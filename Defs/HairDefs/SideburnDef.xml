@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+
+<DefPackage-SideburnDef>
+
+  <SideburnDef>
+    <label>Sideburn_Seventies</label>
+    <hairGender>Male</hairGender>
+    <texPath>Sideburns/Sideburn_Seventies</texPath>
+    <defName>Sideburn_Seventies</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </SideburnDef>
+
+  
+</DefPackage-SideburnDef>

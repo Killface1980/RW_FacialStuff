@@ -7,8 +7,8 @@
     <texPath>Beards/Beard_Amish</texPath>
     <defName>Beard_Beard_Amish</defName>
     <hairTags>
-      <li>Rural</li>
       <li>Urban</li>
+      <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
@@ -20,8 +20,8 @@
     <texPath>Beards/Beard_Methusalem</texPath>
     <defName>Beard_Methusalem</defName>
     <hairTags>
-      <li>Rural</li>
       <li>Urban</li>
+      <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
@@ -33,8 +33,21 @@
     <texPath>Beards/Beard_ZZTop</texPath>
     <defName>Beard_ZZTop</defName>
     <hairTags>
-      <li>Rural</li>
       <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </BeardDef>
+
+  <BeardDef>
+    <label>Beard_Santa</label>
+    <hairGender>Male</hairGender>
+    <texPath>Beards/Beard_Santa</texPath>
+    <defName>Beard_Santa</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>

@@ -19,12 +19,13 @@ namespace RW_FacialHair
         public extern PawnGraphicHairSet();
 #pragma warning restore CS0824 // Konstruktor ist extern markiert
 
-        private static void DrawColonistBeards(Pawn colonist)
-        {
 
-        }
+        //     public Pawn _saveablePawn;
+        //     public BeardDef _saveableBeard;
+        //     private TacheDef _saveableTache;
 
         public Graphic beardGraphic;
+        public Graphic sideburnGraphic;
         public Graphic tacheGraphic;
 
         public Material BeardMatAt(Rot4 facing)
@@ -44,58 +45,88 @@ namespace RW_FacialHair
             ClearCache();
             if (pawn.RaceProps.Humanlike)
             {
-                //      if (pawn.beardyPawn.beardDef.Equals(null))
-                //      pawn.beardyPawn.beardDef = PawnBeardChooser.RandomBeardDefFor(pawn, pawn.Faction.def);
 
                 nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
                 rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RW_FacialHair.PawnGraphicHairSet.RottingColor);
                 dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
 
                 headGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor);
-                beardGraphic = GraphicDatabase.Get<Graphic_Multi>(PawnBeardChooser.RandomBeardDefFor(pawn, pawn.Faction.def).texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
-
-                tacheGraphic = GraphicDatabase.Get<Graphic_Multi>(PawnBeardChooser.RandomTacheDefFor(pawn, pawn.Faction.def).texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
-
 
                 if (pawn.gender != Gender.Female)
                 {
-                    Texture2D readHeadGraphicFront = null;
-                    Texture2D readTacheGraphicFront = null;
-                    Texture2D readBeardGraphicFront = null;
-
-                    Texture2D readHeadGraphicSide = null;
-                    Texture2D readTacheGraphicSide = null;
-                    Texture2D readBeardGraphicSide = null;
-
-                    Texture2D finalHeadFront = null;
-                    Texture2D finalHeadSide = null;
-
-
-                    MakeReadable(headGraphic.MatFront.mainTexture as Texture2D, ref readHeadGraphicFront);
-                    MakeReadable(headGraphic.MatSide.mainTexture as Texture2D, ref readHeadGraphicSide);
-
-                    MakeReadable(tacheGraphic.MatFront.mainTexture as Texture2D, ref readTacheGraphicFront);
-                    MakeReadable(tacheGraphic.MatSide.mainTexture as Texture2D, ref readTacheGraphicSide);
-
-                    MakeReadable(beardGraphic.MatFront.mainTexture as Texture2D, ref readBeardGraphicFront);
-                    MakeReadable(beardGraphic.MatSide.mainTexture as Texture2D, ref readBeardGraphicSide);
-
-                    // only colonists over 16 get a tache, over 40 get full beard. maybe chops for 25-39?
-
                     if (pawn.ageTracker.AgeBiologicalYears > 16)
                     {
-                        if (pawn.ageTracker.AgeBiologicalYears > 40)
-                        {
-                            MakeBeard(readBeardGraphicFront, readTacheGraphicFront, ref finalHeadFront);
-                            MakeBeard(readBeardGraphicSide, readTacheGraphicSide, ref finalHeadSide);
 
-                            AddFacialHair(readHeadGraphicFront, finalHeadFront, ref finalHeadFront);
-                            AddFacialHair(readHeadGraphicSide, finalHeadSide, ref finalHeadSide);
-                        }
-                        else
+                        var _saveableBeard = PawnBeardChooser.RandomBeardDefFor(pawn, pawn.Faction.def);
+                        var _saveableSideburn = PawnBeardChooser.RandomSideburnDefFor(pawn, pawn.Faction.def);
+                        var _saveableTache = PawnBeardChooser.RandomTacheDefFor(pawn, pawn.Faction.def);
+
+                        beardGraphic = GraphicDatabase.Get<Graphic_Multi>(_saveableBeard.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                        sideburnGraphic = GraphicDatabase.Get<Graphic_Multi>(_saveableSideburn.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi>(_saveableTache.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+
+
+                        Texture2D readHeadGraphicFront = null;
+
+                        Texture2D readBeardGraphicFront = null;
+                        Texture2D readSideburnGraphicFront = null;
+                        Texture2D readTacheGraphicFront = null;
+
+                        Texture2D readHeadGraphicSide = null;
+
+                        Texture2D readBeardGraphicSide = null;
+                        Texture2D readSideburnGraphicSide = null;
+                        Texture2D readTacheGraphicSide = null;
+
+                        Texture2D finalHeadFront = null;
+                        Texture2D finalHeadSide = null;
+
+
+                        MakeReadable(headGraphic.MatFront.mainTexture as Texture2D, ref readHeadGraphicFront);
+                        MakeReadable(headGraphic.MatSide.mainTexture as Texture2D, ref readHeadGraphicSide);
+
+                        MakeReadable(beardGraphic.MatFront.mainTexture as Texture2D, ref readBeardGraphicFront);
+                        MakeReadable(beardGraphic.MatSide.mainTexture as Texture2D, ref readBeardGraphicSide);
+
+                        MakeReadable(sideburnGraphic.MatFront.mainTexture as Texture2D, ref readSideburnGraphicFront);
+                        MakeReadable(sideburnGraphic.MatSide.mainTexture as Texture2D, ref readSideburnGraphicSide);
+
+                        MakeReadable(tacheGraphic.MatFront.mainTexture as Texture2D, ref readTacheGraphicFront);
+                        MakeReadable(tacheGraphic.MatSide.mainTexture as Texture2D, ref readTacheGraphicSide);
+
+
+                        // beards are staged ATM, sould be solved per likelihood + age, see PawnBeardChooser
+
+                        if (pawn.ageTracker.AgeBiologicalYears < 25)
                         {
                             AddFacialHair(readHeadGraphicFront, readTacheGraphicFront, ref finalHeadFront);
                             AddFacialHair(readHeadGraphicSide, readTacheGraphicSide, ref finalHeadSide);
+                        }
+                        else
+                        {
+
+                            if (pawn.ageTracker.AgeBiologicalYears >= 25 && pawn.ageTracker.AgeBiologicalYears < 40)
+                            {
+                                MakeBeard(readSideburnGraphicFront, readTacheGraphicFront, ref finalHeadFront);
+                                MakeBeard(readSideburnGraphicSide, readTacheGraphicSide, ref finalHeadSide);
+                            }
+
+
+                            if (pawn.ageTracker.AgeBiologicalYears >= 40)
+                            {
+                                // oder flipped for front
+                                MakeBeard(readSideburnGraphicFront, readBeardGraphicFront, ref finalHeadFront);
+                                MakeBeard(finalHeadFront, readTacheGraphicFront, ref finalHeadFront);
+
+
+                                MakeBeard(readBeardGraphicSide, readSideburnGraphicSide, ref finalHeadSide);
+                                MakeBeard(finalHeadSide, readTacheGraphicSide, ref finalHeadSide);
+
+                            }
+
+
+                            AddFacialHair(readHeadGraphicFront, finalHeadFront, ref finalHeadFront);
+                            AddFacialHair(readHeadGraphicSide, finalHeadSide, ref finalHeadSide);
                         }
 
                         headGraphic.MatFront.mainTexture = finalHeadFront;
@@ -236,6 +267,11 @@ namespace RW_FacialHair
             return finalhead;
         }
 
-
+        //   public override void ExposeData()
+        //   {
+        //       Scribe_References.LookReference(ref _saveablePawn, "Pawn");
+        //       Scribe_Defs.LookDef(ref _saveableBeard, "BeardDef");
+        //       Scribe_Defs.LookDef(ref _saveableTache, "TacheDef");
+        //   }
     }
 }

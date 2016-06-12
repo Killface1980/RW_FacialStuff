@@ -52,8 +52,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BeardDef.cs" />
+    <None Include="MapComponent_FacialHair.cs" />
     <Compile Include="PawnBeardChooser.cs" />
     <Compile Include="PawnGraphicSet.cs" />
+    <None Include="SaveablePawn.cs" />
     <None Include="Pawn_BeardTracker.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,6 +63,9 @@
   <ItemGroup>
     <Content Include="..\..\Defs\HairDefs\BeardDef.xml">
       <Link>Defs\BeardDef.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\HairDefs\SideburnDef.xml">
+      <Link>Defs\SideburnDef.xml</Link>
     </Content>
     <Content Include="..\..\Defs\HairDefs\TacheDef.xml">
       <Link>Defs\TacheDef.xml</Link>

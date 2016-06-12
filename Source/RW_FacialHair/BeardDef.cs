@@ -24,5 +24,15 @@ namespace RW_FacialHair
         public List<string> hairTags = new List<string>();
 
     }
+
+    public class SideburnDef : Def
+    {
+        public string texPath;
+
+        public HairGender hairGender = HairGender.Any;
+
+        public List<string> hairTags = new List<string>();
+
+    }
 }
 

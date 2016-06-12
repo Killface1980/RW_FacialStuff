@@ -8,8 +8,8 @@
     <texPath>Moustaches/Moustache_Deluxe</texPath>
     <defName>Moustache_Deluxe</defName>
     <hairTags>
-      <li>Rural</li>
       <li>Urban</li>
+      <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
@@ -21,21 +21,8 @@
     <texPath>Moustaches/Moustache_Walrus</texPath>
     <defName>Moustache_Walrus</defName>
     <hairTags>
-      <li>Rural</li>
       <li>Urban</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </TacheDef>
-
-  <TacheDef>
-    <label>Moustache_Chops</label>
-    <hairGender>Male</hairGender>
-    <texPath>Moustaches/Moustache_Chops</texPath>
-    <defName>Moustache_Chops</defName>
-    <hairTags>
       <li>Rural</li>
-      <li>Urban</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
@@ -47,8 +34,21 @@
     <texPath>Moustaches/Moustache_Ming</texPath>
     <defName>Moustache_Ming</defName>
     <hairTags>
-      <li>Rural</li>
       <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </TacheDef>
+
+  <TacheDef>
+    <label>Moustache_Ranger</label>
+    <hairGender>Male</hairGender>
+    <texPath>Moustaches/Moustache_Ranger</texPath>
+    <defName>Moustache_Ranger</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
