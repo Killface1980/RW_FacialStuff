@@ -40,5 +40,18 @@
       <li>Tribal</li>
     </hairTags>
   </TacheDef>
+
+  <TacheDef>
+    <label>Moustache_Ming</label>
+    <hairGender>Male</hairGender>
+    <texPath>Moustaches/Moustache_Ming</texPath>
+    <defName>Moustache_Ming</defName>
+    <hairTags>
+      <li>Rural</li>
+      <li>Urban</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </TacheDef>
   
 </DefPackage-TacheDef>

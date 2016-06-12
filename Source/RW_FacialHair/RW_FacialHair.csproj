@@ -59,11 +59,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\Defs\BeardDefs\Hair def - Kopie.xml">
-      <Link>Hair def - Kopie.xml</Link>
+    <Content Include="..\..\Defs\HairDefs\BeardDef.xml">
+      <Link>Defs\BeardDef.xml</Link>
     </Content>
-    <Content Include="..\..\Defs\BeardDefs\Hair def.xml">
-      <Link>Hair def.xml</Link>
+    <Content Include="..\..\Defs\HairDefs\TacheDef.xml">
+      <Link>Defs\TacheDef.xml</Link>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
