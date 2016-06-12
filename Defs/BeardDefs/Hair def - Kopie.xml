@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+
+<DefPackage-TacheDef>
+  <TacheDef>
+    <label>Moustache_Deluxe</label>
+    <hairGender>Male</hairGender>
+    <texPath>Moustaches/Moustache_Deluxe</texPath>
+    <defName>Moustache_Deluxe</defName>
+    <hairTags>
+      <li>Rural</li>
+      <li>Urban</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </TacheDef>
+
+  <TacheDef>
+    <label>Moustache_Walrus</label>
+    <hairGender>Male</hairGender>
+    <texPath>Moustaches/Moustache_Walrus</texPath>
+    <defName>Moustache_Walrus</defName>
+    <hairTags>
+      <li>Rural</li>
+      <li>Urban</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </TacheDef>
+
+  <TacheDef>
+    <label>Moustache_Chops</label>
+    <hairGender>Male</hairGender>
+    <texPath>Moustaches/Moustache_Chops</texPath>
+    <defName>Moustache_Chops</defName>
+    <hairTags>
+      <li>Rural</li>
+      <li>Urban</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </TacheDef>
+  
+</DefPackage-TacheDef>
