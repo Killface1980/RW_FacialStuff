@@ -1,0 +1,182 @@
+﻿using RimWorld;
+using System;
+using System.Collections;
+using UnityEngine;
+using Verse;
+
+namespace RW_FacialHair
+{
+    // public class BeardyPawn:Pawn
+    // {
+    //     public Pawn_BeardTracker beardyPawn;
+    // }
+
+
+
+    public class PawnGraphicHairSet : PawnGraphicSet
+    {
+#pragma warning disable CS0824 // Konstruktor ist extern markiert
+        public extern PawnGraphicHairSet();
+#pragma warning restore CS0824 // Konstruktor ist extern markiert
+
+        private static void DrawColonistBeards(Pawn colonist)
+        {
+
+        }
+
+        public Graphic beardGraphic;
+        public Graphic tacheGraphic;
+
+        public Material BeardMatAt(Rot4 facing)
+        {
+            Material baseMat = beardGraphic.MatAt(facing, null);
+            return flasher.GetDamagedMat(baseMat);
+        }
+
+        public Material TacheMatAt(Rot4 facing)
+        {
+            Material baseMat = tacheGraphic.MatAt(facing, null);
+            return flasher.GetDamagedMat(baseMat);
+        }
+
+        public new void ResolveAllGraphics()
+        {
+            ClearCache();
+            if (pawn.RaceProps.Humanlike)
+            {
+                //      if (pawn.beardyPawn.beardDef.Equals(null))
+                //      pawn.beardyPawn.beardDef = PawnBeardChooser.RandomBeardDefFor(pawn, pawn.Faction.def);
+
+                nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
+                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RW_FacialHair.PawnGraphicHairSet.RottingColor);
+                dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
+
+                headGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor);
+                beardGraphic = GraphicDatabase.Get<Graphic_Multi>(PawnBeardChooser.RandomBeardDefFor(pawn, pawn.Faction.def).texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+
+                tacheGraphic = GraphicDatabase.Get<Graphic_Multi>(PawnBeardChooser.RandomTacheDefFor(pawn, pawn.Faction.def).texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+
+
+                if (pawn.gender != Gender.Female)
+                {
+                    Texture2D readHeadGraphicFront = null;
+                    Texture2D readBeardGraphicFront = null;
+                    Texture2D readTacheGraphicFront = null;
+
+                    Texture2D readHeadGraphicSide = null;
+                    Texture2D readBeardGraphicSide = null;
+                    Texture2D readTacheGraphicSide = null;
+
+                    Texture2D finalHeadFront = null;
+                    Texture2D finalHeadSide = null;
+                    MakeReadable(headGraphic.MatFront.mainTexture as Texture2D, ref readHeadGraphicFront);
+                    MakeReadable(headGraphic.MatSide.mainTexture as Texture2D, ref readHeadGraphicSide);
+
+                    MakeReadable(beardGraphic.MatFront.mainTexture as Texture2D, ref readBeardGraphicFront);
+                    MakeReadable(beardGraphic.MatSide.mainTexture as Texture2D, ref readBeardGraphicSide);
+
+                    MakeReadable(tacheGraphic.MatFront.mainTexture as Texture2D, ref readTacheGraphicFront);
+                    MakeReadable(tacheGraphic.MatSide.mainTexture as Texture2D, ref readTacheGraphicSide);
+
+
+
+                    AddFacialHair(readHeadGraphicFront, readBeardGraphicFront, ref finalHeadFront);
+                    AddFacialHair(readHeadGraphicSide, readBeardGraphicSide, ref finalHeadSide);
+
+                    AddFacialHair(finalHeadFront, readTacheGraphicFront, ref finalHeadFront);
+                    AddFacialHair(finalHeadSide, readTacheGraphicSide, ref finalHeadSide);
+
+                    headGraphic.MatFront.mainTexture = finalHeadFront;
+                    headGraphic.MatSide.mainTexture = finalHeadSide;
+                }
+
+
+
+                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RW_FacialHair.PawnGraphicHairSet.RottingColor);
+                skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
+                hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                ResolveApparelGraphics();
+
+                //beardGraphic
+            }
+            else
+            {
+                PawnKindLifeStage curKindLifeStage = pawn.ageTracker.CurKindLifeStage;
+                if (pawn.gender != Gender.Female || curKindLifeStage.femaleGraphicData == null)
+                {
+                    nakedGraphic = curKindLifeStage.bodyGraphicData.Graphic;
+                }
+                else
+                {
+                    nakedGraphic = curKindLifeStage.femaleGraphicData.Graphic;
+                }
+                rottingGraphic = nakedGraphic.GetColoredVersion(ShaderDatabase.CutoutSkin, RW_FacialHair.PawnGraphicHairSet.RottingColor, RW_FacialHair.PawnGraphicHairSet.RottingColor);
+                if (curKindLifeStage.dessicatedBodyGraphicData != null)
+                {
+                    dessicatedGraphic = curKindLifeStage.dessicatedBodyGraphicData.GraphicColoredFor(pawn);
+                }
+            }
+        }
+
+        public Texture2D MakeReadable(Texture2D texture, ref Texture2D myTexture2D)
+        {
+            // Create a temporary RenderTexture of the same size as the texture
+            RenderTexture tmp = RenderTexture.GetTemporary(
+                                texture.width,
+                                texture.height,
+                                0,
+                                RenderTextureFormat.Default,
+                                RenderTextureReadWrite.Linear);
+
+            // Blit the pixels on texture to the RenderTexture
+            Graphics.Blit(texture, tmp);
+
+            // Set the current RenderTexture to the temporary one we created
+            RenderTexture.active = tmp;
+
+            // Create a new readable Texture2D to copy the pixels to it
+            myTexture2D = new Texture2D(texture.width, texture.width);
+
+            // Copy the pixels from the RenderTexture to the new Texture
+            myTexture2D.ReadPixels(new Rect(0, 0, tmp.width, tmp.height), 0, 0);
+            myTexture2D.Apply();
+
+            // Reset the active RenderTexture
+            //    RenderTexture.active = previous;
+
+            // Release the temporary RenderTexture
+            RenderTexture.ReleaseTemporary(tmp);
+
+            return myTexture2D;
+            // "myTexture2D" now has the same pixels from "texture" and it's readable.
+        }
+
+        public Texture2D AddFacialHair(Texture2D head, Texture2D beard, ref Texture2D finalhead)
+        {
+
+            int startX = 0;
+            int startY = head.height - beard.height;
+
+            for (int x = startX; x < head.width; x++)
+            {
+
+                for (int y = startY; y < head.height; y++)
+                {
+                    Color headColor = head.GetPixel(x, y);
+                    Color beardColor = beard.GetPixel(x - startX, y - startY);
+
+                    Color beardColorFace = pawn.story.hairColor;
+
+                    Color final_color = Color.Lerp(headColor, new Color(beardColorFace.r * 0.65f, beardColorFace.g * 0.65f, beardColorFace.b * 0.65f), beardColor.a / 1.0f);
+
+                    head.SetPixel(x, y, final_color);
+                }
+            }
+
+            head.Apply();
+            finalhead = head;
+            return finalhead;
+        }
+
+    }
+}
