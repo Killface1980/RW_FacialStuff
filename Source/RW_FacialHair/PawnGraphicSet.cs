@@ -70,6 +70,7 @@ namespace RW_FacialHair
                     Texture2D finalHeadFront = null;
                     Texture2D finalHeadSide = null;
 
+
                     MakeReadable(headGraphic.MatFront.mainTexture as Texture2D, ref readHeadGraphicFront);
                     MakeReadable(headGraphic.MatSide.mainTexture as Texture2D, ref readHeadGraphicSide);
 
@@ -79,16 +80,27 @@ namespace RW_FacialHair
                     MakeReadable(beardGraphic.MatFront.mainTexture as Texture2D, ref readBeardGraphicFront);
                     MakeReadable(beardGraphic.MatSide.mainTexture as Texture2D, ref readBeardGraphicSide);
 
+                    // only colonists over 16 get a tache, over 40 get full beard. maybe chops for 25-39?
 
+                    if (pawn.ageTracker.AgeBiologicalYears > 16)
+                    {
+                        if (pawn.ageTracker.AgeBiologicalYears > 40)
+                        {
+                            MakeBeard(readBeardGraphicFront, readTacheGraphicFront, ref finalHeadFront);
+                            MakeBeard(readBeardGraphicSide, readTacheGraphicSide, ref finalHeadSide);
 
-                    MakeBeard(readBeardGraphicFront, readTacheGraphicFront, ref finalHeadFront);
-                    MakeBeard(readBeardGraphicSide, readTacheGraphicSide, ref finalHeadSide);
+                            AddFacialHair(readHeadGraphicFront, finalHeadFront, ref finalHeadFront);
+                            AddFacialHair(readHeadGraphicSide, finalHeadSide, ref finalHeadSide);
+                        }
+                        else
+                        {
+                            AddFacialHair(readHeadGraphicFront, readTacheGraphicFront, ref finalHeadFront);
+                            AddFacialHair(readHeadGraphicSide, readTacheGraphicSide, ref finalHeadSide);
+                        }
 
-                    AddFacialHair(readHeadGraphicFront, finalHeadFront, ref finalHeadFront);
-                    AddFacialHair(readHeadGraphicSide, finalHeadSide, ref finalHeadSide);
-
-                    headGraphic.MatFront.mainTexture = finalHeadFront;
-                    headGraphic.MatSide.mainTexture = finalHeadSide;
+                        headGraphic.MatFront.mainTexture = finalHeadFront;
+                        headGraphic.MatSide.mainTexture = finalHeadSide;
+                    }
                 }
 
 
@@ -202,9 +214,9 @@ namespace RW_FacialHair
                     Color skin = pawn.story.SkinColor;
                     float whiteness = pawn.story.skinWhiteness;
 
-                    beardColor.r = beardColor.r * beardColorFace.r  * UnityEngine.Random.Range(1f, 3.5f) / skin.r * whiteness;
-                    beardColor.g = beardColor.g * beardColorFace.g  * UnityEngine.Random.Range(1f, 3.5f) / skin.g * whiteness;
-                    beardColor.b = beardColor.b * beardColorFace.b  * UnityEngine.Random.Range(1f, 3.5f) / skin.b * whiteness;
+                    beardColor.r = beardColor.r * beardColorFace.r * UnityEngine.Random.Range(1f, 3.5f) / skin.r * whiteness;
+                    beardColor.g = beardColor.g * beardColorFace.g * UnityEngine.Random.Range(1f, 3.5f) / skin.g * whiteness;
+                    beardColor.b = beardColor.b * beardColorFace.b * UnityEngine.Random.Range(1f, 3.5f) / skin.b * whiteness;
 
                     Color final_color = headColor;
                     if (beardColor.a > 0)
@@ -213,7 +225,7 @@ namespace RW_FacialHair
                         final_color = beardColor;
 
 
-              //      Color final_color = Color.Lerp(headColor, beardColor, beardColor.a / 1.0f);
+                    //      Color final_color = Color.Lerp(headColor, beardColor, beardColor.a / 1.0f);
 
                     head.SetPixel(x, y, final_color);
                 }
