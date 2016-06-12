@@ -51,16 +51,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Class1.cs" />
-    <None Include="HairDef.cs" />
-    <None Include="HairGender.cs" />
-    <None Include="GraphicDatabaseHeadRecords.cs" />
     <Compile Include="BeardDef.cs" />
     <Compile Include="PawnBeardChooser.cs" />
     <Compile Include="PawnGraphicSet.cs" />
     <None Include="Pawn_BeardTracker.cs" />
     <Compile Include="Initializer.cs" />
-    <None Include="PawnRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

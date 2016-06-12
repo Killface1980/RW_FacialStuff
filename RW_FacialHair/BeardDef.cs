@@ -11,7 +11,7 @@ namespace RW_FacialHair
 
         public HairGender hairGender = HairGender.Any;
 
-        public List<string> BeardTags = new List<string>();
+        public List<string> hairTags = new List<string>();
 
     }
 
@@ -21,7 +21,7 @@ namespace RW_FacialHair
 
         public HairGender hairGender = HairGender.Any;
 
-        public List<string> BeardTags = new List<string>();
+        public List<string> hairTags = new List<string>();
 
     }
 }

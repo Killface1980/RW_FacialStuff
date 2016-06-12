@@ -60,31 +60,32 @@ namespace RW_FacialHair
                 if (pawn.gender != Gender.Female)
                 {
                     Texture2D readHeadGraphicFront = null;
-                    Texture2D readBeardGraphicFront = null;
                     Texture2D readTacheGraphicFront = null;
+                    Texture2D readBeardGraphicFront = null;
 
                     Texture2D readHeadGraphicSide = null;
-                    Texture2D readBeardGraphicSide = null;
                     Texture2D readTacheGraphicSide = null;
+                    Texture2D readBeardGraphicSide = null;
 
                     Texture2D finalHeadFront = null;
                     Texture2D finalHeadSide = null;
+
                     MakeReadable(headGraphic.MatFront.mainTexture as Texture2D, ref readHeadGraphicFront);
                     MakeReadable(headGraphic.MatSide.mainTexture as Texture2D, ref readHeadGraphicSide);
-
-                    MakeReadable(beardGraphic.MatFront.mainTexture as Texture2D, ref readBeardGraphicFront);
-                    MakeReadable(beardGraphic.MatSide.mainTexture as Texture2D, ref readBeardGraphicSide);
 
                     MakeReadable(tacheGraphic.MatFront.mainTexture as Texture2D, ref readTacheGraphicFront);
                     MakeReadable(tacheGraphic.MatSide.mainTexture as Texture2D, ref readTacheGraphicSide);
 
+                    MakeReadable(beardGraphic.MatFront.mainTexture as Texture2D, ref readBeardGraphicFront);
+                    MakeReadable(beardGraphic.MatSide.mainTexture as Texture2D, ref readBeardGraphicSide);
 
 
-                    AddFacialHair(readHeadGraphicFront, readBeardGraphicFront, ref finalHeadFront);
-                    AddFacialHair(readHeadGraphicSide, readBeardGraphicSide, ref finalHeadSide);
 
-                    AddFacialHair(finalHeadFront, readTacheGraphicFront, ref finalHeadFront);
-                    AddFacialHair(finalHeadSide, readTacheGraphicSide, ref finalHeadSide);
+                    MakeBeard(readBeardGraphicFront, readTacheGraphicFront, ref finalHeadFront);
+                    MakeBeard(readBeardGraphicSide, readTacheGraphicSide, ref finalHeadSide);
+
+                    AddFacialHair(readHeadGraphicFront, finalHeadFront, ref finalHeadFront);
+                    AddFacialHair(readHeadGraphicSide, finalHeadSide, ref finalHeadSide);
 
                     headGraphic.MatFront.mainTexture = finalHeadFront;
                     headGraphic.MatSide.mainTexture = finalHeadSide;
@@ -151,6 +152,38 @@ namespace RW_FacialHair
             // "myTexture2D" now has the same pixels from "texture" and it's readable.
         }
 
+        public Texture2D MakeBeard(Texture2D beard, Texture2D moustache, ref Texture2D finalhead)
+        {
+
+            int startX = 0;
+            int startY = beard.height - moustache.height;
+
+            for (int x = startX; x < beard.width; x++)
+            {
+
+                for (int y = startY; y < beard.height; y++)
+                {
+                    Color beardColor = beard.GetPixel(x, y);
+                    Color tacheColor = moustache.GetPixel(x - startX, y - startY);
+
+                    Color final_color = beardColor;
+                    if (tacheColor.a > 0)
+                        final_color = Color.Lerp(beardColor, tacheColor, tacheColor.a / 1.0f);
+                    if (tacheColor.a == 1)
+                        final_color = tacheColor;
+
+                    //         Color final_color = Color.Lerp(headColor, new Color(beardColorFace.r * 0.35f, beardColorFace.g * 0.35f, beardColorFace.b * 0.35f), beardColor.a / 1.0f);
+                    //        Color final_color = Color.Lerp(beardColor, tacheColor, tacheColor.a / 1.0f);
+
+                    beard.SetPixel(x, y, final_color);
+                }
+            }
+
+            beard.Apply();
+            finalhead = beard;
+            return finalhead;
+        }
+
         public Texture2D AddFacialHair(Texture2D head, Texture2D beard, ref Texture2D finalhead)
         {
 
@@ -166,8 +199,21 @@ namespace RW_FacialHair
                     Color beardColor = beard.GetPixel(x - startX, y - startY);
 
                     Color beardColorFace = pawn.story.hairColor;
+                    Color skin = pawn.story.SkinColor;
+                    float whiteness = pawn.story.skinWhiteness;
 
-                    Color final_color = Color.Lerp(headColor, new Color(beardColorFace.r * 0.65f, beardColorFace.g * 0.65f, beardColorFace.b * 0.65f), beardColor.a / 1.0f);
+                    beardColor.r = beardColor.r * beardColorFace.r  * UnityEngine.Random.Range(1f, 3.5f) / skin.r * whiteness;
+                    beardColor.g = beardColor.g * beardColorFace.g  * UnityEngine.Random.Range(1f, 3.5f) / skin.g * whiteness;
+                    beardColor.b = beardColor.b * beardColorFace.b  * UnityEngine.Random.Range(1f, 3.5f) / skin.b * whiteness;
+
+                    Color final_color = headColor;
+                    if (beardColor.a > 0)
+                        final_color = Color.Lerp(headColor, beardColor, beardColor.a / 1.0f);
+                    if (beardColor.a == 1)
+                        final_color = beardColor;
+
+
+              //      Color final_color = Color.Lerp(headColor, beardColor, beardColor.a / 1.0f);
 
                     head.SetPixel(x, y, final_color);
                 }
@@ -177,6 +223,7 @@ namespace RW_FacialHair
             finalhead = head;
             return finalhead;
         }
+
 
     }
 }

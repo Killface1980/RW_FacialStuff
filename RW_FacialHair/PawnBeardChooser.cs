@@ -11,7 +11,7 @@ namespace RW_FacialHair
         public static BeardDef RandomBeardDefFor(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<BeardDef> source = from beard in DefDatabase<BeardDef>.AllDefs
-                                           where beard.BeardTags.SharesElementWith(factionType.hairTags)
+                                           where beard.hairTags.SharesElementWith(factionType.hairTags)
                                            select beard;
             return source.RandomElementByWeight((BeardDef beard) => PawnBeardChooser.BeardChoiceLikelihoodFor(beard, pawn));
         }
@@ -19,7 +19,7 @@ namespace RW_FacialHair
         public static TacheDef RandomTacheDefFor(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<TacheDef> source = from tache in DefDatabase<TacheDef>.AllDefs
-                                           where tache.BeardTags.SharesElementWith(factionType.hairTags)
+                                           where tache.hairTags.SharesElementWith(factionType.hairTags)
                                            select tache;
             return source.RandomElementByWeight((TacheDef tache) => PawnBeardChooser.TacheChoiceLikelihoodFor(tache, pawn));
         }
