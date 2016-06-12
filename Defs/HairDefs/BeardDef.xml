@@ -52,5 +52,17 @@
       <li>Tribal</li>
     </hairTags>
   </BeardDef>
-
+  
+  <BeardDef>
+    <label>Shaved</label>
+    <hairGender>MaleUsually</hairGender>
+    <texPath>Beards/Shaved</texPath>
+    <defName>Shaved</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </BeardDef>
 </DefPackage-BeardDef>

@@ -95,39 +95,21 @@ namespace RW_FacialHair
                         MakeReadable(tacheGraphic.MatSide.mainTexture as Texture2D, ref readTacheGraphicSide);
 
 
-                        // beards are staged ATM, sould be solved per likelihood + age, see PawnBeardChooser
+                  //    if (UnityEngine.Random.Range(0f, 3f) >  100 / pawn.ageTracker.AgeBiologicalYears)
+                  //    { }
 
-                        if (pawn.ageTracker.AgeBiologicalYears < 25)
-                        {
-                            AddFacialHair(readHeadGraphicFront, readTacheGraphicFront, ref finalHeadFront);
-                            AddFacialHair(readHeadGraphicSide, readTacheGraphicSide, ref finalHeadSide);
-                        }
-                        else
-                        {
+                        MakeBeard(readSideburnGraphicFront, readBeardGraphicFront, ref finalHeadFront);
+                        MakeBeard(finalHeadFront, readTacheGraphicFront, ref finalHeadFront);
 
-                            if (pawn.ageTracker.AgeBiologicalYears >= 25 && pawn.ageTracker.AgeBiologicalYears < 40)
-                            {
-                                MakeBeard(readSideburnGraphicFront, readTacheGraphicFront, ref finalHeadFront);
-                                MakeBeard(readSideburnGraphicSide, readTacheGraphicSide, ref finalHeadSide);
-                            }
+                        MakeBeard(readBeardGraphicSide, readSideburnGraphicSide, ref finalHeadSide);
+                        MakeBeard(finalHeadSide, readTacheGraphicSide, ref finalHeadSide);
+
+                        //           }
 
 
-                            if (pawn.ageTracker.AgeBiologicalYears >= 40)
-                            {
-                                // oder flipped for front
-                                MakeBeard(readSideburnGraphicFront, readBeardGraphicFront, ref finalHeadFront);
-                                MakeBeard(finalHeadFront, readTacheGraphicFront, ref finalHeadFront);
-
-
-                                MakeBeard(readBeardGraphicSide, readSideburnGraphicSide, ref finalHeadSide);
-                                MakeBeard(finalHeadSide, readTacheGraphicSide, ref finalHeadSide);
-
-                            }
-
-
-                            AddFacialHair(readHeadGraphicFront, finalHeadFront, ref finalHeadFront);
-                            AddFacialHair(readHeadGraphicSide, finalHeadSide, ref finalHeadSide);
-                        }
+                        AddFacialHair(readHeadGraphicFront, finalHeadFront, ref finalHeadFront);
+                        AddFacialHair(readHeadGraphicSide, finalHeadSide, ref finalHeadSide);
+                        //       }
 
                         headGraphic.MatFront.mainTexture = finalHeadFront;
                         headGraphic.MatSide.mainTexture = finalHeadSide;
@@ -245,9 +227,9 @@ namespace RW_FacialHair
                     Color skin = pawn.story.SkinColor;
                     float whiteness = pawn.story.skinWhiteness;
 
-                    beardColor.r = beardColor.r * beardColorFace.r * UnityEngine.Random.Range(1f, 3.5f) / skin.r * whiteness;
-                    beardColor.g = beardColor.g * beardColorFace.g * UnityEngine.Random.Range(1f, 3.5f) / skin.g * whiteness;
-                    beardColor.b = beardColor.b * beardColorFace.b * UnityEngine.Random.Range(1f, 3.5f) / skin.b * whiteness;
+                    beardColor.r = beardColor.r * beardColorFace.r * UnityEngine.Random.Range(1f, 2.5f) / skin.r * whiteness;
+                    beardColor.g = beardColor.g * beardColorFace.g * UnityEngine.Random.Range(1f, 2.5f) / skin.g * whiteness;
+                    beardColor.b = beardColor.b * beardColorFace.b * UnityEngine.Random.Range(1f, 2.5f) / skin.b * whiteness;
 
                     Color final_color = headColor;
                     if (beardColor.a > 0)

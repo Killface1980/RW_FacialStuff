@@ -46,7 +46,7 @@ namespace RW_FacialHair
         {
             if (pawn.gender == Gender.None)
             {
-                return 100f;
+                return 0f;
             }
 
             if (pawn.gender == Gender.Male)
@@ -82,9 +82,10 @@ namespace RW_FacialHair
 
         private static float TacheChoiceLikelihoodFor(TacheDef tache, Pawn pawn)
         {
+
             if (pawn.gender == Gender.None)
             {
-                return 100f;
+                return 0f;
             }
             if (pawn.gender == Gender.Male)
             {
@@ -104,20 +105,9 @@ namespace RW_FacialHair
             }
             if (pawn.gender == Gender.Female)
             {
-                switch (tache.hairGender)
-                {
-                    case HairGender.Male:
-                        return 1f;
-                    case HairGender.MaleUsually:
-                        return 5f;
-                    case HairGender.Any:
-                        return 60f;
-                    case HairGender.FemaleUsually:
-                        return 30f;
-                    case HairGender.Female:
-                        return 70f;
-                }
+                return 0f;
             }
+
             Log.Error(string.Concat(new object[]
             {
                 "Unknown hair likelihood for ",
@@ -132,7 +122,7 @@ namespace RW_FacialHair
         {
             if (pawn.gender == Gender.None)
             {
-                return 100f;
+                return 0f;
             }
             if (pawn.gender == Gender.Male)
             {
@@ -152,20 +142,9 @@ namespace RW_FacialHair
             }
             if (pawn.gender == Gender.Female)
             {
-                switch (sideburn.hairGender)
-                {
-                    case HairGender.Male:
-                        return 1f;
-                    case HairGender.MaleUsually:
-                        return 5f;
-                    case HairGender.Any:
-                        return 60f;
-                    case HairGender.FemaleUsually:
-                        return 30f;
-                    case HairGender.Female:
-                        return 70f;
-                }
+                return 0f;
             }
+        
             Log.Error(string.Concat(new object[]
             {
                 "Unknown hair likelihood for ",
