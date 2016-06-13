@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ThingDefs>
 	<ThingDef>
-		<defName>PSI</defName>
+		<defName>RW_FacialStuff</defName>
 		<category>Building</category>
 		<menuHidden>true</menuHidden>
 		<label>ModInitializer</label>
-		<thingClass>RW_FacialHair.ModInitializer</thingClass>
+		<thingClass>RW_FacialStuff.ModInitializer</thingClass>
 		<inspectorTabs>
-			<li>RW_FacialHair.ModInitializer</li>
+			<li>RW_FacialStuff.ModInitializer</li>
 		</inspectorTabs>
 	</ThingDef>
 </ThingDefs>

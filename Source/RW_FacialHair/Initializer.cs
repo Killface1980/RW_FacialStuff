@@ -4,7 +4,7 @@ using CommunityCoreLibrary;
 using System.Reflection;
 using System;
 
-namespace RW_FacialHair
+namespace RW_FacialStuff
 {
 
     public class ModInitializer : ITab
@@ -50,7 +50,7 @@ namespace RW_FacialHair
 #if LOG
                     Log.Message("AutoEquip Injected");
 #endif
-                    MapComponent_FacialHair component = MapComponent_FacialHair.Get;
+                    MapComponent_FacialStuff component = MapComponent_FacialStuff.Get;
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace RW_FacialHair
         public void Start()
         {
             MethodInfo coreMethod = typeof(Verse.PawnGraphicSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
-            MethodInfo autoEquipMethod = typeof(RW_FacialHair.PawnGraphicHairSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
+            MethodInfo autoEquipMethod = typeof(RW_FacialStuff.PawnGraphicHairSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
 
     //      MethodInfo coreMethod2 = typeof(Verse.PawnRenderer).GetMethod("RenderPawnInternal", BindingFlags.Instance | BindingFlags.NonPublic);
     //      MethodInfo autoEquipMethod2 = typeof(RW_FacialHair.PawnBeardRenderer).GetMethod("RenderPawnInternal", BindingFlags.Instance | BindingFlags.NonPublic);

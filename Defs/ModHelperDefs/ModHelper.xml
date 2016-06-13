@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
   <ModHelperDef>
-    <defName>FacialHair</defName>
-    <ModName>FacialHairA13</ModName>
+    <defName>RW_FacialStuff</defName>
+    <ModName>RW_FacialStuff</ModName>
     <minCCLversion>0.13.2</minCCLversion>
     <SpecialInjectors>
 

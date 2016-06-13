@@ -5,7 +5,7 @@ using System.Collections;
 using UnityEngine;
 using Verse;
 
-namespace RW_FacialHair
+namespace RW_FacialStuff
 {
     // public class BeardyPawn:Pawn
     // {
@@ -27,6 +27,7 @@ namespace RW_FacialHair
         //     private TacheDef _saveableTache;
 
         public Graphic beardGraphic;
+        public Graphic eyeGraphic;
         public Graphic sideburnGraphic;
         public Graphic tacheGraphic;
 
@@ -49,17 +50,29 @@ namespace RW_FacialHair
             {
 
                 nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
-                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RW_FacialHair.PawnGraphicHairSet.RottingColor);
+                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RW_FacialStuff.PawnGraphicHairSet.RottingColor);
                 dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
 
                 headGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor);
 
-                if (pawn.gender != Gender.Female)
+                if (pawn.gender == Gender.Male)
                 {
                     if (pawn.ageTracker.AgeBiologicalYears > 18)
                     {
 
-                        var pawnSave = MapComponent_FacialHair.Get.GetCache(pawn);
+                        var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+
+                        EyeDef _saveableEye;
+
+                        if (pawnSave.EyeDef != null)
+                        {
+                            _saveableEye = pawnSave.EyeDef;
+                        }
+                        else
+                        {
+                            _saveableEye = PawnBeardChooser.RandomEyeDefFor(pawn, pawn.Faction.def);
+                            pawnSave.EyeDef = _saveableEye;
+                        }
 
                         BeardDef _saveableBeard;
 
@@ -98,7 +111,7 @@ namespace RW_FacialHair
                         }
 
 
-
+                        eyeGraphic = GraphicDatabase.Get<Graphic_Multi>(_saveableEye.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
 
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi>(_saveableBeard.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                         sideburnGraphic = GraphicDatabase.Get<Graphic_Multi>(_saveableSideburn.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
@@ -107,15 +120,20 @@ namespace RW_FacialHair
 
                         Texture2D readHeadGraphicFront = null;
 
+                        Texture2D readEyeGraphicFront = null;
                         Texture2D readBeardGraphicFront = null;
                         Texture2D readSideburnGraphicFront = null;
                         Texture2D readTacheGraphicFront = null;
 
                         Texture2D readHeadGraphicSide = null;
 
+                        Texture2D readEyeGraphicSide = null;
                         Texture2D readBeardGraphicSide = null;
                         Texture2D readSideburnGraphicSide = null;
                         Texture2D readTacheGraphicSide = null;
+
+                        Texture2D eyesHeadFront = null;
+                        Texture2D eyesHeadSide = null;
 
                         Texture2D finalHeadFront = null;
                         Texture2D finalHeadSide = null;
@@ -123,6 +141,9 @@ namespace RW_FacialHair
 
                         MakeReadable(headGraphic.MatFront.mainTexture as Texture2D, ref readHeadGraphicFront);
                         MakeReadable(headGraphic.MatSide.mainTexture as Texture2D, ref readHeadGraphicSide);
+
+                        MakeReadable(eyeGraphic.MatFront.mainTexture as Texture2D, ref readEyeGraphicFront);
+                        MakeReadable(eyeGraphic.MatSide.mainTexture as Texture2D, ref readEyeGraphicSide);
 
                         MakeReadable(beardGraphic.MatFront.mainTexture as Texture2D, ref readBeardGraphicFront);
                         MakeReadable(beardGraphic.MatSide.mainTexture as Texture2D, ref readBeardGraphicSide);
@@ -134,16 +155,59 @@ namespace RW_FacialHair
                         MakeReadable(tacheGraphic.MatSide.mainTexture as Texture2D, ref readTacheGraphicSide);
 
 
-                        //    if (UnityEngine.Random.Range(0f, 3f) >  100 / pawn.ageTracker.AgeBiologicalYears)
-                        //    { }
 
                         MakeBeard(readSideburnGraphicFront, readBeardGraphicFront, readTacheGraphicFront, ref finalHeadFront);
-
                         MakeBeard(readBeardGraphicSide, readSideburnGraphicSide, readTacheGraphicSide, ref finalHeadSide);                        //           }
 
-                        AddFacialHair(readHeadGraphicFront, finalHeadFront, ref finalHeadFront);
-                        AddFacialHair(readHeadGraphicSide, finalHeadSide, ref finalHeadSide);
-                        //       }
+                        AddEyes(readHeadGraphicFront, readEyeGraphicFront, ref eyesHeadFront);
+                        AddEyes(readHeadGraphicSide, readEyeGraphicSide, ref eyesHeadSide);
+
+                        AddFacialHair(eyesHeadFront, finalHeadFront, ref finalHeadFront);
+                        AddFacialHair(eyesHeadSide, finalHeadSide, ref finalHeadSide);
+
+                        headGraphic.MatFront.mainTexture = finalHeadFront;
+                        headGraphic.MatSide.mainTexture = finalHeadSide;
+                    }
+                }
+
+                if (pawn.gender == Gender.Female)
+                {
+                    if (pawn.ageTracker.AgeBiologicalYears > 16)
+                    {
+                        var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+
+                        EyeDef _saveableEye;
+
+                        if (pawnSave.EyeDef != null)
+                        {
+                            _saveableEye = pawnSave.EyeDef;
+                        }
+                        else
+                        {
+                            _saveableEye = PawnBeardChooser.RandomEyeDefFor(pawn, pawn.Faction.def);
+                            pawnSave.EyeDef = _saveableEye;
+                        }
+
+                        eyeGraphic = GraphicDatabase.Get<Graphic_Multi>(_saveableEye.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
+
+                        Texture2D readHeadGraphicFront = null;
+                        Texture2D readEyeGraphicFront = null;
+
+                        Texture2D readHeadGraphicSide = null;
+                        Texture2D readEyeGraphicSide = null;
+
+                        Texture2D finalHeadFront = null;
+                        Texture2D finalHeadSide = null;
+
+
+                        MakeReadable(headGraphic.MatFront.mainTexture as Texture2D, ref readHeadGraphicFront);
+                        MakeReadable(headGraphic.MatSide.mainTexture as Texture2D, ref readHeadGraphicSide);
+
+                        MakeReadable(eyeGraphic.MatFront.mainTexture as Texture2D, ref readEyeGraphicFront);
+                        MakeReadable(eyeGraphic.MatSide.mainTexture as Texture2D, ref readEyeGraphicSide);
+
+                        AddEyes(readHeadGraphicFront, readEyeGraphicFront, ref finalHeadFront);
+                        AddEyes(readHeadGraphicSide, readEyeGraphicSide, ref finalHeadSide);
 
                         headGraphic.MatFront.mainTexture = finalHeadFront;
                         headGraphic.MatSide.mainTexture = finalHeadSide;
@@ -151,8 +215,7 @@ namespace RW_FacialHair
                 }
 
 
-
-                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RW_FacialHair.PawnGraphicHairSet.RottingColor);
+                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RW_FacialStuff.PawnGraphicHairSet.RottingColor);
                 skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 ResolveApparelGraphics();
@@ -170,7 +233,7 @@ namespace RW_FacialHair
                 {
                     nakedGraphic = curKindLifeStage.femaleGraphicData.Graphic;
                 }
-                rottingGraphic = nakedGraphic.GetColoredVersion(ShaderDatabase.CutoutSkin, RW_FacialHair.PawnGraphicHairSet.RottingColor, RW_FacialHair.PawnGraphicHairSet.RottingColor);
+                rottingGraphic = nakedGraphic.GetColoredVersion(ShaderDatabase.CutoutSkin, RW_FacialStuff.PawnGraphicHairSet.RottingColor, RW_FacialStuff.PawnGraphicHairSet.RottingColor);
                 if (curKindLifeStage.dessicatedBodyGraphicData != null)
                 {
                     dessicatedGraphic = curKindLifeStage.dessicatedBodyGraphicData.GraphicColoredFor(pawn);
@@ -227,19 +290,12 @@ namespace RW_FacialHair
                     Color layer3 = beard_layer_3.GetPixel(x - startX, y - startY);
 
                     Color final_color = layer1;
-                    if (layer2.a > 0)
-                        final_color = Color.Lerp(layer1, layer2, layer2.a / 1.0f);
-                    if (layer2.a == 1)
-                        final_color = layer2;
-
-                    if (layer3.a > 0)
-                        final_color = Color.Lerp(layer1, layer3, layer3.a / 1.0f);
-                    if (layer3.a == 1)
-                        final_color = layer3;
+                    Color mixcolor;
 
 
-                    //         Color final_color = Color.Lerp(headColor, new Color(beardColorFace.r * 0.35f, beardColorFace.g * 0.35f, beardColorFace.b * 0.35f), beardColor.a / 1.0f);
-                    //        Color final_color = Color.Lerp(beardColor, tacheColor, tacheColor.a / 1.0f);
+                    mixcolor = Color.Lerp(layer1, layer2, layer2.a);
+
+                    final_color = Color.Lerp(mixcolor, layer3, layer3.a);
 
                     beard_layer_1.SetPixel(x, y, final_color);
                 }
@@ -274,7 +330,7 @@ namespace RW_FacialHair
 
                     Color final_color = headColor;
                     if (beardColor.a > 0)
-                        final_color = Color.Lerp(headColor, beardColor, beardColor.a / 1.0f);
+                        final_color = Color.Lerp(headColor, beardColor, beardColor.a);
                     if (beardColor.a == 1)
                         final_color = beardColor;
 
@@ -290,18 +346,37 @@ namespace RW_FacialHair
             return finalhead;
         }
 
-        //   public override void ExposeData()
-        //   {
-        //       Scribe_References.LookReference(ref _saveablePawn, "Pawn");
-        //       Scribe_Defs.LookDef(ref _saveableBeard, "BeardDef");
-        //       Scribe_Defs.LookDef(ref _saveableTache, "TacheDef");
-        //   }
-        //  public void ExposeData()
-        //  {
-        //      Scribe_References.LookReference(ref pawn, "Pawn");
-        //      Scribe_Values.LookValue(ref sideburnGraphic, "SideBurn");
-        //      Scribe_Values.LookValue(ref tacheGraphic, "Tache");
-        //      Scribe_Values.LookValue(ref beardGraphic, "Beard");
-        //  }
+        public Texture2D AddEyes(Texture2D head, Texture2D eyes, ref Texture2D finalhead)
+        {
+
+            int startX = 0;
+            int startY = head.height - eyes.height;
+
+            for (int x = startX; x < head.width; x++)
+            {
+
+                for (int y = startY; y < head.height; y++)
+                {
+                    Color headColor = head.GetPixel(x, y);
+                    Color eyeColor = eyes.GetPixel(x - startX, y - startY);
+
+                    Color beardColorFace = pawn.story.hairColor;
+                    Color skin = pawn.story.SkinColor;
+                    float whiteness = pawn.story.skinWhiteness;
+
+                    
+
+                    Color final_color = headColor;
+                        final_color = Color.Lerp(headColor, eyeColor, eyeColor.a);
+
+                    head.SetPixel(x, y, final_color);
+                }
+            }
+
+            head.Apply();
+            finalhead = head;
+            return finalhead;
+        }
+
     }
 }

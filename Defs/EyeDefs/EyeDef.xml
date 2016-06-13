@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DefPackage-EyeDef>
+
+  <EyeDef>
+    
+    <label>Eye_Female_Big</label>
+    <hairGender>Female</hairGender>
+    <texPath>Eyes/Female/Eye_Female_Big</texPath>
+    <defName>Eye_Female_Big</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </EyeDef>
+
+  <EyeDef>
+    <label>Eye_Female_Default</label>
+    <hairGender>Female</hairGender>
+    <texPath>Eyes/Female/Eye_Female_Default</texPath>
+    <defName>Eye_Female_Default</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </EyeDef>
+
+  <EyeDef>
+    <label>Eye_Female_Flat</label>
+    <hairGender>Female</hairGender>
+    <texPath>Eyes/Female/Eye_Female_Flat</texPath>
+    <defName>Eye_Female_Flat</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </EyeDef>
+
+  <EyeDef>
+    <label>Eye_Female_Large</label>
+    <hairGender>Female</hairGender>
+    <texPath>Eyes/Female/Eye_Female_Large</texPath>
+    <defName>Eye_Female_Large</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </EyeDef>
+  
+    <EyeDef>
+    <label>Eye_Female_Medium</label>
+    <hairGender>Female</hairGender>
+    <texPath>Eyes/Female/Eye_Female_Medium</texPath>
+    <defName>Eye_Female_Medium</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </EyeDef>
+
+
+  <EyeDef>
+    <label>Eye_Male_Big</label>
+    <hairGender>Male</hairGender>
+    <texPath>Eyes/Male/Eye_Male_Big</texPath>
+    <defName>Eye_Male_Big</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </EyeDef>
+
+  <EyeDef>
+    <label>Eye_Male_Default</label>
+    <hairGender>Male</hairGender>
+    <texPath>Eyes/Male/Eye_Male_Default</texPath>
+    <defName>Eye_Male_Default</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </EyeDef>
+
+  <EyeDef>
+    <label>Eye_Male_Flat</label>
+    <hairGender>Male</hairGender>
+    <texPath>Eyes/Male/Eye_Male_Flat</texPath>
+    <defName>Eye_Male_Flat</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </EyeDef>
+
+  <EyeDef>
+    <label>Eye_Male_Large</label>
+    <hairGender>Male</hairGender>
+    <texPath>Eyes/Male/Eye_Male_Large</texPath>
+    <defName>Eye_Male_Large</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </EyeDef>
+
+  <EyeDef>
+    <label>Eye_Male_Medium</label>
+    <hairGender>Male</hairGender>
+    <texPath>Eyes/Male/Eye_Male_Medium</texPath>
+    <defName>Eye_Male_Medium</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </EyeDef>
+  
+</DefPackage-EyeDef>

@@ -4,7 +4,7 @@ using System.Linq;
 using Verse;
 using RimWorld;
 
-namespace RW_FacialHair
+namespace RW_FacialStuff
 {
     public class PawnBeardChooser
     {
@@ -83,7 +83,71 @@ namespace RW_FacialHair
 
             return chosenBeard;
         }
-
+ 
+       public static EyeDef RandomEyeDefFor(Pawn pawn, FactionDef factionType)
+       {
+           IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
+                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
+                                          select eye;
+ 
+           EyeDef chosenEyes;
+ 
+               chosenEyes = source.RandomElementByWeight((EyeDef eye) => PawnBeardChooser.EyeChoiceLikelihoodFor(eye, pawn));
+ 
+ 
+           return chosenEyes;
+       }
+ 
+       private static float EyeChoiceLikelihoodFor(EyeDef eye, Pawn pawn)
+       {
+           if (pawn.gender == Gender.None)
+           {
+               return 100f;
+           }
+           if (pawn.gender == Gender.Male)
+           {
+               switch (eye.hairGender)
+               {
+                   case HairGender.Male:
+                       return 70f;
+                   case HairGender.MaleUsually:
+                       return 30f;
+                   case HairGender.Any:
+                       return 60f;
+                   case HairGender.FemaleUsually:
+                       return 5f;
+                   case HairGender.Female:
+                       return 1f;
+               }
+           }
+ 
+           if (pawn.gender == Gender.Female)
+           {
+               switch (eye.hairGender)
+               {
+                   case HairGender.Female:
+                       return 70f;
+                   case HairGender.FemaleUsually:
+                       return 30f;
+                   case HairGender.Any:
+                       return 60f;
+                   case HairGender.MaleUsually:
+                       return 5f;
+                   case HairGender.Male:
+                       return 1f;
+               }
+           }
+ 
+           Log.Error(string.Concat(new object[]
+           {
+               "Unknown hair likelihood for ",
+               eye,
+               " with ",
+               pawn
+           }));
+           return 0f;
+       }
+ 
 
         private static float SideburnChoiceLikelihoodFor(SideburnDef sideburn, Pawn pawn)
         {

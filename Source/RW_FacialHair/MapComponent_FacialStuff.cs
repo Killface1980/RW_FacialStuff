@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using Verse;
 
-namespace RW_FacialHair
+namespace RW_FacialStuff
 {
-    class MapComponent_FacialHair : MapComponent
+    class MapComponent_FacialStuff : MapComponent
     {
 
         public List<SaveablePawn> PawnCache = new List<SaveablePawn>();
 
-        public static MapComponent_FacialHair Get
+        public static MapComponent_FacialStuff Get
         {
             get
             {
-                MapComponent_FacialHair getComponent = Find.Map.components.OfType<MapComponent_FacialHair>().FirstOrDefault();
+                MapComponent_FacialStuff getComponent = Find.Map.components.OfType<MapComponent_FacialStuff>().FirstOrDefault();
                 if (getComponent == null)
                 {
-                    getComponent = new MapComponent_FacialHair();
+                    getComponent = new MapComponent_FacialStuff();
                     Find.Map.components.Add(getComponent);
                 }
 
