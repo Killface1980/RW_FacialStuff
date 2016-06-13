@@ -5,7 +5,7 @@
     <label>Beard_Amish</label>
     <hairGender>Male</hairGender>
     <texPath>Beards/Beard_Amish</texPath>
-    <defName>Beard_Beard_Amish</defName>
+    <defName>Beard_Amish</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -54,10 +54,10 @@
   </BeardDef>
   
   <BeardDef>
-    <label>Shaved</label>
+    <label>Beard_Shaved</label>
     <hairGender>MaleUsually</hairGender>
-    <texPath>Beards/Shaved</texPath>
-    <defName>Shaved</defName>
+    <texPath>Beards/Beard_Shaved</texPath>
+    <defName>Beard_Shaved</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>

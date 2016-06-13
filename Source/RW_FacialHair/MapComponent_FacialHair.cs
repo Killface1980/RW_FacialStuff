@@ -8,6 +8,7 @@ namespace RW_FacialHair
 {
     class MapComponent_FacialHair : MapComponent
     {
+
         public List<SaveablePawn> PawnCache = new List<SaveablePawn>();
 
         public static MapComponent_FacialHair Get
@@ -25,15 +26,6 @@ namespace RW_FacialHair
             }
         }
 
-        public override void ExposeData()
-        {
-            Scribe_Collections.LookList(ref PawnCache, "Pawns", LookMode.Deep);
-            base.ExposeData();
-
-            if (PawnCache == null)
-                PawnCache = new List<SaveablePawn>();
-        }
-
         public SaveablePawn GetCache(Pawn pawn)
         {
             foreach (SaveablePawn c in PawnCache)
@@ -42,6 +34,15 @@ namespace RW_FacialHair
             SaveablePawn n = new SaveablePawn { Pawn = pawn };
             PawnCache.Add(n);
             return n;
+        }
+
+        public override void ExposeData()
+        {
+            Scribe_Collections.LookList(ref PawnCache, "Pawns", LookMode.Deep);
+
+            if (PawnCache == null)
+                PawnCache = new List<SaveablePawn>();
+
         }
     }
 }

@@ -11,13 +11,15 @@ namespace RW_FacialHair
         public Pawn Pawn;
 
         public BeardDef BeardDef;
+        public SideburnDef SideburnDef;
         public TacheDef TacheDef;
 
         public void ExposeData()
         {
             Scribe_References.LookReference(ref Pawn, "Pawn");
-            Scribe_Defs.LookDef(ref BeardDef, "BeardDef");
+            Scribe_Defs.LookDef(ref SideburnDef, "SideburnDef");
             Scribe_Defs.LookDef(ref TacheDef, "TacheDef");
+            Scribe_Defs.LookDef(ref BeardDef, "BeardDef");
         }
     }
 }

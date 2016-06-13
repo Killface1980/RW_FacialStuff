@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using CommunityCoreLibrary;
+using RimWorld;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace RW_FacialHair
 #pragma warning disable CS0824 // Konstruktor ist extern markiert
         public extern PawnGraphicHairSet();
 #pragma warning restore CS0824 // Konstruktor ist extern markiert
+
 
 
         //     public Pawn _saveablePawn;
@@ -57,9 +59,45 @@ namespace RW_FacialHair
                     if (pawn.ageTracker.AgeBiologicalYears > 18)
                     {
 
-                        BeardDef _saveableBeard = PawnBeardChooser.RandomBeardDefFor(pawn, pawn.Faction.def);
-                        SideburnDef _saveableSideburn = PawnBeardChooser.RandomSideburnDefFor(pawn, pawn.Faction.def);
-                        TacheDef _saveableTache = PawnBeardChooser.RandomTacheDefFor(pawn, pawn.Faction.def);
+                        var pawnSave = MapComponent_FacialHair.Get.GetCache(pawn);
+
+                        BeardDef _saveableBeard;
+
+                        if (pawnSave.BeardDef != null)
+                        {
+                            _saveableBeard = pawnSave.BeardDef;
+                        }
+                        else
+                        {
+                            _saveableBeard = PawnBeardChooser.RandomBeardDefFor(pawn, pawn.Faction.def);
+                            pawnSave.BeardDef = _saveableBeard;
+                        }
+
+                        SideburnDef _saveableSideburn;
+
+                        if (pawnSave.SideburnDef != null)
+                        {
+                            _saveableSideburn = pawnSave.SideburnDef;
+                        }
+                        else
+                        {
+                            _saveableSideburn = PawnBeardChooser.RandomSideburnDefFor(pawn, pawn.Faction.def);
+                            pawnSave.SideburnDef = _saveableSideburn;
+                        }
+
+                        TacheDef _saveableTache;
+
+                        if (pawnSave.TacheDef != null)
+                        {
+                            _saveableTache = pawnSave.TacheDef;
+                        }
+                        else
+                        {
+                            _saveableTache = PawnBeardChooser.RandomTacheDefFor(pawn, pawn.Faction.def);
+                            pawnSave.TacheDef = _saveableTache;
+                        }
+
+
 
 
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi>(_saveableBeard.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
@@ -258,5 +296,12 @@ namespace RW_FacialHair
         //       Scribe_Defs.LookDef(ref _saveableBeard, "BeardDef");
         //       Scribe_Defs.LookDef(ref _saveableTache, "TacheDef");
         //   }
+        //  public void ExposeData()
+        //  {
+        //      Scribe_References.LookReference(ref pawn, "Pawn");
+        //      Scribe_Values.LookValue(ref sideburnGraphic, "SideBurn");
+        //      Scribe_Values.LookValue(ref tacheGraphic, "Tache");
+        //      Scribe_Values.LookValue(ref beardGraphic, "Beard");
+        //  }
     }
 }

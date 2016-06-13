@@ -20,9 +20,40 @@ namespace RW_FacialHair
 
         protected override void FillTab() { }
     }
+
+
     class ModInitializerBehaviour : MonoBehaviour
     {
-      
+        protected bool _reinjectNeeded;
+        protected float _reinjectTime;
+
+        public void OnLevelWasLoaded(int level)
+        {
+            _reinjectNeeded = true;
+            if (level >= 0)
+                _reinjectTime = 1;
+            else
+                _reinjectTime = 0;
+        }
+
+        public void FixedUpdate()
+        {
+            if (_reinjectNeeded)
+            {
+                _reinjectTime -= Time.fixedDeltaTime;
+
+                if (_reinjectTime <= 0)
+                {
+                    _reinjectNeeded = false;
+                    _reinjectTime = 0;
+
+#if LOG
+                    Log.Message("AutoEquip Injected");
+#endif
+                    MapComponent_FacialHair component = MapComponent_FacialHair.Get;
+                }
+            }
+        }
 
         public void Start()
         {

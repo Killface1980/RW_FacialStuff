@@ -55,10 +55,10 @@
   </TacheDef>
 
   <TacheDef>
-    <label>Shaved</label>
+    <label>Moustache_Shaved</label>
     <hairGender>MaleUsually</hairGender>
-    <texPath>Moustaches/Shaved</texPath>
-    <defName>Shaved</defName>
+    <texPath>Moustaches/Moustache_Shaved</texPath>
+    <defName>Moustache_Shaved</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>

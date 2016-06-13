@@ -56,10 +56,10 @@
   </SideburnDef>
 
   <SideburnDef>
-    <label>Shaved</label>
+    <label>Sideburn_Shaved</label>
     <hairGender>MaleUsually</hairGender>
-    <texPath>Sideburns/Shaved</texPath>
-    <defName>Shaved</defName>
+    <texPath>Sideburns/Sideburn_Shaved</texPath>
+    <defName>Sideburn_Shaved</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
