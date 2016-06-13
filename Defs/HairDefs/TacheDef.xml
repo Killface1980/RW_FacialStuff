@@ -53,7 +53,20 @@
       <li>Tribal</li>
     </hairTags>
   </TacheDef>
-
+  
+  <TacheDef>
+    <label>Moustache_Handlebar</label>
+    <hairGender>Male</hairGender>
+    <texPath>Moustaches/Moustache_Handlebar</texPath>
+    <defName>Moustache_Handlebar</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </TacheDef>
+  
   <TacheDef>
     <label>Moustache_Shaved</label>
     <hairGender>MaleUsually</hairGender>
