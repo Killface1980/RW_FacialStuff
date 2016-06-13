@@ -6,52 +6,67 @@ using RimWorld;
 
 namespace RW_FacialHair
 {
-    public class PawnBeardChooser 
+    public class PawnBeardChooser
     {
-
-
-        public static BeardDef RandomBeardDefFor(Pawn pawn, FactionDef factionType)
-        {
-    //      if (_saveableBeard.texPath != null)
-    //          return _saveableBeard;
-
-            IEnumerable<BeardDef> source = from beard in DefDatabase<BeardDef>.AllDefs
-                                           where beard.hairTags.SharesElementWith(factionType.hairTags)
-                                           select beard;
-
-            var chosenBeard = source.RandomElementByWeight((BeardDef beard) => PawnBeardChooser.BeardChoiceLikelihoodFor(beard, pawn));
-      //      _saveableBeard = chosenBeard;
-
-        return chosenBeard;
-        }
 
         public static SideburnDef RandomSideburnDefFor(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<SideburnDef> source = from sideburn in DefDatabase<SideburnDef>.AllDefs
-                                           where sideburn.hairTags.SharesElementWith(factionType.hairTags)
-                                           select sideburn;
-            return source.RandomElementByWeight((SideburnDef sideburn) => PawnBeardChooser.SideburnChoiceLikelihoodFor(sideburn, pawn));
-        }
+                                              where sideburn.hairTags.SharesElementWith(factionType.hairTags)
+                                              select sideburn;
 
+            SideburnDef chosenSideburn;
+            if (UnityEngine.Random.Range(10, 30) > pawn.ageTracker.AgeBiologicalYearsFloat)
+                chosenSideburn = DefDatabase<SideburnDef>.GetNamed("Shaved");
+            else
+                chosenSideburn = source.RandomElementByWeight((SideburnDef sideburn) => PawnBeardChooser.SideburnChoiceLikelihoodFor(sideburn, pawn));
+            return chosenSideburn;
+        }
 
         public static TacheDef RandomTacheDefFor(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<TacheDef> source = from tache in DefDatabase<TacheDef>.AllDefs
                                            where tache.hairTags.SharesElementWith(factionType.hairTags)
                                            select tache;
-            return source.RandomElementByWeight((TacheDef tache) => PawnBeardChooser.TacheChoiceLikelihoodFor(tache, pawn));
+
+            TacheDef chosenTache;
+            if (UnityEngine.Random.Range(20, 40) > pawn.ageTracker.AgeBiologicalYearsFloat)
+                chosenTache = DefDatabase<TacheDef>.GetNamed("Shaved");
+            else
+                chosenTache = source.RandomElementByWeight((TacheDef tache) => PawnBeardChooser.TacheChoiceLikelihoodFor(tache, pawn));
+            return chosenTache;
         }
 
-        private static float BeardChoiceLikelihoodFor(BeardDef beard, Pawn pawn)
+        public static BeardDef RandomBeardDefFor(Pawn pawn, FactionDef factionType)
+        {
+            //      if (_saveableBeard.texPath != null)
+            //          return _saveableBeard;
+
+            IEnumerable<BeardDef> source = from beard in DefDatabase<BeardDef>.AllDefs
+                                           where beard.hairTags.SharesElementWith(factionType.hairTags)
+                                           select beard;
+
+            BeardDef chosenBeard;
+
+            if (UnityEngine.Random.Range(30, 50) > pawn.ageTracker.AgeBiologicalYearsFloat)
+                chosenBeard = DefDatabase<BeardDef>.GetNamed("Shaved");
+            else
+                chosenBeard = source.RandomElementByWeight((BeardDef beard) => PawnBeardChooser.BeardChoiceLikelihoodFor(beard, pawn));
+            //      _saveableBeard = chosenBeard;
+
+            return chosenBeard;
+        }
+
+
+        private static float SideburnChoiceLikelihoodFor(SideburnDef sideburn, Pawn pawn)
         {
             if (pawn.gender == Gender.None)
             {
                 return 0f;
             }
-
             if (pawn.gender == Gender.Male)
             {
-                switch (beard.hairGender)
+                switch (sideburn.hairGender)
                 {
                     case HairGender.Male:
                         return 70f;
@@ -73,7 +88,7 @@ namespace RW_FacialHair
             Log.Error(string.Concat(new object[]
             {
                 "Unknown hair likelihood for ",
-                beard,
+                sideburn,
                 " with ",
                 pawn
             }));
@@ -118,15 +133,16 @@ namespace RW_FacialHair
             return 0f;
         }
 
-        private static float SideburnChoiceLikelihoodFor(SideburnDef sideburn, Pawn pawn)
+        private static float BeardChoiceLikelihoodFor(BeardDef beard, Pawn pawn)
         {
             if (pawn.gender == Gender.None)
             {
                 return 0f;
             }
+
             if (pawn.gender == Gender.Male)
             {
-                switch (sideburn.hairGender)
+                switch (beard.hairGender)
                 {
                     case HairGender.Male:
                         return 70f;
@@ -144,16 +160,17 @@ namespace RW_FacialHair
             {
                 return 0f;
             }
-        
+
             Log.Error(string.Concat(new object[]
             {
                 "Unknown hair likelihood for ",
-                sideburn,
+                beard,
                 " with ",
                 pawn
             }));
             return 0f;
         }
+
 
 
     }

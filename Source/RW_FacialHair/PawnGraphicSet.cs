@@ -54,12 +54,13 @@ namespace RW_FacialHair
 
                 if (pawn.gender != Gender.Female)
                 {
-                    if (pawn.ageTracker.AgeBiologicalYears > 16)
+                    if (pawn.ageTracker.AgeBiologicalYears > 18)
                     {
 
-                        var _saveableBeard = PawnBeardChooser.RandomBeardDefFor(pawn, pawn.Faction.def);
-                        var _saveableSideburn = PawnBeardChooser.RandomSideburnDefFor(pawn, pawn.Faction.def);
-                        var _saveableTache = PawnBeardChooser.RandomTacheDefFor(pawn, pawn.Faction.def);
+                        BeardDef _saveableBeard = PawnBeardChooser.RandomBeardDefFor(pawn, pawn.Faction.def);
+                        SideburnDef _saveableSideburn = PawnBeardChooser.RandomSideburnDefFor(pawn, pawn.Faction.def);
+                        TacheDef _saveableTache = PawnBeardChooser.RandomTacheDefFor(pawn, pawn.Faction.def);
+
 
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi>(_saveableBeard.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                         sideburnGraphic = GraphicDatabase.Get<Graphic_Multi>(_saveableSideburn.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
@@ -95,17 +96,12 @@ namespace RW_FacialHair
                         MakeReadable(tacheGraphic.MatSide.mainTexture as Texture2D, ref readTacheGraphicSide);
 
 
-                  //    if (UnityEngine.Random.Range(0f, 3f) >  100 / pawn.ageTracker.AgeBiologicalYears)
-                  //    { }
+                        //    if (UnityEngine.Random.Range(0f, 3f) >  100 / pawn.ageTracker.AgeBiologicalYears)
+                        //    { }
 
-                        MakeBeard(readSideburnGraphicFront, readBeardGraphicFront, ref finalHeadFront);
-                        MakeBeard(finalHeadFront, readTacheGraphicFront, ref finalHeadFront);
+                        MakeBeard(readSideburnGraphicFront, readBeardGraphicFront, readTacheGraphicFront, ref finalHeadFront);
 
-                        MakeBeard(readBeardGraphicSide, readSideburnGraphicSide, ref finalHeadSide);
-                        MakeBeard(finalHeadSide, readTacheGraphicSide, ref finalHeadSide);
-
-                        //           }
-
+                        MakeBeard(readBeardGraphicSide, readSideburnGraphicSide, readTacheGraphicSide, ref finalHeadSide);                        //           }
 
                         AddFacialHair(readHeadGraphicFront, finalHeadFront, ref finalHeadFront);
                         AddFacialHair(readHeadGraphicSide, finalHeadSide, ref finalHeadSide);
@@ -177,36 +173,43 @@ namespace RW_FacialHair
             // "myTexture2D" now has the same pixels from "texture" and it's readable.
         }
 
-        public Texture2D MakeBeard(Texture2D beard, Texture2D moustache, ref Texture2D finalhead)
+        public Texture2D MakeBeard(Texture2D beard_layer_1, Texture2D beard_layer_2, Texture2D beard_layer_3, ref Texture2D beard_final)
         {
 
             int startX = 0;
-            int startY = beard.height - moustache.height;
+            int startY = 0;
 
-            for (int x = startX; x < beard.width; x++)
+            for (int x = startX; x < beard_layer_1.width; x++)
             {
 
-                for (int y = startY; y < beard.height; y++)
+                for (int y = startY; y < beard_layer_1.height; y++)
                 {
-                    Color beardColor = beard.GetPixel(x, y);
-                    Color tacheColor = moustache.GetPixel(x - startX, y - startY);
+                    Color layer1 = beard_layer_1.GetPixel(x, y);
+                    Color layer2 = beard_layer_2.GetPixel(x - startX, y - startY);
+                    Color layer3 = beard_layer_3.GetPixel(x - startX, y - startY);
 
-                    Color final_color = beardColor;
-                    if (tacheColor.a > 0)
-                        final_color = Color.Lerp(beardColor, tacheColor, tacheColor.a / 1.0f);
-                    if (tacheColor.a == 1)
-                        final_color = tacheColor;
+                    Color final_color = layer1;
+                    if (layer2.a > 0)
+                        final_color = Color.Lerp(layer1, layer2, layer2.a / 1.0f);
+                    if (layer2.a == 1)
+                        final_color = layer2;
+
+                    if (layer3.a > 0)
+                        final_color = Color.Lerp(layer1, layer3, layer3.a / 1.0f);
+                    if (layer3.a == 1)
+                        final_color = layer3;
+
 
                     //         Color final_color = Color.Lerp(headColor, new Color(beardColorFace.r * 0.35f, beardColorFace.g * 0.35f, beardColorFace.b * 0.35f), beardColor.a / 1.0f);
                     //        Color final_color = Color.Lerp(beardColor, tacheColor, tacheColor.a / 1.0f);
 
-                    beard.SetPixel(x, y, final_color);
+                    beard_layer_1.SetPixel(x, y, final_color);
                 }
             }
 
-            beard.Apply();
-            finalhead = beard;
-            return finalhead;
+            beard_layer_1.Apply();
+            beard_final = beard_layer_1;
+            return beard_final;
         }
 
         public Texture2D AddFacialHair(Texture2D head, Texture2D beard, ref Texture2D finalhead)
