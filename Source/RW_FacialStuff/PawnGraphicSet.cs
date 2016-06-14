@@ -315,9 +315,9 @@ namespace RW_FacialStuff
                     Color skin = pawn.story.SkinColor;
                     float whiteness = pawn.story.skinWhiteness;
 
-                    beardColor.r = beardColor.r * beardColorFace.r * UnityEngine.Random.Range(1f, 2.5f) / skin.r * whiteness * 0.85f;
-                    beardColor.g = beardColor.g * beardColorFace.g * UnityEngine.Random.Range(1f, 2.5f) / skin.g * whiteness * 0.85f;
-                    beardColor.b = beardColor.b * beardColorFace.b * UnityEngine.Random.Range(1f, 2.5f) / skin.b * whiteness * 0.85f;
+                    beardColor.r = beardColor.r * beardColorFace.r * UnityEngine.Random.Range(1.2f, 2.2f) / skin.r * whiteness;
+                    beardColor.g = beardColor.g * beardColorFace.g * UnityEngine.Random.Range(1.2f, 2.2f) / skin.g * whiteness;
+                    beardColor.b = beardColor.b * beardColorFace.b * UnityEngine.Random.Range(1.2f, 2.2f) / skin.b * whiteness;
 
 
                     Color final_color = headColor;
