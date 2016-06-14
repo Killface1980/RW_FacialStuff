@@ -38,14 +38,14 @@ namespace RW_FacialStuff
         public static Texture2D LoadTexture(string texturePath)
         {
             Texture2D texture;
-            if (textureCache.TryGetValue(texturePath, out texture)) return texture;
+
+            if (textureCache.TryGetValue(@texturePath, out texture)) return texture;
 
             texture = new Texture2D(1, 1);
             texture.LoadImage(File.ReadAllBytes("Mods/RW_FacialStuff/Textures/" + texturePath + ".png"));
             texture.anisoLevel = 8;
 
-
-            textureCache.Add(texturePath, texture);
+            textureCache.Add(@texturePath, texture);
 
             return texture;
         }
@@ -315,9 +315,10 @@ namespace RW_FacialStuff
                     Color skin = pawn.story.SkinColor;
                     float whiteness = pawn.story.skinWhiteness;
 
-                    beardColor = beardColor * beardColorFace * UnityEngine.Random.Range(1f, 2.5f) / skin.r * whiteness;
-                    //          beardColor.g = beardColor.g * beardColorFace.g * UnityEngine.Random.Range(1f, 2.5f);// / skin.g * whiteness;
-                    //          beardColor.b = beardColor.b * beardColorFace.b * UnityEngine.Random.Range(1f, 2.5f);// / skin.b * whiteness;
+                    beardColor.r = beardColor.r * beardColorFace.r * UnityEngine.Random.Range(1f, 2.5f) / skin.r * whiteness * 0.85f;
+                    beardColor.g = beardColor.g * beardColorFace.g * UnityEngine.Random.Range(1f, 2.5f) / skin.g * whiteness * 0.85f;
+                    beardColor.b = beardColor.b * beardColorFace.b * UnityEngine.Random.Range(1f, 2.5f) / skin.b * whiteness * 0.85f;
+
 
                     Color final_color = headColor;
                     final_color = Color.Lerp(headColor, beardColor, beardColor.a);
