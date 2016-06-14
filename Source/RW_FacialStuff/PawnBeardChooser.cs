@@ -40,15 +40,6 @@ namespace RW_FacialStuff
 
         public static TacheDef RandomTacheDefFor(Pawn pawn, FactionDef factionType)
         {
-   //       var pawnSave = MapComponent_FacialHair.Get.GetCache(pawn);
-   //
-   //
-   //     if (pawnSave.tacheDef != null)
-   //     {
-   //           TacheDef tacheselect = pawnSave.tacheDef;
-   //           return DefDatabase<TacheDef>.GetNamed(tacheselect.label);
-   //       }
-
             IEnumerable<TacheDef> source = from tache in DefDatabase<TacheDef>.AllDefs
                                            where tache.hairTags.SharesElementWith(factionType.hairTags)
                                            select tache;
