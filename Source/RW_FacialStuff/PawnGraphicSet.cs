@@ -2,29 +2,19 @@
 using RimWorld;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using Verse;
 
 namespace RW_FacialStuff
 {
-    // public class BeardyPawn:Pawn
-    // {
-    //     public Pawn_BeardTracker beardyPawn;
-    // }
-
-
 
     public class PawnGraphicHairSet : PawnGraphicSet
     {
 #pragma warning disable CS0824 // Konstruktor ist extern markiert
         public extern PawnGraphicHairSet();
 #pragma warning restore CS0824 // Konstruktor ist extern markiert
-
-
-
-        //     public Pawn _saveablePawn;
-        //     public BeardDef _saveableBeard;
-        //     private TacheDef _saveableTache;
 
         public Graphic beardGraphic;
         public Graphic eyeGraphic;
@@ -41,6 +31,23 @@ namespace RW_FacialStuff
         {
             Material baseMat = tacheGraphic.MatAt(facing, null);
             return flasher.GetDamagedMat(baseMat);
+        }
+
+        private static Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
+
+        public static Texture2D LoadTexture(string texturePath)
+        {
+            Texture2D texture;
+            if (textureCache.TryGetValue(texturePath, out texture)) return texture;
+
+            texture = new Texture2D(1, 1);
+            texture.LoadImage(File.ReadAllBytes("Mods/RW_FacialStuff/Textures/" + texturePath + ".png"));
+            texture.anisoLevel = 8;
+
+
+            textureCache.Add(texturePath, texture);
+
+            return texture;
         }
 
         public new void ResolveAllGraphics()
@@ -119,18 +126,7 @@ namespace RW_FacialStuff
 
 
                         Texture2D readHeadGraphicFront = null;
-
-                        Texture2D readEyeGraphicFront = null;
-                        Texture2D readBeardGraphicFront = null;
-                        Texture2D readSideburnGraphicFront = null;
-                        Texture2D readTacheGraphicFront = null;
-
                         Texture2D readHeadGraphicSide = null;
-
-                        Texture2D readEyeGraphicSide = null;
-                        Texture2D readBeardGraphicSide = null;
-                        Texture2D readSideburnGraphicSide = null;
-                        Texture2D readTacheGraphicSide = null;
 
                         Texture2D eyesHeadFront = null;
                         Texture2D eyesHeadSide = null;
@@ -142,18 +138,18 @@ namespace RW_FacialStuff
                         MakeReadable(headGraphic.MatFront.mainTexture as Texture2D, ref readHeadGraphicFront);
                         MakeReadable(headGraphic.MatSide.mainTexture as Texture2D, ref readHeadGraphicSide);
 
-                        MakeReadable(eyeGraphic.MatFront.mainTexture as Texture2D, ref readEyeGraphicFront);
-                        MakeReadable(eyeGraphic.MatSide.mainTexture as Texture2D, ref readEyeGraphicSide);
 
-                        MakeReadable(beardGraphic.MatFront.mainTexture as Texture2D, ref readBeardGraphicFront);
-                        MakeReadable(beardGraphic.MatSide.mainTexture as Texture2D, ref readBeardGraphicSide);
+                        Texture2D readEyeGraphicFront = LoadTexture(_saveableEye.texPath + "_front");
+                        Texture2D readEyeGraphicSide = LoadTexture(_saveableEye.texPath + "_side");
 
-                        MakeReadable(sideburnGraphic.MatFront.mainTexture as Texture2D, ref readSideburnGraphicFront);
-                        MakeReadable(sideburnGraphic.MatSide.mainTexture as Texture2D, ref readSideburnGraphicSide);
+                        Texture2D readSideburnGraphicFront = LoadTexture(_saveableSideburn.texPath + "_front");
+                        Texture2D readSideburnGraphicSide = LoadTexture(_saveableSideburn.texPath + "_side");
 
-                        MakeReadable(tacheGraphic.MatFront.mainTexture as Texture2D, ref readTacheGraphicFront);
-                        MakeReadable(tacheGraphic.MatSide.mainTexture as Texture2D, ref readTacheGraphicSide);
+                        Texture2D readBeardGraphicFront = LoadTexture(_saveableBeard.texPath + "_front");
+                        Texture2D readBeardGraphicSide = LoadTexture(_saveableBeard.texPath + "_side");
 
+                        Texture2D readTacheGraphicFront = LoadTexture(_saveableTache.texPath + "_front");
+                        Texture2D readTacheGraphicSide = LoadTexture(_saveableTache.texPath + "_side");
 
 
                         MakeBeard(readSideburnGraphicFront, readBeardGraphicFront, readTacheGraphicFront, ref finalHeadFront);
@@ -191,20 +187,17 @@ namespace RW_FacialStuff
                         eyeGraphic = GraphicDatabase.Get<Graphic_Multi>(_saveableEye.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
 
                         Texture2D readHeadGraphicFront = null;
-                        Texture2D readEyeGraphicFront = null;
-
                         Texture2D readHeadGraphicSide = null;
-                        Texture2D readEyeGraphicSide = null;
 
                         Texture2D finalHeadFront = null;
                         Texture2D finalHeadSide = null;
 
+                        Texture2D readEyeGraphicFront = LoadTexture(_saveableEye.texPath + "_front");
+                        Texture2D readEyeGraphicSide = LoadTexture(_saveableEye.texPath + "_side");
+
 
                         MakeReadable(headGraphic.MatFront.mainTexture as Texture2D, ref readHeadGraphicFront);
                         MakeReadable(headGraphic.MatSide.mainTexture as Texture2D, ref readHeadGraphicSide);
-
-                        MakeReadable(eyeGraphic.MatFront.mainTexture as Texture2D, ref readEyeGraphicFront);
-                        MakeReadable(eyeGraphic.MatSide.mainTexture as Texture2D, ref readEyeGraphicSide);
 
                         AddEyes(readHeadGraphicFront, readEyeGraphicFront, ref finalHeadFront);
                         AddEyes(readHeadGraphicSide, readEyeGraphicSide, ref finalHeadSide);
@@ -215,12 +208,11 @@ namespace RW_FacialStuff
                 }
 
 
+
                 desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RW_FacialStuff.PawnGraphicHairSet.RottingColor);
                 skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 ResolveApparelGraphics();
-
-                //beardGraphic
             }
             else
             {
@@ -308,7 +300,6 @@ namespace RW_FacialStuff
 
         public Texture2D AddFacialHair(Texture2D head, Texture2D beard, ref Texture2D finalhead)
         {
-
             int startX = 0;
             int startY = head.height - beard.height;
 
@@ -324,16 +315,12 @@ namespace RW_FacialStuff
                     Color skin = pawn.story.SkinColor;
                     float whiteness = pawn.story.skinWhiteness;
 
-                    beardColor.r = beardColor.r * beardColorFace.r * UnityEngine.Random.Range(1f, 2.5f) / skin.r * whiteness;
-                    beardColor.g = beardColor.g * beardColorFace.g * UnityEngine.Random.Range(1f, 2.5f) / skin.g * whiteness;
-                    beardColor.b = beardColor.b * beardColorFace.b * UnityEngine.Random.Range(1f, 2.5f) / skin.b * whiteness;
+                    beardColor = beardColor * beardColorFace * UnityEngine.Random.Range(1f, 2.5f) / skin.r * whiteness;
+                    //          beardColor.g = beardColor.g * beardColorFace.g * UnityEngine.Random.Range(1f, 2.5f);// / skin.g * whiteness;
+                    //          beardColor.b = beardColor.b * beardColorFace.b * UnityEngine.Random.Range(1f, 2.5f);// / skin.b * whiteness;
 
                     Color final_color = headColor;
-                    if (beardColor.a > 0)
-                        final_color = Color.Lerp(headColor, beardColor, beardColor.a);
-                    if (beardColor.a == 1)
-                        final_color = beardColor;
-
+                    final_color = Color.Lerp(headColor, beardColor, beardColor.a);
 
                     //      Color final_color = Color.Lerp(headColor, beardColor, beardColor.a / 1.0f);
 
@@ -364,10 +351,10 @@ namespace RW_FacialStuff
                     Color skin = pawn.story.SkinColor;
                     float whiteness = pawn.story.skinWhiteness;
 
-                    
+
 
                     Color final_color = headColor;
-                        final_color = Color.Lerp(headColor, eyeColor, eyeColor.a);
+                    final_color = Color.Lerp(headColor, eyeColor, eyeColor.a);
 
                     head.SetPixel(x, y, final_color);
                 }
