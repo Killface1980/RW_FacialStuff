@@ -51,13 +51,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BeardDef.cs" />
+    <Compile Include="FacialStuffDefs.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
     <Compile Include="SaveablePawn.cs" />
     <Compile Include="PawnBeardChooser.cs" />
     <Compile Include="PawnGraphicSet.cs" />
     <None Include="Pawn_BeardTracker.cs" />
-    <Compile Include="Initializer.cs" />
+    <Compile Include="ModInitializer .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
