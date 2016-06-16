@@ -13,7 +13,7 @@ namespace RW_FacialHair
 
         public Pawn_BeardTracker(Pawn pawn)
         {
-            this.pawn = pawn;
+            pawn = pawn;
         }
 
         public void ExposeData()

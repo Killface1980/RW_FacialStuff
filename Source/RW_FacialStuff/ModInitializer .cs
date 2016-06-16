@@ -3,6 +3,9 @@ using Verse;
 using CommunityCoreLibrary;
 using System.Reflection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using RimWorld;
 
 namespace RW_FacialStuff
 {
@@ -57,17 +60,24 @@ namespace RW_FacialStuff
 
         public void Start()
         {
-            MethodInfo coreMethod = typeof(Verse.PawnGraphicSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
-            MethodInfo autoEquipMethod = typeof(RW_FacialStuff.PawnGraphicHairSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
+                 MethodInfo coreMethod = typeof(Verse.PawnGraphicSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
+                 MethodInfo autoEquipMethod = typeof(RW_FacialStuff.PawnGraphicHairSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
 
-    //      MethodInfo coreMethod2 = typeof(Verse.PawnRenderer).GetMethod("RenderPawnInternal", BindingFlags.Instance | BindingFlags.NonPublic);
-    //      MethodInfo autoEquipMethod2 = typeof(RW_FacialHair.PawnBeardRenderer).GetMethod("RenderPawnInternal", BindingFlags.Instance | BindingFlags.NonPublic);
+     
+
+
+   //       MethodInfo coreMethod2 = typeof(Verse.PawnRenderer).GetMethod("RenderPawnInternal",
+   //           BindingFlags.Instance | BindingFlags.NonPublic,
+   //           Type.DefaultBinder, new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode) }, null);
+   //
+   //       MethodInfo autoEquipMethod2 = typeof(FS_PawnRenderer).GetMethod("RenderPawnInternal", BindingFlags.Instance | BindingFlags.NonPublic,
+   //           Type.DefaultBinder, new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode) }, null);
 
             try
             {
-                Detours.TryDetourFromTo(coreMethod, autoEquipMethod);
+                            Detours.TryDetourFromTo(coreMethod, autoEquipMethod);
 
-      //          Detours.TryDetourFromTo(coreMethod2, autoEquipMethod2);
+     //           Detours.TryDetourFromTo(coreMethod2, autoEquipMethod2);
             }
             catch (Exception)
             {
