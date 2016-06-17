@@ -6,7 +6,7 @@ using Verse;
 
 namespace RW_FacialStuff
 {
-    class MapComponent_FacialStuff : MapComponent
+    public class MapComponent_FacialStuff : MapComponent
     {
 
         public List<SaveablePawn> PawnCache = new List<SaveablePawn>();
@@ -42,7 +42,6 @@ namespace RW_FacialStuff
 
             if (PawnCache == null)
                 PawnCache = new List<SaveablePawn>();
-
         }
     }
 }
