@@ -48,7 +48,6 @@ namespace RW_FacialStuff
 
                 var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
 
-
                   GraphicDatabaseFacedHeadRecords.AddCustomizedHead(pawn, pawn.story.SkinColor, pawn.story.hairColor, pawn.story.HeadGraphicPath);
               
 

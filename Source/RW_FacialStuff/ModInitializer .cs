@@ -20,9 +20,9 @@ namespace RW_FacialStuff
             modInitializerControllerObject.AddComponent<ModInitializerBehaviour>();
             UnityEngine.Object.DontDestroyOnLoad((UnityEngine.Object)modInitializerControllerObject);
 
-            System.Reflection.MethodInfo method = typeof(GraphicDatabaseUtility).GetMethod("GraphicNamesInFolder", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-            System.Reflection.MethodInfo method2 = typeof(ModInitializer).GetMethod("GraphicNamesInFolder", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-            Detours.TryDetourFromTo(method, method2);
+    //      System.Reflection.MethodInfo method = typeof(GraphicDatabaseUtility).GetMethod("GraphicNamesInFolder", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+    //      System.Reflection.MethodInfo method2 = typeof(ModInitializer).GetMethod("GraphicNamesInFolder", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+    //      Detours.TryDetourFromTo(method, method2);
         }
 
         public static System.Collections.Generic.IEnumerable<string> GraphicNamesInFolder(string folderPath)
