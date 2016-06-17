@@ -35,7 +35,6 @@ namespace RW_FacialStuff
             //          }
         }
 
-
         public new void ResolveAllGraphics()
         {
             ClearCache();

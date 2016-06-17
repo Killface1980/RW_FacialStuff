@@ -16,6 +16,7 @@ namespace RW_FacialStuff
         public EyeDef EyeDef;
 
         public bool optimized = false;
+        public int exported = 0;
 
         public void ExposeData()
         {
@@ -25,6 +26,7 @@ namespace RW_FacialStuff
             Scribe_Defs.LookDef(ref SideburnDef, "SideburnDef");
             Scribe_Defs.LookDef(ref BeardDef, "BeardDef");
             Scribe_Values.LookValue(ref optimized, "optimized");
+            Scribe_Values.LookValue(ref exported, "exported");
         }
     }
 }

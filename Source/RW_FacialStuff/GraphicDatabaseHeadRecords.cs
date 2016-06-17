@@ -52,13 +52,13 @@ namespace RW_FacialStuff
             Texture2D readEyeGraphicSide = null;
 
 
+                    var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
 
             if (pawn.gender == Gender.Male)
             {
                 if (pawn.ageTracker.AgeBiologicalYears > 18)
                 {
 
-                    var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
 
                     EyeDef _saveableEye = null;
 
@@ -183,9 +183,6 @@ namespace RW_FacialStuff
                 if (pawn.ageTracker.AgeBiologicalYears > 16)
                 {
 
-
-                    var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
-
                     EyeDef _saveableEye;
 
                     if (pawnSave.EyeDef != null)
@@ -233,7 +230,10 @@ namespace RW_FacialStuff
             //            headsModded.Add(new HeadGraphicRecordModded("Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn));
 
 
-            return headGraphic;
+            if (pawnSave.exported == 3)
+                return headGraphic;
+            else
+                return null;
         }
 
         public static Texture2D MakeReadable(Texture2D texture, ref Texture2D myTexture2D)
@@ -379,7 +379,8 @@ namespace RW_FacialStuff
                 File.WriteAllBytes(modpath + "Things/Pawn/Humanlike/Heads/Female/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn + "_" + definition + ".png", bytes);
             else
                 File.WriteAllBytes(modpath + "Things/Pawn/Humanlike/Heads/Male/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn + "_" + definition + ".png", bytes);
-
+            var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+            pawnSave.exported += 1;
         }
 
 
@@ -421,24 +422,24 @@ namespace RW_FacialStuff
 
 
 
-       //   string[] headsFolderPaths = HeadsFolderPaths;
-       //   for (int i = 0; i < headsFolderPaths.Length; i++)
-       //   {
-       //       string text = headsFolderPaths[i];
-       //       foreach (string current in GraphicDatabaseUtility.GraphicNamesInFolder(text))
-       //       {
-       //           heads.Add(new HeadGraphicRecord(text + "/" + current));
-       //       }
-       //   }
+            //   string[] headsFolderPaths = HeadsFolderPaths;
+            //   for (int i = 0; i < headsFolderPaths.Length; i++)
+            //   {
+            //       string text = headsFolderPaths[i];
+            //       foreach (string current in GraphicDatabaseUtility.GraphicNamesInFolder(text))
+            //       {
+            //           heads.Add(new HeadGraphicRecord(text + "/" + current));
+            //       }
+            //   }
             skull = new HeadGraphicRecordModded(SkullPath);
         }
 
         private static void BuildModdedDatabaseIfNecessary()
         {
-        //  if (headsModded.Count > 0 && skull != null)
-        //  {
-        //      return;
-        //  }
+            //  if (headsModded.Count > 0 && skull != null)
+            //  {
+            //      return;
+            //  }
 
             string[] headsModdedFolderPaths = HeadsFolderPaths;
             for (int i = 0; i < headsModdedFolderPaths.Length; i++)
