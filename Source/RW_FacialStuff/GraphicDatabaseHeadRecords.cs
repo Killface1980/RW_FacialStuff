@@ -175,6 +175,9 @@ namespace RW_FacialStuff
                     AddToHeadCache(pawn, finalHeadFront, "front");
                     AddToHeadCache(pawn, finalHeadSide, "side");
 
+         //           headsFaced.Add(new HeadGraphicRecordModded("_cachedHeads/Male/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn));
+
+                    
                 }
 
 
@@ -406,7 +409,7 @@ namespace RW_FacialStuff
 
         private static readonly string[] ModdedHeadsFolderPath = new string[]
         {
-            "_cachedHeads/Male",
+           "_cachedHeads/Male",
            "_cachedHeads/Female"
         };
 
@@ -430,10 +433,10 @@ namespace RW_FacialStuff
 
         private static void BuildModdedDatabaseIfNecessary()
         {
-       //   if (headsFaced.Count > 0 && skull != null)
-       //   {
-       //       return;
-       //   }
+          if (headsFaced.Count > 0 && skull != null)
+          {
+              return;
+          }
 
             string[] headsModdedFolderPaths = ModdedHeadsFolderPath;
             for (int i = 0; i < headsModdedFolderPaths.Length; i++)
@@ -627,11 +630,13 @@ namespace RW_FacialStuff
 
                     DecorateHead(headgraph.GetGraphic(skinColor), pawn, skinColor, hairColor);
 
+                    headsFaced.Add(headgraph);
+
               //    headgraph.pawn = pawn;
               //    headgraph.graphicPath = "_cachedHeads/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn;
               //    headsFaced.Add(headgraph);
 
-                    typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pawn.story, "_cachedHeads/" + pawn.gender+"/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn);
+                    typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pawn.story, graphicPath);
 
                     var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
                     pawnSave.optimized = true;
