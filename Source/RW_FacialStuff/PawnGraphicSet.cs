@@ -10,7 +10,6 @@ using Verse;
 
 namespace RW_FacialStuff
 {
-    [StaticConstructorOnStartup]
     public class PawnGraphicHairSet : PawnGraphicSet
     {
 #pragma warning disable CS0824 // Konstruktor ist extern markiert
@@ -47,8 +46,8 @@ namespace RW_FacialStuff
 
                 var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
 
-              if (!pawnSave.optimized)
-                  GraphicDatabaseModdedHeadRecords.AddCustomizedHead(pawn, pawn.story.SkinColor, pawn.story.hairColor, pawn.story.HeadGraphicPath);
+                if (!pawnSave.optimized)
+                    GraphicDatabaseModdedHeadRecords.AddCustomizedHead(pawn, pawn.story.SkinColor, pawn.story.hairColor, pawn.story.HeadGraphicPath);
 
 
                 headGraphic = GraphicDatabaseModdedHeadRecords.GetHeadNamed(pawn, pawn.story.HeadGraphicPath, pawn.story.SkinColor, pawn.story.hairColor);

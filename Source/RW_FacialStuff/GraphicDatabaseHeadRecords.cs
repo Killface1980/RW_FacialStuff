@@ -10,8 +10,7 @@ using Verse;
 
 namespace RW_FacialStuff
 {
-    [StaticConstructorOnStartup]
-    public class GraphicDatabaseModdedHeadRecords
+    public class GraphicDatabaseModdedHeadRecords : GraphicDatabaseHeadRecords
     {
         static string modpath = "Mods/RW_FacialStuff/Textures/";
 
@@ -53,7 +52,7 @@ namespace RW_FacialStuff
             Texture2D readEyeGraphicSide = null;
 
 
-                    var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+            var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
 
             if (pawn.gender == Gender.Male)
             {
@@ -506,7 +505,6 @@ namespace RW_FacialStuff
 
 
 
-
         public class HeadGraphicRecordModded
         {
             public Pawn pawn = null;
@@ -522,7 +520,7 @@ namespace RW_FacialStuff
 
             public string graphicPath;
 
-            private List<KeyValuePair<Color, Graphic_Multi>> graphics = new List<KeyValuePair<Color, Graphic_Multi>>();
+            private List<KeyValuePair<Color, Graphic_Multi_Head>> graphics = new List<KeyValuePair<Color, Graphic_Multi_Head>>();
 
             public HeadGraphicRecordModded(string graphicPath)
             {
@@ -548,7 +546,7 @@ namespace RW_FacialStuff
 
             }
 
-            public Graphic_Multi GetGraphic(Color color)
+            public Graphic_Multi_Head GetGraphic(Color color)
             {
                 for (int i = 0; i < graphics.Count; i++)
                 {
@@ -557,13 +555,13 @@ namespace RW_FacialStuff
                         return graphics[i].Value;
                     }
                 }
-                Graphic_Multi graphic_Multi = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(graphicPath, ShaderDatabase.CutoutSkin, Vector2.one, color);
-                graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphic_Multi));
+                Graphic_Multi_Head graphic_Multi = (Graphic_Multi_Head)GraphicDatabase.Get<Graphic_Multi_Head>(graphicPath, ShaderDatabase.CutoutSkin, Vector2.one, color);
+                graphics.Add(new KeyValuePair<Color, Graphic_Multi_Head>(color, graphic_Multi));
                 return graphic_Multi;
             }
         }
 
-        public static Graphic_Multi GetHeadNamed(Pawn pawn, string graphicPath, Color skinColor, Color hairColor)
+        public static Graphic_Multi_Head GetHeadNamed(Pawn pawn, string graphicPath, Color skinColor, Color hairColor)
         {
             //          MethodInfo method = typeof(GraphicDatabaseHeadRecords).GetMethod("BuildDatabaseIfNecessary", BindingFlags.Static | BindingFlags.NonPublic);
             //          method.Invoke(null, null);
@@ -593,7 +591,7 @@ namespace RW_FacialStuff
         }
 
 
-        public static Graphic_Multi GetHeadRandom(Gender gender, Color skinColor, CrownType crownType)
+        public static new Graphic_Multi GetHeadRandom(Gender gender, Color skinColor, CrownType crownType)
         {
             BuildDatabaseIfNecessary();
             Predicate<HeadGraphicRecord> predicate = (HeadGraphicRecord head) => head.crownType == crownType && head.gender == gender;

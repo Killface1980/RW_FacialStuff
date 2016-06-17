@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="FacialStuffDefs.cs" />
     <Compile Include="GraphicDatabaseHeadRecords.cs" />
+    <Compile Include="Graphic_Multi.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
     <None Include="PawnRenderer.cs" />
     <Compile Include="SaveablePawn.cs" />
