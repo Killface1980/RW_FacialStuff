@@ -48,10 +48,11 @@ namespace RW_FacialStuff
 
                 var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
 
-                  GraphicDatabaseFacedHeadRecords.AddCustomizedHead(pawn, pawn.story.SkinColor, pawn.story.hairColor, pawn.story.HeadGraphicPath);
-              
+                if (!pawnSave.optimized)
+                    GraphicDatabaseModdedHeadRecords.AddCustomizedHead(pawn, pawn.story.SkinColor, pawn.story.hairColor, pawn.story.HeadGraphicPath);
 
-                headGraphic = GraphicDatabaseFacedHeadRecords.GetHeadNamed(pawn, pawn.story.HeadGraphicPath, pawn.story.SkinColor, pawn.story.hairColor);
+
+                headGraphic = GraphicDatabaseModdedHeadRecords.GetHeadNamed(pawn, pawn.story.HeadGraphicPath, pawn.story.SkinColor, pawn.story.hairColor);
 
                 desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RottingColor);
                 skullGraphic = GraphicDatabaseHeadRecords.GetSkull();

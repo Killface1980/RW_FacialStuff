@@ -22,7 +22,7 @@ namespace RW_FacialStuff
 
             MethodInfo method = typeof(GraphicDatabaseUtility).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
             MethodInfo method2 = typeof(ModInitializer).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
-    //      Detours.TryDetourFromTo(method, method2);
+          Detours.TryDetourFromTo(method, method2);
         }
 
         public static IEnumerable<string> GraphicNamesInFolder(string folderPath)
@@ -105,8 +105,8 @@ namespace RW_FacialStuff
  //         MethodInfo coreMethod2 = typeof(Verse.PawnRenderer).GetMethod("RenderPawnAt", BindingFlags.Instance | BindingFlags.Public);
  //         MethodInfo autoEquipMethod2 = typeof(RW_FacialStuff.FS_PawnRenderer).GetMethod("RenderFacialPawnAt", BindingFlags.Instance | BindingFlags.Public);
 
-//        MethodInfo coreMethod2 = typeof(Verse.GraphicDatabaseHeadRecords).GetMethod("GetHeadRandom", BindingFlags.Static | BindingFlags.Public);
-//        MethodInfo autoEquipMethod2 = typeof(RW_FacialStuff.GraphicDatabaseFacedHeadRecords).GetMethod("GetHeadRandom", BindingFlags.Static | BindingFlags.Public);
+        MethodInfo coreMethod2 = typeof(Verse.GraphicDatabaseHeadRecords).GetMethod("GetHeadRandom", BindingFlags.Static | BindingFlags.Public);
+        MethodInfo autoEquipMethod2 = typeof(RW_FacialStuff.GraphicDatabaseModdedHeadRecords).GetMethod("GetHeadRandom", BindingFlags.Static | BindingFlags.Public);
 
 
 
@@ -121,7 +121,7 @@ namespace RW_FacialStuff
             {
                             Detours.TryDetourFromTo(coreMethod, autoEquipMethod);
 
-            //    Detours.TryDetourFromTo(coreMethod2, autoEquipMethod2);
+                Detours.TryDetourFromTo(coreMethod2, autoEquipMethod2);
             }
             catch (Exception)
             {
