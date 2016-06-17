@@ -15,6 +15,8 @@ namespace RW_FacialStuff
         public TacheDef TacheDef;
         public EyeDef EyeDef;
 
+        public bool optimized = false;
+
         public void ExposeData()
         {
             Scribe_References.LookReference(ref Pawn, "Pawn");
@@ -22,6 +24,7 @@ namespace RW_FacialStuff
             Scribe_Defs.LookDef(ref TacheDef, "TacheDef");
             Scribe_Defs.LookDef(ref SideburnDef, "SideburnDef");
             Scribe_Defs.LookDef(ref BeardDef, "BeardDef");
+            Scribe_Values.LookValue(ref optimized, "optimized");
         }
     }
 }

@@ -52,7 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FacialStuffDefs.cs" />
+    <Compile Include="GraphicDatabaseHeadRecords.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
+    <None Include="PawnRenderer.cs" />
     <Compile Include="SaveablePawn.cs" />
     <Compile Include="PawnBeardChooser.cs" />
     <Compile Include="PawnGraphicSet.cs" />
@@ -66,6 +68,7 @@
     </Content>
     <Content Include="..\..\Defs\EyeDefs\EyeDef.xml">
       <Link>Defs\EyeDef.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\HairDefs\BeardDef.xml">
       <Link>Defs\BeardDef.xml</Link>
