@@ -20,20 +20,20 @@ namespace RW_FacialStuff
             modInitializerControllerObject.AddComponent<ModInitializerBehaviour>();
             UnityEngine.Object.DontDestroyOnLoad((UnityEngine.Object)modInitializerControllerObject);
 
-    //      System.Reflection.MethodInfo method = typeof(GraphicDatabaseUtility).GetMethod("GraphicNamesInFolder", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-    //      System.Reflection.MethodInfo method2 = typeof(ModInitializer).GetMethod("GraphicNamesInFolder", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+            MethodInfo method = typeof(GraphicDatabaseUtility).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo method2 = typeof(ModInitializer).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
     //      Detours.TryDetourFromTo(method, method2);
         }
 
-        public static System.Collections.Generic.IEnumerable<string> GraphicNamesInFolder(string folderPath)
+        public static IEnumerable<string> GraphicNamesInFolder(string folderPath)
         {
-            System.Collections.Generic.IEnumerable<Texture2D> allInFolder = ContentFinder<Texture2D>.GetAllInFolder(folderPath);
-            System.Collections.Generic.List<string> list = new System.Collections.Generic.List<string>();
-            using (System.Collections.Generic.IEnumerator<Texture2D> enumerator = allInFolder.GetEnumerator())
+            IEnumerable<Texture2D> allInFolder = ContentFinder<Texture2D>.GetAllInFolder(folderPath);
+            List<string> list = new List<string>();
+            using (IEnumerator<Texture2D> enumerator = allInFolder.GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
-                    System.Collections.Generic.List<string> list2 = enumerator.Current.name.Split("_".ToCharArray()).ToList<string>();
+                    List<string> list2 = enumerator.Current.name.Split("_".ToCharArray()).ToList();
                     if (list2.Count > 4)
                     {
                         Log.Error("Cannot load assets with >3 pieces.");
@@ -44,7 +44,7 @@ namespace RW_FacialStuff
                     }
                     else
                     {
-                        list2.Remove(list2.Last<string>());
+                        list2.Remove(list2.Last());
                         string item = string.Join("_", list2.ToArray());
                         if (!list.Contains(item))
                         {
