@@ -10,7 +10,7 @@ using Verse;
 
 namespace RW_FacialStuff
 {
-
+    [StaticConstructorOnStartup]
     public class PawnGraphicHairSet : PawnGraphicSet
     {
 #pragma warning disable CS0824 // Konstruktor ist extern markiert

@@ -10,6 +10,7 @@ using Verse;
 
 namespace RW_FacialStuff
 {
+    [StaticConstructorOnStartup]
     public class GraphicDatabaseModdedHeadRecords
     {
         static string modpath = "Mods/RW_FacialStuff/Textures/";
