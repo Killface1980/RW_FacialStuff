@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using Verse;
 
@@ -56,6 +58,18 @@ namespace RW_FacialStuff
             }
         }
 
+
+        public static Texture2D LoadTexture(string texturePath)
+        {
+            Texture2D texture = null;
+
+            texture = new Texture2D(1, 1);
+            texture.LoadImage(File.ReadAllBytes(GraphicDatabaseModdedHeadRecords.modpath + texturePath + ".png"));
+            texture.anisoLevel = 8;
+
+            return texture;
+        }
+
         public override void Init(GraphicRequest req)
         {
             this.data = req.graphicData;
@@ -64,22 +78,29 @@ namespace RW_FacialStuff
             this.colorTwo = req.colorTwo;
             this.drawSize = req.drawSize;
             Texture2D[] array = new Texture2D[3];
-            array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", false);
-            if (array[0] == null)
-            {
-                Log.Error("RW_FacialStuff: Failed to find any texture while constructing " + this.ToString());
-                return;
-            }
-            array[1] = ContentFinder<Texture2D>.Get(req.path + "_side", false);
-            if (array[1] == null)
-            {
-                array[1] = array[0];
-            }
-            array[2] = ContentFinder<Texture2D>.Get(req.path + "_front", false);
-            if (array[2] == null)
-            {
-                array[2] = array[0];
-            }
+
+
+            array[0] = LoadTexture(req.path + "_back");
+            array[1] = LoadTexture(req.path + "_side");
+            array[2] = LoadTexture(req.path + "_front");
+
+
+            //          array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", false);
+            //          if (array[0] == null)
+            //          {
+            //              Log.Error("RW_FacialStuff: Failed to find any texture while constructing " + this.ToString());
+            //              return;
+            //          }
+            //          array[1] = ContentFinder<Texture2D>.Get(req.path + "_side", false);
+            //          if (array[1] == null)
+            //          {
+            //              array[1] = array[0];
+            //          }
+            //          array[2] = ContentFinder<Texture2D>.Get(req.path + "_front", false);
+            //          if (array[2] == null)
+            //          {
+            //              array[2] = array[0];
+            //          }
             Texture2D[] array2 = new Texture2D[3];
             if (req.shader.SupportsMaskTex())
             {

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using UnityEngine;
 using Verse;
 
@@ -12,7 +13,7 @@ namespace RW_FacialStuff
 {
     public class GraphicDatabaseModdedHeadRecords : GraphicDatabaseHeadRecords
     {
-        static string modpath = "Mods/RW_FacialStuff/Textures/";
+        public static string modpath = "Mods/RW_FacialStuff/Textures/";
 
         public static Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
 
@@ -142,7 +143,6 @@ namespace RW_FacialStuff
 
                         readTacheGraphicFront = LoadTexture(_saveableTache.texPath + "_Narrow_front");
                         readTacheGraphicSide = LoadTexture(_saveableTache.texPath + "_Narrow_side");
-
                     }
                     else
                     {
@@ -169,8 +169,8 @@ namespace RW_FacialStuff
                     AddFacialHair(pawn, eyesHeadFront, beardFront, ref finalHeadFront, haircolor);
                     AddFacialHair(pawn, eyesHeadSide, beardSide, ref finalHeadSide, haircolor);
 
-                    tempGraphic.MatFront.mainTexture = finalHeadFront;
-                    tempGraphic.MatSide.mainTexture = finalHeadSide;
+                    //     tempGraphic.MatFront.mainTexture = finalHeadFront;
+                    //     tempGraphic.MatSide.mainTexture = finalHeadSide;
 
                 }
 
@@ -216,25 +216,31 @@ namespace RW_FacialStuff
                     AddEyes(pawn, readHeadGraphicFront, readEyeGraphicFront, ref finalHeadFront);
                     AddEyes(pawn, readHeadGraphicSide, readEyeGraphicSide, ref finalHeadSide);
 
-                    tempGraphic.MatFront.mainTexture = finalHeadFront;
-                    tempGraphic.MatSide.mainTexture = finalHeadSide;
+                    //   tempGraphic.MatFront.mainTexture = finalHeadFront;
+                    //   tempGraphic.MatSide.mainTexture = finalHeadSide;
 
                 }
             }
 
-            ExportToPNG(pawn, readHeadGraphicBack, "back");
-            ExportToPNG(pawn, finalHeadFront, "front");
-            ExportToPNG(pawn, finalHeadSide, "side");
+
+            if (readHeadGraphicBack != null)
+                ExportToPNG(pawn, readHeadGraphicBack, "back");
+            if (finalHeadFront != null)
+                ExportToPNG(pawn, finalHeadFront, "front");
+            if (finalHeadSide != null)
+                ExportToPNG(pawn, finalHeadSide, "side");
+                // worker thread ended ok
+                Console.WriteLine("Worker Thread finished");
+
 
             headsModded.Add(new HeadGraphicRecordModded("Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn));
             //            headsModded.Add(new HeadGraphicRecordModded("Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn));
 
 
-            if (pawnSave.exported == 3)
-                return headGraphic;
-            else
-                return null;
+            return headGraphic;
+
         }
+
 
         public static Texture2D MakeReadable(Texture2D texture, ref Texture2D myTexture2D)
         {
@@ -380,7 +386,6 @@ namespace RW_FacialStuff
             else
                 File.WriteAllBytes(modpath + "Things/Pawn/Humanlike/Heads/Male/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn + "_" + definition + ".png", bytes);
             var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
-            pawnSave.exported += 1;
         }
 
 
