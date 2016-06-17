@@ -26,7 +26,6 @@ namespace RW_FacialStuff
 
         private PawnWoundDrawer woundOverlays;
 
-
         private static readonly float[] HorHeadOffsets = new float[]
         {
             0f,

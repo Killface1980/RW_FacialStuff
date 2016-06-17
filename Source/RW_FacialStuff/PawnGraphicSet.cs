@@ -19,7 +19,6 @@ namespace RW_FacialStuff
 
         public static Dictionary<string, Graphic> textureCache = new Dictionary<string, Graphic>();
 
-        public List<Graphic> graphics = new List<Graphic>(8);
 
         public static Graphic Cache(Pawn pawn, string texturePath, Color skincolor)
         {
@@ -36,37 +35,6 @@ namespace RW_FacialStuff
             //          }
         }
 
-   //   // EdB.PrepareCarefully.CustomPawn
-   //   public string HeadGraphicPath
-   //   {
-   //       get
-   //       {
-   //           return this.pawn.story.HeadGraphicPath + "/" + pawn;
-   //       }
-   //       set
-   //       {
-   //           typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this.pawn.story, value + "/"+ pawn);
-   //           this.ResetHead();
-   //       }
-   //   }
-   //
-   //   // EdB.PrepareCarefully.CustomPawn
-   //   protected void ResetHead()
-   //   {
-   //       typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this.pawn.story, this.FilterHeadPathForGender(this.pawn.story.HeadGraphicPath));
-   //       this.graphics[5] = GraphicDatabaseHeadRecords.GetHeadNamed(this.pawn.story.HeadGraphicPath, this.pawn.story.SkinColor);
-   //   }
-   //
-   //   // EdB.PrepareCarefully.CustomPawn
-   //   protected string FilterHeadPathForGender(string path)
-   //   {
-   //       if (this.pawn.gender == Gender.Male)
-   //       {
-   //           return path.Replace("Female", "Male");
-   //       }
-   //       return path.Replace("Male", "Female");
-   //   }
-
 
         public new void ResolveAllGraphics()
         {
@@ -74,17 +42,19 @@ namespace RW_FacialStuff
             if (pawn.RaceProps.Humanlike)
             {
 
-                Graphic baseHeadGraphic = null;
-
                 nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
                 rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RW_FacialStuff.PawnGraphicHairSet.RottingColor);
                 dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
 
+                var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
 
-         //       baseHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor);
-                headGraphic = GraphicDatabaseFacedHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor);
 
-                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RW_FacialStuff.PawnGraphicHairSet.RottingColor);
+                  GraphicDatabaseFacedHeadRecords.AddCustomizedHead(pawn, pawn.story.SkinColor, pawn.story.hairColor, pawn.story.HeadGraphicPath);
+              
+
+                headGraphic = GraphicDatabaseFacedHeadRecords.GetHeadNamed(pawn, pawn.story.HeadGraphicPath, pawn.story.SkinColor, pawn.story.hairColor);
+
+                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RottingColor);
                 skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 ResolveApparelGraphics();
@@ -100,7 +70,7 @@ namespace RW_FacialStuff
                 {
                     nakedGraphic = curKindLifeStage.femaleGraphicData.Graphic;
                 }
-                rottingGraphic = nakedGraphic.GetColoredVersion(ShaderDatabase.CutoutSkin, RW_FacialStuff.PawnGraphicHairSet.RottingColor, RW_FacialStuff.PawnGraphicHairSet.RottingColor);
+                rottingGraphic = nakedGraphic.GetColoredVersion(ShaderDatabase.CutoutSkin, RottingColor, RottingColor);
                 if (curKindLifeStage.dessicatedBodyGraphicData != null)
                 {
                     dessicatedGraphic = curKindLifeStage.dessicatedBodyGraphicData.GraphicColoredFor(pawn);
