@@ -55,11 +55,12 @@
     <Compile Include="GraphicDatabaseHeadRecords.cs" />
     <Compile Include="Graphic_Multi.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
-    <None Include="PawnRenderer.cs" />
+    <None Include="_notInUse\PawnRenderer.cs" />
+    <None Include="PawnStoryTracker.cs" />
     <Compile Include="SaveablePawn.cs" />
     <Compile Include="PawnBeardChooser.cs" />
     <Compile Include="PawnGraphicSet.cs" />
-    <None Include="Pawn_BeardTracker.cs" />
+    <None Include="_notInUse\Pawn_BeardTracker.cs" />
     <Compile Include="ModInitializer .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
