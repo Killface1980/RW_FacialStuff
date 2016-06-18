@@ -158,6 +158,8 @@ namespace RW_FacialStuff
                 Texture2D readSideburnGraphicFront = LoadTexture(_saveableSideburn.texPath + "_front");
                 Texture2D readSideburnGraphicSide = LoadTexture(_saveableSideburn.texPath + "_side");
 
+
+
                 MakeBeard(readSideburnGraphicFront, readBeardGraphicFront, readTacheGraphicFront, ref beardFront);
                 MakeBeard(readBeardGraphicSide, readSideburnGraphicSide, readTacheGraphicSide, ref beardSide);                        //           }
 
@@ -203,10 +205,6 @@ namespace RW_FacialStuff
                 AddEyes(pawn, readHeadGraphicFront, readEyeGraphicFront, ref finalHeadFront);
                 AddEyes(pawn, readHeadGraphicSide, readEyeGraphicSide, ref finalHeadSide);
 
-                //   tempGraphic.MatFront.mainTexture = finalHeadFront;
-                //   tempGraphic.MatSide.mainTexture = finalHeadSide;
-
-
             }
 
 
@@ -216,8 +214,7 @@ namespace RW_FacialStuff
                 ExportToPNG(pawn, finalHeadFront, "front");
             if (finalHeadSide != null)
                 ExportToPNG(pawn, finalHeadSide, "side");
-            // worker thread ended ok
-            Console.WriteLine("Worker Thread finished");
+
 
             graphicPath = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn;
 
