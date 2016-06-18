@@ -10,6 +10,7 @@ using Verse;
 
 namespace RW_FacialStuff
 {
+
     public class PawnGraphicHairSet : PawnGraphicSet
     {
 #pragma warning disable CS0824 // Konstruktor ist extern markiert
@@ -34,7 +35,7 @@ namespace RW_FacialStuff
             //          }
         }
 
-        public new void ResolveAllGraphics()
+        public void ResolveAllGraphicsModded()
         {
             ClearCache();
             if (pawn.RaceProps.Humanlike)
@@ -45,15 +46,15 @@ namespace RW_FacialStuff
                 dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
 
                 var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+              
+              if (!pawnSave.optimized)
+                  GraphicDatabaseModdedHeadRecords.AddCustomizedHead(pawn, pawn.story.SkinColor, pawn.story.hairColor, pawn.story.HeadGraphicPath);
 
-                if (!pawnSave.optimized)
-                    GraphicDatabaseModdedHeadRecords.AddCustomizedHead(pawn, pawn.story.SkinColor, pawn.story.hairColor, pawn.story.HeadGraphicPath);
 
+                headGraphic = GraphicDatabaseModdedHeadRecords.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, pawn.story.SkinColor, pawn.story.hairColor);
 
-                headGraphic = GraphicDatabaseModdedHeadRecords.GetHeadNamed(pawn, pawn.story.HeadGraphicPath, pawn.story.SkinColor, pawn.story.hairColor);
-
-                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RottingColor);
-                skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
+                desiccatedHeadGraphic = GraphicDatabaseModdedHeadRecords.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, RottingColor, RottingColor);
+                skullGraphic = GraphicDatabaseModdedHeadRecords.GetSkull();
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 ResolveApparelGraphics();
             }

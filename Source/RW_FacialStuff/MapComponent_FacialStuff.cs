@@ -6,6 +6,7 @@ using Verse;
 
 namespace RW_FacialStuff
 {
+
     public class MapComponent_FacialStuff : MapComponent
     {
 
