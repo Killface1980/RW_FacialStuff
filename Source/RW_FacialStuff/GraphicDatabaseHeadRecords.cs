@@ -29,6 +29,7 @@ namespace RW_FacialStuff
             texture.LoadImage(File.ReadAllBytes(modpath + texturePath + ".png"));
             texture.anisoLevel = 8;
             texture.name = Path.GetFileName(modpath + texturePath + ".png");
+            
       //      texture.Compress(true);
 
             texture.Apply();
@@ -43,9 +44,9 @@ namespace RW_FacialStuff
         public static void DecorateHead(ref string graphicPath, Pawn pawn, Color skinColor, Color haircolor)
         {
 
-            Texture2D readHeadGraphicBack =  LoadTexture("blankTextures/" + graphicPath + "_back"); 
-            Texture2D readHeadGraphicFront = LoadTexture("blankTextures/" + graphicPath + "_front");
-            Texture2D readHeadGraphicSide = LoadTexture("blankTextures/" + graphicPath + "_side");
+            Texture2D readHeadGraphicBack =  LoadTexture(graphicPath + "_back"); 
+            Texture2D readHeadGraphicFront = LoadTexture(graphicPath + "_front");
+            Texture2D readHeadGraphicSide = LoadTexture(graphicPath + "_side");
 
             Texture2D finalHeadFront = null;
             Texture2D finalHeadSide = null;
@@ -133,14 +134,14 @@ namespace RW_FacialStuff
 
                 if (pawn.story.crownType == CrownType.Narrow)
                 {
-                    readEyeGraphicFront = LoadTexture(_saveableEye.texPath + "_Narrow_front");
-                    readEyeGraphicSide = LoadTexture(_saveableEye.texPath + "_Narrow_side");
+                    readEyeGraphicFront = LoadTexture(_saveableEye.texPath + "_front-Narrow");
+                    readEyeGraphicSide = LoadTexture(_saveableEye.texPath + "_side-Narrow");
 
-                    readBeardGraphicFront = LoadTexture(_saveableBeard.texPath + "_Narrow_front");
-                    readBeardGraphicSide = LoadTexture(_saveableBeard.texPath + "_Narrow_side");
+                    readBeardGraphicFront = LoadTexture(_saveableBeard.texPath + "_front-Narrow");
+                    readBeardGraphicSide = LoadTexture(_saveableBeard.texPath + "_side-Narrow");
 
-                    readTacheGraphicFront = LoadTexture(_saveableTache.texPath + "_Narrow_front");
-                    readTacheGraphicSide = LoadTexture(_saveableTache.texPath + "_Narrow_side");
+                    readTacheGraphicFront = LoadTexture(_saveableTache.texPath + "_front-Narrow");
+                    readTacheGraphicSide = LoadTexture(_saveableTache.texPath + "_side-Narrow");
                 }
                 else
                 {
@@ -191,8 +192,8 @@ namespace RW_FacialStuff
 
                 if (pawn.story.crownType == CrownType.Narrow)
                 {
-                    readEyeGraphicFront = LoadTexture(_saveableEye.texPath + "_Narrow_front");
-                    readEyeGraphicSide = LoadTexture(_saveableEye.texPath + "_Narrow_side");
+                    readEyeGraphicFront = LoadTexture(_saveableEye.texPath + "_front-Narrow");
+                    readEyeGraphicSide = LoadTexture(_saveableEye.texPath + "_side-Narrow");
                 }
                 else
                 {
@@ -205,22 +206,30 @@ namespace RW_FacialStuff
                 AddEyes(pawn, readHeadGraphicFront, readEyeGraphicFront, ref finalHeadFront);
                 AddEyes(pawn, readHeadGraphicSide, readEyeGraphicSide, ref finalHeadSide);
 
+        //      Texture2D.DestroyImmediate(readHeadGraphicFront, true);
+        //      Texture2D.DestroyImmediate(readEyeGraphicFront, true);
+        //      Texture2D.DestroyImmediate(readHeadGraphicSide, true);
+        //      Texture2D.DestroyImmediate(readEyeGraphicSide, true);
+
+
             }
-
-
-            if (readHeadGraphicBack != null)
-                ExportToPNG(pawn, readHeadGraphicBack, "back");
-            if (finalHeadFront != null)
-                ExportToPNG(pawn, finalHeadFront, "front");
-            if (finalHeadSide != null)
-                ExportToPNG(pawn, finalHeadSide, "side");
-
 
             graphicPath = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn;
 
-            headsModded.Add(new HeadGraphicRecordModded(graphicPath));
-            //            headsModded.Add(new HeadGraphicRecordModded("Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn));
+            if (readHeadGraphicBack != null)
+                ExportToPNG(pawn, readHeadGraphicBack, "back", graphicPath);
+            if (finalHeadFront != null)
+                ExportToPNG(pawn, finalHeadFront, "front", graphicPath);
+            if (finalHeadSide != null)
+                ExportToPNG(pawn, finalHeadSide, "side", graphicPath);
 
+
+
+            headsModded.Add(new HeadGraphicRecordModded(graphicPath));
+
+            Texture2D.DestroyImmediate(readHeadGraphicBack, true);
+            Texture2D.DestroyImmediate(finalHeadFront, true);
+            Texture2D.DestroyImmediate(finalHeadSide, true);
 
             //    return headGraphic;
 
@@ -350,14 +359,14 @@ namespace RW_FacialStuff
             finalhead = head;
         }
 
-        public static void ExportToPNG(Pawn pawn, Texture2D inputTexture, string definition)
+        public static void ExportToPNG(Pawn pawn, Texture2D inputTexture, string definition, string graphicpath)
         {
             byte[] bytes = inputTexture.EncodeToPNG();
-            if (pawn.gender == Gender.Female)
-                File.WriteAllBytes(modpath + "Things/Pawn/Humanlike/Heads/Female/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn + "_" + definition + ".png", bytes);
-            else
-                File.WriteAllBytes(modpath + "Things/Pawn/Humanlike/Heads/Male/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn + "_" + definition + ".png", bytes);
-            var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+   //         if (pawn.gender == Gender.Female)
+                File.WriteAllBytes(modpath + graphicpath + "_" + definition + ".png", bytes);
+     //     else
+     //         File.WriteAllBytes(modpath + "Things/Pawn/Humanlike/Heads/Male/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn + "_" + definition + ".png", bytes);
+     //     var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
         }
 
 
