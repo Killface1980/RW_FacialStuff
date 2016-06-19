@@ -40,7 +40,6 @@ namespace RW_FacialStuff
 
             //      texture.Compress(true);
 
-            texture.Apply();
 
             //        textureCache.Add(texturePath, texture);
 

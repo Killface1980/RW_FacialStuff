@@ -115,23 +115,10 @@ namespace RW_FacialStuff
                 array[0] = LoadTexture(req.path + "_back");
             else
                 array[0] = BlankTexture();
-//            array[0] = LoadTexture("_default/Default_Blank_back");
-
 
             array[1] = LoadTexture(req.path + "_side");
             array[2] = LoadTexture(req.path + "_front");
-            //       array[3] = array[2];
-            //       array[4] = array[1];
-            //
-            //       if (File.Exists(req.path + "_front-Narrow.png"))
-            //       {
-            //           array[3] = LoadTexture(req.path + "_front-Narrow");
-            //       }
-            //
-            //       if (File.Exists(req.path + "_front-Narrow.png"))
-            //       {
-            //           array[4] = LoadTexture(req.path + "_side-Narrow");
-            //       }
+
 
 
             //          array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", false);
