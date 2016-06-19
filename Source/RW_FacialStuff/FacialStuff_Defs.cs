@@ -13,6 +13,9 @@ namespace RW_FacialStuff
 
         public List<string> hairTags = new List<string>();
 
+        public CrownType crownType;
+
+
     }
 
     public class TacheDef : Def
@@ -22,6 +25,8 @@ namespace RW_FacialStuff
         public HairGender hairGender = HairGender.Any;
 
         public List<string> hairTags = new List<string>();
+
+        public CrownType crownType;
 
     }
 
@@ -33,15 +38,20 @@ namespace RW_FacialStuff
 
         public List<string> hairTags = new List<string>();
 
+        public CrownType crownType;
+
     }
 
     public class EyeDef: Def
     {
+
         public string texPath;
 
         public HairGender hairGender = HairGender.Any;
 
         public List<string> hairTags = new List<string>();
+
+        public CrownType crownType;
 
     }
 }

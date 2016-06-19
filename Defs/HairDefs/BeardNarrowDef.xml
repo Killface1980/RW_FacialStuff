@@ -2,67 +2,83 @@
 <DefPackage-BeardDef>
 
   <BeardDef>
-    <label>Beard_Amish</label>
+    <label>BN-Amish</label>
     <hairGender>Male</hairGender>
-    <texPath>Beards/Beard_Amish</texPath>
-    <defName>Beard_Amish</defName>
+    <texPath>Beards/Beard_Narrow_Amish</texPath>
+    <defName>Beard_Narrow_Amish</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
   </BeardDef>
 
   <BeardDef>
-    <label>Beard_Methusalem</label>
+    <label>BN-Methusalem</label>
     <hairGender>Male</hairGender>
-    <texPath>Beards/Beard_Methusalem</texPath>
-    <defName>Beard_Methusalem</defName>
+    <texPath>Beards/Beard_Narrow_Methusalem</texPath>
+    <defName>Beard_Narrow_Methusalem</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
   </BeardDef>
 
   <BeardDef>
-    <label>Beard_ZZTop</label>
+    <label>BN-ZZTop</label>
     <hairGender>Male</hairGender>
-    <texPath>Beards/Beard_ZZTop</texPath>
-    <defName>Beard_ZZTop</defName>
+    <texPath>Beards/Beard_Narrow_ZZTop</texPath>
+    <defName>Beard_Narrow_ZZTop</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
   </BeardDef>
 
   <BeardDef>
-    <label>Beard_Santa</label>
+    <label>BN-Santa</label>
     <hairGender>Male</hairGender>
-    <texPath>Beards/Beard_Santa</texPath>
-    <defName>Beard_Santa</defName>
+    <texPath>Beards/Beard_Narrow_Santa</texPath>
+    <defName>Beard_Narrow_Santa</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
   </BeardDef>
-  
+
   <BeardDef>
-    <label>Beard_Shaved</label>
+    <label>BN-Shaved</label>
     <hairGender>MaleUsually</hairGender>
     <texPath>Beards/Beard_Shaved</texPath>
-    <defName>Beard_Shaved</defName>
+    <defName>Beard_Narrow_Shaved</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
   </BeardDef>
+
 </DefPackage-BeardDef>

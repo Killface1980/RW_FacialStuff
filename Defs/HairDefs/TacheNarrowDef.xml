@@ -3,75 +3,91 @@
 
 <DefPackage-TacheDef>
   <TacheDef>
-    <label>Moustache_Deluxe</label>
+    <label>MN-Deluxe</label>
     <hairGender>Male</hairGender>
-    <texPath>Moustaches/Moustache_Deluxe</texPath>
-    <defName>Moustache_Deluxe</defName>
+    <texPath>Moustaches/Moustache_Narrow_Deluxe</texPath>
+    <defName>Moustache_Narrow_Deluxe</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
+
   </TacheDef>
 
   <TacheDef>
-    <label>Moustache_Walrus</label>
+    <label>MN-Walrus</label>
     <hairGender>Male</hairGender>
-    <texPath>Moustaches/Moustache_Walrus</texPath>
-    <defName>Moustache_Walrus</defName>
+    <texPath>Moustaches/Moustache_Narrow_Walrus</texPath>
+    <defName>Moustache_Narrow_Walrus</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
   </TacheDef>
 
   <TacheDef>
-    <label>Moustache_Ming</label>
+    <label>MN-Ming</label>
     <hairGender>Male</hairGender>
-    <texPath>Moustaches/Moustache_Ming</texPath>
-    <defName>Moustache_Ming</defName>
+    <texPath>Moustaches/Moustache_Narrow_Ming</texPath>
+    <defName>Moustache_Narrow_Ming</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
   </TacheDef>
 
   <TacheDef>
-    <label>Moustache_Ranger</label>
+    <label>MN-Ranger</label>
     <hairGender>Male</hairGender>
-    <texPath>Moustaches/Moustache_Ranger</texPath>
-    <defName>Moustache_Ranger</defName>
+    <texPath>Moustaches/Moustache_Narrow_Ranger</texPath>
+    <defName>Moustache_Narrow_Ranger</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
   </TacheDef>
-  
+
   <TacheDef>
-    <label>Moustache_Handlebar</label>
+    <label>MN-Handlebar</label>
     <hairGender>Male</hairGender>
-    <texPath>Moustaches/Moustache_Handlebar</texPath>
-    <defName>Moustache_Handlebar</defName>
+    <texPath>Moustaches/Moustache_Narrow_Handlebar</texPath>
+    <defName>Moustache_Narrow_Handlebar</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
   </TacheDef>
-  
+
   <TacheDef>
-    <label>Moustache_Shaved</label>
+    <label>MN-Shaved</label>
     <hairGender>MaleUsually</hairGender>
     <texPath>Moustaches/Moustache_Shaved</texPath>
-    <defName>Moustache_Shaved</defName>
+    <defName>Moustache_Narrow_Shaved</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -79,5 +95,8 @@
       <li>Tribal</li>
     </hairTags>
   </TacheDef>
-  
+  <crownType>
+    Narrow
+  </crownType>
+
 </DefPackage-TacheDef>

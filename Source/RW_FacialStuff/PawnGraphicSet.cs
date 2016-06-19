@@ -48,13 +48,13 @@ namespace RW_FacialStuff
                 var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
               
               if (!pawnSave.optimized)
-                  GraphicDatabaseModdedHeadRecords.AddCustomizedHead(pawn, pawn.story.SkinColor, pawn.story.hairColor, pawn.story.HeadGraphicPath);
+                  GraphicDatabaseHeadRecordsModded.AddCustomizedHead(pawn, pawn.story.SkinColor, pawn.story.hairColor, pawn.story.HeadGraphicPath);
 
 
-                headGraphic = GraphicDatabaseModdedHeadRecords.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, pawn.story.SkinColor, pawn.story.hairColor);
+                headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, pawn.story.SkinColor, pawn.story.hairColor);
 
-                desiccatedHeadGraphic = GraphicDatabaseModdedHeadRecords.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, RottingColor, RottingColor);
-                skullGraphic = GraphicDatabaseModdedHeadRecords.GetSkull();
+                desiccatedHeadGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, RottingColor, RottingColor);
+                skullGraphic = GraphicDatabaseHeadRecordsModded.GetSkull();
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 ResolveApparelGraphics();
             }

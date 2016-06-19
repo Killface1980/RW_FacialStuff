@@ -2,135 +2,165 @@
 <DefPackage-EyeDef>
 
   <EyeDef>
-    
-    <label>Eye_Female_Big</label>
+
+    <label>EFA-Big</label>
     <hairGender>Female</hairGender>
-    <texPath>Eyes/Female/Eye_Female_Big</texPath>
-    <defName>Eye_Female_Big</defName>
+    <texPath>Eyes/Female/Eye_Female_Average_Big</texPath>
+    <defName>Eye_Female_Average_Big</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Average
+    </crownType>
   </EyeDef>
 
   <EyeDef>
-    <label>Eye_Female_Default</label>
+    <label>EFA-Default</label>
     <hairGender>Female</hairGender>
-    <texPath>Eyes/Female/Eye_Female_Default</texPath>
-    <defName>Eye_Female_Default</defName>
+    <texPath>Eyes/Female/Eye_Female_Average_Default</texPath>
+    <defName>Eye_Female_Average_Default</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Average
+    </crownType>
   </EyeDef>
 
   <EyeDef>
-    <label>Eye_Female_Flat</label>
+    <label>EFA-Flat</label>
     <hairGender>Female</hairGender>
-    <texPath>Eyes/Female/Eye_Female_Flat</texPath>
-    <defName>Eye_Female_Flat</defName>
+    <texPath>Eyes/Female/Eye_Female_Average_Flat</texPath>
+    <defName>Eye_Female_Average_Flat</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Average
+    </crownType>
   </EyeDef>
 
   <EyeDef>
-    <label>Eye_Female_Large</label>
+    <label>EFA-Large</label>
     <hairGender>Female</hairGender>
-    <texPath>Eyes/Female/Eye_Female_Large</texPath>
-    <defName>Eye_Female_Large</defName>
+    <texPath>Eyes/Female/Eye_Female_Average_Large</texPath>
+    <defName>Eye_Female_Average_Large</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Average
+    </crownType>
   </EyeDef>
-  
-    <EyeDef>
-    <label>Eye_Female_Medium</label>
+
+  <EyeDef>
+    <label>EFA-Medium</label>
     <hairGender>Female</hairGender>
-    <texPath>Eyes/Female/Eye_Female_Medium</texPath>
-    <defName>Eye_Female_Medium</defName>
+    <texPath>Eyes/Female/Eye_Female_Average_Medium</texPath>
+    <defName>Eye_Female_Average_Medium</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Average
+    </crownType>
   </EyeDef>
 
 
   <EyeDef>
-    <label>Eye_Male_Big</label>
+    <label>EMA-Big</label>
     <hairGender>Male</hairGender>
-    <texPath>Eyes/Male/Eye_Male_Big</texPath>
-    <defName>Eye_Male_Big</defName>
+    <texPath>Eyes/Male/Eye_Male_Average_Big</texPath>
+    <defName>Eye_Male_Average_Big</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Average
+    </crownType>
   </EyeDef>
 
   <EyeDef>
-    <label>Eye_Male_Default</label>
+    <label>EMA-Default</label>
     <hairGender>Male</hairGender>
-    <texPath>Eyes/Male/Eye_Male_Default</texPath>
-    <defName>Eye_Male_Default</defName>
+    <texPath>Eyes/Male/Eye_Male_Average_Default</texPath>
+    <defName>Eye_Male_Average_Default</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Average
+    </crownType>
   </EyeDef>
 
   <EyeDef>
-    <label>Eye_Male_Flat</label>
+    <label>EMA-Flat</label>
     <hairGender>Male</hairGender>
-    <texPath>Eyes/Male/Eye_Male_Flat</texPath>
-    <defName>Eye_Male_Flat</defName>
+    <texPath>Eyes/Male/Eye_Male_Average_Flat</texPath>
+    <defName>Eye_Male_Average_Flat</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Average
+    </crownType>
   </EyeDef>
 
   <EyeDef>
-    <label>Eye_Male_Large</label>
+    <label>EMA-Large</label>
     <hairGender>Male</hairGender>
-    <texPath>Eyes/Male/Eye_Male_Large</texPath>
-    <defName>Eye_Male_Large</defName>
+    <texPath>Eyes/Male/Eye_Male_Average_Large</texPath>
+    <defName>Eye_Male_Average_Large</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Average
+    </crownType>
   </EyeDef>
 
   <EyeDef>
-    <label>Eye_Male_Medium</label>
+    <label>EMA-Medium</label>
     <hairGender>Male</hairGender>
-    <texPath>Eyes/Male/Eye_Male_Medium</texPath>
-    <defName>Eye_Male_Medium</defName>
+    <texPath>Eyes/Male/Eye_Male_Average_Medium</texPath>
+    <defName>Eye_Male_Average_Medium</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <crownType>
+      Average
+    </crownType>
   </EyeDef>
-  
+
 </DefPackage-EyeDef>

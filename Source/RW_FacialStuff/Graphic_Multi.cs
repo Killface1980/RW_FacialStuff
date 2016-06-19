@@ -7,15 +7,21 @@ using Verse;
 namespace RW_FacialStuff
 {
 
+    //  public class GraphicModded: Graphic
+    //  {
+    //      public virtual Material MatFrontNarrow { get; }
+    //      public virtual Material MatSideNarrow { get; }
+    //  }
+
     public class Graphic_Multi_Head : Graphic
     {
-        private Material[] mats = new Material[3];
+        private Material[] mats = new Material[5];
 
         public string GraphicPath
         {
             get
             {
-                return this.path;
+                return path;
             }
         }
 
@@ -23,7 +29,7 @@ namespace RW_FacialStuff
         {
             get
             {
-                return this.mats[2];
+                return mats[2];
             }
         }
 
@@ -31,7 +37,7 @@ namespace RW_FacialStuff
         {
             get
             {
-                return this.mats[2];
+                return mats[2];
             }
         }
 
@@ -39,7 +45,7 @@ namespace RW_FacialStuff
         {
             get
             {
-                return this.mats[1];
+                return mats[1];
             }
         }
 
@@ -47,7 +53,7 @@ namespace RW_FacialStuff
         {
             get
             {
-                return this.mats[0];
+                return mats[0];
             }
         }
 
@@ -59,13 +65,38 @@ namespace RW_FacialStuff
             }
         }
 
+        private static Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
+
+
+        public static Texture2D BlankTexture()
+        {
+
+          Texture2D blankTexture = null;
+          if (textureCache.TryGetValue("blankBack", out blankTexture)) return blankTexture;
+
+
+             blankTexture = new Texture2D(128, 128);
+            int startX = 0;
+            int startY = 0;
+
+            for (int x = startX; x < blankTexture.width; x++)
+            {
+                for (int y = startY; y < blankTexture.height; y++)
+                {
+                    blankTexture.SetPixel(x, y, Color.clear);
+                }
+            }
+                    textureCache.Add("blankBack", blankTexture);
+
+            return blankTexture;
+        }
 
         public static Texture2D LoadTexture(string texturePath)
         {
             Texture2D texture = null;
 
             texture = new Texture2D(1, 1);
-            texture.LoadImage(File.ReadAllBytes(GraphicDatabaseModdedHeadRecords.modpath + texturePath + ".png"));
+            texture.LoadImage(File.ReadAllBytes(GraphicDatabaseHeadRecordsModded.modpath + texturePath + ".png"));
             texture.anisoLevel = 8;
 
             return texture;
@@ -73,17 +104,34 @@ namespace RW_FacialStuff
 
         public override void Init(GraphicRequest req)
         {
-            this.data = req.graphicData;
-            this.path = req.path;
-            this.color = req.color;
-            this.colorTwo = req.colorTwo;
-            this.drawSize = req.drawSize;
+            data = req.graphicData;
+            path = req.path;
+            color = req.color;
+            colorTwo = req.colorTwo;
+            drawSize = req.drawSize;
             Texture2D[] array = new Texture2D[3];
 
+            if (File.Exists(GraphicDatabaseHeadRecordsModded.modpath + req.path + "_back.png"))
+                array[0] = LoadTexture(req.path + "_back");
+            else
+                array[0] = BlankTexture();
+//            array[0] = LoadTexture("_default/Default_Blank_back");
 
-            array[0] = LoadTexture(req.path + "_back");
+
             array[1] = LoadTexture(req.path + "_side");
             array[2] = LoadTexture(req.path + "_front");
+            //       array[3] = array[2];
+            //       array[4] = array[1];
+            //
+            //       if (File.Exists(req.path + "_front-Narrow.png"))
+            //       {
+            //           array[3] = LoadTexture(req.path + "_front-Narrow");
+            //       }
+            //
+            //       if (File.Exists(req.path + "_front-Narrow.png"))
+            //       {
+            //           array[4] = LoadTexture(req.path + "_side-Narrow");
+            //       }
 
 
             //          array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", false);
@@ -102,24 +150,24 @@ namespace RW_FacialStuff
             //          {
             //              array[2] = array[0];
             //          }
-    //      Texture2D[] array2 = new Texture2D[3];
-    //      if (req.shader.SupportsMaskTex())
-    //      {
-    //          array2[0] = ContentFinder<Texture2D>.Get(req.path + "_backm", false);
-    //          if (array2[0] != null)
-    //          {
-    //              array2[1] = ContentFinder<Texture2D>.Get(req.path + "_sidem", false);
-    //              if (array2[1] == null)
-    //              {
-    //                  array2[1] = array2[0];
-    //              }
-    //              array2[2] = ContentFinder<Texture2D>.Get(req.path + "_frontm", false);
-    //              if (array2[2] == null)
-    //              {
-    //                  array2[2] = array2[0];
-    //              }
-    //          }
-    //      }
+            //      Texture2D[] array2 = new Texture2D[3];
+            //      if (req.shader.SupportsMaskTex())
+            //      {
+            //          array2[0] = ContentFinder<Texture2D>.Get(req.path + "_backm", false);
+            //          if (array2[0] != null)
+            //          {
+            //              array2[1] = ContentFinder<Texture2D>.Get(req.path + "_sidem", false);
+            //              if (array2[1] == null)
+            //              {
+            //                  array2[1] = array2[0];
+            //              }
+            //              array2[2] = ContentFinder<Texture2D>.Get(req.path + "_frontm", false);
+            //              if (array2[2] == null)
+            //              {
+            //                  array2[2] = array2[0];
+            //              }
+            //          }
+            //      }
             for (int i = 0; i < 3; i++)
             {
                 MaterialRequest req2 = default(MaterialRequest);
@@ -127,15 +175,15 @@ namespace RW_FacialStuff
                 req2.shader = req.shader;
                 req2.color = this.color;
                 req2.colorTwo = this.colorTwo;
-     //           req2.maskTex = array2[i];
-                this.mats[i] = MaterialPool.MatFrom(req2);
+                //           req2.maskTex = array2[i];
+                mats[i] = MaterialPool.MatFrom(req2);
             }
         }
 
-   //   public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
-   //   {
-   //       return GraphicDatabase.Get<Graphic_Multi>(this.path, newShader, this.drawSize, newColor, newColorTwo, this.data);
-   //   }
+        //   public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
+        //   {
+        //       return GraphicDatabase.Get<Graphic_Multi>(this.path, newShader, this.drawSize, newColor, newColorTwo, this.data);
+        //   }
 
         public override string ToString()
         {

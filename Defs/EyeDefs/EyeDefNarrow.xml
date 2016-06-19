@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DefPackage-EyeDef>
+
+  <EyeDef>
+    
+    <label>EFN-Big</label>
+    <hairGender>Female</hairGender>
+    <texPath>Eyes/Female/Eye_Female_Narrow_Big</texPath>
+    <defName>Eye_Female_Narrow_Big</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
+  </EyeDef>
+
+  <EyeDef>
+    <label>EFN-Default</label>
+    <hairGender>Female</hairGender>
+    <texPath>Eyes/Female/Eye_Female_Narrow_Default</texPath>
+    <defName>Eye_Female_Narrow_Default</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
+  </EyeDef>
+
+  <EyeDef>
+    <label>EFN-Flat</label>
+    <hairGender>Female</hairGender>
+    <texPath>Eyes/Female/Eye_Female_Narrow_Flat</texPath>
+    <defName>Eye_Female_Narrow_Flat</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
+  </EyeDef>
+
+  <EyeDef>
+    <label>EFN-Large</label>
+    <hairGender>Female</hairGender>
+    <texPath>Eyes/Female/Eye_Female_Narrow_Large</texPath>
+    <defName>Eye_Female_Narrow_Large</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
+  </EyeDef>
+  
+    <EyeDef>
+    <label>EFN-Medium</label>
+    <hairGender>Female</hairGender>
+    <texPath>Eyes/Female/Eye_Female_Narrow_Medium</texPath>
+    <defName>Eye_Female_Narrow_Medium</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+      <crownType>
+        Narrow
+      </crownType>
+    </EyeDef>
+
+
+  <EyeDef>
+    <label>EMN-Big</label>
+    <hairGender>Male</hairGender>
+    <texPath>Eyes/Male/Eye_Male_Narrow_Big</texPath>
+    <defName>Eye_Male_Narrow_Big</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
+  </EyeDef>
+
+  <EyeDef>
+    <label>EMN-Default</label>
+    <hairGender>Male</hairGender>
+    <texPath>Eyes/Male/Eye_Male_Narrow_Default</texPath>
+    <defName>Eye_Male_Narrow_Default</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
+  </EyeDef>
+
+  <EyeDef>
+    <label>EMN-Flat</label>
+    <hairGender>Male</hairGender>
+    <texPath>Eyes/Male/Eye_Male_Narrow_Flat</texPath>
+    <defName>Eye_Male_Narrow_Flat</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
+  </EyeDef>
+
+  <EyeDef>
+    <label>EMN-Large</label>
+    <hairGender>Male</hairGender>
+    <texPath>Eyes/Male/Eye_Male_Narrow_Large</texPath>
+    <defName>Eye_Male_Narrow_Large</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
+  </EyeDef>
+
+  <EyeDef>
+    <label>EMN-Medium</label>
+    <hairGender>Male</hairGender>
+    <texPath>Eyes/Male/Eye_Male_Narrow_Medium</texPath>
+    <defName>Eye_Male_Narrow_Medium</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+    <crownType>
+      Narrow
+    </crownType>
+  </EyeDef>
+  
+</DefPackage-EyeDef>

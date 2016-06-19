@@ -51,8 +51,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FacialStuffDefs.cs" />
-    <Compile Include="GraphicDatabaseHeadRecords.cs" />
+    <Compile Include="FacialStuff_Defs.cs" />
+    <None Include="_notInUse\GraphicDatabase.cs" />
+    <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="Graphic_Multi.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
     <None Include="_notInUse\PawnRenderer.cs" />
@@ -68,18 +69,29 @@
     <Content Include="..\..\About\About.xml">
       <Link>xml\About.xml</Link>
     </Content>
-    <Content Include="..\..\Defs\EyeDefs\EyeDef.xml">
-      <Link>Defs\EyeDef.xml</Link>
-      <SubType>Designer</SubType>
+    <Content Include="..\..\Defs\EyeDefs\EyeDefAverage.xml">
+      <Link>Defs\EyeDefAverage.xml</Link>
     </Content>
-    <Content Include="..\..\Defs\HairDefs\BeardDef.xml">
-      <Link>Defs\BeardDef.xml</Link>
+    <Content Include="..\..\Defs\EyeDefs\EyeDefNarrow.xml">
+      <Link>Defs\EyeDefNarrow.xml</Link>
     </Content>
-    <Content Include="..\..\Defs\HairDefs\SideburnDef.xml">
-      <Link>Defs\SideburnDef.xml</Link>
+    <Content Include="..\..\Defs\HairDefs\BeardAverageDef.xml">
+      <Link>Defs\BeardAverageDef.xml</Link>
     </Content>
-    <Content Include="..\..\Defs\HairDefs\TacheDef.xml">
-      <Link>Defs\TacheDef.xml</Link>
+    <Content Include="..\..\Defs\HairDefs\BeardNarrowDef.xml">
+      <Link>Defs\BeardNarrowDef.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\HairDefs\SideburnAverageDef.xml">
+      <Link>Defs\SideburnAverageDef.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\HairDefs\SideburnNarrowDef.xml">
+      <Link>Defs\SideburnNarrowDef.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\HairDefs\TacheAverageDef.xml">
+      <Link>Defs\TacheAverageDef.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\HairDefs\TacheNarrowDef.xml">
+      <Link>Defs\TacheNarrowDef.xml</Link>
     </Content>
     <Content Include="..\..\Defs\ModHelperDefs\ModHelper.xml">
       <Link>xml\ModHelper.xml</Link>

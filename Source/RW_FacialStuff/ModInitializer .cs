@@ -102,15 +102,15 @@ namespace RW_FacialStuff
             MethodInfo coreMethod = typeof(Verse.PawnGraphicSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
             MethodInfo autoEquipMethod = typeof(RW_FacialStuff.PawnGraphicHairSet).GetMethod("ResolveAllGraphicsModded", BindingFlags.Instance | BindingFlags.Public);
 
-                     MethodInfo coreMethod20 = typeof(GraphicDatabaseHeadRecords).GetMethod("BuildDatabaseIfNecessary", BindingFlags.Instance | BindingFlags.NonPublic);
-                     MethodInfo autoEquipMethod20 = typeof(RW_FacialStuff.GraphicDatabaseModdedHeadRecords).GetMethod("BuildDatabaseIfNecessary", BindingFlags.Instance | BindingFlags.NonPublic);
+            MethodInfo coreMethod20 = typeof(GraphicDatabaseHeadRecords).GetMethod("BuildDatabaseIfNecessary", BindingFlags.Instance | BindingFlags.NonPublic);
+            MethodInfo autoEquipMethod20 = typeof(RW_FacialStuff.GraphicDatabaseHeadRecordsModded).GetMethod("BuildDatabaseIfNecessary", BindingFlags.Instance | BindingFlags.NonPublic);
 
-      //    MethodInfo coreMethod2 = typeof(RimWorld.Pawn_StoryTracker).GetMethod("ExposeData", BindingFlags.CreateInstance | BindingFlags.Public);
-      //    MethodInfo autoEquipMethod2 = typeof(RW_FacialStuff.Pawn_StoryTrackerModded).GetMethod("ExposeData", BindingFlags.CreateInstance | BindingFlags.Public);
+            //    MethodInfo coreMethod2 = typeof(RimWorld.Pawn_StoryTracker).GetMethod("ExposeData", BindingFlags.CreateInstance | BindingFlags.Public);
+            //    MethodInfo autoEquipMethod2 = typeof(RW_FacialStuff.Pawn_StoryTrackerModded).GetMethod("ExposeData", BindingFlags.CreateInstance | BindingFlags.Public);
 
 
-          MethodInfo coreMethod2 = typeof(Verse.GraphicDatabaseHeadRecords).GetMethod("GetHeadRandom", BindingFlags.Static | BindingFlags.Public);
-          MethodInfo autoEquipMethod2 = typeof(RW_FacialStuff.GraphicDatabaseModdedHeadRecords).GetMethod("GetHeadRandomUnmodded", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo coreMethod2 = typeof(Verse.GraphicDatabaseHeadRecords).GetMethod("GetHeadRandom", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo autoEquipMethod2 = typeof(RW_FacialStuff.GraphicDatabaseHeadRecordsModded).GetMethod("GetHeadRandomUnmodded", BindingFlags.Static | BindingFlags.Public);
 
 
             //       MethodInfo coreMethod2 = typeof(Verse.PawnRenderer).GetMethod("RenderPawnInternal",
@@ -126,7 +126,7 @@ namespace RW_FacialStuff
 
                 Detours.TryDetourFromTo(coreMethod2, autoEquipMethod2);
 
-            //    Detours.TryDetourFromTo(coreMethod20, autoEquipMethod20);
+                //    Detours.TryDetourFromTo(coreMethod20, autoEquipMethod20);
             }
             catch (Exception)
             {
