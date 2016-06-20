@@ -4,8 +4,12 @@
   <BeardDef>
     <label>BA-Amish</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Beards/Beard_Average_Amish</texPathAverage>
-    <texPathNarrow>Beards/Beard_Narrow_Amish</texPathNarrow>
+    <texPathAverageNormal>Beards/Beard_Average_Normal_Amish</texPathAverageNormal>
+    <texPathAveragePointy>Beards/Beard_Average_Pointy_Amish</texPathAveragePointy>
+    <texPathAverageWide>Beards/Beard_Average_Wide_Amish</texPathAverageWide>
+    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_Amish</texPathNarrowNormal>
+    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_Amish</texPathNarrowPointy>
+    <texPathNarrowWide>Beards/Beard_Narrow_Wide_Amish</texPathNarrowWide>
     <defName>Beard_Amish</defName>
     <hairTags>
       <li>Urban</li>
@@ -18,8 +22,12 @@
   <BeardDef>
     <label>BA-Methusalem</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Beards/Beard_Average_Methusalem</texPathAverage>
-    <texPathNarrow>Beards/Beard_Narrow_Methusalem</texPathNarrow>
+    <texPathAverageNormal>Beards/Beard_Average_Normal_Methusalem</texPathAverageNormal>
+    <texPathAveragePointy>Beards/Beard_Average_Pointy_Methusalem</texPathAveragePointy>
+    <texPathAverageWide>Beards/Beard_Average_Wide_Methusalem</texPathAverageWide>
+    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_Methusalem</texPathNarrowNormal>
+    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_Methusalem</texPathNarrowPointy>
+    <texPathNarrowWide>Beards/Beard_Narrow_Wide_Methusalem</texPathNarrowWide>    
     <defName>Beard_Methusalem</defName>
     <hairTags>
       <li>Urban</li>
@@ -32,8 +40,12 @@
   <BeardDef>
     <label>BA-ZZTop</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Beards/Beard_Average_ZZTop</texPathAverage>
-    <texPathNarrow>Beards/Beard_Narrow_ZZTop</texPathNarrow>
+    <texPathAverageNormal>Beards/Beard_Average_Normal_ZZTop</texPathAverageNormal>
+    <texPathAveragePointy>Beards/Beard_Average_Pointy_ZZTop</texPathAveragePointy>
+    <texPathAverageWide>Beards/Beard_Average_Wide_ZZTop</texPathAverageWide>
+    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_ZZTop</texPathNarrowNormal>
+    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_ZZTop</texPathNarrowPointy>
+    <texPathNarrowWide>Beards/Beard_Narrow_Wide_ZZTop</texPathNarrowWide>    
     <defName>Beard_ZZTop</defName>
     <hairTags>
       <li>Urban</li>
@@ -46,8 +58,12 @@
   <BeardDef>
     <label>BA-Santa</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Beards/Beard_Average_Santa</texPathAverage>
-    <texPathNarrow>Beards/Beard_Narrow_Santa</texPathNarrow>
+    <texPathAverageNormal>Beards/Beard_Average_Normal_Santa</texPathAverageNormal>
+    <texPathAveragePointy>Beards/Beard_Average_Pointy_Santa</texPathAveragePointy>
+    <texPathAverageWide>Beards/Beard_Average_Wide_Santa</texPathAverageWide>
+    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_Santa</texPathNarrowNormal>
+    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_Santa</texPathNarrowPointy>
+    <texPathNarrowWide>Beards/Beard_Narrow_Wide_Santa</texPathNarrowWide>    
     <defName>Beard_Santa</defName>
     <hairTags>
       <li>Urban</li>
@@ -60,8 +76,12 @@
   <BeardDef>
     <label>BA-Shaved</label>
     <hairGender>MaleUsually</hairGender>
-    <texPathAverage>Beards/Beard_Shaved</texPathAverage>
-    <texPathNarrow>Beards/Beard_Shaved</texPathNarrow>
+    <texPathAverageNormal>Beards/Beard_Shaved</texPathAverageNormal>
+    <texPathAveragePointy>Beards/Beard_Shaved</texPathAveragePointy>
+    <texPathAverageWide>Beards/Beard_Shaved</texPathAverageWide>
+    <texPathNarrowNormal>Beards/Beard_Shaved</texPathNarrowNormal>
+    <texPathNarrowPointy>Beards/Beard_Shaved</texPathNarrowPointy>
+    <texPathNarrowWide>Beards/Beard_Shaved</texPathNarrowWide>    
     <defName>Beard_Shaved</defName>
     <hairTags>
       <li>Urban</li>

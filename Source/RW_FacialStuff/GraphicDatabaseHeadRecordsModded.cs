@@ -111,8 +111,10 @@ namespace RW_FacialStuff
                     _saveableTache = PawnFaceChooser.RandomTacheDefFor(pawn, pawn.Faction.def);
                     pawnSave.TacheDef = _saveableTache;
                 }
-
-                graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnSave.EyeDef.label + "-" + pawnSave.TacheDef.label + "-" + pawnSave.SideburnDef.label + "-" + pawnSave.BeardDef.label + "-" + pawn.story.skinWhiteness + "-" + pawn.story.hairColor;
+                if (_saveableBeard.label.Equals("BA-Shaved") && _saveableSideburn.label.Equals("SA-Shaved") && _saveableTache.label.Equals("MA-Shaved"))
+                    graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnSave.EyeDef.label + "-Shaved";
+                else
+                    graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnSave.EyeDef.label + "-" + pawnSave.TacheDef.label + "-" + pawnSave.SideburnDef.label + "-" + pawnSave.BeardDef.label + "-" /* + pawn.story.skinWhiteness + "-" */ + pawn.story.hairColor;
             }
 
             if (File.Exists(modpath + graphicPathNew + "_front.png"))
@@ -162,13 +164,37 @@ namespace RW_FacialStuff
 
                 if (pawn.story.crownType == CrownType.Narrow)
                 {
-                    beardGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableBeard.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    if (type == "Normal")
+                    { 
+                        beardGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableBeard.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    }
+                    if (type == "Pointy")
+                    {
+                        beardGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableBeard.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    }
+                    if (type == "Wide")
+                    {
+                        beardGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableBeard.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    }
+
                     sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableSideburn.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                     tacheGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableTache.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 }
                 else
                 {
-                    beardGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableBeard.texPathAverage, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    if (type == "Normal")
+                    {
+                        beardGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableBeard.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    }
+                    if (type == "Pointy")
+                    {
+                        beardGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableBeard.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    }
+                    if (type == "Wide")
+                    {
+                        beardGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableBeard.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    }
+
                     sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableSideburn.texPathAverage, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                     tacheGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableTache.texPathAverage, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 }
@@ -288,13 +314,10 @@ namespace RW_FacialStuff
                     Color layer2 = beard_layer_2.GetPixel(x - startX, y - startY);
                     Color layer3 = beard_layer_3.GetPixel(x - startX, y - startY);
 
-                    Color final_color = layer1;
-                    Color mixcolor;
 
+                    Color mixcolor = Color.Lerp(layer1, layer2, layer2.a / 1f);
 
-                    mixcolor = Color.Lerp(layer1, layer2, layer2.a / 1f);
-
-                    final_color = Color.Lerp(mixcolor, layer3, layer3.a / 1f);
+                    Color final_color = Color.Lerp(mixcolor, layer3, layer3.a / 1f);
 
                     beard_final.SetPixel(x, y, final_color);
                 }
@@ -319,9 +342,14 @@ namespace RW_FacialStuff
                     Color skin = pawn.story.SkinColor;
                     float whiteness = pawn.story.skinWhiteness;
 
-                    beardColor.r = beardColor.r * haircolor.r * UnityEngine.Random.Range(1.2f, 2.2f) / skin.r * whiteness;
-                    beardColor.g = beardColor.g * haircolor.g * UnityEngine.Random.Range(1.2f, 2.2f) / skin.g * whiteness;
-                    beardColor.b = beardColor.b * haircolor.b * UnityEngine.Random.Range(1.2f, 2.2f) / skin.b * whiteness;
+                    beardColor.r = beardColor.r * haircolor.r * 0.8f;
+                    beardColor.g = beardColor.g * haircolor.g * 0.8f;
+                    beardColor.b = beardColor.b * haircolor.b * 0.8f;
+
+                    //beardColor.r = beardColor.r * haircolor.r * UnityEngine.Random.Range(1.2f, 2.2f) / skin.r * whiteness;
+                    //beardColor.g = beardColor.g * haircolor.g * UnityEngine.Random.Range(1.2f, 2.2f) / skin.g * whiteness;
+                    //beardColor.b = beardColor.b * haircolor.b * UnityEngine.Random.Range(1.2f, 2.2f) / skin.b * whiteness;
+
 
                     Color final_color = Color.Lerp(headColor, beardColor, beardColor.a / 1f);
 
@@ -563,9 +591,6 @@ namespace RW_FacialStuff
 
                     if (headGraphicRecord.graphicPath == graphicPath)
                     {
-                        //                  if (pawnSave.optimized)
-                        //                  {
-                        //                  }
                         return headGraphicRecord.GetGraphic(skinColor);
                     }
                 }
@@ -577,9 +602,6 @@ namespace RW_FacialStuff
 
                 if (headGraphicRecord.graphicPath == graphicPath)
                 {
-                    //                  if (pawnSave.optimized)
-                    //                  {
-                    //                  }
                     return headGraphicRecord.GetGraphic(skinColor);
                 }
             }

@@ -15,7 +15,7 @@ namespace RW_FacialStuff
 
     public class Graphic_Multi_Head : Graphic
     {
-        private Material[] mats = new Material[5];
+        private Material[] mats = new Material[3];
 
         public string GraphicPath
         {
