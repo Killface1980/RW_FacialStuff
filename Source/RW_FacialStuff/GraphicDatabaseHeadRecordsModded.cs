@@ -38,9 +38,6 @@ namespace RW_FacialStuff
             texture.anisoLevel = 8;
             texture.name = Path.GetFileName(modpath + texturePath + ".png");
 
-            //      texture.Compress(true);
-
-
             //        textureCache.Add(texturePath, texture);
 
             //         Debug.LogWarning("RW_Facial added to cache: " + texture.name);
@@ -121,7 +118,7 @@ namespace RW_FacialStuff
             if (File.Exists(modpath + graphicPathNew + "_front.png"))
             {
                 graphicPath = graphicPathNew;
-                goto exit;
+                return;
             }
 
             var headGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(graphicPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.SkinColor);
@@ -146,7 +143,12 @@ namespace RW_FacialStuff
             Texture2D eyesHeadFront = new Texture2D(128, 128); ;
             Texture2D eyesHeadSide = new Texture2D(128, 128); ;
 
-            var eyeGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableEye.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
+            Graphic eyeGraphic = null;
+            if (pawn.story.crownType == CrownType.Narrow)
+                eyeGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableEye.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.white);
+            else
+                eyeGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableEye.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.white);
+
 
             Texture2D readEyeGraphicFront = eyeGraphic.MatFront.mainTexture as Texture2D;
             Texture2D readEyeGraphicSide = eyeGraphic.MatSide.mainTexture as Texture2D;
@@ -154,9 +156,22 @@ namespace RW_FacialStuff
 
             if (pawn.gender == Gender.Male)
             {
-                var beardGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableBeard.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
-                var sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableSideburn.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
-                var tacheGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableTache.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                Graphic beardGraphic = null;
+                Graphic sideburnGraphic = null;
+                Graphic tacheGraphic = null;
+
+                if (pawn.story.crownType == CrownType.Narrow)
+                {
+                    beardGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableBeard.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableSideburn.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    tacheGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableTache.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                }
+                else
+                {
+                    beardGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableBeard.texPathAverage, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableSideburn.texPathAverage, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    tacheGraphic = GraphicDatabase.Get<Graphic_Multi_Head>(_saveableTache.texPathAverage, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                }
 
 
 
@@ -209,11 +224,18 @@ namespace RW_FacialStuff
 
             headsModded.Add(new HeadGraphicRecordModded(graphicPath));
 
-            UnityEngine.Object.DestroyImmediate(readHeadGraphicBack, true);
+            //   UnityEngine.Object.DestroyImmediate(readHeadGraphicBack, true);
+            //   UnityEngine.Object.DestroyImmediate(readHeadGraphicFront, true);
+            //   UnityEngine.Object.DestroyImmediate(readHeadGraphicSide, true);
+
             UnityEngine.Object.DestroyImmediate(finalHeadFront, true);
             UnityEngine.Object.DestroyImmediate(finalHeadSide, true);
 
-            exit:;
+            UnityEngine.Object.DestroyImmediate(beardFront, true);
+            UnityEngine.Object.DestroyImmediate(beardSide, true);
+
+            UnityEngine.Object.DestroyImmediate(eyesHeadFront, true);
+            UnityEngine.Object.DestroyImmediate(eyesHeadSide, true);
 
         }
 

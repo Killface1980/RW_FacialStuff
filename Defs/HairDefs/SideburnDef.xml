@@ -6,84 +6,74 @@
   <SideburnDef>
     <label>SA-Seventies</label>
     <hairGender>Male</hairGender>
-    <texPath>Sideburns/Sideburn_Average_Seventies</texPath>
-    <defName>Sideburn_Average_Seventies</defName>
+    <texPathAverage>Sideburns/Sideburn_Average_Seventies</texPathAverage>
+    <texPathNarrow>Sideburns/Sideburn_Narrow_Seventies</texPathNarrow>
+    <defName>Sideburn_Seventies</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Average
-    </crownType>
   </SideburnDef>
 
   <SideburnDef>
     <label>SA-Hipster</label>
     <hairGender>Male</hairGender>
-    <texPath>Sideburns/Sideburn_Average_Hipster</texPath>
-    <defName>Sideburn_Average_Hipster</defName>
+    <texPathAverage>Sideburns/Sideburn_Average_Hipster</texPathAverage>
+    <texPathNarrow>Sideburns/Sideburn_Narrow_Hipster</texPathNarrow>
+    <defName>Sideburn_Hipster</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Average
-    </crownType>
 
   </SideburnDef>
 
   <SideburnDef>
     <label>SA-Trekkie</label>
     <hairGender>Male</hairGender>
-    <texPath>Sideburns/Sideburn_Average_Trekkie</texPath>
-    <defName>Sideburn_Average_Trekkie</defName>
+    <texPathAverage>Sideburns/Sideburn_Average_Trekkie</texPathAverage>
+    <texPathNarrow>Sideburns/Sideburn_Narrow_Trekkie</texPathNarrow>
+    <defName>Sideburn_Trekkie</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Average
-    </crownType>
 
   </SideburnDef>
 
   <SideburnDef>
     <label>SA-Trimmed</label>
     <hairGender>Male</hairGender>
-    <texPath>Sideburns/Sideburn_Average_Trimmed</texPath>
-    <defName>Sideburn_Average_Trimmed</defName>
+    <texPathAverage>Sideburns/Sideburn_Average_Trimmed</texPathAverage>
+    <texPathNarrow>Sideburns/Sideburn_Narrow_Trimmed</texPathNarrow>
+    <defName>Sideburn_Trimmed</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Average
-    </crownType>
 
   </SideburnDef>
 
   <SideburnDef>
     <label>SA-Shaved</label>
     <hairGender>MaleUsually</hairGender>
-    <texPath>Sideburns/Sideburn_Shaved</texPath>
-    <defName>Sideburn_Average_Shaved</defName>
+    <texPathAverage>Sideburns/Sideburn_Shaved</texPathAverage>
+    <texPathNarrow>Sideburns/Sideburn_Shaved</texPathNarrow>
+    <defName>Sideburn_Shaved</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Average
-    </crownType>
   </SideburnDef>
 
 </DefPackage-SideburnDef>

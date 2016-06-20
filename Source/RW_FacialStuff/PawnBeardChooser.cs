@@ -14,11 +14,11 @@ namespace RW_FacialStuff
             SideburnDef chosenSideburn;
 
             IEnumerable<SideburnDef> source = from sideburn in DefDatabase<SideburnDef>.AllDefs
-                                              where sideburn.hairTags.SharesElementWith(factionType.hairTags) && sideburn.crownType.Equals(pawn.story.crownType)
+                                              where sideburn.hairTags.SharesElementWith(factionType.hairTags)
                                               select sideburn;
 
             if (UnityEngine.Random.Range(10, 30) > pawn.ageTracker.AgeBiologicalYearsFloat)
-                chosenSideburn = DefDatabase<SideburnDef>.GetNamed("Sideburn_Average_Shaved");
+                chosenSideburn = DefDatabase<SideburnDef>.GetNamed("Sideburn_Shaved");
             else
             {
                 chosenSideburn = source.RandomElementByWeight((SideburnDef sideburn) => SideburnChoiceLikelihoodFor(sideburn, pawn));
@@ -30,12 +30,12 @@ namespace RW_FacialStuff
         public static TacheDef RandomTacheDefFor(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<TacheDef> source = from tache in DefDatabase<TacheDef>.AllDefs
-                                           where tache.hairTags.SharesElementWith(factionType.hairTags) && tache.crownType.Equals(pawn.story.crownType)
+                                           where tache.hairTags.SharesElementWith(factionType.hairTags)
                                            select tache;
 
             TacheDef chosenTache;
             if (UnityEngine.Random.Range(20, 40) > pawn.ageTracker.AgeBiologicalYearsFloat)
-                chosenTache = DefDatabase<TacheDef>.GetNamed("Moustache_Average_Shaved");
+                chosenTache = DefDatabase<TacheDef>.GetNamed("Moustache_Shaved");
             else
                 chosenTache = source.RandomElementByWeight((TacheDef tache) => TacheChoiceLikelihoodFor(tache, pawn));
 
@@ -47,13 +47,13 @@ namespace RW_FacialStuff
 
 
             IEnumerable<BeardDef> source = from beard in DefDatabase<BeardDef>.AllDefs
-                                           where beard.hairTags.SharesElementWith(factionType.hairTags) && beard.crownType.Equals(pawn.story.crownType)
+                                           where beard.hairTags.SharesElementWith(factionType.hairTags)
                                            select beard;
 
             BeardDef chosenBeard;
 
             if (UnityEngine.Random.Range(30, 50) > pawn.ageTracker.AgeBiologicalYearsFloat)
-                chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Average_Shaved");
+                chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
             else
                 chosenBeard = source.RandomElementByWeight((BeardDef beard) => BeardChoiceLikelihoodFor(beard, pawn));
 
@@ -64,7 +64,7 @@ namespace RW_FacialStuff
         public static EyeDef RandomEyeDefFor(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
-                                         where eye.hairTags.SharesElementWith(factionType.hairTags) && eye.crownType.Equals(pawn.story.crownType)
+                                         where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
 
             EyeDef chosenEyes;

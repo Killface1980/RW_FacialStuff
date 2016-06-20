@@ -71,11 +71,10 @@ namespace RW_FacialStuff
         public static Texture2D BlankTexture()
         {
 
-          Texture2D blankTexture = null;
-          if (textureCache.TryGetValue("blankBack", out blankTexture)) return blankTexture;
+            Texture2D blankTexture = null;
+            if (textureCache.TryGetValue("blankBack", out blankTexture)) return blankTexture;
 
-
-             blankTexture = new Texture2D(128, 128);
+            blankTexture = new Texture2D(128, 128);
             int startX = 0;
             int startY = 0;
 
@@ -86,18 +85,20 @@ namespace RW_FacialStuff
                     blankTexture.SetPixel(x, y, Color.clear);
                 }
             }
-                    textureCache.Add("blankBack", blankTexture);
+            textureCache.Add("blankBack", blankTexture);
 
             return blankTexture;
         }
 
         public static Texture2D LoadTexture(string texturePath)
         {
-            Texture2D texture = null;
+            //      if (textureCache.TryGetValue(texturePath, out texture)) return texture;
 
-            texture = new Texture2D(1, 1);
+            Texture2D texture = new Texture2D(1, 1);
             texture.LoadImage(File.ReadAllBytes(GraphicDatabaseHeadRecordsModded.modpath + texturePath + ".png"));
             texture.anisoLevel = 8;
+
+    //        textureCache.Add(texturePath, texture);
 
             return texture;
         }
@@ -111,32 +112,31 @@ namespace RW_FacialStuff
             drawSize = req.drawSize;
             Texture2D[] array = new Texture2D[3];
 
+            //          if (ContentFinder<Texture2D>.Get(req.path + "_front", false))
+            //              array[2] = ContentFinder<Texture2D>.Get(req.path + "_front", false);
+
+            array[2] = LoadTexture(req.path + "_front");
+            if (array[2] == null)
+            {
+                Log.Error("RW_FacialStuff: Failed to find any texture while constructing " + ToString());
+                return;
+            }
+
+            //          if (ContentFinder<Texture2D>.Get(req.path + "_side", false))
+            //              array[1] = ContentFinder<Texture2D>.Get(req.path + "_side", false);
+            //if (array[1] == null)
+            //{
+            array[1] = LoadTexture(req.path + "_side");
+            //}
+            //if (ContentFinder<Texture2D>.Get(req.path + "_back", false))
+            //    array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", false);
             if (File.Exists(GraphicDatabaseHeadRecordsModded.modpath + req.path + "_back.png"))
                 array[0] = LoadTexture(req.path + "_back");
-            else
+            if (array[0] == null)
+            {
                 array[0] = BlankTexture();
+            }
 
-            array[1] = LoadTexture(req.path + "_side");
-            array[2] = LoadTexture(req.path + "_front");
-
-
-
-            //          array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", false);
-            //          if (array[0] == null)
-            //          {
-            //              Log.Error("RW_FacialStuff: Failed to find any texture while constructing " + this.ToString());
-            //              return;
-            //          }
-            //          array[1] = ContentFinder<Texture2D>.Get(req.path + "_side", false);
-            //          if (array[1] == null)
-            //          {
-            //              array[1] = array[0];
-            //          }
-            //          array[2] = ContentFinder<Texture2D>.Get(req.path + "_front", false);
-            //          if (array[2] == null)
-            //          {
-            //              array[2] = array[0];
-            //          }
             //      Texture2D[] array2 = new Texture2D[3];
             //      if (req.shader.SupportsMaskTex())
             //      {
@@ -160,8 +160,8 @@ namespace RW_FacialStuff
                 MaterialRequest req2 = default(MaterialRequest);
                 req2.mainTex = array[i];
                 req2.shader = req.shader;
-                req2.color = this.color;
-                req2.colorTwo = this.colorTwo;
+                req2.color = color;
+                req2.colorTwo = colorTwo;
                 //           req2.maskTex = array2[i];
                 mats[i] = MaterialPool.MatFrom(req2);
             }

@@ -5,89 +5,79 @@
   <TacheDef>
     <label>MA-Deluxe</label>
     <hairGender>Male</hairGender>
-    <texPath>Moustaches/Moustache_Average_Deluxe</texPath>
-    <defName>Moustache_Average_Deluxe</defName>
+    <texPathAverage>Moustaches/Moustache_Average_Deluxe</texPathAverage>
+    <texPathNarrow>Moustaches/Moustache_Narrow_Deluxe</texPathNarrow>
+    <defName>Moustache_Deluxe</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Average
-    </crownType>
-
   </TacheDef>
 
   <TacheDef>
     <label>MA-Walrus</label>
     <hairGender>Male</hairGender>
-    <texPath>Moustaches/Moustache_Average_Walrus</texPath>
-    <defName>Moustache_Average_Walrus</defName>
+    <texPathAverage>Moustaches/Moustache_Average_Walrus</texPathAverage>
+    <texPathNarrow>Moustaches/Moustache_Narrow_Walrus</texPathNarrow>
+    <defName>Moustache_Walrus</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Average
-    </crownType>
   </TacheDef>
 
   <TacheDef>
     <label>MA-Ming</label>
     <hairGender>Male</hairGender>
-    <texPath>Moustaches/Moustache_Average_Ming</texPath>
-    <defName>Moustache_Average_Ming</defName>
+    <texPathAverage>Moustaches/Moustache_Average_Ming</texPathAverage>
+    <texPathNarrow>Moustaches/Moustache_Narrow_Ming</texPathNarrow>
+    <defName>Moustache_Ming</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Average
-    </crownType>
   </TacheDef>
 
   <TacheDef>
     <label>MA-Ranger</label>
     <hairGender>Male</hairGender>
-    <texPath>Moustaches/Moustache_Average_Ranger</texPath>
-    <defName>Moustache_Average_Ranger</defName>
+    <texPathAverage>Moustaches/Moustache_Average_Ranger</texPathAverage>
+    <texPathNarrow>Moustaches/Moustache_Narrow_Ranger</texPathNarrow>
+    <defName>Moustache_Ranger</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Average
-    </crownType>
   </TacheDef>
 
   <TacheDef>
     <label>MA-Handlebar</label>
     <hairGender>Male</hairGender>
-    <texPath>Moustaches/Moustache_Average_Handlebar</texPath>
-    <defName>Moustache_Average_Handlebar</defName>
+    <texPathAverage>Moustaches/Moustache_Average_Handlebar</texPathAverage>
+    <texPathNarrow>Moustaches/Moustache_Narrow_Handlebar</texPathNarrow>
+    <defName>Moustache_Handlebar</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Average
-    </crownType>
   </TacheDef>
 
   <TacheDef>
     <label>MA-Shaved</label>
     <hairGender>MaleUsually</hairGender>
-    <texPath>Moustaches/Moustache_Shaved</texPath>
-    <defName>Moustache_Average_Shaved</defName>
+    <texPathAverage>Moustaches/Moustache_Shaved</texPathAverage>
+    <texPathNarrow>Moustaches/Moustache_Shaved</texPathNarrow>
+    <defName>Moustache_Shaved</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -95,8 +85,6 @@
       <li>Tribal</li>
     </hairTags>
   </TacheDef>
-  <crownType>
-    Average
-  </crownType>
+
 
 </DefPackage-TacheDef>

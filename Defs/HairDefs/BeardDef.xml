@@ -2,83 +2,73 @@
 <DefPackage-BeardDef>
 
   <BeardDef>
-    <label>BN-Amish</label>
+    <label>BA-Amish</label>
     <hairGender>Male</hairGender>
-    <texPath>Beards/Beard_Narrow_Amish</texPath>
-    <defName>Beard_Narrow_Amish</defName>
+    <texPathAverage>Beards/Beard_Average_Amish</texPathAverage>
+    <texPathNarrow>Beards/Beard_Narrow_Amish</texPathNarrow>
+    <defName>Beard_Amish</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Narrow
-    </crownType>
   </BeardDef>
 
   <BeardDef>
-    <label>BN-Methusalem</label>
+    <label>BA-Methusalem</label>
     <hairGender>Male</hairGender>
-    <texPath>Beards/Beard_Narrow_Methusalem</texPath>
-    <defName>Beard_Narrow_Methusalem</defName>
+    <texPathAverage>Beards/Beard_Average_Methusalem</texPathAverage>
+    <texPathNarrow>Beards/Beard_Narrow_Methusalem</texPathNarrow>
+    <defName>Beard_Methusalem</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Narrow
-    </crownType>
   </BeardDef>
 
   <BeardDef>
-    <label>BN-ZZTop</label>
+    <label>BA-ZZTop</label>
     <hairGender>Male</hairGender>
-    <texPath>Beards/Beard_Narrow_ZZTop</texPath>
-    <defName>Beard_Narrow_ZZTop</defName>
+    <texPathAverage>Beards/Beard_Average_ZZTop</texPathAverage>
+    <texPathNarrow>Beards/Beard_Narrow_ZZTop</texPathNarrow>
+    <defName>Beard_ZZTop</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Narrow
-    </crownType>
   </BeardDef>
 
   <BeardDef>
-    <label>BN-Santa</label>
+    <label>BA-Santa</label>
     <hairGender>Male</hairGender>
-    <texPath>Beards/Beard_Narrow_Santa</texPath>
-    <defName>Beard_Narrow_Santa</defName>
+    <texPathAverage>Beards/Beard_Average_Santa</texPathAverage>
+    <texPathNarrow>Beards/Beard_Narrow_Santa</texPathNarrow>
+    <defName>Beard_Santa</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Narrow
-    </crownType>
   </BeardDef>
-
+  
   <BeardDef>
-    <label>BN-Shaved</label>
+    <label>BA-Shaved</label>
     <hairGender>MaleUsually</hairGender>
-    <texPath>Beards/Beard_Shaved</texPath>
-    <defName>Beard_Narrow_Shaved</defName>
+    <texPathAverage>Beards/Beard_Shaved</texPathAverage>
+    <texPathNarrow>Beards/Beard_Shaved</texPathNarrow>
+    <defName>Beard_Shaved</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-    <crownType>
-      Narrow
-    </crownType>
   </BeardDef>
 
 </DefPackage-BeardDef>
