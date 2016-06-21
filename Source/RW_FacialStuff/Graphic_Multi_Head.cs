@@ -98,7 +98,7 @@ namespace RW_FacialStuff
             texture.LoadImage(File.ReadAllBytes(GraphicDatabaseHeadRecordsModded.modpath + texturePath + ".png"));
             texture.anisoLevel = 8;
 
-    //        textureCache.Add(texturePath, texture);
+            //        textureCache.Add(texturePath, texture);
 
             return texture;
         }
@@ -137,24 +137,45 @@ namespace RW_FacialStuff
                 array[0] = BlankTexture();
             }
 
-            //      Texture2D[] array2 = new Texture2D[3];
-            //      if (req.shader.SupportsMaskTex())
-            //      {
-            //          array2[0] = ContentFinder<Texture2D>.Get(req.path + "_backm", false);
-            //          if (array2[0] != null)
-            //          {
-            //              array2[1] = ContentFinder<Texture2D>.Get(req.path + "_sidem", false);
-            //              if (array2[1] == null)
-            //              {
-            //                  array2[1] = array2[0];
-            //              }
-            //              array2[2] = ContentFinder<Texture2D>.Get(req.path + "_frontm", false);
-            //              if (array2[2] == null)
-            //              {
-            //                  array2[2] = array2[0];
-            //              }
-            //          }
-            //      }
+            Texture2D[] array2 = new Texture2D[3];
+            if (req.shader.SupportsMaskTex())
+            {
+                array2[0] = LoadTexture(req.path + "_backm");
+                if (array2[0] != null)
+                {
+                    array2[1] = LoadTexture(req.path + "_sidem");
+                    if (array2[1] == null)
+                    {
+                        array2[1] = array2[0];
+                    }
+                    array2[2] = LoadTexture(req.path + "_frontm");
+                    if (array2[2] == null)
+                    {
+                        array2[2] = array2[0];
+                    }
+                }
+            }
+
+            /*
+            Texture2D[] array2 = new Texture2D[3];
+            if (req.shader.SupportsMaskTex())
+            {
+                array2[0] = ContentFinder<Texture2D>.Get(req.path + "_backm", false);
+                if (array2[0] != null)
+                {
+                    array2[1] = ContentFinder<Texture2D>.Get(req.path + "_sidem", false);
+                    if (array2[1] == null)
+                    {
+                        array2[1] = array2[0];
+                    }
+                    array2[2] = ContentFinder<Texture2D>.Get(req.path + "_frontm", false);
+                    if (array2[2] == null)
+                    {
+                        array2[2] = array2[0];
+                    }
+                }
+            }
+            */
             for (int i = 0; i < 3; i++)
             {
                 MaterialRequest req2 = default(MaterialRequest);
@@ -162,15 +183,15 @@ namespace RW_FacialStuff
                 req2.shader = req.shader;
                 req2.color = color;
                 req2.colorTwo = colorTwo;
-                //           req2.maskTex = array2[i];
+                req2.maskTex = array2[i];
                 mats[i] = MaterialPool.MatFrom(req2);
             }
         }
 
-        //   public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
-        //   {
-        //       return GraphicDatabase.Get<Graphic_Multi>(this.path, newShader, this.drawSize, newColor, newColorTwo, this.data);
-        //   }
+        public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
+        {
+            return GraphicDatabase.Get<Graphic_Multi>(path, newShader, drawSize, newColor, newColorTwo, data);
+        }
 
         public override string ToString()
         {

@@ -20,20 +20,21 @@ namespace RW_FacialStuff
         public static Dictionary<string, Graphic> textureCache = new Dictionary<string, Graphic>();
 
 
-        public static Graphic Cache(Pawn pawn, string texturePath, Color skincolor)
-        {
-            Graphic texture = null;
-            //
-            //   if (textureCache.TryGetValue(pawn.Label + "_" + texturePath, out texture)) return texture;
-            //   else
-            //   {
-            texture = GraphicDatabase.Get<Graphic_Multi>(texturePath, ShaderDatabase.Cutout, Vector2.one, skincolor);
-            //                textureCache.Add(pawn.Label + "_" + texturePath, texture);
+   //   public static Graphic Cache(Pawn pawn, string texturePath, Color skincolor)
+   //   {
+   //       Graphic texture = null;
+   //       //
+   //       //   if (textureCache.TryGetValue(pawn.Label + "_" + texturePath, out texture)) return texture;
+   //       //   else
+   //       //   {
+   //       texture = GraphicDatabase.Get<Graphic_Multi>(texturePath, ShaderDatabase.Cutout, Vector2.one, skincolor);
+   //       //                textureCache.Add(pawn.Label + "_" + texturePath, texture);
+   //
+   //
+   //       return texture;
+   //       //          }
+   //   }
 
-
-            return texture;
-            //          }
-        }
 
         public void ResolveAllGraphicsModded()
         {
