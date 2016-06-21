@@ -56,7 +56,7 @@
     <Compile Include="Graphic_Multi_Head.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
     <None Include="_notInUse\PawnRenderer.cs" />
-    <None Include="PawnStoryTracker.cs" />
+    <None Include="_notInUse\PawnStoryTracker.cs" />
     <Compile Include="SaveablePawn.cs" />
     <Compile Include="PawnBeardChooser.cs" />
     <Compile Include="PawnGraphicSet.cs" />
