@@ -40,6 +40,10 @@ namespace RW_FacialStuff
         private static Color Color04 = new Color(0.929411769f, 0.7921569f, 0.6117647f);
 
 
+        // The color is taken from the hair color, the mod creates a new head for each hair color (males only); needs to be simplified, colors merged
+        //
+        // Needed because the hair color can't be overlayed separately, so for now many new heads
+
         private static string BeardColorNamed;
         /*
                 public static Texture2D LoadTexture(string texturePath)

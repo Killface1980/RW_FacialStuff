@@ -13,6 +13,8 @@ namespace RW_FacialStuff
     //      public virtual Material MatSideNarrow { get; }
     //  }
 
+        // class taken from vanilla, base is Graphic_Multi; needed for adding stuff AFTER game has loaded
+
     public class Graphic_Multi_Head : Graphic
     {
         private Material[] mats = new Material[3];
