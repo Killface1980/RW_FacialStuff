@@ -6,7 +6,7 @@ using RimWorld;
 
 namespace RW_FacialStuff
 {
-    public class PawnFaceChooser
+    public class PawnFaceSelector
     {
 
         public static SideburnDef RandomSideburnDefFor(Pawn pawn, FactionDef factionType)
@@ -17,7 +17,8 @@ namespace RW_FacialStuff
                                               where sideburn.hairTags.SharesElementWith(factionType.hairTags)
                                               select sideburn;
 
-            if (UnityEngine.Random.Range(10, 30) > pawn.ageTracker.AgeBiologicalYearsFloat)
+            //            if (UnityEngine.Random.Range(10, 30) > pawn.ageTracker.AgeBiologicalYearsFloat)
+            if (19 > pawn.ageTracker.AgeBiologicalYearsFloat)
                 chosenSideburn = DefDatabase<SideburnDef>.GetNamed("Sideburn_Shaved");
             else
             {
@@ -34,7 +35,8 @@ namespace RW_FacialStuff
                                            select tache;
 
             TacheDef chosenTache;
-            if (UnityEngine.Random.Range(20, 40) > pawn.ageTracker.AgeBiologicalYearsFloat)
+            //            if (UnityEngine.Random.Range(20, 40) > pawn.ageTracker.AgeBiologicalYearsFloat)
+            if (19 > pawn.ageTracker.AgeBiologicalYearsFloat)
                 chosenTache = DefDatabase<TacheDef>.GetNamed("Moustache_Shaved");
             else
                 chosenTache = source.RandomElementByWeight((TacheDef tache) => TacheChoiceLikelihoodFor(tache, pawn));
@@ -52,8 +54,9 @@ namespace RW_FacialStuff
 
             BeardDef chosenBeard;
 
-            if (UnityEngine.Random.Range(30, 50) > pawn.ageTracker.AgeBiologicalYearsFloat)
-                chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
+//            if (UnityEngine.Random.Range(30, 50) > pawn.ageTracker.AgeBiologicalYearsFloat)
+                if (19 > pawn.ageTracker.AgeBiologicalYearsFloat)
+                    chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
             else
                 chosenBeard = source.RandomElementByWeight((BeardDef beard) => BeardChoiceLikelihoodFor(beard, pawn));
 
@@ -73,6 +76,20 @@ namespace RW_FacialStuff
 
 
             return chosenEyes;
+        }
+
+        public static LipDef RandomLipDefFor(Pawn pawn, FactionDef factionType)
+        {
+            IEnumerable<LipDef> source = from lip in DefDatabase<LipDef>.AllDefs
+                                         where lip.hairTags.SharesElementWith(factionType.hairTags)
+                                         select lip;
+
+            LipDef chosenLips;
+
+            chosenLips = source.RandomElementByWeight((LipDef lip) => LipChoiceLikelihoodFor(lip, pawn));
+
+
+            return chosenLips;
         }
 
         private static float EyeChoiceLikelihoodFor(EyeDef eye, Pawn pawn)
@@ -119,6 +136,56 @@ namespace RW_FacialStuff
             {
                "Unknown hair likelihood for ",
                eye,
+               " with ",
+               pawn
+            }));
+            return 0f;
+        }
+
+        private static float LipChoiceLikelihoodFor(LipDef lip, Pawn pawn)
+        {
+            if (pawn.gender == Gender.None)
+            {
+                return 100f;
+            }
+            if (pawn.gender == Gender.Male)
+            {
+                switch (lip.hairGender)
+                {
+                    case HairGender.Male:
+                        return 70f;
+                    case HairGender.MaleUsually:
+                        return 30f;
+                    case HairGender.Any:
+                        return 60f;
+                    case HairGender.FemaleUsually:
+                        return 5f;
+                    case HairGender.Female:
+                        return 1f;
+                }
+            }
+
+            if (pawn.gender == Gender.Female)
+            {
+                switch (lip.hairGender)
+                {
+                    case HairGender.Female:
+                        return 70f;
+                    case HairGender.FemaleUsually:
+                        return 30f;
+                    case HairGender.Any:
+                        return 60f;
+                    case HairGender.MaleUsually:
+                        return 5f;
+                    case HairGender.Male:
+                        return 1f;
+                }
+            }
+
+            Log.Error(string.Concat(new object[]
+            {
+               "Unknown hair likelihood for ",
+               lip,
                " with ",
                pawn
             }));

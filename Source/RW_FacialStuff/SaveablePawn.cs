@@ -14,6 +14,7 @@ namespace RW_FacialStuff
         public SideburnDef SideburnDef;
         public TacheDef TacheDef;
         public EyeDef EyeDef;
+        public LipDef LipDef;
 
         public bool optimized = false;
 
@@ -21,6 +22,7 @@ namespace RW_FacialStuff
         {
             Scribe_References.LookReference(ref Pawn, "Pawn");
             Scribe_Defs.LookDef(ref EyeDef, "EyeDef");
+            Scribe_Defs.LookDef(ref LipDef, "LipDef");
             Scribe_Defs.LookDef(ref TacheDef, "TacheDef");
             Scribe_Defs.LookDef(ref SideburnDef, "SideburnDef");
             Scribe_Defs.LookDef(ref BeardDef, "BeardDef");

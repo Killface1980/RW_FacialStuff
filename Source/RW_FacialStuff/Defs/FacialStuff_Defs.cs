@@ -23,9 +23,13 @@ namespace RW_FacialStuff
 
     public class TacheDef : Def
     {
-        public string texPathAverage;
+        public string texPathAverageNormal;
+        public string texPathAveragePointy;
+        public string texPathAverageWide;
 
-        public string texPathNarrow;
+        public string texPathNarrowNormal;
+        public string texPathNarrowPointy;
+        public string texPathNarrowWide;
 
         public HairGender hairGender = HairGender.Any;
 
@@ -57,5 +61,18 @@ namespace RW_FacialStuff
         public List<string> hairTags = new List<string>();
 
     }
+
+    public class LipDef : Def
+    {
+        public string texPathAverage;
+
+        public string texPathNarrow;
+
+        public HairGender hairGender = HairGender.Any;
+
+        public List<string> hairTags = new List<string>();
+
+    }
+
 }
 

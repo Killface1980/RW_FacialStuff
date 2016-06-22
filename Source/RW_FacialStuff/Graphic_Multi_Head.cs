@@ -71,8 +71,7 @@ namespace RW_FacialStuff
             Texture2D texture = new Texture2D(1, 1);
             texture.LoadImage(File.ReadAllBytes(GraphicDatabaseHeadRecordsModded.modpath + texturePath + ".png"));
             texture.anisoLevel = 8;
-          texture.Compress(true);
-        //    texture.Apply();
+            texture.Compress(true);
 
             return texture;
         }
@@ -86,26 +85,27 @@ namespace RW_FacialStuff
             drawSize = req.drawSize;
             Texture2D[] array = new Texture2D[3];
 
-            //          if (ContentFinder<Texture2D>.Get(req.path + "_front", false))
-            //              array[2] = ContentFinder<Texture2D>.Get(req.path + "_front", false);
-
-            array[2] = LoadTexture(req.path + "_front");
+            if (ContentFinder<Texture2D>.Get(req.path + "_front", false))
+                array[2] = ContentFinder<Texture2D>.Get(req.path + "_front", false);
+            else
+                array[2] = LoadTexture(req.path + "_front");
             if (array[2] == null)
             {
                 Log.Error("RW_FacialStuff: Failed to find any texture while constructing " + ToString());
                 return;
             }
 
-            //          if (ContentFinder<Texture2D>.Get(req.path + "_side", false))
-            //              array[1] = ContentFinder<Texture2D>.Get(req.path + "_side", false);
+            if (ContentFinder<Texture2D>.Get(req.path + "_side", false))
+                array[1] = ContentFinder<Texture2D>.Get(req.path + "_side", false);
+            else
+                array[1] = LoadTexture(req.path + "_side");
             //if (array[1] == null)
             //{
-            array[1] = LoadTexture(req.path + "_side");
             //}
-            //if (ContentFinder<Texture2D>.Get(req.path + "_back", false))
-            //    array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", false);
-
-            array[0] = LoadTexture(req.path + "_back");
+            if (ContentFinder<Texture2D>.Get(req.path + "_back", false))
+                array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", false);
+            else
+                array[0] = LoadTexture(req.path + "_back");
 
             Texture2D[] array2 = new Texture2D[3];
             if (req.shader.SupportsMaskTex())
@@ -240,6 +240,15 @@ namespace RW_FacialStuff
 
         private static Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
 
+        public static Texture2D LoadTexture(string texturePath)
+        {
+
+            Texture2D texture = new Texture2D(1, 1);
+            texture.LoadImage(File.ReadAllBytes(GraphicDatabaseHeadRecordsModded.modpath + texturePath + ".png"));
+            texture.anisoLevel = 8;
+
+            return texture;
+        }
 
         public static Texture2D BlankTexture()
         {
@@ -255,7 +264,6 @@ namespace RW_FacialStuff
                 }
             }
 
-
             return blankTexture;
         }
 
@@ -269,7 +277,7 @@ namespace RW_FacialStuff
             Texture2D[] array = new Texture2D[3];
 
             if (ContentFinder<Texture2D>.Get(req.path + "_front", false))
-                array[2] = ContentFinder<Texture2D>.Get(req.path + "_front", false);
+                array[2] = ContentFinder<Texture2D>.Get(req.path + "_front", true);
 
             //  array[2] = LoadTexture(req.path + "_front");
             //  if (array[2] == null)
@@ -279,21 +287,25 @@ namespace RW_FacialStuff
             //  }
 
             if (ContentFinder<Texture2D>.Get(req.path + "_side", false))
-                array[1] = ContentFinder<Texture2D>.Get(req.path + "_side", false);
+                array[1] = ContentFinder<Texture2D>.Get(req.path + "_side", true);
             //if (array[1] == null)
             //{
 
             // array[1] = LoadTexture(req.path + "_side");
 
             //}
-            //if (ContentFinder<Texture2D>.Get(req.path + "_back", false))
-            //    array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", false);
 
-    //      if (File.Exists(GraphicDatabaseHeadRecordsModded.modpath + req.path + "_back.png"))
-    //          array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", false);
-    //      else
+            //          if (File.Exists(GraphicDatabaseHeadRecordsModded.modpath + req.path + "_back.png"))
+            //              array[0] = LoadTexture(req.path + "_back");
+            //          else
+            //              array[0] = BlankTexture();
+
+            if (File.Exists(GraphicDatabaseHeadRecordsModded.modpath + req.path + "_back.png"))
+                array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", true);
+            else
                 array[0] = BlankTexture();
-            
+
+
 
             //    Texture2D[] array2 = new Texture2D[3];
             //    if (req.shader.SupportsMaskTex())

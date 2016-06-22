@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DefPackage-LipDef>
+
+  <LipDef>
+
+    <label>EFA-Big</label>
+    <hairGender>Female</hairGender>
+    <texPathAverage>Lips/Female/Lip_Female_Average_Big</texPathAverage>
+    <texPathNarrow>Lips/Female/Lip_Female_Narrow_Big</texPathNarrow>
+    <defName>Lip_Female_Big</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </LipDef>
+
+  <LipDef>
+    <label>EFA-Default</label>
+    <hairGender>Female</hairGender>
+    <texPathAverage>Lips/Female/Lip_Female_Average_Default</texPathAverage>
+    <texPathNarrow>Lips/Female/Lip_Female_Narrow_Default</texPathNarrow>
+    <defName>Lip_Female_Default</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </LipDef>
+
+  <LipDef>
+    <label>EFA-Flat</label>
+    <hairGender>Female</hairGender>
+    <texPathAverage>Lips/Female/Lip_Female_Average_Flat</texPathAverage>
+    <texPathNarrow>Lips/Female/Lip_Female_Narrow_Flat</texPathNarrow>
+    <defName>Lip_Female_Flat</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </LipDef>
+
+  <LipDef>
+    <label>EFA-Large</label>
+    <hairGender>Female</hairGender>
+    <texPathAverage>Lips/Female/Lip_Female_Average_Large</texPathAverage>
+    <texPathNarrow>Lips/Female/Lip_Female_Narrow_Large</texPathNarrow>
+    <defName>Lip_Female_Large</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </LipDef>
+
+  <LipDef>
+    <label>EFA-Medium</label>
+    <hairGender>Female</hairGender>
+    <texPathAverage>Lips/Female/Lip_Female_Average_Medium</texPathAverage>
+    <texPathNarrow>Lips/Female/Lip_Female_Narrow_Medium</texPathNarrow>
+    <defName>Lip_Female_Medium</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </LipDef>
+
+
+</DefPackage-LipDef>

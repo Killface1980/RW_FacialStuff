@@ -58,7 +58,7 @@
     <None Include="_notInUse\PawnRenderer.cs" />
     <None Include="_notInUse\PawnStoryTracker.cs" />
     <Compile Include="SaveablePawn.cs" />
-    <Compile Include="PawnBeardChooser.cs" />
+    <Compile Include="PawnFaceSelector.cs" />
     <Compile Include="PawnGraphicSet.cs" />
     <None Include="_notInUse\Pawn_BeardTracker.cs" />
     <Compile Include="ModInitializer .cs" />
@@ -79,6 +79,9 @@
     </Content>
     <Content Include="..\..\Defs\HairDefs\TacheDef.xml">
       <Link>Defs\TacheDef.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\LipDefs\LipDef.xml">
+      <Link>Defs\LipDef.xml</Link>
     </Content>
     <Content Include="..\..\Defs\ModHelperDefs\ModHelper.xml">
       <Link>xml\ModHelper.xml</Link>

@@ -5,8 +5,12 @@
   <TacheDef>
     <label>MA-Deluxe</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Moustaches/Moustache_Average_Deluxe</texPathAverage>
-    <texPathNarrow>Moustaches/Moustache_Narrow_Deluxe</texPathNarrow>
+    <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Deluxe</texPathAverageNormal>
+    <texPathAveragePointy>Moustaches/Moustache_Average_Pointy_Deluxe</texPathAveragePointy>
+    <texPathAverageWide>Moustaches/Moustache_Average_Wide_Deluxe</texPathAverageWide>
+    <texPathNarrowNormal>Moustaches/Moustache_Narrow_Normal_Deluxe</texPathNarrowNormal>
+    <texPathNarrowPointy>Moustaches/Moustache_Narrow_Pointy_Deluxe</texPathNarrowPointy>
+    <texPathNarrowWide>Moustaches/Moustache_Narrow_Wide_Deluxe</texPathNarrowWide>
     <defName>Moustache_Deluxe</defName>
     <hairTags>
       <li>Urban</li>
@@ -14,13 +18,18 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </TacheDef>
+  
+</TacheDef>
 
   <TacheDef>
     <label>MA-Walrus</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Moustaches/Moustache_Average_Walrus</texPathAverage>
-    <texPathNarrow>Moustaches/Moustache_Narrow_Walrus</texPathNarrow>
+    <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Walrus</texPathAverageNormal>
+    <texPathAveragePointy>Moustaches/Moustache_Average_Pointy_Walrus</texPathAveragePointy>
+    <texPathAverageWide>Moustaches/Moustache_Average_Wide_Walrus</texPathAverageWide>
+    <texPathNarrowNormal>Moustaches/Moustache_Narrow_Normal_Walrus</texPathNarrowNormal>
+    <texPathNarrowPointy>Moustaches/Moustache_Narrow_Pointy_Walrus</texPathNarrowPointy>
+    <texPathNarrowWide>Moustaches/Moustache_Narrow_Wide_Walrus</texPathNarrowWide>
     <defName>Moustache_Walrus</defName>
     <hairTags>
       <li>Urban</li>
@@ -28,13 +37,18 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+
   </TacheDef>
 
   <TacheDef>
     <label>MA-Ming</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Moustaches/Moustache_Average_Ming</texPathAverage>
-    <texPathNarrow>Moustaches/Moustache_Narrow_Ming</texPathNarrow>
+    <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Ming</texPathAverageNormal>
+    <texPathAveragePointy>Moustaches/Moustache_Average_Pointy_Ming</texPathAveragePointy>
+    <texPathAverageWide>Moustaches/Moustache_Average_Wide_Ming</texPathAverageWide>
+    <texPathNarrowNormal>Moustaches/Moustache_Narrow_Normal_Ming</texPathNarrowNormal>
+    <texPathNarrowPointy>Moustaches/Moustache_Narrow_Pointy_Ming</texPathNarrowPointy>
+    <texPathNarrowWide>Moustaches/Moustache_Narrow_Wide_Ming</texPathNarrowWide>
     <defName>Moustache_Ming</defName>
     <hairTags>
       <li>Urban</li>
@@ -42,13 +56,19 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+
+
   </TacheDef>
 
   <TacheDef>
     <label>MA-Ranger</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Moustaches/Moustache_Average_Ranger</texPathAverage>
-    <texPathNarrow>Moustaches/Moustache_Narrow_Ranger</texPathNarrow>
+    <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Ranger</texPathAverageNormal>
+    <texPathAveragePointy>Moustaches/Moustache_Average_Pointy_Ranger</texPathAveragePointy>
+    <texPathAverageWide>Moustaches/Moustache_Average_Wide_Ranger</texPathAverageWide>
+    <texPathNarrowNormal>Moustaches/Moustache_Narrow_Normal_Ranger</texPathNarrowNormal>
+    <texPathNarrowPointy>Moustaches/Moustache_Narrow_Pointy_Ranger</texPathNarrowPointy>
+    <texPathNarrowWide>Moustaches/Moustache_Narrow_Wide_Ranger</texPathNarrowWide>
     <defName>Moustache_Ranger</defName>
     <hairTags>
       <li>Urban</li>
@@ -56,13 +76,18 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+
   </TacheDef>
 
   <TacheDef>
     <label>MA-Handlebar</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Moustaches/Moustache_Average_Handlebar</texPathAverage>
-    <texPathNarrow>Moustaches/Moustache_Narrow_Handlebar</texPathNarrow>
+    <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Handlebar</texPathAverageNormal>
+    <texPathAveragePointy>Moustaches/Moustache_Average_Pointy_Handlebar</texPathAveragePointy>
+    <texPathAverageWide>Moustaches/Moustache_Average_Wide_Handlebar</texPathAverageWide>
+    <texPathNarrowNormal>Moustaches/Moustache_Narrow_Normal_Handlebar</texPathNarrowNormal>
+    <texPathNarrowPointy>Moustaches/Moustache_Narrow_Pointy_Handlebar</texPathNarrowPointy>
+    <texPathNarrowWide>Moustaches/Moustache_Narrow_Wide_Handlebar</texPathNarrowWide>
     <defName>Moustache_Handlebar</defName>
     <hairTags>
       <li>Urban</li>
@@ -75,8 +100,12 @@
   <TacheDef>
     <label>MA-Shaved</label>
     <hairGender>MaleUsually</hairGender>
-    <texPathAverage>Moustaches/Moustache_Shaved</texPathAverage>
-    <texPathNarrow>Moustaches/Moustache_Shaved</texPathNarrow>
+    <texPathAverageNormal>Moustaches/Moustache_Shaved</texPathAverageNormal>
+    <texPathAveragePointy>Moustaches/Moustache_Shaved</texPathAveragePointy>
+    <texPathAverageWide>Moustaches/Moustache_Shaved</texPathAverageWide>
+    <texPathNarrowNormal>Moustaches/Moustache_Shaved</texPathNarrowNormal>
+    <texPathNarrowPointy>Moustaches/Moustache_Shaved</texPathNarrowPointy>
+    <texPathNarrowWide>Moustaches/Moustache_Shaved</texPathNarrowWide>
     <defName>Moustache_Shaved</defName>
     <hairTags>
       <li>Urban</li>

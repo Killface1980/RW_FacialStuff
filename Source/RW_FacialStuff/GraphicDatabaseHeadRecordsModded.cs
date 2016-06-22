@@ -21,6 +21,7 @@ namespace RW_FacialStuff
         public static List<Texture2D> textureList = new List<Texture2D>();
 
         private static EyeDef _saveableEye;
+        private static LipDef _saveableLip;
         private static BeardDef _saveableBeard;
         private static SideburnDef _saveableSideburn;
         private static TacheDef _saveableTache;
@@ -85,12 +86,22 @@ namespace RW_FacialStuff
             }
             else
             {
-                _saveableEye = PawnFaceChooser.RandomEyeDefFor(pawn, pawn.Faction.def);
+                _saveableEye = PawnFaceSelector.RandomEyeDefFor(pawn, pawn.Faction.def);
                 pawnSave.EyeDef = _saveableEye;
             }
 
             if (pawn.gender == Gender.Female)
             {
+                if (pawnSave.LipDef != null)
+                {
+                    _saveableLip = pawnSave.LipDef;
+                }
+                else
+                {
+                    _saveableLip = PawnFaceSelector.RandomLipDefFor(pawn, pawn.Faction.def);
+                    pawnSave.LipDef = _saveableLip;
+                }
+
                 graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnSave.EyeDef.label;
             }
 
@@ -103,7 +114,7 @@ namespace RW_FacialStuff
                 }
                 else
                 {
-                    _saveableBeard = PawnFaceChooser.RandomBeardDefFor(pawn, pawn.Faction.def);
+                    _saveableBeard = PawnFaceSelector.RandomBeardDefFor(pawn, pawn.Faction.def);
                     pawnSave.BeardDef = _saveableBeard;
                 }
 
@@ -113,7 +124,7 @@ namespace RW_FacialStuff
                 }
                 else
                 {
-                    _saveableSideburn = PawnFaceChooser.RandomSideburnDefFor(pawn, pawn.Faction.def);
+                    _saveableSideburn = PawnFaceSelector.RandomSideburnDefFor(pawn, pawn.Faction.def);
                     pawnSave.SideburnDef = _saveableSideburn;
                 }
 
@@ -123,7 +134,7 @@ namespace RW_FacialStuff
                 }
                 else
                 {
-                    _saveableTache = PawnFaceChooser.RandomTacheDefFor(pawn, pawn.Faction.def);
+                    _saveableTache = PawnFaceSelector.RandomTacheDefFor(pawn, pawn.Faction.def);
                     pawnSave.TacheDef = _saveableTache;
                 }
 
@@ -160,15 +171,24 @@ namespace RW_FacialStuff
             Texture2D eyesHeadFront = new Texture2D(headGraphicFront.width, headGraphicFront.height);
             Texture2D eyesHeadSide = new Texture2D(headGraphicSide.width, headGraphicSide.height);
 
-            Graphic eyeGraphic = null;
-            if (pawn.story.crownType == CrownType.Narrow)
-                eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.white);
-            else
-                eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.white);
+            Texture2D lipsHeadFront = new Texture2D(headGraphicFront.width, headGraphicFront.height);
+            Texture2D lipsHeadSide = new Texture2D(headGraphicSide.width, headGraphicSide.height);
 
+
+            Graphic eyeGraphic = null;
+
+            if (pawn.story.crownType == CrownType.Narrow)
+            {
+                eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.white);
+            }
+            else
+            {
+                eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.white);
+            }
 
             Texture2D readEyeGraphicFront = eyeGraphic.MatFront.mainTexture as Texture2D;
             Texture2D readEyeGraphicSide = eyeGraphic.MatSide.mainTexture as Texture2D;
+
 
 
             if (pawn.gender == Gender.Male)
@@ -182,36 +202,40 @@ namespace RW_FacialStuff
                     if (type == "Normal")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                     }
                     if (type == "Pointy")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                     }
                     if (type == "Wide")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                     }
 
                     sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
-                    tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 }
                 else
                 {
                     if (type == "Normal")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                     }
                     if (type == "Pointy")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                     }
                     if (type == "Wide")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                     }
 
                     sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathAverage, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
-                    tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathAverage, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 }
 
 
@@ -226,7 +250,7 @@ namespace RW_FacialStuff
                 Texture2D readSideburnGraphicFront = sideburnGraphic.MatFront.mainTexture as Texture2D;
                 Texture2D readSideburnGraphicSide = sideburnGraphic.MatSide.mainTexture as Texture2D;
 
-                MakeBeard(readSideburnGraphicFront, readBeardGraphicFront, readTacheGraphicFront, ref beardFront);
+                MakeBeard(readBeardGraphicFront, readSideburnGraphicFront, readTacheGraphicFront, ref beardFront);
                 MakeBeard(readBeardGraphicSide, readSideburnGraphicSide, readTacheGraphicSide, ref beardSide);
 
                 //       MakeBeard(readSideburnGraphicFront, readBeardGraphicFront, readTacheGraphicFront, ref beardFront, ref beardFrontComplex);
@@ -244,14 +268,44 @@ namespace RW_FacialStuff
 
             if (pawn.gender == Gender.Female)
             {
-                AddEyes(pawn, headGraphicFront, readEyeGraphicFront, ref finalHeadFront);
-                AddEyes(pawn, headGraphicSide, readEyeGraphicSide, ref finalHeadSide);
+                Graphic lipGraphic = null;
+
+                if (pawn.story.crownType == CrownType.Narrow)
+                {
+                    eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                    lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableLip.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                }
+                else
+                {
+                    eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                    lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableLip.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                }
+
+                Texture2D readLipGraphicFront = lipGraphic.MatFront.mainTexture as Texture2D;
+                Texture2D readLipGraphicSide = lipGraphic.MatSide.mainTexture as Texture2D;
+
+
+                MakeBeard(headGraphicFront, readEyeGraphicFront, readLipGraphicFront, ref finalHeadFront);
+                MakeBeard(headGraphicSide, readEyeGraphicSide, readLipGraphicSide, ref finalHeadSide);
+
+                UnityEngine.Object.DestroyImmediate(lipsHeadFront, true);
+                UnityEngine.Object.DestroyImmediate(lipsHeadSide, true);
+
+
+                //    AddEyes(pawn, headGraphicFront, readEyeGraphicFront, ref finalHeadFront);
+                //    AddEyes(pawn, headGraphicSide, readEyeGraphicSide, ref finalHeadSide);
+
+                //    AddEyes(pawn, finalHeadFront, readLipGraphicFront, ref finalHeadFront);
+                //    AddEyes(pawn, finalHeadSide, readLipGraphicSide, ref finalHeadSide);
+
             }
 
             graphicPath = graphicPathNew;
+            Texture2D finalHeadBack = new Texture2D(1, 1);
+            MakeReadable(headGraphicBack, ref finalHeadBack);
 
             if (headGraphicBack != null)
-                ExportToPNG(pawn, headGraphicBack, "back", graphicPath);
+                ExportToPNG(pawn, finalHeadBack, "back", graphicPath);
             if (finalHeadFront != null)
                 ExportToPNG(pawn, finalHeadFront, "front", graphicPath);
             if (finalHeadSide != null)
