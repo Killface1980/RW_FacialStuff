@@ -14,8 +14,8 @@ namespace RW_FacialStuff
 
     public class GraphicDatabaseHeadRecordsModded : GraphicDatabaseHeadRecords
     {
-        public static string modpath = "Mods/RW_FacialStuff/Textures/";
-
+        public static string ModTexturePath = "Mods/RW_FacialStuff/Textures/";
+        
         public static Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
 
         public static List<Texture2D> textureList = new List<Texture2D>();
@@ -161,7 +161,7 @@ namespace RW_FacialStuff
                     graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawn.ageTracker.AgeBiologicalYears + "-" + pawnSave.EyeDef.label + "-" + pawnSave.TacheDef.label + "-" + pawnSave.SideburnDef.label + "-" + pawnSave.BeardDef.label + "-" + BeardColorNamed;
             }
 
-            if (File.Exists(modpath + graphicPathNew + "_front.png"))
+            if (File.Exists(ModTexturePath + graphicPathNew + "_front.png"))
             {
                 graphicPath = graphicPathNew;
                 return;
@@ -203,8 +203,8 @@ namespace RW_FacialStuff
             }
             else
             {
-                eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.gray);
+                eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.black);
             }
 
             Texture2D readEyeGraphicFront = eyeGraphic.MatFront.mainTexture as Texture2D;
@@ -608,7 +608,9 @@ namespace RW_FacialStuff
                     Color headColor = head.GetPixel(x, y);
                     Color wrinkleColor = wrinkles.GetPixel(x - startX, y - startY);
 
-                    Color final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * ((pawnAge / 100)-0.35f)*4f );
+                    wrinkleColor.a *= 10;
+                    // to do: if pawn > 40, + refine formula
+                    Color final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * ((pawnAge / 100)-0.4f));
 
                     finalhead.SetPixel(x, y, final_color);
                 }
@@ -622,7 +624,7 @@ namespace RW_FacialStuff
         {
             byte[] bytes = inputTexture.EncodeToPNG();
             //         if (pawn.gender == Gender.Female)
-            File.WriteAllBytes(modpath + graphicpath + "_" + definition + ".png", bytes);
+            File.WriteAllBytes(ModTexturePath + graphicpath + "_" + definition + ".png", bytes);
             //     else
             //         File.WriteAllBytes(modpath + "Things/Pawn/Humanlike/Heads/Male/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn + "_" + definition + ".png", bytes);
             //     var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
