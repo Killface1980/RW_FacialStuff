@@ -62,6 +62,20 @@ namespace RW_FacialStuff
 
     }
 
+    public class WrinkleDef : Def
+    {
+
+        public string texPathAverage;
+
+        public string texPathNarrow;
+
+        public HairGender hairGender = HairGender.Any;
+
+        public List<string> hairTags = new List<string>();
+
+    }
+
+
     public class LipDef : Def
     {
         public string texPathAverage;

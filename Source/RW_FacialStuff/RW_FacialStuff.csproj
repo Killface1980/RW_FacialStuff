@@ -76,18 +76,23 @@
     </Content>
     <Content Include="..\..\Defs\HairDefs\SideburnDef.xml">
       <Link>Defs\SideburnDef.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\HairDefs\TacheDef.xml">
       <Link>Defs\TacheDef.xml</Link>
     </Content>
     <Content Include="..\..\Defs\LipDefs\LipDef.xml">
       <Link>Defs\LipDef.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\ModHelperDefs\ModHelper.xml">
       <Link>xml\ModHelper.xml</Link>
     </Content>
     <Content Include="..\..\Defs\ThingDefs\Initializer.xml">
       <Link>xml\Initializer.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WrinkleDefs\WrinkleDef.xml">
+      <Link>Defs\WrinkleDef.xml</Link>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

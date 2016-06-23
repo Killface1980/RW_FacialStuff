@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DefPackage-WrinkleDef>
+
+  <WrinkleDef>
+
+    <label>Wrinkles_Default</label>
+    <hairGender>Female</hairGender>
+    <texPathAverage>Wrinkles/Wrinkles_Default_Average</texPathAverage>
+    <texPathNarrow>Wrinkles/Wrinkles_Default_Narrow</texPathNarrow>
+    <defName>Wrinkles_Default</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </WrinkleDef>
+
+</DefPackage-WrinkleDef>
