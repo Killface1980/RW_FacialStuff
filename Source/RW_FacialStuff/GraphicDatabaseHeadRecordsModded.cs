@@ -15,7 +15,8 @@ namespace RW_FacialStuff
     public class GraphicDatabaseHeadRecordsModded : GraphicDatabaseHeadRecords
     {
         public static string ModTexturePath = "Mods/RW_FacialStuff/Textures/";
-        
+        private static string pawnAgeFileName;
+
         public static Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
 
         public static List<Texture2D> textureList = new List<Texture2D>();
@@ -39,6 +40,16 @@ namespace RW_FacialStuff
         private static Color Color02 = new Color(0.5176471f, 0.3254902f, 0.184313729f);
         private static Color Color03 = new Color(0.75686276f, 0.572549045f, 0.333333343f);
         private static Color Color04 = new Color(0.929411769f, 0.7921569f, 0.6117647f);
+
+        public static List<HeadGraphicRecord> heads = new List<HeadGraphicRecord>();
+        public static List<HeadGraphicRecordModded> headsModded = new List<HeadGraphicRecordModded>();
+
+        private static HeadGraphicRecord skull = null;
+        private static HeadGraphicRecordModded skullModded = null;
+        private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
+        protected Pawn pawn;
+        static string type;
+        static string graphicPathNew;
 
 
         // The color is taken from the hair color, the mod creates a new head for each hair color (males only); needs to be simplified, colors merged
@@ -66,14 +77,32 @@ namespace RW_FacialStuff
                 }
 
         */
-        public static void DecorateHead(ref string graphicPath, Pawn pawn, Color skinColor, Color haircolor)
+        private static void SetFileNameStuff(Pawn pawn, Color haircolor, float pawnAgeFloat, string graphicPath)
         {
+            SaveablePawn pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
 
-            var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+            if (pawnAgeFloat < 40f)
+                pawnAgeFileName = "Young";
 
-            string graphicPathNew = null;
+            if (pawnAgeFloat >= 40f && pawnAgeFloat < 47f)
+                pawnAgeFileName = "40plus";
 
-            string type = null;
+            if (pawnAgeFloat >= 47f && pawnAgeFloat < 54f)
+                pawnAgeFileName = "47plus";
+
+            if (pawnAgeFloat >= 54f && pawnAgeFloat < 61f)
+                pawnAgeFileName = "54plus";
+
+            if (pawnAgeFloat >= 61f && pawnAgeFloat < 68f)
+                pawnAgeFileName = "61plus";
+
+            if (pawnAgeFloat >= 68f && pawnAgeFloat < 75f)
+                pawnAgeFileName = "68plus";
+
+            if (pawnAgeFloat >= 75f)
+                pawnAgeFileName = "75plus";
+
+            //file name definition 2
 
             if (graphicPath.Contains("Normal"))
                 type = "Normal";
@@ -117,7 +146,7 @@ namespace RW_FacialStuff
                     pawnSave.LipDef = _saveableLip;
                 }
 
-                graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawn.ageTracker.AgeBiologicalYears + "-" + pawnSave.EyeDef.label;
+                graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnAgeFileName + "-" + pawnSave.EyeDef.label;
             }
 
 
@@ -156,10 +185,24 @@ namespace RW_FacialStuff
                 GetBeardColorNamed(haircolor);
 
                 if (_saveableBeard.label.Equals("BA-Shaved") && _saveableSideburn.label.Equals("SA-Shaved") && _saveableTache.label.Equals("MA-Shaved"))
-                    graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawn.ageTracker.AgeBiologicalYears + "-" + pawnSave.EyeDef.label + "-Shaved";
+                    graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnAgeFileName + "-" + pawnSave.EyeDef.label + "-Shaved";
                 else
-                    graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawn.ageTracker.AgeBiologicalYears + "-" + pawnSave.EyeDef.label + "-" + pawnSave.TacheDef.label + "-" + pawnSave.SideburnDef.label + "-" + pawnSave.BeardDef.label + "-" + BeardColorNamed;
+                    graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnAgeFileName + "-" + pawnSave.EyeDef.label + "-" + pawnSave.TacheDef.label + "-" + pawnSave.SideburnDef.label + "-" + pawnSave.BeardDef.label + "-" + BeardColorNamed;
             }
+        }
+
+        public static void DecorateHead(ref string graphicPath, Pawn pawn, Color skinColor, Color haircolor)
+        {
+
+            SaveablePawn pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+
+            float pawnAgeFloat = pawn.ageTracker.AgeBiologicalYearsFloat;
+
+            pawnSave.GraphicPathOriginal = graphicPath;
+
+            //file name definition 1
+
+            SetFileNameStuff(pawn, haircolor, pawnAgeFloat, graphicPath);
 
             if (File.Exists(ModTexturePath + graphicPathNew + "_front.png"))
             {
@@ -189,17 +232,14 @@ namespace RW_FacialStuff
             Texture2D wrinklesHeadFront = new Texture2D(headGraphicFront.width, headGraphicFront.height);
             Texture2D wrinklesHeadSide = new Texture2D(headGraphicSide.width, headGraphicSide.height);
 
-            Texture2D lipsHeadFront = new Texture2D(headGraphicFront.width, headGraphicFront.height);
-            Texture2D lipsHeadSide = new Texture2D(headGraphicSide.width, headGraphicSide.height);
-
 
             Graphic eyeGraphic = null;
             Graphic wrinkleGraphic = null;
 
             if (pawn.story.crownType == CrownType.Narrow)
             {
-                eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.gray);
+                eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.black);
             }
             else
             {
@@ -283,11 +323,19 @@ namespace RW_FacialStuff
                 MergeTwoGraphics(headGraphicFront, readEyeGraphicFront, ref eyesHeadFront);
                 MergeTwoGraphics(headGraphicSide, readEyeGraphicSide, ref eyesHeadSide);
 
-                MakeOld(pawn.ageTracker.AgeBiologicalYears, eyesHeadFront, readWrinkleGraphicFront, ref wrinklesHeadFront);
-                MakeOld(pawn.ageTracker.AgeBiologicalYears, eyesHeadSide, readWrinkleGraphicSide, ref wrinklesHeadSide);
+                if (pawnAgeFloat >= 40)
+                {
+                    MakeOld(pawnAgeFloat, eyesHeadFront, readWrinkleGraphicFront, ref wrinklesHeadFront);
+                    MakeOld(pawnAgeFloat, eyesHeadSide, readWrinkleGraphicSide, ref wrinklesHeadSide);
 
-                AddFacialHair(pawn, wrinklesHeadFront, beardFront, ref finalHeadFront);
-                AddFacialHair(pawn, wrinklesHeadSide, beardSide, ref finalHeadSide);
+                    AddFacialHair(pawn, wrinklesHeadFront, beardFront, ref finalHeadFront);
+                    AddFacialHair(pawn, wrinklesHeadSide, beardSide, ref finalHeadSide);
+                }
+                else
+                {
+                    AddFacialHair(pawn, eyesHeadFront, beardFront, ref finalHeadFront);
+                    AddFacialHair(pawn, eyesHeadSide, beardSide, ref finalHeadSide);
+                }
 
             }
 
@@ -308,11 +356,246 @@ namespace RW_FacialStuff
                 Texture2D readLipGraphicFront = lipGraphic.MatFront.mainTexture as Texture2D;
                 Texture2D readLipGraphicSide = lipGraphic.MatSide.mainTexture as Texture2D;
 
-                MakeOld(pawn.ageTracker.AgeBiologicalYears, headGraphicFront, readWrinkleGraphicFront, ref wrinklesHeadFront);
-                MakeOld(pawn.ageTracker.AgeBiologicalYears, headGraphicSide, readWrinkleGraphicSide, ref wrinklesHeadSide);
+                if (pawnAgeFloat >= 40)
+                {
+                    MakeOld(pawnAgeFloat, headGraphicFront, readWrinkleGraphicFront, ref wrinklesHeadFront);
+                    MakeOld(pawnAgeFloat, headGraphicSide, readWrinkleGraphicSide, ref wrinklesHeadSide);
 
-                MergeThreeGraphics(wrinklesHeadFront, readEyeGraphicFront, readLipGraphicFront, ref finalHeadFront);
-                MergeThreeGraphics(wrinklesHeadSide, readEyeGraphicSide, readLipGraphicSide, ref finalHeadSide);
+                    MergeThreeGraphics(wrinklesHeadFront, readEyeGraphicFront, readLipGraphicFront, ref finalHeadFront);
+                    MergeThreeGraphics(wrinklesHeadSide, readEyeGraphicSide, readLipGraphicSide, ref finalHeadSide);
+                }
+                else
+                {
+                    MergeThreeGraphics(headGraphicFront, readEyeGraphicFront, readLipGraphicFront, ref finalHeadFront);
+                    MergeThreeGraphics(headGraphicSide, readEyeGraphicSide, readLipGraphicSide, ref finalHeadSide);
+                }
+
+
+                //    AddEyes(pawn, headGraphicFront, readEyeGraphicFront, ref finalHeadFront);
+                //    AddEyes(pawn, headGraphicSide, readEyeGraphicSide, ref finalHeadSide);
+
+                //    AddEyes(pawn, finalHeadFront, readLipGraphicFront, ref finalHeadFront);
+                //    AddEyes(pawn, finalHeadSide, readLipGraphicSide, ref finalHeadSide);
+
+            }
+
+            graphicPath = graphicPathNew;
+            Texture2D finalHeadBack = new Texture2D(1, 1);
+            MakeReadable(headGraphicBack, ref finalHeadBack);
+
+            if (headGraphicBack != null)
+                ExportToPNG(pawn, finalHeadBack, "back", graphicPath);
+            if (finalHeadFront != null)
+                ExportToPNG(pawn, finalHeadFront, "front", graphicPath);
+            if (finalHeadSide != null)
+                ExportToPNG(pawn, finalHeadSide, "side", graphicPath);
+
+            //      if (headGraphicBack != null)
+            //          ExportToPNG(pawn, headGraphicBack, "backm", graphicPath);
+            //      if (finalHeadFront != null)
+            //          ExportToPNG(pawn, beardFrontComplex, "frontm", graphicPath);
+            //      if (finalHeadSide != null)
+            //          ExportToPNG(pawn, beardSideComplex, "sidem", graphicPath);
+
+            headsModded.Add(new HeadGraphicRecordModded(graphicPath));
+
+            //   UnityEngine.Object.DestroyImmediate(readHeadGraphicBack, true);
+            //   UnityEngine.Object.DestroyImmediate(readHeadGraphicFront, true);
+            //   UnityEngine.Object.DestroyImmediate(readHeadGraphicSide, true);
+
+            UnityEngine.Object.DestroyImmediate(finalHeadFront, true);
+            UnityEngine.Object.DestroyImmediate(finalHeadSide, true);
+
+            UnityEngine.Object.DestroyImmediate(beardFront, true);
+            UnityEngine.Object.DestroyImmediate(beardSide, true);
+
+            //    UnityEngine.Object.DestroyImmediate(beardFrontComplex, true);
+            //    UnityEngine.Object.DestroyImmediate(beardSideComplex, true);
+
+
+            UnityEngine.Object.DestroyImmediate(eyesHeadFront, true);
+            UnityEngine.Object.DestroyImmediate(eyesHeadSide, true);
+
+            UnityEngine.Object.DestroyImmediate(wrinklesHeadFront, true);
+            UnityEngine.Object.DestroyImmediate(wrinklesHeadSide, true);
+
+
+        }
+
+        public static void RebuildHead(ref string graphicPath, Pawn pawn, Color skinColor, Color haircolor)
+        {
+
+            var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+
+            graphicPath = pawnSave.GraphicPathOriginal;
+
+            float pawnAgeFloat = pawn.ageTracker.AgeBiologicalYearsFloat;
+
+            SetFileNameStuff(pawn, haircolor, pawnAgeFloat, graphicPath);
+
+            Graphic headGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(graphicPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.SkinColor);
+
+            Texture2D headGraphicBack = headGraphic.MatBack.mainTexture as Texture2D;
+            Texture2D headGraphicFront = headGraphic.MatFront.mainTexture as Texture2D;
+            Texture2D headGraphicSide = headGraphic.MatSide.mainTexture as Texture2D;
+
+            Texture2D finalHeadFront = new Texture2D(headGraphicFront.width, headGraphicFront.height);
+            Texture2D finalHeadSide = new Texture2D(headGraphicSide.width, headGraphicSide.height);
+
+            Texture2D beardFront = new Texture2D(headGraphicFront.width, headGraphicFront.height);
+            Texture2D beardSide = new Texture2D(headGraphicSide.width, headGraphicSide.height);
+
+            // Deactivated for now, no complex texture
+            //      Texture2D beardFrontComplex = new Texture2D(headGraphicFront.width, headGraphicFront.height);
+            //      Texture2D beardSideComplex = new Texture2D(headGraphicSide.width, headGraphicSide.height);
+
+            Texture2D eyesHeadFront = new Texture2D(headGraphicFront.width, headGraphicFront.height);
+            Texture2D eyesHeadSide = new Texture2D(headGraphicSide.width, headGraphicSide.height);
+
+            Texture2D wrinklesHeadFront = new Texture2D(headGraphicFront.width, headGraphicFront.height);
+            Texture2D wrinklesHeadSide = new Texture2D(headGraphicSide.width, headGraphicSide.height);
+
+            Texture2D lipsHeadFront = new Texture2D(headGraphicFront.width, headGraphicFront.height);
+            Texture2D lipsHeadSide = new Texture2D(headGraphicSide.width, headGraphicSide.height);
+
+
+            Graphic eyeGraphic = null;
+            Graphic wrinkleGraphic = null;
+
+            if (pawn.story.crownType == CrownType.Narrow)
+            {
+                eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.black);
+            }
+            else
+            {
+                eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.black);
+            }
+
+            Texture2D readEyeGraphicFront = eyeGraphic.MatFront.mainTexture as Texture2D;
+            Texture2D readEyeGraphicSide = eyeGraphic.MatSide.mainTexture as Texture2D;
+
+            Texture2D readWrinkleGraphicFront = wrinkleGraphic.MatFront.mainTexture as Texture2D;
+            Texture2D readWrinkleGraphicSide = wrinkleGraphic.MatSide.mainTexture as Texture2D;
+
+
+            if (pawn.gender == Gender.Male)
+            {
+                Graphic beardGraphic = null;
+                Graphic sideburnGraphic = null;
+                Graphic tacheGraphic = null;
+
+                if (pawn.story.crownType == CrownType.Narrow)
+                {
+                    if (type == "Normal")
+                    {
+                        beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    }
+                    if (type == "Pointy")
+                    {
+                        beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    }
+                    if (type == "Wide")
+                    {
+                        beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    }
+
+                    sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                }
+                else
+                {
+                    if (type == "Normal")
+                    {
+                        beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    }
+                    if (type == "Pointy")
+                    {
+                        beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    }
+                    if (type == "Wide")
+                    {
+                        beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                    }
+
+                    sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathAverage, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                }
+
+
+
+                Texture2D readBeardGraphicFront = beardGraphic.MatFront.mainTexture as Texture2D;
+                Texture2D readBeardGraphicSide = beardGraphic.MatSide.mainTexture as Texture2D;
+
+
+                Texture2D readTacheGraphicFront = tacheGraphic.MatFront.mainTexture as Texture2D; ;
+                Texture2D readTacheGraphicSide = tacheGraphic.MatSide.mainTexture as Texture2D;
+
+                Texture2D readSideburnGraphicFront = sideburnGraphic.MatFront.mainTexture as Texture2D;
+                Texture2D readSideburnGraphicSide = sideburnGraphic.MatSide.mainTexture as Texture2D;
+
+                MergeThreeGraphics(readBeardGraphicFront, readSideburnGraphicFront, readTacheGraphicFront, ref beardFront);
+                MergeThreeGraphics(readBeardGraphicSide, readSideburnGraphicSide, readTacheGraphicSide, ref beardSide);
+
+                //       MakeBeard(readSideburnGraphicFront, readBeardGraphicFront, readTacheGraphicFront, ref beardFront, ref beardFrontComplex);
+                //       MakeBeard(readBeardGraphicSide, readSideburnGraphicSide, readTacheGraphicSide, ref beardSide, ref beardSideComplex);
+
+
+                MergeTwoGraphics(headGraphicFront, readEyeGraphicFront, ref eyesHeadFront);
+                MergeTwoGraphics(headGraphicSide, readEyeGraphicSide, ref eyesHeadSide);
+
+                if (pawnAgeFloat >= 40)
+                {
+                    MakeOld(pawnAgeFloat, eyesHeadFront, readWrinkleGraphicFront, ref wrinklesHeadFront);
+                    MakeOld(pawnAgeFloat, eyesHeadSide, readWrinkleGraphicSide, ref wrinklesHeadSide);
+
+                    AddFacialHair(pawn, wrinklesHeadFront, beardFront, ref finalHeadFront);
+                    AddFacialHair(pawn, wrinklesHeadSide, beardSide, ref finalHeadSide);
+                }
+                else
+                {
+                    AddFacialHair(pawn, eyesHeadFront, beardFront, ref finalHeadFront);
+                    AddFacialHair(pawn, eyesHeadSide, beardSide, ref finalHeadSide);
+                }
+
+
+            }
+
+
+            if (pawn.gender == Gender.Female)
+            {
+                Graphic lipGraphic = null;
+
+                if (pawn.story.crownType == CrownType.Narrow)
+                {
+                    lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableLip.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                }
+                else
+                {
+                    lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableLip.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                }
+
+                Texture2D readLipGraphicFront = lipGraphic.MatFront.mainTexture as Texture2D;
+                Texture2D readLipGraphicSide = lipGraphic.MatSide.mainTexture as Texture2D;
+
+                if (pawnAgeFloat >= 40)
+                {
+                    MakeOld(pawnAgeFloat, headGraphicFront, readWrinkleGraphicFront, ref wrinklesHeadFront);
+                    MakeOld(pawnAgeFloat, headGraphicSide, readWrinkleGraphicSide, ref wrinklesHeadSide);
+
+                    MergeThreeGraphics(wrinklesHeadFront, readEyeGraphicFront, readLipGraphicFront, ref finalHeadFront);
+                    MergeThreeGraphics(wrinklesHeadSide, readEyeGraphicSide, readLipGraphicSide, ref finalHeadSide);
+                }
+                else
+                {
+                    MergeThreeGraphics(headGraphicFront, readEyeGraphicFront, readLipGraphicFront, ref finalHeadFront);
+                    MergeThreeGraphics(headGraphicSide, readEyeGraphicSide, readLipGraphicSide, ref finalHeadSide);
+                }
 
                 UnityEngine.Object.DestroyImmediate(lipsHeadFront, true);
                 UnityEngine.Object.DestroyImmediate(lipsHeadSide, true);
@@ -411,8 +694,6 @@ namespace RW_FacialStuff
             float hairBlue = hairColor.b;
             // Random values with 2 % chance
 
-
-
             if (hairRed == hairBlue && hairBlue == hairGreen)
             {
                 // Old, grey hair
@@ -477,28 +758,28 @@ namespace RW_FacialStuff
             BeardColorNamed = hairColor.ToString();
         }
 
-        public static void MergeThreeGraphics(Texture2D beard_layer_1, Texture2D beard_layer_2, Texture2D beard_layer_3, ref Texture2D beard_final)
+        public static void MergeThreeGraphics(Texture2D layer_1, Texture2D layer_2, Texture2D layer_3, ref Texture2D texture_final)
         {
             int startX = 0;
             int startY = 0;
 
-            for (int x = startX; x < beard_layer_1.width; x++)
+            for (int x = startX; x < layer_1.width; x++)
             {
 
-                for (int y = startY; y < beard_layer_1.height; y++)
+                for (int y = startY; y < layer_1.height; y++)
                 {
-                    Color layer1 = beard_layer_1.GetPixel(x, y);
-                    Color layer2 = beard_layer_2.GetPixel(x - startX, y - startY);
-                    Color layer3 = beard_layer_3.GetPixel(x - startX, y - startY);
+                    Color layer1Color = layer_1.GetPixel(x, y);
+                    Color layer2Color = layer_2.GetPixel(x - startX, y - startY);
+                    Color layer3Color = layer_3.GetPixel(x - startX, y - startY);
 
-                    Color mixcolor = Color.Lerp(layer1, layer2, layer2.a / 1f);
-                    Color final_color = Color.Lerp(mixcolor, layer3, layer3.a / 1f);
-
-                    beard_final.SetPixel(x, y, final_color);
+                    Color mixcolor = Color.Lerp(layer1Color, layer2Color, layer2Color.a / 1f);
+                    Color final_color = Color.Lerp(mixcolor, layer3Color, layer3Color.a / 1f);
+                    if (layer1Color.a == 1)
+                        final_color.a = 1;
+                    texture_final.SetPixel(x, y, final_color);
                 }
             }
-
-            beard_final.Apply();
+            texture_final.Apply();
         }
 
         public static void MakeBeard(Texture2D beard_layer_1, Texture2D beard_layer_2, Texture2D beard_layer_3, ref Texture2D beard_final, ref Texture2D beardComplex_final)
@@ -554,7 +835,6 @@ namespace RW_FacialStuff
                     if (BeardColorNamed.Equals("Grey"))
                     {
                         final_color = Color.Lerp(headColor, beardColor * ColorGrey, beardColor.a / 1f);
-
                     }
                     else if (BeardColorNamed.Contains("Dark"))
                     {
@@ -562,8 +842,9 @@ namespace RW_FacialStuff
 
                     }
                     else
-                        final_color = Color.Lerp(headColor, beardColor * hairColorPawn * 0.85f, beardColor.a / 1f);
-
+                        final_color = Color.Lerp(headColor, beardColor * hairColorPawn, beardColor.a / 1f);
+                    if (headColor.a == 1)
+                        final_color.a = 1;
                     finalhead.SetPixel(x, y, final_color);
                 }
             }
@@ -587,6 +868,9 @@ namespace RW_FacialStuff
 
                     Color final_color = Color.Lerp(headColor, eyeColor, eyeColor.a / 1f);
 
+                    if (headColor.a == 1)
+                        final_color.a = 1;
+
                     finalTexture.SetPixel(x, y, final_color);
                 }
             }
@@ -608,9 +892,23 @@ namespace RW_FacialStuff
                     Color headColor = head.GetPixel(x, y);
                     Color wrinkleColor = wrinkles.GetPixel(x - startX, y - startY);
 
-                    wrinkleColor.a *= 10;
-                    // to do: if pawn > 40, + refine formula
-                    Color final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * ((pawnAge / 100)-0.4f));
+                    Color final_color = headColor;
+
+                    if (pawnAgeFileName == "40plus")
+                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.15f);
+                    if (pawnAgeFileName == "47plus")
+                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.3f);
+                    if (pawnAgeFileName == "54plus")
+                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.45f);
+                    if (pawnAgeFileName == "61plus")
+                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.6f);
+                    if (pawnAgeFileName == "68plus")
+                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.8f);
+                    if (pawnAgeFileName == "75plus")
+                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 1f);
+
+                    if (headColor.a == 1)
+                        final_color.a = 1;
 
                     finalhead.SetPixel(x, y, final_color);
                 }
@@ -618,7 +916,6 @@ namespace RW_FacialStuff
 
             finalhead.Apply();
         }
-
 
         public static void ExportToPNG(Pawn pawn, Texture2D inputTexture, string definition, string graphicpath)
         {
@@ -629,15 +926,6 @@ namespace RW_FacialStuff
             //         File.WriteAllBytes(modpath + "Things/Pawn/Humanlike/Heads/Male/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn + "_" + definition + ".png", bytes);
             //     var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
         }
-
-
-        public static List<HeadGraphicRecord> heads = new List<HeadGraphicRecord>();
-        public static List<HeadGraphicRecordModded> headsModded = new List<HeadGraphicRecordModded>();
-
-        private static HeadGraphicRecord skull = null;
-        private static HeadGraphicRecordModded skullModded = null;
-        private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
-
 
         private static readonly string[] HeadsFolderPaths = new string[]
         {
@@ -701,8 +989,6 @@ namespace RW_FacialStuff
             }
             skullModded = new HeadGraphicRecordModded(SkullPath);
         }
-
-        protected Pawn pawn;
 
         public class HeadGraphicRecord
         {
@@ -838,19 +1124,21 @@ namespace RW_FacialStuff
 
             if (pawnSave.optimized)
             {
+                if (!File.Exists(ModTexturePath + graphicPath + "_front.png"))
+                    RebuildHead(ref graphicPath, pawn, skinColor, hairColor);
+
                 for (int i = 0; i < headsModded.Count; i++)
                 {
                     HeadGraphicRecordModded headGraphicRecord = headsModded[i];
 
                     if (headGraphicRecord.graphicPath == graphicPath)
                     {
-                        //                      if (pawn.gender == Gender.Male)
-                        //                          return headGraphicRecord.GetGraphic(skinColor, hairColor);
-                        //                      else
                         return headGraphicRecord.GetGraphic(skinColor);
-
                     }
                 }
+
+
+
             }
 
             for (int i = 0; i < heads.Count; i++)
