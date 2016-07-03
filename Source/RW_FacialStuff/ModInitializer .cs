@@ -56,7 +56,6 @@ namespace RW_FacialStuff
             return list;
         }
 
-
         protected override void FillTab() { }
     }
 
@@ -115,6 +114,9 @@ namespace RW_FacialStuff
             MethodInfo coreMethod2 = typeof(Verse.GraphicDatabaseHeadRecords).GetMethod("GetHeadRandom", BindingFlags.Static | BindingFlags.Public);
             MethodInfo autoEquipMethod2 = typeof(RW_FacialStuff.GraphicDatabaseHeadRecordsModded).GetMethod("GetHeadRandomUnmodded", BindingFlags.Static | BindingFlags.Public);
 
+            MethodInfo coreMethod3 = typeof(RimWorld.PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo autoEquipMethod3 = typeof(RW_FacialStuff.PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
+
 
             //       MethodInfo coreMethod2 = typeof(Verse.PawnRenderer).GetMethod("RenderPawnInternal",
             //           BindingFlags.Instance | BindingFlags.NonPublic,
@@ -126,10 +128,10 @@ namespace RW_FacialStuff
             try
             {
                 Detours.TryDetourFromTo(coreMethod, autoEquipMethod);
-
                 Detours.TryDetourFromTo(coreMethod2, autoEquipMethod2);
+                Detours.TryDetourFromTo(coreMethod3, autoEquipMethod3);
 
-        //        Detours.TryDetourFromTo(coreMethod30, autoEquipMethod30);
+                //        Detours.TryDetourFromTo(coreMethod30, autoEquipMethod30);
             }
             catch (Exception)
             {

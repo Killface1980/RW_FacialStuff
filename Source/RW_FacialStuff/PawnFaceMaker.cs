@@ -6,7 +6,7 @@ using RimWorld;
 
 namespace RW_FacialStuff
 {
-    public class PawnFaceSelector
+    public class PawnFaceMaker
     {
 
         public static SideburnDef RandomSideburnDefFor(Pawn pawn, FactionDef factionType)

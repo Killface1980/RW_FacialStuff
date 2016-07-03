@@ -12,7 +12,7 @@ namespace RW_FacialStuff
     //      public virtual Material MatSideNarrow { get; }
     //  }
 
-        // class taken from vanilla, base is Graphic_Multi; needed for adding stuff AFTER game has loaded
+    // class taken from vanilla, base is Graphic_Multi; needed for adding stuff AFTER game has loaded
 
     public class Graphic_Multi_Head : Graphic
     {
@@ -72,6 +72,7 @@ namespace RW_FacialStuff
             Texture2D texture = new Texture2D(1, 1);
             texture.LoadImage(File.ReadAllBytes(GraphicDatabaseHeadRecordsModded.ModTexturePath + texturePath + ".png"));
             texture.anisoLevel = 8;
+            texture.mipMapBias = -0.5f;
             texture.Compress(true);
 
             return texture;
