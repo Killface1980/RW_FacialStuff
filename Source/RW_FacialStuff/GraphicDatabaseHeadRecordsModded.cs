@@ -252,7 +252,6 @@ namespace RW_FacialStuff
             Texture2D readWrinkleGraphicFront = wrinkleGraphic.MatFront.mainTexture as Texture2D;
             Texture2D readWrinkleGraphicSide = wrinkleGraphic.MatSide.mainTexture as Texture2D;
 
-
             if (pawn.gender == Gender.Male)
             {
                 Graphic beardGraphic = null;
@@ -922,8 +921,10 @@ namespace RW_FacialStuff
                     //}
                     //else
                     Color final_color = Color.Lerp(headColor, beardColor, beardColor.a / 1f);
-                    if (headColor.a == 1)
+                    if (headColor.a > 0.65f)
                         final_color.a = 1;
+                    else
+                        final_color.a = 0;
                     finalhead.SetPixel(x, y, final_color);
                 }
             }
@@ -1046,8 +1047,8 @@ namespace RW_FacialStuff
                 for (int y = startY; y < inputTexture.height; y++)
                 {
                     Color headColor = inputTexture.GetPixel(x, y);
-                    headColor *= skinColor;
-
+                    headColor *= skinColor*0.6f;
+                    headColor.b *= 0.8f;
                     finalTexture.SetPixel(x, y, headColor);
                 }
             }

@@ -242,16 +242,6 @@ namespace RW_FacialStuff
 
         private static Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
 
-        public static Texture2D LoadTexture(string texturePath)
-        {
-
-            Texture2D texture = new Texture2D(1, 1);
-            texture.LoadImage(File.ReadAllBytes(GraphicDatabaseHeadRecordsModded.ModTexturePath + texturePath + ".png"));
-            texture.anisoLevel = 8;
-
-            return texture;
-        }
-
         public static Texture2D BlankTexture()
         {
             Texture2D blankTexture = new Texture2D(128, 128);
