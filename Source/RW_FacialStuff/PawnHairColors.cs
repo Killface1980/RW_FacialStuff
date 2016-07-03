@@ -123,13 +123,20 @@ namespace RW_FacialStuff
             }
 
             // age to become gray as float
-            float value3 = Rand.Range(0.35f, 0.6f);
+            float agingGreyFloat = Rand.Range(0.35f, 0.6f);
 
             float greyness = 0f;
 
-            if ((float)ageYears / 100 > value3)
-                greyness = ((float)ageYears / 100 - value3) * 5f;
+            if ((float)ageYears / 100 > agingGreyFloat)
+            { 
+                greyness = ((float)ageYears / 100 - agingGreyFloat)*5f;
+                
 
+              if (greyness > 0.8f)
+              {
+                  greyness = 0.8f;
+              }
+            }
 
             chosenColor = Color.Lerp(tempColor, Color.white, greyness);
             return chosenColor;

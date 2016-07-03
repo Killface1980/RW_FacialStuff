@@ -902,9 +902,13 @@ namespace RW_FacialStuff
                     Color headColor = head.GetPixel(x, y);
                     Color beardColor = beard.GetPixel(x - startX, y - startY);
 
-                    beardColor.r = Math.Min(beardColor.r, pawn.story.hairColor.r) - 0.05f;
-                    beardColor.g = Math.Min(beardColor.g, pawn.story.hairColor.g) - 0.05f;
-                    beardColor.b = Math.Min(beardColor.b, pawn.story.hairColor.b) - 0.05f;
+                    beardColor = beardColor * pawn.story.hairColor;
+                    
+
+
+                  //beardColor.r = Math.Min(beardColor.r, pawn.story.hairColor.r) - 0.1f;
+                  //beardColor.g = Math.Min(beardColor.g, pawn.story.hairColor.g) - 0.1f;
+                  //beardColor.b = Math.Min(beardColor.b, pawn.story.hairColor.b) - 0.1f;
 
 
                     //if (BeardColorNamed.Equals("Grey"))
@@ -1218,7 +1222,7 @@ namespace RW_FacialStuff
                 //      return graphics[i].Value;
                 //  }
                 //     }
-                Graphic_Multi_Head graphic_Multi_Head = (Graphic_Multi_Head)GraphicDatabase.Get<Graphic_Multi_Head>(graphicPath, ShaderDatabase.CutoutSkin, Vector2.one, skinColor);
+                Graphic_Multi_Head graphic_Multi_Head = (Graphic_Multi_Head)GraphicDatabase.Get<Graphic_Multi_Head>(graphicPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
                 //            graphics.Add(new KeyValuePair<Color, Graphic_Multi_Head>(color, graphic_Multi_Head));
                 return graphic_Multi_Head;
             }
