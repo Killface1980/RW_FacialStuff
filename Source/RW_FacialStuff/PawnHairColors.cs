@@ -64,8 +64,8 @@ namespace RW_FacialStuff
 
                 //else tempColor = Dark04;
 
-                tempColor = Color.Lerp(tempColor, _ColorTerraCotta, Rand.Range(0f, 0.5f));
-           //     tempColor = Color.Lerp(tempColor, _ColorPlatinum, Rand.Range(0f, 0.2f));
+                tempColor = Color.Lerp(tempColor, _ColorTerraCotta, Rand.Range(0f, 0.25f));
+                tempColor = Color.Lerp(tempColor, _ColorPlatinum, Rand.Range(0f, 0.25f));
             }
             else
             {
