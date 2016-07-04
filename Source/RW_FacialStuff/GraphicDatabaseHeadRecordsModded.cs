@@ -901,7 +901,7 @@ namespace RW_FacialStuff
                     Color headColor = head.GetPixel(x, y);
                     Color beardColor = beard.GetPixel(x - startX, y - startY);
 
-                    beardColor = beardColor * pawn.story.hairColor;
+                    beardColor *= pawn.story.hairColor;
                     
 
 
@@ -921,7 +921,7 @@ namespace RW_FacialStuff
                     //}
                     //else
                     Color final_color = Color.Lerp(headColor, beardColor, beardColor.a / 1f);
-                    if (headColor.a > 0.65f)
+                    if (final_color.a > 0.65f)
                         final_color.a = 1;
                     else
                         final_color.a = 0;
@@ -1047,8 +1047,7 @@ namespace RW_FacialStuff
                 for (int y = startY; y < inputTexture.height; y++)
                 {
                     Color headColor = inputTexture.GetPixel(x, y);
-                    headColor *= skinColor*0.6f;
-                    headColor.b *= 0.8f;
+                    headColor *= skinColor;
                     finalTexture.SetPixel(x, y, headColor);
                 }
             }
