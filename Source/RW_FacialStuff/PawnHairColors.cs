@@ -54,7 +54,7 @@ namespace RW_FacialStuff
             //}
             if (PawnSkinColors.IsDarkSkin(skinColor))// || Rand.Value < 0.4f)
             {
-                tempColor = Color.Lerp(_ColorMidnightBlack, _ColorDarkBrown, Rand.Range(0f, 0.5f));
+                tempColor = Color.Lerp(_ColorMidnightBlack, _ColorDarkBrown, Rand.Range(0f, 0.75f));
 
 
 
@@ -138,9 +138,9 @@ namespace RW_FacialStuff
             { 
                 greyness = ((float)ageYears / 100 - agingGreyFloat)*5f;
                 
-              if (greyness > 0.95f)
+              if (greyness > 0.9f)
               {
-                  greyness = 0.95f;
+                  greyness = 0.9f;
               }
 
                 if (PawnSkinColors.IsDarkSkin(skinColor))
