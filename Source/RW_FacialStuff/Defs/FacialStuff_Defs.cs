@@ -65,9 +65,13 @@ namespace RW_FacialStuff
     public class WrinkleDef : Def
     {
 
-        public string texPathAverage;
+        public string texPathAverageNormal;
+        public string texPathAveragePointy;
+        public string texPathAverageWide;
 
-        public string texPathNarrow;
+        public string texPathNarrowNormal;
+        public string texPathNarrowPointy;
+        public string texPathNarrowWide;
 
         public HairGender hairGender = HairGender.Any;
 

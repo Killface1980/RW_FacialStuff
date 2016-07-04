@@ -2,12 +2,33 @@
 <DefPackage-WrinkleDef>
 
   <WrinkleDef>
-
-    <label>Wrinkles_Default</label>
+    <label>Wrinkles_Default_Female</label>
     <hairGender>Female</hairGender>
-    <texPathAverage>Wrinkles/Wrinkles_Default_Average</texPathAverage>
-    <texPathNarrow>Wrinkles/Wrinkles_Default_Narrow</texPathNarrow>
-    <defName>Wrinkles_Default</defName>
+    <texPathAverageNormal>Wrinkles/Wrinkles_Average_Normal_Female</texPathAverageNormal>
+    <texPathAveragePointy>Wrinkles/Wrinkles_Average_Pointy_Female</texPathAveragePointy>
+    <texPathAverageWide>Wrinkles/Wrinkles_Average_Wide_Female</texPathAverageWide>
+    <texPathNarrowNormal>Wrinkles/Wrinkles_Narrow_Normal_Female</texPathNarrowNormal>
+    <texPathNarrowPointy>Wrinkles/Wrinkles_Narrow_Pointy_Female</texPathNarrowPointy>
+    <texPathNarrowWide>Wrinkles/Wrinkles_Narrow_Wide_Female</texPathNarrowWide>
+    <defName>Wrinkles_Default_Female</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </WrinkleDef>
+  
+  <WrinkleDef>
+    <label>Wrinkles_Default_Male</label>
+    <hairGender>Male</hairGender>
+    <texPathAverageNormal>Wrinkles/Wrinkles_Average_Normal_Male</texPathAverageNormal>
+    <texPathAveragePointy>Wrinkles/Wrinkles_Average_Pointy_Male</texPathAveragePointy>
+    <texPathAverageWide>Wrinkles/Wrinkles_Average_Wide_Male</texPathAverageWide>
+    <texPathNarrowNormal>Wrinkles/Wrinkles_Narrow_Normal_Male</texPathNarrowNormal>
+    <texPathNarrowPointy>Wrinkles/Wrinkles_Narrow_Pointy_Male</texPathNarrowPointy>
+    <texPathNarrowWide>Wrinkles/Wrinkles_Narrow_Wide_Male</texPathNarrowWide>
+    <defName>Wrinkles_Default_Male</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>

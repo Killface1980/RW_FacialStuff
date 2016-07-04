@@ -72,7 +72,7 @@ namespace RW_FacialStuff
                 float value2 = Rand.Value;
 
                 //dark hair
-                if (value2 < 0.2f)
+                if (value2 < 0.3f)
                 {
                     tempColor = Color.Lerp(_ColorPlatinum, _ColorYellowBlonde, Rand.Value);
                     tempColor = Color.Lerp(tempColor, _ColorTerraCotta, Rand.Range(0.3f, 1f));
@@ -80,7 +80,7 @@ namespace RW_FacialStuff
                     tempColor = Color.Lerp(tempColor, _ColorMidnightBlack, Rand.Range(0.3f, 1f));
                 }
                 //brown hair
-                else if (value2 < 0.4f)
+                else if (value2 < 0.5f)
                 {
                     tempColor = Color.Lerp(_ColorPlatinum, _ColorYellowBlonde, Rand.Value);
                     tempColor = Color.Lerp(tempColor, _ColorTerraCotta, Rand.Range(0f, 0.6f));

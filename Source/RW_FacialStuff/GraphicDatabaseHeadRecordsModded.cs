@@ -238,12 +238,24 @@ namespace RW_FacialStuff
             if (pawn.story.crownType == CrownType.Narrow)
             {
                 eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.black);
-                wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.black);
+
+                if (type == "Normal")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                if (type == "Pointy")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                if (type == "Wide")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, Color.black);
             }
             else
             {
                 eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.black);
-                wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.black);
+
+                if (type == "Normal")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                if (type == "Pointy")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                if (type == "Wide")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.black);
             }
 
             Texture2D readEyeGraphicFront = eyeGraphic.MatFront.mainTexture as Texture2D;
@@ -470,13 +482,26 @@ namespace RW_FacialStuff
             if (pawn.story.crownType == CrownType.Narrow)
             {
                 eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.black);
-                wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.black);
+
+                if (type == "Normal")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                if (type == "Pointy")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                if (type == "Wide")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, Color.black);
             }
             else
             {
                 eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableEye.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.black);
-                wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.black);
+
+                if (type == "Normal")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                if (type == "Pointy")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                if (type == "Wide")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableWrinkle.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.black);
             }
+
 
             Texture2D readEyeGraphicFront = eyeGraphic.MatFront.mainTexture as Texture2D;
             Texture2D readEyeGraphicSide = eyeGraphic.MatSide.mainTexture as Texture2D;
@@ -832,6 +857,13 @@ namespace RW_FacialStuff
             int startX = 0;
             int startY = 0;
 
+          //float num1 = Rand.Value;
+          //float num2 = Rand.Value;
+          //float num3 = Rand.Value;
+          //
+          //Color eyeColorRandom = new Color(num1, num2, num3);
+
+
             for (int x = startX; x < layer_1.width; x++)
             {
 
@@ -841,6 +873,8 @@ namespace RW_FacialStuff
                     layer1Color *= layer1BlendColor;
                     Color layer2Color = layer_2.GetPixel(x - startX, y - startY);
                     Color layer3Color = layer_3.GetPixel(x - startX, y - startY);
+
+                //    layer2Color *= eyeColorRandom;
 
                     Color mixcolor = Color.Lerp(layer1Color, layer2Color, layer2Color.a / 1f);
                     Color final_color = Color.Lerp(mixcolor, layer3Color, layer3Color.a / 1f);
@@ -962,14 +996,16 @@ namespace RW_FacialStuff
             int startX = 0;
             int startY = bottom_layer.height - top_layer.height;
 
+         
             for (int x = startX; x < bottom_layer.width; x++)
             {
 
                 for (int y = startY; y < bottom_layer.height; y++)
                 {
                     Color headColor = bottom_layer.GetPixel(x, y);
-                    headColor *= bottomColor;
                     Color eyeColor = top_layer.GetPixel(x - startX, y - startY);
+                    headColor *= bottomColor;
+              //      eyeColor *= eyeColorRandom;
 
                     Color final_color = Color.Lerp(headColor, eyeColor, eyeColor.a / 1f);
 
