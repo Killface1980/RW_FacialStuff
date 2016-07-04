@@ -72,7 +72,7 @@ namespace RW_FacialStuff
                 float value2 = Rand.Value;
 
                 //dark hair
-                if (value2 < 0.3f)
+                if (value2 < 0.35f)
                 {
                     tempColor = Color.Lerp(_ColorPlatinum, _ColorYellowBlonde, Rand.Value);
                     tempColor = Color.Lerp(tempColor, _ColorTerraCotta, Rand.Range(0.3f, 1f));
@@ -80,33 +80,35 @@ namespace RW_FacialStuff
                     tempColor = Color.Lerp(tempColor, _ColorMidnightBlack, Rand.Range(0.3f, 1f));
                 }
                 //brown hair
-                else if (value2 < 0.5f)
+                else if (value2 < 0.6f)
                 {
                     tempColor = Color.Lerp(_ColorPlatinum, _ColorYellowBlonde, Rand.Value);
                     tempColor = Color.Lerp(tempColor, _ColorTerraCotta, Rand.Range(0f, 0.6f));
                     tempColor = Color.Lerp(tempColor, _ColorMediumDarkBrown, Rand.Range(0.3f, 1f));
                     tempColor = Color.Lerp(tempColor, _ColorMidnightBlack, Rand.Range(0f, 0.7f));
                 }
-                //blonde hair
-                else  if (value2 < 0.7f)
+                //dirty blonde hair
+                else  if (value2 < 0.75f)
                 {
                     tempColor = Color.Lerp(_ColorPlatinum, _ColorYellowBlonde, Rand.Value);
                     tempColor = Color.Lerp(tempColor, _ColorMediumDarkBrown, Rand.Range(0f, 0.5f));
                 }
-                // red hair
+                // dark red/brown hair
                 else if (value2 < 0.85f)
                 {
-                    tempColor = Color.Lerp(_ColorYellowBlonde, _ColorTerraCotta, Rand.Range(0.25f, 1f));
+                    tempColor = Color.Lerp(_ColorPlatinum, _ColorTerraCotta, Rand.Range(0.25f, 1f));
                     tempColor = Color.Lerp(tempColor, _ColorMidnightBlack, Rand.Range(0f, 0.7f));
                 }
+                // pure blond / albino
                 else if (value2 < 0.95f)
+                    tempColor = Color.Lerp(_ColorPlatinum, _ColorYellowBlonde, Rand.Range(0f, 0.5f));
+
+                // red hair
+                else 
                 {
-                    tempColor = Color.Lerp(_ColorPlatinum, _ColorTerraCotta, Rand.Range(0.25f, 1f));
+                    tempColor = Color.Lerp(_ColorYellowBlonde, _ColorTerraCotta, Rand.Range(0.25f, 1f));
                     tempColor = Color.Lerp(tempColor, _ColorMidnightBlack, Rand.Range(0f, 0.35f));
                 }
-                // pure blond / albino
-                else tempColor = Color.Lerp(_ColorPlatinum, _ColorYellowBlonde, Rand.Range(0f, 0.5f));
-
 
                 //  else if (value2 < 0.75f)
                 //  {
@@ -138,16 +140,16 @@ namespace RW_FacialStuff
             { 
                 greyness = ((float)ageYears / 100 - agingGreyFloat)*5f;
                 
-              if (greyness > 0.9f)
+              if (greyness > 0.85f)
               {
-                  greyness = 0.9f;
+                  greyness = 0.85f;
               }
 
                 if (PawnSkinColors.IsDarkSkin(skinColor))
-                    greyness *= Rand.Range(0.5f, 1f);
+                    greyness *= Rand.Range(0.4f, 0.8f);
             }
 
-            chosenColor = Color.Lerp(tempColor, Color.white, greyness);
+            chosenColor = Color.Lerp(tempColor, new Color32(245, 245, 245, 255), greyness);
             return chosenColor;
             //  else if (value3 < 0.6f)
 

@@ -128,7 +128,7 @@ namespace RW_FacialStuff
             }
             else
             {
-                _saveableWrinkle = PawnFaceMaker.RandomWrinkleDefFor(pawn, pawn.Faction.def);
+                _saveableWrinkle = PawnFaceMaker.AssignWrinkleDefFor(pawn, pawn.Faction.def);
                 pawnSave.WrinkleDef = _saveableWrinkle;
             }
 

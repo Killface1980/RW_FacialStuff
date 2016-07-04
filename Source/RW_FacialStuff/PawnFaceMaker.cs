@@ -54,9 +54,9 @@ namespace RW_FacialStuff
 
             BeardDef chosenBeard;
 
-//            if (UnityEngine.Random.Range(30, 50) > pawn.ageTracker.AgeBiologicalYearsFloat)
-                if (19 > pawn.ageTracker.AgeBiologicalYearsFloat)
-                    chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
+            //            if (UnityEngine.Random.Range(30, 50) > pawn.ageTracker.AgeBiologicalYearsFloat)
+            if (19 > pawn.ageTracker.AgeBiologicalYearsFloat)
+                chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
             else
                 chosenBeard = source.RandomElementByWeight((BeardDef beard) => BeardChoiceLikelihoodFor(beard, pawn));
 
@@ -74,20 +74,18 @@ namespace RW_FacialStuff
 
             chosenEyes = source.RandomElementByWeight((EyeDef eye) => EyeChoiceLikelihoodFor(eye, pawn));
 
-
             return chosenEyes;
         }
 
-        public static WrinkleDef RandomWrinkleDefFor(Pawn pawn, FactionDef factionType)
+        public static WrinkleDef AssignWrinkleDefFor(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<WrinkleDef> source = from wrinkle in DefDatabase<WrinkleDef>.AllDefs
-                                         where wrinkle.hairTags.SharesElementWith(factionType.hairTags)
-                                         select wrinkle;
+                                             where wrinkle.hairGender.ToString() == pawn.gender.ToString()  //.SharesElementWith(factionType.hairTags)
+                                             select wrinkle;
 
             WrinkleDef chosenWrinkles;
 
             chosenWrinkles = source.FirstOrDefault();//.RandomElementByWeight((WrinkleDef wrinkle) => WrinkleChoiceLikelihoodFor(wrinkle, pawn));
-
 
             return chosenWrinkles;
         }
@@ -156,63 +154,63 @@ namespace RW_FacialStuff
             }));
             return 0f;
         }
-/*
-        private static float WrinkleChoiceLikelihoodFor(WrinkleDef wrinkle, Pawn pawn)
-        {
-
-            // everyone gets the same face!
-
-            return 100f;
-
-            if (pawn.gender == Gender.None)
-            {
-                return 100f;
-            }
-
-            if (pawn.gender == Gender.Male)
-            {
-                switch (wrinkle.hairGender)
+        /*
+                private static float WrinkleChoiceLikelihoodFor(WrinkleDef wrinkle, Pawn pawn)
                 {
-                    case HairGender.Male:
-                        return 70f;
-                    case HairGender.MaleUsually:
-                        return 30f;
-                    case HairGender.Any:
-                        return 60f;
-                    case HairGender.FemaleUsually:
-                        return 5f;
-                    case HairGender.Female:
-                        return 1f;
-                }
-            }
 
-            if (pawn.gender == Gender.Female)
-            {
-                switch (wrinkle.hairGender)
-                {
-                    case HairGender.Female:
-                        return 70f;
-                    case HairGender.FemaleUsually:
-                        return 30f;
-                    case HairGender.Any:
-                        return 60f;
-                    case HairGender.MaleUsually:
-                        return 5f;
-                    case HairGender.Male:
-                        return 1f;
-                }
-            }
+                    // everyone gets the same face!
 
-            Log.Error(string.Concat(new object[]
-            {
-               "Unknown hair likelihood for ",
-               wrinkle,
-               " with ",
-               pawn
-            }));
-            return 0f;
-        }
-*/  
+                    return 100f;
+
+                    if (pawn.gender == Gender.None)
+                    {
+                        return 100f;
+                    }
+
+                    if (pawn.gender == Gender.Male)
+                    {
+                        switch (wrinkle.hairGender)
+                        {
+                            case HairGender.Male:
+                                return 70f;
+                            case HairGender.MaleUsually:
+                                return 30f;
+                            case HairGender.Any:
+                                return 60f;
+                            case HairGender.FemaleUsually:
+                                return 5f;
+                            case HairGender.Female:
+                                return 1f;
+                        }
+                    }
+
+                    if (pawn.gender == Gender.Female)
+                    {
+                        switch (wrinkle.hairGender)
+                        {
+                            case HairGender.Female:
+                                return 70f;
+                            case HairGender.FemaleUsually:
+                                return 30f;
+                            case HairGender.Any:
+                                return 60f;
+                            case HairGender.MaleUsually:
+                                return 5f;
+                            case HairGender.Male:
+                                return 1f;
+                        }
+                    }
+
+                    Log.Error(string.Concat(new object[]
+                    {
+                       "Unknown hair likelihood for ",
+                       wrinkle,
+                       " with ",
+                       pawn
+                    }));
+                    return 0f;
+                }
+        */
         private static float LipChoiceLikelihoodFor(LipDef lip, Pawn pawn)
         {
             if (pawn.gender == Gender.None)

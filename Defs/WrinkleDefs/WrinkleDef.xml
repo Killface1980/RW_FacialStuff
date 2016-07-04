@@ -11,12 +11,6 @@
     <texPathNarrowPointy>Wrinkles/Wrinkles_Narrow_Pointy_Female</texPathNarrowPointy>
     <texPathNarrowWide>Wrinkles/Wrinkles_Narrow_Wide_Female</texPathNarrowWide>
     <defName>Wrinkles_Default_Female</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
   </WrinkleDef>
   
   <WrinkleDef>
@@ -29,12 +23,6 @@
     <texPathNarrowPointy>Wrinkles/Wrinkles_Narrow_Pointy_Male</texPathNarrowPointy>
     <texPathNarrowWide>Wrinkles/Wrinkles_Narrow_Wide_Male</texPathNarrowWide>
     <defName>Wrinkles_Default_Male</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
   </WrinkleDef>
 
 </DefPackage-WrinkleDef>

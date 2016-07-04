@@ -75,8 +75,6 @@ namespace RW_FacialStuff
 
         public HairGender hairGender = HairGender.Any;
 
-        public List<string> hairTags = new List<string>();
-
     }
 
 
