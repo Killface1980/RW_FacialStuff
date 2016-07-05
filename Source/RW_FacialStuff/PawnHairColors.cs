@@ -33,8 +33,6 @@ namespace RW_FacialStuff
 
         public static Color RandomHairColor(Color skinColor, int ageYears)
         {
-
-            Color chosenColor;
             Color tempColor = skinColor;
 
           //if (Rand.Value < 0.02f)
@@ -149,12 +147,7 @@ namespace RW_FacialStuff
                     greyness *= Rand.Range(0.4f, 0.8f);
             }
 
-            chosenColor = Color.Lerp(tempColor, new Color32(245, 245, 245, 255), greyness);
-            return chosenColor;
-            //  else if (value3 < 0.6f)
-
-
-
+            return Color.Lerp(tempColor, new Color32(245, 245, 245, 255), greyness);
         }
     }
 }

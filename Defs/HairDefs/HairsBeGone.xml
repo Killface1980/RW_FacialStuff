@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DefPackage-HairDef>
+  <HairDef>
+    <defName>AfroBald</defName>
+    <label>afrobald</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Afro_Bald</texPath>
+		<hairTags>
+			<li>Urban</li>
+		</hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>WavyBald</defName>
+    <label>wavybald</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Wavy_Bald</texPath>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+		</hairTags>
+  </HairDef>
+
+
+  <HairDef>
+    <defName>BraidedKnotBald</defName>
+    <label>braided knot bald</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Braidbun_Bald</texPath>
+    <hairTags>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>MessyBald</defName>
+    <label>messy</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Mess_Bald</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </HairDef>
+
+</DefPackage-HairDef>

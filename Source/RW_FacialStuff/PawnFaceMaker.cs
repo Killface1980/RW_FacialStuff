@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Verse;
 using RimWorld;
+using RW_FacialStuff.Defs;
 
 namespace RW_FacialStuff
 {
@@ -70,9 +71,7 @@ namespace RW_FacialStuff
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
 
-            EyeDef chosenEyes;
-
-            chosenEyes = source.RandomElementByWeight((EyeDef eye) => EyeChoiceLikelihoodFor(eye, pawn));
+            EyeDef chosenEyes = source.RandomElementByWeight((EyeDef eye) => EyeChoiceLikelihoodFor(eye, pawn));
 
             return chosenEyes;
         }
@@ -83,9 +82,7 @@ namespace RW_FacialStuff
                                              where wrinkle.hairGender.ToString() == pawn.gender.ToString()  //.SharesElementWith(factionType.hairTags)
                                              select wrinkle;
 
-            WrinkleDef chosenWrinkles;
-
-            chosenWrinkles = source.FirstOrDefault();//.RandomElementByWeight((WrinkleDef wrinkle) => WrinkleChoiceLikelihoodFor(wrinkle, pawn));
+            var chosenWrinkles = source.FirstOrDefault();
 
             return chosenWrinkles;
         }
@@ -97,9 +94,7 @@ namespace RW_FacialStuff
                                          where lip.hairTags.SharesElementWith(factionType.hairTags)
                                          select lip;
 
-            LipDef chosenLips;
-
-            chosenLips = source.RandomElementByWeight((LipDef lip) => LipChoiceLikelihoodFor(lip, pawn));
+            LipDef chosenLips = source.RandomElementByWeight((LipDef lip) => LipChoiceLikelihoodFor(lip, pawn));
 
 
             return chosenLips;

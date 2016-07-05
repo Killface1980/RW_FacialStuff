@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Verse;
 
-namespace RW_FacialStuff
+namespace RW_FacialStuff.Defs
 {
     public class BeardDef : Def
     {
