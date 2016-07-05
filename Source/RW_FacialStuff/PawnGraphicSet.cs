@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -48,7 +49,11 @@ namespace RW_FacialStuff
                 headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, pawn.story.SkinColor, pawn.story.hairColor);
 
                 desiccatedHeadGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, RottingColor, RottingColor);
-                skullGraphic = GraphicDatabaseHeadRecordsModded.GetSkull();
+                skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
+
+            //  if (pawn.gender == Gender.Female && pawn.story.hairDef.hairTags.Contains("MaleOnly"))
+            //      pawn.story.hairDef = PawnFaceMaker.RandomHairDefFor(pawn, pawn.Faction.def);
+
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 ResolveApparelGraphics();
             }

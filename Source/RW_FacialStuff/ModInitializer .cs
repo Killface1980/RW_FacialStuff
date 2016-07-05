@@ -117,10 +117,11 @@ namespace RW_FacialStuff
             MethodInfo coreMethod3 = typeof(RimWorld.PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
             MethodInfo autoEquipMethod3 = typeof(RW_FacialStuff.PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
 
-
             MethodInfo coreMethod4 = typeof(RimWorld.PawnSkinColors).GetMethod("GetSkinColor", BindingFlags.Static | BindingFlags.Public);
             MethodInfo autoEquipMethod4 = typeof(RW_FacialStuff.PawnSkinColorsModded).GetMethod("GetSkinColor", BindingFlags.Static | BindingFlags.Public);
 
+            MethodInfo coreMethod5 = typeof(RimWorld.PawnHairChooser).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo autoEquipMethod5 = typeof(RW_FacialStuff.PawnFaceMaker).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
 
             //       MethodInfo coreMethod2 = typeof(Verse.PawnRenderer).GetMethod("RenderPawnInternal",
             //           BindingFlags.Instance | BindingFlags.NonPublic,
@@ -135,6 +136,7 @@ namespace RW_FacialStuff
                 Detours.TryDetourFromTo(coreMethod2, autoEquipMethod2);
                 Detours.TryDetourFromTo(coreMethod3, autoEquipMethod3);
                 Detours.TryDetourFromTo(coreMethod4, autoEquipMethod4);
+                Detours.TryDetourFromTo(coreMethod5, autoEquipMethod5);
 
                 //        Detours.TryDetourFromTo(coreMethod30, autoEquipMethod30);
             }

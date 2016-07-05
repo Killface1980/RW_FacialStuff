@@ -1,27 +1,95 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DefPackage-HairDef>
+
   <HairDef>
-    <defName>AfroBald</defName>
-    <label>afrobald</label>
+    <defName>AfroBald1</defName>
+    <label>Afrobald1</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Afro_Bald</texPath>
-		<hairTags>
-			<li>Urban</li>
-		</hairTags>
+    <texPath>Hair/Afro_Bald1</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>MaleOnly</li>
+    </hairTags>
   </HairDef>
 
   <HairDef>
-    <defName>WavyBald</defName>
-    <label>wavybald</label>
+    <defName>AfroBald2</defName>
+    <label>Afrobald2</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Wavy_Bald</texPath>
+    <texPath>Hair/Afro_Bald2</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>AfroBald3</defName>
+    <label>Afrobald3</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Afro_Bald3</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>AfroBald4</defName>
+    <label>Afrobald4</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Afro_Bald4</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>WavyBald1</defName>
+    <label>wavybald1</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Wavy_Bald1</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>WavyBald2</defName>
+    <label>wavybald2</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Wavy_Bald2</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>WavyBald3</defName>
+    <label>wavybald3</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Wavy_Bald3</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>WavyBald4</defName>
+    <label>wavybald4</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Wavy_Bald4</texPath>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
 		</hairTags>
   </HairDef>
-
-
+  
   <HairDef>
     <defName>BraidedKnotBald</defName>
     <label>braided knot bald</label>

@@ -5,6 +5,8 @@ using Verse;
 
 namespace RW_FacialStuff.Defs
 {
+
+
     public class BeardDef : Def
     {
         public string texPathAverageNormal;
@@ -76,7 +78,6 @@ namespace RW_FacialStuff.Defs
         public HairGender hairGender = HairGender.Any;
 
     }
-
 
     public class LipDef : Def
     {
