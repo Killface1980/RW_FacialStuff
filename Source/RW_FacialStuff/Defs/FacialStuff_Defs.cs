@@ -1,5 +1,4 @@
 ﻿using RimWorld;
-using System;
 using System.Collections.Generic;
 using Verse;
 
@@ -41,9 +40,13 @@ namespace RW_FacialStuff.Defs
 
     public class SideburnDef : Def
     {
-        public string texPathAverage;
+        public string texPathAverageNormal;
+        public string texPathAveragePointy;
+        public string texPathAverageWide;
 
-        public string texPathNarrow;
+        public string texPathNarrowNormal;
+        public string texPathNarrowPointy;
+        public string texPathNarrowWide;
 
         public HairGender hairGender = HairGender.Any;
 

@@ -5,7 +5,6 @@ using System.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RimWorld;
 
 namespace RW_FacialStuff
 {
@@ -85,9 +84,6 @@ namespace RW_FacialStuff
                     _reinjectNeeded = false;
                     _reinjectTime = 0;
 
-#if LOG
-                    Log.Message("AutoEquip Injected");
-#endif
                     MapComponent_FacialStuff component = MapComponent_FacialStuff.Get;
                 }
             }
@@ -99,50 +95,32 @@ namespace RW_FacialStuff
 
 
             MethodInfo coreMethod = typeof(Verse.PawnGraphicSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
-            MethodInfo autoEquipMethod = typeof(RW_FacialStuff.PawnGraphicHairSet).GetMethod("ResolveAllGraphicsModded", BindingFlags.Instance | BindingFlags.Public);
-
-       //   MethodInfo coreMethod20 = typeof(GraphicDatabaseHeadRecords).GetMethod("BuildDatabaseIfNecessary", BindingFlags.Instance | BindingFlags.NonPublic);
-       //   MethodInfo autoEquipMethod20 = typeof(RW_FacialStuff.GraphicDatabaseHeadRecordsModded).GetMethod("BuildDatabaseIfNecessary", BindingFlags.Instance | BindingFlags.NonPublic);
-
-       //   MethodInfo coreMethod30 = typeof(Verse.PawnRenderer).GetMethod("RenderPawnAt", BindingFlags.Instance | BindingFlags.Public);
-       //   MethodInfo autoEquipMethod30 = typeof(RW_FacialStuff.FS_PawnRenderer).GetMethod("RenderFacialPawnAt", BindingFlags.Instance | BindingFlags.Public);
-
-            //    MethodInfo coreMethod2 = typeof(RimWorld.Pawn_StoryTracker).GetMethod("ExposeData", BindingFlags.CreateInstance | BindingFlags.Public);
-            //    MethodInfo autoEquipMethod2 = typeof(RW_FacialStuff.Pawn_StoryTrackerModded).GetMethod("ExposeData", BindingFlags.CreateInstance | BindingFlags.Public);
-
+            MethodInfo moddedHeadMethod = typeof(RW_FacialStuff.PawnGraphicHairSet).GetMethod("ResolveAllGraphicsModded", BindingFlags.Instance | BindingFlags.Public);
 
             MethodInfo coreMethod2 = typeof(Verse.GraphicDatabaseHeadRecords).GetMethod("GetHeadRandom", BindingFlags.Static | BindingFlags.Public);
-            MethodInfo autoEquipMethod2 = typeof(RW_FacialStuff.GraphicDatabaseHeadRecordsModded).GetMethod("GetHeadRandomUnmodded", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo moddedHeadMethod2 = typeof(RW_FacialStuff.GraphicDatabaseHeadRecordsModded).GetMethod("GetHeadRandomUnmodded", BindingFlags.Static | BindingFlags.Public);
 
             MethodInfo coreMethod3 = typeof(RimWorld.PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
-            MethodInfo autoEquipMethod3 = typeof(RW_FacialStuff.PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo moddedHeadMethod3 = typeof(RW_FacialStuff.PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
 
             MethodInfo coreMethod4 = typeof(RimWorld.PawnSkinColors).GetMethod("GetSkinColor", BindingFlags.Static | BindingFlags.Public);
-            MethodInfo autoEquipMethod4 = typeof(RW_FacialStuff.PawnSkinColorsModded).GetMethod("GetSkinColor", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo moddedHeadMethod4 = typeof(RW_FacialStuff.PawnSkinColorsModded).GetMethod("GetSkinColor", BindingFlags.Static | BindingFlags.Public);
 
             MethodInfo coreMethod5 = typeof(RimWorld.PawnHairChooser).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
-            MethodInfo autoEquipMethod5 = typeof(RW_FacialStuff.PawnFaceMaker).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
-
-            //       MethodInfo coreMethod2 = typeof(Verse.PawnRenderer).GetMethod("RenderPawnInternal",
-            //           BindingFlags.Instance | BindingFlags.NonPublic,
-            //           Type.DefaultBinder, new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode) }, null);
-            //
-            //       MethodInfo autoEquipMethod2 = typeof(FS_PawnRenderer).GetMethod("RenderPawnInternal", BindingFlags.Instance | BindingFlags.NonPublic,
-            //           Type.DefaultBinder, new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode) }, null);
+            MethodInfo moddedHeadMethod5 = typeof(RW_FacialStuff.PawnFaceMaker).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
 
             try
             {
-                Detours.TryDetourFromTo(coreMethod, autoEquipMethod);
-                Detours.TryDetourFromTo(coreMethod2, autoEquipMethod2);
-                Detours.TryDetourFromTo(coreMethod3, autoEquipMethod3);
-                Detours.TryDetourFromTo(coreMethod4, autoEquipMethod4);
-                Detours.TryDetourFromTo(coreMethod5, autoEquipMethod5);
+                Detours.TryDetourFromTo(coreMethod, moddedHeadMethod);
+                Detours.TryDetourFromTo(coreMethod2, moddedHeadMethod2);
+                Detours.TryDetourFromTo(coreMethod3, moddedHeadMethod3);
+                Detours.TryDetourFromTo(coreMethod4, moddedHeadMethod4);
+                Detours.TryDetourFromTo(coreMethod5, moddedHeadMethod5);
 
-                //        Detours.TryDetourFromTo(coreMethod30, autoEquipMethod30);
             }
             catch (Exception)
             {
-                Log.Error("Could not Detour Graphics.");
+                Log.Error("Could not detour graphics");
                 throw;
             }
 

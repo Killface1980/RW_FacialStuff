@@ -2,10 +2,10 @@
 <DefPackage-HairDef>
 
   <HairDef>
-    <defName>AfroBald1</defName>
-    <label>Afrobald1</label>
+    <defName>AfroBald01</defName>
+    <label>Afrobald01</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Afro_Bald1</texPath>
+    <texPath>Hair/Afro_Bald/Afro_Bald01</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -14,10 +14,10 @@
   </HairDef>
 
   <HairDef>
-    <defName>AfroBald2</defName>
-    <label>Afrobald2</label>
+    <defName>AfroBald02</defName>
+    <label>Afrobald02</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Afro_Bald2</texPath>
+    <texPath>Hair/Afro_Bald/Afro_Bald02</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -26,10 +26,10 @@
   </HairDef>
 
   <HairDef>
-    <defName>AfroBald3</defName>
-    <label>Afrobald3</label>
+    <defName>AfroBald03</defName>
+    <label>Afrobald03</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Afro_Bald3</texPath>
+    <texPath>Hair/Afro_Bald/Afro_Bald03</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -38,10 +38,10 @@
   </HairDef>
 
   <HairDef>
-    <defName>AfroBald4</defName>
-    <label>Afrobald4</label>
+    <defName>AfroBald04</defName>
+    <label>Afrobald04</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Afro_Bald4</texPath>
+    <texPath>Hair/Afro_Bald/Afro_Bald04</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -49,11 +49,83 @@
     </hairTags>
   </HairDef>
 
+  <HairDef>
+    <defName>AfroBald05</defName>
+    <label>Afrobald05</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Afro_Bald/Afro_Bald05</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>AfroBald06</defName>
+    <label>Afrobald06</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Afro_Bald/Afro_Bald06</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>AfroBald07</defName>
+    <label>Afrobald07</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Afro_Bald/Afro_Bald07</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>AfroBald08</defName>
+    <label>Afrobald08</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Afro_Bald/Afro_Bald08</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>AfroBald09</defName>
+    <label>Afrobald09</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Afro_Bald/Afro_Bald09</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>AfroBald10</defName>
+    <label>Afrobald10</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Afro_Bald/Afro_Bald10</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+  
   <HairDef>
     <defName>WavyBald01</defName>
     <label>wavybald01</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Wavy_Bald01</texPath>
+    <texPath>Hair/Wavy_Bald/Wavy_Bald01</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -65,7 +137,7 @@
     <defName>WavyBald02</defName>
     <label>wavybald02</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Wavy_Bald02</texPath>
+    <texPath>Hair/Wavy_Bald/Wavy_Bald02</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -77,7 +149,7 @@
     <defName>WavyBald03</defName>
     <label>wavybald03</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Wavy_Bald03</texPath>
+    <texPath>Hair/Wavy_Bald/Wavy_Bald03</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -89,7 +161,7 @@
     <defName>WavyBald04</defName>
     <label>wavybald04</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Wavy_Bald04</texPath>
+    <texPath>Hair/Wavy_Bald/Wavy_Bald04</texPath>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -101,68 +173,192 @@
     <defName>WavyBald05</defName>
     <label>wavybald05</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Wavy_Bald05</texPath>
+    <texPath>Hair/Wavy_Bald/Wavy_Bald05</texPath>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
       <li>MaleOnly</li>
 		</hairTags>
   </HairDef>
+  
   <HairDef>
     <defName>WavyBald06</defName>
     <label>wavybald06</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Wavy_Bald06</texPath>
+    <texPath>Hair/Wavy_Bald/Wavy_Bald06</texPath>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
       <li>MaleOnly</li>
 		</hairTags>
   </HairDef>
+  
   <HairDef>
     <defName>WavyBald07</defName>
     <label>wavybald07</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Wavy_Bald07</texPath>
+    <texPath>Hair/Wavy_Bald/Wavy_Bald07</texPath>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
       <li>MaleOnly</li>
 		</hairTags>
   </HairDef>
+  
   <HairDef>
     <defName>WavyBald08</defName>
     <label>wavybald08</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Wavy_Bald08</texPath>
+    <texPath>Hair/Wavy_Bald/Wavy_Bald08</texPath>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
       <li>MaleOnly</li>
 		</hairTags>
   </HairDef>
+  
   <HairDef>
     <defName>WavyBald09</defName>
     <label>wavybald09</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Wavy_Bald09</texPath>
+    <texPath>Hair/Wavy_Bald/Wavy_Bald09</texPath>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
       <li>MaleOnly</li>
 		</hairTags>
   </HairDef>
+  
   <HairDef>
     <defName>WavyBald10</defName>
     <label>wavybald10</label>
     <hairGender>Male</hairGender>
-    <texPath>Hair/Wavy_Bald10</texPath>
+    <texPath>Hair/Wavy_Bald/Wavy_Bald10</texPath>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
       <li>MaleOnly</li>
 		</hairTags>
-  </HairDef>  
+  </HairDef>
+
+  <HairDef>
+    <defName>TopdogBald01</defName>
+    <label>topdogbald01</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Topdog_Bald/Topdog_Bald01</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Punk</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>TopdogBald02</defName>
+    <label>topdogbald02</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Topdog_Bald/Topdog_Bald02</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Punk</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>TopdogBald03</defName>
+    <label>topdogbald03</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Topdog_Bald/Topdog_Bald03</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Punk</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>TopdogBald04</defName>
+    <label>topdogbald04</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Topdog_Bald/Topdog_Bald04</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Punk</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>TopdogBald05</defName>
+    <label>topdogbald05</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Topdog_Bald/Topdog_Bald05</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Punk</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+  <HairDef>
+    <defName>TopdogBald06</defName>
+    <label>topdogbald06</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Topdog_Bald/Topdog_Bald06</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Punk</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+  <HairDef>
+    <defName>TopdogBald07</defName>
+    <label>topdogbald07</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Topdog_Bald/Topdog_Bald07</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Punk</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>TopdogBald08</defName>
+    <label>topdogbald08</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Topdog_Bald/Topdog_Bald08</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Punk</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>TopdogBald09</defName>
+    <label>topdogbald09</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Topdog_Bald/Topdog_Bald09</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Punk</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <defName>TopdogBald10</defName>
+    <label>topdogbald10</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Topdog_Bald/Topdog_Bald10</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Punk</li>
+      <li>MaleOnly</li>
+    </hairTags>
+  </HairDef>
+  
   <HairDef>
     <defName>BraidedKnotBald</defName>
     <label>braided knot bald</label>

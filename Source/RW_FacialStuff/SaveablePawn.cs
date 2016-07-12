@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using RW_FacialStuff.Defs;
+﻿using RW_FacialStuff.Defs;
 using Verse;
 
 namespace RW_FacialStuff

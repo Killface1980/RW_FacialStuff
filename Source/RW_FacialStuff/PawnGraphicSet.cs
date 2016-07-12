@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -11,9 +10,6 @@ namespace RW_FacialStuff
 #pragma warning disable CS0824 // Konstruktor ist extern markiert
         public extern PawnGraphicHairSet();
 #pragma warning restore CS0824 // Konstruktor ist extern markiert
-
-        public static Dictionary<string, Graphic> textureCache = new Dictionary<string, Graphic>();
-
 
    //   public static Graphic Cache(Pawn pawn, string texturePath, Color skincolor)
    //   {

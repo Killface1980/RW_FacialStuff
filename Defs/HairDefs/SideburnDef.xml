@@ -6,8 +6,12 @@
   <SideburnDef>
     <label>SA-Seventies</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Sideburns/Sideburn_Average_Seventies</texPathAverage>
-    <texPathNarrow>Sideburns/Sideburn_Narrow_Seventies</texPathNarrow>
+    <texPathAverageNormal>Sideburns/Sideburn_Average_Normal_Seventies</texPathAverageNormal>
+    <texPathAveragePointy>Sideburns/Sideburn_Average_Pointy_Seventies</texPathAveragePointy>
+    <texPathAverageWide>Sideburns/Sideburn_Average_Wide_Seventies</texPathAverageWide>
+    <texPathNarrowNormal>Sideburns/Sideburn_Narrow_Normal_Seventies</texPathNarrowNormal>
+    <texPathNarrowPointy>Sideburns/Sideburn_Narrow_Pointy_Seventies</texPathNarrowPointy>
+    <texPathNarrowWide>Sideburns/Sideburn_Narrow_Wide_Seventies</texPathNarrowWide>
     <defName>Sideburn_Seventies</defName>
     <hairTags>
       <li>Urban</li>
@@ -20,8 +24,12 @@
   <SideburnDef>
     <label>SA-Hipster</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Sideburns/Sideburn_Average_Hipster</texPathAverage>
-    <texPathNarrow>Sideburns/Sideburn_Narrow_Hipster</texPathNarrow>
+    <texPathAverageNormal>Sideburns/Sideburn_Average_Normal_Hipster</texPathAverageNormal>
+    <texPathAveragePointy>Sideburns/Sideburn_Average_Pointy_Hipster</texPathAveragePointy>
+    <texPathAverageWide>Sideburns/Sideburn_Average_Wide_Hipster</texPathAverageWide>
+    <texPathNarrowNormal>Sideburns/Sideburn_Narrow_Normal_Hipster</texPathNarrowNormal>
+    <texPathNarrowPointy>Sideburns/Sideburn_Narrow_Pointy_Hipster</texPathNarrowPointy>
+    <texPathNarrowWide>Sideburns/Sideburn_Narrow_Wide_Hipster</texPathNarrowWide>
     <defName>Sideburn_Hipster</defName>
     <hairTags>
       <li>Urban</li>
@@ -35,8 +43,12 @@
   <SideburnDef>
     <label>SA-Trekkie</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Sideburns/Sideburn_Average_Trekkie</texPathAverage>
-    <texPathNarrow>Sideburns/Sideburn_Narrow_Trekkie</texPathNarrow>
+    <texPathAverageNormal>Sideburns/Sideburn_Average_Normal_Trekkie</texPathAverageNormal>
+    <texPathAveragePointy>Sideburns/Sideburn_Average_Pointy_Trekkie</texPathAveragePointy>
+    <texPathAverageWide>Sideburns/Sideburn_Average_Wide_Trekkie</texPathAverageWide>
+    <texPathNarrowNormal>Sideburns/Sideburn_Narrow_Normal_Trekkie</texPathNarrowNormal>
+    <texPathNarrowPointy>Sideburns/Sideburn_Narrow_Pointy_Trekkie</texPathNarrowPointy>
+    <texPathNarrowWide>Sideburns/Sideburn_Narrow_Wide_Trekkie</texPathNarrowWide>
     <defName>Sideburn_Trekkie</defName>
     <hairTags>
       <li>Urban</li>
@@ -50,8 +62,12 @@
   <SideburnDef>
     <label>SA-Trimmed</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Sideburns/Sideburn_Average_Trimmed</texPathAverage>
-    <texPathNarrow>Sideburns/Sideburn_Narrow_Trimmed</texPathNarrow>
+    <texPathAverageNormal>Sideburns/Sideburn_Average_Normal_Trimmed</texPathAverageNormal>
+    <texPathAveragePointy>Sideburns/Sideburn_Average_Pointy_Trimmed</texPathAveragePointy>
+    <texPathAverageWide>Sideburns/Sideburn_Average_Wide_Trimmed</texPathAverageWide>
+    <texPathNarrowNormal>Sideburns/Sideburn_Narrow_Normal_Trimmed</texPathNarrowNormal>
+    <texPathNarrowPointy>Sideburns/Sideburn_Narrow_Pointy_Trimmed</texPathNarrowPointy>
+    <texPathNarrowWide>Sideburns/Sideburn_Narrow_Wide_Trimmed</texPathNarrowWide>
     <defName>Sideburn_Trimmed</defName>
     <hairTags>
       <li>Urban</li>
@@ -65,8 +81,12 @@
   <SideburnDef>
     <label>SA-Shaved</label>
     <hairGender>MaleUsually</hairGender>
-    <texPathAverage>Sideburns/Sideburn_Shaved</texPathAverage>
-    <texPathNarrow>Sideburns/Sideburn_Shaved</texPathNarrow>
+    <texPathAverageNormal>Sideburns/Sideburn_Shaved</texPathAverageNormal>
+    <texPathAveragePointy>Sideburns/Sideburn_Shaved</texPathAveragePointy>
+    <texPathAverageWide>Sideburns/Sideburn_Shaved</texPathAverageWide>
+    <texPathNarrowNormal>Sideburns/Sideburn_Shaved</texPathNarrowNormal>
+    <texPathNarrowPointy>Sideburns/Sideburn_Shaved</texPathNarrowPointy>
+    <texPathNarrowWide>Sideburns/Sideburn_Shaved</texPathNarrowWide>
     <defName>Sideburn_Shaved</defName>
     <hairTags>
       <li>Urban</li>
