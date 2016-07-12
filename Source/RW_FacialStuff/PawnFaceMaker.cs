@@ -390,8 +390,15 @@ namespace RW_FacialStuff
             {
                 return 100f;
             }
+
             if (pawn.gender == Gender.Male)
             {
+
+                if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeChronologicalYears < 30)
+                {
+                    return 0f;
+                }
+
                 switch (hair.hairGender)
                 {
                     case HairGender.Male:

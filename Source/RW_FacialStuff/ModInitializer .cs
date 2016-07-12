@@ -5,6 +5,7 @@ using System.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RimWorld;
 
 namespace RW_FacialStuff
 {
@@ -94,20 +95,20 @@ namespace RW_FacialStuff
         {
 
 
-            MethodInfo coreMethod = typeof(Verse.PawnGraphicSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
-            MethodInfo moddedHeadMethod = typeof(RW_FacialStuff.PawnGraphicHairSet).GetMethod("ResolveAllGraphicsModded", BindingFlags.Instance | BindingFlags.Public);
+            MethodInfo coreMethod = typeof(PawnGraphicSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
+            MethodInfo moddedHeadMethod = typeof(PawnGraphicSetModded).GetMethod("ResolveAllGraphicsModded", BindingFlags.Instance | BindingFlags.Public);
 
-            MethodInfo coreMethod2 = typeof(Verse.GraphicDatabaseHeadRecords).GetMethod("GetHeadRandom", BindingFlags.Static | BindingFlags.Public);
-            MethodInfo moddedHeadMethod2 = typeof(RW_FacialStuff.GraphicDatabaseHeadRecordsModded).GetMethod("GetHeadRandomUnmodded", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo coreMethod2 = typeof(GraphicDatabaseHeadRecords).GetMethod("GetHeadRandom", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo moddedHeadMethod2 = typeof(GraphicDatabaseHeadRecordsModded).GetMethod("GetHeadRandomUnmodded", BindingFlags.Static | BindingFlags.Public);
 
             MethodInfo coreMethod3 = typeof(RimWorld.PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
-            MethodInfo moddedHeadMethod3 = typeof(RW_FacialStuff.PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo moddedHeadMethod3 = typeof(PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
 
-            MethodInfo coreMethod4 = typeof(RimWorld.PawnSkinColors).GetMethod("GetSkinColor", BindingFlags.Static | BindingFlags.Public);
-            MethodInfo moddedHeadMethod4 = typeof(RW_FacialStuff.PawnSkinColorsModded).GetMethod("GetSkinColor", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo coreMethod4 = typeof(PawnSkinColors).GetMethod("GetSkinColor", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo moddedHeadMethod4 = typeof(PawnSkinColorsModded).GetMethod("GetSkinColor", BindingFlags.Static | BindingFlags.Public);
 
-            MethodInfo coreMethod5 = typeof(RimWorld.PawnHairChooser).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
-            MethodInfo moddedHeadMethod5 = typeof(RW_FacialStuff.PawnFaceMaker).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo coreMethod5 = typeof(PawnHairChooser).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo moddedHeadMethod5 = typeof(PawnFaceMaker).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
 
             try
             {

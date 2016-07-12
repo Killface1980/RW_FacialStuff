@@ -58,6 +58,7 @@
       <li>Urban</li>
       <li>Rural</li>
       <li>MaleOnly</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -70,6 +71,7 @@
       <li>Urban</li>
       <li>Rural</li>
       <li>MaleOnly</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -82,6 +84,7 @@
       <li>Urban</li>
       <li>Rural</li>
       <li>MaleOnly</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -94,6 +97,7 @@
       <li>Urban</li>
       <li>Rural</li>
       <li>MaleOnly</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -106,6 +110,7 @@
       <li>Urban</li>
       <li>Rural</li>
       <li>MaleOnly</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -118,6 +123,7 @@
       <li>Urban</li>
       <li>Rural</li>
       <li>MaleOnly</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
   
@@ -178,7 +184,8 @@
 			<li>Urban</li>
 			<li>Rural</li>
       <li>MaleOnly</li>
-		</hairTags>
+      <li>MaleOld</li>
+    </hairTags>
   </HairDef>
   
   <HairDef>
@@ -190,7 +197,8 @@
 			<li>Urban</li>
 			<li>Rural</li>
       <li>MaleOnly</li>
-		</hairTags>
+      <li>MaleOld</li>
+    </hairTags>
   </HairDef>
   
   <HairDef>
@@ -202,7 +210,8 @@
 			<li>Urban</li>
 			<li>Rural</li>
       <li>MaleOnly</li>
-		</hairTags>
+      <li>MaleOld</li>
+    </hairTags>
   </HairDef>
   
   <HairDef>
@@ -214,7 +223,8 @@
 			<li>Urban</li>
 			<li>Rural</li>
       <li>MaleOnly</li>
-		</hairTags>
+      <li>MaleOld</li>
+    </hairTags>
   </HairDef>
   
   <HairDef>
@@ -226,7 +236,8 @@
 			<li>Urban</li>
 			<li>Rural</li>
       <li>MaleOnly</li>
-		</hairTags>
+      <li>MaleOld</li>
+    </hairTags>
   </HairDef>
   
   <HairDef>
@@ -238,7 +249,8 @@
 			<li>Urban</li>
 			<li>Rural</li>
       <li>MaleOnly</li>
-		</hairTags>
+      <li>MaleOld</li>
+    </hairTags>
   </HairDef>
 
   <HairDef>
@@ -298,6 +310,7 @@
       <li>Urban</li>
       <li>Punk</li>
       <li>MaleOnly</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
   <HairDef>
@@ -309,6 +322,7 @@
       <li>Urban</li>
       <li>Punk</li>
       <li>MaleOnly</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
   <HairDef>
@@ -320,6 +334,7 @@
       <li>Urban</li>
       <li>Punk</li>
       <li>MaleOnly</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -332,6 +347,7 @@
       <li>Urban</li>
       <li>Punk</li>
       <li>MaleOnly</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -344,6 +360,7 @@
       <li>Urban</li>
       <li>Punk</li>
       <li>MaleOnly</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -356,6 +373,7 @@
       <li>Urban</li>
       <li>Punk</li>
       <li>MaleOnly</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
   
@@ -368,6 +386,7 @@
       <li>Punk</li>
       <li>Tribal</li>
       <li>MaleOnly</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -380,6 +399,7 @@
       <li>Urban</li>
       <li>Rural</li>
       <li>MaleOnly</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 

@@ -26,12 +26,12 @@ namespace RW_FacialStuff
         private static SideburnDef _saveableSideburn;
         private static TacheDef _saveableTache;
 
-        private static Color Skin01 = new Color(0.3882353f, 0.274509817f, 0.141176477f);
-        private static Color Skin02 = new Color(0.509803951f, 0.356862754f, 0.1882353f);
-        private static Color Skin03 = new Color(0.894117653f, 0.619607866f, 0.3529412f);
-        private static Color Skin04 = new Color(1f, 0.9372549f, 0.7411765f);
-        private static Color Skin05 = new Color(1f, 0.9372549f, 0.8352941f);
-        private static Color Skin06 = new Color(0.9490196f, 0.929411769f, 0.8784314f);
+        private static readonly Color Skin01 = new Color(0.3882353f, 0.274509817f, 0.141176477f);
+        private static readonly Color Skin02 = new Color(0.509803951f, 0.356862754f, 0.1882353f);
+        private static readonly Color Skin03 = new Color(0.894117653f, 0.619607866f, 0.3529412f);
+        private static readonly Color Skin04 = new Color(1f, 0.9372549f, 0.7411765f);
+        private static readonly Color Skin05 = new Color(1f, 0.9372549f, 0.8352941f);
+        private static readonly Color Skin06 = new Color(0.9490196f, 0.929411769f, 0.8784314f);
 
 
         public static List<HeadGraphicRecord> heads = new List<HeadGraphicRecord>();
@@ -714,7 +714,7 @@ namespace RW_FacialStuff
 
             }
             //Dark
-            if (hairColor == PawnHairColors._ColorMidnightBlack)
+            if (hairColor == PawnHairColors.HairMidnightBlack)
             {
                 _hairColorNamed = "Dark01";
                 return;
@@ -726,7 +726,7 @@ namespace RW_FacialStuff
             //    return;
             //}
 
-            if (hairColor == PawnHairColors._ColorMediumDarkBrown)
+            if (hairColor == PawnHairColors.HairMediumDarkBrown)
             {
                 _hairColorNamed = "Dark03";
                 return;
@@ -739,7 +739,7 @@ namespace RW_FacialStuff
             //}
 
             //Reg Named
-            if (hairColor == PawnHairColors._ColorTerraCotta)
+            if (hairColor == PawnHairColors.HairTerraCotta)
             {
                 _hairColorNamed = "Color01";
                 return;
@@ -751,7 +751,7 @@ namespace RW_FacialStuff
             //    return;
             //}
 
-            if (hairColor == PawnHairColors._ColorYellowBlonde)
+            if (hairColor == PawnHairColors.HairYellowBlonde)
             {
                 _hairColorNamed = "Color03";
                 return;
