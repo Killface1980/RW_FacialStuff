@@ -48,25 +48,25 @@ namespace RW_FacialStuff
             {
                 var rand = Rand.Value;
 
-                if (rand < 0.1f)
-                    return new Color(HairDarkPurple.r*Rand.Range(0.75f, 1.25f), HairDarkPurple.g * Rand.Range(0.75f, 1.25f), HairDarkPurple.b * Rand.Range(0.75f, 1.25f), 255); 
+           //   if (rand < 0.1f)
+           //       return new Color(HairDarkPurple.r*Rand.Range(0.75f, 1.25f), HairDarkPurple.g * Rand.Range(0.75f, 1.25f), HairDarkPurple.b * Rand.Range(0.75f, 1.25f), 255); 
 
                 if (rand < 0.2f)
                     return new Color(HairBlueSteel.r * Rand.Range(0.75f, 1.25f), HairBlueSteel.g * Rand.Range(0.75f, 1.25f), HairBlueSteel.b * Rand.Range(0.75f, 1.25f), 255);
-                if (rand < 0.3f)
-                    return new Color(HairBurgundyBistro.r * Rand.Range(0.75f, 1.25f), HairBurgundyBistro.g * Rand.Range(0.75f, 1.25f), HairBurgundyBistro.b * Rand.Range(0.75f, 1.25f), 255);
+           //   if (rand < 0.3f)
+           //       return new Color(HairBurgundyBistro.r * Rand.Range(0.75f, 1.25f), HairBurgundyBistro.g * Rand.Range(0.75f, 1.25f), HairBurgundyBistro.b * Rand.Range(0.75f, 1.25f), 255);
                 if (rand < 0.4f)
                     return new Color(HairGreenGrape.r * Rand.Range(0.75f, 1.25f), HairGreenGrape.g * Rand.Range(0.75f, 1.25f), HairGreenGrape.b * Rand.Range(0.75f, 1.25f), 255);
-                if (rand < 0.5f)
-                    return new Color(HairMysticTurquois.r * Rand.Range(0.75f, 1.25f), HairMysticTurquois.g * Rand.Range(0.75f, 1.25f), HairMysticTurquois.b * Rand.Range(0.75f, 1.25f), 255);
                 if (rand < 0.6f)
-                    return new Color(HairPinkPearl.r * Rand.Range(0.75f, 1.25f), HairPinkPearl.g * Rand.Range(0.75f, 1.25f), HairPinkPearl.b * Rand.Range(0.75f, 1.25f), 255);
-                if (rand < 0.7f)
-                    return new Color(HairPurplePassion.r * Rand.Range(0.75f, 1.25f), HairPurplePassion.g * Rand.Range(0.75f, 1.25f), HairPurplePassion.b * Rand.Range(0.75f, 1.25f), 255);
+                    return new Color(HairMysticTurquois.r * Rand.Range(0.75f, 1.25f), HairMysticTurquois.g * Rand.Range(0.75f, 1.25f), HairMysticTurquois.b * Rand.Range(0.75f, 1.25f), 255);
+           //   if (rand < 0.6f)
+           //       return new Color(HairPinkPearl.r * Rand.Range(0.75f, 1.25f), HairPinkPearl.g * Rand.Range(0.75f, 1.25f), HairPinkPearl.b * Rand.Range(0.75f, 1.25f), 255);
                 if (rand < 0.8f)
-                    return new Color(HairRosaRosa.r * Rand.Range(0.75f, 1.25f), HairRosaRosa.g * Rand.Range(0.75f, 1.25f), HairRosaRosa.b * Rand.Range(0.75f, 1.25f), 255);
-                if (rand < 0.9f)
-                    return new Color(HairRubyRed.r * Rand.Range(0.75f, 1.25f), HairRubyRed.g * Rand.Range(0.75f, 1.25f), HairRubyRed.b * Rand.Range(0.75f, 1.25f), 255);
+                    return new Color(HairPurplePassion.r * Rand.Range(0.75f, 1.25f), HairPurplePassion.g * Rand.Range(0.75f, 1.25f), HairPurplePassion.b * Rand.Range(0.75f, 1.25f), 255);
+          //    if (rand < 0.8f)
+          //        return new Color(HairRosaRosa.r * Rand.Range(0.75f, 1.25f), HairRosaRosa.g * Rand.Range(0.75f, 1.25f), HairRosaRosa.b * Rand.Range(0.75f, 1.25f), 255);
+          //    if (rand < 0.9f)
+          //        return new Color(HairRubyRed.r * Rand.Range(0.75f, 1.25f), HairRubyRed.g * Rand.Range(0.75f, 1.25f), HairRubyRed.b * Rand.Range(0.75f, 1.25f), 255);
                 return new Color(HairUltraViolet.r * Rand.Range(0.75f, 1.25f), HairUltraViolet.g * Rand.Range(0.75f, 1.25f), HairUltraViolet.b * Rand.Range(0.75f, 1.25f), 255);
 
 
