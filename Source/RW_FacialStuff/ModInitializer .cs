@@ -12,10 +12,13 @@ namespace RW_FacialStuff
 
     public class ModInitializer : ITab
     {
+        protected GameObject modInitializerControllerObject;
 
         public ModInitializer()
         {
-
+            modInitializerControllerObject = new GameObject("BeardyFaces");
+            modInitializerControllerObject.AddComponent<ModInitializerBehaviour>();
+            UnityEngine.Object.DontDestroyOnLoad((UnityEngine.Object)modInitializerControllerObject);
         }
 
         public static IEnumerable<string> GraphicNamesInFolder(string folderPath)
@@ -83,14 +86,7 @@ namespace RW_FacialStuff
             }
         }
 
-        protected GameObject modInitializerControllerObject;
 
-        public void Awake()
-        {
-            modInitializerControllerObject = new GameObject("BeardyFaces");
-            modInitializerControllerObject.AddComponent<ModInitializerBehaviour>();
-            UnityEngine.Object.DontDestroyOnLoad((UnityEngine.Object)modInitializerControllerObject);            
-        }
 
         public void Start()
         {
