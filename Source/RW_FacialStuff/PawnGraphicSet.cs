@@ -43,17 +43,7 @@ namespace RW_FacialStuff
               
               if (!pawnSave.optimized)
                   GraphicDatabaseHeadRecordsModded.AddCustomizedHead(pawn, pawn.story.SkinColor, pawn.story.hairColor, pawn.story.HeadGraphicPath);
-
-
                 headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, pawn.story.SkinColor, pawn.story.hairColor);
-
-             // for (int j = 0; j < apparelGraphics.Count; j++)
-             // {
-             //     if (apparelGraphics[j].sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
-             //     {
-             //         headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawnSave.GraphicPathOriginal, pawn.story.hairColor, pawn.story.SkinColor);
-             //     }
-             // }
                 desiccatedHeadGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, RottingColor, RottingColor);
                 skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
 

@@ -8,7 +8,7 @@ namespace RW_FacialStuff
     public class MapComponent_FacialStuff : MapComponent
     {
 
-        public List<SaveablePawn> PawnCache = new List<SaveablePawn>();
+        public  List<SaveablePawn> PawnCache = new List<SaveablePawn>();
 
         public static MapComponent_FacialStuff Get
         {
