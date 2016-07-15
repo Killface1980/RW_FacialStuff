@@ -2,7 +2,7 @@
 
 
 <DefPackage-TacheDef>
-  <TacheDef>
+  <RW_FacialStuff.Defs.TacheDef>
     <label>MA-Deluxe</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Deluxe</texPathAverageNormal>
@@ -19,9 +19,9 @@
       <li>Tribal</li>
     </hairTags>
   
-</TacheDef>
+</RW_FacialStuff.Defs.TacheDef>
 
-  <TacheDef>
+  <RW_FacialStuff.Defs.TacheDef>
     <label>MA-Walrus</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Walrus</texPathAverageNormal>
@@ -38,9 +38,9 @@
       <li>Tribal</li>
     </hairTags>
 
-  </TacheDef>
+  </RW_FacialStuff.Defs.TacheDef>
 
-  <TacheDef>
+  <RW_FacialStuff.Defs.TacheDef>
     <label>MA-Ming</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Ming</texPathAverageNormal>
@@ -58,9 +58,9 @@
     </hairTags>
 
 
-  </TacheDef>
+  </RW_FacialStuff.Defs.TacheDef>
 
-  <TacheDef>
+  <RW_FacialStuff.Defs.TacheDef>
     <label>MA-Ranger</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Ranger</texPathAverageNormal>
@@ -77,9 +77,9 @@
       <li>Tribal</li>
     </hairTags>
 
-  </TacheDef>
+  </RW_FacialStuff.Defs.TacheDef>
 
-  <TacheDef>
+  <RW_FacialStuff.Defs.TacheDef>
     <label>MA-Handlebar</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Handlebar</texPathAverageNormal>
@@ -95,9 +95,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </TacheDef>
+  </RW_FacialStuff.Defs.TacheDef>
 
-  <TacheDef>
+  <RW_FacialStuff.Defs.TacheDef>
     <label>MA-Shaved</label>
     <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Moustaches/Moustache_Shaved</texPathAverageNormal>
@@ -113,7 +113,6 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </TacheDef>
-
+  </RW_FacialStuff.Defs.TacheDef>
 
 </DefPackage-TacheDef>

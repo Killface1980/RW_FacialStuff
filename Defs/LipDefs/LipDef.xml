@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DefPackage-LipDef>
 
-  <LipDef>
+  <RW_FacialStuff.Defs.LipDef>
 
     <label>EFA-Big</label>
     <hairGender>Female</hairGender>
@@ -14,9 +14,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </LipDef>
+  </RW_FacialStuff.Defs.LipDef>
 
-  <LipDef>
+  <RW_FacialStuff.Defs.LipDef>
     <label>EFA-Default</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Lips/Female/Lip_Female_Average_Default</texPathAverage>
@@ -28,9 +28,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </LipDef>
+  </RW_FacialStuff.Defs.LipDef>
 
-  <LipDef>
+  <RW_FacialStuff.Defs.LipDef>
     <label>EFA-Flat</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Lips/Female/Lip_Female_Average_Flat</texPathAverage>
@@ -42,9 +42,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </LipDef>
+  </RW_FacialStuff.Defs.LipDef>
 
-  <LipDef>
+  <RW_FacialStuff.Defs.LipDef>
     <label>EFA-Large</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Lips/Female/Lip_Female_Average_Large</texPathAverage>
@@ -56,9 +56,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </LipDef>
+  </RW_FacialStuff.Defs.LipDef>
 
-  <LipDef>
+  <RW_FacialStuff.Defs.LipDef>
     <label>EFA-Medium</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Lips/Female/Lip_Female_Average_Medium</texPathAverage>
@@ -70,7 +70,6 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </LipDef>
-
+  </RW_FacialStuff.Defs.LipDef>
 
 </DefPackage-LipDef>

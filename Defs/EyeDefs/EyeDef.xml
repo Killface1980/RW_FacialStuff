@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DefPackage-EyeDef>
 
-  <EyeDef>
+  <RW_FacialStuff.Defs.EyeDef>
     <label>EFA-Big</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Eyes/Female/Eye_Female_Average_Big</texPathAverage>
@@ -13,9 +13,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </EyeDef>
+  </RW_FacialStuff.Defs.EyeDef>
 
-  <EyeDef>
+  <RW_FacialStuff.Defs.EyeDef>
     <label>EFA-Default</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Eyes/Female/Eye_Female_Average_Default</texPathAverage>
@@ -27,9 +27,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </EyeDef>
+  </RW_FacialStuff.Defs.EyeDef>
 
-  <EyeDef>
+  <RW_FacialStuff.Defs.EyeDef>
     <label>EFA-Flat</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Eyes/Female/Eye_Female_Average_Flat</texPathAverage>
@@ -41,9 +41,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </EyeDef>
+  </RW_FacialStuff.Defs.EyeDef>
 
-  <EyeDef>
+  <RW_FacialStuff.Defs.EyeDef>
     <label>EFA-Large</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Eyes/Female/Eye_Female_Average_Large</texPathAverage>
@@ -55,9 +55,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </EyeDef>
+  </RW_FacialStuff.Defs.EyeDef>
 
-  <EyeDef>
+  <RW_FacialStuff.Defs.EyeDef>
     <label>EFA-Medium</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Eyes/Female/Eye_Female_Average_Medium</texPathAverage>
@@ -69,10 +69,10 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </EyeDef>
+  </RW_FacialStuff.Defs.EyeDef>
 
 
-  <EyeDef>
+  <RW_FacialStuff.Defs.EyeDef>
     <label>EMA-Big</label>
     <hairGender>Male</hairGender>
     <texPathAverage>Eyes/Male/Eye_Male_Average_Big</texPathAverage>
@@ -84,9 +84,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </EyeDef>
+  </RW_FacialStuff.Defs.EyeDef>
 
-  <EyeDef>
+  <RW_FacialStuff.Defs.EyeDef>
     <label>EMA-Default</label>
     <hairGender>Male</hairGender>
     <texPathAverage>Eyes/Male/Eye_Male_Average_Default</texPathAverage>
@@ -98,9 +98,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </EyeDef>
+  </RW_FacialStuff.Defs.EyeDef>
 
-  <EyeDef>
+  <RW_FacialStuff.Defs.EyeDef>
     <label>EMA-Flat</label>
     <hairGender>Male</hairGender>
     <texPathAverage>Eyes/Male/Eye_Male_Average_Flat</texPathAverage>
@@ -112,9 +112,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </EyeDef>
+  </RW_FacialStuff.Defs.EyeDef>
 
-  <EyeDef>
+  <RW_FacialStuff.Defs.EyeDef>
     <label>EMA-Large</label>
     <hairGender>Male</hairGender>
     <texPathAverage>Eyes/Male/Eye_Male_Average_Large</texPathAverage>
@@ -126,9 +126,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </EyeDef>
+  </RW_FacialStuff.Defs.EyeDef>
 
-  <EyeDef>
+  <RW_FacialStuff.Defs.EyeDef>
     <label>EMA-Medium</label>
     <hairGender>Male</hairGender>
     <texPathAverage>Eyes/Male/Eye_Male_Average_Medium</texPathAverage>
@@ -140,6 +140,6 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </EyeDef>
+  </RW_FacialStuff.Defs.EyeDef>
 
 </DefPackage-EyeDef>

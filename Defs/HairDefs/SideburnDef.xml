@@ -3,7 +3,7 @@
 
 <DefPackage-SideburnDef>
 
-  <SideburnDef>
+  <RW_FacialStuff.Defs.SideburnDef>
     <label>SA-Seventies</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Sideburns/Sideburn_Average_Normal_Seventies</texPathAverageNormal>
@@ -19,9 +19,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </SideburnDef>
+  </RW_FacialStuff.Defs.SideburnDef>
 
-  <SideburnDef>
+  <RW_FacialStuff.Defs.SideburnDef>
     <label>SA-Hipster</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Sideburns/Sideburn_Average_Normal_Hipster</texPathAverageNormal>
@@ -38,9 +38,9 @@
       <li>Tribal</li>
     </hairTags>
 
-  </SideburnDef>
+  </RW_FacialStuff.Defs.SideburnDef>
 
-  <SideburnDef>
+  <RW_FacialStuff.Defs.SideburnDef>
     <label>SA-Trekkie</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Sideburns/Sideburn_Average_Normal_Trekkie</texPathAverageNormal>
@@ -57,9 +57,9 @@
       <li>Tribal</li>
     </hairTags>
 
-  </SideburnDef>
+  </RW_FacialStuff.Defs.SideburnDef>
 
-  <SideburnDef>
+  <RW_FacialStuff.Defs.SideburnDef>
     <label>SA-Trimmed</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Sideburns/Sideburn_Average_Normal_Trimmed</texPathAverageNormal>
@@ -76,9 +76,9 @@
       <li>Tribal</li>
     </hairTags>
 
-  </SideburnDef>
+  </RW_FacialStuff.Defs.SideburnDef>
 
-  <SideburnDef>
+  <RW_FacialStuff.Defs.SideburnDef>
     <label>SA-Shaved</label>
     <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Sideburns/Sideburn_Shaved</texPathAverageNormal>
@@ -94,6 +94,6 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </SideburnDef>
+  </RW_FacialStuff.Defs.SideburnDef>
 
 </DefPackage-SideburnDef>

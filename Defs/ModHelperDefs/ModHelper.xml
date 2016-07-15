@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-  <ModHelperDef>
+  <CommunityCoreLibrary.ModHelperDef>
     <defName>RW_FacialStuff</defName>
     <ModName>RW_FacialStuff</ModName>
     <minCCLversion>0.14.0</minCCLversion>
@@ -8,5 +8,5 @@
 
     </SpecialInjectors>
 
-  </ModHelperDef>
+  </CommunityCoreLibrary.ModHelperDef>
 </Defs>

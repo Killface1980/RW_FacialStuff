@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DefPackage-WrinkleDef>
 
-  <WrinkleDef>
+  <RW_FacialStuff.Defs.WrinkleDef>
     <label>Wrinkles_Default_Female</label>
     <hairGender>Female</hairGender>
     <texPathAverageNormal>Wrinkles/Wrinkles_Average_Normal_Female</texPathAverageNormal>
@@ -11,9 +11,9 @@
     <texPathNarrowPointy>Wrinkles/Wrinkles_Narrow_Pointy_Female</texPathNarrowPointy>
     <texPathNarrowWide>Wrinkles/Wrinkles_Narrow_Wide_Female</texPathNarrowWide>
     <defName>Wrinkles_Default_Female</defName>
-  </WrinkleDef>
-  
-  <WrinkleDef>
+  </RW_FacialStuff.Defs.WrinkleDef>
+
+  <RW_FacialStuff.Defs.WrinkleDef>
     <label>Wrinkles_Default_Male</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Wrinkles/Wrinkles_Average_Normal_Male</texPathAverageNormal>
@@ -23,6 +23,6 @@
     <texPathNarrowPointy>Wrinkles/Wrinkles_Narrow_Pointy_Male</texPathNarrowPointy>
     <texPathNarrowWide>Wrinkles/Wrinkles_Narrow_Wide_Male</texPathNarrowWide>
     <defName>Wrinkles_Default_Male</defName>
-  </WrinkleDef>
+  </RW_FacialStuff.Defs.WrinkleDef>
 
 </DefPackage-WrinkleDef>

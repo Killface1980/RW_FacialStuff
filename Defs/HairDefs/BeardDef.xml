@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DefPackage-BeardDef>
 
-  <BeardDef>
+  <RW_FacialStuff.Defs.BeardDef>
     <label>BA-Amish</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_Amish</texPathAverageNormal>
@@ -17,9 +17,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </BeardDef>
+  </RW_FacialStuff.Defs.BeardDef>
 
-  <BeardDef>
+  <RW_FacialStuff.Defs.BeardDef>
     <label>BA-Methusalem</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_Methusalem</texPathAverageNormal>
@@ -35,9 +35,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </BeardDef>
+  </RW_FacialStuff.Defs.BeardDef>
 
-  <BeardDef>
+  <RW_FacialStuff.Defs.BeardDef>
     <label>BA-ZZTop</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_ZZTop</texPathAverageNormal>
@@ -53,9 +53,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </BeardDef>
+  </RW_FacialStuff.Defs.BeardDef>
 
-  <BeardDef>
+  <RW_FacialStuff.Defs.BeardDef>
     <label>BA-Santa</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_Santa</texPathAverageNormal>
@@ -71,9 +71,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </BeardDef>
-  
-  <BeardDef>
+  </RW_FacialStuff.Defs.BeardDef>
+
+  <RW_FacialStuff.Defs.BeardDef>
     <label>BA-Shaved</label>
     <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Beards/Beard_Shaved</texPathAverageNormal>
@@ -89,6 +89,6 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </BeardDef>
+  </RW_FacialStuff.Defs.BeardDef>
 
 </DefPackage-BeardDef>
