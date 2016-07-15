@@ -2,7 +2,6 @@
 <DefPackage-EyeDef>
 
   <EyeDef>
-
     <label>EFA-Big</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Eyes/Female/Eye_Female_Average_Big</texPathAverage>

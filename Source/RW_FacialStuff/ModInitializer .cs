@@ -12,17 +12,10 @@ namespace RW_FacialStuff
 
     public class ModInitializer : ITab
     {
-        protected GameObject modInitializerControllerObject;
 
         public ModInitializer()
         {
-            modInitializerControllerObject = new GameObject("BeardyFaces");
-            modInitializerControllerObject.AddComponent<ModInitializerBehaviour>();
-            UnityEngine.Object.DontDestroyOnLoad((UnityEngine.Object)modInitializerControllerObject);
 
-            MethodInfo method = typeof(GraphicDatabaseUtility).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
-            MethodInfo method2 = typeof(ModInitializer).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
-            Detours.TryDetourFromTo(method, method2);
         }
 
         public static IEnumerable<string> GraphicNamesInFolder(string folderPath)
@@ -90,10 +83,18 @@ namespace RW_FacialStuff
             }
         }
 
+        protected GameObject modInitializerControllerObject;
 
         public void Start()
         {
 
+            modInitializerControllerObject = new GameObject("BeardyFaces");
+            modInitializerControllerObject.AddComponent<ModInitializerBehaviour>();
+            UnityEngine.Object.DontDestroyOnLoad((UnityEngine.Object)modInitializerControllerObject);
+
+            MethodInfo method = typeof(GraphicDatabaseUtility).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo method2 = typeof(ModInitializer).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
+            Detours.TryDetourFromTo(method, method2);
 
             MethodInfo coreMethod = typeof(PawnGraphicSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
             MethodInfo moddedHeadMethod = typeof(PawnGraphicSetModded).GetMethod("ResolveAllGraphicsModded", BindingFlags.Instance | BindingFlags.Public);

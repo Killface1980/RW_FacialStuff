@@ -3,9 +3,10 @@
   <ModHelperDef>
     <defName>RW_FacialStuff</defName>
     <ModName>RW_FacialStuff</ModName>
-    <minCCLversion>0.13.2</minCCLversion>
+    <minCCLversion>0.14.0</minCCLversion>
     <SpecialInjectors>
 
     </SpecialInjectors>
+
   </ModHelperDef>
 </Defs>

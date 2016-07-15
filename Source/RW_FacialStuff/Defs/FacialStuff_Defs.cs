@@ -5,7 +5,6 @@ using Verse;
 namespace RW_FacialStuff.Defs
 {
 
-
     public class BeardDef : Def
     {
         public string texPathAverageNormal;
