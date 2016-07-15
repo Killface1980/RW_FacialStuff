@@ -85,13 +85,15 @@ namespace RW_FacialStuff
 
         protected GameObject modInitializerControllerObject;
 
-        public void Start()
+        public void Awake()
         {
-
             modInitializerControllerObject = new GameObject("BeardyFaces");
             modInitializerControllerObject.AddComponent<ModInitializerBehaviour>();
-            UnityEngine.Object.DontDestroyOnLoad((UnityEngine.Object)modInitializerControllerObject);
+            UnityEngine.Object.DontDestroyOnLoad((UnityEngine.Object)modInitializerControllerObject);            
+        }
 
+        public void Start()
+        {
             MethodInfo method = typeof(GraphicDatabaseUtility).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
             MethodInfo method2 = typeof(ModInitializer).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
             Detours.TryDetourFromTo(method, method2);
