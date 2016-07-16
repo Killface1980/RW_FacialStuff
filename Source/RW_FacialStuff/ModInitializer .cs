@@ -92,7 +92,6 @@ namespace RW_FacialStuff
         {
             MethodInfo method = typeof(GraphicDatabaseUtility).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
             MethodInfo method2 = typeof(ModInitializer).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
-            Detours.TryDetourFromTo(method, method2);
 
             MethodInfo coreMethod = typeof(PawnGraphicSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
             MethodInfo moddedHeadMethod = typeof(PawnGraphicSetModded).GetMethod("ResolveAllGraphicsModded", BindingFlags.Instance | BindingFlags.Public);
@@ -111,6 +110,7 @@ namespace RW_FacialStuff
 
             try
             {
+            Detours.TryDetourFromTo(method, method2);
                 Detours.TryDetourFromTo(coreMethod, moddedHeadMethod);
                 Detours.TryDetourFromTo(coreMethod2, moddedHeadMethod2);
                 Detours.TryDetourFromTo(coreMethod3, moddedHeadMethod3);

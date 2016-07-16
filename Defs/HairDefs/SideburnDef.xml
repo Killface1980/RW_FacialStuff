@@ -4,7 +4,7 @@
 <DefPackage-SideburnDef>
 
   <RW_FacialStuff.Defs.SideburnDef>
-    <label>SA-Seventies</label>
+    <label>SSE</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Sideburns/Sideburn_Average_Normal_Seventies</texPathAverageNormal>
     <texPathAveragePointy>Sideburns/Sideburn_Average_Pointy_Seventies</texPathAveragePointy>
@@ -22,7 +22,7 @@
   </RW_FacialStuff.Defs.SideburnDef>
 
   <RW_FacialStuff.Defs.SideburnDef>
-    <label>SA-Hipster</label>
+    <label>SHI</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Sideburns/Sideburn_Average_Normal_Hipster</texPathAverageNormal>
     <texPathAveragePointy>Sideburns/Sideburn_Average_Pointy_Hipster</texPathAveragePointy>
@@ -41,7 +41,7 @@
   </RW_FacialStuff.Defs.SideburnDef>
 
   <RW_FacialStuff.Defs.SideburnDef>
-    <label>SA-Trekkie</label>
+    <label>STR</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Sideburns/Sideburn_Average_Normal_Trekkie</texPathAverageNormal>
     <texPathAveragePointy>Sideburns/Sideburn_Average_Pointy_Trekkie</texPathAveragePointy>
@@ -60,7 +60,7 @@
   </RW_FacialStuff.Defs.SideburnDef>
 
   <RW_FacialStuff.Defs.SideburnDef>
-    <label>SA-Trimmed</label>
+    <label>STI</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Sideburns/Sideburn_Average_Normal_Trimmed</texPathAverageNormal>
     <texPathAveragePointy>Sideburns/Sideburn_Average_Pointy_Trimmed</texPathAveragePointy>
@@ -79,7 +79,7 @@
   </RW_FacialStuff.Defs.SideburnDef>
 
   <RW_FacialStuff.Defs.SideburnDef>
-    <label>SA-Shaved</label>
+    <label>SSH</label>
     <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Sideburns/Sideburn_Shaved</texPathAverageNormal>
     <texPathAveragePointy>Sideburns/Sideburn_Shaved</texPathAveragePointy>

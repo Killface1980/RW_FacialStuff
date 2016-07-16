@@ -44,6 +44,8 @@ namespace RW_FacialStuff
         static string type;
         static string graphicPathNew;
 
+        public static List<SaveablePawn> PawnCache = new List<SaveablePawn>();
+
 
         // The color is taken from the hair color, the mod creates a new head for each hair color (males only); needs to be simplified, colors merged
         //
@@ -73,28 +75,28 @@ namespace RW_FacialStuff
         */
         private static void SetFileNameStuff(Pawn pawn, Color skinColor, Color haircolor, float pawnAgeFloat, string graphicPath)
         {
-            SaveablePawn pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+            SaveablePawn pawnSave = GetCache(pawn);
 
             if (pawnAgeFloat < 40f)
-                pawnAgeFileName = "Young";
+                pawnAgeFileName = "YNG";
 
             if (pawnAgeFloat >= 40f && pawnAgeFloat < 47f)
-                pawnAgeFileName = "40plus";
+                pawnAgeFileName = "40+";
 
             if (pawnAgeFloat >= 47f && pawnAgeFloat < 54f)
-                pawnAgeFileName = "47plus";
+                pawnAgeFileName = "47+";
 
             if (pawnAgeFloat >= 54f && pawnAgeFloat < 61f)
-                pawnAgeFileName = "54plus";
+                pawnAgeFileName = "54+";
 
             if (pawnAgeFloat >= 61f && pawnAgeFloat < 68f)
-                pawnAgeFileName = "61plus";
+                pawnAgeFileName = "61+";
 
             if (pawnAgeFloat >= 68f && pawnAgeFloat < 75f)
-                pawnAgeFileName = "68plus";
+                pawnAgeFileName = "68+";
 
             if (pawnAgeFloat >= 75f)
-                pawnAgeFileName = "75plus";
+                pawnAgeFileName = "75+";
 
             //file name definition 2
 
@@ -189,7 +191,7 @@ namespace RW_FacialStuff
         public static void DecorateHead(ref string graphicPath, Pawn pawn, Color skinColor, Color haircolor)
         {
 
-            SaveablePawn pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+            SaveablePawn pawnSave = GetCache(pawn);
 
             float pawnAgeFloat = pawn.ageTracker.AgeBiologicalYearsFloat;
 
@@ -388,6 +390,7 @@ namespace RW_FacialStuff
             Texture2D finalHeadBack = new Texture2D(1, 1);
             MakeReadable(headGraphicBack, ref finalHeadBack);
 
+            Debug.Log(headGraphicBack);
 
 
             if (headGraphicBack != null)
@@ -434,7 +437,7 @@ namespace RW_FacialStuff
 
             //this is a copy of DecorateHead, to do: merge these two instances to only one code block
 
-            var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+            var pawnSave = GetCache(pawn);
 
             graphicPath = pawnSave.GraphicPathOriginal;
 
@@ -1262,7 +1265,7 @@ namespace RW_FacialStuff
             //          MethodInfo method = typeof(GraphicDatabaseHeadRecords).GetMethod("BuildDatabaseIfNecessary", BindingFlags.Static | BindingFlags.NonPublic);
             //          method.Invoke(null, null);
 
-            var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+            var pawnSave = GetCache(pawn);
 
             BuildDatabaseIfNecessary();
             BuildModdedDatabaseIfNecessary();
@@ -1340,8 +1343,26 @@ namespace RW_FacialStuff
 
             typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pawn.story, graphicPath);
 
-            var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+            var pawnSave = GetCache(pawn);
             pawnSave.optimized = true;
+        }
+
+        public static SaveablePawn GetCache(Pawn pawn)
+        {
+            foreach (SaveablePawn c in PawnCache)
+                if (c.Pawn == pawn)
+                    return c;
+            SaveablePawn n = new SaveablePawn { Pawn = pawn };
+            PawnCache.Add(n);
+            return n;
+        }
+
+        public void ExposeData()
+        {
+            Scribe_Collections.LookList(ref PawnCache, "Pawns", LookMode.Deep);
+
+            if (PawnCache == null)
+                PawnCache = new List<SaveablePawn>();
         }
 
     }

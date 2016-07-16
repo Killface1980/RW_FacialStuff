@@ -3,7 +3,7 @@
 
 <DefPackage-TacheDef>
   <RW_FacialStuff.Defs.TacheDef>
-    <label>MA-Deluxe</label>
+    <label>MDX</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Deluxe</texPathAverageNormal>
     <texPathAveragePointy>Moustaches/Moustache_Average_Pointy_Deluxe</texPathAveragePointy>
@@ -22,7 +22,7 @@
 </RW_FacialStuff.Defs.TacheDef>
 
   <RW_FacialStuff.Defs.TacheDef>
-    <label>MA-Walrus</label>
+    <label>MWR</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Walrus</texPathAverageNormal>
     <texPathAveragePointy>Moustaches/Moustache_Average_Pointy_Walrus</texPathAveragePointy>
@@ -41,7 +41,7 @@
   </RW_FacialStuff.Defs.TacheDef>
 
   <RW_FacialStuff.Defs.TacheDef>
-    <label>MA-Ming</label>
+    <label>MMI</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Ming</texPathAverageNormal>
     <texPathAveragePointy>Moustaches/Moustache_Average_Pointy_Ming</texPathAveragePointy>
@@ -61,7 +61,7 @@
   </RW_FacialStuff.Defs.TacheDef>
 
   <RW_FacialStuff.Defs.TacheDef>
-    <label>MA-Ranger</label>
+    <label>MRA</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Ranger</texPathAverageNormal>
     <texPathAveragePointy>Moustaches/Moustache_Average_Pointy_Ranger</texPathAveragePointy>
@@ -80,7 +80,7 @@
   </RW_FacialStuff.Defs.TacheDef>
 
   <RW_FacialStuff.Defs.TacheDef>
-    <label>MA-Handlebar</label>
+    <label>MHB</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Moustaches/Moustache_Average_Normal_Handlebar</texPathAverageNormal>
     <texPathAveragePointy>Moustaches/Moustache_Average_Pointy_Handlebar</texPathAveragePointy>
@@ -98,7 +98,7 @@
   </RW_FacialStuff.Defs.TacheDef>
 
   <RW_FacialStuff.Defs.TacheDef>
-    <label>MA-Shaved</label>
+    <label>MSH</label>
     <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Moustaches/Moustache_Shaved</texPathAverageNormal>
     <texPathAveragePointy>Moustaches/Moustache_Shaved</texPathAveragePointy>

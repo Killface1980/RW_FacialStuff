@@ -2,7 +2,7 @@
 <DefPackage-BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
-    <label>BA-Amish</label>
+    <label>BAM</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_Amish</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Amish</texPathAveragePointy>
@@ -20,7 +20,7 @@
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
-    <label>BA-Methusalem</label>
+    <label>BME</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_Methusalem</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Methusalem</texPathAveragePointy>
@@ -38,7 +38,7 @@
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
-    <label>BA-ZZTop</label>
+    <label>BZZ</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_ZZTop</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_ZZTop</texPathAveragePointy>
@@ -56,7 +56,7 @@
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
-    <label>BA-Santa</label>
+    <label>BSA</label>
     <hairGender>Male</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_Santa</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Santa</texPathAveragePointy>
@@ -74,7 +74,7 @@
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
-    <label>BA-Shaved</label>
+    <label>BSH</label>
     <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Beards/Beard_Shaved</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Shaved</texPathAveragePointy>

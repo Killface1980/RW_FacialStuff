@@ -239,8 +239,6 @@ namespace RW_FacialStuff
             }
         }
 
-        private static Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
-
         public static Texture2D BlankTexture()
         {
             Texture2D blankTexture = new Texture2D(128, 128);
@@ -292,7 +290,8 @@ namespace RW_FacialStuff
             //              array[0] = BlankTexture();
 
             if (File.Exists(GraphicDatabaseHeadRecordsModded.ModTexturePath + req.path + "_back.png"))
-                array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", true);
+
+                 array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", true);
             else
                 array[0] = BlankTexture();
 

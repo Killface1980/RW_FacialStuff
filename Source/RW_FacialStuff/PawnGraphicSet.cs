@@ -39,7 +39,7 @@ namespace RW_FacialStuff
                 rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RottingColor);
                 dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
 
-                var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
+                var pawnSave = GraphicDatabaseHeadRecordsModded.GetCache(pawn);
               
               if (!pawnSave.optimized)
                   GraphicDatabaseHeadRecordsModded.AddCustomizedHead(pawn, pawn.story.SkinColor, pawn.story.hairColor, pawn.story.HeadGraphicPath);
