@@ -21,38 +21,6 @@ namespace RW_FacialStuff.Defs
 
     }
 
-    public class TacheDef : Def
-    {
-        public string texPathAverageNormal;
-        public string texPathAveragePointy;
-        public string texPathAverageWide;
-
-        public string texPathNarrowNormal;
-        public string texPathNarrowPointy;
-        public string texPathNarrowWide;
-
-        public HairGender hairGender = HairGender.Any;
-
-        public List<string> hairTags = new List<string>();
-
-    }
-
-    public class SideburnDef : Def
-    {
-        public string texPathAverageNormal;
-        public string texPathAveragePointy;
-        public string texPathAverageWide;
-
-        public string texPathNarrowNormal;
-        public string texPathNarrowPointy;
-        public string texPathNarrowWide;
-
-        public HairGender hairGender = HairGender.Any;
-
-        public List<string> hairTags = new List<string>();
-
-    }
-
     public class EyeDef: Def
     {
 

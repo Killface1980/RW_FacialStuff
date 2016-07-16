@@ -23,8 +23,6 @@ namespace RW_FacialStuff
         private static WrinkleDef _saveableWrinkle;
         private static LipDef _saveableLip;
         private static BeardDef _saveableBeard;
-        private static SideburnDef _saveableSideburn;
-        private static TacheDef _saveableTache;
 
         private static readonly Color Skin01 = new Color(0.3882353f, 0.274509817f, 0.141176477f);
         private static readonly Color Skin02 = new Color(0.509803951f, 0.356862754f, 0.1882353f);
@@ -156,33 +154,11 @@ namespace RW_FacialStuff
                     pawnSave.BeardDef = _saveableBeard;
                 }
 
-                if (pawnSave.SideburnDef != null)
-                {
-                    _saveableSideburn = pawnSave.SideburnDef;
-                }
-                else
-                {
-                    _saveableSideburn = PawnFaceMaker.RandomSideburnDefFor(pawn, pawn.Faction.def);
-                    pawnSave.SideburnDef = _saveableSideburn;
-                }
-
-                if (pawnSave.TacheDef != null)
-                {
-                    _saveableTache = pawnSave.TacheDef;
-                }
-                else
-                {
-                    _saveableTache = PawnFaceMaker.RandomTacheDefFor(pawn, pawn.Faction.def);
-                    pawnSave.TacheDef = _saveableTache;
-                }
 
                 GetHairColorNamed(haircolor);
                 GetSkinColorNamed(skinColor);
 
-                if (_saveableBeard.label.Equals("BA-Shaved") && _saveableSideburn.label.Equals("SA-Shaved") && _saveableTache.label.Equals("MA-Shaved"))
-                    graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnAgeFileName + "-" + pawnSave.EyeDef.label + "-" + _skinColorNamed + "-Shaved";
-                else
-                    graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnAgeFileName + "-" + pawnSave.EyeDef.label + "-" + pawnSave.TacheDef.label + "-" + pawnSave.SideburnDef.label + "-" + pawnSave.BeardDef.label + "-" + _skinColorNamed + "-" + _hairColorNamed;
+                    graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnAgeFileName + "-" + pawnSave.EyeDef.label + "-" + pawnSave.BeardDef.label + "-" + _skinColorNamed + "-" + _hairColorNamed;
             }
         }
 
@@ -263,28 +239,20 @@ namespace RW_FacialStuff
             if (pawn.gender == Gender.Male)
             {
                 Graphic beardGraphic = null;
-                Graphic sideburnGraphic = null;
-                Graphic tacheGraphic = null;
 
                 if (pawn.story.crownType == CrownType.Narrow)
                 {
                     if (type == "Normal")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     }
                     if (type == "Pointy")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     }
                     if (type == "Wide")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     }
 
                 }
@@ -293,20 +261,14 @@ namespace RW_FacialStuff
                     if (type == "Normal")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     }
                     if (type == "Pointy")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     }
                     if (type == "Wide")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     }
 
                 }
@@ -315,17 +277,6 @@ namespace RW_FacialStuff
 
                 Texture2D readBeardGraphicFront = beardGraphic.MatFront.mainTexture as Texture2D;
                 Texture2D readBeardGraphicSide = beardGraphic.MatSide.mainTexture as Texture2D;
-
-
-                Texture2D readTacheGraphicFront = tacheGraphic.MatFront.mainTexture as Texture2D;
-                Texture2D readTacheGraphicSide = tacheGraphic.MatSide.mainTexture as Texture2D;
-
-                Texture2D readSideburnGraphicFront = sideburnGraphic.MatFront.mainTexture as Texture2D;
-                Texture2D readSideburnGraphicSide = sideburnGraphic.MatSide.mainTexture as Texture2D;
-
-                MergeThreeGraphics(readBeardGraphicFront, readSideburnGraphicFront, readTacheGraphicFront, ref beardFront);
-                MergeThreeGraphics(readBeardGraphicSide, readSideburnGraphicSide, readTacheGraphicSide, ref beardSide);
-
 
 
                 //       MakeBeard(readSideburnGraphicFront, readBeardGraphicFront, readTacheGraphicFront, ref beardFront, ref beardFrontComplex);
@@ -340,13 +291,13 @@ namespace RW_FacialStuff
                     MakeOld(pawnAgeFloat, eyesHeadFront, readWrinkleGraphicFront, ref wrinklesHeadFront);
                     MakeOld(pawnAgeFloat, eyesHeadSide, readWrinkleGraphicSide, ref wrinklesHeadSide);
 
-                    AddFacialHair(pawn, wrinklesHeadFront, beardFront, ref finalHeadFront);
-                    AddFacialHair(pawn, wrinklesHeadSide, beardSide, ref finalHeadSide);
+                    AddFacialHair(pawn, wrinklesHeadFront, readBeardGraphicFront, ref finalHeadFront);
+                    AddFacialHair(pawn, wrinklesHeadSide, readBeardGraphicSide, ref finalHeadSide);
                 }
                 else
                 {
-                    AddFacialHair(pawn, eyesHeadFront, beardFront, ref finalHeadFront);
-                    AddFacialHair(pawn, eyesHeadSide, beardSide, ref finalHeadSide);
+                    AddFacialHair(pawn, eyesHeadFront, readBeardGraphicFront, ref finalHeadFront);
+                    AddFacialHair(pawn, eyesHeadSide, readBeardGraphicSide, ref finalHeadSide);
                 }
 
             }
@@ -502,28 +453,20 @@ namespace RW_FacialStuff
             if (pawn.gender == Gender.Male)
             {
                 Graphic beardGraphic = null;
-                Graphic sideburnGraphic = null;
-                Graphic tacheGraphic = null;
 
                 if (pawn.story.crownType == CrownType.Narrow)
                 {
                     if (type == "Normal")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     }
                     if (type == "Pointy")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     }
                     if (type == "Wide")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     }
 
                 }
@@ -532,20 +475,14 @@ namespace RW_FacialStuff
                     if (type == "Normal")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     }
                     if (type == "Pointy")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     }
                     if (type == "Wide")
                     {
                         beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableBeard.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        tacheGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableTache.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                        sideburnGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(_saveableSideburn.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     }
 
                 }
@@ -555,15 +492,6 @@ namespace RW_FacialStuff
                 Texture2D readBeardGraphicFront = beardGraphic.MatFront.mainTexture as Texture2D;
                 Texture2D readBeardGraphicSide = beardGraphic.MatSide.mainTexture as Texture2D;
 
-
-                Texture2D readTacheGraphicFront = tacheGraphic.MatFront.mainTexture as Texture2D;
-                Texture2D readTacheGraphicSide = tacheGraphic.MatSide.mainTexture as Texture2D;
-
-                Texture2D readSideburnGraphicFront = sideburnGraphic.MatFront.mainTexture as Texture2D;
-                Texture2D readSideburnGraphicSide = sideburnGraphic.MatSide.mainTexture as Texture2D;
-
-                MergeThreeGraphics(readBeardGraphicFront, readSideburnGraphicFront, readTacheGraphicFront, ref beardFront);
-                MergeThreeGraphics(readBeardGraphicSide, readSideburnGraphicSide, readTacheGraphicSide, ref beardSide);
 
                 //       MakeBeard(readSideburnGraphicFront, readBeardGraphicFront, readTacheGraphicFront, ref beardFront, ref beardFrontComplex);
                 //       MakeBeard(readBeardGraphicSide, readSideburnGraphicSide, readTacheGraphicSide, ref beardSide, ref beardSideComplex);
@@ -576,13 +504,13 @@ namespace RW_FacialStuff
                     MakeOld(pawnAgeFloat, eyesHeadFront, readWrinkleGraphicFront, ref wrinklesHeadFront);
                     MakeOld(pawnAgeFloat, eyesHeadSide, readWrinkleGraphicSide, ref wrinklesHeadSide);
 
-                    AddFacialHair(pawn, wrinklesHeadFront, beardFront, ref finalHeadFront);
-                    AddFacialHair(pawn, wrinklesHeadSide, beardSide, ref finalHeadSide);
+                    AddFacialHair(pawn, wrinklesHeadFront, readBeardGraphicFront, ref finalHeadFront);
+                    AddFacialHair(pawn, wrinklesHeadSide, readBeardGraphicSide, ref finalHeadSide);
                 }
                 else
                 {
-                    AddFacialHair(pawn, eyesHeadFront, beardFront, ref finalHeadFront);
-                    AddFacialHair(pawn, eyesHeadSide, beardSide, ref finalHeadSide);
+                    AddFacialHair(pawn, eyesHeadFront, readBeardGraphicFront, ref finalHeadFront);
+                    AddFacialHair(pawn, eyesHeadSide, readBeardGraphicSide, ref finalHeadSide);
                 }
 
             }
