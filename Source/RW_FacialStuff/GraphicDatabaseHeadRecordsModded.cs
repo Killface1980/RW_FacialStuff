@@ -44,8 +44,6 @@ namespace RW_FacialStuff
         static string type;
         static string graphicPathNew;
 
-        public static List<SaveablePawn> PawnCache = new List<SaveablePawn>();
-
 
         // The color is taken from the hair color, the mod creates a new head for each hair color (males only); needs to be simplified, colors merged
         //
@@ -75,7 +73,7 @@ namespace RW_FacialStuff
         */
         private static void SetFileNameStuff(Pawn pawn, Color skinColor, Color haircolor, float pawnAgeFloat, string graphicPath)
         {
-            SaveablePawn pawnSave = GetCache(pawn);
+            SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
             if (pawnAgeFloat < 40f)
                 pawnAgeFileName = "YNG";
@@ -191,7 +189,7 @@ namespace RW_FacialStuff
         public static void DecorateHead(ref string graphicPath, Pawn pawn, Color skinColor, Color haircolor)
         {
 
-            SaveablePawn pawnSave = GetCache(pawn);
+            SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
             float pawnAgeFloat = pawn.ageTracker.AgeBiologicalYearsFloat;
 
@@ -437,7 +435,7 @@ namespace RW_FacialStuff
 
             //this is a copy of DecorateHead, to do: merge these two instances to only one code block
 
-            var pawnSave = GetCache(pawn);
+            var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
             graphicPath = pawnSave.GraphicPathOriginal;
 
@@ -1265,7 +1263,7 @@ namespace RW_FacialStuff
             //          MethodInfo method = typeof(GraphicDatabaseHeadRecords).GetMethod("BuildDatabaseIfNecessary", BindingFlags.Static | BindingFlags.NonPublic);
             //          method.Invoke(null, null);
 
-            var pawnSave = GetCache(pawn);
+            var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
             BuildDatabaseIfNecessary();
             BuildModdedDatabaseIfNecessary();
@@ -1343,28 +1341,9 @@ namespace RW_FacialStuff
 
             typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pawn.story, graphicPath);
 
-            var pawnSave = GetCache(pawn);
+            var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
             pawnSave.optimized = true;
         }
-
-        public static SaveablePawn GetCache(Pawn pawn)
-        {
-            foreach (SaveablePawn c in PawnCache)
-                if (c.Pawn == pawn)
-                    return c;
-            SaveablePawn n = new SaveablePawn { Pawn = pawn };
-            PawnCache.Add(n);
-            return n;
-        }
-
-        public void ExposeData()
-        {
-            Scribe_Collections.LookList(ref PawnCache, "Pawns", LookMode.Deep);
-
-            if (PawnCache == null)
-                PawnCache = new List<SaveablePawn>();
-        }
-
     }
 }
 

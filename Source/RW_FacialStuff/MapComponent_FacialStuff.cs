@@ -7,7 +7,7 @@ namespace RW_FacialStuff
 
     public class MapComponent_FacialStuff : MapComponent
     {
-
+        public static List<SaveablePawn> PawnCache = new List<SaveablePawn>();
 
         public static MapComponent_FacialStuff Get
         {
@@ -25,5 +25,22 @@ namespace RW_FacialStuff
         }
 
 
+        public static SaveablePawn GetCache(Pawn pawn)
+        {
+            foreach (SaveablePawn c in MapComponent_FacialStuff.PawnCache)
+                if (c.Pawn == pawn)
+                    return c;
+            SaveablePawn n = new SaveablePawn { Pawn = pawn };
+            PawnCache.Add(n);
+            return n;
+        }
+
+        public override void ExposeData()
+        {
+            Scribe_Collections.LookList(ref PawnCache, "Pawns", LookMode.Deep);
+
+            if (PawnCache == null)
+                PawnCache = new List<SaveablePawn>();
+        }
     }
 }
