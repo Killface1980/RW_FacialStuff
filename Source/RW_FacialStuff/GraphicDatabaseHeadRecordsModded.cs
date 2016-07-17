@@ -942,17 +942,17 @@ namespace RW_FacialStuff
 
                     Color final_color = headColor;
 
-                    if (pawnAgeFileName == "40plus")
+                    if (pawnAgeFileName == "40+")
                         final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.15f);
-                    if (pawnAgeFileName == "47plus")
+                    if (pawnAgeFileName == "47+")
                         final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.3f);
-                    if (pawnAgeFileName == "54plus")
+                    if (pawnAgeFileName == "54+")
                         final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.45f);
-                    if (pawnAgeFileName == "61plus")
+                    if (pawnAgeFileName == "61+")
                         final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.6f);
-                    if (pawnAgeFileName == "68plus")
+                    if (pawnAgeFileName == "68+")
                         final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.8f);
-                    if (pawnAgeFileName == "75plus")
+                    if (pawnAgeFileName == "75+")
                         final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 1f);
 
                     if (headColor.a == 1)

@@ -72,18 +72,6 @@ namespace RW_FacialStuff
 
         public void FixedUpdate()
         {
-            if (_reinjectNeeded)
-            {
-                _reinjectTime -= Time.fixedDeltaTime;
-
-                if (_reinjectTime <= 0)
-                {
-                    _reinjectNeeded = false;
-                    _reinjectTime = 0;
-
-                    MapComponent_FacialStuff component = MapComponent_FacialStuff.Get;
-                }
-            }
         }
 
 

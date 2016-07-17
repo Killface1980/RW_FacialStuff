@@ -81,13 +81,6 @@
     <Content Include="..\..\Defs\HairDefs\HairsBeGone.xml">
       <Link>Defs\HairsBeGone.xml</Link>
     </Content>
-    <Content Include="..\..\Defs\HairDefs\SideburnDef.xml">
-      <Link>Defs\SideburnDef.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="..\..\Defs\HairDefs\TacheDef.xml">
-      <Link>Defs\TacheDef.xml</Link>
-    </Content>
     <Content Include="..\..\Defs\LipDefs\LipDef.xml">
       <Link>Defs\LipDef.xml</Link>
       <SubType>Designer</SubType>
