@@ -73,11 +73,11 @@
 
 
   <RW_FacialStuff.Defs.EyeDef>
-    <label>EMA-Big</label>
+    <label>EMAOV-Aggro</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_Average_Big</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_Narrow_Big</texPathNarrow>
-    <defName>Eye_Male_Big</defName>
+    <texPathAverage>Eyes/Male/Eye_Male_Average_OV_Aggro</texPathAverage>
+    <texPathNarrow>Eyes/Male/Eye_Male_Narrow_OV_Aggro</texPathNarrow>
+    <defName>Eye_Male_Average_OV_Aggro</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -87,11 +87,11 @@
   </RW_FacialStuff.Defs.EyeDef>
 
   <RW_FacialStuff.Defs.EyeDef>
-    <label>EMA-Default</label>
+    <label>EMAOV-Aware</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_Average_Default</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_Narrow_Default</texPathNarrow>
-    <defName>Eye_Male_Default</defName>
+    <texPathAverage>Eyes/Male/Eye_Male_Average_OV_Aware</texPathAverage>
+    <texPathNarrow>Eyes/Male/Eye_Male_Narrow_OV_Aware</texPathNarrow>
+    <defName>Eye_Male_Average_OV_Aware</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -101,11 +101,11 @@
   </RW_FacialStuff.Defs.EyeDef>
 
   <RW_FacialStuff.Defs.EyeDef>
-    <label>EMA-Flat</label>
+    <label>EMAOV-Nice</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_Average_Flat</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_Narrow_Flat</texPathNarrow>
-    <defName>Eye_Male_Flat</defName>
+    <texPathAverage>Eyes/Male/Eye_Male_Average_OV_Nice</texPathAverage>
+    <texPathNarrow>Eyes/Male/Eye_Male_Narrow_OV_Nice</texPathNarrow>
+    <defName>Eye_Male_Average_OV_Nice</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -115,11 +115,25 @@
   </RW_FacialStuff.Defs.EyeDef>
 
   <RW_FacialStuff.Defs.EyeDef>
-    <label>EMA-Large</label>
+    <label>EMAOV-Tired</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_Average_Large</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_Narrow_Large</texPathNarrow>
-    <defName>Eye_Male_Large</defName>
+    <texPathAverage>Eyes/Male/Eye_Male_Average_OV_Tired</texPathAverage>
+    <texPathNarrow>Eyes/Male/Eye_Male_Narrow_OV_Tired</texPathNarrow>
+    <defName>Eye_Male_Average_OV_Tired</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.EyeDef>
+  
+    <RW_FacialStuff.Defs.EyeDef>
+    <label>EMARD-Aggro</label>
+    <hairGender>Male</hairGender>
+    <texPathAverage>Eyes/Male/Eye_Male_Average_RD_Aggro</texPathAverage>
+    <texPathNarrow>Eyes/Male/Eye_Male_Narrow_RD_Aggro</texPathNarrow>
+    <defName>Eye_Male_Average_RD_Aggro</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -129,11 +143,39 @@
   </RW_FacialStuff.Defs.EyeDef>
 
   <RW_FacialStuff.Defs.EyeDef>
-    <label>EMA-Medium</label>
+    <label>EMARD-Aware</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_Average_Medium</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_Narrow_Medium</texPathNarrow>
-    <defName>Eye_Male_Medium</defName>
+    <texPathAverage>Eyes/Male/Eye_Male_Average_RD_Aware</texPathAverage>
+    <texPathNarrow>Eyes/Male/Eye_Male_Narrow_RD_Aware</texPathNarrow>
+    <defName>Eye_Male_Average_RD_Aware</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.EyeDef>
+
+  <RW_FacialStuff.Defs.EyeDef>
+    <label>EMARD-Nice</label>
+    <hairGender>Male</hairGender>
+    <texPathAverage>Eyes/Male/Eye_Male_Average_RD_Nice</texPathAverage>
+    <texPathNarrow>Eyes/Male/Eye_Male_Narrow_RD_Nice</texPathNarrow>
+    <defName>Eye_Male_Average_RD_Nice</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.EyeDef>
+
+  <RW_FacialStuff.Defs.EyeDef>
+    <label>EMARD-Tired</label>
+    <hairGender>Male</hairGender>
+    <texPathAverage>Eyes/Male/Eye_Male_Average_RD_Tired</texPathAverage>
+    <texPathNarrow>Eyes/Male/Eye_Male_Narrow_RD_Tired</texPathNarrow>
+    <defName>Eye_Male_Average_RD_Tired</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
