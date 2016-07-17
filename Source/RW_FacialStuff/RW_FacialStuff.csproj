@@ -40,12 +40,7 @@
       <HintPath>..\..\..\Community Core Library\Assemblies\Community Core Library.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
@@ -69,8 +64,11 @@
       <Link>xml\About.xml</Link>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="..\..\Defs\EyeDefs\EyeDef.xml">
-      <Link>Defs\EyeDef.xml</Link>
+    <Content Include="..\..\Defs\EyeDefs\EyeDef_Female.xml">
+      <Link>Defs\EyeDef_Female.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\EyeDefs\EyeDef_Male.xml">
+      <Link>Defs\EyeDef_Male.xml</Link>
     </Content>
     <Content Include="..\..\Defs\HairDefs\BeardDef.xml">
       <Link>Defs\BeardDef.xml</Link>

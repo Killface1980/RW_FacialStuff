@@ -123,63 +123,7 @@ namespace RW_FacialStuff
             }));
             return 0f;
         }
-        /*
-                private static float WrinkleChoiceLikelihoodFor(WrinkleDef wrinkle, Pawn pawn)
-                {
 
-                    // everyone gets the same face!
-
-                    return 100f;
-
-                    if (pawn.gender == Gender.None)
-                    {
-                        return 100f;
-                    }
-
-                    if (pawn.gender == Gender.Male)
-                    {
-                        switch (wrinkle.hairGender)
-                        {
-                            case HairGender.Male:
-                                return 70f;
-                            case HairGender.MaleUsually:
-                                return 30f;
-                            case HairGender.Any:
-                                return 60f;
-                            case HairGender.FemaleUsually:
-                                return 5f;
-                            case HairGender.Female:
-                                return 1f;
-                        }
-                    }
-
-                    if (pawn.gender == Gender.Female)
-                    {
-                        switch (wrinkle.hairGender)
-                        {
-                            case HairGender.Female:
-                                return 70f;
-                            case HairGender.FemaleUsually:
-                                return 30f;
-                            case HairGender.Any:
-                                return 60f;
-                            case HairGender.MaleUsually:
-                                return 5f;
-                            case HairGender.Male:
-                                return 1f;
-                        }
-                    }
-
-                    Log.Error(string.Concat(new object[]
-                    {
-                       "Unknown hair likelihood for ",
-                       wrinkle,
-                       " with ",
-                       pawn
-                    }));
-                    return 0f;
-                }
-        */
         private static float LipChoiceLikelihoodFor(LipDef lip, Pawn pawn)
         {
             if (pawn.gender == Gender.None)

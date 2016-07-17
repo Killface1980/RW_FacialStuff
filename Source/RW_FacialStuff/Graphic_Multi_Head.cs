@@ -69,7 +69,7 @@ namespace RW_FacialStuff
         {
 
             Texture2D texture = new Texture2D(1, 1);
-            texture.LoadImage(File.ReadAllBytes(GraphicDatabaseHeadRecordsModded.ModTexturePath + texturePath + ".png"));
+            texture.LoadImage(File.ReadAllBytes(GraphicDatabaseHeadRecordsModded.GetModTexturePath() + texturePath + ".png"));
             texture.anisoLevel = 8;
             texture.mipMapBias = -0.5f;
             texture.Compress(true);
@@ -289,7 +289,7 @@ namespace RW_FacialStuff
             //          else
             //              array[0] = BlankTexture();
 
-            if (File.Exists(GraphicDatabaseHeadRecordsModded.ModTexturePath + req.path + "_back.png"))
+            if (File.Exists(GraphicDatabaseHeadRecordsModded.GetModTexturePath() + req.path + "_back.png"))
 
                  array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", true);
             else

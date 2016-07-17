@@ -7,12 +7,17 @@ using System.Reflection;
 using RW_FacialStuff.Defs;
 using UnityEngine;
 using Verse;
+using Verse.Steam;
 
 namespace RW_FacialStuff
 {
     public class GraphicDatabaseHeadRecordsModded : GraphicDatabaseHeadRecords
     {
-        public static string ModTexturePath = "Mods/RW_FacialStuff/Textures/";
+        public static string GetModTexturePath()
+        {
+                return "Mods/RW_FacialStuff/Textures/";
+        }
+
         private static string pawnAgeFileName;
 
         public static Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
@@ -176,7 +181,7 @@ namespace RW_FacialStuff
 
             SetFileNameStuff(pawn, skinColor, haircolor, pawnAgeFloat, graphicPath);
 
-            if (File.Exists(ModTexturePath + graphicPathNew + "_front.png"))
+            if (File.Exists(GetModTexturePath() + graphicPathNew + "_front.png"))
             {
                 graphicPath = graphicPathNew;
                 return;
@@ -984,7 +989,7 @@ namespace RW_FacialStuff
         {
             byte[] bytes = inputTexture.EncodeToPNG();
             //         if (pawn.gender == Gender.Female)
-            File.WriteAllBytes(ModTexturePath + graphicpath + "_" + definition + ".png", bytes);
+            File.WriteAllBytes(GetModTexturePath() + graphicpath + "_" + definition + ".png", bytes);
             //     else
             //         File.WriteAllBytes(modpath + "Things/Pawn/Humanlike/Heads/Male/" + pawn.gender + "_" + pawn.story.crownType + "_" + pawn + "_" + definition + ".png", bytes);
             //     var pawnSave = MapComponent_FacialStuff.Get.GetCache(pawn);
@@ -1012,7 +1017,7 @@ namespace RW_FacialStuff
             finalTexture.Apply();
 
             byte[] bytes = finalTexture.EncodeToPNG();
-            File.WriteAllBytes(ModTexturePath + graphicpath + "_" + definition + ".png", bytes);
+            File.WriteAllBytes(GetModTexturePath() + graphicpath + "_" + definition + ".png", bytes);
             UnityEngine.Object.DestroyImmediate(finalTexture);
         }
 
@@ -1213,7 +1218,7 @@ namespace RW_FacialStuff
 
             if (pawnSave.optimized)
             {
-                if (!File.Exists(ModTexturePath + graphicPath + "_front.png"))
+                if (!File.Exists(GetModTexturePath() + graphicPath + "_front.png"))
                     RebuildHead(ref graphicPath, pawn, skinColor, hairColor);
 
                 for (int i = 0; i < headsModded.Count; i++)
