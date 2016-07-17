@@ -58,6 +58,7 @@
       <li>Urban</li>
       <li>Rural</li>
       <li>MaleOnly</li>
+      <li>MaleOnly</li>
       <li>MaleOld</li>
     </hairTags>
   </HairDef>

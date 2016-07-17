@@ -238,6 +238,11 @@ namespace RW_FacialStuff
                 return 0f;
             }
 
+            if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 40)
+            {
+                return 0f;
+            }
+
             if (pawn.gender == Gender.Male)
             {
                 switch (beard.hairGender)
@@ -281,7 +286,7 @@ namespace RW_FacialStuff
             if (pawn.gender == Gender.Male)
             {
 
-                if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeChronologicalYears < 30)
+                if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 40)
                 {
                     return 0f;
                 }

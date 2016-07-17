@@ -138,6 +138,7 @@ namespace RW_FacialStuff
                     pawnSave.LipDef = _saveableLip;
                 }
 
+                GetSkinColorNamed(skinColor);
                 graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnAgeFileName + "-" + pawnSave.EyeDef.label + "-" + _skinColorNamed;
             }
 
@@ -158,7 +159,7 @@ namespace RW_FacialStuff
                 GetHairColorNamed(haircolor);
                 GetSkinColorNamed(skinColor);
 
-                    graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnAgeFileName + "-" + pawnSave.EyeDef.label + "-" + pawnSave.BeardDef.label + "-" + _skinColorNamed + "-" + _hairColorNamed;
+                graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnAgeFileName + "-" + pawnSave.EyeDef.label + "-" + pawnSave.BeardDef.label + "-" + _skinColorNamed + "-" + _hairColorNamed;
             }
         }
 
@@ -697,38 +698,52 @@ namespace RW_FacialStuff
         private static void GetSkinColorNamed(Color skinColor)
         {
 
-            if (skinColor == Skin01)
+            if (skinColor == new Color32(74, 41, 25, 255))
             {
                 _skinColorNamed = "Skin01";
                 return;
             }
 
-            if (skinColor == Skin02)
+            if (skinColor == new Color32(122, 54, 25, 255))
             {
                 _skinColorNamed = "Skin02";
                 return;
             }
-            if (skinColor == Skin03)
+            if (skinColor == new Color32(165, 93, 41, 255))
             {
                 _skinColorNamed = "Skin03";
                 return;
             }
-            if (skinColor == Skin04)
+            if (skinColor == new Color32(186, 119, 80, 255))
             {
                 _skinColorNamed = "Skin04";
                 return;
             }
-            if (skinColor == Skin05)
+            if (skinColor == new Color32(230, 158, 124, 255))
             {
                 _skinColorNamed = "Skin05";
                 return;
             }
-            if (skinColor == Skin06)
+            if (skinColor == new Color32(231, 184, 143, 255))
             {
                 _skinColorNamed = "Skin06";
                 return;
             }
-
+            if (skinColor == new Color32(237, 194, 154, 255))
+            {
+                _skinColorNamed = "Skin07";
+                return;
+            }
+            if (skinColor == new Color32(245, 210, 178, 255))
+            {
+                _skinColorNamed = "Skin08";
+                return;
+            }
+            if (skinColor == new Color32(255, 230, 212, 255))
+            {
+                _skinColorNamed = "Skin09";
+                return;
+            }
 
             _skinColorNamed = skinColor.ToString();
         }

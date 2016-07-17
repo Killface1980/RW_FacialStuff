@@ -14,8 +14,6 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -32,8 +30,6 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -51,7 +47,6 @@
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -66,8 +61,6 @@
     <texPathNarrowWide>Beards/Beard_Narrow_Wide_ChinPuff</texPathNarrowWide>
     <defName>Beard_ChinPuff</defName>
     <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
@@ -86,8 +79,7 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
+      <li>MaleOld</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -102,8 +94,6 @@
     <texPathNarrowWide>Beards/Beard_Narrow_Wide_ElInsecto</texPathNarrowWide>
     <defName>Beard_ElInsecto</defName>
     <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
@@ -122,8 +112,6 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -138,10 +126,9 @@
     <texPathNarrowWide>Beards/Beard_Narrow_Wide_FrenchFork</texPathNarrowWide>
     <defName>Beard_FrenchFork</defName>
     <hairTags>
-      <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
-      <li>Tribal</li>
+      <li>MaleOld</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -159,7 +146,7 @@
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
-      <li>Tribal</li>
+      <li>MaleOld</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -196,6 +183,7 @@
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
+      <li>MaleOld</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -212,8 +200,6 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -230,8 +216,6 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -246,10 +230,9 @@
     <texPathNarrowWide>Beards/Beard_Narrow_Wide_Hulihee</texPathNarrowWide>
     <defName>Beard_Hulihee</defName>
     <hairTags>
-      <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
-      <li>Tribal</li>
+      <li>MaleOld</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -266,8 +249,7 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
+      <li>MaleOld</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -303,7 +285,6 @@
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -338,8 +319,6 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -356,8 +335,6 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -374,8 +351,6 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -408,8 +383,6 @@
     <texPathNarrowWide>Beards/Beard_Narrow_Wide_TheKlingon</texPathNarrowWide>
     <defName>Beard_TheKlingon</defName>
     <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
@@ -426,9 +399,6 @@
     <texPathNarrowWide>Beards/Beard_Narrow_Wide_TheSparrow</texPathNarrowWide>
     <defName>Beard_TheSparrow</defName>
     <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
@@ -444,10 +414,8 @@
     <texPathNarrowWide>Beards/Beard_Narrow_Wide_TheWinnifried</texPathNarrowWide>
     <defName>Beard_TheWinnifried</defName>
     <hairTags>
-      <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -482,8 +450,6 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -500,8 +466,6 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
