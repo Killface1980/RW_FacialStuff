@@ -36,7 +36,7 @@ namespace RW_FacialStuff
             {
 
                 nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
-                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RottingColor);
+                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RottingColor * pawn.story.SkinColor);
                 dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
 
                 var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
@@ -44,7 +44,7 @@ namespace RW_FacialStuff
               if (!pawnSave.optimized)
                   GraphicDatabaseHeadRecordsModded.AddCustomizedHead(pawn, pawn.story.SkinColor, pawn.story.hairColor, pawn.story.HeadGraphicPath);
                 headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, pawn.story.SkinColor, pawn.story.hairColor);
-                desiccatedHeadGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, RottingColor, RottingColor);
+                desiccatedHeadGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, RottingColor);
                 skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
 
             //  if (pawn.gender == Gender.Female && pawn.story.hairDef.hairTags.Contains("MaleOnly"))
@@ -53,6 +53,16 @@ namespace RW_FacialStuff
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 ResolveApparelGraphics();
                 PortraitsCache.Clear();
+
+            //  List<ApparelGraphicRecord> apparelGraphics = graphics.apparelGraphics;
+            //  for (int j = 0; j < apparelGraphics.Count; j++)
+            //  {
+            //      if (apparelGraphics[j].sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
+            //      {
+            //          if (apparelGraphics[j].sourceApparel.def.apparel.wornGraphicPath.Contains("Hat"))
+            //              apparelGraphics[j].sourceApparel.def.apparel.LastLayer == ApparelLayer.Accessory;
+            //      }
+            //  }
             }
             else
             {

@@ -1189,6 +1189,19 @@ namespace RW_FacialStuff
                 return graphic_Multi_Head;
             }
 
+            public Graphic_Multi_Head GetGraphicRotten(Color rottenColor)
+            {
+                //     for (int i = 0; i < graphics.Count; i++)
+                //     {
+                //  if (color.IndistinguishableFrom(graphics[i].Key))
+                //  {
+                //      return graphics[i].Value;
+                //  }
+                //     }
+                Graphic_Multi_Head graphic_Multi_Head = (Graphic_Multi_Head)GraphicDatabase.Get<Graphic_Multi_Head>(graphicPath, ShaderDatabase.CutoutSkin, Vector2.one, rottenColor);
+                //            graphics.Add(new KeyValuePair<Color, Graphic_Multi_Head>(color, graphic_Multi_Head));
+                return graphic_Multi_Head;
+            }
             /*
                         public Graphic_Multi_Head GetGraphic(Color skinColor, Color hairColor)
                         {
@@ -1249,6 +1262,49 @@ namespace RW_FacialStuff
             Log.Message("Tried to get pawn head at path " + graphicPath + " that was not found. Defaulting...");
             return heads.First().GetGraphic(skinColor);
         }
+
+        public static Graphic_Multi_Head GetModdedHeadNamed(Pawn pawn, string graphicPath, Color rottenColor)
+        {
+            //          MethodInfo method = typeof(GraphicDatabaseHeadRecords).GetMethod("BuildDatabaseIfNecessary", BindingFlags.Static | BindingFlags.NonPublic);
+            //          method.Invoke(null, null);
+
+            var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+
+            BuildDatabaseIfNecessary();
+            BuildModdedDatabaseIfNecessary();
+
+            if (pawnSave.optimized)
+            {
+
+                for (int i = 0; i < headsModded.Count; i++)
+                {
+                    HeadGraphicRecordModded headGraphicRecord = headsModded[i];
+
+                    if (headGraphicRecord.graphicPath == graphicPath)
+                    {
+                        return headGraphicRecord.GetGraphicRotten(rottenColor);
+                    }
+                }
+
+
+
+            }
+
+            for (int i = 0; i < heads.Count; i++)
+            {
+                HeadGraphicRecord headGraphicRecord = heads[i];
+
+                if (headGraphicRecord.graphicPath == graphicPath)
+                {
+                    return headGraphicRecord.GetGraphic(rottenColor);
+                }
+            }
+
+
+            Log.Message("Tried to get pawn head at path " + graphicPath + " that was not found. Defaulting...");
+            return heads.First().GetGraphic(rottenColor);
+        }
+
 
         public static Graphic_Multi_Head GetHeadRandomUnmodded(Gender gender, Color skinColor, CrownType crownType)
         {

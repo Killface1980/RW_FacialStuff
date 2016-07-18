@@ -96,6 +96,7 @@ namespace RW_FacialStuff
             MethodInfo coreMethod5 = typeof(PawnHairChooser).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
             MethodInfo moddedHeadMethod5 = typeof(PawnFaceMaker).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
 
+
             try
             {
             Detours.TryDetourFromTo(method, method2);

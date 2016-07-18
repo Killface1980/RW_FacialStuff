@@ -1,5 +1,5 @@
-﻿using RimWorld;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace RW_FacialStuff.Defs
@@ -36,7 +36,6 @@ namespace RW_FacialStuff.Defs
 
     public class WrinkleDef : Def
     {
-
         public string texPathAverageNormal;
         public string texPathAveragePointy;
         public string texPathAverageWide;
