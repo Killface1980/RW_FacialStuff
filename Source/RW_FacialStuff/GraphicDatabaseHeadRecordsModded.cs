@@ -15,7 +15,12 @@ namespace RW_FacialStuff
     {
         public static string GetModTexturePath()
         {
+            if (File.Exists("Mods/726338068/Textures/Things/Pawn/Humanlike/Heads/Female/Female_Average_Normal_back.png"))
+                return "Mods/726338068/Textures/";
+            else
+            {
                 return "Mods/RW_FacialStuff/Textures/";
+            }
         }
 
         private static string pawnAgeFileName;
