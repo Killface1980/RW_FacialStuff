@@ -15,12 +15,12 @@ namespace RW_FacialStuff
     {
         public static string GetModTexturePath()
         {
-            if (File.Exists("Mods/726338068/Textures/Things/Pawn/Humanlike/Heads/Female/Female_Average_Normal_back.png"))
-                return "Mods/726338068/Textures/";
-            else
-            {
-                return "Mods/RW_FacialStuff/Textures/";
-            }
+ //       if (File.Exists("Mods/RW_FacialStuff/Textures/Things/Pawn/Humanlike/Heads/Female/Female_Average_Normal_back.png"))
+ //           return "Mods/RW_FacialStuff/Textures/";
+
+            return "Mods/RW_FacialStuff/Textures/";
+         //   return "726338068/Textures/";
+
         }
 
         private static string pawnAgeFileName;
@@ -148,8 +148,9 @@ namespace RW_FacialStuff
                     pawnSave.LipDef = _saveableLip;
                 }
 
-                GetSkinColorNamed(skinColor);
+                GetColorNamed(skinColor, ref _skinColorNamed);
                 graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnAgeFileName + "-" + pawnSave.EyeDef.label + "-" + _skinColorNamed;
+
             }
 
 
@@ -166,10 +167,11 @@ namespace RW_FacialStuff
                 }
 
 
-                GetHairColorNamed(haircolor);
-                GetSkinColorNamed(skinColor);
+                GetColorNamed(haircolor, ref _hairColorNamed);
+                GetColorNamed(skinColor, ref _skinColorNamed);
 
                 graphicPathNew = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnAgeFileName + "-" + pawnSave.EyeDef.label + "-" + pawnSave.BeardDef.label + "-" + _skinColorNamed + "-" + _hairColorNamed;
+
             }
         }
 
@@ -350,9 +352,6 @@ namespace RW_FacialStuff
             Texture2D finalHeadBack = new Texture2D(1, 1);
             MakeReadable(headGraphicBack, ref finalHeadBack);
 
-            Debug.Log(headGraphicBack);
-
-
             if (headGraphicBack != null)
                 ExportHeadBackToPNG(pawn, finalHeadBack, skinColor, "back", graphicPath);
             if (finalHeadFront != null)
@@ -503,10 +502,6 @@ namespace RW_FacialStuff
                 Texture2D readBeardGraphicFront = beardGraphic.MatFront.mainTexture as Texture2D;
                 Texture2D readBeardGraphicSide = beardGraphic.MatSide.mainTexture as Texture2D;
 
-
-                //       MakeBeard(readSideburnGraphicFront, readBeardGraphicFront, readTacheGraphicFront, ref beardFront, ref beardFrontComplex);
-                //       MakeBeard(readBeardGraphicSide, readSideburnGraphicSide, readTacheGraphicSide, ref beardSide, ref beardSideComplex);
-
                 MergeTwoGraphics(headGraphicFront, skinColor, readEyeGraphicFront, ref eyesHeadFront);
                 MergeTwoGraphics(headGraphicSide, skinColor, readEyeGraphicSide, ref eyesHeadSide);
 
@@ -636,126 +631,32 @@ namespace RW_FacialStuff
             // "myTexture2D" now has the same pixels from "texture" and it's readable.
         }
 
-        private static void GetHairColorNamed(Color hairColor)
+        private static void GetColorNamed(Color skinColor, ref string colorName)
         {
-            float hairRed = hairColor.r;
-            float hairGreen = hairColor.g;
-            float hairBlue = hairColor.b;
-            // Random values with 2 % chance
 
-            if (hairRed == hairBlue && hairBlue == hairGreen)
-            {
-                // Old, grey hair
-                if (hairRed >= 0.65f && hairRed <= 0.85f)
-                {
-                    _hairColorNamed = "Grey";
-                    return;
-                }
-
-            }
-            //Dark
-            if (hairColor == PawnHairColors.HairMidnightBlack)
-            {
-                _hairColorNamed = "Dark01";
-                return;
-            }
-
-            //if (hairColor == PawnHairColors.Dark02)
-            //{
-            //    HairColorNamed = "Dark02";
-            //    return;
-            //}
-
-            if (hairColor == PawnHairColors.HairMediumDarkBrown)
-            {
-                _hairColorNamed = "Dark03";
-                return;
-            }
-
-            //if (hairColor == PawnHairColors.Dark04)
-            //{
-            //    HairColorNamed = "Dark04";
-            //    return;
-            //}
-
-            //Reg Named
-            if (hairColor == PawnHairColors.HairTerraCotta)
-            {
-                _hairColorNamed = "Color01";
-                return;
-            }
-
-            //if (hairColor == PawnHairColors.Color02)
-            //{
-            //    HairColorNamed = "Color02";
-            //    return;
-            //}
-
-            if (hairColor == PawnHairColors.HairYellowBlonde)
-            {
-                _hairColorNamed = "Color03";
-                return;
-            }
-            //if (hairColor == PawnHairColors.Color04)
-            //{
-            //    HairColorNamed = "Color04";
-            //    return;
-            //}
-
-            _hairColorNamed = hairColor.ToString();
+            colorName = ColorToHex(skinColor);
         }
 
-        private static void GetSkinColorNamed(Color skinColor)
+        public static string ColorToHex(Color32 color)
         {
+            string hex = color.r.ToString("X2") + color.g.ToString("X2") + color.b.ToString("X2");
+            return hex;
+        }
 
-            if (skinColor == new Color32(74, 41, 25, 255))
+        public static Color HexToColor(string hex)
+        {
+            hex = hex.Replace("0x", "");//in case the string is formatted 0xFFFFFF
+            hex = hex.Replace("#", "");//in case the string is formatted #FFFFFF
+            byte a = 255;//assume fully visible unless specified in hex
+            byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+            byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+            byte b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+            //Only use alpha if the string has enough characters
+            if (hex.Length == 8)
             {
-                _skinColorNamed = "Skin01";
-                return;
+                a = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
             }
-
-            if (skinColor == new Color32(122, 54, 25, 255))
-            {
-                _skinColorNamed = "Skin02";
-                return;
-            }
-            if (skinColor == new Color32(165, 93, 41, 255))
-            {
-                _skinColorNamed = "Skin03";
-                return;
-            }
-            if (skinColor == new Color32(186, 119, 80, 255))
-            {
-                _skinColorNamed = "Skin04";
-                return;
-            }
-            if (skinColor == new Color32(230, 158, 124, 255))
-            {
-                _skinColorNamed = "Skin05";
-                return;
-            }
-            if (skinColor == new Color32(231, 184, 143, 255))
-            {
-                _skinColorNamed = "Skin06";
-                return;
-            }
-            if (skinColor == new Color32(237, 194, 154, 255))
-            {
-                _skinColorNamed = "Skin07";
-                return;
-            }
-            if (skinColor == new Color32(245, 210, 178, 255))
-            {
-                _skinColorNamed = "Skin08";
-                return;
-            }
-            if (skinColor == new Color32(255, 230, 212, 255))
-            {
-                _skinColorNamed = "Skin09";
-                return;
-            }
-
-            _skinColorNamed = skinColor.ToString();
+            return new Color32(r, g, b, a);
         }
 
         private static void MergeThreeGraphics(Texture2D layer_1, Texture2D layer_2, Texture2D layer_3, ref Texture2D texture_final)

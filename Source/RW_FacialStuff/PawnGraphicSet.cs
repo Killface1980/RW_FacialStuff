@@ -47,8 +47,7 @@ namespace RW_FacialStuff
                 desiccatedHeadGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, RottingColor);
                 skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
 
-            //  if (pawn.gender == Gender.Female && pawn.story.hairDef.hairTags.Contains("MaleOnly"))
-            //      pawn.story.hairDef = PawnFaceMaker.RandomHairDefFor(pawn, pawn.Faction.def);
+// INTERESTING                pawn.Drawer.renderer.graphics.headGraphic = skullGraphic;
 
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 ResolveApparelGraphics();
