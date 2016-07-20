@@ -67,10 +67,17 @@ namespace RW_FacialStuff
                 GraphicDatabaseHeadRecordsModded.MergeHeadWithHair(headGraphic.MatSide.mainTexture as Texture2D, newhairside, pawn.story.hairColor, ref temptextureside);
                 GraphicDatabaseHeadRecordsModded.MergeHeadWithHair(headGraphic.MatBack.mainTexture as Texture2D, newhairback, pawn.story.hairColor, ref temptextureback);
 
+                temptexturefront.Compress(true);
+                temptextureside.Compress(true);
+                temptextureback.Compress(true);
+
                 headGraphic.MatFront.mainTexture = temptexturefront;
                 headGraphic.MatSide.mainTexture = temptextureside;
                 headGraphic.MatBack.mainTexture = temptextureback;
 
+                UnityEngine.Object.DestroyImmediate(newhairfront);
+                UnityEngine.Object.DestroyImmediate(newhairside);
+                UnityEngine.Object.DestroyImmediate(newhairback);
                 /*
                 for (int j = 0; j < apparelGraphics.Count; j++)
                 {
