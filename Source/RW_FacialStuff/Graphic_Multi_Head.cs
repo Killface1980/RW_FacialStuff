@@ -115,8 +115,7 @@ namespace RW_FacialStuff
             //          else
             //              array[0] = BlankTexture();
 
-            if (File.Exists(GraphicDatabaseHeadRecordsModded.GetModTexturePath() + req.path + "_back.png"))
-
+            if (ContentFinder<Texture2D>.Get(req.path + "_back", false))
                  array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", true);
             else
                 array[0] = BlankTexture();

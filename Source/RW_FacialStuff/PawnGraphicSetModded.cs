@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Object = UnityEngine.Object;
 
 namespace RW_FacialStuff
 {
@@ -53,8 +55,6 @@ namespace RW_FacialStuff
 
                 GraphicDatabaseHeadRecordsModded.ModifyVanillaHead(pawn, hairGraphic, ref headGraphic);
 
-
-                
 
                 //           typeof(Pawn_StoryTracker).GetField("skinColor", BindingFlags.Instance | BindingFlags.Public).SetValue(pawn.story, Color.cyan);
 

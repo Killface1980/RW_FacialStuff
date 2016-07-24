@@ -12,6 +12,10 @@ namespace RW_FacialStuff
         public LipDef LipDef;
         public WrinkleDef WrinkleDef;
         public string headGraphicIndex;
+        public string type;
+
+        public string SkinColorHex;
+        public string HairColorHex;
 
         public bool optimized;
 
@@ -24,6 +28,9 @@ namespace RW_FacialStuff
             Scribe_Defs.LookDef(ref BeardDef, "BeardDef");
             Scribe_Values.LookValue(ref optimized, "optimized");
             Scribe_Values.LookValue(ref headGraphicIndex, "headGraphicIndex");
+            Scribe_Values.LookValue(ref type, "type");
+            Scribe_Values.LookValue(ref SkinColorHex, "SkinColorHex");
+            Scribe_Values.LookValue(ref HairColorHex, "HairColorHex");
         }
     }
 }
