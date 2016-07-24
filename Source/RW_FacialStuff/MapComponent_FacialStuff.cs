@@ -27,7 +27,7 @@ namespace RW_FacialStuff
 
         public static SaveablePawn GetCache(Pawn pawn)
         {
-            foreach (SaveablePawn c in MapComponent_FacialStuff.PawnCache)
+            foreach (SaveablePawn c in PawnCache)
                 if (c.Pawn == pawn)
                     return c;
             SaveablePawn n = new SaveablePawn { Pawn = pawn };

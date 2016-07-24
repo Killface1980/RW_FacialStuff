@@ -1,11 +1,12 @@
-﻿using UnityEngine;
-using Verse;
-using CommunityCoreLibrary;
-using System.Reflection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using CommunityCoreLibrary;
 using RimWorld;
+using UnityEngine;
+using Verse;
+using Object = UnityEngine.Object;
 
 namespace RW_FacialStuff
 {
@@ -18,7 +19,7 @@ namespace RW_FacialStuff
         {
             modInitializerControllerObject = new GameObject("BeardyFaces");
             modInitializerControllerObject.AddComponent<ModInitializerBehaviour>();
-            UnityEngine.Object.DontDestroyOnLoad((UnityEngine.Object)modInitializerControllerObject);
+            Object.DontDestroyOnLoad(modInitializerControllerObject);
         }
 
         public static IEnumerable<string> GraphicNamesInFolder(string folderPath)
@@ -98,7 +99,7 @@ namespace RW_FacialStuff
 
             try
             {
-            Detours.TryDetourFromTo(method, method2);
+                Detours.TryDetourFromTo(method, method2);
                 Detours.TryDetourFromTo(coreMethod, moddedHeadMethod);
                 Detours.TryDetourFromTo(coreMethod2, moddedHeadMethod2);
                 Detours.TryDetourFromTo(coreMethod3, moddedHeadMethod3);

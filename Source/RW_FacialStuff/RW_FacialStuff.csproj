@@ -11,7 +11,7 @@
     <AssemblyName>RW_FacialStuff</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -37,7 +37,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Community Core Library">
-      <HintPath>..\..\..\Community Core Library\Assemblies\Community Core Library.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\729577707\Assemblies\Community Core Library.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -56,7 +56,7 @@
     <Compile Include="PawnSkinColors.cs" />
     <Compile Include="SaveablePawn.cs" />
     <Compile Include="PawnFaceMaker.cs" />
-    <Compile Include="PawnGraphicSet.cs" />
+    <Compile Include="PawnGraphicSetModded.cs" />
     <Compile Include="ModInitializer .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -86,6 +86,7 @@
     </Content>
     <Content Include="..\..\Defs\ThingDefs\Initializer.xml">
       <Link>xml\Initializer.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\WrinkleDefs\WrinkleDef.xml">
       <Link>Defs\WrinkleDef.xml</Link>

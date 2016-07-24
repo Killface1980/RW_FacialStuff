@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Verse;
 using RimWorld;
 using RW_FacialStuff.Defs;
+using Verse;
 
 namespace RW_FacialStuff
 {
@@ -24,7 +24,7 @@ namespace RW_FacialStuff
             if (19 > pawn.ageTracker.AgeBiologicalYearsFloat)
                 chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
             else
-                chosenBeard = source.RandomElementByWeight((BeardDef beard) => BeardChoiceLikelihoodFor(beard, pawn));
+                chosenBeard = source.RandomElementByWeight(beard => BeardChoiceLikelihoodFor(beard, pawn));
 
 
             return chosenBeard;
@@ -36,7 +36,7 @@ namespace RW_FacialStuff
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
 
-            EyeDef chosenEyes = source.RandomElementByWeight((EyeDef eye) => EyeChoiceLikelihoodFor(eye, pawn));
+            EyeDef chosenEyes = source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
 
             return chosenEyes;
         }
@@ -58,7 +58,7 @@ namespace RW_FacialStuff
             IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
                                           where hair.hairTags.SharesElementWith(factionType.hairTags)
                                           select hair;
-            return source.RandomElementByWeight((HairDef hair) => HairChoiceLikelihoodFor(hair, pawn));
+            return source.RandomElementByWeight(hair => HairChoiceLikelihoodFor(hair, pawn));
         }
 
 
@@ -68,7 +68,7 @@ namespace RW_FacialStuff
                                          where lip.hairTags.SharesElementWith(factionType.hairTags)
                                          select lip;
 
-            LipDef chosenLips = source.RandomElementByWeight((LipDef lip) => LipChoiceLikelihoodFor(lip, pawn));
+            LipDef chosenLips = source.RandomElementByWeight(lip => LipChoiceLikelihoodFor(lip, pawn));
 
 
             return chosenLips;
@@ -114,13 +114,7 @@ namespace RW_FacialStuff
                 }
             }
 
-            Log.Error(string.Concat(new object[]
-            {
-               "Unknown hair likelihood for ",
-               eye,
-               " with ",
-               pawn
-            }));
+            Log.Error(string.Concat("Unknown hair likelihood for ", eye, " with ", pawn));
             return 0f;
         }
 
@@ -164,13 +158,7 @@ namespace RW_FacialStuff
                 }
             }
 
-            Log.Error(string.Concat(new object[]
-            {
-               "Unknown hair likelihood for ",
-               lip,
-               " with ",
-               pawn
-            }));
+            Log.Error(string.Concat("Unknown hair likelihood for ", lip, " with ", pawn));
             return 0f;
         }
 
@@ -208,13 +196,7 @@ namespace RW_FacialStuff
                 return 0f;
             }
 
-            Log.Error(string.Concat(new object[]
-            {
-                "Unknown hair likelihood for ",
-                beard,
-                " with ",
-                pawn
-            }));
+            Log.Error(string.Concat("Unknown hair likelihood for ", beard, " with ", pawn));
             return 0f;
         }
 
@@ -269,13 +251,7 @@ namespace RW_FacialStuff
                         return 70f;
                 }
             }
-            Log.Error(string.Concat(new object[]
-            {
-        "Unknown hair likelihood for ",
-        hair,
-        " with ",
-        pawn
-            }));
+            Log.Error(string.Concat("Unknown hair likelihood for ", hair, " with ", pawn));
             return 0f;
         }
 

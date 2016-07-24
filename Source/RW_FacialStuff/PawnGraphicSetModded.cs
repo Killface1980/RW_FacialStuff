@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -11,21 +11,6 @@ namespace RW_FacialStuff
 #pragma warning disable CS0824 // Konstruktor ist extern markiert
         public extern PawnGraphicSetModded();
 #pragma warning restore CS0824 // Konstruktor ist extern markiert
-
-        //   public static Graphic Cache(Pawn pawn, string texturePath, Color skincolor)
-        //   {
-        //       Graphic texture = null;
-        //       //
-        //       //   if (textureCache.TryGetValue(pawn.Label + "_" + texturePath, out texture)) return texture;
-        //       //   else
-        //       //   {
-        //       texture = GraphicDatabase.Get<Graphic_Multi>(texturePath, ShaderDatabase.Cutout, Vector2.one, skincolor);
-        //       //                textureCache.Add(pawn.Label + "_" + texturePath, texture);
-        //
-        //
-        //       return texture;
-        //       //          }
-        //   }
 
         public PawnGraphicSet graphics;
 
@@ -45,6 +30,7 @@ namespace RW_FacialStuff
                     GraphicDatabaseHeadRecordsModded.AddCustomizedHead(pawn, pawn.story.SkinColor, pawn.story.hairColor, pawn.story.HeadGraphicPath);
 
                 headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, pawn.story.SkinColor, pawn.story.hairColor);
+                // Original: headGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(this.pawn.story.HeadGraphicPath, this.pawn.story.SkinColor);
                 desiccatedHeadGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.HeadGraphicPath, RottingColor);
                 skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
@@ -75,9 +61,13 @@ namespace RW_FacialStuff
                 headGraphic.MatSide.mainTexture = temptextureside;
                 headGraphic.MatBack.mainTexture = temptextureback;
 
-                UnityEngine.Object.DestroyImmediate(newhairfront);
-                UnityEngine.Object.DestroyImmediate(newhairside);
-                UnityEngine.Object.DestroyImmediate(newhairback);
+                Object.DestroyImmediate(newhairfront);
+                Object.DestroyImmediate(newhairside);
+                Object.DestroyImmediate(newhairback);
+
+                //overwrites the crown type so that manually merged hair looks good again.
+          //      pawn.story.crownType = CrownType.Average;
+
                 /*
                 for (int j = 0; j < apparelGraphics.Count; j++)
                 {
@@ -109,7 +99,26 @@ namespace RW_FacialStuff
                 }
             }
 
+        // Verse.PawnGraphicSet
+        public GraphicMeshSet HairMeshSetModded
+        {
+            get
+            {
+         //       return MeshPool.humanlikeHairSetAverage;
 
-
+                if (pawn.story.crownType == CrownType.Average)
+                {
+                    return MeshPool.humanlikeHairSetAverage;
+                }
+                if (pawn.story.crownType == CrownType.Narrow)
+                {
+                    return MeshPool.humanlikeHairSetNarrow;
+                }
+                Log.Error("Unknown crown type: " + pawn.story.crownType);
+                return MeshPool.humanlikeHairSetAverage;
+            }
         }
+
+
     }
+}

@@ -13,7 +13,7 @@ namespace RW_FacialStuff
         public WrinkleDef WrinkleDef;
         public string GraphicPathOriginal;
 
-        public bool optimized = false;
+        public bool optimized;
 
         public void ExposeData()
         {

@@ -1,13 +1,15 @@
-﻿using RimWorld;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using CommunityCoreLibrary.ColorPicker;
+using RimWorld;
 using RW_FacialStuff.Defs;
 using UnityEngine;
 using Verse;
-using Verse.Steam;
+using Object = UnityEngine.Object;
 
 namespace RW_FacialStuff
 {
@@ -24,10 +26,6 @@ namespace RW_FacialStuff
         }
 
         private static string pawnAgeFileName;
-
-        public static Dictionary<string, Texture2D> textureCache = new Dictionary<string, Texture2D>();
-
-        public static List<Texture2D> textureList = new List<Texture2D>();
 
         private static EyeDef _saveableEye;
         private static WrinkleDef _saveableWrinkle;
@@ -52,8 +50,7 @@ namespace RW_FacialStuff
         static string type;
         static string graphicPathNew;
 
-        private static readonly string[] HeadsFolderPaths = new string[]
-        {
+        private static readonly string[] HeadsFolderPaths = {
           "Things/Pawn/Humanlike/Heads/Male",
           "Things/Pawn/Humanlike/Heads/Female"
         };
@@ -181,7 +178,7 @@ namespace RW_FacialStuff
             }
         }
 
-        public static void BuildHead(ref string graphicPath, Pawn pawn, Color skinColor, Color haircolor, bool rebuild)
+        private static void BuildHead(ref string graphicPath, Pawn pawn, Color skinColor, Color haircolor, bool rebuild)
         {
 
             var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
@@ -343,17 +340,17 @@ namespace RW_FacialStuff
 
             headsModded.Add(new HeadGraphicRecordModded(graphicPath));
 
-            UnityEngine.Object.DestroyImmediate(finalHeadFront, true);
-            UnityEngine.Object.DestroyImmediate(finalHeadSide, true);
+            Object.DestroyImmediate(finalHeadFront, true);
+            Object.DestroyImmediate(finalHeadSide, true);
 
-            UnityEngine.Object.DestroyImmediate(beardFront, true);
-            UnityEngine.Object.DestroyImmediate(beardSide, true);
+            Object.DestroyImmediate(beardFront, true);
+            Object.DestroyImmediate(beardSide, true);
 
-            UnityEngine.Object.DestroyImmediate(eyesHeadFront, true);
-            UnityEngine.Object.DestroyImmediate(eyesHeadSide, true);
+            Object.DestroyImmediate(eyesHeadFront, true);
+            Object.DestroyImmediate(eyesHeadSide, true);
 
-            UnityEngine.Object.DestroyImmediate(wrinklesHeadFront, true);
-            UnityEngine.Object.DestroyImmediate(wrinklesHeadSide, true);
+            Object.DestroyImmediate(wrinklesHeadFront, true);
+            Object.DestroyImmediate(wrinklesHeadSide, true);
 
 
         }
@@ -388,36 +385,16 @@ namespace RW_FacialStuff
             // Release the temporary RenderTexture
             RenderTexture.ReleaseTemporary(tmp);
 
-            return;
             // "myTexture2D" now has the same pixels from "texture" and it's readable.
         }
 
         private static void GetColorNamed(Color skinColor, ref string colorName)
         {
 
-            colorName = ColorToHex(skinColor);
-        }
+            colorName = ColorHelper.RGBtoHex(skinColor);
+            // 0.14.0 release :
+            //            colorName = CommunityCoreLibrary.ColorPicker.ColorHelper.RGBtoHex(skinColor);
 
-        public static string ColorToHex(Color32 color)
-        {
-            string hex = color.r.ToString("X2") + color.g.ToString("X2") + color.b.ToString("X2");
-            return hex;
-        }
-
-        public static Color HexToColor(string hex)
-        {
-            hex = hex.Replace("0x", "");//in case the string is formatted 0xFFFFFF
-            hex = hex.Replace("#", "");//in case the string is formatted #FFFFFF
-            byte a = 255;//assume fully visible unless specified in hex
-            byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-            byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-            byte b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
-            //Only use alpha if the string has enough characters
-            if (hex.Length == 8)
-            {
-                a = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
-            }
-            return new Color32(r, g, b, a);
         }
 
         /*
@@ -519,7 +496,7 @@ namespace RW_FacialStuff
         */
 
 
-        public static void AddFacialHair(Pawn pawn, Texture2D head, Texture2D beard, ref Texture2D finalhead)
+        private static void AddFacialHair(Pawn pawn, Texture2D head, Texture2D beard, ref Texture2D finalhead)
         {
             int startX = 0;
             int startY = head.height - beard.height;
@@ -560,7 +537,7 @@ namespace RW_FacialStuff
             finalhead.Apply();
         }
 
-        public static void MergeTwoGraphics(Texture2D bottom_layer, Texture2D top_layer, ref Texture2D finalTexture)
+        private static void MergeTwoGraphics(Texture2D bottom_layer, Texture2D top_layer, ref Texture2D finalTexture)
         {
             int startX = 0;
             int startY = bottom_layer.height - top_layer.height;
@@ -585,7 +562,7 @@ namespace RW_FacialStuff
             finalTexture.Apply();
         }
 
-        public static void MergeTwoGraphics(Texture2D bottom_layer, Color bottomColor, Texture2D top_layer, ref Texture2D finalTexture)
+        private static void MergeTwoGraphics(Texture2D bottom_layer, Color bottomColor, Texture2D top_layer, ref Texture2D finalTexture)
         {
             int startX = 0;
             int startY = bottom_layer.height - top_layer.height;
@@ -648,8 +625,7 @@ namespace RW_FacialStuff
             finalTexture.Apply();
         }
 
-
-        public static void MakeOld(float pawnAge, Texture2D head, Texture2D wrinkles, ref Texture2D finalhead)
+        private static void MakeOld(float pawnAge, Texture2D head, Texture2D wrinkles, ref Texture2D finalhead)
         {
 
             int startX = 0;
@@ -721,7 +697,7 @@ namespace RW_FacialStuff
 
             byte[] bytes = finalTexture.EncodeToPNG();
             File.WriteAllBytes(GetModTexturePath() + graphicpath + "_" + definition + ".png", bytes);
-            UnityEngine.Object.DestroyImmediate(finalTexture);
+            Object.DestroyImmediate(finalTexture);
         }
 
 
@@ -798,21 +774,18 @@ namespace RW_FacialStuff
                 this.graphicPath = graphicPath;
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
 
-                string[] array = fileNameWithoutExtension.Split(new char[]
-                {
-                            '_'
-                });
+                string[] array = fileNameWithoutExtension.Split('_');
 
                 try
                 {
-                    this.crownType = (CrownType)((byte)ParseHelper.FromString(array[array.Length - 2], typeof(CrownType)));
-                    this.gender = (Gender)((byte)ParseHelper.FromString(array[array.Length - 3], typeof(Gender)));
+                    crownType = (CrownType)((byte)ParseHelper.FromString(array[array.Length - 2], typeof(CrownType)));
+                    gender = (Gender)((byte)ParseHelper.FromString(array[array.Length - 3], typeof(Gender)));
                 }
                 catch (Exception ex)
                 {
                     Log.Error("Parse error with head graphic at " + graphicPath + ": " + ex.Message);
                     crownType = CrownType.Undefined;
-                    this.gender = Gender.None;
+                    gender = Gender.None;
                 }
 
 
@@ -820,7 +793,7 @@ namespace RW_FacialStuff
 
             public Graphic_Multi_Head GetGraphic(Color color)
             {
-                for (int i = 0; i < this.graphics.Count; i++)
+                for (int i = 0; i < graphics.Count; i++)
                 {
                     if (color.IndistinguishableFrom(graphics[i].Key))
                     {
@@ -855,10 +828,7 @@ namespace RW_FacialStuff
 
                 this.graphicPath = graphicPath;
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
-                string[] array = fileNameWithoutExtension.Split(new char[]
-                {
-                    '_'
-                });
+                string[] array = fileNameWithoutExtension.Split('_');
                 try
                 {
                     crownType = (CrownType)((byte)ParseHelper.FromString(array[array.Length - 2], typeof(CrownType)));
@@ -916,6 +886,49 @@ namespace RW_FacialStuff
                             return graphic_Multi_Head;
                         }
               */
+        }
+
+        //Adapted for Zombie Apocalypse - not in use
+        public static Graphic_Multi_Head GetModdedHeadNamed(string graphicPath, Color skinColor, Color hairColor)
+        {
+            //          MethodInfo method = typeof(GraphicDatabaseHeadRecords).GetMethod("BuildDatabaseIfNecessary", BindingFlags.Static | BindingFlags.NonPublic);
+            //          method.Invoke(null, null);
+
+
+            BuildDatabaseIfNecessary();
+            BuildModdedDatabaseIfNecessary();
+
+
+          //    if (!File.Exists(GetModTexturePath() + graphicPath + "_front.png"))
+          //        BuildHead(ref graphicPath, pawn, skinColor, hairColor, true);
+
+                for (int i = 0; i < headsModded.Count; i++)
+                {
+                    HeadGraphicRecordModded headGraphicRecord = headsModded[i];
+
+                    if (headGraphicRecord.graphicPath == graphicPath)
+                    {
+                        return headGraphicRecord.GetGraphic(Color.white);
+                    }
+                }
+
+
+
+            
+
+            for (int i = 0; i < heads.Count; i++)
+            {
+                HeadGraphicRecord headGraphicRecord = heads[i];
+
+                if (headGraphicRecord.graphicPath == graphicPath)
+                {
+                    return headGraphicRecord.GetGraphic(Color.white);
+                }
+            }
+
+
+            Log.Message("Tried to get pawn head at path " + graphicPath + " that was not found. Defaulting...");
+            return heads.First().GetGraphic(skinColor);
         }
 
         public static Graphic_Multi_Head GetModdedHeadNamed(Pawn pawn, string graphicPath, Color skinColor, Color hairColor)
@@ -1008,7 +1021,7 @@ namespace RW_FacialStuff
         public static Graphic_Multi_Head GetHeadRandomUnmodded(Gender gender, Color skinColor, CrownType crownType)
         {
             BuildDatabaseIfNecessary();
-            Predicate<HeadGraphicRecord> predicate = (HeadGraphicRecord head) => head.crownType == crownType && head.gender == gender;
+            Predicate<HeadGraphicRecord> predicate = head => head.crownType == crownType && head.gender == gender;
             int num = 0;
             HeadGraphicRecord headGraphicRecord;
             while (true)

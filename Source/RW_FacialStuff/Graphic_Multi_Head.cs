@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 using Verse;
 
@@ -166,24 +165,15 @@ namespace RW_FacialStuff
 
         public override string ToString()
         {
-            return string.Concat(new object[]
-            {
-                "Multi(initPath=",
-                path,
-                ", color=",
-                this.color,
-                ", colorTwo=",
-                this.colorTwo,
-                ")"
-            });
+            return string.Concat("Multi(initPath=", path, ", color=", color, ", colorTwo=", colorTwo, ")");
         }
 
         public override int GetHashCode()
         {
             int seed = 0;
-            seed = Gen.HashCombine<string>(seed, this.path);
-            seed = Gen.HashCombineStruct<Color>(seed, this.color);
-            return Gen.HashCombineStruct<Color>(seed, this.colorTwo);
+            seed = Gen.HashCombine(seed, path);
+            seed = Gen.HashCombineStruct(seed, color);
+            return Gen.HashCombineStruct(seed, colorTwo);
         }
     }
 
@@ -355,24 +345,15 @@ namespace RW_FacialStuff
 
         public override string ToString()
         {
-            return string.Concat(new object[]
-            {
-                "Multi(initPath=",
-                path,
-                ", color=",
-                this.color,
-                ", colorTwo=",
-                this.colorTwo,
-                ")"
-            });
+            return string.Concat("Multi(initPath=", path, ", color=", color, ", colorTwo=", colorTwo, ")");
         }
 
         public override int GetHashCode()
         {
             int seed = 0;
-            seed = Gen.HashCombine<string>(seed, this.path);
-            seed = Gen.HashCombineStruct<Color>(seed, this.color);
-            return Gen.HashCombineStruct<Color>(seed, this.colorTwo);
+            seed = Gen.HashCombine(seed, path);
+            seed = Gen.HashCombineStruct(seed, color);
+            return Gen.HashCombineStruct(seed, colorTwo);
         }
     }
 
