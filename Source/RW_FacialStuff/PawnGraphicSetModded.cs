@@ -40,7 +40,8 @@ namespace RW_FacialStuff
                 //    typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pawn.story, pawnSave.headGraphicIndex);
 
 
-                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RottingColor); skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
+                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RottingColor);
+                skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 ResolveApparelGraphics();
                 PortraitsCache.Clear();
@@ -91,25 +92,6 @@ namespace RW_FacialStuff
             }
         }
 
-        // Verse.PawnGraphicSet
-        public GraphicMeshSet HairMeshSetModded
-        {
-            get
-            {
-                //       return MeshPool.humanlikeHairSetAverage;
-
-                if (pawn.story.crownType == CrownType.Average)
-                {
-                    return MeshPool.humanlikeHairSetAverage;
-                }
-                if (pawn.story.crownType == CrownType.Narrow)
-                {
-                    return MeshPool.humanlikeHairSetNarrow;
-                }
-                Log.Error("Unknown crown type: " + pawn.story.crownType);
-                return MeshPool.humanlikeHairSetAverage;
-            }
-        }
 
         private static void ExportHeadBackToPNG()
         {
