@@ -38,6 +38,7 @@ namespace RW_FacialStuff
         private static string _hairColorHex;
         private static string _skinColorHex;
 
+        public static int headIndex = 0;
 
 
         public static void DefineHeadParts(Pawn pawn)
@@ -85,14 +86,9 @@ namespace RW_FacialStuff
 
 
             _skinColorHex = ColorHelper.RGBtoHex(pawn.story.SkinColor);
-            int number = 0;
             if (pawn.gender == Gender.Female)
             {
-                number = 1;
                 pawnSave.LipDef = PawnFaceMaker.RandomLipDefFor(pawn, pawn.Faction.def);
-
-                pawnSave.headGraphicPathModded = "Things/Pawn/Humanlike/Heads/" + pawn.gender + "/" + pawn.gender + "_" + pawn.story.crownType + "_" + type + "-" + pawnAgeFileName + "-" + pawnSave.EyeDef.label + "-" + _skinColorHex;
-
             }
 
 
@@ -102,12 +98,8 @@ namespace RW_FacialStuff
                 pawnSave.BeardDef = PawnFaceMaker.RandomBeardDefFor(pawn, pawn.Faction.def);
 
                 _hairColorHex = ColorHelper.RGBtoHex(pawn.story.hairColor);
-                number = 2;
             }
-            pawnSave.headGraphicPathModded = "Things/Pawn/Humanlike/Heads/Blank/0001" + number.ToString("0000");
 
-            var newhead = new HeadGraphicRecordModded(pawn);
-            headsModded.Add(newhead);
         }
 
         public static void ModifyVanillaHead(Pawn pawn, Graphic hairGraphic, ref Graphic headGraphic)
@@ -674,7 +666,7 @@ namespace RW_FacialStuff
 
                 this.pawn = pawn;
                 graphicPath = pawn.story.HeadGraphicPath;
-                graphicPathModded = pawnSave.headGraphicPathModded;
+                graphicPathModded = pawnSave.headGraphicIndex;
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
                 string[] array = fileNameWithoutExtension.Split('_');
                 try
@@ -692,9 +684,9 @@ namespace RW_FacialStuff
 
             }
 
-            public Graphic_Multi GetGraphic()
+            public Graphic_Multi GetGraphicBlank()
             {
-                Graphic_Multi graphic_Multi_Head = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(graphicPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                Graphic_Multi graphic_Multi_Head = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(graphicPathModded, ShaderDatabase.Cutout, Vector2.one, Color.white);
 
                 return graphic_Multi_Head;
             }
@@ -709,13 +701,13 @@ namespace RW_FacialStuff
             {
                 HeadGraphicRecordModded headGraphicRecordModded = headsModded[i];
 
-                if (headGraphicRecordModded.graphicPathModded == pawnSave.headGraphicPathModded)
+                if (headGraphicRecordModded.graphicPathModded == pawnSave.headGraphicIndex)
                 {
-                    return headGraphicRecordModded.GetGraphic();
+                    return headGraphicRecordModded.GetGraphicBlank();
                 }
             }
 
-            Log.Message("Tried to get pawn head at path " + pawnSave.headGraphicPathModded + " that was not found. Defaulting...");
+            Log.Message("Tried to get pawn head at path " + pawnSave.headGraphicIndex + " that was not found. Defaulting...");
 
             return heads.First().GetGraphic(pawn.story.SkinColor);
         }
