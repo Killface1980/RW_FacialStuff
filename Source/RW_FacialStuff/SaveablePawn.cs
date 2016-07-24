@@ -11,7 +11,7 @@ namespace RW_FacialStuff
         public EyeDef EyeDef;
         public LipDef LipDef;
         public WrinkleDef WrinkleDef;
-        public string GraphicPathOriginal;
+        public string headGraphicPathModded;
 
         public bool optimized;
 
@@ -23,7 +23,7 @@ namespace RW_FacialStuff
             Scribe_Defs.LookDef(ref WrinkleDef, "WrinkleDef");
             Scribe_Defs.LookDef(ref BeardDef, "BeardDef");
             Scribe_Values.LookValue(ref optimized, "optimized");
-            Scribe_Values.LookValue(ref GraphicPathOriginal, "GraphicPathOriginal");
+            Scribe_Values.LookValue(ref headGraphicPathModded, "headGraphicPathModded");
         }
     }
 }
