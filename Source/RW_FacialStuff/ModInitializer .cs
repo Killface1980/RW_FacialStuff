@@ -60,12 +60,15 @@ namespace RW_FacialStuff
             MethodInfo coreMethod5 = typeof(PawnHairChooser).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
             MethodInfo moddedHeadMethod5 = typeof(PawnFaceMaker).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
 
+     //       MethodInfo coreMethod6 = typeof(ZombieMod_Utility).GetMethod("Zombify", BindingFlags.Static | BindingFlags.Public);
+    //        MethodInfo moddedHeadMethod6 = typeof(ZombieMod_UtilityFS).GetMethod("Zombify", BindingFlags.Static | BindingFlags.Public);
             try
             {
                 Detours.TryDetourFromTo(coreMethod, moddedHeadMethod);
                 Detours.TryDetourFromTo(coreMethod3, moddedHeadMethod3);
                 Detours.TryDetourFromTo(coreMethod4, moddedHeadMethod4);
                 Detours.TryDetourFromTo(coreMethod5, moddedHeadMethod5);
+        //        Detours.TryDetourFromTo(coreMethod6, moddedHeadMethod6);
 
             }
             catch (Exception)
