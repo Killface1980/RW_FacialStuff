@@ -48,11 +48,14 @@ namespace RW_FacialStuff
 
         public void Start()
         {
-            MethodInfo method = typeof(GraphicDatabaseUtility).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
-            MethodInfo method2 = typeof(GraphicDatabaseUtilityFS).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
+  //        MethodInfo method = typeof(GraphicDatabaseUtility).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
+  //        MethodInfo method2 = typeof(GraphicDatabaseUtilityFS).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
 
             MethodInfo coreMethod = typeof(PawnGraphicSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
             MethodInfo moddedHeadMethod = typeof(PawnGraphicSetModded).GetMethod("ResolveAllGraphicsModded", BindingFlags.Instance | BindingFlags.Public);
+
+            MethodInfo coreMethod2 = typeof(PawnHairChooser).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo moddedHeadMethod2 = typeof(PawnFaceMaker).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
 
             MethodInfo coreMethod3 = typeof(RimWorld.PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
             MethodInfo moddedHeadMethod3 = typeof(PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
@@ -60,8 +63,6 @@ namespace RW_FacialStuff
             MethodInfo coreMethod4 = typeof(PawnSkinColors).GetMethod("GetSkinColor", BindingFlags.Static | BindingFlags.Public);
             MethodInfo moddedHeadMethod4 = typeof(PawnSkinColorsModded).GetMethod("GetSkinColor", BindingFlags.Static | BindingFlags.Public);
 
-            MethodInfo coreMethod5 = typeof(PawnHairChooser).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
-            MethodInfo moddedHeadMethod5 = typeof(PawnFaceMaker).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
 
      //       MethodInfo coreMethod6 = typeof(ZombieMod_Utility).GetMethod("Zombify", BindingFlags.Static | BindingFlags.Public);
     //        MethodInfo moddedHeadMethod6 = typeof(ZombieMod_UtilityFS).GetMethod("Zombify", BindingFlags.Static | BindingFlags.Public);
@@ -69,9 +70,9 @@ namespace RW_FacialStuff
             {
       //          Detours.TryDetourFromTo(method, method2);
                 Detours.TryDetourFromTo(coreMethod, moddedHeadMethod);
+                Detours.TryDetourFromTo(coreMethod2, moddedHeadMethod2);
                 Detours.TryDetourFromTo(coreMethod3, moddedHeadMethod3);
                 Detours.TryDetourFromTo(coreMethod4, moddedHeadMethod4);
-                Detours.TryDetourFromTo(coreMethod5, moddedHeadMethod5);
         //        Detours.TryDetourFromTo(coreMethod6, moddedHeadMethod6);
 
             }

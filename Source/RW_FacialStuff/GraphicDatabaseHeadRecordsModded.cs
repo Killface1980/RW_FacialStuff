@@ -243,7 +243,6 @@ namespace RW_FacialStuff
             finalHeadSide.Compress(true);
             finalHeadBack.Compress(true);
 
-
             headGraphic.MatFront.mainTexture = finalHeadFront;
             headGraphic.MatSide.mainTexture = finalHeadSide;
             headGraphic.MatBack.mainTexture = finalHeadBack;
@@ -267,10 +266,6 @@ namespace RW_FacialStuff
             Object.DestroyImmediate(newhairfront, true);
             Object.DestroyImmediate(newhairside, true);
             Object.DestroyImmediate(newhairback, true);
-
-            //Object.DestroyImmediate(temptextureback, true);
-
-
 
         }
 
@@ -386,7 +381,7 @@ namespace RW_FacialStuff
             finalTexture.Apply();
         }
 
-        public static void MergeHeadWithHair(Texture2D bottom_layer, Texture2D top_layer, Color topColor, ref Texture2D finalTexture)
+        private static void MergeHeadWithHair(Texture2D bottom_layer, Texture2D top_layer, Color topColor, ref Texture2D finalTexture)
         {
             int startX = 0;
             int startY = bottom_layer.height - top_layer.height;
@@ -604,6 +599,21 @@ namespace RW_FacialStuff
                 return graphic_Multi_Head;
             }
 
+            public Graphic_Multi GetGraphicColored(Color color)
+            {
+                for (int i = 0; i < graphics.Count; i++)
+                {
+                    if (color.IndistinguishableFrom(graphics[i].Key))
+                    {
+                        return graphics[i].Value;
+                    }
+                }
+
+                Graphic_Multi graphic_Multi_Head = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(graphicPathModded, ShaderDatabase.Cutout, Vector2.one, color);
+                graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphic_Multi_Head));
+
+                return graphic_Multi_Head;
+            }
         }
 
         public static Graphic_Multi GetModdedHeadNamed(Pawn pawn, bool useVanilla)
@@ -630,6 +640,26 @@ namespace RW_FacialStuff
                 if (headGraphicRecordModded.graphicPathModded == pawnSave.headGraphicIndex)
                 {
                     return headGraphicRecordModded.GetGraphicBlank();
+                }
+            }
+
+            Log.Message("Tried to get pawn head at path " + pawnSave.headGraphicIndex + " that was not found. Defaulting...");
+
+            return headsVanillaCustom.First().GetGraphic();
+        }
+
+        public static Graphic_Multi GetModdedHeadNamed(Pawn pawn, Color color)
+        {
+            var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+
+
+            for (int i = 0; i < headsModded.Count; i++)
+            {
+                HeadGraphicRecordModded headGraphicRecordModded = headsModded[i];
+
+                if (headGraphicRecordModded.graphicPathModded == pawnSave.headGraphicIndex)
+                {
+                    return headGraphicRecordModded.GetGraphicColored(color);
                 }
             }
 

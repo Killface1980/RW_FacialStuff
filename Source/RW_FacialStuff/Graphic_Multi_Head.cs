@@ -65,6 +65,7 @@ namespace RW_FacialStuff
             }
         }
 
+
         public static Texture2D BlankTexture()
         {
             Texture2D blankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
@@ -78,7 +79,7 @@ namespace RW_FacialStuff
                     blankTexture.SetPixel(x, y, Color.clear);
                 }
             }
-
+            blankTexture.Apply();
             return blankTexture;
         }
 

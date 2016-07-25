@@ -19,7 +19,7 @@ namespace RW_FacialStuff
         public void ResolveAllGraphicsModded()
         {
             //This creates many empty textures. only neede for rebuilding
-           // ExportHeadBackToPNG();
+            // ExportHeadBackToPNG();
 
 
             ClearCache();
@@ -28,7 +28,7 @@ namespace RW_FacialStuff
             if (pawn.RaceProps.Humanlike)
             {
                 nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
-                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RottingColor);
+                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RottingColor*pawn.story.SkinColor);
                 dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
 
                 var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
@@ -42,7 +42,6 @@ namespace RW_FacialStuff
                 //    typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pawn.story, pawnSave.headGraphicIndex);
 
 
-                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RottingColor);
                 skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 ResolveApparelGraphics();
@@ -51,7 +50,9 @@ namespace RW_FacialStuff
                 pawnSave.headGraphicIndex = "Heads/Blank/" + GraphicDatabaseHeadRecordsModded.headIndex.ToString("0000");
                 GraphicDatabaseHeadRecordsModded.headsModded.Add(new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(pawn));
                 GraphicDatabaseHeadRecordsModded.headIndex += 1;
-                headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn,false);
+                headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, false);
+                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RottingColor);
+        //        desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RottingColor);
 
                 GraphicDatabaseHeadRecordsModded.ModifyVanillaHead(pawn, hairGraphic, ref headGraphic);
 
