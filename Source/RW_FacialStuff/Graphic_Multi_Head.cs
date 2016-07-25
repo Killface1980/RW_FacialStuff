@@ -67,7 +67,7 @@ namespace RW_FacialStuff
 
         public static Texture2D BlankTexture()
         {
-            Texture2D blankTexture = new Texture2D(128, 128);
+            Texture2D blankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
             int startX = 0;
             int startY = 0;
 

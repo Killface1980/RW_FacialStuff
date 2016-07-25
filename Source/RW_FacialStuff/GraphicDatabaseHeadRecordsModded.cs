@@ -80,30 +80,30 @@ namespace RW_FacialStuff
 
             var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
-            Texture2D headGraphicFront = new Texture2D(128, 128);
-            Texture2D headGraphicSide = new Texture2D(128, 128);
-            Texture2D headGraphicBack = new Texture2D(128, 128);
+            Texture2D headGraphicFront = new Texture2D(128, 128, TextureFormat.RGBA32, false);
+            Texture2D headGraphicSide = new Texture2D(128, 128, TextureFormat.RGBA32, false);
+            Texture2D headGraphicBack = new Texture2D(128, 128, TextureFormat.RGBA32, false);
 
-            Texture2D finalHeadFront = new Texture2D(headGraphicFront.width, headGraphicFront.height);
-            Texture2D finalHeadSide = new Texture2D(headGraphicSide.width, headGraphicSide.height);
-            Texture2D finalHeadBack = new Texture2D(headGraphicBack.width, headGraphicBack.height);
+            Texture2D finalHeadFront = new Texture2D(128, 128, TextureFormat.RGBA32, false);
+            Texture2D finalHeadSide = new Texture2D(128, 128, TextureFormat.RGBA32, false);
+            Texture2D finalHeadBack = new Texture2D(128, 128, TextureFormat.RGBA32, false);
 
-            Texture2D beardFront = new Texture2D(headGraphicFront.width, headGraphicFront.height);
-            Texture2D beardSide = new Texture2D(headGraphicSide.width, headGraphicSide.height);
+            Texture2D beardFront = new Texture2D(128, 128, TextureFormat.RGBA32, false);
+            Texture2D beardSide = new Texture2D(128, 128, TextureFormat.RGBA32, false);
 
-            Texture2D eyesHeadFront = new Texture2D(headGraphicFront.width, headGraphicFront.height);
-            Texture2D eyesHeadSide = new Texture2D(headGraphicSide.width, headGraphicSide.height);
+            Texture2D eyesHeadFront = new Texture2D(128, 128, TextureFormat.RGBA32, false);
+            Texture2D eyesHeadSide = new Texture2D(128, 128, TextureFormat.RGBA32, false);
 
-            Texture2D wrinklesHeadFront = new Texture2D(headGraphicFront.width, headGraphicFront.height);
-            Texture2D wrinklesHeadSide = new Texture2D(headGraphicSide.width, headGraphicSide.height);
+            Texture2D wrinklesHeadFront = new Texture2D(128, 128, TextureFormat.RGBA32, false);
+            Texture2D wrinklesHeadSide = new Texture2D(128, 128, TextureFormat.RGBA32, false);
 
-            Texture2D temptexturefront = new Texture2D(128, 128);
-            Texture2D temptextureside = new Texture2D(128, 128);
+            Texture2D temptexturefront = new Texture2D(128, 128, TextureFormat.RGBA32, false);
+            Texture2D temptextureside = new Texture2D(128, 128, TextureFormat.RGBA32, false);
             // Texture2D temptextureback = new Texture2D(128, 128);
 
-            Texture2D newhairfront = new Texture2D(128, 128);
-            Texture2D newhairside = new Texture2D(128, 128);
-            Texture2D newhairback = new Texture2D(128, 128);
+            Texture2D newhairfront = new Texture2D(128, 128, TextureFormat.RGBA32, false);
+            Texture2D newhairside = new Texture2D(128, 128, TextureFormat.RGBA32, false);
+            Texture2D newhairback = new Texture2D(128, 128, TextureFormat.RGBA32, false);
 
             MakeReadable(headGraphicVanilla.MatFront.mainTexture as Texture2D, ref headGraphicFront);
             MakeReadable(headGraphicVanilla.MatSide.mainTexture as Texture2D, ref headGraphicSide);
@@ -138,7 +138,6 @@ namespace RW_FacialStuff
                 if (pawnSave.type == "Wide")
                     wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.black);
             }
-
 
             Texture2D readEyeGraphicFront = eyeGraphic.MatFront.mainTexture as Texture2D;
             Texture2D readEyeGraphicSide = eyeGraphic.MatSide.mainTexture as Texture2D;
