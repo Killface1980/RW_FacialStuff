@@ -59,6 +59,8 @@
     <Compile Include="PawnGraphicSetModded.cs" />
     <Compile Include="ModInitializer .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextureScale.cs" />
+    <None Include="ZombieMod_UtilityFS.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\About\About.xml">
