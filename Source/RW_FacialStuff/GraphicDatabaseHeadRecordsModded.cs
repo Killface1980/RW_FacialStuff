@@ -225,9 +225,9 @@ namespace RW_FacialStuff
              if (pawn.story.crownType == CrownType.Narrow)
              {
             
-                 TextureScale.Point(newhairfront, 112, 128);
-                 TextureScale.Point(newhairside, 112, 128);
-                 TextureScale.Point(newhairback, 112, 128);
+                 TextureScale.Bilinear(newhairfront, 112, 128);
+                 TextureScale.Bilinear(newhairside, 112, 128);
+                 TextureScale.Bilinear(newhairback, 112, 128);
             
                  TextureScale.ResizeCanvas(newhairfront, 128, 128);
                  TextureScale.ResizeCanvas(newhairside, 128, 128);
