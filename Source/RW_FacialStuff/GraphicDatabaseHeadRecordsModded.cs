@@ -16,21 +16,11 @@ namespace RW_FacialStuff
 {
     public class GraphicDatabaseHeadRecordsModded : GraphicDatabaseHeadRecords
     {
-        public static string GetModTexturePath()
-        {
-            //       if (File.Exists("Mods/RW_FacialStuff/Textures/Things/Pawn/Humanlike/Heads/Female/Female_Average_Normal_back.png"))
-            //           return "Mods/RW_FacialStuff/Textures/";
 
-            return "Mods/RW_FacialStuff/Textures/";
-            //   return "726338068/Textures/";
-
-        }
-
-
-        public static List<HeadGraphicRecord> heads = new List<HeadGraphicRecord>();
+        public static List<HeadGraphicRecordVanillaCustom> headsVanillaCustom = new List<HeadGraphicRecordVanillaCustom>();
         public static List<HeadGraphicRecordModded> headsModded = new List<HeadGraphicRecordModded>();
 
-        private static HeadGraphicRecord skull;
+        private static HeadGraphicRecordVanillaCustom skull;
         private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
         protected Pawn pawn;
 
@@ -55,7 +45,6 @@ namespace RW_FacialStuff
 
             pawnSave.WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn, pawn.Faction.def);
 
-
             pawnSave.SkinColorHex = ColorHelper.RGBtoHex(pawn.story.SkinColor);
 
             if (pawn.gender == Gender.Female)
@@ -71,12 +60,15 @@ namespace RW_FacialStuff
 
                 pawnSave.HairColorHex = ColorHelper.RGBtoHex(pawn.story.hairColor);
             }
+
+
             pawnSave.optimized = true;
         }
 
         public static void ModifyVanillaHead(Pawn pawn, Graphic hairGraphic, ref Graphic headGraphic)
         {
-            Graphic headGraphicVanilla = GetHeadNamed(pawn.story.HeadGraphicPath, Color.white);
+            // grab the blank texture instead of Vanilla
+            Graphic headGraphicVanilla = GetModdedHeadNamed(pawn, true);
 
             var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
@@ -230,18 +222,18 @@ namespace RW_FacialStuff
             }
 
 
-            // if (pawn.story.crownType == CrownType.Narrow)
-            // {
-            //
-            //     TextureScale.Point(newhairfront, 112, 128);
-            //     TextureScale.Point(newhairside, 112, 128);
-            //     TextureScale.Point(newhairback, 112, 128);
-            //
-            //     TextureScale.ResizeCanvas(newhairfront, 128, 128);
-            //     TextureScale.ResizeCanvas(newhairside, 128, 128);
-            //     TextureScale.ResizeCanvas(newhairback, 128, 128);
-            //
-            // }
+             if (pawn.story.crownType == CrownType.Narrow)
+             {
+            
+                 TextureScale.Point(newhairfront, 112, 128);
+                 TextureScale.Point(newhairside, 112, 128);
+                 TextureScale.Point(newhairback, 112, 128);
+            
+                 TextureScale.ResizeCanvas(newhairfront, 128, 128);
+                 TextureScale.ResizeCanvas(newhairside, 128, 128);
+                 TextureScale.ResizeCanvas(newhairback, 128, 128);
+            
+             }
 
             MergeHeadWithHair(temptexturefront, newhairfront, pawn.story.hairColor, ref finalHeadFront);
             MergeHeadWithHair(temptextureside, newhairside, pawn.story.hairColor, ref finalHeadSide);
@@ -315,48 +307,10 @@ namespace RW_FacialStuff
             // "myTexture2D" now has the same pixels from "texture" and it's readable.
         }
 
-
-
-        /*
-        private static void MergeThreeGraphics(Texture2D layer_1, Texture2D layer_2, Texture2D layer_3, ref Texture2D texture_final)
-        {
-            int startX = 0;
-            int startY = 0;
-
-            for (int x = startX; x < layer_1.width; x++)
-            {
-
-                for (int y = startY; y < layer_1.height; y++)
-                {
-                    Color layer1Color = layer_1.GetPixel(x, y);
-                    Color layer2Color = layer_2.GetPixel(x - startX, y - startY);
-                    Color layer3Color = layer_3.GetPixel(x - startX, y - startY);
-
-                    Color mixcolor = Color.Lerp(layer1Color, layer2Color, layer2Color.a / 1f);
-                    Color final_color = Color.Lerp(mixcolor, layer3Color, layer3Color.a / 1f);
-                    //      if (layer1Color.a == 1 || layer2Color.a == 1 || layer3Color.a == 1)
-                    final_color.a = layer1Color.a + layer2Color.a + layer3Color.a;
-                    //    if (final_color.a >= 0.6)
-                    //        final_color.a = 1;
-                    //    else
-                    //        final_color.a = 0;
-                    texture_final.SetPixel(x, y, final_color);
-                }
-            }
-            texture_final.Apply();
-        }
-*/
         private static void MergeThreeGraphics(Texture2D layer_1, Color layer1BlendColor, Texture2D layer_2, Texture2D layer_3, ref Texture2D texture_final)
         {
             int startX = 0;
             int startY = 0;
-
-            //float num1 = Rand.Value;
-            //float num2 = Rand.Value;
-            //float num3 = Rand.Value;
-            //
-            //Color eyeColorRandom = new Color(num1, num2, num3);
-
 
             for (int x = startX; x < layer_1.width; x++)
             {
@@ -380,7 +334,6 @@ namespace RW_FacialStuff
             texture_final.Apply();
         }
 
-
         private static void AddFacialHair(Pawn pawn, Texture2D head, Texture2D beard, ref Texture2D finalhead)
         {
             int startX = 0;
@@ -396,23 +349,6 @@ namespace RW_FacialStuff
 
                     beardColor *= pawn.story.hairColor;
 
-
-
-                    //beardColor.r = Math.Min(beardColor.r, pawn.story.hairColor.r) - 0.1f;
-                    //beardColor.g = Math.Min(beardColor.g, pawn.story.hairColor.g) - 0.1f;
-                    //beardColor.b = Math.Min(beardColor.b, pawn.story.hairColor.b) - 0.1f;
-
-
-                    //if (BeardColorNamed.Equals("Grey"))
-                    //{
-                    //    final_color = Color.Lerp(headColor, beardColor * ColorGrey, beardColor.a / 1f);
-                    //}
-                    //else if (BeardColorNamed.Contains("Dark"))
-                    //{
-                    //    final_color = Color.Lerp(headColor, beardColor * Dark01, beardColor.a / 1f);
-                    //
-                    //}
-                    //else
                     Color final_color = Color.Lerp(headColor, beardColor, beardColor.a / 1f);
 
                     finalhead.SetPixel(x, y, final_color);
@@ -528,29 +464,27 @@ namespace RW_FacialStuff
 
         public static void BuildDatabaseIfNecessary()
         {
-            heads.Clear();
-            if (heads.Count > 0 && skull != null)
+            headsVanillaCustom.Clear();
+            if (headsVanillaCustom.Count > 0 && skull != null)
             {
                 return;
             }
 
-            // now adding only vanilla cleared heads to the main db
+            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Average_Normal"));
+            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Average_Pointy"));
+            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Average_Wide"));
+            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Narrow_Normal"));
+            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Narrow_Pointy"));
+            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Narrow_Wide"));
 
-            heads.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads/Female/Female_Average_Normal2"));
-            heads.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads/Female/Female_Average_Pointy2"));
-            heads.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads/Female/Female_Average_Wide2"));
-            heads.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Normal2"));
-            heads.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Pointy2"));
-            heads.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Wide2"));
+            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Average_Normal"));
+            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Average_Pointy"));
+            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Average_Wide"));
+            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Narrow_Normal"));
+            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Narrow_Pointy"));
+            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Narrow_Wide"));
 
-            heads.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads/Male/Male_Average_Normal2"));
-            heads.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads/Male/Male_Average_Pointy2"));
-            heads.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads/Male/Male_Average_Wide2"));
-            heads.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Normal2"));
-            heads.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Pointy2"));
-            heads.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Wide2"));
-
-            skull = new HeadGraphicRecord(SkullPath);
+            skull = new HeadGraphicRecordVanillaCustom(SkullPath);
 
 
             //   string[] headsFolderPaths = HeadsFolderPaths;
@@ -559,25 +493,25 @@ namespace RW_FacialStuff
             //       string text = headsFolderPaths[i];
             //       foreach (string current in GraphicDatabaseUtility.GraphicNamesInFolder(text))
             //       {
-            //           heads.Add(new HeadGraphicRecord(text + "/" + current));
+            //           headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom(text + "/" + current));
             //       }
             //   }
         }
 
 
-        public class HeadGraphicRecord
+        public class HeadGraphicRecordVanillaCustom
         {
             public Gender gender;
 
             public CrownType crownType;
 
-            public string graphicPath;
+            public string graphicPathVanillaCustom;
 
             public List<KeyValuePair<Color, Graphic_Multi>> graphics = new List<KeyValuePair<Color, Graphic_Multi>>();
 
-            public HeadGraphicRecord(string graphicPath)
+            public HeadGraphicRecordVanillaCustom(string graphicPath)
             {
-                this.graphicPath = graphicPath;
+                this.graphicPathVanillaCustom = graphicPath;
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
 
                 string[] array = fileNameWithoutExtension.Split('_');
@@ -597,8 +531,9 @@ namespace RW_FacialStuff
 
             }
 
-            public Graphic_Multi GetGraphic(Color color)
+            public Graphic_Multi GetGraphic()
             {
+                Color color = Color.white;
                 for (int i = 0; i < graphics.Count; i++)
                 {
                     if (color.IndistinguishableFrom(graphics[i].Key))
@@ -606,8 +541,7 @@ namespace RW_FacialStuff
                         return graphics[i].Value;
                     }
                 }
-                Graphic_Multi graphic_Multi_Head = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(graphicPath, ShaderDatabase.Cutout, Vector2.one, color);
-                //   Graphic_Multi graphic_Multi_Head = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(graphicPath, ShaderDatabase.CutoutSkin, Vector2.one, color);
+                Graphic_Multi graphic_Multi_Head = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(graphicPathVanillaCustom, ShaderDatabase.Cutout, Vector2.one, color);
                 graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphic_Multi_Head));
                 return graphic_Multi_Head;
             }
@@ -617,6 +551,7 @@ namespace RW_FacialStuff
         {
             public Pawn pawn = null;
 
+            public List<KeyValuePair<Color, Graphic_Multi>> graphics = new List<KeyValuePair<Color, Graphic_Multi>>();
 
             public bool unique = false;
 
@@ -654,16 +589,39 @@ namespace RW_FacialStuff
 
             public Graphic_Multi GetGraphicBlank()
             {
+                Color color = Color.white;
+                for (int i = 0; i < graphics.Count; i++)
+                {
+                    if (color.IndistinguishableFrom(graphics[i].Key))
+                    {
+                        return graphics[i].Value;
+                    }
+                }
+
                 Graphic_Multi graphic_Multi_Head = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(graphicPathModded, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphic_Multi_Head));
 
                 return graphic_Multi_Head;
             }
 
         }
 
-        public static Graphic_Multi GetModdedHeadNamed(Pawn pawn)
+        public static Graphic_Multi GetModdedHeadNamed(Pawn pawn, bool useVanilla)
         {
             var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+
+            if (useVanilla)
+            {
+                for (int i = 0; i < headsVanillaCustom.Count; i++)
+                {
+                    HeadGraphicRecordVanillaCustom headGraphicRecordVanillaCustom = headsVanillaCustom[i];
+
+                    if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story.HeadGraphicPath.Remove(0,22))
+                    {
+                        return headGraphicRecordVanillaCustom.GetGraphic();
+                    }
+                }
+            }
 
             for (int i = 0; i < headsModded.Count; i++)
             {
@@ -677,7 +635,7 @@ namespace RW_FacialStuff
 
             Log.Message("Tried to get pawn head at path " + pawnSave.headGraphicIndex + " that was not found. Defaulting...");
 
-            return heads.First().GetGraphic(pawn.story.SkinColor);
+            return headsVanillaCustom.First().GetGraphic();
         }
 
     }

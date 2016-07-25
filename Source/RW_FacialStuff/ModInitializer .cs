@@ -48,6 +48,9 @@ namespace RW_FacialStuff
 
         public void Start()
         {
+            MethodInfo method = typeof(GraphicDatabaseUtility).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo method2 = typeof(GraphicDatabaseUtilityFS).GetMethod("GraphicNamesInFolder", BindingFlags.Static | BindingFlags.Public);
+
             MethodInfo coreMethod = typeof(PawnGraphicSet).GetMethod("ResolveAllGraphics", BindingFlags.Instance | BindingFlags.Public);
             MethodInfo moddedHeadMethod = typeof(PawnGraphicSetModded).GetMethod("ResolveAllGraphicsModded", BindingFlags.Instance | BindingFlags.Public);
 
@@ -64,6 +67,7 @@ namespace RW_FacialStuff
     //        MethodInfo moddedHeadMethod6 = typeof(ZombieMod_UtilityFS).GetMethod("Zombify", BindingFlags.Static | BindingFlags.Public);
             try
             {
+      //          Detours.TryDetourFromTo(method, method2);
                 Detours.TryDetourFromTo(coreMethod, moddedHeadMethod);
                 Detours.TryDetourFromTo(coreMethod3, moddedHeadMethod3);
                 Detours.TryDetourFromTo(coreMethod4, moddedHeadMethod4);

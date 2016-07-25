@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Defs\FacialStuff_Defs.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
+    <Compile Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphic_Multi_Head.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
     <Compile Include="PawnHairColors.cs" />

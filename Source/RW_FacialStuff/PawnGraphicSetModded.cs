@@ -48,10 +48,10 @@ namespace RW_FacialStuff
                 ResolveApparelGraphics();
                 PortraitsCache.Clear();
 
-                pawnSave.headGraphicIndex = "Things/Pawn/Humanlike/Heads/Blank/" + GraphicDatabaseHeadRecordsModded.headIndex.ToString("0000");
+                pawnSave.headGraphicIndex = "Heads/Blank/" + GraphicDatabaseHeadRecordsModded.headIndex.ToString("0000");
                 GraphicDatabaseHeadRecordsModded.headsModded.Add(new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(pawn));
                 GraphicDatabaseHeadRecordsModded.headIndex += 1;
-                headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn);
+                headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn,false);
 
                 GraphicDatabaseHeadRecordsModded.ModifyVanillaHead(pawn, hairGraphic, ref headGraphic);
 
@@ -115,9 +115,9 @@ namespace RW_FacialStuff
             for (int i = 0; i < 512; i++)
             {
                 byte[] bytes = finalTexture.EncodeToPNG();
-                File.WriteAllBytes("Mods/RW_FacialStuff/Textures/Things/Pawn/Humanlike/Heads/Blank/" + i.ToString("0000") + "_front.png", bytes);
-                File.WriteAllBytes("Mods/RW_FacialStuff/Textures/Things/Pawn/Humanlike/Heads/Blank/" + i.ToString("0000") + "_side.png", bytes);
-                File.WriteAllBytes("Mods/RW_FacialStuff/Textures/Things/Pawn/Humanlike/Heads/Blank/" + i.ToString("0000") + "_back.png", bytes);
+                File.WriteAllBytes("Mods/RW_FacialStuff/Textures/Heads/Blank/" + i.ToString("0000") + "_front.png", bytes);
+                File.WriteAllBytes("Mods/RW_FacialStuff/Textures/Heads/Blank/" + i.ToString("0000") + "_side.png", bytes);
+                File.WriteAllBytes("Mods/RW_FacialStuff/Textures/Heads/Blank/" + i.ToString("0000") + "_back.png", bytes);
 
             }
 
