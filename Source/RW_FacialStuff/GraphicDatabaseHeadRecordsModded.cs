@@ -69,6 +69,7 @@ namespace RW_FacialStuff
         {
             // grab the blank texture instead of Vanilla
             Graphic headGraphicVanilla = GetModdedHeadNamed(pawn, true);
+            bool oldAge = pawn.ageTracker.AgeBiologicalYearsFloat >= 40;
 
             var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
@@ -79,9 +80,6 @@ namespace RW_FacialStuff
             Texture2D finalHeadFront = new Texture2D(128, 128, TextureFormat.RGBA32, false);
             Texture2D finalHeadSide = new Texture2D(128, 128, TextureFormat.RGBA32, false);
             Texture2D finalHeadBack = new Texture2D(128, 128, TextureFormat.RGBA32, false);
-
-            Texture2D beardFront = new Texture2D(128, 128, TextureFormat.RGBA32, false);
-            Texture2D beardSide = new Texture2D(128, 128, TextureFormat.RGBA32, false);
 
             Texture2D eyesHeadFront = new Texture2D(128, 128, TextureFormat.RGBA32, false);
             Texture2D eyesHeadSide = new Texture2D(128, 128, TextureFormat.RGBA32, false);
@@ -112,30 +110,34 @@ namespace RW_FacialStuff
             {
                 eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.EyeDef.texPathNarrow, ShaderDatabase.Cutout, Vector2.one, Color.black);
 
-                if (pawnSave.type == "Normal")
-                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, Color.black);
-                if (pawnSave.type == "Pointy")
-                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, Color.black);
-                if (pawnSave.type == "Wide")
-                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                if (oldAge)
+                {
+                    if (pawnSave.type == "Normal")
+                        wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathNarrowNormal, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                    if (pawnSave.type == "Pointy")
+                        wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathNarrowPointy, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                    if (pawnSave.type == "Wide")
+                        wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathNarrowWide, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                }
             }
             else
             {
                 eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.EyeDef.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.black);
 
-                if (pawnSave.type == "Normal")
-                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, Color.black);
-                if (pawnSave.type == "Pointy")
-                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, Color.black);
-                if (pawnSave.type == "Wide")
-                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                if (oldAge)
+                {
+                    if (pawnSave.type == "Normal")
+                        wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                    if (pawnSave.type == "Pointy")
+                        wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                    if (pawnSave.type == "Wide")
+                        wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.black);
+
+                }
             }
 
             Texture2D readEyeGraphicFront = eyeGraphic.MatFront.mainTexture as Texture2D;
             Texture2D readEyeGraphicSide = eyeGraphic.MatSide.mainTexture as Texture2D;
-
-            Texture2D readWrinkleGraphicFront = wrinkleGraphic.MatFront.mainTexture as Texture2D;
-            Texture2D readWrinkleGraphicSide = wrinkleGraphic.MatSide.mainTexture as Texture2D;
 
 
             if (pawn.gender == Gender.Male)
@@ -181,8 +183,11 @@ namespace RW_FacialStuff
                 MergeTwoGraphics(headGraphicFront, pawn.story.SkinColor, readEyeGraphicFront, ref eyesHeadFront);
                 MergeTwoGraphics(headGraphicSide, pawn.story.SkinColor, readEyeGraphicSide, ref eyesHeadSide);
 
-                if (pawn.ageTracker.AgeBiologicalYearsFloat >= 40)
+                if (oldAge)
                 {
+                    Texture2D readWrinkleGraphicFront = wrinkleGraphic.MatFront.mainTexture as Texture2D;
+                    Texture2D readWrinkleGraphicSide = wrinkleGraphic.MatSide.mainTexture as Texture2D;
+
                     MakeOld(pawn, eyesHeadFront, readWrinkleGraphicFront, ref wrinklesHeadFront);
                     MakeOld(pawn, eyesHeadSide, readWrinkleGraphicSide, ref wrinklesHeadSide);
 
@@ -206,8 +211,11 @@ namespace RW_FacialStuff
                 Texture2D readLipGraphicSide = lipGraphic.MatSide.mainTexture as Texture2D;
 
 
-                if (pawn.ageTracker.AgeBiologicalYearsFloat >= 40)
+                if (oldAge)
                 {
+                    Texture2D readWrinkleGraphicFront = wrinkleGraphic.MatFront.mainTexture as Texture2D;
+                    Texture2D readWrinkleGraphicSide = wrinkleGraphic.MatSide.mainTexture as Texture2D;
+
                     MakeOld(pawn, headGraphicFront, readWrinkleGraphicFront, ref wrinklesHeadFront);
                     MakeOld(pawn, headGraphicSide, readWrinkleGraphicSide, ref wrinklesHeadSide);
 
@@ -222,18 +230,18 @@ namespace RW_FacialStuff
             }
 
 
-             if (pawn.story.crownType == CrownType.Narrow)
-             {
-            
-                 TextureScale.Bilinear(newhairfront, 112, 128);
-                 TextureScale.Bilinear(newhairside, 112, 128);
-                 TextureScale.Bilinear(newhairback, 112, 128);
-            
-                 TextureScale.ResizeCanvas(newhairfront, 128, 128);
-                 TextureScale.ResizeCanvas(newhairside, 128, 128);
-                 TextureScale.ResizeCanvas(newhairback, 128, 128);
-            
-             }
+            if (pawn.story.crownType == CrownType.Narrow)
+            {
+
+                TextureScale.Bilinear(newhairfront, 112, 128);
+                TextureScale.Bilinear(newhairside, 112, 128);
+                TextureScale.Bilinear(newhairback, 112, 128);
+
+                TextureScale.ResizeCanvas(newhairfront, 128, 128);
+                TextureScale.ResizeCanvas(newhairside, 128, 128);
+                TextureScale.ResizeCanvas(newhairback, 128, 128);
+
+            }
 
             MergeHeadWithHair(temptexturefront, newhairfront, pawn.story.hairColor, ref finalHeadFront);
             MergeHeadWithHair(temptextureside, newhairside, pawn.story.hairColor, ref finalHeadSide);
@@ -247,12 +255,13 @@ namespace RW_FacialStuff
             headGraphic.MatSide.mainTexture = finalHeadSide;
             headGraphic.MatBack.mainTexture = finalHeadBack;
 
+            finalHeadFront.Apply(false, true);
+            finalHeadSide.Apply(false, true);
+            finalHeadBack.Apply(false, true);
+
             Object.DestroyImmediate(headGraphicFront, true);
             Object.DestroyImmediate(headGraphicSide, true);
             Object.DestroyImmediate(headGraphicBack, true);
-
-            Object.DestroyImmediate(beardFront, true);
-            Object.DestroyImmediate(beardSide, true);
 
             Object.DestroyImmediate(eyesHeadFront, true);
             Object.DestroyImmediate(eyesHeadSide, true);
@@ -626,7 +635,7 @@ namespace RW_FacialStuff
                 {
                     HeadGraphicRecordVanillaCustom headGraphicRecordVanillaCustom = headsVanillaCustom[i];
 
-                    if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story.HeadGraphicPath.Remove(0,22))
+                    if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story.HeadGraphicPath.Remove(0, 22))
                     {
                         return headGraphicRecordVanillaCustom.GetGraphic();
                     }
