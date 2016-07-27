@@ -88,7 +88,7 @@ namespace RW_FacialStuff
             //}
             if (PawnSkinColors.IsDarkSkin(skinColor))// || Rand.Value < 0.4f)
             {
-                tempColor = Color.Lerp(HairMidnightBlack, HairDarkBrown, Rand.Range(0f, 0.75f));
+                tempColor = Color.Lerp(HairMidnightBlack, HairDarkBrown, Rand.Range(0f, 0.35f));
 
                 //else if (value < 0.5f)
                 //    tempColor = Dark02;

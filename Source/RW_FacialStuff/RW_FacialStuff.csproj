@@ -53,10 +53,11 @@
     <Compile Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphic_Multi_Head.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
+    <None Include="PawnGeneratorModded.cs" />
     <Compile Include="PawnHairColors.cs" />
     <Compile Include="PawnSkinColors.cs" />
     <Compile Include="SaveablePawn.cs" />
-    <Compile Include="PawnFaceMaker.cs" />
+    <Compile Include="PawnFaceChooser.cs" />
     <Compile Include="PawnGraphicSetModded.cs" />
     <Compile Include="ModInitializer .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

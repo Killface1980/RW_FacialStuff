@@ -41,22 +41,22 @@ namespace RW_FacialStuff
                 pawnSave.type = "Wide";
 
 
-            pawnSave.EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, pawn.Faction.def);
+            pawnSave.EyeDef = PawnFaceChooser.RandomEyeDefFor(pawn, pawn.Faction.def);
 
-            pawnSave.WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn, pawn.Faction.def);
+            pawnSave.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(pawn, pawn.Faction.def);
 
             pawnSave.SkinColorHex = ColorHelper.RGBtoHex(pawn.story.SkinColor);
 
             if (pawn.gender == Gender.Female)
             {
-                pawnSave.LipDef = PawnFaceMaker.RandomLipDefFor(pawn, pawn.Faction.def);
+                pawnSave.LipDef = PawnFaceChooser.RandomLipDefFor(pawn, pawn.Faction.def);
             }
 
 
             if (pawn.gender == Gender.Male)
             {
 
-                pawnSave.BeardDef = PawnFaceMaker.RandomBeardDefFor(pawn, pawn.Faction.def);
+                pawnSave.BeardDef = PawnFaceChooser.RandomBeardDefFor(pawn, pawn.Faction.def);
 
                 pawnSave.HairColorHex = ColorHelper.RGBtoHex(pawn.story.hairColor);
             }
@@ -67,11 +67,16 @@ namespace RW_FacialStuff
 
         public static void ModifyVanillaHead(Pawn pawn, Graphic hairGraphic, ref Graphic headGraphic)
         {
+           
+            var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+
+            if (pawnSave.sessionOptimized)
+                return;
+
             // grab the blank texture instead of Vanilla
             Graphic headGraphicVanilla = GetModdedHeadNamed(pawn, true);
             bool oldAge = pawn.ageTracker.AgeBiologicalYearsFloat >= 40;
 
-            var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
             Texture2D headGraphicFront = new Texture2D(128, 128, TextureFormat.RGBA32, false);
             Texture2D headGraphicSide = new Texture2D(128, 128, TextureFormat.RGBA32, false);
@@ -89,7 +94,7 @@ namespace RW_FacialStuff
 
             Texture2D temptexturefront = new Texture2D(128, 128, TextureFormat.RGBA32, false);
             Texture2D temptextureside = new Texture2D(128, 128, TextureFormat.RGBA32, false);
-            // Texture2D temptextureback = new Texture2D(128, 128);
+            Texture2D temptextureback = new Texture2D(128, 128);
 
             Texture2D newhairfront = new Texture2D(128, 128, TextureFormat.RGBA32, false);
             Texture2D newhairside = new Texture2D(128, 128, TextureFormat.RGBA32, false);
@@ -243,9 +248,11 @@ namespace RW_FacialStuff
 
             }
 
+            MergeColor(headGraphicBack, pawn.story.SkinColor, ref temptextureback);
+
             MergeHeadWithHair(temptexturefront, newhairfront, pawn.story.hairColor, ref finalHeadFront);
             MergeHeadWithHair(temptextureside, newhairside, pawn.story.hairColor, ref finalHeadSide);
-            MergeHeadWithHair(headGraphicBack, newhairback, pawn.story.hairColor, ref finalHeadBack);
+            MergeHeadWithHair(temptextureback, newhairback, pawn.story.hairColor, ref finalHeadBack);
 
             finalHeadFront.Compress(true);
             finalHeadSide.Compress(true);
@@ -271,11 +278,13 @@ namespace RW_FacialStuff
 
             Object.DestroyImmediate(temptexturefront, true);
             Object.DestroyImmediate(temptextureside, true);
+            Object.DestroyImmediate(temptextureback, true);
 
             Object.DestroyImmediate(newhairfront, true);
             Object.DestroyImmediate(newhairside, true);
             Object.DestroyImmediate(newhairback, true);
 
+            pawnSave.sessionOptimized = true;
         }
 
         public static void MakeReadable(Texture2D texture, ref Texture2D myTexture2D)
@@ -389,6 +398,31 @@ namespace RW_FacialStuff
 
             finalTexture.Apply();
         }
+
+        private static void MergeColor(Texture2D bottom_layer, Color bottomColor, ref Texture2D finalTexture)
+        {
+            int startX = 0;
+            int startY = 0;
+
+
+            for (int x = startX; x < bottom_layer.width; x++)
+            {
+
+                for (int y = startY; y < bottom_layer.height; y++)
+                {
+                    Color headColor = bottom_layer.GetPixel(x, y);
+                    Color final_color = headColor * bottomColor;
+
+                    if (headColor.a == 1)
+                        final_color.a = 1;
+
+                    finalTexture.SetPixel(x, y, final_color);
+                }
+            }
+
+            finalTexture.Apply();
+        }
+
 
         private static void MergeHeadWithHair(Texture2D bottom_layer, Texture2D top_layer, Color topColor, ref Texture2D finalTexture)
         {
@@ -657,25 +691,6 @@ namespace RW_FacialStuff
             return headsVanillaCustom.First().GetGraphic();
         }
 
-        public static Graphic_Multi GetModdedHeadNamed(Pawn pawn, Color color)
-        {
-            var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
-
-
-            for (int i = 0; i < headsModded.Count; i++)
-            {
-                HeadGraphicRecordModded headGraphicRecordModded = headsModded[i];
-
-                if (headGraphicRecordModded.graphicPathModded == pawnSave.headGraphicIndex)
-                {
-                    return headGraphicRecordModded.GetGraphicColored(color);
-                }
-            }
-
-            Log.Message("Tried to get pawn head at path " + pawnSave.headGraphicIndex + " that was not found. Defaulting...");
-
-            return headsVanillaCustom.First().GetGraphic();
-        }
 
     }
 }

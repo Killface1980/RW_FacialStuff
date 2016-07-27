@@ -18,6 +18,7 @@ namespace RW_FacialStuff
         public string HairColorHex;
 
         public bool optimized;
+        public bool sessionOptimized;
 
         public void ExposeData()
         {
@@ -27,6 +28,7 @@ namespace RW_FacialStuff
             Scribe_Defs.LookDef(ref WrinkleDef, "WrinkleDef");
             Scribe_Defs.LookDef(ref BeardDef, "BeardDef");
             Scribe_Values.LookValue(ref optimized, "optimized");
+
             Scribe_Values.LookValue(ref headGraphicIndex, "headGraphicIndex");
             Scribe_Values.LookValue(ref type, "type");
             Scribe_Values.LookValue(ref SkinColorHex, "SkinColorHex");

@@ -35,6 +35,7 @@ namespace RW_FacialStuff
 
                 if (!pawnSave.optimized)
                 {
+                    pawn.story.hairDef = PawnHairChooser.RandomHairDefFor(pawn, pawn.Faction.def);
                     GraphicDatabaseHeadRecordsModded.DefineHeadParts(pawn);
                 }
 
@@ -52,7 +53,6 @@ namespace RW_FacialStuff
                 GraphicDatabaseHeadRecordsModded.headIndex += 1;
                 headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, false);
                 desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RottingColor);
-        //        desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RottingColor);
 
                 GraphicDatabaseHeadRecordsModded.ModifyVanillaHead(pawn, hairGraphic, ref headGraphic);
 

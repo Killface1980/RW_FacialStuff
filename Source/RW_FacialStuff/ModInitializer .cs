@@ -55,7 +55,7 @@ namespace RW_FacialStuff
             MethodInfo moddedHeadMethod = typeof(PawnGraphicSetModded).GetMethod("ResolveAllGraphicsModded", BindingFlags.Instance | BindingFlags.Public);
 
             MethodInfo coreMethod2 = typeof(PawnHairChooser).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
-            MethodInfo moddedHeadMethod2 = typeof(PawnFaceMaker).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo moddedHeadMethod2 = typeof(PawnFaceChooser).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
 
             MethodInfo coreMethod3 = typeof(RimWorld.PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
             MethodInfo moddedHeadMethod3 = typeof(PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using RW_FacialStuff.Defs;
@@ -6,7 +7,7 @@ using Verse;
 
 namespace RW_FacialStuff
 {
-    public class PawnFaceMaker
+    public class PawnFaceChooser
     {
 
 
@@ -32,11 +33,48 @@ namespace RW_FacialStuff
 
         public static EyeDef RandomEyeDefFor(Pawn pawn, FactionDef factionType)
         {
-            IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
+
+                IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
+            EyeDef chosenEyes;
+            if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")) == 2)
+            {
+                var filtered = source.Where(x => x.label.Contains("Nice"));
+                chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
 
-            EyeDef chosenEyes = source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+                return chosenEyes;
+            }
+            if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")) == 1)
+            {
+                var filtered = source.Where(x => x.label.Contains("Aware"));
+                chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+
+                return chosenEyes;
+            }
+            if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")) == 0)
+            {
+                var filtered = source.Where(x => !x.label.Contains("Depressed") && !x.label.Contains("Tired"));
+                chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+
+                return chosenEyes;
+            }
+            if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")) == -1)
+            {
+                var filtered = source.Where(x => x.label.Contains("Tired"));
+                chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+
+                return chosenEyes;
+            }
+            if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")) == -2)
+            {
+                var filtered = source.Where(x => x.label.Contains("Depressed"));
+                chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+
+                return chosenEyes;
+            }
+
+            chosenEyes = source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
 
             return chosenEyes;
         }
@@ -217,18 +255,35 @@ namespace RW_FacialStuff
                     return 0f;
                 }
 
+                if (pawn.story.traits.HasTrait(TraitDef.Named("Gay")))
+                {
+                    switch (hair.hairGender)
+                    {
+                        case HairGender.Male:
+                            return 10f;
+                        case HairGender.MaleUsually:
+                            return 5f;
+                        case HairGender.Any:
+                            return 20f;
+                        case HairGender.FemaleUsually:
+                            return 40f;
+                        case HairGender.Female:
+                            return 80f;
+                    }
+                }
+
                 switch (hair.hairGender)
                 {
                     case HairGender.Male:
-                        return 70f;
+                        return 80f;
                     case HairGender.MaleUsually:
-                        return 30f;
+                        return 40f;
                     case HairGender.Any:
-                        return 60f;
+                        return 50f;
                     case HairGender.FemaleUsually:
-                        return 5f;
+                        return 0f;
                     case HairGender.Female:
-                        return 1f;
+                        return 0f;
                 }
             }
             if (pawn.gender == Gender.Female)
@@ -237,18 +292,36 @@ namespace RW_FacialStuff
                 {
                     return 0f;
                 }
+
+                if (pawn.story.traits.HasTrait(TraitDef.Named("Gay")))
+                {
+                    switch (hair.hairGender)
+                    {
+                        case HairGender.Male:
+                            return 80f;
+                        case HairGender.MaleUsually:
+                            return 40f;
+                        case HairGender.Any:
+                            return 20f;
+                        case HairGender.FemaleUsually:
+                            return 5f;
+                        case HairGender.Female:
+                            return 10f;
+                    }
+                }
+
                 switch (hair.hairGender)
                 {
                     case HairGender.Male:
-                        return 1f;
+                        return 0f;
                     case HairGender.MaleUsually:
-                        return 5f;
+                        return 0f;
                     case HairGender.Any:
-                        return 60f;
+                        return 50f;
                     case HairGender.FemaleUsually:
-                        return 30f;
+                        return 40f;
                     case HairGender.Female:
-                        return 70f;
+                        return 80f;
                 }
             }
             Log.Error(string.Concat("Unknown hair likelihood for ", hair, " with ", pawn));
