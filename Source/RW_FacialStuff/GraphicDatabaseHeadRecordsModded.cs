@@ -67,7 +67,7 @@ namespace RW_FacialStuff
 
         public static void ModifyVanillaHead(Pawn pawn, Graphic hairGraphic, ref Graphic headGraphic)
         {
-           
+
             var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
             if (pawnSave.sessionOptimized)
@@ -99,6 +99,18 @@ namespace RW_FacialStuff
             Texture2D newhairfront = new Texture2D(128, 128, TextureFormat.RGBA32, false);
             Texture2D newhairside = new Texture2D(128, 128, TextureFormat.RGBA32, false);
             Texture2D newhairback = new Texture2D(128, 128, TextureFormat.RGBA32, false);
+
+            Texture2D readEyeGraphicFront;
+            Texture2D readEyeGraphicSide;
+
+            Texture2D readBeardGraphicFront;
+            Texture2D readBeardGraphicSide;
+            Texture2D readLipGraphicFront;
+            Texture2D readLipGraphicSide;
+
+            Texture2D readWrinkleGraphicFront;
+            Texture2D readWrinkleGraphicSide;
+
 
             MakeReadable(headGraphicVanilla.MatFront.mainTexture as Texture2D, ref headGraphicFront);
             MakeReadable(headGraphicVanilla.MatSide.mainTexture as Texture2D, ref headGraphicSide);
@@ -141,8 +153,8 @@ namespace RW_FacialStuff
                 }
             }
 
-            Texture2D readEyeGraphicFront = eyeGraphic.MatFront.mainTexture as Texture2D;
-            Texture2D readEyeGraphicSide = eyeGraphic.MatSide.mainTexture as Texture2D;
+            readEyeGraphicFront = eyeGraphic.MatFront.mainTexture as Texture2D;
+            readEyeGraphicSide = eyeGraphic.MatSide.mainTexture as Texture2D;
 
 
             if (pawn.gender == Gender.Male)
@@ -182,16 +194,16 @@ namespace RW_FacialStuff
 
                 }
 
-                Texture2D readBeardGraphicFront = beardGraphic.MatFront.mainTexture as Texture2D;
-                Texture2D readBeardGraphicSide = beardGraphic.MatSide.mainTexture as Texture2D;
+                readBeardGraphicFront = beardGraphic.MatFront.mainTexture as Texture2D;
+                readBeardGraphicSide = beardGraphic.MatSide.mainTexture as Texture2D;
 
                 MergeTwoGraphics(headGraphicFront, pawn.story.SkinColor, readEyeGraphicFront, ref eyesHeadFront);
                 MergeTwoGraphics(headGraphicSide, pawn.story.SkinColor, readEyeGraphicSide, ref eyesHeadSide);
 
                 if (oldAge)
                 {
-                    Texture2D readWrinkleGraphicFront = wrinkleGraphic.MatFront.mainTexture as Texture2D;
-                    Texture2D readWrinkleGraphicSide = wrinkleGraphic.MatSide.mainTexture as Texture2D;
+                    readWrinkleGraphicFront = wrinkleGraphic.MatFront.mainTexture as Texture2D;
+                    readWrinkleGraphicSide = wrinkleGraphic.MatSide.mainTexture as Texture2D;
 
                     MakeOld(pawn, eyesHeadFront, readWrinkleGraphicFront, ref wrinklesHeadFront);
                     MakeOld(pawn, eyesHeadSide, readWrinkleGraphicSide, ref wrinklesHeadSide);
@@ -212,14 +224,14 @@ namespace RW_FacialStuff
             {
                 Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawn.story.crownType == CrownType.Narrow ? pawnSave.LipDef.texPathNarrow : pawnSave.LipDef.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.white);
 
-                Texture2D readLipGraphicFront = lipGraphic.MatFront.mainTexture as Texture2D;
-                Texture2D readLipGraphicSide = lipGraphic.MatSide.mainTexture as Texture2D;
+                readLipGraphicFront = lipGraphic.MatFront.mainTexture as Texture2D;
+                readLipGraphicSide = lipGraphic.MatSide.mainTexture as Texture2D;
 
 
                 if (oldAge)
                 {
-                    Texture2D readWrinkleGraphicFront = wrinkleGraphic.MatFront.mainTexture as Texture2D;
-                    Texture2D readWrinkleGraphicSide = wrinkleGraphic.MatSide.mainTexture as Texture2D;
+                    readWrinkleGraphicFront = wrinkleGraphic.MatFront.mainTexture as Texture2D;
+                    readWrinkleGraphicSide = wrinkleGraphic.MatSide.mainTexture as Texture2D;
 
                     MakeOld(pawn, headGraphicFront, readWrinkleGraphicFront, ref wrinklesHeadFront);
                     MakeOld(pawn, headGraphicSide, readWrinkleGraphicSide, ref wrinklesHeadSide);

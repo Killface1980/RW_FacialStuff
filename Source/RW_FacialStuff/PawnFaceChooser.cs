@@ -34,7 +34,7 @@ namespace RW_FacialStuff
         public static EyeDef RandomEyeDefFor(Pawn pawn, FactionDef factionType)
         {
 
-                IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
+            IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
             EyeDef chosenEyes;
@@ -45,33 +45,33 @@ namespace RW_FacialStuff
 
                 return chosenEyes;
             }
-            if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")) == 1)
+            switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")))
             {
-                var filtered = source.Where(x => x.label.Contains("Aware"));
-                chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+                case 1:
+                    {
+                        var filtered = source.Where(x => x.label.Contains("Aware"));
+                        chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+                        return chosenEyes;
+                    }
+                case 0:
+                    {
+                        var filtered = source.Where(x => !x.label.Contains("Depressed") && !x.label.Contains("Tired"));
+                        chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+                        return chosenEyes;
+                    }
+                case -1:
+                    {
+                        var filtered = source.Where(x => x.label.Contains("Tired"));
+                        chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+                        return chosenEyes;
+                    }
+                case -2:
+                    {
+                        var filtered = source.Where(x => x.label.Contains("Depressed"));
+                        chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+                        return chosenEyes;
+                    }
 
-                return chosenEyes;
-            }
-            if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")) == 0)
-            {
-                var filtered = source.Where(x => !x.label.Contains("Depressed") && !x.label.Contains("Tired"));
-                chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
-
-                return chosenEyes;
-            }
-            if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")) == -1)
-            {
-                var filtered = source.Where(x => x.label.Contains("Tired"));
-                chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
-
-                return chosenEyes;
-            }
-            if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")) == -2)
-            {
-                var filtered = source.Where(x => x.label.Contains("Depressed"));
-                chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
-
-                return chosenEyes;
             }
 
             chosenEyes = source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
