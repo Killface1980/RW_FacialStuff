@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using Object = System.Object;
 
 namespace RW_FacialStuff
 {
@@ -69,7 +70,7 @@ namespace RW_FacialStuff
                 for (i = 0; i < cores - 1; i++)
                 {
                     threadData = new ThreadData(slice * i, slice * (i + 1));
-                    ParameterizedThreadStart ts = useBilinear ? new ParameterizedThreadStart(BilinearScale) : new ParameterizedThreadStart(PointScale);
+                    ParameterizedThreadStart ts = useBilinear ? BilinearScale : new ParameterizedThreadStart(PointScale);
                     Thread thread = new Thread(ts);
                     thread.Start(threadData);
                 }
@@ -105,7 +106,7 @@ namespace RW_FacialStuff
             tex.Apply();
         }
 
-        public static void BilinearScale(System.Object obj)
+        public static void BilinearScale(Object obj)
         {
             ThreadData threadData = (ThreadData)obj;
             for (var y = threadData.start; y < threadData.end; y++)
@@ -130,7 +131,7 @@ namespace RW_FacialStuff
             mutex.ReleaseMutex();
         }
 
-        public static void PointScale(System.Object obj)
+        public static void PointScale(Object obj)
         {
             ThreadData threadData = (ThreadData)obj;
             for (var y = threadData.start; y < threadData.end; y++)

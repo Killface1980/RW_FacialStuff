@@ -1,10 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
+﻿using System.IO;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Object = UnityEngine.Object;
 
 namespace RW_FacialStuff
 {
@@ -28,7 +25,7 @@ namespace RW_FacialStuff
             if (pawn.RaceProps.Humanlike)
             {
                 nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
-                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RottingColor*pawn.story.SkinColor);
+                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RottingColor * pawn.story.SkinColor);
                 dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
 
                 var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
@@ -45,18 +42,17 @@ namespace RW_FacialStuff
 
                 skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor*RottingColor);
                 ResolveApparelGraphics();
                 PortraitsCache.Clear();
 
-                pawnSave.headGraphicIndex = "Heads/Blank/" + GraphicDatabaseHeadRecordsModded.headIndex.ToString("0000");
-                GraphicDatabaseHeadRecordsModded.headsModded.Add(new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(pawn));
-                GraphicDatabaseHeadRecordsModded.headIndex += 1;
-                headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, false);
-                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RottingColor);
-
-                GraphicDatabaseHeadRecordsModded.ModifyVanillaHead(pawn, hairGraphic, ref headGraphic);
-
-
+                if (!pawnSave.sessionOptimized)
+                {
+                    pawnSave.headGraphicIndex = "Heads/Blank/" + GraphicDatabaseHeadRecordsModded.headIndex.ToString("0000");
+                    GraphicDatabaseHeadRecordsModded.headsModded.Add(new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(pawn));
+                    GraphicDatabaseHeadRecordsModded.headIndex += 1;
+                }
+                headGraphic = GraphicDatabaseHeadRecordsModded.ModifiedVanillaHead(pawn, pawn.story.SkinColor, hairGraphic);
                 //           typeof(Pawn_StoryTracker).GetField("skinColor", BindingFlags.Instance | BindingFlags.Public).SetValue(pawn.story, Color.cyan);
 
                 //overwrites the crown type so that manually merged hair looks good again.
