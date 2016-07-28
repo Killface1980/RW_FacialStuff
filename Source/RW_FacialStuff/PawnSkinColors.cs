@@ -21,8 +21,8 @@ namespace RW_FacialStuff
         }
 
         private static readonly SkinColorData[] SkinColors = {
-            new SkinColorData(0f, 0.05f, new Color32(74,41,25, 255)),
-            new SkinColorData(0.1f, 0.1f, new Color32(122,54,25,255)),
+            new SkinColorData(0f, 0.05f, new Color32(89,45,32, 255)),
+            new SkinColorData(0.1f, 0.1f, new Color32(127,66,45,255)),
             new SkinColorData(0.2f, 0.15f, new Color32(165,93,41,255)),
             new SkinColorData(0.3f, 0.2f, new Color32(186,119,80,255)),
             new SkinColorData(0.4f, 0.3f, new Color32(230,158,124,255)),

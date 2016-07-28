@@ -6,7 +6,8 @@ namespace RW_FacialStuff
 {
     public static class PawnHairColors
     {
-        public static Color HairMidnightBlack = new Color32(10, 10, 10, 255);//(0.2f, 0.2f, 0.2f);
+        // changed Midnight Black - 10/10/10 - 2016-07-28
+        public static Color HairMidnightBlack = new Color32(30, 30, 30, 255);//(0.2f, 0.2f, 0.2f);
         public static Color HairDarkBrown = new Color32(64, 41, 19, 255);//(0.25f, 0.2f, 0.15f);
 
         public static Color HairMediumDarkBrown = new Color32(110, 70, 10, 255);//(0.25f, 0.2f, 0.15f);

@@ -232,15 +232,15 @@ namespace RW_FacialStuff
             pawnSave.optimized = true;
         }
 
-        public static List<KeyValuePair<string,Graphic_Multi>> moddedHeadGraphics = new List<KeyValuePair<string, Graphic_Multi>>();
+        public static List<KeyValuePair<string, Graphic_Multi>> moddedHeadGraphics = new List<KeyValuePair<string, Graphic_Multi>>();
 
 
-        public static Graphic_Multi ModifiedVanillaHead(Pawn pawn,Color color, Graphic hairGraphic)
+        public static Graphic_Multi ModifiedVanillaHead(Pawn pawn, Color color, Graphic hairGraphic)
         {
 
             for (int i = 0; i < moddedHeadGraphics.Count; i++)
             {
-                if (i.Equals(pawn+color.ToString()))
+                if (i.Equals(pawn + color.ToString()))
                 {
                     return moddedHeadGraphics[i].Value;
                 }
@@ -360,7 +360,7 @@ namespace RW_FacialStuff
                     temptextureside = beardGraphic.MatSide.mainTexture as Texture2D;
 
                     AddFacialHair(pawn, ref finalHeadFront, temptexturefront);
-                    AddFacialHair(pawn, ref finalHeadFront, temptexturefront);
+                    AddFacialHair(pawn, ref finalHeadSide, temptextureside);
                 }
                 else
                 {
@@ -368,7 +368,7 @@ namespace RW_FacialStuff
                     temptextureside = beardGraphic.MatSide.mainTexture as Texture2D;
 
                     AddFacialHair(pawn, ref finalHeadFront, temptexturefront);
-                    AddFacialHair(pawn, ref finalHeadFront, temptexturefront);
+                    AddFacialHair(pawn, ref finalHeadSide, temptextureside);
                 }
 
             }
@@ -392,8 +392,9 @@ namespace RW_FacialStuff
                 temptexturefront = lipGraphic.MatFront.mainTexture as Texture2D;
                 temptextureside = lipGraphic.MatSide.mainTexture as Texture2D;
 
-                MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.white);
-                MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.white);
+                var lipcolor = Color.Lerp(new Color32(100, 30, 30, 255), new Color32(255, 178, 224, 255), Rand.Value)*pawn.story.SkinColor;
+                MergeTwoGraphics(ref finalHeadFront, temptexturefront, lipcolor);
+                MergeTwoGraphics(ref finalHeadSide, temptextureside, new Color32(80, 0, 0, 255));
 
             }
             #endregion
@@ -414,12 +415,12 @@ namespace RW_FacialStuff
 
             }
 
-        //    MergeColor(ref finalHeadBack, pawn.story.SkinColor);
+            //    MergeColor(ref finalHeadBack, pawn.story.SkinColor);
 
-            MergeHeadWithHair(ref finalHeadFront, temptexturefront,  pawn.story.hairColor);
-            MergeHeadWithHair(ref finalHeadSide, temptextureside,  pawn.story.hairColor);
-            MergeHeadWithHair(ref finalHeadBack, temptextureback,  pawn.story.hairColor);
-          
+            MergeHeadWithHair(ref finalHeadFront, temptexturefront, pawn.story.hairColor);
+            MergeHeadWithHair(ref finalHeadSide, temptextureside, pawn.story.hairColor);
+            MergeHeadWithHair(ref finalHeadBack, temptextureback, pawn.story.hairColor);
+
             finalHeadFront.Compress(true);
             finalHeadSide.Compress(true);
             finalHeadBack.Compress(true);
@@ -443,7 +444,7 @@ namespace RW_FacialStuff
 
             pawnSave.sessionOptimized = true;
 
-            moddedHeadGraphics.Add(new KeyValuePair<string, Graphic_Multi>(pawn+color.ToString(), headGraphic));
+            moddedHeadGraphics.Add(new KeyValuePair<string, Graphic_Multi>(pawn + color.ToString(), headGraphic));
 
             return headGraphic;
         }
