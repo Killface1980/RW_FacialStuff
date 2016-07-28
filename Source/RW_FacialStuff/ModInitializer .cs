@@ -56,14 +56,20 @@ namespace RW_FacialStuff
             MethodInfo moddedHeadMethod2 = typeof(PawnFaceChooser).GetMethod("RandomHairDefFor", BindingFlags.Static | BindingFlags.Public);
 
             MethodInfo coreMethod3 = typeof(RimWorld.PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
-            MethodInfo moddedHeadMethod3 = typeof(PawnHairColors).GetMethod("RandomHairColor", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo moddedHeadMethod3 = typeof(PawnHairColors).GetMethod("RandomHairColorModded", BindingFlags.Static | BindingFlags.Public);
 
             MethodInfo coreMethod4 = typeof(PawnSkinColors).GetMethod("GetSkinColor", BindingFlags.Static | BindingFlags.Public);
             MethodInfo moddedHeadMethod4 = typeof(PawnSkinColorsModded).GetMethod("GetSkinColor", BindingFlags.Static | BindingFlags.Public);
 
+            MethodInfo coreMethod5 = typeof(PawnSkinColors).GetMethod("IsDarkSkin", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo moddedHeadMethod5 = typeof(PawnSkinColorsModded).GetMethod("IsDarkSkin", BindingFlags.Static | BindingFlags.Public);
 
-     //       MethodInfo coreMethod6 = typeof(ZombieMod_Utility).GetMethod("Zombify", BindingFlags.Static | BindingFlags.Public);
-    //        MethodInfo moddedHeadMethod6 = typeof(ZombieMod_UtilityFS).GetMethod("Zombify", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo coreMethod6 = typeof(PawnSkinColors).GetMethod("RandomSkinWhiteness", BindingFlags.Static | BindingFlags.Public);
+            MethodInfo moddedHeadMethod6 = typeof(PawnSkinColorsModded).GetMethod("RandomSkinWhiteness", BindingFlags.Static | BindingFlags.Public);
+
+
+            //       MethodInfo coreMethod6 = typeof(ZombieMod_Utility).GetMethod("Zombify", BindingFlags.Static | BindingFlags.Public);
+            //        MethodInfo moddedHeadMethod6 = typeof(ZombieMod_UtilityFS).GetMethod("Zombify", BindingFlags.Static | BindingFlags.Public);
             try
             {
       //          Detours.TryDetourFromTo(method, method2);
@@ -71,7 +77,9 @@ namespace RW_FacialStuff
                 Detours.TryDetourFromTo(coreMethod2, moddedHeadMethod2);
                 Detours.TryDetourFromTo(coreMethod3, moddedHeadMethod3);
                 Detours.TryDetourFromTo(coreMethod4, moddedHeadMethod4);
-        //        Detours.TryDetourFromTo(coreMethod6, moddedHeadMethod6);
+                Detours.TryDetourFromTo(coreMethod5, moddedHeadMethod5);
+                Detours.TryDetourFromTo(coreMethod6, moddedHeadMethod6);
+                //        Detours.TryDetourFromTo(coreMethod6, moddedHeadMethod6);
 
             }
             catch (Exception)

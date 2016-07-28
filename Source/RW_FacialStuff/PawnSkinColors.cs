@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using RimWorld;
+using UnityEngine;
+using Verse;
 
 namespace RW_FacialStuff
 {
@@ -21,14 +23,13 @@ namespace RW_FacialStuff
         }
 
         private static readonly SkinColorData[] SkinColors = {
-            new SkinColorData(0f, 0.05f, new Color32(89,45,32, 255)),
-            new SkinColorData(0.1f, 0.1f, new Color32(127,66,45,255)),
-            new SkinColorData(0.2f, 0.15f, new Color32(165,93,41,255)),
-            new SkinColorData(0.3f, 0.2f, new Color32(186,119,80,255)),
-            new SkinColorData(0.4f, 0.3f, new Color32(230,158,124,255)),
-            new SkinColorData(0.5f, 0.4f, new Color32(231,184,143,255)),
-            new SkinColorData(0.66f, 0.75f, new Color32(237,194,154,255)),
-            new SkinColorData(0.83f, 0.85f, new Color32(245,210,178,255)),
+            new SkinColorData(0.3f, 0f, new Color32(77,39,28, 255)),
+            new SkinColorData(0.5f, 0.05f, new Color32(127,66,45,255)),
+            new SkinColorData(0.65f, 0.15f, new Color32(165,93,41,255)),
+            new SkinColorData(0.7f, 0.225f, new Color32(186,119,80,255)),
+            new SkinColorData(0.8f, 0.285f, new Color32(230,158,124,255)),
+            new SkinColorData(0.9f, 0.78f, new Color32(231,184,143,255)),
+            new SkinColorData(0.95f, 0.89f, new Color32(245,210,178,255)),
             new SkinColorData(1f, 1f, new Color32(255,230,212,255))
 
 //          new SkinColorData(0f, 0f, new Color(0.3882353f, 0.274509817f, 0.141176477f)),
@@ -38,7 +39,11 @@ namespace RW_FacialStuff
 //          new SkinColorData(0.75f, 0.785f, new Color(1f, 0.9372549f, 0.8352941f)),
 //          new SkinColorData(1f, 1f, new Color(0.9490196f, 0.929411769f, 0.8784314f))
         };
-
+        public static bool IsDarkSkin(Color color)
+        {
+            Color skinColor = GetSkinColor(0.7f);
+            return color.r + color.g + color.b <= skinColor.r + skinColor.g + skinColor.b + 0.01f;
+        }
         public static Color GetSkinColor(float skinWhiteness)
         {
             int skinDataLeftIndexByWhiteness = GetSkinDataLeftIndexByWhiteness(skinWhiteness);
@@ -62,6 +67,26 @@ namespace RW_FacialStuff
                 result = i;
             }
             return result;
+        }
+
+        public static float RandomSkinWhiteness()
+        {
+            float value = Rand.Value;
+            int num = 0;
+            for (int i = 0; i < SkinColors.Length; i++)
+            {
+                if (value < SkinColors[i].selector)
+                {
+                    break;
+                }
+                num = i;
+            }
+            if (num == SkinColors.Length - 1)
+            {
+                return SkinColors[num].whiteness;
+            }
+            float t = Mathf.InverseLerp(SkinColors[num].selector, SkinColors[num + 1].selector, value);
+            return Mathf.Lerp(SkinColors[num].whiteness, SkinColors[num + 1].whiteness, t);
         }
     }
 }

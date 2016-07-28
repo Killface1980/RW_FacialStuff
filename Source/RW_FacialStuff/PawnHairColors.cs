@@ -41,7 +41,7 @@ namespace RW_FacialStuff
         //      public static Color Color04 = new Color32(237, 202, 156, 255);//(0,929411769f, 0,7921569f, 0,6117647f);
 
 
-        public static Color RandomHairColor(Color skinColor, int ageYears)
+        public static Color RandomHairColorModded(Color skinColor, int ageYears)
         {
             Color tempColor;
 

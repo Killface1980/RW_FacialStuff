@@ -24,22 +24,56 @@ namespace RW_FacialStuff
 
             if (pawn.RaceProps.Humanlike)
             {
-                nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
-                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RottingColor * pawn.story.SkinColor);
-                dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
 
                 var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
                 if (!pawnSave.optimized)
                 {
                     pawn.story.hairDef = PawnHairChooser.RandomHairDefFor(pawn, pawn.Faction.def);
+                    switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")))
+                    {
+                        case 2:
+                            if (pawn.story.skinWhiteness<0.9f)
+                            {
+                                pawn.story.skinWhiteness = Random.Range(0.9f, 1f);
+                            }
+                            break;
+                        case 1:
+                            if (pawn.story.skinWhiteness < 0.8f)
+                            {
+                                pawn.story.skinWhiteness = Random.Range(0.8f, 1f);
+                            }
+                            break;
+                        case 0:
+                          //if (pawn.story.skinWhiteness < 0.15f || pawn.story.skinWhiteness > 0.8f)
+                          //{
+                          //    pawn.story.skinWhiteness = Random.Range(0.2f, 0.66f);
+                          //}
+                            break;
+                        case -1:
+                            if (pawn.story.skinWhiteness > 0.7f)
+                            {
+                                pawn.story.skinWhiteness = Random.Range(0.35f, 0.7f);
+                            }
+                            break;
+                        case -2:
+                            if (pawn.story.skinWhiteness > 0.65f)
+                            {
+                                pawn.story.skinWhiteness = Random.Range(0.35f, 0.65f);
+                            }
+                            break;
+                    }
+                    pawn.story.hairColor = PawnHairColors.RandomHairColorModded(pawn.story.SkinColor, pawn.ageTracker.AgeBiologicalYears);
                     GraphicDatabaseHeadRecordsModded.DefineHeadParts(pawn);
+
                 }
 
                 //if (pawnSave.optimized)
                 //    typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pawn.story, pawnSave.headGraphicIndex);
 
-
+                nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
+                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RottingColor * pawn.story.SkinColor);
+                dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
                 skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor*RottingColor);
