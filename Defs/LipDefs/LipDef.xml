@@ -71,5 +71,18 @@
       <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.LipDef>
-
+  
+  <RW_FacialStuff.Defs.LipDef>
+    <label>EFA-Smile</label>
+    <hairGender>Female</hairGender>
+    <texPathAverage>Lips/Female/Lip_Female_Average_Smile</texPathAverage>
+    <texPathNarrow>Lips/Female/Lip_Female_Narrow_Smile</texPathNarrow>
+    <defName>Lip_Female_Smile</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.LipDef>
 </DefPackage-LipDef>

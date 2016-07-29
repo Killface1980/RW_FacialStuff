@@ -15,6 +15,7 @@
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -48,6 +49,7 @@
       <li>Rural</li>
       <li>Punk</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -64,6 +66,7 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -81,6 +84,7 @@
       <li>Rural</li>
       <li>MaleOld</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -97,6 +101,7 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -201,6 +206,7 @@
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -304,6 +310,7 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -320,6 +327,7 @@
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -336,6 +344,7 @@
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -352,6 +361,7 @@
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -370,6 +380,7 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -467,6 +478,7 @@
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
 </DefPackage-BeardDef>

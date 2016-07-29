@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CommunityCoreLibrary.ColorPicker;
+using RW_FacialStuff.Defs;
 using UnityEngine;
 using Verse;
 using Object = UnityEngine.Object;
@@ -214,11 +215,7 @@ namespace RW_FacialStuff
 
             pawnSave.SkinColorHex = ColorHelper.RGBtoHex(pawn.story.SkinColor);
 
-            if (pawn.gender == Gender.Female)
-            {
-                pawnSave.LipDef = PawnFaceChooser.RandomLipDefFor(pawn, pawn.Faction.def);
-            }
-
+            pawnSave.LipDef = PawnFaceChooser.RandomLipDefFor(pawn, pawn.Faction.def);
 
             if (pawn.gender == Gender.Male)
             {
@@ -315,7 +312,12 @@ namespace RW_FacialStuff
             {
                 Graphic beardGraphic = null;
 
-                if (pawn.story.crownType == CrownType.Narrow)
+                if (pawnSave.BeardDef.defName.Equals("Beard_Shaved"))
+                {
+                    beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawn.story.crownType == CrownType.Narrow ? pawnSave.LipDef.texPathNarrow : pawnSave.LipDef.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                }
+
+                else if (pawn.story.crownType == CrownType.Narrow)
                 {
                     if (pawnSave.type == "Normal")
                     {
@@ -348,6 +350,7 @@ namespace RW_FacialStuff
 
                 }
 
+
                 if (oldAge)
                 {
                     temptexturefront = wrinkleGraphic.MatFront.mainTexture as Texture2D;
@@ -355,21 +358,27 @@ namespace RW_FacialStuff
 
                     MakeOld(pawn, ref finalHeadFront, temptexturefront);
                     MakeOld(pawn, ref finalHeadSide, temptextureside);
-
-                    temptexturefront = beardGraphic.MatFront.mainTexture as Texture2D;
-                    temptextureside = beardGraphic.MatSide.mainTexture as Texture2D;
-
-                    AddFacialHair(pawn, ref finalHeadFront, temptexturefront);
-                    AddFacialHair(pawn, ref finalHeadSide, temptextureside);
                 }
-                else
+
+                if (pawnSave.BeardDef.drawMouth && !pawnSave.BeardDef.defName.Equals("Beard_Shaved"))
                 {
-                    temptexturefront = beardGraphic.MatFront.mainTexture as Texture2D;
-                    temptextureside = beardGraphic.MatSide.mainTexture as Texture2D;
+                    Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawn.story.crownType == CrownType.Narrow ? pawnSave.LipDef.texPathNarrow : pawnSave.LipDef.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                    temptexturefront = lipGraphic.MatFront.mainTexture as Texture2D;
+                    temptextureside = lipGraphic.MatSide.mainTexture as Texture2D;
 
-                    AddFacialHair(pawn, ref finalHeadFront, temptexturefront);
-                    AddFacialHair(pawn, ref finalHeadSide, temptextureside);
+                    MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.white);
+                    MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.white);
                 }
+
+
+                temptexturefront = beardGraphic.MatFront.mainTexture as Texture2D;
+                temptextureside = beardGraphic.MatSide.mainTexture as Texture2D;
+
+
+
+                AddFacialHair(pawn, ref finalHeadFront, temptexturefront);
+                AddFacialHair(pawn, ref finalHeadSide, temptextureside);
+
 
             }
 
@@ -392,9 +401,8 @@ namespace RW_FacialStuff
                 temptexturefront = lipGraphic.MatFront.mainTexture as Texture2D;
                 temptextureside = lipGraphic.MatSide.mainTexture as Texture2D;
 
-                var lipcolor = Color.Lerp(new Color32(100, 30, 30, 255), new Color32(255, 178, 224, 255), Rand.Value)*pawn.story.SkinColor;
-                MergeTwoGraphics(ref finalHeadFront, temptexturefront, lipcolor);
-                MergeTwoGraphics(ref finalHeadSide, temptextureside, new Color32(80, 0, 0, 255));
+                MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.white);
+                MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.white);
 
             }
             #endregion

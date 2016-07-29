@@ -15,6 +15,8 @@ namespace RW_FacialStuff.Defs
         public string texPathNarrowPointy;
         public string texPathNarrowWide;
 
+        public bool drawMouth;
+
         public HairGender hairGender = HairGender.Any;
 
         public List<string> hairTags = new List<string>();

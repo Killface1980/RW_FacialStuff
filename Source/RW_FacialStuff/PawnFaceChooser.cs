@@ -37,15 +37,15 @@ namespace RW_FacialStuff
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
             EyeDef chosenEyes;
-            if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")) == 2)
-            {
-                var filtered = source.Where(x => x.label.Contains("Nice"));
-                chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
 
-                return chosenEyes;
-            }
             switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")))
             {
+                case 2:
+                    {
+                        var filtered = source.Where(x => x.label.Contains("Nice"));
+                        chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+                        return chosenEyes;
+                    }
                 case 1:
                     {
                         var filtered = source.Where(x => x.label.Contains("Aware"));
