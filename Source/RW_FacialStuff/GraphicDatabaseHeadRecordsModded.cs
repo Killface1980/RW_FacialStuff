@@ -300,37 +300,35 @@ namespace RW_FacialStuff
             }
             //   }
 
-            var temptexturefront = eyeGraphic.MatFront.mainTexture as Texture2D;
-            var temptextureside = eyeGraphic.MatSide.mainTexture as Texture2D;
+            var temptexturefront = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+            var temptextureside = new Texture2D(1, 1, TextureFormat.ARGB32, false);
 
             if (pawn.story.crownType == CrownType.Narrow)
             {
+                ScaleTexture(eyeGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
+                ScaleTexture(eyeGraphic.MatSide.mainTexture as Texture2D, ref temptextureside, 102, 128);
+            }
+            else
+            {
+                temptexturefront = eyeGraphic.MatFront.mainTexture as Texture2D;
+                temptextureside = eyeGraphic.MatSide.mainTexture as Texture2D;
+            }
+            MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
+            MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
 
-                MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
-                MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
-
+            if (pawn.story.crownType == CrownType.Narrow)
+            {
+                ScaleTexture(browGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
+                ScaleTexture(browGraphic.MatSide.mainTexture as Texture2D, ref temptextureside, 102, 128);
             }
             else
             {
 
-                MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
-                MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
+                temptexturefront = browGraphic.MatFront.mainTexture as Texture2D;
+                temptextureside = browGraphic.MatSide.mainTexture as Texture2D;
             }
-
-            temptexturefront = browGraphic.MatFront.mainTexture as Texture2D;
-            temptextureside = browGraphic.MatSide.mainTexture as Texture2D;
-            if (pawn.story.crownType == CrownType.Narrow)
-            {
-                MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
-                MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
-
-            }
-            else
-            {
-
-                MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
-                MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
-            }
+            MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
+            MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
 
             #region Male
             if (pawn.gender == Gender.Male)
@@ -366,37 +364,35 @@ namespace RW_FacialStuff
                 {
 
                     Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.LipDef.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                    temptexturefront = lipGraphic.MatFront.mainTexture as Texture2D;
-                    temptextureside = lipGraphic.MatSide.mainTexture as Texture2D;
                     if (pawn.story.crownType == CrownType.Narrow)
                     {
-
-                        MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.white);
-                        MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.white);
-
+                        ScaleTexture(lipGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
+                        ScaleTexture(lipGraphic.MatSide.mainTexture as Texture2D, ref temptextureside, 102, 128);
                     }
                     else
                     {
-
-                        MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.white);
-                        MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.white);
+                        temptexturefront = lipGraphic.MatFront.mainTexture as Texture2D;
+                        temptextureside = lipGraphic.MatSide.mainTexture as Texture2D;
                     }
+                    MergeTwoGraphics(ref finalHeadFront, temptexturefront, new Color(0.85f, 0.85f, 0.85f));
+                    MergeTwoGraphics(ref finalHeadSide, temptextureside, new Color(0.85f, 0.85f, 0.85f));
                 }
 
-                temptexturefront = beardGraphic.MatFront.mainTexture as Texture2D;
-                temptextureside = beardGraphic.MatSide.mainTexture as Texture2D;
 
                 if (pawn.story.crownType == CrownType.Narrow)
                 {
-                AddFacialHair(pawn, ref finalHeadFront, temptexturefront);
-                AddFacialHair(pawn, ref finalHeadSide, temptextureside);
+                    ScaleTexture(beardGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
+                    ScaleTexture(beardGraphic.MatSide.mainTexture as Texture2D, ref temptextureside, 102, 128);
                 }
                 else
                 {
-                    
+                    temptexturefront = beardGraphic.MatFront.mainTexture as Texture2D;
+                    temptextureside = beardGraphic.MatSide.mainTexture as Texture2D;
+                }
+
                 AddFacialHair(pawn, ref finalHeadFront, temptexturefront);
                 AddFacialHair(pawn, ref finalHeadSide, temptextureside);
-                }
+
 
 
             }
@@ -417,36 +413,38 @@ namespace RW_FacialStuff
                     MakeOld(pawn, ref finalHeadSide, temptextureside);
 
                 }
-                temptexturefront = (lipGraphic.MatFront.mainTexture as Texture2D);
-                temptextureside = (lipGraphic.MatSide.mainTexture as Texture2D);
                 if (pawn.story.crownType == CrownType.Narrow)
                 {
-                    MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.white);
-                    MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.white);
+                    ScaleTexture(lipGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
+                    ScaleTexture(lipGraphic.MatSide.mainTexture as Texture2D, ref temptextureside, 102, 128);
                 }
                 else
                 {
-                    MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.white);
-                    MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.white);
-
+                    temptexturefront = (lipGraphic.MatFront.mainTexture as Texture2D);
+                    temptextureside = (lipGraphic.MatSide.mainTexture as Texture2D);
                 }
+                MergeTwoGraphics(ref finalHeadFront, temptexturefront, new Color(0.85f, 0.85f, 0.85f));
+                MergeTwoGraphics(ref finalHeadSide, temptextureside, new Color(0.85f, 0.85f, 0.85f));
+
             }
             #endregion
-            temptexturefront = (MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D));
-            temptextureside = MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D);
-            var temptextureback = MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D);
 
             //   temptexturefront = Object.Instantiate(hairGraphic.MatFront.mainTexture as Texture2D);
             //   temptextureside = Object.Instantiate(hairGraphic.MatSide.mainTexture as Texture2D);
             //   temptextureback = Object.Instantiate(hairGraphic.MatBack.mainTexture as Texture2D);
+            var temptextureback = new Texture2D(1, 1,TextureFormat.ARGB32, false);
 
             if (pawn.story.crownType == CrownType.Narrow)
             {
-
-                //       temptexturefront.Resize(64, 128);
-                //       temptextureside.Resize(64, 128);
-                //       temptextureback.Resize(64, 128);
-
+                ScaleTexture(MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D), ref temptexturefront, 108, 128);
+                ScaleTexture(MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D), ref temptextureside, 108, 128);
+                ScaleTexture(MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D), ref temptextureback, 108, 128);
+            }
+            else
+            {
+                temptexturefront = (MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D));
+                temptextureside = MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D);
+                temptextureback = MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D);
             }
 
             //    MergeColor(ref finalHeadBack, pawn.story.SkinColor);
@@ -522,7 +520,7 @@ namespace RW_FacialStuff
             RenderTexture.active = tmp;
 
             // Create a new readable Texture2D to copy the pixels to it
-            var myTexture2D = new Texture2D(texture.width, texture.width);
+            var myTexture2D = new Texture2D(texture.width, texture.width, TextureFormat.ARGB32, false);
 
             // Copy the pixels from the RenderTexture to the new Texture
             myTexture2D.ReadPixels(new Rect(0, 0, tmp.width, tmp.height), 0, 0);
@@ -539,7 +537,7 @@ namespace RW_FacialStuff
 
         private static void AddFacialHair(Pawn pawn, ref Texture2D finalTexture, Texture2D beard)
         {
-         
+            int offset = (finalTexture.width - beard.width) / 2;
             int startX = 0;
             int startY = finalTexture.height - beard.height;
 
@@ -553,8 +551,8 @@ namespace RW_FacialStuff
                     Color beardColor;
 
 
-                     beardColor = beard.GetPixel(x - startX, y - startY);
-                        
+                    beardColor = beard.GetPixel(x - startX - offset, y - startY);
+
 
                     beardColor *= pawn.story.hairColor;
 
@@ -569,7 +567,8 @@ namespace RW_FacialStuff
 
         private static void MergeTwoGraphics(ref Texture2D finalTexture, Texture2D topLayer, Color topColor)
         {
-         
+            int offset = (finalTexture.width - topLayer.width) / 2;
+
             for (int x = 0; x < 128; x++)
             {
 
@@ -577,7 +576,7 @@ namespace RW_FacialStuff
                 {
                     Color eyeColor;
 
-                        eyeColor = topLayer.GetPixel(x, y);
+                    eyeColor = topLayer.GetPixel(x - offset, y);
                     Color headColor = finalTexture.GetPixel(x, y);
                     //          eyeColor = topLayer.GetPixel(x, y);
                     eyeColor *= topColor;
@@ -595,14 +594,13 @@ namespace RW_FacialStuff
 
         private static void MergeHeadWithHair(ref Texture2D finalTexture, Texture2D top_layer, Color topColor)
         {
-      
+
+            int offset = (finalTexture.width - top_layer.width) / 2;
 
 
 
             int startX = 0;
             int startY = finalTexture.height - top_layer.height;
-
-            int offset = ((finalTexture.width - top_layer.width) / 2);
 
 
             for (int x = startX; x < top_layer.width + offset; x++)
@@ -614,7 +612,7 @@ namespace RW_FacialStuff
                     Color headColor = finalTexture.GetPixel(x, y);
                     Color hairColor;
 
-                                           hairColor = top_layer.GetPixel(x - startX + offset, y - startY);
+                    hairColor = top_layer.GetPixel(x - startX - offset, y - startY);
 
                     if (y > 82)
                         hairColor.a = 0;
@@ -674,19 +672,33 @@ namespace RW_FacialStuff
             finalhead.Apply();
         }
 
-        private Texture2D ScaleTexture(Texture2D source, int targetWidth, int targetHeight)
+        private static Color[] destPix;
+
+        private static void ScaleTexture(Texture2D sourceTex, ref Texture2D destTex, int targetWidth, int targetHeight)
         {
-            Texture2D result = new Texture2D(targetWidth, targetHeight, source.format, true);
-            Color[] rpixels = result.GetPixels(0);
-            float incX = (1.0f / (float)targetWidth);
-            float incY = (1.0f / (float)targetHeight);
-            for (int px = 0; px < rpixels.Length; px++)
+            float warpFactorX = 1f;
+            float warpFactorY = 1f;
+
+            destTex = new Texture2D(targetWidth, targetHeight, TextureFormat.ARGB32, false);
+            destPix = new Color[destTex.width * destTex.height];
+            int y = 0;
+            while (y < destTex.height)
             {
-                rpixels[px] = source.GetPixelBilinear(incX * ((float)px % targetWidth), incY * ((float)Mathf.Floor(px / targetWidth)));
+                int x = 0;
+                while (x < destTex.width)
+                {
+                    float xFrac = x * 1.0F / (destTex.width - 1);
+                    float yFrac = y * 1.0F / (destTex.height - 1);
+                    float warpXFrac = Mathf.Pow(xFrac, warpFactorX);
+                    float warpYFrac = Mathf.Pow(yFrac, warpFactorY);
+                    destPix[y * destTex.width + x] = sourceTex.GetPixelBilinear(warpXFrac, warpYFrac);
+                    x++;
+                }
+                y++;
             }
-            result.SetPixels(rpixels, 0);
-            result.Apply();
-            return result;
+            destTex.SetPixels(destPix);
+            destTex.Apply();
+
         }
     }
 }
