@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DefPackage-BrowDef>
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Aggro</label>
+    <hairGender>Male</hairGender>
+    <texPathAverage>Brows/Brow_Average_Aggro</texPathAverage>
+    <texPathNarrow>Brows/Brow_Average_Aggro</texPathNarrow>
+    <defName>Brow_Average_Aggro</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Aware</label>
+    <hairGender>Male</hairGender>
+    <texPathAverage>Brows/Brow_Average_Aware</texPathAverage>
+    <texPathNarrow>Brows/Brow_Average_Aware</texPathNarrow>
+    <defName>Brow_Average_Aware</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Depressed</label>
+    <hairGender>Male</hairGender>
+    <texPathAverage>Brows/Brow_Average_Depressed</texPathAverage>
+    <texPathNarrow>Brows/Brow_Average_Depressed</texPathNarrow>
+    <defName>Brow_Average_Depressed</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Furious</label>
+    <hairGender>Male</hairGender>
+    <texPathAverage>Brows/Brow_Average_Furious</texPathAverage>
+    <texPathNarrow>Brows/Brow_Average_Furious</texPathNarrow>
+    <defName>Brow_Average_Furious</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Nice</label>
+    <hairGender>Male</hairGender>
+    <texPathAverage>Brows/Brow_Average_Nice</texPathAverage>
+    <texPathNarrow>Brows/Brow_Average_Nice</texPathNarrow>
+    <defName>Brow_Average_Nice</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Tired</label>
+    <hairGender>Male</hairGender>
+    <texPathAverage>Brows/Brow_Average_Tired</texPathAverage>
+    <texPathNarrow>Brows/Brow_Average_Tired</texPathNarrow>
+    <defName>Brow_Average_Tired</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+
+</DefPackage-BrowDef>

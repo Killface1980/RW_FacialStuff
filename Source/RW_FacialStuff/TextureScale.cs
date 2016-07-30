@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
-using Object = System.Object;
 
 namespace RW_FacialStuff
 {
@@ -55,40 +54,12 @@ namespace RW_FacialStuff
             }
             w = tex.width;
             w2 = newWidth;
-            var cores = Mathf.Min(SystemInfo.processorCount, newHeight);
-            var slice = newHeight / cores;
 
             finishCount = 0;
             if (mutex == null)
             {
                 mutex = new Mutex(false);
             }
-            if (cores > 1)
-            {
-                int i = 0;
-                ThreadData threadData;
-                for (i = 0; i < cores - 1; i++)
-                {
-                    threadData = new ThreadData(slice * i, slice * (i + 1));
-                    ParameterizedThreadStart ts = useBilinear ? BilinearScale : new ParameterizedThreadStart(PointScale);
-                    Thread thread = new Thread(ts);
-                    thread.Start(threadData);
-                }
-                threadData = new ThreadData(slice * i, newHeight);
-                if (useBilinear)
-                {
-                    BilinearScale(threadData);
-                }
-                else
-                {
-                    PointScale(threadData);
-                }
-                while (finishCount < cores)
-                {
-                    Thread.Sleep(1);
-                }
-            }
-            else
             {
                 ThreadData threadData = new ThreadData(0, newHeight);
                 if (useBilinear)
@@ -106,9 +77,9 @@ namespace RW_FacialStuff
             tex.Apply();
         }
 
-        public static void BilinearScale(Object obj)
+        public static void BilinearScale(ThreadData obj)
         {
-            ThreadData threadData = (ThreadData)obj;
+            ThreadData threadData = obj;
             for (var y = threadData.start; y < threadData.end; y++)
             {
                 int yFloor = (int)Mathf.Floor(y * ratioY);
@@ -131,9 +102,9 @@ namespace RW_FacialStuff
             mutex.ReleaseMutex();
         }
 
-        public static void PointScale(Object obj)
+        public static void PointScale(ThreadData obj)
         {
-            ThreadData threadData = (ThreadData)obj;
+            ThreadData threadData = obj;
             for (var y = threadData.start; y < threadData.end; y++)
             {
                 var thisY = (int)(ratioY * y) * w;
@@ -156,7 +127,7 @@ namespace RW_FacialStuff
                               c1.b + (c2.b - c1.b) * value,
                               c1.a + (c2.a - c1.a) * value);
         }
-    
+
 
 
         public static Color32[] ResizeCanvas(Texture2D texture, int width, int height)
@@ -194,5 +165,10 @@ namespace RW_FacialStuff
 
             return newPixels;
         }
+
+
+
+
+
     }
 }

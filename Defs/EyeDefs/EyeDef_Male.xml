@@ -2,11 +2,11 @@
 <DefPackage-EyeDef>
 
   <RW_FacialStuff.Defs.EyeDef>
-    <label>EMAOV-Aggro</label>
+    <label>Male_FL</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_OV_Average_Aggro</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_OV_Narrow_Aggro</texPathNarrow>
-    <defName>Eye_Male_OV_Average_Aggro</defName>
+    <texPathAverage>Eyes/Male/Eye_Male_Average_FL</texPathAverage>
+    <texPathNarrow>Eyes/Male/Eye_Male_Average_FL</texPathNarrow>
+    <defName>Eye_Male_Average_FL</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -16,11 +16,11 @@
   </RW_FacialStuff.Defs.EyeDef>
 
   <RW_FacialStuff.Defs.EyeDef>
-    <label>EMAOV-Aware</label>
+    <label>Male_RD</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_OV_Average_Aware</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_OV_Narrow_Aware</texPathNarrow>
-    <defName>Eye_Male_OV_Average_Aware</defName>
+    <texPathAverage>Eyes/Male/Eye_Male_Average_RD</texPathAverage>
+    <texPathNarrow>Eyes/Male/Eye_Male_Average_RD</texPathNarrow>
+    <defName>Eye_Male_Average_RD</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -30,11 +30,11 @@
   </RW_FacialStuff.Defs.EyeDef>
 
   <RW_FacialStuff.Defs.EyeDef>
-    <label>EMAOV-Nice</label>
+    <label>Male_OV</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_OV_Average_Nice</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_OV_Narrow_Nice</texPathNarrow>
-    <defName>Eye_Male_OV_Average_Nice</defName>
+    <texPathAverage>Eyes/Male/Eye_Male_Average_OV</texPathAverage>
+    <texPathNarrow>Eyes/Male/Eye_Male_Average_OV</texPathNarrow>
+    <defName>Eye_Male_Average_OV</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -44,11 +44,11 @@
   </RW_FacialStuff.Defs.EyeDef>
 
   <RW_FacialStuff.Defs.EyeDef>
-    <label>EMAOV-Tired</label>
+    <label>Male_SM</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_OV_Average_Tired</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_OV_Narrow_Tired</texPathNarrow>
-    <defName>Eye_Male_OV_Average_Tired</defName>
+    <texPathAverage>Eyes/Male/Eye_Male_Average_SM</texPathAverage>
+    <texPathNarrow>Eyes/Male/Eye_Male_Average_SM</texPathNarrow>
+    <defName>Eye_Male_Average_SM</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -56,203 +56,4 @@
       <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.EyeDef>
-
-  <RW_FacialStuff.Defs.EyeDef>
-    <label>EMAOV-Depressed</label>
-    <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_OV_Average_Depressed</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_OV_Narrow_Depressed</texPathNarrow>
-    <defName>Eye_Male_OV_Average_Depressed</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
-
-  <RW_FacialStuff.Defs.EyeDef>
-    <label>EMAOV-Furious</label>
-    <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_OV_Average_Furious</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_OV_Narrow_Furious</texPathNarrow>
-    <defName>Eye_Male_OV_Average_Furious</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
-  
-  
-  
-    <RW_FacialStuff.Defs.EyeDef>
-    <label>EMARD-Aggro</label>
-    <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_RD_Average_Aggro</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_RD_Narrow_Aggro</texPathNarrow>
-    <defName>Eye_Male_RD_Average_Aggro</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
-
-  <RW_FacialStuff.Defs.EyeDef>
-    <label>EMARD-Aware</label>
-    <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_RD_Average_Aware</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_RD_Narrow_Aware</texPathNarrow>
-    <defName>Eye_Male_RD_Average_Aware</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
-
-  <RW_FacialStuff.Defs.EyeDef>
-    <label>EMARD-Nice</label>
-    <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_RD_Average_Nice</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_RD_Narrow_Nice</texPathNarrow>
-    <defName>Eye_Male_RD_Average_Nice</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
-
-  <RW_FacialStuff.Defs.EyeDef>
-    <label>EMARD-Tired</label>
-    <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_RD_Average_Tired</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_RD_Narrow_Tired</texPathNarrow>
-    <defName>Eye_Male_RD_Average_Tired</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
-
-  <RW_FacialStuff.Defs.EyeDef>
-    <label>EMARD-Depressed</label>
-    <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_RD_Average_Depressed</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_RD_Narrow_Depressed</texPathNarrow>
-    <defName>Eye_Male_RD_Average_Depressed</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
-
-  <RW_FacialStuff.Defs.EyeDef>
-    <label>EMARD-Furious</label>
-    <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_RD_Average_Furious</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_RD_Narrow_Furious</texPathNarrow>
-    <defName>Eye_Male_RD_Average_Furious</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
-
-  <RW_FacialStuff.Defs.EyeDef>
-    <label>EMAFL-Aggro</label>
-    <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_FL_Average_Aggro</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_FL_Narrow_Aggro</texPathNarrow>
-    <defName>Eye_Male_FL_Average_Aggro</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
-
-  <RW_FacialStuff.Defs.EyeDef>
-    <label>EMAFL-Aware</label>
-    <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_FL_Average_Aware</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_FL_Narrow_Aware</texPathNarrow>
-    <defName>Eye_Male_FL_Average_Aware</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
-
-  <RW_FacialStuff.Defs.EyeDef>
-    <label>EMAFL-Nice</label>
-    <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_FL_Average_Nice</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_FL_Narrow_Nice</texPathNarrow>
-    <defName>Eye_Male_FL_Average_Nice</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
-
-  <RW_FacialStuff.Defs.EyeDef>
-    <label>EMAFL-Tired</label>
-    <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_FL_Average_Tired</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_FL_Narrow_Tired</texPathNarrow>
-    <defName>Eye_Male_FL_Average_Tired</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
-
-  <RW_FacialStuff.Defs.EyeDef>
-    <label>EMAFL-Depressed</label>
-    <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_FL_Average_Depressed</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_FL_Narrow_Depressed</texPathNarrow>
-    <defName>Eye_Male_FL_Average_Depressed</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
-
-  <RW_FacialStuff.Defs.EyeDef>
-    <label>EMAFL-Furious</label>
-    <hairGender>Male</hairGender>
-    <texPathAverage>Eyes/Male/Eye_Male_FL_Average_Furious</texPathAverage>
-    <texPathNarrow>Eyes/Male/Eye_Male_FL_Narrow_Furious</texPathNarrow>
-    <defName>Eye_Male_FL_Average_Furious</defName>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
-  
 </DefPackage-EyeDef>

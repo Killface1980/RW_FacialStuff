@@ -67,6 +67,9 @@
       <Link>xml\About.xml</Link>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="..\..\Defs\BrowDefs\BrowDef.xml">
+      <Link>Defs\BrowDef.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\EyeDefs\EyeDef_Female.xml">
       <Link>Defs\EyeDef_Female.xml</Link>
     </Content>

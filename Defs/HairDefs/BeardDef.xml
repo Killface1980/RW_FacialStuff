@@ -7,9 +7,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_Anchor</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Anchor</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_Anchor</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_Anchor</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_Anchor</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_Anchor</texPathNarrowWide>
     <defName>Beard_Anchor</defName>
     <hairTags>
       <li>Urban</li>
@@ -24,9 +21,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_Balbo</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Balbo</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_Balbo</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_Balbo</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_Balbo</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_Balbo</texPathNarrowWide>
     <defName>Beard_Balbo</defName>
     <hairTags>
       <li>Urban</li>
@@ -40,9 +34,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_ChinCurtain</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_ChinCurtain</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_ChinCurtain</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_ChinCurtain</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_ChinCurtain</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_ChinCurtain</texPathNarrowWide>
     <defName>Beard_ChinCurtain</defName>
     <hairTags>
       <li>Urban</li>
@@ -58,9 +49,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_ChinPuff</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_ChinPuff</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_ChinPuff</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_ChinPuff</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_ChinPuff</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_ChinPuff</texPathNarrowWide>
     <defName>Beard_ChinPuff</defName>
     <hairTags>
       <li>Punk</li>
@@ -75,9 +63,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_DuckTail</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_DuckTail</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_DuckTail</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_DuckTail</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_DuckTail</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_DuckTail</texPathNarrowWide>
     <defName>Beard_DuckTail</defName>
     <hairTags>
       <li>Urban</li>
@@ -93,9 +78,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_ElInsecto</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_ElInsecto</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_ElInsecto</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_ElInsecto</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_ElInsecto</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_ElInsecto</texPathNarrowWide>
     <defName>Beard_ElInsecto</defName>
     <hairTags>
       <li>Punk</li>
@@ -110,14 +92,12 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_FranzJoseph</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_FranzJoseph</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_FranzJoseph</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_FranzJoseph</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_FranzJoseph</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_FranzJoseph</texPathNarrowWide>
     <defName>Beard_FranzJoseph</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -126,9 +106,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_FrenchFork</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_FrenchFork</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_FrenchFork</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_FrenchFork</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_FrenchFork</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_FrenchFork</texPathNarrowWide>
     <defName>Beard_FrenchFork</defName>
     <hairTags>
       <li>Rural</li>
@@ -143,9 +120,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_FriendlyMuttonChops</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_FriendlyMuttonChops</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_FriendlyMuttonChops</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_FriendlyMuttonChops</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_FriendlyMuttonChops</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_FriendlyMuttonChops</texPathNarrowWide>
     <defName>Beard_FriendlyMuttonChops</defName>
     <hairTags>
       <li>Urban</li>
@@ -161,9 +135,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_FullBeard</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_FullBeard</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_FullBeard</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_FullBeard</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_FullBeard</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_FullBeard</texPathNarrowWide>
     <defName>Beard_FullBeard</defName>
     <hairTags>
       <li>Urban</li>
@@ -179,9 +150,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_Garibaldi</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Garibaldi</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_Garibaldi</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_Garibaldi</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_Garibaldi</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_Garibaldi</texPathNarrowWide>
     <defName>Beard_Garibaldi</defName>
     <hairTags>
       <li>Urban</li>
@@ -198,9 +166,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_Goatee</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Goatee</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_Goatee</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_Goatee</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_Goatee</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_Goatee</texPathNarrowWide>
     <defName>Beard_Goatee</defName>
     <hairTags>
       <li>Urban</li>
@@ -215,9 +180,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_Hollywoodian</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Hollywoodian</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_Hollywoodian</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_Hollywoodian</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_Hollywoodian</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_Hollywoodian</texPathNarrowWide>
     <defName>Beard_Hollywoodian</defName>
     <hairTags>
       <li>Urban</li>
@@ -231,15 +193,13 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_Hulihee</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Hulihee</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_Hulihee</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_Hulihee</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_Hulihee</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_Hulihee</texPathNarrowWide>
     <defName>Beard_Hulihee</defName>
     <hairTags>
       <li>Rural</li>
       <li>Punk</li>
       <li>MaleOld</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -248,9 +208,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_Imperial</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Imperial</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_Imperial</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_Imperial</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_Imperial</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_Imperial</texPathNarrowWide>
     <defName>Beard_Imperial</defName>
     <hairTags>
       <li>Urban</li>
@@ -265,9 +222,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_MuttonChops</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_MuttonChops</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_MuttonChops</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_MuttonChops</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_MuttonChops</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_MuttonChops</texPathNarrowWide>
     <defName>Beard_MuttonChops</defName>
     <hairTags>
       <li>Urban</li>
@@ -275,6 +229,7 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -283,9 +238,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_NapoleonIIIImperial</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_NapoleonIIIImperial</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_NapoleonIIIImperial</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_NapoleonIIIImperial</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_NapoleonIIIImperial</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_NapoleonIIIImperial</texPathNarrowWide>
     <defName>Beard_NapoleonIIIImperial</defName>
     <hairTags>
       <li>Urban</li>
@@ -300,9 +252,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_OldDutch</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_OldDutch</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_OldDutch</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_OldDutch</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_OldDutch</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_OldDutch</texPathNarrowWide>
     <defName>Beard_OldDutch</defName>
     <hairTags>
       <li>Urban</li>
@@ -319,9 +268,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_PetiteGoatee</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_PetiteGoatee</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_PetiteGoatee</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_PetiteGoatee</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_PetiteGoatee</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_PetiteGoatee</texPathNarrowWide>
     <defName>Beard_PetiteGoatee</defName>
     <hairTags>
       <li>Urban</li>
@@ -336,9 +282,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_SoulPatch</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_SoulPatch</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_SoulPatch</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_SoulPatch</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_SoulPatch</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_SoulPatch</texPathNarrowWide>
     <defName>Beard_SoulPatch</defName>
     <hairTags>
       <li>Urban</li>
@@ -353,9 +296,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_Souvarov</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Souvarov</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_Souvarov</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_Souvarov</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_Souvarov</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_Souvarov</texPathNarrowWide>
     <defName>Beard_Souvarov</defName>
     <hairTags>
       <li>Urban</li>
@@ -370,9 +310,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_Stubble</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Stubble</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_Stubble</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_Stubble</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_Stubble</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_Stubble</texPathNarrowWide>
     <defName>Beard_Stubble</defName>
     <hairTags>
       <li>Urban</li>
@@ -389,9 +326,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_TheKlingon</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_TheKlingon</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_TheKlingon</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_TheKlingon</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_TheKlingon</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_TheKlingon</texPathNarrowWide>
     <defName>Beard_TheKlingon</defName>
     <hairTags>
       <li>Punk</li>
@@ -405,9 +339,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_TheSparrow</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_TheSparrow</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_TheSparrow</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_TheSparrow</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_TheSparrow</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_TheSparrow</texPathNarrowWide>
     <defName>Beard_TheSparrow</defName>
     <hairTags>
       <li>Tribal</li>
@@ -420,9 +351,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_TheWinnifried</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_TheWinnifried</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_TheWinnifried</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_TheWinnifried</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_TheWinnifried</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_TheWinnifried</texPathNarrowWide>
     <defName>Beard_TheWinnifried</defName>
     <hairTags>
       <li>Rural</li>
@@ -436,9 +364,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_TheZappa</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_TheZappa</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_TheZappa</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_TheZappa</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_TheZappa</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_TheZappa</texPathNarrowWide>
     <defName>Beard_TheZappa</defName>
     <hairTags>
       <li>Urban</li>
@@ -454,9 +379,6 @@
     <texPathAverageNormal>Beards/Beard_Average_Normal_VanDyke</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_VanDyke</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_VanDyke</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Narrow_Normal_VanDyke</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Narrow_Pointy_VanDyke</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Narrow_Wide_VanDyke</texPathNarrowWide>
     <defName>Beard_VanDyke</defName>
     <hairTags>
       <li>Urban</li>
@@ -470,9 +392,6 @@
     <texPathAverageNormal>Beards/Beard_Shaved</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Shaved</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Shaved</texPathAverageWide>
-    <texPathNarrowNormal>Beards/Beard_Shaved</texPathNarrowNormal>
-    <texPathNarrowPointy>Beards/Beard_Shaved</texPathNarrowPointy>
-    <texPathNarrowWide>Beards/Beard_Shaved</texPathNarrowWide>    
     <defName>Beard_Shaved</defName>
     <hairTags>
       <li>Urban</li>

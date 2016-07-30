@@ -6,7 +6,6 @@
     <label>EFA-Big</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Lips/Female/Lip_Female_Average_Big</texPathAverage>
-    <texPathNarrow>Lips/Female/Lip_Female_Narrow_Big</texPathNarrow>
     <defName>Lip_Female_Big</defName>
     <hairTags>
       <li>Urban</li>
@@ -20,7 +19,6 @@
     <label>EFA-Default</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Lips/Female/Lip_Female_Average_Default</texPathAverage>
-    <texPathNarrow>Lips/Female/Lip_Female_Narrow_Default</texPathNarrow>
     <defName>Lip_Female_Default</defName>
     <hairTags>
       <li>Urban</li>
@@ -31,11 +29,10 @@
   </RW_FacialStuff.Defs.LipDef>
 
   <RW_FacialStuff.Defs.LipDef>
-    <label>EFA-Flat</label>
+    <label>EFA-Sad</label>
     <hairGender>Female</hairGender>
-    <texPathAverage>Lips/Female/Lip_Female_Average_Flat</texPathAverage>
-    <texPathNarrow>Lips/Female/Lip_Female_Narrow_Flat</texPathNarrow>
-    <defName>Lip_Female_Flat</defName>
+    <texPathAverage>Lips/Female/Lip_Female_Average_Sad</texPathAverage>
+    <defName>Lip_Female_Sad</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -48,7 +45,6 @@
     <label>EFA-Large</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Lips/Female/Lip_Female_Average_Large</texPathAverage>
-    <texPathNarrow>Lips/Female/Lip_Female_Narrow_Large</texPathNarrow>
     <defName>Lip_Female_Large</defName>
     <hairTags>
       <li>Urban</li>
@@ -62,7 +58,6 @@
     <label>EFA-Medium</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Lips/Female/Lip_Female_Average_Medium</texPathAverage>
-    <texPathNarrow>Lips/Female/Lip_Female_Narrow_Medium</texPathNarrow>
     <defName>Lip_Female_Medium</defName>
     <hairTags>
       <li>Urban</li>
@@ -76,7 +71,6 @@
     <label>EFA-Smile</label>
     <hairGender>Female</hairGender>
     <texPathAverage>Lips/Female/Lip_Female_Average_Smile</texPathAverage>
-    <texPathNarrow>Lips/Female/Lip_Female_Narrow_Smile</texPathNarrow>
     <defName>Lip_Female_Smile</defName>
     <hairTags>
       <li>Urban</li>
