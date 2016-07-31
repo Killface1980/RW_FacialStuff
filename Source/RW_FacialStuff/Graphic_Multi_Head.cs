@@ -64,10 +64,15 @@ namespace RW_FacialStuff
             }
         }
 
+        private static Texture2D blankTexture;
+        private static bool blankExists;
 
         public static Texture2D BlankTexture()
         {
-            Texture2D blankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
+            if (blankExists)
+                return blankTexture;
+
+            blankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
             int startX = 0;
             int startY = 0;
 
@@ -78,7 +83,9 @@ namespace RW_FacialStuff
                     blankTexture.SetPixel(x, y, Color.clear);
                 }
             }
-            blankTexture.Apply();
+            blankTexture.Compress(false);
+            blankTexture.Apply(false,true);
+            blankExists = true;
             return blankTexture;
         }
 

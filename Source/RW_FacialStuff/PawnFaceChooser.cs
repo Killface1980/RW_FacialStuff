@@ -38,45 +38,59 @@ namespace RW_FacialStuff
                                          select eye;
             EyeDef chosenEyes;
 
+            chosenEyes = source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+
+            return chosenEyes;
+        }
+
+        public static BrowDef RandomBrowDefFor(Pawn pawn, FactionDef factionType)
+        {
+
+            IEnumerable<BrowDef> source = from brow in DefDatabase<BrowDef>.AllDefs
+                                          where brow.hairTags.SharesElementWith(factionType.hairTags)
+                                          select brow;
+            BrowDef chosenBrows;
+
             switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")))
             {
                 case 2:
                     {
                         var filtered = source.Where(x => x.label.Contains("Nice"));
-                        chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
-                        return chosenEyes;
+                        chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
+                        return chosenBrows;
                     }
                 case 1:
                     {
                         var filtered = source.Where(x => x.label.Contains("Aware"));
-                        chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
-                        return chosenEyes;
+                        chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
+                        return chosenBrows;
                     }
                 case 0:
                     {
                         var filtered = source.Where(x => !x.label.Contains("Depressed") && !x.label.Contains("Tired"));
-                        chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
-                        return chosenEyes;
+                        chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
+                        return chosenBrows;
                     }
                 case -1:
                     {
                         var filtered = source.Where(x => x.label.Contains("Tired"));
-                        chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
-                        return chosenEyes;
+                        chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
+                        return chosenBrows;
                     }
                 case -2:
                     {
                         var filtered = source.Where(x => x.label.Contains("Depressed"));
-                        chosenEyes = filtered.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
-                        return chosenEyes;
+                        chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
+                        return chosenBrows;
                     }
 
             }
 
-            chosenEyes = source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+            chosenBrows = source.RandomElementByWeight(brow => BrowChoiceLikelihoodFor(brow, pawn));
 
-            return chosenEyes;
+            return chosenBrows;
         }
+
 
         public static WrinkleDef AssignWrinkleDefFor(Pawn pawn, FactionDef factionType)
         {
@@ -105,10 +119,45 @@ namespace RW_FacialStuff
                                          where lip.hairTags.SharesElementWith(factionType.hairTags)
                                          select lip;
 
-            LipDef chosenLips = source.RandomElementByWeight(lip => LipChoiceLikelihoodFor(lip, pawn));
+            LipDef chosenLips;
 
+            switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")))
+            {
+                case 2:
+                    {
+                        var filtered = source.Where(x => x.label.Contains("Smile"));
+                        chosenLips = filtered.RandomElementByWeight(eye => LipChoiceLikelihoodFor(eye, pawn));
+                        return chosenLips;
+                    }
+                case 1:
+                    {
+                        var filtered = source.Where(x => x.label.Contains("Default"));
+                        chosenLips = filtered.RandomElementByWeight(eye => LipChoiceLikelihoodFor(eye, pawn));
+                        return chosenLips;
+                    }
+                case 0:
+                    {
+                        chosenLips = source.RandomElementByWeight(lip => LipChoiceLikelihoodFor(lip, pawn));
+                        return chosenLips;
+                    }
 
+                case -1:
+                    {
+                        var filtered = source.Where(x => x.label.Contains("Big"));
+                        chosenLips = filtered.RandomElementByWeight(eye => LipChoiceLikelihoodFor(eye, pawn));
+                        return chosenLips;
+                    }
+                case -2:
+                    {
+                        var filtered = source.Where(x => x.label.Contains("Sad"));
+                        chosenLips = filtered.RandomElementByWeight(lip => LipChoiceLikelihoodFor(lip, pawn));
+                        return chosenLips;
+                    }
+            }
+            chosenLips = source.RandomElementByWeight(lip => LipChoiceLikelihoodFor(lip, pawn));
             return chosenLips;
+
+
         }
 
         private static float EyeChoiceLikelihoodFor(EyeDef eye, Pawn pawn)
@@ -152,6 +201,50 @@ namespace RW_FacialStuff
             }
 
             Log.Error(string.Concat("Unknown hair likelihood for ", eye, " with ", pawn));
+            return 0f;
+        }
+
+        private static float BrowChoiceLikelihoodFor(BrowDef brow, Pawn pawn)
+        {
+            if (pawn.gender == Gender.None)
+            {
+                return 100f;
+            }
+            if (pawn.gender == Gender.Male)
+            {
+                switch (brow.hairGender)
+                {
+                    case HairGender.Male:
+                        return 70f;
+                    case HairGender.MaleUsually:
+                        return 30f;
+                    case HairGender.Any:
+                        return 60f;
+                    case HairGender.FemaleUsually:
+                        return 5f;
+                    case HairGender.Female:
+                        return 1f;
+                }
+            }
+
+            if (pawn.gender == Gender.Female)
+            {
+                switch (brow.hairGender)
+                {
+                    case HairGender.Female:
+                        return 70f;
+                    case HairGender.FemaleUsually:
+                        return 30f;
+                    case HairGender.Any:
+                        return 60f;
+                    case HairGender.MaleUsually:
+                        return 5f;
+                    case HairGender.Male:
+                        return 1f;
+                }
+            }
+
+            Log.Error(string.Concat("Unknown hair likelihood for ", brow, " with ", pawn));
             return 0f;
         }
 

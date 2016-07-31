@@ -74,8 +74,8 @@ namespace RW_FacialStuff
             {
       //          Detours.TryDetourFromTo(method, method2);
                 Detours.TryDetourFromTo(coreMethod, moddedHeadMethod);
-                Detours.TryDetourFromTo(coreMethod2, moddedHeadMethod2);
-                Detours.TryDetourFromTo(coreMethod3, moddedHeadMethod3);
+                //       Detours.TryDetourFromTo(coreMethod2, moddedHeadMethod2);
+                //       Detours.TryDetourFromTo(coreMethod3, moddedHeadMethod3);
                 Detours.TryDetourFromTo(coreMethod4, moddedHeadMethod4);
                 Detours.TryDetourFromTo(coreMethod5, moddedHeadMethod5);
                 Detours.TryDetourFromTo(coreMethod6, moddedHeadMethod6);

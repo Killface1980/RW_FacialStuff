@@ -11,10 +11,6 @@ namespace RW_FacialStuff.Defs
         public string texPathAveragePointy;
         public string texPathAverageWide;
 
-        public string texPathNarrowNormal;
-        public string texPathNarrowPointy;
-        public string texPathNarrowWide;
-
         public bool drawMouth;
 
         public HairGender hairGender = HairGender.Any;
@@ -24,6 +20,19 @@ namespace RW_FacialStuff.Defs
     }
 
     public class EyeDef: Def
+    {
+
+        public string texPathAverage;
+
+        public string texPathNarrow;
+
+        public HairGender hairGender = HairGender.Any;
+
+        public List<string> hairTags = new List<string>();
+
+    }
+
+    public class BrowDef : Def
     {
 
         public string texPathAverage;

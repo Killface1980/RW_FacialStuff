@@ -54,18 +54,20 @@
     <Compile Include="Graphic_Multi_Head.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
     <Compile Include="PawnHairColors.cs" />
-    <Compile Include="PawnSkinColors.cs" />
+    <Compile Include="PawnSkinColorsModded.cs" />
     <Compile Include="SaveablePawn.cs" />
     <Compile Include="PawnFaceChooser.cs" />
     <Compile Include="PawnGraphicSetModded.cs" />
     <Compile Include="ModInitializer .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextureScale.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\About\About.xml">
       <Link>xml\About.xml</Link>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Defs\BrowDefs\BrowDef.xml">
+      <Link>Defs\BrowDef.xml</Link>
     </Content>
     <Content Include="..\..\Defs\EyeDefs\EyeDef_Female.xml">
       <Link>Defs\EyeDef_Female.xml</Link>
