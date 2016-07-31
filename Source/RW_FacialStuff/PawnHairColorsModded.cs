@@ -4,7 +4,7 @@ using Verse;
 
 namespace RW_FacialStuff
 {
-    public static class PawnHairColors
+    public static class PawnHairColorsModded
     {
         // changed Midnight Black - 10/10/10 - 2016-07-28
         public static Color HairMidnightBlack = new Color32(30, 30, 30, 255);//(0.2f, 0.2f, 0.2f);

@@ -137,7 +137,8 @@ namespace RW_FacialStuff
                     }
                 case 0:
                     {
-                        chosenLips = source.RandomElementByWeight(lip => LipChoiceLikelihoodFor(lip, pawn));
+                        var filtered = source.Where(x => !x.label.Contains("Default")&& !x.label.Contains("Smile") && !x.label.Contains("Big") && !x.label.Contains("Sad"));
+                        chosenLips = filtered.RandomElementByWeight(eye => LipChoiceLikelihoodFor(eye, pawn));
                         return chosenLips;
                     }
 

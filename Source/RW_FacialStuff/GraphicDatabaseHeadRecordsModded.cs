@@ -662,8 +662,8 @@ namespace RW_FacialStuff
                     if (pawn.ageTracker.AgeBiologicalYearsFloat >= 76)
                         final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 1f);
 
-                    if (headColor.a == 1)
-                        final_color.a = 1;
+                    if (headColor.a > 0)
+                        final_color.a = headColor.a+wrinkleColor.a;
 
                     finalhead.SetPixel(x, y, final_color);
                 }

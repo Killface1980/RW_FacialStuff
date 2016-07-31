@@ -24,12 +24,11 @@ namespace RW_FacialStuff
 
             if (pawn.RaceProps.Humanlike)
             {
-
                 var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
                 if (!pawnSave.optimized)
                 {
-                    pawn.story.hairDef = PawnHairChooser.RandomHairDefFor(pawn, pawn.Faction.def);
+                    pawn.story.hairDef = PawnFaceChooser.RandomHairDefFor(pawn, pawn.Faction.def);
                     switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")))
                     {
                         case 2:
@@ -63,7 +62,7 @@ namespace RW_FacialStuff
                             }
                             break;
                     }
-                    pawn.story.hairColor = PawnHairColors.RandomHairColorModded(pawn.story.SkinColor, pawn.ageTracker.AgeBiologicalYears);
+                    pawn.story.hairColor = PawnHairColorsModded.RandomHairColorModded(pawn.story.SkinColor, pawn.ageTracker.AgeBiologicalYears);
                     GraphicDatabaseHeadRecordsModded.DefineHeadParts(pawn);
 
                 }
