@@ -26,10 +26,10 @@ namespace RW_FacialStuff
             new SkinColorData(0.3f, 0f, new Color32(77,39,28, 255)),
             new SkinColorData(0.5f, 0.05f, new Color32(127,66,45,255)),
             new SkinColorData(0.65f, 0.15f, new Color32(165,93,41,255)),
-            new SkinColorData(0.7f, 0.225f, new Color32(186,119,80,255)),
-            new SkinColorData(0.8f, 0.285f, new Color32(230,158,124,255)),
-            new SkinColorData(0.9f, 0.78f, new Color32(231,184,143,255)),
-            new SkinColorData(0.95f, 0.89f, new Color32(245,210,178,255)),
+            new SkinColorData(0.7f, 0.25f, new Color32(186,119,80,255)),
+            new SkinColorData(0.8f, 0.35f, new Color32(230,158,124,255)),
+            new SkinColorData(0.9f, 0.6f, new Color32(231,184,143,255)),
+            new SkinColorData(0.95f, 0.8f, new Color32(245,210,178,255)),
             new SkinColorData(1f, 1f, new Color32(255,230,212,255))
 
 //          new SkinColorData(0f, 0f, new Color(0.3882353f, 0.274509817f, 0.141176477f)),
