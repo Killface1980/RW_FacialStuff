@@ -87,7 +87,7 @@ namespace RW_FacialStuff
             //        return new Color(num2, num2, num2);
             //    }
             //}
-            if (PawnSkinColors.IsDarkSkin(skinColor))// || Rand.Value < 0.4f)
+            if (PawnSkinColorsModded.IsDarkSkin(skinColor))// || Rand.Value < 0.4f)
             {
                 tempColor = Color.Lerp(HairMidnightBlack, HairDarkBrown, Rand.Range(0f, 0.35f));
 
@@ -177,7 +177,7 @@ namespace RW_FacialStuff
                     greyness = 0.85f;
                 }
 
-                if (PawnSkinColors.IsDarkSkin(skinColor))
+                if (PawnSkinColorsModded.IsDarkSkin(skinColor))
                     greyness *= Rand.Range(0.4f, 0.8f);
             }
 
