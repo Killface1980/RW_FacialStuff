@@ -5,13 +5,16 @@
     <ModName>RW_FacialStuff</ModName>
     <minCCLversion>0.14.0</minCCLversion>
     <MapComponents>
-
       <li>RW_FacialStuff.MapComponent_FacialStuff</li>
-
     </MapComponents>
     <SpecialInjectors>
-
     </SpecialInjectors>
-
+    <ModConfigurationMenus>
+      <li>
+        <label>Facial Stuff</label>
+        <mcmClass>RW_FacialStuff.ModConfigMenu</mcmClass>
+        <preload>True</preload>
+      </li>
+    </ModConfigurationMenus>
   </CommunityCoreLibrary.ModHelperDef>
 </Defs>
