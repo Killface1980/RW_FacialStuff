@@ -88,8 +88,7 @@ namespace RW_FacialStuff
                 headGraphic = GraphicDatabaseHeadRecordsModded.ModifiedVanillaHead(pawn, pawn.story.SkinColor, hairGraphic);
                 //           typeof(Pawn_StoryTracker).GetField("skinColor", BindingFlags.Instance | BindingFlags.Public).SetValue(pawn.story, Color.cyan);
 
-                //overwrites the crown type so that manually merged hair looks good again.
-                //      pawn.story.crownType = CrownType.Average;
+
 
                 /*
                 for (int j = 0; j < apparelGraphics.Count; j++)
