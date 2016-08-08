@@ -22,17 +22,19 @@ namespace RW_FacialStuff
             ClearCache();
             GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
 
-            if (pawn.RaceProps.Humanlike)
+            if (pawn.kindDef.race.ToString().Equals("Human"))
             {
                 var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
                 if (!pawnSave.optimized)
                 {
+                    //  pawn.story.skinWhiteness = Rand.Value;
+
                     pawn.story.hairDef = PawnFaceChooser.RandomHairDefFor(pawn, pawn.Faction.def);
                     switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")))
                     {
                         case 2:
-                            if (pawn.story.skinWhiteness<0.9f)
+                            if (pawn.story.skinWhiteness < 0.9f)
                             {
                                 pawn.story.skinWhiteness = Random.Range(0.9f, 1f);
                             }
@@ -44,10 +46,10 @@ namespace RW_FacialStuff
                             }
                             break;
                         case 0:
-                          //if (pawn.story.skinWhiteness < 0.15f || pawn.story.skinWhiteness > 0.8f)
-                          //{
-                          //    pawn.story.skinWhiteness = Random.Range(0.2f, 0.66f);
-                          //}
+                            //if (pawn.story.skinWhiteness < 0.15f || pawn.story.skinWhiteness > 0.8f)
+                            //{
+                            //    pawn.story.skinWhiteness = Random.Range(0.2f, 0.66f);
+                            //}
                             break;
                         case -1:
                             if (pawn.story.skinWhiteness > 0.7f)
@@ -75,7 +77,7 @@ namespace RW_FacialStuff
                 dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
                 skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
-                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor*RottingColor);
+                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor * RottingColor);
                 ResolveApparelGraphics();
                 PortraitsCache.Clear();
 
@@ -85,7 +87,16 @@ namespace RW_FacialStuff
                     GraphicDatabaseHeadRecordsModded.headsModded.Add(new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(pawn));
                     GraphicDatabaseHeadRecordsModded.headIndex += 1;
                 }
-                headGraphic = GraphicDatabaseHeadRecordsModded.ModifiedVanillaHead(pawn, pawn.story.SkinColor, hairGraphic);
+
+                if (pawn.RaceProps.hasGenders)
+                {
+
+                    headGraphic = GraphicDatabaseHeadRecordsModded.ModifiedVanillaHead(pawn, pawn.story.SkinColor, hairGraphic);
+                }
+                else
+                {
+                    this.headGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(this.pawn.story.HeadGraphicPath, this.pawn.story.SkinColor);
+                }
                 //           typeof(Pawn_StoryTracker).GetField("skinColor", BindingFlags.Instance | BindingFlags.Public).SetValue(pawn.story, Color.cyan);
 
 
@@ -101,6 +112,18 @@ namespace RW_FacialStuff
                 }
                 */
 
+            }
+            else
+                if (pawn.RaceProps.Humanlike)
+            {
+                nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(this.pawn.story.BodyType, ShaderDatabase.CutoutSkin, this.pawn.story.SkinColor);
+                this.rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(this.pawn.story.BodyType, ShaderDatabase.CutoutSkin, PawnGraphicSet.RottingColor);
+                this.dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
+                this.headGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(this.pawn.story.HeadGraphicPath, this.pawn.story.SkinColor);
+                this.desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(this.pawn.story.HeadGraphicPath, PawnGraphicSet.RottingColor);
+                this.skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
+                this.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(this.pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, this.pawn.story.hairColor);
+                this.ResolveApparelGraphics();
             }
             else
             {
