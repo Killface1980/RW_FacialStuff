@@ -4,5 +4,13 @@
   <author>Killface</author>
   <url>https://ludeon.com/forums/index.php?topic=20771.msg228259#msg228259</url>
   <targetVersion>0.14.1241</targetVersion>
-  <description>Adds new eyes to all colonists and individual beards to male colonists.</description>
+  <description>This mod aims to provide more visual individuality for your colonists.
+   - 8 newly defined skin colors instead of the vanilla 6.
+   - hair genetics according to real life. No more unrealistic hair colors.
+   - 27 different beards
+   - Added vanilla hair styles with 10 steps of hair loss.
+   - Hair is merged on the head graphic, thus visible with worn hats.
+   - Only gays have the possibility to chose the other sex's hair style
+   - Only white skinned people have cold preference, ahile only dark skinned like the heat. 
+</description>
 </ModMetaData>

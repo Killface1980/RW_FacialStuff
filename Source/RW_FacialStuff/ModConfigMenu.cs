@@ -35,14 +35,13 @@ namespace RW_FacialStuff
         
         private void FillPageMain(Listing_Standard listing, float columnwidth, ref float curY)
         {
-            listing.ColumnWidth = columnwidth / 2;
-
-            if (listing.ButtonText("RW_FacialStuff.Settings.RevertSettings".Translate()))
-            {
-            }
-            listing.ColumnWidth = columnwidth;
+        //  listing.ColumnWidth = columnwidth / 2;
+        //
+        //  if (listing.ButtonText("RW_FacialStuff.Settings.RevertSettings".Translate()))
+        //  {
+        //  }
+        //  listing.ColumnWidth = columnwidth;
             listing.CheckboxLabeled("RW_FacialStuff.Settings.useMouth".Translate(), ref useMouth, null);
-
             listing.Gap();
 
             listing.End();
@@ -50,7 +49,8 @@ namespace RW_FacialStuff
 
         }
 
-        public static bool useMouth= true;
+        public static bool useMouth = true;
+
         public override void ExposeData()
         {
           Scribe_Values.LookValue(ref useMouth, "useMouth", false, false);
