@@ -15,7 +15,7 @@ namespace RW_FacialStuff
 
         public ModInitializer()
         {
-            modInitializerControllerObject = new GameObject("BeardyFaces");
+            modInitializerControllerObject = new GameObject("Facial Stuff");
             modInitializerControllerObject.AddComponent<ModInitializerBehaviour>();
             Object.DontDestroyOnLoad(modInitializerControllerObject);
         }
