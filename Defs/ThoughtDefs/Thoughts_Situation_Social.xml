@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ThoughtDefs>
+
+  <!-- affecting opinion -->
+
+  <ThoughtDef>
+    <defName>IntoleranceVsAll</defName>
+    <thoughtClass>RW_FacialStuff.Thought_IntoleranceVsAll</thoughtClass>
+    <workerClass>RW_FacialStuff.ThoughtWorker_IntoleranceVsAll</workerClass>
+    <stages>
+      <li>
+        <label>bigot vs sex. pref.</label>
+      </li>
+      <li>
+        <label>racist vs skin color</label>
+      </li>
+      <li>
+        <label>bigot racist vs all</label>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Ugly</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>RW_FacialStuff.ThoughtWorker_Ugly</workerClass>
+    <stages>
+      <li>
+        <label>ugly</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+      <li>
+        <label>staggeringly ugly</label>
+        <baseOpinionOffset>-80</baseOpinionOffset>
+      </li>
+      <li>
+        <label>ugly like me</label>
+        <baseOpinionOffset>+15</baseOpinionOffset>
+      </li>
+      <li>
+        <label>even uglier than me</label>
+        <baseOpinionOffset>+30</baseOpinionOffset>
+      </li>
+      <li>
+        <label>ugly but sweet</label>
+        <baseOpinionOffset>30</baseOpinionOffset>
+      </li>
+      <li>
+        <label>finding beauty in ugly faces</label>
+        <baseOpinionOffset>+15</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef> 
+</ThoughtDefs>

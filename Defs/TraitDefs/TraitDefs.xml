@@ -3,7 +3,7 @@
 
   <TraitDef>
     <defName>CrossDresser</defName>
-    <commonality>1.0</commonality>
+    <commonality>33</commonality>
     <degreeDatas>
       <li>
         <label>crossdresser</label>
@@ -13,17 +13,24 @@
   </TraitDef>
 
   <TraitDef>
-    <defName>Racist</defName>
-    <commonality>1.0</commonality>
+    <defName>Intolerance</defName>
+    <commonality>33.0</commonality>
     <degreeDatas>
       <li>
+        <label>bigot</label>
+        <description>NAME hates everyone not sharing his sexual orientation.</description>
+        <degree>1</degree> </li>
+      <li>
         <label>racist</label>
-        <description>NAME hates everyone not sharing his skin color or sexual orientation.</description>
+        <description>NAME hates everyone not sharing his skin color.</description>
+        <degree>2</degree> </li>
+      <li>
+        <label>bigot racist</label>
+        <description>NAME hates everyone not sharing his sexual orentation or skin color.</description>
+        <degree>3</degree>
       </li>
     </degreeDatas>
     <conflictingTraits>
-      <li>Gay</li>
-      <li>CrossDresser</li>
     </conflictingTraits>
   </TraitDef>
 
@@ -32,7 +39,7 @@
 
   <TraitDef>
     <defName>Gay</defName>
-    <commonality>0.4</commonality>
+    <commonality>33</commonality>
     <degreeDatas>
       <li>
         <label>bisexual</label>

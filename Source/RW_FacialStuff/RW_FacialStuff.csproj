@@ -64,6 +64,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sexuality\LovePartnerRelationUtility.cs" />
     <Compile Include="Sexuality\Pawn_RelationsTracker.cs" />
+    <Compile Include="ThoughWorker\ThoughtWorker_RacistVsAll.cs" />
+    <Compile Include="ThoughWorker\Thought_IntoleranceVsAll.cs" />
+    <Compile Include="ThoughWorker\ThoughtWorker_Ugly.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\About\About.xml">
@@ -95,6 +98,9 @@
     <Content Include="..\..\Defs\ThingDefs\Initializer.xml">
       <Link>Initializer\Initializer.xml</Link>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Defs\ThoughtDefs\Thoughts_Situation_Social.xml">
+      <Link>Defs\Thoughts_Situation_Social.xml</Link>
     </Content>
     <Content Include="..\..\Defs\TraitDefs\TraitDefs.xml">
       <Link>Defs\TraitDefs.xml</Link>

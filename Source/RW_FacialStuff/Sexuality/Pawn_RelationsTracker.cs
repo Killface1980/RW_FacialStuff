@@ -18,8 +18,8 @@ namespace RW_FacialStuff.Sexuality
             }
             float num = 1f;
             float num2 = 1f;
-            float ageBiologicalYearsFloat = pawn.ageTracker.AgeBiologicalYearsFloat;
-            float ageBiologicalYearsFloat2 = otherPawn.ageTracker.AgeBiologicalYearsFloat;
+            float pawnAgeBiological = pawn.ageTracker.AgeBiologicalYearsFloat;
+            float otherPawnAgeBiological = otherPawn.ageTracker.AgeBiologicalYearsFloat;
             if (pawn.gender == Gender.Male)
             {
                 // if (pawn.RaceProps.Humanlike && pawn.story.traits.HasTrait(TraitDefOf.Gay))
@@ -37,10 +37,10 @@ namespace RW_FacialStuff.Sexuality
                 {
                     if (otherPawn.gender == Gender.Male)
                     {
-                        return 0f;
+                        return 0.05f;
                     }
                 }
-                num2 = GenMath.FlatHill(16f, 20f, ageBiologicalYearsFloat, ageBiologicalYearsFloat + 15f, ageBiologicalYearsFloat2);
+                num2 = GenMath.FlatHill(16f, 20f, pawnAgeBiological, pawnAgeBiological + 15f, otherPawnAgeBiological);
             }
             else if (pawn.gender == Gender.Female)
             {
@@ -62,17 +62,17 @@ namespace RW_FacialStuff.Sexuality
                     }
                 }
 
-                if (ageBiologicalYearsFloat2 < ageBiologicalYearsFloat - 10f)
+                if (otherPawnAgeBiological < pawnAgeBiological - 10f)
                 {
                     return 0f;
                 }
-                if (ageBiologicalYearsFloat2 < ageBiologicalYearsFloat - 3f)
+                if (otherPawnAgeBiological < pawnAgeBiological - 3f)
                 {
-                    num2 = Mathf.InverseLerp(ageBiologicalYearsFloat - 10f, ageBiologicalYearsFloat - 3f, ageBiologicalYearsFloat2) * 0.2f;
+                    num2 = Mathf.InverseLerp(pawnAgeBiological - 10f, pawnAgeBiological - 3f, otherPawnAgeBiological) * 0.2f;
                 }
                 else
                 {
-                    num2 = GenMath.FlatHill(0.2f, ageBiologicalYearsFloat - 3f, ageBiologicalYearsFloat, ageBiologicalYearsFloat + 10f, ageBiologicalYearsFloat + 40f, 0.1f, ageBiologicalYearsFloat2);
+                    num2 = GenMath.FlatHill(0.2f, pawnAgeBiological - 3f, pawnAgeBiological, pawnAgeBiological + 10f, pawnAgeBiological + 40f, 0.1f, otherPawnAgeBiological);
                 }
             }
             float num3 = 1f;
@@ -84,22 +84,22 @@ namespace RW_FacialStuff.Sexuality
             {
                 num4 *= current.attractionFactor;
             }
-            int num5 = 0;
+            int degreeOfTraitBeauty = 0;
             if (otherPawn.RaceProps.Humanlike)
             {
-                num5 = otherPawn.story.traits.DegreeOfTrait(TraitDefOf.Beauty);
+                degreeOfTraitBeauty = otherPawn.story.traits.DegreeOfTrait(TraitDefOf.Beauty);
             }
             float num6 = 1f;
-            if (num5 < 0)
+            if (degreeOfTraitBeauty < 0)
             {
                 num6 = 0.3f;
             }
-            else if (num5 > 0)
+            else if (degreeOfTraitBeauty > 0)
             {
                 num6 = 2.3f;
             }
-            float num7 = Mathf.InverseLerp(15f, 18f, ageBiologicalYearsFloat);
-            float num8 = Mathf.InverseLerp(15f, 18f, ageBiologicalYearsFloat2);
+            float num7 = Mathf.InverseLerp(15f, 18f, pawnAgeBiological);
+            float num8 = Mathf.InverseLerp(15f, 18f, otherPawnAgeBiological);
             return num * num2 * num3 * num4 * num7 * num8 * num6;
         }
 
