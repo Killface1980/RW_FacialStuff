@@ -52,6 +52,7 @@
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphic_Multi_Head.cs" />
+    <Compile Include="Initializer\DetourInjector.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="PawnHairColorsModded.cs" />
@@ -59,8 +60,10 @@
     <Compile Include="SaveablePawn.cs" />
     <Compile Include="PawnFaceChooser.cs" />
     <Compile Include="PawnGraphicSetModded.cs" />
-    <Compile Include="ModInitializer .cs" />
+    <Compile Include="Initializer\ModInitializer .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sexuality\LovePartnerRelationUtility.cs" />
+    <Compile Include="Sexuality\Pawn_RelationsTracker.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\About\About.xml">
@@ -87,11 +90,14 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\ModHelperDefs\ModHelper.xml">
-      <Link>xml\ModHelper.xml</Link>
+      <Link>Initializer\ModHelper.xml</Link>
     </Content>
     <Content Include="..\..\Defs\ThingDefs\Initializer.xml">
-      <Link>xml\Initializer.xml</Link>
+      <Link>Initializer\Initializer.xml</Link>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Defs\TraitDefs\TraitDefs.xml">
+      <Link>Defs\TraitDefs.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WrinkleDefs\WrinkleDef.xml">
       <Link>Defs\WrinkleDef.xml</Link>

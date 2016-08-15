@@ -348,16 +348,16 @@ namespace RW_FacialStuff
                     return 0f;
                 }
 
-                if (pawn.story.traits.HasTrait(TraitDef.Named("Gay")))
+                if (pawn.story.traits.HasTrait(TraitDef.Named("CrossDresser")))
                 {
                     switch (hair.hairGender)
                     {
                         case HairGender.Male:
-                            return 10f;
+                            return 0f;
                         case HairGender.MaleUsually:
-                            return 5f;
+                            return 0f;
                         case HairGender.Any:
-                            return 20f;
+                            return 0f;
                         case HairGender.FemaleUsually:
                             return 40f;
                         case HairGender.Female:
@@ -386,7 +386,7 @@ namespace RW_FacialStuff
                     return 0f;
                 }
 
-                if (pawn.story.traits.HasTrait(TraitDef.Named("Gay")))
+                if (pawn.story.traits.HasTrait(TraitDef.Named("CrossDresser")))
                 {
                     switch (hair.hairGender)
                     {
@@ -395,11 +395,11 @@ namespace RW_FacialStuff
                         case HairGender.MaleUsually:
                             return 40f;
                         case HairGender.Any:
-                            return 20f;
+                            return 0f;
                         case HairGender.FemaleUsually:
-                            return 5f;
+                            return 0f;
                         case HairGender.Female:
-                            return 10f;
+                            return 0f;
                     }
                 }
 

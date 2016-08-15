@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <TraitDef>
+    <defName>CrossDresser</defName>
+    <commonality>1.0</commonality>
+    <degreeDatas>
+      <li>
+        <label>crossdresser</label>
+        <description>NAME wears items of clothing and other accoutrements commonly associated with the opposite sex within a particular society. HECAP uses it as a disguise, comfort, and self-actualization.</description>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>Racist</defName>
+    <commonality>1.0</commonality>
+    <degreeDatas>
+      <li>
+        <label>racist</label>
+        <description>NAME hates everyone not sharing his skin color or sexual orientation.</description>
+      </li>
+    </degreeDatas>
+    <conflictingTraits>
+      <li>Gay</li>
+      <li>CrossDresser</li>
+    </conflictingTraits>
+  </TraitDef>
+
+
+  <!-- Vanilla override -->
+
+  <TraitDef>
+    <defName>Gay</defName>
+    <commonality>5</commonality>
+    <degreeDatas>
+      <li>
+        <label>bisexual</label>
+        <description>NAME has an easy time staying on-task and focused, and gets things done much faster than the average person.</description>
+        <degree>2</degree>
+        <statOffsets>
+          <WorkSpeedGlobal>0.35</WorkSpeedGlobal>
+        </statOffsets>
+      </li>
+      <li>
+        <label>gay</label>
+        <description>NAME is a natural hard worker and will finish tasks faster than most.</description>
+        <degree>1</degree>
+        <statOffsets>
+          <WorkSpeedGlobal>0.20</WorkSpeedGlobal>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+</Defs>
