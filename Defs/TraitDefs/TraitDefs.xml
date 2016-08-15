@@ -32,12 +32,12 @@
 
   <TraitDef>
     <defName>Gay</defName>
-    <commonality>5</commonality>
+    <commonality>0.4</commonality>
     <degreeDatas>
       <li>
         <label>bisexual</label>
         <description>NAME has an easy time staying on-task and focused, and gets things done much faster than the average person.</description>
-        <degree>2</degree>
+        <degree>1</degree>
         <statOffsets>
           <WorkSpeedGlobal>0.35</WorkSpeedGlobal>
         </statOffsets>
@@ -45,7 +45,7 @@
       <li>
         <label>gay</label>
         <description>NAME is a natural hard worker and will finish tasks faster than most.</description>
-        <degree>1</degree>
+        <degree>0</degree>
         <statOffsets>
           <WorkSpeedGlobal>0.20</WorkSpeedGlobal>
         </statOffsets>

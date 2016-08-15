@@ -19,18 +19,15 @@ namespace RW_FacialStuff.Sexuality
             {
                 return 0f;
             }
-            if (pawn.gender == otherPawn.gender && (!otherPawn.story.traits.HasTrait(TraitDefOf.Gay) || !request.AllowGay))
+            if ((pawn.gender == otherPawn.gender && otherPawn.story.traits.HasTrait(TraitDefOf.Gay) && otherPawn.story.traits.DegreeOfTrait(TraitDef.Named("Gay")) == 0) || !request.AllowGay)
             {
                 return 0f;
             }
-            if (pawn.gender != otherPawn.gender && otherPawn.story.traits.DegreeOfTrait(TraitDef.Named("Gay")) == 0)
+
+            if (pawn.gender != otherPawn.gender && otherPawn.story.traits.HasTrait(TraitDefOf.Gay) && otherPawn.story.traits.DegreeOfTrait(TraitDef.Named("Gay")) == 0)
             {
                 return 0f;
             }
-         // if (pawn.gender != otherPawn.gender && otherPawn.story.traits.HasTrait(TraitDefOf.Gay))
-         // {
-         //     return 0f;
-         // }
             float num = 1f;
             if (ex)
             {

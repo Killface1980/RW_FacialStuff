@@ -23,14 +23,17 @@ namespace RW_FacialStuff.Sexuality
             if (pawn.gender == Gender.Male)
             {
                 // if (pawn.RaceProps.Humanlike && pawn.story.traits.HasTrait(TraitDefOf.Gay))
-                if (pawn.RaceProps.Humanlike && pawn.story.traits.DegreeOfTrait(TraitDef.Named("Gay")) == 1)
+                if (pawn.story.traits.HasTrait(TraitDefOf.Gay))
                 {
-                    if (otherPawn.gender == Gender.Female)
+                    if (pawn.RaceProps.Humanlike && pawn.story.traits.DegreeOfTrait(TraitDef.Named("Gay")) == 0)
                     {
-                        return 0f;
+                        if (otherPawn.gender == Gender.Female)
+                        {
+                            return 0f;
+                        }
                     }
                 }
-                else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("Gay")) == 0)
+                else
                 {
                     if (otherPawn.gender == Gender.Male)
                     {
@@ -41,14 +44,17 @@ namespace RW_FacialStuff.Sexuality
             }
             else if (pawn.gender == Gender.Female)
             {
-                if (pawn.RaceProps.Humanlike && pawn.story.traits.DegreeOfTrait(TraitDef.Named("Gay")) == 1)
+                if (pawn.story.traits.HasTrait(TraitDefOf.Gay))
                 {
-                    if (otherPawn.gender == Gender.Male)
+                    if (pawn.RaceProps.Humanlike && pawn.story.traits.DegreeOfTrait(TraitDef.Named("Gay")) == 0)
                     {
-                        return 0f;
+                        if (otherPawn.gender == Gender.Male)
+                        {
+                            return 0f;
+                        }
                     }
                 }
-                else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("Gay")) == 0)
+                else 
                 {
                     if (otherPawn.gender == Gender.Female)
                     {
