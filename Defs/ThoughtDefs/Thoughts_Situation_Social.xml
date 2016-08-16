@@ -9,7 +9,7 @@
     <workerClass>RW_FacialStuff.ThoughtWorker_IntoleranceVsAll</workerClass>
     <stages>
       <li>
-        <label>bigot vs sex. pref.</label>
+        <label>bigot vs sexual preference</label>
       </li>
       <li>
         <label>racist vs skin color</label>
@@ -39,16 +39,29 @@
       </li>
       <li>
         <label>even uglier than me</label>
-        <baseOpinionOffset>+30</baseOpinionOffset>
+        <baseOpinionOffset>+25</baseOpinionOffset>
       </li>
       <li>
         <label>ugly but sweet</label>
-        <baseOpinionOffset>30</baseOpinionOffset>
+        <baseOpinionOffset>35</baseOpinionOffset>
       </li>
       <li>
         <label>finding beauty in ugly faces</label>
-        <baseOpinionOffset>+15</baseOpinionOffset>
+        <baseOpinionOffset>+45</baseOpinionOffset>
       </li>
     </stages>
-  </ThoughtDef> 
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>BulimiaCatharsis</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>3</stackLimit>
+    <stages>
+      <li>
+        <label>bulimiacatharsis</label>
+        <description>It felt good to unbottle my feelings for a bit and disconnect.</description>
+        <baseMoodEffect>10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
 </ThoughtDefs>

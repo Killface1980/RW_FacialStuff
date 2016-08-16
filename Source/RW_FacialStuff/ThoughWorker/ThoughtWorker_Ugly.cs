@@ -1,5 +1,4 @@
-﻿using System;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace RW_FacialStuff
@@ -8,6 +7,8 @@ namespace RW_FacialStuff
     {
         protected override ThoughtState CurrentSocialStateInternal(Pawn pawn, Pawn other)
         {
+
+            //to do: fix ugly thoughts
             if (!other.RaceProps.Humanlike || !RelationsUtility.PawnsKnowEachOther(pawn, other))
             {
                 return false;

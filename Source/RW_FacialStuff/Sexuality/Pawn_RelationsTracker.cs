@@ -54,7 +54,7 @@ namespace RW_FacialStuff.Sexuality
                         }
                     }
                 }
-                else 
+                else
                 {
                     if (otherPawn.gender == Gender.Female)
                     {
@@ -84,19 +84,32 @@ namespace RW_FacialStuff.Sexuality
             {
                 num4 *= current.attractionFactor;
             }
-            int degreeOfTraitBeauty = 0;
+            int otherPawnDegreeOfBeauty = 0;
+            int pawnDegreeOfBeauty = pawn.story.traits.DegreeOfTrait(TraitDefOf.Beauty);
             if (otherPawn.RaceProps.Humanlike)
             {
-                degreeOfTraitBeauty = otherPawn.story.traits.DegreeOfTrait(TraitDefOf.Beauty);
+                otherPawnDegreeOfBeauty = otherPawn.story.traits.DegreeOfTrait(TraitDefOf.Beauty);
             }
             float num6 = 1f;
-            if (degreeOfTraitBeauty < 0)
+            if (otherPawnDegreeOfBeauty < 0)
             {
-                num6 = 0.3f;
+                if (pawnDegreeOfBeauty < otherPawnDegreeOfBeauty)
+                {
+                    num6 = 1.2f;
+                }
+                else
+                {
+                    num6 = 0.3f;
+                }
+                //   num6 = 0.3f;
             }
-            else if (degreeOfTraitBeauty > 0)
+            else if (otherPawnDegreeOfBeauty == 1)
             {
-                num6 = 2.3f;
+                num6 = 1.8f;
+            }
+            else if (otherPawnDegreeOfBeauty == 2)
+            {
+                num6 = 2.4f;
             }
             float num7 = Mathf.InverseLerp(15f, 18f, pawnAgeBiological);
             float num8 = Mathf.InverseLerp(15f, 18f, otherPawnAgeBiological);

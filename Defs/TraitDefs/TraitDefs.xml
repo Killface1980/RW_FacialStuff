@@ -3,30 +3,66 @@
 
   <TraitDef>
     <defName>CrossDresser</defName>
-    <commonality>33</commonality>
+    <commonality>0.3</commonality>
     <degreeDatas>
       <li>
         <label>crossdresser</label>
         <description>NAME wears items of clothing and other accoutrements commonly associated with the opposite sex within a particular society. HECAP uses it as a disguise, comfort, and self-actualization.</description>
+        <statOffsets>
+          <MentalBreakThreshold>-0.1</MentalBreakThreshold>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>Bulimia</defName>
+    <commonality>0.2</commonality>
+    <degreeDatas>
+      <li>
+        <label>bulimia</label>
+        <description>NAME has an eating disorder characterized by binge eating followed by purging. Binge eating refers to eating a large amount of food in a short amount of time. Purging refers to the attempts to get rid of the food consumed.</description>
+        <allowedMentalBreaks>
+          <li>BulimiaAttack</li>
+        </allowedMentalBreaks>
+        <randomMentalState>BulimiaAttack</randomMentalState>
+        <randomMentalStateMtbDaysMoodCurve>
+          <points>
+            <li>(0, 1)</li>
+            <li>(50, 50)</li>
+            <li>(100, 100)</li>
+          </points>
+        </randomMentalStateMtbDaysMoodCurve>
+        <statOffsets>
+          <EatingSpeed>2.5</EatingSpeed>
+        </statOffsets>
+        <skillGains>
+          <li>
+            <key>Cooking</key>
+            <value>10</value>
+          </li>
+        </skillGains>
       </li>
     </degreeDatas>
   </TraitDef>
 
   <TraitDef>
     <defName>Intolerance</defName>
-    <commonality>33.0</commonality>
+    <commonality>0.4</commonality>
     <degreeDatas>
       <li>
         <label>bigot</label>
-        <description>NAME hates everyone not sharing his sexual orientation.</description>
-        <degree>1</degree> </li>
+        <description>NAME hates everyone not sharing HIS sexual orientation, but likes anyone who does.</description>
+        <degree>1</degree>
+      </li>
       <li>
         <label>racist</label>
-        <description>NAME hates everyone not sharing his skin color.</description>
-        <degree>2</degree> </li>
+        <description>NAME hates everyone not sharing HIS skin color, but likes anyone who does.</description>
+        <degree>2</degree>
+      </li>
       <li>
         <label>bigot racist</label>
-        <description>NAME hates everyone not sharing his sexual orentation or skin color.</description>
+        <description>NAME hates everyone not sharing HIS sexual orentation or skin color, but likes anyone who does.</description>
         <degree>3</degree>
       </li>
     </degreeDatas>
@@ -34,29 +70,23 @@
     </conflictingTraits>
   </TraitDef>
 
-
   <!-- Vanilla override -->
 
   <TraitDef>
     <defName>Gay</defName>
-    <commonality>33</commonality>
+    <commonality>0.6</commonality>
     <degreeDatas>
       <li>
         <label>bisexual</label>
-        <description>NAME has an easy time staying on-task and focused, and gets things done much faster than the average person.</description>
+        <description>NAME is romantically attracted to people of both genders.</description>
         <degree>1</degree>
-        <statOffsets>
-          <WorkSpeedGlobal>0.35</WorkSpeedGlobal>
-        </statOffsets>
       </li>
       <li>
         <label>gay</label>
-        <description>NAME is a natural hard worker and will finish tasks faster than most.</description>
+        <description>NAME is romantically attracted to people of HIS own gender.</description>
         <degree>0</degree>
-        <statOffsets>
-          <WorkSpeedGlobal>0.20</WorkSpeedGlobal>
-        </statOffsets>
       </li>
     </degreeDatas>
   </TraitDef>
+
 </Defs>

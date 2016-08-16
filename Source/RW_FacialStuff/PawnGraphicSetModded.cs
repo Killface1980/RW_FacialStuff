@@ -34,15 +34,15 @@ namespace RW_FacialStuff
                     switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")))
                     {
                         case 2:
-                            if (pawn.story.skinWhiteness < 0.9f)
+                            if (pawn.story.skinWhiteness < 0.85f)
                             {
-                                pawn.story.skinWhiteness = Random.Range(0.9f, 1f);
+                                pawn.story.skinWhiteness = Random.Range(0.85f, 1f);
                             }
                             break;
                         case 1:
-                            if (pawn.story.skinWhiteness < 0.8f)
+                            if (pawn.story.skinWhiteness < 0.75f)
                             {
-                                pawn.story.skinWhiteness = Random.Range(0.8f, 1f);
+                                pawn.story.skinWhiteness = Random.Range(0.75f, 0.95f);
                             }
                             break;
                         case 0:
@@ -52,15 +52,15 @@ namespace RW_FacialStuff
                             //}
                             break;
                         case -1:
-                            if (pawn.story.skinWhiteness > 0.7f)
+                            if (pawn.story.skinWhiteness > 0.5f)
                             {
-                                pawn.story.skinWhiteness = Random.Range(0.35f, 0.7f);
+                                pawn.story.skinWhiteness = Random.Range(0.1f, 0.5f);
                             }
                             break;
                         case -2:
-                            if (pawn.story.skinWhiteness > 0.65f)
+                            if (pawn.story.skinWhiteness > 0.25f)
                             {
-                                pawn.story.skinWhiteness = Random.Range(0.35f, 0.65f);
+                                pawn.story.skinWhiteness = Random.Range(0f, 0.25f);
                             }
                             break;
                     }

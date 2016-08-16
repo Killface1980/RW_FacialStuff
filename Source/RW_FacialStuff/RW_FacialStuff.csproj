@@ -48,7 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Defs\FacialStuff_Defs.cs" />
+    <Compile Include="Defs\FacialDefs\FacialStuff_Defs.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphic_Multi_Head.cs" />
@@ -64,7 +64,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sexuality\LovePartnerRelationUtility.cs" />
     <Compile Include="Sexuality\Pawn_RelationsTracker.cs" />
-    <Compile Include="ThoughWorker\ThoughtWorker_RacistVsAll.cs" />
+    <Compile Include="ThoughWorker\MentalStateWorker_BulimiaAttack.cs" />
+    <Compile Include="ThoughWorker\MentalState_BulimiaAttack.cs" />
+    <Compile Include="ThoughWorker\JobGiver_BulimiaAttack.cs" />
+    <Compile Include="ThoughWorker\ThoughtWorker_IntoleranceVsAll.cs" />
     <Compile Include="ThoughWorker\Thought_IntoleranceVsAll.cs" />
     <Compile Include="ThoughWorker\ThoughtWorker_Ugly.cs" />
   </ItemGroup>
@@ -74,23 +77,26 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\BrowDefs\BrowDef.xml">
-      <Link>Defs\BrowDef.xml</Link>
+      <Link>Defs\FacialDefs\BrowDef.xml</Link>
     </Content>
     <Content Include="..\..\Defs\EyeDefs\EyeDef_Female.xml">
-      <Link>Defs\EyeDef_Female.xml</Link>
+      <Link>Defs\FacialDefs\EyeDef_Female.xml</Link>
     </Content>
     <Content Include="..\..\Defs\EyeDefs\EyeDef_Male.xml">
-      <Link>Defs\EyeDef_Male.xml</Link>
+      <Link>Defs\FacialDefs\EyeDef_Male.xml</Link>
     </Content>
     <Content Include="..\..\Defs\HairDefs\BeardDef.xml">
-      <Link>Defs\BeardDef.xml</Link>
+      <Link>Defs\FacialDefs\BeardDef.xml</Link>
     </Content>
     <Content Include="..\..\Defs\HairDefs\HairsBeGone.xml">
-      <Link>Defs\HairsBeGone.xml</Link>
+      <Link>Defs\FacialDefs\HairsBeGone.xml</Link>
     </Content>
     <Content Include="..\..\Defs\LipDefs\LipDef.xml">
-      <Link>Defs\LipDef.xml</Link>
+      <Link>Defs\FacialDefs\LipDef.xml</Link>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Defs\MentalStateDefs\MentalStates_Mood.xml">
+      <Link>Defs\MentalStates_Mood.xml</Link>
     </Content>
     <Content Include="..\..\Defs\ModHelperDefs\ModHelper.xml">
       <Link>Initializer\ModHelper.xml</Link>
@@ -99,6 +105,9 @@
       <Link>Initializer\Initializer.xml</Link>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="..\..\Defs\ThinkTreeDefs\SubTrees_Misc.xml">
+      <Link>Defs\SubTrees_Misc.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\ThoughtDefs\Thoughts_Situation_Social.xml">
       <Link>Defs\Thoughts_Situation_Social.xml</Link>
     </Content>
@@ -106,7 +115,7 @@
       <Link>Defs\TraitDefs.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WrinkleDefs\WrinkleDef.xml">
-      <Link>Defs\WrinkleDef.xml</Link>
+      <Link>Defs\FacialDefs\WrinkleDef.xml</Link>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
