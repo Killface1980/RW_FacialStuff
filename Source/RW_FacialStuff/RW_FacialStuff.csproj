@@ -49,23 +49,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="DetourAttribute.cs" />
     <Compile Include="Defs\FacialDefs\FacialStuff_Defs.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphic_Multi_Head.cs" />
-    <Compile Include="Initializer\DetourInjector.cs" />
+    <Compile Include="Initializer\FS_SpecialInjector.cs" />
     <None Include="Initializer\PawnRenderer.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
     <Compile Include="ModConfigMenu.cs" />
+    <Compile Include="NoCCL\Detours.cs" />
+    <Compile Include="NoCCL\SpecialInjector.cs" />
     <Compile Include="PawnHairColorsModded.cs" />
-    <Compile Include="PawnSkinColorsModded.cs" />
+    <Compile Include="Detouring\PawnSkinColorsModded.cs" />
     <Compile Include="SaveablePawn.cs" />
     <Compile Include="PawnFaceChooser.cs" />
-    <Compile Include="PawnGraphicSetModded.cs" />
+    <Compile Include="Detouring\PawnGraphicSetModded.cs" />
     <Compile Include="Initializer\ModInitializer .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sexuality\LovePartnerRelationUtility.cs" />
-    <Compile Include="Sexuality\Pawn_RelationsTracker.cs" />
+    <Compile Include="Detouring\LovePartnerRelationUtility.cs" />
+    <Compile Include="Detouring\Pawn_RelationsTracker.cs" />
     <Compile Include="ThoughWorker\MentalStateWorker_BulimiaAttack.cs" />
     <Compile Include="ThoughWorker\MentalState_BulimiaAttack.cs" />
     <Compile Include="ThoughWorker\JobGiver_BulimiaAttack.cs" />

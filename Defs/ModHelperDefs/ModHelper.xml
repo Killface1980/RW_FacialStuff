@@ -8,7 +8,7 @@
       <li>RW_FacialStuff.MapComponent_FacialStuff</li>
     </MapComponents>
     <SpecialInjectors>
-      <li>RW_FacialStuff.DetourInjector</li>
+      <li>RW_FacialStuff.FS_SpecialInjector</li>
     </SpecialInjectors>
     <ModConfigurationMenus>
       <li>
