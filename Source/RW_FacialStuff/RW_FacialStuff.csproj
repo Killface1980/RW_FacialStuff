@@ -51,10 +51,14 @@
     <Compile Include="Class1.cs" />
     <Compile Include="DetourAttribute.cs" />
     <Compile Include="Defs\FacialDefs\FacialStuff_Defs.cs" />
+    <Compile Include="FaceStyler\Dialog_FaceStyling.cs" />
+    <Compile Include="FaceStyler\Job_FaceStyling.cs" />
+    <Compile Include="FaceStyler\FaceStyler.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphic_Multi_Head.cs" />
     <Compile Include="Initializer\FS_SpecialInjector.cs" />
+    <Compile Include="Utilities\Class1.cs" />
     <None Include="Initializer\PawnRenderer.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
     <Compile Include="ModConfigMenu.cs" />
