@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CommunityCoreLibrary;
+﻿using CommunityCoreLibrary;
 using RimWorld;
 using RW_FacialStuff.Sexuality;
+using Verse;
 
 namespace RW_FacialStuff
 {
@@ -16,6 +13,9 @@ namespace RW_FacialStuff
             if (!Detours.TryDetourFromTo(typeof(Pawn_RelationsTracker).GetMethod("AttractionTo"),
                 typeof(Pawn_RelationsTrackerModded).GetMethod("AttractionToModded")))
                 return false;
+         // if (!Detours.TryDetourFromTo(typeof(PawnRenderer).GetMethod("RenderPawnAt"),
+         //     typeof(PawnRendererModded).GetMethod("RenderPawnAt")))
+         //     return false;
             return true;
         }
 

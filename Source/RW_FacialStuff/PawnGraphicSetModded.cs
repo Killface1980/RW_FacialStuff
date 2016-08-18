@@ -8,10 +8,12 @@ namespace RW_FacialStuff
 
     public class PawnGraphicSetModded : PawnGraphicSet
     {
-#pragma warning disable CS0824 // Konstruktor ist extern markiert
-        public extern PawnGraphicSetModded();
-#pragma warning restore CS0824 // Konstruktor ist extern markiert
 
+        public PawnGraphicSetModded(Pawn pawn) : base(pawn)
+        {
+            this.pawn = pawn;
+            this.flasher = new DamageFlasher(pawn);
+        }
 
         public void ResolveAllGraphicsModded()
         {
