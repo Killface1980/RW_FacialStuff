@@ -1,4 +1,4 @@
-﻿using RimWorld;
+﻿using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -39,11 +39,15 @@ namespace RW_FacialStuff
 //          new SkinColorData(0.75f, 0.785f, new Color(1f, 0.9372549f, 0.8352941f)),
 //          new SkinColorData(1f, 1f, new Color(0.9490196f, 0.929411769f, 0.8784314f))
         };
+
+        [Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
         public static bool IsDarkSkin(Color color)
         {
-            Color skinColor = GetSkinColor(0.7f);
+            Color skinColor = GetSkinColor(0.6f);
             return color.r + color.g + color.b <= skinColor.r + skinColor.g + skinColor.b + 0.01f;
         }
+
+        [Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
         public static Color GetSkinColor(float skinWhiteness)
         {
             int skinDataLeftIndexByWhiteness = GetSkinDataLeftIndexByWhiteness(skinWhiteness);
@@ -69,6 +73,7 @@ namespace RW_FacialStuff
             return result;
         }
 
+        [Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
         public static float RandomSkinWhiteness()
         {
             float value = Rand.Value;

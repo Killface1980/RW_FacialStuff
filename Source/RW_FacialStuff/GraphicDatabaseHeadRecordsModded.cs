@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using CommunityCoreLibrary;
 using CommunityCoreLibrary.ColorPicker;
-using RW_FacialStuff.Defs;
 using UnityEngine;
 using Verse;
 using Object = UnityEngine.Object;

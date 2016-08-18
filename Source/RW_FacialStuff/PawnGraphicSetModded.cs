@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -12,10 +13,11 @@ namespace RW_FacialStuff
         public PawnGraphicSetModded(Pawn pawn) : base(pawn)
         {
             this.pawn = pawn;
-            this.flasher = new DamageFlasher(pawn);
+            flasher = new DamageFlasher(pawn);
         }
 
-        public void ResolveAllGraphicsModded()
+        [Detour(typeof(Verse.PawnGraphicSet), bindingFlags = (BindingFlags.Instance | BindingFlags.Public))]
+        public new void ResolveAllGraphics()
         {
             //This creates many empty textures. only neede for rebuilding
             // ExportHeadBackToPNG();
@@ -97,7 +99,7 @@ namespace RW_FacialStuff
                 }
                 else
                 {
-                    this.headGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(this.pawn.story.HeadGraphicPath, this.pawn.story.SkinColor);
+                    headGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor);
                 }
                 //           typeof(Pawn_StoryTracker).GetField("skinColor", BindingFlags.Instance | BindingFlags.Public).SetValue(pawn.story, Color.cyan);
 
@@ -118,14 +120,14 @@ namespace RW_FacialStuff
             else
                 if (pawn.RaceProps.Humanlike)
             {
-                nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(this.pawn.story.BodyType, ShaderDatabase.CutoutSkin, this.pawn.story.SkinColor);
-                this.rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(this.pawn.story.BodyType, ShaderDatabase.CutoutSkin, PawnGraphicSet.RottingColor);
-                this.dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
-                this.headGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(this.pawn.story.HeadGraphicPath, this.pawn.story.SkinColor);
-                this.desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(this.pawn.story.HeadGraphicPath, PawnGraphicSet.RottingColor);
-                this.skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
-                this.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(this.pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, this.pawn.story.hairColor);
-                this.ResolveApparelGraphics();
+                nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
+                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RottingColor);
+                dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
+                headGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor);
+                desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RottingColor);
+                skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
+                hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+                ResolveApparelGraphics();
             }
             else
             {

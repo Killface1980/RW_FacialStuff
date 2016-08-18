@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RW_FacialStuff.Sexuality
+namespace RW_FacialStuff.Detouring
 {
-    public static class LovePartnerRelationUtilityModded
+    public static class LovePartnerRelationUtility
     {
-        // RimWorld.LovePartnerRelationUtility
-        public static float LovePartnerRelationGenerationChanceModded(Pawn pawn, Pawn otherPawn, PawnGenerationRequest request, bool ex)
+        [Detour(typeof(RimWorld.LovePartnerRelationUtility), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]  // RimWorld.LovePartnerRelationUtility
+        public static float LovePartnerRelationGenerationChance(Pawn pawn, Pawn otherPawn, PawnGenerationRequest request, bool ex)
         {
             if (pawn.ageTracker.AgeBiologicalYearsFloat < 14f)
             {
@@ -42,7 +43,7 @@ namespace RW_FacialStuff.Sexuality
                 }
                 num = Mathf.Pow(0.2f, num2);
             }
-            else if (LovePartnerRelationUtility.HasAnyLovePartner(otherPawn))
+            else if (HasAnyLovePartner(otherPawn))
             {
                 return 0f;
             }
@@ -67,13 +68,22 @@ namespace RW_FacialStuff.Sexuality
             return num * generationChanceAgeFactor * generationChanceAgeFactor2 * generationChanceAgeGapFactor * num3 * num5 * num4;
         }
 
-        // RimWorld.LovePartnerRelationUtility
         private static float GetGenerationChanceAgeFactor(Pawn p)
         {
             float value = GenMath.LerpDouble(14f, 27f, 0f, 1f, p.ageTracker.AgeBiologicalYearsFloat);
             return Mathf.Clamp(value, 0f, 1f);
         }
-        // RimWorld.LovePartnerRelationUtility
+
+        public static bool IsExLovePartnerRelation(PawnRelationDef relation)
+        {
+            return relation == PawnRelationDefOf.ExLover || relation == PawnRelationDefOf.ExSpouse;
+        }
+
+        public static bool HasAnyLovePartner(Pawn pawn)
+        {
+            return pawn.relations.GetFirstDirectRelationPawn(PawnRelationDefOf.Spouse, null) != null || pawn.relations.GetFirstDirectRelationPawn(PawnRelationDefOf.Lover, null) != null || pawn.relations.GetFirstDirectRelationPawn(PawnRelationDefOf.Fiance, null) != null;
+        }
+
         private static float GetGenerationChanceAgeGapFactor(Pawn p1, Pawn p2, bool ex)
         {
             float num = Mathf.Abs(p1.ageTracker.AgeBiologicalYearsFloat - p2.ageTracker.AgeBiologicalYearsFloat);
@@ -98,7 +108,6 @@ namespace RW_FacialStuff.Sexuality
             return Mathf.Clamp(value, 0.001f, 1f);
         }
 
-        // RimWorld.LovePartnerRelationUtility
         private static float MinPossibleAgeGapAtMinAgeToGenerateAsLovers(Pawn p1, Pawn p2)
         {
             float num = p1.ageTracker.AgeChronologicalYearsFloat - 14f;

@@ -1,15 +1,17 @@
-﻿using RimWorld;
+﻿using System.Reflection;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RW_FacialStuff.Sexuality
+namespace RW_FacialStuff.Detouring
 {
-    public class Pawn_RelationsTrackerModded
+    public class Pawn_RelationsTracker
     {
         private Pawn pawn;
 
         // RimWorld.Pawn_RelationsTracker
-        public float AttractionToModded(Pawn otherPawn)
+        [Detour(typeof(RimWorld.Pawn_RelationsTracker), bindingFlags = (BindingFlags.Instance | BindingFlags.Public))]
+        public float AttractionTo(Pawn otherPawn)
         {
 
             if (pawn.def != otherPawn.def || pawn == otherPawn)

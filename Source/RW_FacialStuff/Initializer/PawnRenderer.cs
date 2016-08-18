@@ -2,10 +2,11 @@
 using RimWorld;
 using UnityEngine;
 using Verse;
+using System.Reflection;
 
 namespace RW_FacialStuff
 {
-    public class PawnRendererModded
+    public class PawnRenderer
     {
         private const float CarriedThingDrawAngle = 16f;
 
@@ -16,10 +17,8 @@ namespace RW_FacialStuff
         private const float UpHeadOffset = 0.34f;
 
         private Pawn pawn;
-
-        public PawnGraphicSet graphics;
-
         public PawnDownedWiggler wiggler;
+        public PawnGraphicSetModded graphicsFS;
 
         private PawnHeadOverlays statusOverlays;
 
@@ -35,14 +34,14 @@ namespace RW_FacialStuff
             0.1f,
             0.09f
         };
-
-        public PawnRendererModded(Pawn pawn)
+        [Detour(typeof(Verse.PawnRenderer), bindingFlags = (BindingFlags.Instance | BindingFlags.NonPublic))]
+        public PawnRenderer(Pawn pawn)
         {
             this.pawn = pawn;
             wiggler = new PawnDownedWiggler(pawn);
             statusOverlays = new PawnHeadOverlays(pawn);
             woundOverlays = new PawnWoundDrawer(pawn);
-            graphics = new PawnGraphicSetModded(pawn);
+            graphicsFS = new PawnGraphicSetModded(pawn);
         }
 
         private Rot4 LayingFacing()
@@ -84,9 +83,9 @@ namespace RW_FacialStuff
 
         public void RenderPawnAt(Vector3 drawLoc, RotDrawMode bodyDrawType = RotDrawMode.Fresh)
         {
-            if (!graphics.AllResolved)
+            if (!graphicsFS.AllResolved)
             {
-                graphics.ResolveAllGraphics();
+                graphicsFS.ResolveAllGraphics();
             }
             if (pawn.GetPosture() == PawnPosture.Standing)
             {
@@ -123,9 +122,9 @@ namespace RW_FacialStuff
                     }
                     shadowGraphic.Draw(drawLoc, Rot4.North, pawn);
                 }
-                if (graphics.nakedGraphic != null && graphics.nakedGraphic.ShadowGraphic != null)
+                if (graphicsFS.nakedGraphic != null && graphicsFS.nakedGraphic.ShadowGraphic != null)
                 {
-                    graphics.nakedGraphic.ShadowGraphic.Draw(drawLoc, Rot4.North, pawn);
+                    graphicsFS.nakedGraphic.ShadowGraphic.Draw(drawLoc, Rot4.North, pawn);
                 }
             }
             else
@@ -191,28 +190,6 @@ namespace RW_FacialStuff
             }
         }
 
-        public void RenderPortait()
-        {
-            Vector3 zero = Vector3.zero;
-            Quaternion quat;
-            if (pawn.Dead || pawn.Downed)
-            {
-                quat = Quaternion.Euler(0f, 85f, 0f);
-                zero.x -= 0.18f;
-                zero.z -= 0.18f;
-            }
-            else
-            {
-                quat = Quaternion.identity;
-            }
-            RotDrawMode bodyDrawType = RotDrawMode.Fresh;
-            if (pawn.Dead && pawn.corpse != null)
-            {
-                bodyDrawType = pawn.corpse.CurRotDrawMode;
-            }
-            RenderPawnInternal(zero, quat, true, Rot4.South, Rot4.South, bodyDrawType, true);
-        }
-
         private void RenderPawnInternal(Vector3 loc, Quaternion quat, bool renderBody, RotDrawMode draw = RotDrawMode.Fresh)
         {
             RenderPawnInternal(loc, quat, renderBody, pawn.Rotation, pawn.Rotation, draw, false);
@@ -220,16 +197,16 @@ namespace RW_FacialStuff
 
         private void RenderPawnInternal(Vector3 loc, Quaternion quat, bool renderBody, Rot4 bodyFacing, Rot4 headFacing, RotDrawMode bodyDrawType = RotDrawMode.Fresh, bool portrait = false)
         {
-            if (!graphics.AllResolved)
+            if (!graphicsFS.AllResolved)
             {
-                graphics.ResolveAllGraphics();
+                graphicsFS.ResolveAllGraphics();
             }
             Mesh bodyMesh = null;
             if (renderBody)
             {
-                if (bodyDrawType == RotDrawMode.Dessicated && !pawn.RaceProps.Humanlike && graphics.dessicatedGraphic != null && !portrait)
+                if (bodyDrawType == RotDrawMode.Dessicated && !pawn.RaceProps.Humanlike && graphicsFS.dessicatedGraphic != null && !portrait)
                 {
-                    graphics.dessicatedGraphic.Draw(loc, bodyFacing, pawn);
+                    graphicsFS.dessicatedGraphic.Draw(loc, bodyFacing, pawn);
                 }
                 else
                 {
@@ -239,12 +216,12 @@ namespace RW_FacialStuff
                     }
                     else
                     {
-                        bodyMesh = graphics.nakedGraphic.MeshAt(bodyFacing);
+                        bodyMesh = graphicsFS.nakedGraphic.MeshAt(bodyFacing);
                     }
-                    List<Material> list = graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
+                    List<Material> list = graphicsFS.MatsBodyBaseAt(bodyFacing, bodyDrawType);
                     for (int i = 0; i < list.Count; i++)
                     {
-                        Material damagedMat = graphics.flasher.GetDamagedMat(list[i]);
+                        Material damagedMat = graphicsFS.flasher.GetDamagedMat(list[i]);
                         GenDraw.DrawMeshNowOrLater(bodyMesh, loc, quat, damagedMat, portrait);
                         loc.y += 0.005f;
                     }
@@ -268,23 +245,23 @@ namespace RW_FacialStuff
                 y2 = loc.y;
             }
             loc.y += 0.01f;
-            if (graphics.headGraphic != null)
+            if (graphicsFS.headGraphic != null)
             {
                 var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
                 loc.y = y;
                 Vector3 b = quat * BaseHeadOffsetAt(headFacing);
                 Mesh headMesh = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
-                Material headMatAt = graphics.HeadMatAt(headFacing, bodyDrawType);
+                Material headMatAt = graphicsFS.HeadMatAt(headFacing, bodyDrawType);
                 GenDraw.DrawMeshNowOrLater(headMesh, loc + b, quat, headMatAt, portrait);
                 loc.y += 0.005f;
                 if (pawnSave.optimized)
                 {
            //       //
            //       //    // Eyes
-           //       Mesh mesh401 = graphics.EyeMeshSet.MeshAt(headFacing);
+           //       Mesh mesh401 = graphicsFS.EyeMeshSet.MeshAt(headFacing);
            //       //
-           //       Material mat200 = graphics.EyeMatAt(headFacing);
+           //       Material mat200 = graphicsFS.EyeMatAt(headFacing);
            //       GenDraw.DrawMeshNowOrLater(mesh401, loc + b, quat, mat200, portrait);
            //           loc.y += 0.005f;
            //       //
@@ -294,7 +271,7 @@ namespace RW_FacialStuff
            //
                 }
                 bool flag = false;
-                List<ApparelGraphicRecord> apparelGraphics = graphics.apparelGraphics;
+                List<ApparelGraphicRecord> apparelGraphics = graphicsFS.apparelGraphics;
                 Building_Bed building_Bed = pawn.CurrentBed();
                 for (int j = 0; j < apparelGraphics.Count; j++)
                 {
@@ -305,8 +282,8 @@ namespace RW_FacialStuff
                             flag = true;
 
                             Material apparelMatAt = apparelGraphics[j].graphic.MatAt(bodyFacing, null);
-                            apparelMatAt = graphics.flasher.GetDamagedMat(apparelMatAt);
-                            Mesh apparelMeshAt = graphics.HairMeshSet.MeshAt(headFacing);
+                            apparelMatAt = graphicsFS.flasher.GetDamagedMat(apparelMatAt);
+                            Mesh apparelMeshAt = graphicsFS.HairMeshSet.MeshAt(headFacing);
                             GenDraw.DrawMeshNowOrLater(apparelMeshAt, loc + b, quat, apparelMatAt, portrait);
                             loc.y += 0.005f;
                         }
@@ -314,8 +291,8 @@ namespace RW_FacialStuff
                 }
                 if (!flag && bodyDrawType != RotDrawMode.Dessicated)
                 {
-                    Mesh mesh4 = graphics.HairMeshSet.MeshAt(headFacing);
-                    Material mat2 = graphics.HairMatAt(headFacing);
+                    Mesh mesh4 = graphicsFS.HairMeshSet.MeshAt(headFacing);
+                    Material mat2 = graphicsFS.HairMatAt(headFacing);
                     GenDraw.DrawMeshNowOrLater(mesh4, loc + b, quat, mat2, portrait);
                     loc.y += 0.005f;
                 }
@@ -323,13 +300,13 @@ namespace RW_FacialStuff
             if (renderBody)
             {
                 loc.y = y2;
-                for (int k = 0; k < graphics.apparelGraphics.Count; k++)
+                for (int k = 0; k < graphicsFS.apparelGraphics.Count; k++)
                 {
-                    ApparelGraphicRecord apparelGraphicRecord = graphics.apparelGraphics[k];
+                    ApparelGraphicRecord apparelGraphicRecord = graphicsFS.apparelGraphics[k];
                     if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer == ApparelLayer.Shell)
                     {
                         Material material2 = apparelGraphicRecord.graphic.MatAt(bodyFacing, null);
-                        material2 = graphics.flasher.GetDamagedMat(material2);
+                        material2 = graphicsFS.flasher.GetDamagedMat(material2);
                         GenDraw.DrawMeshNowOrLater(bodyMesh, loc, quat, material2, portrait);
                         loc.y += 0.005f;
                     }
@@ -405,7 +382,7 @@ namespace RW_FacialStuff
                 }
             }
         }
-
+        // Verse.PawnRenderer
         public void DrawEquipmentAiming(Thing eq, Vector3 drawLoc, float aimAngle)
         {
             float num = aimAngle - 90f;
@@ -439,15 +416,9 @@ namespace RW_FacialStuff
             }
             Graphics.DrawMesh(mesh, drawLoc, Quaternion.AngleAxis(num, Vector3.up), matSingle, 0);
         }
-
-        private bool CarryWeaponOpenly()
-        {
-            return (pawn.carrier == null || pawn.carrier.CarriedThing == null) && (pawn.Drafted || (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon) || (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
-        }
-
         public Vector3 BaseHeadOffsetAt(Rot4 rotation)
         {
-            float num = HorHeadOffsets[(int)pawn.story.BodyType];
+            float num = PawnRenderer.HorHeadOffsets[(int)this.pawn.story.BodyType];
             switch (rotation.AsInt)
             {
                 case 0:
@@ -459,15 +430,13 @@ namespace RW_FacialStuff
                 case 3:
                     return new Vector3(-num, 0f, 0.34f);
                 default:
-                    Log.Error("BaseHeadOffsetAt error in " + pawn);
+                    Log.Error("BaseHeadOffsetAt error in " + this.pawn);
                     return Vector3.zero;
             }
         }
-
-        public void Notify_DamageApplied(DamageInfo dam)
+        private bool CarryWeaponOpenly()
         {
-            graphics.flasher.Notify_DamageApplied(dam);
-            wiggler.Notify_DamageApplied(dam);
+            return (pawn.carrier == null || pawn.carrier.CarriedThing == null) && (pawn.Drafted || (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon) || (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
         }
 
     }

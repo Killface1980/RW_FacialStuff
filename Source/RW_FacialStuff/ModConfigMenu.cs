@@ -1,6 +1,4 @@
 ﻿using CommunityCoreLibrary;
-using CommunityCoreLibrary.ColorPicker;
-using CommunityCoreLibrary.UI;
 using UnityEngine;
 using Verse;
 

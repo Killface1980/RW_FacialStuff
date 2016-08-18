@@ -48,12 +48,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="Defs\FacialDefs\FacialStuff_Defs.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphic_Multi_Head.cs" />
     <Compile Include="Initializer\DetourInjector.cs" />
-    <Compile Include="Initializer\PawnRenderer.cs" />
+    <None Include="Initializer\PawnRenderer.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="PawnHairColorsModded.cs" />
