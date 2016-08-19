@@ -1,7 +1,5 @@
 ﻿using RimWorld;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using CommunityCoreLibrary.ColorPicker;
 using RW_FacialStuff;
 using RW_FacialStuff.Defs;
@@ -223,7 +221,7 @@ namespace FaceStyling
 
         static Dialog_FaceStyling()
         {
-            _title = "ClutterHairStylerTitle".Translate();
+            _title = "FaceStylerTitle".Translate();
             _titleHeight = 30f;
             _previewSize = 250f;
             //       _previewSize = 100f;
@@ -536,6 +534,7 @@ namespace FaceStyling
             set.x = selectionRect.x;
             set.width = selectionRect.width;
             Widgets.CheckboxLabeled(set,"Draw colonist mouth if suitable", ref pawnSave.drawMouth);
+            set.width = selectionRect.width / 2 - 10f;
 
 
             set.y += 36f;

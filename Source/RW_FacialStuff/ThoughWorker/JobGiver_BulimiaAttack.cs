@@ -61,16 +61,16 @@ namespace RW_FacialStuff
             new CurvePoint(1f, 4f)
         };
 
-        protected int ConsumeInterval(Pawn pawn)
-        {
-            int num = BaseConsumeInterval;
-            Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Alcohol);
-            if (firstHediffOfDef != null)
-            {
-                num = (int)(num * IngestIntervalFactorCurve_Drunkness.Evaluate(firstHediffOfDef.Severity));
-            }
-            return num;
-        }
+    //  protected int ConsumeInterval(Pawn pawn)
+    //  {
+    //      int num = BaseConsumeInterval;
+    //      Hediff firstHediffOfDef = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Alcohol);
+    //      if (firstHediffOfDef != null)
+    //      {
+    //          num = (int)(num * IngestIntervalFactorCurve_Drunkness.Evaluate(firstHediffOfDef.Severity));
+    //      }
+    //      return num;
+    //  }
 
         // RimWorld.JobGiver_GetFood
         public override float GetPriority(Pawn pawn)

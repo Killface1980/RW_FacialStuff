@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using RimWorld;
+﻿using System.Reflection;
 using Verse;
 // Toggle in Hospitality Properties
 #if NoCCL
