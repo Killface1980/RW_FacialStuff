@@ -2,22 +2,8 @@
 <Defs>
 
   <TraitDef>
-    <defName>CrossDresser</defName>
-    <commonality>0.3</commonality>
-    <degreeDatas>
-      <li>
-        <label>crossdresser</label>
-        <description>NAME wears items of clothing and other accoutrements commonly associated with the opposite sex within a particular society. HECAP uses it as a disguise, comfort, and self-actualization.</description>
-        <statOffsets>
-          <MentalBreakThreshold>-0.1</MentalBreakThreshold>
-        </statOffsets>
-      </li>
-    </degreeDatas>
-  </TraitDef>
-
-  <TraitDef>
     <defName>Bulimia</defName>
-    <commonality>0.2</commonality>
+    <commonality>0</commonality>
     <degreeDatas>
       <li>
         <label>bulimia</label>

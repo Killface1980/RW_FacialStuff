@@ -216,10 +216,11 @@ namespace FaceStyling
             _columns = 5;
             _entrySize = _listWidth / (float)_columns;
             _nameBackground = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0.3f));
-            _hairDefs = DefDatabase<HairDef>.AllDefsListForReading;
+            _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(x=> x.hairGender.Equals(pawn.gender));
+
             _beardDefs = DefDatabase<BeardDef>.AllDefsListForReading;
             _lipDefs = DefDatabase<LipDef>.AllDefsListForReading;
-            _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
+            _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(x => x.hairGender.Equals(pawn.gender));
             _browDefs = DefDatabase<BrowDef>.AllDefsListForReading;
             _hairDefs.SortBy(i => i.hairGender.ToString(), i => i.LabelCap);
             _beardDefs.SortBy(i => i.LabelCap);
@@ -269,6 +270,7 @@ namespace FaceStyling
         public override void PostOpen()
         {
             windowRect.x = windowRect.x - (windowRect.width - _margin) / 2f;
+
         }
 
         public override void PreClose()
@@ -466,14 +468,57 @@ namespace FaceStyling
                 if (Widgets.ButtonText(set, "Beard"))
                     Page = "beard";
             }
+            if (Page == "hair")
+            {
+            set.x = selectionRect.x;
+                set.y += 36f;
+                set.width = selectionRect.width / 3 - 10f;
+                if (Widgets.ButtonText(set, "Female"))
+                {
+                    _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
+                    _hairDefs.SortBy(i => i.LabelCap);
+                }
+                set.x += set.width + 10f;
+                if (Widgets.ButtonText(set, "Male"))
+                {
+                    _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually);
+                    _hairDefs.SortBy(i => i.LabelCap);
+                }
+                set.x += set.width + 10f;
+                if (Widgets.ButtonText(set, "Any"))
+                {
+                    _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Any);
+                    _hairDefs.SortBy(i => i.LabelCap);
+                }
+            }
             set.y += 36f;
+            set.width = selectionRect.width / 2 - 10f;
             set.x = selectionRect.x;
 
             if (Widgets.ButtonText(set, "Eye"))
                 Page = "eye";
             set.x += set.width + 10f;
+
             if (Widgets.ButtonText(set, "Brow"))
                 Page = "brow";
+
+            if (Page == "eye")
+            {
+                set.y += 36f;
+                if (Widgets.ButtonText(set, "Female"))
+                {
+                    _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
+                    _eyeDefs.SortBy(i => i.LabelCap);
+                }
+                set.x += set.width + 10f;
+                if (Widgets.ButtonText(set, "Male"))
+                {
+                    _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually);
+                    _eyeDefs.SortBy(i => i.LabelCap);
+                }
+            }
+
+
 
             set.y += 36f;
             set.x = selectionRect.x;
@@ -772,7 +817,7 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 newLip = lip;
-                Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));                
+                Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
             }
         }
 

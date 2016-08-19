@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using RimWorld;
 using RW_FacialStuff.Defs;
 using Verse;
@@ -104,6 +105,7 @@ namespace RW_FacialStuff
         }
 
         // RimWorld.PawnHairChooser
+        [Detour(typeof(RimWorld.PawnHairChooser), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
         public static HairDef RandomHairDefFor(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
@@ -348,23 +350,6 @@ namespace RW_FacialStuff
                     return 0f;
                 }
 
-                if (pawn.story.traits.HasTrait(TraitDef.Named("CrossDresser")))
-                {
-                    switch (hair.hairGender)
-                    {
-                        case HairGender.Male:
-                            return 0f;
-                        case HairGender.MaleUsually:
-                            return 0f;
-                        case HairGender.Any:
-                            return 0f;
-                        case HairGender.FemaleUsually:
-                            return 40f;
-                        case HairGender.Female:
-                            return 80f;
-                    }
-                }
-
                 switch (hair.hairGender)
                 {
                     case HairGender.Male:
@@ -384,23 +369,6 @@ namespace RW_FacialStuff
                 if (hair.hairTags.Contains("MaleOnly"))
                 {
                     return 0f;
-                }
-
-                if (pawn.story.traits.HasTrait(TraitDef.Named("CrossDresser")))
-                {
-                    switch (hair.hairGender)
-                    {
-                        case HairGender.Male:
-                            return 80f;
-                        case HairGender.MaleUsually:
-                            return 40f;
-                        case HairGender.Any:
-                            return 0f;
-                        case HairGender.FemaleUsually:
-                            return 0f;
-                        case HairGender.Female:
-                            return 0f;
-                    }
                 }
 
                 switch (hair.hairGender)
