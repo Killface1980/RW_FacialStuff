@@ -2,11 +2,9 @@
 using System.Reflection;
 using CommunityCoreLibrary;
 using RimWorld;
-using RW_FacialStuff.Detouring;
 using UnityEngine;
 using Verse;
 using Object = UnityEngine.Object;
-using Pawn_RelationsTracker = RimWorld.Pawn_RelationsTracker;
 
 namespace RW_FacialStuff
 {

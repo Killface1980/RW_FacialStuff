@@ -28,6 +28,25 @@ namespace FaceStyling
             Hair,
             Overhead
         }
+        //      private FacePreset _selFacePresetInt;
+
+        //  private FacePreset SelectedFacePreset
+        //  {
+        //      get { return _selFacePresetInt; }
+        //      set
+        //      {
+        //          CheckSelectedFacePresetHasName();
+        //          _selFacePresetInt = value;
+        //      }
+        //  }
+
+        //   private void CheckSelectedFacePresetHasName()
+        //   {
+        //       if (SelectedFacePreset != null && SelectedFacePreset.label.NullOrEmpty())
+        //       {
+        //           SelectedFacePreset.label = "Unnamed";
+        //       }
+        //   }
 
         public class GraphicsDisp
         {
@@ -216,11 +235,11 @@ namespace FaceStyling
             _columns = 5;
             _entrySize = _listWidth / (float)_columns;
             _nameBackground = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0.3f));
-            _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(x=> x.hairGender.Equals(pawn.gender));
-
+            _hairDefs = DefDatabase<HairDef>.AllDefsListForReading;
+ 
             _beardDefs = DefDatabase<BeardDef>.AllDefsListForReading;
             _lipDefs = DefDatabase<LipDef>.AllDefsListForReading;
-            _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(x => x.hairGender.Equals(pawn.gender));
+            _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
             _browDefs = DefDatabase<BrowDef>.AllDefsListForReading;
             _hairDefs.SortBy(i => i.hairGender.ToString(), i => i.LabelCap);
             _beardDefs.SortBy(i => i.LabelCap);
@@ -460,6 +479,19 @@ namespace FaceStyling
             set.height = 30f;
             set.width = selectionRect.width / 2 - 10f;
 
+            //  if (Widgets.ButtonText(set, "SelectFacePreset".Translate(), true, false))
+            //  {
+            //      var list = new List<FloatMenuOption>();
+            //      foreach (var current in Current.Game.outfitDatabase.AllOutfits)
+            //      {
+            //          var localOut = current;
+            //          list.Add(new FloatMenuOption(localOut.label, delegate { SelectedFacePreset = localOut; },
+            //              MenuOptionPriority.Medium, null, null));
+            //      }
+            //      Find.WindowStack.Add(new FloatMenu(list));
+            //  }
+
+
             if (Widgets.ButtonText(set, "Hair"))
                 Page = "hair";
             set.x += set.width + 10f;
@@ -470,7 +502,7 @@ namespace FaceStyling
             }
             if (Page == "hair")
             {
-            set.x = selectionRect.x;
+                set.x = selectionRect.x;
                 set.y += 36f;
                 set.width = selectionRect.width / 3 - 10f;
                 if (Widgets.ButtonText(set, "Female"))
@@ -874,7 +906,6 @@ namespace FaceStyling
 
             }
         }
-
 
         public override void DoWindowContents(Rect inRect)
         {

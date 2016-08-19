@@ -21,38 +21,6 @@
   </ThoughtDef>
 
   <ThoughtDef>
-    <defName>Ugly</defName>
-    <thoughtClass>Thought_SituationalSocial</thoughtClass>
-    <workerClass>RW_FacialStuff.ThoughtWorker_Ugly</workerClass>
-    <stages>
-      <li>
-        <label>ugly</label>
-        <baseOpinionOffset>-20</baseOpinionOffset>
-      </li>
-      <li>
-        <label>staggeringly ugly</label>
-        <baseOpinionOffset>-80</baseOpinionOffset>
-      </li>
-      <li>
-        <label>ugly like me</label>
-        <baseOpinionOffset>+15</baseOpinionOffset>
-      </li>
-      <li>
-        <label>even uglier than me</label>
-        <baseOpinionOffset>+25</baseOpinionOffset>
-      </li>
-      <li>
-        <label>ugly but sweet</label>
-        <baseOpinionOffset>35</baseOpinionOffset>
-      </li>
-      <li>
-        <label>finding beauty in ugly faces</label>
-        <baseOpinionOffset>+45</baseOpinionOffset>
-      </li>
-    </stages>
-  </ThoughtDef>
-
-  <ThoughtDef>
     <defName>BulimiaCatharsis</defName>
     <durationDays>1</durationDays>
     <stackLimit>3</stackLimit>

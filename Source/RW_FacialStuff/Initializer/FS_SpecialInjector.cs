@@ -39,7 +39,7 @@ namespace RW_FacialStuff
                             var sourceMethod = detour.source.GetMethod(targetMethod.Name, flags);
                             if (sourceMethod == null)
                             {
-                                Log.Error(string.Format("Hospitality :: Detours :: Can't find source method '{0} with bindingflags {1}", targetMethod.Name, flags));
+                                Log.Error(string.Format("Facial Stuff :: Detours :: Can't find source method '{0} with bindingflags {1}", targetMethod.Name, flags));
                                 return false;
                             }
                             if (!Detours.TryDetourFromTo(sourceMethod, targetMethod)) return false;

@@ -34,39 +34,39 @@ namespace RW_FacialStuff
                 {
                     //  pawn.story.skinWhiteness = Rand.Value;
 
-             //     switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")))
-             //     {
-             //         case 2:
-             //             if (pawn.story.skinWhiteness < 0.85f)
-             //             {
-             //                 pawn.story.skinWhiteness = Random.Range(0.85f, 1f);
-             //             }
-             //             break;
-             //         case 1:
-             //             if (pawn.story.skinWhiteness < 0.75f)
-             //             {
-             //                 pawn.story.skinWhiteness = Random.Range(0.75f, 0.95f);
-             //             }
-             //             break;
-             //         case 0:
-             //             //if (pawn.story.skinWhiteness < 0.15f || pawn.story.skinWhiteness > 0.8f)
-             //             //{
-             //             //    pawn.story.skinWhiteness = Random.Range(0.2f, 0.66f);
-             //             //}
-             //             break;
-             //         case -1:
-             //             if (pawn.story.skinWhiteness > 0.5f)
-             //             {
-             //                 pawn.story.skinWhiteness = Random.Range(0.1f, 0.5f);
-             //             }
-             //             break;
-             //         case -2:
-             //             if (pawn.story.skinWhiteness > 0.25f)
-             //             {
-             //                 pawn.story.skinWhiteness = Random.Range(0f, 0.25f);
-             //             }
-             //             break;
-             //     }
+                    switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")))
+                    {
+                        case 2:
+                            if (pawn.story.skinWhiteness < 0.85f)
+                            {
+                                pawn.story.skinWhiteness += 0.15f;
+                            }
+                            break;
+                        case 1:
+                            if (pawn.story.skinWhiteness < 0.75f)
+                            {
+                                pawn.story.skinWhiteness += 0.15f;
+                            }
+                            break;
+                        case 0:
+                            //if (pawn.story.skinWhiteness < 0.15f || pawn.story.skinWhiteness > 0.8f)
+                            //{
+                            //    pawn.story.skinWhiteness = Random.Range(0.2f, 0.66f);
+                            //}
+                            break;
+                        case -1:
+                            if (pawn.story.skinWhiteness > 0.5f)
+                            {
+                                pawn.story.skinWhiteness -= 0.15f;
+                            }
+                            break;
+                        case -2:
+                            if (pawn.story.skinWhiteness > 0.25f)
+                            {
+                                pawn.story.skinWhiteness -= 0.15f;
+                            }
+                            break;
+                    }
                     GraphicDatabaseHeadRecordsModded.DefineHeadParts(pawn);
 
                 }

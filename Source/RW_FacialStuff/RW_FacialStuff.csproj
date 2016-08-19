@@ -48,12 +48,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <None Include="Class1.cs" />
     <Compile Include="DetourAttribute.cs" />
     <Compile Include="Defs\FacialDefs\FacialStuff_Defs.cs" />
     <Compile Include="FaceStyler\Dialog_FaceStyling.cs" />
     <Compile Include="FaceStyler\Job_FaceStyling.cs" />
     <Compile Include="FaceStyler\FaceStyler.cs" />
+    <None Include="FaceStyler\Preset.cs" />
+    <None Include="FaceStyler\PresetDatabase.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphic_Multi_Head.cs" />
@@ -71,14 +73,11 @@
     <Compile Include="Detouring\PawnGraphicSetModded.cs" />
     <Compile Include="Initializer\ModInitializer .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Detouring\LovePartnerRelationUtility.cs" />
-    <Compile Include="Detouring\Pawn_RelationsTracker.cs" />
     <Compile Include="ThoughWorker\MentalStateWorker_BulimiaAttack.cs" />
     <Compile Include="ThoughWorker\MentalState_BulimiaAttack.cs" />
     <Compile Include="ThoughWorker\JobGiver_BulimiaAttack.cs" />
     <Compile Include="ThoughWorker\ThoughtWorker_IntoleranceVsAll.cs" />
     <Compile Include="ThoughWorker\Thought_IntoleranceVsAll.cs" />
-    <Compile Include="ThoughWorker\ThoughtWorker_Ugly.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\About\About.xml">
@@ -113,6 +112,9 @@
     <Content Include="..\..\Defs\ThingDefs\Initializer.xml">
       <Link>Initializer\Initializer.xml</Link>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Defs\ThingDefs\Worktable.xml">
+      <Link>Defs\Worktable.xml</Link>
     </Content>
     <Content Include="..\..\Defs\ThinkTreeDefs\SubTrees_Misc.xml">
       <Link>Defs\SubTrees_Misc.xml</Link>

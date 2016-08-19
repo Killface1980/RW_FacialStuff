@@ -21,7 +21,7 @@
     <DefName>FSStylist</DefName>
     <label>Face styling bench</label>
     <ThingClass>FaceStyling.Facestyler</ThingClass>
-    <Description>Place where hair go wild!</Description>
+    <Description>Place where faces go wild!</Description>
     <graphicData>
 	<shaderType>CutoutComplex</shaderType>
       <texPath>Clutter/Tables/StylingBench</texPath>
@@ -35,8 +35,9 @@
       </damageData>
     </graphicData>
     <CostList>
-      <Steel>100</Steel>
-	  <Component>2</Component>
+      <WoodLog>100</WoodLog>
+      <Steel>50</Steel>
+	  <Component>1</Component>
     </CostList>
     <AltitudeLayer>Building</AltitudeLayer>
     <fillPercent>0.5</fillPercent>
@@ -55,7 +56,6 @@
 	
     <interactionCellOffset>(0,0,1)</interactionCellOffset>
     <surfaceType>Item</surfaceType>
-	<researchPrerequisites><li>ComfyTechTierII</li></researchPrerequisites>
   </ThingDef>
  
 
