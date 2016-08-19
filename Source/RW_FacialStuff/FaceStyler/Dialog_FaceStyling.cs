@@ -224,7 +224,7 @@ namespace FaceStyling
         static Dialog_FaceStyling()
         {
             _title = "ClutterHairStylerTitle".Translate();
-            _titleHeight = 40f;
+            _titleHeight = 30f;
             _previewSize = 250f;
             //       _previewSize = 100f;
             _iconSize = 24f;
@@ -236,12 +236,10 @@ namespace FaceStyling
             _entrySize = _listWidth / (float)_columns;
             _nameBackground = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0.3f));
             _hairDefs = DefDatabase<HairDef>.AllDefsListForReading;
- 
+            _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
             _beardDefs = DefDatabase<BeardDef>.AllDefsListForReading;
             _lipDefs = DefDatabase<LipDef>.AllDefsListForReading;
-            _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
             _browDefs = DefDatabase<BrowDef>.AllDefsListForReading;
-            _hairDefs.SortBy(i => i.hairGender.ToString(), i => i.LabelCap);
             _beardDefs.SortBy(i => i.LabelCap);
         }
 
@@ -289,7 +287,19 @@ namespace FaceStyling
         public override void PostOpen()
         {
             windowRect.x = windowRect.x - (windowRect.width - _margin) / 2f;
-
+            switch (pawn.gender)
+            {
+                case Gender.Male:
+                    _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually);
+                    _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually);
+                    break;
+                case Gender.Female:
+                    _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
+                    _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
+                    break;
+            }
+            _hairDefs.SortBy(i => i.LabelCap);
+            _eyeDefs.SortBy(i => i.LabelCap);
         }
 
         public override void PreClose()
@@ -429,13 +439,14 @@ namespace FaceStyling
             Rect pawnRect = new Rect(0f, 0f, _previewSize, _previewSize);
             Rect labelRect = new Rect(0f, pawnRect.yMax - vector.y, vector.x, vector.y);
             Rect selectionRect = new Rect(0f, pawnRect.yMax + _margin, _previewSize, _previewSize);
-            Rect listRect = new Rect(_previewSize + _margin, 0f, _listWidth, parentRect.height - _margin);
+            Rect listRect = new Rect(_previewSize + _margin, 18f, _listWidth, parentRect.height - _margin);
             labelRect = labelRect.CenteredOnXIn(pawnRect);
+            var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
             for (int i = 0; i < DisplayGraphics.Length; i++)
             {
                 if (pawn.gender == Gender.Male)
                 {
-                    if (!newBeard.drawMouth)
+                    if (!newBeard.drawMouth||!pawnSave.drawMouth)
                     {
                         if (i != 8)
                         {
@@ -452,7 +463,15 @@ namespace FaceStyling
                 {
                     if (i != 9)
                     {
-                        if (DisplayGraphics[i].Valid)
+                        if (!pawnSave.drawMouth)
+                        {
+                            if (i != 8)
+                            {
+                                if (DisplayGraphics[i].Valid)
+                                    DisplayGraphics[i].Draw(pawnRect);
+                            }
+                        }
+                        else if (DisplayGraphics[i].Valid)
                             DisplayGraphics[i].Draw(pawnRect);
                     }
                 }
@@ -500,10 +519,42 @@ namespace FaceStyling
                 if (Widgets.ButtonText(set, "Beard"))
                     Page = "beard";
             }
+
+            set.y += 36f;
+            set.width = selectionRect.width / 2 - 10f;
+            set.x = selectionRect.x;
+
+            if (Widgets.ButtonText(set, "Eye"))
+                Page = "eye";
+            set.x += set.width + 10f;
+
+            if (Widgets.ButtonText(set, "Brow"))
+                Page = "brow";
+
+
+            set.y += 36f;
+            set.x = selectionRect.x;
+            set.width = selectionRect.width;
+            Widgets.CheckboxLabeled(set,"Draw colonist mouth if suitable", ref pawnSave.drawMouth);
+
+
+            set.y += 36f;
+            set.x = selectionRect.x;
+
+            if (newBeard.drawMouth || pawn.gender == Gender.Female)
+            {
+                if (Widgets.ButtonText(set, "Mouth"))
+                    Page = "mouth";
+            }
+
             if (Page == "hair")
             {
                 set.x = selectionRect.x;
-                set.y += 36f;
+                set.y += 48f;
+                GUI.color=Color.gray;
+                Widgets.DrawLineHorizontal(selectionRect.x,set.y, selectionRect.width);
+                GUI.color=Color.white;
+                set.y += 12f;
                 set.width = selectionRect.width / 3 - 10f;
                 if (Widgets.ButtonText(set, "Female"))
                 {
@@ -523,20 +574,16 @@ namespace FaceStyling
                     _hairDefs.SortBy(i => i.LabelCap);
                 }
             }
-            set.y += 36f;
-            set.width = selectionRect.width / 2 - 10f;
-            set.x = selectionRect.x;
-
-            if (Widgets.ButtonText(set, "Eye"))
-                Page = "eye";
-            set.x += set.width + 10f;
-
-            if (Widgets.ButtonText(set, "Brow"))
-                Page = "brow";
 
             if (Page == "eye")
             {
-                set.y += 36f;
+                set.x = selectionRect.x;
+                set.y += 48f;
+                GUI.color = Color.gray;
+                Widgets.DrawLineHorizontal(selectionRect.x, set.y, selectionRect.width);
+                GUI.color = Color.white;
+                set.y += 12f;
+
                 if (Widgets.ButtonText(set, "Female"))
                 {
                     _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
@@ -549,19 +596,6 @@ namespace FaceStyling
                     _eyeDefs.SortBy(i => i.LabelCap);
                 }
             }
-
-
-
-            set.y += 36f;
-            set.x = selectionRect.x;
-
-            if (newBeard.drawMouth || pawn.gender == Gender.Female)
-            {
-                if (Widgets.ButtonText(set, "Mouth"))
-                    Page = "mouth";
-            }
-
-
 
             if (Page == "hair")
             {
@@ -915,9 +949,9 @@ namespace FaceStyling
             Widgets.Label(rect, _title);
             Text.Anchor = TextAnchor.UpperLeft;
             Text.Font = GameFont.Small;
-            Rect position = new Rect(0f, 0f, _iconSize, _iconSize).CenteredOnYIn(rect);
-            GUI.DrawTexture(position, _icon);
-            DrawUI(new Rect(0f, _titleHeight + _margin, inRect.width, inRect.height - _titleHeight - 38f - _margin));
+            Rect iconPosition = new Rect(0f, 0f, _iconSize, _iconSize).CenteredOnYIn(rect);
+            GUI.DrawTexture(iconPosition, _icon);
+            DrawUI(new Rect(0f, _titleHeight + _margin, inRect.width, inRect.height - _titleHeight - 25f - _margin*2));
             DialogUtility.DoNextBackButtons(inRect, "ClutterColorChangerButtonAccept".Translate(), delegate
             {
                 // update render for graphics

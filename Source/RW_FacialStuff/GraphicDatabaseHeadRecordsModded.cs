@@ -365,7 +365,7 @@ namespace RW_FacialStuff
                     MakeOld(pawn, ref finalHeadSide, temptextureside);
                 }
 
-                if (pawnSave.BeardDef.drawMouth && ModConfigMenu.useMouth)
+                if (pawnSave.BeardDef.drawMouth && ModConfigMenu.useMouth && pawnSave.drawMouth)
                 {
 
                     Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.LipDef.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.white);

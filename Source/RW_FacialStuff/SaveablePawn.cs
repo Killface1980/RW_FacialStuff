@@ -20,6 +20,7 @@ namespace RW_FacialStuff
 
         public bool optimized;
         public bool sessionOptimized;
+        public bool drawMouth=true;
 
         public void ExposeData()
         {
@@ -30,6 +31,7 @@ namespace RW_FacialStuff
             Scribe_Defs.LookDef(ref WrinkleDef, "WrinkleDef");
             Scribe_Defs.LookDef(ref BeardDef, "BeardDef");
             Scribe_Values.LookValue(ref optimized, "optimized");
+            Scribe_Values.LookValue(ref drawMouth, "drawMouth");
 
             Scribe_Values.LookValue(ref headGraphicIndex, "headGraphicIndex");
             Scribe_Values.LookValue(ref type, "type");
