@@ -1,4 +1,5 @@
 ﻿using RW_FacialStuff.Defs;
+using UnityEngine;
 using Verse;
 
 namespace RW_FacialStuff
@@ -16,11 +17,12 @@ namespace RW_FacialStuff
         public string type;
 
         public string SkinColorHex;
-        public string HairColorHex;
+        public Color HairColorOrg;
 
         public bool optimized;
         public bool sessionOptimized;
         public bool drawMouth = true;
+        public bool convertedOld;
 
         public void ExposeData()
         {
@@ -32,11 +34,12 @@ namespace RW_FacialStuff
             Scribe_Defs.LookDef(ref BeardDef, "BeardDef");
             Scribe_Values.LookValue(ref optimized, "optimized");
             Scribe_Values.LookValue(ref drawMouth, "drawMouth", true, true);
+            Scribe_Values.LookValue(ref convertedOld, "convertedOld");
 
             Scribe_Values.LookValue(ref headGraphicIndex, "headGraphicIndex");
             Scribe_Values.LookValue(ref type, "type");
             Scribe_Values.LookValue(ref SkinColorHex, "SkinColorHex");
-            Scribe_Values.LookValue(ref HairColorHex, "HairColorHex");
+            Scribe_Values.LookValue(ref HairColorOrg, "HairColorOrg");
         }
     }
 }

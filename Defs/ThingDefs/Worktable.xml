@@ -42,6 +42,7 @@
     <AltitudeLayer>Building</AltitudeLayer>
     <fillPercent>0.5</fillPercent>
     <useHitPoints>True</useHitPoints>
+    <minifiedDef>MinifiedFurniture</minifiedDef>
     <statBases>
       <WorkToMake>2000</WorkToMake>
       <MaxHitPoints>180</MaxHitPoints>

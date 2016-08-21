@@ -13,11 +13,15 @@ namespace RW_FacialStuff
 
         public static BeardDef RandomBeardDefFor(Pawn pawn, FactionDef factionType)
         {
-
-
             IEnumerable<BeardDef> source = from beard in DefDatabase<BeardDef>.AllDefs
                                            where beard.hairTags.SharesElementWith(factionType.hairTags)
                                            select beard;
+
+            if (!pawn.kindDef.race.ToString().Equals("Human"))
+            {
+                source = from beard in DefDatabase<BeardDef>.AllDefs
+                         select beard;
+            }
 
             BeardDef chosenBeard;
 
@@ -37,6 +41,11 @@ namespace RW_FacialStuff
             IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
+            if (!pawn.kindDef.race.ToString().Equals("Human"))
+            {
+                source = from eye in DefDatabase<EyeDef>.AllDefs
+                         select eye;
+            }
             EyeDef chosenEyes;
 
             chosenEyes = source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
@@ -50,6 +59,11 @@ namespace RW_FacialStuff
             IEnumerable<BrowDef> source = from brow in DefDatabase<BrowDef>.AllDefs
                                           where brow.hairTags.SharesElementWith(factionType.hairTags)
                                           select brow;
+            if (!pawn.kindDef.race.ToString().Equals("Human"))
+            {
+                source = from brow in DefDatabase<BrowDef>.AllDefs
+                         select brow;
+            }
             BrowDef chosenBrows;
 
             switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")))
@@ -104,7 +118,6 @@ namespace RW_FacialStuff
             return chosenWrinkles;
         }
 
-        // RimWorld.PawnHairChooser
         [Detour(typeof(RimWorld.PawnHairChooser), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
         public static HairDef RandomHairDefFor(Pawn pawn, FactionDef factionType)
         {
@@ -120,6 +133,12 @@ namespace RW_FacialStuff
             IEnumerable<LipDef> source = from lip in DefDatabase<LipDef>.AllDefs
                                          where lip.hairTags.SharesElementWith(factionType.hairTags)
                                          select lip;
+
+            if (!pawn.kindDef.race.ToString().Equals("Human"))
+            {
+                source = from lip in DefDatabase<LipDef>.AllDefs
+                         select lip;
+            }
 
             LipDef chosenLips;
 

@@ -8,6 +8,7 @@ using Verse;
 
 namespace FaceStyling
 {
+    [StaticConstructorOnStartup]
     public class Dialog_FaceStyling : Window
     {
         public enum GraphicSlotGroup
@@ -250,7 +251,7 @@ namespace FaceStyling
             forcePause = true;
             closeOnClickedOutside = false;
             pawn = p;
-            originalColour = (_newColour = pawn.story.hairColor);
+            originalColour = (_newColour = pawnSave.HairColorOrg);
             colourWrapper = new ColorWrapper(newColour);
             _newHair = (originalHair = pawn.story.hairDef);
             _newBeard = (originalBeard = pawnSave.BeardDef);
@@ -437,14 +438,14 @@ namespace FaceStyling
             Rect pawnRect = new Rect(0f, 0f, _previewSize, _previewSize);
             Rect labelRect = new Rect(0f, pawnRect.yMax - vector.y, vector.x, vector.y);
             Rect selectionRect = new Rect(0f, pawnRect.yMax + _margin, _previewSize, _previewSize);
-            Rect listRect = new Rect(_previewSize + _margin, 18f, _listWidth, parentRect.height - _margin);
+            Rect listRect = new Rect(_previewSize + _margin, 0f, _listWidth, parentRect.height - _margin * 2);
             labelRect = labelRect.CenteredOnXIn(pawnRect);
             var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
             for (int i = 0; i < DisplayGraphics.Length; i++)
             {
                 if (pawn.gender == Gender.Male)
                 {
-                    if (!newBeard.drawMouth||!pawnSave.drawMouth)
+                    if (!newBeard.drawMouth || !pawnSave.drawMouth)
                     {
                         if (i != 8)
                         {
@@ -518,6 +519,7 @@ namespace FaceStyling
                     Page = "beard";
             }
 
+
             set.y += 36f;
             set.width = selectionRect.width / 2 - 10f;
             set.x = selectionRect.x;
@@ -533,7 +535,7 @@ namespace FaceStyling
             set.y += 36f;
             set.x = selectionRect.x;
             set.width = selectionRect.width;
-            Widgets.CheckboxLabeled(set,"Draw colonist mouth if suitable", ref pawnSave.drawMouth);
+            Widgets.CheckboxLabeled(set, "Draw colonist mouth if suitable", ref pawnSave.drawMouth);
             set.width = selectionRect.width / 2 - 10f;
 
 
@@ -550,9 +552,9 @@ namespace FaceStyling
             {
                 set.x = selectionRect.x;
                 set.y += 48f;
-                GUI.color=Color.gray;
-                Widgets.DrawLineHorizontal(selectionRect.x,set.y, selectionRect.width);
-                GUI.color=Color.white;
+                GUI.color = Color.gray;
+                Widgets.DrawLineHorizontal(selectionRect.x, set.y, selectionRect.width);
+                GUI.color = Color.white;
                 set.y += 12f;
                 set.width = selectionRect.width / 3 - 10f;
                 if (Widgets.ButtonText(set, "Female"))
@@ -572,6 +574,8 @@ namespace FaceStyling
                     _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Any);
                     _hairDefs.SortBy(i => i.LabelCap);
                 }
+                DrawHairPicker(listRect);
+
             }
 
             if (Page == "eye")
@@ -596,10 +600,6 @@ namespace FaceStyling
                 }
             }
 
-            if (Page == "hair")
-            {
-                DrawHairPicker(listRect);
-            }
             if (Page == "beard")
             {
                 DrawBeardPicker(listRect);
@@ -615,6 +615,30 @@ namespace FaceStyling
             if (Page == "brow")
             {
                 DrawBrowPicker(listRect);
+            }
+
+            if (Page == "hair" || Page == "beard")
+            {
+                set.y += 36f;
+                set.width = selectionRect.width / 7.5f - 10f;
+                set.x = selectionRect.x;
+
+               
+                DrawColorPickerCell(originalColour, set);
+                set.x += set.width * 1.5f + 10f;
+
+                DrawColorPickerCell(PawnHairColorsModded.HairPlatinum, set);
+                set.x += set.width + 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairYellowBlonde, set);
+                set.x += set.width + 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairTerraCotta, set);
+                set.x += set.width + 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairMediumDarkBrown, set);
+                set.x += set.width + 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairDarkBrown, set);
+                set.x += set.width + 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairMidnightBlack, set);
+                set.x += set.width + 10f;
             }
 
             GUI.EndGroup();
@@ -940,6 +964,36 @@ namespace FaceStyling
             }
         }
 
+        private void DrawColorPickerCell(Color color, Rect rect)
+        {
+
+
+            Widgets.DrawBoxSolid(rect, color);
+            string text = color.ToString();
+            Widgets.DrawHighlightIfMouseover(rect);
+            if (color == newColour)
+            {
+                Widgets.DrawHighlightSelected(rect);
+                text += "\n(selected)";
+            }
+            else
+            {
+                if (color == originalColour)
+                {
+                    Widgets.DrawAltRect(rect);
+                    text += "\n(original)";
+                }
+            }
+            TooltipHandler.TipRegion(rect, text);
+            if (Widgets.ButtonInvisible(rect))
+            {
+                newColour = color;
+                Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
+
+            }
+        }
+
+
         public override void DoWindowContents(Rect inRect)
         {
             Rect rect = new Rect(_iconSize + _margin, 0f, inRect.width - _iconSize - _margin, _titleHeight);
@@ -950,7 +1004,7 @@ namespace FaceStyling
             Text.Font = GameFont.Small;
             Rect iconPosition = new Rect(0f, 0f, _iconSize, _iconSize).CenteredOnYIn(rect);
             GUI.DrawTexture(iconPosition, _icon);
-            DrawUI(new Rect(0f, _titleHeight + _margin, inRect.width, inRect.height - _titleHeight - 25f - _margin*2));
+            DrawUI(new Rect(0f, _titleHeight, inRect.width, inRect.height - _titleHeight - 25f - _margin * 2));
             DialogUtility.DoNextBackButtons(inRect, "ClutterColorChangerButtonAccept".Translate(), delegate
             {
                 // update render for graphics

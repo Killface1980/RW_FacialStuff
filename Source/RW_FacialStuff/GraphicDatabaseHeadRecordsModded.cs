@@ -220,12 +220,10 @@ namespace RW_FacialStuff
 
             if (pawn.gender == Gender.Male)
             {
-
                 pawnSave.BeardDef = PawnFaceChooser.RandomBeardDefFor(pawn, pawn.Faction.def);
-
-                pawnSave.HairColorHex = ColorHelper.RGBtoHex(pawn.story.hairColor);
             }
 
+            pawnSave.HairColorOrg = pawn.story.hairColor;
 
             pawnSave.optimized = true;
         }
