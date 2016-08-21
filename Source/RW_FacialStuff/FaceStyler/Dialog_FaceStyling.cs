@@ -435,6 +435,7 @@ namespace FaceStyling
             GUI.BeginGroup(parentRect);
             string nameStringShort = pawn.NameStringShort;
             Vector2 vector = Text.CalcSize(nameStringShort);
+            Rect pawnHeadRect = new Rect(0f, -10f, _previewSize, _previewSize);
             Rect pawnRect = new Rect(0f, 0f, _previewSize, _previewSize);
             Rect labelRect = new Rect(0f, pawnRect.yMax - vector.y, vector.x, vector.y);
             Rect selectionRect = new Rect(0f, pawnRect.yMax + _margin, _previewSize, _previewSize);
@@ -447,19 +448,43 @@ namespace FaceStyling
                 {
                     if (!newBeard.drawMouth || !pawnSave.drawMouth)
                     {
-                        if (i != 8)
+                        // layer 1-5 = body
+                        if (i <= 5)
                         {
                             if (DisplayGraphics[i].Valid)
                                 DisplayGraphics[i].Draw(pawnRect);
                         }
+                        else
+                        {
+                            if (i != 8)
+                            {
+                                if (DisplayGraphics[i].Valid)
+                                    DisplayGraphics[i].Draw(pawnHeadRect);
+                            }
+                        }
                     }
                     else if (DisplayGraphics[i].Valid)
                     {
-                        DisplayGraphics[i].Draw(pawnRect);
+                        if (i <= 5)
+                        {
+                            DisplayGraphics[i].Draw(pawnRect);
+                        }
+                        else
+                        {
+
+                            DisplayGraphics[i].Draw(pawnHeadRect);
+                        }
                     }
                 }
                 else
                 {
+
+                    if (i <= 5)
+                    {
+                        if (DisplayGraphics[i].Valid)
+                            DisplayGraphics[i].Draw(pawnRect);
+                    }
+                    else
                     if (i != 9)
                     {
                         if (!pawnSave.drawMouth)
@@ -467,11 +492,11 @@ namespace FaceStyling
                             if (i != 8)
                             {
                                 if (DisplayGraphics[i].Valid)
-                                    DisplayGraphics[i].Draw(pawnRect);
+                                    DisplayGraphics[i].Draw(pawnHeadRect);
                             }
                         }
                         else if (DisplayGraphics[i].Valid)
-                            DisplayGraphics[i].Draw(pawnRect);
+                            DisplayGraphics[i].Draw(pawnHeadRect);
                     }
                 }
             }
@@ -623,7 +648,7 @@ namespace FaceStyling
                 set.width = selectionRect.width / 7.5f - 10f;
                 set.x = selectionRect.x;
 
-               
+
                 DrawColorPickerCell(originalColour, set);
                 set.x += set.width * 1.5f + 10f;
 
@@ -638,6 +663,30 @@ namespace FaceStyling
                 DrawColorPickerCell(PawnHairColorsModded.HairDarkBrown, set);
                 set.x += set.width + 10f;
                 DrawColorPickerCell(PawnHairColorsModded.HairMidnightBlack, set);
+                set.x += set.width + 10f;
+
+                set.y += 36f;
+                set.x = selectionRect.x;
+                set.width = selectionRect.width / 10f - 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairDarkPurple, set);
+                set.x += set.width + 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairBlueSteel, set);
+                set.x += set.width + 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairBurgundyBistro, set);
+                set.x += set.width + 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairGreenGrape, set);
+                set.x += set.width + 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairMysticTurquois, set);
+                set.x += set.width + 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairPinkPearl, set);
+                set.x += set.width + 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairPurplePassion, set);
+                set.x += set.width + 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairRosaRosa, set);
+                set.x += set.width + 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairRubyRed, set);
+                set.x += set.width + 10f;
+                DrawColorPickerCell(PawnHairColorsModded.HairUltraViolet, set);
                 set.x += set.width + 10f;
             }
 
@@ -966,8 +1015,6 @@ namespace FaceStyling
 
         private void DrawColorPickerCell(Color color, Rect rect)
         {
-
-
             Widgets.DrawBoxSolid(rect, color);
             string text = color.ToString();
             Widgets.DrawHighlightIfMouseover(rect);
@@ -1007,11 +1054,11 @@ namespace FaceStyling
             DrawUI(new Rect(0f, _titleHeight, inRect.width, inRect.height - _titleHeight - 25f - _margin * 2));
             DialogUtility.DoNextBackButtons(inRect, "ClutterColorChangerButtonAccept".Translate(), delegate
             {
-                // update render for graphics
-                pawn.Drawer.renderer.graphics.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(newHair.texPath, ShaderDatabase.Cutout, Vector2.one, newColour);
+        // update render for graphics
+        pawn.Drawer.renderer.graphics.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(newHair.texPath, ShaderDatabase.Cutout, Vector2.one, newColour);
 
-                // update story to persist across save/load
-                pawn.story.hairColor = newColour;
+        // update story to persist across save/load
+        pawn.story.hairColor = newColour;
                 pawn.story.hairDef = newHair;
                 var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
                 if (pawn.gender == Gender.Male)
@@ -1022,8 +1069,8 @@ namespace FaceStyling
                 pawnSave.sessionOptimized = false;
                 pawn.Drawer.renderer.graphics.ResolveAllGraphics();
 
-                // force colonist bar to update
-                PortraitsCache.SetDirty(pawn);
+        // force colonist bar to update
+        PortraitsCache.SetDirty(pawn);
                 Close();
             }, delegate
             {
