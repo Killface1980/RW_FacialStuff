@@ -387,6 +387,8 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
     </hairTags>
     <drawMouth>true</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>

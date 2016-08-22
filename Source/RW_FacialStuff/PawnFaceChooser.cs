@@ -24,13 +24,23 @@ namespace RW_FacialStuff
             }
 
             BeardDef chosenBeard;
-
+            float rand = Rand.Value;
             //            if (UnityEngine.Random.Range(30, 50) > pawn.ageTracker.AgeBiologicalYearsFloat)
-            if (19 > pawn.ageTracker.AgeBiologicalYearsFloat)
+            if (pawn.ageTracker.AgeBiologicalYearsFloat < 19)
+            {
                 chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
+            }
+            else if (rand < 0.15f)
+            {
+                chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
+            }
+            else if (rand < 0.3f)
+            {
+                chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Stubble");
+            }
+
             else
                 chosenBeard = source.RandomElementByWeight(beard => BeardChoiceLikelihoodFor(beard, pawn));
-
 
             return chosenBeard;
         }
@@ -158,7 +168,7 @@ namespace RW_FacialStuff
                     }
                 case 0:
                     {
-                        var filtered = source.Where(x => !x.label.Contains("Default")&& !x.label.Contains("Smile") && !x.label.Contains("Big") && !x.label.Contains("Sad"));
+                        var filtered = source.Where(x => !x.label.Contains("Default") && !x.label.Contains("Smile") && !x.label.Contains("Big") && !x.label.Contains("Sad"));
                         chosenLips = filtered.RandomElementByWeight(eye => LipChoiceLikelihoodFor(eye, pawn));
                         return chosenLips;
                     }
