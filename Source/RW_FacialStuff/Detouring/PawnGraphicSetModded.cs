@@ -19,10 +19,10 @@ namespace RW_FacialStuff
         [Detour(typeof(Verse.PawnGraphicSet), bindingFlags = (BindingFlags.Instance | BindingFlags.Public))]
         public new void ResolveAllGraphics()
         {
+#if RebuildHeads
             //This creates many empty textures. only neede for rebuilding
-            // ExportHeadBackToPNG();
-
-
+            ExportHeadBackToPNG();
+#endif
             ClearCache();
             GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
 
@@ -171,7 +171,7 @@ namespace RW_FacialStuff
 
             finalTexture.Apply();
 
-            for (int i = 0; i < 512; i++)
+            for (int i = 0; i < 1024; i++)
             {
                 byte[] bytes = finalTexture.EncodeToPNG();
                 File.WriteAllBytes("Mods/RW_FacialStuff/Textures/Heads/Blank/" + i.ToString("0000") + "_front.png", bytes);
