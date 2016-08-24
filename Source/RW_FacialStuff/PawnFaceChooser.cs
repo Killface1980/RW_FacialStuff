@@ -17,7 +17,7 @@ namespace RW_FacialStuff
                                            where beard.hairTags.SharesElementWith(factionType.hairTags)
                                            select beard;
 
-            if (!pawn.kindDef.race.ToString().Equals("Human"))
+            if (!source.Any())
             {
                 source = from beard in DefDatabase<BeardDef>.AllDefs
                          select beard;
@@ -51,11 +51,13 @@ namespace RW_FacialStuff
             IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
-            if (!pawn.kindDef.race.ToString().Equals("Human"))
+
+            if (!source.Any())
             {
                 source = from eye in DefDatabase<EyeDef>.AllDefs
                          select eye;
             }
+
             EyeDef chosenEyes;
 
             chosenEyes = source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
@@ -69,7 +71,7 @@ namespace RW_FacialStuff
             IEnumerable<BrowDef> source = from brow in DefDatabase<BrowDef>.AllDefs
                                           where brow.hairTags.SharesElementWith(factionType.hairTags)
                                           select brow;
-            if (!pawn.kindDef.race.ToString().Equals("Human"))
+            if (!source.Any())
             {
                 source = from brow in DefDatabase<BrowDef>.AllDefs
                          select brow;
@@ -116,7 +118,6 @@ namespace RW_FacialStuff
             return chosenBrows;
         }
 
-
         public static WrinkleDef AssignWrinkleDefFor(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<WrinkleDef> source = from wrinkle in DefDatabase<WrinkleDef>.AllDefs
@@ -134,7 +135,12 @@ namespace RW_FacialStuff
             IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
                                           where hair.hairTags.SharesElementWith(factionType.hairTags)
                                           select hair;
-            return source.RandomElementByWeight(hair => HairChoiceLikelihoodFor(hair, pawn));
+            if (!source.Any())
+            {
+                source = from hair in DefDatabase<HairDef>.AllDefs
+                         select hair;
+            }
+                return source.RandomElementByWeight(hair => HairChoiceLikelihoodFor(hair, pawn));
         }
 
 
@@ -144,7 +150,7 @@ namespace RW_FacialStuff
                                          where lip.hairTags.SharesElementWith(factionType.hairTags)
                                          select lip;
 
-            if (!pawn.kindDef.race.ToString().Equals("Human"))
+            if (!source.Any())
             {
                 source = from lip in DefDatabase<LipDef>.AllDefs
                          select lip;
