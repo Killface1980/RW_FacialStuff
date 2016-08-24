@@ -135,12 +135,8 @@ namespace RW_FacialStuff
             IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
                                           where hair.hairTags.SharesElementWith(factionType.hairTags)
                                           select hair;
-            if (!source.Any())
-            {
-                source = from hair in DefDatabase<HairDef>.AllDefs
-                         select hair;
-            }
-                return source.RandomElementByWeight(hair => HairChoiceLikelihoodFor(hair, pawn));
+
+            return source.RandomElementByWeight(hair => HairChoiceLikelihoodFor(hair, pawn));
         }
 
 
@@ -163,7 +159,7 @@ namespace RW_FacialStuff
                 case 2:
                     {
                         var filtered = source.Where(x => x.label.Contains("Smile"));
-                        chosenLips = filtered.RandomElementByWeight(eye => LipChoiceLikelihoodFor(eye, pawn));
+                        chosenLips = filtered.RandomElementByWeight(lip => LipChoiceLikelihoodFor(lip, pawn));
                         return chosenLips;
                     }
                 case 1:

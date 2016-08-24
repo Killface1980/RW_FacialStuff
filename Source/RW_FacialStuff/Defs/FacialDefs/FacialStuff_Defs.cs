@@ -19,7 +19,7 @@ namespace RW_FacialStuff.Defs
 
     }
 
-    public class EyeDef: Def
+    public class EyeDef : Def
     {
 
         public string texPathAverage;
