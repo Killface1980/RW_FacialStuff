@@ -1,4 +1,6 @@
-﻿using CommunityCoreLibrary;
+﻿#if !NoCCL
+
+using CommunityCoreLibrary;
 using UnityEngine;
 using Verse;
 
@@ -88,3 +90,4 @@ namespace RW_FacialStuff
 
     }
 }
+#endif

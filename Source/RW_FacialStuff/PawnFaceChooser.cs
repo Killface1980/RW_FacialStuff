@@ -17,7 +17,13 @@ namespace RW_FacialStuff
                                            where beard.hairTags.SharesElementWith(factionType.hairTags)
                                            select beard;
 
-            if (!source.Any())
+            if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
+            {
+                 source = from beard in DefDatabase<BeardDef>.AllDefs
+                                               where !beard.hairTags.SharesElementWith(factionType.hairTags)
+                                               select beard;
+            }
+                if (!source.Any())
             {
                 source = from beard in DefDatabase<BeardDef>.AllDefs
                          select beard;
@@ -52,7 +58,13 @@ namespace RW_FacialStuff
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
 
-            if (!source.Any())
+            if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
+            {
+                 source = from eye in DefDatabase<EyeDef>.AllDefs
+                                             where !eye.hairTags.SharesElementWith(factionType.hairTags)
+                                             select eye;
+            }
+                if (!source.Any())
             {
                 source = from eye in DefDatabase<EyeDef>.AllDefs
                          select eye;
@@ -71,7 +83,15 @@ namespace RW_FacialStuff
             IEnumerable<BrowDef> source = from brow in DefDatabase<BrowDef>.AllDefs
                                           where brow.hairTags.SharesElementWith(factionType.hairTags)
                                           select brow;
-            if (!source.Any())
+
+            if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
+            {
+                source = from brow in DefDatabase<BrowDef>.AllDefs
+                         where !brow.hairTags.SharesElementWith(factionType.hairTags)
+                         select brow;
+            }
+
+                if (!source.Any())
             {
                 source = from brow in DefDatabase<BrowDef>.AllDefs
                          select brow;
@@ -136,6 +156,13 @@ namespace RW_FacialStuff
                                           where hair.hairTags.SharesElementWith(factionType.hairTags)
                                           select hair;
 
+            if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
+            {
+                source = from hair in DefDatabase<HairDef>.AllDefs
+                                              where !hair.hairTags.SharesElementWith(factionType.hairTags)
+                                              select hair;
+            }
+
             return source.RandomElementByWeight(hair => HairChoiceLikelihoodFor(hair, pawn));
         }
 
@@ -146,7 +173,13 @@ namespace RW_FacialStuff
                                          where lip.hairTags.SharesElementWith(factionType.hairTags)
                                          select lip;
 
-            if (!source.Any())
+            if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
+            {
+                source = from lip in DefDatabase<LipDef>.AllDefs
+                         where !lip.hairTags.SharesElementWith(factionType.hairTags)
+                         select lip;
+            }
+                if (!source.Any())
             {
                 source = from lip in DefDatabase<LipDef>.AllDefs
                          select lip;
@@ -367,6 +400,10 @@ namespace RW_FacialStuff
         // RimWorld.PawnHairChooser
         private static float HairChoiceLikelihoodFor(HairDef hair, Pawn pawn)
         {
+         // if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
+         // {
+         //     return 0f;
+         // }
 
             if (pawn.gender == Gender.None)
             {

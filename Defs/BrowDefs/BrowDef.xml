@@ -4,8 +4,7 @@
   <RW_FacialStuff.Defs.BrowDef>
     <label>Brow_Aggro</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Brows/Brow_Average_Aggro</texPathAverage>
-    <texPathNarrow>Brows/Brow_Average_Aggro</texPathNarrow>
+    <texPath>Brows/Brow_Average_Aggro</texPath>
     <defName>Brow_Average_Aggro</defName>
     <hairTags>
       <li>Urban</li>
@@ -15,12 +14,10 @@
     </hairTags>
   </RW_FacialStuff.Defs.BrowDef>
 
-
   <RW_FacialStuff.Defs.BrowDef>
     <label>Brow_Aware</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Brows/Brow_Average_Aware</texPathAverage>
-    <texPathNarrow>Brows/Brow_Average_Aware</texPathNarrow>
+    <texPath>Brows/Brow_Average_Aware</texPath>
     <defName>Brow_Average_Aware</defName>
     <hairTags>
       <li>Urban</li>
@@ -30,12 +27,10 @@
     </hairTags>
   </RW_FacialStuff.Defs.BrowDef>
 
-
   <RW_FacialStuff.Defs.BrowDef>
     <label>Brow_Depressed</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Brows/Brow_Average_Depressed</texPathAverage>
-    <texPathNarrow>Brows/Brow_Average_Depressed</texPathNarrow>
+    <texPath>Brows/Brow_Average_Depressed</texPath>
     <defName>Brow_Average_Depressed</defName>
     <hairTags>
       <li>Urban</li>
@@ -45,12 +40,10 @@
     </hairTags>
   </RW_FacialStuff.Defs.BrowDef>
 
-
   <RW_FacialStuff.Defs.BrowDef>
     <label>Brow_Furious</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Brows/Brow_Average_Furious</texPathAverage>
-    <texPathNarrow>Brows/Brow_Average_Furious</texPathNarrow>
+    <texPath>Brows/Brow_Average_Furious</texPath>
     <defName>Brow_Average_Furious</defName>
     <hairTags>
       <li>Urban</li>
@@ -60,12 +53,10 @@
     </hairTags>
   </RW_FacialStuff.Defs.BrowDef>
 
-
   <RW_FacialStuff.Defs.BrowDef>
     <label>Brow_Nice</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Brows/Brow_Average_Nice</texPathAverage>
-    <texPathNarrow>Brows/Brow_Average_Nice</texPathNarrow>
+    <texPath>Brows/Brow_Average_Nice</texPath>
     <defName>Brow_Average_Nice</defName>
     <hairTags>
       <li>Urban</li>
@@ -75,12 +66,10 @@
     </hairTags>
   </RW_FacialStuff.Defs.BrowDef>
 
-
   <RW_FacialStuff.Defs.BrowDef>
     <label>Brow_Tired</label>
     <hairGender>Male</hairGender>
-    <texPathAverage>Brows/Brow_Average_Tired</texPathAverage>
-    <texPathNarrow>Brows/Brow_Average_Tired</texPathNarrow>
+    <texPath>Brows/Brow_Average_Tired</texPath>
     <defName>Brow_Average_Tired</defName>
     <hairTags>
       <li>Urban</li>
@@ -89,6 +78,5 @@
       <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BrowDef>
-
-
+  
 </DefPackage-BrowDef>

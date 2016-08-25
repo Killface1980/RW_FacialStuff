@@ -1,6 +1,8 @@
 ﻿using RimWorld;
 using System.Collections.Generic;
+#if !NoCCL
 using CommunityCoreLibrary.ColorPicker;
+#endif
 using RW_FacialStuff;
 using RW_FacialStuff.Defs;
 using UnityEngine;
@@ -130,7 +132,9 @@ namespace FaceStyling
         private static BrowDef originalBrow;
         private static Color _newColour;
         private static Color originalColour;
+#if !NoCCL
         private static ColorWrapper colourWrapper;
+#endif
         private Vector2 _scrollPosition = Vector2.zero;
 
         public HairDef newHair
@@ -252,7 +256,9 @@ namespace FaceStyling
             closeOnClickedOutside = false;
             pawn = p;
             originalColour = (_newColour = pawnSave.HairColorOrg);
-            colourWrapper = new ColorWrapper(newColour);
+#if !NoCCL
+           colourWrapper = new ColorWrapper(newColour);
+#endif
             _newHair = (originalHair = pawn.story.hairDef);
             _newBeard = (originalBeard = pawnSave.BeardDef);
             _newLip = (originalLip = pawnSave.LipDef);
@@ -303,10 +309,11 @@ namespace FaceStyling
 
         public override void PreClose()
         {
-            while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker), false))
+#if !NoCCL
+     while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker), false))
             {
             }
-
+#endif
         }
 
         private Graphic HairGraphic(HairDef def)
@@ -340,9 +347,9 @@ namespace FaceStyling
         private Graphic EyeGraphic(EyeDef def)
         {
             Graphic result;
-            if (def.texPathAverage != null)
+            if (def.texPath != null)
             {
-                result = GraphicDatabase.Get<Graphic_Multi_HeadParts>(def.texPathAverage, ShaderDatabase.Cutout, new Vector2(38f, 38f), Color.white, Color.white);
+                result = GraphicDatabase.Get<Graphic_Multi_HeadParts>(def.texPath, ShaderDatabase.Cutout, new Vector2(38f, 38f), Color.white, Color.white);
             }
             else
             {
@@ -354,9 +361,9 @@ namespace FaceStyling
         private Graphic BrowGraphic(BrowDef def)
         {
             Graphic result;
-            if (def.texPathAverage != null)
+            if (def.texPath != null)
             {
-                result = GraphicDatabase.Get<Graphic_Multi_HeadParts>(def.texPathAverage, ShaderDatabase.Cutout, new Vector2(38f, 38f), Color.white, Color.white);
+                result = GraphicDatabase.Get<Graphic_Multi_HeadParts>(def.texPath, ShaderDatabase.Cutout, new Vector2(38f, 38f), Color.white, Color.white);
             }
             else
             {
@@ -368,9 +375,9 @@ namespace FaceStyling
         private Graphic LipGraphic(LipDef def)
         {
             Graphic result;
-            if (def.texPathAverage != null)
+            if (def.texPath != null)
             {
-                result = GraphicDatabase.Get<Graphic_Multi_HeadParts>(def.texPathAverage, ShaderDatabase.Cutout, new Vector2(38f, 38f), Color.white, Color.white);
+                result = GraphicDatabase.Get<Graphic_Multi_HeadParts>(def.texPath, ShaderDatabase.Cutout, new Vector2(38f, 38f), Color.white, Color.white);
             }
             else
             {
@@ -882,6 +889,7 @@ namespace FaceStyling
                 }
             }
             TooltipHandler.TipRegion(rect, text);
+#if !NoCCL
             if (Widgets.ButtonInvisible(rect))
             {
                 newHair = hair;
@@ -896,6 +904,7 @@ namespace FaceStyling
                     initialPosition = new Vector2(windowRect.xMax + _margin, windowRect.yMin),
                 });
             }
+#endif
         }
 
         private void DrawBeardPickerCell(BeardDef beard, Rect rect)
@@ -920,7 +929,8 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 newBeard = beard;
-                while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
+#if !NoCCL
+             while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
                 {
                 }
                 Find.WindowStack.Add(new Dialog_ColorPicker(colourWrapper, delegate
@@ -930,6 +940,7 @@ namespace FaceStyling
                 {
                     initialPosition = new Vector2(windowRect.xMax + _margin, windowRect.yMin),
                 });
+#endif
             }
         }
 
@@ -955,7 +966,9 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 newLip = lip;
-                Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
+#if !NoCCL
+             Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
+#endif
             }
         }
 
@@ -981,8 +994,9 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 newEye = eye;
-                Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
-
+#if !NoCCL
+     Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
+#endif
             }
         }
 
@@ -1008,8 +1022,9 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 newBrow = brow;
-                Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
-
+#if !NoCCL
+           Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
+#endif
             }
         }
 
@@ -1035,8 +1050,10 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 newColour = color;
-                Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
+#if !NoCCL
 
+                Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
+#endif
             }
         }
 
@@ -1054,11 +1071,11 @@ namespace FaceStyling
             DrawUI(new Rect(0f, _titleHeight, inRect.width, inRect.height - _titleHeight - 25f - _margin * 2));
             DialogUtility.DoNextBackButtons(inRect, "ClutterColorChangerButtonAccept".Translate(), delegate
             {
-        // update render for graphics
-        pawn.Drawer.renderer.graphics.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(newHair.texPath, ShaderDatabase.Cutout, Vector2.one, newColour);
+                // update render for graphics
+                pawn.Drawer.renderer.graphics.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(newHair.texPath, ShaderDatabase.Cutout, Vector2.one, newColour);
 
-        // update story to persist across save/load
-        pawn.story.hairColor = newColour;
+                // update story to persist across save/load
+                pawn.story.hairColor = newColour;
                 pawn.story.hairDef = newHair;
                 var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
                 if (pawn.gender == Gender.Male)
@@ -1069,8 +1086,8 @@ namespace FaceStyling
                 pawnSave.sessionOptimized = false;
                 pawn.Drawer.renderer.graphics.ResolveAllGraphics();
 
-        // force colonist bar to update
-        PortraitsCache.SetDirty(pawn);
+                // force colonist bar to update
+                PortraitsCache.SetDirty(pawn);
                 Close();
             }, delegate
             {

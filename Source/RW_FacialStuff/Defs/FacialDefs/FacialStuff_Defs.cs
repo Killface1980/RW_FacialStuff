@@ -22,9 +22,7 @@ namespace RW_FacialStuff.Defs
     public class EyeDef : Def
     {
 
-        public string texPathAverage;
-
-        public string texPathNarrow;
+        public string texPath;
 
         public HairGender hairGender = HairGender.Any;
 
@@ -35,9 +33,7 @@ namespace RW_FacialStuff.Defs
     public class BrowDef : Def
     {
 
-        public string texPathAverage;
-
-        public string texPathNarrow;
+        public string texPath;
 
         public HairGender hairGender = HairGender.Any;
 
@@ -61,9 +57,7 @@ namespace RW_FacialStuff.Defs
 
     public class LipDef : Def
     {
-        public string texPathAverage;
-
-        public string texPathNarrow;
+        public string texPath;
 
         public HairGender hairGender = HairGender.Any;
 

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DefPackage-EyeDef>
+
+  <RW_FacialStuff.Defs.EyeDef>
+    <label>Orassan_Female_FL</label>
+    <hairGender>Female</hairGender>
+    <texPath>Eyes/Female/Orassan_Eye_Female_Average_FL</texPath>
+    <defName>Orassan_Eye_Female_Average_FL</defName>
+    <hairTags>
+      <li>Orassan</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.EyeDef>
+  
+  <RW_FacialStuff.Defs.EyeDef>
+    <label>Orassan_Female_RD</label>
+    <hairGender>Female</hairGender>
+    <texPath>Eyes/Female/Orassan_Eye_Female_Average_RD</texPath>
+    <defName>Orassan_Eye_Female_Average_RD</defName>
+    <hairTags>
+      <li>Orassan</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.EyeDef>
+  
+  <RW_FacialStuff.Defs.EyeDef>
+    <label>Orassan_Female_OV</label>
+    <hairGender>Female</hairGender>
+    <texPath>Eyes/Female/Orassan_Eye_Female_Average_OV</texPath>
+    <defName>Orassan_Eye_Female_Average_OV</defName>
+    <hairTags>
+      <li>Orassan</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.EyeDef>
+  
+  <RW_FacialStuff.Defs.EyeDef>
+    <label>Orassan_Female_SM</label>
+    <hairGender>Female</hairGender>
+    <texPath>Eyes/Female/Orassan_Eye_Female_Average_SM</texPath>
+    <defName>Orassan_Eye_Female_Average_SM</defName>
+    <hairTags>
+      <li>Orassan</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.EyeDef>
+</DefPackage-EyeDef>

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+#if !NoCCL
 using CommunityCoreLibrary.ColorPicker;
+#endif
 using UnityEngine;
 using Verse;
 using Object = UnityEngine.Object;
@@ -214,8 +216,6 @@ namespace RW_FacialStuff
 
             pawnSave.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(pawn, pawn.Faction.def);
 
-            pawnSave.SkinColorHex = ColorHelper.RGBtoHex(pawn.story.SkinColor);
-
             pawnSave.LipDef = PawnFaceChooser.RandomLipDefFor(pawn, pawn.Faction.def);
 
             if (pawn.gender == Gender.Male)
@@ -282,8 +282,8 @@ namespace RW_FacialStuff
             //  }
             //  else
             //  {
-            eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.EyeDef.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.black);
-            browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.BrowDef.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.black);
+            eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.EyeDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.black);
+            browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.BrowDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.black);
 
             if (oldAge)
             {
@@ -333,7 +333,7 @@ namespace RW_FacialStuff
             MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
             MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
 
-            #region Male
+#region Male
             if (pawn.gender == Gender.Male)
             {
                 Graphic beardGraphic = null;
@@ -363,10 +363,15 @@ namespace RW_FacialStuff
                     MakeOld(pawn, ref finalHeadSide, temptextureside);
                 }
 
-                if (pawnSave.BeardDef.drawMouth && ModConfigMenu.useMouth && pawnSave.drawMouth)
+#if !NoCCL
+     if (pawnSave.BeardDef.drawMouth && ModConfigMenu.useMouth && pawnSave.drawMouth)
+#endif
+#if NoCCL
+                if (pawnSave.BeardDef.drawMouth && pawnSave.drawMouth)
+#endif
                 {
 
-                    Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.LipDef.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                    Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.LipDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     if (pawn.story.crownType == CrownType.Narrow)
                     {
                         ScaleTexture(lipGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
@@ -400,9 +405,9 @@ namespace RW_FacialStuff
 
             }
 
-            #endregion
+#endregion
 
-            #region Female
+#region Female
             if (pawn.gender == Gender.Female)
             {
 
@@ -415,9 +420,10 @@ namespace RW_FacialStuff
                     MakeOld(pawn, ref finalHeadSide, temptextureside);
 
                 }
+#if !NoCCL
                 if (ModConfigMenu.useMouth)
                 {
-                    Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.LipDef.texPathAverage, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                    Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.LipDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     if (pawn.story.crownType == CrownType.Narrow)
                     {
                         ScaleTexture(lipGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
@@ -431,8 +437,9 @@ namespace RW_FacialStuff
                     MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
                     MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
                 }
+#endif
             }
-            #endregion
+#endregion
 
             //   temptexturefront = Object.Instantiate(hairGraphic.MatFront.mainTexture as Texture2D);
             //   temptextureside = Object.Instantiate(hairGraphic.MatSide.mainTexture as Texture2D);

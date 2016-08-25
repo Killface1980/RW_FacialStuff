@@ -4,8 +4,7 @@
   <RW_FacialStuff.Defs.EyeDef>
     <label>Female_FL</label>
     <hairGender>Female</hairGender>
-    <texPathAverage>Eyes/Female/Eye_Female_Average_FL</texPathAverage>
-    <texPathNarrow>Eyes/Female/Eye_Female_Average_FL</texPathNarrow>
+    <texPath>Eyes/Female/Eye_Female_Average_FL</texPath>
     <defName>Eye_Female_Average_FL</defName>
     <hairTags>
       <li>Urban</li>
@@ -18,8 +17,7 @@
   <RW_FacialStuff.Defs.EyeDef>
     <label>Female_RD</label>
     <hairGender>Female</hairGender>
-    <texPathAverage>Eyes/Female/Eye_Female_Average_RD</texPathAverage>
-    <texPathNarrow>Eyes/Female/Eye_Female_Average_RD</texPathNarrow>
+    <texPath>Eyes/Female/Eye_Female_Average_RD</texPath>
     <defName>Eye_Female_Average_RD</defName>
     <hairTags>
       <li>Urban</li>
@@ -32,8 +30,7 @@
   <RW_FacialStuff.Defs.EyeDef>
     <label>Female_OV</label>
     <hairGender>Female</hairGender>
-    <texPathAverage>Eyes/Female/Eye_Female_Average_OV</texPathAverage>
-    <texPathNarrow>Eyes/Female/Eye_Female_Average_OV</texPathNarrow>
+    <texPath>Eyes/Female/Eye_Female_Average_OV</texPath>
     <defName>Eye_Female_Average_OV</defName>
     <hairTags>
       <li>Urban</li>
@@ -46,8 +43,7 @@
   <RW_FacialStuff.Defs.EyeDef>
     <label>Female_SM</label>
     <hairGender>Female</hairGender>
-    <texPathAverage>Eyes/Female/Eye_Female_Average_SM</texPathAverage>
-    <texPathNarrow>Eyes/Female/Eye_Female_Average_SM</texPathNarrow>
+    <texPath>Eyes/Female/Eye_Female_Average_SM</texPath>
     <defName>Eye_Female_Average_SM</defName>
     <hairTags>
       <li>Urban</li>
