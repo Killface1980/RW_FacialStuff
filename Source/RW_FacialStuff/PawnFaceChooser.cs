@@ -17,13 +17,13 @@ namespace RW_FacialStuff
                                            where beard.hairTags.SharesElementWith(factionType.hairTags)
                                            select beard;
 
-            if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
-            {
-                 source = from beard in DefDatabase<BeardDef>.AllDefs
-                                               where !beard.hairTags.SharesElementWith(factionType.hairTags)
-                                               select beard;
-            }
-                if (!source.Any())
+          //if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
+          //{
+          //    source = from beard in DefDatabase<BeardDef>.AllDefs
+          //             where !beard.hairTags.SharesElementWith(factionType.hairTags)
+          //             select beard;
+          //}
+            if (!source.Any())
             {
                 source = from beard in DefDatabase<BeardDef>.AllDefs
                          select beard;
@@ -58,13 +58,13 @@ namespace RW_FacialStuff
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
 
-            if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
-            {
-                 source = from eye in DefDatabase<EyeDef>.AllDefs
-                                             where !eye.hairTags.SharesElementWith(factionType.hairTags)
-                                             select eye;
-            }
-                if (!source.Any())
+            //if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
+            //{
+            //     source = from eye in DefDatabase<EyeDef>.AllDefs
+            //                                 where !eye.hairTags.SharesElementWith(factionType.hairTags)
+            //                                 select eye;
+            //}
+            if (!source.Any())
             {
                 source = from eye in DefDatabase<EyeDef>.AllDefs
                          select eye;
@@ -84,14 +84,14 @@ namespace RW_FacialStuff
                                           where brow.hairTags.SharesElementWith(factionType.hairTags)
                                           select brow;
 
-            if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
-            {
-                source = from brow in DefDatabase<BrowDef>.AllDefs
-                         where !brow.hairTags.SharesElementWith(factionType.hairTags)
-                         select brow;
-            }
+            //if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
+            //{
+            //    source = from brow in DefDatabase<BrowDef>.AllDefs
+            //             where !brow.hairTags.SharesElementWith(factionType.hairTags)
+            //             select brow;
+            //}
 
-                if (!source.Any())
+            if (!source.Any())
             {
                 source = from brow in DefDatabase<BrowDef>.AllDefs
                          select brow;
@@ -159,70 +159,69 @@ namespace RW_FacialStuff
             if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
             {
                 source = from hair in DefDatabase<HairDef>.AllDefs
-                                              where !hair.hairTags.SharesElementWith(factionType.hairTags)
-                                              select hair;
+                         where !hair.hairTags.SharesElementWith(factionType.hairTags)
+                         select hair;
             }
 
             return source.RandomElementByWeight(hair => HairChoiceLikelihoodFor(hair, pawn));
         }
 
-
-        public static LipDef RandomLipDefFor(Pawn pawn, FactionDef factionType)
+        public static MouthDef RandomMouthDefFor(Pawn pawn, FactionDef factionType)
         {
-            IEnumerable<LipDef> source = from lip in DefDatabase<LipDef>.AllDefs
-                                         where lip.hairTags.SharesElementWith(factionType.hairTags)
-                                         select lip;
+            IEnumerable<MouthDef> source = from mouthDef in DefDatabase<MouthDef>.AllDefs
+                                         where mouthDef.hairTags.SharesElementWith(factionType.hairTags)
+                                         select mouthDef;
 
-            if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
+            //if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
+            //{
+            //    source = from mouth in DefDatabase<MouthDef>.AllDefs
+            //             where !mouth.hairTags.SharesElementWith(factionType.hairTags)
+            //             select mouth;
+            //}
+            if (!source.Any())
             {
-                source = from lip in DefDatabase<LipDef>.AllDefs
-                         where !lip.hairTags.SharesElementWith(factionType.hairTags)
-                         select lip;
-            }
-                if (!source.Any())
-            {
-                source = from lip in DefDatabase<LipDef>.AllDefs
-                         select lip;
+                source = from mouthDef in DefDatabase<MouthDef>.AllDefs
+                         select mouthDef;
             }
 
-            LipDef chosenLips;
+            MouthDef chosenMouths;
 
             switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")))
             {
                 case 2:
                     {
                         var filtered = source.Where(x => x.label.Contains("Smile"));
-                        chosenLips = filtered.RandomElementByWeight(lip => LipChoiceLikelihoodFor(lip, pawn));
-                        return chosenLips;
+                        chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
+                        return chosenMouths;
                     }
                 case 1:
                     {
                         var filtered = source.Where(x => x.label.Contains("Default"));
-                        chosenLips = filtered.RandomElementByWeight(eye => LipChoiceLikelihoodFor(eye, pawn));
-                        return chosenLips;
+                        chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
+                        return chosenMouths;
                     }
                 case 0:
                     {
                         var filtered = source.Where(x => !x.label.Contains("Default") && !x.label.Contains("Smile") && !x.label.Contains("Big") && !x.label.Contains("Sad"));
-                        chosenLips = filtered.RandomElementByWeight(eye => LipChoiceLikelihoodFor(eye, pawn));
-                        return chosenLips;
+                        chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
+                        return chosenMouths;
                     }
 
                 case -1:
                     {
                         var filtered = source.Where(x => x.label.Contains("Big"));
-                        chosenLips = filtered.RandomElementByWeight(eye => LipChoiceLikelihoodFor(eye, pawn));
-                        return chosenLips;
+                        chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
+                        return chosenMouths;
                     }
                 case -2:
                     {
                         var filtered = source.Where(x => x.label.Contains("Sad"));
-                        chosenLips = filtered.RandomElementByWeight(lip => LipChoiceLikelihoodFor(lip, pawn));
-                        return chosenLips;
+                        chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
+                        return chosenMouths;
                     }
             }
-            chosenLips = source.RandomElementByWeight(lip => LipChoiceLikelihoodFor(lip, pawn));
-            return chosenLips;
+            chosenMouths = source.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
+            return chosenMouths;
 
 
         }
@@ -288,9 +287,9 @@ namespace RW_FacialStuff
                     case HairGender.Any:
                         return 60f;
                     case HairGender.FemaleUsually:
-                        return 5f;
+                        return 0f;
                     case HairGender.Female:
-                        return 1f;
+                        return 0f;
                 }
             }
 
@@ -305,9 +304,9 @@ namespace RW_FacialStuff
                     case HairGender.Any:
                         return 60f;
                     case HairGender.MaleUsually:
-                        return 5f;
+                        return 0f;
                     case HairGender.Male:
-                        return 1f;
+                        return 0f;
                 }
             }
 
@@ -315,7 +314,7 @@ namespace RW_FacialStuff
             return 0f;
         }
 
-        private static float LipChoiceLikelihoodFor(LipDef lip, Pawn pawn)
+        private static float MouthChoiceLikelihoodFor(MouthDef mouth, Pawn pawn)
         {
             if (pawn.gender == Gender.None)
             {
@@ -323,7 +322,7 @@ namespace RW_FacialStuff
             }
             if (pawn.gender == Gender.Male)
             {
-                switch (lip.hairGender)
+                switch (mouth.hairGender)
                 {
                     case HairGender.Male:
                         return 70f;
@@ -340,7 +339,7 @@ namespace RW_FacialStuff
 
             if (pawn.gender == Gender.Female)
             {
-                switch (lip.hairGender)
+                switch (mouth.hairGender)
                 {
                     case HairGender.Female:
                         return 70f;
@@ -355,7 +354,7 @@ namespace RW_FacialStuff
                 }
             }
 
-            Log.Error(string.Concat("Unknown hair likelihood for ", lip, " with ", pawn));
+            Log.Error(string.Concat("Unknown hair likelihood for ", mouth, " with ", pawn));
             return 0f;
         }
 
@@ -400,10 +399,10 @@ namespace RW_FacialStuff
         // RimWorld.PawnHairChooser
         private static float HairChoiceLikelihoodFor(HairDef hair, Pawn pawn)
         {
-         // if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
-         // {
-         //     return 0f;
-         // }
+            // if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
+            // {
+            //     return 0f;
+            // }
 
             if (pawn.gender == Gender.None)
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Verse;
 
 namespace RW_FacialStuff.NoCCL
 {
@@ -11,37 +12,50 @@ namespace RW_FacialStuff.NoCCL
     public static class Detours
     {
         private static List<string> detoured = new List<string>();
-
         private static List<string> destinations = new List<string>();
 
-        public unsafe static bool TryDetourFromTo(MethodInfo source, MethodInfo destination)
+        /**
+            This is a basic first implementation of the IL method 'hooks' (detours) made possible by RawCode's work;
+            https://ludeon.com/forums/index.php?topic=17143.0
+
+            Performs detours, spits out basic logs and warns if a method is detoured multiple times.
+        **/
+        public static unsafe bool TryDetourFromTo(MethodInfo source, MethodInfo destination)
         {
+            // error out on null arguments
             if (source == null)
             {
+                Log.Error("Source MethodInfo is null: Detours");
                 return false;
             }
+
             if (destination == null)
             {
+                Log.Error("Destination MethodInfo is null: Detours");
                 return false;
             }
-            string item = string.Concat(new string[]
+
+            // keep track of detours and spit out some messaging
+            string sourceString = source.DeclaringType.FullName + "." + source.Name + " @ 0x" + source.MethodHandle.GetFunctionPointer().ToString("X" + (IntPtr.Size * 2).ToString());
+            string destinationString = destination.DeclaringType.FullName + "." + destination.Name + " @ 0x" + destination.MethodHandle.GetFunctionPointer().ToString("X" + (IntPtr.Size * 2).ToString());
+
+#if DEBUG
+            if( detoured.Contains( sourceString ) )
             {
-                source.DeclaringType.FullName,
-                ".",
-                source.Name,
-                " @ 0x",
-                source.MethodHandle.GetFunctionPointer().ToString("X" + (IntPtr.Size * 2).ToString())
-            });
-            string item2 = string.Concat(new string[]
-            {
-                destination.DeclaringType.FullName,
-                ".",
-                destination.Name,
-                " @ 0x",
-                destination.MethodHandle.GetFunctionPointer().ToString("X" + (IntPtr.Size * 2).ToString())
-            });
-            Detours.detoured.Add(item);
-            Detours.destinations.Add(item2);
+                CCL_Log.Trace( Verbosity.Warnings,
+                    "Source method ('" + sourceString + "') is previously detoured to '" + destinations[ detoured.IndexOf( sourceString ) ] + "'",
+                    "Detours"
+                );
+            } 
+            CCL_Log.Trace( Verbosity.Injections,
+                "Detouring '" + sourceString + "' to '" + destinationString + "'",
+                "Detours"
+            );
+#endif
+
+            detoured.Add(sourceString);
+            destinations.Add(destinationString);
+
             if (IntPtr.Size == sizeof(Int64))
             {
                 // 64-bit systems use 64-bit absolute address and jumps
@@ -93,6 +107,7 @@ namespace RW_FacialStuff.NoCCL
             // done!
             return true;
         }
+
     }
 #endif
 }

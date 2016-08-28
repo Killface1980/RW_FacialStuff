@@ -5,6 +5,7 @@ using CommunityCoreLibrary.ColorPicker;
 #endif
 using RW_FacialStuff;
 using RW_FacialStuff.Defs;
+using RW_FacialStuff.Utilities;
 using UnityEngine;
 using Verse;
 
@@ -24,7 +25,7 @@ namespace FaceStyling
             Head,
             Eyes,
             Brows,
-            Lips,
+            Mouth,
             Beard,
             Hair,
             Overhead
@@ -115,7 +116,7 @@ namespace FaceStyling
         private static Texture2D _nameBackground;
         private static List<HairDef> _hairDefs;
         private static List<BeardDef> _beardDefs;
-        private static List<LipDef> _lipDefs;
+        private static List<MouthDef> _mouthDefs;
         private static List<EyeDef> _eyeDefs;
         private static List<BrowDef> _browDefs;
         private static Pawn pawn;
@@ -124,8 +125,8 @@ namespace FaceStyling
         private static HairDef originalHair;
         private static BeardDef _newBeard;
         private static BeardDef originalBeard;
-        private static LipDef _newLip;
-        private static LipDef originalLip;
+        private static MouthDef _newMouth;
+        private static MouthDef _originalMouth;
         private static EyeDef _newEye;
         private static EyeDef originalEye;
         private static BrowDef _newBrow;
@@ -163,16 +164,16 @@ namespace FaceStyling
             }
         }
 
-        public LipDef newLip
+        public MouthDef NewMouth
         {
             get
             {
-                return _newLip;
+                return _newMouth;
             }
             set
             {
-                _newLip = value;
-                SetGraphicSlot(GraphicSlotGroup.Lips, pawn, LipGraphic(value), pawn.def.uiIcon, newColour);
+                _newMouth = value;
+                SetGraphicSlot(GraphicSlotGroup.Mouth, pawn, MouthGraphic(value), pawn.def.uiIcon, newColour);
             }
         }
 
@@ -241,7 +242,7 @@ namespace FaceStyling
             _hairDefs = DefDatabase<HairDef>.AllDefsListForReading;
             _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
             _beardDefs = DefDatabase<BeardDef>.AllDefsListForReading;
-            _lipDefs = DefDatabase<LipDef>.AllDefsListForReading;
+            _mouthDefs = DefDatabase<MouthDef>.AllDefsListForReading;
             _browDefs = DefDatabase<BrowDef>.AllDefsListForReading;
             _beardDefs.SortBy(i => i.LabelCap);
         }
@@ -261,7 +262,7 @@ namespace FaceStyling
 #endif
             _newHair = (originalHair = pawn.story.hairDef);
             _newBeard = (originalBeard = pawnSave.BeardDef);
-            _newLip = (originalLip = pawnSave.LipDef);
+            _newMouth = (_originalMouth = pawnSave.MouthDef);
             _newEye = (originalEye = pawnSave.EyeDef);
             _newBrow = (originalBrow = pawnSave.BrowDef);
 
@@ -276,7 +277,7 @@ namespace FaceStyling
             SetGraphicSlot(GraphicSlotGroup.Hair, pawn, HairGraphic(pawn.story.hairDef), pawn.def.uiIcon, pawn.story.hairColor);
             SetGraphicSlot(GraphicSlotGroup.Eyes, pawn, EyeGraphic(pawnSave.EyeDef), pawn.def.uiIcon, Color.black);
             SetGraphicSlot(GraphicSlotGroup.Brows, pawn, BrowGraphic(pawnSave.BrowDef), pawn.def.uiIcon, Color.black);
-            SetGraphicSlot(GraphicSlotGroup.Lips, pawn, LipGraphic(pawnSave.LipDef), pawn.def.uiIcon, Color.black);
+            SetGraphicSlot(GraphicSlotGroup.Mouth, pawn, MouthGraphic(pawnSave.MouthDef), pawn.def.uiIcon, Color.black);
             SetGraphicSlot(GraphicSlotGroup.Beard, pawn, BeardGraphic(pawnSave.BeardDef), pawn.def.uiIcon, pawn.story.hairColor);
             foreach (Apparel current in pawn.apparel.WornApparel)
             {
@@ -372,7 +373,7 @@ namespace FaceStyling
             return result;
         }
 
-        private Graphic LipGraphic(LipDef def)
+        private Graphic MouthGraphic(MouthDef def)
         {
             Graphic result;
             if (def.texPath != null)
@@ -772,7 +773,7 @@ namespace FaceStyling
         {
             Rect rect2 = rect.ContractedBy(1f);
             Rect rect3 = rect2;
-            int num = Mathf.CeilToInt((float)_lipDefs.Count / (float)_columns);
+            int num = Mathf.CeilToInt((float)_mouthDefs.Count / (float)_columns);
 
             rect3.height = (float)num * _entrySize;
             Vector2 vector = new Vector2(_entrySize, _entrySize);
@@ -789,12 +790,12 @@ namespace FaceStyling
             GUI.BeginGroup(rect3);
 
 
-            for (int i = 0; i < _lipDefs.Count; i++)
+            for (int i = 0; i < _mouthDefs.Count; i++)
             {
                 int num2 = i / _columns;
                 int num3 = i % _columns;
                 Rect rect4 = new Rect((float)num3 * vector.x, (float)num2 * vector.y, vector.x, vector.y);
-                DrawLipPickerCell(_lipDefs[i], rect4);
+                DrawMouthPickerCell(_mouthDefs[i], rect4);
             }
 
             GUI.EndGroup();
@@ -944,19 +945,19 @@ namespace FaceStyling
             }
         }
 
-        private void DrawLipPickerCell(LipDef lip, Rect rect)
+        private void DrawMouthPickerCell(MouthDef mouth, Rect rect)
         {
-            GUI.DrawTexture(rect, LipGraphic(lip).MatFront.mainTexture);
-            string text = lip.LabelCap;
+            GUI.DrawTexture(rect, MouthGraphic(mouth).MatFront.mainTexture);
+            string text = mouth.LabelCap;
             Widgets.DrawHighlightIfMouseover(rect);
-            if (lip == newLip)
+            if (mouth == NewMouth)
             {
                 Widgets.DrawHighlightSelected(rect);
                 text += "\n(selected)";
             }
             else
             {
-                if (lip == originalLip)
+                if (mouth == _originalMouth)
                 {
                     Widgets.DrawAltRect(rect);
                     text += "\n(original)";
@@ -965,7 +966,7 @@ namespace FaceStyling
             TooltipHandler.TipRegion(rect, text);
             if (Widgets.ButtonInvisible(rect))
             {
-                newLip = lip;
+                NewMouth = mouth;
 #if !NoCCL
              Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
 #endif
@@ -1082,7 +1083,7 @@ namespace FaceStyling
                 {
                     pawnSave.BeardDef = newBeard;
                 }
-                pawnSave.LipDef = newLip;
+                pawnSave.MouthDef = NewMouth;
                 pawnSave.sessionOptimized = false;
                 pawn.Drawer.renderer.graphics.ResolveAllGraphics();
 

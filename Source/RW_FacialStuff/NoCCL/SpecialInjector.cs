@@ -10,17 +10,19 @@ namespace RW_FacialStuff.NoCCL
 #if NoCCL
         public virtual bool Inject()
         {
-            throw new System.NotImplementedException();
+            Log.Error("This should never be called.");
+            return false;
         }
     }
 
+    [StaticConstructorOnStartup]
     internal static class DetourInjector
     {
         private static Assembly Assembly { get { return Assembly.GetAssembly(typeof(DetourInjector)); } }
         private static string AssemblyName { get { return Assembly.FullName.Split(',').First(); } }
         static DetourInjector()
         {
-            LongEventHandler.QueueLongEvent(Inject, "LibraryStartup", true, null);
+            LongEventHandler.QueueLongEvent(Inject, "Initializing", true, null);
         }
 
         private static void Inject()

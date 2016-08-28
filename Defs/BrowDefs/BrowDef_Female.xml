@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DefPackage-BrowDef>
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Female_Aggro</label>
+    <hairGender>Female</hairGender>
+    <texPath>Brows/Female/Brow_Female_Aggro</texPath>
+    <defName>Brow_Female_Aggro</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Female_Aware</label>
+    <hairGender>Female</hairGender>
+    <texPath>Brows/Female/Brow_Female_Aware</texPath>
+    <defName>Brow_Female_Aware</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Female_Depressed</label>
+    <hairGender>Female</hairGender>
+    <texPath>Brows/Female/Brow_Female_Depressed</texPath>
+    <defName>Brow_Female_Depressed</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Female_Furious</label>
+    <hairGender>Female</hairGender>
+    <texPath>Brows/Female/Brow_Female_Furious</texPath>
+    <defName>Brow_Female_Furious</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Female_Nice</label>
+    <hairGender>Female</hairGender>
+    <texPath>Brows/Female/Brow_Female_Nice</texPath>
+    <defName>Brow_Female_Nice</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Female_Tired</label>
+    <hairGender>Female</hairGender>
+    <texPath>Brows/Female/Brow_Female_Tired</texPath>
+    <defName>Brow_Female_Tired</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+  
+</DefPackage-BrowDef>

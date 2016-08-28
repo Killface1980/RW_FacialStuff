@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DefPackage-BrowDef>
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Male_Aggro</label>
+    <hairGender>Male</hairGender>
+    <texPath>Brows/Male/Brow_Male_Aggro</texPath>
+    <defName>Brow_Male_Aggro</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Male_Aware</label>
+    <hairGender>Male</hairGender>
+    <texPath>Brows/Male/Brow_Male_Aware</texPath>
+    <defName>Brow_Male_Aware</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Male_Depressed</label>
+    <hairGender>Male</hairGender>
+    <texPath>Brows/Male/Brow_Male_Depressed</texPath>
+    <defName>Brow_Male_Depressed</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Male_Furious</label>
+    <hairGender>Male</hairGender>
+    <texPath>Brows/Male/Brow_Male_Furious</texPath>
+    <defName>Brow_Male_Furious</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Male_Nice</label>
+    <hairGender>Male</hairGender>
+    <texPath>Brows/Male/Brow_Male_Nice</texPath>
+    <defName>Brow_Male_Nice</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+  <RW_FacialStuff.Defs.BrowDef>
+    <label>Brow_Male_Tired</label>
+    <hairGender>Male</hairGender>
+    <texPath>Brows/Male/Brow_Male_Tired</texPath>
+    <defName>Brow_Male_Tired</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>
+
+</DefPackage-BrowDef>

@@ -11,7 +11,7 @@ namespace RW_FacialStuff
         public BeardDef BeardDef;
         public EyeDef EyeDef;
         public BrowDef BrowDef;
-        public LipDef LipDef;
+        public MouthDef MouthDef;
         public WrinkleDef WrinkleDef;
         public string headGraphicIndex;
         public string type;
@@ -21,20 +21,18 @@ namespace RW_FacialStuff
 
         public bool optimized;
         public bool sessionOptimized;
-        public bool drawMouth = true;
-        public bool convertedOld;
+        public bool drawMouth;
 
         public void ExposeData()
         {
             Scribe_References.LookReference(ref Pawn, "Pawn");
             Scribe_Defs.LookDef(ref EyeDef, "EyeDef");
             Scribe_Defs.LookDef(ref BrowDef, "BrowDef");
-            Scribe_Defs.LookDef(ref LipDef, "LipDef");
+            Scribe_Defs.LookDef(ref MouthDef, "MouthDef");
             Scribe_Defs.LookDef(ref WrinkleDef, "WrinkleDef");
             Scribe_Defs.LookDef(ref BeardDef, "BeardDef");
             Scribe_Values.LookValue(ref optimized, "optimized");
-            Scribe_Values.LookValue(ref drawMouth, "drawMouth", true, true);
-            Scribe_Values.LookValue(ref convertedOld, "convertedOld");
+            Scribe_Values.LookValue(ref drawMouth, "drawMouth");
 
             Scribe_Values.LookValue(ref headGraphicIndex, "headGraphicIndex");
             Scribe_Values.LookValue(ref type, "type");

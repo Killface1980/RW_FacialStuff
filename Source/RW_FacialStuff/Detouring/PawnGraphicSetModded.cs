@@ -26,7 +26,9 @@ namespace RW_FacialStuff
             ClearCache();
             GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
 
-            if (pawn.kindDef.race.ToString().Equals("Human") || pawn.kindDef.race.ToString().Equals("Orassan"))
+            if (pawn.kindDef.race.ToString().Equals("Human") 
+                || pawn.kindDef.race.ToString().Equals("Orassan")
+                || pawn.kindDef.race.ToString().Equals("Jaffa"))
             {
                 var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
@@ -88,11 +90,6 @@ namespace RW_FacialStuff
                     pawnSave.headGraphicIndex = "Heads/Blank/" + GraphicDatabaseHeadRecordsModded.headIndex.ToString("0000");
                     GraphicDatabaseHeadRecordsModded.headsModded.Add(new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(pawn));
                     GraphicDatabaseHeadRecordsModded.headIndex += 1;
-                    if (!pawnSave.convertedOld)
-                    {
-                        pawnSave.HairColorOrg = pawn.story.hairColor;
-                        pawnSave.convertedOld = true;
-                    }
                 }
 
                 if (pawn.RaceProps.hasGenders)

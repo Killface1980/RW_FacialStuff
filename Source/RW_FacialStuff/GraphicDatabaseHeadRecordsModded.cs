@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-#if !NoCCL
-using CommunityCoreLibrary.ColorPicker;
-#endif
 using UnityEngine;
 using Verse;
 using Object = UnityEngine.Object;
@@ -216,7 +213,7 @@ namespace RW_FacialStuff
 
             pawnSave.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(pawn, pawn.Faction.def);
 
-            pawnSave.LipDef = PawnFaceChooser.RandomLipDefFor(pawn, pawn.Faction.def);
+            pawnSave.MouthDef = PawnFaceChooser.RandomMouthDefFor(pawn, pawn.Faction.def);
 
             if (pawn.gender == Gender.Male)
             {
@@ -371,16 +368,16 @@ namespace RW_FacialStuff
 #endif
                 {
 
-                    Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.LipDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                    Graphic mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     if (pawn.story.crownType == CrownType.Narrow)
                     {
-                        ScaleTexture(lipGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
-                        ScaleTexture(lipGraphic.MatSide.mainTexture as Texture2D, ref temptextureside, 102, 128);
+                        ScaleTexture(mouthGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
+                        ScaleTexture(mouthGraphic.MatSide.mainTexture as Texture2D, ref temptextureside, 102, 128);
                     }
                     else
                     {
-                        temptexturefront = lipGraphic.MatFront.mainTexture as Texture2D;
-                        temptextureside = lipGraphic.MatSide.mainTexture as Texture2D;
+                        temptexturefront = mouthGraphic.MatFront.mainTexture as Texture2D;
+                        temptextureside = mouthGraphic.MatSide.mainTexture as Texture2D;
                     }
                     MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
                     MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
@@ -423,7 +420,7 @@ namespace RW_FacialStuff
 #if !NoCCL
                 if (ModConfigMenu.useMouth)
                 {
-                    Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.LipDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                    Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     if (pawn.story.crownType == CrownType.Narrow)
                     {
                         ScaleTexture(lipGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
