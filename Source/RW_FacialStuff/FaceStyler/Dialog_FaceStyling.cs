@@ -108,7 +108,7 @@ namespace FaceStyling
         private static float _titleHeight;
         private static float _previewSize;
         private static float _iconSize;
-        private static Texture2D _icon;
+   //     private static Texture2D _icon;
         private static float _margin;
         private static float _listWidth;
         private static int _columns;
@@ -126,7 +126,7 @@ namespace FaceStyling
         private static BeardDef _newBeard;
         private static BeardDef originalBeard;
         private static MouthDef _newMouth;
-        private static MouthDef _originalMouth;
+        private static MouthDef originalMouth;
         private static EyeDef _newEye;
         private static EyeDef originalEye;
         private static BrowDef _newBrow;
@@ -232,7 +232,7 @@ namespace FaceStyling
             _previewSize = 250f;
             //       _previewSize = 100f;
             _iconSize = 24f;
-            _icon = ContentFinder<Texture2D>.Get("ClothIcon");
+        //    _icon = ContentFinder<Texture2D>.Get("ClothIcon");
             _margin = 6f;
             _listWidth = 450f;
             //   _listWidth = 200f;
@@ -262,7 +262,7 @@ namespace FaceStyling
 #endif
             _newHair = (originalHair = pawn.story.hairDef);
             _newBeard = (originalBeard = pawnSave.BeardDef);
-            _newMouth = (_originalMouth = pawnSave.MouthDef);
+            _newMouth = (originalMouth = pawnSave.MouthDef);
             _newEye = (originalEye = pawnSave.EyeDef);
             _newBrow = (originalBrow = pawnSave.BrowDef);
 
@@ -298,14 +298,17 @@ namespace FaceStyling
                 case Gender.Male:
                     _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually);
                     _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually);
+                    _browDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually);
                     break;
                 case Gender.Female:
                     _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
                     _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
+                    _browDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
                     break;
             }
             _hairDefs.SortBy(i => i.LabelCap);
             _eyeDefs.SortBy(i => i.LabelCap);
+            _browDefs.SortBy(i => i.LabelCap);
         }
 
         public override void PreClose()
@@ -633,6 +636,30 @@ namespace FaceStyling
                 }
             }
 
+            if (Page == "brow")
+            {
+                set.x = selectionRect.x;
+                set.y += 48f;
+                GUI.color = Color.gray;
+                Widgets.DrawLineHorizontal(selectionRect.x, set.y, selectionRect.width);
+                GUI.color = Color.white;
+                set.y += 12f;
+
+                if (Widgets.ButtonText(set, "Female"))
+                {
+                    _browDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
+                    _browDefs.SortBy(i => i.LabelCap);
+                }
+                set.x += set.width + 10f;
+                if (Widgets.ButtonText(set, "Male"))
+                {
+                    _browDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(x => x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually);
+                    _browDefs.SortBy(i => i.LabelCap);
+                }
+                DrawBrowPicker(listRect);
+
+            }
+
             if (Page == "beard")
             {
                 DrawBeardPicker(listRect);
@@ -645,10 +672,7 @@ namespace FaceStyling
             {
                 DrawEyePicker(listRect);
             }
-            if (Page == "brow")
-            {
-                DrawBrowPicker(listRect);
-            }
+
 
             if (Page == "hair" || Page == "beard")
             {
@@ -890,10 +914,10 @@ namespace FaceStyling
                 }
             }
             TooltipHandler.TipRegion(rect, text);
-#if !NoCCL
             if (Widgets.ButtonInvisible(rect))
             {
                 newHair = hair;
+#if !NoCCL
                 while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
                 {
                 }
@@ -904,8 +928,8 @@ namespace FaceStyling
                 {
                     initialPosition = new Vector2(windowRect.xMax + _margin, windowRect.yMin),
                 });
-            }
 #endif
+            }
         }
 
         private void DrawBeardPickerCell(BeardDef beard, Rect rect)
@@ -957,7 +981,7 @@ namespace FaceStyling
             }
             else
             {
-                if (mouth == _originalMouth)
+                if (mouth == originalMouth)
                 {
                     Widgets.DrawAltRect(rect);
                     text += "\n(original)";
@@ -1067,10 +1091,10 @@ namespace FaceStyling
             Widgets.Label(rect, _title);
             Text.Anchor = TextAnchor.UpperLeft;
             Text.Font = GameFont.Small;
-            Rect iconPosition = new Rect(0f, 0f, _iconSize, _iconSize).CenteredOnYIn(rect);
-            GUI.DrawTexture(iconPosition, _icon);
+      //      Rect iconPosition = new Rect(0f, 0f, _iconSize, _iconSize).CenteredOnYIn(rect);
+       //     GUI.DrawTexture(iconPosition, _icon);
             DrawUI(new Rect(0f, _titleHeight, inRect.width, inRect.height - _titleHeight - 25f - _margin * 2));
-            DialogUtility.DoNextBackButtons(inRect, "ClutterColorChangerButtonAccept".Translate(), delegate
+            DialogUtility.DoNextBackButtons(inRect, "FacialStuffColorChangerButtonAccept".Translate(), delegate
             {
                 // update render for graphics
                 pawn.Drawer.renderer.graphics.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(newHair.texPath, ShaderDatabase.Cutout, Vector2.one, newColour);

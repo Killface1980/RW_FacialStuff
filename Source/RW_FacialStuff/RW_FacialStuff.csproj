@@ -110,6 +110,12 @@
     <Content Include="..\..\Defs\HairDefs\HairsBeGone.xml">
       <Link>Defs\FacialDefs\HairsBeGone.xml</Link>
     </Content>
+    <Content Include="..\..\Defs\HairDefs\NackbladIncRimhair_HairDef.xml">
+      <Link>Defs\NackbladIncRimhair_HairDef.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\HairDefs\SpoonshortagesRimworldHairstyles_HairDefs.xml">
+      <Link>Defs\SpoonshortagesRimworldHairstyles_HairDefs.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\ModHelperDefs\ModHelper.xml">
       <Link>Initializer\ModHelper.xml</Link>
     </Content>

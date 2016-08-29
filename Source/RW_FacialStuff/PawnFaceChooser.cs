@@ -36,11 +36,11 @@ namespace RW_FacialStuff
             {
                 chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
             }
-            else if (rand < 0.15f)
+            else if (rand < 0.1f)
             {
                 chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
             }
-            else if (rand < 0.3f)
+            else if (rand < 0.25f)
             {
                 chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Stubble");
             }
