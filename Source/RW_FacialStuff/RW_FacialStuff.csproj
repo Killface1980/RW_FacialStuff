@@ -89,7 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\About\About.xml">
-      <Link>xml\About.xml</Link>
+      <Link>About.xml</Link>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\BrowDefs\BrowDef_Female.xml">
@@ -131,6 +131,9 @@
     </Content>
     <Content Include="..\..\Defs\WrinkleDefs\WrinkleDef.xml">
       <Link>Defs\FacialDefs\WrinkleDef.xml</Link>
+    </Content>
+    <Content Include="..\..\Languages\English\Keyed\FacialStuff_Keyed.xml">
+      <Link>Languages\English\FacialStuff_Keyed.xml</Link>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -408,7 +408,13 @@ namespace FaceStyling
 
         private void SetGraphicSlot(GraphicSlotGroup slotIndex, Thing newThing, Graphic newGraphic, Texture2D newIcon, Color newColor)
         {
-            DisplayGraphics[(int)slotIndex] = new GraphicsDisp(newThing, newGraphic, newIcon, newColor, (slotIndex < GraphicSlotGroup.Head) ? 0f : -16f);
+
+            if (slotIndex < GraphicSlotGroup.Head)
+                DisplayGraphics[(int)slotIndex] = new GraphicsDisp(newThing, newGraphic, newIcon, newColor, 0f);
+            if (slotIndex == GraphicSlotGroup.Head)
+                DisplayGraphics[(int)slotIndex] = new GraphicsDisp(newThing, newGraphic, newIcon, newColor, -50f);
+            if (slotIndex > GraphicSlotGroup.Head)
+                DisplayGraphics[(int)slotIndex] = new GraphicsDisp(newThing, newGraphic, newIcon, newColor, -40f);
         }
 
         private GraphicSlotGroup GetSlotForApparel(Thing apparel)
@@ -587,7 +593,7 @@ namespace FaceStyling
             if (Page == "hair")
             {
                 set.x = selectionRect.x;
-                set.y += 48f;
+                set.y += 36f;
                 GUI.color = Color.gray;
                 Widgets.DrawLineHorizontal(selectionRect.x, set.y, selectionRect.width);
                 GUI.color = Color.white;
@@ -617,7 +623,7 @@ namespace FaceStyling
             if (Page == "eye")
             {
                 set.x = selectionRect.x;
-                set.y += 48f;
+                set.y += 36f;
                 GUI.color = Color.gray;
                 Widgets.DrawLineHorizontal(selectionRect.x, set.y, selectionRect.width);
                 GUI.color = Color.white;
@@ -639,7 +645,7 @@ namespace FaceStyling
             if (Page == "brow")
             {
                 set.x = selectionRect.x;
-                set.y += 48f;
+                set.y += 36f;
                 GUI.color = Color.gray;
                 Widgets.DrawLineHorizontal(selectionRect.x, set.y, selectionRect.width);
                 GUI.color = Color.white;
@@ -913,6 +919,7 @@ namespace FaceStyling
                     text += "\n(original)";
                 }
             }
+            Widgets.Label(rect, text);
             TooltipHandler.TipRegion(rect, text);
             if (Widgets.ButtonInvisible(rect))
             {

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DefPackage-HairDef>
 
-
 	<HairDef>
 		<label>SPSUsagi</label>
 		<hairGender>Female</hairGender>
@@ -230,6 +229,5 @@
 			<li>Rural</li>
 		</hairTags>
 	</HairDef>
-
-
+  
 </DefPackage-HairDef>

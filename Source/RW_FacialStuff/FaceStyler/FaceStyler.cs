@@ -60,37 +60,7 @@ namespace FaceStyling
                     }
 
                 };
-                list.Add(new FloatMenuOption("ClutterStylizeHair".Translate(), action2));
-
-                if (myPawn.apparel.WornApparelCount <= 0)
-                {
-                    FloatMenuOption item3 = new FloatMenuOption("ClutterImNaked".Translate(), null);
-                    return new List<FloatMenuOption>
-                {
-                    item3
-                };
-
-                }
-
-                Action action1 = delegate
-                {
-                    // IntVec3 InteractionSquare = (this.Position + new IntVec3(0, 0, 1)).RotatedBy(this.Rotation);
-                    Job ShallWalkTheValleyOfSquierrls = new Job(DefDatabase<JobDef>.GetNamed("ClutterColorChanger"), this, InteractionCell);
-                    if (myPawn.drafter.CanTakeOrderedJob())//This is used to force go job, it will work even when drafted
-                    {
-                        myPawn.drafter.TakeOrderedJob(ShallWalkTheValleyOfSquierrls);
-                    }
-                    else
-                    {
-                        myPawn.QueueJob(ShallWalkTheValleyOfSquierrls);
-                        myPawn.jobs.StopAll();
-                    }
-
-                };
-           //     list.Add(new FloatMenuOption("ClutterColorCloths".Translate(), action1));
-
-
-
+                list.Add(new FloatMenuOption("FSStylizeFace".Translate(), action2));
             }
             return list;
         }

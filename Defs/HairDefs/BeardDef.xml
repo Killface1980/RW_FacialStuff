@@ -336,12 +336,12 @@
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
-    <label>TheWinnifried</label>
+    <label>TheWinnfield</label>
     <hairGender>Male</hairGender>
-    <texPathAverageNormal>Beards/Beard_Average_Normal_TheWinnifried</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Average_Pointy_TheWinnifried</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Average_Wide_TheWinnifried</texPathAverageWide>
-    <defName>Beard_TheWinnifried</defName>
+    <texPathAverageNormal>Beards/Beard_Average_Normal_TheWinnfield</texPathAverageNormal>
+    <texPathAveragePointy>Beards/Beard_Average_Pointy_TheWinnfield</texPathAveragePointy>
+    <texPathAverageWide>Beards/Beard_Average_Wide_TheWinnfield</texPathAverageWide>
+    <defName>Beard_TheWinnfield</defName>
     <hairTags>
       <li>Rural</li>
       <li>Punk</li>
@@ -390,6 +390,62 @@
       <li>Tribal</li>
     </hairTags>
     <drawMouth>true</drawMouth>
+  </RW_FacialStuff.Defs.BeardDef>
+
+  <RW_FacialStuff.Defs.BeardDef>
+    <label>CoolSteiner</label>
+    <hairGender>Male</hairGender>
+    <texPathAverageNormal>Beards/Beard_Average_Normal_CoolSteiner</texPathAverageNormal>
+    <texPathAveragePointy>Beards/Beard_Average_Pointy_CoolSteiner</texPathAveragePointy>
+    <texPathAverageWide>Beards/Beard_Average_Wide_CoolSteiner</texPathAverageWide>
+    <defName>Beard_CoolSteiner</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>MaleOld</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BeardDef>
+
+  <RW_FacialStuff.Defs.BeardDef>
+    <label>CaptainTiebeard</label>
+    <hairGender>Male</hairGender>
+    <texPathAverageNormal>Beards/Beard_Average_Normal_CaptainTiebeard</texPathAverageNormal>
+    <texPathAveragePointy>Beards/Beard_Average_Pointy_CaptainTiebeard</texPathAveragePointy>
+    <texPathAverageWide>Beards/Beard_Average_Wide_CaptainTiebeard</texPathAverageWide>
+    <defName>Beard_CaptainTiebeard</defName>
+    <hairTags>
+      <li>Punk</li>
+      <li>Tribal</li>
+      <li>MaleOld</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BeardDef>
+
+  <RW_FacialStuff.Defs.BeardDef>
+    <label>Santa</label>
+    <hairGender>Male</hairGender>
+    <texPathAverageNormal>Beards/Beard_Average_Normal_Santa</texPathAverageNormal>
+    <texPathAveragePointy>Beards/Beard_Average_Pointy_Santa</texPathAveragePointy>
+    <texPathAverageWide>Beards/Beard_Average_Wide_Santa</texPathAverageWide>
+    <defName>Beard_Santa</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Tribal</li>
+      <li>MaleOld</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.BeardDef>
+
+  <RW_FacialStuff.Defs.BeardDef>
+    <label>TwinPeaks</label>
+    <hairGender>Male</hairGender>
+    <texPathAverageNormal>Beards/Beard_Average_Normal_TwinPeaks</texPathAverageNormal>
+    <texPathAveragePointy>Beards/Beard_Average_Pointy_TwinPeaks</texPathAveragePointy>
+    <texPathAverageWide>Beards/Beard_Average_Wide_TwinPeaks</texPathAverageWide>
+    <defName>Beard_TwinPeaks</defName>
+    <hairTags>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>MaleOld</li>
+    </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
 </DefPackage-BeardDef>

@@ -3,18 +3,20 @@
   <name>RW_FacialStuff</name>
   <author>Killface</author>
   <url>https://ludeon.com/forums/index.php?topic=20771.msg228259#msg228259</url>
-  <targetVersion>0.15.1279</targetVersion>
+  <targetVersion>0.15.1280</targetVersion>
   <description>
     This mod aims to provide more visual individuality for your colonists.
     - 8 newly defined skin colors instead of the vanilla 6.
     - hair genetics according to real life.
     - includes a few selected trend colors of 5501.
-    - 27 different beards.
+    - 30+ different beards.
     - new eyes and brows for both sexes.
     - Added vanilla hair styles with 10 steps of hair loss.
     - Hair is merged on the head graphic, thus visible with worn hats.
 
     + includes a modified version of 'Spoonshortage's Rimworld Hairstyles 1.2' by spoonshortage
     + includes a modified version of 'Nackblad Inc Rimhair 1.1' by nackblad
+    Special thanks to Fluffy for the FaceStyling bench (adapted from 'Clutter')
+    Uses the detour code from Orion's 'Hospitality'
   </description>
 </ModMetaData>
