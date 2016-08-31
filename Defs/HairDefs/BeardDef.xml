@@ -296,7 +296,7 @@
 
   <RW_FacialStuff.Defs.BeardDef>
     <label>Stubble</label>
-    <hairGender>Male</hairGender>
+    <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_Stubble</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Stubble</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_Stubble</texPathAverageWide>
@@ -312,7 +312,7 @@
 
   <RW_FacialStuff.Defs.BeardDef>
     <label>TheKlingon</label>
-    <hairGender>Male</hairGender>
+    <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_TheKlingon</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_TheKlingon</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_TheKlingon</texPathAverageWide>
@@ -377,7 +377,7 @@
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
-    <label>Shaved</label>
+    <label>MaleUsually</label>
     <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Beards/Beard_Shaved</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Shaved</texPathAveragePointy>

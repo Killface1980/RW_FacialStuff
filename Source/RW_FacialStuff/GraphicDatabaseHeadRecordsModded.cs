@@ -330,7 +330,7 @@ namespace RW_FacialStuff
             MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
             MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
 
-#region Male
+            #region Male
             if (pawn.gender == Gender.Male)
             {
                 Graphic beardGraphic = null;
@@ -402,9 +402,9 @@ namespace RW_FacialStuff
 
             }
 
-#endregion
+            #endregion
 
-#region Female
+            #region Female
             if (pawn.gender == Gender.Female)
             {
 
@@ -419,6 +419,9 @@ namespace RW_FacialStuff
                 }
 #if !NoCCL
                 if (ModConfigMenu.useMouth)
+#else
+                if (true)
+#endif
                 {
                     Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     if (pawn.story.crownType == CrownType.Narrow)
@@ -434,9 +437,8 @@ namespace RW_FacialStuff
                     MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
                     MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
                 }
-#endif
             }
-#endregion
+            #endregion
 
             //   temptexturefront = Object.Instantiate(hairGraphic.MatFront.mainTexture as Texture2D);
             //   temptextureside = Object.Instantiate(hairGraphic.MatSide.mainTexture as Texture2D);

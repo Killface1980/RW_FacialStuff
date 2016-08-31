@@ -84,7 +84,6 @@
     <Compile Include="SaveablePawn.cs" />
     <Compile Include="PawnFaceChooser.cs" />
     <Compile Include="Detouring\PawnGraphicSetModded.cs" />
-    <Compile Include="Initializer\ModInitializer .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -121,10 +120,6 @@
     </Content>
     <Content Include="..\..\Defs\MouthDefs\MouthDef.xml">
       <Link>Defs\FacialDefs\MouthDef.xml</Link>
-    </Content>
-    <Content Include="..\..\Defs\ThingDefs\Initializer.xml">
-      <Link>Initializer\Initializer.xml</Link>
-      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\ThingDefs\Worktable.xml">
       <Link>Defs\Worktable.xml</Link>

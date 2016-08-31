@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>RW_FacialStuff</name>
+  <name>Facial Stuff A15</name>
   <author>Killface</author>
   <url>https://ludeon.com/forums/index.php?topic=20771.msg228259#msg228259</url>
   <targetVersion>0.15.1280</targetVersion>
@@ -16,6 +16,7 @@
 
     + includes a modified version of 'Spoonshortage's Rimworld Hairstyles 1.2' by spoonshortage
     + includes a modified version of 'Nackblad Inc Rimhair 1.1' by nackblad
+    
     Special thanks to Fluffy for the FaceStyling bench (adapted from 'Clutter')
     Uses the detour code from Orion's 'Hospitality'
   </description>
