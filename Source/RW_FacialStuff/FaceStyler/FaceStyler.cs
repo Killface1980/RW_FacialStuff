@@ -17,7 +17,7 @@ namespace FaceStyling
 
         public void FaceStyling(Pawn pawn)
         {
-            Find.WindowStack.Add((Window)new FaceStyling.Dialog_FaceStyling(pawn));
+            Find.WindowStack.Add((Window)new Dialog_FaceStyling(pawn));
         }
 
 

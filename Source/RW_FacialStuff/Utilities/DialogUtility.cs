@@ -14,7 +14,7 @@ namespace RW_FacialStuff.Utilities
             Text.Font = GameFont.Small;
             if (backAct != null)
             {
-                Rect rect = new Rect(0f, top, DialogUtility.BottomButSize.x, DialogUtility.BottomButSize.y);
+                Rect rect = new Rect(0f, top, BottomButSize.x, BottomButSize.y);
                 if (Widgets.ButtonText(rect, "Back".Translate(), true, false))
                 {
                     backAct();
@@ -22,7 +22,7 @@ namespace RW_FacialStuff.Utilities
             }
             if (nextAct != null)
             {
-                Rect rect2 = new Rect(innerRect.width - DialogUtility.BottomButSize.x, top, DialogUtility.BottomButSize.x, DialogUtility.BottomButSize.y);
+                Rect rect2 = new Rect(innerRect.width - BottomButSize.x, top, BottomButSize.x, BottomButSize.y);
                 if (Widgets.ButtonText(rect2, nextLabel, true, false))
                 {
                     nextAct();
@@ -32,7 +32,7 @@ namespace RW_FacialStuff.Utilities
         public static bool DoMiddleButton(Rect innerRect, string label)
         {
             float top = innerRect.height - 38f;
-            Rect rect = new Rect(innerRect.width / 2f - DialogUtility.BottomButSize.x / 2f, top, DialogUtility.BottomButSize.x, DialogUtility.BottomButSize.y);
+            Rect rect = new Rect(innerRect.width / 2f - BottomButSize.x / 2f, top, BottomButSize.x, BottomButSize.y);
             return Widgets.ButtonText(rect, label, true, false);
         }
     }

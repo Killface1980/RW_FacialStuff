@@ -69,6 +69,7 @@
     <Compile Include="FaceStyler\FaceStyler.cs" />
     <None Include="FaceStyler\Preset.cs" />
     <None Include="FaceStyler\PresetDatabase.cs" />
+    <Compile Include="MapComponentInjectorBehavior.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphic_Multi_Head.cs" />
@@ -120,6 +121,9 @@
     </Content>
     <Content Include="..\..\Defs\MouthDefs\MouthDef.xml">
       <Link>Defs\FacialDefs\MouthDef.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\ThingDefs\Injector.xml">
+      <Link>Initializer\Injector.xml</Link>
     </Content>
     <Content Include="..\..\Defs\ThingDefs\Worktable.xml">
       <Link>Defs\Worktable.xml</Link>

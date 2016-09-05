@@ -16,7 +16,7 @@ namespace RW_FacialStuff
             flasher = new DamageFlasher(pawn);
         }
 
-        [Detour(typeof(Verse.PawnGraphicSet), bindingFlags = (BindingFlags.Instance | BindingFlags.Public))]
+        [Detour(typeof(PawnGraphicSet), bindingFlags = (BindingFlags.Instance | BindingFlags.Public))]
         public new void ResolveAllGraphics()
         {
 #if RebuildHeads
