@@ -690,41 +690,41 @@ namespace FaceStyling
                 DrawColorPickerCell(originalColour, set);
                 set.x += set.width * 1.5f + 10f;
 
-                DrawColorPickerCell(PawnHairColorsModded.HairPlatinum, set);
+                DrawColorPickerCell(_PawnHairColors.HairPlatinum, set);
                 set.x += set.width + 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairYellowBlonde, set);
+                DrawColorPickerCell(_PawnHairColors.HairYellowBlonde, set);
                 set.x += set.width + 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairTerraCotta, set);
+                DrawColorPickerCell(_PawnHairColors.HairTerraCotta, set);
                 set.x += set.width + 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairMediumDarkBrown, set);
+                DrawColorPickerCell(_PawnHairColors.HairMediumDarkBrown, set);
                 set.x += set.width + 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairDarkBrown, set);
+                DrawColorPickerCell(_PawnHairColors.HairDarkBrown, set);
                 set.x += set.width + 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairMidnightBlack, set);
+                DrawColorPickerCell(_PawnHairColors.HairMidnightBlack, set);
                 set.x += set.width + 10f;
 
                 set.y += 36f;
                 set.x = selectionRect.x;
                 set.width = selectionRect.width / 10f - 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairDarkPurple, set);
+                DrawColorPickerCell(_PawnHairColors.HairDarkPurple, set);
                 set.x += set.width + 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairBlueSteel, set);
+                DrawColorPickerCell(_PawnHairColors.HairBlueSteel, set);
                 set.x += set.width + 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairBurgundyBistro, set);
+                DrawColorPickerCell(_PawnHairColors.HairBurgundyBistro, set);
                 set.x += set.width + 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairGreenGrape, set);
+                DrawColorPickerCell(_PawnHairColors.HairGreenGrape, set);
                 set.x += set.width + 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairMysticTurquois, set);
+                DrawColorPickerCell(_PawnHairColors.HairMysticTurquois, set);
                 set.x += set.width + 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairPinkPearl, set);
+                DrawColorPickerCell(_PawnHairColors.HairPinkPearl, set);
                 set.x += set.width + 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairPurplePassion, set);
+                DrawColorPickerCell(_PawnHairColors.HairPurplePassion, set);
                 set.x += set.width + 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairRosaRosa, set);
+                DrawColorPickerCell(_PawnHairColors.HairRosaRosa, set);
                 set.x += set.width + 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairRubyRed, set);
+                DrawColorPickerCell(_PawnHairColors.HairRubyRed, set);
                 set.x += set.width + 10f;
-                DrawColorPickerCell(PawnHairColorsModded.HairUltraViolet, set);
+                DrawColorPickerCell(_PawnHairColors.HairUltraViolet, set);
                 set.x += set.width + 10f;
             }
 

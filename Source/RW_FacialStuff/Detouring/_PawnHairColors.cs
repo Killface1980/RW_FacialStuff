@@ -4,7 +4,7 @@ using Verse;
 
 namespace RW_FacialStuff
 {
-    public static class PawnHairColorsModded
+    public static class _PawnHairColors
     {
         // changed Midnight Black - 10/10/10 - 2016-07-28
         public static Color HairPlatinum = new Color32(255, 245, 226, 255);//(0,929411769f, 0,7921569f, 0,6117647f);
@@ -84,7 +84,7 @@ namespace RW_FacialStuff
             //        return new Color(num2, num2, num2);
             //    }
             //}
-            if (PawnSkinColorsModded.IsDarkSkin(skinColor))// || Rand.Value < 0.4f)
+            if (_PawnSkinColors.IsDarkSkin(skinColor))// || Rand.Value < 0.4f)
             {
                 tempColor = Color.Lerp(HairMidnightBlack, HairDarkBrown, Rand.Range(0f, 0.35f));
 
@@ -174,7 +174,7 @@ namespace RW_FacialStuff
                     greyness = 0.85f;
                 }
 
-                if (PawnSkinColorsModded.IsDarkSkin(skinColor))
+                if (_PawnSkinColors.IsDarkSkin(skinColor))
                     greyness *= Rand.Range(0.4f, 0.8f);
             }
 

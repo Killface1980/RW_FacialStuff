@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <DefPackage-BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
@@ -44,7 +45,7 @@
 
   <RW_FacialStuff.Defs.BeardDef>
     <label>ChinPuff</label>
-    <hairGender>Male</hairGender>
+    <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_ChinPuff</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_ChinPuff</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_ChinPuff</texPathAverageWide>
@@ -72,7 +73,7 @@
 
   <RW_FacialStuff.Defs.BeardDef>
     <label>ElInsecto</label>
-    <hairGender>Male</hairGender>
+    <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_ElInsecto</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_ElInsecto</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_ElInsecto</texPathAverageWide>
@@ -85,7 +86,7 @@
 
   <RW_FacialStuff.Defs.BeardDef>
     <label>FranzJoseph</label>
-    <hairGender>Male</hairGender>
+    <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_FranzJoseph</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_FranzJoseph</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_FranzJoseph</texPathAverageWide>
@@ -185,7 +186,7 @@
 
   <RW_FacialStuff.Defs.BeardDef>
     <label>Hulihee</label>
-    <hairGender>Male</hairGender>
+    <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_Hulihee</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Hulihee</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_Hulihee</texPathAverageWide>
@@ -199,7 +200,7 @@
 
   <RW_FacialStuff.Defs.BeardDef>
     <label>Imperial</label>
-    <hairGender>Male</hairGender>
+    <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_Imperial</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Imperial</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_Imperial</texPathAverageWide>
@@ -228,7 +229,7 @@
 
   <RW_FacialStuff.Defs.BeardDef>
     <label>NapoleonIIIImperial</label>
-    <hairGender>Male</hairGender>
+    <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_NapoleonIIIImperial</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_NapoleonIIIImperial</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_NapoleonIIIImperial</texPathAverageWide>
@@ -283,7 +284,9 @@
 
   <RW_FacialStuff.Defs.BeardDef>
     <label>Souvarov</label>
-    <hairGender>Male</hairGender>
+    <hairGender>
+      MaleUsually
+    </hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_Souvarov</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_Souvarov</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_Souvarov</texPathAverageWide>
@@ -350,16 +353,14 @@
 
   <RW_FacialStuff.Defs.BeardDef>
     <label>TheZappa</label>
-    <hairGender>Male</hairGender>
+    <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Beards/Beard_Average_Normal_TheZappa</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Average_Pointy_TheZappa</texPathAveragePointy>
     <texPathAverageWide>Beards/Beard_Average_Wide_TheZappa</texPathAverageWide>
     <defName>Beard_TheZappa</defName>
     <hairTags>
-      <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -377,7 +378,7 @@
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>
-    <label>MaleUsually</label>
+    <label>Shaved</label>
     <hairGender>MaleUsually</hairGender>
     <texPathAverageNormal>Beards/Beard_Shaved</texPathAverageNormal>
     <texPathAveragePointy>Beards/Beard_Shaved</texPathAveragePointy>
@@ -402,6 +403,8 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
       <li>MaleOld</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
@@ -414,9 +417,7 @@
     <texPathAverageWide>Beards/Beard_Average_Wide_CaptainTiebeard</texPathAverageWide>
     <defName>Beard_CaptainTiebeard</defName>
     <hairTags>
-      <li>Punk</li>
       <li>Tribal</li>
-      <li>MaleOld</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>
 
@@ -429,6 +430,8 @@
     <defName>Beard_Santa</defName>
     <hairTags>
       <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
       <li>Tribal</li>
       <li>MaleOld</li>
     </hairTags>
@@ -442,8 +445,10 @@
     <texPathAverageWide>Beards/Beard_Average_Wide_TwinPeaks</texPathAverageWide>
     <defName>Beard_TwinPeaks</defName>
     <hairTags>
+      <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
+      <li>Tribal</li>
       <li>MaleOld</li>
     </hairTags>
   </RW_FacialStuff.Defs.BeardDef>

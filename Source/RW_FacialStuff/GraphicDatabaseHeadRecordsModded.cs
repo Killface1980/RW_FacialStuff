@@ -420,7 +420,7 @@ namespace RW_FacialStuff
 #if !NoCCL
                 if (ModConfigMenu.useMouth)
 #else
-                if (true)
+                if (false)
 #endif
                 {
                     Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
@@ -493,7 +493,6 @@ namespace RW_FacialStuff
             Object.DestroyImmediate(temptexturefront, true);
             Object.DestroyImmediate(temptextureside, true);
             Object.DestroyImmediate(temptextureback, true);
-
 
             pawnSave.sessionOptimized = true;
 

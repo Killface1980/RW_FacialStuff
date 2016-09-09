@@ -7,10 +7,10 @@ using Verse;
 namespace RW_FacialStuff
 {
 
-    public class PawnGraphicSetModded : PawnGraphicSet
+    public class _PawnGraphicSet : PawnGraphicSet
     {
 
-        public PawnGraphicSetModded(Pawn pawn) : base(pawn)
+        public _PawnGraphicSet(Pawn pawn) : base(pawn)
         {
             this.pawn = pawn;
             flasher = new DamageFlasher(pawn);

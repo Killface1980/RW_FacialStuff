@@ -80,11 +80,11 @@
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
-    <Compile Include="Detouring\PawnHairColorsModded.cs" />
-    <Compile Include="Detouring\PawnSkinColorsModded.cs" />
+    <Compile Include="Detouring\_PawnHairColors.cs" />
+    <Compile Include="Detouring\_PawnSkinColors.cs" />
     <Compile Include="SaveablePawn.cs" />
     <Compile Include="PawnFaceChooser.cs" />
-    <Compile Include="Detouring\PawnGraphicSetModded.cs" />
+    <Compile Include="Detouring\_PawnGraphicSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

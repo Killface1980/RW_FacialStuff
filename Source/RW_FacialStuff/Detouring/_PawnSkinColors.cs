@@ -4,7 +4,7 @@ using Verse;
 
 namespace RW_FacialStuff
 {
-    public static class PawnSkinColorsModded
+    public static class _PawnSkinColors
     {
         private struct SkinColorData
         {
@@ -31,7 +31,8 @@ namespace RW_FacialStuff
             new SkinColorData(0.85f, 0.65f, new Color32(231,184,143,255)),
             new SkinColorData(0.95f, 0.85f, new Color32(245,210,178,255)),
             new SkinColorData(1f, 1f, new Color32(255,230,212,255))
-
+  
+                // Vanilla
 //          new SkinColorData(0f, 0f, new Color(0.3882353f, 0.274509817f, 0.141176477f)),
 //          new SkinColorData(0.1f, 0.05f, new Color(0.509803951f, 0.356862754f, 0.1882353f)),
 //          new SkinColorData(0.25f, 0.2f, new Color(0.894117653f, 0.619607866f, 0.3529412f)),
@@ -43,7 +44,7 @@ namespace RW_FacialStuff
         [Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
         public static bool IsDarkSkin(Color color)
         {
-            Color skinColor = GetSkinColor(0.6f);
+            Color skinColor = GetSkinColor(0.5f);
             return color.r + color.g + color.b <= skinColor.r + skinColor.g + skinColor.b + 0.01f;
         }
 
