@@ -199,7 +199,7 @@ namespace FaceStyling
             set
             {
                 _newBrow = value;
-                SetGraphicSlot(GraphicSlotGroup.Brows, pawn, BrowGraphic(value), pawn.def.uiIcon, newColour);
+                SetGraphicSlot(GraphicSlotGroup.Brows, pawn, BrowGraphic(value), pawn.def.uiIcon, newColour * new Color(0.3f, 0.3f, 0.3f));
             }
         }
 
@@ -276,7 +276,7 @@ namespace FaceStyling
             //   SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor), pawn.def.uiIcon, pawn.story.SkinColor);
             SetGraphicSlot(GraphicSlotGroup.Hair, pawn, HairGraphic(pawn.story.hairDef), pawn.def.uiIcon, pawn.story.hairColor);
             SetGraphicSlot(GraphicSlotGroup.Eyes, pawn, EyeGraphic(pawnSave.EyeDef), pawn.def.uiIcon, Color.black);
-            SetGraphicSlot(GraphicSlotGroup.Brows, pawn, BrowGraphic(pawnSave.BrowDef), pawn.def.uiIcon, Color.black);
+            SetGraphicSlot(GraphicSlotGroup.Brows, pawn, BrowGraphic(pawnSave.BrowDef), pawn.def.uiIcon, pawn.story.hairColor * new Color(0.3f, 0.3f, 0.3f));
             SetGraphicSlot(GraphicSlotGroup.Mouth, pawn, MouthGraphic(pawnSave.MouthDef), pawn.def.uiIcon, Color.black);
             SetGraphicSlot(GraphicSlotGroup.Beard, pawn, BeardGraphic(pawnSave.BeardDef), pawn.def.uiIcon, pawn.story.hairColor);
             foreach (Apparel current in pawn.apparel.WornApparel)

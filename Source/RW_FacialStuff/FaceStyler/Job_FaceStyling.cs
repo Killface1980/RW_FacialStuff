@@ -26,7 +26,7 @@ namespace FaceStyling
                     FaceStyler faceStyler = TargetA.Thing as FaceStyler;
                     if (faceStyler != null)
                     {
-                        FaceStyler rainbowSquieerl2 = TargetA.Thing as FaceStyler;
+                        FaceStyler rainbowSquieerl2 = (FaceStyler) TargetA.Thing;
                         if (GetActor().Position == TargetA.Thing.InteractionCell)
                         {
                             rainbowSquieerl2.FaceStyling(GetActor());

@@ -4,7 +4,7 @@
     <defName>FacialStuffInjector</defName><!-- Replace with your namespace, for safety. -->
     <category>Building</category>
     <menuHidden>true</menuHidden>
-    <label>ModInitializer</label>
+    <label>ModInitializerFS</label>
     <thingClass>RW_FacialStuff.MapComponentInjector</thingClass><!-- Replace namespace. -->
     <inspectorTabs>
       <li>RW_FacialStuff.MapComponentInjector</li><!-- Replace namespace. -->

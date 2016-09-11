@@ -40,7 +40,9 @@ namespace RW_FacialStuff
                                 Log.Error(string.Format("Facial Stuff :: Detours :: Can't find source method '{0} with bindingflags {1}", targetMethod.Name, flags));
                                 return false;
                             }
+                            {                                
                             if (!Detours.TryDetourFromTo(sourceMethod, targetMethod)) return false;
+                            }
                         }
                     }
                 }
