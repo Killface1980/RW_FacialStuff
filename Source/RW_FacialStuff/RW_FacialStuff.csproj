@@ -131,6 +131,9 @@
     <Content Include="..\..\Languages\English\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\English\FacialStuff_Keyed.xml</Link>
     </Content>
+    <Content Include="..\..\Languages\German\Keyed\FacialStuff_Keyed.xml">
+      <Link>Languages\German\FacialStuff_Keyed.xml</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

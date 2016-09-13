@@ -5,7 +5,7 @@ using Verse.AI;
 
 namespace FaceStyling
 {
-    abstract class FaceStyler : Building
+    class FaceStyler : Building
     {
 
         public override void SpawnSetup()
