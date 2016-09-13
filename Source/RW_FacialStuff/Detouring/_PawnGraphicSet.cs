@@ -4,9 +4,10 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RW_FacialStuff
+namespace RW_FacialStuff.Detouring
 {
 
+    // ReSharper disable once UnusedMember.Global
     public class _PawnGraphicSet : PawnGraphicSet
     {
 
@@ -17,6 +18,7 @@ namespace RW_FacialStuff
         }
 
         [Detour(typeof(PawnGraphicSet), bindingFlags = (BindingFlags.Instance | BindingFlags.Public))]
+        // ReSharper disable once UnusedMember.Global
         public new void ResolveAllGraphics()
         {
 #if RebuildHeads
@@ -36,41 +38,42 @@ namespace RW_FacialStuff
                 {
                     //  pawn.story.skinWhiteness = Rand.Value;
 
-                    switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")))
+                    if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == 2)
                     {
-                        case 2:
-                            if (pawn.story.skinWhiteness < 0.85f)
-                            {
-                                pawn.story.skinWhiteness += 0.15f;
-                            }
-                            break;
-                        case 1:
-                            if (pawn.story.skinWhiteness < 0.75f)
-                            {
-                                pawn.story.skinWhiteness += 0.15f;
-                            }
-                            break;
-                        case 0:
-                            //if (pawn.story.skinWhiteness < 0.15f || pawn.story.skinWhiteness > 0.8f)
-                            //{
-                            //    pawn.story.skinWhiteness = Random.Range(0.2f, 0.66f);
-                            //}
-                            break;
-                        case -1:
-                            if (pawn.story.skinWhiteness > 0.5f)
-                            {
-                                pawn.story.skinWhiteness -= 0.15f;
-                            }
-                            break;
-                        case -2:
-                            if (pawn.story.skinWhiteness > 0.25f)
-                            {
-                                pawn.story.skinWhiteness -= 0.15f;
-                            }
-                            break;
+                        if (pawn.story.skinWhiteness < 0.85f)
+                        {
+                            pawn.story.skinWhiteness += 0.15f;
+                        }
+                    }
+                    else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == 1)
+                    {
+                        if (pawn.story.skinWhiteness < 0.75f)
+                        {
+                            pawn.story.skinWhiteness += 0.15f;
+                        }
+                    }
+                    else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == 0)
+                    {
+                        //if (pawn.story.skinWhiteness < 0.15f || pawn.story.skinWhiteness > 0.8f)
+                        //{
+                        //    pawn.story.skinWhiteness = Random.Range(0.2f, 0.66f);
+                        //}
+                    }
+                    else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == -1)
+                    {
+                        if (pawn.story.skinWhiteness > 0.5f)
+                        {
+                            pawn.story.skinWhiteness -= 0.15f;
+                        }
+                    }
+                    else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == -2)
+                    {
+                        if (pawn.story.skinWhiteness > 0.25f)
+                        {
+                            pawn.story.skinWhiteness -= 0.15f;
+                        }
                     }
                     GraphicDatabaseHeadRecordsModded.DefineHeadParts(pawn);
-
                 }
 
                 //if (pawnSave.optimized)

@@ -15,7 +15,7 @@ namespace RW_FacialStuff.Utilities
             if (backAct != null)
             {
                 Rect rect = new Rect(0f, top, BottomButSize.x, BottomButSize.y);
-                if (Widgets.ButtonText(rect, "Back".Translate(), true, false))
+                if (Widgets.ButtonText(rect, "Back".Translate()))
                 {
                     backAct();
                 }
@@ -23,7 +23,7 @@ namespace RW_FacialStuff.Utilities
             if (nextAct != null)
             {
                 Rect rect2 = new Rect(innerRect.width - BottomButSize.x, top, BottomButSize.x, BottomButSize.y);
-                if (Widgets.ButtonText(rect2, nextLabel, true, false))
+                if (Widgets.ButtonText(rect2, nextLabel))
                 {
                     nextAct();
                 }
@@ -33,7 +33,7 @@ namespace RW_FacialStuff.Utilities
         {
             float top = innerRect.height - 38f;
             Rect rect = new Rect(innerRect.width / 2f - BottomButSize.x / 2f, top, BottomButSize.x, BottomButSize.y);
-            return Widgets.ButtonText(rect, label, true, false);
+            return Widgets.ButtonText(rect, label);
         }
     }
 }

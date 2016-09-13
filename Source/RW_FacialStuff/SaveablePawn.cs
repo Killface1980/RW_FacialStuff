@@ -25,7 +25,7 @@ namespace RW_FacialStuff
 
         public void ExposeData()
         {
-            Scribe_References.LookReference(ref Pawn, "Pawn",false);
+            Scribe_References.LookReference(ref Pawn, "Pawn");
             Scribe_Defs.LookDef(ref EyeDef, "EyeDef");
             Scribe_Defs.LookDef(ref BrowDef, "BrowDef");
             Scribe_Defs.LookDef(ref MouthDef, "MouthDef");

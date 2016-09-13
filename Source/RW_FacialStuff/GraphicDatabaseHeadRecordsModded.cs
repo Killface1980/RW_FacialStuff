@@ -38,7 +38,7 @@ namespace RW_FacialStuff
                 graphicPathVanillaCustom = graphicPath;
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
 
-                string[] array = fileNameWithoutExtension.Split('_');
+                string[] array = fileNameWithoutExtension?.Split('_');
 
                 try
                 {
@@ -94,7 +94,7 @@ namespace RW_FacialStuff
                 graphicPath = pawn.story.HeadGraphicPath;
                 graphicPathModded = pawnSave.headGraphicIndex;
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
-                string[] array = fileNameWithoutExtension.Split('_');
+                string[] array = fileNameWithoutExtension?.Split('_');
                 try
                 {
                     crownType = (CrownType)((byte)ParseHelper.FromString(array[array.Length - 2], typeof(CrownType)));
@@ -468,15 +468,15 @@ namespace RW_FacialStuff
             if (pawn.story.crownType == CrownType.Narrow)
             {
 
-                MergeHeadWithHair(ref finalHeadFront, temptexturefront, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back", true), pawn.story.hairColor);
-                MergeHeadWithHair(ref finalHeadSide, temptextureside, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_side", true), pawn.story.hairColor);
-                MergeHeadWithHair(ref finalHeadBack, temptextureback, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back", true), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadFront, temptexturefront, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back"), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadSide, temptextureside, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_side"), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadBack, temptextureback, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back"), pawn.story.hairColor);
             }
             else
             {
-                MergeHeadWithHair(ref finalHeadFront, temptexturefront, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back", true), pawn.story.hairColor);
-                MergeHeadWithHair(ref finalHeadSide, temptextureside, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_side", true), pawn.story.hairColor);
-                MergeHeadWithHair(ref finalHeadBack, temptextureback, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back", true), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadFront, temptexturefront, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadSide, temptextureside, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_side"), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadBack, temptextureback, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"), pawn.story.hairColor);
             }
 
             finalHeadFront.Compress(true);

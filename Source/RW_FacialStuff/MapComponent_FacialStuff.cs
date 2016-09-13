@@ -29,8 +29,13 @@ namespace RW_FacialStuff
         public static SaveablePawn GetCache(Pawn pawn)
         {
             foreach (SaveablePawn c in PawnCache)
+            {
+                if (c.Pawn == null)
+                    PawnCache.Remove(c);
                 if (c.Pawn == pawn)
-                    return c;
+                    return c;                
+            }
+           
             SaveablePawn n = new SaveablePawn { Pawn = pawn };
             PawnCache.Add(n);
             return n;

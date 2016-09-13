@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
+using RW_FacialStuff.Initializer;
 using UnityEngine;
 using Verse;
 
@@ -34,7 +35,7 @@ namespace RW_FacialStuff.NoCCL
 
             GameObject initializer = new GameObject("FSMapComponentInjector");
             initializer.AddComponent<MapComponentInjector>();
-            Object.DontDestroyOnLoad((Object)initializer);
+            Object.DontDestroyOnLoad(initializer);
         }
 #endif
     }

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using Verse;
 using Verse.AI;
 
-
 namespace FaceStyling
 {
-    class FaceStyler : Building
+    abstract class FaceStyler : Building
     {
 
         public override void SpawnSetup()
@@ -17,7 +16,7 @@ namespace FaceStyling
 
         public void FaceStyling(Pawn pawn)
         {
-            Find.WindowStack.Add((Window)new Dialog_FaceStyling(pawn));
+            Find.WindowStack.Add(new Dialog_FaceStyling(pawn));
         }
 
 

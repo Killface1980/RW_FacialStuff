@@ -1,13 +1,14 @@
-﻿using RimWorld;
-using System.Collections.Generic;
-#if !NoCCL
-using CommunityCoreLibrary.ColorPicker;
-#endif
+﻿using System.Collections.Generic;
+using RimWorld;
 using RW_FacialStuff;
 using RW_FacialStuff.Defs;
+using RW_FacialStuff.Detouring;
 using RW_FacialStuff.Utilities;
 using UnityEngine;
 using Verse;
+#if !NoCCL
+using CommunityCoreLibrary.ColorPicker;
+#endif
 
 namespace FaceStyling
 {
@@ -237,7 +238,7 @@ namespace FaceStyling
             _listWidth = 450f;
             //   _listWidth = 200f;
             _columns = 5;
-            _entrySize = _listWidth / (float)_columns;
+            _entrySize = _listWidth / _columns;
             _nameBackground = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0.3f));
             _hairDefs = DefDatabase<HairDef>.AllDefsListForReading;
             _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
@@ -735,17 +736,17 @@ namespace FaceStyling
         {
             Rect rect2 = rect.ContractedBy(1f);
             Rect rect3 = rect2;
-            int num = Mathf.CeilToInt((float)_hairDefs.Count / (float)_columns);
+            int num = Mathf.CeilToInt(_hairDefs.Count / (float)_columns);
 
 
-            rect3.height = (float)num * _entrySize;
+            rect3.height = num * _entrySize;
             Vector2 vector = new Vector2(_entrySize, _entrySize);
             if (rect3.height > rect2.height)
             {
-                vector.x -= 16f / (float)_columns;
-                vector.y -= 16f / (float)_columns;
+                vector.x -= 16f / _columns;
+                vector.y -= 16f / _columns;
                 rect3.width -= 16f;
-                rect3.height = vector.y * ((float)num);
+                rect3.height = vector.y * num;
             }
             Rect selectHair = rect;
             selectHair.height = 30f;
@@ -756,7 +757,7 @@ namespace FaceStyling
             {
                 int num2 = i / _columns;
                 int num3 = i % _columns;
-                Rect rect4 = new Rect((float)num3 * vector.x, (float)num2 * vector.y, vector.x, vector.y);
+                Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
                 DrawHairPickerCell(_hairDefs[i], rect4);
             }
 
@@ -769,16 +770,16 @@ namespace FaceStyling
         {
             Rect rect2 = rect.ContractedBy(1f);
             Rect rect3 = rect2;
-            int num = Mathf.CeilToInt((float)_beardDefs.Count / (float)_columns);
+            int num = Mathf.CeilToInt(_beardDefs.Count / (float)_columns);
 
-            rect3.height = (float)num * _entrySize;
+            rect3.height = num * _entrySize;
             Vector2 vector = new Vector2(_entrySize, _entrySize);
             if (rect3.height > rect2.height)
             {
-                vector.x -= 16f / (float)_columns;
-                vector.y -= 16f / (float)_columns;
+                vector.x -= 16f / _columns;
+                vector.y -= 16f / _columns;
                 rect3.width -= 16f;
-                rect3.height = vector.y * ((float)num);
+                rect3.height = vector.y * num;
             }
             Rect selectHair = rect;
             selectHair.height = 30f;
@@ -790,7 +791,7 @@ namespace FaceStyling
             {
                 int num2 = i / _columns;
                 int num3 = i % _columns;
-                Rect rect4 = new Rect((float)num3 * vector.x, (float)num2 * vector.y, vector.x, vector.y);
+                Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
                 DrawBeardPickerCell(_beardDefs[i], rect4);
             }
 
@@ -803,16 +804,16 @@ namespace FaceStyling
         {
             Rect rect2 = rect.ContractedBy(1f);
             Rect rect3 = rect2;
-            int num = Mathf.CeilToInt((float)_mouthDefs.Count / (float)_columns);
+            int num = Mathf.CeilToInt(_mouthDefs.Count / (float)_columns);
 
-            rect3.height = (float)num * _entrySize;
+            rect3.height = num * _entrySize;
             Vector2 vector = new Vector2(_entrySize, _entrySize);
             if (rect3.height > rect2.height)
             {
-                vector.x -= 16f / (float)_columns;
-                vector.y -= 16f / (float)_columns;
+                vector.x -= 16f / _columns;
+                vector.y -= 16f / _columns;
                 rect3.width -= 16f;
-                rect3.height = vector.y * ((float)num);
+                rect3.height = vector.y * num;
             }
             Rect selectHair = rect;
             selectHair.height = 30f;
@@ -824,7 +825,7 @@ namespace FaceStyling
             {
                 int num2 = i / _columns;
                 int num3 = i % _columns;
-                Rect rect4 = new Rect((float)num3 * vector.x, (float)num2 * vector.y, vector.x, vector.y);
+                Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
                 DrawMouthPickerCell(_mouthDefs[i], rect4);
             }
 
@@ -837,16 +838,16 @@ namespace FaceStyling
         {
             Rect rect2 = rect.ContractedBy(1f);
             Rect rect3 = rect2;
-            int num = Mathf.CeilToInt((float)_eyeDefs.Count / (float)_columns);
+            int num = Mathf.CeilToInt(_eyeDefs.Count / (float)_columns);
 
-            rect3.height = (float)num * _entrySize;
+            rect3.height = num * _entrySize;
             Vector2 vector = new Vector2(_entrySize, _entrySize);
             if (rect3.height > rect2.height)
             {
-                vector.x -= 16f / (float)_columns;
-                vector.y -= 16f / (float)_columns;
+                vector.x -= 16f / _columns;
+                vector.y -= 16f / _columns;
                 rect3.width -= 16f;
-                rect3.height = vector.y * ((float)num);
+                rect3.height = vector.y * num;
             }
             Rect selectHair = rect;
             selectHair.height = 30f;
@@ -858,7 +859,7 @@ namespace FaceStyling
             {
                 int num2 = i / _columns;
                 int num3 = i % _columns;
-                Rect rect4 = new Rect((float)num3 * vector.x, (float)num2 * vector.y, vector.x, vector.y);
+                Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
                 DrawEyePickerCell(_eyeDefs[i], rect4);
             }
 
@@ -871,16 +872,16 @@ namespace FaceStyling
         {
             Rect rect2 = rect.ContractedBy(1f);
             Rect rect3 = rect2;
-            int num = Mathf.CeilToInt((float)_browDefs.Count / (float)_columns);
+            int num = Mathf.CeilToInt(_browDefs.Count / (float)_columns);
 
-            rect3.height = (float)num * _entrySize;
+            rect3.height = num * _entrySize;
             Vector2 vector = new Vector2(_entrySize, _entrySize);
             if (rect3.height > rect2.height)
             {
-                vector.x -= 16f / (float)_columns;
-                vector.y -= 16f / (float)_columns;
+                vector.x -= 16f / _columns;
+                vector.y -= 16f / _columns;
                 rect3.width -= 16f;
-                rect3.height = vector.y * ((float)num);
+                rect3.height = vector.y * num;
             }
             Rect selectHair = rect;
             selectHair.height = 30f;
@@ -892,7 +893,7 @@ namespace FaceStyling
             {
                 int num2 = i / _columns;
                 int num3 = i % _columns;
-                Rect rect4 = new Rect((float)num3 * vector.x, (float)num2 * vector.y, vector.x, vector.y);
+                Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
                 DrawBrowPickerCell(_browDefs[i], rect4);
             }
 

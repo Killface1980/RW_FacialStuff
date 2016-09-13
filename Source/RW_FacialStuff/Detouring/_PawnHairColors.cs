@@ -2,7 +2,7 @@
 using UnityEngine;
 using Verse;
 
-namespace RW_FacialStuff
+namespace RW_FacialStuff.Detouring
 {
     public static class _PawnHairColors
     {
@@ -38,6 +38,7 @@ namespace RW_FacialStuff
         //      public static Color Color04 = new Color32(237, 202, 156, 255);//(0,929411769f, 0,7921569f, 0,6117647f);
 
         [Detour(typeof(RimWorld.PawnHairColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
+        // ReSharper disable once UnusedMember.Global
         public static Color RandomHairColor(Color skinColor, int ageYears)
         {
             Color tempColor;
