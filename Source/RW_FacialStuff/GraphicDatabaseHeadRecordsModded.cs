@@ -10,6 +10,9 @@ namespace RW_FacialStuff
 {
     public class GraphicDatabaseHeadRecordsModded : GraphicDatabaseHeadRecords
     {
+        // use mouth?
+        private static bool usemouth = false;
+
 
         public static List<HeadGraphicRecordVanillaCustom> headsVanillaCustom = new List<HeadGraphicRecordVanillaCustom>();
         public static List<HeadGraphicRecordModded> headsModded = new List<HeadGraphicRecordModded>();
@@ -35,7 +38,7 @@ namespace RW_FacialStuff
                 graphicPathVanillaCustom = graphicPath;
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
 
-                string[] array = fileNameWithoutExtension.Split('_');
+                string[] array = fileNameWithoutExtension?.Split('_');
 
                 try
                 {
@@ -91,7 +94,7 @@ namespace RW_FacialStuff
                 graphicPath = pawn.story.HeadGraphicPath;
                 graphicPathModded = pawnSave.headGraphicIndex;
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
-                string[] array = fileNameWithoutExtension.Split('_');
+                string[] array = fileNameWithoutExtension?.Split('_');
                 try
                 {
                     crownType = (CrownType)((byte)ParseHelper.FromString(array[array.Length - 2], typeof(CrownType)));
@@ -279,8 +282,8 @@ namespace RW_FacialStuff
             //  }
             //  else
             //  {
-            eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.EyeDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.black);
-            browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.BrowDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.black);
+            eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.EyeDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
+            browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.BrowDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
 
             if (oldAge)
             {
@@ -303,6 +306,23 @@ namespace RW_FacialStuff
             // }
             // _textures.Add(eyeGraphic.MatFront.mainTexture as Texture2D);
 
+            // Brows
+
+            if (pawn.story.crownType == CrownType.Narrow)
+            {
+                ScaleTexture(browGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
+                ScaleTexture(browGraphic.MatSide.mainTexture as Texture2D, ref temptextureside, 102, 128);
+            }
+            else
+            {
+                temptexturefront = browGraphic.MatFront.mainTexture as Texture2D;
+                temptextureside = browGraphic.MatSide.mainTexture as Texture2D;
+            }
+            MergeTwoGraphics(ref finalHeadFront, temptexturefront, pawn.story.hairColor * new Color(0.3f, 0.3f, 0.3f));
+            MergeTwoGraphics(ref finalHeadSide, temptextureside, pawn.story.hairColor * new Color(0.3f, 0.3f, 0.3f));
+
+            // Eyes
+
             if (pawn.story.crownType == CrownType.Narrow)
             {
                 ScaleTexture(eyeGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
@@ -316,19 +336,7 @@ namespace RW_FacialStuff
             MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
             MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
 
-            if (pawn.story.crownType == CrownType.Narrow)
-            {
-                ScaleTexture(browGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
-                ScaleTexture(browGraphic.MatSide.mainTexture as Texture2D, ref temptextureside, 102, 128);
-            }
-            else
-            {
 
-                temptexturefront = browGraphic.MatFront.mainTexture as Texture2D;
-                temptextureside = browGraphic.MatSide.mainTexture as Texture2D;
-            }
-            MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
-            MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
 
             #region Male
             if (pawn.gender == Gender.Male)
@@ -398,8 +406,6 @@ namespace RW_FacialStuff
                 AddFacialHair(pawn, ref finalHeadFront, temptexturefront);
                 AddFacialHair(pawn, ref finalHeadSide, temptextureside);
 
-
-
             }
 
             #endregion
@@ -420,7 +426,7 @@ namespace RW_FacialStuff
 #if !NoCCL
                 if (ModConfigMenu.useMouth)
 #else
-                if (true)
+                if (usemouth)
 #endif
                 {
                     Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
@@ -462,15 +468,15 @@ namespace RW_FacialStuff
             if (pawn.story.crownType == CrownType.Narrow)
             {
 
-                MergeHeadWithHair(ref finalHeadFront, temptexturefront, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back", true), pawn.story.hairColor);
-                MergeHeadWithHair(ref finalHeadSide, temptextureside, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_side", true), pawn.story.hairColor);
-                MergeHeadWithHair(ref finalHeadBack, temptextureback, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back", true), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadFront, temptexturefront, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back"), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadSide, temptextureside, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_side"), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadBack, temptextureback, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back"), pawn.story.hairColor);
             }
             else
             {
-                MergeHeadWithHair(ref finalHeadFront, temptexturefront, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back", true), pawn.story.hairColor);
-                MergeHeadWithHair(ref finalHeadSide, temptextureside, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_side", true), pawn.story.hairColor);
-                MergeHeadWithHair(ref finalHeadBack, temptextureback, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back", true), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadFront, temptexturefront, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadSide, temptextureside, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_side"), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadBack, temptextureback, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"), pawn.story.hairColor);
             }
 
             finalHeadFront.Compress(true);
@@ -493,7 +499,6 @@ namespace RW_FacialStuff
             Object.DestroyImmediate(temptexturefront, true);
             Object.DestroyImmediate(temptextureside, true);
             Object.DestroyImmediate(temptextureback, true);
-
 
             pawnSave.sessionOptimized = true;
 

@@ -7,7 +7,7 @@ using Verse;
 
 namespace RW_FacialStuff
 {
-    public class PawnFaceChooser
+    public static class PawnFaceChooser
     {
 
 

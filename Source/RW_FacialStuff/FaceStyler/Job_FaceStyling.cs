@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using Verse;
 using Verse.AI;
+
 namespace FaceStyling
 {
+    // ReSharper disable once UnusedMember.Global
     public class Job_FaceStyling : JobDriver
     {
         private const TargetIndex ColorChanger = TargetIndex.A;
@@ -23,10 +25,10 @@ namespace FaceStyling
             {
                 initAction = delegate
                 {
-                    FaceStyler faceStyler = TargetA.Thing as FaceStyler;
+                    FaceStyling.FaceStyler faceStyler = TargetA.Thing as FaceStyling.FaceStyler;
                     if (faceStyler != null)
                     {
-                        FaceStyler rainbowSquieerl2 = TargetA.Thing as FaceStyler;
+                        FaceStyling.FaceStyler rainbowSquieerl2 = (FaceStyling.FaceStyler) TargetA.Thing;
                         if (GetActor().Position == TargetA.Thing.InteractionCell)
                         {
                             rainbowSquieerl2.FaceStyling(GetActor());

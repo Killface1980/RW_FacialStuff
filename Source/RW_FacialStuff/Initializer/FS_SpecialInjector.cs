@@ -1,13 +1,14 @@
-﻿using System.Reflection;
-using Verse;
-// Toggle in Hospitality Properties
-#if NoCCL
+﻿// Toggle in Hospitality Properties
+using System.Reflection;
 using RW_FacialStuff.NoCCL;
+using Verse;
+#if NoCCL
+
 #else
 using CommunityCoreLibrary;
 #endif
 
-namespace RW_FacialStuff
+namespace RW_FacialStuff.Initializer
 {
 
     public class FS_SpecialInjector : SpecialInjector
@@ -40,7 +41,9 @@ namespace RW_FacialStuff
                                 Log.Error(string.Format("Facial Stuff :: Detours :: Can't find source method '{0} with bindingflags {1}", targetMethod.Name, flags));
                                 return false;
                             }
+                            {                                
                             if (!Detours.TryDetourFromTo(sourceMethod, targetMethod)) return false;
+                            }
                         }
                     }
                 }

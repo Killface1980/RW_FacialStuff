@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Reflection;
+using RW_FacialStuff.Initializer;
+using UnityEngine;
 using Verse;
 
 namespace RW_FacialStuff.NoCCL
@@ -30,6 +32,10 @@ namespace RW_FacialStuff.NoCCL
             var injector = new FS_SpecialInjector();
             if (injector.Inject()) Log.Message(AssemblyName + " injected.");
             else Log.Error(AssemblyName + " failed to get injected properly.");
+
+            GameObject initializer = new GameObject("FSMapComponentInjector");
+            initializer.AddComponent<MapComponentInjector>();
+            Object.DontDestroyOnLoad(initializer);
         }
 #endif
     }
