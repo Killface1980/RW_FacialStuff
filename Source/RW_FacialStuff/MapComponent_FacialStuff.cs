@@ -30,8 +30,6 @@ namespace RW_FacialStuff
         {
             foreach (SaveablePawn c in PawnCache)
             {
-                if (c.Pawn == null)
-                    PawnCache.Remove(c);
                 if (c.Pawn == pawn)
                     return c;                
             }
