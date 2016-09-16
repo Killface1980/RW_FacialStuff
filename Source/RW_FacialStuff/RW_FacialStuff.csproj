@@ -111,6 +111,9 @@
     <Content Include="..\..\Defs\HairDefs\SpoonshortagesRimworldHairstyles_HairDefs.xml">
       <Link>Defs\SpoonshortagesRimworldHairstyles_HairDefs.xml</Link>
     </Content>
+    <Content Include="..\..\Defs\JobDefs\Clutter_Jobs.xml">
+      <Link>Defs\Clutter_Jobs.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\ModHelperDefs\ModHelper.xml">
       <Link>Initializer\ModHelper.xml</Link>
     </Content>
