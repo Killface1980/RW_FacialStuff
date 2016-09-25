@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using RimWorld;
 using RW_FacialStuff;
 using RW_FacialStuff.Defs;
@@ -8,6 +9,8 @@ using UnityEngine;
 using Verse;
 #if !NoCCL
 using CommunityCoreLibrary.ColorPicker;
+#else
+using FaceStyling.ColorPicker;
 #endif
 
 namespace FaceStyling
@@ -134,9 +137,9 @@ namespace FaceStyling
         private static BrowDef originalBrow;
         private static Color _newColour;
         private static Color originalColour;
-#if !NoCCL
+
         private static ColorWrapper colourWrapper;
-#endif
+
         private Vector2 _scrollPosition = Vector2.zero;
 
         public HairDef newHair
@@ -258,9 +261,9 @@ namespace FaceStyling
             closeOnClickedOutside = false;
             pawn = p;
             originalColour = (_newColour = pawnSave.HairColorOrg);
-#if !NoCCL
-           colourWrapper = new ColorWrapper(newColour);
-#endif
+
+            colourWrapper = new ColorWrapper(newColour);
+
             _newHair = (originalHair = pawn.story.hairDef);
             _newBeard = (originalBeard = pawnSave.BeardDef);
             _newMouth = (originalMouth = pawnSave.MouthDef);
@@ -314,11 +317,9 @@ namespace FaceStyling
 
         public override void PreClose()
         {
-#if !NoCCL
      while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker), false))
             {
             }
-#endif
         }
 
         private Graphic HairGraphic(HairDef def)
@@ -925,7 +926,6 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 newHair = hair;
-#if !NoCCL
                 while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
                 {
                 }
@@ -936,7 +936,6 @@ namespace FaceStyling
                 {
                     initialPosition = new Vector2(windowRect.xMax + _margin, windowRect.yMin),
                 });
-#endif
             }
         }
 
@@ -962,7 +961,6 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 newBeard = beard;
-#if !NoCCL
              while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
                 {
                 }
@@ -973,7 +971,6 @@ namespace FaceStyling
                 {
                     initialPosition = new Vector2(windowRect.xMax + _margin, windowRect.yMin),
                 });
-#endif
             }
         }
 
@@ -999,9 +996,7 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 NewMouth = mouth;
-#if !NoCCL
              Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
-#endif
             }
         }
 
@@ -1027,9 +1022,7 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 newEye = eye;
-#if !NoCCL
      Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
-#endif
             }
         }
 
@@ -1055,9 +1048,7 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 newBrow = brow;
-#if !NoCCL
            Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
-#endif
             }
         }
 
@@ -1083,10 +1074,8 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 newColour = color;
-#if !NoCCL
 
                 Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
-#endif
             }
         }
 

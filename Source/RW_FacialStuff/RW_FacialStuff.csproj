@@ -58,6 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="MeshPoolFS.cs" />
+    <Compile Include="ColorPicker\ColorWrapper.cs" />
+    <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
+    <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="DetourAttribute.cs" />
     <Compile Include="Defs\FacialStuff_Defs.cs" />
     <Compile Include="FaceStyler\Dialog_FaceStyling.cs" />
