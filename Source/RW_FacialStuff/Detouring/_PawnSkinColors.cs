@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -50,7 +51,7 @@ namespace RW_FacialStuff.Detouring
         //    return color.r + color.g + color.b <= skinColor.r + skinColor.g + skinColor.b + 0.01f;
         //}
 
-        [Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
+        [Detour(typeof(PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
         public static Color GetSkinColor(float skinWhiteness)
         {
             int skinDataLeftIndexByWhiteness = GetSkinDataLeftIndexByWhiteness(skinWhiteness);
@@ -77,7 +78,7 @@ namespace RW_FacialStuff.Detouring
             return result;
         }
 
-        [Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
+        [Detour(typeof(PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
         public static float RandomSkinWhiteness()
         {
             float value = Rand.Value;
@@ -96,6 +97,50 @@ namespace RW_FacialStuff.Detouring
             }
             float t = Mathf.InverseLerp(_SkinColors[num].selector, _SkinColors[num + 1].selector, value);
             return Mathf.Lerp(_SkinColors[num].whiteness, _SkinColors[num + 1].whiteness, t);
+        }
+
+        [Detour(typeof(PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
+        public static float GetWhitenessCommonalityFactor(float skinWhiteness)
+        {
+            int skinDataLeftIndexByWhiteness = GetSkinDataLeftIndexByWhiteness(skinWhiteness);
+            if (skinDataLeftIndexByWhiteness == _SkinColors.Length - 1)
+            {
+                return GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness);
+            }
+            float t = Mathf.InverseLerp(_SkinColors[skinDataLeftIndexByWhiteness].whiteness, _SkinColors[skinDataLeftIndexByWhiteness + 1].whiteness, skinWhiteness);
+            return Mathf.Lerp(GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness), GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness + 1), t);
+        }
+
+        private static float GetSkinCommonalityFactor(int skinDataIndex)
+        {
+            float num = 0f;
+            for (int i = 0; i < _SkinColors.Length; i++)
+            {
+                num = Mathf.Max(num, GetTotalAreaWhereClosestToSelector(i));
+            }
+            return GetTotalAreaWhereClosestToSelector(skinDataIndex) / num;
+        }
+
+        private static float GetTotalAreaWhereClosestToSelector(int skinDataIndex)
+        {
+            float num = 0f;
+            if (skinDataIndex == 0)
+            {
+                num += _SkinColors[skinDataIndex].selector;
+            }
+            else if (_SkinColors.Length > 1)
+            {
+                num += (_SkinColors[skinDataIndex].selector - _SkinColors[skinDataIndex - 1].selector) / 2f;
+            }
+            if (skinDataIndex == _SkinColors.Length - 1)
+            {
+                num += 1f - _SkinColors[skinDataIndex].selector;
+            }
+            else if (_SkinColors.Length > 1)
+            {
+                num += (_SkinColors[skinDataIndex + 1].selector - _SkinColors[skinDataIndex].selector) / 2f;
+            }
+            return num;
         }
     }
 }
