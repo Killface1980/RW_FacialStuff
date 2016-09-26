@@ -62,6 +62,7 @@ namespace RW_FacialStuff.Detouring
             return Color.Lerp(_SkinColors[skinDataLeftIndexByWhiteness].color, _SkinColors[skinDataLeftIndexByWhiteness + 1].color, t);
         }
 
+        [Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.NonPublic))]
         private static int GetSkinDataLeftIndexByWhiteness(float skinWhiteness)
         {
             int result = 0;
