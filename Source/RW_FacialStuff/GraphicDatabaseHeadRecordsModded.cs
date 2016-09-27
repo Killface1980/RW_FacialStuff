@@ -479,6 +479,16 @@ namespace RW_FacialStuff
                 MergeHeadWithHair(ref finalHeadBack, temptextureback, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"), pawn.story.hairColor);
             }
 
+            if (false)
+            {
+                byte[] bytes = finalHeadFront.EncodeToPNG();
+                File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + pawn.Name + "_01front.png", bytes);
+                byte[] bytes2 = finalHeadSide.EncodeToPNG();
+                File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + pawn.Name + "_02side.png", bytes2);
+                byte[] bytes3 = finalHeadBack.EncodeToPNG();
+                File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + pawn.Name + "_03back.png", bytes3);
+            }
+
             finalHeadFront.Compress(true);
             finalHeadSide.Compress(true);
             finalHeadBack.Compress(true);
