@@ -31,9 +31,9 @@ namespace RW_FacialStuff
             foreach (SaveablePawn c in PawnCache)
             {
                 if (c.Pawn == pawn)
-                    return c;                
+                    return c;
             }
-           
+
             SaveablePawn n = new SaveablePawn { Pawn = pawn };
             PawnCache.Add(n);
             return n;
@@ -56,6 +56,9 @@ namespace RW_FacialStuff
 
             if (PawnCache == null)
                 PawnCache = new List<SaveablePawn>();
+
+
+
         //  if (FacePresets == null)
         //      FacePresets = new List<FacePreset>();
         }

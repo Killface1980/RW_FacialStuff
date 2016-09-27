@@ -44,12 +44,12 @@ namespace RW_FacialStuff.Detouring
 //          new SkinColorData(1f, 1f, new Color(0.9490196f, 0.929411769f, 0.8784314f))
         };
 
-        //[Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
-        //public static bool IsDarkSkin(Color color)
-        //{
-        //    Color skinColor = GetSkinColor(0.5f);
-        //    return color.r + color.g + color.b <= skinColor.r + skinColor.g + skinColor.b + 0.01f;
-        //}
+        [Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
+        public static bool IsDarkSkin(Color color)
+        {
+            Color skinColor = GetSkinColor(0.5f);
+            return color.r + color.g + color.b <= skinColor.r + skinColor.g + skinColor.b + 0.01f;
+        }
 
         [Detour(typeof(PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
         public static Color GetSkinColor(float skinWhiteness)

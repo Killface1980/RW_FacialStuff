@@ -103,7 +103,7 @@ namespace RW_FacialStuff.Detouring
                 float value2 = Rand.Value;
 
                 //dark hair
-                if (value2 < 0.15f)
+                if (value2 < 0.125f)
                 {
                     tempColor = Color.Lerp(HairPlatinum, HairYellowBlonde, Rand.Value);
                     tempColor = Color.Lerp(tempColor, HairTerraCotta, Rand.Range(0.3f, 1f));
@@ -111,7 +111,7 @@ namespace RW_FacialStuff.Detouring
                     tempColor = Color.Lerp(tempColor, HairMidnightBlack, Rand.Range(0.3f, 1f));
                 }
                 //brown hair
-                else if (value2 < 0.3f)
+                else if (value2 < 0.25f)
                 {
                     tempColor = Color.Lerp(HairPlatinum, HairYellowBlonde, Rand.Value);
                     tempColor = Color.Lerp(tempColor, HairTerraCotta, Rand.Range(0f, 0.6f));
@@ -128,7 +128,7 @@ namespace RW_FacialStuff.Detouring
                 else if (value2 < 0.7f)
                 {
                     tempColor = Color.Lerp(HairPlatinum, HairTerraCotta, Rand.Range(0.25f, 1f));
-                    tempColor = Color.Lerp(tempColor, HairMidnightBlack, Rand.Range(0f, 0.7f));
+                    tempColor = Color.Lerp(tempColor, HairMidnightBlack, Rand.Range(0f, 0.5f));
                 }
                 // pure blond / albino
                 else if (value2 < 0.85f)
