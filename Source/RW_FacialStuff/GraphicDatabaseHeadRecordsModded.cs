@@ -21,7 +21,6 @@ namespace RW_FacialStuff
         private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
         protected Pawn pawn;
 
-        public static int headIndex = 0;
 
         public class HeadGraphicRecordVanillaCustom
         {
