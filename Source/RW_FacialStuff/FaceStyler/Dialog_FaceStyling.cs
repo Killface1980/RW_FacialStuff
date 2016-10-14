@@ -296,7 +296,6 @@ namespace FaceStyling
 
         public override void PostOpen()
         {
-            windowRect.x = windowRect.x - (windowRect.width - _margin) / 2f;
             switch (pawn.gender)
             {
                 case Gender.Male:

@@ -3,10 +3,10 @@
   <name>Facial Stuff A15</name>
   <author>Killface</author>
   <url>https://ludeon.com/forums/index.php?topic=20771.msg228259#msg228259</url>
-  <targetVersion>0.15.1280</targetVersion>
+  <targetVersion>0.15.1284</targetVersion>
   <description>
     This mod aims to provide more visual individuality for your colonists.
-    - 8 newly defined skin colors instead of the vanilla 6.
+    - 10 newly defined skin colors instead of the vanilla 6.
     - hair genetics according to real life.
     - includes a few selected trend colors of 5501.
     - 30+ different beards.
@@ -19,5 +19,7 @@
     
     Special thanks to Fluffy for the FaceStyling bench (adapted from 'Clutter')
     Uses the detour code from Orion's 'Hospitality'
+
+    2016-10-14 - updated tribal hairs from NackbladIncRimhair
   </description>
 </ModMetaData>

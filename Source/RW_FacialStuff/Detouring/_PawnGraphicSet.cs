@@ -30,9 +30,10 @@ namespace RW_FacialStuff.Detouring
             ClearCache();
             GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
 
-            if (pawn.kindDef.race.ToString().Equals("Human")
+            if (pawn.RaceProps.IsFlesh && (pawn.kindDef.race.ToString().Equals("Human")
                 || pawn.kindDef.race.ToString().Equals("Orassan")
-                || pawn.kindDef.race.ToString().Equals("Jaffa"))
+                || pawn.kindDef.race.ToString().Equals("Jaffa")))
+
             {
                 var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
@@ -93,7 +94,7 @@ namespace RW_FacialStuff.Detouring
                 if (!pawnSave.sessionOptimized)
                 {
                     // Build the empty head index once to be used for the blank heads
-                    if (HeadIndex.Count==0)
+                    if (HeadIndex.Count == 0)
                         for (int i = 0; i < 1024; i++)
                         {
                             HeadIndex.Add(i.ToString("0000"), null);
@@ -113,9 +114,9 @@ namespace RW_FacialStuff.Detouring
                         }
                     }
 
-                  //pawnSave.headGraphicIndex = "Heads/Blank/" + GraphicDatabaseHeadRecordsModded.headIndex.ToString("0000");
-                  //GraphicDatabaseHeadRecordsModded.headsModded.Add(new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(pawn));
-                  //GraphicDatabaseHeadRecordsModded.headIndex += 1;
+                    //pawnSave.headGraphicIndex = "Heads/Blank/" + GraphicDatabaseHeadRecordsModded.headIndex.ToString("0000");
+                    //GraphicDatabaseHeadRecordsModded.headsModded.Add(new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(pawn));
+                    //GraphicDatabaseHeadRecordsModded.headIndex += 1;
                 }
 
                 if (pawn.RaceProps.hasGenders)
@@ -143,8 +144,7 @@ namespace RW_FacialStuff.Detouring
                 */
 
             }
-            else
-                if (pawn.RaceProps.Humanlike)
+            else if (pawn.RaceProps.Humanlike)
             {
                 nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
                 rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RottingColor);
