@@ -88,7 +88,7 @@ namespace RW_FacialStuff
 
             public HeadGraphicRecordModded(Pawn pawn)
             {
-                var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+                SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
                 this.pawn = pawn;
                 graphicPath = pawn.story.HeadGraphicPath;
@@ -130,7 +130,7 @@ namespace RW_FacialStuff
 
         public static Graphic_Multi GetModdedHeadNamed(Pawn pawn, bool useVanilla, Color color)
         {
-            var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+            SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
             if (useVanilla)
             {
@@ -244,8 +244,8 @@ namespace RW_FacialStuff
             //}
 
 
-            var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
-            var headGraphic = GetModdedHeadNamed(pawn, false, Color.white);
+            SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+            Graphic_Multi headGraphic = GetModdedHeadNamed(pawn, false, Color.white);
 
             // grab the blank texture instead of Vanilla
             Graphic headGraphicVanilla = GetModdedHeadNamed(pawn, true, Color.white);
@@ -253,9 +253,9 @@ namespace RW_FacialStuff
 
 
 
-            var finalHeadFront = MakeReadable(headGraphicVanilla.MatFront.mainTexture as Texture2D);
-            var finalHeadSide = MakeReadable(headGraphicVanilla.MatSide.mainTexture as Texture2D);
-            var finalHeadBack = MakeReadable(headGraphicVanilla.MatBack.mainTexture as Texture2D);
+            Texture2D finalHeadFront = MakeReadable(headGraphicVanilla.MatFront.mainTexture as Texture2D);
+            Texture2D finalHeadSide = MakeReadable(headGraphicVanilla.MatSide.mainTexture as Texture2D);
+            Texture2D finalHeadBack = MakeReadable(headGraphicVanilla.MatBack.mainTexture as Texture2D);
 
             PaintHead(finalHeadFront, color);
             PaintHead(finalHeadSide, color);
@@ -297,8 +297,8 @@ namespace RW_FacialStuff
             }
             //   }
 
-            var temptexturefront = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-            var temptextureside = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+            Texture2D temptexturefront = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+            Texture2D temptextureside = new Texture2D(1, 1, TextureFormat.ARGB32, false);
 
             // if (_textures.Contains(eyeGraphic.MatFront.mainTexture as Texture2D))
             // {
@@ -449,7 +449,7 @@ namespace RW_FacialStuff
             //   temptexturefront = Object.Instantiate(hairGraphic.MatFront.mainTexture as Texture2D);
             //   temptextureside = Object.Instantiate(hairGraphic.MatSide.mainTexture as Texture2D);
             //   temptextureback = Object.Instantiate(hairGraphic.MatBack.mainTexture as Texture2D);
-            var temptextureback = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+            Texture2D temptextureback = new Texture2D(1, 1, TextureFormat.ARGB32, false);
 
             if (pawn.story.crownType == CrownType.Narrow)
             {
@@ -516,6 +516,100 @@ namespace RW_FacialStuff
 
             return headGraphic;
         }
+
+        public static Graphic_Multi ModifiedAlienHead(Pawn pawn, Color color, Graphic hairGraphic)
+        {
+
+            SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+            Graphic_Multi headGraphic = GetModdedHeadNamed(pawn, false, Color.white);
+
+            // grab the blank texture instead of Vanilla
+            Graphic headGraphicVanilla = GetModdedHeadNamed(pawn, true, Color.white);
+
+            Texture2D finalHeadFront = MakeReadable(headGraphicVanilla.MatFront.mainTexture as Texture2D);
+            Texture2D finalHeadSide = MakeReadable(headGraphicVanilla.MatSide.mainTexture as Texture2D);
+            Texture2D finalHeadBack = MakeReadable(headGraphicVanilla.MatBack.mainTexture as Texture2D);
+
+            PaintHead(finalHeadFront, color);
+            PaintHead(finalHeadSide, color);
+            PaintHead(finalHeadBack, color);
+
+            //   }
+
+            Texture2D temptexturefront = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+            Texture2D temptextureside = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+
+            Texture2D temptextureback = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+
+            if (pawn.story.crownType == CrownType.Narrow)
+            {
+                ScaleTexture(MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D), ref temptexturefront, 112, 128);
+                ScaleTexture(MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D), ref temptextureside, 112, 128);
+                ScaleTexture(MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D), ref temptextureback, 112, 128);
+            }
+            else
+            {
+                temptexturefront = MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D);
+                temptextureside = MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D);
+                temptextureback = MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D);
+            }
+
+            //    MergeColor(ref finalHeadBack, pawn.story.SkinColor);
+            if (pawn.story.crownType == CrownType.Narrow)
+            {
+
+                MergeHeadWithHair(ref finalHeadFront, temptexturefront, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back"), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadSide, temptextureside, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_side"), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadBack, temptextureback, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back"), pawn.story.hairColor);
+            }
+            else
+            {
+                MergeHeadWithHair(ref finalHeadFront, temptexturefront, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadSide, temptextureside, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_side"), pawn.story.hairColor);
+                MergeHeadWithHair(ref finalHeadBack, temptextureback, ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"), pawn.story.hairColor);
+            }
+
+            if (false)
+            {
+                byte[] bytes = finalHeadFront.EncodeToPNG();
+                File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + pawn.Name + "_01front.png", bytes);
+                byte[] bytes2 = finalHeadSide.EncodeToPNG();
+                File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + pawn.Name + "_02side.png", bytes2);
+                byte[] bytes3 = finalHeadBack.EncodeToPNG();
+                File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + pawn.Name + "_03back.png", bytes3);
+            }
+
+            finalHeadFront.Compress(true);
+            finalHeadSide.Compress(true);
+            finalHeadBack.Compress(true);
+
+            finalHeadFront.mipMapBias = 0.5f;
+            finalHeadSide.mipMapBias = 0.5f;
+            finalHeadBack.mipMapBias = 0.5f;
+
+            finalHeadFront.Apply(false, true);
+            finalHeadSide.Apply(false, true);
+            finalHeadBack.Apply(false, true);
+
+
+            headGraphic.MatFront.mainTexture = finalHeadFront;
+            headGraphic.MatSide.mainTexture = finalHeadSide;
+            headGraphic.MatBack.mainTexture = finalHeadBack;
+
+            Object.DestroyImmediate(temptexturefront, true);
+            Object.DestroyImmediate(temptextureside, true);
+            Object.DestroyImmediate(temptextureback, true);
+
+            pawnSave.sessionOptimized = true;
+
+            //    moddedHeadGraphics.Add(new KeyValuePair<string, Graphic_Multi>(pawn + color.ToString(), headGraphic));
+
+            return headGraphic;
+        }
+
+
+
+
         private static void PaintHead(Texture2D finalHeadFront, Color color)
         {
             for (int x = 0; x < 128; x++)
@@ -554,7 +648,7 @@ namespace RW_FacialStuff
             RenderTexture.active = tmp;
 
             // Create a new readable Texture2D to copy the pixels to it
-            var myTexture2D = new Texture2D(texture.width, texture.width, TextureFormat.ARGB32, false);
+            Texture2D myTexture2D = new Texture2D(texture.width, texture.width, TextureFormat.ARGB32, false);
 
             // Copy the pixels from the RenderTexture to the new Texture
             myTexture2D.ReadPixels(new Rect(0, 0, tmp.width, tmp.height), 0, 0);

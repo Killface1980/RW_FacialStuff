@@ -102,31 +102,31 @@ namespace RW_FacialStuff
             {
                 case 2:
                     {
-                        var filtered = source.Where(x => x.label.Contains("Nice"));
+                        IEnumerable<BrowDef> filtered = source.Where(x => x.label.Contains("Nice"));
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
                 case 1:
                     {
-                        var filtered = source.Where(x => x.label.Contains("Aware"));
+                        IEnumerable<BrowDef> filtered = source.Where(x => x.label.Contains("Aware"));
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
                 case 0:
                     {
-                        var filtered = source.Where(x => !x.label.Contains("Depressed") && !x.label.Contains("Tired"));
+                        IEnumerable<BrowDef> filtered = source.Where(x => !x.label.Contains("Depressed") && !x.label.Contains("Tired"));
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
                 case -1:
                     {
-                        var filtered = source.Where(x => x.label.Contains("Tired"));
+                        IEnumerable<BrowDef> filtered = source.Where(x => x.label.Contains("Tired"));
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
                 case -2:
                     {
-                        var filtered = source.Where(x => x.label.Contains("Depressed"));
+                        IEnumerable<BrowDef> filtered = source.Where(x => x.label.Contains("Depressed"));
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
@@ -144,7 +144,7 @@ namespace RW_FacialStuff
                                              where wrinkle.hairGender.ToString() == pawn.gender.ToString()  //.SharesElementWith(factionType.hairTags)
                                              select wrinkle;
 
-            var chosenWrinkles = source.FirstOrDefault();
+            WrinkleDef chosenWrinkles = source.FirstOrDefault();
 
             return chosenWrinkles;
         }
@@ -190,32 +190,32 @@ namespace RW_FacialStuff
             {
                 case 2:
                     {
-                        var filtered = source.Where(x => x.label.Contains("Smile"));
+                        IEnumerable<MouthDef> filtered = source.Where(x => x.label.Contains("Smile"));
                         chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
                         return chosenMouths;
                     }
                 case 1:
                     {
-                        var filtered = source.Where(x => x.label.Contains("Default"));
+                        IEnumerable<MouthDef> filtered = source.Where(x => x.label.Contains("Default"));
                         chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
                         return chosenMouths;
                     }
                 case 0:
                     {
-                        var filtered = source.Where(x => !x.label.Contains("Default") && !x.label.Contains("Smile") && !x.label.Contains("Big") && !x.label.Contains("Sad"));
+                        IEnumerable<MouthDef> filtered = source.Where(x => !x.label.Contains("Default") && !x.label.Contains("Smile") && !x.label.Contains("Big") && !x.label.Contains("Sad"));
                         chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
                         return chosenMouths;
                     }
 
                 case -1:
                     {
-                        var filtered = source.Where(x => x.label.Contains("Big"));
+                        IEnumerable<MouthDef> filtered = source.Where(x => x.label.Contains("Big"));
                         chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
                         return chosenMouths;
                     }
                 case -2:
                     {
-                        var filtered = source.Where(x => x.label.Contains("Sad"));
+                        IEnumerable<MouthDef> filtered = source.Where(x => x.label.Contains("Sad"));
                         chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
                         return chosenMouths;
                     }

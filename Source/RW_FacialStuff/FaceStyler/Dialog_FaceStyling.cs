@@ -253,7 +253,7 @@ namespace FaceStyling
 
         public Dialog_FaceStyling(Pawn p)
         {
-            var pawnSave = MapComponent_FacialStuff.GetCache(p);
+            SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(p);
             if (pawnSave.BeardDef == null)
                 pawnSave.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
             absorbInputAroundWindow = false;
@@ -459,7 +459,7 @@ namespace FaceStyling
             Rect selectionRect = new Rect(0f, pawnRect.yMax + _margin, _previewSize, _previewSize);
             Rect listRect = new Rect(_previewSize + _margin, 0f, _listWidth, parentRect.height - _margin * 2);
             labelRect = labelRect.CenteredOnXIn(pawnRect);
-            var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+            SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
             for (int i = 0; i < DisplayGraphics.Length; i++)
             {
                 if (pawn.gender == Gender.Male)
@@ -536,7 +536,7 @@ namespace FaceStyling
             Widgets.Label(labelRect, nameStringShort);
             Widgets.DrawMenuSection(listRect);
 
-            var set = new Rect(selectionRect);
+            Rect set = new Rect(selectionRect);
             set.height = 30f;
             set.width = selectionRect.width / 2 - 10f;
 
@@ -1098,7 +1098,7 @@ namespace FaceStyling
                 // update story to persist across save/load
                 pawn.story.hairColor = newColour;
                 pawn.story.hairDef = newHair;
-                var pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+                SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
                 if (pawn.gender == Gender.Male)
                 {
                     pawnSave.BeardDef = newBeard;

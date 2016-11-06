@@ -644,8 +644,8 @@ namespace FaceStyling.ColorPicker
             if (_alphaPickerBG == null)
                 _alphaPickerBG = new Texture2D(1, pickerSize);
 
-            var h = pickerSize;
-            var hu = 1f / h;
+            int h = pickerSize;
+            float hu = 1f / h;
 
             // RGB color from cache, increasing a
             for (int y = 0; y < h; y++)
@@ -684,8 +684,8 @@ namespace FaceStyling.ColorPicker
             if (_huePickerBG == null)
                 _huePickerBG = new Texture2D(1, pickerSize);
 
-            var h = pickerSize;
-            var hu = UnitsPerPixel;
+            int h = pickerSize;
+            float hu = UnitsPerPixel;
 
             // HSV colors, S = V = 1
             for (int y = 0; y < h; y++)

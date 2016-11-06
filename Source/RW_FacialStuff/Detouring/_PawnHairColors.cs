@@ -46,7 +46,7 @@ namespace RW_FacialStuff.Detouring
 
             if (Rand.Value < 0.02f)
             {
-                var rand = Rand.Value;
+                float rand = Rand.Value;
 
            //   if (rand < 0.1f)
            //       return new Color(HairDarkPurple.r*Rand.Range(0.25f, 1f), HairDarkPurple.g * Rand.Range(0.25f, 1f), HairDarkPurple.b * Rand.Range(0.25f, 1f), 255); 

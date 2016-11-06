@@ -1,4 +1,6 @@
 ﻿// Toggle in Hospitality Properties
+
+using System;
 using System.Reflection;
 using RW_FacialStuff.NoCCL;
 using Verse;
@@ -26,16 +28,16 @@ namespace RW_FacialStuff.Initializer
 
             #region Automatic hookup
             // Loop through all detour attributes and try to hook them up
-            foreach (var targetType in Assembly.GetTypes())
+            foreach (Type targetType in Assembly.GetTypes())
             {
-                foreach (var bindingFlags in bindingFlagCombos)
+                foreach (BindingFlags bindingFlags in bindingFlagCombos)
                 {
-                    foreach (var targetMethod in targetType.GetMethods(bindingFlags))
+                    foreach (MethodInfo targetMethod in targetType.GetMethods(bindingFlags))
                     {
                         foreach (DetourAttribute detour in targetMethod.GetCustomAttributes(typeof(DetourAttribute), true))
                         {
-                            var flags = detour.bindingFlags != default(BindingFlags) ? detour.bindingFlags : bindingFlags;
-                            var sourceMethod = detour.source.GetMethod(targetMethod.Name, flags);
+                            BindingFlags flags = detour.bindingFlags != default(BindingFlags) ? detour.bindingFlags : bindingFlags;
+                            MethodInfo sourceMethod = detour.source.GetMethod(targetMethod.Name, flags);
                             if (sourceMethod == null)
                             {
                                 Log.Error(string.Format("Facial Stuff :: Detours :: Can't find source method '{0} with bindingflags {1}", targetMethod.Name, flags));
