@@ -73,6 +73,7 @@
     <Compile Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphic_Multi_HeadParts.cs" />
     <Compile Include="Initializer\FS_SpecialInjector.cs" />
+    <Compile Include="MaskTextures.cs" />
     <Compile Include="Utilities\DialogUtility.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
     <Compile Include="ModConfigMenu.cs" />

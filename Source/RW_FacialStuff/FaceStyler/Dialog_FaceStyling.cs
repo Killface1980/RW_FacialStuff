@@ -142,7 +142,7 @@ namespace FaceStyling
 
         private Vector2 _scrollPosition = Vector2.zero;
 
-        public HairDef newHair
+        public HairDef NewHair
         {
             get
             {
@@ -151,11 +151,11 @@ namespace FaceStyling
             set
             {
                 _newHair = value;
-                SetGraphicSlot(GraphicSlotGroup.Hair, pawn, HairGraphic(value), pawn.def.uiIcon, newColour);
+                SetGraphicSlot(GraphicSlotGroup.Hair, pawn, HairGraphic(value), pawn.def.uiIcon, NewColour);
             }
         }
 
-        public BeardDef newBeard
+        public BeardDef NewBeard
         {
             get
             {
@@ -164,7 +164,7 @@ namespace FaceStyling
             set
             {
                 _newBeard = value;
-                SetGraphicSlot(GraphicSlotGroup.Beard, pawn, BeardGraphic(value), pawn.def.uiIcon, newColour);
+                SetGraphicSlot(GraphicSlotGroup.Beard, pawn, BeardGraphic(value), pawn.def.uiIcon, NewColour);
             }
         }
 
@@ -177,11 +177,11 @@ namespace FaceStyling
             set
             {
                 _newMouth = value;
-                SetGraphicSlot(GraphicSlotGroup.Mouth, pawn, MouthGraphic(value), pawn.def.uiIcon, newColour);
+                SetGraphicSlot(GraphicSlotGroup.Mouth, pawn, MouthGraphic(value), pawn.def.uiIcon, NewColour);
             }
         }
 
-        public EyeDef newEye
+        public EyeDef NewEye
         {
             get
             {
@@ -190,11 +190,11 @@ namespace FaceStyling
             set
             {
                 _newEye = value;
-                SetGraphicSlot(GraphicSlotGroup.Eyes, pawn, EyeGraphic(value), pawn.def.uiIcon, newColour);
+                SetGraphicSlot(GraphicSlotGroup.Eyes, pawn, EyeGraphic(value), pawn.def.uiIcon, NewColour);
             }
         }
 
-        public BrowDef newBrow
+        public BrowDef NewBrow
         {
             get
             {
@@ -203,11 +203,11 @@ namespace FaceStyling
             set
             {
                 _newBrow = value;
-                SetGraphicSlot(GraphicSlotGroup.Brows, pawn, BrowGraphic(value), pawn.def.uiIcon, newColour * new Color(0.3f, 0.3f, 0.3f));
+                SetGraphicSlot(GraphicSlotGroup.Brows, pawn, BrowGraphic(value), pawn.def.uiIcon, NewColour * new Color(0.3f, 0.3f, 0.3f));
             }
         }
 
-        public Color newColour
+        public Color NewColour
         {
             get
             {
@@ -262,7 +262,7 @@ namespace FaceStyling
             pawn = p;
             originalColour = (_newColour = pawnSave.HairColorOrg);
 
-            colourWrapper = new ColorWrapper(newColour);
+            colourWrapper = new ColorWrapper(NewColour);
 
             _newHair = (originalHair = pawn.story.hairDef);
             _newBeard = (originalBeard = pawnSave.BeardDef);
@@ -464,7 +464,7 @@ namespace FaceStyling
             {
                 if (pawn.gender == Gender.Male)
                 {
-                    if (!newBeard.drawMouth || !pawnSave.drawMouth)
+                    if (!NewBeard.drawMouth || !pawnSave.drawMouth)
                     {
                         // layer 1-5 = body
                         if (i <= 5)
@@ -585,7 +585,7 @@ namespace FaceStyling
             set.y += 36f;
             set.x = selectionRect.x;
 
-            if (newBeard.drawMouth || pawn.gender == Gender.Female)
+            if (NewBeard.drawMouth || pawn.gender == Gender.Female)
             {
                 if (Widgets.ButtonText(set, "Mouth"))
                     Page = "mouth";
@@ -907,7 +907,7 @@ namespace FaceStyling
             GUI.DrawTexture(rect, HairGraphic(hair).MatFront.mainTexture);
             string text = hair.LabelCap;
             Widgets.DrawHighlightIfMouseover(rect);
-            if (hair == newHair)
+            if (hair == NewHair)
             {
                 Widgets.DrawHighlightSelected(rect);
                 text += "\n(selected)";
@@ -924,13 +924,13 @@ namespace FaceStyling
             TooltipHandler.TipRegion(rect, text);
             if (Widgets.ButtonInvisible(rect))
             {
-                newHair = hair;
+                NewHair = hair;
                 while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
                 {
                 }
                 Find.WindowStack.Add(new Dialog_ColorPicker(colourWrapper, delegate
                 {
-                    newColour = colourWrapper.Color;
+                    NewColour = colourWrapper.Color;
                 }, false, true)
                 {
                     initialPosition = new Vector2(windowRect.xMax + _margin, windowRect.yMin),
@@ -943,7 +943,7 @@ namespace FaceStyling
             GUI.DrawTexture(rect, BeardGraphic(beard).MatFront.mainTexture);
             string text = beard.LabelCap;
             Widgets.DrawHighlightIfMouseover(rect);
-            if (beard == newBeard)
+            if (beard == NewBeard)
             {
                 Widgets.DrawHighlightSelected(rect);
                 text += "\n(selected)";
@@ -959,13 +959,13 @@ namespace FaceStyling
             TooltipHandler.TipRegion(rect, text);
             if (Widgets.ButtonInvisible(rect))
             {
-                newBeard = beard;
+                NewBeard = beard;
              while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
                 {
                 }
                 Find.WindowStack.Add(new Dialog_ColorPicker(colourWrapper, delegate
                 {
-                    newColour = colourWrapper.Color;
+                    NewColour = colourWrapper.Color;
                 }, false, true)
                 {
                     initialPosition = new Vector2(windowRect.xMax + _margin, windowRect.yMin),
@@ -1004,7 +1004,7 @@ namespace FaceStyling
             GUI.DrawTexture(rect, EyeGraphic(eye).MatFront.mainTexture);
             string text = eye.LabelCap;
             Widgets.DrawHighlightIfMouseover(rect);
-            if (eye == newEye)
+            if (eye == NewEye)
             {
                 Widgets.DrawHighlightSelected(rect);
                 text += "\n(selected)";
@@ -1020,7 +1020,7 @@ namespace FaceStyling
             TooltipHandler.TipRegion(rect, text);
             if (Widgets.ButtonInvisible(rect))
             {
-                newEye = eye;
+                NewEye = eye;
      Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
             }
         }
@@ -1030,7 +1030,7 @@ namespace FaceStyling
             GUI.DrawTexture(rect, BrowGraphic(brow).MatFront.mainTexture);
             string text = brow.LabelCap;
             Widgets.DrawHighlightIfMouseover(rect);
-            if (brow == newBrow)
+            if (brow == NewBrow)
             {
                 Widgets.DrawHighlightSelected(rect);
                 text += "\n(selected)";
@@ -1046,7 +1046,7 @@ namespace FaceStyling
             TooltipHandler.TipRegion(rect, text);
             if (Widgets.ButtonInvisible(rect))
             {
-                newBrow = brow;
+                NewBrow = brow;
            Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
             }
         }
@@ -1056,7 +1056,7 @@ namespace FaceStyling
             Widgets.DrawBoxSolid(rect, color);
             string text = color.ToString();
             Widgets.DrawHighlightIfMouseover(rect);
-            if (color == newColour)
+            if (color == NewColour)
             {
                 Widgets.DrawHighlightSelected(rect);
                 text += "\n(selected)";
@@ -1072,7 +1072,7 @@ namespace FaceStyling
             TooltipHandler.TipRegion(rect, text);
             if (Widgets.ButtonInvisible(rect))
             {
-                newColour = color;
+                NewColour = color;
 
                 Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
             }
@@ -1093,16 +1093,20 @@ namespace FaceStyling
             DialogUtility.DoNextBackButtons(inRect, "FacialStuffColorChangerButtonAccept".Translate(), delegate
             {
                 // update render for graphics
-                pawn.Drawer.renderer.graphics.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(newHair.texPath, ShaderDatabase.Cutout, Vector2.one, newColour);
+                pawn.Drawer.renderer.graphics.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(NewHair.texPath, ShaderDatabase.Cutout, Vector2.one, NewColour);
 
                 // update story to persist across save/load
-                pawn.story.hairColor = newColour;
-                pawn.story.hairDef = newHair;
+                pawn.story.hairColor = NewColour;
+                pawn.story.hairDef = NewHair;
+
+                // FS additions
                 SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
                 if (pawn.gender == Gender.Male)
                 {
-                    pawnSave.BeardDef = newBeard;
+                    pawnSave.BeardDef = NewBeard;
                 }
+                pawnSave.EyeDef = NewEye;
+                pawnSave.BrowDef = NewBrow;
                 pawnSave.MouthDef = NewMouth;
                 pawnSave.sessionOptimized = false;
                 pawn.Drawer.renderer.graphics.ResolveAllGraphics();
