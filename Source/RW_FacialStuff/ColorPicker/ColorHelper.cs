@@ -113,7 +113,7 @@ namespace FaceStyling.ColorPicker
             V = dominantcolor;
             if (V != 0f)
             {
-                float num = 0f;
+                float num;
                 if (colorone > colortwo)
                 {
                     num = colortwo;

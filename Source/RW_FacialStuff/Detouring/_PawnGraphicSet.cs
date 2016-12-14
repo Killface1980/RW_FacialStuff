@@ -38,49 +38,49 @@ namespace RW_FacialStuff.Detouring
                 {
                     //  pawn.story.skinWhiteness = Rand.Value;
 
-                    if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == 2)
-                    {
-                        if (pawn.story.skinWhiteness < 0.85f)
-                        {
-                            pawn.story.skinWhiteness += 0.15f;
-                        }
-                    }
-                    else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == 1)
-                    {
-                        if (pawn.story.skinWhiteness < 0.75f)
-                        {
-                            pawn.story.skinWhiteness += 0.15f;
-                        }
-                    }
-                    else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == 0)
-                    {
-                        //if (pawn.story.skinWhiteness < 0.15f || pawn.story.skinWhiteness > 0.8f)
-                        //{
-                        //    pawn.story.skinWhiteness = Random.Range(0.2f, 0.66f);
-                        //}
-                    }
-                    else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == -1)
-                    {
-                        if (pawn.story.skinWhiteness > 0.5f)
-                        {
-                            pawn.story.skinWhiteness -= 0.15f;
-                        }
-                    }
-                    else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == -2)
-                    {
-                        if (pawn.story.skinWhiteness > 0.25f)
-                        {
-                            pawn.story.skinWhiteness -= 0.15f;
-                        }
-                    }
+                  //if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == 2)
+                  //{
+                  //    if (pawn.story.melanin < 0.85f)
+                  //    {
+                  //        pawn.story.melanin += 0.15f;
+                  //    }
+                  //}
+                  //else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == 1)
+                  //{
+                  //    if (pawn.story.melanin < 0.75f)
+                  //    {
+                  //        pawn.story.melanin += 0.15f;
+                  //    }
+                  //}
+                  //else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == 0)
+                  //{
+                  //    //if (pawn.story.skinWhiteness < 0.15f || pawn.story.skinWhiteness > 0.8f)
+                  //    //{
+                  //    //    pawn.story.skinWhiteness = Random.Range(0.2f, 0.66f);
+                  //    //}
+                  //}
+                  //else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == -1)
+                  //{
+                  //    if (pawn.story.melanin > 0.5f)
+                  //    {
+                  //        pawn.story.melanin -= 0.15f;
+                  //    }
+                  //}
+                  //else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == -2)
+                  //{
+                  //    if (pawn.story.melanin > 0.25f)
+                  //    {
+                  //        pawn.story.melanin -= 0.15f;
+                  //    }
+                  //}
                     GraphicDatabaseHeadRecordsModded.DefineHeadParts(pawn);
                 }
 
                 //if (pawnSave.optimized)
                 //    typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pawn.story, pawnSave.headGraphicIndex);
 
-                nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
-                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RottingColor * pawn.story.SkinColor);
+                nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
+                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, RottingColor * pawn.story.SkinColor);
                 dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
                 skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
@@ -143,8 +143,8 @@ namespace RW_FacialStuff.Detouring
             }
             else if (pawn.RaceProps.Humanlike)
             {
-                nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
-                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, RottingColor);
+                nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
+                rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, RottingColor);
                 dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
                 headGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor);
                 desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, RottingColor);

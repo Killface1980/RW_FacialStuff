@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Reflection;
 using RimWorld;
 using RW_FacialStuff;
 using RW_FacialStuff.Defs;
@@ -275,7 +274,7 @@ namespace FaceStyling
             {
                 DisplayGraphics[i] = new GraphicsDisp();
             }
-            SetGraphicSlot(GraphicSlotGroup.Body, pawn, GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.BodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor), pawn.def.uiIcon, pawn.story.SkinColor);
+            SetGraphicSlot(GraphicSlotGroup.Body, pawn, GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor), pawn.def.uiIcon, pawn.story.SkinColor);
             SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, true, pawn.story.SkinColor), pawn.def.uiIcon, pawn.story.SkinColor);
             //   SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor), pawn.def.uiIcon, pawn.story.SkinColor);
             SetGraphicSlot(GraphicSlotGroup.Hair, pawn, HairGraphic(pawn.story.hairDef), pawn.def.uiIcon, pawn.story.hairColor);
@@ -289,7 +288,7 @@ namespace FaceStyling
                 if (slotForApparel != GraphicSlotGroup.Invalid)
                 {
                     if (current.def.apparel.LastLayer != ApparelLayer.Overhead)
-                        SetGraphicSlot(slotForApparel, current, ApparelGraphic(current.def, pawn.story.BodyType), current.def.uiIcon, current.DrawColor);
+                        SetGraphicSlot(slotForApparel, current, ApparelGraphic(current.def, pawn.story.bodyType), current.def.uiIcon, current.DrawColor);
                 }
             }
         }

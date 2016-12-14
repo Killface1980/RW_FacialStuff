@@ -9,15 +9,15 @@ namespace RW_FacialStuff.Detouring
     {
         private struct SkinColorData
         {
-            public float whiteness;
+            public float melanin;
 
             public float selector;
 
             public Color color;
 
-            public SkinColorData(float whiteness, float selector, Color color)
+            public SkinColorData(float melanin, float selector, Color color)
             {
-                this.whiteness = whiteness;
+                this.melanin = melanin;
                 this.selector = selector;
                 this.color = color;
             }
@@ -54,22 +54,22 @@ namespace RW_FacialStuff.Detouring
         [Detour(typeof(PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
         public static Color GetSkinColor(float skinWhiteness)
         {
-            int skinDataLeftIndexByWhiteness = GetSkinDataLeftIndexByWhiteness(skinWhiteness);
+            int skinDataLeftIndexByWhiteness = GetSkinDataIndexOfMelanin(skinWhiteness);
             if (skinDataLeftIndexByWhiteness == _SkinColors.Length - 1)
             {
                 return _SkinColors[skinDataLeftIndexByWhiteness].color;
             }
-            float t = Mathf.InverseLerp(_SkinColors[skinDataLeftIndexByWhiteness].whiteness, _SkinColors[skinDataLeftIndexByWhiteness + 1].whiteness, skinWhiteness);
+            float t = Mathf.InverseLerp(_SkinColors[skinDataLeftIndexByWhiteness].melanin, _SkinColors[skinDataLeftIndexByWhiteness + 1].melanin, skinWhiteness);
             return Color.Lerp(_SkinColors[skinDataLeftIndexByWhiteness].color, _SkinColors[skinDataLeftIndexByWhiteness + 1].color, t);
         }
 
         [Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.NonPublic))]
-        private static int GetSkinDataLeftIndexByWhiteness(float skinWhiteness)
+        private static int GetSkinDataIndexOfMelanin(float melanin)
         {
             int result = 0;
             for (int i = 0; i < _SkinColors.Length; i++)
             {
-                if (skinWhiteness < _SkinColors[i].whiteness)
+                if (melanin < _SkinColors[i].melanin)
                 {
                     break;
                 }
@@ -79,7 +79,7 @@ namespace RW_FacialStuff.Detouring
         }
 
         [Detour(typeof(PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
-        public static float RandomSkinWhiteness()
+        public static float RandomMelanin()
         {
             float value = Rand.Value;
             int num = 0;
@@ -93,21 +93,21 @@ namespace RW_FacialStuff.Detouring
             }
             if (num == _SkinColors.Length - 1)
             {
-                return _SkinColors[num].whiteness;
+                return _SkinColors[num].melanin;
             }
             float t = Mathf.InverseLerp(_SkinColors[num].selector, _SkinColors[num + 1].selector, value);
-            return Mathf.Lerp(_SkinColors[num].whiteness, _SkinColors[num + 1].whiteness, t);
+            return Mathf.Lerp(_SkinColors[num].melanin, _SkinColors[num + 1].melanin, t);
         }
 
         [Detour(typeof(PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
-        public static float GetWhitenessCommonalityFactor(float skinWhiteness)
+        public static float GetMelaninCommonalityFactor(float melanin)
         {
-            int skinDataLeftIndexByWhiteness = GetSkinDataLeftIndexByWhiteness(skinWhiteness);
+            int skinDataLeftIndexByWhiteness = GetSkinDataIndexOfMelanin(melanin);
             if (skinDataLeftIndexByWhiteness == _SkinColors.Length - 1)
             {
                 return GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness);
             }
-            float t = Mathf.InverseLerp(_SkinColors[skinDataLeftIndexByWhiteness].whiteness, _SkinColors[skinDataLeftIndexByWhiteness + 1].whiteness, skinWhiteness);
+            float t = Mathf.InverseLerp(_SkinColors[skinDataLeftIndexByWhiteness].melanin, _SkinColors[skinDataLeftIndexByWhiteness + 1].melanin, melanin);
             return Mathf.Lerp(GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness), GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness + 1), t);
         }
 

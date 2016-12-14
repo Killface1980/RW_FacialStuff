@@ -8,9 +8,9 @@ namespace FaceStyling
     class FaceStyler : Building
     {
 
-        public override void SpawnSetup()
+        public override void SpawnSetup(Map map)
         {
-            base.SpawnSetup();
+            base.SpawnSetup(map);
 
         }
 
@@ -48,9 +48,9 @@ namespace FaceStyling
                 {
                     // IntVec3 InteractionSquare = (this.Position + new IntVec3(0, 0, 1)).RotatedBy(this.Rotation);
                     Job ShallWalkTheValleyOfSquierrls = new Job(DefDatabase<JobDef>.GetNamed("FaceStyleChanger"), this, InteractionCell);
-                    if (myPawn.drafter.CanTakeOrderedJob())//This is used to force go job, it will work even when drafted
+                    if (myPawn.jobs.CanTakeOrderedJob())//This is used to force go job, it will work even when drafted
                     {
-                        myPawn.drafter.TakeOrderedJob(ShallWalkTheValleyOfSquierrls);
+                        myPawn.jobs.TryTakeOrderedJob(ShallWalkTheValleyOfSquierrls);
                     }
                     else
                     {
