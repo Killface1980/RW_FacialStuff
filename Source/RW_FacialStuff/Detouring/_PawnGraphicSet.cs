@@ -85,6 +85,7 @@ namespace RW_FacialStuff.Detouring
                 skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
                 hairGraphic = GraphicDatabase.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
                 desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor * RottingColor);
+                this.skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
                 ResolveApparelGraphics();
                 PortraitsCache.Clear();
 
@@ -194,19 +195,23 @@ namespace RW_FacialStuff.Detouring
             }
             else
             {
-                PawnKindLifeStage curKindLifeStage = pawn.ageTracker.CurKindLifeStage;
-                if (pawn.gender != Gender.Female || curKindLifeStage.femaleGraphicData == null)
+                PawnKindLifeStage curKindLifeStage = this.pawn.ageTracker.CurKindLifeStage;
+                if (this.pawn.gender != Gender.Female || curKindLifeStage.femaleGraphicData == null)
                 {
-                    nakedGraphic = curKindLifeStage.bodyGraphicData.Graphic;
+                    this.nakedGraphic = curKindLifeStage.bodyGraphicData.Graphic;
                 }
                 else
                 {
-                    nakedGraphic = curKindLifeStage.femaleGraphicData.Graphic;
+                    this.nakedGraphic = curKindLifeStage.femaleGraphicData.Graphic;
                 }
-                rottingGraphic = nakedGraphic.GetColoredVersion(ShaderDatabase.CutoutSkin, RottingColor, RottingColor);
+                this.rottingGraphic = this.nakedGraphic.GetColoredVersion(ShaderDatabase.CutoutSkin, PawnGraphicSet.RottingColor, PawnGraphicSet.RottingColor);
+                if (this.pawn.RaceProps.packAnimal)
+                {
+                    this.packGraphic = GraphicDatabase.Get<Graphic_Multi>(this.nakedGraphic.path + "Pack", ShaderDatabase.Cutout, this.nakedGraphic.drawSize, Color.white);
+                }
                 if (curKindLifeStage.dessicatedBodyGraphicData != null)
                 {
-                    dessicatedGraphic = curKindLifeStage.dessicatedBodyGraphicData.GraphicColoredFor(pawn);
+                    this.dessicatedGraphic = curKindLifeStage.dessicatedBodyGraphicData.GraphicColoredFor(this.pawn);
                 }
             }
         }
