@@ -12,6 +12,29 @@
 		</hairTags>
 	</HairDef>
 
+  <HairDef>
+    <label>SPSCurly</label>
+    <hairGender>MaleUsually</hairGender>
+    <texPath>Hair/Spoon/SPSCurly</texPath>
+    <defName>SPSCurly</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <label>SPSFlora</label>
+    <hairGender>Female</hairGender>
+    <texPath>Hair/Spoon/SPSFlora</texPath>
+    <defName>SPSFlora</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </HairDef>
+  
 	<HairDef>
 		<label>SPSBeard</label>
 		<hairGender>Male</hairGender>
@@ -23,7 +46,18 @@
 		</hairTags>
 	</HairDef>
 
-	<HairDef>
+  <HairDef>
+    <label>SPSLeon</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Spoon/SPSLeon</texPath>
+    <defName>SPSLeon</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </HairDef>
+  
+  <HairDef>
 		<label>SPSScot</label>
 		<hairGender>Male</hairGender>
 		<texPath>Hair/Spoon/SPSScot</texPath>
@@ -101,7 +135,29 @@
 		</hairTags>
 	</HairDef>
 
-	<HairDef>
+  <HairDef>
+    <label>SPSOlga</label>
+    <hairGender>Female</hairGender>
+    <texPath>Hair/Spoon/SPSOlga</texPath>
+    <defName>SPSOlga</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </HairDef>
+
+  <HairDef>
+    <label>SPSMomo</label>
+    <hairGender>Female</hairGender>
+    <texPath>Hair/Spoon/SPSMomo</texPath>
+    <defName>SPSMomo</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </HairDef>
+  
+  <HairDef>
 		<label>SPSAda</label>
 		<hairGender>Female</hairGender>
 		<texPath>Hair/Spoon/SPSAda</texPath>
@@ -135,7 +191,18 @@
 			<li>Rural</li>
 		</hairTags>
 	</HairDef>
-
+  
+  <HairDef>
+    <label>SPSFrat</label>
+    <hairGender>Male</hairGender>
+    <texPath>Hair/Spoon/SPSFrat</texPath>
+    <defName>SPSFrat</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </HairDef>
+  
 	<HairDef>
 		<label>SPSBrona</label>
 		<hairGender>Female</hairGender>
@@ -171,7 +238,19 @@
 		</hairTags>
 	</HairDef>
 
-	<HairDef>
+  <HairDef>
+    <label>SPSSlick</label>
+    <hairGender>MaleUsually</hairGender>
+    <texPath>Hair/Spoon/SPSSlick</texPath>
+    <defName>SPSSlick</defName>
+    <hairTags>
+      <li>Tribal</li>
+      <li>Rural</li>
+      <li>Urban</li>
+    </hairTags>
+  </HairDef>
+  
+  <HairDef>
 		<label>SPSElsa</label>
 		<hairGender>Female</hairGender>
 		<texPath>Hair/Spoon/SPSElsa</texPath>
@@ -230,4 +309,14 @@
 		</hairTags>
 	</HairDef>
   
+  <HairDef>
+    <label>SPSPaige</label>
+    <hairGender>Female</hairGender>
+    <texPath>Hair/Spoon/SPSPaige</texPath>
+    <defName>SPSPaige</defName>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </HairDef>
 </DefPackage-HairDef>
