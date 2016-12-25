@@ -111,7 +111,7 @@ namespace FaceStyling
         private static float _titleHeight;
         private static float _previewSize;
         private static float _iconSize;
-   //     private static Texture2D _icon;
+        //     private static Texture2D _icon;
         private static float _margin;
         private static float _listWidth;
         private static int _columns;
@@ -136,6 +136,8 @@ namespace FaceStyling
         private static BrowDef originalBrow;
         private static Color _newColour;
         private static Color originalColour;
+
+        private SaveablePawn pawnSave;
 
         private static ColorWrapper colourWrapper;
 
@@ -224,7 +226,7 @@ namespace FaceStyling
         {
             get
             {
-                return new Vector2(_previewSize + _margin + _listWidth + 36f, 40f + _previewSize * 2f + _margin * 3f + 38f + 36f);
+                return new Vector2(_previewSize + _margin + _listWidth + 36f, 40f + _previewSize * 2f + _margin * 3f + 38f + 36f + 80f);
             }
         }
 
@@ -235,7 +237,7 @@ namespace FaceStyling
             _previewSize = 250f;
             //       _previewSize = 100f;
             _iconSize = 24f;
-        //    _icon = ContentFinder<Texture2D>.Get("ClothIcon");
+            //    _icon = ContentFinder<Texture2D>.Get("ClothIcon");
             _margin = 6f;
             _listWidth = 450f;
             //   _listWidth = 200f;
@@ -252,16 +254,18 @@ namespace FaceStyling
 
         public Dialog_FaceStyling(Pawn p)
         {
-            SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(p);
+            pawn = p;
+            pawnSave = MapComponent_FacialStuff.GetCache(pawn);
             if (pawnSave.BeardDef == null)
                 pawnSave.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
             absorbInputAroundWindow = false;
             forcePause = true;
             closeOnClickedOutside = false;
-            pawn = p;
             originalColour = (_newColour = pawnSave.HairColorOrg);
 
             colourWrapper = new ColorWrapper(NewColour);
+
+            _newMelanin = (originalMelanin = pawn.story.melanin);
 
             _newHair = (originalHair = pawn.story.hairDef);
             _newBeard = (originalBeard = pawnSave.BeardDef);
@@ -274,9 +278,9 @@ namespace FaceStyling
             {
                 DisplayGraphics[i] = new GraphicsDisp();
             }
-            SetGraphicSlot(GraphicSlotGroup.Body, pawn, GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor), pawn.def.uiIcon, pawn.story.SkinColor);
-            SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, true, pawn.story.SkinColor), pawn.def.uiIcon, pawn.story.SkinColor);
-            //   SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor), pawn.def.uiIcon, pawn.story.SkinColor);
+            SetGraphicSlot(GraphicSlotGroup.Body, pawn, GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, _PawnSkinColors.GetSkinColor(NewMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(NewMelanin));
+            SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, true, _PawnSkinColors.GetSkinColor(NewMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(NewMelanin));
+            //   SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,_PawnSkinColors.GetSkinColor(NewMelanin))), pawn.def.uiIcon,_PawnSkinColors.GetSkinColor(NewMelanin)));
             SetGraphicSlot(GraphicSlotGroup.Hair, pawn, HairGraphic(pawn.story.hairDef), pawn.def.uiIcon, pawn.story.hairColor);
             SetGraphicSlot(GraphicSlotGroup.Eyes, pawn, EyeGraphic(pawnSave.EyeDef), pawn.def.uiIcon, Color.black);
             SetGraphicSlot(GraphicSlotGroup.Brows, pawn, BrowGraphic(pawnSave.BrowDef), pawn.def.uiIcon, pawn.story.hairColor * new Color(0.3f, 0.3f, 0.3f));
@@ -315,7 +319,7 @@ namespace FaceStyling
 
         public override void PreClose()
         {
-     while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker), false))
+            while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker), false))
             {
             }
         }
@@ -392,6 +396,20 @@ namespace FaceStyling
 
         public string Page = "hair";
 
+        public float NewMelanin
+        {
+            get { return _newMelanin; }
+            set
+            {
+                _newMelanin = value;
+                SetGraphicSlot(GraphicSlotGroup.Body, pawn, GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, _PawnSkinColors.GetSkinColor(_newMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(_newMelanin));
+                SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, true, _PawnSkinColors.GetSkinColor(_newMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(_newMelanin));
+
+            }
+        }
+        private float _newMelanin;
+        private float originalMelanin;
+
         private Graphic ApparelGraphic(ThingDef def, BodyType bodyType)
         {
             Graphic result;
@@ -455,10 +473,11 @@ namespace FaceStyling
             Rect pawnHeadRect = new Rect(0f, -10f, _previewSize, _previewSize);
             Rect pawnRect = new Rect(0f, 0f, _previewSize, _previewSize);
             Rect labelRect = new Rect(0f, pawnRect.yMax - vector.y, vector.x, vector.y);
-            Rect selectionRect = new Rect(0f, pawnRect.yMax + _margin, _previewSize, _previewSize);
+            Rect melaninRect = new Rect(0f, labelRect.yMax + _margin, _previewSize, 30f);
+            Rect selectionRect = new Rect(0f, melaninRect.yMax + _margin, _previewSize, _previewSize);
             Rect listRect = new Rect(_previewSize + _margin, 0f, _listWidth, parentRect.height - _margin * 2);
+
             labelRect = labelRect.CenteredOnXIn(pawnRect);
-            SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
             for (int i = 0; i < DisplayGraphics.Length; i++)
             {
                 if (pawn.gender == Gender.Male)
@@ -533,6 +552,15 @@ namespace FaceStyling
 
             GUI.DrawTexture(new Rect(labelRect.xMin - 3f, labelRect.yMin, labelRect.width + 6f, labelRect.height), _nameBackground);
             Widgets.Label(labelRect, nameStringShort);
+            float width = _previewSize / (_PawnSkinColors._SkinColors.Length) - 10f;
+            float spacing = 10f;
+            Rect setMelanin = new Rect(0f, melaninRect.y, width, melaninRect.height);
+            foreach (var skinColorData in _PawnSkinColors._SkinColors)
+            {
+                DrawMelaninPickerCell(skinColorData, setMelanin);
+                setMelanin.x += setMelanin.width + 10f;
+            }
+
             Widgets.DrawMenuSection(listRect);
 
             Rect set = new Rect(selectionRect);
@@ -550,6 +578,7 @@ namespace FaceStyling
             //      }
             //      Find.WindowStack.Add(new FloatMenu(list));
             //  }
+
 
 
             if (Widgets.ButtonText(set, "Hair"))
@@ -686,7 +715,6 @@ namespace FaceStyling
                 set.width = selectionRect.width / 7.5f - 10f;
                 set.x = selectionRect.x;
 
-
                 DrawColorPickerCell(originalColour, set);
                 set.x += set.width * 1.5f + 10f;
 
@@ -730,6 +758,33 @@ namespace FaceStyling
 
             GUI.EndGroup();
         }
+
+        private void DrawMelaninPickerCell(_PawnSkinColors.SkinColorData data, Rect rect)
+        {
+            Widgets.DrawBoxSolid(rect, data.color);
+            string text = data.ToString();
+            Widgets.DrawHighlightIfMouseover(rect);
+            if (data.melanin == NewMelanin)
+            {
+                Widgets.DrawHighlightSelected(rect);
+                text += "\n(selected)";
+            }
+            else
+            {
+                if (data.melanin == originalMelanin)
+                {
+                    Widgets.DrawAltRect(rect);
+                    text += "\n(original)";
+                }
+            }
+            TooltipHandler.TipRegion(rect, text);
+            if (Widgets.ButtonInvisible(rect))
+            {
+
+                NewMelanin = data.melanin;
+            }
+        }
+
 
         private void DrawHairPicker(Rect rect)
         {
@@ -959,7 +1014,7 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 NewBeard = beard;
-             while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
+                while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
                 {
                 }
                 Find.WindowStack.Add(new Dialog_ColorPicker(colourWrapper, delegate
@@ -994,7 +1049,7 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 NewMouth = mouth;
-             Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
+                Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
             }
         }
 
@@ -1020,7 +1075,7 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 NewEye = eye;
-     Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
+                Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
             }
         }
 
@@ -1046,7 +1101,7 @@ namespace FaceStyling
             if (Widgets.ButtonInvisible(rect))
             {
                 NewBrow = brow;
-           Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
+                Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
             }
         }
 
@@ -1071,9 +1126,18 @@ namespace FaceStyling
             TooltipHandler.TipRegion(rect, text);
             if (Widgets.ButtonInvisible(rect))
             {
-                NewColour = color;
 
-                Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
+                while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
+                {
+                }
+                colourWrapper.Color = color;
+                Find.WindowStack.Add(new Dialog_ColorPicker(colourWrapper, delegate
+                {
+                    NewColour = colourWrapper.Color;
+                }, false, true)
+                {
+                    initialPosition = new Vector2(windowRect.xMax + _margin, windowRect.yMin),
+                });
             }
         }
 
@@ -1086,8 +1150,8 @@ namespace FaceStyling
             Widgets.Label(rect, _title);
             Text.Anchor = TextAnchor.UpperLeft;
             Text.Font = GameFont.Small;
-      //      Rect iconPosition = new Rect(0f, 0f, _iconSize, _iconSize).CenteredOnYIn(rect);
-       //     GUI.DrawTexture(iconPosition, _icon);
+            //      Rect iconPosition = new Rect(0f, 0f, _iconSize, _iconSize).CenteredOnYIn(rect);
+            //     GUI.DrawTexture(iconPosition, _icon);
             DrawUI(new Rect(0f, _titleHeight, inRect.width, inRect.height - _titleHeight - 25f - _margin * 2));
             DialogUtility.DoNextBackButtons(inRect, "FacialStuffColorChangerButtonAccept".Translate(), delegate
             {
@@ -1097,6 +1161,7 @@ namespace FaceStyling
                 // update story to persist across save/load
                 pawn.story.hairColor = NewColour;
                 pawn.story.hairDef = NewHair;
+                pawn.story.melanin = NewMelanin;
 
                 // FS additions
                 SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);

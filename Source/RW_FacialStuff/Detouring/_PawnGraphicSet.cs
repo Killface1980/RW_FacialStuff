@@ -154,43 +154,6 @@ namespace RW_FacialStuff.Detouring
                 ResolveApparelGraphics();
 
 
-                SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
-                if (!pawnSave.sessionOptimized)
-                {
-                    // Build the empty head index once to be used for the blank heads
-                    if (HeadIndex.Count == 0)
-                        for (int i = 0; i < 1024; i++)
-                        {
-                            HeadIndex.Add(i.ToString("0000"), null);
-                        }
-                    // Get the first free index and go on
-                    foreach (KeyValuePair<string, Pawn> pair in HeadIndex)
-                    {
-                        if (pair.Value == null)
-                        {
-                            string index = pair.Key;
-                            HeadIndex.Remove(pair.Key);
-                            HeadIndex.Add(index, pawn);
-
-                            pawnSave.headGraphicIndex = "Heads/Blank/" + pair.Key;
-                            GraphicDatabaseHeadRecordsModded.headsModded.Add(new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(pawn));
-                            break;
-                        }
-                    }
-
-                    //pawnSave.headGraphicIndex = "Heads/Blank/" + GraphicDatabaseHeadRecordsModded.headIndex.ToString("0000");
-                    //GraphicDatabaseHeadRecordsModded.headsModded.Add(new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(pawn));
-                    //GraphicDatabaseHeadRecordsModded.headIndex += 1;
-                }
-
-                if (pawn.RaceProps.hasGenders && hairGraphic != null)
-                {
-                    headGraphic = GraphicDatabaseHeadRecordsModded.ModifiedAlienHead(pawn, pawn.story.SkinColor, hairGraphic);
-                }
-                else
-                {
-                    headGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath, pawn.story.SkinColor);
-                }
 
             }
             else

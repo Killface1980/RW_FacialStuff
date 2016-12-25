@@ -11,8 +11,6 @@ namespace RW_FacialStuff
     public class GraphicDatabaseHeadRecordsModded : GraphicDatabaseHeadRecords
     {
         // use mouth?
-        private static bool usemouth = false;
-
 
         public static List<HeadGraphicRecordVanillaCustom> headsVanillaCustom = new List<HeadGraphicRecordVanillaCustom>();
         public static List<HeadGraphicRecordModded> headsModded = new List<HeadGraphicRecordModded>();
@@ -422,7 +420,7 @@ namespace RW_FacialStuff
 #if !NoCCL
                 if (ModConfigMenu.useMouth)
 #else
-                if (usemouth)
+                if (pawnSave.drawMouth)
 #endif
                 {
                     Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);

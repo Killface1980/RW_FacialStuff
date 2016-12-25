@@ -19,7 +19,6 @@ namespace FaceStyling
             Find.WindowStack.Add(new Dialog_FaceStyling(pawn));
         }
 
-
         public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn myPawn)
         {
             List<FloatMenuOption> list = new List<FloatMenuOption>();
@@ -47,18 +46,19 @@ namespace FaceStyling
                 Action action2 = delegate
                 {
                     // IntVec3 InteractionSquare = (this.Position + new IntVec3(0, 0, 1)).RotatedBy(this.Rotation);
-                    Job ShallWalkTheValleyOfSquierrls = new Job(DefDatabase<JobDef>.GetNamed("FaceStyleChanger"), this, InteractionCell);
+                    Job FaceStyleChanger = new Job(DefDatabase<JobDef>.GetNamed("FaceStyleChanger"), this, InteractionCell);
                     if (myPawn.jobs.CanTakeOrderedJob())//This is used to force go job, it will work even when drafted
                     {
-                        myPawn.jobs.TryTakeOrderedJob(ShallWalkTheValleyOfSquierrls);
+                        myPawn.jobs.TryTakeOrderedJob(FaceStyleChanger);
                     }
                     else
                     {
-                        myPawn.QueueJob(ShallWalkTheValleyOfSquierrls);
+                        myPawn.QueueJob(FaceStyleChanger);
                         myPawn.jobs.StopAll();
                     }
 
                 };
+
                 list.Add(new FloatMenuOption("FSStylizeFace".Translate(), action2));
             }
             return list;

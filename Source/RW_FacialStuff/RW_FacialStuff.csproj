@@ -68,11 +68,11 @@
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="DetourAttribute.cs" />
     <Compile Include="Defs\FacialStuff_Defs.cs" />
-    <Compile Include="FaceStyler\Dialog_FaceStyling.cs" />
-    <Compile Include="FaceStyler\Job_FaceStyling.cs" />
-    <Compile Include="FaceStyler\FaceStyler.cs" />
-    <None Include="FaceStyler\Preset.cs" />
-    <None Include="FaceStyler\PresetDatabase.cs" />
+    <Compile Include="FaceStyling Bench\Dialog_FaceStyling.cs" />
+    <Compile Include="FaceStyling Bench\Job_FaceStyling.cs" />
+    <Compile Include="FaceStyling Bench\FaceStyler.cs" />
+    <None Include="FaceStyling Bench\Preset.cs" />
+    <None Include="FaceStyling Bench\PresetDatabase.cs" />
     <Compile Include="MapComponentInjector.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="GraphicNamesInFolder.cs" />

@@ -7,7 +7,7 @@ namespace RW_FacialStuff.Detouring
 {
     public static class _PawnSkinColors
     {
-        private struct SkinColorData
+        public struct SkinColorData
         {
             public float melanin;
 
@@ -23,7 +23,7 @@ namespace RW_FacialStuff.Detouring
             }
         }
 
-        private static readonly SkinColorData[] _SkinColors = {
+        public static readonly SkinColorData[] _SkinColors = {
             new SkinColorData(0f, 0f, new Color32(89,49,36, 255)),
             new SkinColorData(0.1f, 0.085f, new Color32(127,71,51,255)),
             new SkinColorData(0.25f, 0.175f, new Color32(165,93,41,255)),
@@ -52,15 +52,15 @@ namespace RW_FacialStuff.Detouring
         }
 
         [Detour(typeof(PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
-        public static Color GetSkinColor(float skinWhiteness)
+        public static Color GetSkinColor(float melanin)
         {
-            int skinDataLeftIndexByWhiteness = GetSkinDataIndexOfMelanin(skinWhiteness);
-            if (skinDataLeftIndexByWhiteness == _SkinColors.Length - 1)
+            int skinDataLeftIndexByMelanin = GetSkinDataIndexOfMelanin(melanin);
+            if (skinDataLeftIndexByMelanin == _SkinColors.Length - 1)
             {
-                return _SkinColors[skinDataLeftIndexByWhiteness].color;
+                return _SkinColors[skinDataLeftIndexByMelanin].color;
             }
-            float t = Mathf.InverseLerp(_SkinColors[skinDataLeftIndexByWhiteness].melanin, _SkinColors[skinDataLeftIndexByWhiteness + 1].melanin, skinWhiteness);
-            return Color.Lerp(_SkinColors[skinDataLeftIndexByWhiteness].color, _SkinColors[skinDataLeftIndexByWhiteness + 1].color, t);
+            float t = Mathf.InverseLerp(_SkinColors[skinDataLeftIndexByMelanin].melanin, _SkinColors[skinDataLeftIndexByMelanin + 1].melanin, melanin);
+            return Color.Lerp(_SkinColors[skinDataLeftIndexByMelanin].color, _SkinColors[skinDataLeftIndexByMelanin + 1].color, t);
         }
 
         [Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.NonPublic))]

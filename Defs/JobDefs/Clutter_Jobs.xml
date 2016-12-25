@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <JobDefs>
 
-      <JobDef>
+  <JobDef>
     <defName>FaceStyleChanger</defName>
     <driverClass>FaceStyling.Job_FaceStyling</driverClass>
     <reportString>Going to the styling station.</reportString>
   </JobDef>
-    
-   
+
 </JobDefs>
