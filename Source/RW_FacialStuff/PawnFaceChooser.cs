@@ -149,7 +149,7 @@ namespace RW_FacialStuff
             return chosenWrinkles;
         }
 
-        [Detour(typeof(PawnHairChooser), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
+        [Detour(typeof(RimWorld.PawnHairChooser))]
         public static HairDef RandomHairDefFor(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs

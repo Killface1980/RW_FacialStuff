@@ -44,14 +44,14 @@ namespace RW_FacialStuff.Detouring
 //          new SkinColorData(1f, 1f, new Color(0.9490196f, 0.929411769f, 0.8784314f))
         };
 
-        [Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
+        [Detour(typeof(RimWorld.PawnSkinColors))]
         public static bool IsDarkSkin(Color color)
         {
             Color skinColor = GetSkinColor(0.5f);
             return color.r + color.g + color.b <= skinColor.r + skinColor.g + skinColor.b + 0.01f;
         }
 
-        [Detour(typeof(PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
+        [Detour(typeof(RimWorld.PawnSkinColors))]
         public static Color GetSkinColor(float melanin)
         {
             int skinDataLeftIndexByMelanin = GetSkinDataIndexOfMelanin(melanin);
@@ -63,7 +63,7 @@ namespace RW_FacialStuff.Detouring
             return Color.Lerp(_SkinColors[skinDataLeftIndexByMelanin].color, _SkinColors[skinDataLeftIndexByMelanin + 1].color, t);
         }
 
-        [Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.NonPublic))]
+        [Detour(typeof(RimWorld.PawnSkinColors))]
         private static int GetSkinDataIndexOfMelanin(float melanin)
         {
             int result = 0;
@@ -78,7 +78,7 @@ namespace RW_FacialStuff.Detouring
             return result;
         }
 
-        [Detour(typeof(PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
+        [Detour(typeof(RimWorld.PawnSkinColors))]
         public static float RandomMelanin()
         {
             float value = Rand.Value;
@@ -99,7 +99,7 @@ namespace RW_FacialStuff.Detouring
             return Mathf.Lerp(_SkinColors[num].melanin, _SkinColors[num + 1].melanin, t);
         }
 
-        [Detour(typeof(PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
+        [Detour(typeof(RimWorld.PawnSkinColors))]
         public static float GetMelaninCommonalityFactor(float melanin)
         {
             int skinDataLeftIndexByWhiteness = GetSkinDataIndexOfMelanin(melanin);
