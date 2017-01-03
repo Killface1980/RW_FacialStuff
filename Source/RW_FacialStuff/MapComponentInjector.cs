@@ -21,9 +21,9 @@ namespace RW_FacialStuff       // Replace with yours.
 
 
 
-            if (Find.VisibleMap.components.FindAll(c => c.GetType() == facialStuff).Count == 0)
+            if (Find.AnyPlayerHomeMap.components.FindAll(c => c.GetType() == facialStuff).Count == 0)
             {
-                Find.VisibleMap.components.Add((MapComponent)Activator.CreateInstance(facialStuff));
+                Find.AnyPlayerHomeMap.components.Add((MapComponent)Activator.CreateInstance(facialStuff));
 
                 Log.Message("Facial Stuff :: Added an FS to the map.");
             }

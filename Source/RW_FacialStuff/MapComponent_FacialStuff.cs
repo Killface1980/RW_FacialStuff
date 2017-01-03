@@ -11,8 +11,6 @@
         public MapComponent_FacialStuff(Map map)
             : base(map)
         {
-            MapComponentUtility.EnsureIsActive(this);
-            this.map = map;
         }
 
         public static SaveablePawn GetCache(Pawn pawn)

@@ -38,7 +38,7 @@ namespace RW_FacialStuff.Detouring
         //      public static Color Color03 = new Color32(193, 146, 85, 255);//(0,75686276f, 0,572549045f, 0,333333343f);
         //      public static Color Color04 = new Color32(237, 202, 156, 255);//(0,929411769f, 0,7921569f, 0,6117647f);
 
-        [Detour(typeof(PawnHairColors))]
+        [Detour(typeof(PawnHairColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
         // ReSharper disable once UnusedMember.Global
         public static Color RandomHairColor(Color skinColor, int ageYears)
         {
