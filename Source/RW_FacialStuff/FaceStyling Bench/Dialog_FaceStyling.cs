@@ -137,7 +137,7 @@ namespace FaceStyling
         private static Color _newColour;
         private static Color originalColour;
 
-        private SaveablePawn pawnSave;
+        private CompFace faceComp;
 
         private static ColorWrapper colourWrapper;
 
@@ -255,23 +255,24 @@ namespace FaceStyling
         public Dialog_FaceStyling(Pawn p)
         {
             pawn = p;
-            pawnSave = MapComponent_FacialStuff.GetCache(pawn);
-            if (pawnSave.BeardDef == null)
-                pawnSave.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
+            this.faceComp = pawn.TryGetComp<CompFace>();
+
+            if (this.faceComp.BeardDef == null)
+                this.faceComp.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
             absorbInputAroundWindow = false;
             forcePause = true;
             closeOnClickedOutside = false;
-            originalColour = (_newColour = pawnSave.HairColorOrg);
+            originalColour = (_newColour = this.faceComp.HairColorOrg);
 
             colourWrapper = new ColorWrapper(NewColour);
 
             _newMelanin = (originalMelanin = pawn.story.melanin);
 
             _newHair = (originalHair = pawn.story.hairDef);
-            _newBeard = (originalBeard = pawnSave.BeardDef);
-            _newMouth = (originalMouth = pawnSave.MouthDef);
-            _newEye = (originalEye = pawnSave.EyeDef);
-            _newBrow = (originalBrow = pawnSave.BrowDef);
+            _newBeard = (originalBeard = this.faceComp.BeardDef);
+            _newMouth = (originalMouth = this.faceComp.MouthDef);
+            _newEye = (originalEye = this.faceComp.EyeDef);
+            _newBrow = (originalBrow = this.faceComp.BrowDef);
 
             DisplayGraphics = new GraphicsDisp[12];
             for (int i = 0; i < 12; i++)
@@ -282,10 +283,10 @@ namespace FaceStyling
             SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, true, _PawnSkinColors.GetSkinColor(NewMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(NewMelanin));
             //   SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,_PawnSkinColors.GetSkinColor(NewMelanin))), pawn.def.uiIcon,_PawnSkinColors.GetSkinColor(NewMelanin)));
             SetGraphicSlot(GraphicSlotGroup.Hair, pawn, HairGraphic(pawn.story.hairDef), pawn.def.uiIcon, pawn.story.hairColor);
-            SetGraphicSlot(GraphicSlotGroup.Eyes, pawn, EyeGraphic(pawnSave.EyeDef), pawn.def.uiIcon, Color.black);
-            SetGraphicSlot(GraphicSlotGroup.Brows, pawn, BrowGraphic(pawnSave.BrowDef), pawn.def.uiIcon, pawn.story.hairColor * new Color(0.3f, 0.3f, 0.3f));
-            SetGraphicSlot(GraphicSlotGroup.Mouth, pawn, MouthGraphic(pawnSave.MouthDef), pawn.def.uiIcon, Color.black);
-            SetGraphicSlot(GraphicSlotGroup.Beard, pawn, BeardGraphic(pawnSave.BeardDef), pawn.def.uiIcon, pawn.story.hairColor);
+            SetGraphicSlot(GraphicSlotGroup.Eyes, pawn, EyeGraphic(this.faceComp.EyeDef), pawn.def.uiIcon, Color.black);
+            SetGraphicSlot(GraphicSlotGroup.Brows, pawn, BrowGraphic(this.faceComp.BrowDef), pawn.def.uiIcon, pawn.story.hairColor * new Color(0.3f, 0.3f, 0.3f));
+            SetGraphicSlot(GraphicSlotGroup.Mouth, pawn, MouthGraphic(this.faceComp.MouthDef), pawn.def.uiIcon, Color.black);
+            SetGraphicSlot(GraphicSlotGroup.Beard, pawn, BeardGraphic(this.faceComp.BeardDef), pawn.def.uiIcon, pawn.story.hairColor);
             foreach (Apparel current in pawn.apparel.WornApparel)
             {
                 GraphicSlotGroup slotForApparel = GetSlotForApparel(current);
@@ -482,7 +483,7 @@ namespace FaceStyling
             {
                 if (pawn.gender == Gender.Male)
                 {
-                    if (!NewBeard.drawMouth || !pawnSave.drawMouth)
+                    if (!NewBeard.drawMouth || !faceComp.drawMouth)
                     {
                         // layer 1-5 = body
                         if (i <= 5)
@@ -523,7 +524,7 @@ namespace FaceStyling
                     else
                     if (i != 9)
                     {
-                        if (!pawnSave.drawMouth)
+                        if (!faceComp.drawMouth)
                         {
                             if (i != 8)
                             {
@@ -606,7 +607,7 @@ namespace FaceStyling
             set.y += 36f;
             set.x = selectionRect.x;
             set.width = selectionRect.width;
-            Widgets.CheckboxLabeled(set, "Draw colonist mouth if suitable", ref pawnSave.drawMouth);
+            Widgets.CheckboxLabeled(set, "Draw colonist mouth if suitable", ref faceComp.drawMouth);
             set.width = selectionRect.width / 2 - 10f;
 
 
@@ -1164,15 +1165,15 @@ namespace FaceStyling
                 pawn.story.melanin = NewMelanin;
 
                 // FS additions
-                SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+                CompFace faceComp = pawn.TryGetComp<CompFace>();
                 if (pawn.gender == Gender.Male)
                 {
-                    pawnSave.BeardDef = NewBeard;
+                    faceComp.BeardDef = NewBeard;
                 }
-                pawnSave.EyeDef = NewEye;
-                pawnSave.BrowDef = NewBrow;
-                pawnSave.MouthDef = NewMouth;
-                pawnSave.sessionOptimized = false;
+                faceComp.EyeDef = NewEye;
+                faceComp.BrowDef = NewBrow;
+                faceComp.MouthDef = NewMouth;
+                faceComp.sessionOptimized = false;
                 pawn.Drawer.renderer.graphics.ResolveAllGraphics();
 
                 // force colonist bar to update

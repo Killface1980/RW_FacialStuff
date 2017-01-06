@@ -88,11 +88,11 @@ namespace RW_FacialStuff
 
             public HeadGraphicRecordModded(Pawn pawn)
             {
-                SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+                CompFace faceComp = pawn.TryGetComp<CompFace>();
 
                 this.pawn = pawn;
                 graphicPath = pawn.story.HeadGraphicPath;
-                graphicPathModded = pawnSave.headGraphicIndex;
+                graphicPathModded = faceComp.headGraphicIndex;
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
                 string[] array = fileNameWithoutExtension?.Split('_');
                 try
@@ -130,7 +130,7 @@ namespace RW_FacialStuff
 
         public static Graphic_Multi GetModdedHeadNamed(Pawn pawn, bool useVanilla, Color color)
         {
-            SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+            CompFace faceComp = pawn.TryGetComp<CompFace>();
 
             if (useVanilla)
             {
@@ -145,13 +145,13 @@ namespace RW_FacialStuff
 
             foreach (HeadGraphicRecordModded headGraphicRecordModded in headsModded)
             {
-                if (headGraphicRecordModded.graphicPathModded == pawnSave.headGraphicIndex)
+                if (headGraphicRecordModded.graphicPathModded == faceComp.headGraphicIndex)
                 {
                     return headGraphicRecordModded.GetGraphicBlank(color);
                 }
             }
 
-            Log.Message("Tried to get pawn head at path " + pawnSave.headGraphicIndex + " that was not found. Defaulting...");
+            Log.Message("Tried to get pawn head at path " + faceComp.headGraphicIndex + " that was not found. Defaulting...");
 
             return headsVanillaCustom.First().GetGraphic(color);
         }
@@ -192,37 +192,7 @@ namespace RW_FacialStuff
             //   }
         }
 
-        public static void DefineHeadParts(Pawn pawn)
-        {
-            SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
 
-            if (pawn.story.HeadGraphicPath.Contains("Normal"))
-                pawnSave.type = "Normal";
-
-            if (pawn.story.HeadGraphicPath.Contains("Pointy"))
-                pawnSave.type = "Pointy";
-
-            if (pawn.story.HeadGraphicPath.Contains("Wide"))
-                pawnSave.type = "Wide";
-
-
-            pawnSave.EyeDef = PawnFaceChooser.RandomEyeDefFor(pawn, pawn.Faction.def);
-
-            pawnSave.BrowDef = PawnFaceChooser.RandomBrowDefFor(pawn, pawn.Faction.def);
-
-            pawnSave.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(pawn, pawn.Faction.def);
-
-            pawnSave.MouthDef = PawnFaceChooser.RandomMouthDefFor(pawn, pawn.Faction.def);
-
-            if (pawn.gender == Gender.Male)
-            {
-                pawnSave.BeardDef = PawnFaceChooser.RandomBeardDefFor(pawn, pawn.Faction.def);
-            }
-
-            pawnSave.HairColorOrg = pawn.story.hairColor;
-
-            pawnSave.optimized = true;
-        }
 
         public static List<KeyValuePair<string, Graphic_Multi>> moddedHeadGraphics = new List<KeyValuePair<string, Graphic_Multi>>();
 
@@ -240,7 +210,7 @@ namespace RW_FacialStuff
             //}
 
 
-            SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+                CompFace faceComp = pawn.TryGetComp<CompFace>();
             Graphic_Multi headGraphic = GetModdedHeadNamed(pawn, false, Color.white);
 
             // grab the blank texture instead of Vanilla
@@ -257,8 +227,6 @@ namespace RW_FacialStuff
             PaintHead(finalHeadSide, color);
             PaintHead(finalHeadBack, color);
 
-            Graphic eyeGraphic;
-            Graphic browGraphic;
             Graphic wrinkleGraphic = null;
 
             //  if (pawn.story.crownType == CrownType.Narrow)
@@ -278,17 +246,17 @@ namespace RW_FacialStuff
             //  }
             //  else
             //  {
-            eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.EyeDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
-            browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.BrowDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
+            Graphic eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.EyeDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
+            Graphic browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.BrowDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
 
             if (oldAge)
             {
-                if (pawnSave.type == "Normal")
-                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, Color.black);
-                if (pawnSave.type == "Pointy")
-                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, Color.black);
-                if (pawnSave.type == "Wide")
-                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.WrinkleDef.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                if (faceComp.type == "Normal")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.WrinkleDef.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                if (faceComp.type == "Pointy")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.WrinkleDef.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, Color.black);
+                if (faceComp.type == "Wide")
+                    wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.WrinkleDef.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.black);
 
             }
             //   }
@@ -337,17 +305,17 @@ namespace RW_FacialStuff
             {
                 Graphic beardGraphic = null;
 
-                if (pawnSave.type == "Normal")
+                if (faceComp.type == "Normal")
                 {
-                    beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.BeardDef.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                    beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.BeardDef.texPathAverageNormal, ShaderDatabase.Cutout, Vector2.one, Color.white);
                 }
-                if (pawnSave.type == "Pointy")
+                if (faceComp.type == "Pointy")
                 {
-                    beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.BeardDef.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                    beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.BeardDef.texPathAveragePointy, ShaderDatabase.Cutout, Vector2.one, Color.white);
                 }
-                if (pawnSave.type == "Wide")
+                if (faceComp.type == "Wide")
                 {
-                    beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.BeardDef.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                    beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.BeardDef.texPathAverageWide, ShaderDatabase.Cutout, Vector2.one, Color.white);
                 }
 
                 //     }
@@ -366,11 +334,11 @@ namespace RW_FacialStuff
      if (pawnSave.BeardDef.drawMouth && ModConfigMenu.useMouth && pawnSave.drawMouth)
 #endif
 #if NoCCL
-                if (pawnSave.BeardDef.drawMouth && pawnSave.drawMouth)
+                if (faceComp.BeardDef.drawMouth && faceComp.drawMouth)
 #endif
                 {
 
-                    Graphic mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                    Graphic mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     if (pawn.story.crownType == CrownType.Narrow)
                     {
                         ScaleTexture(mouthGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
@@ -420,10 +388,10 @@ namespace RW_FacialStuff
 #if !NoCCL
                 if (ModConfigMenu.useMouth)
 #else
-                if (pawnSave.drawMouth)
+                if (faceComp.drawMouth)
 #endif
                 {
-                    Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(pawnSave.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                    Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
                     if (pawn.story.crownType == CrownType.Narrow)
                     {
                         ScaleTexture(lipGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
@@ -503,7 +471,7 @@ namespace RW_FacialStuff
             Object.DestroyImmediate(temptextureside, true);
             Object.DestroyImmediate(temptextureback, true);
 
-            pawnSave.sessionOptimized = true;
+            faceComp.sessionOptimized = true;
 
             //    moddedHeadGraphics.Add(new KeyValuePair<string, Graphic_Multi>(pawn + color.ToString(), headGraphic));
 
@@ -513,7 +481,7 @@ namespace RW_FacialStuff
         public static Graphic_Multi ModifiedAlienHead(Pawn pawn, Color color, Graphic hairGraphic)
         {
 
-            SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+                CompFace faceComp = pawn.TryGetComp<CompFace>();
             Graphic_Multi headGraphic = GetModdedHeadNamed(pawn, false, Color.white);
 
             // grab the blank texture instead of Vanilla
@@ -582,7 +550,7 @@ namespace RW_FacialStuff
             Object.DestroyImmediate(temptextureside, true);
             Object.DestroyImmediate(temptextureback, true);
 
-            pawnSave.sessionOptimized = true;
+            faceComp.sessionOptimized = true;
 
             //    moddedHeadGraphics.Add(new KeyValuePair<string, Graphic_Multi>(pawn + color.ToString(), headGraphic));
 

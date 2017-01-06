@@ -18,14 +18,18 @@
 
         public static SaveablePawn GetCache(Pawn pawn)
         {
-            foreach (SaveablePawn c in PawnCache)
-            {
-                if (c.Pawn == pawn) return c;
-            }
+            List<SaveablePawn> cache = PawnCache;
 
-            SaveablePawn n = new SaveablePawn { Pawn = pawn };
-            PawnCache.Add(n);
-            return n;
+            for (int index = 0; index < cache.Count; index++)
+            {
+                SaveablePawn c = cache[index];
+                if (c.Pawn == pawn)
+                {
+                    PawnCache.RemoveAt(index);
+                    return c;
+                }
+            }
+            return null;
         }
 
         // public static FacePreset GetPreset(Pawn pawn)
@@ -42,10 +46,6 @@
             Scribe_Collections.LookList(ref PawnCache, "Pawns", LookMode.Deep);
 
             // Scribe_Collections.LookList(ref FacePresets, "FacePresets", LookMode.Deep);
-            if (PawnCache == null)
-            {
-                PawnCache = new List<SaveablePawn>();
-            }
 
             // if (FacePresets == null)
             // FacePresets = new List<FacePreset>();

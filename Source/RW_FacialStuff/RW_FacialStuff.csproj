@@ -63,6 +63,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="MeshPoolFS.cs" />
+    <Compile Include="CompFace.cs" />
+    <Compile Include="CompProperties_Face.cs" />
+    <Compile Include="Class3.cs" />
     <Compile Include="MapComponentUtility.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
@@ -80,6 +83,8 @@
     <Compile Include="Graphic_Multi_HeadParts.cs" />
     <Compile Include="Initializer\FS_SpecialInjector.cs" />
     <Compile Include="MaskTextures.cs" />
+    <Compile Include="NoCCL\CompInjectionSet.cs" />
+    <Compile Include="NoCCL\Class2.cs" />
     <Compile Include="Utilities\DialogUtility.cs" />
     <Compile Include="MapComponent_FacialStuff.cs" />
     <Compile Include="ModConfigMenu.cs" />

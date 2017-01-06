@@ -32,49 +32,36 @@ namespace RW_FacialStuff.Detouring
 
             if (pawn.RaceProps.IsFlesh && (pawn.kindDef.race.ToString().Equals("Human")))
             {
-                SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+                CompFace faceComp = pawn.TryGetComp<CompFace>();
 
-                if (!pawnSave.optimized)
+                if (!faceComp.optimized)
                 {
-                    //  pawn.story.skinWhiteness = Rand.Value;
 
-                  //if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == 2)
-                  //{
-                  //    if (pawn.story.melanin < 0.85f)
-                  //    {
-                  //        pawn.story.melanin += 0.15f;
-                  //    }
-                  //}
-                  //else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == 1)
-                  //{
-                  //    if (pawn.story.melanin < 0.75f)
-                  //    {
-                  //        pawn.story.melanin += 0.15f;
-                  //    }
-                  //}
-                  //else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == 0)
-                  //{
-                  //    //if (pawn.story.skinWhiteness < 0.15f || pawn.story.skinWhiteness > 0.8f)
-                  //    //{
-                  //    //    pawn.story.skinWhiteness = Random.Range(0.2f, 0.66f);
-                  //    //}
-                  //}
-                  //else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == -1)
-                  //{
-                  //    if (pawn.story.melanin > 0.5f)
-                  //    {
-                  //        pawn.story.melanin -= 0.15f;
-                  //    }
-                  //}
-                  //else if (pawn.story.traits.DegreeOfTrait(TraitDef.Named("TemperaturePreference")) == -2)
-                  //{
-                  //    if (pawn.story.melanin > 0.25f)
-                  //    {
-                  //        pawn.story.melanin -= 0.15f;
-                  //    }
-                  //}
-                    GraphicDatabaseHeadRecordsModded.DefineHeadParts(pawn);
+                    // Import MapComponent face definitions from old versions
+                    SaveablePawn pawnSave = MapComponent_FacialStuff.GetCache(pawn);
+                    if (pawnSave != null)
+                    {
+                        faceComp.BeardDef = pawnSave.BeardDef;
+                        faceComp.EyeDef = pawnSave.EyeDef;
+                        faceComp.BrowDef = pawnSave.BrowDef;
+                        faceComp.MouthDef = pawnSave.MouthDef;
+                        faceComp.WrinkleDef = pawnSave.WrinkleDef;
+
+                        faceComp.headGraphicIndex = pawnSave.headGraphicIndex;
+                        faceComp.type = pawnSave.type;
+
+                        faceComp.SkinColorHex = pawnSave.SkinColorHex;
+                        faceComp.HairColorOrg = pawnSave.HairColorOrg;
+                        faceComp.optimized = pawnSave.optimized;
+                        faceComp.drawMouth = pawnSave.drawMouth;
+                    }
+                    else
+                    {
+                        if (!faceComp.optimized)
+                            faceComp.DefineFace(pawn);
+                    }
                 }
+
 
                 //if (pawnSave.optimized)
                 //    typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pawn.story, pawnSave.headGraphicIndex);
@@ -89,7 +76,7 @@ namespace RW_FacialStuff.Detouring
                 ResolveApparelGraphics();
                 PortraitsCache.Clear();
 
-                if (!pawnSave.sessionOptimized)
+                if (!faceComp.sessionOptimized)
                 {
                     // Build the empty head index once to be used for the blank heads
                     if (HeadIndex.Count == 0)
@@ -106,7 +93,7 @@ namespace RW_FacialStuff.Detouring
                             HeadIndex.Remove(pair.Key);
                             HeadIndex.Add(index, pawn);
 
-                            pawnSave.headGraphicIndex = "Heads/Blank/" + pair.Key;
+                            faceComp.headGraphicIndex = "Heads/Blank/" + pair.Key;
                             GraphicDatabaseHeadRecordsModded.headsModded.Add(new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(pawn));
                             break;
                         }
