@@ -20,9 +20,13 @@
         {
             List<SaveablePawn> cache = PawnCache;
 
-            for (int index = 0; index < cache.Count; index++)
+            for (int index = cache.Count - 1; index >= 0; index--)
             {
                 SaveablePawn c = cache[index];
+                if (c.Pawn ==null)
+                {
+                    PawnCache.RemoveAt(index);
+                }
                 if (c.Pawn == pawn)
                 {
                     PawnCache.RemoveAt(index);

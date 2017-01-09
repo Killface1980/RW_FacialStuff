@@ -7,8 +7,6 @@ namespace RW_FacialStuff
 {
     public class CompFace : ThingComp
     {
-        public CompProperties_Face compProps => (CompProperties_Face)this.props;
-
         public BeardDef BeardDef;
         public EyeDef EyeDef;
         public BrowDef BrowDef;
@@ -22,7 +20,7 @@ namespace RW_FacialStuff
 
         public bool optimized;
         public bool sessionOptimized;
-        public bool drawMouth;
+        public bool drawMouth = true;
 
         public void DefineFace(Pawn pawn)
         {

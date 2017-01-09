@@ -64,7 +64,6 @@
   <ItemGroup>
     <None Include="MeshPoolFS.cs" />
     <Compile Include="CompFace.cs" />
-    <Compile Include="CompProperties_Face.cs" />
     <Compile Include="Class3.cs" />
     <Compile Include="MapComponentUtility.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />

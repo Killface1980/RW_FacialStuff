@@ -210,7 +210,7 @@ namespace RW_FacialStuff
             //}
 
 
-                CompFace faceComp = pawn.TryGetComp<CompFace>();
+            CompFace faceComp = pawn.TryGetComp<CompFace>();
             Graphic_Multi headGraphic = GetModdedHeadNamed(pawn, false, Color.white);
 
             // grab the blank texture instead of Vanilla
@@ -330,12 +330,8 @@ namespace RW_FacialStuff
                     MakeOld(pawn, ref finalHeadSide, temptextureside);
                 }
 
-#if !NoCCL
-     if (pawnSave.BeardDef.drawMouth && ModConfigMenu.useMouth && pawnSave.drawMouth)
-#endif
-#if NoCCL
+
                 if (faceComp.BeardDef.drawMouth && faceComp.drawMouth)
-#endif
                 {
 
                     Graphic mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
@@ -477,87 +473,6 @@ namespace RW_FacialStuff
 
             return headGraphic;
         }
-
-        public static Graphic_Multi ModifiedAlienHead(Pawn pawn, Color color, Graphic hairGraphic)
-        {
-
-                CompFace faceComp = pawn.TryGetComp<CompFace>();
-            Graphic_Multi headGraphic = GetModdedHeadNamed(pawn, false, Color.white);
-
-            // grab the blank texture instead of Vanilla
-            Graphic headGraphicVanilla = GetModdedHeadNamed(pawn, true, Color.white);
-
-            Texture2D finalHeadFront = MakeReadable(headGraphicVanilla.MatFront.mainTexture as Texture2D);
-            Texture2D finalHeadSide = MakeReadable(headGraphicVanilla.MatSide.mainTexture as Texture2D);
-            Texture2D finalHeadBack = MakeReadable(headGraphicVanilla.MatBack.mainTexture as Texture2D);
-
-            PaintHead(finalHeadFront, color);
-            PaintHead(finalHeadSide, color);
-            PaintHead(finalHeadBack, color);
-
-            //   }
-
-            Texture2D temptexturefront = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-            Texture2D temptextureside = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-
-            Texture2D temptextureback = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-
-            if (pawn.story.crownType == CrownType.Narrow)
-            {
-                ScaleTexture(MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D), ref temptexturefront, 112, 128);
-                ScaleTexture(MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D), ref temptextureside, 112, 128);
-                ScaleTexture(MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D), ref temptextureback, 112, 128);
-            }
-            else
-            {
-                temptexturefront = MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D);
-                temptextureside = MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D);
-                temptextureback = MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D);
-            }
-
-            //    MergeColor(ref finalHeadBack, pawn.story.SkinColor);
-            if (pawn.story.crownType == CrownType.Narrow)
-            {
-                MergeHeadWithHair(ref finalHeadFront, temptexturefront, MaskTextures.MaskTex_Narrow_FrontBack, pawn.story.hairColor);
-                MergeHeadWithHair(ref finalHeadSide, temptextureside, MaskTextures.MaskTex_Narrow_Side, pawn.story.hairColor);
-                MergeHeadWithHair(ref finalHeadBack, temptextureback, MaskTextures.MaskTex_Narrow_FrontBack, pawn.story.hairColor);
-            }
-            else
-            {
-                MergeHeadWithHair(ref finalHeadFront, temptexturefront, MaskTextures.MaskTex_Average_FrontBack, pawn.story.hairColor);
-                MergeHeadWithHair(ref finalHeadSide, temptextureside, MaskTextures.MaskTex_Average_Side, pawn.story.hairColor);
-                MergeHeadWithHair(ref finalHeadBack, temptextureback, MaskTextures.MaskTex_Average_FrontBack, pawn.story.hairColor);
-            }
-
-            finalHeadFront.Compress(true);
-            finalHeadSide.Compress(true);
-            finalHeadBack.Compress(true);
-
-            finalHeadFront.mipMapBias = 0.5f;
-            finalHeadSide.mipMapBias = 0.5f;
-            finalHeadBack.mipMapBias = 0.5f;
-
-            finalHeadFront.Apply(false, true);
-            finalHeadSide.Apply(false, true);
-            finalHeadBack.Apply(false, true);
-
-
-            headGraphic.MatFront.mainTexture = finalHeadFront;
-            headGraphic.MatSide.mainTexture = finalHeadSide;
-            headGraphic.MatBack.mainTexture = finalHeadBack;
-
-            Object.DestroyImmediate(temptexturefront, true);
-            Object.DestroyImmediate(temptextureside, true);
-            Object.DestroyImmediate(temptextureback, true);
-
-            faceComp.sessionOptimized = true;
-
-            //    moddedHeadGraphics.Add(new KeyValuePair<string, Graphic_Multi>(pawn + color.ToString(), headGraphic));
-
-            return headGraphic;
-        }
-
-
 
 
         private static void PaintHead(Texture2D finalHeadFront, Color color)
@@ -769,17 +684,9 @@ namespace RW_FacialStuff
                     Color final_color = headColor;
 
                     if (pawn.ageTracker.AgeBiologicalYearsFloat >= 40)
-                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.15f);
-                    if (pawn.ageTracker.AgeBiologicalYearsFloat >= 47)
-                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.3f);
-                    if (pawn.ageTracker.AgeBiologicalYearsFloat >= 54)
-                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.45f);
-                    if (pawn.ageTracker.AgeBiologicalYearsFloat >= 61)
-                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.6f);
-                    if (pawn.ageTracker.AgeBiologicalYearsFloat >= 68)
-                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 0.8f);
-                    if (pawn.ageTracker.AgeBiologicalYearsFloat >= 76)
-                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 1f) * 1f);
+                    {
+                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 0.6f) * Mathf.InverseLerp(40, 110, pawn.ageTracker.AgeBiologicalYearsFloat));
+                    }
 
                     final_color.a = headColor.a + wrinkleColor.a;
 
