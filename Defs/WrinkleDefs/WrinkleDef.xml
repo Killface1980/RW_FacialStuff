@@ -7,9 +7,6 @@
     <texPathAverageNormal>Wrinkles/Wrinkles_Average_Normal_Female</texPathAverageNormal>
     <texPathAveragePointy>Wrinkles/Wrinkles_Average_Pointy_Female</texPathAveragePointy>
     <texPathAverageWide>Wrinkles/Wrinkles_Average_Wide_Female</texPathAverageWide>
-    <texPathNarrowNormal>Wrinkles/Wrinkles_Narrow_Normal_Female</texPathNarrowNormal>
-    <texPathNarrowPointy>Wrinkles/Wrinkles_Narrow_Pointy_Female</texPathNarrowPointy>
-    <texPathNarrowWide>Wrinkles/Wrinkles_Narrow_Wide_Female</texPathNarrowWide>
     <defName>Wrinkles_Default_Female</defName>
   </RW_FacialStuff.Defs.WrinkleDef>
 
@@ -19,9 +16,6 @@
     <texPathAverageNormal>Wrinkles/Wrinkles_Average_Normal_Male</texPathAverageNormal>
     <texPathAveragePointy>Wrinkles/Wrinkles_Average_Pointy_Male</texPathAveragePointy>
     <texPathAverageWide>Wrinkles/Wrinkles_Average_Wide_Male</texPathAverageWide>
-    <texPathNarrowNormal>Wrinkles/Wrinkles_Narrow_Normal_Male</texPathNarrowNormal>
-    <texPathNarrowPointy>Wrinkles/Wrinkles_Narrow_Pointy_Male</texPathNarrowPointy>
-    <texPathNarrowWide>Wrinkles/Wrinkles_Narrow_Wide_Male</texPathNarrowWide>
     <defName>Wrinkles_Default_Male</defName>
   </RW_FacialStuff.Defs.WrinkleDef>
 

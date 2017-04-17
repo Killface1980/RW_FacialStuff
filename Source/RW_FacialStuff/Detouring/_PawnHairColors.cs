@@ -47,53 +47,22 @@ namespace RW_FacialStuff.Detouring
             if (Rand.Value < 0.02f)
             {
                 float rand = Rand.Value;
-
-           //   if (rand < 0.1f)
-           //       return new Color(HairDarkPurple.r*Rand.Range(0.25f, 1f), HairDarkPurple.g * Rand.Range(0.25f, 1f), HairDarkPurple.b * Rand.Range(0.25f, 1f), 255); 
-
                 if (rand < 0.2f)
                     return new Color(HairBlueSteel.r * Rand.Range(0.25f, 1f), HairBlueSteel.g * Rand.Range(0.25f, 1f), HairBlueSteel.b * Rand.Range(0.25f, 1f), 255);
-           //   if (rand < 0.3f)
-           //       return new Color(HairBurgundyBistro.r * Rand.Range(0.25f, 1f), HairBurgundyBistro.g * Rand.Range(0.25f, 1f), HairBurgundyBistro.b * Rand.Range(0.25f, 1f), 255);
                 if (rand < 0.4f)
                     return new Color(HairGreenGrape.r * Rand.Range(0.25f, 1f), HairGreenGrape.g * Rand.Range(0.25f, 1f), HairGreenGrape.b * Rand.Range(0.25f, 1f), 255);
                 if (rand < 0.6f)
                     return new Color(HairMysticTurquois.r * Rand.Range(0.25f, 1f), HairMysticTurquois.g * Rand.Range(0.25f, 1f), HairMysticTurquois.b * Rand.Range(0.25f, 1f), 255);
-           //   if (rand < 0.6f)
-           //       return new Color(HairPinkPearl.r * Rand.Range(0.25f, 1f), HairPinkPearl.g * Rand.Range(0.25f, 1f), HairPinkPearl.b * Rand.Range(0.25f, 1f), 255);
                 if (rand < 0.8f)
                     return new Color(HairPurplePassion.r * Rand.Range(0.25f, 1f), HairPurplePassion.g * Rand.Range(0.25f, 1f), HairPurplePassion.b * Rand.Range(0.25f, 1f), 255);
-          //    if (rand < 0.8f)
-          //        return new Color(HairRosaRosa.r * Rand.Range(0.25f, 1f), HairRosaRosa.g * Rand.Range(0.25f, 1f), HairRosaRosa.b * Rand.Range(0.25f, 1f), 255);
-          //    if (rand < 0.9f)
-          //        return new Color(HairRubyRed.r * Rand.Range(0.25f, 1f), HairRubyRed.g * Rand.Range(0.25f, 1f), HairRubyRed.b * Rand.Range(0.25f, 1f), 255);
                 return new Color(HairUltraViolet.r * Rand.Range(0.25f, 1f), HairUltraViolet.g * Rand.Range(0.25f, 1f), HairUltraViolet.b * Rand.Range(0.25f, 1f), 255);
 
 
             }          //if (Rand.Value < 0.02f)
 
-            //{
-            //    return new Color(Rand.Value, Rand.Value, Rand.Value);
-            //}
-
-
-            //if (ageYears > 40)
-            //{
-            //    float num = GenMath.SmootherStep(40f, 75f, (float)ageYears);
-            //    if (Rand.Value < num)
-            //    {
-            //        float num2 = Rand.Range(0.65f, 0.85f);
-            //        return new Color(num2, num2, num2);
-            //    }
-            //}
             if (_PawnSkinColors.IsDarkSkin(skinColor))// || Rand.Value < 0.4f)
             {
                 tempColor = Color.Lerp(HairMidnightBlack, HairDarkBrown, Rand.Range(0f, 0.35f));
-
-                //else if (value < 0.5f)
-                //    tempColor = Dark02;
-
-                //else tempColor = Dark04;
 
                 tempColor = Color.Lerp(tempColor, HairTerraCotta, Rand.Range(0f, 0.3f));
                 tempColor = Color.Lerp(tempColor, HairPlatinum, Rand.Range(0f, 0.15f));
@@ -141,29 +110,10 @@ namespace RW_FacialStuff.Detouring
                     tempColor = Color.Lerp(tempColor, HairMidnightBlack, Rand.Range(0f, 0.25f));
                 }
 
-                //  else if (value2 < 0.75f)
-                //  {
-                //  }
-                //  else // if (value2 < 0.8f)
-                //  {
-                //  tempColor = Color.Lerp(_ColorPlatin, HairYellowBlonde, Rand.Value);
-                //  tempColor = Color.Lerp(tempColor, HairTerraCotta, Rand.Value);
-                //  tempColor = Color.Lerp(tempColor, HairMediumDarkBrown, Rand.Value);
-                //  tempColor = Color.Lerp(tempColor, HairMidnightBlack, Rand.Value);
-                //  }
-
-                //           tempColor = ColorWhiteBlonde;
-                //
-                //       else if (value2 < 0.8f)
-                //           tempColor = Color04;
-                //
-                //       else tempColor = ColPlatin;
-
-
             }
 
             // age to become gray as float
-            float agingGreyFloat = Rand.Range(0.35f, 0.6f);
+            float agingGreyFloat = Rand.Range(0.35f, 0.7f);
 
             float greyness = 0f;
 

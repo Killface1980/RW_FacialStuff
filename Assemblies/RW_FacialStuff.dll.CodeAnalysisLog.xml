@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="c:\program files (x86)\microsoft visual studio 14.0\team tools\static analysis tools\fxcop\Xml\CodeAnalysisReport.xsl"?>
+<FxCopReport Version="14.0">
+ <Targets>
+  <Target Name="C:\Program Files (x86)\Steam\SteamApps\common\RimWorld\Mods\RW_FacialStuff\Assemblies\RW_FacialStuff.dll">
+   <Modules>
+    <Module Name="rw_facialstuff.dll">
+     <Namespaces>
+      <Namespace Name="RW_FacialStuff.NoCCL">
+       <Types>
+        <Type Name="Detours" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#TryDetourFromTo(System.Reflection.MethodInfo,System.Reflection.MethodInfo)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DoNotIndirectlyExposeMethodsWithLinkDemands" Category="Microsoft.Security" CheckId="CA2122" Status="Active" Created="2017-02-25 20:46:11Z" FixCategory="NonBreaking">
+             <Issue Certainty="33" Level="CriticalError">"'Detours.TryDetourFromTo(MethodInfo, MethodInfo)'" ruft "'RuntimeMethodHandle.GetFunctionPointer()'" auf, das ein LinkDemand aufweist. Bei diesem Aufruf wird "'RuntimeMethodHandle.GetFunctionPointer()'" indirekt für Benutzercode verfügbar gemacht. Überprüfen Sie folgende Aufrufliste, die möglicherweise eine Möglichkeit zum Umgehen der Sicherheit verfügbar macht: &#xD;&#xA;   -&gt;'Detours.TryDetourFromTo(MethodInfo, MethodInfo)'&#xD;&#xA;   -&gt;'Detours.TryDetourFromTo(MethodInfo, MethodInfo)'</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+ </Targets>
+ <Rules>
+  <Rule TypeName="DoNotIndirectlyExposeMethodsWithLinkDemands" Category="Microsoft.Security" CheckId="CA2122">
+   <Name>Methoden mit Linkaufrufen nicht indirekt verfügbar machen</Name>
+   <Description>Umschließen Sie eine Methode, die durch eine LinkDemand geschützt ist, nicht mit einer Methode, die keine Sicherheitsüberprüfung durchführt. LinkDemand überprüft die Berechtigungen des unmittelbaren Aufrufers, anstelle die Berechtigungen aller Aufrufer in der Aufrufliste zu überprüfen. In diesem Fall werden die Berechtigungen der Wrappermethode überprüft. Wenn die Wrappermethode die Berechtigungen von Aufrufern weiter oben in der Aufrufliste nicht überprüft, kann in bösartiger Absicht erstellter Code möglicherweise die umschlossene Funktion ausführen, obwohl er dazu nicht berechtigt ist.</Description>
+   <Resolution Name="Default">"{0}" ruft "{1}" auf, das ein LinkDemand aufweist. Bei diesem Aufruf wird "{1}" indirekt für Benutzercode verfügbar gemacht. Überprüfen Sie folgende Aufrufliste, die möglicherweise eine Möglichkeit zum Umgehen der Sicherheit verfügbar macht: {2}</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182303.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="33">CriticalError</MessageLevel>
+   <File Name="securityrules.dll" Version="14.0.0.0" />
+  </Rule>
+ </Rules>
+ <Localized>
+  <String Key="Category">Kategorie</String>
+  <String Key="Certainty">Sicherheit</String>
+  <String Key="CollapseAll">Alle reduzieren</String>
+  <String Key="CheckId">Prüf-ID</String>
+  <String Key="Error">Fehler</String>
+  <String Key="Errors">Fehler</String>
+  <String Key="ExpandAll">Alle erweitern</String>
+  <String Key="Help">Hilfe</String>
+  <String Key="Line">Zeile</String>
+  <String Key="Messages">Meldung(en)</String>
+  <String Key="LocationNotStoredInPdb">[Nicht in PDB gespeicherter Speicherort]</String>
+  <String Key="Project">Projekt</String>
+  <String Key="Resolution">Auflösung</String>
+  <String Key="Rule">Regel</String>
+  <String Key="RuleFile">Regeldatei</String>
+  <String Key="RuleDescription">Regelbeschreibung</String>
+  <String Key="Source">Quelle</String>
+  <String Key="Status">Status</String>
+  <String Key="Target">Ziel</String>
+  <String Key="Warning">Warnung</String>
+  <String Key="Warnings">Warnung(en)</String>
+  <String Key="ReportTitle">Codeanalysebericht</String>
+ </Localized>
+ <Exceptions>
+  <Exception Keyword="CA0068" Kind="Engine" TreatAsWarning="True">
+   <Type>Microsoft.FxCop.Sdk.FxCopException</Type>
+   <ExceptionMessage>Für die Zielassembly "RW_FacialStuff.dll" konnten keine Debuginformationen gefunden werden. Um optimale Analyseergebnisse zu erzielen, fügen Sie die PDB-Datei mit Debuginformationen für "RW_FacialStuff.dll" in dasselbe Verzeichnis wie die Zielassembly ein.</ExceptionMessage>
+  </Exception>
+ </Exceptions>
+</FxCopReport>

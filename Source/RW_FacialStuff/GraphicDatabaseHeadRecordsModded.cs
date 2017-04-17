@@ -215,7 +215,7 @@ namespace RW_FacialStuff
 
             // grab the blank texture instead of Vanilla
             Graphic headGraphicVanilla = GetModdedHeadNamed(pawn, true, Color.white);
-            bool oldAge = pawn.ageTracker.AgeBiologicalYearsFloat >= 40;
+            bool oldAge = pawn.ageTracker.AgeBiologicalYearsFloat >= 50;
 
 
 
@@ -675,7 +675,6 @@ namespace RW_FacialStuff
 
             for (int x = startX; x < finalhead.width; x++)
             {
-
                 for (int y = startY; y < finalhead.height; y++)
                 {
                     Color headColor = finalhead.GetPixel(x, y);
@@ -683,10 +682,7 @@ namespace RW_FacialStuff
 
                     Color final_color = headColor;
 
-                    if (pawn.ageTracker.AgeBiologicalYearsFloat >= 40)
-                    {
-                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 0.6f) * Mathf.InverseLerp(40, 110, pawn.ageTracker.AgeBiologicalYearsFloat));
-                    }
+                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 0.6f) * Mathf.InverseLerp(50, 200, pawn.ageTracker.AgeBiologicalYearsFloat));
 
                     final_color.a = headColor.a + wrinkleColor.a;
 

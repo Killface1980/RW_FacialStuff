@@ -64,7 +64,7 @@
   <ItemGroup>
     <None Include="MeshPoolFS.cs" />
     <Compile Include="CompFace.cs" />
-    <Compile Include="Class3.cs" />
+    <None Include="SaveablePawnTC.cs" />
     <Compile Include="MapComponentUtility.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
@@ -125,6 +125,7 @@
     </Content>
     <Content Include="..\..\Defs\HairDefs\SpoonshortagesRimworldHairstyles_HairDefs.xml">
       <Link>Defs\SpoonshortagesRimworldHairstyles_HairDefs.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\JobDefs\Clutter_Jobs.xml">
       <Link>Defs\Clutter_Jobs.xml</Link>
