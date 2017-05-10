@@ -8,9 +8,9 @@ namespace FaceStyling
     class FaceStyler : Building
     {
 
-        public override void SpawnSetup(Map map)
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
-            base.SpawnSetup(map);
+            base.SpawnSetup(map, respawningAfterLoad);
 
         }
 
@@ -47,15 +47,13 @@ namespace FaceStyling
                 {
                     // IntVec3 InteractionSquare = (this.Position + new IntVec3(0, 0, 1)).RotatedBy(this.Rotation);
                     Job FaceStyleChanger = new Job(DefDatabase<JobDef>.GetNamed("FaceStyleChanger"), this, InteractionCell);
-                    if (myPawn.jobs.CanTakeOrderedJob())//This is used to force go job, it will work even when drafted
+                    if (!myPawn.jobs.TryTakeOrderedJob(FaceStyleChanger))//This is used to force go job, it will work even when drafted
                     {
-                        myPawn.jobs.TryTakeOrderedJob(FaceStyleChanger);
-                    }
-                    else
-                    {
-                        myPawn.QueueJob(FaceStyleChanger);
+                        myPawn.jobs.jobQueue.EnqueueFirst(FaceStyleChanger);
                         myPawn.jobs.StopAll();
+                        
                     }
+                    
 
                 };
 

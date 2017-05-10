@@ -12,7 +12,7 @@
         public MapComponent_FacialStuff(Map map)
             : base(map)
         {
-            MapComponentUtility.EnsureIsActive(this);
+            HugsLib.Utils.MapComponentUtility.EnsureIsActive(this);
             this.map = map;
         }
 
@@ -47,7 +47,7 @@
         // }
         public override void ExposeData()
         {
-            Scribe_Collections.LookList(ref PawnCache, "Pawns", LookMode.Deep);
+            Scribe_Collections.Look(ref PawnCache, "Pawns", LookMode.Deep);
 
             // Scribe_Collections.LookList(ref FacePresets, "FacePresets", LookMode.Deep);
 
