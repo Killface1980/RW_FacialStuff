@@ -12,7 +12,10 @@ namespace HugsLib.Utils
 		 */
         public static void EnsureIsActive(this MapComponent mapComponent)
         {
-            if (mapComponent == null) throw new Exception("MapComponent is null");
+            if (mapComponent == null)
+            {
+                throw new Exception("MapComponent is null");
+            }
             LongEventHandler.ExecuteWhenFinished(() => {
                 if (mapComponent.map == null || mapComponent.map.components == null) throw new Exception("The map component requires a loaded map to be made active.");
                 var components = mapComponent.map.components;

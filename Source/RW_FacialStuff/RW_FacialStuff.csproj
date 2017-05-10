@@ -65,7 +65,7 @@
     <None Include="MeshPoolFS.cs" />
     <Compile Include="CompFace.cs" />
     <None Include="SaveablePawnTC.cs" />
-    <Compile Include="MapComponentUtility.cs" />
+    <None Include="MapComponentUtility.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
@@ -76,7 +76,7 @@
     <Compile Include="FaceStyling Bench\FaceStyler.cs" />
     <None Include="FaceStyling Bench\Preset.cs" />
     <None Include="FaceStyling Bench\PresetDatabase.cs" />
-    <Compile Include="MapComponentInjector.cs" />
+    <None Include="MapComponentInjector.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphic_Multi_HeadParts.cs" />
@@ -85,13 +85,13 @@
     <Compile Include="NoCCL\CompInjectionSet.cs" />
     <Compile Include="NoCCL\Class2.cs" />
     <Compile Include="Utilities\DialogUtility.cs" />
-    <Compile Include="MapComponent_FacialStuff.cs" />
+    <None Include="MapComponent_FacialStuff.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
     <Compile Include="Detouring\_PawnHairColors.cs" />
     <Compile Include="Detouring\_PawnSkinColors.cs" />
-    <Compile Include="SaveablePawn.cs" />
+    <None Include="SaveablePawn.cs" />
     <Compile Include="PawnFaceChooser.cs" />
     <Compile Include="Detouring\_PawnGraphicSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
