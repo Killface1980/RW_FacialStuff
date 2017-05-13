@@ -55,9 +55,8 @@ namespace RW_FacialStuff.Detouring
                     return new Color(HairMysticTurquois.r * Rand.Range(0.25f, 1f), HairMysticTurquois.g * Rand.Range(0.25f, 1f), HairMysticTurquois.b * Rand.Range(0.25f, 1f), 255);
                 if (rand < 0.8f)
                     return new Color(HairPurplePassion.r * Rand.Range(0.25f, 1f), HairPurplePassion.g * Rand.Range(0.25f, 1f), HairPurplePassion.b * Rand.Range(0.25f, 1f), 255);
+
                 return new Color(HairUltraViolet.r * Rand.Range(0.25f, 1f), HairUltraViolet.g * Rand.Range(0.25f, 1f), HairUltraViolet.b * Rand.Range(0.25f, 1f), 255);
-
-
             }          //if (Rand.Value < 0.02f)
 
             if (_PawnSkinColors.IsDarkSkin(skinColor))// || Rand.Value < 0.4f)
@@ -65,7 +64,7 @@ namespace RW_FacialStuff.Detouring
                 tempColor = Color.Lerp(HairMidnightBlack, HairDarkBrown, Rand.Range(0f, 0.35f));
 
                 tempColor = Color.Lerp(tempColor, HairTerraCotta, Rand.Range(0f, 0.3f));
-                tempColor = Color.Lerp(tempColor, HairPlatinum, Rand.Range(0f, 0.15f));
+                tempColor = Color.Lerp(tempColor, HairPlatinum, Rand.Range(0f, 0.45f));
             }
             else
             {

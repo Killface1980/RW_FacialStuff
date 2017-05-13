@@ -62,10 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="MeshPoolFS.cs" />
     <Compile Include="CompFace.cs" />
-    <None Include="SaveablePawnTC.cs" />
-    <None Include="MapComponentUtility.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
@@ -76,22 +73,19 @@
     <Compile Include="FaceStyling Bench\FaceStyler.cs" />
     <None Include="FaceStyling Bench\Preset.cs" />
     <None Include="FaceStyling Bench\PresetDatabase.cs" />
-    <None Include="MapComponentInjector.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphic_Multi_HeadParts.cs" />
     <Compile Include="Initializer\FS_SpecialInjector.cs" />
     <Compile Include="MaskTextures.cs" />
     <Compile Include="NoCCL\CompInjectionSet.cs" />
-    <Compile Include="NoCCL\Class2.cs" />
+    <Compile Include="NoCCL\DefInjectionQualifier.cs" />
     <Compile Include="Utilities\DialogUtility.cs" />
-    <None Include="MapComponent_FacialStuff.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
     <Compile Include="Detouring\_PawnHairColors.cs" />
     <Compile Include="Detouring\_PawnSkinColors.cs" />
-    <None Include="SaveablePawn.cs" />
     <Compile Include="PawnFaceChooser.cs" />
     <Compile Include="Detouring\_PawnGraphicSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -130,15 +124,8 @@
     <Content Include="..\..\Defs\JobDefs\Clutter_Jobs.xml">
       <Link>Defs\Clutter_Jobs.xml</Link>
     </Content>
-    <Content Include="..\..\Defs\ModHelperDefs\ModHelper.xml">
-      <Link>Initializer\ModHelper.xml</Link>
-    </Content>
     <Content Include="..\..\Defs\MouthDefs\MouthDef.xml">
       <Link>Defs\FacialDefs\MouthDef.xml</Link>
-    </Content>
-    <Content Include="..\..\Defs\ThingDefs\Injector.xml">
-      <Link>Initializer\Injector.xml</Link>
-      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\ThingDefs\Worktable.xml">
       <Link>Defs\Worktable.xml</Link>

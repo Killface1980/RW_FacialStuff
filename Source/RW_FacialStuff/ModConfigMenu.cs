@@ -1,63 +1,64 @@
-﻿#if !NoCCL
-
-using CommunityCoreLibrary;
+﻿using RimWorld;
+using RW_FacialStuff.Detouring;
 using UnityEngine;
 using Verse;
+using static UnityEngine.GUILayout;
 
 namespace RW_FacialStuff
 {
-    public class ModConfigMenu : ModConfigurationMenu
+    public class FS_Mod : Mod
     {
         #region Fields
-
-        public string Page = "main";
-        public Window OptionsDialog;
+        public override string SettingsCategory() => "Facial Stuff";
 
         #endregion
+
+        public FS_Mod(ModContentPack content) : base(content)
+        {
+        }
 
         #region Methods
 
-        public override float DoWindowContents(Rect rect)
+        public override void DoSettingsWindowContents(Rect inRect)
         {
-            float curY = 0f;
-
-            rect.xMin += 15f;
-            rect.width -= 15f;
-
-            var listing = new Listing_Standard(rect);
+            BeginArea(inRect);
+            BeginVertical();
+            FS_Settings.UseMouth = Toggle(FS_Settings.UseMouth, "Settings.UseMouth".Translate());
+            EndVertical();
+            BeginVertical();
+            if (GUILayout.Button("Settings.Apply".Translate()))
             {
-                FillPageMain(listing, rect.width, ref curY);
+                foreach (Pawn pawn in Find.WorldPawns.AllPawnsAliveOrDead)
+                {
+                    if (pawn.RaceProps.IsFlesh && (pawn.kindDef.race.ToString().Equals("Human")))
+                    {
+                        CompFace faceComp = pawn.TryGetComp<CompFace>();
+                        faceComp.sessionOptimized = false;
+                        pawn.Drawer.renderer.graphics.ResolveAllGraphics();
+
+                        if (pawn.Faction == Faction.OfPlayer)
+                            PortraitsCache.SetDirty(pawn);
+
+                    }
+                }
+
             }
-
-            return 680f;
-            //return curY;
-        }
-        
-        private void FillPageMain(Listing_Standard listing, float columnwidth, ref float curY)
-        {
-        //  listing.ColumnWidth = columnwidth / 2;
-        //
-        //  if (listing.ButtonText("RW_FacialStuff.Settings.RevertSettings".Translate()))
-        //  {
-        //  }
-        //  listing.ColumnWidth = columnwidth;
-            listing.CheckboxLabeled("RW_FacialStuff.Settings.useMouth".Translate(), ref useMouth, null);
-            listing.Gap();
-
-            listing.End();
-            curY += listing.CurHeight;
-
+            EndVertical();
+            EndArea();
         }
 
-        public static bool useMouth = false;
+    }
+    public class FS_Settings : ModSettings
+    {
+        public static bool UseMouth = false;
 
         public override void ExposeData()
         {
-          Scribe_Values.LookValue(ref useMouth, "useMouth", false, false);
+            Scribe_Values.Look(ref UseMouth, "UseMouth", false, false);
         }
-
-        #endregion
-
     }
+
+    #endregion
+
 }
-#endif
+

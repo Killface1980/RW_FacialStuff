@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace RW_FacialStuff
 {
-    public static class GraphicDatabaseHeadRecordsModded 
+    public static class GraphicDatabaseHeadRecordsModded
     {
         // use mouth?
 
@@ -330,22 +330,25 @@ namespace RW_FacialStuff
                 }
 
 
-                if (faceComp.BeardDef.drawMouth && faceComp.drawMouth)
+                if (FS_Settings.UseMouth)
                 {
+                    if (faceComp.BeardDef.drawMouth && faceComp.drawMouth)
+                    {
 
-                    Graphic mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                    if (pawn.story.crownType == CrownType.Narrow)
-                    {
-                        ScaleTexture(mouthGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
-                        ScaleTexture(mouthGraphic.MatSide.mainTexture as Texture2D, ref temptextureside, 102, 128);
+                        Graphic mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                        if (pawn.story.crownType == CrownType.Narrow)
+                        {
+                            ScaleTexture(mouthGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
+                            ScaleTexture(mouthGraphic.MatSide.mainTexture as Texture2D, ref temptextureside, 102, 128);
+                        }
+                        else
+                        {
+                            temptexturefront = MakeReadable(mouthGraphic.MatFront.mainTexture as Texture2D);
+                            temptextureside = MakeReadable(mouthGraphic.MatSide.mainTexture as Texture2D);
+                        }
+                        MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
+                        MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
                     }
-                    else
-                    {
-                        temptexturefront = MakeReadable(mouthGraphic.MatFront.mainTexture as Texture2D);
-                        temptextureside = MakeReadable(mouthGraphic.MatSide.mainTexture as Texture2D);
-                    }
-                    MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
-                    MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
                 }
 
 
@@ -380,25 +383,25 @@ namespace RW_FacialStuff
                     MakeOld(pawn, ref finalHeadSide, temptextureside);
 
                 }
-#if !NoCCL
-                if (ModConfigMenu.useMouth)
-#else
-                if (faceComp.drawMouth)
-#endif
+
+                if (FS_Settings.UseMouth)
                 {
-                    Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                    if (pawn.story.crownType == CrownType.Narrow)
+                    if (faceComp.drawMouth)
                     {
-                        ScaleTexture(lipGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
-                        ScaleTexture(lipGraphic.MatSide.mainTexture as Texture2D, ref temptextureside, 102, 128);
+                        Graphic lipGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(faceComp.MouthDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                        if (pawn.story.crownType == CrownType.Narrow)
+                        {
+                            ScaleTexture(lipGraphic.MatFront.mainTexture as Texture2D, ref temptexturefront, 102, 128);
+                            ScaleTexture(lipGraphic.MatSide.mainTexture as Texture2D, ref temptextureside, 102, 128);
+                        }
+                        else
+                        {
+                            temptexturefront = MakeReadable(lipGraphic.MatFront.mainTexture as Texture2D);
+                            temptextureside = MakeReadable(lipGraphic.MatSide.mainTexture as Texture2D);
+                        }
+                        MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
+                        MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
                     }
-                    else
-                    {
-                        temptexturefront = MakeReadable(lipGraphic.MatFront.mainTexture as Texture2D);
-                        temptextureside = MakeReadable(lipGraphic.MatSide.mainTexture as Texture2D);
-                    }
-                    MergeTwoGraphics(ref finalHeadFront, temptexturefront, Color.black);
-                    MergeTwoGraphics(ref finalHeadSide, temptextureside, Color.black);
                 }
             }
             #endregion
@@ -658,8 +661,8 @@ namespace RW_FacialStuff
 
                     Color final_color = Color.Lerp(headColor, hairColor, hairColor.a);
 
-                    if (headColor.a > 0 || hairColor.a > 0)
-                        final_color.a = headColor.a + hairColor.a;
+                  //if (headColor.a > 0 || hairColor.a > 0)
+                  //    final_color.a = headColor.a + hairColor.a;
 
                     finalTexture.SetPixel(x, y, final_color);
                 }
@@ -684,7 +687,7 @@ namespace RW_FacialStuff
 
                     Color final_color = headColor;
 
-                        final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 0.6f) * Mathf.InverseLerp(50, 200, pawn.ageTracker.AgeBiologicalYearsFloat));
+                    final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 0.6f) * Mathf.InverseLerp(50, 200, pawn.ageTracker.AgeBiologicalYearsFloat));
 
                     final_color.a = headColor.a + wrinkleColor.a;
 

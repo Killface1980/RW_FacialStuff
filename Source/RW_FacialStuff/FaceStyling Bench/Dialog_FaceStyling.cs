@@ -59,7 +59,7 @@ namespace FaceStyling
             public Graphic graphic = null;
             public Texture2D icon = null;
             public Color color = Color.white;
-            private float yOffset = 0f;
+            private readonly float yOffset = 0f;
 
             public bool Valid
             {
@@ -107,19 +107,19 @@ namespace FaceStyling
             }
         }
 
-        private static string _title;
-        private static float _titleHeight;
-        private static float _previewSize;
-        private static float _iconSize;
+        private static readonly string _title;
+        private static readonly float _titleHeight;
+        private static readonly float _previewSize;
+        private static readonly float _iconSize;
         //     private static Texture2D _icon;
-        private static float _margin;
-        private static float _listWidth;
-        private static int _columns;
-        private static float _entrySize;
-        private static Texture2D _nameBackground;
+        private static readonly float _margin;
+        private static readonly float _listWidth;
+        private static readonly int _columns;
+        private static readonly float _entrySize;
+        private static readonly Texture2D _nameBackground;
         private static List<HairDef> _hairDefs;
-        private static List<BeardDef> _beardDefs;
-        private static List<MouthDef> _mouthDefs;
+        private static readonly List<BeardDef> _beardDefs;
+        private static readonly List<MouthDef> _mouthDefs;
         private static List<EyeDef> _eyeDefs;
         private static List<BrowDef> _browDefs;
         private static Pawn pawn;
@@ -137,7 +137,7 @@ namespace FaceStyling
         private static Color _newColour;
         private static Color originalColour;
 
-        private CompFace faceComp;
+        private static CompFace faceComp;
 
         private static ColorWrapper colourWrapper;
 
@@ -244,6 +244,7 @@ namespace FaceStyling
             _columns = 5;
             _entrySize = _listWidth / _columns;
             _nameBackground = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0.3f));
+
             _hairDefs = DefDatabase<HairDef>.AllDefsListForReading;
             _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
             _beardDefs = DefDatabase<BeardDef>.AllDefsListForReading;
@@ -255,24 +256,24 @@ namespace FaceStyling
         public Dialog_FaceStyling(Pawn p)
         {
             pawn = p;
-            this.faceComp = pawn.TryGetComp<CompFace>();
+            faceComp = pawn.TryGetComp<CompFace>();
 
-            if (this.faceComp.BeardDef == null)
-                this.faceComp.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
+            if (faceComp.BeardDef == null)
+                faceComp.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
             absorbInputAroundWindow = false;
             forcePause = true;
             closeOnClickedOutside = false;
-            originalColour = (_newColour = this.faceComp.HairColorOrg);
+            originalColour = (_newColour = faceComp.HairColorOrg);
 
             colourWrapper = new ColorWrapper(NewColour);
 
             _newMelanin = (originalMelanin = pawn.story.melanin);
 
             _newHair = (originalHair = pawn.story.hairDef);
-            _newBeard = (originalBeard = this.faceComp.BeardDef);
-            _newMouth = (originalMouth = this.faceComp.MouthDef);
-            _newEye = (originalEye = this.faceComp.EyeDef);
-            _newBrow = (originalBrow = this.faceComp.BrowDef);
+            _newBeard = (originalBeard = faceComp.BeardDef);
+            _newMouth = (originalMouth = faceComp.MouthDef);
+            _newEye = (originalEye = faceComp.EyeDef);
+            _newBrow = (originalBrow = faceComp.BrowDef);
 
             DisplayGraphics = new GraphicsDisp[12];
             for (int i = 0; i < 12; i++)
@@ -283,10 +284,10 @@ namespace FaceStyling
             SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, true, _PawnSkinColors.GetSkinColor(NewMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(NewMelanin));
             //   SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,_PawnSkinColors.GetSkinColor(NewMelanin))), pawn.def.uiIcon,_PawnSkinColors.GetSkinColor(NewMelanin)));
             SetGraphicSlot(GraphicSlotGroup.Hair, pawn, HairGraphic(pawn.story.hairDef), pawn.def.uiIcon, pawn.story.hairColor);
-            SetGraphicSlot(GraphicSlotGroup.Eyes, pawn, EyeGraphic(this.faceComp.EyeDef), pawn.def.uiIcon, Color.black);
-            SetGraphicSlot(GraphicSlotGroup.Brows, pawn, BrowGraphic(this.faceComp.BrowDef), pawn.def.uiIcon, pawn.story.hairColor * new Color(0.3f, 0.3f, 0.3f));
-            SetGraphicSlot(GraphicSlotGroup.Mouth, pawn, MouthGraphic(this.faceComp.MouthDef), pawn.def.uiIcon, Color.black);
-            SetGraphicSlot(GraphicSlotGroup.Beard, pawn, BeardGraphic(this.faceComp.BeardDef), pawn.def.uiIcon, pawn.story.hairColor);
+            SetGraphicSlot(GraphicSlotGroup.Eyes, pawn, EyeGraphic(faceComp.EyeDef), pawn.def.uiIcon, Color.black);
+            SetGraphicSlot(GraphicSlotGroup.Brows, pawn, BrowGraphic(faceComp.BrowDef), pawn.def.uiIcon, pawn.story.hairColor * new Color(0.3f, 0.3f, 0.3f));
+            SetGraphicSlot(GraphicSlotGroup.Mouth, pawn, MouthGraphic(faceComp.MouthDef), pawn.def.uiIcon, Color.black);
+            SetGraphicSlot(GraphicSlotGroup.Beard, pawn, BeardGraphic(faceComp.BeardDef), pawn.def.uiIcon, pawn.story.hairColor);
             foreach (Apparel current in pawn.apparel.WornApparel)
             {
                 GraphicSlotGroup slotForApparel = GetSlotForApparel(current);
@@ -409,7 +410,7 @@ namespace FaceStyling
             }
         }
         private float _newMelanin;
-        private float originalMelanin;
+        private readonly float originalMelanin;
 
         private Graphic ApparelGraphic(ThingDef def, BodyType bodyType)
         {
@@ -1165,7 +1166,6 @@ namespace FaceStyling
                 pawn.story.melanin = NewMelanin;
 
                 // FS additions
-                CompFace faceComp = pawn.TryGetComp<CompFace>();
                 if (pawn.gender == Gender.Male)
                 {
                     faceComp.BeardDef = NewBeard;
