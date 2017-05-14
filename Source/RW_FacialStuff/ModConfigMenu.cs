@@ -28,7 +28,7 @@ namespace RW_FacialStuff
             BeginVertical();
             if (GUILayout.Button("Settings.Apply".Translate()))
             {
-                foreach (Pawn pawn in Find.WorldPawns.AllPawnsAliveOrDead)
+                foreach (Pawn pawn in PawnsFinder.AllMapsAndWorld_Alive)
                 {
                     if (pawn.RaceProps.IsFlesh && (pawn.kindDef.race.ToString().Equals("Human")))
                     {
@@ -36,6 +36,7 @@ namespace RW_FacialStuff
                         faceComp.sessionOptimized = false;
                         pawn.Drawer.renderer.graphics.ResolveAllGraphics();
 
+                        // force colonist bar to update
                         if (pawn.Faction == Faction.OfPlayer)
                             PortraitsCache.SetDirty(pawn);
 

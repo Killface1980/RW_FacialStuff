@@ -583,11 +583,11 @@ namespace RW_FacialStuff
                     topColor *= multiplyColor;
                     //      eyeColor *= eyeColorRandom;
 
-                    Color final_color = Color.Lerp(headColor, topColor, topColor.a / 1f);
+                    Color finalColor = Color.Lerp(headColor, topColor, topColor.a / 1f);
 
-                    final_color.a = headColor.a + topColor.a;
+                    finalColor.a = headColor.a + topColor.a;
 
-                    finalTexture.SetPixel(x, y, final_color);
+                    finalTexture.SetPixel(x, y, finalColor);
                 }
             }
 
