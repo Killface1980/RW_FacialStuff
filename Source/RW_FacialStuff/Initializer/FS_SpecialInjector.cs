@@ -61,7 +61,6 @@ namespace RW_FacialStuff.Initializer
             };
 
             injectionSet.targetDefs.Add("Human");
-            injectionSet.targetDefs.Add("Jaffa");
 
             injectionSet.compProps.compClass = typeof(CompFace);
             List<ThingDef> thingDefs = DefInjectionQualifier.FilteredThingDefs(injectionSet.qualifier, ref injectionSet.qualifierInt, injectionSet.targetDefs);

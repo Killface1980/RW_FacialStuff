@@ -44,7 +44,8 @@ namespace RW_FacialStuff.Detouring
                 _this.rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(_this.pawn.story.bodyType, ShaderDatabase.CutoutSkin, PawnGraphicSet.RottingColor * _this.pawn.story.SkinColor);
                 _this.dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>("Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
                 _this.skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
-                _this.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(_this.pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, _this.pawn.story.hairColor);
+                _this.headStumpGraphic = GraphicDatabaseHeadRecords.GetStump(_this.pawn.story.SkinColor);
+                _this.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecords.GetStump(PawnGraphicSet.RottingColor); _this.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(_this.pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, _this.pawn.story.hairColor);
                 _this.desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(_this.pawn.story.HeadGraphicPath, _this.pawn.story.SkinColor * PawnGraphicSet.RottingColor);
                 _this.skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
                 _this.ResolveApparelGraphics();
@@ -108,6 +109,8 @@ namespace RW_FacialStuff.Detouring
                 _this.headGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(_this.pawn.story.HeadGraphicPath, _this.pawn.story.SkinColor);
                 _this.desiccatedHeadGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(_this.pawn.story.HeadGraphicPath, PawnGraphicSet.RottingColor);
                 _this.skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
+                _this.headStumpGraphic = GraphicDatabaseHeadRecords.GetStump(_this.pawn.story.SkinColor);
+                _this.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecords.GetStump(PawnGraphicSet.RottingColor);
                 _this.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(_this.pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, _this.pawn.story.hairColor);
                 _this.ResolveApparelGraphics();
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 using Object = UnityEngine.Object;
@@ -16,8 +17,9 @@ namespace RW_FacialStuff
         public static List<HeadGraphicRecordModded> headsModded = new List<HeadGraphicRecordModded>();
 
         private static HeadGraphicRecordVanillaCustom skull;
+        private static HeadGraphicRecordVanillaCustom stump;
         private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
-
+        private static readonly string StumpPath = "Things/Pawn/Humanlike/Heads/None_Average_Stump";
 
 
         public static int headIndex = 0;
@@ -155,13 +157,22 @@ namespace RW_FacialStuff
             return headsVanillaCustom.First().GetGraphic(color);
         }
 
+        [Detour(typeof(GraphicDatabaseHeadRecords), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
+        public static void Reset()
+        {
+            headsVanillaCustom.Clear();
+            skull = null;
+            stump = null;
+        }
+
         public static void BuildDatabaseIfNecessary()
         {
             //  headsVanillaCustom.Clear();
-            if (headsVanillaCustom.Count > 0 && skull != null)
+            if (headsVanillaCustom.Count > 0 && skull != null && stump != null)
             {
                 return;
             }
+            headsVanillaCustom.Clear();
 
             headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Average_Normal"));
             headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Average_Pointy"));
@@ -178,7 +189,7 @@ namespace RW_FacialStuff
             headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Narrow_Wide"));
 
             skull = new HeadGraphicRecordVanillaCustom(SkullPath);
-
+            stump = new HeadGraphicRecordVanillaCustom(StumpPath);
 
             //   string[] headsFolderPaths = HeadsFolderPaths;
             //   for (int i = 0; i < headsFolderPaths.Length; i++)
@@ -191,7 +202,11 @@ namespace RW_FacialStuff
             //   }
         }
 
-
+        public static Graphic_Multi GetStump(Color skinColor)
+        {
+            BuildDatabaseIfNecessary();
+            return stump.GetGraphic(skinColor);
+        }
 
         public static List<KeyValuePair<string, Graphic_Multi>> moddedHeadGraphics = new List<KeyValuePair<string, Graphic_Multi>>();
 
