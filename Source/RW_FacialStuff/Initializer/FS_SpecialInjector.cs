@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using CommunityCoreLibrary;
 using RW_FacialStuff.NoCCL;
 using Verse;
 #if NoCCL
@@ -53,31 +52,6 @@ namespace RW_FacialStuff.Initializer
                 }
             }
             #endregion
-
-            CompInjectionSet injectionSet = new CompInjectionSet
-            {
-                targetDefs = new List<string>(),
-                compProps = new CompProperties()
-            };
-
-            injectionSet.targetDefs.Add("Human");
-
-            injectionSet.compProps.compClass = typeof(CompFace);
-            List<ThingDef> thingDefs = DefInjectionQualifier.FilteredThingDefs(injectionSet.qualifier, ref injectionSet.qualifierInt, injectionSet.targetDefs);
-
-
-            if (!thingDefs.NullOrEmpty())
-            {
-                foreach (ThingDef thingDef in thingDefs)
-                {
-                    // TODO:  Make a full copy using the comp in this def as a template
-                    // Currently adds the comp in this def so all target use the same def
-                    if (!thingDef.HasComp(injectionSet.compProps.compClass))
-                    {
-                        thingDef.comps.Add(injectionSet.compProps);
-                    }
-                }
-            }
 
             return true;
         }

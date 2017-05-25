@@ -26,12 +26,10 @@ namespace RW_FacialStuff.Detouring
             _this.ClearCache();
             GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
 
-            bool isSuitableFaceCandidate = _this.pawn.RaceProps.IsFlesh &&
-                                           _this.pawn.kindDef.race.ToString().Equals("Human");
 
-            if (isSuitableFaceCandidate)
+            CompFace faceComp = _this.pawn.TryGetComp<CompFace>();
+            if (faceComp != null)
             {
-                CompFace faceComp = _this.pawn.TryGetComp<CompFace>();
                 if (!faceComp.optimized)
                 {
                     faceComp.DefineFace(_this.pawn);
@@ -84,7 +82,7 @@ namespace RW_FacialStuff.Detouring
                 _this.headGraphic = _this.pawn.RaceProps.hasGenders ?
                     GraphicDatabaseHeadRecordsModded.ModifiedVanillaHead(_this.pawn, _this.pawn.story.SkinColor, _this.hairGraphic) :
                     GraphicDatabaseHeadRecords.GetHeadNamed(_this.pawn.story.HeadGraphicPath, _this.pawn.story.SkinColor);
-             
+
                 //           typeof(Pawn_StoryTracker).GetField("skinColor", BindingFlags.Instance | BindingFlags.Public).SetValue(pawn.story, Color.cyan);
 
 

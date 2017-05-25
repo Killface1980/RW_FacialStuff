@@ -2,11 +2,13 @@
 <DefPackage-MouthDef>
 
   <RW_FacialStuff.Defs.MouthDef>
-
+    <defName>Mouth_Female_Big</defName>
     <label>EFA-Big</label>
     <hairGender>Female</hairGender>
+    <raceList>
+      <li>Human</li>
+    </raceList>
     <texPath>Mouth/Mouth_Big</texPath>
-    <defName>Mouth_Female_Big</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -16,10 +18,13 @@
   </RW_FacialStuff.Defs.MouthDef>
 
   <RW_FacialStuff.Defs.MouthDef>
+    <defName>Mouth_Female_Default</defName>
     <label>EFA-Default</label>
     <hairGender>Female</hairGender>
+    <raceList>
+      <li>Human</li>
+    </raceList>
     <texPath>Mouth/Mouth_Default</texPath>
-    <defName>Mouth_Female_Default</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -29,10 +34,13 @@
   </RW_FacialStuff.Defs.MouthDef>
 
   <RW_FacialStuff.Defs.MouthDef>
+    <defName>Mouth_Female_Sad</defName>
     <label>EFA-Sad</label>
     <hairGender>Female</hairGender>
+    <raceList>
+      <li>Human</li>
+    </raceList>
     <texPath>Mouth/Mouth_Sad</texPath>
-    <defName>Mouth_Female_Sad</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -42,10 +50,13 @@
   </RW_FacialStuff.Defs.MouthDef>
 
   <RW_FacialStuff.Defs.MouthDef>
+    <defName>Mouth_Female_Large</defName>
     <label>EFA-Large</label>
     <hairGender>Female</hairGender>
+    <raceList>
+      <li>Human</li>
+    </raceList>
     <texPath>Mouth/Mouth_Large</texPath>
-    <defName>Mouth_Female_Large</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -55,10 +66,13 @@
   </RW_FacialStuff.Defs.MouthDef>
 
   <RW_FacialStuff.Defs.MouthDef>
+    <defName>Mouth_Female_Medium</defName>
     <label>EFA-Medium</label>
     <hairGender>Female</hairGender>
+    <raceList>
+      <li>Human</li>
+    </raceList>
     <texPath>Mouth/Mouth_Medium</texPath>
-    <defName>Mouth_Female_Medium</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -68,10 +82,13 @@
   </RW_FacialStuff.Defs.MouthDef>
   
   <RW_FacialStuff.Defs.MouthDef>
+    <defName>Mouth_Female_Smile</defName>
     <label>EFA-Smile</label>
     <hairGender>Female</hairGender>
+    <raceList>
+      <li>Human</li>
+    </raceList>
     <texPath>Mouth/Mouth_Smile</texPath>
-    <defName>Mouth_Female_Smile</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>

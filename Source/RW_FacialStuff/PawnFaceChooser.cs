@@ -14,15 +14,10 @@ namespace RW_FacialStuff
         public static BeardDef RandomBeardDefFor(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<BeardDef> source = from beard in DefDatabase<BeardDef>.AllDefs
+                                           where beard.raceList.Contains(pawn.def)
                                            where beard.hairTags.SharesElementWith(factionType.hairTags)
                                            select beard;
 
-          //if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
-          //{
-          //    source = from beard in DefDatabase<BeardDef>.AllDefs
-          //             where !beard.hairTags.SharesElementWith(factionType.hairTags)
-          //             select beard;
-          //}
             if (!source.Any())
             {
                 source = from beard in DefDatabase<BeardDef>.AllDefs
@@ -55,15 +50,10 @@ namespace RW_FacialStuff
         {
 
             IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
+                                         where eye.raceList.Contains(pawn.def)
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
 
-            //if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
-            //{
-            //     source = from eye in DefDatabase<EyeDef>.AllDefs
-            //                                 where !eye.hairTags.SharesElementWith(factionType.hairTags)
-            //                                 select eye;
-            //}
             if (!source.Any())
             {
                 source = from eye in DefDatabase<EyeDef>.AllDefs
@@ -81,15 +71,9 @@ namespace RW_FacialStuff
         {
 
             IEnumerable<BrowDef> source = from brow in DefDatabase<BrowDef>.AllDefs
+                                          where brow.raceList.Contains(pawn.def)
                                           where brow.hairTags.SharesElementWith(factionType.hairTags)
                                           select brow;
-
-            //if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
-            //{
-            //    source = from brow in DefDatabase<BrowDef>.AllDefs
-            //             where !brow.hairTags.SharesElementWith(factionType.hairTags)
-            //             select brow;
-            //}
 
             if (!source.Any())
             {
@@ -141,6 +125,7 @@ namespace RW_FacialStuff
         public static WrinkleDef AssignWrinkleDefFor(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<WrinkleDef> source = from wrinkle in DefDatabase<WrinkleDef>.AllDefs
+                                             where wrinkle.raceList.Contains(pawn.def)
                                              where wrinkle.hairGender.ToString() == pawn.gender.ToString()  //.SharesElementWith(factionType.hairTags)
                                              select wrinkle;
 
@@ -156,28 +141,16 @@ namespace RW_FacialStuff
                                           where hair.hairTags.SharesElementWith(factionType.hairTags)
                                           select hair;
 
-            if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
-            {
-                source = from hair in DefDatabase<HairDef>.AllDefs
-                         where !hair.hairTags.SharesElementWith(factionType.hairTags)
-                         select hair;
-            }
-
             return source.RandomElementByWeight(hair => HairChoiceLikelihoodFor(hair, pawn));
         }
 
         public static MouthDef RandomMouthDefFor(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<MouthDef> source = from mouthDef in DefDatabase<MouthDef>.AllDefs
-                                         where mouthDef.hairTags.SharesElementWith(factionType.hairTags)
-                                         select mouthDef;
+                                           where mouthDef.raceList.Contains(pawn.def)
+                                           where mouthDef.hairTags.SharesElementWith(factionType.hairTags)
+                                           select mouthDef;
 
-            //if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
-            //{
-            //    source = from mouth in DefDatabase<MouthDef>.AllDefs
-            //             where !mouth.hairTags.SharesElementWith(factionType.hairTags)
-            //             select mouth;
-            //}
             if (!source.Any())
             {
                 source = from mouthDef in DefDatabase<MouthDef>.AllDefs
@@ -399,10 +372,6 @@ namespace RW_FacialStuff
         // RimWorld.PawnHairChooser
         private static float HairChoiceLikelihoodFor(HairDef hair, Pawn pawn)
         {
-            // if (pawn.Faction.Name.Contains("Orassan") && !pawn.kindDef.race.ToString().Equals("Orassan"))
-            // {
-            //     return 0f;
-            // }
 
             if (pawn.gender == Gender.None)
             {

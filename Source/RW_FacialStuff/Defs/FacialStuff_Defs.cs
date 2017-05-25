@@ -17,6 +17,7 @@ namespace RW_FacialStuff.Defs
 
         public List<string> hairTags = new List<string>();
 
+        public List<ThingDef> raceList = new List<ThingDef>();
     }
 
     public class EyeDef : Def
@@ -28,6 +29,7 @@ namespace RW_FacialStuff.Defs
 
         public List<string> hairTags = new List<string>();
 
+        public List<ThingDef> raceList = new List<ThingDef>();
     }
 
     public class BrowDef : Def
@@ -39,6 +41,7 @@ namespace RW_FacialStuff.Defs
 
         public List<string> hairTags = new List<string>();
 
+        public List<ThingDef> raceList = new List<ThingDef>();
     }
 
     public class WrinkleDef : Def
@@ -49,6 +52,7 @@ namespace RW_FacialStuff.Defs
 
         public HairGender hairGender = HairGender.Any;
 
+        public List<ThingDef> raceList = new List<ThingDef>();
     }
 
     public class MouthDef : Def
@@ -59,6 +63,7 @@ namespace RW_FacialStuff.Defs
 
         public List<string> hairTags = new List<string>();
 
+        public List<ThingDef> raceList = new List<ThingDef>();
     }
 
 }

@@ -78,8 +78,6 @@
     <Compile Include="Graphic_Multi_HeadParts.cs" />
     <Compile Include="Initializer\FS_SpecialInjector.cs" />
     <Compile Include="MaskTextures.cs" />
-    <Compile Include="NoCCL\CompInjectionSet.cs" />
-    <Compile Include="NoCCL\DefInjectionQualifier.cs" />
     <Compile Include="Utilities\DialogUtility.cs" />
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="NoCCL\Detours.cs" />
@@ -140,7 +138,11 @@
     <Content Include="..\..\Languages\German\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\German\FacialStuff_Keyed.xml</Link>
     </Content>
+    <Content Include="..\..\Patches\HumanPatch.xml">
+      <Link>Patches\HumanPatch.xml</Link>
+    </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

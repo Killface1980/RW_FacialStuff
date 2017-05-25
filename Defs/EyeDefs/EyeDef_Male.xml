@@ -2,10 +2,13 @@
 <DefPackage-EyeDef>
 
   <RW_FacialStuff.Defs.EyeDef>
+    <defName>Eye_Male_Average_FL</defName>
     <label>Male_FL</label>
     <hairGender>Male</hairGender>
+    <raceList>
+      <li>Human</li>
+    </raceList>
     <texPath>Eyes/Male/Eye_Male_Average_FL</texPath>
-    <defName>Eye_Male_Average_FL</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -15,10 +18,13 @@
   </RW_FacialStuff.Defs.EyeDef>
 
   <RW_FacialStuff.Defs.EyeDef>
+    <defName>Eye_Male_Average_RD</defName>
     <label>Male_RD</label>
     <hairGender>Male</hairGender>
+    <raceList>
+      <li>Human</li>
+    </raceList>
     <texPath>Eyes/Male/Eye_Male_Average_RD</texPath>
-    <defName>Eye_Male_Average_RD</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -28,10 +34,13 @@
   </RW_FacialStuff.Defs.EyeDef>
 
   <RW_FacialStuff.Defs.EyeDef>
+    <defName>Eye_Male_Average_OV</defName>
     <label>Male_OV</label>
     <hairGender>Male</hairGender>
+    <raceList>
+      <li>Human</li>
+    </raceList>
     <texPath>Eyes/Male/Eye_Male_Average_OV</texPath>
-    <defName>Eye_Male_Average_OV</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -41,10 +50,13 @@
   </RW_FacialStuff.Defs.EyeDef>
 
   <RW_FacialStuff.Defs.EyeDef>
+    <defName>Eye_Male_Average_SM</defName>
     <label>Male_SM</label>
     <hairGender>Male</hairGender>
+    <raceList>
+      <li>Human</li>
+    </raceList>
     <texPath>Eyes/Male/Eye_Male_Average_SM</texPath>
-    <defName>Eye_Male_Average_SM</defName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>

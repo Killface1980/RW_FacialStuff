@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>//ThingDef[defName = "Human"]</xpath>
+    <value>
+      <comps></comps>
+    </value>
+  </Operation>
+  
+  <Operation Class="PatchOperationAdd">
+    <xpath>//ThingDef[defName = "Human"]/comps</xpath>
+    <value>
+      <li>
+        <compClass>RW_FacialStuff.CompFace</compClass>
+      </li>
+    </value>
+  </Operation>
+
+
+
+</Patch>
