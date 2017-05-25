@@ -6,6 +6,11 @@ using static UnityEngine.GUILayout;
 
 namespace RW_FacialStuff
 {
+    public class FacialStuff_ModBase : HugsLib.ModBase
+    {
+        public override string ModIdentifier { get { return "FacialStuff"; } }
+    }
+
     public class FS_Mod : Mod
     {
         #region Fields
