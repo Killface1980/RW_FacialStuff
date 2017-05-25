@@ -66,7 +66,7 @@
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
-    <Compile Include="DetourAttribute.cs" />
+    <Compile Include="NoCCL\DetourAttribute.cs" />
     <Compile Include="Defs\FacialStuff_Defs.cs" />
     <Compile Include="FaceStyling Bench\Dialog_FaceStyling.cs" />
     <Compile Include="FaceStyling Bench\Job_FaceStyling.cs" />

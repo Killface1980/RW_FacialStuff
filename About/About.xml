@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Facial Stuff 0.17.0</name>
+  <name>Facial Stuff 0.17.1</name>
   <author>Killface</author>
   <url></url>
-  <targetVersion>0.17.1533</targetVersion>
+  <targetVersion>0.17.1546</targetVersion>
   <description>
     This mod aims to provide more visual individuality for your colonists.
     - 10 newly defined skin colors instead of the vanilla 6.
@@ -20,7 +20,8 @@
     Special thanks to Fluffy for the FaceStyling bench (adapted from 'Clutter')
     Uses the detour code from Orion's 'Hospitality'
 
-    2016-10-14 - updated tribal hairs from NackbladIncRimhair
+    2017-05-17 - 0.17.1 added basic integration for other species, faces are now added via def patch
     2016-12-15 - updated Spoon's hairs
+    2016-10-14 - updated tribal hairs from NackbladIncRimhair
   </description>
 </ModMetaData>
