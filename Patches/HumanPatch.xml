@@ -2,14 +2,14 @@
 <Patch>
 
   <Operation Class="PatchOperationAdd">
-    <xpath>//ThingDef[defName = "Human"]</xpath>
+    <xpath>/ThingDefs/ThingDef[defName = "Human"]</xpath>
     <value>
       <comps></comps>
     </value>
   </Operation>
   
   <Operation Class="PatchOperationAdd">
-    <xpath>//ThingDef[defName = "Human"]/comps</xpath>
+    <xpath>/ThingDefs/ThingDef[defName = "Human"]/comps</xpath>
     <value>
       <li>
         <compClass>RW_FacialStuff.CompFace</compClass>
