@@ -34,9 +34,9 @@ namespace RW_FacialStuff
         private Graphic _wrinkleGraphic;
         private Graphic _lipGraphic;
 
-        private static Texture2D _temptexturefront;
-        private static Texture2D _temptextureside;
-        private static Texture2D _temptextureback;
+        private Texture2D _temptexturefront;
+        private Texture2D _temptextureside;
+        private Texture2D _temptextureback;
 
         public Graphic_Multi HeadGraphic;
         public Graphic_Multi DissicatedHeadGraphic;

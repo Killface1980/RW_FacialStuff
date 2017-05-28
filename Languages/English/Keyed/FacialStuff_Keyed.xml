@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-  <Settings.UseMouth>Add mouths to colonists (requires reload)</Settings.UseMouth>
+  <Settings.UseMouth>Add mouths to colonists</Settings.UseMouth>
+  <Settings.Apply>Apply settings</Settings.Apply>
   <FaceStylerTitle>Face Styler</FaceStylerTitle>
   <FacialStuffColorChangerButtonAccept>Accept new style</FacialStuffColorChangerButtonAccept>
   <FSStylizeFace>Edit colonists's appearance</FSStylizeFace>

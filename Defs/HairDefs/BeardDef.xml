@@ -204,7 +204,7 @@
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
-    <drawMouth>true</drawMouth>
+    <drawMouth>false</drawMouth>
   </RW_FacialStuff.Defs.BeardDef>
 
   <RW_FacialStuff.Defs.BeardDef>

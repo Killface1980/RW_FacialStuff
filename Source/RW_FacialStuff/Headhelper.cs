@@ -7,9 +7,10 @@ using Verse;
 
 namespace RW_FacialStuff
 {
-   public static class Headhelper
+    [StaticConstructorOnStartup]
+    public static class Headhelper
     {
-        public static Texture2D texture_= null;
+        public static Texture2D texture_ = null;
 
         public static readonly Color skinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 

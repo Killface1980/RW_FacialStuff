@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
   <Settings.UseMouth>Benutze Münder</Settings.UseMouth>
+  <Settings.Apply>Einstellungen übernehmen</Settings.Apply>
   <FaceStylerTitle>Face Styler</FaceStylerTitle>
   <FacialStuffColorChangerButtonAccept>Check den neuen Style aus</FacialStuffColorChangerButtonAccept>
   <FSStylizeFace>Bearbeite Aussehen des Kolonisten</FSStylizeFace>
