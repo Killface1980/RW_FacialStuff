@@ -11,8 +11,7 @@ namespace RW_FacialStuff.Detouring
     [HarmonyPatch(typeof(PawnGraphicSet), "ResolveAllGraphics")]
     static class ResolveAllGraphics_Postfix
     {
-        public static Dictionary<string, Pawn> HeadIndex = new Dictionary<string, Pawn>();
-
+        private static readonly Dictionary<string, Pawn> HeadIndex = new Dictionary<string, Pawn>();
         [HarmonyPostfix]
         public static void ResolveAllGraphics(PawnGraphicSet __instance)
         {
@@ -22,6 +21,7 @@ namespace RW_FacialStuff.Detouring
             }
 
             CompFace faceComp = __instance.pawn.TryGetComp<CompFace>();
+
             if (faceComp == null)
                 return;
 
@@ -30,33 +30,25 @@ namespace RW_FacialStuff.Detouring
 
             if (!faceComp.optimized)
             {
-                faceComp.DefineFace(__instance.pawn);
+                faceComp.DefineFace();
             }
 
-            //if (pawnSave.optimized)
-            //    typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pawn.story, pawnSave.headGraphicIndex);
-
-            __instance.nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(__instance.pawn.story.bodyType,
-                ShaderDatabase.CutoutSkin, __instance.pawn.story.SkinColor);
-            __instance.rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
-                __instance.pawn.story.bodyType, ShaderDatabase.CutoutSkin,
-                PawnGraphicSet.RottingColor*__instance.pawn.story.SkinColor);
-            __instance.dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>(
-                "Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
-            __instance.skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
-            __instance.headStumpGraphic = GraphicDatabaseHeadRecords.GetStump(__instance.pawn.story.SkinColor);
-            __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecords.GetStump(PawnGraphicSet.RottingColor);
-            __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.hairDef.texPath,
-                ShaderDatabase.Cutout, Vector2.one, __instance.pawn.story.hairColor);
-            __instance.desiccatedHeadGraphic =
-                GraphicDatabaseHeadRecords.GetHeadNamed(__instance.pawn.story.HeadGraphicPath,
-                    __instance.pawn.story.SkinColor*PawnGraphicSet.RottingColor);
-            __instance.skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
+            //__instance.nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(__instance.pawn.story.bodyType,
+            //    ShaderDatabase.CutoutSkin, __instance.pawn.story.SkinColor);
+            //__instance.dessicatedGraphic = GraphicDatabase.Get<Graphic_Multi>(
+            //    "Things/Pawn/Humanlike/HumanoidDessicated", ShaderDatabase.Cutout);
+            //__instance.skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
+            //__instance.headStumpGraphic = GraphicDatabaseHeadRecords.GetStump(__instance.pawn.story.SkinColor);
+            //__instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.hairDef.texPath,
+            //    ShaderDatabase.Cutout, Vector2.one, __instance.pawn.story.hairColor);
+            //  __instance.skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
             __instance.ResolveApparelGraphics();
             PortraitsCache.Clear();
 
             if (!faceComp.sessionOptimized)
             {
+                faceComp.SetGraphics();
+
                 // Build the empty head index once to be used for the blank heads
                 {
                     if (HeadIndex.Count == 0)
@@ -86,25 +78,31 @@ namespace RW_FacialStuff.Detouring
                 //GraphicDatabaseHeadRecordsModded.headIndex += 1;
             }
 
-            __instance.headGraphic = __instance.pawn.RaceProps.hasGenders
-                ? GraphicDatabaseHeadRecordsModded.ModifiedVanillaHead(__instance.pawn, __instance.pawn.story.SkinColor,
-                    __instance.hairGraphic)
-                : GraphicDatabaseHeadRecords.GetHeadNamed(__instance.pawn.story.HeadGraphicPath,
-                    __instance.pawn.story.SkinColor);
+            if (__instance.pawn.RaceProps.hasGenders)
+            {
+                Color rotColor = __instance.pawn.story.SkinColor* Headhelper.skinRottingMultiplyColor;
 
-            //           typeof(Pawn_StoryTracker).GetField("skinColor", BindingFlags.Instance | BindingFlags.Public).SetValue(pawn.story, Color.cyan);
+                if (faceComp.GenerateHeadGraphics(__instance.pawn.story.SkinColor,
+                    __instance.hairGraphic))
+                {
+                    __instance.headGraphic = faceComp.HeadGraphic;
+                    __instance.desiccatedHeadGraphic = faceComp.DissicatedHeadGraphic;
+                    __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
+                    __instance.rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
+                        __instance.pawn.story.bodyType, ShaderDatabase.CutoutSkin,
+                        rotColor);
+                }
 
-
-/*
-                                                    for (int j = 0; j < apparelGraphics.Count; j++)
-                                                    {
-                                                        if (apparelGraphics[j].sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
-                                                        {
-                                                            // INTERESTING                
-                                                            pawn.Drawer.renderer.graphics.headGraphic = hairGraphic;
-                                                        }
-                                                    }
-                                                    */
+            }
+            // else
+            // {
+            //     __instance.headGraphic = GraphicDatabaseHeadRecords.GetHeadNamed(__instance.pawn.story.HeadGraphicPath,
+            //         __instance.pawn.story.SkinColor);
+            //     __instance.desiccatedHeadGraphic =
+            //         GraphicDatabaseHeadRecords.GetHeadNamed(__instance.pawn.story.HeadGraphicPath,
+            //             __instance.pawn.story.SkinColor * PawnGraphicSet.RottingColor);
+            //
+            // }
         }
 
         public static void ExportHeadBackToPNG()

@@ -281,7 +281,9 @@ namespace FaceStyling
                 DisplayGraphics[i] = new GraphicsDisp();
             }
             SetGraphicSlot(GraphicSlotGroup.Body, pawn, GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, _PawnSkinColors.GetSkinColor(NewMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(NewMelanin));
-            SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, true, _PawnSkinColors.GetSkinColor(NewMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(NewMelanin));
+            Graphic_Multi tex;
+            faceComp.GetModdedHeadNamed(true, _PawnSkinColors.GetSkinColor(NewMelanin), out tex);
+            SetGraphicSlot(GraphicSlotGroup.Head, pawn, tex, pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(NewMelanin));
             //   SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,_PawnSkinColors.GetSkinColor(NewMelanin))), pawn.def.uiIcon,_PawnSkinColors.GetSkinColor(NewMelanin)));
             SetGraphicSlot(GraphicSlotGroup.Hair, pawn, HairGraphic(pawn.story.hairDef), pawn.def.uiIcon, pawn.story.hairColor);
             SetGraphicSlot(GraphicSlotGroup.Eyes, pawn, EyeGraphic(faceComp.EyeDef), pawn.def.uiIcon, Color.black);
@@ -405,7 +407,9 @@ namespace FaceStyling
             {
                 _newMelanin = value;
                 SetGraphicSlot(GraphicSlotGroup.Body, pawn, GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, _PawnSkinColors.GetSkinColor(_newMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(_newMelanin));
-                SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, true, _PawnSkinColors.GetSkinColor(_newMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(_newMelanin));
+                Graphic_Multi tex;
+                faceComp.GetModdedHeadNamed(true, _PawnSkinColors.GetSkinColor(_newMelanin), out tex);
+                SetGraphicSlot(GraphicSlotGroup.Head, pawn, tex, pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(_newMelanin));
 
             }
         }
