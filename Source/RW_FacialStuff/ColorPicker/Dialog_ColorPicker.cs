@@ -51,7 +51,7 @@ namespace FaceStyling.ColorPicker
                             _huePosition,
                             _alphaPosition,
                             _unitsPerPixel,
-                            _H = 0f,
+                            _H,
                             _S = 1f,
                             _V = 1f,
                             _A = 1f;
@@ -59,7 +59,7 @@ namespace FaceStyling.ColorPicker
         private Vector2 _pickerPosition = Vector2.zero;
 
         private bool _preview = true,
-                            _autoApply = false;
+                            _autoApply;
 
         // reference type containing the in/out parameter
         private ColorWrapper _wrapper;
@@ -443,7 +443,7 @@ namespace FaceStyling.ColorPicker
                 if (Widgets.ButtonText(okRect, "OK"))
                 {
                     Apply();
-                    this.Close();
+                    Close();
                 }
                 if (Widgets.ButtonText(applyRect, "Apply"))
                 {
@@ -452,7 +452,7 @@ namespace FaceStyling.ColorPicker
                 }
                 if (Widgets.ButtonText(cancelRect, "Cancel"))
                 {
-                    this.Close();
+                    Close();
                 }
             }
 
@@ -552,7 +552,7 @@ namespace FaceStyling.ColorPicker
                 // default window size.
                 float width, height;
                 // size of main picker + the standard window margins.
-                width = height = pickerSize + Window.StandardMargin * 2;
+                width = height = pickerSize + StandardMargin * 2;
 
                 // width of two sliders (hue and alpha) + margins
                 width += (sliderWidth + _margin) * 2;

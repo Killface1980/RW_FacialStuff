@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using Harmony;
 using RimWorld;
 using UnityEngine;
@@ -12,6 +11,7 @@ namespace RW_FacialStuff.Detouring
     static class ResolveAllGraphics_Postfix
     {
         private static readonly Dictionary<string, Pawn> HeadIndex = new Dictionary<string, Pawn>();
+
         [HarmonyPostfix]
         public static void ResolveAllGraphics(PawnGraphicSet __instance)
         {
@@ -47,7 +47,7 @@ namespace RW_FacialStuff.Detouring
 
             if (!faceComp.sessionOptimized)
             {
-                faceComp.SetGraphics();
+                faceComp.InitializeGraphics();
 
                 // Build the empty head index once to be used for the blank heads
                 {
@@ -82,8 +82,7 @@ namespace RW_FacialStuff.Detouring
             {
                 Color rotColor = __instance.pawn.story.SkinColor* Headhelper.skinRottingMultiplyColor;
 
-                if (faceComp.GenerateHeadGraphics(__instance.pawn.story.SkinColor,
-                    __instance.hairGraphic))
+                if (faceComp.GenerateHeadGraphics(__instance.hairGraphic))
                 {
                     __instance.headGraphic = faceComp.HeadGraphic;
                     __instance.desiccatedHeadGraphic = faceComp.DissicatedHeadGraphic;

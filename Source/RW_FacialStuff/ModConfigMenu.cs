@@ -1,12 +1,12 @@
-﻿using RimWorld;
-using RW_FacialStuff.Detouring;
+﻿using HugsLib;
+using RimWorld;
 using UnityEngine;
 using Verse;
 using static UnityEngine.GUILayout;
 
 namespace RW_FacialStuff
 {
-    public class FacialStuff_ModBase : HugsLib.ModBase
+    public class FacialStuff_ModBase : ModBase
     {
         public override string ModIdentifier { get { return "FacialStuff"; } }
     }
@@ -31,19 +31,22 @@ namespace RW_FacialStuff
             FS_Settings.UseMouth = Toggle(FS_Settings.UseMouth, "Settings.UseMouth".Translate());
             EndVertical();
             BeginVertical();
-            if (GUILayout.Button("Settings.Apply".Translate()))
+            if (Button("Settings.Apply".Translate()))
             {
                 foreach (Pawn pawn in PawnsFinder.AllMapsAndWorld_Alive)
                 {
-                    if (pawn.RaceProps.IsFlesh && (pawn.kindDef.race.ToString().Equals("Human")))
+                    if (pawn.RaceProps.Humanlike)
                     {
                         CompFace faceComp = pawn.TryGetComp<CompFace>();
-                        faceComp.sessionOptimized = false;
-                        pawn.Drawer.renderer.graphics.ResolveAllGraphics();
+                        if (faceComp != null && faceComp.drawMouth && faceComp.BeardDef.drawMouth)
+                        {
+                            faceComp.sessionOptimized = false;
+                            pawn.Drawer.renderer.graphics.ResolveAllGraphics();
 
-                        // force colonist bar to update
-                        if (pawn.Faction == Faction.OfPlayer)
-                            PortraitsCache.SetDirty(pawn);
+                            // force colonist bar to update
+                            if (pawn.Faction == Faction.OfPlayer)
+                                PortraitsCache.SetDirty(pawn);
+                        }
 
                     }
                 }
@@ -56,10 +59,11 @@ namespace RW_FacialStuff
     }
     public class FS_Settings : ModSettings
     {
-        public static bool UseMouth = false;
+        public static bool UseMouth;
 
         public override void ExposeData()
         {
+            base.ExposeData();
             Scribe_Values.Look(ref UseMouth, "UseMouth", false, false);
         }
     }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 using Verse;
 
 namespace RW_FacialStuff
@@ -10,7 +6,7 @@ namespace RW_FacialStuff
     [StaticConstructorOnStartup]
     public static class Headhelper
     {
-        public static Texture2D texture_ = null;
+        public static Texture2D BlankTex = null;
 
         public static readonly Color skinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
@@ -34,7 +30,7 @@ namespace RW_FacialStuff
             finalHeadFront.Apply();
         }
 
-        public static Texture2D MakeReadable(Texture2D texture)
+        public static void MakeReadable(Texture2D texture, out Texture2D myTexture2D)
         {
 
             // Create a temporary RenderTexture of the same size as the texture
@@ -52,7 +48,7 @@ namespace RW_FacialStuff
             RenderTexture.active = tmp;
 
             // Create a new readable Texture2D to copy the pixels to it
-            Texture2D myTexture2D = new Texture2D(texture.width, texture.width, TextureFormat.ARGB32, false);
+            myTexture2D = new Texture2D(texture.width, texture.width, TextureFormat.ARGB32, false);
 
             // Copy the pixels from the RenderTexture to the new Texture
             myTexture2D.ReadPixels(new Rect(0, 0, tmp.width, tmp.height), 0, 0);
@@ -63,13 +59,16 @@ namespace RW_FacialStuff
 
             // Release the temporary RenderTexture
             RenderTexture.ReleaseTemporary(tmp);
-            return myTexture2D;
+            //           return myTexture2D;
             // "myTexture2D" now has the same pixels from "texture" and it's readable.
         }
 
-        public static void AddFacialHair(Pawn pawn, ref Texture2D finalTexture, Texture2D beardTex)
+        public static void AddFacialHair(Pawn pawn, Texture2D beardTex, ref Texture2D finalTexture)
         {
-            Texture2D tempBeardTex = MakeReadable(beardTex);
+            Texture2D tempBeardTex;
+            MakeReadable(beardTex, out tempBeardTex);
+            Color color = new Color(0.8f, 0.8f, 0.8f, 1f);
+
             // offset neede if beards are stretched => narrow
             int offset = (finalTexture.width - tempBeardTex.width) / 2;
             int startX = 0;
@@ -82,13 +81,9 @@ namespace RW_FacialStuff
                 {
                     Color headColor = finalTexture.GetPixel(x, y);
 
-                    Color beardColor;
+                    Color beardColor = tempBeardTex.GetPixel(x - startX - offset, y - startY);
 
-
-                    beardColor = tempBeardTex.GetPixel(x - startX - offset, y - startY);
-
-
-                    beardColor *= pawn.story.hairColor;
+                    beardColor *= pawn.story.hairColor * color;
 
                     Color final_color = Color.Lerp(headColor, beardColor, beardColor.a / 1f);
 
@@ -97,11 +92,11 @@ namespace RW_FacialStuff
                     finalTexture.SetPixel(x, y, final_color);
                 }
             }
-
+            Object.DestroyImmediate(tempBeardTex);
             finalTexture.Apply();
         }
 
-        public static void MergeTwoGraphics(ref Texture2D finalTexture, Texture2D topLayerTex, Color multiplyColor)
+        public static void MergeTwoGraphics(Texture2D topLayerTex, Color multiplyColor, ref Texture2D finalTexture)
         {
             // offset neede if beards are stretched => narrow
 
@@ -127,7 +122,6 @@ namespace RW_FacialStuff
                     finalTexture.SetPixel(x, y, finalColor);
                 }
             }
-
 
             finalTexture.Apply();
         }
@@ -171,9 +165,12 @@ namespace RW_FacialStuff
             finalTexture.Apply();
         }
 
-        public static void MergeTwoLayers(ref Texture2D finalTexture, Texture2D top_layer, Texture2D maskTex, Color topColor)
+
+
+        public static void MergeHeadWithHair(Color mutiplyHairColor, Texture2D top_layer, Texture2D maskTex, ref Texture2D finalTexture)
         {
-            Texture2D tempMaskTex = MakeReadable(maskTex);
+            Texture2D tempMaskTex;
+            MakeReadable(maskTex, out tempMaskTex);
 
             int offset = (finalTexture.width - top_layer.width) / 2;
 
@@ -193,24 +190,24 @@ namespace RW_FacialStuff
                     Color hairColor = top_layer.GetPixel(x - startX - offset, y - startY);
 
                     hairColor *= maskColor;
-
-                    hairColor *= topColor;
+                    hairColor *= mutiplyHairColor;
 
                     Color final_color = Color.Lerp(headColor, hairColor, hairColor.a);
 
-                    //if (headColor.a > 0 || hairColor.a > 0)
-                    //    final_color.a = headColor.a + hairColor.a;
+                    //if (headColor.a > 0 || mutiplyHairColor.a > 0)
+                    //    final_color.a = headColor.a + mutiplyHairColor.a;
 
                     finalTexture.SetPixel(x, y, final_color);
                 }
             }
-
+            Object.DestroyImmediate(tempMaskTex);
             finalTexture.Apply();
         }
 
-        public static void MakeOld(Pawn pawn, ref Texture2D finalhead, Texture2D wrinkleTex)
+        public static void MakeOld(Pawn pawn, Texture2D wrinkleTex, ref Texture2D finalhead)
         {
-            Texture2D tempWrinkleTex = MakeReadable(wrinkleTex);
+            Texture2D tempWrinkleTex;
+            MakeReadable(wrinkleTex, out tempWrinkleTex);
             int startX = 0;
             int startY = finalhead.height - tempWrinkleTex.height;
 
@@ -230,18 +227,21 @@ namespace RW_FacialStuff
                     finalhead.SetPixel(x, y, final_color);
                 }
             }
+            Object.DestroyImmediate(tempWrinkleTex);
 
             finalhead.Apply();
         }
 
-        private static Color[] destPix;
 
-        public static void ScaleTexture(Texture2D sourceTex, ref Texture2D destTex, int targetWidth, int targetHeight)
+
+        public static void ScaleTexture(Texture2D sourceTex, out Texture2D destTex, int targetWidth, int targetHeight)
         {
             float warpFactorX = 1f;
             float warpFactorY = 1f;
+            Color[] destPix;
 
-            Texture2D scaleTex = MakeReadable(sourceTex);
+            Texture2D scaleTex;
+            MakeReadable(sourceTex, out scaleTex);
 
             destTex = new Texture2D(targetWidth, targetHeight, TextureFormat.ARGB32, false);
             destPix = new Color[destTex.width * destTex.height];
@@ -262,6 +262,7 @@ namespace RW_FacialStuff
             }
             destTex.SetPixels(destPix);
             destTex.Apply();
+            Object.DestroyImmediate(scaleTex);
 
         }
 

@@ -44,7 +44,7 @@ namespace RW_FacialStuff.Detouring
 //          new SkinColorData(1f, 1f, new Color(0.9490196f, 0.929411769f, 0.8784314f))
         };
 
-        [Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
+        [Detour(typeof(PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
         public static bool IsDarkSkin(Color color)
         {
             Color skinColor = GetSkinColor(0.5f);
@@ -63,7 +63,7 @@ namespace RW_FacialStuff.Detouring
             return Color.Lerp(_SkinColors[skinDataLeftIndexByMelanin].color, _SkinColors[skinDataLeftIndexByMelanin + 1].color, t);
         }
 
-        [Detour(typeof(RimWorld.PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.NonPublic))]
+        [Detour(typeof(PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.NonPublic))]
         private static int GetSkinDataIndexOfMelanin(float melanin)
         {
             int result = 0;

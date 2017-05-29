@@ -55,11 +55,11 @@ namespace FaceStyling
 
         public class GraphicsDisp
         {
-            public Thing thing = null;
-            public Graphic graphic = null;
-            public Texture2D icon = null;
+            public Thing thing;
+            public Graphic graphic;
+            public Texture2D icon;
             public Color color = Color.white;
-            private readonly float yOffset = 0f;
+            private readonly float yOffset;
 
             public bool Valid
             {
@@ -281,10 +281,7 @@ namespace FaceStyling
                 DisplayGraphics[i] = new GraphicsDisp();
             }
             SetGraphicSlot(GraphicSlotGroup.Body, pawn, GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, _PawnSkinColors.GetSkinColor(NewMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(NewMelanin));
-            Graphic_Multi tex;
-            faceComp.GetModdedHeadNamed(true, _PawnSkinColors.GetSkinColor(NewMelanin), out tex);
-            SetGraphicSlot(GraphicSlotGroup.Head, pawn, tex, pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(NewMelanin));
-            //   SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,_PawnSkinColors.GetSkinColor(NewMelanin))), pawn.def.uiIcon,_PawnSkinColors.GetSkinColor(NewMelanin)));
+               SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,_PawnSkinColors.GetSkinColor(NewMelanin)), pawn.def.uiIcon,_PawnSkinColors.GetSkinColor(NewMelanin));
             SetGraphicSlot(GraphicSlotGroup.Hair, pawn, HairGraphic(pawn.story.hairDef), pawn.def.uiIcon, pawn.story.hairColor);
             SetGraphicSlot(GraphicSlotGroup.Eyes, pawn, EyeGraphic(faceComp.EyeDef), pawn.def.uiIcon, Color.black);
             SetGraphicSlot(GraphicSlotGroup.Brows, pawn, BrowGraphic(faceComp.BrowDef), pawn.def.uiIcon, pawn.story.hairColor * new Color(0.3f, 0.3f, 0.3f));
@@ -408,8 +405,8 @@ namespace FaceStyling
                 _newMelanin = value;
                 SetGraphicSlot(GraphicSlotGroup.Body, pawn, GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, _PawnSkinColors.GetSkinColor(_newMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(_newMelanin));
                 Graphic_Multi tex;
-                faceComp.GetModdedHeadNamed(true, _PawnSkinColors.GetSkinColor(_newMelanin), out tex);
-                SetGraphicSlot(GraphicSlotGroup.Head, pawn, tex, pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(_newMelanin));
+                
+                SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, true, _PawnSkinColors.GetSkinColor(_newMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(_newMelanin));
 
             }
         }
@@ -425,7 +422,7 @@ namespace FaceStyling
             }
             else
             {
-                result = GraphicDatabase.Get<Graphic_Multi>((def.apparel.LastLayer != ApparelLayer.Overhead) ? (def.apparel.wornGraphicPath + "_" + bodyType.ToString()) : def.apparel.wornGraphicPath, ShaderDatabase.Cutout, new Vector2(38f, 38f), Color.white, Color.white);
+                result = GraphicDatabase.Get<Graphic_Multi>((def.apparel.LastLayer != ApparelLayer.Overhead) ? (def.apparel.wornGraphicPath + "_" + bodyType) : def.apparel.wornGraphicPath, ShaderDatabase.Cutout, new Vector2(38f, 38f), Color.white, Color.white);
             }
             return result;
         }
@@ -466,7 +463,7 @@ namespace FaceStyling
                     result = GraphicSlotGroup.Overhead;
                     return result;
             }
-            Log.Warning("Could not resolve 'LastLayer' " + lastLayer.ToString());
+            Log.Warning("Could not resolve 'LastLayer' " + lastLayer);
             result = GraphicSlotGroup.Invalid;
             return result;
         }
@@ -993,7 +990,7 @@ namespace FaceStyling
                     NewColour = colourWrapper.Color;
                 }, false, true)
                 {
-                    initialPosition = new Vector2(windowRect.xMax + _margin, windowRect.yMin),
+                    initialPosition = new Vector2(windowRect.xMax + _margin, windowRect.yMin)
                 });
             }
         }
@@ -1028,7 +1025,7 @@ namespace FaceStyling
                     NewColour = colourWrapper.Color;
                 }, false, true)
                 {
-                    initialPosition = new Vector2(windowRect.xMax + _margin, windowRect.yMin),
+                    initialPosition = new Vector2(windowRect.xMax + _margin, windowRect.yMin)
                 });
             }
         }
@@ -1142,7 +1139,7 @@ namespace FaceStyling
                     NewColour = colourWrapper.Color;
                 }, false, true)
                 {
-                    initialPosition = new Vector2(windowRect.xMax + _margin, windowRect.yMin),
+                    initialPosition = new Vector2(windowRect.xMax + _margin, windowRect.yMin)
                 });
             }
         }

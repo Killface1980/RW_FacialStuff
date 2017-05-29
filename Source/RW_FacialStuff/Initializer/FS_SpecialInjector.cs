@@ -1,10 +1,10 @@
 ﻿// Toggle in Hospitality Properties
 
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using RW_FacialStuff.NoCCL;
 using Verse;
+
 #if NoCCL
 
 #else
@@ -21,7 +21,7 @@ namespace RW_FacialStuff.Initializer
 
         private static readonly BindingFlags[] bindingFlagCombos = {
             BindingFlags.Instance | BindingFlags.Public, BindingFlags.Static | BindingFlags.Public,
-            BindingFlags.Instance | BindingFlags.NonPublic, BindingFlags.Static | BindingFlags.NonPublic,
+            BindingFlags.Instance | BindingFlags.NonPublic, BindingFlags.Static | BindingFlags.NonPublic
         };
 
         public override bool Inject()

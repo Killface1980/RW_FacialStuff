@@ -17,7 +17,6 @@ namespace FaceStyling
             yield return Toils_Reserve.Reserve(TargetIndex.A);
             yield return Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell);
             yield return Toils_WaitWithSoundAndEffect();
-            yield break;
         }
         private Toil Toils_WaitWithSoundAndEffect()
         {
@@ -25,10 +24,10 @@ namespace FaceStyling
             {
                 initAction = delegate
                 {
-                    FaceStyling.FaceStyler faceStyler = TargetA.Thing as FaceStyling.FaceStyler;
+                    FaceStyler faceStyler = TargetA.Thing as FaceStyler;
                     if (faceStyler != null)
                     {
-                        FaceStyling.FaceStyler rainbowSquieerl2 = (FaceStyling.FaceStyler) TargetA.Thing;
+                        FaceStyler rainbowSquieerl2 = (FaceStyler) TargetA.Thing;
                         if (GetActor().Position == TargetA.Thing.InteractionCell)
                         {
                             rainbowSquieerl2.FaceStyling(GetActor());
