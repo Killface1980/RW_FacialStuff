@@ -67,7 +67,7 @@ namespace RW_FacialStuff
         {
             Texture2D tempBeardTex;
             MakeReadable(beardTex, out tempBeardTex);
-            Color color = new Color(0.8f, 0.8f, 0.8f, 1f);
+            Color color = new Color(0.95f, 0.95f, 0.95f, 1f);
 
             // offset neede if beards are stretched => narrow
             int offset = (finalTexture.width - tempBeardTex.width) / 2;
@@ -83,7 +83,7 @@ namespace RW_FacialStuff
 
                     Color beardColor = tempBeardTex.GetPixel(x - startX - offset, y - startY);
 
-                    beardColor *= pawn.story.hairColor * color;
+                    beardColor *= pawn.story.hairColor;
 
                     Color final_color = Color.Lerp(headColor, beardColor, beardColor.a / 1f);
 
