@@ -43,18 +43,15 @@ namespace RW_FacialStuff.Detouring
             //    ShaderDatabase.Cutout, Vector2.one, __instance.pawn.story.hairColor);
             //  __instance.skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
             //     __instance.ResolveApparelGraphics();
-            PortraitsCache.Clear();
 
             if (!faceComp.sessionOptimized)
             {
                 // Build the empty head index once to be used for the blank heads
+                if (HeadIndex.Count == 0)
                 {
-                    if (HeadIndex.Count == 0)
+                    for (int i = 0; i < 1024; i++)
                     {
-                        for (int i = 0; i < 1024; i++)
-                        {
-                            HeadIndex.Add(i.ToString("0000"), null);
-                        }
+                        HeadIndex.Add(i.ToString("0000"), null);
                     }
                 }
                 // Get the first free index and go on
@@ -99,6 +96,9 @@ namespace RW_FacialStuff.Detouring
                     __instance.rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
                         __instance.pawn.story.bodyType, ShaderDatabase.CutoutSkin,
                         rotColor);
+
+                    PortraitsCache.Clear();
+
                 }
 
             }

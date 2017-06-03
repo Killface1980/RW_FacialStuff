@@ -15,8 +15,8 @@ namespace RW_FacialStuff
 
         public static readonly Color skinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
-    //    public static Dictionary<string, Texture2D> TexDict = new Dictionary<string, Texture2D>();
-       // public static Dictionary<string, Texture2D> ScaledTexDict = new Dictionary<string, Texture2D>();
+        //    public static Dictionary<string, Texture2D> TexDict = new Dictionary<string, Texture2D>();
+        // public static Dictionary<string, Texture2D> ScaledTexDict = new Dictionary<string, Texture2D>();
 
         public static void PaintHeadWithColor(ref Texture2D finalHeadFront, Color color)
         {
@@ -27,9 +27,6 @@ namespace RW_FacialStuff
                 {
                     Color headColor = finalHeadFront.GetPixel(x, y);
                     headColor *= color;
-
-                    //      Color final_color = Color.Lerp(headColor, eyeColor, eyeColor.a / 1f);
-
 
                     finalHeadFront.SetPixel(x, y, headColor);
                 }
@@ -47,8 +44,8 @@ namespace RW_FacialStuff
             }
             else
             {
-                MakeReadable(currentGraphic.MatFront.mainTexture as Texture2D, out _temptexturefront);
-                MakeReadable(currentGraphic.MatSide.mainTexture as Texture2D, out _temptextureside);
+                _temptexturefront = MakeReadable(currentGraphic.MatFront.mainTexture as Texture2D);
+                _temptextureside = MakeReadable(currentGraphic.MatSide.mainTexture as Texture2D);
             }
 
             if (isBeard)
@@ -66,8 +63,7 @@ namespace RW_FacialStuff
 
         public static void AddFacialHair(Pawn pawn, Texture2D beardTex, ref Texture2D finalTexture)
         {
-            Texture2D tempBeardTex;
-            MakeReadable(beardTex, out tempBeardTex);
+            Texture2D tempBeardTex = MakeReadable(beardTex);
             Color color = new Color(0.95f, 0.95f, 0.95f, 1f);
 
             // offset neede if beards are stretched => narrow
@@ -131,8 +127,7 @@ namespace RW_FacialStuff
 
         public static void MergeHeadWithHair(Color mutiplyHairColor, Texture2D top_layer, Texture2D maskTex, ref Texture2D finalTexture)
         {
-            Texture2D tempMaskTex;
-            MakeReadable(maskTex, out tempMaskTex);
+            Texture2D tempMaskTex = MakeReadable(maskTex);
 
             int offset = (finalTexture.width - top_layer.width) / 2;
 
@@ -162,14 +157,13 @@ namespace RW_FacialStuff
                     finalTexture.SetPixel(x, y, final_color);
                 }
             }
-            Object.DestroyImmediate(tempMaskTex);
             finalTexture.Apply();
+            Object.DestroyImmediate(tempMaskTex);
         }
 
         public static void MakeOld(Pawn pawn, Texture2D wrinkleTex, ref Texture2D finalhead)
         {
-            Texture2D tempWrinkleTex;
-            MakeReadable(wrinkleTex, out tempWrinkleTex);
+            Texture2D tempWrinkleTex = MakeReadable(wrinkleTex);
             int startX = 0;
             int startY = finalhead.height - tempWrinkleTex.height;
 
@@ -195,22 +189,22 @@ namespace RW_FacialStuff
         }
 
 
-        public static void MakeReadable(Texture2D texture, out Texture2D myTexture2D)
+        public static Texture2D MakeReadable(Texture2D texture)
         {
-       //   string x = texture.name;
-       //   try
-       //   {
-       //       if (TexDict.ContainsKey(x))
-       //       {
-       //           if (TexDict.TryGetValue(x, out myTexture2D))
-       //           {
-       //               return;
-       //           }
-       //       }
-       //   }
-       //   catch (ArgumentNullException argumentNullException)
-       //   {
-       //   }
+            //   string x = texture.name;
+            //   try
+            //   {
+            //       if (TexDict.ContainsKey(x))
+            //       {
+            //           if (TexDict.TryGetValue(x, out myTexture2D))
+            //           {
+            //               return;
+            //           }
+            //       }
+            //   }
+            //   catch (ArgumentNullException argumentNullException)
+            //   {
+            //   }
 
             // Create a temporary RenderTexture of the same size as the texture
             RenderTexture tmp = RenderTexture.GetTemporary(
@@ -227,7 +221,7 @@ namespace RW_FacialStuff
             RenderTexture.active = tmp;
 
             // Create a new readable Texture2D to copy the pixels to it
-            myTexture2D = new Texture2D(texture.width, texture.width, TextureFormat.ARGB32, false);
+            Texture2D myTexture2D = new Texture2D(texture.width, texture.width, TextureFormat.ARGB32, false);
 
             // Copy the pixels from the RenderTexture to the new Texture
             myTexture2D.ReadPixels(new Rect(0, 0, tmp.width, tmp.height), 0, 0);
@@ -238,41 +232,40 @@ namespace RW_FacialStuff
 
             // Release the temporary RenderTexture
             RenderTexture.ReleaseTemporary(tmp);
-            //           return myTexture2D;
+            return myTexture2D;
             // "myTexture2D" now has the same pixels from "texture" and it's readable.
 
-        //  try
-        //  {
-        //      TexDict.Add(x, myTexture2D);
-        //  }
-        //  catch (ArgumentNullException argumentNullException)
-        //  {
-        //  }
+            //  try
+            //  {
+            //      TexDict.Add(x, myTexture2D);
+            //  }
+            //  catch (ArgumentNullException argumentNullException)
+            //  {
+            //  }
         }
 
         public static void ScaleTexture(Texture2D sourceTex, out Texture2D destTex, int targetWidth, int targetHeight)
         {
-         // string xx = sourceTex.name;
-         // try
-         // {
-         //     if (ScaledTexDict.ContainsKey(xx))
-         //     {
-         //         if (ScaledTexDict.TryGetValue(xx, out destTex))
-         //         {
-         //             return;
-         //         }
-         //     }
-         // }
-        //  catch (ArgumentNullException argumentNullException)
-        //  {
-        //  }
+            // string xx = sourceTex.name;
+            // try
+            // {
+            //     if (ScaledTexDict.ContainsKey(xx))
+            //     {
+            //         if (ScaledTexDict.TryGetValue(xx, out destTex))
+            //         {
+            //             return;
+            //         }
+            //     }
+            // }
+            //  catch (ArgumentNullException argumentNullException)
+            //  {
+            //  }
 
             float warpFactorX = 1f;
             float warpFactorY = 1f;
             Color[] destPix;
 
-            Texture2D scaleTex;
-            MakeReadable(sourceTex, out scaleTex);
+            Texture2D scaleTex = MakeReadable(sourceTex);
 
             destTex = new Texture2D(targetWidth, targetHeight, TextureFormat.ARGB32, false);
             destPix = new Color[destTex.width * destTex.height];
@@ -295,13 +288,13 @@ namespace RW_FacialStuff
             destTex.Apply();
             Object.DestroyImmediate(scaleTex);
 
-         // try
-         // {
-         //     ScaledTexDict.Add(xx, destTex);
-         // }
-         // catch (ArgumentNullException argumentNullException)
-         // {
-         // }
+            // try
+            // {
+            //     ScaledTexDict.Add(xx, destTex);
+            // }
+            // catch (ArgumentNullException argumentNullException)
+            // {
+            // }
         }
 
     }

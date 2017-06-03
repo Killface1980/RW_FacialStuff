@@ -11,23 +11,23 @@ namespace RW_FacialStuff
 
     // to do: patch
     //[Detour(typeof(GraphicDatabaseHeadRecords), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
-    [HarmonyPatch(typeof(GraphicDatabaseHeadRecords), "Reset")]
-
     public static class GraphicDatabaseHeadRecordsModded
     {
-        static class Reset_Prefix
-        {
-            [HarmonyPrefix]
-            public static void Reset()
-            {
-                headsVanillaCustom.Clear();
-                skull = null;
-                stump = null;
-            }
-
-        }
+        //[HarmonyPatch(typeof(GraphicDatabaseHeadRecords), "Reset")]
+        //static class Reset_Prefix
+        //{
+        //    [HarmonyPrefix]
+        //    public static void Reset()
+        //    {
+        //        headsVanillaCustom.Clear();
+        //        skull = null;
+        //        stump = null;
+        //    }
+        //
+        //}
 
         public static List<HeadGraphicRecordVanillaCustom> headsVanillaCustom = new List<HeadGraphicRecordVanillaCustom>();
+
         public static List<HeadGraphicRecordModded> headsModded = new List<HeadGraphicRecordModded>();
 
         private static HeadGraphicRecordVanillaCustom skull;
@@ -47,7 +47,7 @@ namespace RW_FacialStuff
 
             public string graphicPathVanillaCustom;
 
-            public static List<KeyValuePair<Color, Graphic_Multi>> graphics = new List<KeyValuePair<Color, Graphic_Multi>>();
+            private List<KeyValuePair<Color, Graphic_Multi>> graphics = new List<KeyValuePair<Color, Graphic_Multi>>();
 
             public HeadGraphicRecordVanillaCustom(string graphicPath)
             {
@@ -59,7 +59,7 @@ namespace RW_FacialStuff
                 try
                 {
                     crownType = (CrownType)((byte)ParseHelper.FromString(array[array.Length - 2], typeof(CrownType)));
-                    gender = (Gender)((byte)ParseHelper.FromString(array[array.Length - 3], typeof(Gender)));
+                    this.gender = (Gender)((byte)ParseHelper.FromString(array[array.Length - 3], typeof(Gender)));
                 }
                 catch (Exception ex)
                 {
@@ -73,11 +73,11 @@ namespace RW_FacialStuff
 
             public Graphic_Multi GetGraphic(Color color)
             {
-                foreach (KeyValuePair<Color, Graphic_Multi> graphic_multi in graphics)
+                for (int i = 0; i < this.graphics.Count; i++)
                 {
-                    if (color.IndistinguishableFrom(graphic_multi.Key))
+                    if (color.IndistinguishableFrom(this.graphics[i].Key))
                     {
-                        return graphic_multi.Value;
+                        return this.graphics[i].Value;
                     }
                 }
                 Graphic_Multi graphicMultiHead = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(graphicPathVanillaCustom, ShaderDatabase.Cutout, Vector2.one, color);
@@ -129,7 +129,7 @@ namespace RW_FacialStuff
 
             public Graphic_Multi GetGraphicBlank(Color color)
             {
-                for (int i = 0; i < graphics.Count; i++)
+                for (int i = 0; i < this.graphics.Count; i++)
                 {
                     if (color.IndistinguishableFrom(graphics[i].Key))
                     {
@@ -138,7 +138,7 @@ namespace RW_FacialStuff
                 }
 
                 Graphic_Multi graphic_Multi_Head = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(graphicPathModded, ShaderDatabase.Cutout, Vector2.one, color);
-                graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphic_Multi_Head));
+                this.graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphic_Multi_Head));
 
                 return graphic_Multi_Head;
             }
@@ -148,23 +148,29 @@ namespace RW_FacialStuff
 
         public static Graphic_Multi GetModdedHeadNamed(Pawn pawn, bool useVanilla, Color color)
         {
-            CompFace faceComp = pawn.TryGetComp<CompFace>();
-
+            BuildDatabaseIfNecessary();
             if (useVanilla)
             {
                 foreach (HeadGraphicRecordVanillaCustom headGraphicRecordVanillaCustom in headsVanillaCustom)
                 {
                     if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story.HeadGraphicPath.Remove(0, 22))
                     {
+                        Log.Message("Getting vanilla" + pawn.story.HeadGraphicPath.Remove(0, 22) + ".");
+
                         return headGraphicRecordVanillaCustom.GetGraphic(color);
                     }
                 }
+                Log.Message("Tried to get pawn head at path " + pawn.story.HeadGraphicPath.Remove(0, 22) + " that was not found. Defaulting...");
+
+                return headsVanillaCustom.First().GetGraphic(color);
             }
+            CompFace faceComp = pawn.TryGetComp<CompFace>();
 
             foreach (HeadGraphicRecordModded headGraphicRecordModded in headsModded)
             {
                 if (headGraphicRecordModded.graphicPathModded == faceComp.headGraphicIndex)
                 {
+                    Log.Message("Getting modded" + headGraphicRecordModded.graphicPathModded + ".");
                     return headGraphicRecordModded.GetGraphicBlank(color);
                 }
             }

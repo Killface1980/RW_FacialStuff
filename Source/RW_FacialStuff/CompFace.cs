@@ -57,16 +57,16 @@ namespace RW_FacialStuff
 
         private Texture2D _temptextureside;
 
-        private Graphic _wrinkleGraphic;
-
-        private Graphic_Multi headGraphicVanilla;
-        private Graphic_Multi dissicatedHeadGraphicVanilla;
         private Texture2D finalHeadFront;
         private Texture2D finalHeadSide;
         private Texture2D finalHeadBack;
         private Texture2D disHeadFront;
         private Texture2D disHeadSide;
         private Texture2D disHeadBack;
+        private Graphic _wrinkleGraphic;
+
+        private Graphic_Multi headGraphicVanilla;
+        private Graphic_Multi dissicatedHeadGraphicVanilla;
 
         private bool reInit;
 
@@ -179,8 +179,8 @@ namespace RW_FacialStuff
             {
                 if (oldAge)
                 {
-                    MakeReadable(this._wrinkleGraphic.MatFront.mainTexture as Texture2D, out _temptexturefront);
-                    MakeReadable(this._wrinkleGraphic.MatSide.mainTexture as Texture2D, out _temptextureside);
+                    _temptexturefront = MakeReadable(this._wrinkleGraphic.MatFront.mainTexture as Texture2D);
+                    _temptextureside = MakeReadable(this._wrinkleGraphic.MatSide.mainTexture as Texture2D);
 
                     MakeOld(pawn, this._temptexturefront, ref canvasHeadFront);
                     MakeOld(pawn, this._temptextureside, ref canvasHeadSide);
@@ -207,8 +207,8 @@ namespace RW_FacialStuff
             {
                 if (oldAge)
                 {
-                    MakeReadable(this._wrinkleGraphic.MatFront.mainTexture as Texture2D, out _temptexturefront);
-                    MakeReadable(this._wrinkleGraphic.MatSide.mainTexture as Texture2D, out _temptextureside);
+                    _temptexturefront = MakeReadable(this._wrinkleGraphic.MatFront.mainTexture as Texture2D);
+                    _temptextureside = MakeReadable(this._wrinkleGraphic.MatSide.mainTexture as Texture2D);
 
                     MakeOld(pawn, this._temptexturefront, ref canvasHeadFront);
                     MakeOld(pawn, this._temptextureside, ref canvasHeadSide);
@@ -220,9 +220,9 @@ namespace RW_FacialStuff
                 }
             }
 
-            MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D, out _temptexturefront);
-            MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D, out _temptextureside);
-            MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D, out _temptextureback);
+            _temptexturefront = MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D);
+            _temptextureside = MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D);
+            _temptextureback = MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D);
 
 
             if (pawn.story.crownType == CrownType.Narrow)
@@ -270,15 +270,15 @@ namespace RW_FacialStuff
 
 
             headGraphicVanilla = GetModdedHeadNamed(pawn, true, Color.white);
-            dissicatedHeadGraphicVanilla = GetModdedHeadNamed(pawn, true, skinRottingMultiplyColor);
+            dissicatedHeadGraphicVanilla = GetModdedHeadNamed(pawn, true, Color.white);
 
-            MakeReadable(headGraphicVanilla.MatFront.mainTexture as Texture2D, out finalHeadFront);
-            MakeReadable(headGraphicVanilla.MatSide.mainTexture as Texture2D, out finalHeadSide);
-            MakeReadable(headGraphicVanilla.MatBack.mainTexture as Texture2D, out finalHeadBack);
+            finalHeadFront = MakeReadable(headGraphicVanilla.MatFront.mainTexture as Texture2D);
+            finalHeadSide = MakeReadable(headGraphicVanilla.MatSide.mainTexture as Texture2D);
+            finalHeadBack = MakeReadable(headGraphicVanilla.MatBack.mainTexture as Texture2D);
 
-            MakeReadable(dissicatedHeadGraphicVanilla.MatFront.mainTexture as Texture2D, out disHeadFront);
-            MakeReadable(dissicatedHeadGraphicVanilla.MatSide.mainTexture as Texture2D, out disHeadSide);
-            MakeReadable(dissicatedHeadGraphicVanilla.MatBack.mainTexture as Texture2D, out disHeadBack);
+            disHeadFront = MakeReadable(dissicatedHeadGraphicVanilla.MatFront.mainTexture as Texture2D);
+            disHeadSide = MakeReadable(dissicatedHeadGraphicVanilla.MatSide.mainTexture as Texture2D);
+            disHeadBack = MakeReadable(dissicatedHeadGraphicVanilla.MatBack.mainTexture as Texture2D);
 
             PaintHeadWithColor(ref finalHeadFront, pawn.story.SkinColor);
             PaintHeadWithColor(ref finalHeadSide, pawn.story.SkinColor);
@@ -363,7 +363,7 @@ namespace RW_FacialStuff
 
 
             this.sessionOptimized = true;
-            return this.sessionOptimized;
+            return true;
 
             // moddedHeadGraphics.Add(new KeyValuePair<string, Graphic_Multi>(pawn + color.ToString(), headGraphic));
         }
@@ -377,17 +377,17 @@ namespace RW_FacialStuff
                 return;
             }
 
-          //// Save RAM 
-          //if (this.finalHeadFront != null)
-          //{
-          //    Object.DestroyImmediate(finalHeadFront, true);
-          //    Object.DestroyImmediate(finalHeadSide, true);
-          //    Object.DestroyImmediate(finalHeadBack, true);
-          //    Object.DestroyImmediate(disHeadFront, true);
-          //    Object.DestroyImmediate(disHeadSide, true);
-          //    Object.DestroyImmediate(disHeadBack, true);
-          //
-          //}
+            //// Save RAM 
+            //if (this.finalHeadFront != null)
+            //{
+            //    Object.DestroyImmediate(finalHeadFront, true);
+            //    Object.DestroyImmediate(finalHeadSide, true);
+            //    Object.DestroyImmediate(finalHeadBack, true);
+            //    Object.DestroyImmediate(disHeadFront, true);
+            //    Object.DestroyImmediate(disHeadSide, true);
+            //    Object.DestroyImmediate(disHeadBack, true);
+            //
+            //}
 
             // Create the blank canvas texture
             if (BlankTex == null)
