@@ -10,7 +10,7 @@ namespace RW_FacialStuff
 
         public static readonly Color skinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
-        public static void PaintHeadWithColor(Texture2D finalHeadFront, Color color)
+        public static void PaintHeadWithColor(ref Texture2D finalHeadFront, Color color)
         {
             for (int x = 0; x < 128; x++)
             {
@@ -30,38 +30,31 @@ namespace RW_FacialStuff
             finalHeadFront.Apply();
         }
 
-        public static void MakeReadable(Texture2D texture, out Texture2D myTexture2D)
+        public static void MergeFaceParts(Pawn pawn, Graphic currentGraphic, Color color, ref Texture2D canvasHeadFront, ref Texture2D canvasHeadSide, ref Texture2D _temptexturefront, ref Texture2D _temptextureside, bool isBeard = false)
         {
+            if (pawn.story.crownType == CrownType.Narrow)
+            {
+                ScaleTexture(currentGraphic.MatFront.mainTexture as Texture2D, out _temptexturefront, 102, 128);
+                ScaleTexture(currentGraphic.MatSide.mainTexture as Texture2D, out _temptextureside, 102, 128);
+            }
+            else
+            {
+                MakeReadable(currentGraphic.MatFront.mainTexture as Texture2D, out _temptexturefront);
+                MakeReadable(currentGraphic.MatSide.mainTexture as Texture2D, out _temptextureside);
+            }
 
-            // Create a temporary RenderTexture of the same size as the texture
-            RenderTexture tmp = RenderTexture.GetTemporary(
-                                texture.width,
-                                texture.height,
-                                0,
-                                RenderTextureFormat.Default,
-                                RenderTextureReadWrite.Linear);
-
-            // Blit the pixels on texture to the RenderTexture
-            Graphics.Blit(texture, tmp);
-
-            // Set the current RenderTexture to the temporary one we created
-            RenderTexture.active = tmp;
-
-            // Create a new readable Texture2D to copy the pixels to it
-            myTexture2D = new Texture2D(texture.width, texture.width, TextureFormat.ARGB32, false);
-
-            // Copy the pixels from the RenderTexture to the new Texture
-            myTexture2D.ReadPixels(new Rect(0, 0, tmp.width, tmp.height), 0, 0);
-            myTexture2D.Apply();
-
-            // Reset the active RenderTexture
-            //    RenderTexture.active = previous;
-
-            // Release the temporary RenderTexture
-            RenderTexture.ReleaseTemporary(tmp);
-            //           return myTexture2D;
-            // "myTexture2D" now has the same pixels from "texture" and it's readable.
+            if (isBeard)
+            {
+                AddFacialHair(pawn, _temptexturefront, ref canvasHeadFront);
+                AddFacialHair(pawn, _temptextureside, ref canvasHeadSide);
+            }
+            else
+            {
+                MergeTwoGraphics(_temptexturefront, color, ref canvasHeadFront);
+                MergeTwoGraphics(_temptextureside, color, ref canvasHeadSide);
+            }
         }
+
 
         public static void AddFacialHair(Pawn pawn, Texture2D beardTex, ref Texture2D finalTexture)
         {
@@ -83,7 +76,7 @@ namespace RW_FacialStuff
 
                     Color beardColor = tempBeardTex.GetPixel(x - startX - offset, y - startY);
 
-                    beardColor *= pawn.story.hairColor;
+       //             beardColor *= pawn.story.hairColor;
 
                     Color final_color = Color.Lerp(headColor, beardColor, beardColor.a / 1f);
 
@@ -92,7 +85,9 @@ namespace RW_FacialStuff
                     finalTexture.SetPixel(x, y, final_color);
                 }
             }
+
             Object.DestroyImmediate(tempBeardTex);
+
             finalTexture.Apply();
         }
 
@@ -125,47 +120,6 @@ namespace RW_FacialStuff
 
             finalTexture.Apply();
         }
-
-        public static void MergeTwoLayers(ref Texture2D finalTexture, Texture2D top_layer, Color topColor)
-        {
-
-            int offset = (finalTexture.width - top_layer.width) / 2;
-
-            int startX = 0;
-            int startY = finalTexture.height - top_layer.height;
-
-
-            for (int x = startX; x < top_layer.width + offset; x++)
-            {
-
-                for (int y = startY; y < finalTexture.height; y++)
-                {
-
-                    Color headColor = finalTexture.GetPixel(x, y);
-                    Color hairColor;
-
-                    hairColor = top_layer.GetPixel(x - startX - offset, y - startY);
-
-                    if (y > 82)
-                        hairColor.a = 0;
-                    if (y > 79 && y < 82 && hairColor.a > 0)
-                        hairColor = Color.black;
-
-                    hairColor *= topColor;
-
-                    Color final_color = Color.Lerp(headColor, hairColor, hairColor.a);
-
-                    if (headColor.a > 0 || hairColor.a > 0)
-                        final_color.a = headColor.a + hairColor.a;
-
-                    finalTexture.SetPixel(x, y, final_color);
-                }
-            }
-
-            finalTexture.Apply();
-        }
-
-
 
         public static void MergeHeadWithHair(Color mutiplyHairColor, Texture2D top_layer, Texture2D maskTex, ref Texture2D finalTexture)
         {
@@ -232,7 +186,38 @@ namespace RW_FacialStuff
             finalhead.Apply();
         }
 
+        public static void MakeReadable(Texture2D texture, out Texture2D myTexture2D)
+        {
 
+            // Create a temporary RenderTexture of the same size as the texture
+            RenderTexture tmp = RenderTexture.GetTemporary(
+                                texture.width,
+                                texture.height,
+                                0,
+                                RenderTextureFormat.Default,
+                                RenderTextureReadWrite.Linear);
+
+            // Blit the pixels on texture to the RenderTexture
+            Graphics.Blit(texture, tmp);
+
+            // Set the current RenderTexture to the temporary one we created
+            RenderTexture.active = tmp;
+
+            // Create a new readable Texture2D to copy the pixels to it
+            myTexture2D = new Texture2D(texture.width, texture.width, TextureFormat.ARGB32, false);
+
+            // Copy the pixels from the RenderTexture to the new Texture
+            myTexture2D.ReadPixels(new Rect(0, 0, tmp.width, tmp.height), 0, 0);
+            myTexture2D.Apply();
+
+            // Reset the active RenderTexture
+            //    RenderTexture.active = previous;
+
+            // Release the temporary RenderTexture
+            RenderTexture.ReleaseTemporary(tmp);
+            //           return myTexture2D;
+            // "myTexture2D" now has the same pixels from "texture" and it's readable.
+        }
 
         public static void ScaleTexture(Texture2D sourceTex, out Texture2D destTex, int targetWidth, int targetHeight)
         {

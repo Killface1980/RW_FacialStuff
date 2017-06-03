@@ -58,6 +58,16 @@ namespace RW_FacialStuff
 
         private Graphic _wrinkleGraphic;
 
+        private Graphic_Multi headGraphicVanilla;
+        private Graphic_Multi dissicatedHeadGraphicVanilla;
+        private Texture2D finalHeadFront;
+        private Texture2D finalHeadSide;
+        private Texture2D finalHeadBack;
+        private Texture2D disHeadFront;
+        private Texture2D disHeadSide;
+        private Texture2D disHeadBack;
+
+
         public void DefineFace()
         {
             Pawn pawn = this.parent as Pawn;
@@ -128,14 +138,14 @@ namespace RW_FacialStuff
             // }
             // _textures.Add(eyeGraphic.MatFront.mainTexture as Texture2D);
             Color darken = new Color(0.3f, 0.3f, 0.3f, 1f);
-            this.MergeFaceParts(
+            MergeFaceParts(
                 pawn,
                 this._browGraphic,
                 hairColor * darken,
                 ref canvasHeadFront,
-                ref canvasHeadSide);
+                ref canvasHeadSide, ref _temptexturefront, ref _temptextureside);
 
-            this.MergeFaceParts(pawn, this._eyeGraphic, Color.black, ref canvasHeadFront, ref canvasHeadSide);
+            MergeFaceParts(pawn, this._eyeGraphic, Color.black, ref canvasHeadFront, ref canvasHeadSide, ref _temptexturefront, ref _temptextureside);
 
             if (pawn.gender == Gender.Male)
             {
@@ -150,16 +160,19 @@ namespace RW_FacialStuff
 
                 if (FS_Settings.UseMouth && (this.BeardDef.drawMouth && this.drawMouth))
                 {
-                    this.MergeFaceParts(pawn, this._mouthGraphic, Color.black, ref canvasHeadFront, ref canvasHeadSide);
+                    MergeFaceParts(pawn, this._mouthGraphic, Color.black, ref canvasHeadFront, ref canvasHeadSide, ref _temptexturefront, ref _temptextureside);
                 }
 
-                this.MergeFaceParts(
-                    pawn,
-                    this._beardGraphic,
-                    Color.white,
-                    ref canvasHeadFront,
-                    ref canvasHeadSide,
-                    true);
+                if (!BeardDef.defName.Equals("Shaved"))
+                {
+                    MergeFaceParts(
+                        pawn,
+                        this._beardGraphic,
+                        Color.white,
+                        ref canvasHeadFront,
+                        ref canvasHeadSide, ref _temptexturefront, ref _temptextureside,
+                        true);
+                }
             }
 
             if (pawn.gender == Gender.Female)
@@ -175,7 +188,7 @@ namespace RW_FacialStuff
 
                 if (FS_Settings.UseMouth && this.drawMouth)
                 {
-                    this.MergeFaceParts(pawn, this._mouthGraphic, Color.black, ref canvasHeadFront, ref canvasHeadSide);
+                   MergeFaceParts(pawn, this._mouthGraphic, Color.black, ref canvasHeadFront, ref canvasHeadSide, ref _temptexturefront, ref _temptextureside);
                 }
             }
 
@@ -227,32 +240,24 @@ namespace RW_FacialStuff
                     ref canvasHeadBack);
             }
 
-            Graphic_Multi headGraphicVanilla;
-            Graphic_Multi dissicatedHeadGraphicVanilla;
 
             headGraphicVanilla = GetModdedHeadNamed(pawn, true, Color.white);
             dissicatedHeadGraphicVanilla = GetModdedHeadNamed(pawn, true, skinRottingMultiplyColor);
 
-            Texture2D finalHeadFront;
-            Texture2D finalHeadSide;
-            Texture2D finalHeadBack;
             MakeReadable(headGraphicVanilla.MatFront.mainTexture as Texture2D, out finalHeadFront);
             MakeReadable(headGraphicVanilla.MatSide.mainTexture as Texture2D, out finalHeadSide);
             MakeReadable(headGraphicVanilla.MatBack.mainTexture as Texture2D, out finalHeadBack);
 
-            Texture2D disHeadFront;
-            Texture2D disHeadSide;
-            Texture2D disHeadBack;
             MakeReadable(dissicatedHeadGraphicVanilla.MatFront.mainTexture as Texture2D, out disHeadFront);
             MakeReadable(dissicatedHeadGraphicVanilla.MatSide.mainTexture as Texture2D, out disHeadSide);
             MakeReadable(dissicatedHeadGraphicVanilla.MatBack.mainTexture as Texture2D, out disHeadBack);
 
-            PaintHeadWithColor(finalHeadFront, pawn.story.SkinColor);
-            PaintHeadWithColor(finalHeadSide, pawn.story.SkinColor);
-            PaintHeadWithColor(finalHeadBack, pawn.story.SkinColor);
-            PaintHeadWithColor(disHeadFront, pawn.story.SkinColor);
-            PaintHeadWithColor(disHeadSide, pawn.story.SkinColor);
-            PaintHeadWithColor(disHeadBack, pawn.story.SkinColor);
+            PaintHeadWithColor(ref finalHeadFront, pawn.story.SkinColor);
+            PaintHeadWithColor(ref finalHeadSide, pawn.story.SkinColor);
+            PaintHeadWithColor(ref finalHeadBack, pawn.story.SkinColor);
+            PaintHeadWithColor(ref disHeadFront, pawn.story.SkinColor);
+            PaintHeadWithColor(ref disHeadSide, pawn.story.SkinColor);
+            PaintHeadWithColor(ref disHeadBack, pawn.story.SkinColor);
 
             if (pawn.story.crownType == CrownType.Narrow)
             {
@@ -330,11 +335,11 @@ namespace RW_FacialStuff
             // moddedHeadGraphics.Add(new KeyValuePair<string, Graphic_Multi>(pawn + color.ToString(), headGraphic));
         }
 
-
         public void InitializeGraphics()
         {
             Pawn pawn = this.parent as Pawn;
-            if (pawn == null) return;
+            if (pawn == null)
+                return;
 
             // Create the blank canvas texture
             if (BlankTex == null)
@@ -434,35 +439,5 @@ namespace RW_FacialStuff
             Scribe_Values.Look(ref this.HairColorOrg, "HairColorOrg");
         }
 
-        private void MergeFaceParts(
-            Pawn pawn,
-            Graphic currentGraphic,
-            Color color,
-            ref Texture2D canvasHeadFront,
-            ref Texture2D canvasHeadSide,
-            bool isBeard = false)
-        {
-            if (pawn.story.crownType == CrownType.Narrow)
-            {
-                ScaleTexture(currentGraphic.MatFront.mainTexture as Texture2D, out this._temptexturefront, 102, 128);
-                ScaleTexture(currentGraphic.MatSide.mainTexture as Texture2D, out this._temptextureside, 102, 128);
-            }
-            else
-            {
-                MakeReadable(currentGraphic.MatFront.mainTexture as Texture2D, out _temptexturefront);
-                MakeReadable(currentGraphic.MatSide.mainTexture as Texture2D, out _temptextureside);
-            }
-
-            if (isBeard)
-            {
-                AddFacialHair(pawn, this._temptexturefront, ref canvasHeadFront);
-                AddFacialHair(pawn, this._temptextureside, ref canvasHeadSide);
-            }
-            else
-            {
-                MergeTwoGraphics(this._temptexturefront, color, ref canvasHeadFront);
-                MergeTwoGraphics(this._temptextureside, color, ref canvasHeadSide);
-            }
-        }
     }
 }
