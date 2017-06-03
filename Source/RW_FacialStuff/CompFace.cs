@@ -14,6 +14,7 @@ namespace RW_FacialStuff
 
     public class CompFace : ThingComp
     {
+
         public BeardDef BeardDef;
 
         public BrowDef BrowDef;
@@ -38,7 +39,7 @@ namespace RW_FacialStuff
 
         public string SkinColorHex;
 
-        public string type;
+        public string type = null;
 
         public WrinkleDef WrinkleDef;
 
@@ -67,18 +68,15 @@ namespace RW_FacialStuff
         private Texture2D disHeadSide;
         private Texture2D disHeadBack;
 
+        private bool reInit;
 
         public void DefineFace()
         {
+
             Pawn pawn = this.parent as Pawn;
 
-            if (pawn == null) return;
-
-            if (pawn.story.HeadGraphicPath.Contains("Normal")) this.type = "Normal";
-
-            if (pawn.story.HeadGraphicPath.Contains("Pointy")) this.type = "Pointy";
-
-            if (pawn.story.HeadGraphicPath.Contains("Wide")) this.type = "Wide";
+            if (pawn == null)
+                return;
 
             this.EyeDef = PawnFaceChooser.RandomEyeDefFor(pawn, pawn.Faction.def);
 
@@ -93,6 +91,36 @@ namespace RW_FacialStuff
             this.HairColorOrg = pawn.story.hairColor;
 
             this.optimized = true;
+        }
+
+        public void SetHeadType()
+        {
+            Pawn pawn = this.parent as Pawn;
+
+            if (pawn == null)
+                return;
+
+            string newType = null;
+
+            if (pawn.story.HeadGraphicPath.Contains("Normal"))
+            {
+                newType = "Normal";
+            }
+
+            if (pawn.story.HeadGraphicPath.Contains("Pointy"))
+            {
+                newType = "Pointy";
+            }
+
+            if (pawn.story.HeadGraphicPath.Contains("Wide"))
+            {
+                newType = "Wide";
+            }
+
+            if (this.type == null || this.type != newType)
+            {
+                this.type = newType;
+            }
         }
 
         public bool GenerateHeadGraphics(Graphic hairGraphic)
@@ -188,7 +216,7 @@ namespace RW_FacialStuff
 
                 if (FS_Settings.UseMouth && this.drawMouth)
                 {
-                   MergeFaceParts(pawn, this._mouthGraphic, Color.black, ref canvasHeadFront, ref canvasHeadSide, ref _temptexturefront, ref _temptextureside);
+                    MergeFaceParts(pawn, this._mouthGraphic, Color.black, ref canvasHeadFront, ref canvasHeadSide, ref _temptexturefront, ref _temptextureside);
                 }
             }
 
@@ -329,6 +357,11 @@ namespace RW_FacialStuff
             Object.DestroyImmediate(this._temptextureside, true);
             Object.DestroyImmediate(this._temptextureback, true);
 
+            Object.DestroyImmediate(canvasHeadFront, true);
+            Object.DestroyImmediate(canvasHeadSide, true);
+            Object.DestroyImmediate(canvasHeadBack, true);
+
+
             this.sessionOptimized = true;
             return this.sessionOptimized;
 
@@ -338,8 +371,23 @@ namespace RW_FacialStuff
         public void InitializeGraphics()
         {
             Pawn pawn = this.parent as Pawn;
+
             if (pawn == null)
+            {
                 return;
+            }
+
+          //// Save RAM 
+          //if (this.finalHeadFront != null)
+          //{
+          //    Object.DestroyImmediate(finalHeadFront, true);
+          //    Object.DestroyImmediate(finalHeadSide, true);
+          //    Object.DestroyImmediate(finalHeadBack, true);
+          //    Object.DestroyImmediate(disHeadFront, true);
+          //    Object.DestroyImmediate(disHeadSide, true);
+          //    Object.DestroyImmediate(disHeadBack, true);
+          //
+          //}
 
             // Create the blank canvas texture
             if (BlankTex == null)
@@ -359,26 +407,6 @@ namespace RW_FacialStuff
                 BlankTex.Apply();
             }
 
-            this._eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                this.EyeDef.texPath,
-                ShaderDatabase.Cutout,
-                Vector2.one,
-                Color.white);
-            this._browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                this.BrowDef.texPath,
-                ShaderDatabase.Cutout,
-                Vector2.one,
-                Color.white);
-            this._mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                this.MouthDef.texPath,
-                ShaderDatabase.Cutout,
-                Vector2.one,
-                pawn.story.SkinColor);
-
-            if (pawn.gender == Gender.Female && this.BeardDef == null)
-            {
-                this.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
-            }
             if (this.type == "Normal")
             {
                 this._beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
@@ -420,6 +448,28 @@ namespace RW_FacialStuff
                     Vector2.one,
                     Color.black);
             }
+
+            this._eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                this.EyeDef.texPath,
+                ShaderDatabase.Cutout,
+                Vector2.one,
+                Color.white);
+            this._browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                this.BrowDef.texPath,
+                ShaderDatabase.Cutout,
+                Vector2.one,
+                Color.white);
+            this._mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                this.MouthDef.texPath,
+                ShaderDatabase.Cutout,
+                Vector2.one,
+                pawn.story.SkinColor);
+
+            if (pawn.gender == Gender.Female && this.BeardDef == null)
+            {
+                this.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
+            }
+
         }
 
         public override void PostExposeData()

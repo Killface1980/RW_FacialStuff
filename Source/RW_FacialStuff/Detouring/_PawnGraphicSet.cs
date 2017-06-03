@@ -42,35 +42,40 @@ namespace RW_FacialStuff.Detouring
             //__instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.hairDef.texPath,
             //    ShaderDatabase.Cutout, Vector2.one, __instance.pawn.story.hairColor);
             //  __instance.skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
-            __instance.ResolveApparelGraphics();
+            //     __instance.ResolveApparelGraphics();
             PortraitsCache.Clear();
 
             if (!faceComp.sessionOptimized)
             {
-                faceComp.InitializeGraphics();
-
                 // Build the empty head index once to be used for the blank heads
                 {
                     if (HeadIndex.Count == 0)
+                    {
                         for (int i = 0; i < 1024; i++)
                         {
                             HeadIndex.Add(i.ToString("0000"), null);
                         }
+                    }
                 }
                 // Get the first free index and go on
-                foreach (KeyValuePair<string, Pawn> pair in HeadIndex)
+                //           foreach (KeyValuePair<string, Pawn> pair in HeadIndex)
+                for (int i = 0; i < HeadIndex.Count; i++)
                 {
-                    if (pair.Value == null)
-                    {
-                        string index = pair.Key;
-                        HeadIndex.Remove(pair.Key);
-                        HeadIndex.Add(index, __instance.pawn);
+                    string index = i.ToString("0000");
 
-                        faceComp.headGraphicIndex = "Heads/Blank/" + pair.Key;
-                        GraphicDatabaseHeadRecordsModded.headsModded.Add(
-                            new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(__instance.pawn));
-                        break;
+                    Pawn pair = HeadIndex[index];
+                    if (pair != null)
+                    {
+                        continue;
                     }
+
+                    HeadIndex.Remove(index);
+                    HeadIndex.Add(index, __instance.pawn);
+
+                    faceComp.headGraphicIndex = "Heads/Blank/" + index;
+                    GraphicDatabaseHeadRecordsModded.headsModded.Add(
+                        new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(__instance.pawn));
+                    break;
                 }
 
                 //pawnSave.headGraphicIndex = "Heads/Blank/" + GraphicDatabaseHeadRecordsModded.headIndex.ToString("0000");
@@ -80,7 +85,11 @@ namespace RW_FacialStuff.Detouring
 
             if (__instance.pawn.RaceProps.hasGenders)
             {
-                Color rotColor = __instance.pawn.story.SkinColor* Headhelper.skinRottingMultiplyColor;
+
+                Color rotColor = __instance.pawn.story.SkinColor * Headhelper.skinRottingMultiplyColor;
+
+                faceComp.SetHeadType();
+                faceComp.InitializeGraphics();
 
                 if (faceComp.GenerateHeadGraphics(__instance.hairGraphic))
                 {
