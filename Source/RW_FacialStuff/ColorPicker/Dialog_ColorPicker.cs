@@ -27,7 +27,7 @@ namespace FaceStyling.ColorPicker
         // used in the picker only
         public Color tempColor = Color.white;
 
-        private controls _activeControl = controls.none;
+        private Controls _activeControl = Controls.none;
 
         private Color _alphaBGColorA = Color.white,
                             _alphaBGColorB = new Color(.85f, .85f, .85f);
@@ -92,7 +92,7 @@ namespace FaceStyling.ColorPicker
 
         #region Enums
 
-        private enum controls
+        private enum Controls
         {
             colorPicker,
             huePicker,
@@ -296,10 +296,7 @@ namespace FaceStyling.ColorPicker
         public void Apply()
         {
             _wrapper.Color = tempColor;
-            if (_callback != null)
-            {
-                _callback();
-            }
+            _callback?.Invoke();
         }
 
         public Texture2D CreatePreviewBG(Color col)
@@ -372,7 +369,7 @@ namespace FaceStyling.ColorPicker
             // reset active control on mouseup
             if (Input.GetMouseButtonUp(0))
             {
-                _activeControl = controls.none;
+                _activeControl = Controls.none;
             }
 
             // colorpicker interaction
@@ -380,9 +377,9 @@ namespace FaceStyling.ColorPicker
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    _activeControl = controls.colorPicker;
+                    _activeControl = Controls.colorPicker;
                 }
-                if (_activeControl == controls.colorPicker)
+                if (_activeControl == Controls.colorPicker)
                 {
                     Vector2 MousePosition = Event.current.mousePosition;
                     Vector2 PositionInRect = MousePosition - new Vector2(pickerRect.xMin, pickerRect.yMin);
@@ -396,7 +393,7 @@ namespace FaceStyling.ColorPicker
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    _activeControl = controls.huePicker;
+                    _activeControl = Controls.huePicker;
                 }
                 if (Event.current.type == EventType.ScrollWheel)
                 {
@@ -404,7 +401,7 @@ namespace FaceStyling.ColorPicker
                     _huePosition = Mathf.Clamp(_huePosition + Event.current.delta.y, 0f, pickerSize);
                     Event.current.Use();
                 }
-                if (_activeControl == controls.huePicker)
+                if (_activeControl == Controls.huePicker)
                 {
                     float MousePosition = Event.current.mousePosition.y;
                     float PositionInRect = MousePosition - hueRect.yMin;
@@ -418,7 +415,7 @@ namespace FaceStyling.ColorPicker
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    _activeControl = controls.alphaPicker;
+                    _activeControl = Controls.alphaPicker;
                 }
                 if (Event.current.type == EventType.ScrollWheel)
                 {
@@ -426,7 +423,7 @@ namespace FaceStyling.ColorPicker
                     _alphaPosition = Mathf.Clamp(_alphaPosition + Event.current.delta.y, 0f, pickerSize);
                     Event.current.Use();
                 }
-                if (_activeControl == controls.alphaPicker)
+                if (_activeControl == Controls.alphaPicker)
                 {
                     float MousePosition = Event.current.mousePosition.y;
                     float PositionInRect = MousePosition - alphaRect.yMin;
@@ -725,7 +722,7 @@ namespace FaceStyling.ColorPicker
             #region Properties
 
             // only allow read.
-            public List<Color> presets
+            public List<Color> Presets
             {
                 get
                 {

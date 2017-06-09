@@ -403,10 +403,15 @@ namespace FaceStyling
             set
             {
                 _newMelanin = value;
-                SetGraphicSlot(GraphicSlotGroup.Body, pawn, GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, _PawnSkinColors.GetSkinColor(_newMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(_newMelanin));
-                Graphic_Multi tex;
-                
-                SetGraphicSlot(GraphicSlotGroup.Head, pawn, GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, true, _PawnSkinColors.GetSkinColor(_newMelanin)), pawn.def.uiIcon, _PawnSkinColors.GetSkinColor(_newMelanin));
+                SetGraphicSlot(GraphicSlotGroup.Body, pawn,
+                    GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin,
+                        _PawnSkinColors.GetSkinColor(_newMelanin)), pawn.def.uiIcon,
+                    _PawnSkinColors.GetSkinColor(_newMelanin));
+
+                SetGraphicSlot(GraphicSlotGroup.Head, pawn,
+                    GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, true,
+                        _PawnSkinColors.GetSkinColor(_newMelanin)), pawn.def.uiIcon,
+                    _PawnSkinColors.GetSkinColor(_newMelanin));
 
             }
         }
@@ -556,7 +561,7 @@ namespace FaceStyling
             GUI.DrawTexture(new Rect(labelRect.xMin - 3f, labelRect.yMin, labelRect.width + 6f, labelRect.height), _nameBackground);
             Widgets.Label(labelRect, nameStringShort);
             float width = _previewSize / (_PawnSkinColors._SkinColors.Length) - 10f;
-            float spacing = 10f;
+ //           float spacing = 10f;
             Rect setMelanin = new Rect(0f, melaninRect.y, width, melaninRect.height);
             foreach (var skinColorData in _PawnSkinColors._SkinColors)
             {
@@ -566,9 +571,11 @@ namespace FaceStyling
 
             Widgets.DrawMenuSection(listRect);
 
-            Rect set = new Rect(selectionRect);
-            set.height = 30f;
-            set.width = selectionRect.width / 2 - 10f;
+            Rect set = new Rect(selectionRect)
+            {
+                height = 30f,
+                width = selectionRect.width / 2 - 10f
+            };
 
             //  if (Widgets.ButtonText(set, "SelectFacePreset".Translate(), true, false))
             //  {

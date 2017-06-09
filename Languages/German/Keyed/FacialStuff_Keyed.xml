@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
+  <Settings.UseWrinkles>Benutze Falten</Settings.UseWrinkles>
   <Settings.UseMouth>Benutze Münder</Settings.UseMouth>
   <Settings.Apply>Einstellungen übernehmen</Settings.Apply>
   <FaceStylerTitle>Face Styler</FaceStylerTitle>

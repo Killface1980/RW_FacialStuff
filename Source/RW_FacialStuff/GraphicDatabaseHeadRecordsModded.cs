@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Harmony;
+
 using UnityEngine;
 using Verse;
 
@@ -155,7 +155,7 @@ namespace RW_FacialStuff
                 {
                     if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story.HeadGraphicPath.Remove(0, 22))
                     {
-                        Log.Message("Getting vanilla" + pawn.story.HeadGraphicPath.Remove(0, 22) + ".");
+                //        Log.Message("Getting vanilla " + pawn.story.HeadGraphicPath.Remove(0, 22) + ".");
 
                         return headGraphicRecordVanillaCustom.GetGraphic(color);
                     }
@@ -170,7 +170,7 @@ namespace RW_FacialStuff
             {
                 if (headGraphicRecordModded.graphicPathModded == faceComp.headGraphicIndex)
                 {
-                    Log.Message("Getting modded" + headGraphicRecordModded.graphicPathModded + ".");
+           //         Log.Message("Getting modded " + headGraphicRecordModded.graphicPathModded + ".");
                     return headGraphicRecordModded.GetGraphicBlank(color);
                 }
             }

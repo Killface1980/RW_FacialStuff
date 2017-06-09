@@ -4,7 +4,6 @@ using static RW_FacialStuff.Headhelper;
 namespace RW_FacialStuff
 {
     using System.IO;
-    using System.Linq;
 
     using RW_FacialStuff.Defs;
 
@@ -14,7 +13,6 @@ namespace RW_FacialStuff
 
     public class CompFace : ThingComp
     {
-
         public BeardDef BeardDef;
 
         public BrowDef BrowDef;
@@ -43,19 +41,21 @@ namespace RW_FacialStuff
 
         public WrinkleDef WrinkleDef;
 
-        private Graphic _beardGraphic;
+        private Graphic beardGraphic;
 
-        private Graphic _browGraphic;
+        private Graphic browGraphic;
 
-        private Graphic _eyeGraphic;
+        private Graphic eyeGraphic;
 
-        private Graphic _mouthGraphic;
+        private Graphic mouthGraphic;
 
-        private Texture2D _temptextureback;
+        private Graphic wrinkleGraphic;
 
-        private Texture2D _temptexturefront;
+        private Texture2D temptexturefront;
 
-        private Texture2D _temptextureside;
+        private Texture2D temptextureside;
+
+        private Texture2D temptextureback;
 
         private Texture2D finalHeadFront;
         private Texture2D finalHeadSide;
@@ -63,20 +63,17 @@ namespace RW_FacialStuff
         private Texture2D disHeadFront;
         private Texture2D disHeadSide;
         private Texture2D disHeadBack;
-        private Graphic _wrinkleGraphic;
 
         private Graphic_Multi headGraphicVanilla;
         private Graphic_Multi dissicatedHeadGraphicVanilla;
 
-        private bool reInit;
 
         public void DefineFace()
         {
 
             Pawn pawn = this.parent as Pawn;
 
-            if (pawn == null)
-                return;
+            if (pawn == null) return;
 
             this.EyeDef = PawnFaceChooser.RandomEyeDefFor(pawn, pawn.Faction.def);
 
@@ -129,9 +126,9 @@ namespace RW_FacialStuff
             bool oldAge = pawn.ageTracker.AgeBiologicalYearsFloat >= 50;
             Color hairColor = pawn.story.hairColor;
 
-            this._temptexturefront = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-            this._temptextureside = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-            this._temptextureback = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+            this.temptexturefront = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+            this.temptextureside = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+            this.temptextureback = new Texture2D(1, 1, TextureFormat.ARGB32, false);
 
             Texture2D canvasHeadFront = new Texture2D(128, 128);
             Texture2D canvasHeadSide = new Texture2D(128, 128);
@@ -168,75 +165,84 @@ namespace RW_FacialStuff
             Color darken = new Color(0.3f, 0.3f, 0.3f, 1f);
             MergeFaceParts(
                 pawn,
-                this._browGraphic,
+                this.browGraphic,
                 hairColor * darken,
                 ref canvasHeadFront,
-                ref canvasHeadSide, ref _temptexturefront, ref _temptextureside);
+                ref canvasHeadSide,
+                ref this.temptexturefront,
+                ref this.temptextureside);
 
-            MergeFaceParts(pawn, this._eyeGraphic, Color.black, ref canvasHeadFront, ref canvasHeadSide, ref _temptexturefront, ref _temptextureside);
+            MergeFaceParts(
+                pawn,
+                this.eyeGraphic,
+                Color.black,
+                ref canvasHeadFront,
+                ref canvasHeadSide,
+                ref this.temptexturefront,
+                ref this.temptextureside);
 
             if (pawn.gender == Gender.Male)
             {
-                if (oldAge)
+                if (FS_Settings.UseWrinkles && oldAge)
                 {
-                    _temptexturefront = MakeReadable(this._wrinkleGraphic.MatFront.mainTexture as Texture2D);
-                    _temptextureside = MakeReadable(this._wrinkleGraphic.MatSide.mainTexture as Texture2D);
+                    this.temptexturefront = MakeReadable(this.wrinkleGraphic.MatFront.mainTexture as Texture2D);
+                    this.temptextureside = MakeReadable(this.wrinkleGraphic.MatSide.mainTexture as Texture2D);
 
-                    MakeOld(pawn, this._temptexturefront, ref canvasHeadFront);
-                    MakeOld(pawn, this._temptextureside, ref canvasHeadSide);
+                    MakeOld(pawn, this.temptexturefront, ref canvasHeadFront);
+                    MakeOld(pawn, this.temptextureside, ref canvasHeadSide);
                 }
 
                 if (FS_Settings.UseMouth && (this.BeardDef.drawMouth && this.drawMouth))
                 {
-                    MergeFaceParts(pawn, this._mouthGraphic, Color.black, ref canvasHeadFront, ref canvasHeadSide, ref _temptexturefront, ref _temptextureside);
+                    MergeFaceParts(pawn, this.mouthGraphic, Color.black, ref canvasHeadFront, ref canvasHeadSide, ref this.temptexturefront, ref this.temptextureside);
                 }
 
                 if (!BeardDef.defName.Equals("Shaved"))
                 {
                     MergeFaceParts(
                         pawn,
-                        this._beardGraphic,
+                        this.beardGraphic,
                         Color.white,
                         ref canvasHeadFront,
-                        ref canvasHeadSide, ref _temptexturefront, ref _temptextureside,
+                        ref canvasHeadSide, ref this.temptexturefront, ref this.temptextureside,
                         true);
                 }
             }
 
             if (pawn.gender == Gender.Female)
             {
-                if (oldAge)
+                if (FS_Settings.UseWrinkles && oldAge)
                 {
-                    _temptexturefront = MakeReadable(this._wrinkleGraphic.MatFront.mainTexture as Texture2D);
-                    _temptextureside = MakeReadable(this._wrinkleGraphic.MatSide.mainTexture as Texture2D);
+                    this.temptexturefront = MakeReadable(this.wrinkleGraphic.MatFront.mainTexture as Texture2D);
+                    this.temptextureside = MakeReadable(this.wrinkleGraphic.MatSide.mainTexture as Texture2D);
 
-                    MakeOld(pawn, this._temptexturefront, ref canvasHeadFront);
-                    MakeOld(pawn, this._temptextureside, ref canvasHeadSide);
+                    MakeOld(pawn, this.temptexturefront, ref canvasHeadFront);
+                    MakeOld(pawn, this.temptextureside, ref canvasHeadSide);
                 }
 
                 if (FS_Settings.UseMouth && this.drawMouth)
                 {
-                    MergeFaceParts(pawn, this._mouthGraphic, Color.black, ref canvasHeadFront, ref canvasHeadSide, ref _temptexturefront, ref _temptextureside);
+                    MergeFaceParts(pawn, this.mouthGraphic, Color.black, ref canvasHeadFront, ref canvasHeadSide, ref this.temptexturefront, ref this.temptextureside);
                 }
             }
 
-            _temptexturefront = MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D);
-            _temptextureside = MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D);
-            _temptextureback = MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D);
+            this.temptexturefront = MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D);
+            this.temptextureside = MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D);
+            this.temptextureback = MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D);
 
 
             if (pawn.story.crownType == CrownType.Narrow)
             {
-                ScaleTexture(_temptexturefront,
-                    out this._temptexturefront,
+                ScaleTexture(this.temptexturefront,
+                    out this.temptexturefront,
                     112,
                     128);
-                ScaleTexture(_temptextureside,
-                    out this._temptextureside,
+                ScaleTexture(this.temptextureside,
+                    out this.temptextureside,
                     112,
                     128);
-                ScaleTexture(_temptextureback,
-                    out this._temptextureback,
+                ScaleTexture(this.temptextureback,
+                    out this.temptextureback,
                     112,
                     128);
             }
@@ -245,25 +251,25 @@ namespace RW_FacialStuff
             // MergeColor(ref canvasHeadBack, pawn.story.SkinColor);
             if (pawn.story.crownType == CrownType.Narrow)
             {
-                MergeHeadWithHair(hairColor, this._temptexturefront,
+                MergeHeadWithHair(hairColor, this.temptexturefront,
                     MaskTextures.MaskTex_Narrow_FrontBack,
                     ref canvasHeadFront);
-                MergeHeadWithHair(hairColor, this._temptextureside,
+                MergeHeadWithHair(hairColor, this.temptextureside,
                     MaskTextures.MaskTex_Narrow_Side,
                     ref canvasHeadSide);
-                MergeHeadWithHair(hairColor, this._temptextureback,
+                MergeHeadWithHair(hairColor, this.temptextureback,
                     MaskTextures.MaskTex_Narrow_FrontBack,
                     ref canvasHeadBack);
             }
             else
             {
-                MergeHeadWithHair(hairColor, this._temptexturefront,
+                MergeHeadWithHair(hairColor, this.temptexturefront,
                     MaskTextures.MaskTex_Average_FrontBack,
                     ref canvasHeadFront);
-                MergeHeadWithHair(hairColor, this._temptextureside,
+                MergeHeadWithHair(hairColor, this.temptextureside,
                     MaskTextures.MaskTex_Average_Side,
                     ref canvasHeadSide);
-                MergeHeadWithHair(hairColor, this._temptextureback,
+                MergeHeadWithHair(hairColor, this.temptextureback,
                     MaskTextures.MaskTex_Average_FrontBack,
                     ref canvasHeadBack);
             }
@@ -353,9 +359,9 @@ namespace RW_FacialStuff
             this.DissicatedHeadGraphic.MatSide.mainTexture = disHeadSide;
             this.DissicatedHeadGraphic.MatBack.mainTexture = disHeadBack;
 
-            Object.DestroyImmediate(this._temptexturefront, true);
-            Object.DestroyImmediate(this._temptextureside, true);
-            Object.DestroyImmediate(this._temptextureback, true);
+            Object.DestroyImmediate(this.temptexturefront, true);
+            Object.DestroyImmediate(this.temptextureside, true);
+            Object.DestroyImmediate(this.temptextureback, true);
 
             Object.DestroyImmediate(canvasHeadFront, true);
             Object.DestroyImmediate(canvasHeadSide, true);
@@ -409,12 +415,12 @@ namespace RW_FacialStuff
 
             if (this.type == "Normal")
             {
-                this._beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.BeardDef.texPathAverageNormal,
                     ShaderDatabase.Cutout,
                     Vector2.one,
                     Color.white);
-                this._wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.WrinkleDef.texPathAverageNormal,
                     ShaderDatabase.Cutout,
                     Vector2.one,
@@ -423,12 +429,12 @@ namespace RW_FacialStuff
 
             if (this.type == "Pointy")
             {
-                this._beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.BeardDef.texPathAveragePointy,
                     ShaderDatabase.Cutout,
                     Vector2.one,
                     Color.white);
-                this._wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.WrinkleDef.texPathAveragePointy,
                     ShaderDatabase.Cutout,
                     Vector2.one,
@@ -437,29 +443,29 @@ namespace RW_FacialStuff
 
             if (this.type == "Wide")
             {
-                this._beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.BeardDef.texPathAverageWide,
                     ShaderDatabase.Cutout,
                     Vector2.one,
                     Color.white);
-                this._wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.WrinkleDef.texPathAverageWide,
                     ShaderDatabase.Cutout,
                     Vector2.one,
                     Color.black);
             }
 
-            this._eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+            this.eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                 this.EyeDef.texPath,
                 ShaderDatabase.Cutout,
                 Vector2.one,
                 Color.white);
-            this._browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+            this.browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                 this.BrowDef.texPath,
                 ShaderDatabase.Cutout,
                 Vector2.one,
                 Color.white);
-            this._mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+            this.mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                 this.MouthDef.texPath,
                 ShaderDatabase.Cutout,
                 Vector2.one,

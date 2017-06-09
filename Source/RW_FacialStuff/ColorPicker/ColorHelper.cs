@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace FaceStyling.ColorPicker
 {
-
     public class ColorHelper
     {
 

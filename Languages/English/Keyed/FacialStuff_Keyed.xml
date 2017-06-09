@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
+  <Settings.UseWrinkles>Add wrinkles to colonists</Settings.UseWrinkles>
   <Settings.UseMouth>Add mouths to colonists</Settings.UseMouth>
   <Settings.Apply>Apply settings</Settings.Apply>
   <FaceStylerTitle>Face Styler</FaceStylerTitle>

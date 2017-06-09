@@ -28,6 +28,9 @@ namespace RW_FacialStuff
         {
             BeginArea(inRect);
             BeginVertical();
+            FS_Settings.UseWrinkles = Toggle(FS_Settings.UseWrinkles, "Settings.UseWrinkles".Translate());
+            EndVertical();
+            BeginVertical();
             FS_Settings.UseMouth = Toggle(FS_Settings.UseMouth, "Settings.UseMouth".Translate());
             EndVertical();
             BeginVertical();
@@ -59,11 +62,14 @@ namespace RW_FacialStuff
     }
     public class FS_Settings : ModSettings
     {
-        public static bool UseMouth;
+        public static bool UseMouth  = false;
+
+        public static bool UseWrinkles = true;
 
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref UseWrinkles, "UseWrinkles", false, false);
             Scribe_Values.Look(ref UseMouth, "UseMouth", false, false);
         }
     }

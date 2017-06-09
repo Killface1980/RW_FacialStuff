@@ -51,9 +51,8 @@ namespace FaceStyling
                     {
                         myPawn.jobs.jobQueue.EnqueueFirst(FaceStyleChanger);
                         myPawn.jobs.StopAll();
-                        
                     }
-                    
+
 
                 };
 

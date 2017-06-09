@@ -3,9 +3,6 @@ using Verse;
 
 namespace RW_FacialStuff
 {
-    using System;
-    using System.Collections.Generic;
-
     using Object = UnityEngine.Object;
 
     [StaticConstructorOnStartup]
@@ -191,21 +188,6 @@ namespace RW_FacialStuff
 
         public static Texture2D MakeReadable(Texture2D texture)
         {
-            //   string x = texture.name;
-            //   try
-            //   {
-            //       if (TexDict.ContainsKey(x))
-            //       {
-            //           if (TexDict.TryGetValue(x, out myTexture2D))
-            //           {
-            //               return;
-            //           }
-            //       }
-            //   }
-            //   catch (ArgumentNullException argumentNullException)
-            //   {
-            //   }
-
             // Create a temporary RenderTexture of the same size as the texture
             RenderTexture tmp = RenderTexture.GetTemporary(
                                 texture.width,
@@ -235,13 +217,6 @@ namespace RW_FacialStuff
             return myTexture2D;
             // "myTexture2D" now has the same pixels from "texture" and it's readable.
 
-            //  try
-            //  {
-            //      TexDict.Add(x, myTexture2D);
-            //  }
-            //  catch (ArgumentNullException argumentNullException)
-            //  {
-            //  }
         }
 
         public static void ScaleTexture(Texture2D sourceTex, out Texture2D destTex, int targetWidth, int targetHeight)
