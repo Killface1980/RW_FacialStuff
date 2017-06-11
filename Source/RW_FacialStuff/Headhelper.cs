@@ -3,6 +3,8 @@ using Verse;
 
 namespace RW_FacialStuff
 {
+    using RW_FacialStuff.Defs;
+
     using Object = UnityEngine.Object;
 
     [StaticConstructorOnStartup]
@@ -12,178 +14,6 @@ namespace RW_FacialStuff
 
         public static readonly Color skinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
-        //    public static Dictionary<string, Texture2D> TexDict = new Dictionary<string, Texture2D>();
-        // public static Dictionary<string, Texture2D> ScaledTexDict = new Dictionary<string, Texture2D>();
-
-        public static void PaintHeadWithColor(ref Texture2D finalHeadFront, Color color)
-        {
-            for (int x = 0; x < 128; x++)
-            {
-
-                for (int y = 0; y < 128; y++)
-                {
-                    Color headColor = finalHeadFront.GetPixel(x, y);
-                    headColor *= color;
-
-                    finalHeadFront.SetPixel(x, y, headColor);
-                }
-            }
-
-            finalHeadFront.Apply();
-        }
-
-        public static void MergeFaceParts(Pawn pawn, Graphic currentGraphic, Color color, ref Texture2D canvasHeadFront, ref Texture2D canvasHeadSide, ref Texture2D _temptexturefront, ref Texture2D _temptextureside, bool isBeard = false)
-        {
-            if (pawn.story.crownType == CrownType.Narrow)
-            {
-                ScaleTexture(currentGraphic.MatFront.mainTexture as Texture2D, out _temptexturefront, 102, 128);
-                ScaleTexture(currentGraphic.MatSide.mainTexture as Texture2D, out _temptextureside, 102, 128);
-            }
-            else
-            {
-                _temptexturefront = MakeReadable(currentGraphic.MatFront.mainTexture as Texture2D);
-                _temptextureside = MakeReadable(currentGraphic.MatSide.mainTexture as Texture2D);
-            }
-
-            if (isBeard)
-            {
-                AddFacialHair(pawn, _temptexturefront, ref canvasHeadFront);
-                AddFacialHair(pawn, _temptextureside, ref canvasHeadSide);
-            }
-            else
-            {
-                MergeTwoGraphics(_temptexturefront, color, ref canvasHeadFront);
-                MergeTwoGraphics(_temptextureside, color, ref canvasHeadSide);
-            }
-        }
-
-
-        public static void AddFacialHair(Pawn pawn, Texture2D beardTex, ref Texture2D finalTexture)
-        {
-            Texture2D tempBeardTex = MakeReadable(beardTex);
-            Color color = new Color(0.95f, 0.95f, 0.95f, 1f);
-
-            // offset neede if beards are stretched => narrow
-            int offset = (finalTexture.width - tempBeardTex.width) / 2;
-            int startX = 0;
-            int startY = finalTexture.height - tempBeardTex.height;
-
-            for (int x = startX; x < finalTexture.width; x++)
-            {
-
-                for (int y = startY; y < finalTexture.height; y++)
-                {
-                    Color headColor = finalTexture.GetPixel(x, y);
-
-                    Color beardColor = tempBeardTex.GetPixel(x - startX - offset, y - startY);
-
-                    //             beardColor *= pawn.story.hairColor;
-
-                    Color final_color = Color.Lerp(headColor, beardColor, beardColor.a / 1f);
-
-                    final_color.a = headColor.a + beardColor.a;
-
-                    finalTexture.SetPixel(x, y, final_color);
-                }
-            }
-
-            Object.DestroyImmediate(tempBeardTex);
-
-            finalTexture.Apply();
-        }
-
-        public static void MergeTwoGraphics(Texture2D topLayerTex, Color multiplyColor, ref Texture2D finalTexture)
-        {
-            // offset neede if beards are stretched => narrow
-
-            int offset = (finalTexture.width - topLayerTex.width) / 2;
-
-            for (int x = 0; x < 128; x++)
-            {
-
-                for (int y = 0; y < 128; y++)
-                {
-                    Color topColor;
-
-                    topColor = topLayerTex.GetPixel(x - offset, y);
-                    Color headColor = finalTexture.GetPixel(x, y);
-                    //          eyeColor = topLayerTex.GetPixel(x, y);
-                    topColor *= multiplyColor;
-                    //      eyeColor *= eyeColorRandom;
-
-                    Color finalColor = Color.Lerp(headColor, topColor, topColor.a / 1f);
-
-                    finalColor.a = headColor.a + topColor.a;
-
-                    finalTexture.SetPixel(x, y, finalColor);
-                }
-            }
-
-            finalTexture.Apply();
-        }
-
-        public static void MergeHeadWithHair(Color mutiplyHairColor, Texture2D top_layer, Texture2D maskTex, ref Texture2D finalTexture)
-        {
-            Texture2D tempMaskTex = MakeReadable(maskTex);
-
-            int offset = (finalTexture.width - top_layer.width) / 2;
-
-            int startX = 0;
-            int startY = finalTexture.height - top_layer.height;
-
-
-            for (int x = startX; x < top_layer.width + offset; x++)
-            {
-
-                for (int y = startY; y < finalTexture.height; y++)
-                {
-
-                    Color headColor = finalTexture.GetPixel(x, y);
-                    Color maskColor = tempMaskTex.GetPixel(x, y);
-
-                    Color hairColor = top_layer.GetPixel(x - startX - offset, y - startY);
-
-                    hairColor *= maskColor;
-                    hairColor *= mutiplyHairColor;
-
-                    Color final_color = Color.Lerp(headColor, hairColor, hairColor.a);
-
-                    //if (headColor.a > 0 || mutiplyHairColor.a > 0)
-                    //    final_color.a = headColor.a + mutiplyHairColor.a;
-
-                    finalTexture.SetPixel(x, y, final_color);
-                }
-            }
-            finalTexture.Apply();
-            Object.DestroyImmediate(tempMaskTex);
-        }
-
-        public static void MakeOld(Pawn pawn, Texture2D wrinkleTex, ref Texture2D finalhead)
-        {
-            Texture2D tempWrinkleTex = MakeReadable(wrinkleTex);
-            int startX = 0;
-            int startY = finalhead.height - tempWrinkleTex.height;
-
-            for (int x = startX; x < finalhead.width; x++)
-            {
-                for (int y = startY; y < finalhead.height; y++)
-                {
-                    Color headColor = finalhead.GetPixel(x, y);
-                    Color wrinkleColor = tempWrinkleTex.GetPixel(x - startX, y - startY);
-
-                    Color final_color = headColor;
-
-                    final_color = Color.Lerp(headColor, wrinkleColor, (wrinkleColor.a / 0.6f) * Mathf.InverseLerp(50, 200, pawn.ageTracker.AgeBiologicalYearsFloat));
-
-                    final_color.a = headColor.a + wrinkleColor.a;
-
-                    finalhead.SetPixel(x, y, final_color);
-                }
-            }
-            Object.DestroyImmediate(tempWrinkleTex);
-
-            finalhead.Apply();
-        }
 
 
         public static Texture2D MakeReadable(Texture2D texture)
@@ -271,6 +101,5 @@ namespace RW_FacialStuff
             // {
             // }
         }
-
     }
 }

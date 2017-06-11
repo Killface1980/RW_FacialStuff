@@ -70,7 +70,9 @@ namespace RW_FacialStuff
         public static Texture2D BlankTexture()
         {
             if (blankExists)
+            {
                 return blankTexture;
+            }
 
             blankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
             int startX = 0;
@@ -99,7 +101,9 @@ namespace RW_FacialStuff
             Texture2D[] array = new Texture2D[3];
 
             if (ContentFinder<Texture2D>.Get(req.path + "_front", false))
+            {
                 array[2] = ContentFinder<Texture2D>.Get(req.path + "_front");
+            }
 
             //  array[2] = LoadTexture(req.path + "_front");
             //  if (array[2] == null)
@@ -109,7 +113,9 @@ namespace RW_FacialStuff
             //  }
 
             if (ContentFinder<Texture2D>.Get(req.path + "_side", false))
+            {
                 array[1] = ContentFinder<Texture2D>.Get(req.path + "_side");
+            }
             //if (array[1] == null)
             //{
 
@@ -123,9 +129,13 @@ namespace RW_FacialStuff
             //              array[0] = BlankTexture();
 
             if (ContentFinder<Texture2D>.Get(req.path + "_back", false))
+            {
                 array[0] = ContentFinder<Texture2D>.Get(req.path + "_back");
+            }
             else
+            {
                 array[0] = BlankTexture();
+            }
 
 
 

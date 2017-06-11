@@ -37,7 +37,9 @@ namespace RW_FacialStuff
             }
 
             else
+            {
                 chosenBeard = source.RandomElementByWeight(beard => BeardChoiceLikelihoodFor(beard, pawn));
+            }
 
             return chosenBeard;
         }

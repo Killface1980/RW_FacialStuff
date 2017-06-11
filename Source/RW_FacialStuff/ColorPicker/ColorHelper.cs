@@ -17,9 +17,15 @@ namespace FaceStyling.ColorPicker
         public static Color HSVtoRGB(float H, float S, float V, float A = 1f)
         {
             if (S == 0f)
+            {
                 return new Color(V, V, V, A);
+            }
+
             if (V == 0f)
+            {
                 return new Color(0f, 0f, 0f, A);
+            }
+
             Color col = Color.black;
             float Hval = H * 6f;
             int sel = Mathf.FloorToInt(Hval);
@@ -179,8 +185,13 @@ namespace FaceStyling.ColorPicker
                     clr.g = int.Parse(str.Substring(2, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
                     clr.b = int.Parse(str.Substring(4, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
                     if (str.Length == 8)
+                    {
                         clr.a = int.Parse(str.Substring(6, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
-                    else clr.a = 1.0f;
+                    }
+                    else
+                    {
+                        clr.a = 1.0f;
+                    }
                 }
                 catch
                 {

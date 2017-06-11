@@ -487,10 +487,14 @@ namespace FaceStyling.ColorPicker
             _tempPreviewBG = CreatePreviewBG(tempColor);
 
             if (_preview)
+            {
                 _hexOut = _hexIn = ColorHelper.RGBtoHex(tempColor);
+            }
 
             if (_autoApply)
+            {
                 Apply();
+            }
         }
 
         public void Notify_RGBUpdated()
@@ -503,23 +507,31 @@ namespace FaceStyling.ColorPicker
             CreateColorPickerBG();
             CreateHuePickerBG();
             if (_preview)
+            {
                 CreateAlphaPickerBG();
+            }
 
             // set slider positions
             _huePosition = (1f - _H) / UnitsPerPixel;
             _pickerPosition.x = _S / UnitsPerPixel;
             _pickerPosition.y = (1f - _V) / UnitsPerPixel;
             if (_preview)
+            {
                 _alphaPosition = (1f - _A) / UnitsPerPixel;
+            }
 
             // set the color block and update hex fields
             _tempPreviewBG = CreatePreviewBG(tempColor);
             if (_preview)
+            {
                 _hexOut = _hexIn = ColorHelper.RGBtoHex(tempColor);
+            }
 
             // call callback for auto-apply
             if (_autoApply)
+            {
                 Apply();
+            }
         }
 
         public void PickerAction(Vector2 pos)
@@ -613,10 +625,15 @@ namespace FaceStyling.ColorPicker
             // initialize color arrays for blocks
             Color[] bgA = new Color[alphaBGBlockSize * alphaBGBlockSize];
             for (int i = 0; i < bgA.Length; i++)
+            {
                 bgA[i] = _alphaBGColorA;
+            }
+
             Color[] bgB = new Color[alphaBGBlockSize * alphaBGBlockSize];
             for (int i = 0; i < bgB.Length; i++)
+            {
                 bgB[i] = _alphaBGColorB;
+            }
 
             // set blocks of pixels at a time
             // this also sets border blocks, meaning it'll try to set out of bounds pixels.
@@ -639,7 +656,9 @@ namespace FaceStyling.ColorPicker
         private void CreateAlphaPickerBG()
         {
             if (_alphaPickerBG == null)
+            {
                 _alphaPickerBG = new Texture2D(1, pickerSize);
+            }
 
             int h = pickerSize;
             float hu = 1f / h;
@@ -655,7 +674,9 @@ namespace FaceStyling.ColorPicker
         private void CreateColorPickerBG()
         {
             if (_colorPickerBG == null)
+            {
                 _colorPickerBG = new Texture2D(pickerSize, pickerSize);
+            }
 
             float S, V;
             int w = pickerSize;
@@ -679,7 +700,9 @@ namespace FaceStyling.ColorPicker
         private void CreateHuePickerBG()
         {
             if (_huePickerBG == null)
+            {
                 _huePickerBG = new Texture2D(1, pickerSize);
+            }
 
             int h = pickerSize;
             float hu = UnitsPerPixel;
@@ -742,7 +765,9 @@ namespace FaceStyling.ColorPicker
 
                 // pop elements from the front until the list is short enough (should really only be once).
                 while (_presets.Count > _size)
+                {
                     _presets.RemoveAt(0);
+                }
             }
 
             // draw presets and interactivity.

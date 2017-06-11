@@ -29,10 +29,14 @@ namespace RW_FacialStuff.NoCCL
         private static void Inject()
         {
             FS_SpecialInjector injector = new FS_SpecialInjector();
-            if (injector.Inject()) Log.Message(AssemblyName + " injected.");
-            else Log.Error(AssemblyName + " failed to get injected properly.");
-
-
+            if (injector.Inject())
+            {
+                Log.Message(AssemblyName + " injected.");
+            }
+            else
+            {
+                Log.Error(AssemblyName + " failed to get injected properly.");
+            }
         }
 #endif
     }

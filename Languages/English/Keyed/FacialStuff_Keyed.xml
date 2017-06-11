@@ -2,7 +2,7 @@
 <LanguageData>
   <Settings.UseWrinkles>Add wrinkles to colonists</Settings.UseWrinkles>
   <Settings.UseMouth>Add mouths to colonists</Settings.UseMouth>
-  <Settings.Apply>Apply settings</Settings.Apply>
+  <Settings.Apply>Save and apply settings. Beware, consumes additional RAM. Please save your game before you press.</Settings.Apply>
   <FaceStylerTitle>Face Styler</FaceStylerTitle>
   <FacialStuffColorChangerButtonAccept>Accept new style</FacialStuffColorChangerButtonAccept>
   <FSStylizeFace>Edit colonists's appearance</FSStylizeFace>

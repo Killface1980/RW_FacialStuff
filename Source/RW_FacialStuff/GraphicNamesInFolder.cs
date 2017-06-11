@@ -17,7 +17,10 @@ namespace RW_FacialStuff
                 {
                     List<string> list2 = enumerator.Current?.name?.Split("_".ToCharArray()).ToList();
                     if (list2 == null)
+                    {
                         break;
+                    }
+
                     if (list2.Count > 4)
                     {
                         Log.Error("Cannot load assets with >3 pieces.");

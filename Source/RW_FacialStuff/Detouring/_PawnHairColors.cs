@@ -36,13 +36,24 @@ namespace RW_FacialStuff.Detouring
             {
                 float rand = Rand.Value;
                 if (rand < 0.2f)
+                {
                     return new Color(HairBlueSteel.r * Rand.Range(0.25f, 1f), HairBlueSteel.g * Rand.Range(0.25f, 1f), HairBlueSteel.b * Rand.Range(0.25f, 1f), 255);
+                }
+
                 if (rand < 0.4f)
+                {
                     return new Color(HairGreenGrape.r * Rand.Range(0.25f, 1f), HairGreenGrape.g * Rand.Range(0.25f, 1f), HairGreenGrape.b * Rand.Range(0.25f, 1f), 255);
+                }
+
                 if (rand < 0.6f)
+                {
                     return new Color(HairMysticTurquois.r * Rand.Range(0.25f, 1f), HairMysticTurquois.g * Rand.Range(0.25f, 1f), HairMysticTurquois.b * Rand.Range(0.25f, 1f), 255);
+                }
+
                 if (rand < 0.8f)
+                {
                     return new Color(HairPurplePassion.r * Rand.Range(0.25f, 1f), HairPurplePassion.g * Rand.Range(0.25f, 1f), HairPurplePassion.b * Rand.Range(0.25f, 1f), 255);
+                }
 
                 return new Color(HairUltraViolet.r * Rand.Range(0.25f, 1f), HairUltraViolet.g * Rand.Range(0.25f, 1f), HairUltraViolet.b * Rand.Range(0.25f, 1f), 255);
             }          //if (Rand.Value < 0.02f)
@@ -88,7 +99,9 @@ namespace RW_FacialStuff.Detouring
                 }
                 // pure blond / albino
                 else if (value2 < 0.85f)
+                {
                     tempColor = Color.Lerp(HairPlatinum, HairYellowBlonde, Rand.Range(0f, 0.5f));
+                }
 
                 // red hair
                 else
@@ -114,7 +127,9 @@ namespace RW_FacialStuff.Detouring
                 }
 
                 if (PawnSkinColors.IsDarkSkin(skinColor))
+                {
                     greyness *= Rand.Range(0.4f, 0.8f);
+                }
             }
 
             return Color.Lerp(tempColor, new Color32(245, 245, 245, 255), greyness);

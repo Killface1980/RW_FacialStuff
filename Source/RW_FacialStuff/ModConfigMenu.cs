@@ -9,6 +9,12 @@ namespace RW_FacialStuff
     public class FacialStuff_ModBase : ModBase
     {
         public override string ModIdentifier { get { return "FacialStuff"; } }
+
+        public override void SettingsChanged()
+        {
+
+            base.SettingsChanged();
+        }
     }
 
     public class FS_Mod : Mod
@@ -16,13 +22,24 @@ namespace RW_FacialStuff
         #region Fields
         public override string SettingsCategory() => "Facial Stuff";
 
+        private ModSettings modSettings;
+
         #endregion
 
         public FS_Mod(ModContentPack content) : base(content)
         {
+            this.modSettings = this.GetSettings<FS_Settings>();
         }
 
         #region Methods
+
+        public override void WriteSettings()
+        {
+            if (this.modSettings != null)
+            {
+                this.modSettings.Write();
+            }
+        }
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
@@ -41,19 +58,16 @@ namespace RW_FacialStuff
                     if (pawn.RaceProps.Humanlike)
                     {
                         CompFace faceComp = pawn.TryGetComp<CompFace>();
-                        if (faceComp != null && faceComp.drawMouth && faceComp.BeardDef.drawMouth)
+                        if (faceComp != null)
                         {
+
                             faceComp.sessionOptimized = false;
                             pawn.Drawer.renderer.graphics.ResolveAllGraphics();
-
-                            // force colonist bar to update
-                            if (pawn.Faction == Faction.OfPlayer)
-                                PortraitsCache.SetDirty(pawn);
+                            this.WriteSettings();
                         }
 
                     }
                 }
-
             }
             EndVertical();
             EndArea();
@@ -62,7 +76,7 @@ namespace RW_FacialStuff
     }
     public class FS_Settings : ModSettings
     {
-        public static bool UseMouth  = false;
+        public static bool UseMouth = false;
 
         public static bool UseWrinkles = true;
 

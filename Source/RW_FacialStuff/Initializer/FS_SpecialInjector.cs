@@ -45,7 +45,10 @@ namespace RW_FacialStuff.Initializer
                                 return false;
                             }
                             {                                
-                            if (!Detours.TryDetourFromTo(sourceMethod, targetMethod)) return false;
+                            if (!Detours.TryDetourFromTo(sourceMethod, targetMethod))
+                                {
+                                    return false;
+                                }
                             }
                         }
                     }

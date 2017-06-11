@@ -23,7 +23,9 @@ namespace RW_FacialStuff.Detouring
             CompFace faceComp = __instance.pawn.TryGetComp<CompFace>();
 
             if (faceComp == null)
+            {
                 return;
+            }
 
             GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
 
@@ -85,19 +87,22 @@ namespace RW_FacialStuff.Detouring
 
                 Color rotColor = __instance.pawn.story.SkinColor * Headhelper.skinRottingMultiplyColor;
 
-                faceComp.SetHeadType();
-                faceComp.InitializeGraphics();
-
-                if (faceComp.GenerateHeadGraphics(__instance.hairGraphic))
+                if (faceComp.SetHeadType())
                 {
-                    __instance.headGraphic = faceComp.HeadGraphic;
-                    __instance.desiccatedHeadGraphic = faceComp.DissicatedHeadGraphic;
-                    __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
-                    __instance.rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
-                        __instance.pawn.story.bodyType, ShaderDatabase.CutoutSkin,
-                        rotColor);
+                    faceComp.InitializeGraphics();
 
-                    PortraitsCache.Clear();
+                    if (faceComp.GenerateHeadGraphics(__instance.hairGraphic))
+                    {
+                        __instance.headGraphic = faceComp.HeadGraphic;
+                        __instance.desiccatedHeadGraphic = faceComp.DissicatedHeadGraphic;
+                        __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
+                        __instance.rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
+                            __instance.pawn.story.bodyType, ShaderDatabase.CutoutSkin,
+                            rotColor);
+
+                        PortraitsCache.Clear();
+                        //PortraitsCache.SetDirty(__instance.pawn);
+                    }
 
                 }
 

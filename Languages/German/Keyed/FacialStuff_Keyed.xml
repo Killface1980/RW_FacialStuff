@@ -2,7 +2,7 @@
 <LanguageData>
   <Settings.UseWrinkles>Benutze Falten</Settings.UseWrinkles>
   <Settings.UseMouth>Benutze Münder</Settings.UseMouth>
-  <Settings.Apply>Einstellungen übernehmen</Settings.Apply>
+  <Settings.Apply>Einstellungen speichern und übernehmen. Verbraucht zusätzlichen RAM. Bitte Spielstand vorher speichern.</Settings.Apply>
   <FaceStylerTitle>Face Styler</FaceStylerTitle>
   <FacialStuffColorChangerButtonAccept>Check den neuen Style aus</FacialStuffColorChangerButtonAccept>
   <FSStylizeFace>Bearbeite Aussehen des Kolonisten</FSStylizeFace>
