@@ -178,7 +178,7 @@ namespace RW_FacialStuff
             // _textures[1]
             // }
             // _textures.Add(eyeGraphic.MatFront.mainTexture as Texture2D);
-            Color darken = new Color(0.3f, 0.3f, 0.3f, 1f);
+            Color darken = new Color(0.15f, 0.15f, 0.15f, 1f);
             this.MergeFaceParts(
                 this.browGraphic,
                 this.pawn.story.hairColor * darken,
@@ -678,7 +678,7 @@ namespace RW_FacialStuff
                     Color canvasColor = canvas.GetPixel(x, y);
 
                     wrinkleColor *= col;
-                    wrinkleColor.a *= Mathf.InverseLerp(50f, 100f, pawn.ageTracker.AgeBiologicalYearsFloat) * 0.8f;
+                    wrinkleColor.a *= Mathf.InverseLerp(50f, 100f, pawn.ageTracker.AgeBiologicalYearsFloat) ;
 
                     Color final_color = Color.clear;
                     if (canvasColor.a > 0f)
