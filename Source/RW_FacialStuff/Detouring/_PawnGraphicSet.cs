@@ -146,7 +146,7 @@ namespace RW_FacialStuff.Detouring
 
             }
 
-            Object.DestroyImmediate(finalTexture);
+            Object.Destroy(finalTexture);
         }
     }
 }

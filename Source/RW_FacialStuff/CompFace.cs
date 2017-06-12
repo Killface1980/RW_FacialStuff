@@ -58,11 +58,7 @@ namespace RW_FacialStuff
 
         private Graphic wrinkleGraphic;
 
-        private Texture2D temptexturefront;
 
-        private Texture2D temptextureside;
-
-        private Texture2D temptextureback;
 
         private Texture2D finalHeadFront;
         private Texture2D finalHeadSide;
@@ -106,7 +102,7 @@ namespace RW_FacialStuff
 
         public bool SetHeadType()
         {
-             this.pawn = this.parent as Pawn;
+            this.pawn = this.parent as Pawn;
 
             if (this.pawn == null)
             {
@@ -140,19 +136,22 @@ namespace RW_FacialStuff
 
         public bool GenerateHeadGraphics(Graphic hairGraphic)
         {
+
+
             this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
 
-            this.temptexturefront = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-            this.temptextureside = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-            this.temptextureback = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+            var temptexturefront = new Texture2D(128, 128, TextureFormat.ARGB32, false);
+            var temptextureside = new Texture2D(128, 128, TextureFormat.ARGB32, false);
+            var temptextureback = new Texture2D(128, 128, TextureFormat.ARGB32, false);
 
-            Texture2D canvasHeadFront = new Texture2D(128, 128);
-            Texture2D canvasHeadSide = new Texture2D(128, 128);
-            Texture2D canvasHeadBack = new Texture2D(128, 128);
+            Texture2D canvasHeadFront = new Texture2D(128, 128) { wrapMode = TextureWrapMode.Clamp };
+            Texture2D canvasHeadSide = new Texture2D(128, 128) { wrapMode = TextureWrapMode.Clamp };
+            Texture2D canvasHeadBack = new Texture2D(128, 128) { wrapMode = TextureWrapMode.Clamp };
 
             Graphics.CopyTexture(BlankTex, canvasHeadFront);
             Graphics.CopyTexture(BlankTex, canvasHeadSide);
             Graphics.CopyTexture(BlankTex, canvasHeadBack);
+
 
             // if (pawn.story.crownType == CrownType.Narrow)
             // {
@@ -195,11 +194,11 @@ namespace RW_FacialStuff
             {
                 if (FS_Settings.UseWrinkles && this.isOld)
                 {
-                    this.temptexturefront = MakeReadable(this.wrinkleGraphic.MatFront.mainTexture as Texture2D);
-                    this.temptextureside = MakeReadable(this.wrinkleGraphic.MatSide.mainTexture as Texture2D);
+                    temptexturefront = MakeReadable(this.wrinkleGraphic.MatFront.mainTexture as Texture2D);
+                    temptextureside = MakeReadable(this.wrinkleGraphic.MatSide.mainTexture as Texture2D);
 
-                    this.MakeOld(this.temptexturefront, ref canvasHeadFront);
-                    this.MakeOld(this.temptextureside, ref canvasHeadSide);
+                    this.MakeOld(temptexturefront, ref canvasHeadFront);
+                    this.MakeOld(temptextureside, ref canvasHeadSide);
                 }
 
                 if (FS_Settings.UseMouth && (this.BeardDef.drawMouth && this.drawMouth))
@@ -223,11 +222,11 @@ namespace RW_FacialStuff
             {
                 if (FS_Settings.UseWrinkles && this.isOld)
                 {
-                    this.temptexturefront = MakeReadable(this.wrinkleGraphic.MatFront.mainTexture as Texture2D);
-                    this.temptextureside = MakeReadable(this.wrinkleGraphic.MatSide.mainTexture as Texture2D);
+                    temptexturefront = MakeReadable(this.wrinkleGraphic.MatFront.mainTexture as Texture2D);
+                    temptextureside = MakeReadable(this.wrinkleGraphic.MatSide.mainTexture as Texture2D);
 
-                    this.MakeOld(this.temptexturefront, ref canvasHeadFront);
-                    this.MakeOld(this.temptextureside, ref canvasHeadSide);
+                    this.MakeOld(temptexturefront, ref canvasHeadFront);
+                    this.MakeOld(temptextureside, ref canvasHeadSide);
                 }
 
                 if (FS_Settings.UseMouth && this.drawMouth)
@@ -248,25 +247,21 @@ namespace RW_FacialStuff
             this.disHeadBack = MakeReadable(this.dissicatedHeadGraphicVanilla.MatBack.mainTexture as Texture2D);
 
 
-            this.temptexturefront = MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D);
-            this.temptextureside = MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D);
-            this.temptextureback = MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D);
+            temptexturefront = MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D);
+            temptextureside = MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D);
+            temptextureback = MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D);
 
             switch (this.pawn.story.crownType)
             {
                 case CrownType.Narrow:
-                    ScaleTexture(this.temptexturefront,
-                        out this.temptexturefront,
-                        112,
-                        128);
-                    ScaleTexture(this.temptextureside,
-                        out this.temptextureside,
-                        112,
-                        128);
-                    ScaleTexture(this.temptextureback,
-                        out this.temptextureback,
-                        112,
-                        128);
+                    ScaleTexture(temptexturefront, out temptexturefront, 102, 128);
+                    ScaleTexture(temptextureside, out temptextureside, 102, 128);
+                    ScaleTexture(temptextureback, out temptextureback, 102, 128);
+
+                    ScaleTexture(canvasHeadFront, out canvasHeadFront, 102, 128);
+                    ScaleTexture(canvasHeadSide, out canvasHeadSide, 102, 128);
+                    // NO SCALING of the clear back. Causes trouble.
+                    //          ScaleTexture(canvasHeadBack, out canvasHeadBack, 102, 128);
 
                     this.maskTexFrontBack = MaskTextures.MaskTex_Narrow_FrontBack;
                     this.maskTexSide = MaskTextures.MaskTex_Narrow_Side;
@@ -279,21 +274,21 @@ namespace RW_FacialStuff
             }
 
             this.MergeHeadWithHair(
-                this.temptexturefront,
+                temptexturefront,
                 canvasHeadFront,
                 this.maskTexFrontBack,
                 ref this.finalHeadFront,
                 ref this.disHeadFront);
 
             this.MergeHeadWithHair(
-                this.temptextureside,
+                temptextureside,
                 canvasHeadSide,
                 this.maskTexSide,
                 ref this.finalHeadSide,
                 ref this.disHeadSide);
 
             this.MergeHeadWithHair(
-                this.temptextureback,
+                temptextureback,
                 canvasHeadBack,
                 this.maskTexFrontBack,
                 ref this.finalHeadBack,
@@ -345,13 +340,13 @@ namespace RW_FacialStuff
             this.DissicatedHeadGraphic.MatSide.mainTexture = this.disHeadSide;
             this.DissicatedHeadGraphic.MatBack.mainTexture = this.disHeadBack;
 
-            UnityEngine.Object.DestroyImmediate(this.temptexturefront, true);
-            UnityEngine.Object.DestroyImmediate(this.temptextureside, true);
-            UnityEngine.Object.DestroyImmediate(this.temptextureback, true);
+            UnityEngine.Object.Destroy(temptexturefront);
+            UnityEngine.Object.Destroy(temptextureside);
+            UnityEngine.Object.Destroy(temptextureback);
 
-            UnityEngine.Object.DestroyImmediate(canvasHeadFront, true);
-            UnityEngine.Object.DestroyImmediate(canvasHeadSide, true);
-            UnityEngine.Object.DestroyImmediate(canvasHeadBack, true);
+            UnityEngine.Object.Destroy(canvasHeadFront);
+            UnityEngine.Object.Destroy(canvasHeadSide);
+            UnityEngine.Object.Destroy(canvasHeadBack);
 
 
             this.sessionOptimized = true;
@@ -359,6 +354,46 @@ namespace RW_FacialStuff
 
             // moddedHeadGraphics.Add(new KeyValuePair<string, Graphic_Multi>(pawn + color.ToString(), headGraphic));
         }
+
+        public static void ScaleTexture(Texture2D sourceTex, out Texture2D destTex, int targetWidth, int targetHeight)
+        {
+
+            float warpFactorX = 1f;
+            float warpFactorY = 1f;
+            Color[] destPix;
+
+            Texture2D scaleTex = MakeReadable(sourceTex);
+
+            destTex = new Texture2D(targetWidth, targetHeight, TextureFormat.ARGB32, false);
+            destPix = new Color[destTex.width * destTex.height];
+            int y = 0;
+            while (y < destTex.height)
+            {
+                int x = 0;
+                while (x < destTex.width)
+                {
+                    float xFrac = x * 1.0F / (destTex.width - 1);
+                    float yFrac = y * 1.0F / (destTex.height - 1);
+                    float warpXFrac = Mathf.Pow(xFrac, warpFactorX);
+                    float warpYFrac = Mathf.Pow(yFrac, warpFactorY);
+                    destPix[y * destTex.width + x] = scaleTex.GetPixelBilinear(warpXFrac, warpYFrac);
+                    x++;
+                }
+                y++;
+            }
+            destTex.SetPixels(destPix);
+            destTex.Apply();
+            Object.Destroy(scaleTex);
+
+            // try
+            // {
+            //     ScaledTexDict.Add(xx, destTex);
+            // }
+            // catch (ArgumentNullException argumentNullException)
+            // {
+            // }
+        }
+
 
         public void InitializeGraphics()
         {
@@ -371,12 +406,12 @@ namespace RW_FacialStuff
             //// Save RAM 
             // if (this.finalHeadFront != null)
             // {
-            // Object.DestroyImmediate(finalHeadFront, true);
-            // Object.DestroyImmediate(finalHeadSide, true);
-            // Object.DestroyImmediate(finalHeadBack, true);
-            // Object.DestroyImmediate(disHeadFront, true);
-            // Object.DestroyImmediate(disHeadSide, true);
-            // Object.DestroyImmediate(disHeadBack, true);
+            // Object.Destroy(finalHeadFront, true);
+            // Object.Destroy(finalHeadSide, true);
+            // Object.Destroy(finalHeadBack, true);
+            // Object.Destroy(disHeadFront, true);
+            // Object.Destroy(disHeadSide, true);
+            // Object.Destroy(disHeadBack, true);
             // }
 
             // Create the blank canvas texture
@@ -385,7 +420,7 @@ namespace RW_FacialStuff
                 BlankTex = new Texture2D(128, 128);
 
                 // Reset all pixels color to transparent
-                Color32 resetColor = new Color32(255, 255, 255, 0);
+                Color32 resetColor = Color.clear;
                 Color32[] resetColorArray = BlankTex.GetPixels32();
 
                 for (int i = 0; i < resetColorArray.Length; i++)
@@ -464,66 +499,53 @@ namespace RW_FacialStuff
 
         public void AddMouth(Graphic currentGraphic, ref Texture2D canvasHeadFront, ref Texture2D canvasHeadSide)
         {
-            if (this.pawn.story.crownType == CrownType.Narrow)
-            {
-                ScaleTexture(currentGraphic.MatFront.mainTexture as Texture2D, out this.temptexturefront, 102, 128);
-                ScaleTexture(currentGraphic.MatSide.mainTexture as Texture2D, out this.temptextureside, 102, 128);
-            }
-            else
-            {
-                this.temptexturefront = MakeReadable(currentGraphic.MatFront.mainTexture as Texture2D);
-                this.temptextureside = MakeReadable(currentGraphic.MatSide.mainTexture as Texture2D);
-            }
+            var temptexturefront = MakeReadable(currentGraphic.MatFront.mainTexture as Texture2D);
+            var temptextureside = MakeReadable(currentGraphic.MatSide.mainTexture as Texture2D);
 
-            this.MergeMouth(this.temptexturefront, this.pawn.story.SkinColor, ref canvasHeadFront);
-            this.MergeMouth(this.temptextureside, this.pawn.story.SkinColor, ref canvasHeadSide);
+            this.MergeMouth(temptexturefront, this.pawn.story.SkinColor, ref canvasHeadFront);
+            this.MergeMouth(temptextureside, this.pawn.story.SkinColor, ref canvasHeadSide);
 
+            UnityEngine.Object.Destroy(temptexturefront);
+            UnityEngine.Object.Destroy(temptextureside);
         }
 
         public void MergeFaceParts(Graphic currentGraphic, Color color, ref Texture2D canvasHeadFront, ref Texture2D canvasHeadSide, bool isBeard = false, bool stubble = false)
         {
 
-            if (this.pawn.story.crownType == CrownType.Narrow)
-            {
-                ScaleTexture(currentGraphic.MatFront.mainTexture as Texture2D, out this.temptexturefront, 102, 128);
-                ScaleTexture(currentGraphic.MatSide.mainTexture as Texture2D, out this.temptextureside, 102, 128);
-            }
-            else
-            {
-                this.temptexturefront = MakeReadable(currentGraphic.MatFront.mainTexture as Texture2D);
-                this.temptextureside = MakeReadable(currentGraphic.MatSide.mainTexture as Texture2D);
-            }
+            var temptexturefront = MakeReadable(currentGraphic.MatFront.mainTexture as Texture2D);
+            var temptextureside = MakeReadable(currentGraphic.MatSide.mainTexture as Texture2D);
+
+
 
             if (isBeard)
             {
-                this.AddFacialHair(this.temptexturefront, ref canvasHeadFront, stubble);
-                this.AddFacialHair(this.temptextureside, ref canvasHeadSide, stubble);
+                this.AddFacialHair(temptexturefront, ref canvasHeadFront, stubble);
+                this.AddFacialHair(temptextureside, ref canvasHeadSide, stubble);
             }
             else
             {
-                this.MergeTwoGraphics(this.temptexturefront, color, ref canvasHeadFront);
-                this.MergeTwoGraphics(this.temptextureside, color, ref canvasHeadSide);
+                this.MergeTwoGraphics(temptexturefront, color, ref canvasHeadFront);
+                this.MergeTwoGraphics(temptextureside, color, ref canvasHeadSide);
             }
+            UnityEngine.Object.Destroy(temptexturefront);
+            UnityEngine.Object.Destroy(temptextureside);
         }
 
-        public  void AddFacialHair(Texture2D beardTex, ref Texture2D finalTexture, bool stubble = false)
+        private void AddFacialHair(Texture2D beardTex, ref Texture2D finalTexture, bool stubble = false)
         {
             Texture2D tempBeardTex = MakeReadable(beardTex);
             Color color = new Color(0.6f, 0.6f, 0.6f);
 
             // offset neede if beards are stretched => narrow
-            int offset = (finalTexture.width - tempBeardTex.width) / 2;
-            int startX = 0;
-            int startY = finalTexture.height - tempBeardTex.height;
 
-            for (int x = startX; x < finalTexture.width; x++)
+            for (int x = 0; x < finalTexture.width; x++)
             {
 
-                for (int y = startY; y < finalTexture.height; y++)
+                for (int y = 0; y < finalTexture.height; y++)
                 {
                     Color headColor = finalTexture.GetPixel(x, y);
 
-                    Color beardColor = tempBeardTex.GetPixel(x - startX - offset, y - startY);
+                    Color beardColor = tempBeardTex.GetPixel(x, y);
                     if (stubble)
                     {
                         beardColor *= color;
@@ -539,7 +561,7 @@ namespace RW_FacialStuff
                 }
             }
 
-            UnityEngine.Object.DestroyImmediate(tempBeardTex);
+            UnityEngine.Object.Destroy(tempBeardTex);
 
             finalTexture.Apply();
         }
@@ -547,7 +569,6 @@ namespace RW_FacialStuff
         private void MergeTwoGraphics(Texture2D topLayerTex, Color multiplyColor, ref Texture2D finalTexture)
         {
             // offset neede if beards are stretched => narrow
-            int offset = (finalTexture.width - topLayerTex.width) / 2;
 
             for (int x = 0; x < 128; x++)
             {
@@ -556,7 +577,7 @@ namespace RW_FacialStuff
                 {
                     Color topColor;
 
-                    topColor = topLayerTex.GetPixel(x - offset, y);
+                    topColor = topLayerTex.GetPixel(x, y);
                     Color headColor = finalTexture.GetPixel(x, y);
 
                     // eyeColor = topLayerTex.GetPixel(x, y);
@@ -583,20 +604,17 @@ namespace RW_FacialStuff
 
             int offset = (finalTex1.width - hairTex.width) / 2;
 
-            int startX = 0;
-            int startY = finalTex1.height - hairTex.height;
-
-            for (int x = startX; x < canvasTex.width + offset; x++)
+            for (int x = 0; x < finalTex1.width; x++)
             {
-                for (int y = startY; y < finalTex1.height; y++)
+                for (int y = 0; y < finalTex1.height; y++)
                 {
-                     var loc_x = x - startX - offset;
-                     var loc_y = y - startY;
+                    int loc_x = x - offset;
+
                     Color maskColor = tempMaskTex.GetPixel(x, y);
                     Color headBase = finalTex1.GetPixel(x, y);
-                    Color canvas = canvasTex.GetPixel(x, y);
+                    Color canvas = canvasTex.GetPixel(loc_x, y);
+                    Color hairColor = hairTex.GetPixel(loc_x, y);
 
-                    Color hairColor = hairTex.GetPixel(loc_x, loc_y);
 
                     // Set up face
                     Color final_color1 = headBase * pawnSkinColor;
@@ -630,10 +648,10 @@ namespace RW_FacialStuff
 
             finalTex1.Apply();
             finalTex2.Apply();
-            UnityEngine.Object.DestroyImmediate(tempMaskTex);
+            UnityEngine.Object.Destroy(tempMaskTex);
         }
 
-        public void MergeMouth(Texture2D mouthTex, Color skinColor, ref Texture2D canvas)
+        private void MergeMouth(Texture2D mouthTex, Color skinColor, ref Texture2D canvas)
         {
             // offset neede if beards are stretched => narrow
             int offset = (canvas.width - mouthTex.width) / 2;
@@ -661,24 +679,22 @@ namespace RW_FacialStuff
             canvas.Apply();
         }
 
-        public void MakeOld(Texture2D wrinkleTex, ref Texture2D canvas)
+        private void MakeOld(Texture2D wrinkleTex, ref Texture2D canvas)
         {
             Pawn pawn = this.parent as Pawn;
 
             Texture2D tempWrinkleTex = MakeReadable(wrinkleTex);
-            int startX = 0;
-            int startY = 0;
             var col = pawn.story.SkinColor * pawn.story.SkinColor;
 
-            for (int x = startX; x < canvas.width; x++)
+            for (int x = 0; x < canvas.width; x++)
             {
-                for (int y = startY; y < canvas.height; y++)
+                for (int y = 0; y < canvas.height; y++)
                 {
                     Color wrinkleColor = tempWrinkleTex.GetPixel(x, y);
                     Color canvasColor = canvas.GetPixel(x, y);
 
                     wrinkleColor *= col;
-                    wrinkleColor.a *= Mathf.InverseLerp(50f, 100f, pawn.ageTracker.AgeBiologicalYearsFloat) ;
+                    wrinkleColor.a *= Mathf.InverseLerp(50f, 100f, pawn.ageTracker.AgeBiologicalYearsFloat);
 
                     Color final_color = Color.clear;
                     if (canvasColor.a > 0f)
@@ -694,7 +710,7 @@ namespace RW_FacialStuff
                 }
             }
 
-            UnityEngine.Object.DestroyImmediate(tempWrinkleTex);
+            UnityEngine.Object.Destroy(tempWrinkleTex);
 
             canvas.Apply();
         }

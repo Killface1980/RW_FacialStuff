@@ -49,57 +49,5 @@ namespace RW_FacialStuff
 
         }
 
-        public static void ScaleTexture(Texture2D sourceTex, out Texture2D destTex, int targetWidth, int targetHeight)
-        {
-            // string xx = sourceTex.name;
-            // try
-            // {
-            //     if (ScaledTexDict.ContainsKey(xx))
-            //     {
-            //         if (ScaledTexDict.TryGetValue(xx, out destTex))
-            //         {
-            //             return;
-            //         }
-            //     }
-            // }
-            //  catch (ArgumentNullException argumentNullException)
-            //  {
-            //  }
-
-            float warpFactorX = 1f;
-            float warpFactorY = 1f;
-            Color[] destPix;
-
-            Texture2D scaleTex = MakeReadable(sourceTex);
-
-            destTex = new Texture2D(targetWidth, targetHeight, TextureFormat.ARGB32, false);
-            destPix = new Color[destTex.width * destTex.height];
-            int y = 0;
-            while (y < destTex.height)
-            {
-                int x = 0;
-                while (x < destTex.width)
-                {
-                    float xFrac = x * 1.0F / (destTex.width - 1);
-                    float yFrac = y * 1.0F / (destTex.height - 1);
-                    float warpXFrac = Mathf.Pow(xFrac, warpFactorX);
-                    float warpYFrac = Mathf.Pow(yFrac, warpFactorY);
-                    destPix[y * destTex.width + x] = scaleTex.GetPixelBilinear(warpXFrac, warpYFrac);
-                    x++;
-                }
-                y++;
-            }
-            destTex.SetPixels(destPix);
-            destTex.Apply();
-            Object.DestroyImmediate(scaleTex);
-
-            // try
-            // {
-            //     ScaledTexDict.Add(xx, destTex);
-            // }
-            // catch (ArgumentNullException argumentNullException)
-            // {
-            // }
-        }
     }
 }

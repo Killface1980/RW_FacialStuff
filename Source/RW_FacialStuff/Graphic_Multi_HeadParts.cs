@@ -67,7 +67,7 @@ namespace RW_FacialStuff
         private static Texture2D blankTexture;
         private static bool blankExists;
 
-        public static Texture2D BlankTexture()
+        private static Texture2D BlankTexture()
         {
             if (blankExists)
             {
@@ -75,12 +75,10 @@ namespace RW_FacialStuff
             }
 
             blankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
-            int startX = 0;
-            int startY = 0;
 
-            for (int x = startX; x < blankTexture.width; x++)
+            for (int x = 0; x < blankTexture.width; x++)
             {
-                for (int y = startY; y < blankTexture.height; y++)
+                for (int y = 0; y < blankTexture.height; y++)
                 {
                     blankTexture.SetPixel(x, y, Color.clear);
                 }
