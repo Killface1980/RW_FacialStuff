@@ -114,7 +114,7 @@ namespace RW_FacialStuff
                     {
                         Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
                         Mesh mesh2a = faceComp.HeadMeshSet.MeshAt(headFacing);
-                        GenDraw.DrawMeshNowOrLater(mesh2a, locFacialY, quat, headMat, portrait);
+                        GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, headMat, portrait);
                         locFacialY.y += 0.0328125022f;
                         if (!headStump)
                         {
@@ -146,7 +146,7 @@ namespace RW_FacialStuff
                             }
                             if (beardMat != null)
                             {
-                                GenDraw.DrawMeshNowOrLater(mesh2a, locFacialY, quat, beardMat, portrait);
+                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, beardMat, portrait);
                                 locFacialY.y += 0.01f;
                             }
                         }

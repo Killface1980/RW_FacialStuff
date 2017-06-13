@@ -139,6 +139,11 @@ namespace RW_FacialStuff
             {
                 return false;
             }
+            if (this.pawn.gender == Gender.Female && this.BeardDef == null)
+            {
+                this.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
+            }
+
             var suffix = "_Average";
 
             if (this.pawn.story.crownType == CrownType.Narrow) suffix = "_Narrow";
@@ -153,7 +158,7 @@ namespace RW_FacialStuff
             if (this.type == "Normal")
             {
                 this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                    this.BeardDef.texPathAverageNormal,
+                    this.BeardDef.texPathAverageNormal + suffix,
                     ShaderDatabase.Cutout,
                     Vector2.one,
                     this.pawn.story.hairColor);
@@ -167,7 +172,7 @@ namespace RW_FacialStuff
             if (this.type == "Pointy")
             {
                 this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                    this.BeardDef.texPathAveragePointy,
+                    this.BeardDef.texPathAveragePointy + suffix,
                     ShaderDatabase.Cutout,
                     Vector2.one,
                     this.pawn.story.hairColor);
@@ -181,7 +186,7 @@ namespace RW_FacialStuff
             if (this.type == "Wide")
             {
                 this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                    this.BeardDef.texPathAverageWide,
+                    this.BeardDef.texPathAverageWide + suffix,
                     ShaderDatabase.Cutout,
                     Vector2.one,
                     this.pawn.story.hairColor);
@@ -212,10 +217,7 @@ namespace RW_FacialStuff
                 Vector2.one,
                 this.pawn.story.SkinColor * darkenColor);
 
-            if (this.pawn.gender == Gender.Female && this.BeardDef == null)
-            {
-                this.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
-            }
+
             return true;
 
         }
