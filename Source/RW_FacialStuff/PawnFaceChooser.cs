@@ -27,11 +27,11 @@ namespace RW_FacialStuff
             BeardDef chosenBeard;
             float rand = Rand.Value;
             //            if (UnityEngine.Random.Range(30, 50) > pawn.ageTracker.AgeBiologicalYearsFloat)
-            if (pawn.ageTracker.AgeBiologicalYearsFloat < 19|| rand < 0.1f || pawn.gender == Gender.Female)
+            if (pawn.ageTracker.AgeBiologicalYearsFloat < 19 || rand < 0.1f || pawn.gender == Gender.Female)
             {
                 chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
             }
-            else if (rand < 0.25f)
+            else if (rand < 0.15f)
             {
                 chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Stubble");
             }

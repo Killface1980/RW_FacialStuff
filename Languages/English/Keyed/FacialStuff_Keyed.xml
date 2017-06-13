@@ -2,8 +2,8 @@
 <LanguageData>
   <Settings.UseWrinkles>Add wrinkles to colonists</Settings.UseWrinkles>
   <Settings.UseMouth>Add mouths to colonists</Settings.UseMouth>
-	<Settings.MergeHair>Merge head with hair texture. Needs more resources. Please deactivate if you use 'Headgear Frame'.</Settings.MergeHair>
-  <Settings.Apply>Save and apply settings. Beware, consumes additional RAM. Please save your game before you press.</Settings.Apply>
+	<Settings.MergeHair>Merge head with hair texture. Please deactivate if you use 'Headgear Frame'.</Settings.MergeHair>
+  <Settings.Apply>Save and apply settings.</Settings.Apply>
   <FaceStylerTitle>Face Styler</FaceStylerTitle>
   <FacialStuffColorChangerButtonAccept>Accept new style</FacialStuffColorChangerButtonAccept>
   <FSStylizeFace>Edit colonists's appearance</FSStylizeFace>

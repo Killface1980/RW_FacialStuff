@@ -9,8 +9,6 @@
     {
         public static readonly Color skinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
-        public static Texture2D BlankTex = null;
-
         public static Texture2D MakeReadable(Texture2D texture)
         {
             RenderTexture previous = RenderTexture.active;

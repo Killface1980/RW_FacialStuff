@@ -69,11 +69,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Class1.cs" />
-    <None Include="Class2.cs" />
     <Compile Include="MeshPoolFs.cs" />
     <Compile Include="CutHairDb.cs" />
-    <Compile Include="Detouring\Class4.cs" />
+    <Compile Include="Detouring\PawnRenderer.cs" />
     <Compile Include="CompFace.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />

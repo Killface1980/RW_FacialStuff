@@ -133,76 +133,21 @@ namespace RW_FacialStuff
             return true;
         }
 
-
-        public static void ScaleTexture(Texture2D sourceTex, out Texture2D destTex, int targetWidth, int targetHeight)
-        {
-
-            float warpFactorX = 1f;
-            float warpFactorY = 1f;
-            Color[] destPix;
-
-            Texture2D scaleTex = MakeReadable(sourceTex);
-
-            destTex = new Texture2D(targetWidth, targetHeight, TextureFormat.ARGB32, false);
-            destPix = new Color[destTex.width * destTex.height];
-            int y = 0;
-            while (y < destTex.height)
-            {
-                int x = 0;
-                while (x < destTex.width)
-                {
-                    float xFrac = x * 1.0F / (destTex.width - 1);
-                    float yFrac = y * 1.0F / (destTex.height - 1);
-                    float warpXFrac = Mathf.Pow(xFrac, warpFactorX);
-                    float warpYFrac = Mathf.Pow(yFrac, warpFactorY);
-                    destPix[y * destTex.width + x] = scaleTex.GetPixelBilinear(warpXFrac, warpYFrac);
-                    x++;
-                }
-                y++;
-            }
-            destTex.SetPixels(destPix);
-            destTex.Apply();
-            Object.Destroy(scaleTex);
-
-            // try
-            // {
-            //     ScaledTexDict.Add(xx, destTex);
-            // }
-            // catch (ArgumentNullException argumentNullException)
-            // {
-            // }
-        }
-
-
         public bool InitializeGraphics()
         {
-
             if (this.pawn == null)
             {
                 return false;
             }
+            var suffix = "_Average";
+
+            if (this.pawn.story.crownType == CrownType.Narrow) suffix = "_Narrow";
+
 
             this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
 
-            // Create the blank canvas texture
-            if (BlankTex == null)
-            {
-                BlankTex = new Texture2D(128, 128);
 
-                // Reset all pixels color to transparent
-                Color32 resetColor = Color.clear;
-                Color32[] resetColorArray = BlankTex.GetPixels32();
-
-                for (int i = 0; i < resetColorArray.Length; i++)
-                {
-                    resetColorArray[i] = resetColor;
-                }
-
-                BlankTex.SetPixels32(resetColorArray);
-                BlankTex.Apply();
-            }
-            Color wrinkleColor = Color.gray * this.pawn.story.SkinColor;
-            wrinkleColor = Color.Lerp(pawn.story.SkinColor, Color.black, Mathf.InverseLerp(50f, 100f, pawn.ageTracker.AgeBiologicalYearsFloat));
+            var wrinkleColor = Color.Lerp(pawn.story.SkinColor, Color.black, Mathf.InverseLerp(50f, 100f, pawn.ageTracker.AgeBiologicalYearsFloat));
 
 
             if (this.type == "Normal")
@@ -248,21 +193,24 @@ namespace RW_FacialStuff
             }
 
             this.eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                this.EyeDef.texPath,
+                this.EyeDef.texPath + suffix,
                 ShaderDatabase.Cutout,
                 Vector2.one,
                 Color.white);
+
+            Color darkenColor = new Color(0.2f, 0.2f, 0.2f);
+
             this.browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                this.BrowDef.texPath,
+                this.BrowDef.texPath + suffix,
                 ShaderDatabase.Cutout,
                 Vector2.one,
-                this.pawn.story.hairColor * new Color(0.3f, 0.3f, 0.3f));
+                this.pawn.story.hairColor * darkenColor);
 
             this.mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                this.MouthDef.texPath,
+                this.MouthDef.texPath + suffix,
                 ShaderDatabase.Cutout,
                 Vector2.one,
-                this.pawn.story.SkinColor);
+                this.pawn.story.SkinColor * darkenColor);
 
             if (this.pawn.gender == Gender.Female && this.BeardDef == null)
             {
@@ -275,33 +223,12 @@ namespace RW_FacialStuff
 
 
         // Verse.PawnGraphicSet
-        public Material BeardMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh, bool stump = false)
+        public Material BeardMatAt(Rot4 facing)
         {
             Material material = null;
             if (this.pawn.gender == Gender.Male)
             {
-                if (bodyCondition == RotDrawMode.Fresh)
-                {
-                    if (stump)
-                    {
-                        material = null;
-                    }
-                    else
-                    {
                         material = this.beardGraphic.MatAt(facing, null);
-                    }
-                }
-                else if (bodyCondition == RotDrawMode.Rotting)
-                {
-                    if (stump)
-                    {
-                        material = null;
-                    }
-                    else
-                    {
-                        material = this.beardGraphic.MatAt(facing, null);
-                    }
-                }
 
                 if (material != null)
                 {
@@ -311,36 +238,14 @@ namespace RW_FacialStuff
             return material;
         }
 
-        public Material HairCutMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh, bool stump = false)
+        public Material HairCutMatAt(Rot4 facing)
         {
             if (!FS_Settings.MergeHair)
             {
                 return null;
             }
 
-            Material material = null;
-            if (bodyCondition == RotDrawMode.Fresh)
-            {
-                if (stump)
-                {
-                    material = null;
-                }
-                else
-                {
-                    material = this.HairCutGraphic.MatAt(facing, null);
-                }
-            }
-            else if (bodyCondition == RotDrawMode.Rotting)
-            {
-                if (stump)
-                {
-                    material = null;
-                }
-                else
-                {
-                    material = this.HairCutGraphic.MatAt(facing, null);
-                }
-            }
+            Material material = this.HairCutGraphic.MatAt(facing, null);
 
             if (material != null)
             {
@@ -349,31 +254,16 @@ namespace RW_FacialStuff
             return material;
         }
 
-        public Material EyeMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh, bool stump = false)
+        public Material EyeMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
             Material material = null;
             if (bodyCondition == RotDrawMode.Fresh)
             {
-                if (stump)
-                {
-                    material = null;
-                }
-                else
-                {
-                    material = this.eyeGraphic.MatAt(facing, null);
-                }
+                material = this.eyeGraphic.MatAt(facing, null);
             }
             else if (bodyCondition == RotDrawMode.Rotting)
             {
-                if (stump)
-                {
-                    material = null;
-                }
-                else
-                {
-                    // dead staring eyes maybe?
-                    material = this.eyeGraphic.MatAt(facing, null);
-                }
+                material = this.eyeGraphic.MatAt(facing, null);
             }
 
             if (material != null)
@@ -383,32 +273,10 @@ namespace RW_FacialStuff
             return material;
         }
 
-        public Material BrowMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh, bool stump = false)
+        public Material BrowMatAt(Rot4 facing)
         {
             Material material = null;
-            if (bodyCondition == RotDrawMode.Fresh)
-            {
-                if (stump)
-                {
-                    material = null;
-                }
-                else
-                {
-                    material = this.browGraphic.MatAt(facing, null);
-                }
-            }
-            else if (bodyCondition == RotDrawMode.Rotting)
-            {
-                if (stump)
-                {
-                    material = null;
-                }
-                else
-                {
-                    // dead staring eyes maybe?
-                    material = this.browGraphic.MatAt(facing, null);
-                }
-            }
+            material = this.browGraphic.MatAt(facing, null);
 
             if (material != null)
             {
@@ -417,7 +285,7 @@ namespace RW_FacialStuff
             return material;
         }
 
-        public Material MouthMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh, bool stump = false)
+        public Material MouthMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
             Material material = null;
             bool flag = this.pawn.gender == Gender.Female;
@@ -426,26 +294,12 @@ namespace RW_FacialStuff
 
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
-                    if (stump)
-                    {
-                        material = null;
-                    }
-                    else
-                    {
-                        material = this.mouthGraphic.MatAt(facing, null);
-                    }
+                    material = this.mouthGraphic.MatAt(facing, null);
+
                 }
                 else if (bodyCondition == RotDrawMode.Rotting)
                 {
-                    if (stump)
-                    {
-                        material = null;
-                    }
-                    else
-                    {
-                        // dead staring eyes maybe?
-                        material = this.mouthGraphic.MatAt(facing, null);
-                    }
+                    material = this.mouthGraphic.MatAt(facing, null);
                 }
 
                 if (material != null)
@@ -457,35 +311,13 @@ namespace RW_FacialStuff
             return material;
         }
 
-        public Material WrinkleMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh, bool stump = false)
+        public Material WrinkleMatAt(Rot4 facing)
         {
 
             Material material = null;
             if (this.isOld && FS_Settings.UseWrinkles)
             {
-                if (bodyCondition == RotDrawMode.Fresh)
-                {
-                    if (stump)
-                    {
-                        material = null;
-                    }
-                    else
-                    {
-                        material = this.wrinkleGraphic.MatAt(facing, null);
-                    }
-                }
-                else if (bodyCondition == RotDrawMode.Rotting)
-                {
-                    if (stump)
-                    {
-                        material = null;
-                    }
-                    else
-                    {
-                        // dead staring eyes maybe?
-                        material = this.wrinkleGraphic.MatAt(facing, null);
-                    }
-                }
+                material = this.wrinkleGraphic.MatAt(facing, null);
             }
             if (material != null)
             {
