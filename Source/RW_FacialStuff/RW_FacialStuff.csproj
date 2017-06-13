@@ -62,7 +62,6 @@
       <HintPath>..\..\..\..\..\..\workshop\content\294100\818773962\Assemblies\HugsLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
@@ -71,6 +70,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Class1.cs" />
+    <None Include="Class2.cs" />
+    <Compile Include="Class4.cs" />
+    <Compile Include="Detouring\Class4.cs" />
     <Compile Include="CompFace.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />

@@ -7,6 +7,8 @@ using Verse;
 
 namespace RW_FacialStuff.Detouring
 {
+    using static GraphicDatabaseHeadRecordsModded;
+
     [HarmonyPatch(typeof(PawnGraphicSet), "ResolveAllGraphics")]
     static class ResolveAllGraphics_Postfix
     {
@@ -27,7 +29,7 @@ namespace RW_FacialStuff.Detouring
                 return;
             }
 
-            GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
+            BuildDatabaseIfNecessary();
 
 
             if (!faceComp.optimized)
@@ -46,42 +48,6 @@ namespace RW_FacialStuff.Detouring
             //  __instance.skullGraphic = GraphicDatabaseHeadRecords.GetSkull();
             //     __instance.ResolveApparelGraphics();
 
-            if (!faceComp.sessionOptimized)
-            {
-                // Build the empty head index once to be used for the blank heads
-                if (HeadIndex.Count == 0)
-                {
-                    for (int i = 0; i < 1024; i++)
-                    {
-                        HeadIndex.Add(i.ToString("0000"), null);
-                    }
-                }
-                // Get the first free index and go on
-                //           foreach (KeyValuePair<string, Pawn> pair in HeadIndex)
-                for (int i = 0; i < HeadIndex.Count; i++)
-                {
-                    string index = i.ToString("0000");
-
-                    Pawn pair = HeadIndex[index];
-                    if (pair != null)
-                    {
-                        continue;
-                    }
-
-                    HeadIndex.Remove(index);
-                    HeadIndex.Add(index, __instance.pawn);
-
-                    faceComp.headGraphicIndex = "Heads/Blank/" + index;
-                    GraphicDatabaseHeadRecordsModded.headsModded.Add(
-                        new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(__instance.pawn));
-                    break;
-                }
-
-                //pawnSave.headGraphicIndex = "Heads/Blank/" + GraphicDatabaseHeadRecordsModded.headIndex.ToString("0000");
-                //GraphicDatabaseHeadRecordsModded.headsModded.Add(new GraphicDatabaseHeadRecordsModded.HeadGraphicRecordModded(pawn));
-                //GraphicDatabaseHeadRecordsModded.headIndex += 1;
-            }
-
             if (__instance.pawn.RaceProps.hasGenders)
             {
 
@@ -91,18 +57,28 @@ namespace RW_FacialStuff.Detouring
                 {
                     faceComp.InitializeGraphics();
 
-                    if (faceComp.GenerateHeadGraphics(__instance.hairGraphic))
-                    {
-                        __instance.headGraphic = faceComp.HeadGraphic;
-                        __instance.desiccatedHeadGraphic = faceComp.DissicatedHeadGraphic;
-                        __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
-                        __instance.rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
-                            __instance.pawn.story.bodyType, ShaderDatabase.CutoutSkin,
-                            rotColor);
 
-                        PortraitsCache.Clear();
-                        //PortraitsCache.SetDirty(__instance.pawn);
-                    }
+                    __instance.headGraphic = GetModdedHeadNamed(__instance.pawn, true, __instance.pawn.story.SkinColor);
+                    __instance.desiccatedHeadGraphic = GetModdedHeadNamed(__instance.pawn, true, rotColor);
+                    __instance.desiccatedHeadStumpGraphic = GetStump(rotColor);
+                    __instance.rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
+                        __instance.pawn.story.bodyType, ShaderDatabase.CutoutSkin,
+                        rotColor);
+                    PortraitsCache.Clear();
+
+                    if (false)
+                        if (faceComp.GenerateHeadGraphics(__instance.hairGraphic))
+                        {
+                            __instance.headGraphic = faceComp.HeadGraphic;
+                            __instance.desiccatedHeadGraphic = faceComp.DissicatedHeadGraphic;
+                            __instance.desiccatedHeadStumpGraphic = GetStump(rotColor);
+                            __instance.rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
+                                __instance.pawn.story.bodyType, ShaderDatabase.CutoutSkin,
+                                rotColor);
+
+                            PortraitsCache.Clear();
+                            //PortraitsCache.SetDirty(__instance.pawn);
+                        }
 
                 }
 

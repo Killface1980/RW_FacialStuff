@@ -1,30 +1,27 @@
-﻿using UnityEngine;
-using Verse;
-
-namespace RW_FacialStuff
+﻿namespace RW_FacialStuff
 {
-    using RW_FacialStuff.Defs;
+    using UnityEngine;
 
-    using Object = UnityEngine.Object;
+    using Verse;
 
     [StaticConstructorOnStartup]
     public static class Headhelper
     {
-        public static Texture2D BlankTex = null;
-
         public static readonly Color skinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
-
+        public static Texture2D BlankTex = null;
 
         public static Texture2D MakeReadable(Texture2D texture)
         {
+            RenderTexture previous = RenderTexture.active;
+
             // Create a temporary RenderTexture of the same size as the texture
             RenderTexture tmp = RenderTexture.GetTemporary(
-                                texture.width,
-                                texture.height,
-                                0,
-                                RenderTextureFormat.Default,
-                                RenderTextureReadWrite.Linear);
+                texture.width,
+                texture.height,
+                0,
+                RenderTextureFormat.Default,
+                RenderTextureReadWrite.Linear);
 
             // Blit the pixels on texture to the RenderTexture
             Graphics.Blit(texture, tmp);
@@ -40,14 +37,13 @@ namespace RW_FacialStuff
             myTexture2D.Apply();
 
             // Reset the active RenderTexture
-            //    RenderTexture.active = previous;
+             RenderTexture.active = previous;
 
             // Release the temporary RenderTexture
             RenderTexture.ReleaseTemporary(tmp);
             return myTexture2D;
+
             // "myTexture2D" now has the same pixels from "texture" and it's readable.
-
         }
-
     }
 }

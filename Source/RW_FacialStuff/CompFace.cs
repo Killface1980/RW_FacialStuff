@@ -140,6 +140,7 @@ namespace RW_FacialStuff
 
             this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
 
+
             var temptexturefront = new Texture2D(128, 128, TextureFormat.ARGB32, false);
             var temptextureside = new Texture2D(128, 128, TextureFormat.ARGB32, false);
             var temptextureback = new Texture2D(128, 128, TextureFormat.ARGB32, false);
@@ -148,10 +149,10 @@ namespace RW_FacialStuff
             Texture2D canvasHeadSide = new Texture2D(128, 128) { wrapMode = TextureWrapMode.Clamp };
             Texture2D canvasHeadBack = new Texture2D(128, 128) { wrapMode = TextureWrapMode.Clamp };
 
+
             Graphics.CopyTexture(BlankTex, canvasHeadFront);
             Graphics.CopyTexture(BlankTex, canvasHeadSide);
             Graphics.CopyTexture(BlankTex, canvasHeadBack);
-
 
             // if (pawn.story.crownType == CrownType.Narrow)
             // {
@@ -246,63 +247,109 @@ namespace RW_FacialStuff
             this.disHeadSide = MakeReadable(this.dissicatedHeadGraphicVanilla.MatSide.mainTexture as Texture2D);
             this.disHeadBack = MakeReadable(this.dissicatedHeadGraphicVanilla.MatBack.mainTexture as Texture2D);
 
-
-            temptexturefront = MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D);
-            temptextureside = MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D);
-            temptextureback = MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D);
-
-            switch (this.pawn.story.crownType)
+            if (FS_Settings.MergeHair)
             {
-                case CrownType.Narrow:
-                    ScaleTexture(temptexturefront, out temptexturefront, 102, 128);
-                    ScaleTexture(temptextureside, out temptextureside, 102, 128);
-                    ScaleTexture(temptextureback, out temptextureback, 102, 128);
+                temptexturefront = MakeReadable(hairGraphic.MatFront.mainTexture as Texture2D);
+                temptextureside = MakeReadable(hairGraphic.MatSide.mainTexture as Texture2D);
+                temptextureback = MakeReadable(hairGraphic.MatBack.mainTexture as Texture2D);
 
-                    ScaleTexture(canvasHeadFront, out canvasHeadFront, 102, 128);
-                    ScaleTexture(canvasHeadSide, out canvasHeadSide, 102, 128);
-                    // NO SCALING of the clear back. Causes trouble.
-                    //          ScaleTexture(canvasHeadBack, out canvasHeadBack, 102, 128);
+                switch (this.pawn.story.crownType)
+                {
+                    case CrownType.Narrow:
 
-                    this.maskTexFrontBack = MaskTextures.MaskTex_Narrow_FrontBack;
-                    this.maskTexSide = MaskTextures.MaskTex_Narrow_Side;
-                    break;
+                        ScaleTexture(temptexturefront, out temptexturefront, 102, 128);
+                        ScaleTexture(temptextureside, out temptextureside, 102, 128);
+                        ScaleTexture(temptextureback, out temptextureback, 102, 128);
 
-                default:
-                    this.maskTexFrontBack = MaskTextures.MaskTex_Average_FrontBack;
-                    this.maskTexSide = MaskTextures.MaskTex_Average_Side;
-                    break;
+                        ScaleTexture(canvasHeadFront, out canvasHeadFront, 102, 128);
+                        ScaleTexture(canvasHeadSide, out canvasHeadSide, 102, 128);
+                        // NO SCALING of the clear back. Causes trouble.
+                        //          ScaleTexture(canvasHeadBack, out canvasHeadBack, 102, 128);
+
+                        this.maskTexFrontBack = MaskTextures.MaskTex_Narrow_FrontBack;
+                        this.maskTexSide = MaskTextures.MaskTex_Narrow_Side;
+                        break;
+
+                    default:
+                        this.maskTexFrontBack = MaskTextures.MaskTex_Average_FrontBack;
+                        this.maskTexSide = MaskTextures.MaskTex_Average_Side;
+                        break;
+                }
+
+                this.MergeHeadWithHair(
+                    temptexturefront,
+                    canvasHeadFront,
+                    this.maskTexFrontBack,
+                    ref this.finalHeadFront,
+                    ref this.disHeadFront);
+
+                this.MergeHeadWithHair(
+                    temptextureside,
+                    canvasHeadSide,
+                    this.maskTexSide,
+                    ref this.finalHeadSide,
+                    ref this.disHeadSide);
+
+                this.MergeHeadWithHair(
+                    temptextureback,
+                    canvasHeadBack,
+                    this.maskTexFrontBack,
+                    ref this.finalHeadBack,
+                    ref this.disHeadBack);
+
+
+                if (false)
+                {
+                    byte[] bytes = canvasHeadFront.EncodeToPNG();
+                    File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + this.pawn.Name + "_01front.png", bytes);
+                    byte[] bytes2 = canvasHeadSide.EncodeToPNG();
+                    File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + this.pawn.Name + "_02side.png", bytes2);
+                    byte[] bytes3 = canvasHeadBack.EncodeToPNG();
+                    File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + this.pawn.Name + "_03back.png", bytes3);
+                }
             }
-
-            this.MergeHeadWithHair(
-                temptexturefront,
-                canvasHeadFront,
-                this.maskTexFrontBack,
-                ref this.finalHeadFront,
-                ref this.disHeadFront);
-
-            this.MergeHeadWithHair(
-                temptextureside,
-                canvasHeadSide,
-                this.maskTexSide,
-                ref this.finalHeadSide,
-                ref this.disHeadSide);
-
-            this.MergeHeadWithHair(
-                temptextureback,
-                canvasHeadBack,
-                this.maskTexFrontBack,
-                ref this.finalHeadBack,
-                ref this.disHeadBack);
-
-
-            if (false)
+            else
             {
-                byte[] bytes = canvasHeadFront.EncodeToPNG();
-                File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + this.pawn.Name + "_01front.png", bytes);
-                byte[] bytes2 = canvasHeadSide.EncodeToPNG();
-                File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + this.pawn.Name + "_02side.png", bytes2);
-                byte[] bytes3 = canvasHeadBack.EncodeToPNG();
-                File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + this.pawn.Name + "_03back.png", bytes3);
+                switch (this.pawn.story.crownType)
+                {
+                    case CrownType.Narrow:
+                        ScaleTexture(canvasHeadFront, out canvasHeadFront, 102, 128);
+                        ScaleTexture(canvasHeadSide, out canvasHeadSide, 102, 128);
+                        // NO SCALING of the clear back. Causes trouble.
+                        //          ScaleTexture(canvasHeadBack, out canvasHeadBack, 102, 128);
+
+                        break;
+
+                    default:
+                        break;
+                }
+
+                this.MergeHead(
+                    canvasHeadFront,
+                    ref this.finalHeadFront,
+                    ref this.disHeadFront);
+
+                this.MergeHead(
+                    canvasHeadSide,
+                    ref this.finalHeadSide,
+                    ref this.disHeadSide);
+
+                this.MergeHead(
+                    canvasHeadBack,
+                    ref this.finalHeadBack,
+                    ref this.disHeadBack);
+
+
+                if (false)
+                {
+                    byte[] bytes = canvasHeadFront.EncodeToPNG();
+                    File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + this.pawn.Name + "_01front.png", bytes);
+                    byte[] bytes2 = canvasHeadSide.EncodeToPNG();
+                    File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + this.pawn.Name + "_02side.png", bytes2);
+                    byte[] bytes3 = canvasHeadBack.EncodeToPNG();
+                    File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + this.pawn.Name + "_03back.png", bytes3);
+                }
+
             }
 
             this.finalHeadFront.Compress(true);
@@ -332,6 +379,11 @@ namespace RW_FacialStuff
             this.HeadGraphic = GetModdedHeadNamed(this.pawn, false, Color.white);
             this.DissicatedHeadGraphic = GetModdedHeadNamed(this.pawn, false, skinRottingMultiplyColor);
 
+            // CHECK
+
+            //      this.finalHeadFront = Merged(this.headGraphicVanilla, this.browGraphic, this.beardGraphic);
+
+
             this.HeadGraphic.MatFront.mainTexture = this.finalHeadFront;
             this.HeadGraphic.MatSide.mainTexture = this.finalHeadSide;
             this.HeadGraphic.MatBack.mainTexture = this.finalHeadBack;
@@ -340,13 +392,13 @@ namespace RW_FacialStuff
             this.DissicatedHeadGraphic.MatSide.mainTexture = this.disHeadSide;
             this.DissicatedHeadGraphic.MatBack.mainTexture = this.disHeadBack;
 
-            UnityEngine.Object.Destroy(temptexturefront);
-            UnityEngine.Object.Destroy(temptextureside);
-            UnityEngine.Object.Destroy(temptextureback);
+            Object.Destroy(temptexturefront);
+            Object.Destroy(temptextureside);
+            Object.Destroy(temptextureback);
 
-            UnityEngine.Object.Destroy(canvasHeadFront);
-            UnityEngine.Object.Destroy(canvasHeadSide);
-            UnityEngine.Object.Destroy(canvasHeadBack);
+            Object.Destroy(canvasHeadFront);
+            Object.Destroy(canvasHeadSide);
+            Object.Destroy(canvasHeadBack);
 
 
             this.sessionOptimized = true;
@@ -438,7 +490,7 @@ namespace RW_FacialStuff
                     this.BeardDef.texPathAverageNormal,
                     ShaderDatabase.Cutout,
                     Vector2.one,
-                    Color.white);
+                    this.pawn.story.hairColor);
                 this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.WrinkleDef.texPathAverageNormal,
                     ShaderDatabase.Cutout,
@@ -452,7 +504,7 @@ namespace RW_FacialStuff
                     this.BeardDef.texPathAveragePointy,
                     ShaderDatabase.Cutout,
                     Vector2.one,
-                    Color.white);
+                    this.pawn.story.hairColor);
                 this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.WrinkleDef.texPathAveragePointy,
                     ShaderDatabase.Cutout,
@@ -466,7 +518,7 @@ namespace RW_FacialStuff
                     this.BeardDef.texPathAverageWide,
                     ShaderDatabase.Cutout,
                     Vector2.one,
-                    Color.white);
+                    this.pawn.story.hairColor);
                 this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.WrinkleDef.texPathAverageWide,
                     ShaderDatabase.Cutout,
@@ -483,7 +535,8 @@ namespace RW_FacialStuff
                 this.BrowDef.texPath,
                 ShaderDatabase.Cutout,
                 Vector2.one,
-                Color.white);
+                this.pawn.story.hairColor * new Color(0.3f, 0.3f, 0.3f));
+
             this.mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                 this.MouthDef.texPath,
                 ShaderDatabase.Cutout,
@@ -505,8 +558,8 @@ namespace RW_FacialStuff
             this.MergeMouth(temptexturefront, this.pawn.story.SkinColor, ref canvasHeadFront);
             this.MergeMouth(temptextureside, this.pawn.story.SkinColor, ref canvasHeadSide);
 
-            UnityEngine.Object.Destroy(temptexturefront);
-            UnityEngine.Object.Destroy(temptextureside);
+            Object.Destroy(temptexturefront);
+            Object.Destroy(temptextureside);
         }
 
         public void MergeFaceParts(Graphic currentGraphic, Color color, ref Texture2D canvasHeadFront, ref Texture2D canvasHeadSide, bool isBeard = false, bool stubble = false)
@@ -527,8 +580,8 @@ namespace RW_FacialStuff
                 this.MergeTwoGraphics(temptexturefront, color, ref canvasHeadFront);
                 this.MergeTwoGraphics(temptextureside, color, ref canvasHeadSide);
             }
-            UnityEngine.Object.Destroy(temptexturefront);
-            UnityEngine.Object.Destroy(temptextureside);
+            Object.Destroy(temptexturefront);
+            Object.Destroy(temptextureside);
         }
 
         private void AddFacialHair(Texture2D beardTex, ref Texture2D finalTexture, bool stubble = false)
@@ -561,7 +614,7 @@ namespace RW_FacialStuff
                 }
             }
 
-            UnityEngine.Object.Destroy(tempBeardTex);
+            Object.Destroy(tempBeardTex);
 
             finalTexture.Apply();
         }
@@ -595,14 +648,11 @@ namespace RW_FacialStuff
             finalTexture.Apply();
         }
 
-        private void MergeHeadWithHair(Texture2D hairTex, Texture2D canvasTex, Texture2D maskTex, ref Texture2D finalTex1, ref Texture2D finalTex2)
+        private void MergeHead(Texture2D canvasTex, ref Texture2D finalTex1, ref Texture2D finalTex2)
         {
             Color pawnSkinColor = this.pawn.story.SkinColor;
-            Color pawnHairColor = this.pawn.story.hairColor;
 
-            Texture2D tempMaskTex = MakeReadable(maskTex);
-
-            int offset = (finalTex1.width - hairTex.width) / 2;
+            int offset = (finalTex1.width - canvasTex.width) / 2;
 
             for (int x = 0; x < finalTex1.width; x++)
             {
@@ -610,7 +660,46 @@ namespace RW_FacialStuff
                 {
                     int loc_x = x - offset;
 
-                    Color maskColor = tempMaskTex.GetPixel(x, y);
+                    Color headBase = finalTex1.GetPixel(x, y);
+                    Color canvas = canvasTex.GetPixel(loc_x, y);
+
+
+                    // Set up face
+                    Color final_color1 = headBase * pawnSkinColor;
+                    Color final_color2 = headBase * pawnSkinColor;
+
+                    // Merge cansvas with face
+                    final_color1 = Color.Lerp(final_color1, canvas, canvas.a);
+                    final_color2 = Color.Lerp(final_color2, canvas, canvas.a);
+
+                    float alpha1 = headBase.a + canvas.a;
+                    final_color1.a = alpha1;
+                    final_color2.a = alpha1;
+
+
+                    finalTex1.SetPixel(x, y, final_color1);
+                    finalTex2.SetPixel(x, y, final_color2);
+                }
+            }
+
+            finalTex1.Apply();
+            finalTex2.Apply();
+        }
+
+        private void MergeHeadWithHair(Texture2D hairTex, Texture2D canvasTex, Texture2D maskTex, ref Texture2D finalTex1, ref Texture2D finalTex2)
+        {
+            Color pawnSkinColor = this.pawn.story.SkinColor;
+            Color pawnHairColor = this.pawn.story.hairColor;
+
+            int offset = (finalTex1.width - canvasTex.width) / 2;
+
+            for (int x = 0; x < finalTex1.width; x++)
+            {
+                for (int y = 0; y < finalTex1.height; y++)
+                {
+                    int loc_x = x - offset;
+
+                    Color maskColor = maskTex.GetPixel(x, y);
                     Color headBase = finalTex1.GetPixel(x, y);
                     Color canvas = canvasTex.GetPixel(loc_x, y);
                     Color hairColor = hairTex.GetPixel(loc_x, y);
@@ -648,7 +737,6 @@ namespace RW_FacialStuff
 
             finalTex1.Apply();
             finalTex2.Apply();
-            UnityEngine.Object.Destroy(tempMaskTex);
         }
 
         private void MergeMouth(Texture2D mouthTex, Color skinColor, ref Texture2D canvas)
@@ -710,12 +798,241 @@ namespace RW_FacialStuff
                 }
             }
 
-            UnityEngine.Object.Destroy(tempWrinkleTex);
+            Object.Destroy(tempWrinkleTex);
 
             canvas.Apply();
         }
 
+        // Verse.PawnGraphicSet
+        public Material BeardMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh, bool stump = false)
+        {
+            Material material = null;
+            if (bodyCondition == RotDrawMode.Fresh)
+            {
+                if (stump)
+                {
+                    material = null;
+                }
+                else
+                {
+                    material = this.beardGraphic.MatAt(facing, null);
+                }
+            }
+            else if (bodyCondition == RotDrawMode.Rotting)
+            {
+                if (stump)
+                {
+                    material = null;
+                }
+                else
+                {
+                    material = this.beardGraphic.MatAt(facing, null);
+                }
+            }
 
+            if (material != null)
+            {
+                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+            }
+            return material;
+        }
+
+        public Material EyeMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh, bool stump = false)
+        {
+            Material material = null;
+            if (bodyCondition == RotDrawMode.Fresh)
+            {
+                if (stump)
+                {
+                    material = null;
+                }
+                else
+                {
+                    material = this.eyeGraphic.MatAt(facing, null);
+                }
+            }
+            else if (bodyCondition == RotDrawMode.Rotting)
+            {
+                if (stump)
+                {
+                    material = null;
+                }
+                else
+                {
+                    // dead staring eyes maybe?
+                    material = this.eyeGraphic.MatAt(facing, null);
+                }
+            }
+
+            if (material != null)
+            {
+                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+            }
+            return material;
+        }
+
+        public Material BrowMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh, bool stump = false)
+        {
+            Material material = null;
+            if (bodyCondition == RotDrawMode.Fresh)
+            {
+                if (stump)
+                {
+                    material = null;
+                }
+                else
+                {
+                    material = this.browGraphic.MatAt(facing, null);
+                }
+            }
+            else if (bodyCondition == RotDrawMode.Rotting)
+            {
+                if (stump)
+                {
+                    material = null;
+                }
+                else
+                {
+                    // dead staring eyes maybe?
+                    material = this.browGraphic.MatAt(facing, null);
+                }
+            }
+
+            if (material != null)
+            {
+                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+            }
+            return material;
+        }
+
+        public Material MouthMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh, bool stump = false)
+        {
+            Material material = null;
+            if (bodyCondition == RotDrawMode.Fresh)
+            {
+                if (stump)
+                {
+                    material = null;
+                }
+                else
+                {
+                    material = this.mouthGraphic.MatAt(facing, null);
+                }
+            }
+            else if (bodyCondition == RotDrawMode.Rotting)
+            {
+                if (stump)
+                {
+                    material = null;
+                }
+                else
+                {
+                    // dead staring eyes maybe?
+                    material = this.mouthGraphic.MatAt(facing, null);
+                }
+            }
+
+            if (material != null)
+            {
+                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+            }
+            return material;
+        }
+
+        public Material WrinkleMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh, bool stump = false)
+        {
+            Material material = null;
+            if (bodyCondition == RotDrawMode.Fresh)
+            {
+                if (stump)
+                {
+                    material = null;
+                }
+                else
+                {
+                    material = this.wrinkleGraphic.MatAt(facing, null);
+                }
+            }
+            else if (bodyCondition == RotDrawMode.Rotting)
+            {
+                if (stump)
+                {
+                    material = null;
+                }
+                else
+                {
+                    // dead staring eyes maybe?
+                    material = this.wrinkleGraphic.MatAt(facing, null);
+                }
+            }
+
+            if (material != null)
+            {
+                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+            }
+            return material;
+        }
+
+      // Verse.PawnGraphicSet
+      public GraphicMeshSet HeadMeshSet
+      {
+          get
+          {
+              if (this.pawn.story.crownType == CrownType.Average)
+              {
+                  return MeshPoolFs.humanlikeHeadSetAverage;
+              }
+              if (this.pawn.story.crownType == CrownType.Narrow)
+              {
+                  return MeshPoolFs.humanlikeHeadSetNarrow;
+              }
+              Log.Error("Unknown crown type: " + this.pawn.story.crownType);
+              return MeshPool.humanlikeHeadSet;
+          }
+      }
+
+        public static Texture2D Merged(Graphic graphic1, Graphic graphic2, Graphic graphic3)
+        {
+            RenderTexture previous = RenderTexture.active;
+
+            var texture1 = graphic1.MatFront.mainTexture;
+            var texture2 = graphic2.MatFront.mainTexture;
+            var texture3 = graphic3.MatFront.mainTexture;
+
+            // Create a temporary RenderTexture of the same size as the texture
+            RenderTexture tmp = RenderTexture.GetTemporary(
+                texture1.width,
+                texture1.height,
+                0,
+                RenderTextureFormat.Default,
+                RenderTextureReadWrite.Linear);
+
+            // Blit the pixels on texture to the RenderTexture
+            //    Material material = new Material(ShaderDatabase.Transparent);
+
+            Graphics.Blit(texture1, tmp);
+            Graphics.Blit(texture2, tmp);
+            Graphics.Blit(texture3, tmp);
+
+            // Set the current RenderTexture to the temporary one we created
+            RenderTexture.active = tmp;
+
+            // Create a new readable Texture2D to copy the pixels to it
+            Texture2D myTexture2D = new Texture2D(texture1.width, texture1.width, TextureFormat.ARGB32, false);
+
+            // Copy the pixels from the RenderTexture to the new Texture
+            myTexture2D.ReadPixels(new Rect(0, 0, tmp.width, tmp.height), 0, 0);
+            myTexture2D.Apply();
+
+            // Reset the active RenderTexture
+            RenderTexture.active = previous;
+
+            // Release the temporary RenderTexture
+            RenderTexture.ReleaseTemporary(tmp);
+            return myTexture2D;
+
+            // "myTexture2D" now has the same pixels from "texture" and it's readable.
+        }
 
         public override void PostExposeData()
         {

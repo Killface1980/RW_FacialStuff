@@ -22,7 +22,7 @@ namespace RW_FacialStuff
         #region Fields
         public override string SettingsCategory() => "Facial Stuff";
 
-        private ModSettings modSettings;
+        private ModSettings modSettings = new FS_Settings();
 
         #endregion
 
@@ -43,6 +43,7 @@ namespace RW_FacialStuff
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
+
             BeginArea(inRect);
             BeginVertical();
             FS_Settings.UseWrinkles = Toggle(FS_Settings.UseWrinkles, "Settings.UseWrinkles".Translate());
@@ -50,6 +51,10 @@ namespace RW_FacialStuff
             BeginVertical();
             FS_Settings.UseMouth = Toggle(FS_Settings.UseMouth, "Settings.UseMouth".Translate());
             EndVertical();
+            BeginVertical();
+            FS_Settings.MergeHair = Toggle(FS_Settings.MergeHair, "Settings.MergeHair".Translate());
+            EndVertical();
+            FlexibleSpace();
             BeginVertical();
             if (Button("Settings.Apply".Translate()))
             {
@@ -60,16 +65,16 @@ namespace RW_FacialStuff
                         CompFace faceComp = pawn.TryGetComp<CompFace>();
                         if (faceComp != null)
                         {
-
+                            this.WriteSettings();
                             faceComp.sessionOptimized = false;
                             pawn.Drawer.renderer.graphics.ResolveAllGraphics();
-                            this.WriteSettings();
                         }
 
                     }
                 }
             }
             EndVertical();
+            FlexibleSpace();
             EndArea();
         }
 
@@ -80,11 +85,14 @@ namespace RW_FacialStuff
 
         public static bool UseWrinkles = true;
 
+        public static bool MergeHair = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref UseWrinkles, "UseWrinkles", false, false);
-            Scribe_Values.Look(ref UseMouth, "UseMouth", false, false);
+            Scribe_Values.Look(ref UseWrinkles, "UseWrinkles", false, true);
+            Scribe_Values.Look(ref UseMouth, "UseMouth", false, true);
+            Scribe_Values.Look(ref MergeHair, "MergeHair", false, true);
         }
     }
 
