@@ -108,12 +108,12 @@ namespace RW_FacialStuff
                 {
                     Vector3 b = quat * __instance.BaseHeadOffsetAt(headFacing);
                     Material headMat = __instance.graphics.HeadMatAt(headFacing, bodyDrawType, headStump);
+                    Vector3 locFacialY = a + b;
 
                     if (headMat != null)
                     {
                         Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
                         Mesh mesh2a = faceComp.HeadMeshSet.MeshAt(headFacing);
-                        Vector3 locFacialY = a + b;
                         GenDraw.DrawMeshNowOrLater(mesh2a, locFacialY, quat, headMat, portrait);
                         locFacialY.y += 0.0328125022f;
                         if (!headStump)
@@ -127,33 +127,33 @@ namespace RW_FacialStuff
                             if (wrinkleMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2a, locFacialY, quat, wrinkleMat, portrait);
-                                locFacialY.y += 0.0328125022f;
+                                locFacialY.y += 0.01f;
                             }
                             if (eyeMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, eyeMat, portrait);
-                                locFacialY.y += 0.0328125022f;
+                                locFacialY.y += 0.01f;
                             }
                             if (browMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, browMat, portrait);
-                                locFacialY.y += 0.0328125022f;
+                                locFacialY.y += 0.01f;
                             }
                             if (mouthMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, mouthMat, portrait);
-                                locFacialY.y += 0.0328125022f;
+                                locFacialY.y += 0.01f;
                             }
                             if (beardMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2a, locFacialY, quat, beardMat, portrait);
-                                locFacialY.y += 0.0328125022f;
+                                locFacialY.y += 0.01f;
                             }
                         }
                     }
 
                     Vector3 loc2 = rootLoc + b;
-                    loc2.y += 0.0328125022f;
+                    loc2.y = locFacialY.y;
                     bool hatVisible = false;
                     if (!portrait || !Prefs.HatsOnlyOnMap)
                     {
@@ -264,4 +264,5 @@ namespace RW_FacialStuff
             return false;
         }
     }
+
 }

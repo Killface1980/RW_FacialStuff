@@ -1,21 +1,10 @@
-﻿using HugsLib;
-using RimWorld;
+﻿using RimWorld;
 using UnityEngine;
 using Verse;
 using static UnityEngine.GUILayout;
 
 namespace RW_FacialStuff
 {
-    public class FacialStuff_ModBase : ModBase
-    {
-        public override string ModIdentifier { get { return "FacialStuff"; } }
-
-        public override void SettingsChanged()
-        {
-
-            base.SettingsChanged();
-        }
-    }
 
     public class FS_Mod : Mod
     {
