@@ -115,7 +115,7 @@ namespace RW_FacialStuff
                         Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
                         Mesh mesh2a = faceComp.HeadMeshSet.MeshAt(headFacing);
                         GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, headMat, portrait);
-                        locFacialY.y += 0.0328125022f;
+                        locFacialY.y += 0.005f;
                         if (!headStump)
                         {
 
@@ -127,33 +127,34 @@ namespace RW_FacialStuff
                             if (wrinkleMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2a, locFacialY, quat, wrinkleMat, portrait);
-                                locFacialY.y += 0.01f;
+                                locFacialY.y += 0.005f;
                             }
                             if (eyeMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, eyeMat, portrait);
-                                locFacialY.y += 0.01f;
+                                locFacialY.y += 0.005f;
                             }
                             if (browMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, browMat, portrait);
-                                locFacialY.y += 0.01f;
+                                locFacialY.y += 0.005f;
                             }
                             if (mouthMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, mouthMat, portrait);
-                                locFacialY.y += 0.01f;
+                                locFacialY.y += 0.005f;
                             }
                             if (beardMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, beardMat, portrait);
-                                locFacialY.y += 0.01f;
+                                locFacialY.y += 0.005f;
                             }
                         }
                     }
 
                     Vector3 loc2 = rootLoc + b;
-                    loc2.y = locFacialY.y;
+                    loc2.y += 0.0328125022f;
+
                     bool hatVisible = false;
                     if (!portrait || !Prefs.HatsOnlyOnMap)
                     {
@@ -163,7 +164,15 @@ namespace RW_FacialStuff
                         {
                             if (apparelGraphics[j].sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
                             {
-                                if (renderBody)
+                                bool flag = FS_Settings.HideHatInBed;
+                                
+                                bool flag2 = false;
+                                if (flag)
+                                {
+                                    if (renderBody) flag2 = true;
+                                }
+
+                                if (flag2)
                                 {
                                     hatVisible = true;
 

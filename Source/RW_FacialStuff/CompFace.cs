@@ -144,9 +144,14 @@ namespace RW_FacialStuff
                 this.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
             }
 
-            var suffix = "_Average";
+            string suffix = "_Average";
 
-            if (this.pawn.story.crownType == CrownType.Narrow) suffix = "_Narrow";
+            switch (this.pawn.story.crownType)
+            {
+                case CrownType.Narrow:
+                    suffix = "_Narrow";
+                    break;
+            }
 
 
             this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
@@ -159,12 +164,12 @@ namespace RW_FacialStuff
             {
                 this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.BeardDef.texPathAverageNormal + suffix,
-                    ShaderDatabase.Cutout,
+                    ShaderDatabase.CutoutSkin,
                     Vector2.one,
                     this.pawn.story.hairColor);
                 this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.WrinkleDef.texPathAverageNormal,
-                    ShaderDatabase.Cutout,
+                    ShaderDatabase.CutoutSkin,
                     Vector2.one,
                     wrinkleColor);
             }
@@ -173,12 +178,12 @@ namespace RW_FacialStuff
             {
                 this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.BeardDef.texPathAveragePointy + suffix,
-                    ShaderDatabase.Cutout,
+                    ShaderDatabase.CutoutSkin,
                     Vector2.one,
                     this.pawn.story.hairColor);
                 this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.WrinkleDef.texPathAveragePointy,
-                    ShaderDatabase.Cutout,
+                    ShaderDatabase.CutoutSkin,
                     Vector2.one,
                     wrinkleColor);
             }
@@ -187,19 +192,19 @@ namespace RW_FacialStuff
             {
                 this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.BeardDef.texPathAverageWide + suffix,
-                    ShaderDatabase.Cutout,
+                    ShaderDatabase.CutoutSkin,
                     Vector2.one,
                     this.pawn.story.hairColor);
                 this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                     this.WrinkleDef.texPathAverageWide,
-                    ShaderDatabase.Cutout,
+                    ShaderDatabase.CutoutSkin,
                     Vector2.one,
                     wrinkleColor);
             }
 
             this.eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                 this.EyeDef.texPath + suffix,
-                ShaderDatabase.Cutout,
+                ShaderDatabase.CutoutSkin,
                 Vector2.one,
                 Color.white);
 
@@ -207,13 +212,13 @@ namespace RW_FacialStuff
 
             this.browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                 this.BrowDef.texPath + suffix,
-                ShaderDatabase.Cutout,
+                ShaderDatabase.CutoutSkin,
                 Vector2.one,
                 this.pawn.story.hairColor * darkenColor);
 
             this.mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                 this.MouthDef.texPath + suffix,
-                ShaderDatabase.Cutout,
+                ShaderDatabase.CutoutSkin,
                 Vector2.one,
                 this.pawn.story.SkinColor * darkenColor);
 

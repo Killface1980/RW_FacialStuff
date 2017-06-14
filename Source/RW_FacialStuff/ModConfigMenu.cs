@@ -43,6 +43,9 @@ namespace RW_FacialStuff
             BeginVertical();
             FS_Settings.MergeHair = Toggle(FS_Settings.MergeHair, "Settings.MergeHair".Translate());
             EndVertical();
+            BeginVertical();
+            FS_Settings.HideHatInBed = Toggle(FS_Settings.HideHatInBed, "Settings.HideHatInBed".Translate());
+            EndVertical();
             FlexibleSpace();
             BeginVertical();
             if (Button("Settings.Apply".Translate()))
@@ -68,6 +71,7 @@ namespace RW_FacialStuff
         }
 
     }
+
     public class FS_Settings : ModSettings
     {
         public static bool UseMouth = false;
@@ -76,12 +80,15 @@ namespace RW_FacialStuff
 
         public static bool MergeHair = true;
 
+        public static bool HideHatInBed =false;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref UseWrinkles, "UseWrinkles", false, true);
             Scribe_Values.Look(ref UseMouth, "UseMouth", false, true);
             Scribe_Values.Look(ref MergeHair, "MergeHair", false, true);
+            Scribe_Values.Look(ref HideHatInBed, "HideHatInBed", false, true);
         }
     }
 

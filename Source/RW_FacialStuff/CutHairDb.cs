@@ -42,7 +42,7 @@ namespace RW_FacialStuff
                 temptextureside = Headhelper.MakeReadable(graphic.MatSide.mainTexture as Texture2D);
                 temptextureback = Headhelper.MakeReadable(graphic.MatBack.mainTexture as Texture2D);
 
-                maskTexFrontBack = MaskTextures.MaskTex_Narrow_FrontBack;
+                maskTexFrontBack = MaskTextures.MaskTex_Average_FrontBack;
                 maskTexSide = MaskTextures.MaskTex_Narrow_Side;
 
                 CutOutHair(ref temptexturefront, maskTexFrontBack);

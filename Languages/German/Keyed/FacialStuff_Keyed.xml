@@ -3,8 +3,10 @@
   <Settings.UseWrinkles>Benutze Falten</Settings.UseWrinkles>
   <Settings.UseMouth>Benutze Münder</Settings.UseMouth>
 	<Settings.MergeHair>Verschmelze Kopf- mit Haartextur. Bitte deaktivieren falls Du 'Headgear Frame' nutzt.</Settings.MergeHair>
+	<Settings.HideHatInBed>Blende Hüte im Bett aus</Settings.HideHatInBed>
   <Settings.Apply>Einstellungen speichern und übernehmen.</Settings.Apply>
   <FaceStylerTitle>Face Styler</FaceStylerTitle>
   <FacialStuffColorChangerButtonAccept>Check den neuen Style aus</FacialStuffColorChangerButtonAccept>
   <FSStylizeFace>Bearbeite Aussehen des Kolonisten</FSStylizeFace>
+
 </LanguageData>

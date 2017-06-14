@@ -80,7 +80,7 @@ namespace RW_FacialStuff
                         return this.graphics[i].Value;
                     }
                 }
-                Graphic_Multi graphicMultiHead = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(graphicPathVanillaCustom, ShaderDatabase.Cutout, Vector2.one, color);
+                Graphic_Multi graphicMultiHead = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(graphicPathVanillaCustom, ShaderDatabase.CutoutSkin, Vector2.one, color);
                 graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphicMultiHead));
                 return graphicMultiHead;
             }
