@@ -157,7 +157,7 @@ namespace RW_FacialStuff
             this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
 
 
-            var wrinkleColor = Color.Lerp(pawn.story.SkinColor, Color.black, Mathf.InverseLerp(50f, 100f, pawn.ageTracker.AgeBiologicalYearsFloat));
+            var wrinkleColor = Color.Lerp(pawn.story.SkinColor, this.pawn.story.SkinColor * Color.gray, Mathf.InverseLerp(50f, 100f, pawn.ageTracker.AgeBiologicalYearsFloat));
 
 
             if (this.type == "Normal")
@@ -168,7 +168,7 @@ namespace RW_FacialStuff
                     Vector2.one,
                     this.pawn.story.hairColor);
                 this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                    this.WrinkleDef.texPathAverageNormal,
+                    this.WrinkleDef.texPathAverageNormal + suffix,
                     ShaderDatabase.CutoutSkin,
                     Vector2.one,
                     wrinkleColor);
@@ -182,7 +182,7 @@ namespace RW_FacialStuff
                     Vector2.one,
                     this.pawn.story.hairColor);
                 this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                    this.WrinkleDef.texPathAveragePointy,
+                    this.WrinkleDef.texPathAveragePointy + suffix,
                     ShaderDatabase.CutoutSkin,
                     Vector2.one,
                     wrinkleColor);
@@ -196,7 +196,7 @@ namespace RW_FacialStuff
                     Vector2.one,
                     this.pawn.story.hairColor);
                 this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                    this.WrinkleDef.texPathAverageWide,
+                    this.WrinkleDef.texPathAverageWide + suffix,
                     ShaderDatabase.CutoutSkin,
                     Vector2.one,
                     wrinkleColor);
@@ -235,7 +235,7 @@ namespace RW_FacialStuff
             Material material = null;
             if (this.pawn.gender == Gender.Male)
             {
-                        material = this.beardGraphic.MatAt(facing, null);
+                material = this.beardGraphic.MatAt(facing, null);
 
                 if (material != null)
                 {

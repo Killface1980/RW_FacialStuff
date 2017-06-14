@@ -115,7 +115,7 @@ namespace RW_FacialStuff
                         Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
                         Mesh mesh2a = faceComp.HeadMeshSet.MeshAt(headFacing);
                         GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, headMat, portrait);
-                        locFacialY.y += 0.005f;
+                        locFacialY.y += 0.002f;
                         if (!headStump)
                         {
 
@@ -127,27 +127,27 @@ namespace RW_FacialStuff
                             if (wrinkleMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2a, locFacialY, quat, wrinkleMat, portrait);
-                                locFacialY.y += 0.005f;
+                                locFacialY.y += 0.002f;
                             }
                             if (eyeMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, eyeMat, portrait);
-                                locFacialY.y += 0.005f;
+                                locFacialY.y += 0.002f;
                             }
                             if (browMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, browMat, portrait);
-                                locFacialY.y += 0.005f;
+                                locFacialY.y += 0.002f;
                             }
                             if (mouthMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, mouthMat, portrait);
-                                locFacialY.y += 0.005f;
+                                locFacialY.y += 0.002f;
                             }
                             if (beardMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, beardMat, portrait);
-                                locFacialY.y += 0.005f;
+                                locFacialY.y += 0.002f;
                             }
                         }
                     }

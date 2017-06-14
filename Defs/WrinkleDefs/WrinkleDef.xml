@@ -8,9 +8,9 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Wrinkles/Wrinkles_Average_Normal_Female</texPathAverageNormal>
-    <texPathAveragePointy>Wrinkles/Wrinkles_Average_Pointy_Female</texPathAveragePointy>
-    <texPathAverageWide>Wrinkles/Wrinkles_Average_Wide_Female</texPathAverageWide>
+    <texPathAverageNormal>Wrinkles/Wrinkles_Female_Normal</texPathAverageNormal>
+    <texPathAveragePointy>Wrinkles/Wrinkles_Female_Pointy</texPathAveragePointy>
+    <texPathAverageWide>Wrinkles/Wrinkles_Female_Wide</texPathAverageWide>
   </RW_FacialStuff.Defs.WrinkleDef>
 
   <RW_FacialStuff.Defs.WrinkleDef>
@@ -20,9 +20,9 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Wrinkles/Wrinkles_Average_Normal_Male</texPathAverageNormal>
-    <texPathAveragePointy>Wrinkles/Wrinkles_Average_Pointy_Male</texPathAveragePointy>
-    <texPathAverageWide>Wrinkles/Wrinkles_Average_Wide_Male</texPathAverageWide>
+    <texPathAverageNormal>Wrinkles/Wrinkles_Male_Normal</texPathAverageNormal>
+    <texPathAveragePointy>Wrinkles/Wrinkles_Male_Pointy</texPathAveragePointy>
+    <texPathAverageWide>Wrinkles/Wrinkles_Male_Wide</texPathAverageWide>
   </RW_FacialStuff.Defs.WrinkleDef>
 
 </DefPackage-WrinkleDef>
