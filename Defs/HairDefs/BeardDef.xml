@@ -9,9 +9,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_Anchor</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_Anchor</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_Anchor</texPathAverageWide>
+    <texPath>Beards/Beard_Anchor</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -25,9 +23,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_Balbo</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_Balbo</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_Balbo</texPathAverageWide>
+    <texPath>Beards/Beard_Balbo</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -41,9 +37,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_ChinCurtain</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_ChinCurtain</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_ChinCurtain</texPathAverageWide>
+    <texPath>Beards/Beard_ChinCurtain</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -59,9 +53,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_ChinPuff</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_ChinPuff</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_ChinPuff</texPathAverageWide>
+    <texPath>Beards/Beard_ChinPuff</texPath>
     <hairTags>
       <li>Punk</li>
       <li>Tribal</li>
@@ -76,9 +68,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_DuckTail</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_DuckTail</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_DuckTail</texPathAverageWide>
+    <texPath>Beards/Beard_DuckTail</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -93,9 +83,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_ElInsecto</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_ElInsecto</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_ElInsecto</texPathAverageWide>
+    <texPath>Beards/Beard_ElInsecto</texPath>
     <hairTags>
       <li>Punk</li>
       <li>Tribal</li>
@@ -109,9 +97,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_FranzJoseph</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_FranzJoseph</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_FranzJoseph</texPathAverageWide>
+    <texPath>Beards/Beard_FranzJoseph</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -125,9 +111,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_FrenchFork</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_FrenchFork</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_FrenchFork</texPathAverageWide>
+    <texPath>Beards/Beard_FrenchFork</texPath>
     <hairTags>
       <li>Rural</li>
       <li>Punk</li>
@@ -142,9 +126,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_FriendlyMuttonChops</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_FriendlyMuttonChops</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_FriendlyMuttonChops</texPathAverageWide>
+    <texPath>Beards/Beard_FriendlyMuttonChops</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -160,9 +142,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_FullBeard</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_FullBeard</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_FullBeard</texPathAverageWide>
+    <texPath>Beards/Beard_FullBeard</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -178,9 +158,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_Garibaldi</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_Garibaldi</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_Garibaldi</texPathAverageWide>
+    <texPath>Beards/Beard_Garibaldi</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -197,9 +175,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_Goatee</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_Goatee</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_Goatee</texPathAverageWide>
+    <texPath>Beards/Beard_Goatee</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -214,9 +190,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_Hollywoodian</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_Hollywoodian</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_Hollywoodian</texPathAverageWide>
+    <texPath>Beards/Beard_Hollywoodian</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -230,9 +204,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_Hulihee</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_Hulihee</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_Hulihee</texPathAverageWide>
+    <texPath>Beards/Beard_Hulihee</texPath>
     <hairTags>
       <li>Rural</li>
       <li>Punk</li>
@@ -247,9 +219,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_Imperial</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_Imperial</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_Imperial</texPathAverageWide>
+    <texPath>Beards/Beard_Imperial</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -264,9 +234,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_MuttonChops</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_MuttonChops</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_MuttonChops</texPathAverageWide>
+    <texPath>Beards/Beard_MuttonChops</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -282,9 +250,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_NapoleonIIIImperial</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_NapoleonIIIImperial</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_NapoleonIIIImperial</texPathAverageWide>
+    <texPath>Beards/Beard_NapoleonIIIImperial</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -299,9 +265,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_OldDutch</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_OldDutch</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_OldDutch</texPathAverageWide>
+    <texPath>Beards/Beard_OldDutch</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -317,9 +281,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_PetiteGoatee</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_PetiteGoatee</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_PetiteGoatee</texPathAverageWide>
+    <texPath>Beards/Beard_PetiteGoatee</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -333,9 +295,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_SoulPatch</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_SoulPatch</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_SoulPatch</texPathAverageWide>
+    <texPath>Beards/Beard_SoulPatch</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -351,9 +311,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_Souvarov</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_Souvarov</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_Souvarov</texPathAverageWide>
+    <texPath>Beards/Beard_Souvarov</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -367,9 +325,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_Stubble</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_Stubble</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_Stubble</texPathAverageWide>
+    <texPath>Beards/Beard_Stubble</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -386,9 +342,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_TheKlingon</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_TheKlingon</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_TheKlingon</texPathAverageWide>
+    <texPath>Beards/Beard_TheKlingon</texPath>
     <hairTags>
       <li>Punk</li>
       <li>Tribal</li>
@@ -402,9 +356,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_TheSparrow</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_TheSparrow</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_TheSparrow</texPathAverageWide>
+    <texPath>Beards/Beard_TheSparrow</texPath>
     <hairTags>
       <li>Tribal</li>
     </hairTags>
@@ -417,9 +369,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_TheWinnfield</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_TheWinnfield</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_TheWinnfield</texPathAverageWide>
+    <texPath>Beards/Beard_TheWinnfield</texPath>
     <hairTags>
       <li>Rural</li>
       <li>Punk</li>
@@ -433,9 +383,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_TheZappa</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_TheZappa</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_TheZappa</texPathAverageWide>
+    <texPath>Beards/Beard_TheZappa</texPath>
     <hairTags>
       <li>Rural</li>
       <li>Punk</li>
@@ -449,9 +397,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_VanDyke</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_VanDyke</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_VanDyke</texPathAverageWide>
+    <texPath>Beards/Beard_VanDyke</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -465,9 +411,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Shaved</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Shaved</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Shaved</texPathAverageWide>
+    <texPath>Beards/Beard_Shaved</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -484,9 +428,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_CoolSteiner</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_CoolSteiner</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_CoolSteiner</texPathAverageWide>
+    <texPath>Beards/Beard_CoolSteiner</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -503,9 +445,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_CaptainTiebeard</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_CaptainTiebeard</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_CaptainTiebeard</texPathAverageWide>
+    <texPath>Beards/Beard_CaptainTiebeard</texPath>
     <hairTags>
       <li>Tribal</li>
     </hairTags>
@@ -518,9 +458,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_Santa</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_Santa</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_Santa</texPathAverageWide>
+    <texPath>Beards/Beard_Santa</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -537,9 +475,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPathAverageNormal>Beards/Beard_Normal_TwinPeaks</texPathAverageNormal>
-    <texPathAveragePointy>Beards/Beard_Pointy_TwinPeaks</texPathAveragePointy>
-    <texPathAverageWide>Beards/Beard_Wide_TwinPeaks</texPathAverageWide>
+    <texPath>Beards/Beard_TwinPeaks</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>

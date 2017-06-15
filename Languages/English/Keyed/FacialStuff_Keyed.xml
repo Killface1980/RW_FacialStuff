@@ -2,7 +2,7 @@
 <LanguageData>
   <Settings.UseWrinkles>Add wrinkles to colonists</Settings.UseWrinkles>
   <Settings.UseMouth>Add mouths to colonists</Settings.UseMouth>
-	<Settings.MergeHair>Merge head with hair texture. Please deactivate if you use 'Headgear Frame'.</Settings.MergeHair>
+	<Settings.MergeHair>Show hair under hat.</Settings.MergeHair>
 	<Settings.HideHatInBed>Hide hats in bed</Settings.HideHatInBed>
   <Settings.Apply>Save and apply settings.</Settings.Apply>
   <FaceStylerTitle>Face Styler</FaceStylerTitle>

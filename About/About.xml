@@ -17,7 +17,7 @@
     + includes a modified version of 'Spoonshortage's Rimworld Hairstyles 1.2' by spoonshortage
     + includes a modified version of 'Nackblad Inc Rimhair 1.1' by nackblad
     
-    REQUIRES HUGSLIB
+    Patches the PawnRenderer via Harmony and returns 'false' thus bein incompatible to mods doind the same.
     
     Special thanks to Fluffy for the FaceStyling bench (adapted from 'Clutter')
     Uses the detour code from Orion's 'Hospitality A15'

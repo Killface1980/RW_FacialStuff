@@ -291,6 +291,9 @@ namespace RW_FacialStuff
             {
                 return 100f;
             }
+            return Rand.Range(1f, 100f);
+
+            // deactivated for now
             if (pawn.gender == Gender.Male)
             {
                 switch (mouth.hairGender)

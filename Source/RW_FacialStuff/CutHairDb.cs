@@ -19,6 +19,7 @@ namespace RW_FacialStuff
         // Verse.GraphicDatabase
         public static Graphic Get<T>(string path, Shader shader, Vector2 drawSize, Color color) where T : Graphic, new()
         {
+            // Added second 'color' to get a separate graphic
             GraphicRequest req = new GraphicRequest(typeof(T), path, shader, drawSize, color, color, null, 0);
             return GetInner<T>(req);
         }

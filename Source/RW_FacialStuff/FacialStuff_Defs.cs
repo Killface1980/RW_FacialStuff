@@ -7,9 +7,7 @@ namespace RW_FacialStuff.Defs
 
     public class BeardDef : Def
     {
-        public string texPathAverageNormal;
-        public string texPathAveragePointy;
-        public string texPathAverageWide;
+        public string texPath;
 
         public bool drawMouth;
 
@@ -46,9 +44,7 @@ namespace RW_FacialStuff.Defs
 
     public class WrinkleDef : Def
     {
-        public string texPathAverageNormal;
-        public string texPathAveragePointy;
-        public string texPathAverageWide;
+        public string texPath;
 
         public HairGender hairGender = HairGender.Any;
 

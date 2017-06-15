@@ -67,7 +67,7 @@ namespace RW_FacialStuff.Detouring
         }
 
         [Detour(typeof(PawnSkinColors), bindingFlags = (BindingFlags.Static | BindingFlags.NonPublic))]
-        private static int GetSkinDataIndexOfMelanin(float melanin)
+        public static int GetSkinDataIndexOfMelanin(float melanin)
         {
             int result = 0;
             for (int i = 0; i < _SkinColors.Length; i++)
@@ -144,6 +144,32 @@ namespace RW_FacialStuff.Detouring
                 num += (_SkinColors[skinDataIndex + 1].selector - _SkinColors[skinDataIndex].selector) / 2f;
             }
             return num;
+        }
+
+        // FS bench
+        public static float GetRelativeLerpValue(float value)
+        {
+            int leftIndexForValue = GetSkinDataIndexOfMelanin(value);
+            if (leftIndexForValue == _SkinColors.Length - 1)
+            {
+                return 0f;
+            }
+            int num = leftIndexForValue + 1;
+            return Mathf.InverseLerp(_SkinColors[leftIndexForValue].melanin, _SkinColors[num].melanin, value);
+        }
+
+        public static float GetValueFromRelativeLerp(int leftIndex, float lerp)
+        {
+            if (leftIndex >= _SkinColors.Length - 1)
+            {
+                return 1f;
+            }
+            if (leftIndex < 0)
+            {
+                return 0f;
+            }
+            int num = leftIndex + 1;
+            return Mathf.Lerp(_SkinColors[leftIndex].melanin, _SkinColors[num].melanin, lerp);
         }
     }
 }

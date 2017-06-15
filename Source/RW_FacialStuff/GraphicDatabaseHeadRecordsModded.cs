@@ -9,23 +9,8 @@ namespace RW_FacialStuff
 {
     using System.Linq;
 
-    // to do: patch
-    //[Detour(typeof(GraphicDatabaseHeadRecords), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
     public static class GraphicDatabaseHeadRecordsModded
     {
-        //[HarmonyPatch(typeof(GraphicDatabaseHeadRecords), "Reset")]
-        //static class Reset_Prefix
-        //{
-        //    [HarmonyPrefix]
-        //    public static void Reset()
-        //    {
-        //        headsVanillaCustom.Clear();
-        //        skull = null;
-        //        stump = null;
-        //    }
-        //
-        //}
-
         public static List<HeadGraphicRecordVanillaCustom> headsVanillaCustom = new List<HeadGraphicRecordVanillaCustom>();
 
         public static List<HeadGraphicRecordModded> headsModded = new List<HeadGraphicRecordModded>();
@@ -146,36 +131,21 @@ namespace RW_FacialStuff
         }
 
 
-        public static Graphic_Multi GetModdedHeadNamed(Pawn pawn, bool useVanilla, Color color)
+        public static Graphic_Multi GetModdedHeadNamed(Pawn pawn, Color color)
         {
             BuildDatabaseIfNecessary();
-            if (useVanilla)
+            foreach (HeadGraphicRecordVanillaCustom headGraphicRecordVanillaCustom in headsVanillaCustom)
             {
-                foreach (HeadGraphicRecordVanillaCustom headGraphicRecordVanillaCustom in headsVanillaCustom)
+                if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story.HeadGraphicPath.Remove(0, 22))
                 {
-                    if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story.HeadGraphicPath.Remove(0, 22))
-                    {
-                //        Log.Message("Getting vanilla " + pawn.story.HeadGraphicPath.Remove(0, 22) + ".");
+                    //        Log.Message("Getting vanilla " + pawn.story.HeadGraphicPath.Remove(0, 22) + ".");
 
-                        return headGraphicRecordVanillaCustom.GetGraphic(color);
-                    }
-                }
-                Log.Message("Tried to get pawn head at path " + pawn.story.HeadGraphicPath.Remove(0, 22) + " that was not found. Defaulting...");
-
-                return headsVanillaCustom.First().GetGraphic(color);
-            }
-            CompFace faceComp = pawn.TryGetComp<CompFace>();
-
-            foreach (HeadGraphicRecordModded headGraphicRecordModded in headsModded)
-            {
-                if (headGraphicRecordModded.graphicPathModded == faceComp.headGraphicIndex)
-                {
-           //         Log.Message("Getting modded " + headGraphicRecordModded.graphicPathModded + ".");
-                    return headGraphicRecordModded.GetGraphicBlank(color);
+                    return headGraphicRecordVanillaCustom.GetGraphic(color);
                 }
             }
-
-            Log.Message("Tried to get pawn head at path " + faceComp.headGraphicIndex + " that was not found. Defaulting...");
+            Log.Message(
+                "Tried to get pawn head at path " + pawn.story.HeadGraphicPath.Remove(0, 22)
+                + " that was not found. Defaulting...");
 
             return headsVanillaCustom.First().GetGraphic(color);
         }
@@ -223,7 +193,6 @@ namespace RW_FacialStuff
             return stump.GetGraphic(skinColor);
         }
 
-        public static List<KeyValuePair<string, Graphic_Multi>> moddedHeadGraphics = new List<KeyValuePair<string, Graphic_Multi>>();
 
         //   private static List<Texture2D> _textures;
 

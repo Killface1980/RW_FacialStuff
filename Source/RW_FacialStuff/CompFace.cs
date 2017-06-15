@@ -27,7 +27,7 @@ namespace RW_FacialStuff
 
         public BrowDef BrowDef;
 
-        public Graphic_Multi DissicatedHeadGraphic;
+        public string crownTypeSuffix = "_Average";
 
         public bool drawMouth = true;
 
@@ -47,7 +47,7 @@ namespace RW_FacialStuff
 
         public string SkinColorHex;
 
-        public string type = null;
+        public string headTypeSuffix = "_Normal";
 
         public WrinkleDef WrinkleDef;
 
@@ -60,17 +60,6 @@ namespace RW_FacialStuff
         private Graphic mouthGraphic;
 
         private Graphic wrinkleGraphic;
-
-
-
-        private Texture2D finalHeadFront;
-        private Texture2D finalHeadSide;
-        private Texture2D finalHeadBack;
-
-
-        private Graphic_Multi headGraphicVanilla;
-        private Graphic_Multi dissicatedHeadGraphicVanilla;
-
 
 
         public bool isOld;
@@ -112,22 +101,36 @@ namespace RW_FacialStuff
 
             if (this.pawn.story.HeadGraphicPath.Contains("Normal"))
             {
-                newType = "Normal";
+                newType = "_Normal";
             }
 
             if (this.pawn.story.HeadGraphicPath.Contains("Pointy"))
             {
-                newType = "Pointy";
+                newType = "_Pointy";
             }
 
             if (this.pawn.story.HeadGraphicPath.Contains("Wide"))
             {
-                newType = "Wide";
+                newType = "_Wide";
             }
 
-            if (this.type == null || this.type != newType)
+            if (this.headTypeSuffix == null || this.headTypeSuffix != newType)
             {
-                this.type = newType;
+                this.headTypeSuffix = newType;
+            }
+
+            if (this.pawn.story.crownType == CrownType.Narrow)
+            {
+                this.crownTypeSuffix = "_Narrow";
+            }
+            else
+            {
+                this.crownTypeSuffix = "_Average";
+            }
+
+            if (this.pawn.gender == Gender.Female && this.BeardDef == null)
+            {
+                this.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
             }
 
             return true;
@@ -139,88 +142,50 @@ namespace RW_FacialStuff
             {
                 return false;
             }
-            if (this.pawn.gender == Gender.Female && this.BeardDef == null)
-            {
-                this.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
-            }
 
-            string suffix = "_Average";
-
-            switch (this.pawn.story.crownType)
-            {
-                case CrownType.Narrow:
-                    suffix = "_Narrow";
-                    break;
-            }
 
 
             this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
 
 
-            var wrinkleColor = Color.Lerp(pawn.story.SkinColor, this.pawn.story.SkinColor * Color.gray, Mathf.InverseLerp(50f, 100f, pawn.ageTracker.AgeBiologicalYearsFloat));
+            var wrinkleColor = Color.Lerp(this.pawn.story.SkinColor, this.pawn.story.SkinColor * Color.gray, Mathf.InverseLerp(50f, 100f, this.pawn.ageTracker.AgeBiologicalYearsFloat));
 
+            this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                this.WrinkleDef.texPath + this.crownTypeSuffix  + this.headTypeSuffix,
+                ShaderDatabase.Transparent,
+                Vector2.one,
+                wrinkleColor);
 
-            if (this.type == "Normal")
+            string path = this.BeardDef.texPath  + this.crownTypeSuffix + this.headTypeSuffix;
+
+            if (this.BeardDef == DefDatabase<BeardDef>.GetNamed("Beard_Shaved"))
             {
-                this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                    this.BeardDef.texPathAverageNormal + suffix,
-                    ShaderDatabase.CutoutSkin,
-                    Vector2.one,
-                    this.pawn.story.hairColor);
-                this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                    this.WrinkleDef.texPathAverageNormal + suffix,
-                    ShaderDatabase.CutoutSkin,
-                    Vector2.one,
-                    wrinkleColor);
+                path = this.BeardDef.texPath;
             }
 
-            if (this.type == "Pointy")
-            {
-                this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                    this.BeardDef.texPathAveragePointy + suffix,
-                    ShaderDatabase.CutoutSkin,
+            this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                    path,
+                    ShaderDatabase.Transparent,
                     Vector2.one,
                     this.pawn.story.hairColor);
-                this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                    this.WrinkleDef.texPathAveragePointy + suffix,
-                    ShaderDatabase.CutoutSkin,
-                    Vector2.one,
-                    wrinkleColor);
-            }
-
-            if (this.type == "Wide")
-            {
-                this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                    this.BeardDef.texPathAverageWide + suffix,
-                    ShaderDatabase.CutoutSkin,
-                    Vector2.one,
-                    this.pawn.story.hairColor);
-                this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                    this.WrinkleDef.texPathAverageWide + suffix,
-                    ShaderDatabase.CutoutSkin,
-                    Vector2.one,
-                    wrinkleColor);
-            }
 
             this.eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                this.EyeDef.texPath + suffix,
-                ShaderDatabase.CutoutSkin,
+                this.EyeDef.texPath  + this.crownTypeSuffix,
+                ShaderDatabase.Transparent,
                 Vector2.one,
                 Color.white);
 
-            Color darkenColor = new Color(0.2f, 0.2f, 0.2f);
-
             this.browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                this.BrowDef.texPath + suffix,
-                ShaderDatabase.CutoutSkin,
+                this.BrowDef.texPath + this.crownTypeSuffix,
+                ShaderDatabase.Transparent,
                 Vector2.one,
-                this.pawn.story.hairColor * darkenColor);
+                Color.black);
 
             this.mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                this.MouthDef.texPath + suffix,
-                ShaderDatabase.CutoutSkin,
+                this.MouthDef.texPath  + this.crownTypeSuffix,
+                ShaderDatabase.Transparent,
                 Vector2.one,
-                this.pawn.story.SkinColor * darkenColor);
+                Color.black);
 
 
             return true;
@@ -228,8 +193,8 @@ namespace RW_FacialStuff
         }
 
 
+        #region Materials
 
-        // Verse.PawnGraphicSet
         public Material BeardMatAt(Rot4 facing)
         {
             Material material = null;
@@ -242,6 +207,7 @@ namespace RW_FacialStuff
                     material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
                 }
             }
+
             return material;
         }
 
@@ -258,6 +224,7 @@ namespace RW_FacialStuff
             {
                 material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
             }
+
             return material;
         }
 
@@ -277,6 +244,7 @@ namespace RW_FacialStuff
             {
                 material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
             }
+
             return material;
         }
 
@@ -289,6 +257,7 @@ namespace RW_FacialStuff
             {
                 material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
             }
+
             return material;
         }
 
@@ -326,12 +295,17 @@ namespace RW_FacialStuff
             {
                 material = this.wrinkleGraphic.MatAt(facing, null);
             }
+
             if (material != null)
             {
                 material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
             }
+
             return material;
         }
+
+        #endregion
+
 
         // Verse.PawnGraphicSet
         public GraphicMeshSet HeadMeshSet
@@ -342,11 +316,13 @@ namespace RW_FacialStuff
                 {
                     return MeshPoolFs.humanlikeHeadSetAverage;
                 }
+
                 if (this.pawn.story.crownType == CrownType.Narrow)
                 {
                     return MeshPoolFs.humanlikeHeadSetNarrow;
                 }
-                Log.Error("Unknown crown type: " + this.pawn.story.crownType);
+
+                Log.Error("Unknown crown headTypeSuffix: " + this.pawn.story.crownType);
                 return MeshPool.humanlikeHeadSet;
             }
         }
@@ -365,7 +341,8 @@ namespace RW_FacialStuff
             Scribe_Values.Look(ref this.drawMouth, "drawMouth");
 
             Scribe_Values.Look(ref this.headGraphicIndex, "headGraphicIndex");
-            Scribe_Values.Look(ref this.type, "type");
+            Scribe_Values.Look(ref this.headTypeSuffix, "headTypeSuffix");
+            Scribe_Values.Look(ref this.crownTypeSuffix, "crownTypeSuffix");
             Scribe_Values.Look(ref this.SkinColorHex, "SkinColorHex");
             Scribe_Values.Look(ref this.HairColorOrg, "HairColorOrg");
         }
