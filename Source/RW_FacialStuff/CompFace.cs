@@ -76,6 +76,10 @@ namespace RW_FacialStuff
 
         private Graphic eyesClosedGraphic;
 
+        private int nextBlink;
+
+        private int nextBlinkEnd;
+
         public void DefineFace()
         {
             this.pawn = this.parent as Pawn;
@@ -284,22 +288,41 @@ namespace RW_FacialStuff
             return material;
         }
 
-        public Material EyeMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
+        public Material EyeMatAt(Rot4 facing, bool portrait, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
             Material material = null;
             if (bodyCondition == RotDrawMode.Fresh)
             {
                 bool flag = true;
-//                if (this.pawn.GetPosture() == PawnPosture.LayingAny)
+                if (portrait)
                 {
-                    if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep || this.pawn.Dead)
-                    {
-                        flag = false;
-                        material = this.eyesClosedGraphic.MatAt(facing, null);
-                    }
+                    material = this.eyeGraphic.MatAt(facing, null);
+                    material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                    return material;
+                }
+                //                if (this.pawn.GetPosture() == PawnPosture.LayingAny)
+
+                if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep || this.pawn.Dead)
+                {
+                    flag = false;
+                    material = this.eyesClosedGraphic.MatAt(facing, null);
                 }
                 if (flag)
-                    material = this.eyeGraphic.MatAt(facing, null);
+                {
+                    if (Find.TickManager.TicksGame >= this.nextBlink)
+                    {
+                        material = this.eyesClosedGraphic.MatAt(facing, null);
+                        if (Find.TickManager.TicksGame > this.nextBlinkEnd)
+                        {
+                            nextBlink = Find.TickManager.TicksGame + (int)Rand.Range(30f, 240f);
+                            this.nextBlinkEnd = this.nextBlink + (int)Rand.Range(5f, 20f);
+                        }
+                    }
+                    else
+                    {
+                        material = this.eyeGraphic.MatAt(facing, null);
+                    }
+                }
             }
             else if (bodyCondition == RotDrawMode.Rotting)
             {

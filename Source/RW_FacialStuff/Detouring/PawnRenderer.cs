@@ -122,7 +122,7 @@ namespace RW_FacialStuff
                     if (!headStump)
                     {
                         Material beardMat = faceComp.BeardMatAt(headFacing);
-                        Material eyeMat = faceComp.EyeMatAt(headFacing, bodyDrawType);
+                        Material eyeMat = faceComp.EyeMatAt(headFacing, portrait, bodyDrawType);
                         Material browMat = faceComp.BrowMatAt(headFacing);
                         Material mouthMat = faceComp.MouthMatAt(headFacing, bodyDrawType);
                         Material wrinkleMat = faceComp.WrinkleMatAt(headFacing);
