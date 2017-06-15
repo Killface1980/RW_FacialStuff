@@ -126,6 +126,7 @@ namespace RW_FacialStuff
                         Material browMat = faceComp.BrowMatAt(headFacing);
                         Material mouthMat = faceComp.MouthMatAt(headFacing, bodyDrawType);
                         Material wrinkleMat = faceComp.WrinkleMatAt(headFacing);
+
                         if (wrinkleMat != null)
                         {
                             GenDraw.DrawMeshNowOrLater(mesh2a, locFacialY, quat, wrinkleMat, portrait);
@@ -151,6 +152,15 @@ namespace RW_FacialStuff
                             GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, beardMat, portrait);
                             locFacialY.y += 0.002f;
                         }
+                    //  if (faceComp.hasBionic)
+                    //  {
+                    //      Material bioniceMat = faceComp.BionicMatAt(headFacing);
+                    //      if (bioniceMat != null)
+                    //      {
+                    //          GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, bioniceMat, portrait);
+                    //          locFacialY.y += 0.002f;
+                    //      }
+                    //  }
                     }
                 }
 

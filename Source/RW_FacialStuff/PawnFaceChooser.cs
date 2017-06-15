@@ -340,7 +340,7 @@ namespace RW_FacialStuff
                 return 0f;
             }
 
-            if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 40)
+            if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 37)
             {
                 return 0f;
             }

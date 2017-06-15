@@ -6,6 +6,8 @@ namespace RW_FacialStuff
     using System;
     using System.IO;
 
+    using RimWorld;
+
     using RW_FacialStuff.Defs;
 
     using UnityEngine;
@@ -23,7 +25,7 @@ namespace RW_FacialStuff
 
         private Pawn pawn;
 
-        public BeardDef BeardDef;
+        public BeardDef BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
 
         public BrowDef BrowDef;
 
@@ -39,7 +41,7 @@ namespace RW_FacialStuff
 
         public string headGraphicIndex;
 
-        public MouthDef MouthDef;
+        public MouthDef MouthDef = DefDatabase<MouthDef>.GetNamed("Mouth_Female_Default");
 
         public bool optimized;
 
@@ -61,8 +63,18 @@ namespace RW_FacialStuff
 
         private Graphic wrinkleGraphic;
 
+        //     private Graphic bionicGraphic;
+
 
         public bool isOld;
+
+        public bool hasBionic;
+
+        private string BionicEye_texPath;
+
+        private int BionicEye_place;
+
+        private Graphic eyesClosedGraphic;
 
         public void DefineFace()
         {
@@ -128,10 +140,43 @@ namespace RW_FacialStuff
                 this.crownTypeSuffix = "_Average";
             }
 
-            if (this.pawn.gender == Gender.Female && this.BeardDef == null)
-            {
-                this.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
-            }
+            // weird bug: no MouthDef defined for some visitors (male, 17)
+            if (this.MouthDef == null) this.MouthDef = DefDatabase<MouthDef>.GetNamed("Mouth_Female_Default");
+
+            // bool flag1 = false;
+            // bool flag2 = false;
+            // this.hasBionic = false;
+            // foreach (Hediff hediff in this.pawn.health.hediffSet.hediffs)
+            // {
+            //     AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
+            //     if (addedPartProps != null && addedPartProps.isBionic)
+            //     {
+            //         if (hediff.Part.def == BodyPartDefOf.LeftEye) flag1 = true;
+            //
+            //         if (hediff.Part.def == BodyPartDefOf.RightEye) flag2 = true;
+            //         this.hasBionic = true;
+            //     }
+            //
+            // }
+            // if (flag1 || flag2)
+            // {
+            //
+            //     if (flag1 && flag2)
+            //     {
+            //         this.BionicEye_texPath = "AddedParts/BionicEye_Both";
+            //         this.BionicEye_place = 2;
+            //     }
+            //     else if (flag1)
+            //     {
+            //         this.BionicEye_texPath = "AddedParts/BionicEye_Left";
+            //         this.BionicEye_place = 0;
+            //     }
+            //     else
+            //     {
+            //         this.BionicEye_texPath = "AddedParts/BionicEye_Right";
+            //         this.BionicEye_place = 1;
+            //     }
+            // }
 
             return true;
         }
@@ -151,12 +196,12 @@ namespace RW_FacialStuff
             var wrinkleColor = Color.Lerp(this.pawn.story.SkinColor, this.pawn.story.SkinColor * Color.gray, Mathf.InverseLerp(50f, 100f, this.pawn.ageTracker.AgeBiologicalYearsFloat));
 
             this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                this.WrinkleDef.texPath + this.crownTypeSuffix  + this.headTypeSuffix,
+                this.WrinkleDef.texPath + this.crownTypeSuffix + this.headTypeSuffix,
                 ShaderDatabase.Transparent,
                 Vector2.one,
                 wrinkleColor);
 
-            string path = this.BeardDef.texPath  + this.crownTypeSuffix + this.headTypeSuffix;
+            string path = this.BeardDef.texPath + this.crownTypeSuffix + this.headTypeSuffix;
 
             if (this.BeardDef == DefDatabase<BeardDef>.GetNamed("Beard_Shaved"))
             {
@@ -170,7 +215,13 @@ namespace RW_FacialStuff
                     this.pawn.story.hairColor);
 
             this.eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                this.EyeDef.texPath  + this.crownTypeSuffix,
+                this.EyeDef.texPath + this.crownTypeSuffix,
+                ShaderDatabase.Transparent,
+                Vector2.one,
+                Color.white);
+
+            this.eyesClosedGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                "Eyes/Eyes_Closed",
                 ShaderDatabase.Transparent,
                 Vector2.one,
                 Color.white);
@@ -182,11 +233,16 @@ namespace RW_FacialStuff
                 Color.black);
 
             this.mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                this.MouthDef.texPath  + this.crownTypeSuffix,
+                this.MouthDef.texPath + this.crownTypeSuffix,
                 ShaderDatabase.Transparent,
                 Vector2.one,
                 Color.black);
 
+
+            // if (hasBionic)
+            // {
+            //     this.bionicGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(BionicEye_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white);
+            // }
 
             return true;
 
@@ -233,11 +289,21 @@ namespace RW_FacialStuff
             Material material = null;
             if (bodyCondition == RotDrawMode.Fresh)
             {
-                material = this.eyeGraphic.MatAt(facing, null);
+                bool flag = true;
+//                if (this.pawn.GetPosture() == PawnPosture.LayingAny)
+                {
+                    if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep || this.pawn.Dead)
+                    {
+                        flag = false;
+                        material = this.eyesClosedGraphic.MatAt(facing, null);
+                    }
+                }
+                if (flag)
+                    material = this.eyeGraphic.MatAt(facing, null);
             }
             else if (bodyCondition == RotDrawMode.Rotting)
             {
-                material = this.eyeGraphic.MatAt(facing, null);
+                material = this.eyesClosedGraphic.MatAt(facing, null);
             }
 
             if (material != null)
@@ -264,23 +330,26 @@ namespace RW_FacialStuff
         public Material MouthMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
             Material material = null;
-            bool flag = this.pawn.gender == Gender.Female;
-            if (FS_Settings.UseMouth && (flag || !flag && this.BeardDef.drawMouth) && this.drawMouth)
+            if (FS_Settings.UseMouth && this.drawMouth)
             {
+                bool flag = this.pawn.gender == Gender.Female;
 
-                if (bodyCondition == RotDrawMode.Fresh)
+                if (flag || !flag && this.BeardDef.drawMouth)
                 {
-                    material = this.mouthGraphic.MatAt(facing, null);
+                    if (bodyCondition == RotDrawMode.Fresh)
+                    {
+                        material = this.mouthGraphic.MatAt(facing, null);
 
-                }
-                else if (bodyCondition == RotDrawMode.Rotting)
-                {
-                    material = this.mouthGraphic.MatAt(facing, null);
-                }
+                    }
+                    else if (bodyCondition == RotDrawMode.Rotting)
+                    {
+                        material = this.mouthGraphic.MatAt(facing, null);
+                    }
 
-                if (material != null)
-                {
-                    material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                    if (material != null)
+                    {
+                        material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                    }
                 }
             }
 
@@ -303,6 +372,25 @@ namespace RW_FacialStuff
 
             return material;
         }
+
+        // public Material BionicMatAt(Rot4 facing)
+        // {
+        //     Material material = this.bionicGraphic.MatAt(facing, null);
+        //
+        //     if (this.BionicEye_place == 1)
+        //     {
+        //         if (facing == Rot4.South)
+        //         {
+        //             material = this.bionicGraphic.MatAt(facing, null);
+        //         }
+        //     }
+        //     if (material != null)
+        //     {
+        //         material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+        //     }
+        //
+        //     return material;
+        // }
 
         #endregion
 
