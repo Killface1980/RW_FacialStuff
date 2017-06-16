@@ -8,7 +8,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Eyes/Female/Eye_Female_FL</texPath>
+    <texPath>FL</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -24,7 +24,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Eyes/Female/Eye_Female_RD</texPath>
+    <texPath>RD</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -40,7 +40,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Eyes/Female/Eye_Female_OV</texPath>
+    <texPath>OV</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -56,7 +56,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Eyes/Female/Eye_Female_SM</texPath>
+    <texPath>SM</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>

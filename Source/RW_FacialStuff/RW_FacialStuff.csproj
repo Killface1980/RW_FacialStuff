@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Detouring\Pawn_HealthTracker_Patches.cs" />
+    <Compile Include="Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="Graphic_Multi_EyeWear.cs" />
     <Compile Include="MeshPoolFs.cs" />
     <Compile Include="CutHairDb.cs" />

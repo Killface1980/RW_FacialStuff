@@ -85,38 +85,21 @@ namespace RW_FacialStuff
             drawSize = req.drawSize;
             Texture2D[] array = new Texture2D[4];
 
-            string basepath = null;
-            string usageType = null;
+            string addedpartName = null;
+            string side = null;
+            string crowntype = null;
 
             string fileNameWithoutExtension = req.path;
             string[] array2 = fileNameWithoutExtension.Split('_');
             try
             {
-                basepath = array2[0];
-                usageType = array2[1];
+                addedpartName = array2[0];
+                side = array2[1];
+                crowntype = array2[2];
             }
             catch (Exception ex)
             {
                 Log.Error("Parse error with head graphic at " + req.path + ": " + ex.Message);
-            }
-
-            string reqPath = basepath + "_" + usageType;
-
-            if (ContentFinder<Texture2D>.Get(reqPath + "_side", false))
-            {
-                if (usageType.Equals("Right"))
-                {
-                    array[3] = MaskTextures.BlankTexture();
-                }
-                else
-                {
-                    array[3] = ContentFinder<Texture2D>.Get(reqPath + "_side");
-                }
-            }
-            else
-            {
-                Log.Message("Facial Stuff: Failed to get front texture at " + reqPath + "_side" + " - Graphic_Multi_EyeWear");
-                array[3] = MaskTextures.BlankTexture();
             }
 
             if (ContentFinder<Texture2D>.Get(req.path + "_front", false))
@@ -126,25 +109,51 @@ namespace RW_FacialStuff
             else
             {
                 Log.Message("Facial Stuff: Failed to get front texture at " + req.path + "_front" + " - Graphic_Multi_EyeWear");
+                return;
                 array[2] = MaskTextures.BlankTexture();
             }
 
-            if (ContentFinder<Texture2D>.Get(reqPath + "_side", false))
+            if (ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side", false))
             {
-                if (usageType.Equals("Left"))
+                if (side.Equals("Right"))
                 {
-                    array[1] = MaskTextures.BlankTexture();
+                    if (ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side2", false))
+                    {
+                        array[3] = ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side2");
+
+                    }
+                    else
+                    {
+                        array[3] = MaskTextures.BlankTexture();
+                    }
                 }
                 else
                 {
-                    array[1] = ContentFinder<Texture2D>.Get(reqPath + "_side");
+                    array[3] = ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side");
+                }
+
+                if (side.Equals("Left"))
+                {
+                    if (ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side2", false))
+                    {
+                        array[1] = ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side2");
+                    }
+                    else
+                    {
+                        array[1] = MaskTextures.BlankTexture();
+                    }
+                }
+                else
+                {
+                    array[1] = ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side");
                 }
             }
             else
             {
-                Log.Message("Facial Stuff: Failed to get front texture at " + reqPath + "_side" + " - Graphic_Multi_EyeWear");
-                array[1] = MaskTextures.BlankTexture();
+                Log.Message("Facial Stuff: No texture found at " + addedpartName + "_" + crowntype + "_side" + " - Graphic_Multi_EyeWear");
+                array[3] = MaskTextures.BlankTexture();
             }
+
 
             if (ContentFinder<Texture2D>.Get(req.path + "_back", false))
             {
@@ -157,6 +166,10 @@ namespace RW_FacialStuff
 
             for (int i = 0; i < 4; i++)
             {
+                if (array[i] == null)
+                {
+                    Log.Message("Array = null at: " + i);
+                }
                 MaterialRequest req2 = default(MaterialRequest);
                 req2.mainTex = array[i];
                 req2.shader = req.shader;

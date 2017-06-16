@@ -55,14 +55,17 @@ namespace RW_FacialStuff
 
         private Graphic browGraphic;
 
-        private Graphic eyeGraphic;
-
         private Graphic mouthGraphic;
 
         private Graphic wrinkleGraphic;
 
-        private Graphic_Multi_EyeWear leftEyePatchGraphic =null;
+        private Graphic_Multi_NaturalEyes leftEyeGraphic = null;
 
+        private Graphic_Multi_NaturalEyes rightEyeGraphic = null;
+
+        private Graphic_Multi_EyeWear leftEyePatchGraphic = null;
+
+        private Graphic_Multi_EyeWear rightEyePatchGraphic = null;
 
         public bool isOld;
 
@@ -70,17 +73,37 @@ namespace RW_FacialStuff
 
         private string RightEyePatch_texPath;
 
-        private Graphic eyesClosedGraphic;
+        private int nextBlink = -5000;
 
-        private int nextBlink;
+        private int nextBlinkEnd = -5000;
 
-        private int nextBlinkEnd;
 
-        public Graphic_Multi_EyeWear rightEyePatchGraphic =null;
-
-        public bool hasLeftEyePactch =false;
+        public bool hasLeftEyePactch = false;
 
         public bool hasRightEyePatch = false;
+
+        private Graphic_Multi_NaturalEyes leftEyeClosedGraphic;
+
+        private Graphic_Multi_NaturalEyes rightEyeClosedGraphic;
+
+        private string RightEye_texPath;
+
+        private string RightEyeClosed_texPath;
+
+        private string LeftEyeClosed_texPath;
+
+        private string LeftEye_texPath;
+
+        public bool leftIsSolid;
+
+        public bool rightIsSolid;
+
+        //     private float blinkRate;
+
+        private int jitterLeft = 0;
+        private int jitterRight = 0;
+
+        private Graphic deadEyeGraphic;
 
         public void DefineFace()
         {
@@ -154,6 +177,17 @@ namespace RW_FacialStuff
 
             this.hasLeftEyePactch = false;
             this.hasRightEyePatch = false;
+            this.leftIsSolid = false;
+            this.rightIsSolid = false;
+
+            this.RightEye_texPath = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_" + this.EyeDef.texPath + "_Right";
+
+            this.RightEyeClosed_texPath = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_Closed_Right";
+
+            this.LeftEye_texPath = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_" + this.EyeDef.texPath + "_Left";
+
+            this.LeftEyeClosed_texPath = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_Closed_Left";
+
 
             foreach (Hediff hediff in this.pawn.health.hediffSet.hediffs)
             {
@@ -164,12 +198,14 @@ namespace RW_FacialStuff
                     {
                         this.hasLeftEyePactch = true;
                         this.LeftEyePatch_texPath = "AddedParts/" + hediff.def.defName + "_Left" + this.crownTypeSuffix;
+                        this.leftIsSolid = addedPartProps.isSolid;
                     }
 
                     if (hediff.Part.def == BodyPartDefOf.RightEye)
                     {
                         this.hasRightEyePatch = true;
-                        this.RightEyePatch_texPath = "AddedParts/" + hediff.def.defName + "_Right" + this.crownTypeSuffix ;
+                        this.RightEyePatch_texPath = "AddedParts/" + hediff.def.defName + "_Right" + this.crownTypeSuffix;
+                        this.rightIsSolid = addedPartProps.isSolid;
                     }
                 }
 
@@ -211,18 +247,6 @@ namespace RW_FacialStuff
                     Vector2.one,
                     this.pawn.story.hairColor);
 
-            this.eyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                this.EyeDef.texPath + this.crownTypeSuffix,
-                ShaderDatabase.Transparent,
-                Vector2.one,
-                Color.white);
-
-            this.eyesClosedGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
-                "Eyes/Eyes_Closed",
-                ShaderDatabase.Transparent,
-                Vector2.one,
-                Color.white);
-
             this.browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                 this.BrowDef.texPath + this.crownTypeSuffix,
                 ShaderDatabase.Transparent,
@@ -236,13 +260,25 @@ namespace RW_FacialStuff
                 Color.black);
 
 
+            this.deadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>("Eyes/Eyes_Dead", ShaderDatabase.Transparent, Vector2.one, Color.white);
+
             if (this.hasLeftEyePactch)
             {
                 this.leftEyePatchGraphic = GraphicDatabase.Get<Graphic_Multi_EyeWear>(this.LeftEyePatch_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_EyeWear;
             }
+            else
+            {
+                this.leftEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.LeftEye_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_NaturalEyes;
+                this.leftEyeClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.LeftEyeClosed_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_NaturalEyes;
+            }
             if (this.hasRightEyePatch)
             {
                 this.rightEyePatchGraphic = GraphicDatabase.Get<Graphic_Multi_EyeWear>(this.RightEyePatch_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_EyeWear;
+            }
+            else
+            {
+                this.rightEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.RightEye_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_NaturalEyes;
+                this.rightEyeClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.RightEyeClosed_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_NaturalEyes;
             }
 
             return true;
@@ -285,7 +321,41 @@ namespace RW_FacialStuff
             return material;
         }
 
-        public Material EyeMatAt(Rot4 facing, bool portrait, RotDrawMode bodyCondition = RotDrawMode.Fresh)
+        public override void PostDraw()
+        {
+            base.PostDraw();
+            if (!pawn.Spawned) return;
+
+            if (Find.TickManager.TicksGame > this.nextBlinkEnd)
+            {
+                //     this.jitterLeft = 1f;
+                //     this.jitterRight = 1f;
+
+                //     blinkRate = Mathf.Lerp(2f, 0.25f, this.pawn.needs.rest.CurLevel);
+
+                float range = Rand.Range(20f, 180f);
+                float blinkDuration = Rand.Range(5f, 35f);
+                //
+                //  range *= (int)blinkRate;
+                //  blinkDuration /= (int)this.blinkRate;
+
+                nextBlink = (int)(Find.TickManager.TicksGame + range);
+                this.nextBlinkEnd = (int)(this.nextBlink + blinkDuration);
+
+                if (Rand.Value > 0.9f)
+                {
+                    this.jitterLeft = (int)Rand.Range(-10f, 90f);
+                    this.jitterRight = (int)Rand.Range(-10f, 90f);
+                }
+                else
+                {
+                    this.jitterLeft = 0;
+                    this.jitterRight = 0;
+                }
+            }
+        }
+
+        public Material LeftEyeMatAt(Rot4 facing, bool portrait, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
             Material material = null;
             if (bodyCondition == RotDrawMode.Fresh)
@@ -293,37 +363,32 @@ namespace RW_FacialStuff
                 bool flag = true;
                 if (portrait)
                 {
-                    material = this.pawn.Dead ? this.eyesClosedGraphic.MatAt(facing, null) : this.eyeGraphic.MatAt(facing, null);
+                    material = this.pawn.Dead ? this.leftEyeClosedGraphic.MatAt(facing, null) : this.leftEyeGraphic.MatAt(facing, null);
                     material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
                     return material;
                 }
                 //                if (this.pawn.GetPosture() == PawnPosture.LayingAny)
 
-                if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep || this.pawn.Dead)
+                if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
                 {
                     flag = false;
-                    material = this.eyesClosedGraphic.MatAt(facing, null);
+                    material = this.leftEyeClosedGraphic.MatAt(facing, null);
                 }
                 if (flag)
                 {
-                    if (Find.TickManager.TicksGame >= this.nextBlink)
+                    if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterLeft)
                     {
-                        material = this.eyesClosedGraphic.MatAt(facing, null);
-                        if (Find.TickManager.TicksGame > this.nextBlinkEnd)
-                        {
-                            nextBlink = Find.TickManager.TicksGame + (int)Rand.Range(10f, 180f);
-                            this.nextBlinkEnd = this.nextBlink + (int)Rand.Range(5f, 20f);
-                        }
+                        material = this.leftEyeClosedGraphic.MatAt(facing, null);
                     }
                     else
                     {
-                        material = this.eyeGraphic.MatAt(facing, null);
+                        material = this.leftEyeGraphic.MatAt(facing, null);
                     }
                 }
             }
             else if (bodyCondition == RotDrawMode.Rotting)
             {
-                material = this.eyesClosedGraphic.MatAt(facing, null);
+                material = this.leftEyeClosedGraphic.MatAt(facing, null);
             }
 
             if (material != null)
@@ -333,6 +398,72 @@ namespace RW_FacialStuff
 
             return material;
         }
+
+        public Material RightEyeMatAt(Rot4 facing, bool portrait, RotDrawMode bodyCondition = RotDrawMode.Fresh)
+        {
+            Material material = null;
+            if (bodyCondition == RotDrawMode.Fresh)
+            {
+                bool flag = true;
+                if (portrait)
+                {
+                    material = this.rightEyeGraphic.MatAt(facing, null);
+
+                    material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                    return material;
+                }
+                //                if (this.pawn.GetPosture() == PawnPosture.LayingAny)
+
+                if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
+                {
+                    flag = false;
+                    material = this.rightEyeClosedGraphic.MatAt(facing, null);
+                }
+                if (flag)
+                {
+                    if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterRight)
+                    {
+                        material = this.rightEyeClosedGraphic.MatAt(facing, null);
+                    }
+                    else
+                    {
+                        material = this.rightEyeGraphic.MatAt(facing, null);
+                    }
+                }
+            }
+            else if (bodyCondition == RotDrawMode.Rotting)
+            {
+                material = this.rightEyeClosedGraphic.MatAt(facing, null);
+            }
+
+            if (material != null)
+            {
+                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+            }
+
+            return material;
+        }
+
+        public Material DeadEyeMatAt(Rot4 facing, bool portrait, RotDrawMode bodyCondition = RotDrawMode.Fresh)
+        {
+            Material material = null;
+            if (bodyCondition == RotDrawMode.Fresh)
+            {
+                material = this.deadEyeGraphic.MatAt(facing, null);
+            }
+            else if (bodyCondition == RotDrawMode.Rotting)
+            {
+                material = this.deadEyeGraphic.MatAt(facing, null);
+            }
+
+            if (material != null)
+            {
+                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+            }
+
+            return material;
+        }
+
 
         public Material BrowMatAt(Rot4 facing)
         {
@@ -393,8 +524,9 @@ namespace RW_FacialStuff
             return material;
         }
 
-        public Material ExtraEyePatchLeftMatAt(Rot4 facing)
+        public Material LeftEyePatchMatAt(Rot4 facing)
         {
+
             Material material = this.leftEyePatchGraphic.MatAt(facing, null);
 
             if (material != null)
@@ -405,7 +537,7 @@ namespace RW_FacialStuff
             return material;
         }
 
-        public Material ExtraEyePatchRightMatAt(Rot4 facing)
+        public Material RightEyePatchMatAt(Rot4 facing)
         {
             Material material = this.rightEyePatchGraphic.MatAt(facing, null);
 

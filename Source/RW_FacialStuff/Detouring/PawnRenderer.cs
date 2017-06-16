@@ -57,6 +57,7 @@ namespace RW_FacialStuff
             if (faceComp == null) return true;
 
 
+
             Mesh mesh = null;
             if (pawn != null && renderBody)
             {
@@ -108,21 +109,18 @@ namespace RW_FacialStuff
             if (__instance.graphics.headGraphic != null)
             {
                 // Rendererd pawn faces
-
                 Vector3 b = quat * __instance.BaseHeadOffsetAt(headFacing);
-                Material headMat = __instance.graphics.HeadMatAt(headFacing, bodyDrawType, headStump);
+                Material material = __instance.graphics.HeadMatAt(headFacing, bodyDrawType, headStump);
                 Vector3 locFacialY = a + b;
-
-                if (headMat != null)
+                if (material != null)
                 {
                     Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
                     Mesh mesh2a = faceComp.HeadMeshSet.MeshAt(headFacing);
-                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, headMat, portrait);
-                    locFacialY.y += 0.002f;
+                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, material, portrait);
+                    locFacialY.y += 0.001f;
                     if (!headStump)
                     {
                         Material beardMat = faceComp.BeardMatAt(headFacing);
-                        Material eyeMat = faceComp.EyeMatAt(headFacing, portrait, bodyDrawType);
                         Material browMat = faceComp.BrowMatAt(headFacing);
                         Material mouthMat = faceComp.MouthMatAt(headFacing, bodyDrawType);
                         Material wrinkleMat = faceComp.WrinkleMatAt(headFacing);
@@ -130,46 +128,73 @@ namespace RW_FacialStuff
                         if (wrinkleMat != null)
                         {
                             GenDraw.DrawMeshNowOrLater(mesh2a, locFacialY, quat, wrinkleMat, portrait);
-                            locFacialY.y += 0.002f;
+                            locFacialY.y += 0.001f;
                         }
-                        if (eyeMat != null)
+                        if (pawn.Dead)
                         {
-                            GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, eyeMat, portrait);
-                            locFacialY.y += 0.002f;
+                            Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, portrait, bodyDrawType);
+                            if (deadEyeMat != null)
+                            {
+                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, deadEyeMat, portrait);
+                                locFacialY.y += 0.001f;
+                            }
                         }
+                        else
+                        {
+
+                            if (!faceComp.hasLeftEyePactch || faceComp.hasLeftEyePactch && !faceComp.leftIsSolid)
+                            {
+                                Material leftEyeMat = faceComp.LeftEyeMatAt(headFacing, portrait, bodyDrawType);
+                                if (leftEyeMat != null)
+                                {
+                                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, leftEyeMat, portrait);
+                                    locFacialY.y += 0.001f;
+                                }
+                            }
+
+                            if (!faceComp.hasRightEyePatch || faceComp.hasRightEyePatch && !faceComp.rightIsSolid)
+                            {
+                                Material rightEyeMat = faceComp.RightEyeMatAt(headFacing, portrait, bodyDrawType);
+                                if (rightEyeMat != null)
+                                {
+                                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, rightEyeMat, portrait);
+                                    locFacialY.y += 0.001f;
+                                }
+                            }
+                        }
+
                         if (browMat != null)
                         {
                             GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, browMat, portrait);
-                            locFacialY.y += 0.002f;
+                            locFacialY.y += 0.001f;
                         }
                         if (mouthMat != null)
                         {
                             GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, mouthMat, portrait);
-                            locFacialY.y += 0.002f;
+                            locFacialY.y += 0.001f;
                         }
                         if (beardMat != null)
                         {
                             GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, beardMat, portrait);
-                            locFacialY.y += 0.002f;
+                            locFacialY.y += 0.001f;
                         }
                         if (faceComp.hasLeftEyePactch)
                         {
-                            Material leftBionicMat = faceComp.ExtraEyePatchLeftMatAt(headFacing);
+                            Material leftBionicMat = faceComp.LeftEyePatchMatAt(headFacing);
                             if (leftBionicMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, leftBionicMat, portrait);
-                                locFacialY.y += 0.002f;
+                                locFacialY.y += 0.001f;
                             }
                         }
                         if (faceComp.hasRightEyePatch)
                         {
-
-                            Material rightBionicMat = faceComp.ExtraEyePatchRightMatAt(headFacing);
+                            Material rightBionicMat = faceComp.RightEyePatchMatAt(headFacing);
 
                             if (rightBionicMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, rightBionicMat, portrait);
-                                locFacialY.y += 0.002f;
+                                locFacialY.y += 0.001f;
                             }
                         }
                     }

@@ -13,7 +13,7 @@ namespace RW_FacialStuff.Detouring
 
     using Verse;
 
-   public static class Pawn_HealthTracker_Patches
+    public static class Pawn_HealthTracker_Patches
     {
         [HarmonyPatch(typeof(Pawn_HealthTracker), "AddHediff", new Type[] { typeof(Hediff), typeof(BodyPartRecord), typeof(DamageInfo) })]
         public static class AddHediff_Postfix
@@ -42,13 +42,13 @@ namespace RW_FacialStuff.Detouring
 
                 GetReflections();
 
-                Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
 
                 AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
                 if (addedPartProps != null)
                 {
                     if (part.def == BodyPartDefOf.LeftEye || part.def == BodyPartDefOf.RightEye || part.def == BodyPartDefOf.Jaw)
                     {
+                        Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
                         pawn.Drawer.renderer.graphics.ResolveAllGraphics();
                     }
                 }
@@ -74,7 +74,7 @@ namespace RW_FacialStuff.Detouring
 
 
             [HarmonyPostfix]
-            public static void CheckBionic(
+            public static void CheckBionic_RestorePart(
                 Pawn_HealthTracker __instance,
                 BodyPartRecord part, Hediff diffException = null, bool checkStateChange = true)
             {

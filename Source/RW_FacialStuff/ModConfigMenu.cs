@@ -28,6 +28,7 @@ namespace RW_FacialStuff
             {
                 this.modSettings.Write();
             }
+            Find.ColonistBar.MarkColonistsDirty();
         }
 
         public override void DoSettingsWindowContents(Rect inRect)

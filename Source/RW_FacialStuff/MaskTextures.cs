@@ -24,6 +24,9 @@ namespace RW_FacialStuff
                     blankTexture.SetPixel(x, y, Color.clear);
                 }
             }
+            blankTexture.name = "Blank";
+
+
             blankTexture.Compress(false);
             blankTexture.Apply(false, true);
             blankExists = true;
