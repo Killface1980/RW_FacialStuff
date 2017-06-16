@@ -10,6 +10,22 @@ namespace RW_FacialStuff
     {
         private Material[] mats = new Material[4];
 
+        public virtual Material MatAt(Rot4 rot, Thing thing = null)
+        {
+            switch (rot.AsInt)
+            {
+                case 0:
+                    return this.MatBack;
+                case 1:
+                    return this.MatRight;
+                case 2:
+                    return this.MatFront;
+                case 3:
+                    return this.MatLeft;
+                default:
+                    return BaseContent.BadMat;
+            }
+        }
         public string GraphicPath
         {
             get
@@ -18,7 +34,7 @@ namespace RW_FacialStuff
             }
         }
 
-        public override Material MatSingle
+        public  Material MatLeft
         {
             get
             {
@@ -34,7 +50,7 @@ namespace RW_FacialStuff
             }
         }
 
-        public override Material MatSide
+        public  Material MatRight
         {
             get
             {
@@ -54,7 +70,7 @@ namespace RW_FacialStuff
         {
             get
             {
-                return this.MatSide == MatBack;
+                return this.MatRight == MatBack;
             }
         }
 
@@ -99,9 +115,10 @@ namespace RW_FacialStuff
                 return;
                 array[2] = MaskTextures.BlankTexture();
             }
+
             string sidePath = "Eyes/Eye_" + gender + "_" + crowntype + "_" + eyeType + "_side";
 
-            if (ContentFinder<Texture2D>.Get(sidePath, false))
+            if (ContentFinder<Texture2D>.Get(sidePath, true))
             {
                 if (side.Equals("Right"))
                 {

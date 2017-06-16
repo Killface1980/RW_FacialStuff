@@ -69,7 +69,7 @@
     <Compile Include="Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="Graphic_Multi_EyeWear.cs" />
     <Compile Include="MeshPoolFs.cs" />
-    <Compile Include="CutHairDb.cs" />
+    <Compile Include="HairCut\CutHairDb.cs" />
     <Compile Include="Detouring\PawnRenderer.cs" />
     <Compile Include="CompFace.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />

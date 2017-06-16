@@ -27,7 +27,6 @@ namespace RW_FacialStuff
 
         }
 
-
         private static T GetInner<T>(GraphicRequest req) where T : Graphic, new()
         {
             Graphic graphic;

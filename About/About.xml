@@ -1,29 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Facial Stuff 0.17.3.0</name>
+  <name>Facial Stuff 0.17.3.0 Public Beta</name>
   <author>Killface</author>
   <url></url>
   <targetVersion>0.17.1557</targetVersion>
   <description>
-    This mod aims to provide more visual individuality for your colonists.
-    - 13 newly defined skin colors instead of the vanilla 6.
-    - hair genetics according to real life.
-    - includes a few selected trend colors of 5501.
-    - 30+ different beards.
-    - new eyes and brows for both sexes.
-    - Added vanilla hair styles with 10 steps of hair loss.
-    - Hair is merged on the head graphic, thus visible with worn hats.
+	  This mod aims to provide more visual individuality for your colonists.
+	  - 13 newly defined skin colors instead of the vanilla 6.
+	  - hair genetics according to real life.
+	  - includes a few selected trend colors of 5501.
+	  - 30+ different beards.
+	  - new eyes and brows for both sexes.
+	  - Added vanilla hair styles with 10 steps of hair loss.
+	  - Hair is merged on the head graphic, thus visible with worn hats.
 
-    + includes a modified version of 'Spoonshortage's Rimworld Hairstyles 1.2' by spoonshortage
-    + includes a modified version of 'Nackblad Inc Rimhair 1.1' by nackblad
+	  + includes a modified version of 'Spoonshortage's Rimworld Hairstyles 1.2' by spoonshortage
+	  + includes a modified version of 'Nackblad Inc Rimhair 1.1' by nackblad
     
-    Patches the PawnRenderer via Harmony and returns 'false' thus bein incompatible to mods doind the same.
+	  Patches the PawnRenderer via Harmony and returns 'false' thus bein incompatible to mods doind the same.
     
-    Special thanks to Fluffy for the FaceStyling bench (adapted from 'Clutter')
-    Uses the detour code from Orion's 'Hospitality A15'
+	  Special thanks to Fluffy for the FaceStyling bench (adapted from 'Clutter')
+	  Uses the detour code from Orion's 'Hospitality A15'
 
-    2017-05-17 - 0.17.1 added basic integration for other species, faces are now added via def patch
-    2016-12-15 - updated Spoon's hairs
-    2016-10-14 - updated tribal hairs from NackbladIncRimhair
+	  2017-05-17 - 0.17.1 added basic integration for other species, faces are now added via def patch
+	  2016-12-15 - updated Spoon's hairs
+	  2016-10-14 - updated tribal hairs from NackbladIncRimhair
   </description>
 </ModMetaData>

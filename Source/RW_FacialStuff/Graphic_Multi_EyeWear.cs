@@ -24,17 +24,17 @@ namespace RW_FacialStuff
                 case 0:
                     return this.MatBack;
                 case 1:
-                    return this.MatSide;
+                    return this.MatRight;
                 case 2:
                     return this.MatFront;
                 case 3:
-                    return this.MatSingle;
+                    return this.MatLeft;
                 default:
                     return BaseContent.BadMat;
             }
         }
 
-        public override Material MatSingle
+        public  Material MatLeft
         {
             get
             {
@@ -50,7 +50,7 @@ namespace RW_FacialStuff
             }
         }
 
-        public override Material MatSide
+        public  Material MatRight
         {
             get
             {
@@ -70,7 +70,7 @@ namespace RW_FacialStuff
         {
             get
             {
-                return this.MatSide == MatBack;
+                return this.MatRight == MatBack;
             }
         }
 
@@ -113,7 +113,7 @@ namespace RW_FacialStuff
                 array[2] = MaskTextures.BlankTexture();
             }
 
-            if (ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side", false))
+            if (ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side"))
             {
                 if (side.Equals("Right"))
                 {

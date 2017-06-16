@@ -28,7 +28,26 @@ namespace RW_FacialStuff
             {
                 this.modSettings.Write();
             }
-            Find.ColonistBar.MarkColonistsDirty();
+            if (Find.ColonistBar != null)
+            {
+                Find.ColonistBar.MarkColonistsDirty();
+            }
+
+            if (Current.ProgramState == ProgramState.Playing)
+            {
+                foreach (Pawn pawn in PawnsFinder.AllMapsAndWorld_Alive)
+                {
+                    if (pawn.RaceProps.Humanlike)
+                    {
+                        CompFace faceComp = pawn.TryGetComp<CompFace>();
+                        if (faceComp != null)
+                        {
+                            pawn.Drawer.renderer.graphics.ResolveAllGraphics();
+                        }
+
+                    }
+                }
+            }
         }
 
         public override void DoSettingsWindowContents(Rect inRect)
@@ -47,27 +66,27 @@ namespace RW_FacialStuff
             BeginVertical();
             FS_Settings.HideHatInBed = Toggle(FS_Settings.HideHatInBed, "Settings.HideHatInBed".Translate());
             EndVertical();
-     //     FlexibleSpace();
-     //     BeginVertical();
-     //     if (Button("Settings.Apply".Translate()))
-     //     {
-     //         foreach (Pawn pawn in PawnsFinder.AllMapsAndWorld_Alive)
-     //         {
-     //             if (pawn.RaceProps.Humanlike)
-     //             {
-     //                 CompFace faceComp = pawn.TryGetComp<CompFace>();
-     //                 if (faceComp != null)
-     //                 {
-     //                     this.WriteSettings();
-     //                     faceComp.sessionOptimized = false;
-     //                     pawn.Drawer.renderer.graphics.ResolveAllGraphics();
-     //                 }
-     //
-     //             }
-     //         }
-     //     }
-     //     EndVertical();
-     //     FlexibleSpace();
+            //     FlexibleSpace();
+            //     BeginVertical();
+            //     if (Button("Settings.Apply".Translate()))
+            //     {
+            //         foreach (Pawn pawn in PawnsFinder.AllMapsAndWorld_Alive)
+            //         {
+            //             if (pawn.RaceProps.Humanlike)
+            //             {
+            //                 CompFace faceComp = pawn.TryGetComp<CompFace>();
+            //                 if (faceComp != null)
+            //                 {
+            //                     this.WriteSettings();
+            //                     faceComp.sessionOptimized = false;
+            //                     pawn.Drawer.renderer.graphics.ResolveAllGraphics();
+            //                 }
+            //
+            //             }
+            //         }
+            //     }
+            //     EndVertical();
+            //     FlexibleSpace();
             EndArea();
         }
 
@@ -81,7 +100,7 @@ namespace RW_FacialStuff
 
         public static bool MergeHair = true;
 
-        public static bool HideHatInBed =true;
+        public static bool HideHatInBed = true;
 
         public override void ExposeData()
         {

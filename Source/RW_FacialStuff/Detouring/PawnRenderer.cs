@@ -54,7 +54,11 @@ namespace RW_FacialStuff
 
             // Skip to default renderer if no faces can be used
             CompFace faceComp = pawn.TryGetComp<CompFace>();
-            if (faceComp == null) return true;
+            if (faceComp == null)
+            {
+                return true;
+                
+            }
 
 
 
@@ -117,7 +121,7 @@ namespace RW_FacialStuff
                     Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
                     Mesh mesh2a = faceComp.HeadMeshSet.MeshAt(headFacing);
                     GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, material, portrait);
-                    locFacialY.y += 0.001f;
+                    locFacialY.y += 0.002f;
                     if (!headStump)
                     {
                         Material beardMat = faceComp.BeardMatAt(headFacing);
@@ -128,7 +132,7 @@ namespace RW_FacialStuff
                         if (wrinkleMat != null)
                         {
                             GenDraw.DrawMeshNowOrLater(mesh2a, locFacialY, quat, wrinkleMat, portrait);
-                            locFacialY.y += 0.001f;
+                            locFacialY.y += 0.002f;
                         }
                         if (pawn.Dead)
                         {
@@ -136,29 +140,28 @@ namespace RW_FacialStuff
                             if (deadEyeMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, deadEyeMat, portrait);
-                                locFacialY.y += 0.001f;
+                                locFacialY.y += 0.002f;
                             }
                         }
                         else
                         {
-
-                            if (!faceComp.hasLeftEyePactch || faceComp.hasLeftEyePactch && !faceComp.leftIsSolid)
+                            if (!faceComp.hasLeftEyePatch || faceComp.hasLeftEyePatch && !faceComp.leftIsSolid)
                             {
-                                Material leftEyeMat = faceComp.LeftEyeMatAt(headFacing, portrait, bodyDrawType);
+                                Material leftEyeMat = faceComp.LeftEyeMatAt(headFacing, portrait);
                                 if (leftEyeMat != null)
                                 {
                                     GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, leftEyeMat, portrait);
-                                    locFacialY.y += 0.001f;
+                                    locFacialY.y += 0.002f;
                                 }
                             }
 
                             if (!faceComp.hasRightEyePatch || faceComp.hasRightEyePatch && !faceComp.rightIsSolid)
                             {
-                                Material rightEyeMat = faceComp.RightEyeMatAt(headFacing, portrait, bodyDrawType);
+                                Material rightEyeMat = faceComp.RightEyeMatAt(headFacing, portrait);
                                 if (rightEyeMat != null)
                                 {
                                     GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, rightEyeMat, portrait);
-                                    locFacialY.y += 0.001f;
+                                    locFacialY.y += 0.002f;
                                 }
                             }
                         }
@@ -166,25 +169,25 @@ namespace RW_FacialStuff
                         if (browMat != null)
                         {
                             GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, browMat, portrait);
-                            locFacialY.y += 0.001f;
+                            locFacialY.y += 0.002f;
                         }
                         if (mouthMat != null)
                         {
                             GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, mouthMat, portrait);
-                            locFacialY.y += 0.001f;
+                            locFacialY.y += 0.002f;
                         }
                         if (beardMat != null)
                         {
                             GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, beardMat, portrait);
-                            locFacialY.y += 0.001f;
+                            locFacialY.y += 0.002f;
                         }
-                        if (faceComp.hasLeftEyePactch)
+                        if (faceComp.hasLeftEyePatch)
                         {
                             Material leftBionicMat = faceComp.LeftEyePatchMatAt(headFacing);
                             if (leftBionicMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, leftBionicMat, portrait);
-                                locFacialY.y += 0.001f;
+                                locFacialY.y += 0.002f;
                             }
                         }
                         if (faceComp.hasRightEyePatch)
@@ -194,7 +197,7 @@ namespace RW_FacialStuff
                             if (rightBionicMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, rightBionicMat, portrait);
-                                locFacialY.y += 0.001f;
+                                locFacialY.y += 0.002f;
                             }
                         }
                     }

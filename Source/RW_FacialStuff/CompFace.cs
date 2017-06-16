@@ -69,16 +69,16 @@ namespace RW_FacialStuff
 
         public bool isOld;
 
-        private string LeftEyePatch_texPath;
+        private string LeftEyePatch_texPath = null;
 
-        private string RightEyePatch_texPath;
+        private string RightEyePatch_texPath = null;
 
         private int nextBlink = -5000;
 
         private int nextBlinkEnd = -5000;
 
 
-        public bool hasLeftEyePactch = false;
+        public bool hasLeftEyePatch = false;
 
         public bool hasRightEyePatch = false;
 
@@ -175,10 +175,13 @@ namespace RW_FacialStuff
                 this.MouthDef = DefDatabase<MouthDef>.GetNamed("Mouth_Female_Default");
             }
 
-            this.hasLeftEyePactch = false;
+            this.hasLeftEyePatch = false;
             this.hasRightEyePatch = false;
             this.leftIsSolid = false;
             this.rightIsSolid = false;
+
+            this.LeftEyePatch_texPath = null;
+            this.RightEyePatch_texPath = null;
 
             this.RightEye_texPath = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_" + this.EyeDef.texPath + "_Right";
 
@@ -188,22 +191,22 @@ namespace RW_FacialStuff
 
             this.LeftEyeClosed_texPath = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_Closed_Left";
 
-
             foreach (Hediff hediff in this.pawn.health.hediffSet.hediffs)
             {
                 AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
                 if (addedPartProps != null)
                 {
-                    if (hediff.Part.def == BodyPartDefOf.LeftEye)
+                    BodyPartRecord leftEye = this.pawn.RaceProps.body.GetPartAtIndex(27);
+                    BodyPartRecord rightEye = this.pawn.RaceProps.body.GetPartAtIndex(28);
+
+                    if (hediff.Part == leftEye)
                     {
-                        this.hasLeftEyePactch = true;
                         this.LeftEyePatch_texPath = "AddedParts/" + hediff.def.defName + "_Left" + this.crownTypeSuffix;
                         this.leftIsSolid = addedPartProps.isSolid;
                     }
 
-                    if (hediff.Part.def == BodyPartDefOf.RightEye)
+                    if (hediff.Part == rightEye)
                     {
-                        this.hasRightEyePatch = true;
                         this.RightEyePatch_texPath = "AddedParts/" + hediff.def.defName + "_Right" + this.crownTypeSuffix;
                         this.rightIsSolid = addedPartProps.isSolid;
                     }
@@ -261,25 +264,31 @@ namespace RW_FacialStuff
 
 
             this.deadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>("Eyes/Eyes_Dead", ShaderDatabase.Transparent, Vector2.one, Color.white);
+           if (this.LeftEyePatch_texPath != null)
+           {
+               this.leftEyePatchGraphic = GraphicDatabase.Get<Graphic_Multi_EyeWear>(this.LeftEyePatch_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_EyeWear;
+               if (this.leftEyePatchGraphic != null)
+               {
+                   this.hasLeftEyePatch = true;
+               }
+           }
+           if (this.RightEyePatch_texPath != null)
+           {
+               this.rightEyePatchGraphic = GraphicDatabase.Get<Graphic_Multi_EyeWear>(this.RightEyePatch_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_EyeWear;
+               if (this.rightEyePatchGraphic != null)
+               {
+                   this.hasRightEyePatch = true;
+               }
+           }
 
-            if (this.hasLeftEyePactch)
-            {
-                this.leftEyePatchGraphic = GraphicDatabase.Get<Graphic_Multi_EyeWear>(this.LeftEyePatch_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_EyeWear;
-            }
-            else
-            {
-                this.leftEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.LeftEye_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_NaturalEyes;
-                this.leftEyeClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.LeftEyeClosed_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_NaturalEyes;
-            }
-            if (this.hasRightEyePatch)
-            {
-                this.rightEyePatchGraphic = GraphicDatabase.Get<Graphic_Multi_EyeWear>(this.RightEyePatch_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_EyeWear;
-            }
-            else
-            {
-                this.rightEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.RightEye_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_NaturalEyes;
-                this.rightEyeClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.RightEyeClosed_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_NaturalEyes;
-            }
+            this.leftEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.LeftEye_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_NaturalEyes;
+            this.leftEyeClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.LeftEyeClosed_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_NaturalEyes;
+
+
+
+            this.rightEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.RightEye_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_NaturalEyes;
+            this.rightEyeClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.RightEyeClosed_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_NaturalEyes;
+
 
             return true;
 
@@ -355,40 +364,35 @@ namespace RW_FacialStuff
             }
         }
 
-        public Material LeftEyeMatAt(Rot4 facing, bool portrait, RotDrawMode bodyCondition = RotDrawMode.Fresh)
+        public Material LeftEyeMatAt(Rot4 facing, bool portrait)
         {
             Material material = null;
-            if (bodyCondition == RotDrawMode.Fresh)
-            {
-                bool flag = true;
-                if (portrait)
-                {
-                    material = this.pawn.Dead ? this.leftEyeClosedGraphic.MatAt(facing, null) : this.leftEyeGraphic.MatAt(facing, null);
-                    material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
-                    return material;
-                }
-                //                if (this.pawn.GetPosture() == PawnPosture.LayingAny)
 
-                if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
+            bool flag = true;
+            if (portrait)
+            {
+                material = this.leftEyeGraphic.MatAt(facing, null);
+
+                if (material != null)
+                    material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                return material;
+            }
+
+            if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
+            {
+                flag = false;
+                material = this.leftEyeClosedGraphic.MatAt(facing, null);
+            }
+            if (flag)
+            {
+                if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterLeft)
                 {
-                    flag = false;
                     material = this.leftEyeClosedGraphic.MatAt(facing, null);
                 }
-                if (flag)
+                else
                 {
-                    if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterLeft)
-                    {
-                        material = this.leftEyeClosedGraphic.MatAt(facing, null);
-                    }
-                    else
-                    {
-                        material = this.leftEyeGraphic.MatAt(facing, null);
-                    }
+                    material = this.leftEyeGraphic.MatAt(facing, null);
                 }
-            }
-            else if (bodyCondition == RotDrawMode.Rotting)
-            {
-                material = this.leftEyeClosedGraphic.MatAt(facing, null);
             }
 
             if (material != null)
@@ -399,41 +403,34 @@ namespace RW_FacialStuff
             return material;
         }
 
-        public Material RightEyeMatAt(Rot4 facing, bool portrait, RotDrawMode bodyCondition = RotDrawMode.Fresh)
+        public Material RightEyeMatAt(Rot4 facing, bool portrait)
         {
             Material material = null;
-            if (bodyCondition == RotDrawMode.Fresh)
+            bool flag = true;
+            if (portrait)
             {
-                bool flag = true;
-                if (portrait)
-                {
-                    material = this.rightEyeGraphic.MatAt(facing, null);
+                material = this.rightEyeGraphic.MatAt(facing, null);
 
+                if (material != null)
                     material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
-                    return material;
-                }
-                //                if (this.pawn.GetPosture() == PawnPosture.LayingAny)
+                return material;
+            }
 
-                if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
+            if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
+            {
+                flag = false;
+                material = this.rightEyeClosedGraphic.MatAt(facing, null);
+            }
+            if (flag)
+            {
+                if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterRight)
                 {
-                    flag = false;
                     material = this.rightEyeClosedGraphic.MatAt(facing, null);
                 }
-                if (flag)
-                {
-                    if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterRight)
-                    {
-                        material = this.rightEyeClosedGraphic.MatAt(facing, null);
-                    }
-                    else
+                                    else
                     {
                         material = this.rightEyeGraphic.MatAt(facing, null);
                     }
-                }
-            }
-            else if (bodyCondition == RotDrawMode.Rotting)
-            {
-                material = this.rightEyeClosedGraphic.MatAt(facing, null);
             }
 
             if (material != null)
