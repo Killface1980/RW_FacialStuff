@@ -6,6 +6,31 @@ namespace RW_FacialStuff
     [StaticConstructorOnStartup]
     public class MaskTextures
     {
+        private static Texture2D blankTexture;
+        private static bool blankExists;
+        public static Texture2D BlankTexture()
+        {
+            if (blankExists)
+            {
+                return blankTexture;
+            }
+
+            blankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
+
+            for (int x = 0; x < blankTexture.width; x++)
+            {
+                for (int y = 0; y < blankTexture.height; y++)
+                {
+                    blankTexture.SetPixel(x, y, Color.clear);
+                }
+            }
+            blankTexture.Compress(false);
+            blankTexture.Apply(false, true);
+            blankExists = true;
+            return blankTexture;
+        }
+
+
         private static Texture2D maskTexNarrowFrontBack = null;
         private static Texture2D maskTexNarrowSide = null;
         private static Texture2D maskTexAverageFrontBack = null;

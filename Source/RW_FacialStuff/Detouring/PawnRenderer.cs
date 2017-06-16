@@ -152,15 +152,26 @@ namespace RW_FacialStuff
                             GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, beardMat, portrait);
                             locFacialY.y += 0.002f;
                         }
-                    //  if (faceComp.hasBionic)
-                    //  {
-                    //      Material bioniceMat = faceComp.BionicMatAt(headFacing);
-                    //      if (bioniceMat != null)
-                    //      {
-                    //          GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, bioniceMat, portrait);
-                    //          locFacialY.y += 0.002f;
-                    //      }
-                    //  }
+                        if (faceComp.hasLeftEyePactch)
+                        {
+                            Material leftBionicMat = faceComp.ExtraEyePatchLeftMatAt(headFacing);
+                            if (leftBionicMat != null)
+                            {
+                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, leftBionicMat, portrait);
+                                locFacialY.y += 0.002f;
+                            }
+                        }
+                        if (faceComp.hasRightEyePatch)
+                        {
+
+                            Material rightBionicMat = faceComp.ExtraEyePatchRightMatAt(headFacing);
+
+                            if (rightBionicMat != null)
+                            {
+                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, rightBionicMat, portrait);
+                                locFacialY.y += 0.002f;
+                            }
+                        }
                     }
                 }
 
@@ -246,5 +257,6 @@ namespace RW_FacialStuff
             return false;
         }
     }
+
 
 }

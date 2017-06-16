@@ -11,7 +11,6 @@ namespace RW_FacialStuff
 
     // class taken from vanilla, base is Graphic_Multi; needed for adding stuff AFTER game has loaded
 
-    [StaticConstructorOnStartup]
     public class Graphic_Multi_HeadParts : Graphic
     {
         private Material[] mats = new Material[3];
@@ -64,30 +63,6 @@ namespace RW_FacialStuff
             }
         }
 
-        private static Texture2D blankTexture;
-        private static bool blankExists;
-
-        private static Texture2D BlankTexture()
-        {
-            if (blankExists)
-            {
-                return blankTexture;
-            }
-
-            blankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
-
-            for (int x = 0; x < blankTexture.width; x++)
-            {
-                for (int y = 0; y < blankTexture.height; y++)
-                {
-                    blankTexture.SetPixel(x, y, Color.clear);
-                }
-            }
-            blankTexture.Compress(false);
-            blankTexture.Apply(false, true);
-            blankExists = true;
-            return blankTexture;
-        }
 
         public override void Init(GraphicRequest req)
         {
@@ -132,7 +107,7 @@ namespace RW_FacialStuff
             }
             else
             {
-                array[0] = BlankTexture();
+                array[0] = MaskTextures.BlankTexture();
             }
 
 

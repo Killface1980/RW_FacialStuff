@@ -9,6 +9,7 @@ namespace RW_FacialStuff
 
     using Verse;
 
+    [StaticConstructorOnStartup]
     public static class CutHairDb
     {
         private static Dictionary<GraphicRequest, Graphic> allGraphics = new Dictionary<GraphicRequest, Graphic>();
@@ -22,6 +23,8 @@ namespace RW_FacialStuff
             // Added second 'color' to get a separate graphic
             GraphicRequest req = new GraphicRequest(typeof(T), path, shader, drawSize, color, color, null, 0);
             return GetInner<T>(req);
+
+
         }
 
 

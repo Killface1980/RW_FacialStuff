@@ -175,16 +175,6 @@ namespace RW_FacialStuff
 
             skull = new HeadGraphicRecordVanillaCustom(SkullPath);
             stump = new HeadGraphicRecordVanillaCustom(StumpPath);
-
-            //   string[] headsFolderPaths = HeadsFolderPaths;
-            //   for (int i = 0; i < headsFolderPaths.Length; i++)
-            //   {
-            //       string text = headsFolderPaths[i];
-            //       foreach (string current in GraphicDatabaseUtility.GraphicNamesInFolder(text))
-            //       {
-            //           headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom(text + "/" + current));
-            //       }
-            //   }
         }
 
         public static Graphic_Multi GetStump(Color skinColor)

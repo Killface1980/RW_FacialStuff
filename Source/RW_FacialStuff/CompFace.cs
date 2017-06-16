@@ -45,8 +45,6 @@ namespace RW_FacialStuff
 
         public bool optimized;
 
-        public bool sessionOptimized;
-
         public string SkinColorHex;
 
         public string headTypeSuffix = "_Normal";
@@ -63,22 +61,26 @@ namespace RW_FacialStuff
 
         private Graphic wrinkleGraphic;
 
-        //     private Graphic bionicGraphic;
+        private Graphic_Multi_EyeWear leftEyePatchGraphic =null;
 
 
         public bool isOld;
 
-        public bool hasBionic;
+        private string LeftEyePatch_texPath;
 
-        private string BionicEye_texPath;
-
-        private int BionicEye_place;
+        private string RightEyePatch_texPath;
 
         private Graphic eyesClosedGraphic;
 
         private int nextBlink;
 
         private int nextBlinkEnd;
+
+        public Graphic_Multi_EyeWear rightEyePatchGraphic =null;
+
+        public bool hasLeftEyePactch =false;
+
+        public bool hasRightEyePatch = false;
 
         public void DefineFace()
         {
@@ -145,42 +147,35 @@ namespace RW_FacialStuff
             }
 
             // weird bug: no MouthDef defined for some visitors (male, 17)
-            if (this.MouthDef == null) this.MouthDef = DefDatabase<MouthDef>.GetNamed("Mouth_Female_Default");
+            if (this.MouthDef == null)
+            {
+                this.MouthDef = DefDatabase<MouthDef>.GetNamed("Mouth_Female_Default");
+            }
 
-            // bool flag1 = false;
-            // bool flag2 = false;
-            // this.hasBionic = false;
-            // foreach (Hediff hediff in this.pawn.health.hediffSet.hediffs)
-            // {
-            //     AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
-            //     if (addedPartProps != null && addedPartProps.isBionic)
-            //     {
-            //         if (hediff.Part.def == BodyPartDefOf.LeftEye) flag1 = true;
-            //
-            //         if (hediff.Part.def == BodyPartDefOf.RightEye) flag2 = true;
-            //         this.hasBionic = true;
-            //     }
-            //
-            // }
-            // if (flag1 || flag2)
-            // {
-            //
-            //     if (flag1 && flag2)
-            //     {
-            //         this.BionicEye_texPath = "AddedParts/BionicEye_Both";
-            //         this.BionicEye_place = 2;
-            //     }
-            //     else if (flag1)
-            //     {
-            //         this.BionicEye_texPath = "AddedParts/BionicEye_Left";
-            //         this.BionicEye_place = 0;
-            //     }
-            //     else
-            //     {
-            //         this.BionicEye_texPath = "AddedParts/BionicEye_Right";
-            //         this.BionicEye_place = 1;
-            //     }
-            // }
+            this.hasLeftEyePactch = false;
+            this.hasRightEyePatch = false;
+
+            foreach (Hediff hediff in this.pawn.health.hediffSet.hediffs)
+            {
+                AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
+                if (addedPartProps != null)
+                {
+                    if (hediff.Part.def == BodyPartDefOf.LeftEye)
+                    {
+                        this.hasLeftEyePactch = true;
+                        this.LeftEyePatch_texPath = "AddedParts/" + hediff.def.defName + "_Left" + this.crownTypeSuffix;
+                    }
+
+                    if (hediff.Part.def == BodyPartDefOf.RightEye)
+                    {
+                        this.hasRightEyePatch = true;
+                        this.RightEyePatch_texPath = "AddedParts/" + hediff.def.defName + "_Right" + this.crownTypeSuffix ;
+                    }
+                }
+
+            }
+
+
 
             return true;
         }
@@ -192,12 +187,10 @@ namespace RW_FacialStuff
                 return false;
             }
 
-
-
             this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
 
 
-            var wrinkleColor = Color.Lerp(this.pawn.story.SkinColor, this.pawn.story.SkinColor * Color.gray, Mathf.InverseLerp(50f, 100f, this.pawn.ageTracker.AgeBiologicalYearsFloat));
+            Color wrinkleColor = Color.Lerp(this.pawn.story.SkinColor, this.pawn.story.SkinColor * Color.gray, Mathf.InverseLerp(50f, 100f, this.pawn.ageTracker.AgeBiologicalYearsFloat));
 
             this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
                 this.WrinkleDef.texPath + this.crownTypeSuffix + this.headTypeSuffix,
@@ -243,10 +236,14 @@ namespace RW_FacialStuff
                 Color.black);
 
 
-            // if (hasBionic)
-            // {
-            //     this.bionicGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(BionicEye_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white);
-            // }
+            if (this.hasLeftEyePactch)
+            {
+                this.leftEyePatchGraphic = GraphicDatabase.Get<Graphic_Multi_EyeWear>(this.LeftEyePatch_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_EyeWear;
+            }
+            if (this.hasRightEyePatch)
+            {
+                this.rightEyePatchGraphic = GraphicDatabase.Get<Graphic_Multi_EyeWear>(this.RightEyePatch_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_EyeWear;
+            }
 
             return true;
 
@@ -296,7 +293,7 @@ namespace RW_FacialStuff
                 bool flag = true;
                 if (portrait)
                 {
-                    material = this.eyeGraphic.MatAt(facing, null);
+                    material = this.pawn.Dead ? this.eyesClosedGraphic.MatAt(facing, null) : this.eyeGraphic.MatAt(facing, null);
                     material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
                     return material;
                 }
@@ -314,7 +311,7 @@ namespace RW_FacialStuff
                         material = this.eyesClosedGraphic.MatAt(facing, null);
                         if (Find.TickManager.TicksGame > this.nextBlinkEnd)
                         {
-                            nextBlink = Find.TickManager.TicksGame + (int)Rand.Range(30f, 240f);
+                            nextBlink = Find.TickManager.TicksGame + (int)Rand.Range(10f, 180f);
                             this.nextBlinkEnd = this.nextBlink + (int)Rand.Range(5f, 20f);
                         }
                     }
@@ -396,25 +393,29 @@ namespace RW_FacialStuff
             return material;
         }
 
-        // public Material BionicMatAt(Rot4 facing)
-        // {
-        //     Material material = this.bionicGraphic.MatAt(facing, null);
-        //
-        //     if (this.BionicEye_place == 1)
-        //     {
-        //         if (facing == Rot4.South)
-        //         {
-        //             material = this.bionicGraphic.MatAt(facing, null);
-        //         }
-        //     }
-        //     if (material != null)
-        //     {
-        //         material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
-        //     }
-        //
-        //     return material;
-        // }
+        public Material ExtraEyePatchLeftMatAt(Rot4 facing)
+        {
+            Material material = this.leftEyePatchGraphic.MatAt(facing, null);
 
+            if (material != null)
+            {
+                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+            }
+
+            return material;
+        }
+
+        public Material ExtraEyePatchRightMatAt(Rot4 facing)
+        {
+            Material material = this.rightEyePatchGraphic.MatAt(facing, null);
+
+            if (material != null)
+            {
+                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+            }
+
+            return material;
+        }
         #endregion
 
 

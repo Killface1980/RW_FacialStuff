@@ -565,7 +565,6 @@
                         faceComp.EyeDef = this.NewEye;
                         faceComp.BrowDef = this.NewBrow;
                         faceComp.MouthDef = this.NewMouth;
-                        faceComp.sessionOptimized = false;
                         pawn.Drawer.renderer.graphics.ResolveAllGraphics();
 
 
