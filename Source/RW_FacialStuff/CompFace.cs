@@ -4,6 +4,7 @@ using static RW_FacialStuff.Headhelper;
 namespace RW_FacialStuff
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     using RimWorld;
@@ -63,9 +64,9 @@ namespace RW_FacialStuff
 
         private Graphic_Multi_NaturalEyes rightEyeGraphic = null;
 
-        private Graphic_Multi_EyeWear leftEyePatchGraphic = null;
+        private Graphic_Multi_AddedHeadParts leftEyePatchGraphic = null;
 
-        private Graphic_Multi_EyeWear rightEyePatchGraphic = null;
+        private Graphic_Multi_AddedHeadParts rightEyePatchGraphic = null;
 
         public bool isOld;
 
@@ -104,6 +105,8 @@ namespace RW_FacialStuff
         private int jitterRight = 0;
 
         private Graphic deadEyeGraphic;
+
+        public Vector3 eyemove = new Vector3(0, 0, 0);
 
         public void DefineFace()
         {
@@ -196,8 +199,19 @@ namespace RW_FacialStuff
                 AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
                 if (addedPartProps != null)
                 {
-                    BodyPartRecord leftEye = this.pawn.RaceProps.body.GetPartAtIndex(27);
-                    BodyPartRecord rightEye = this.pawn.RaceProps.body.GetPartAtIndex(28);
+                    List<BodyPartRecord> body = this.pawn.RaceProps.body.AllParts;
+
+                    BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
+                    BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
+
+             //       BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
+
+                    // if (hediff.Part == jaw)
+                    // {
+                    //     this.ExtraJaw_texPath = "AddedParts/" + hediff.def.defName +  this.crownTypeSuffix;
+                    // }
+                    //   BodyPartRecord leftEye = this.pawn.RaceProps.body.GetPartAtIndex(27);
+                    //   BodyPartRecord rightEye = this.pawn.RaceProps.body.GetPartAtIndex(28);
 
                     if (hediff.Part == leftEye)
                     {
@@ -231,7 +245,7 @@ namespace RW_FacialStuff
 
             Color wrinkleColor = Color.Lerp(this.pawn.story.SkinColor, this.pawn.story.SkinColor * Color.gray, Mathf.InverseLerp(50f, 100f, this.pawn.ageTracker.AgeBiologicalYearsFloat));
 
-            this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+            this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 this.WrinkleDef.texPath + this.crownTypeSuffix + this.headTypeSuffix,
                 ShaderDatabase.Transparent,
                 Vector2.one,
@@ -244,42 +258,42 @@ namespace RW_FacialStuff
                 path = this.BeardDef.texPath;
             }
 
-            this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+            this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     path,
                     ShaderDatabase.Transparent,
                     Vector2.one,
                     this.pawn.story.hairColor);
 
-            this.browGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+            this.browGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 this.BrowDef.texPath + this.crownTypeSuffix,
                 ShaderDatabase.Transparent,
                 Vector2.one,
                 Color.black);
 
-            this.mouthGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+            this.mouthGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 this.MouthDef.texPath + this.crownTypeSuffix,
                 ShaderDatabase.Transparent,
                 Vector2.one,
                 Color.black);
 
 
-            this.deadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_HeadParts>("Eyes/Eyes_Dead", ShaderDatabase.Transparent, Vector2.one, Color.white);
-           if (this.LeftEyePatch_texPath != null)
-           {
-               this.leftEyePatchGraphic = GraphicDatabase.Get<Graphic_Multi_EyeWear>(this.LeftEyePatch_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_EyeWear;
-               if (this.leftEyePatchGraphic != null)
-               {
-                   this.hasLeftEyePatch = true;
-               }
-           }
-           if (this.RightEyePatch_texPath != null)
-           {
-               this.rightEyePatchGraphic = GraphicDatabase.Get<Graphic_Multi_EyeWear>(this.RightEyePatch_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_EyeWear;
-               if (this.rightEyePatchGraphic != null)
-               {
-                   this.hasRightEyePatch = true;
-               }
-           }
+            this.deadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>("Eyes/Eyes_Dead", ShaderDatabase.Transparent, Vector2.one, Color.white);
+            if (this.LeftEyePatch_texPath != null)
+            {
+                this.leftEyePatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(this.LeftEyePatch_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_AddedHeadParts;
+                if (this.leftEyePatchGraphic != null)
+                {
+                    this.hasLeftEyePatch = true;
+                }
+            }
+            if (this.RightEyePatch_texPath != null)
+            {
+                this.rightEyePatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(this.RightEyePatch_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_AddedHeadParts;
+                if (this.rightEyePatchGraphic != null)
+                {
+                    this.hasRightEyePatch = true;
+                }
+            }
 
             this.leftEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.LeftEye_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_NaturalEyes;
             this.leftEyeClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.LeftEyeClosed_texPath, ShaderDatabase.Transparent, Vector2.one, Color.white) as Graphic_Multi_NaturalEyes;
@@ -330,10 +344,88 @@ namespace RW_FacialStuff
             return material;
         }
 
+
+
+        private int lastBlinkended;
+
+        private static readonly SimpleCurve EyeMotionFullCurve =
+            new SimpleCurve
+                {
+                    { new CurvePoint(0f, 0f), true },
+                    { new CurvePoint(0.15f, -1f), true },
+     //               { new CurvePoint(0.25f, -1f), true },
+     //               { new CurvePoint(0.3f, -1f), true },
+       //           { new CurvePoint(0.5f, 0f), true },
+       //           { new CurvePoint(0.7f, 1f), true },
+       //           { new CurvePoint(0.75f, 1f), true },
+                    { new CurvePoint(0.85f, 1f), true },
+                    { new CurvePoint(1f, 0f), true }
+                };
+
+        private static readonly SimpleCurve EyeMotionHalfCurve =
+            new SimpleCurve
+                {
+                    { new CurvePoint(0f, 0f), true },
+                  { new CurvePoint(0.2f, 1f), true },
+            //      { new CurvePoint(0.5f, 1f), true },
+                    { new CurvePoint(0.8f, 1f), true },
+                    { new CurvePoint(1f, 0f), true }
+                };
+
+        private float flippedX = 0f;
+
+        private float flippedY = 0f;
+
+        private bool halfAnimX;
+        private float factorX = 0.02f;
+        private float factorY = 0.01f;
+
+        private bool moveX;
+        private bool moveY;
+
+        private bool halfAnimY;
+
         public override void PostDraw()
         {
             base.PostDraw();
-            if (!pawn.Spawned) return;
+            if (!pawn.Spawned)
+            {
+                return;
+            }
+
+            var x = Mathf.InverseLerp(this.lastBlinkended, this.nextBlink, Find.TickManager.TicksGame);
+            float movePixel = 0f;
+            float movePixelY = 0f;
+
+            if (this.moveX || this.moveY)
+            {
+                if (this.moveX)
+                {
+                    if (this.halfAnimX)
+                    {
+                        movePixel = EyeMotionHalfCurve.Evaluate(x) * this.factorX;
+                    }
+                    else
+                    {
+                        movePixel = EyeMotionFullCurve.Evaluate(x) * this.factorX;
+                    }
+                }
+                if (this.moveY)
+                {
+                    if (this.halfAnimY)
+                    {
+                        movePixelY = EyeMotionHalfCurve.Evaluate(x) * this.factorY;
+                    }
+                    else
+                    {
+                        movePixelY = EyeMotionFullCurve.Evaluate(x) * this.factorY;
+                    }
+                }
+                this.eyemove = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
+            }
+
+            //float moveX = (float)Math.Sin(Find.TickManager.TicksGame * 0.1f) * this.factorX;
+            //float moveY = (float)Math.Cos(Find.TickManager.TicksGame * 0.1f) * this.factorY;
 
             if (Find.TickManager.TicksGame > this.nextBlinkEnd)
             {
@@ -361,6 +453,22 @@ namespace RW_FacialStuff
                     this.jitterLeft = 0;
                     this.jitterRight = 0;
                 }
+                if (range > 80f)
+                {
+                    this.moveX = Rand.Value > 0.3f;
+                    this.moveY = Rand.Value > 0.3f;
+                    this.halfAnimX = Rand.Value > 0.3f;
+                    this.halfAnimY = Rand.Value > 0.3f;
+                    this.flippedX = Rand.Range(-1f, 1f);
+                    this.flippedY = Rand.Range(-1f, 1f);
+                }
+                else
+                {
+                    this.moveX = this.moveY = false;
+                }
+
+
+                lastBlinkended = Find.TickManager.TicksGame;
             }
         }
 
@@ -427,10 +535,10 @@ namespace RW_FacialStuff
                 {
                     material = this.rightEyeClosedGraphic.MatAt(facing, null);
                 }
-                                    else
-                    {
-                        material = this.rightEyeGraphic.MatAt(facing, null);
-                    }
+                else
+                {
+                    material = this.rightEyeGraphic.MatAt(facing, null);
+                }
             }
 
             if (material != null)

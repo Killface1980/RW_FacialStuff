@@ -11,7 +11,7 @@ namespace RW_FacialStuff
 
     // class taken from vanilla, base is Graphic_Multi; needed for adding stuff AFTER game has loaded
 
-    public class Graphic_Multi_HeadParts : Graphic
+    public class Graphic_Multi_NaturalHeadParts : Graphic
     {
         private Material[] mats = new Material[3];
 

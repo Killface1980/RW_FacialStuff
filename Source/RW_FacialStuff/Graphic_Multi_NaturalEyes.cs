@@ -141,7 +141,7 @@ namespace RW_FacialStuff
             }
             else
             {
-                Log.Message("Facial Stuff: No texture found at " + sidePath + " - Graphic_Multi_EyeWear");
+                Log.Message("Facial Stuff: No texture found at " + sidePath + " - Graphic_Multi_AddedHeadParts");
                 array[3] = MaskTextures.BlankTexture();
             }
 

@@ -92,7 +92,7 @@
             Graphic result;
             if (def.texPath != null)
             {
-                result = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     def.texPath + faceComp.crownTypeSuffix,
                     ShaderDatabase.Cutout,
                     new Vector2(38f, 38f),
@@ -133,7 +133,7 @@
             Graphic result;
             if (def.texPath != null)
             {
-                result = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     def.texPath + faceComp.crownTypeSuffix,
                     ShaderDatabase.Cutout,
                     new Vector2(38f, 38f),
@@ -160,7 +160,7 @@
                     path = def.texPath;
                 }
 
-                result = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     path,
                     ShaderDatabase.Cutout,
                     new Vector2(38f, 38f),
@@ -180,7 +180,7 @@
             Graphic result;
             if (def.texPath != null)
             {
-                result = GraphicDatabase.Get<Graphic_Multi_HeadParts>(
+                result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     def.texPath + faceComp.crownTypeSuffix,
                     ShaderDatabase.Cutout,
                     new Vector2(38f, 38f),

@@ -5,7 +5,7 @@ namespace RW_FacialStuff
 {
     using System;
 
-    public class Graphic_Multi_EyeWear : Graphic
+    public class Graphic_Multi_AddedHeadParts : Graphic
     {
         private Material[] mats = new Material[4];
 
@@ -108,7 +108,7 @@ namespace RW_FacialStuff
             }
             else
             {
-                Log.Message("Facial Stuff: Failed to get front texture at " + req.path + "_front" + " - Graphic_Multi_EyeWear");
+                Log.Message("Facial Stuff: Failed to get front texture at " + req.path + "_front" + " - Graphic_Multi_AddedHeadParts");
                 return;
                 array[2] = MaskTextures.BlankTexture();
             }
@@ -150,7 +150,7 @@ namespace RW_FacialStuff
             }
             else
             {
-                Log.Message("Facial Stuff: No texture found at " + addedpartName + "_" + crowntype + "_side" + " - Graphic_Multi_EyeWear");
+                Log.Message("Facial Stuff: No texture found at " + addedpartName + "_" + crowntype + "_side" + " - Graphic_Multi_AddedHeadParts");
                 array[3] = MaskTextures.BlankTexture();
             }
 

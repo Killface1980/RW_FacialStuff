@@ -67,7 +67,7 @@
   <ItemGroup>
     <Compile Include="Detouring\Pawn_HealthTracker_Patches.cs" />
     <Compile Include="Graphic_Multi_NaturalEyes.cs" />
-    <Compile Include="Graphic_Multi_EyeWear.cs" />
+    <Compile Include="Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="MeshPoolFs.cs" />
     <Compile Include="HairCut\CutHairDb.cs" />
     <Compile Include="Detouring\PawnRenderer.cs" />
@@ -85,7 +85,7 @@
     <None Include="FaceStyling Bench\PresetDatabase.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="GraphicNamesInFolder.cs" />
-    <Compile Include="Graphic_Multi_HeadParts.cs" />
+    <Compile Include="Graphic_Multi_NaturalHeadParts.cs" />
     <Compile Include="Initializer\FS_SpecialInjector.cs" />
     <Compile Include="MaskTextures.cs" />
     <Compile Include="Utilities\DialogUtility.cs" />

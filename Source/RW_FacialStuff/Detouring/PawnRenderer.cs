@@ -57,12 +57,13 @@ namespace RW_FacialStuff
             if (faceComp == null)
             {
                 return true;
-                
+
             }
 
 
 
             Mesh mesh = null;
+
             if (pawn != null && renderBody)
             {
                 Vector3 loc = rootLoc;
@@ -119,9 +120,8 @@ namespace RW_FacialStuff
                 if (material != null)
                 {
                     Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
-                    Mesh mesh2a = faceComp.HeadMeshSet.MeshAt(headFacing);
                     GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, material, portrait);
-                    locFacialY.y += 0.002f;
+                    locFacialY.y += 0.001f;
                     if (!headStump)
                     {
                         Material beardMat = faceComp.BeardMatAt(headFacing);
@@ -131,16 +131,30 @@ namespace RW_FacialStuff
 
                         if (wrinkleMat != null)
                         {
-                            GenDraw.DrawMeshNowOrLater(mesh2a, locFacialY, quat, wrinkleMat, portrait);
-                            locFacialY.y += 0.002f;
+                            GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, wrinkleMat, portrait);
+                            locFacialY.y += 0.00001f;
                         }
+
+                        if (mouthMat != null)
+                        {
+                            GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, mouthMat, portrait);
+                            locFacialY.y += 0.00001f;
+                        }
+
+                        if (beardMat != null)
+                        {
+                            GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, beardMat, portrait);
+                            locFacialY.y += 0.00001f;
+                        }
+
+
                         if (pawn.Dead)
                         {
                             Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, portrait, bodyDrawType);
                             if (deadEyeMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, deadEyeMat, portrait);
-                                locFacialY.y += 0.002f;
+                                locFacialY.y += 0.00001f;
                             }
                         }
                         else
@@ -150,8 +164,8 @@ namespace RW_FacialStuff
                                 Material leftEyeMat = faceComp.LeftEyeMatAt(headFacing, portrait);
                                 if (leftEyeMat != null)
                                 {
-                                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, leftEyeMat, portrait);
-                                    locFacialY.y += 0.002f;
+                                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY + faceComp.eyemove, quat, leftEyeMat, portrait);
+                                    locFacialY.y += 0.00001f;
                                 }
                             }
 
@@ -160,36 +174,30 @@ namespace RW_FacialStuff
                                 Material rightEyeMat = faceComp.RightEyeMatAt(headFacing, portrait);
                                 if (rightEyeMat != null)
                                 {
-                                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, rightEyeMat, portrait);
-                                    locFacialY.y += 0.002f;
+                                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY + faceComp.eyemove, quat, rightEyeMat, portrait);
+                                    locFacialY.y += 0.00001f;
                                 }
                             }
                         }
 
+
                         if (browMat != null)
                         {
                             GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, browMat, portrait);
-                            locFacialY.y += 0.002f;
+                            locFacialY.y += 0.00001f;
                         }
-                        if (mouthMat != null)
-                        {
-                            GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, mouthMat, portrait);
-                            locFacialY.y += 0.002f;
-                        }
-                        if (beardMat != null)
-                        {
-                            GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, beardMat, portrait);
-                            locFacialY.y += 0.002f;
-                        }
+
+
                         if (faceComp.hasLeftEyePatch)
                         {
                             Material leftBionicMat = faceComp.LeftEyePatchMatAt(headFacing);
                             if (leftBionicMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, leftBionicMat, portrait);
-                                locFacialY.y += 0.002f;
+                                locFacialY.y += 0.00001f;
                             }
                         }
+
                         if (faceComp.hasRightEyePatch)
                         {
                             Material rightBionicMat = faceComp.RightEyePatchMatAt(headFacing);
@@ -197,16 +205,17 @@ namespace RW_FacialStuff
                             if (rightBionicMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, rightBionicMat, portrait);
-                                locFacialY.y += 0.002f;
+                                locFacialY.y += 0.00001f;
                             }
                         }
                     }
                 }
 
                 Vector3 loc2 = rootLoc + b;
-                //   loc2.y += 0.0328125022f;
-                loc2.y = locFacialY.y;
+                loc2.y += 0.0328125022f;
+                //        loc2.y = locFacialY.y;
                 bool hatVisible = false;
+
                 if (!portrait || !Prefs.HatsOnlyOnMap)
                 {
                     Mesh mesh3 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
@@ -229,7 +238,8 @@ namespace RW_FacialStuff
                                 if (hairCutMat != null)
                                 {
                                     GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, hairCutMat, portrait);
-                                    loc2.y += 0.0328125022f;
+                                    loc2.y += 0.0001f;
+                               //     loc2.y += 0.0328125022f;
                                 }
 
                                 Material material2 = apparelGraphics[j].graphic.MatAt(bodyFacing, null);
@@ -239,6 +249,7 @@ namespace RW_FacialStuff
                         }
                     }
                 }
+
                 if (!hatVisible && bodyDrawType != RotDrawMode.Dessicated && !headStump)
                 {
                     Mesh mesh4 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
@@ -246,6 +257,7 @@ namespace RW_FacialStuff
                     GenDraw.DrawMeshNowOrLater(mesh4, loc2, quat, mat, portrait);
                 }
             }
+
             if (renderBody)
             {
                 for (int k = 0; k < __instance.graphics.apparelGraphics.Count; k++)
@@ -260,10 +272,12 @@ namespace RW_FacialStuff
                     }
                 }
             }
+
             if (!portrait && pawn.RaceProps.Animal && pawn.inventory != null && pawn.inventory.innerContainer.Count > 0)
             {
                 Graphics.DrawMesh(mesh, vector, quat, __instance.graphics.packGraphic.MatAt(pawn.Rotation, null), 0);
             }
+
             if (!portrait)
             {
                 DrawEquipmentMethodInfo?.Invoke(__instance, new object[] { rootLoc });
