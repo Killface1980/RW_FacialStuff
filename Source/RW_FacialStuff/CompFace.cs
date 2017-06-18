@@ -55,9 +55,10 @@
 
         public BrowDef BrowDef;
 
+        // todo: make dead eyes
         public EyeDef EyeDef;
 
-        public MouthDef MouthDef = DefDatabase<MouthDef>.GetNamed("Mouth_Female_Default");
+        public MouthDef MouthDef = null;
 
         public WrinkleDef WrinkleDef;
 
@@ -66,9 +67,8 @@
         #region Graphics
 
         public Color HairColorOrg;
-        public Color BeardColor;
+        public Color BeardColor = Color.clear;
 
-        public Graphic HairCutGraphic;
         private Graphic beardGraphic;
 
         private Graphic browGraphic;
@@ -138,22 +138,7 @@
             return material;
         }
 
-        public Material HairCutMatAt(Rot4 facing)
-        {
-            if (!FS_Settings.MergeHair)
-            {
-                return null;
-            }
 
-            Material material = this.HairCutGraphic.MatAt(facing, null);
-
-            if (material != null)
-            {
-                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
-            }
-
-            return material;
-        }
 
         public Material LeftEyeMatAt(Rot4 facing, bool portrait)
         {
@@ -264,7 +249,7 @@
             return material;
         }
 
-        // todo: make mouths dynamic,check textures
+        // todo: make mouths dynamic, check textures
         public Material MouthMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
             Material material = null;
@@ -384,6 +369,7 @@
 
         private int nextBlinkEnd = -5000;
 
+        public bool sameBeardColor;
 
         #endregion
 
@@ -430,12 +416,6 @@
             else
             {
                 this.crownTypeSuffix = "_Average";
-            }
-
-            // weird bug: no MouthDef defined for some visitors (male, 17)
-            if (this.MouthDef == null)
-            {
-                this.MouthDef = DefDatabase<MouthDef>.GetNamed("Mouth_Female_Default");
             }
 
             this.hasLeftEyePatch = false;
@@ -513,9 +493,14 @@
 
             this.HairColorOrg = this.pawn.story.hairColor;
 
-            this.BeardColor = _PawnHairColors.RandomBeardColor(this.pawn);
+            this.sameBeardColor = Rand.Value > 0.2f;
+            if (this.sameBeardColor)
+                this.BeardColor = _PawnHairColors.DarkerBeardColor(this.pawn.story.hairColor);
+            else
+                this.BeardColor = _PawnHairColors.RandomBeardColor();
 
             this.optimized = true;
+
         }
 
         public bool InitializeGraphics()
@@ -524,11 +509,21 @@
             {
                 return false;
             }
-            // Patch old pawns
-            if (this.BeardColor == null)
+            if (this.BeardColor == Color.clear)
             {
-                this.BeardColor = _PawnHairColors.RandomBeardColor(this.pawn);
+                this.sameBeardColor = Rand.Value > 0.2f;
+
+                if (this.sameBeardColor)
+                    this.BeardColor = _PawnHairColors.DarkerBeardColor(this.pawn.story.hairColor);
+                else
+                    this.BeardColor = _PawnHairColors.RandomBeardColor();
             }
+
+            if (this.MouthDef == null)
+            {
+                MouthDef = DefDatabase<MouthDef>.GetNamed("Mouth_Female_Default");
+            }
+
 
             this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
 
@@ -550,11 +545,12 @@
                 path = this.BeardDef.texPath;
             }
 
+
             this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 path,
                 ShaderDatabase.Transparent,
                 Vector2.one,
-                this.pawn.story.hairColor);
+                this.BeardColor);
 
 
             this.browGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
@@ -604,23 +600,23 @@
                                       this.leftEyeTexPath,
                                       ShaderDatabase.Transparent,
                                       Vector2.one,
-                                      Color.white) as Graphic_Multi_NaturalEyes;
+                                      Color.black) as Graphic_Multi_NaturalEyes;
             this.leftEyeClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                             this.leftEyeClosedTexPath,
                                             ShaderDatabase.Transparent,
                                             Vector2.one,
-                                            Color.white) as Graphic_Multi_NaturalEyes;
+                                            Color.black) as Graphic_Multi_NaturalEyes;
 
             this.rightEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                        this.rightEyeTexPath,
                                        ShaderDatabase.Transparent,
                                        Vector2.one,
-                                       Color.white) as Graphic_Multi_NaturalEyes;
+                                       Color.black) as Graphic_Multi_NaturalEyes;
             this.rightEyeClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                              this.rightEyeClosedTexPath,
                                              ShaderDatabase.Transparent,
                                              Vector2.one,
-                                             Color.white) as Graphic_Multi_NaturalEyes;
+                                             Color.black) as Graphic_Multi_NaturalEyes;
 
             return true;
         }
@@ -734,6 +730,9 @@
             Scribe_Values.Look(ref this.SkinColorHex, "SkinColorHex");
             Scribe_Values.Look(ref this.HairColorOrg, "HairColorOrg");
             Scribe_Values.Look(ref this.BeardColor, "BeardColor");
+            Scribe_Values.Look(ref this.sameBeardColor, "sameBeardColor");
+
+
 
         }
 

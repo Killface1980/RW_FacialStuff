@@ -18,7 +18,7 @@ namespace FaceStyling.ColorPicker
                             windowSize = Vector2.zero;
 
         public int numPresets = 0,
-                            pickerSize = 300,
+                            pickerSize = 200,
                             sliderWidth = 15,
                             alphaBGBlockSize = 10,
                             previewSize = 90, // odd multiple of alphaBGblocksize forces alternation of the background texture grid.

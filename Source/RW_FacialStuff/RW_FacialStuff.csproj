@@ -65,6 +65,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Aliens\Class1.cs" />
+    <None Include="Aliens\Class2.cs" />
+    <None Include="Aliens\ProviderAlienRaces.cs" />
+    <None Include="Aliens\AlienRace.cs" />
+    <None Include="Aliens\AlienStuff.cs" />
+    <None Include="Aliens\ExtensionsColorGenerator.cs" />
+    <None Include="Aliens\Providers.cs" />
+    <None Include="Aliens\CustomPawn.cs" />
+    <Compile Include="HaircutPawn.cs" />
+    <Compile Include="FaceStyling Bench\GraphicSlotGroup.cs" />
     <Compile Include="Patches\Pawn_HealthTracker_Postfixes.cs" />
     <Compile Include="Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="Graphic_Multi_AddedHeadParts.cs" />
