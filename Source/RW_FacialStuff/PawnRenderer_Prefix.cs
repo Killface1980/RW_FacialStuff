@@ -52,12 +52,11 @@ namespace RW_FacialStuff
 
             Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
 
-            // Skip to default renderer if no faces can be used
+            // Skip to default renderer if pawn has no CompFace
             CompFace faceComp = pawn.TryGetComp<CompFace>();
             if (faceComp == null)
             {
                 return true;
-
             }
 
 
@@ -119,6 +118,7 @@ namespace RW_FacialStuff
                 Vector3 locFacialY = a + b;
                 if (material != null)
                 {
+           //         locFacialY += faceComp.eyemove;
                     Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
                     GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, material, portrait);
                     locFacialY.y += 0.001f;
@@ -150,7 +150,7 @@ namespace RW_FacialStuff
 
                         if (pawn.Dead)
                         {
-                            Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, portrait, bodyDrawType);
+                            Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, bodyDrawType);
                             if (deadEyeMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, deadEyeMat, portrait);
@@ -159,7 +159,7 @@ namespace RW_FacialStuff
                         }
                         else
                         {
-                            if (!faceComp.hasLeftEyePatch || faceComp.hasLeftEyePatch && !faceComp.leftIsSolid)
+                            if (!faceComp.hasLeftEyePatch || faceComp.hasLeftEyePatch && !faceComp.LeftIsSolid)
                             {
                                 Material leftEyeMat = faceComp.LeftEyeMatAt(headFacing, portrait);
                                 if (leftEyeMat != null)
@@ -169,7 +169,7 @@ namespace RW_FacialStuff
                                 }
                             }
 
-                            if (!faceComp.hasRightEyePatch || faceComp.hasRightEyePatch && !faceComp.rightIsSolid)
+                            if (!faceComp.hasRightEyePatch || faceComp.hasRightEyePatch && !faceComp.RightIsSolid)
                             {
                                 Material rightEyeMat = faceComp.RightEyeMatAt(headFacing, portrait);
                                 if (rightEyeMat != null)
@@ -180,13 +180,11 @@ namespace RW_FacialStuff
                             }
                         }
 
-
                         if (browMat != null)
                         {
                             GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, browMat, portrait);
                             locFacialY.y += 0.00001f;
                         }
-
 
                         if (faceComp.hasLeftEyePatch)
                         {
@@ -213,7 +211,9 @@ namespace RW_FacialStuff
 
                 Vector3 loc2 = rootLoc + b;
                 loc2.y += 0.0328125022f;
-                //        loc2.y = locFacialY.y;
+
+       //         loc2 += faceComp.eyemove;
+
                 bool hatVisible = false;
 
                 if (!portrait || !Prefs.HatsOnlyOnMap)

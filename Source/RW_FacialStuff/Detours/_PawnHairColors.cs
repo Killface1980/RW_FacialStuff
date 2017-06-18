@@ -1,10 +1,12 @@
-﻿using System.Reflection;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace RW_FacialStuff.Detouring
 {
+    using Harmony;
+
     public static class _PawnHairColors
     {
         // changed Midnight Black - 10/10/10 - 2016-07-28
@@ -26,6 +28,11 @@ namespace RW_FacialStuff.Detouring
         public static readonly Color HairRubyRed = new Color32(227, 35, 41, 255);
         public static readonly Color HairUltraViolet = new Color32(191, 53, 132, 255);
 
+        // [HarmonyPatch(typeof(PawnHairColors), "RandomHairColor")]
+        // public static class RandomHairColor_Postfix
+        // {
+        //
+        // }
 
         [Detour(typeof(PawnHairColors), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
         public static Color RandomHairColor(Color skinColor, int ageYears)
@@ -68,6 +75,7 @@ namespace RW_FacialStuff.Detouring
                 tempColor = Color.Lerp(tempColor, HairTerraCotta, Rand.Range(0f, 0.3f));
                 tempColor = Color.Lerp(tempColor, HairPlatinum, Rand.Range(0f, 0.45f));
             }
+
             else
             {
                 float value2 = Rand.Value;
@@ -148,5 +156,33 @@ namespace RW_FacialStuff.Detouring
         //      public static Color Color03 = new Color32(193, 146, 85, 255);//(0,75686276f, 0,572549045f, 0,333333343f);
         //      public static Color Color04 = new Color32(237, 202, 156, 255);//(0,929411769f, 0,7921569f, 0,6117647f);
 
+        public static Color RandomBeardColor(Pawn pawn)
+        {
+            float value = Rand.Value;
+            Color tempColor = new Color();
+            Color darken = new Color(0.8f, 0.8f, 0.8f);
+
+            if (value > 0.3f)
+            {
+                return pawn.story.hairColor * darken;
+            }
+            //dark hair
+            if (value > 0.15f)
+            {
+                tempColor = Color.Lerp(HairPlatinum, HairYellowBlonde, Rand.Value);
+                tempColor = Color.Lerp(tempColor, HairTerraCotta, Rand.Range(0.3f, 1f));
+                tempColor = Color.Lerp(tempColor, HairMediumDarkBrown, Rand.Range(0.3f, 0.7f));
+                tempColor = Color.Lerp(tempColor, HairMidnightBlack, Rand.Range(0.1f, 0.8f));
+            }
+            //brown hair
+            else 
+            {
+                tempColor = Color.Lerp(HairPlatinum, HairYellowBlonde, Rand.Value);
+                tempColor = Color.Lerp(tempColor, HairTerraCotta, Rand.Range(0f, 0.6f));
+                tempColor = Color.Lerp(tempColor, HairMediumDarkBrown, Rand.Range(0.3f, 1f));
+                tempColor = Color.Lerp(tempColor, HairMidnightBlack, Rand.Range(0f, 0.5f));
+            }
+            return tempColor;
+        }
     }
 }

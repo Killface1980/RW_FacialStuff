@@ -110,7 +110,7 @@ namespace RW_FacialStuff
             {
                 Log.Message("Facial Stuff: Failed to get front texture at " + req.path + "_front" + " - Graphic_Multi_AddedHeadParts");
                 return;
-                array[2] = MaskTextures.BlankTexture();
+                //array[2] = MaskTextures.BlankTexture();
             }
 
             if (ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side"))

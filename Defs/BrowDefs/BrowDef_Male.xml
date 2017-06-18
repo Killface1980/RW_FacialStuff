@@ -95,6 +95,20 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+  </RW_FacialStuff.Defs.BrowDef>  
+	
+	<RW_FacialStuff.Defs.BrowDef>
+    <defName>Brow_Male_Mono</defName>
+    <label>Brow_Male_Mono</label>
+    <hairGender>Male</hairGender>
+    <raceList>
+      <li>Human</li>
+    </raceList>
+    <texPath>Brows/Male/Brow_Male_Mono</texPath>
+    <hairTags>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
   </RW_FacialStuff.Defs.BrowDef>
 
 </DefPackage-BrowDef>

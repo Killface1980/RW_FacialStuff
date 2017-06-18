@@ -65,12 +65,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Detouring\Pawn_HealthTracker_Patches.cs" />
+    <Compile Include="Patches\Pawn_HealthTracker_Postfixes.cs" />
     <Compile Include="Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="Graphic_Multi_AddedHeadParts.cs" />
-    <Compile Include="MeshPoolFs.cs" />
-    <Compile Include="HairCut\CutHairDb.cs" />
-    <Compile Include="Detouring\PawnRenderer.cs" />
+    <None Include="MeshPoolFs.cs" />
+    <Compile Include="CutHairDb.cs" />
+    <Compile Include="PawnRenderer_Prefix.cs" />
     <Compile Include="CompFace.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
@@ -92,10 +92,10 @@
     <Compile Include="ModConfigMenu.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
-    <Compile Include="Detouring\_PawnHairColors.cs" />
-    <Compile Include="Detouring\_PawnSkinColors.cs" />
+    <Compile Include="Detours\_PawnHairColors.cs" />
+    <Compile Include="Detours\_PawnSkinColors.cs" />
     <Compile Include="PawnFaceChooser.cs" />
-    <Compile Include="Detouring\_PawnGraphicSet.cs" />
+    <Compile Include="Patches\PawnGraphicSet_Postfix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

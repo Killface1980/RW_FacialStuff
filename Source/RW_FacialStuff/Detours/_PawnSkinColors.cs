@@ -1,10 +1,13 @@
-﻿using System.Reflection;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace RW_FacialStuff.Detouring
 {
+    using System;
+    using System.Collections.Generic;
+
     public static class _PawnSkinColors
     {
         public struct SkinColorData

@@ -15,6 +15,8 @@
 
     using Verse;
 
+    // bug: update for 2nd eye display, make beard color selectable, 
+
     [StaticConstructorOnStartup]
     public class Dialog_FaceStyling : Window
     {
@@ -87,17 +89,18 @@
 
         private Vector2 _scrollPosition = Vector2.zero;
 
-        private Graphic EyeGraphic(EyeDef def)
+        // todo: make dead eyes
+        private Graphic_Multi_NaturalEyes EyeGraphic(EyeDef def)
         {
-            Graphic result;
+            Graphic_Multi_NaturalEyes result;
             if (def.texPath != null)
             {
-                result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                     def.texPath + faceComp.crownTypeSuffix,
                     ShaderDatabase.Cutout,
                     new Vector2(38f, 38f),
                     Color.white,
-                    Color.white);
+                    Color.white) as Graphic_Multi_NaturalEyes;
             }
             else
             {
@@ -128,9 +131,9 @@
             return result;
         }
 
-        private Graphic MouthGraphic(MouthDef def)
+        private Graphic_Multi_NaturalHeadParts MouthGraphic(MouthDef def)
         {
-            Graphic result;
+            Graphic_Multi_NaturalHeadParts result;
             if (def.texPath != null)
             {
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
@@ -138,7 +141,7 @@
                     ShaderDatabase.Cutout,
                     new Vector2(38f, 38f),
                     Color.white,
-                    Color.white);
+                    Color.white) as Graphic_Multi_NaturalHeadParts;
             }
             else
             {
@@ -148,10 +151,9 @@
             return result;
         }
 
-
-        private Graphic BeardGraphic(BeardDef def)
+        private Graphic_Multi_NaturalHeadParts BeardGraphic(BeardDef def)
         {
-            Graphic result;
+            Graphic_Multi_NaturalHeadParts result;
             if (def.texPath != null)
             {
                 string path = def.texPath + faceComp.crownTypeSuffix + faceComp.headTypeSuffix;
@@ -165,7 +167,7 @@
                     ShaderDatabase.Cutout,
                     new Vector2(38f, 38f),
                     Color.white,
-                    Color.white);
+                    Color.white) as Graphic_Multi_NaturalHeadParts;
             }
             else
             {
@@ -174,10 +176,9 @@
 
             return result;
         }
-
-        private Graphic BrowGraphic(BrowDef def)
+        private Graphic_Multi_NaturalHeadParts BrowGraphic(BrowDef def)
         {
-            Graphic result;
+            Graphic_Multi_NaturalHeadParts result;
             if (def.texPath != null)
             {
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
@@ -185,7 +186,7 @@
                     ShaderDatabase.Cutout,
                     new Vector2(38f, 38f),
                     Color.white,
-                    Color.white);
+                    Color.white) as Graphic_Multi_NaturalHeadParts;
             }
             else
             {

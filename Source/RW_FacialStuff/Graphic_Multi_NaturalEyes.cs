@@ -10,7 +10,7 @@ namespace RW_FacialStuff
     {
         private Material[] mats = new Material[4];
 
-        public virtual Material MatAt(Rot4 rot, Thing thing = null)
+        public override Material MatAt(Rot4 rot, Thing thing = null)
         {
             switch (rot.AsInt)
             {
@@ -74,8 +74,6 @@ namespace RW_FacialStuff
             }
         }
 
-
-
         public override void Init(GraphicRequest req)
         {
             data = req.graphicData;
@@ -113,7 +111,7 @@ namespace RW_FacialStuff
             {
                 Log.Message("Facial Stuff: Failed to get front texture at " + req.path + "_front" + " - Graphic_Multi_NaturalEyes");
                 return;
-                array[2] = MaskTextures.BlankTexture();
+             //   array[2] = MaskTextures.BlankTexture();
             }
 
             string sidePath = "Eyes/Eye_" + gender + "_" + crowntype + "_" + eyeType + "_side";

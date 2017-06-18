@@ -292,7 +292,8 @@ namespace RW_FacialStuff
                 return 100f;
             }
             return Rand.Range(1f, 100f);
-
+        
+            /*
             // deactivated for now
             if (pawn.gender == Gender.Male)
             {
@@ -330,6 +331,7 @@ namespace RW_FacialStuff
 
             Log.Error(string.Concat("Unknown hair likelihood for ", mouth, " with ", pawn));
             return 0f;
+            */
         }
 
         private static float BeardChoiceLikelihoodFor(BeardDef beard, Pawn pawn)

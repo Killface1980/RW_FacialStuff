@@ -90,11 +90,8 @@ namespace RW_FacialStuff
 
             public HeadGraphicRecordModded(Pawn pawn)
             {
-                CompFace faceComp = pawn.TryGetComp<CompFace>();
-
                 this.pawn = pawn;
                 graphicPath = pawn.story.HeadGraphicPath;
-                graphicPathModded = faceComp.headGraphicIndex;
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
                 string[] array = fileNameWithoutExtension?.Split('_');
                 try
