@@ -157,7 +157,7 @@
                 return material;
             }
 
-            if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
+            if (asleep)
             {
                 flag = false;
                 material = this.leftEyeClosedGraphic.MatAt(facing, null);
@@ -211,7 +211,7 @@
                 return material;
             }
 
-            if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
+            if (asleep)
             {
                 flag = false;
                 material = this.rightEyeClosedGraphic.MatAt(facing, null);
@@ -370,6 +370,8 @@
         private int nextBlinkEnd = -5000;
 
         public bool sameBeardColor;
+
+        private bool asleep;
 
         #endregion
 
@@ -621,6 +623,9 @@
             return true;
         }
 
+        // todo: eyes closed when anaesthetic
+
+        // eyes closed time = > consciousness
         // Method used to animate the eye movement
         public override void PostDraw()
         {
@@ -668,17 +673,28 @@
             // float moveY = (float)Math.Cos(Find.TickManager.TicksGame * 0.1f) * this.factorY;
             if (tickManagerTicksGame > this.nextBlinkEnd)
             {
+                float range = Rand.Range(20f, 180f);
+                float blinkDuration = Rand.Range(5f, 35f);
+
+                this.nextBlink = (int)(tickManagerTicksGame + range);
+                this.nextBlinkEnd = (int)(this.nextBlink + blinkDuration);
+
+                if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
+                {
+                    this.asleep = true;
+                    return;
+                }
+                this.asleep = false;
+
                 // this.jitterLeft = 1f;
                 // this.jitterRight = 1f;
 
                 // blinkRate = Mathf.Lerp(2f, 0.25f, this.pawn.needs.rest.CurLevel);
-                float range = Rand.Range(20f, 180f);
-                float blinkDuration = Rand.Range(5f, 35f);
+
 
                 // range *= (int)blinkRate;
                 // blinkDuration /= (int)this.blinkRate;
-                this.nextBlink = (int)(tickManagerTicksGame + range);
-                this.nextBlinkEnd = (int)(this.nextBlink + blinkDuration);
+
 
                 if (Rand.Value > 0.9f)
                 {
