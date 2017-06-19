@@ -28,13 +28,14 @@ namespace RW_FacialStuff
             {
                 this.modSettings.Write();
             }
-            if (Find.ColonistBar != null)
-            {
-                Find.ColonistBar.MarkColonistsDirty();
-            }
+
 
             if (Current.ProgramState == ProgramState.Playing)
             {
+                if (Find.ColonistBar != null)
+                {
+                    Find.ColonistBar.MarkColonistsDirty();
+                }
                 foreach (Pawn pawn in PawnsFinder.AllMapsAndWorld_Alive)
                 {
                     if (pawn.RaceProps.Humanlike)

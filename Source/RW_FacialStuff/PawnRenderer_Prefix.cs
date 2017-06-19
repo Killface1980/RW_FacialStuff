@@ -35,6 +35,45 @@ namespace RW_FacialStuff
         private static MethodInfo DrawEquipmentMethodInfo;
         private static FieldInfo PawnHeadOverlaysFieldInfo;
 
+        // Verse.PawnRenderer
+        public static Vector3 BaseMouthOffsetAt(CompFace faceComp, Rot4 rotation)
+        {
+            float num2 = 0f;
+            switch (faceComp.pawn.gender)
+            {
+                case Gender.Male:
+                    num2 = HorMouthMaleExtraOffset[(int)faceComp.headType];
+                    break;
+                case Gender.Female:
+                    num2 = HorMouthFemaleExtraOffset[(int)faceComp.headType];
+                    break;
+            }
+            float num = HorMouthOffset[(int)faceComp.pawn.story.crownType];
+            float num3 = VerMouthOffset[(int)faceComp.headType];
+            float num4 = VerMouthOffset[(int)faceComp.pawn.story.crownType];
+
+            switch (rotation.AsInt)
+            {
+                case 1:
+                    return new Vector3(num + num2, 0f, -num3 - num4);
+                case 2:
+                    return new Vector3(0, 0f, -num3 - num4);
+                case 3:
+                    return new Vector3(-num - num2, 0f, -num3 - num4);
+                default:
+                    return Vector3.zero;
+            }
+        }
+
+        // Verse.PawnRenderer
+        private static readonly float[] HorMouthOffset = new float[] { 0f, 0f, 0.015f };
+
+        private static readonly float[] VerMouthOffset = new float[] { 0f, 0f, 0.015f };
+
+        private static readonly float[] HorMouthMaleExtraOffset = new float[] { 0f, 0f, 0.1f };
+        private static readonly float[] HorMouthFemaleExtraOffset = new float[] { 0f, 0f, 0.01f };
+
+
         private static void GetReflections()
         {
             if (PawnRendererType == null)
@@ -57,8 +96,8 @@ namespace RW_FacialStuff
             //ThingDef_AlienRace alienProps = pawn.def as ThingDef_AlienRace;
             CompFace faceComp = pawn.TryGetComp<CompFace>();
 
-       //   if (alienProps != null)
-       //       Log.Message(alienProps.alienRace.ToString());
+            //   if (alienProps != null)
+            //       Log.Message(alienProps.alienRace.ToString());
 
             Mesh mesh = null;
 
@@ -137,7 +176,8 @@ namespace RW_FacialStuff
                             {
                                 Mesh meshMouth = __instance.graphics.HairMeshSet.MeshAt(headFacing);
 
-                                GenDraw.DrawMeshNowOrLater(meshMouth, locFacialY, quat, mouthMat, portrait);
+                                var drawLoc = locFacialY + BaseMouthOffsetAt(faceComp, bodyFacing);
+                                GenDraw.DrawMeshNowOrLater(meshMouth, drawLoc, quat, mouthMat, portrait);
                                 locFacialY.y += 0.00001f;
                             }
 
@@ -284,241 +324,241 @@ namespace RW_FacialStuff
 
             #endregion
 
-       //   else if (alienProps != null)
-       //   {
-       //       return false;
-       //       if (!__instance.graphics.AllResolved)
-       //       {
-       //           __instance.graphics.ResolveAllGraphics();
-       //       }
-       //       if (renderBody)
-       //       {
-       //           Vector3 loc = rootLoc;
-       //           loc.y += 0.00483870972f;
-       //
-       //           if (bodyDrawType == RotDrawMode.Rotting)
-       //           {
-       //               Mesh mesh2;
-       //               if (__instance.graphics.dessicatedGraphic.ShouldDrawRotated)
-       //               {
-       //                   mesh2 = MeshPool.GridPlane(
-       //                       portrait
-       //                           ? alienProps.alienRace.generalSettings.alienPartGenerator.CustomPortraitDrawSize
-       //                           : alienProps.alienRace.generalSettings.alienPartGenerator.CustomDrawSize);
-       //               }
-       //               else
-       //               {
-       //                   Vector2 size = portrait
-       //                                      ? alienProps.alienRace.generalSettings.alienPartGenerator
-       //                                          .CustomPortraitDrawSize
-       //                                      : alienProps.alienRace.generalSettings.alienPartGenerator.CustomDrawSize;
-       //                   if (bodyFacing.IsHorizontal)
-       //                   {
-       //                       size = size.Rotated();
-       //                   }
-       //                   if (bodyFacing == Rot4.West
-       //                       && (__instance.graphics.dessicatedGraphic.data == null
-       //                           || __instance.graphics.dessicatedGraphic.data.allowFlip))
-       //                   {
-       //                       return MeshPool.GridPlaneFlip(size);
-       //                   }
-       //                   return MeshPool.GridPlane(size);
-       //               }
-       //
-       //               Quaternion rotation = (Quaternion)Traverse.Create(__instance.graphics.dessicatedGraphic)
-       //                   .Method("QuatFromRot").GetValue<Quaternion>(bodyFacing);
-       //               Material material = __instance.graphics.dessicatedGraphic.MatAt(bodyFacing, pawn);
-       //               Graphics.DrawMesh(mesh2, loc, rotation, material, 0);
-       //               if (__instance.graphics.dessicatedGraphic.ShadowGraphic != null)
-       //               {
-       //                   __instance.graphics.dessicatedGraphic.ShadowGraphic.DrawWorker(
-       //                       loc,
-       //                       bodyFacing,
-       //                       pawn.def,
-       //                       pawn);
-       //               }
-       //
-       //               //__instance.graphics.dessicatedGraphic.Draw(loc, bodyFacing, pawn);
-       //           }
-       //           else
-       //           {
-       //               mesh = (portrait
-       //                           ? alienProps.alienRace.generalSettings.alienPartGenerator.bodyPortraitSet.MeshAt(
-       //                               bodyFacing)
-       //                           : alienProps.alienRace.generalSettings.alienPartGenerator.bodySet
-       //                               .MeshAt(bodyFacing));
-       //           }
-       //
-       //           List<Material> list = __instance.graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
-       //           list.ForEach(
-       //               m =>
-       //                   {
-       //                       Material damagedMat = __instance.graphics.flasher.GetDamagedMat(m);
-       //                       GenDraw.DrawMeshNowOrLater(mesh, loc, quat, damagedMat, portrait);
-       //                       loc.y += 0.00483870972f;
-       //                   });
-       //           if (bodyDrawType == RotDrawMode.Fresh)
-       //           {
-       //               Vector3 drawLoc = rootLoc;
-       //               drawLoc.y += 0.0193548389f;
-       //               Traverse.Create(__instance).Field("woundOverlays").GetValue<PawnWoundDrawer>()
-       //                   .RenderOverBody(drawLoc, mesh, quat, portrait);
-       //           }
-       //       }
-       //
-       //       Vector3 vector = rootLoc;
-       //       Vector3 a = rootLoc;
-       //       if (bodyFacing != Rot4.North)
-       //       {
-       //           a.y += 0.0290322583f;
-       //           vector.y += 0.0241935477f;
-       //       }
-       //       else
-       //       {
-       //           a.y += 0.0241935477f;
-       //           vector.y += 0.0290322583f;
-       //       }
-       //       if (__instance.graphics.headGraphic != null)
-       //       {
-       //           Vector3 b = quat * __instance.BaseHeadOffsetAt(headFacing);
-       //           Material material = __instance.graphics.HeadMatAt(headFacing, bodyDrawType, headStump);
-       //           if (material != null)
-       //           {
-       //               Mesh mesh2 = (portrait
-       //                                 ? alienProps.alienRace.generalSettings.alienPartGenerator.headPortraitSet
-       //                                     .MeshAt(headFacing)
-       //                                 : alienProps.alienRace.generalSettings.alienPartGenerator.headSet.MeshAt(
-       //                                     headFacing));
-       //               GenDraw.DrawMeshNowOrLater(mesh2, a + b, quat, material, portrait);
-       //           }
-       //           Vector3 loc2 = rootLoc + b;
-       //           loc2.y += 0.03387097f;
-       //           bool hatVisible = false;
-       //           if (!portrait || !Prefs.HatsOnlyOnMap)
-       //           {
-       //               Mesh mesh3 = (pawn.story.crownType == CrownType.Narrow
-       //                                 ? (portrait
-       //                                        ? alienProps.alienRace.generalSettings.alienPartGenerator
-       //                                            .hairPortraitSetNarrow
-       //                                        : alienProps.alienRace.generalSettings.alienPartGenerator.hairSetNarrow
-       //                                   )
-       //                                 : (portrait
-       //                                        ? alienProps.alienRace.generalSettings.alienPartGenerator
-       //                                            .hairPortraitSetAverage
-       //                                        : alienProps.alienRace.generalSettings.alienPartGenerator
-       //                                            .hairSetAverage)).MeshAt(headFacing);
-       //               List<ApparelGraphicRecord> apparelGraphics = __instance.graphics.apparelGraphics;
-       //               apparelGraphics.Where(apr => apr.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
-       //                   .ToList().ForEach(
-       //                       apr =>
-       //                           {
-       //                               bool flagBody = true;
-       //                               if (FS_Settings.HideHatInBed)
-       //                               {
-       //                                   flagBody = renderBody;
-       //                               }
-       //                               if (flagBody)
-       //                               {
-       //                                   hatVisible = true;
-       //                                   if (FS_Settings.MergeHair)
-       //                                   {
-       //                                       HaircutPawn hairPawn = SaveableCache.GetHairCache(pawn);
-       //                                       Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
-       //                                       if (hairCutMat != null)
-       //                                       {
-       //                                           GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, hairCutMat, portrait);
-       //                                           loc2.y += 0.0001f;
-       //                                           //     loc2.y += 0.0328125022f;
-       //                                       }
-       //                                   }
-       //                                   Material material2 = apr.graphic.MatAt(bodyFacing, null);
-       //                                   material2 = __instance.graphics.flasher.GetDamagedMat(material2);
-       //                                   GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, material2, portrait);
-       //                               }
-       //                           });
-       //           }
-       //           if (!hatVisible && bodyDrawType != RotDrawMode.Dessicated && !headStump)
-       //           {
-       //               Mesh mesh4 = (pawn.story.crownType == CrownType.Narrow
-       //                                 ? (portrait
-       //                                        ? alienProps.alienRace.generalSettings.alienPartGenerator
-       //                                            .hairPortraitSetNarrow
-       //                                        : alienProps.alienRace.generalSettings.alienPartGenerator.hairSetNarrow
-       //                                   )
-       //                                 : (portrait
-       //                                        ? alienProps.alienRace.generalSettings.alienPartGenerator
-       //                                            .hairPortraitSetAverage
-       //                                        : alienProps.alienRace.generalSettings.alienPartGenerator
-       //                                            .hairSetAverage)).MeshAt(headFacing);
-       //               Material mat = __instance.graphics.HairMatAt(headFacing);
-       //               GenDraw.DrawMeshNowOrLater(mesh4, loc2, quat, mat, portrait);
-       //           }
-       //       }
-       //       if (renderBody)
-       //       {
-       //           __instance.graphics.apparelGraphics
-       //               .Where(apr => apr.sourceApparel.def.apparel.LastLayer == ApparelLayer.Shell).ToList().ForEach(
-       //                   apr =>
-       //                       {
-       //                           Material material3 = apr.graphic.MatAt(bodyFacing, null);
-       //                           material3 = __instance.graphics.flasher.GetDamagedMat(material3);
-       //                           GenDraw.DrawMeshNowOrLater(mesh, vector, quat, material3, portrait);
-       //                       });
-       //
-       //           if (pawn.GetComp<AlienPartGenerator.AlienComp>().Tail != null
-       //               && alienProps.alienRace.generalSettings.alienPartGenerator.CanDrawTail(pawn))
-       //           {
-       //               //mesh = MeshPool.plane10;
-       //
-       //               mesh = portrait
-       //                          ? alienProps.alienRace.generalSettings.alienPartGenerator.tailPortraitMesh
-       //                          : alienProps.alienRace.generalSettings.alienPartGenerator.tailMesh;
-       //
-       //               float MoffsetX = 0.42f;
-       //               float MoffsetZ = -0.22f;
-       //               float MoffsetY = -0.3f;
-       //               float num = -40;
-       //
-       //               if (pawn.Rotation == Rot4.North)
-       //               {
-       //                   MoffsetX = 0f;
-       //                   MoffsetY = 0.3f;
-       //                   MoffsetZ = -0.55f;
-       //                   mesh = portrait
-       //                              ? alienProps.alienRace.generalSettings.alienPartGenerator.tailPortraitMesh
-       //                              : alienProps.alienRace.generalSettings.alienPartGenerator.tailMesh;
-       //                   num = 0;
-       //               }
-       //               else if (pawn.Rotation == Rot4.East)
-       //               {
-       //                   MoffsetX = -MoffsetX;
-       //                   num = -num + 0; //TailAngle
-       //                   mesh = portrait
-       //                              ? alienProps.alienRace.generalSettings.alienPartGenerator.tailPortraitMeshFlipped
-       //                              : alienProps.alienRace.generalSettings.alienPartGenerator.tailMeshFlipped;
-       //               }
-       //
-       //               Vector3 scaleVector = new Vector3(MoffsetX, MoffsetY, MoffsetZ);
-       //               scaleVector.x *= 1f + (1f - (portrait
-       //                                                ? alienProps.alienRace.generalSettings.alienPartGenerator
-       //                                                    .CustomPortraitDrawSize
-       //                                                : alienProps.alienRace.generalSettings.alienPartGenerator
-       //                                                    .CustomDrawSize).x);
-       //               scaleVector.y *= 1f + (1f - (portrait
-       //                                                ? alienProps.alienRace.generalSettings.alienPartGenerator
-       //                                                    .CustomPortraitDrawSize
-       //                                                : alienProps.alienRace.generalSettings.alienPartGenerator
-       //                                                    .CustomDrawSize).y);
-       //
-       //               Graphics.DrawMesh(
-       //                   mesh,
-       //                   vector + scaleVector,
-       //                   Quaternion.AngleAxis(num, Vector3.up),
-       //                   pawn.GetComp<AlienPartGenerator.AlienComp>().Tail.MatAt(pawn.Rotation),
-       //                   0);
-       //           }
-       //       }
-       //   }
+            //   else if (alienProps != null)
+            //   {
+            //       return false;
+            //       if (!__instance.graphics.AllResolved)
+            //       {
+            //           __instance.graphics.ResolveAllGraphics();
+            //       }
+            //       if (renderBody)
+            //       {
+            //           Vector3 loc = rootLoc;
+            //           loc.y += 0.00483870972f;
+            //
+            //           if (bodyDrawType == RotDrawMode.Rotting)
+            //           {
+            //               Mesh mesh2;
+            //               if (__instance.graphics.dessicatedGraphic.ShouldDrawRotated)
+            //               {
+            //                   mesh2 = MeshPool.GridPlane(
+            //                       portrait
+            //                           ? alienProps.alienRace.generalSettings.alienPartGenerator.CustomPortraitDrawSize
+            //                           : alienProps.alienRace.generalSettings.alienPartGenerator.CustomDrawSize);
+            //               }
+            //               else
+            //               {
+            //                   Vector2 size = portrait
+            //                                      ? alienProps.alienRace.generalSettings.alienPartGenerator
+            //                                          .CustomPortraitDrawSize
+            //                                      : alienProps.alienRace.generalSettings.alienPartGenerator.CustomDrawSize;
+            //                   if (bodyFacing.IsHorizontal)
+            //                   {
+            //                       size = size.Rotated();
+            //                   }
+            //                   if (bodyFacing == Rot4.West
+            //                       && (__instance.graphics.dessicatedGraphic.data == null
+            //                           || __instance.graphics.dessicatedGraphic.data.allowFlip))
+            //                   {
+            //                       return MeshPool.GridPlaneFlip(size);
+            //                   }
+            //                   return MeshPool.GridPlane(size);
+            //               }
+            //
+            //               Quaternion rotation = (Quaternion)Traverse.Create(__instance.graphics.dessicatedGraphic)
+            //                   .Method("QuatFromRot").GetValue<Quaternion>(bodyFacing);
+            //               Material material = __instance.graphics.dessicatedGraphic.MatAt(bodyFacing, pawn);
+            //               Graphics.DrawMesh(mesh2, loc, rotation, material, 0);
+            //               if (__instance.graphics.dessicatedGraphic.ShadowGraphic != null)
+            //               {
+            //                   __instance.graphics.dessicatedGraphic.ShadowGraphic.DrawWorker(
+            //                       loc,
+            //                       bodyFacing,
+            //                       pawn.def,
+            //                       pawn);
+            //               }
+            //
+            //               //__instance.graphics.dessicatedGraphic.Draw(loc, bodyFacing, pawn);
+            //           }
+            //           else
+            //           {
+            //               mesh = (portrait
+            //                           ? alienProps.alienRace.generalSettings.alienPartGenerator.bodyPortraitSet.MeshAt(
+            //                               bodyFacing)
+            //                           : alienProps.alienRace.generalSettings.alienPartGenerator.bodySet
+            //                               .MeshAt(bodyFacing));
+            //           }
+            //
+            //           List<Material> list = __instance.graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
+            //           list.ForEach(
+            //               m =>
+            //                   {
+            //                       Material damagedMat = __instance.graphics.flasher.GetDamagedMat(m);
+            //                       GenDraw.DrawMeshNowOrLater(mesh, loc, quat, damagedMat, portrait);
+            //                       loc.y += 0.00483870972f;
+            //                   });
+            //           if (bodyDrawType == RotDrawMode.Fresh)
+            //           {
+            //               Vector3 drawLoc = rootLoc;
+            //               drawLoc.y += 0.0193548389f;
+            //               Traverse.Create(__instance).Field("woundOverlays").GetValue<PawnWoundDrawer>()
+            //                   .RenderOverBody(drawLoc, mesh, quat, portrait);
+            //           }
+            //       }
+            //
+            //       Vector3 vector = rootLoc;
+            //       Vector3 a = rootLoc;
+            //       if (bodyFacing != Rot4.North)
+            //       {
+            //           a.y += 0.0290322583f;
+            //           vector.y += 0.0241935477f;
+            //       }
+            //       else
+            //       {
+            //           a.y += 0.0241935477f;
+            //           vector.y += 0.0290322583f;
+            //       }
+            //       if (__instance.graphics.headGraphic != null)
+            //       {
+            //           Vector3 b = quat * __instance.BaseHeadOffsetAt(headFacing);
+            //           Material material = __instance.graphics.HeadMatAt(headFacing, bodyDrawType, headStump);
+            //           if (material != null)
+            //           {
+            //               Mesh mesh2 = (portrait
+            //                                 ? alienProps.alienRace.generalSettings.alienPartGenerator.headPortraitSet
+            //                                     .MeshAt(headFacing)
+            //                                 : alienProps.alienRace.generalSettings.alienPartGenerator.headSet.MeshAt(
+            //                                     headFacing));
+            //               GenDraw.DrawMeshNowOrLater(mesh2, a + b, quat, material, portrait);
+            //           }
+            //           Vector3 loc2 = rootLoc + b;
+            //           loc2.y += 0.03387097f;
+            //           bool hatVisible = false;
+            //           if (!portrait || !Prefs.HatsOnlyOnMap)
+            //           {
+            //               Mesh mesh3 = (pawn.story.crownType == CrownType.Narrow
+            //                                 ? (portrait
+            //                                        ? alienProps.alienRace.generalSettings.alienPartGenerator
+            //                                            .hairPortraitSetNarrow
+            //                                        : alienProps.alienRace.generalSettings.alienPartGenerator.hairSetNarrow
+            //                                   )
+            //                                 : (portrait
+            //                                        ? alienProps.alienRace.generalSettings.alienPartGenerator
+            //                                            .hairPortraitSetAverage
+            //                                        : alienProps.alienRace.generalSettings.alienPartGenerator
+            //                                            .hairSetAverage)).MeshAt(headFacing);
+            //               List<ApparelGraphicRecord> apparelGraphics = __instance.graphics.apparelGraphics;
+            //               apparelGraphics.Where(apr => apr.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
+            //                   .ToList().ForEach(
+            //                       apr =>
+            //                           {
+            //                               bool flagBody = true;
+            //                               if (FS_Settings.HideHatInBed)
+            //                               {
+            //                                   flagBody = renderBody;
+            //                               }
+            //                               if (flagBody)
+            //                               {
+            //                                   hatVisible = true;
+            //                                   if (FS_Settings.MergeHair)
+            //                                   {
+            //                                       HaircutPawn hairPawn = SaveableCache.GetHairCache(pawn);
+            //                                       Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
+            //                                       if (hairCutMat != null)
+            //                                       {
+            //                                           GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, hairCutMat, portrait);
+            //                                           loc2.y += 0.0001f;
+            //                                           //     loc2.y += 0.0328125022f;
+            //                                       }
+            //                                   }
+            //                                   Material material2 = apr.graphic.MatAt(bodyFacing, null);
+            //                                   material2 = __instance.graphics.flasher.GetDamagedMat(material2);
+            //                                   GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, material2, portrait);
+            //                               }
+            //                           });
+            //           }
+            //           if (!hatVisible && bodyDrawType != RotDrawMode.Dessicated && !headStump)
+            //           {
+            //               Mesh mesh4 = (pawn.story.crownType == CrownType.Narrow
+            //                                 ? (portrait
+            //                                        ? alienProps.alienRace.generalSettings.alienPartGenerator
+            //                                            .hairPortraitSetNarrow
+            //                                        : alienProps.alienRace.generalSettings.alienPartGenerator.hairSetNarrow
+            //                                   )
+            //                                 : (portrait
+            //                                        ? alienProps.alienRace.generalSettings.alienPartGenerator
+            //                                            .hairPortraitSetAverage
+            //                                        : alienProps.alienRace.generalSettings.alienPartGenerator
+            //                                            .hairSetAverage)).MeshAt(headFacing);
+            //               Material mat = __instance.graphics.HairMatAt(headFacing);
+            //               GenDraw.DrawMeshNowOrLater(mesh4, loc2, quat, mat, portrait);
+            //           }
+            //       }
+            //       if (renderBody)
+            //       {
+            //           __instance.graphics.apparelGraphics
+            //               .Where(apr => apr.sourceApparel.def.apparel.LastLayer == ApparelLayer.Shell).ToList().ForEach(
+            //                   apr =>
+            //                       {
+            //                           Material material3 = apr.graphic.MatAt(bodyFacing, null);
+            //                           material3 = __instance.graphics.flasher.GetDamagedMat(material3);
+            //                           GenDraw.DrawMeshNowOrLater(mesh, vector, quat, material3, portrait);
+            //                       });
+            //
+            //           if (pawn.GetComp<AlienPartGenerator.AlienComp>().Tail != null
+            //               && alienProps.alienRace.generalSettings.alienPartGenerator.CanDrawTail(pawn))
+            //           {
+            //               //mesh = MeshPool.plane10;
+            //
+            //               mesh = portrait
+            //                          ? alienProps.alienRace.generalSettings.alienPartGenerator.tailPortraitMesh
+            //                          : alienProps.alienRace.generalSettings.alienPartGenerator.tailMesh;
+            //
+            //               float MoffsetX = 0.42f;
+            //               float MoffsetZ = -0.22f;
+            //               float MoffsetY = -0.3f;
+            //               float num = -40;
+            //
+            //               if (pawn.Rotation == Rot4.North)
+            //               {
+            //                   MoffsetX = 0f;
+            //                   MoffsetY = 0.3f;
+            //                   MoffsetZ = -0.55f;
+            //                   mesh = portrait
+            //                              ? alienProps.alienRace.generalSettings.alienPartGenerator.tailPortraitMesh
+            //                              : alienProps.alienRace.generalSettings.alienPartGenerator.tailMesh;
+            //                   num = 0;
+            //               }
+            //               else if (pawn.Rotation == Rot4.East)
+            //               {
+            //                   MoffsetX = -MoffsetX;
+            //                   num = -num + 0; //TailAngle
+            //                   mesh = portrait
+            //                              ? alienProps.alienRace.generalSettings.alienPartGenerator.tailPortraitMeshFlipped
+            //                              : alienProps.alienRace.generalSettings.alienPartGenerator.tailMeshFlipped;
+            //               }
+            //
+            //               Vector3 scaleVector = new Vector3(MoffsetX, MoffsetY, MoffsetZ);
+            //               scaleVector.x *= 1f + (1f - (portrait
+            //                                                ? alienProps.alienRace.generalSettings.alienPartGenerator
+            //                                                    .CustomPortraitDrawSize
+            //                                                : alienProps.alienRace.generalSettings.alienPartGenerator
+            //                                                    .CustomDrawSize).x);
+            //               scaleVector.y *= 1f + (1f - (portrait
+            //                                                ? alienProps.alienRace.generalSettings.alienPartGenerator
+            //                                                    .CustomPortraitDrawSize
+            //                                                : alienProps.alienRace.generalSettings.alienPartGenerator
+            //                                                    .CustomDrawSize).y);
+            //
+            //               Graphics.DrawMesh(
+            //                   mesh,
+            //                   vector + scaleVector,
+            //                   Quaternion.AngleAxis(num, Vector3.up),
+            //                   pawn.GetComp<AlienPartGenerator.AlienComp>().Tail.MatAt(pawn.Rotation),
+            //                   0);
+            //           }
+            //       }
+            //   }
             else
             {
                 return true;

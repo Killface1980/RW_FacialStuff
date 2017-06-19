@@ -61,7 +61,7 @@ namespace FaceStyling.ColorPicker
         private bool _preview = true,
                             _autoApply;
 
-        // reference headTypeSuffix containing the in/out parameter
+        // reference headType containing the in/out parameter
         private ColorWrapper _wrapper;
 
         #endregion Fields

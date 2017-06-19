@@ -100,7 +100,7 @@
             if (def.texPath != null)
             {
                 string path = faceComp.EyeTexPath(def.texPath, Side.Right);
-          //      "Eyes/Eye_" + pawn.gender + faceComp.crownTypeSuffix + "_" + def.texPath   + "_Right";
+          //      "Eyes/Eye_" + pawn.gender + faceComp.crownType + "_" + def.texPath   + "_Right";
 
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                              path,
@@ -167,7 +167,7 @@
             if (def.texPath != null)
             {
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                    def.texPath + faceComp.crownTypeSuffix,
+                    def.texPath +"_"+ faceComp.crownType,
                     ShaderDatabase.Cutout,
                     new Vector2(38f, 38f),
                     Color.white,
@@ -186,7 +186,7 @@
             Graphic_Multi_NaturalHeadParts result;
             if (def.texPath != null)
             {
-                string path = def.texPath + faceComp.crownTypeSuffix + faceComp.headTypeSuffix;
+                string path = def.texPath + "_" + faceComp.crownType + "_" + faceComp.headType;
                 if (def == DefDatabase<BeardDef>.GetNamed("Beard_Shaved"))
                 {
                     path = def.texPath;

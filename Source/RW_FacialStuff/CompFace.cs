@@ -51,7 +51,7 @@
 
         public Vector3 eyemoveR = new Vector3(0, 0, 0);
         public Vector3 eyemoveL = new Vector3(0, 0, 0);
-        private Pawn pawn;
+        public Pawn pawn;
 
         #region Defs
 
@@ -301,9 +301,10 @@
         #endregion
 
         #region Strings
-        public string crownTypeSuffix = "_Average";
 
-        public string headTypeSuffix = "_Normal";
+        public CrownType crownType;
+
+        public HeadType headType;
 
         private string SkinColorHex;
 
@@ -394,35 +395,29 @@
                 return false;
             }
 
-            string newType = null;
-
+           
             if (this.pawn.story.HeadGraphicPath.Contains("Normal"))
             {
-                newType = "_Normal";
+                headType = HeadType.Normal;
             }
 
             if (this.pawn.story.HeadGraphicPath.Contains("Pointy"))
             {
-                newType = "_Pointy";
+                headType = HeadType.Pointy;
             }
 
             if (this.pawn.story.HeadGraphicPath.Contains("Wide"))
             {
-                newType = "_Wide";
-            }
-
-            if (this.headTypeSuffix == null || this.headTypeSuffix != newType)
-            {
-                this.headTypeSuffix = newType;
+                headType = HeadType.Wide;
             }
 
             if (this.pawn.story.crownType == CrownType.Narrow)
             {
-                this.crownTypeSuffix = "_Narrow";
+                this.crownType = CrownType.Narrow;
             }
             else
             {
-                this.crownTypeSuffix = "_Average";
+                this.crownType = CrownType.Average;
             }
 
             this.hasLeftEyePatch = false;
@@ -442,14 +437,14 @@
             this.LeftCanBlink = true;
             this.RightCanBlink = true;
 
-            // "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_" + this.EyeDef.texPath + "_Right";
+            // "Eyes/Eye_" + this.pawn.gender + this.crownType + "_" + this.EyeDef.texPath + "_Right";
 
-            // = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_Closed_Right";
+            // = "Eyes/Eye_" + this.pawn.gender + this.crownType + "_Closed_Right";
 
 
-            // this.leftEyeTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_" + this.EyeDef.texPath
+            // this.leftEyeTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownType + "_" + this.EyeDef.texPath
             // + "_Left";
-            // this.leftEyeClosedTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_Closed_Left";
+            // this.leftEyeClosedTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownType + "_Closed_Left";
             this.browTexPath = this.BrowTexPath(BrowDef);
 
 
@@ -467,20 +462,20 @@
 
                     // if (hediff.Part == jaw)
                     // {
-                    // this.ExtraJaw_texPath = "AddedParts/" + hediff.def.defName +  this.crownTypeSuffix;
+                    // this.ExtraJaw_texPath = "AddedParts/" + hediff.def.defName +  this.crownType;
                     // }
                     // BodyPartRecord leftEye = this.pawn.RaceProps.body.GetPartAtIndex(27);
                     // BodyPartRecord rightEye = this.pawn.RaceProps.body.GetPartAtIndex(28);
                     if (hediff.Part == leftEye)
                     {
-                        this.leftEyePatchTexPath = "AddedParts/" + hediff.def.defName + "_Left" + this.crownTypeSuffix;
+                        this.leftEyePatchTexPath = "AddedParts/" + hediff.def.defName + "_Left" + "_" + this.crownType;
                         this.LeftIsSolid = addedPartProps.isSolid;
                     }
 
                     if (hediff.Part == rightEye)
                     {
                         this.rightEyePatchTexPath = "AddedParts/" + hediff.def.defName + "_Right"
-                                                    + this.crownTypeSuffix;
+                                                    + "_" + this.crownType;
                         this.RightIsSolid = addedPartProps.isSolid;
                     }
                 }
@@ -489,7 +484,7 @@
                 {
                     if (hediff.Part == leftEye)
                     {
-                        this.leftEyeTexPath = EyeTexPath("Missing", enums.Side.Left);// "Eyes/" + "ShotOut" + "_Left" + this.crownTypeSuffix;
+                        this.leftEyeTexPath = EyeTexPath("Missing", enums.Side.Left);// "Eyes/" + "ShotOut" + "_Left" + this.crownType;
                         this.LeftCanBlink = false;
                     }
 
@@ -506,7 +501,7 @@
 
         public string EyeTexPath(string eyeDefPath, enums.Side side, bool closed = false)
         {
-            string path = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_";
+            string path = "Eyes/Eye_" + this.pawn.gender + "_" + this.crownType + "_";
 
             if (closed)
             {
@@ -521,13 +516,13 @@
 
             return path;
 
-            // "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_" + this.EyeDef.texPath + "_Right";
-            // = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_Closed_Right";
+            // "Eyes/Eye_" + this.pawn.gender + this.crownType + "_" + this.EyeDef.texPath + "_Right";
+            // = "Eyes/Eye_" + this.pawn.gender + this.crownType + "_Closed_Right";
         }
 
         public string BrowTexPath(BrowDef browDef)
         {
-            return "Brows/" + this.pawn.gender + "/Brow_" + this.pawn.gender + this.crownTypeSuffix + "_"
+            return "Brows/" + this.pawn.gender + "/Brow_" + this.pawn.gender + "_" + this.crownType + "_"
                    + browDef.texPath;
         }
 
@@ -593,12 +588,12 @@
                 Mathf.InverseLerp(50f, 100f, this.pawn.ageTracker.AgeBiologicalYearsFloat));
 
             this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                this.WrinkleDef.texPath + this.crownTypeSuffix + this.headTypeSuffix,
+                this.WrinkleDef.texPath + "_" + this.crownType + "_" + this.headType,
                 ShaderDatabase.Transparent,
                 Vector2.one,
                 wrinkleColor);
 
-            string path = this.BeardDef.texPath + this.crownTypeSuffix + this.headTypeSuffix;
+            string path = this.BeardDef.texPath + "_" + this.crownType + "_" + this.headType;
 
             if (this.BeardDef == DefDatabase<BeardDef>.GetNamed("Beard_Shaved"))
             {
@@ -854,8 +849,8 @@
             Scribe_Values.Look(ref this.drawMouth, "drawMouth");
 
             Scribe_Values.Look(ref this.headGraphicIndex, "headGraphicIndex");
-            Scribe_Values.Look(ref this.headTypeSuffix, "headTypeSuffix");
-            Scribe_Values.Look(ref this.crownTypeSuffix, "crownTypeSuffix");
+            Scribe_Values.Look(ref this.headType, "headType");
+            Scribe_Values.Look(ref this.crownType, "crownType");
             Scribe_Values.Look(ref this.SkinColorHex, "SkinColorHex");
             Scribe_Values.Look(ref this.HairColorOrg, "HairColorOrg");
             Scribe_Values.Look(ref this.BeardColor, "BeardColor");
