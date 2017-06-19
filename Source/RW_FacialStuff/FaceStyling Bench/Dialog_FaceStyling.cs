@@ -16,10 +16,12 @@
 
     using Verse;
 
+    using static RW_FacialStuff.enums;
+
     // bug: update for 2nd eye display, make beard color selectable, 
 
     [StaticConstructorOnStartup]
-    public partial class Dialog_FaceStyling : Window
+    public class Dialog_FaceStyling : Window
     {
         private static readonly List<BeardDef> _beardDefs;
 
@@ -97,11 +99,11 @@
             Graphic_Multi_NaturalEyes result;
             if (def.texPath != null)
             {
-                var rightEyeTexPath = "Eyes/Eye_" + pawn.gender + faceComp.crownTypeSuffix + "_" + def.texPath
-                                       + "_Right";
+                string path = faceComp.EyeTexPath(def.texPath, Side.Right);
+          //      "Eyes/Eye_" + pawn.gender + faceComp.crownTypeSuffix + "_" + def.texPath   + "_Right";
 
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-                             rightEyeTexPath,
+                             path,
                              ShaderDatabase.Cutout,
                              new Vector2(38f, 38f),
                              Color.white,
@@ -120,11 +122,11 @@
             Graphic_Multi_NaturalEyes result;
             if (def.texPath != null)
             {
-                var leftEyeTexPath = "Eyes/Eye_" + pawn.gender + faceComp.crownTypeSuffix + "_" + def.texPath
-                                       + "_Left";
+                string path = faceComp.EyeTexPath(def.texPath, Side.Left);
+
 
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-                             leftEyeTexPath,
+                             path,
                              ShaderDatabase.Cutout,
                              new Vector2(38f, 38f),
                              Color.white,
@@ -211,7 +213,7 @@
             if (def.texPath != null)
             {
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                    def.texPath + faceComp.crownTypeSuffix,
+                    faceComp.BrowTexPath(def),
                     ShaderDatabase.Cutout,
                     new Vector2(38f, 38f),
                     Color.white,

@@ -1,11 +1,11 @@
-﻿namespace FaceStyling
+﻿namespace RW_FacialStuff
 {
 
     using Verse;
 
-    public partial class Dialog_FaceStyling : Window
+    public class enums
     {
-        private enum GraphicSlotGroup
+        public enum GraphicSlotGroup
         {
             Invalid = -1,
 
@@ -42,9 +42,17 @@
 
             Hair,
 
-            Overhead, 
+            Overhead,
 
             NumberOfTypes
+        }
+
+        public enum Side
+        {
+            Left = 0,
+
+            Right = 1,
+
         }
     }
 }

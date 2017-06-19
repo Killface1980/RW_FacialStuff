@@ -2,7 +2,10 @@
 {
     using System.Collections.Generic;
 
+    using FaceStyling;
+
     using RimWorld;
+    using RimWorld.Planet;
 
     using RW_FacialStuff.Defs;
     using RW_FacialStuff.Detouring;
@@ -23,9 +26,9 @@
 
                                                                          // { new CurvePoint(0.25f, -1f), true },
                                                                          // { new CurvePoint(0.3f, -1f), true },
-                                                                         // { new CurvePoint(0.5f, 0f), true },
-                                                                         // { new CurvePoint(0.7f, 1f), true },
                                                                          {
+                                                                             // { new CurvePoint(0.5f, 0f), true },
+                                                                             // { new CurvePoint(0.7f, 1f), true },
                                                                              // { new CurvePoint(0.75f, 1f), true },
                                                                              new CurvePoint(0.65f, 1f), true
                                                                          },
@@ -145,9 +148,9 @@
             Material material = null;
 
             bool flag = true;
+            material = this.leftEyeGraphic.MatAt(facing, null);
             if (portrait)
             {
-                material = this.leftEyeGraphic.MatAt(facing, null);
 
                 if (material != null)
                 {
@@ -156,22 +159,20 @@
 
                 return material;
             }
-
-            if (asleep)
+            if (this.LeftCanBlink)
             {
-                flag = false;
-                material = this.leftEyeClosedGraphic.MatAt(facing, null);
-            }
-
-            if (flag)
-            {
-                if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterLeft)
+                if (asleep)
                 {
+                    flag = false;
                     material = this.leftEyeClosedGraphic.MatAt(facing, null);
                 }
-                else
+
+                if (flag)
                 {
-                    material = this.leftEyeGraphic.MatAt(facing, null);
+                    if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterLeft)
+                    {
+                        material = this.leftEyeClosedGraphic.MatAt(facing, null);
+                    }
                 }
             }
 
@@ -199,10 +200,10 @@
         {
             Material material = null;
             bool flag = true;
+            material = this.rightEyeGraphic.MatAt(facing, null);
+
             if (portrait)
             {
-                material = this.rightEyeGraphic.MatAt(facing, null);
-
                 if (material != null)
                 {
                     material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
@@ -211,22 +212,23 @@
                 return material;
             }
 
-            if (asleep)
+            if (this.RightCanBlink)
             {
-                flag = false;
-                material = this.rightEyeClosedGraphic.MatAt(facing, null);
-            }
-
-            if (flag)
-            {
-                if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterRight)
+                if (asleep)
                 {
+                    flag = false;
                     material = this.rightEyeClosedGraphic.MatAt(facing, null);
                 }
-                else
+                if (flag)
                 {
-                    material = this.rightEyeGraphic.MatAt(facing, null);
+                    if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterRight)
+                    {
+                        material = this.rightEyeClosedGraphic.MatAt(facing, null);
+                    }
                 }
+            }
+            else
+            {
             }
 
             if (material != null)
@@ -373,6 +375,8 @@
 
         private bool asleep;
 
+        private string browTexPath;
+
         #endregion
 
 
@@ -428,26 +432,36 @@
             this.leftEyePatchTexPath = null;
             this.rightEyePatchTexPath = null;
 
-            this.rightEyeTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_" + this.EyeDef.texPath
-                                   + "_Right";
+            this.rightEyeTexPath = EyeTexPath(this.EyeDef.texPath, enums.Side.Right);
+            this.rightEyeClosedTexPath = EyeTexPath(this.EyeDef.texPath, enums.Side.Right, true);
 
-            this.rightEyeClosedTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_Closed_Right";
+            this.leftEyeTexPath = EyeTexPath(this.EyeDef.texPath, enums.Side.Left);
+            this.leftEyeClosedTexPath = EyeTexPath(this.EyeDef.texPath, enums.Side.Left, true);
 
-            this.leftEyeTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_" + this.EyeDef.texPath
-                                  + "_Left";
+            this.LeftCanBlink = true;
+            this.RightCanBlink = true;
 
-            this.leftEyeClosedTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_Closed_Left";
+            // "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_" + this.EyeDef.texPath + "_Right";
+
+            // = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_Closed_Right";
+
+
+            // this.leftEyeTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_" + this.EyeDef.texPath
+            // + "_Left";
+            // this.leftEyeClosedTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_Closed_Left";
+            this.browTexPath = this.BrowTexPath(BrowDef);
+
 
             foreach (Hediff hediff in this.pawn.health.hediffSet.hediffs)
             {
+                List<BodyPartRecord> body = this.pawn.RaceProps.body.AllParts;
+
+                BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
+                BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
                 AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
+
                 if (addedPartProps != null)
                 {
-                    List<BodyPartRecord> body = this.pawn.RaceProps.body.AllParts;
-
-                    BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
-                    BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
-
                     // BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
 
                     // if (hediff.Part == jaw)
@@ -469,9 +483,51 @@
                         this.RightIsSolid = addedPartProps.isSolid;
                     }
                 }
+
+                if (hediff.def == HediffDefOf.MissingBodyPart)
+                {
+                    if (hediff.Part == leftEye)
+                    {
+                        this.leftEyeTexPath = EyeTexPath("Missing", enums.Side.Left);// "Eyes/" + "ShotOut" + "_Left" + this.crownTypeSuffix;
+                        this.LeftCanBlink = false;
+                    }
+
+                    if (hediff.Part == rightEye)
+                    {
+                        this.rightEyeTexPath = EyeTexPath("Missing", enums.Side.Right); ;
+                        this.RightCanBlink = false;
+                    }
+                }
             }
 
             return true;
+        }
+
+        public string EyeTexPath(string eyeDefPath, enums.Side side, bool closed = false)
+        {
+            string path = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_";
+
+            if (closed)
+            {
+                path += "Closed";
+            }
+            else
+            {
+                path += eyeDefPath;
+            }
+
+            path += "_" + side;
+
+            return path;
+
+            // "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_" + this.EyeDef.texPath + "_Right";
+            // = "Eyes/Eye_" + this.pawn.gender + this.crownTypeSuffix + "_Closed_Right";
+        }
+
+        public string BrowTexPath(BrowDef browDef)
+        {
+            return "Brows/" + this.pawn.gender + "/Brow_" + this.pawn.gender + this.crownTypeSuffix + "_"
+                   + browDef.texPath;
         }
 
         public void DefineFace()
@@ -511,6 +567,7 @@
             {
                 return false;
             }
+
             if (this.BeardColor == Color.clear)
             {
                 this.sameBeardColor = Rand.Value > 0.2f;
@@ -523,7 +580,7 @@
 
             if (this.MouthDef == null)
             {
-                MouthDef = DefDatabase<MouthDef>.GetNamed("Mouth_Female_Default");
+                MouthDef = MouthDefOf.Mouth_Female_Default;
             }
 
 
@@ -554,9 +611,8 @@
                 Vector2.one,
                 this.BeardColor);
 
-
             this.browGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                this.BrowDef.texPath + this.crownTypeSuffix,
+                this.browTexPath,
                 ShaderDatabase.Transparent,
                 Vector2.one,
                 Color.black);
@@ -602,7 +658,7 @@
                                       this.leftEyeTexPath,
                                       ShaderDatabase.Transparent,
                                       Vector2.one,
-                                      Color.black) as Graphic_Multi_NaturalEyes;
+                                      this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
             this.leftEyeClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                             this.leftEyeClosedTexPath,
                                             ShaderDatabase.Transparent,
@@ -613,7 +669,7 @@
                                        this.rightEyeTexPath,
                                        ShaderDatabase.Transparent,
                                        Vector2.one,
-                                       Color.black) as Graphic_Multi_NaturalEyes;
+                                       this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
             this.rightEyeClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                              this.rightEyeClosedTexPath,
                                              ShaderDatabase.Transparent,
@@ -625,8 +681,16 @@
 
         // todo: eyes closed when anaesthetic
 
-        // eyes closed time = > consciousness
+        // eyes closed time = > consciousness?
+        // tiredness affect blink rate
         // Method used to animate the eye movement
+
+        private CellRect _viewRect = new CellRect();
+
+        private bool LeftCanBlink;
+
+        private bool RightCanBlink;
+
         public override void PostDraw()
         {
             base.PostDraw();
@@ -635,8 +699,19 @@
                 return;
             }
 
+            if (WorldRendererUtility.WorldRenderedNow)
+            {
+                return;
+            }
+
+            _viewRect = Find.CameraDriver.CurrentViewRect;
+            _viewRect = _viewRect.ExpandedBy(5);
+
+            if (!_viewRect.Contains(this.pawn.Position))
+                return;
+
             int tickManagerTicksGame = Find.TickManager.TicksGame;
-            var x = Mathf.InverseLerp(this.lastBlinkended, this.nextBlink, tickManagerTicksGame);
+            float x = Mathf.InverseLerp(this.lastBlinkended, this.nextBlink, tickManagerTicksGame);
             float movePixel = 0f;
             float movePixelY = 0f;
 
@@ -673,10 +748,28 @@
             // float moveY = (float)Math.Cos(Find.TickManager.TicksGame * 0.1f) * this.factorY;
             if (tickManagerTicksGame > this.nextBlinkEnd)
             {
-                float range = Rand.Range(20f, 180f);
+                float ticksTillNextBlink = Rand.Range(60f, 240f);
                 float blinkDuration = Rand.Range(5f, 35f);
 
-                this.nextBlink = (int)(tickManagerTicksGame + range);
+                //  Log.Message(
+                //      "FS Blinker: " + this.pawn + " - ticksTillNextBlinkORG: " + ticksTillNextBlink.ToString("N0")
+                //      + " - blinkDurationORG: " + blinkDuration.ToString("N0"));
+
+                float dynamic = this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
+                float factor = Mathf.Lerp(0.125f, 1f, dynamic);
+
+                float dynamic2 = this.pawn.needs.rest.CurLevel;
+                float factor2 = Mathf.Lerp(0.125f, 1f, dynamic2);
+
+                ticksTillNextBlink *= factor * factor2;
+                blinkDuration /= factor * factor * factor2;
+
+                //    Log.Message(
+                //        "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - Rest: "
+                //        + dynamic2.ToStringPercent() + " - factorR: " + factor2.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
+                //        + " - blinkDuration: " + blinkDuration.ToString("N0"));
+
+                this.nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
                 this.nextBlinkEnd = (int)(this.nextBlink + blinkDuration);
 
                 if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
@@ -684,6 +777,7 @@
                     this.asleep = true;
                     return;
                 }
+
                 this.asleep = false;
 
                 // this.jitterLeft = 1f;
@@ -694,8 +788,6 @@
 
                 // range *= (int)blinkRate;
                 // blinkDuration /= (int)this.blinkRate;
-
-
                 if (Rand.Value > 0.9f)
                 {
                     // early "nerous" blinking. I guss positive values have no effect ...
@@ -709,7 +801,7 @@
                 }
 
                 // only animate eye movement if animation lasts at least 2.5 seconds
-                if (range > 80f)
+                if (ticksTillNextBlink > 80f)
                 {
                     this.moveX = Rand.Value > 0.7f;
                     this.moveY = Rand.Value > 0.85f;
@@ -747,9 +839,6 @@
             Scribe_Values.Look(ref this.HairColorOrg, "HairColorOrg");
             Scribe_Values.Look(ref this.BeardColor, "BeardColor");
             Scribe_Values.Look(ref this.sameBeardColor, "sameBeardColor");
-
-
-
         }
 
         #endregion
