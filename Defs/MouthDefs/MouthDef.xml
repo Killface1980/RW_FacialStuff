@@ -2,7 +2,7 @@
 <DefPackage-MouthDef>
 
   <RW_FacialStuff.Defs.MouthDef>
-    <defName>Mouth_Female_Big</defName>
+    <defName>Mouth_Big</defName>
     <label>EFA-Big</label>
     <hairGender>Female</hairGender>
     <raceList>
@@ -18,7 +18,7 @@
   </RW_FacialStuff.Defs.MouthDef>
 
   <RW_FacialStuff.Defs.MouthDef>
-    <defName>Mouth_Female_Default</defName>
+    <defName>Mouth_Default</defName>
     <label>EFA-Default</label>
     <hairGender>Female</hairGender>
     <raceList>
@@ -34,7 +34,7 @@
   </RW_FacialStuff.Defs.MouthDef>
 
   <RW_FacialStuff.Defs.MouthDef>
-    <defName>Mouth_Female_Sad</defName>
+    <defName>Mouth_Sad</defName>
     <label>EFA-Sad</label>
     <hairGender>Female</hairGender>
     <raceList>
@@ -50,7 +50,7 @@
   </RW_FacialStuff.Defs.MouthDef>
 
   <RW_FacialStuff.Defs.MouthDef>
-    <defName>Mouth_Female_Large</defName>
+    <defName>Mouth_Large</defName>
     <label>EFA-Large</label>
     <hairGender>Female</hairGender>
     <raceList>
@@ -66,7 +66,7 @@
   </RW_FacialStuff.Defs.MouthDef>
 
   <RW_FacialStuff.Defs.MouthDef>
-    <defName>Mouth_Female_Medium</defName>
+    <defName>Mouth_Medium</defName>
     <label>EFA-Medium</label>
     <hairGender>Female</hairGender>
     <raceList>
@@ -82,13 +82,29 @@
   </RW_FacialStuff.Defs.MouthDef>
   
   <RW_FacialStuff.Defs.MouthDef>
-    <defName>Mouth_Female_Smile</defName>
+    <defName>Mouth_Smile</defName>
     <label>EFA-Smile</label>
     <hairGender>Female</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
     <texPath>Mouth/Mouth_Smile</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </RW_FacialStuff.Defs.MouthDef> 
+	
+	<RW_FacialStuff.Defs.MouthDef>
+    <defName>Mouth_Psycho</defName>
+    <label>EFA-Smile</label>
+    <hairGender>Female</hairGender>
+    <raceList>
+      <li>Human</li>
+    </raceList>
+    <texPath>Mouth/Mouth_Psycho</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>

@@ -73,7 +73,8 @@
     <None Include="Aliens\ExtensionsColorGenerator.cs" />
     <None Include="Aliens\Providers.cs" />
     <None Include="Aliens\CustomPawn.cs" />
-    <Compile Include="Defs\Class1.cs" />
+    <Compile Include="Defs\MouthDefOf.cs" />
+    <Compile Include="FacialGraphics.cs" />
     <Compile Include="HaircutPawn.cs" />
     <Compile Include="FaceStyling Bench\GraphicSlotGroup.cs" />
     <Compile Include="Patches\Pawn_HealthTracker_Postfixes.cs" />

@@ -49,7 +49,8 @@
 
         #region Fields
 
-        public Vector3 eyemove = new Vector3(0, 0, 0);
+        public Vector3 eyemoveR = new Vector3(0, 0, 0);
+        public Vector3 eyemoveL = new Vector3(0, 0, 0);
         private Pawn pawn;
 
         #region Defs
@@ -580,7 +581,7 @@
 
             if (this.MouthDef == null)
             {
-                MouthDef = MouthDefOf.Mouth_Female_Default;
+                MouthDef = MouthDefOf.Mouth_Default;
             }
 
 
@@ -617,11 +618,7 @@
                 Vector2.one,
                 Color.black);
 
-            this.mouthGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                this.MouthDef.texPath + this.crownTypeSuffix,
-                ShaderDatabase.Transparent,
-                Vector2.one,
-                Color.black);
+            this.mouthGraphic = FacialGraphics.mouthGraphic3;
 
             this.deadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 "Eyes/Eyes_Dead",
@@ -691,6 +688,8 @@
 
         private bool RightCanBlink;
 
+        private float mood = 0.5f;
+
         public override void PostDraw()
         {
             base.PostDraw();
@@ -741,7 +740,10 @@
                     }
                 }
 
-                this.eyemove = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
+                if (this.RightCanBlink)
+                    this.eyemoveR = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
+                if (this.LeftCanBlink)
+                    this.eyemoveL = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
             }
 
             // float moveX = (float)Math.Sin(Find.TickManager.TicksGame * 0.1f) * this.factorX;
@@ -816,6 +818,25 @@
                 }
 
                 this.lastBlinkended = tickManagerTicksGame;
+                if (this.pawn.needs != null)
+                {
+                    this.mood = this.pawn.needs.mood.CurLevel;
+
+                }
+                else this.mood = 0.5f;
+
+                if (this.mood != null)
+                {
+                    if (mood > 0.9f) mouthGraphic = FacialGraphics.mouthGraphic1;
+                    else if (mood > 0.8f) mouthGraphic = FacialGraphics.mouthGraphic2;
+                    else if (mood > 0.7f) mouthGraphic = FacialGraphics.mouthGraphic3;
+                    else if (mood > 0.55f) mouthGraphic = FacialGraphics.mouthGraphic4;
+                    else if (mood > 0.45f) mouthGraphic = FacialGraphics.mouthGraphic5;
+                    else if (mood > 0.35f) mouthGraphic = FacialGraphics.mouthGraphic6;
+                    else mouthGraphic = FacialGraphics.mouthGraphic7;
+                }
+                else mouthGraphic = FacialGraphics.mouthGraphic3;
+
             }
         }
 
@@ -826,7 +847,7 @@
 
             Scribe_Defs.Look(ref this.EyeDef, "EyeDef");
             Scribe_Defs.Look(ref this.BrowDef, "BrowDef");
-            Scribe_Defs.Look(ref this.MouthDef, "MouthDef");
+            //      Scribe_Defs.Look(ref this.MouthDef, "MouthDef");
             Scribe_Defs.Look(ref this.WrinkleDef, "WrinkleDef");
             Scribe_Defs.Look(ref this.BeardDef, "BeardDef");
             Scribe_Values.Look(ref this.optimized, "optimized");

@@ -135,7 +135,9 @@ namespace RW_FacialStuff
 
                             if (mouthMat != null)
                             {
-                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, mouthMat, portrait);
+                                Mesh meshMouth = __instance.graphics.HairMeshSet.MeshAt(headFacing);
+
+                                GenDraw.DrawMeshNowOrLater(meshMouth, locFacialY, quat, mouthMat, portrait);
                                 locFacialY.y += 0.00001f;
                             }
 
@@ -163,7 +165,7 @@ namespace RW_FacialStuff
                                     {
                                         GenDraw.DrawMeshNowOrLater(
                                             mesh2,
-                                            locFacialY + faceComp.eyemove,
+                                            locFacialY + faceComp.eyemoveL,
                                             quat,
                                             leftEyeMat,
                                             portrait);
@@ -178,7 +180,7 @@ namespace RW_FacialStuff
                                     {
                                         GenDraw.DrawMeshNowOrLater(
                                             mesh2,
-                                            locFacialY + faceComp.eyemove,
+                                            locFacialY + faceComp.eyemoveR,
                                             quat,
                                             rightEyeMat,
                                             portrait);
