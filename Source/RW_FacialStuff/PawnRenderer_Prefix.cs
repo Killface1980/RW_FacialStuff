@@ -171,7 +171,7 @@ namespace FacialStuff
                                 //          Mesh meshMouth = __instance.graphics.HairMeshSet.MeshAt(headFacing);
                                 Mesh meshMouth = faceComp.MouthMeshSet.MeshAt(headFacing);
 
-                                Vector3 drawLoc = locFacialY + faceComp.BaseMouthOffsetAt(bodyFacing);
+                                Vector3 drawLoc = locFacialY + quat * faceComp.BaseMouthOffsetAt(bodyFacing);
                                 GenDraw.DrawMeshNowOrLater(meshMouth, drawLoc, quat, mouthMat, portrait);
                                 locFacialY.y += 0.00001f;
                             }
