@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Verse;
 
-namespace RW_FacialStuff
+namespace FacialStuff
 {
     //  public class GraphicModded: Graphic
     //  {
@@ -81,7 +81,7 @@ namespace RW_FacialStuff
             //  array[2] = LoadTexture(req.path + "_front");
             //  if (array[2] == null)
             //  {
-            //      Log.Error("RW_FacialStuff: Failed to find any texture while constructing " + ToString());
+            //      Log.Error("FacialStuff: Failed to find any texture while constructing " + ToString());
             //      return;
             //  }
 

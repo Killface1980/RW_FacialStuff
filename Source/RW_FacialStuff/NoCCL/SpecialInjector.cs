@@ -1,14 +1,15 @@
 ﻿using System.Linq;
 using System.Reflection;
-using RW_FacialStuff.Initializer;
+using FacialStuff.Initializer;
 using Verse;
 
-namespace RW_FacialStuff.NoCCL
+namespace FacialStuff.NoCCL
 {
+    using FacialStuff.Initializer;
+
     public class SpecialInjector
     {
 
-#if NoCCL
         public virtual bool Inject()
         {
             Log.Error("This should never be called.");
@@ -38,6 +39,5 @@ namespace RW_FacialStuff.NoCCL
                 Log.Error(AssemblyName + " failed to get injected properly.");
             }
         }
-#endif
     }
 }

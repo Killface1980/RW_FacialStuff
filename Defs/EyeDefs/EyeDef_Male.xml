@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DefPackage-EyeDef>
 
-  <RW_FacialStuff.Defs.EyeDef>
+  <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_FL</defName>
     <label>Male_FL</label>
     <hairGender>Male</hairGender>
@@ -15,9 +15,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
+  </FacialStuff.Defs.EyeDef>
 
-  <RW_FacialStuff.Defs.EyeDef>
+  <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_RD</defName>
     <label>Male_RD</label>
     <hairGender>Male</hairGender>
@@ -31,9 +31,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
+  </FacialStuff.Defs.EyeDef>
 
-  <RW_FacialStuff.Defs.EyeDef>
+  <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_OV</defName>
     <label>Male_OV</label>
     <hairGender>Male</hairGender>
@@ -47,9 +47,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
+  </FacialStuff.Defs.EyeDef>
 
-  <RW_FacialStuff.Defs.EyeDef>
+  <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_SM</defName>
     <label>Male_SM</label>
     <hairGender>Male</hairGender>
@@ -63,5 +63,5 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </RW_FacialStuff.Defs.EyeDef>
+  </FacialStuff.Defs.EyeDef>
 </DefPackage-EyeDef>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RW_FacialStuff.Aliens
+namespace FacialStuff.Aliens
 {
     public class Providers
     {

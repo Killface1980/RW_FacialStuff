@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace RW_FacialStuff
+namespace FacialStuff
 {
     using Verse;
 
@@ -14,14 +14,24 @@ namespace RW_FacialStuff
 
         public static readonly GraphicMeshSet humanlikeHeadSetNarrow;
 
+        public static readonly GraphicMeshSet humanlikeHeadSetAverageFemale;
+
+        public static readonly GraphicMeshSet humanlikeHeadSetNarrowFemale;
+
         private const float HumanlikeHeadAverageWidth = 1.5f;
 
         private const float HumanlikeHeadNarrowWidth = 1.3f;
+
+        private const float HumanlikeHeadAverageWidthFemale = 1.4f;
+        private const float HumanlikeHeadNarrowWidthFemale = 1.2f;
 
         static MeshPoolFs()
         {
             humanlikeHeadSetAverage = new GraphicMeshSet(HumanlikeHeadAverageWidth);
             humanlikeHeadSetNarrow = new GraphicMeshSet(HumanlikeHeadNarrowWidth, HumanlikeHeadAverageWidth);
+
+            humanlikeHeadSetAverageFemale = new GraphicMeshSet(HumanlikeHeadAverageWidthFemale);
+            humanlikeHeadSetNarrowFemale = new GraphicMeshSet(HumanlikeHeadNarrowWidthFemale, HumanlikeHeadAverageWidthFemale);
         }
     }
 }

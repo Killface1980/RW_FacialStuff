@@ -2,11 +2,13 @@
 using System.Linq;
 using System.Reflection;
 using RimWorld;
-using RW_FacialStuff.Defs;
+using FacialStuff.Defs;
 using Verse;
 
-namespace RW_FacialStuff
+namespace FacialStuff
 {
+    using FacialStuff.Defs;
+
     public static class PawnFaceChooser
     {
 

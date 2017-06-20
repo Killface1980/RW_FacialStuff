@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RW_FacialStuff
+namespace FacialStuff
 {
     public class AlienRace
     {

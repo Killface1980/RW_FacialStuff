@@ -1,216 +1,12 @@
-﻿using Harmony;
-using RimWorld;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
-using UnityEngine;
-using Verse;
+using System.Linq;
+using System.Text;
 
 namespace FacialStuff
 {
-    using System.Linq;
-
-    using FacialStuff.Detouring;
-
-    using RW_FacialStuff;
-
-    [StaticConstructorOnStartup]
-    class HarmonyPatches
+    class BACKUP
     {
-
-        static HarmonyPatches()
-        {
-            var harmony = HarmonyInstance.Create("com.facialstuff.rimworld.mod");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
-
-            Log.Message("FacialStuff: Adding Harmony Prefix to PawnRenderer.RenderPawnInternal.");
-
-        }
-    }
-
-    [HarmonyPatch(typeof(PawnRenderer), "RenderPawnInternal", new Type[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) })]
-    public static class PawnRenderer_RenderPawnInternal
-    {
-        private static Type PawnRendererType = null;
-        private static FieldInfo PawnFieldInfo;
-        private static FieldInfo WoundOverlayFieldInfo;
-        private static MethodInfo DrawEquipmentMethodInfo;
-        private static FieldInfo PawnHeadOverlaysFieldInfo;
-
-
-
-        // Verse.PawnRenderer
-        public static Vector3 BaseMouthOffsetAt(CompFace faceComp, Rot4 rotation)
-        {
-
-            switch (rotation.AsInt)
-            {
-                case 1:
-                    return new Vector3(faceComp.headTypeX, 0f, -faceComp.headTypeY);
-                case 2:
-                    return new Vector3(0, 0f, -faceComp.headTypeY);
-                case 3:
-                    return new Vector3(-faceComp.headTypeX, 0f, -faceComp.headTypeY);
-                default:
-                    return Vector3.zero;
-            }
-
-
-            float headTypeX = 0f;
-            float headTypeY = 0f;
-
-#if develop
-
-            var male = faceComp.pawn.gender == Gender.Male;
-
-
-            if (faceComp.crownType == CrownType.Average)
-            {
-                switch (faceComp.headType)
-                {
-                    case HeadType.Normal:
-                        if (male)
-                        {
-                            headTypeX = FS_Settings.MaleAverageNormalOffsetX;
-                            headTypeY = FS_Settings.MaleAverageNormalOffsetY;
-                        }
-                        else
-                        {
-                            headTypeX = FS_Settings.FemaleAverageNormalOffsetX;
-                            headTypeY = FS_Settings.FemaleAverageNormalOffsetY;
-                        }
-                        break;
-                    case HeadType.Pointy:
-                        if (male)
-                        {
-                            headTypeX = FS_Settings.MaleAveragePointyOffsetX;
-                            headTypeY = FS_Settings.MaleAveragePointyOffsetY;
-                        }
-                        else
-                        {
-                            headTypeX = FS_Settings.FemaleAveragePointyOffsetX;
-                            headTypeY = FS_Settings.FemaleAveragePointyOffsetY;
-                        }
-                        break;
-                    case HeadType.Wide:
-                        if (male)
-                        {
-                            headTypeX = FS_Settings.MaleAverageWideOffsetX;
-                            headTypeY = FS_Settings.MaleAverageWideOffsetY;
-                        }
-                        else
-                        {
-                            headTypeX = FS_Settings.FemaleAverageWideOffsetX;
-                            headTypeY = FS_Settings.FemaleAverageWideOffsetY;
-                        }
-                        break;
-                }
-            }
-            else
-            {
-                switch (faceComp.headType)
-                {
-                    case HeadType.Normal:
-                        if (male)
-                        {
-                            headTypeX = FS_Settings.MaleNarrowNormalOffsetX;
-                            headTypeY = FS_Settings.MaleNarrowNormalOffsetY;
-                        }
-                        else
-                        {
-                            headTypeX = FS_Settings.FemaleNarrowNormalOffsetX;
-                            headTypeY = FS_Settings.FemaleNarrowNormalOffsetY;
-                        }
-                        break;
-                    case HeadType.Pointy:
-                        if (male)
-                        {
-                            headTypeX = FS_Settings.MaleNarrowPointyOffsetX;
-                            headTypeY = FS_Settings.MaleNarrowPointyOffsetY;
-                        }
-                        else
-                        {
-                            headTypeX = FS_Settings.FemaleNarrowPointyOffsetX;
-                            headTypeY = FS_Settings.FemaleNarrowPointyOffsetY;
-                        }
-                        break;
-                    case HeadType.Wide:
-                        if (male)
-                        {
-                            headTypeX = FS_Settings.MaleNarrowWideOffsetX;
-                            headTypeY = FS_Settings.MaleNarrowWideOffsetY;
-                        }
-                        else
-                        {
-                            headTypeX = FS_Settings.FemaleNarrowWideOffsetX;
-                            headTypeY = FS_Settings.FemaleNarrowWideOffsetY;
-                        }
-                        break;
-                }
-
-            }
-
-#else
-#endif
-
-
-
-            switch (faceComp.pawn.gender)
-            {
-                case Gender.Male:
-                    headTypeY = VerCrowntypeOffsetMale[(int)faceComp.crownType];
-                    headTypeX = HorHeadTypeOffsetMale[(int)faceComp.headType];
-                    break;
-                case Gender.Female:
-                    headTypeY = VerCrowntypeOffsetFemale[(int)faceComp.crownType];
-                    headTypeX = HorHeadTypeOffsetFemale[(int)faceComp.headType];
-                    break;
-            }
-
-            switch (rotation.AsInt)
-            {
-                case 1:
-                    return new Vector3( headTypeX, 0f, -headTypeY);
-                case 2:
-                    return new Vector3(0, 0f, -headTypeY);
-                case 3:
-                    return new Vector3(- headTypeX, 0f, -headTypeY);
-                default:
-                    return Vector3.zero;
-            }
-        }
-
-        private static readonly float[] HorCrowntypeOffsetMale = new float[] { 0f, FS_Settings.MaleAverageNormalOffsetX, FS_Settings.MaleNarrowNormalOffsetX };
-
-        private static readonly float[] HorCrowntypeOffsetFemale = new float[] { 0f, FS_Settings.FemaleAverageNormalOffsetX, FS_Settings.FemaleNarrowNormalOffsetX };
-
-        private static readonly float[] VerCrowntypeOffsetMale = new float[] { 0f, FS_Settings.MaleAverageNormalOffsetY, FS_Settings.MaleNarrowNormalOffsetY };
-
-        private static readonly float[] VerCrowntypeOffsetFemale = new float[] { 0f, FS_Settings.FemaleAverageNormalOffsetY, FS_Settings.FemaleNarrowNormalOffsetY };
-
-        private static readonly float[] HorHeadTypeOffsetMale = new float[] { FS_Settings.MaleAverageNormalOffsetX, FS_Settings.MaleAveragePointyOffsetX, FS_Settings.MaleAverageWideOffsetX };
-
-        private static readonly float[] HorHeadTypeOffsetFemale = new float[] { FS_Settings.FemaleAverageNormalOffsetX, FS_Settings.FemaleAveragePointyOffsetX, FS_Settings.FemaleAverageWideOffsetX };
-
-
-        //   private static readonly float[] HorMouthOffsetSex = new float[] { 0f, FS_Settings.MaleOffsetX, FS_Settings.FemaleOffsetX };
-        //
-        //   private static readonly float[] VerMouthOffsetSex = new float[] { 0f, FS_Settings.MaleOffsetY, FS_Settings.FemaleOffsetY };
-
-
-        private static void GetReflections()
-        {
-            if (PawnRendererType == null)
-            {
-                PawnRendererType = typeof(PawnRenderer);
-                PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
-                WoundOverlayFieldInfo = PawnRendererType.GetField("woundOverlays", BindingFlags.NonPublic | BindingFlags.Instance);
-                DrawEquipmentMethodInfo = PawnRendererType.GetMethod("DrawEquipment", BindingFlags.NonPublic | BindingFlags.Instance);
-                PawnHeadOverlaysFieldInfo = PawnRendererType.GetField("statusOverlays", BindingFlags.NonPublic | BindingFlags.Instance);
-            }
-        }
-
-        [HarmonyAfter(new string[] { "rimworld.erdelf.alien_race.main" })]
         public static bool Prefix(PawnRenderer __instance, Vector3 rootLoc, Quaternion quat, bool renderBody, Rot4 bodyFacing, Rot4 headFacing, RotDrawMode bodyDrawType, bool portrait, bool headStump)
         {
             GetReflections();
@@ -229,27 +25,6 @@ namespace FacialStuff
 
             if (faceComp != null)
             {
-#if develop
-                if (faceComp.ignoreRenderer)
-                {
-                    switch (faceComp.rotationInt)
-                    {
-                        case 0:
-                            bodyFacing = Rot4.North;
-                            break;
-                        case 1:
-                            bodyFacing = Rot4.East;
-                            break;
-                        case 2:
-                            bodyFacing = Rot4.South;
-                            break;
-                        case 3:
-                            bodyFacing = Rot4.West;
-                            break;
-                    }
-                    headFacing = bodyFacing;
-                }
-#endif
                 if (!__instance.graphics.AllResolved)
                 {
                     __instance.graphics.ResolveAllGraphics();
@@ -735,7 +510,6 @@ namespace FacialStuff
             }
             return false;
         }
+
     }
-
-
 }

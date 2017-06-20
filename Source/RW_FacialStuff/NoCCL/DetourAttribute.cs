@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace RW_FacialStuff
+namespace FacialStuff
 {
 
     [AttributeUsage(AttributeTargets.Method)]

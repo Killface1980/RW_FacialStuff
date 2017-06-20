@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DefPackage-BrowDef>
 
-  <RW_FacialStuff.Defs.BrowDef>
+  <FacialStuff.Defs.BrowDef>
     <defName>Brow_Female_Aggro</defName>
     <label>Brow_Female_Aggro</label>
     <hairGender>Female</hairGender>
@@ -15,9 +15,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </RW_FacialStuff.Defs.BrowDef>
+  </FacialStuff.Defs.BrowDef>
 
-  <RW_FacialStuff.Defs.BrowDef>
+  <FacialStuff.Defs.BrowDef>
     <defName>Brow_Female_Aware</defName>
     <label>Brow_Female_Aware</label>
     <hairGender>Female</hairGender>
@@ -31,9 +31,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </RW_FacialStuff.Defs.BrowDef>
+  </FacialStuff.Defs.BrowDef>
 
-  <RW_FacialStuff.Defs.BrowDef>
+  <FacialStuff.Defs.BrowDef>
     <defName>Brow_Female_Depressed</defName>
     <label>Brow_Female_Depressed</label>
     <hairGender>Female</hairGender>
@@ -47,9 +47,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </RW_FacialStuff.Defs.BrowDef>
+  </FacialStuff.Defs.BrowDef>
 
-  <RW_FacialStuff.Defs.BrowDef>
+  <FacialStuff.Defs.BrowDef>
     <defName>Brow_Female_Furious</defName>
     <label>Brow_Female_Furious</label>
     <hairGender>Female</hairGender>
@@ -63,9 +63,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </RW_FacialStuff.Defs.BrowDef>
+  </FacialStuff.Defs.BrowDef>
 
-  <RW_FacialStuff.Defs.BrowDef>
+  <FacialStuff.Defs.BrowDef>
     <defName>Brow_Female_Nice</defName>
     <label>Brow_Female_Nice</label>
     <hairGender>Female</hairGender>
@@ -79,9 +79,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </RW_FacialStuff.Defs.BrowDef>
+  </FacialStuff.Defs.BrowDef>
 
-  <RW_FacialStuff.Defs.BrowDef>
+  <FacialStuff.Defs.BrowDef>
     <defName>Brow_Female_Tired</defName>
     <label>Brow_Female_Tired</label>
     <hairGender>Female</hairGender>
@@ -95,6 +95,6 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </RW_FacialStuff.Defs.BrowDef>
+  </FacialStuff.Defs.BrowDef>
   
 </DefPackage-BrowDef>

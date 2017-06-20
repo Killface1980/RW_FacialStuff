@@ -8,7 +8,7 @@ using UnityEngine;
 using Verse;
 using Verse.Sound;
 
-namespace RW_FacialStuff.Aliens
+namespace FacialStuff.Aliens
 {
     public static class ExtensionsColorGenerator
     {

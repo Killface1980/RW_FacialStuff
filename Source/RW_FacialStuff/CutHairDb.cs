@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace RW_FacialStuff
+namespace FacialStuff
 {
     using UnityEngine;
 
@@ -57,11 +57,11 @@ namespace RW_FacialStuff
                 // if (false)
                 // {
                 //     byte[] bytes = canvasHeadFront.EncodeToPNG();
-                //     File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + this.pawn.Name + "_01front.png", bytes);
+                //     File.WriteAllBytes("Mods/FacialStuff/MergedHeads/" + this.pawn.Name + "_01front.png", bytes);
                 //     byte[] bytes2 = canvasHeadSide.EncodeToPNG();
-                //     File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + this.pawn.Name + "_02side.png", bytes2);
+                //     File.WriteAllBytes("Mods/FacialStuff/MergedHeads/" + this.pawn.Name + "_02side.png", bytes2);
                 //     byte[] bytes3 = canvasHeadBack.EncodeToPNG();
-                //     File.WriteAllBytes("Mods/RW_FacialStuff/MergedHeads/" + this.pawn.Name + "_03back.png", bytes3);
+                //     File.WriteAllBytes("Mods/FacialStuff/MergedHeads/" + this.pawn.Name + "_03back.png", bytes3);
                 // }
 
                 temptexturefront.Compress(true);

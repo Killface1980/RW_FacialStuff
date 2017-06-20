@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Verse;
 
-namespace RW_FacialStuff
+namespace FacialStuff
 {
     using System;
     using System.IO;

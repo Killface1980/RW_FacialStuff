@@ -2,7 +2,7 @@
 using UnityEngine;
 using Verse;
 
-namespace RW_FacialStuff.Utilities
+namespace FacialStuff.Utilities
 {
     public static class DialogUtility
     {

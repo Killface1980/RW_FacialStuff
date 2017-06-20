@@ -5,7 +5,7 @@ using System.IO;
 using UnityEngine;
 using Verse;
 
-namespace RW_FacialStuff
+namespace FacialStuff
 {
     using System.Linq;
 

@@ -2,7 +2,7 @@
 using RimWorld;
 using Verse;
 
-namespace RW_FacialStuff.Defs
+namespace FacialStuff.Defs
 {
 
     public class BeardDef : Def

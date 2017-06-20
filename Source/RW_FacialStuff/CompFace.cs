@@ -1,14 +1,16 @@
-﻿namespace RW_FacialStuff
+﻿namespace FacialStuff
 {
     using System.Collections.Generic;
 
     using FaceStyling;
 
+    using FacialStuff.Defs;
+    using FacialStuff.Detouring;
+
     using RimWorld;
     using RimWorld.Planet;
 
-    using RW_FacialStuff.Defs;
-    using RW_FacialStuff.Detouring;
+    using RW_FacialStuff;
 
     using UnityEngine;
 
@@ -47,7 +49,14 @@
                                                                      };
 
 
+
+
+        #region Development
+        public bool ignoreRenderer;
+        #endregion
+
         #region Fields
+
 
         public Vector3 eyemoveR = new Vector3(0, 0, 0);
         public Vector3 eyemoveL = new Vector3(0, 0, 0);
@@ -308,7 +317,6 @@
 
         private string SkinColorHex;
 
-        private string headGraphicIndex;
         private string leftEyeClosedTexPath = null;
 
         private string leftEyePatchTexPath = null;
@@ -386,6 +394,42 @@
 
         #region Methods
 
+        // Verse.PawnGraphicSet
+        public GraphicMeshSet MouthMeshSet
+        {
+            get
+            {
+                switch (pawn.gender)
+                {
+                    case Gender.Male:
+                        if (this.pawn.story.crownType == CrownType.Average)
+                        {
+                            return MeshPoolFs.humanlikeHeadSetAverage;
+                        }
+                        if (this.pawn.story.crownType == CrownType.Narrow)
+                        {
+                            return MeshPoolFs.humanlikeHeadSetNarrow;
+                        }
+                        break;
+
+                    case Gender.Female:
+                        if (this.pawn.story.crownType == CrownType.Average)
+                        {
+                            return MeshPoolFs.humanlikeHeadSetAverageFemale;
+                        }
+                        if (this.pawn.story.crownType == CrownType.Narrow)
+                        {
+                            return MeshPoolFs.humanlikeHeadSetNarrowFemale;
+                        }
+                        break;
+
+                }
+                Log.Error("Unknown crown type: " + this.pawn.story.crownType);
+                return MeshPool.humanlikeHairSetAverage;
+            }
+        }
+
+
         public bool SetHeadType()
         {
             this.pawn = this.parent as Pawn;
@@ -395,7 +439,7 @@
                 return false;
             }
 
-           
+
             if (this.pawn.story.HeadGraphicPath.Contains("Normal"))
             {
                 headType = HeadType.Normal;
@@ -447,7 +491,6 @@
             // this.leftEyeClosedTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownType + "_Closed_Left";
             this.browTexPath = this.BrowTexPath(BrowDef);
 
-
             foreach (Hediff hediff in this.pawn.health.hediffSet.hediffs)
             {
                 List<BodyPartRecord> body = this.pawn.RaceProps.body.AllParts;
@@ -492,6 +535,86 @@
                     {
                         this.rightEyeTexPath = EyeTexPath("Missing", enums.Side.Right); ;
                         this.RightCanBlink = false;
+                    }
+                }
+            }
+
+            if (this.pawn.gender == Gender.Male)
+            {
+                if (this.crownType == CrownType.Average)
+                {
+                    switch (this.headType)
+                    {
+                        case HeadType.Normal:
+                            headTypeX = FS_Settings.MaleAverageNormalOffsetX;
+                            headTypeY = FS_Settings.MaleAverageNormalOffsetY;
+                            break;
+                        case HeadType.Pointy:
+                            headTypeX = FS_Settings.MaleAveragePointyOffsetX;
+                            headTypeY = FS_Settings.MaleAveragePointyOffsetY;
+                            break;
+                        case HeadType.Wide:
+                            headTypeX = FS_Settings.MaleAverageWideOffsetX;
+                            headTypeY = FS_Settings.MaleAverageWideOffsetY;
+                            break;
+                    }
+                }
+                if (this.crownType == CrownType.Narrow)
+                {
+                    switch (this.headType)
+                    {
+                        case HeadType.Normal:
+                            headTypeX = FS_Settings.MaleNarrowNormalOffsetX;
+                            headTypeY = FS_Settings.MaleNarrowNormalOffsetY;
+                            break;
+                        case HeadType.Pointy:
+                            headTypeX = FS_Settings.MaleNarrowPointyOffsetX;
+                            headTypeY = FS_Settings.MaleNarrowPointyOffsetY;
+                            break;
+                        case HeadType.Wide:
+                            headTypeX = FS_Settings.MaleNarrowWideOffsetX;
+                            headTypeY = FS_Settings.MaleNarrowWideOffsetY;
+                            break;
+                    }
+                }
+            }
+
+            if (this.pawn.gender == Gender.Female)
+            {
+                if (this.crownType == CrownType.Average)
+                {
+                    switch (this.headType)
+                    {
+                        case HeadType.Normal:
+                            headTypeX = FS_Settings.FemaleAverageNormalOffsetX;
+                            headTypeY = FS_Settings.FemaleAverageNormalOffsetY;
+                            break;
+                        case HeadType.Pointy:
+                            headTypeX = FS_Settings.FemaleAveragePointyOffsetX;
+                            headTypeY = FS_Settings.FemaleAveragePointyOffsetY;
+                            break;
+                        case HeadType.Wide:
+                            headTypeX = FS_Settings.FemaleAverageWideOffsetX;
+                            headTypeY = FS_Settings.FemaleAverageWideOffsetY;
+                            break;
+                    }
+                }
+                if (this.crownType == CrownType.Narrow)
+                {
+                    switch (this.headType)
+                    {
+                        case HeadType.Normal:
+                            headTypeX = FS_Settings.FemaleNarrowNormalOffsetX;
+                            headTypeY = FS_Settings.FemaleNarrowNormalOffsetY;
+                            break;
+                        case HeadType.Pointy:
+                            headTypeX = FS_Settings.FemaleNarrowPointyOffsetX;
+                            headTypeY = FS_Settings.FemaleNarrowPointyOffsetY;
+                            break;
+                        case HeadType.Wide:
+                            headTypeX = FS_Settings.FemaleNarrowWideOffsetX;
+                            headTypeY = FS_Settings.FemaleNarrowWideOffsetY;
+                            break;
                     }
                 }
             }
@@ -613,7 +736,7 @@
                 Vector2.one,
                 Color.black);
 
-            this.mouthGraphic = FacialGraphics.mouthGraphic3;
+            this.mouthGraphic = FacialGraphics.MouthGraphic3;
 
             this.deadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 "Eyes/Eyes_Dead",
@@ -684,6 +807,12 @@
         private bool RightCanBlink;
 
         private float mood = 0.5f;
+
+        public object rotationInt;
+
+        public float headTypeX;
+
+        public float headTypeY;
 
         public override void PostDraw()
         {
@@ -822,15 +951,15 @@
 
                 if (this.mood != null)
                 {
-                    if (mood > 0.9f) mouthGraphic = FacialGraphics.mouthGraphic1;
-                    else if (mood > 0.8f) mouthGraphic = FacialGraphics.mouthGraphic2;
-                    else if (mood > 0.7f) mouthGraphic = FacialGraphics.mouthGraphic3;
-                    else if (mood > 0.55f) mouthGraphic = FacialGraphics.mouthGraphic4;
-                    else if (mood > 0.45f) mouthGraphic = FacialGraphics.mouthGraphic5;
-                    else if (mood > 0.35f) mouthGraphic = FacialGraphics.mouthGraphic6;
-                    else mouthGraphic = FacialGraphics.mouthGraphic7;
+                    if (mood > 0.9f) mouthGraphic = FacialGraphics.MouthGraphic1;
+                    else if (mood > 0.8f) mouthGraphic = FacialGraphics.MouthGraphic2;
+                    else if (mood > 0.7f) mouthGraphic = FacialGraphics.MouthGraphic3;
+                    else if (mood > 0.55f) mouthGraphic = FacialGraphics.MouthGraphic4;
+                    else if (mood > 0.45f) mouthGraphic = FacialGraphics.MouthGraphic5;
+                    else if (mood > 0.35f) mouthGraphic = FacialGraphics.MouthGraphic6;
+                    else mouthGraphic = FacialGraphics.MouthGraphic7;
                 }
-                else mouthGraphic = FacialGraphics.mouthGraphic3;
+                else mouthGraphic = FacialGraphics.MouthGraphic3;
 
             }
         }
@@ -848,7 +977,6 @@
             Scribe_Values.Look(ref this.optimized, "optimized");
             Scribe_Values.Look(ref this.drawMouth, "drawMouth");
 
-            Scribe_Values.Look(ref this.headGraphicIndex, "headGraphicIndex");
             Scribe_Values.Look(ref this.headType, "headType");
             Scribe_Values.Look(ref this.crownType, "crownType");
             Scribe_Values.Look(ref this.SkinColorHex, "SkinColorHex");

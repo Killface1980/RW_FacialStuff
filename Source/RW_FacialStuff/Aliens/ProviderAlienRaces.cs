@@ -6,9 +6,9 @@ using System.Reflection;
 using UnityEngine;
 using Verse;
 
-namespace RW_FacialStuff
+namespace FacialStuff
 {
-    using RW_FacialStuff.Aliens;
+    using FacialStuff.Aliens;
 
     public class ProviderAlienRaces
     {

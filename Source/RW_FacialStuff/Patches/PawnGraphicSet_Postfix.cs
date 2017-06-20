@@ -5,7 +5,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RW_FacialStuff.Detouring
+namespace FacialStuff.Detouring
 {
 
     using static GraphicDatabaseHeadRecordsModded;

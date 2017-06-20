@@ -1,4 +1,4 @@
-﻿namespace RW_FacialStuff
+﻿namespace FacialStuff
 {
 
     using Verse;

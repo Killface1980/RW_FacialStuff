@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Verse;
 
-namespace RW_FacialStuff
+namespace FacialStuff
 {
     public class GraphicDatabaseUtilityFS
     {

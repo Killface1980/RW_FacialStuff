@@ -12,7 +12,7 @@
     <xpath>/ThingDefs/ThingDef[defName = "Human"]/comps</xpath>
     <value>
       <li>
-        <compClass>RW_FacialStuff.CompFace</compClass>
+        <compClass>FacialStuff.CompFace</compClass>
       </li>
     </value>
   </Operation>

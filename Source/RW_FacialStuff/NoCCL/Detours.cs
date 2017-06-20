@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using Verse;
 
-namespace RW_FacialStuff.NoCCL
+namespace FacialStuff.NoCCL
 {
-#if NoCCL
     /// <summary>
     /// For when CCL is not available
     /// </summary>
@@ -109,5 +108,4 @@ namespace RW_FacialStuff.NoCCL
         }
 
     }
-#endif
 }

@@ -7,16 +7,16 @@
 
     using RimWorld;
 
-    using RW_FacialStuff;
-    using RW_FacialStuff.Defs;
-    using RW_FacialStuff.Detouring;
-    using RW_FacialStuff.Utilities;
+    using FacialStuff;
+    using FacialStuff.Defs;
+    using FacialStuff.Detouring;
+    using FacialStuff.Utilities;
 
     using UnityEngine;
 
     using Verse;
 
-    using static RW_FacialStuff.enums;
+    using static FacialStuff.enums;
 
     // bug: update for 2nd eye display, make beard color selectable, 
 

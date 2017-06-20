@@ -36,7 +36,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NoCCL|AnyCPU'">
     <OutputPath>..\..\Assemblies\</OutputPath>
-    <DefineConstants>NoCCL</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -73,7 +74,9 @@
     <None Include="Aliens\ExtensionsColorGenerator.cs" />
     <None Include="Aliens\Providers.cs" />
     <None Include="Aliens\CustomPawn.cs" />
-    <Compile Include="Class1.cs" />
+    <None Include="BACKUP.cs" />
+    <Compile Include="ITab_Pawn_Face.cs" />
+    <Compile Include="HeadType.cs" />
     <Compile Include="Defs\MouthDefOf.cs" />
     <Compile Include="FacialGraphics.cs" />
     <Compile Include="HaircutPawn.cs" />
@@ -81,7 +84,7 @@
     <Compile Include="Patches\Pawn_HealthTracker_Postfixes.cs" />
     <Compile Include="Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="Graphic_Multi_AddedHeadParts.cs" />
-    <None Include="MeshPoolFs.cs" />
+    <Compile Include="MeshPoolFs.cs" />
     <Compile Include="CutHairDb.cs" />
     <Compile Include="PawnRenderer_Prefix.cs" />
     <Compile Include="CompFace.cs" />
@@ -99,10 +102,10 @@
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphic_Multi_NaturalHeadParts.cs" />
-    <Compile Include="Initializer\FS_SpecialInjector.cs" />
+    <Compile Include="NoCCL\FS_SpecialInjector.cs" />
     <Compile Include="MaskTextures.cs" />
     <Compile Include="Utilities\DialogUtility.cs" />
-    <Compile Include="ModConfigMenu.cs" />
+    <Compile Include="Mod.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
     <Compile Include="Detours\_PawnHairColors.cs" />
