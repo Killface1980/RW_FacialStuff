@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace FacialStuff
 {
@@ -45,6 +43,7 @@ namespace FacialStuff
                 temptextureside = Headhelper.MakeReadable(graphic.MatSide.mainTexture as Texture2D);
                 temptextureback = Headhelper.MakeReadable(graphic.MatBack.mainTexture as Texture2D);
 
+                // intentional, only 1 mask tex. todo: rename, cleanup
                 maskTexFrontBack = MaskTextures.MaskTex_Average_FrontBack;
                 maskTexSide = MaskTextures.MaskTex_Narrow_Side;
 

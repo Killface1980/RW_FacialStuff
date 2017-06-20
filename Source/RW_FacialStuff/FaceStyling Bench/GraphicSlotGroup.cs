@@ -1,8 +1,5 @@
 ﻿namespace FacialStuff
 {
-
-    using Verse;
-
     public class enums
     {
         public enum GraphicSlotGroup

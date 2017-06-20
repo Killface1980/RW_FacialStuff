@@ -2,8 +2,6 @@
 {
     using System.Collections.Generic;
 
-    using FaceStyling;
-
     using FacialStuff.Defs;
     using FacialStuff.Detouring;
 
@@ -27,8 +25,8 @@
                                                                          },
 
                                                                          // { new CurvePoint(0.25f, -1f), true },
-                                                                         // { new CurvePoint(0.3f, -1f), true },
                                                                          {
+                                                                             // { new CurvePoint(0.3f, -1f), true },
                                                                              // { new CurvePoint(0.5f, 0f), true },
                                                                              // { new CurvePoint(0.7f, 1f), true },
                                                                              // { new CurvePoint(0.75f, 1f), true },
@@ -49,7 +47,254 @@
                                                                      };
 
 
+        public Vector3 BaseMouthOffsetAt(CompFace faceComp, Rot4 rotation)
+        {
 
+            switch (rotation.AsInt)
+            {
+                case 1:
+                    return new Vector3(faceComp.headTypeX, 0f, -faceComp.headTypeY);
+                case 2:
+                    return new Vector3(0, 0f, -faceComp.headTypeY);
+                case 3:
+                    return new Vector3(-faceComp.headTypeX, 0f, -faceComp.headTypeY);
+                default:
+                    return Vector3.zero;
+            }
+
+
+            float headTypeX = 0f;
+            float headTypeY = 0f;
+
+#if develop
+
+            var male = faceComp.pawn.gender == Gender.Male;
+
+
+            if (faceComp.crownType == CrownType.Average)
+            {
+                switch (faceComp.headType)
+                {
+                    case HeadType.Normal:
+                        if (male)
+                        {
+                            headTypeX = FS_Settings.MaleAverageNormalOffsetX;
+                            headTypeY = FS_Settings.MaleAverageNormalOffsetY;
+                        }
+                        else
+                        {
+                            headTypeX = FS_Settings.FemaleAverageNormalOffsetX;
+                            headTypeY = FS_Settings.FemaleAverageNormalOffsetY;
+                        }
+                        break;
+                    case HeadType.Pointy:
+                        if (male)
+                        {
+                            headTypeX = FS_Settings.MaleAveragePointyOffsetX;
+                            headTypeY = FS_Settings.MaleAveragePointyOffsetY;
+                        }
+                        else
+                        {
+                            headTypeX = FS_Settings.FemaleAveragePointyOffsetX;
+                            headTypeY = FS_Settings.FemaleAveragePointyOffsetY;
+                        }
+                        break;
+                    case HeadType.Wide:
+                        if (male)
+                        {
+                            headTypeX = FS_Settings.MaleAverageWideOffsetX;
+                            headTypeY = FS_Settings.MaleAverageWideOffsetY;
+                        }
+                        else
+                        {
+                            headTypeX = FS_Settings.FemaleAverageWideOffsetX;
+                            headTypeY = FS_Settings.FemaleAverageWideOffsetY;
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                switch (faceComp.headType)
+                {
+                    case HeadType.Normal:
+                        if (male)
+                        {
+                            headTypeX = FS_Settings.MaleNarrowNormalOffsetX;
+                            headTypeY = FS_Settings.MaleNarrowNormalOffsetY;
+                        }
+                        else
+                        {
+                            headTypeX = FS_Settings.FemaleNarrowNormalOffsetX;
+                            headTypeY = FS_Settings.FemaleNarrowNormalOffsetY;
+                        }
+                        break;
+                    case HeadType.Pointy:
+                        if (male)
+                        {
+                            headTypeX = FS_Settings.MaleNarrowPointyOffsetX;
+                            headTypeY = FS_Settings.MaleNarrowPointyOffsetY;
+                        }
+                        else
+                        {
+                            headTypeX = FS_Settings.FemaleNarrowPointyOffsetX;
+                            headTypeY = FS_Settings.FemaleNarrowPointyOffsetY;
+                        }
+                        break;
+                    case HeadType.Wide:
+                        if (male)
+                        {
+                            headTypeX = FS_Settings.MaleNarrowWideOffsetX;
+                            headTypeY = FS_Settings.MaleNarrowWideOffsetY;
+                        }
+                        else
+                        {
+                            headTypeX = FS_Settings.FemaleNarrowWideOffsetX;
+                            headTypeY = FS_Settings.FemaleNarrowWideOffsetY;
+                        }
+                        break;
+                }
+
+            }
+
+#else
+#endif
+
+
+
+        //  switch (faceComp.pawn.gender)
+        //  {
+        //      case Gender.Male:
+        //          headTypeY = VerCrowntypeOffsetMale[(int)faceComp.crownType];
+        //          headTypeX = HorHeadTypeOffsetMale[(int)faceComp.headType];
+        //          break;
+        //      case Gender.Female:
+        //          headTypeY = VerCrowntypeOffsetFemale[(int)faceComp.crownType];
+        //          headTypeX = HorHeadTypeOffsetFemale[(int)faceComp.headType];
+        //          break;
+        //  }
+
+            switch (rotation.AsInt)
+            {
+                case 1:
+                    return new Vector3(headTypeX, 0f, -headTypeY);
+                case 2:
+                    return new Vector3(0, 0f, -headTypeY);
+                case 3:
+                    return new Vector3(-headTypeX, 0f, -headTypeY);
+                default:
+                    return Vector3.zero;
+            }
+        }
+
+       public Vector3 BaseMouthOffsetAt(Rot4 rotation)
+        {
+
+#if develop
+
+            var male = pawn.gender == Gender.Male;
+
+
+            if (crownType == CrownType.Average)
+            {
+                switch (headType)
+                {
+                    case HeadType.Normal:
+                        if (male)
+                        {
+                            headTypeX = FS_Settings.MaleAverageNormalOffsetX;
+                            headTypeY = FS_Settings.MaleAverageNormalOffsetY;
+                        }
+                        else
+                        {
+                            headTypeX = FS_Settings.FemaleAverageNormalOffsetX;
+                            headTypeY = FS_Settings.FemaleAverageNormalOffsetY;
+                        }
+                        break;
+                    case HeadType.Pointy:
+                        if (male)
+                        {
+                            headTypeX = FS_Settings.MaleAveragePointyOffsetX;
+                            headTypeY = FS_Settings.MaleAveragePointyOffsetY;
+                        }
+                        else
+                        {
+                            headTypeX = FS_Settings.FemaleAveragePointyOffsetX;
+                            headTypeY = FS_Settings.FemaleAveragePointyOffsetY;
+                        }
+                        break;
+                    case HeadType.Wide:
+                        if (male)
+                        {
+                            headTypeX = FS_Settings.MaleAverageWideOffsetX;
+                            headTypeY = FS_Settings.MaleAverageWideOffsetY;
+                        }
+                        else
+                        {
+                            headTypeX = FS_Settings.FemaleAverageWideOffsetX;
+                            headTypeY = FS_Settings.FemaleAverageWideOffsetY;
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                switch (headType)
+                {
+                    case HeadType.Normal:
+                        if (male)
+                        {
+                            headTypeX = FS_Settings.MaleNarrowNormalOffsetX;
+                            headTypeY = FS_Settings.MaleNarrowNormalOffsetY;
+                        }
+                        else
+                        {
+                            headTypeX = FS_Settings.FemaleNarrowNormalOffsetX;
+                            headTypeY = FS_Settings.FemaleNarrowNormalOffsetY;
+                        }
+                        break;
+                    case HeadType.Pointy:
+                        if (male)
+                        {
+                            headTypeX = FS_Settings.MaleNarrowPointyOffsetX;
+                            headTypeY = FS_Settings.MaleNarrowPointyOffsetY;
+                        }
+                        else
+                        {
+                            headTypeX = FS_Settings.FemaleNarrowPointyOffsetX;
+                            headTypeY = FS_Settings.FemaleNarrowPointyOffsetY;
+                        }
+                        break;
+                    case HeadType.Wide:
+                        if (male)
+                        {
+                            headTypeX = FS_Settings.MaleNarrowWideOffsetX;
+                            headTypeY = FS_Settings.MaleNarrowWideOffsetY;
+                        }
+                        else
+                        {
+                            headTypeX = FS_Settings.FemaleNarrowWideOffsetX;
+                            headTypeY = FS_Settings.FemaleNarrowWideOffsetY;
+                        }
+                        break;
+                }
+
+            }
+
+#else
+#endif
+            switch (rotation.AsInt)
+            {
+                case 1:
+                    return new Vector3(headTypeX, 0f, -headTypeY);
+                case 2:
+                    return new Vector3(0, 0f, -headTypeY);
+                case 3:
+                    return new Vector3(-headTypeX, 0f, -headTypeY);
+                default:
+                    return Vector3.zero;
+            }
+        }
 
         #region Development
         public bool ignoreRenderer;
@@ -169,9 +414,10 @@
 
                 return material;
             }
+
             if (this.LeftCanBlink)
             {
-                if (asleep)
+                if (this.asleep)
                 {
                     flag = false;
                     material = this.leftEyeClosedGraphic.MatAt(facing, null);
@@ -224,11 +470,12 @@
 
             if (this.RightCanBlink)
             {
-                if (asleep)
+                if (this.asleep)
                 {
                     flag = false;
                     material = this.rightEyeClosedGraphic.MatAt(facing, null);
                 }
+
                 if (flag)
                 {
                     if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterRight)
@@ -399,17 +646,19 @@
         {
             get
             {
-                switch (pawn.gender)
+                switch (this.pawn.gender)
                 {
                     case Gender.Male:
                         if (this.pawn.story.crownType == CrownType.Average)
                         {
                             return MeshPoolFs.humanlikeHeadSetAverage;
                         }
+
                         if (this.pawn.story.crownType == CrownType.Narrow)
                         {
                             return MeshPoolFs.humanlikeHeadSetNarrow;
                         }
+
                         break;
 
                     case Gender.Female:
@@ -417,10 +666,12 @@
                         {
                             return MeshPoolFs.humanlikeHeadSetAverageFemale;
                         }
+
                         if (this.pawn.story.crownType == CrownType.Narrow)
                         {
                             return MeshPoolFs.humanlikeHeadSetNarrowFemale;
                         }
+
                         break;
 
                 }
@@ -442,17 +693,17 @@
 
             if (this.pawn.story.HeadGraphicPath.Contains("Normal"))
             {
-                headType = HeadType.Normal;
+                this.headType = HeadType.Normal;
             }
 
             if (this.pawn.story.HeadGraphicPath.Contains("Pointy"))
             {
-                headType = HeadType.Pointy;
+                this.headType = HeadType.Pointy;
             }
 
             if (this.pawn.story.HeadGraphicPath.Contains("Wide"))
             {
-                headType = HeadType.Wide;
+                this.headType = HeadType.Wide;
             }
 
             if (this.pawn.story.crownType == CrownType.Narrow)
@@ -472,11 +723,11 @@
             this.leftEyePatchTexPath = null;
             this.rightEyePatchTexPath = null;
 
-            this.rightEyeTexPath = EyeTexPath(this.EyeDef.texPath, enums.Side.Right);
-            this.rightEyeClosedTexPath = EyeTexPath(this.EyeDef.texPath, enums.Side.Right, true);
+            this.rightEyeTexPath = this.EyeTexPath(this.EyeDef.texPath, enums.Side.Right);
+            this.rightEyeClosedTexPath = this.EyeTexPath(this.EyeDef.texPath, enums.Side.Right, true);
 
-            this.leftEyeTexPath = EyeTexPath(this.EyeDef.texPath, enums.Side.Left);
-            this.leftEyeClosedTexPath = EyeTexPath(this.EyeDef.texPath, enums.Side.Left, true);
+            this.leftEyeTexPath = this.EyeTexPath(this.EyeDef.texPath, enums.Side.Left);
+            this.leftEyeClosedTexPath = this.EyeTexPath(this.EyeDef.texPath, enums.Side.Left, true);
 
             this.LeftCanBlink = true;
             this.RightCanBlink = true;
@@ -489,7 +740,7 @@
             // this.leftEyeTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownType + "_" + this.EyeDef.texPath
             // + "_Left";
             // this.leftEyeClosedTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownType + "_Closed_Left";
-            this.browTexPath = this.BrowTexPath(BrowDef);
+            this.browTexPath = this.BrowTexPath(this.BrowDef);
 
             foreach (Hediff hediff in this.pawn.health.hediffSet.hediffs)
             {
@@ -527,13 +778,13 @@
                 {
                     if (hediff.Part == leftEye)
                     {
-                        this.leftEyeTexPath = EyeTexPath("Missing", enums.Side.Left);// "Eyes/" + "ShotOut" + "_Left" + this.crownType;
+                        this.leftEyeTexPath = this.EyeTexPath("Missing", enums.Side.Left);// "Eyes/" + "ShotOut" + "_Left" + this.crownType;
                         this.LeftCanBlink = false;
                     }
 
                     if (hediff.Part == rightEye)
                     {
-                        this.rightEyeTexPath = EyeTexPath("Missing", enums.Side.Right); ;
+                        this.rightEyeTexPath = this.EyeTexPath("Missing", enums.Side.Right); 
                         this.RightCanBlink = false;
                     }
                 }
@@ -546,34 +797,35 @@
                     switch (this.headType)
                     {
                         case HeadType.Normal:
-                            headTypeX = FS_Settings.MaleAverageNormalOffsetX;
-                            headTypeY = FS_Settings.MaleAverageNormalOffsetY;
+                            this.headTypeX = FS_Settings.MaleAverageNormalOffsetX;
+                            this.headTypeY = FS_Settings.MaleAverageNormalOffsetY;
                             break;
                         case HeadType.Pointy:
-                            headTypeX = FS_Settings.MaleAveragePointyOffsetX;
-                            headTypeY = FS_Settings.MaleAveragePointyOffsetY;
+                            this.headTypeX = FS_Settings.MaleAveragePointyOffsetX;
+                            this.headTypeY = FS_Settings.MaleAveragePointyOffsetY;
                             break;
                         case HeadType.Wide:
-                            headTypeX = FS_Settings.MaleAverageWideOffsetX;
-                            headTypeY = FS_Settings.MaleAverageWideOffsetY;
+                            this.headTypeX = FS_Settings.MaleAverageWideOffsetX;
+                            this.headTypeY = FS_Settings.MaleAverageWideOffsetY;
                             break;
                     }
                 }
+
                 if (this.crownType == CrownType.Narrow)
                 {
                     switch (this.headType)
                     {
                         case HeadType.Normal:
-                            headTypeX = FS_Settings.MaleNarrowNormalOffsetX;
-                            headTypeY = FS_Settings.MaleNarrowNormalOffsetY;
+                            this.headTypeX = FS_Settings.MaleNarrowNormalOffsetX;
+                            this.headTypeY = FS_Settings.MaleNarrowNormalOffsetY;
                             break;
                         case HeadType.Pointy:
-                            headTypeX = FS_Settings.MaleNarrowPointyOffsetX;
-                            headTypeY = FS_Settings.MaleNarrowPointyOffsetY;
+                            this.headTypeX = FS_Settings.MaleNarrowPointyOffsetX;
+                            this.headTypeY = FS_Settings.MaleNarrowPointyOffsetY;
                             break;
                         case HeadType.Wide:
-                            headTypeX = FS_Settings.MaleNarrowWideOffsetX;
-                            headTypeY = FS_Settings.MaleNarrowWideOffsetY;
+                            this.headTypeX = FS_Settings.MaleNarrowWideOffsetX;
+                            this.headTypeY = FS_Settings.MaleNarrowWideOffsetY;
                             break;
                     }
                 }
@@ -586,34 +838,35 @@
                     switch (this.headType)
                     {
                         case HeadType.Normal:
-                            headTypeX = FS_Settings.FemaleAverageNormalOffsetX;
-                            headTypeY = FS_Settings.FemaleAverageNormalOffsetY;
+                            this.headTypeX = FS_Settings.FemaleAverageNormalOffsetX;
+                            this.headTypeY = FS_Settings.FemaleAverageNormalOffsetY;
                             break;
                         case HeadType.Pointy:
-                            headTypeX = FS_Settings.FemaleAveragePointyOffsetX;
-                            headTypeY = FS_Settings.FemaleAveragePointyOffsetY;
+                            this.headTypeX = FS_Settings.FemaleAveragePointyOffsetX;
+                            this.headTypeY = FS_Settings.FemaleAveragePointyOffsetY;
                             break;
                         case HeadType.Wide:
-                            headTypeX = FS_Settings.FemaleAverageWideOffsetX;
-                            headTypeY = FS_Settings.FemaleAverageWideOffsetY;
+                            this.headTypeX = FS_Settings.FemaleAverageWideOffsetX;
+                            this.headTypeY = FS_Settings.FemaleAverageWideOffsetY;
                             break;
                     }
                 }
+
                 if (this.crownType == CrownType.Narrow)
                 {
                     switch (this.headType)
                     {
                         case HeadType.Normal:
-                            headTypeX = FS_Settings.FemaleNarrowNormalOffsetX;
-                            headTypeY = FS_Settings.FemaleNarrowNormalOffsetY;
+                            this.headTypeX = FS_Settings.FemaleNarrowNormalOffsetX;
+                            this.headTypeY = FS_Settings.FemaleNarrowNormalOffsetY;
                             break;
                         case HeadType.Pointy:
-                            headTypeX = FS_Settings.FemaleNarrowPointyOffsetX;
-                            headTypeY = FS_Settings.FemaleNarrowPointyOffsetY;
+                            this.headTypeX = FS_Settings.FemaleNarrowPointyOffsetX;
+                            this.headTypeY = FS_Settings.FemaleNarrowPointyOffsetY;
                             break;
                         case HeadType.Wide:
-                            headTypeX = FS_Settings.FemaleNarrowWideOffsetX;
-                            headTypeY = FS_Settings.FemaleNarrowWideOffsetY;
+                            this.headTypeX = FS_Settings.FemaleNarrowWideOffsetX;
+                            this.headTypeY = FS_Settings.FemaleNarrowWideOffsetY;
                             break;
                     }
                 }
@@ -699,7 +952,7 @@
 
             if (this.MouthDef == null)
             {
-                MouthDef = MouthDefOf.Mouth_Default;
+                this.MouthDef = MouthDefOf.Mouth_Default;
             }
 
 
@@ -799,7 +1052,6 @@
         // eyes closed time = > consciousness?
         // tiredness affect blink rate
         // Method used to animate the eye movement
-
         private CellRect _viewRect = new CellRect();
 
         private bool LeftCanBlink;
@@ -827,10 +1079,10 @@
                 return;
             }
 
-            _viewRect = Find.CameraDriver.CurrentViewRect;
-            _viewRect = _viewRect.ExpandedBy(5);
+            this._viewRect = Find.CameraDriver.CurrentViewRect;
+            this._viewRect = this._viewRect.ExpandedBy(5);
 
-            if (!_viewRect.Contains(this.pawn.Position))
+            if (!this._viewRect.Contains(this.pawn.Position))
                 return;
 
             int tickManagerTicksGame = Find.TickManager.TicksGame;
@@ -877,10 +1129,9 @@
                 float ticksTillNextBlink = Rand.Range(60f, 240f);
                 float blinkDuration = Rand.Range(5f, 35f);
 
-                //  Log.Message(
-                //      "FS Blinker: " + this.pawn + " - ticksTillNextBlinkORG: " + ticksTillNextBlink.ToString("N0")
-                //      + " - blinkDurationORG: " + blinkDuration.ToString("N0"));
-
+                // Log.Message(
+                // "FS Blinker: " + this.pawn + " - ticksTillNextBlinkORG: " + ticksTillNextBlink.ToString("N0")
+                // + " - blinkDurationORG: " + blinkDuration.ToString("N0"));
                 float dynamic = this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
                 float factor = Mathf.Lerp(0.125f, 1f, dynamic);
 
@@ -890,11 +1141,10 @@
                 ticksTillNextBlink *= factor * factor2;
                 blinkDuration /= factor * factor * factor2;
 
-                //    Log.Message(
-                //        "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - Rest: "
-                //        + dynamic2.ToStringPercent() + " - factorR: " + factor2.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
-                //        + " - blinkDuration: " + blinkDuration.ToString("N0"));
-
+                // Log.Message(
+                // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - Rest: "
+                // + dynamic2.ToStringPercent() + " - factorR: " + factor2.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
+                // + " - blinkDuration: " + blinkDuration.ToString("N0"));
                 this.nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
                 this.nextBlinkEnd = (int)(this.nextBlink + blinkDuration);
 
@@ -944,22 +1194,21 @@
                 this.lastBlinkended = tickManagerTicksGame;
                 if (this.pawn.needs != null)
                 {
-                    this.mood = this.pawn.needs.mood.CurLevel;
-
+                    this.mood = this.pawn.needs.mood.CurInstantLevel;
                 }
                 else this.mood = 0.5f;
 
                 if (this.mood != null)
                 {
-                    if (mood > 0.9f) mouthGraphic = FacialGraphics.MouthGraphic1;
-                    else if (mood > 0.8f) mouthGraphic = FacialGraphics.MouthGraphic2;
-                    else if (mood > 0.7f) mouthGraphic = FacialGraphics.MouthGraphic3;
-                    else if (mood > 0.55f) mouthGraphic = FacialGraphics.MouthGraphic4;
-                    else if (mood > 0.45f) mouthGraphic = FacialGraphics.MouthGraphic5;
-                    else if (mood > 0.35f) mouthGraphic = FacialGraphics.MouthGraphic6;
-                    else mouthGraphic = FacialGraphics.MouthGraphic7;
+                    if (this.mood > 0.9f) this.mouthGraphic = FacialGraphics.MouthGraphic1;
+                    else if (this.mood > 0.8f) this.mouthGraphic = FacialGraphics.MouthGraphic2;
+                    else if (this.mood > 0.7f) this.mouthGraphic = FacialGraphics.MouthGraphic3;
+                    else if (this.mood > 0.55f) this.mouthGraphic = FacialGraphics.MouthGraphic4;
+                    else if (this.mood > 0.45f) this.mouthGraphic = FacialGraphics.MouthGraphic5;
+                    else if (this.mood > 0.35f) this.mouthGraphic = FacialGraphics.MouthGraphic6;
+                    else this.mouthGraphic = FacialGraphics.MouthGraphic7;
                 }
-                else mouthGraphic = FacialGraphics.MouthGraphic3;
+                else this.mouthGraphic = FacialGraphics.MouthGraphic3;
 
             }
         }
@@ -971,7 +1220,8 @@
 
             Scribe_Defs.Look(ref this.EyeDef, "EyeDef");
             Scribe_Defs.Look(ref this.BrowDef, "BrowDef");
-            //      Scribe_Defs.Look(ref this.MouthDef, "MouthDef");
+
+            // Scribe_Defs.Look(ref this.MouthDef, "MouthDef");
             Scribe_Defs.Look(ref this.WrinkleDef, "WrinkleDef");
             Scribe_Defs.Look(ref this.BeardDef, "BeardDef");
             Scribe_Values.Look(ref this.optimized, "optimized");

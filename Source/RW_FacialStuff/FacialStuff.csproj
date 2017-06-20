@@ -7,8 +7,8 @@
     <ProjectGuid>{F3DA945B-AB1B-492C-9C59-A17E61362AA5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RW_FacialStuff</RootNamespace>
-    <AssemblyName>RW_FacialStuff</AssemblyName>
+    <RootNamespace>FacialStuff</RootNamespace>
+    <AssemblyName>FacialStuff</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>

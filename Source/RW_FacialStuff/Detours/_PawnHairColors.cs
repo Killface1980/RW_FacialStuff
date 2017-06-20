@@ -5,10 +5,7 @@ using Verse;
 
 namespace FacialStuff.Detouring
 {
-    using System;
     using System.Collections.Generic;
-
-    using Harmony;
 
     public static class _PawnHairColors
     {

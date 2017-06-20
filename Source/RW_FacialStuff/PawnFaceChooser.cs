@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using RimWorld;
-using FacialStuff.Defs;
+
 using Verse;
 
 namespace FacialStuff

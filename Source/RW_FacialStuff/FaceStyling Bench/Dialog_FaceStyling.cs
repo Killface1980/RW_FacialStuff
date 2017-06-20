@@ -1,6 +1,5 @@
 ﻿namespace FaceStyling
 {
-    using System;
     using System.Collections.Generic;
 
     using FaceStyling.ColorPicker;

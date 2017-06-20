@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
-using FacialStuff.Initializer;
+
 using Verse;
 
 namespace FacialStuff.NoCCL

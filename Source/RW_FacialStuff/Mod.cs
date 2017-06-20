@@ -104,33 +104,33 @@ namespace RW_FacialStuff
 
         public static bool HideHatInBed = true;
 
-        public static float MaleAverageNormalOffsetX = 0.06226415f;
-        public static float MaleAveragePointyOffsetX = 0.06603774f;
-        public static float MaleAverageWideOffsetX = 0.05943396f;
-        public static float FemaleAverageNormalOffsetX = -0.001886792f;
-        public static float FemaleAveragePointyOffsetX =  -0.0009433962f;
-        public static float FemaleAverageWideOffsetX = 0.04916981f;
+        public static float MaleAverageNormalOffsetX = 0.04433962f;
+        public static float MaleAveragePointyOffsetX = 0.03773585f;
+        public static float MaleAverageWideOffsetX = 0.06603774f;
+        public static float FemaleAverageNormalOffsetX = -0.01132075f;
+        public static float FemaleAveragePointyOffsetX = -0.01226415f;
+        public static float FemaleAverageWideOffsetX = 0.02641509f;
 
-        public static float MaleNarrowNormalOffsetX = 0;
-        public static float MaleNarrowPointyOffsetX = 0.005660374f;
-        public static float MaleNarrowWideOffsetX = -0.01698113f;
-        public static float FemaleNarrowNormalOffsetX = -0.01415095f;
-        public static float FemaleNarrowPointyOffsetX = 0.01132075f;
-        public static float FemaleNarrowWideOffsetX = 0.01226415f;
+        public static float MaleNarrowNormalOffsetX = 0.004716982f;
+        public static float MaleNarrowPointyOffsetX = 2.34295E-10f;
+        public static float MaleNarrowWideOffsetX = -0.01320755f;
+        public static float FemaleNarrowNormalOffsetX = -0.002830188f;
+        public static float FemaleNarrowPointyOffsetX = 0.001886792f;
+        public static float FemaleNarrowWideOffsetX = 0.009433962f;
 
-        public static float MaleAverageNormalOffsetY = 0.002830188f;
-        public static float MaleAveragePointyOffsetY = 0.006603774f;
-        public static float MaleAverageWideOffsetY = 0;
-        public static float FemaleAverageNormalOffsetY = 0;
-        public static float FemaleAveragePointyOffsetY = 0;
-        public static float FemaleAverageWideOffsetY = 0.01415094f;
+        public static float MaleAverageNormalOffsetY = 0.005660377f;
+        public static float MaleAveragePointyOffsetY = 0.01981132f;
+        public static float MaleAverageWideOffsetY = 0.01698113f;
+        public static float FemaleAverageNormalOffsetY = 0.01226415f;
+        public static float FemaleAveragePointyOffsetY = 0.01603774f;
+        public static float FemaleAverageWideOffsetY = 0.01981132f;
 
-        public static float MaleNarrowNormalOffsetY = 0.03962264f;
-        public static float MaleNarrowPointyOffsetY = 0.02641509f;
-        public static float MaleNarrowWideOffsetY = 0.05188679f;
-        public static float FemaleNarrowNormalOffsetY = 0.02830189f;
-        public static float FemaleNarrowPointyOffsetY = 0.03773585f;
-        public static float FemaleNarrowWideOffsetY = 0.03301887f;
+        public static float MaleNarrowNormalOffsetY = 0.03584906f;
+        public static float MaleNarrowPointyOffsetY = 0.04056604f;
+        public static float MaleNarrowWideOffsetY = 0.04622642f;
+        public static float FemaleNarrowNormalOffsetY = 0.03113208f;
+        public static float FemaleNarrowPointyOffsetY = 0.0490566f;
+        public static float FemaleNarrowWideOffsetY = 0.03207547f;
 
 
 
@@ -183,32 +183,32 @@ namespace RW_FacialStuff
 
     #endregion
     // Backup:
- // <MaleAverageOffsetX>0.04716981</MaleAverageOffsetX>
- //
- // <MaleAverageOffsetY>0.01320755</MaleAverageOffsetY>
- //
- // <MaleNarrowOffsetX>-0.0245283</MaleNarrowOffsetX>
- //
- // <MaleNarrowOffsetY>0.03773585</MaleNarrowOffsetY>
- //
- // <FemaleAverageOffsetX>0.03584905</FemaleAverageOffsetX>
- //
- // <FemaleAverageOffsetY>0.04150943</FemaleAverageOffsetY>
- //
- // <FemaleNarrowOffsetX>0.009433965</FemaleNarrowOffsetX>
- //
- // <FemaleNarrowOffsetY>0.06981131</FemaleNarrowOffsetY>
- //
- // <MaleAverageNormalOffsetX>0.02641509</MaleAverageNormalOffsetX>
- //
- // <MaleAveragePointyOffsetX>0.02264151</MaleAveragePointyOffsetX>
- //
- // <MaleAverageWideOffsetX>0.00754717</MaleAverageWideOffsetX>
- //
- // <FemaleAverageNormalOffsetX>0.02452831</FemaleAverageNormalOffsetX>
- //
- // <FemaleAveragePointyOffsetX>0.02452831</FemaleAveragePointyOffsetX>
- //
- // <FemaleAverageWideOffsetX>0.04150943</FemaleAverageWideOffsetX>
+    // <MaleAverageOffsetX>0.04716981</MaleAverageOffsetX>
+    //
+    // <MaleAverageOffsetY>0.01320755</MaleAverageOffsetY>
+    //
+    // <MaleNarrowOffsetX>-0.0245283</MaleNarrowOffsetX>
+    //
+    // <MaleNarrowOffsetY>0.03773585</MaleNarrowOffsetY>
+    //
+    // <FemaleAverageOffsetX>0.03584905</FemaleAverageOffsetX>
+    //
+    // <FemaleAverageOffsetY>0.04150943</FemaleAverageOffsetY>
+    //
+    // <FemaleNarrowOffsetX>0.009433965</FemaleNarrowOffsetX>
+    //
+    // <FemaleNarrowOffsetY>0.06981131</FemaleNarrowOffsetY>
+    //
+    // <MaleAverageNormalOffsetX>0.02641509</MaleAverageNormalOffsetX>
+    //
+    // <MaleAveragePointyOffsetX>0.02264151</MaleAveragePointyOffsetX>
+    //
+    // <MaleAverageWideOffsetX>0.00754717</MaleAverageWideOffsetX>
+    //
+    // <FemaleAverageNormalOffsetX>0.02452831</FemaleAverageNormalOffsetX>
+    //
+    // <FemaleAveragePointyOffsetX>0.02452831</FemaleAveragePointyOffsetX>
+    //
+    // <FemaleAverageWideOffsetX>0.04150943</FemaleAverageWideOffsetX>
 }
 

@@ -5,9 +5,6 @@ using Verse;
 
 namespace FacialStuff.Detouring
 {
-    using System;
-    using System.Collections.Generic;
-
     public static class _PawnSkinColors
     {
         public struct SkinColorData
