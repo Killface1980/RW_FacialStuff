@@ -66,14 +66,14 @@ namespace FacialStuff.Detouring
             BuildDatabaseIfNecessary();
 
 
-            if (!faceComp.optimized)
-            {
-                faceComp.DefineFace();
-            }
-
             if (pawn.RaceProps.hasGenders)
             {
                 Color rotColor = pawn.story.SkinColor * Headhelper.skinRottingMultiplyColor;
+
+                if (!faceComp.optimized)
+                {
+                    faceComp.DefineFace();
+                }
 
                 if (faceComp.SetHeadType())
                 {

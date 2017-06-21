@@ -5,28 +5,33 @@
     [StaticConstructorOnStartup]
     public static class MeshPoolFs
     {
-        public static readonly GraphicMeshSet humanlikeHeadSetAverage;
+        public static readonly GraphicMeshSet humanlikeMouthSetAverageMale;
 
-        public static readonly GraphicMeshSet humanlikeHeadSetNarrow;
+        public static readonly GraphicMeshSet humanlikeMouthSetNarrowMale;
 
-        public static readonly GraphicMeshSet humanlikeHeadSetAverageFemale;
+        public static readonly GraphicMeshSet humanlikeMouthSetAverageFemale;
 
-        public static readonly GraphicMeshSet humanlikeHeadSetNarrowFemale;
+        public static readonly GraphicMeshSet humanlikeMouthSetNarrowFemale;
 
-        private const float HumanlikeHeadAverageWidth = 1.5f;
+        private const float HumanlikeMouthHeight = 0.75f;
 
-        private const float HumanlikeHeadNarrowWidth = 1.3f;
+        private const float HumanlikeMouthHeightFemale = 0.6f;
 
-        private const float HumanlikeHeadAverageWidthFemale = 1.4f;
-        private const float HumanlikeHeadNarrowWidthFemale = 1.2f;
+        private const float HumanlikeMouthAverageWidthMale = 0.7f;
+
+        private const float HumanlikeMouthNarrowWidthMale = 0.6f;
+
+        private const float HumanlikeMouthAverageWidthFemale = 0.65f;
+
+        private const float HumanlikeMouthNarrowWidthFemale = 0.55f;
 
         static MeshPoolFs()
         {
-            humanlikeHeadSetAverage = new GraphicMeshSet(HumanlikeHeadAverageWidth);
-            humanlikeHeadSetNarrow = new GraphicMeshSet(HumanlikeHeadNarrowWidth, HumanlikeHeadAverageWidth);
+            humanlikeMouthSetAverageMale = new GraphicMeshSet(HumanlikeMouthAverageWidthMale, HumanlikeMouthHeight);
+            humanlikeMouthSetNarrowMale = new GraphicMeshSet(HumanlikeMouthNarrowWidthMale, HumanlikeMouthHeight);
 
-            humanlikeHeadSetAverageFemale = new GraphicMeshSet(HumanlikeHeadAverageWidthFemale);
-            humanlikeHeadSetNarrowFemale = new GraphicMeshSet(HumanlikeHeadNarrowWidthFemale, HumanlikeHeadAverageWidthFemale);
+            humanlikeMouthSetAverageFemale = new GraphicMeshSet(HumanlikeMouthAverageWidthFemale, HumanlikeMouthHeightFemale);
+            humanlikeMouthSetNarrowFemale = new GraphicMeshSet(HumanlikeMouthNarrowWidthFemale, HumanlikeMouthHeightFemale);
         }
     }
 }

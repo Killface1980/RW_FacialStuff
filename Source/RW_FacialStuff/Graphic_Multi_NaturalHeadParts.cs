@@ -77,7 +77,11 @@ namespace FacialStuff
             {
                 array[2] = ContentFinder<Texture2D>.Get(req.path + "_front");
             }
-
+            else
+            {
+                Log.Message("Facial Stuff: Failed to get front texture at " + req.path + "_front" + " - Graphic_Multi_NaturalHeadParts");
+                return;
+            }
             //  array[2] = LoadTexture(req.path + "_front");
             //  if (array[2] == null)
             //  {

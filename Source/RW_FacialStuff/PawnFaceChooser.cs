@@ -49,6 +49,7 @@ namespace FacialStuff
         public static EyeDef RandomEyeDefFor(Pawn pawn, FactionDef factionType)
         {
 
+            //       Log.Message("Selecting eyes.");
             IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
                                          where eye.raceList.Contains(pawn.def)
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
@@ -56,6 +57,7 @@ namespace FacialStuff
 
             if (!source.Any())
             {
+     //       Log.Message("No eyes found, defaulting.");
                 source = from eye in DefDatabase<EyeDef>.AllDefs
                          select eye;
             }
@@ -63,6 +65,7 @@ namespace FacialStuff
             EyeDef chosenEyes;
 
             chosenEyes = source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+    //        Log.Message("Chosen eyes: " + chosenEyes);
 
             return chosenEyes;
         }
@@ -122,7 +125,7 @@ namespace FacialStuff
             return chosenBrows;
         }
 
-        public static WrinkleDef AssignWrinkleDefFor(Pawn pawn, FactionDef factionType)
+        public static WrinkleDef AssignWrinkleDefFor(Pawn pawn)
         {
             IEnumerable<WrinkleDef> source = from wrinkle in DefDatabase<WrinkleDef>.AllDefs
                                              where wrinkle.raceList.Contains(pawn.def)
@@ -137,66 +140,12 @@ namespace FacialStuff
         [Detour(typeof(PawnHairChooser), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
         public static HairDef RandomHairDefFor(Pawn pawn, FactionDef factionType)
         {
+
             IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
                                           where hair.hairTags.SharesElementWith(factionType.hairTags)
                                           select hair;
 
             return source.RandomElementByWeight(hair => HairChoiceLikelihoodFor(hair, pawn));
-        }
-
-        public static MouthDef RandomMouthDefFor(Pawn pawn, FactionDef factionType)
-        {
-            IEnumerable<MouthDef> source = from mouthDef in DefDatabase<MouthDef>.AllDefs
-                                           where mouthDef.raceList.Contains(pawn.def)
-                                           where mouthDef.hairTags.SharesElementWith(factionType.hairTags)
-                                           select mouthDef;
-
-            if (!source.Any())
-            {
-                source = from mouthDef in DefDatabase<MouthDef>.AllDefs
-                         select mouthDef;
-            }
-
-            MouthDef chosenMouths;
-
-            switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")))
-            {
-                case 2:
-                    {
-                        IEnumerable<MouthDef> filtered = source.Where(x => x.label.Contains("Smile"));
-                        chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
-                        return chosenMouths;
-                    }
-                case 1:
-                    {
-                        IEnumerable<MouthDef> filtered = source.Where(x => x.label.Contains("Default"));
-                        chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
-                        return chosenMouths;
-                    }
-                case 0:
-                    {
-                        IEnumerable<MouthDef> filtered = source.Where(x => !x.label.Contains("Default") && !x.label.Contains("Smile") && !x.label.Contains("Big") && !x.label.Contains("Sad"));
-                        chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
-                        return chosenMouths;
-                    }
-
-                case -1:
-                    {
-                        IEnumerable<MouthDef> filtered = source.Where(x => x.label.Contains("Big"));
-                        chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
-                        return chosenMouths;
-                    }
-                case -2:
-                    {
-                        IEnumerable<MouthDef> filtered = source.Where(x => x.label.Contains("Sad"));
-                        chosenMouths = filtered.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
-                        return chosenMouths;
-                    }
-            }
-            chosenMouths = source.RandomElementByWeight(mouthDef => MouthChoiceLikelihoodFor(mouthDef, pawn));
-            return chosenMouths;
-
-
         }
 
         private static float EyeChoiceLikelihoodFor(EyeDef eye, Pawn pawn)
@@ -285,55 +234,6 @@ namespace FacialStuff
 
             Log.Error(string.Concat("Unknown hair likelihood for ", brow, " with ", pawn));
             return 0f;
-        }
-
-        private static float MouthChoiceLikelihoodFor(MouthDef mouth, Pawn pawn)
-        {
-            if (pawn.gender == Gender.None)
-            {
-                return 100f;
-            }
-            return Rand.Range(1f, 100f);
-        
-            /*
-            // deactivated for now
-            if (pawn.gender == Gender.Male)
-            {
-                switch (mouth.hairGender)
-                {
-                    case HairGender.Male:
-                        return 70f;
-                    case HairGender.MaleUsually:
-                        return 30f;
-                    case HairGender.Any:
-                        return 60f;
-                    case HairGender.FemaleUsually:
-                        return 5f;
-                    case HairGender.Female:
-                        return 1f;
-                }
-            }
-
-            if (pawn.gender == Gender.Female)
-            {
-                switch (mouth.hairGender)
-                {
-                    case HairGender.Female:
-                        return 70f;
-                    case HairGender.FemaleUsually:
-                        return 30f;
-                    case HairGender.Any:
-                        return 60f;
-                    case HairGender.MaleUsually:
-                        return 5f;
-                    case HairGender.Male:
-                        return 1f;
-                }
-            }
-
-            Log.Error(string.Concat("Unknown hair likelihood for ", mouth, " with ", pawn));
-            return 0f;
-            */
         }
 
         private static float BeardChoiceLikelihoodFor(BeardDef beard, Pawn pawn)

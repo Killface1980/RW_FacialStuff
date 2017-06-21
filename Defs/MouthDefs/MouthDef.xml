@@ -2,13 +2,13 @@
 <DefPackage-MouthDef>
 
   <FacialStuff.Defs.MouthDef>
-    <defName>Mouth_Big</defName>
+    <defName>Mouth_Mood01</defName>
     <label>EFA-Big</label>
     <hairGender>Female</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Mouth/Mouth_Big</texPath>
+    <texPath>Mouth/Mouth_Mood01</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -18,13 +18,13 @@
   </FacialStuff.Defs.MouthDef>
 
   <FacialStuff.Defs.MouthDef>
-    <defName>Mouth_Default</defName>
+    <defName>Mouth_Mood02</defName>
     <label>EFA-Default</label>
     <hairGender>Female</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Mouth/Mouth_Default</texPath>
+    <texPath>Mouth/Mouth_Mood02</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -34,13 +34,13 @@
   </FacialStuff.Defs.MouthDef>
 
   <FacialStuff.Defs.MouthDef>
-    <defName>Mouth_Sad</defName>
+    <defName>Mouth_Mood03</defName>
     <label>EFA-Sad</label>
     <hairGender>Female</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Mouth/Mouth_Sad</texPath>
+    <texPath>Mouth/Mouth_Mood03</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -50,13 +50,13 @@
   </FacialStuff.Defs.MouthDef>
 
   <FacialStuff.Defs.MouthDef>
-    <defName>Mouth_Large</defName>
+    <defName>Mouth_Mood04</defName>
     <label>EFA-Large</label>
     <hairGender>Female</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Mouth/Mouth_Large</texPath>
+    <texPath>Mouth/Mouth_Mood04</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -66,13 +66,13 @@
   </FacialStuff.Defs.MouthDef>
 
   <FacialStuff.Defs.MouthDef>
-    <defName>Mouth_Medium</defName>
+    <defName>Mouth_Mood05</defName>
     <label>EFA-Medium</label>
     <hairGender>Female</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Mouth/Mouth_Medium</texPath>
+    <texPath>Mouth/Mouth_Mood05</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -82,13 +82,28 @@
   </FacialStuff.Defs.MouthDef>
   
   <FacialStuff.Defs.MouthDef>
-    <defName>Mouth_Smile</defName>
+    <defName>Mouth_Mood06</defName>
     <label>EFA-Smile</label>
     <hairGender>Female</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Mouth/Mouth_Smile</texPath>
+    <texPath>Mouth/Mouth_Mood06</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </FacialStuff.Defs.MouthDef>   
+	
+	<FacialStuff.Defs.MouthDef>
+    <defName>Mouth_BionicJaw</defName>
+    <label>BionicJaw</label>
+    <raceList>
+      <li>Human</li>
+    </raceList>
+    <texPath>Mouth/Mouth_BionicJaw</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -96,21 +111,5 @@
       <li>Tribal</li>
     </hairTags>
   </FacialStuff.Defs.MouthDef> 
-	
-	<FacialStuff.Defs.MouthDef>
-    <defName>Mouth_Psycho</defName>
-    <label>EFA-Smile</label>
-    <hairGender>Female</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
-    <texPath>Mouth/Mouth_Psycho</texPath>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </FacialStuff.Defs.MouthDef>
-	
+		
 </DefPackage-MouthDef>

@@ -162,17 +162,17 @@
 
 
 
-        //  switch (faceComp.pawn.gender)
-        //  {
-        //      case Gender.Male:
-        //          headTypeY = VerCrowntypeOffsetMale[(int)faceComp.crownType];
-        //          headTypeX = HorHeadTypeOffsetMale[(int)faceComp.headType];
-        //          break;
-        //      case Gender.Female:
-        //          headTypeY = VerCrowntypeOffsetFemale[(int)faceComp.crownType];
-        //          headTypeX = HorHeadTypeOffsetFemale[(int)faceComp.headType];
-        //          break;
-        //  }
+            //  switch (faceComp.pawn.gender)
+            //  {
+            //      case Gender.Male:
+            //          headTypeY = VerCrowntypeOffsetMale[(int)faceComp.crownType];
+            //          headTypeX = HorHeadTypeOffsetMale[(int)faceComp.headType];
+            //          break;
+            //      case Gender.Female:
+            //          headTypeY = VerCrowntypeOffsetFemale[(int)faceComp.crownType];
+            //          headTypeX = HorHeadTypeOffsetFemale[(int)faceComp.headType];
+            //          break;
+            //  }
 
             switch (rotation.AsInt)
             {
@@ -187,7 +187,7 @@
             }
         }
 
-       public Vector3 BaseMouthOffsetAt(Rot4 rotation)
+        public Vector3 BaseMouthOffsetAt(Rot4 rotation)
         {
 
 #if develop
@@ -316,8 +316,6 @@
         // todo: make dead eyes
         public EyeDef EyeDef;
 
-        public MouthDef MouthDef = null;
-
         public WrinkleDef WrinkleDef;
 
         #endregion
@@ -336,7 +334,8 @@
         private Graphic_Multi_NaturalEyes leftEyeClosedGraphic;
         private Graphic_Multi_NaturalEyes leftEyeGraphic = null;
         private Graphic_Multi_AddedHeadParts leftEyePatchGraphic = null;
-        private Graphic mouthGraphic;
+
+        public Graphic_Multi_NaturalHeadParts mouthGraphic;
         private Graphic_Multi_NaturalEyes rightEyeClosedGraphic;
         private Graphic_Multi_NaturalEyes rightEyeGraphic = null;
         private Graphic_Multi_AddedHeadParts rightEyePatchGraphic = null;
@@ -349,6 +348,11 @@
 
         public Material BeardMatAt(Rot4 facing)
         {
+            if (!this.naturalMouth)
+            {
+                return null;
+            }
+
             Material material = null;
             if (this.pawn.gender == Gender.Male)
             {
@@ -512,27 +516,33 @@
         public Material MouthMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
             Material material = null;
-            if (FS_Settings.UseMouth && this.drawMouth)
+            if (this.naturalMouth)
             {
-                bool flag = this.pawn.gender == Gender.Female;
-
-                if (flag || !flag && this.BeardDef.drawMouth)
+                if (!FS_Settings.UseMouth || !this.drawMouth)
                 {
-                    if (bodyCondition == RotDrawMode.Fresh)
-                    {
-                        material = this.mouthGraphic.MatAt(facing, null);
-                    }
-                    else if (bodyCondition == RotDrawMode.Rotting)
-                    {
-                        material = this.mouthGraphic.MatAt(facing, null);
-                    }
-
-                    if (material != null)
-                    {
-                        material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
-                    }
+                    return null;
                 }
             }
+
+            bool flag = this.pawn.gender == Gender.Female;
+
+            if (flag || !flag && this.BeardDef.drawMouth || !this.BeardDef.drawMouth && !this.naturalMouth)
+            {
+                if (bodyCondition == RotDrawMode.Fresh)
+                {
+                    material = this.mouthGraphic.MatAt(facing, null);
+                }
+                else if (bodyCondition == RotDrawMode.Rotting)
+                {
+                    material = this.mouthGraphic.MatAt(facing, null);
+                }
+
+                if (material != null)
+                {
+                    material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                }
+            }
+
 
             return material;
         }
@@ -651,12 +661,12 @@
                     case Gender.Male:
                         if (this.pawn.story.crownType == CrownType.Average)
                         {
-                            return MeshPoolFs.humanlikeHeadSetAverage;
+                            return MeshPoolFs.humanlikeMouthSetAverageMale;
                         }
 
                         if (this.pawn.story.crownType == CrownType.Narrow)
                         {
-                            return MeshPoolFs.humanlikeHeadSetNarrow;
+                            return MeshPoolFs.humanlikeMouthSetNarrowMale;
                         }
 
                         break;
@@ -664,12 +674,12 @@
                     case Gender.Female:
                         if (this.pawn.story.crownType == CrownType.Average)
                         {
-                            return MeshPoolFs.humanlikeHeadSetAverageFemale;
+                            return MeshPoolFs.humanlikeMouthSetAverageFemale;
                         }
 
                         if (this.pawn.story.crownType == CrownType.Narrow)
                         {
-                            return MeshPoolFs.humanlikeHeadSetNarrowFemale;
+                            return MeshPoolFs.humanlikeMouthSetNarrowFemale;
                         }
 
                         break;
@@ -732,6 +742,15 @@
             this.LeftCanBlink = true;
             this.RightCanBlink = true;
 
+#if develop
+            {
+                naturalMouth = false;
+                this.mouthTexPath = "Mouth/Mouth_BionicJaw";
+
+            }
+#else
+            naturalMouth = true;
+#endif
             // "Eyes/Eye_" + this.pawn.gender + this.crownType + "_" + this.EyeDef.texPath + "_Right";
 
             // = "Eyes/Eye_" + this.pawn.gender + this.crownType + "_Closed_Right";
@@ -748,6 +767,7 @@
 
                 BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
                 BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
+                BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
                 AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
 
                 if (addedPartProps != null)
@@ -772,6 +792,12 @@
                                                     + "_" + this.crownType;
                         this.RightIsSolid = addedPartProps.isSolid;
                     }
+
+                    if (hediff.Part == jaw)
+                    {
+                        this.mouthTexPath = "Mouth/Mouth_" + hediff.def.defName;
+                        naturalMouth = false;
+                    }
                 }
 
                 if (hediff.def == HediffDefOf.MissingBodyPart)
@@ -784,7 +810,7 @@
 
                     if (hediff.Part == rightEye)
                     {
-                        this.rightEyeTexPath = this.EyeTexPath("Missing", enums.Side.Right); 
+                        this.rightEyeTexPath = this.EyeTexPath("Missing", enums.Side.Right);
                         this.RightCanBlink = false;
                     }
                 }
@@ -906,20 +932,33 @@
         {
             this.pawn = this.parent as Pawn;
 
+            //   Log.Message("FS " + this.pawn);
+
             if (this.pawn == null)
             {
+                //        Log.Message("Pawn is null, returning. ");
                 return;
             }
 
-            this.EyeDef = PawnFaceChooser.RandomEyeDefFor(this.pawn, this.pawn.Faction.def);
+            //      Log.Message("Choosing eyes... ");
 
-            this.BrowDef = PawnFaceChooser.RandomBrowDefFor(this.pawn, this.pawn.Faction.def);
+            var faction = this.pawn.Faction?.def;
 
-            this.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(this.pawn, this.pawn.Faction.def);
+            if (faction == null) faction = FactionDefOf.PlayerColony;
 
-            this.MouthDef = PawnFaceChooser.RandomMouthDefFor(this.pawn, this.pawn.Faction.def);
+            this.EyeDef = PawnFaceChooser.RandomEyeDefFor(this.pawn, faction);
+            //       Log.Message(EyeDef.defName);
 
-            this.BeardDef = PawnFaceChooser.RandomBeardDefFor(this.pawn, this.pawn.Faction.def);
+            this.BrowDef = PawnFaceChooser.RandomBrowDefFor(this.pawn, faction);
+            //    Log.Message(BrowDef.defName);
+
+            this.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(this.pawn);
+            //        Log.Message(WrinkleDef.defName);
+
+            //       this.MouthDef = PawnFaceChooser.RandomMouthDefFor(this.pawn, this.pawn.Faction.def);
+
+            this.BeardDef = PawnFaceChooser.RandomBeardDefFor(this.pawn, faction);
+            //       Log.Message(BeardDef.defName);
 
             this.HairColorOrg = this.pawn.story.hairColor;
 
@@ -949,12 +988,6 @@
                 else
                     this.BeardColor = _PawnHairColors.RandomBeardColor();
             }
-
-            if (this.MouthDef == null)
-            {
-                this.MouthDef = MouthDefOf.Mouth_Default;
-            }
-
 
             this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
 
@@ -989,7 +1022,18 @@
                 Vector2.one,
                 Color.black);
 
-            this.mouthGraphic = FacialGraphics.MouthGraphic3;
+            if (!this.naturalMouth)
+            {
+                this.mouthGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                this.mouthTexPath,
+                ShaderDatabase.Transparent,
+                Vector2.one,
+                Color.white) as Graphic_Multi_NaturalHeadParts;
+            }
+            else
+            {
+                this.mouthGraphic = FacialGraphics.MouthGraphic03;
+            }
 
             this.deadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 "Eyes/Eyes_Dead",
@@ -1066,6 +1110,10 @@
 
         public float headTypeY;
 
+        public bool naturalMouth = true;
+
+        private string mouthTexPath;
+
         public override void PostDraw()
         {
             base.PostDraw();
@@ -1139,7 +1187,7 @@
                 float factor2 = Mathf.Lerp(0.125f, 1f, dynamic2);
 
                 ticksTillNextBlink *= factor * factor2;
-                blinkDuration /= factor * factor * factor2;
+                blinkDuration /= factor * factor * factor2 * 2;
 
                 // Log.Message(
                 // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - Rest: "
@@ -1192,24 +1240,19 @@
                 }
 
                 this.lastBlinkended = tickManagerTicksGame;
-                if (this.pawn.needs != null)
-                {
-                    this.mood = this.pawn.needs.mood.CurInstantLevel;
-                }
-                else this.mood = 0.5f;
 
-                if (this.mood != null)
+                if (this.naturalMouth)
                 {
-                    if (this.mood > 0.9f) this.mouthGraphic = FacialGraphics.MouthGraphic1;
-                    else if (this.mood > 0.8f) this.mouthGraphic = FacialGraphics.MouthGraphic2;
-                    else if (this.mood > 0.7f) this.mouthGraphic = FacialGraphics.MouthGraphic3;
-                    else if (this.mood > 0.55f) this.mouthGraphic = FacialGraphics.MouthGraphic4;
-                    else if (this.mood > 0.45f) this.mouthGraphic = FacialGraphics.MouthGraphic5;
-                    else if (this.mood > 0.35f) this.mouthGraphic = FacialGraphics.MouthGraphic6;
-                    else this.mouthGraphic = FacialGraphics.MouthGraphic7;
-                }
-                else this.mouthGraphic = FacialGraphics.MouthGraphic3;
+                    this.mood = this.pawn.needs != null ? this.pawn.needs.mood.CurInstantLevel : 0.5f;
 
+                    if (this.mood > 0.85f) this.mouthGraphic = FacialGraphics.MouthGraphic01;
+                    else if (this.mood > 0.7f) this.mouthGraphic = FacialGraphics.MouthGraphic02;
+                    else if (this.mood > 0.55f) this.mouthGraphic = FacialGraphics.MouthGraphic03;
+                    else if (this.mood > 0.4f) this.mouthGraphic = FacialGraphics.MouthGraphic04;
+                    else if (this.mood > 0.25f) this.mouthGraphic = FacialGraphics.MouthGraphic05;
+                    else this.mouthGraphic = FacialGraphics.MouthGraphic06;
+
+                }
             }
         }
 

@@ -104,33 +104,33 @@ namespace RW_FacialStuff
 
         public static bool HideHatInBed = true;
 
-        public static float MaleAverageNormalOffsetX = 0.04433962f;
-        public static float MaleAveragePointyOffsetX = 0.03773585f;
-        public static float MaleAverageWideOffsetX = 0.06603774f;
-        public static float FemaleAverageNormalOffsetX = -0.01132075f;
-        public static float FemaleAveragePointyOffsetX = -0.01226415f;
-        public static float FemaleAverageWideOffsetX = 0.02641509f;
+        public static float MaleAverageNormalOffsetX = 0.2314465f;
+        public static float MaleAveragePointyOffsetX = 0.2339623f;
+        public static float MaleAverageWideOffsetX = 0.2616352f;
+        public static float FemaleAverageNormalOffsetX = 0.1761006f;
+        public static float FemaleAveragePointyOffsetX = 0.1937107f;
+        public static float FemaleAverageWideOffsetX = 0.2062893f;
 
-        public static float MaleNarrowNormalOffsetX = 0.004716982f;
-        public static float MaleNarrowPointyOffsetX = 2.34295E-10f;
-        public static float MaleNarrowWideOffsetX = -0.01320755f;
-        public static float FemaleNarrowNormalOffsetX = -0.002830188f;
-        public static float FemaleNarrowPointyOffsetX = 0.001886792f;
-        public static float FemaleNarrowWideOffsetX = 0.009433962f;
+        public static float MaleNarrowNormalOffsetX = 0.163522f;
+        public static float MaleNarrowPointyOffsetX = 0.1534591f;
+        public static float MaleNarrowWideOffsetX = 0.1559749f;
+        public static float FemaleNarrowNormalOffsetX = 0.1383648f;
+        public static float FemaleNarrowPointyOffsetX = 0.1534591f;
+        public static float FemaleNarrowWideOffsetX = 0.1610063f;
 
-        public static float MaleAverageNormalOffsetY = 0.005660377f;
-        public static float MaleAveragePointyOffsetY = 0.01981132f;
-        public static float MaleAverageWideOffsetY = 0.01698113f;
-        public static float FemaleAverageNormalOffsetY = 0.01226415f;
-        public static float FemaleAveragePointyOffsetY = 0.01603774f;
-        public static float FemaleAverageWideOffsetY = 0.01981132f;
+        public static float MaleAverageNormalOffsetY = 0.17862f;
+        public static float MaleAveragePointyOffsetY = 0.17107f;
+        public static float MaleAverageWideOffsetY = 0.1735849f;
+        public static float FemaleAverageNormalOffsetY = 0.18113f;
+        public static float FemaleAveragePointyOffsetY = 0.163522f;
+        public static float FemaleAverageWideOffsetY = 0.1861635f;
 
-        public static float MaleNarrowNormalOffsetY = 0.03584906f;
-        public static float MaleNarrowPointyOffsetY = 0.04056604f;
-        public static float MaleNarrowWideOffsetY = 0.04622642f;
-        public static float FemaleNarrowNormalOffsetY = 0.03113208f;
-        public static float FemaleNarrowPointyOffsetY = 0.0490566f;
-        public static float FemaleNarrowWideOffsetY = 0.03207547f;
+        public static float MaleNarrowNormalOffsetY = 0.20337f;
+        public static float MaleNarrowPointyOffsetY = 0.19874f;
+        public static float MaleNarrowWideOffsetY = 0.2264151f;
+        public static float FemaleNarrowNormalOffsetY = 0.2012579f;
+        public static float FemaleNarrowPointyOffsetY = 0.21635f;
+        public static float FemaleNarrowWideOffsetY = 0.191195f;
 
 
 

@@ -7,6 +7,9 @@ using Verse;
 
 namespace FacialStuff.Initializer
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using FacialStuff.NoCCL;
 
     public class FS_SpecialInjector : SpecialInjector

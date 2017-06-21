@@ -75,14 +75,14 @@ namespace FacialStuff
                                 "MaleAverageNormalOffsetX: " + FS_Settings.MaleAverageNormalOffsetX.ToString("N5"));
                             FS_Settings.MaleAverageNormalOffsetX = GUILayout.HorizontalSlider(
                                 FS_Settings.MaleAverageNormalOffsetX,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                             GUILayout.Label(
                                 "MaleAverageNormalOffsetY: " + FS_Settings.MaleAverageNormalOffsetY.ToString("N5"));
                             FS_Settings.MaleAverageNormalOffsetY = GUILayout.HorizontalSlider(
                                 FS_Settings.MaleAverageNormalOffsetY,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                         }
                         else
                         {
@@ -90,14 +90,14 @@ namespace FacialStuff
                                 "FemaleAverageNormalOffsetX: " + FS_Settings.FemaleAverageNormalOffsetX.ToString("N5"));
                             FS_Settings.FemaleAverageNormalOffsetX = GUILayout.HorizontalSlider(
                                 FS_Settings.FemaleAverageNormalOffsetX,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                             GUILayout.Label(
                                 "FemaleAverageNormalOffsetY: " + FS_Settings.FemaleAverageNormalOffsetY.ToString("N5"));
                             FS_Settings.FemaleAverageNormalOffsetY = GUILayout.HorizontalSlider(
                                 FS_Settings.FemaleAverageNormalOffsetY,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                         }
                         break;
                     case HeadType.Pointy:
@@ -107,14 +107,14 @@ namespace FacialStuff
                                 "MaleAveragePointyOffsetX: " + FS_Settings.MaleAveragePointyOffsetX.ToString("N5"));
                             FS_Settings.MaleAveragePointyOffsetX = GUILayout.HorizontalSlider(
                                 FS_Settings.MaleAveragePointyOffsetX,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                             GUILayout.Label(
                                 "MaleAveragePointyOffsetY: " + FS_Settings.MaleAveragePointyOffsetY.ToString("N5"));
                             FS_Settings.MaleAveragePointyOffsetY = GUILayout.HorizontalSlider(
                                 FS_Settings.MaleAveragePointyOffsetY,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                         }
                         else
                         {
@@ -122,14 +122,14 @@ namespace FacialStuff
                                 "FemaleAveragePointyOffsetX: " + FS_Settings.FemaleAveragePointyOffsetX.ToString("N5"));
                             FS_Settings.FemaleAveragePointyOffsetX = GUILayout.HorizontalSlider(
                                 FS_Settings.FemaleAveragePointyOffsetX,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                             GUILayout.Label(
                                 "FemaleAveragePointyOffsetY: " + FS_Settings.FemaleAveragePointyOffsetY.ToString("N5"));
                             FS_Settings.FemaleAveragePointyOffsetY = GUILayout.HorizontalSlider(
                                 FS_Settings.FemaleAveragePointyOffsetY,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                         }
                         break;
                     case HeadType.Wide:
@@ -139,14 +139,14 @@ namespace FacialStuff
                                 "MaleAverageWideOffsetX: " + FS_Settings.MaleAverageWideOffsetX.ToString("N5"));
                             FS_Settings.MaleAverageWideOffsetX = GUILayout.HorizontalSlider(
                                 FS_Settings.MaleAverageWideOffsetX,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                             GUILayout.Label(
                                 "MaleAverageWideOffsetY: " + FS_Settings.MaleAverageWideOffsetY.ToString("N5"));
                             FS_Settings.MaleAverageWideOffsetY = GUILayout.HorizontalSlider(
                                 FS_Settings.MaleAverageWideOffsetY,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                         }
                         else
                         {
@@ -154,14 +154,14 @@ namespace FacialStuff
                                 "FemaleAverageWideOffsetX: " + FS_Settings.FemaleAverageWideOffsetX.ToString("N5"));
                             FS_Settings.FemaleAverageWideOffsetX = GUILayout.HorizontalSlider(
                                 FS_Settings.FemaleAverageWideOffsetX,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                             GUILayout.Label(
                                 "FemaleAverageWideOffsetY: " + FS_Settings.FemaleAverageWideOffsetY.ToString("N5"));
                             FS_Settings.FemaleAverageWideOffsetY = GUILayout.HorizontalSlider(
                                 FS_Settings.FemaleAverageWideOffsetY,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                         }
                         break;
                 }
@@ -178,14 +178,14 @@ namespace FacialStuff
                                 "MaleNarrowNormalOffsetX: " + FS_Settings.MaleNarrowNormalOffsetX.ToString("N5"));
                             FS_Settings.MaleNarrowNormalOffsetX = GUILayout.HorizontalSlider(
                                 FS_Settings.MaleNarrowNormalOffsetX,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                             GUILayout.Label(
                                 "MaleNarrowNormalOffsetY: " + FS_Settings.MaleNarrowNormalOffsetY.ToString("N5"));
                             FS_Settings.MaleNarrowNormalOffsetY = GUILayout.HorizontalSlider(
                                 FS_Settings.MaleNarrowNormalOffsetY,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                         }
                         else
                         {
@@ -193,14 +193,14 @@ namespace FacialStuff
                                 "FemaleNarrowNormalOffsetX: " + FS_Settings.FemaleNarrowNormalOffsetX.ToString("N5"));
                             FS_Settings.FemaleNarrowNormalOffsetX = GUILayout.HorizontalSlider(
                                 FS_Settings.FemaleNarrowNormalOffsetX,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                             GUILayout.Label(
                                 "FemaleNarrowNormalOffsetY: " + FS_Settings.FemaleNarrowNormalOffsetY.ToString("N5"));
                             FS_Settings.FemaleNarrowNormalOffsetY = GUILayout.HorizontalSlider(
                                 FS_Settings.FemaleNarrowNormalOffsetY,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                         }
                         break;
                     case HeadType.Pointy:
@@ -210,14 +210,14 @@ namespace FacialStuff
                                 "MaleNarrowPointyOffsetX: " + FS_Settings.MaleNarrowPointyOffsetX.ToString("N5"));
                             FS_Settings.MaleNarrowPointyOffsetX = GUILayout.HorizontalSlider(
                                 FS_Settings.MaleNarrowPointyOffsetX,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                             GUILayout.Label(
                                 "MaleNarrowPointyOffsetY: " + FS_Settings.MaleNarrowPointyOffsetY.ToString("N5"));
                             FS_Settings.MaleNarrowPointyOffsetY = GUILayout.HorizontalSlider(
                                 FS_Settings.MaleNarrowPointyOffsetY,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                         }
                         else
                         {
@@ -225,14 +225,14 @@ namespace FacialStuff
                                 "FemaleNarrowPointyOffsetX: " + FS_Settings.FemaleNarrowPointyOffsetX.ToString("N5"));
                             FS_Settings.FemaleNarrowPointyOffsetX = GUILayout.HorizontalSlider(
                                 FS_Settings.FemaleNarrowPointyOffsetX,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                             GUILayout.Label(
                                 "FemaleNarrowPointyOffsetY: " + FS_Settings.FemaleNarrowPointyOffsetY.ToString("N5"));
                             FS_Settings.FemaleNarrowPointyOffsetY = GUILayout.HorizontalSlider(
                                 FS_Settings.FemaleNarrowPointyOffsetY,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                         }
                         break;
                     case HeadType.Wide:
@@ -242,14 +242,14 @@ namespace FacialStuff
                                 "MaleNarrowWideOffsetX: " + FS_Settings.MaleNarrowWideOffsetX.ToString("N5"));
                             FS_Settings.MaleNarrowWideOffsetX = GUILayout.HorizontalSlider(
                                 FS_Settings.MaleNarrowWideOffsetX,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                             GUILayout.Label(
                                 "MaleNarrowWideOffsetY: " + FS_Settings.MaleNarrowWideOffsetY.ToString("N5"));
                             FS_Settings.MaleNarrowWideOffsetY = GUILayout.HorizontalSlider(
                                 FS_Settings.MaleNarrowWideOffsetY,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                         }
                         else
                         {
@@ -257,14 +257,14 @@ namespace FacialStuff
                                 "FemaleNarrowWideOffsetX: " + FS_Settings.FemaleNarrowWideOffsetX.ToString("N5"));
                             FS_Settings.FemaleNarrowWideOffsetX = GUILayout.HorizontalSlider(
                                 FS_Settings.FemaleNarrowWideOffsetX,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                             GUILayout.Label(
                                 "FemaleNarrowWideOffsetY: " + FS_Settings.FemaleNarrowWideOffsetY.ToString("N5"));
                             FS_Settings.FemaleNarrowWideOffsetY = GUILayout.HorizontalSlider(
                                 FS_Settings.FemaleNarrowWideOffsetY,
-                                -0.15f,
-                                0.15f);
+                                -0.4f,
+                                0.4f);
                         }
                         break;
                 }
@@ -275,7 +275,7 @@ namespace FacialStuff
             //  {
             //      GUILayout.Label("FemaleOffsetY");
             //      FS_Settings.FemaleOffsetY =
-            //          GUILayout.HorizontalSlider(FS_Settings.FemaleOffsetY, -0.15f, 0.15f);
+            //          GUILayout.HorizontalSlider(FS_Settings.FemaleOffsetY, -0.4f, 0.4f);
             //  }
 
             GUILayout.EndVertical();

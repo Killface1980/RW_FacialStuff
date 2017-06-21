@@ -35,8 +35,6 @@
         // private static Texture2D _icon;
         private static readonly float _margin;
 
-        private static readonly List<MouthDef> _mouthDefs;
-
         private static readonly Texture2D _nameBackground;
 
         private static readonly float _previewSize;
@@ -63,8 +61,6 @@
 
         private static HairDef _newHair;
 
-        private static MouthDef _newMouth;
-
         private static ColorWrapper colourWrapper;
 
         private static GraphicsDisp[] DisplayGraphics;
@@ -80,8 +76,6 @@
         private static EyeDef originalEye;
 
         private static HairDef originalHair;
-
-        private static MouthDef originalMouth;
 
         private static Pawn pawn;
 
@@ -99,7 +93,7 @@
             if (def.texPath != null)
             {
                 string path = faceComp.EyeTexPath(def.texPath, Side.Right);
-          //      "Eyes/Eye_" + pawn.gender + faceComp.crownType + "_" + def.texPath   + "_Right";
+                //      "Eyes/Eye_" + pawn.gender + faceComp.crownType + "_" + def.texPath   + "_Right";
 
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                              path,
@@ -151,26 +145,6 @@
                     new Vector2(38f, 38f),
                     Color.white,
                     Color.white);
-            }
-            else
-            {
-                result = null;
-            }
-
-            return result;
-        }
-
-        private Graphic_Multi_NaturalHeadParts MouthGraphic(MouthDef def)
-        {
-            Graphic_Multi_NaturalHeadParts result;
-            if (def.texPath != null)
-            {
-                result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                    def.texPath +"_"+ faceComp.crownType,
-                    ShaderDatabase.Cutout,
-                    new Vector2(38f, 38f),
-                    Color.white,
-                    Color.white) as Graphic_Multi_NaturalHeadParts;
             }
             else
             {
@@ -270,7 +244,6 @@
             _hairDefs = DefDatabase<HairDef>.AllDefsListForReading;
             _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
             _beardDefs = DefDatabase<BeardDef>.AllDefsListForReading;
-            _mouthDefs = DefDatabase<MouthDef>.AllDefsListForReading;
             _browDefs = DefDatabase<BrowDef>.AllDefsListForReading;
             _beardDefs.SortBy(i => i.LabelCap);
         }
@@ -289,7 +262,6 @@
                 originalColour = faceComp.HairColorOrg;
                 _newBeardColour = faceComp.BeardColor;
                 _newBeard = originalBeard = faceComp.BeardDef;
-                _newMouth = originalMouth = faceComp.MouthDef;
                 _newEye = originalEye = faceComp.EyeDef;
                 _newBrow = originalBrow = faceComp.BrowDef;
             }
@@ -383,9 +355,9 @@
                 this.SetGraphicSlot(
                     GraphicSlotGroup.Mouth,
                     pawn,
-                    this.MouthGraphic(faceComp.MouthDef),
+                    faceComp.mouthGraphic,
                     pawn.def.uiIcon,
-                    Color.black);
+                    Color.white);
 
                 this.SetGraphicSlot(
                     GraphicSlotGroup.Beard,
@@ -570,25 +542,6 @@
             }
         }
 
-        public MouthDef NewMouth
-        {
-            get
-            {
-                return _newMouth;
-            }
-
-            set
-            {
-                _newMouth = value;
-                this.SetGraphicSlot(
-                    GraphicSlotGroup.Mouth,
-                    pawn,
-                    this.MouthGraphic(value),
-                    pawn.def.uiIcon,
-                    Color.black);
-            }
-        }
-
         public override void DoWindowContents(Rect inRect)
         {
             Rect rect = new Rect(_iconSize + _margin, 0f, inRect.width - _iconSize - _margin, _titleHeight);
@@ -636,7 +589,6 @@
 
                             faceComp.EyeDef = this.NewEye;
                             faceComp.BrowDef = this.NewBrow;
-                            faceComp.MouthDef = this.NewMouth;
                         }
 
                         pawn.Drawer.renderer.graphics.ResolveAllGraphics();
@@ -1018,67 +970,6 @@
             }
         }
 
-
-        private void DrawMouthPicker(Rect rect)
-        {
-            Rect rect2 = rect.ContractedBy(1f);
-            Rect rect3 = rect2;
-            int num = Mathf.CeilToInt(_mouthDefs.Count / (float)_columns);
-
-            rect3.height = num * _entrySize;
-            Vector2 vector = new Vector2(_entrySize, _entrySize);
-            if (rect3.height > rect2.height)
-            {
-                vector.x -= 16f / _columns;
-                vector.y -= 16f / _columns;
-                rect3.width -= 16f;
-                rect3.height = vector.y * num;
-            }
-
-            Rect selectHair = rect;
-            selectHair.height = 30f;
-            Widgets.BeginScrollView(rect2, ref this._scrollPosition, rect3);
-            GUI.BeginGroup(rect3);
-
-            for (int i = 0; i < _mouthDefs.Count; i++)
-            {
-                int num2 = i / _columns;
-                int num3 = i % _columns;
-                Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
-                this.DrawMouthPickerCell(_mouthDefs[i], rect4);
-            }
-
-            GUI.EndGroup();
-            Widgets.EndScrollView();
-        }
-
-        private void DrawMouthPickerCell(MouthDef mouth, Rect rect)
-        {
-            GUI.DrawTexture(rect, this.MouthGraphic(mouth).MatFront.mainTexture);
-            string text = mouth.LabelCap;
-            Widgets.DrawHighlightIfMouseover(rect);
-            if (mouth == this.NewMouth)
-            {
-                Widgets.DrawHighlightSelected(rect);
-                text += "\n(selected)";
-            }
-            else
-            {
-                if (mouth == originalMouth)
-                {
-                    Widgets.DrawAltRect(rect);
-                    text += "\n(original)";
-                }
-            }
-
-            TooltipHandler.TipRegion(rect, text);
-            if (Widgets.ButtonInvisible(rect))
-            {
-                this.NewMouth = mouth;
-                Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker));
-            }
-        }
-
         #endregion
 
         private void DrawUI(Rect parentRect)
@@ -1087,6 +978,12 @@
             string nameStringShort = pawn.NameStringShort;
             Vector2 vector = Text.CalcSize(nameStringShort);
             Rect pawnHeadRect = new Rect(0f, -10f, _previewSize, _previewSize);
+            Rect pawnMouthRect = new Rect(pawnHeadRect);
+            pawnMouthRect.width /= 2;
+            pawnMouthRect.height /= 2;
+            pawnMouthRect.x += pawnHeadRect.width / 4;
+            pawnMouthRect.y += pawnHeadRect.width / 4;
+
             Rect pawnRect = new Rect(0f, 0f, _previewSize, _previewSize);
             Rect labelRect = new Rect(0f, pawnRect.yMax - vector.y, vector.x, vector.y);
             Rect melaninRect = new Rect(2f, labelRect.yMax + _margin, _previewSize - 5f, 65f);
@@ -1098,7 +995,7 @@
             {
                 if (pawn.gender == Gender.Male)
                 {
-                    if (faceComp != null && (!this.NewBeard.drawMouth || !faceComp.drawMouth))
+                    if (faceComp != null && (!this.NewBeard.drawMouth && faceComp.naturalMouth || !faceComp.drawMouth))
                     {
                         // layer 1-5 = body
                         if (i <= (int)GraphicSlotGroup.Shell)
@@ -1125,6 +1022,11 @@
                         {
                             DisplayGraphics[i].Draw(pawnRect);
                         }
+                        else if (i == (int)GraphicSlotGroup.Mouth)
+                        {
+                            DisplayGraphics[i].Draw(pawnMouthRect);
+
+                        }
                         else
                         {
                             DisplayGraphics[i].Draw(pawnHeadRect);
@@ -1142,7 +1044,7 @@
                     }
                     else if (i != (int)GraphicSlotGroup.Beard)
                     {
-                        if (faceComp != null && !faceComp.drawMouth)
+                        if (!faceComp.drawMouth)
                         {
                             if (i != (int)GraphicSlotGroup.Mouth)
                             {
@@ -1151,6 +1053,10 @@
                                     DisplayGraphics[i].Draw(pawnHeadRect);
                                 }
                             }
+                        }
+                        else if (i == (int)GraphicSlotGroup.Mouth)
+                        {
+                            DisplayGraphics[i].Draw(pawnMouthRect);
                         }
                         else if (DisplayGraphics[i].graphic != null)
                         {
@@ -1256,19 +1162,6 @@
             set.y += 36f;
             set.x = selectionRect.x;
 
-            if (faceComp != null)
-                if (faceComp.drawMouth)
-                {
-                    if (this.NewBeard.drawMouth || pawn.gender == Gender.Female)
-                    {
-                        if (Widgets.ButtonText(set, "Mouth"))
-                        {
-                            this.Page = "mouth";
-                        }
-                        set.y += 36f;
-                    }
-                }
-
             if (this.Page == "hair")
             {
                 set.x = selectionRect.x;
@@ -1357,11 +1250,6 @@
                 if (this.Page == "beard")
                 {
                     this.DrawBeardPicker(listRect);
-                }
-
-                if (this.Page == "mouth")
-                {
-                    this.DrawMouthPicker(listRect);
                 }
 
                 if (this.Page == "eye")

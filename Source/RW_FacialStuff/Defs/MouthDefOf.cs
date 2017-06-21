@@ -5,12 +5,13 @@
     [DefOf]
     public static class MouthDefOf
     {
-        public static MouthDef Mouth_Big;
-        public static MouthDef Mouth_Default;
-        public static MouthDef Mouth_Sad;
-        public static MouthDef Mouth_Large;
-        public static MouthDef Mouth_Medium;
-        public static MouthDef Mouth_Smile;
-        public static MouthDef Mouth_Psycho;
+        public static MouthDef Mouth_Mood01;
+        public static MouthDef Mouth_Mood02;
+        public static MouthDef Mouth_Mood03;
+        public static MouthDef Mouth_Mood04;
+        public static MouthDef Mouth_Mood05;
+        public static MouthDef Mouth_Mood06;
+
+        public static MouthDef Mouth_BionicJaw;
     }
 }
