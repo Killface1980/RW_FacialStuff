@@ -55,14 +55,13 @@ namespace FacialStuff
 
                 // if (false)
                 // {
-                //     byte[] bytes = canvasHeadFront.EncodeToPNG();
-                //     File.WriteAllBytes("Mods/FacialStuff/MergedHeads/" + this.pawn.Name + "_01front.png", bytes);
-                //     byte[] bytes2 = canvasHeadSide.EncodeToPNG();
-                //     File.WriteAllBytes("Mods/FacialStuff/MergedHeads/" + this.pawn.Name + "_02side.png", bytes2);
-                //     byte[] bytes3 = canvasHeadBack.EncodeToPNG();
-                //     File.WriteAllBytes("Mods/FacialStuff/MergedHeads/" + this.pawn.Name + "_03back.png", bytes3);
+                // byte[] bytes = canvasHeadFront.EncodeToPNG();
+                // File.WriteAllBytes("Mods/FacialStuff/MergedHeads/" + this.pawn.Name + "_01front.png", bytes);
+                // byte[] bytes2 = canvasHeadSide.EncodeToPNG();
+                // File.WriteAllBytes("Mods/FacialStuff/MergedHeads/" + this.pawn.Name + "_02side.png", bytes2);
+                // byte[] bytes3 = canvasHeadBack.EncodeToPNG();
+                // File.WriteAllBytes("Mods/FacialStuff/MergedHeads/" + this.pawn.Name + "_03back.png", bytes3);
                 // }
-
                 temptexturefront.Compress(true);
                 temptextureside.Compress(true);
                 temptextureback.Compress(true);
@@ -80,11 +79,11 @@ namespace FacialStuff
                 graphic.MatBack.mainTexture = temptextureback;
 
 
-                //   Object.Destroy(temptexturefront);
-                //   Object.Destroy(temptextureside);
-                //   Object.Destroy(temptextureback);
-
+                // Object.Destroy(temptexturefront);
+                // Object.Destroy(temptextureside);
+                // Object.Destroy(temptextureback);
             }
+
             return (T)((object)graphic);
         }
 

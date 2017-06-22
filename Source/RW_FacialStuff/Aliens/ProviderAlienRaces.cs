@@ -1,9 +1,12 @@
-﻿using RimWorld;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+
+using RimWorld;
+
 using UnityEngine;
+
 using Verse;
 
 namespace FacialStuff
@@ -21,6 +24,7 @@ namespace FacialStuff
             {
                 return alienRace;
             }
+
             if (ProviderAlienRaces.IsAlienRace(def))
             {
                 alienRace = this.InitializeAlienRace(def);
@@ -28,8 +32,10 @@ namespace FacialStuff
                 {
                     this.lookup.Add(def, alienRace);
                 }
+
                 return alienRace;
             }
+
             return null;
         }
 
@@ -45,27 +51,32 @@ namespace FacialStuff
             {
                 return null;
             }
+
             object fieldValue2 = this.GetFieldValue(raceDef, fieldValue, "generalSettings", false);
             if (fieldValue2 == null)
             {
                 return null;
             }
+
             object fieldValue3 = this.GetFieldValue(raceDef, fieldValue2, "alienPartGenerator", false);
             if (fieldValue3 == null)
             {
                 return null;
             }
+
             ICollection fieldValueAsCollection = this.GetFieldValueAsCollection(raceDef, fieldValue, "graphicPaths");
             if (fieldValueAsCollection == null)
             {
                 return null;
             }
+
             AlienRace alienRace = new AlienRace();
             ICollection fieldValueAsCollection2 = this.GetFieldValueAsCollection(raceDef, fieldValue3, "alienbodytypes");
             if (fieldValueAsCollection2 == null)
             {
                 return null;
             }
+
             List<BodyType> list = new List<BodyType>();
             if (fieldValueAsCollection2.Count > 0)
             {
@@ -77,18 +88,21 @@ namespace FacialStuff
                     }
                 }
             }
+
             alienRace.BodyTypes = list;
             bool? fieldValueAsBool = this.GetFieldValueAsBool(raceDef, fieldValue3, "UseGenderedHeads");
             if (!fieldValueAsBool.HasValue)
             {
                 return null;
             }
+
             alienRace.GenderSpecificHeads = fieldValueAsBool.Value;
             ICollection fieldValueAsCollection3 = this.GetFieldValueAsCollection(raceDef, fieldValue3, "aliencrowntypes");
             if (fieldValueAsCollection3 == null)
             {
                 return null;
             }
+
             List<string> list2 = new List<string>();
             if (fieldValueAsCollection3.Count > 0)
             {
@@ -102,6 +116,7 @@ namespace FacialStuff
                     }
                 }
             }
+
             alienRace.CrownTypes = list2;
             string graphicsPathForHeads = null;
             foreach (object current2 in fieldValueAsCollection)
@@ -117,6 +132,7 @@ namespace FacialStuff
                     }
                 }
             }
+
             alienRace.GraphicsPathForHeads = graphicsPathForHeads;
             object arg_203_0 = this.GetFieldValue(raceDef, fieldValue3, "alienskincolorgen", true);
             alienRace.UseMelaninLevels = true;
@@ -130,6 +146,7 @@ namespace FacialStuff
             {
                 alienRace.PrimaryColors = new List<Color>();
             }
+
             object arg_248_0 = this.GetFieldValue(raceDef, fieldValue3, "alienskinsecondcolorgen", true);
             alienRace.HasSecondaryColor = false;
             ColorGenerator colorGenerator2 = arg_248_0 as ColorGenerator;
@@ -142,6 +159,7 @@ namespace FacialStuff
             {
                 alienRace.SecondaryColors = new List<Color>();
             }
+
             object fieldValue4 = this.GetFieldValue(raceDef, fieldValue, "hairSettings", true);
             alienRace.HasHair = true;
             if (fieldValue4 != null)
@@ -151,6 +169,7 @@ namespace FacialStuff
                 {
                     alienRace.HasHair = fieldValueAsBool2.Value;
                 }
+
                 ICollection fieldValueAsCollection5 = this.GetFieldValueAsCollection(raceDef, fieldValue4, "hairTags");
                 if (fieldValueAsCollection5 != null)
                 {
@@ -164,12 +183,14 @@ namespace FacialStuff
                             hashSet.Add(text2);
                         }
                     }
+
                     if (hashSet.Count > 0)
                     {
                         alienRace.HairTags = hashSet;
                     }
                 }
             }
+
             if (this.GetFieldValue(raceDef, fieldValue3, "alienhaircolorgen", true) is ColorGenerator)
             {
                 alienRace.HairColors = colorGenerator.GetColorList();
@@ -178,6 +199,7 @@ namespace FacialStuff
             {
                 alienRace.HairColors = null;
             }
+
             object fieldValue5 = this.GetFieldValue(raceDef, fieldValue, "raceRestriction", true);
             alienRace.RestrictedApparelOnly = false;
             if (fieldValue5 != null)
@@ -187,6 +209,7 @@ namespace FacialStuff
                 {
                     alienRace.RestrictedApparelOnly = fieldValueAsBool3.Value;
                 }
+
                 ICollection fieldValueAsCollection6 = this.GetFieldValueAsCollection(raceDef, fieldValue5, "apparelList");
                 if (fieldValueAsCollection6 != null)
                 {
@@ -200,12 +223,14 @@ namespace FacialStuff
                             hashSet2.Add(text3);
                         }
                     }
+
                     if (hashSet2.Count > 0)
                     {
                         alienRace.RestrictedApparel = hashSet2;
                     }
                 }
             }
+
             return alienRace;
         }
 
@@ -229,6 +254,7 @@ namespace FacialStuff
                         {
                             Log.Warning("Prepare carefully could not find " + name + " field value for " + raceDef.defName);
                         }
+
                         result = null;
                     }
                     else
@@ -242,6 +268,7 @@ namespace FacialStuff
                 Log.Warning("Prepare carefully could resolve value of the " + name + " field for " + raceDef.defName);
                 result = null;
             }
+
             return result;
         }
 
@@ -252,10 +279,11 @@ namespace FacialStuff
             {
                 return null;
             }
+
             ICollection collection = fieldValue as ICollection;
             if (collection == null)
             {
-                Log.Warning(string.Concat(new string[]
+                Log.Warning(string.Concat(new[]
                                               {
                                                   "Prepare carefully could not convert ",
                                                   name,
@@ -265,6 +293,7 @@ namespace FacialStuff
                                               }));
                 return null;
             }
+
             return collection;
         }
 
@@ -275,11 +304,13 @@ namespace FacialStuff
             {
                 return null;
             }
+
             if (fieldValue.GetType() == typeof(bool))
             {
                 return new bool?((bool)fieldValue);
             }
-            Log.Warning(string.Concat(new string[]
+
+            Log.Warning(string.Concat(new[]
                                           {
                                               "Prepare carefully could not convert ",
                                               name,
@@ -297,12 +328,14 @@ namespace FacialStuff
             {
                 return null;
             }
+
             string text = fieldValue as string;
             if (text != null)
             {
                 return text;
             }
-            Log.Warning(string.Concat(new string[]
+
+            Log.Warning(string.Concat(new[]
                                           {
                                               "Prepare carefully could not convert ",
                                               name,

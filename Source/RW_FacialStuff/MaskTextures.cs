@@ -24,6 +24,7 @@ namespace FacialStuff
                     blankTexture.SetPixel(x, y, Color.clear);
                 }
             }
+
             blankTexture.name = "Blank";
 
 
@@ -34,10 +35,10 @@ namespace FacialStuff
         }
 
 
-        private static Texture2D maskTexNarrowFrontBack = null;
-        private static Texture2D maskTexNarrowSide = null;
-        private static Texture2D maskTexAverageFrontBack = null;
-        private static Texture2D maskTexAverageSide = null;
+        private static Texture2D maskTexNarrowFrontBack;
+        private static Texture2D maskTexNarrowSide;
+        private static Texture2D maskTexAverageFrontBack;
+        private static Texture2D maskTexAverageSide;
 
         public static Texture2D MaskTex_Narrow_FrontBack
         {
@@ -47,6 +48,7 @@ namespace FacialStuff
                 {
                     maskTexNarrowFrontBack = Headhelper.MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back"));
                 }
+
                 return maskTexNarrowFrontBack;
             }
         }
@@ -58,6 +60,7 @@ namespace FacialStuff
                 {
                     maskTexNarrowSide = Headhelper.MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_side"));
                 }
+
                 return maskTexNarrowSide;
             }
         }
@@ -69,6 +72,7 @@ namespace FacialStuff
                 {
                     maskTexAverageFrontBack = Headhelper.MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"));
                 }
+
                 return maskTexAverageFrontBack;
             }
         }
@@ -80,6 +84,7 @@ namespace FacialStuff
                 {
                     maskTexAverageSide = Headhelper.MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_side"));
                 }
+
                 return maskTexAverageSide;
             }
         }

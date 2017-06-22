@@ -12,11 +12,11 @@
 
         public  Material HairCutMatAt(Rot4 facing)
         {
-            Material material = HairCutGraphic.MatAt(facing, null);
+            Material material = this.HairCutGraphic.MatAt(facing);
 
             if (material != null)
             {
-                material = Pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                material = this.Pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
             }
 
             return material;

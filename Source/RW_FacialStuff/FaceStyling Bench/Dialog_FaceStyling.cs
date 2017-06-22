@@ -1,24 +1,22 @@
-﻿namespace FaceStyling
+﻿namespace FacialStuff.FaceStyling_Bench
 {
     using System.Collections.Generic;
 
-    using FaceStyling.ColorPicker;
-
-    using RimWorld;
+    using FaceStyling;
 
     using FacialStuff;
+    using FacialStuff.ColorPicker;
     using FacialStuff.Defs;
     using FacialStuff.Detouring;
     using FacialStuff.Utilities;
+
+    using RimWorld;
 
     using UnityEngine;
 
     using Verse;
 
-    using static FacialStuff.enums;
-
     // bug: update for 2nd eye display, make beard color selectable, 
-
     [StaticConstructorOnStartup]
     public class Dialog_FaceStyling : Window
     {
@@ -92,9 +90,9 @@
             Graphic_Multi_NaturalEyes result;
             if (def.texPath != null)
             {
-                string path = faceComp.EyeTexPath(def.texPath, Side.Right);
-                //      "Eyes/Eye_" + pawn.gender + faceComp.crownType + "_" + def.texPath   + "_Right";
+                string path = faceComp.EyeTexPath(def.texPath, enums.Side.Right);
 
+                // "Eyes/Eye_" + pawn.gender + faceComp.crownType + "_" + def.texPath   + "_Right";
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                              path,
                              ShaderDatabase.Cutout,
@@ -115,7 +113,7 @@
             Graphic_Multi_NaturalEyes result;
             if (def.texPath != null)
             {
-                string path = faceComp.EyeTexPath(def.texPath, Side.Left);
+                string path = faceComp.EyeTexPath(def.texPath, enums.Side.Left);
 
 
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
@@ -259,6 +257,7 @@
                 {
                     faceComp.BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
                 }
+
                 originalColour = faceComp.HairColorOrg;
                 _newBeardColour = faceComp.BeardColor;
                 _newBeard = originalBeard = faceComp.BeardDef;
@@ -283,15 +282,15 @@
             _newHair = originalHair = pawn.story.hairDef;
 
 
-            DisplayGraphics = new GraphicsDisp[(int)GraphicSlotGroup.NumberOfTypes];
-            for (int i = 0; i < (int)GraphicSlotGroup.NumberOfTypes; i++)
+            DisplayGraphics = new GraphicsDisp[(int)enums.GraphicSlotGroup.NumberOfTypes];
+            for (int i = 0; i < (int)enums.GraphicSlotGroup.NumberOfTypes; i++)
             {
                 DisplayGraphics[i] = new GraphicsDisp();
             }
 
 
             this.SetGraphicSlot(
-                GraphicSlotGroup.Body,
+                enums.GraphicSlotGroup.Body,
                 pawn,
                 GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
                     pawn.story.bodyType,
@@ -303,7 +302,7 @@
             if (faceComp != null)
             {
                 this.SetGraphicSlot(
-                    GraphicSlotGroup.Head,
+                    enums.GraphicSlotGroup.Head,
                     pawn,
                     GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(
                         pawn,
@@ -314,7 +313,7 @@
             else
             {
                 this.SetGraphicSlot(
-                    GraphicSlotGroup.Head,
+                    enums.GraphicSlotGroup.Head,
                     pawn,
                    pawn.Drawer.renderer.graphics.headGraphic,
                     pawn.def.uiIcon,
@@ -322,7 +321,7 @@
             }
 
             this.SetGraphicSlot(
-                GraphicSlotGroup.Hair,
+                enums.GraphicSlotGroup.Hair,
                 pawn,
                 pawn.Drawer.renderer.graphics.hairGraphic,
                 pawn.def.uiIcon,
@@ -332,35 +331,35 @@
             {
 
                 this.SetGraphicSlot(
-                    GraphicSlotGroup.RightEye,
+                    enums.GraphicSlotGroup.RightEye,
                     pawn,
                     this.RightEyeGraphic(faceComp.EyeDef),
                     pawn.def.uiIcon,
                     Color.black);
 
                 this.SetGraphicSlot(
-                    GraphicSlotGroup.LeftEye,
+                    enums.GraphicSlotGroup.LeftEye,
                     pawn,
                     this.LeftEyeGraphic(faceComp.EyeDef),
                     pawn.def.uiIcon,
                     Color.black);
 
                 this.SetGraphicSlot(
-                    GraphicSlotGroup.Brows,
+                    enums.GraphicSlotGroup.Brows,
                     pawn,
                     this.BrowGraphic(faceComp.BrowDef),
                     pawn.def.uiIcon,
                     Color.black);
 
                 this.SetGraphicSlot(
-                    GraphicSlotGroup.Mouth,
+                    enums.GraphicSlotGroup.Mouth,
                     pawn,
-                    faceComp.mouthGraphic,
+                    faceComp.MouthGraphic,
                     pawn.def.uiIcon,
-                    Color.white);
+                   faceComp.naturalMouth ? Color.black : Color.white);
 
                 this.SetGraphicSlot(
-                    GraphicSlotGroup.Beard,
+                    enums.GraphicSlotGroup.Beard,
                     pawn,
                     this.BeardGraphic(faceComp.BeardDef),
                     pawn.def.uiIcon,
@@ -369,8 +368,8 @@
 
             foreach (Apparel current in pawn.apparel.WornApparel)
             {
-                GraphicSlotGroup slotForApparel = this.GetSlotForApparel(current);
-                if (slotForApparel != GraphicSlotGroup.Invalid)
+                enums.GraphicSlotGroup slotForApparel = this.GetSlotForApparel(current);
+                if (slotForApparel != enums.GraphicSlotGroup.Invalid)
                 {
                     if (current.def.apparel.LastLayer != ApparelLayer.Overhead)
                     {
@@ -405,10 +404,10 @@
             set
             {
                 _newHairColour = value;
-                DisplayGraphics[(int)GraphicSlotGroup.Hair].color = value;
+                DisplayGraphics[(int)enums.GraphicSlotGroup.Hair].color = value;
                 if (faceComp != null && faceComp.sameBeardColor)
                 {
-                    DisplayGraphics[(int)GraphicSlotGroup.Beard].color = _PawnHairColors.DarkerBeardColor(value);
+                    DisplayGraphics[(int)enums.GraphicSlotGroup.Beard].color = _PawnHairColors.DarkerBeardColor(value);
                 }
             }
         }
@@ -423,7 +422,7 @@
             set
             {
                 _newBeardColour = value;
-                DisplayGraphics[(int)GraphicSlotGroup.Beard].color = value;
+                DisplayGraphics[(int)enums.GraphicSlotGroup.Beard].color = value;
             }
         }
 
@@ -438,7 +437,7 @@
             {
                 _newBeard = value;
                 this.SetGraphicSlot(
-                    GraphicSlotGroup.Beard,
+                    enums.GraphicSlotGroup.Beard,
                     pawn,
                     this.BeardGraphic(value),
                     pawn.def.uiIcon,
@@ -457,7 +456,7 @@
             {
                 _newBrow = value;
                 this.SetGraphicSlot(
-                    GraphicSlotGroup.Brows,
+                    enums.GraphicSlotGroup.Brows,
                     pawn,
                     this.BrowGraphic(value),
                     pawn.def.uiIcon,
@@ -477,14 +476,14 @@
                 _newEye = value;
 
                 this.SetGraphicSlot(
-                    GraphicSlotGroup.RightEye,
+                    enums.GraphicSlotGroup.RightEye,
                     pawn,
                     this.RightEyeGraphic(value),
                     pawn.def.uiIcon,
                     Color.black);
 
                 this.SetGraphicSlot(
-                    GraphicSlotGroup.LeftEye,
+                    enums.GraphicSlotGroup.LeftEye,
                     pawn,
                     this.LeftEyeGraphic(value),
                     pawn.def.uiIcon,
@@ -503,7 +502,7 @@
             {
                 _newHair = value;
                 this.SetGraphicSlot(
-                    GraphicSlotGroup.Hair,
+                    enums.GraphicSlotGroup.Hair,
                     pawn,
                     this.HairGraphic(value),
                     pawn.def.uiIcon,
@@ -522,7 +521,7 @@
             {
                 this._newMelanin = value;
                 this.SetGraphicSlot(
-                    GraphicSlotGroup.Body,
+                    enums.GraphicSlotGroup.Body,
                     pawn,
                     GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
                         pawn.story.bodyType,
@@ -532,7 +531,7 @@
                     _PawnSkinColors.GetSkinColor(this._newMelanin));
 
                 this.SetGraphicSlot(
-                    GraphicSlotGroup.Head,
+                    enums.GraphicSlotGroup.Head,
                     pawn,
                     GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(
                         pawn,
@@ -694,6 +693,7 @@
                 while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
                 {
                 }
+
                 if (!faceComp.sameBeardColor)
                 {
                     colourWrapper.Color = this.NewBeardColour;
@@ -982,7 +982,7 @@
             pawnMouthRect.width /= 2;
             pawnMouthRect.height /= 2;
             pawnMouthRect.x += pawnHeadRect.width / 4;
-            pawnMouthRect.y += pawnHeadRect.width / 4;
+            pawnMouthRect.y += pawnHeadRect.height / 2;
 
             Rect pawnRect = new Rect(0f, 0f, _previewSize, _previewSize);
             Rect labelRect = new Rect(0f, pawnRect.yMax - vector.y, vector.x, vector.y);
@@ -998,7 +998,7 @@
                     if (faceComp != null && (!this.NewBeard.drawMouth && faceComp.naturalMouth || !faceComp.drawMouth))
                     {
                         // layer 1-5 = body
-                        if (i <= (int)GraphicSlotGroup.Shell)
+                        if (i <= (int)enums.GraphicSlotGroup.Shell)
                         {
                             if (DisplayGraphics[i].graphic != null)
                             {
@@ -1007,7 +1007,7 @@
                         }
                         else
                         {
-                            if (i != (int)GraphicSlotGroup.Mouth)
+                            if (i != (int)enums.GraphicSlotGroup.Mouth)
                             {
                                 if (DisplayGraphics[i].graphic != null)
                                 {
@@ -1018,11 +1018,11 @@
                     }
                     else if (DisplayGraphics[i].graphic != null)
                     {
-                        if (i <= (int)GraphicSlotGroup.Shell)
+                        if (i <= (int)enums.GraphicSlotGroup.Shell)
                         {
                             DisplayGraphics[i].Draw(pawnRect);
                         }
-                        else if (i == (int)GraphicSlotGroup.Mouth)
+                        else if (i == (int)enums.GraphicSlotGroup.Mouth)
                         {
                             DisplayGraphics[i].Draw(pawnMouthRect);
 
@@ -1035,18 +1035,18 @@
                 }
                 else
                 {
-                    if (i <= (int)GraphicSlotGroup.Shell)
+                    if (i <= (int)enums.GraphicSlotGroup.Shell)
                     {
                         if (DisplayGraphics[i].graphic != null)
                         {
                             DisplayGraphics[i].Draw(pawnRect);
                         }
                     }
-                    else if (i != (int)GraphicSlotGroup.Beard)
+                    else if (i != (int)enums.GraphicSlotGroup.Beard)
                     {
                         if (!faceComp.drawMouth)
                         {
-                            if (i != (int)GraphicSlotGroup.Mouth)
+                            if (i != (int)enums.GraphicSlotGroup.Mouth)
                             {
                                 if (DisplayGraphics[i].graphic != null)
                                 {
@@ -1054,7 +1054,7 @@
                                 }
                             }
                         }
-                        else if (i == (int)GraphicSlotGroup.Mouth)
+                        else if (i == (int)enums.GraphicSlotGroup.Mouth)
                         {
                             DisplayGraphics[i].Draw(pawnMouthRect);
                         }
@@ -1086,9 +1086,8 @@
             float width = _previewSize;
 
             // float spacing = 10f;
-
             if (faceComp != null)
-                DrawHumanlikeColorSelector(melaninRect);
+                this.DrawHumanlikeColorSelector(melaninRect);
 
 
             Widgets.DrawMenuSection(listRect);
@@ -1194,6 +1193,7 @@
 
                 this.DrawHairPicker(listRect);
             }
+
             if (faceComp != null)
             {
 
@@ -1322,35 +1322,35 @@
         }
 
 
-        private GraphicSlotGroup GetSlotForApparel(Thing apparel)
+        private enums.GraphicSlotGroup GetSlotForApparel(Thing apparel)
         {
             ApparelProperties apparel2 = apparel.def.apparel;
             ApparelLayer lastLayer = apparel2.LastLayer;
-            GraphicSlotGroup result;
+            enums.GraphicSlotGroup result;
             switch (lastLayer)
             {
                 case ApparelLayer.OnSkin:
                     if (apparel2.bodyPartGroups.Count == 1
                         && apparel2.bodyPartGroups[0].Equals(BodyPartGroupDefOf.Legs))
                     {
-                        result = GraphicSlotGroup.OnSkinOnLegs;
+                        result = enums.GraphicSlotGroup.OnSkinOnLegs;
                         return result;
                     }
 
-                    result = GraphicSlotGroup.OnSkin;
+                    result = enums.GraphicSlotGroup.OnSkin;
                     return result;
                 case ApparelLayer.Middle:
-                    result = GraphicSlotGroup.Middle;
+                    result = enums.GraphicSlotGroup.Middle;
                     return result;
                 case ApparelLayer.Shell:
-                    result = GraphicSlotGroup.Shell;
+                    result = enums.GraphicSlotGroup.Shell;
                     return result;
                 case ApparelLayer.Overhead:
-                    result = GraphicSlotGroup.Overhead;
+                    result = enums.GraphicSlotGroup.Overhead;
                     return result;
             }
             Log.Warning("Could not resolve 'LastLayer' " + lastLayer);
-            result = GraphicSlotGroup.Invalid;
+            result = enums.GraphicSlotGroup.Invalid;
             return result;
         }
 
@@ -1376,7 +1376,7 @@
                 Color color = _PawnSkinColors._SkinColors[i].color;
 
                 // If the swatch is selected, draw a heavier border around it.
-                bool isThisSwatchSelected = (i == currentSwatchIndex);
+                bool isThisSwatchSelected = i == currentSwatchIndex;
                 if (isThisSwatchSelected)
                 {
                     Rect selectionRect = new Rect(swatchRect.x - 2, swatchRect.y - 2, SwatchSize.x + 4, SwatchSize.y + 4);
@@ -1395,10 +1395,11 @@
 
                 if (!isThisSwatchSelected)
                 {
-                    if (Widgets.ButtonInvisible(swatchRect, false))
+                    if (Widgets.ButtonInvisible(swatchRect))
                     {
                         clickedIndex = i;
-                        //currentSwatchColor = color;
+
+                        // currentSwatchColor = color;
                     }
                 }
 
@@ -1418,6 +1419,7 @@
             {
                 currentColorRect.y += SwatchSpacing.y;
             }
+
             GUI.color = ColorSwatchBorder;
             GUI.DrawTexture(currentColorRect, BaseContent.WhiteTex);
             GUI.color = _PawnSkinColors.GetSkinColor(this.NewMelanin);
@@ -1436,6 +1438,7 @@
             {
                 t = maxValue;
             }
+
             if (clickedIndex != -1)
             {
                 t = minValue;
@@ -1451,6 +1454,7 @@
             {
                 newValue = maxValue;
             }
+
             GUI.color = Color.white;
 
             // If the user selected a new swatch or changed the lerp value, set a new color value.
@@ -1460,6 +1464,7 @@
                 {
                     currentSwatchIndex = clickedIndex;
                 }
+
                 float melaninLevel = _PawnSkinColors.GetValueFromRelativeLerp(currentSwatchIndex, newValue);
                 this.NewMelanin = melaninLevel;
             }
@@ -1467,23 +1472,23 @@
 
 
         private void SetGraphicSlot(
-            GraphicSlotGroup slotIndex,
+            enums.GraphicSlotGroup slotIndex,
             Thing newThing,
             Graphic newGraphic,
             Texture2D newIcon,
             Color newColor)
         {
-            if (slotIndex < GraphicSlotGroup.Head)
+            if (slotIndex < enums.GraphicSlotGroup.Head)
             {
                 DisplayGraphics[(int)slotIndex] = new GraphicsDisp(newThing, newGraphic, newIcon, newColor, 0f);
             }
 
             // else if (slotIndex >= GraphicSlotGroup.Hair)
-            //  {
-            //      DisplayGraphics[(int)slotIndex] = new GraphicsDisp(newThing, newGraphic, newIcon, newColor, -40f);
-            //  }
+            // {
+            // DisplayGraphics[(int)slotIndex] = new GraphicsDisp(newThing, newGraphic, newIcon, newColor, -40f);
+            // }
 
-            //if (slotIndex == GraphicSlotGroup.Head)
+            // if (slotIndex == GraphicSlotGroup.Head)
             else
             {
                 DisplayGraphics[(int)slotIndex] = new GraphicsDisp(newThing, newGraphic, newIcon, newColor, -40f);

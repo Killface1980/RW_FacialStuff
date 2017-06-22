@@ -16,180 +16,26 @@
 
     public class CompFace : ThingComp
     {
-        private static readonly SimpleCurve EyeMotionFullCurve = new SimpleCurve
-                                                                     {
-                                                                         { new CurvePoint(0f, 0f), true },
-                                                                         {
-                                                                             new CurvePoint(0.05f, -1f),
-                                                                             true
-                                                                         },
-
-                                                                         // { new CurvePoint(0.25f, -1f), true },
-                                                                         {
-                                                                             // { new CurvePoint(0.3f, -1f), true },
-                                                                             // { new CurvePoint(0.5f, 0f), true },
-                                                                             // { new CurvePoint(0.7f, 1f), true },
-                                                                             // { new CurvePoint(0.75f, 1f), true },
-                                                                             new CurvePoint(0.65f, 1f), true
-                                                                         },
-                                                                         { new CurvePoint(0.85f, 0f), true }
-                                                                     };
-
-        private static readonly SimpleCurve EyeMotionHalfCurve = new SimpleCurve
-                                                                     {
-                                                                         { new CurvePoint(0f, 0f), true },
-                                                                         { new CurvePoint(0.1f, 1f), true },
-                                                                         {
-                                                                             // { new CurvePoint(0.5f, 1f), true },
-                                                                             new CurvePoint(0.65f, 1f), true
-                                                                         },
-                                                                         { new CurvePoint(0.75f, 0f), true }
-                                                                     };
-
-
-        public Vector3 BaseMouthOffsetAt(CompFace faceComp, Rot4 rotation)
-        {
-
-            switch (rotation.AsInt)
-            {
-                case 1:
-                    return new Vector3(faceComp.headTypeX, 0f, -faceComp.headTypeY);
-                case 2:
-                    return new Vector3(0, 0f, -faceComp.headTypeY);
-                case 3:
-                    return new Vector3(-faceComp.headTypeX, 0f, -faceComp.headTypeY);
-                default:
-                    return Vector3.zero;
-            }
-
-
-            float headTypeX = 0f;
-            float headTypeY = 0f;
-
-#if develop
-
-            var male = faceComp.pawn.gender == Gender.Male;
-
-
-            if (faceComp.crownType == CrownType.Average)
-            {
-                switch (faceComp.headType)
+        private static readonly SimpleCurve EyeMotionFullCurve =
+            new SimpleCurve
                 {
-                    case HeadType.Normal:
-                        if (male)
-                        {
-                            headTypeX = FS_Settings.MaleAverageNormalOffsetX;
-                            headTypeY = FS_Settings.MaleAverageNormalOffsetY;
-                        }
-                        else
-                        {
-                            headTypeX = FS_Settings.FemaleAverageNormalOffsetX;
-                            headTypeY = FS_Settings.FemaleAverageNormalOffsetY;
-                        }
-                        break;
-                    case HeadType.Pointy:
-                        if (male)
-                        {
-                            headTypeX = FS_Settings.MaleAveragePointyOffsetX;
-                            headTypeY = FS_Settings.MaleAveragePointyOffsetY;
-                        }
-                        else
-                        {
-                            headTypeX = FS_Settings.FemaleAveragePointyOffsetX;
-                            headTypeY = FS_Settings.FemaleAveragePointyOffsetY;
-                        }
-                        break;
-                    case HeadType.Wide:
-                        if (male)
-                        {
-                            headTypeX = FS_Settings.MaleAverageWideOffsetX;
-                            headTypeY = FS_Settings.MaleAverageWideOffsetY;
-                        }
-                        else
-                        {
-                            headTypeX = FS_Settings.FemaleAverageWideOffsetX;
-                            headTypeY = FS_Settings.FemaleAverageWideOffsetY;
-                        }
-                        break;
-                }
-            }
-            else
-            {
-                switch (faceComp.headType)
+                    new CurvePoint(0f, 0f),
+                    new CurvePoint(0.05f, -1f),
+                    new CurvePoint(0.65f, 1f),
+                    new CurvePoint(0.85f, 0f)
+                };
+
+        private static readonly SimpleCurve EyeMotionHalfCurve =
+            new SimpleCurve
                 {
-                    case HeadType.Normal:
-                        if (male)
-                        {
-                            headTypeX = FS_Settings.MaleNarrowNormalOffsetX;
-                            headTypeY = FS_Settings.MaleNarrowNormalOffsetY;
-                        }
-                        else
-                        {
-                            headTypeX = FS_Settings.FemaleNarrowNormalOffsetX;
-                            headTypeY = FS_Settings.FemaleNarrowNormalOffsetY;
-                        }
-                        break;
-                    case HeadType.Pointy:
-                        if (male)
-                        {
-                            headTypeX = FS_Settings.MaleNarrowPointyOffsetX;
-                            headTypeY = FS_Settings.MaleNarrowPointyOffsetY;
-                        }
-                        else
-                        {
-                            headTypeX = FS_Settings.FemaleNarrowPointyOffsetX;
-                            headTypeY = FS_Settings.FemaleNarrowPointyOffsetY;
-                        }
-                        break;
-                    case HeadType.Wide:
-                        if (male)
-                        {
-                            headTypeX = FS_Settings.MaleNarrowWideOffsetX;
-                            headTypeY = FS_Settings.MaleNarrowWideOffsetY;
-                        }
-                        else
-                        {
-                            headTypeX = FS_Settings.FemaleNarrowWideOffsetX;
-                            headTypeY = FS_Settings.FemaleNarrowWideOffsetY;
-                        }
-                        break;
-                }
-
-            }
-
-#else
-#endif
-
-
-
-            //  switch (faceComp.pawn.gender)
-            //  {
-            //      case Gender.Male:
-            //          headTypeY = VerCrowntypeOffsetMale[(int)faceComp.crownType];
-            //          headTypeX = HorHeadTypeOffsetMale[(int)faceComp.headType];
-            //          break;
-            //      case Gender.Female:
-            //          headTypeY = VerCrowntypeOffsetFemale[(int)faceComp.crownType];
-            //          headTypeX = HorHeadTypeOffsetFemale[(int)faceComp.headType];
-            //          break;
-            //  }
-
-            switch (rotation.AsInt)
-            {
-                case 1:
-                    return new Vector3(headTypeX, 0f, -headTypeY);
-                case 2:
-                    return new Vector3(0, 0f, -headTypeY);
-                case 3:
-                    return new Vector3(-headTypeX, 0f, -headTypeY);
-                default:
-                    return Vector3.zero;
-            }
-        }
+                    new CurvePoint(0f, 0f),
+                    new CurvePoint(0.1f, 1f),
+                    new CurvePoint(0.65f, 1f),
+                    new CurvePoint(0.75f, 0f)
+                };
 
         public Vector3 BaseMouthOffsetAt(Rot4 rotation)
         {
-
 #if develop
 
             var male = pawn.gender == Gender.Male;
@@ -286,11 +132,11 @@
             switch (rotation.AsInt)
             {
                 case 1:
-                    return new Vector3(headTypeX, 0f, -headTypeY);
+                    return new Vector3(this.headTypeX, 0f, -this.headTypeY);
                 case 2:
-                    return new Vector3(0, 0f, -headTypeY);
+                    return new Vector3(0, 0f, -this.headTypeY);
                 case 3:
-                    return new Vector3(-headTypeX, 0f, -headTypeY);
+                    return new Vector3(-this.headTypeX, 0f, -this.headTypeY);
                 default:
                     return Vector3.zero;
             }
@@ -303,8 +149,8 @@
         #region Fields
 
 
-        public Vector3 eyemoveR = new Vector3(0, 0, 0);
-        public Vector3 eyemoveL = new Vector3(0, 0, 0);
+        public Vector3 EyemoveR = new Vector3(0, 0, 0);
+        public Vector3 EyemoveL = new Vector3(0, 0, 0);
         public Pawn pawn;
 
         #region Defs
@@ -332,13 +178,13 @@
         private Graphic deadEyeGraphic;
 
         private Graphic_Multi_NaturalEyes leftEyeClosedGraphic;
-        private Graphic_Multi_NaturalEyes leftEyeGraphic = null;
-        private Graphic_Multi_AddedHeadParts leftEyePatchGraphic = null;
+        private Graphic_Multi_NaturalEyes leftEyeGraphic;
+        private Graphic_Multi_AddedHeadParts leftEyePatchGraphic;
 
-        public Graphic_Multi_NaturalHeadParts mouthGraphic;
+        public Graphic_Multi_NaturalHeadParts MouthGraphic;
         private Graphic_Multi_NaturalEyes rightEyeClosedGraphic;
-        private Graphic_Multi_NaturalEyes rightEyeGraphic = null;
-        private Graphic_Multi_AddedHeadParts rightEyePatchGraphic = null;
+        private Graphic_Multi_NaturalEyes rightEyeGraphic;
+        private Graphic_Multi_AddedHeadParts rightEyePatchGraphic;
 
         private Graphic wrinkleGraphic;
 
@@ -356,7 +202,7 @@
             Material material = null;
             if (this.pawn.gender == Gender.Male)
             {
-                material = this.beardGraphic.MatAt(facing, null);
+                material = this.beardGraphic.MatAt(facing);
 
                 if (material != null)
                 {
@@ -370,7 +216,7 @@
         public Material BrowMatAt(Rot4 facing)
         {
             Material material = null;
-            material = this.browGraphic.MatAt(facing, null);
+            material = this.browGraphic.MatAt(facing);
 
             if (material != null)
             {
@@ -385,11 +231,11 @@
             Material material = null;
             if (bodyCondition == RotDrawMode.Fresh)
             {
-                material = this.deadEyeGraphic.MatAt(facing, null);
+                material = this.deadEyeGraphic.MatAt(facing);
             }
             else if (bodyCondition == RotDrawMode.Rotting)
             {
-                material = this.deadEyeGraphic.MatAt(facing, null);
+                material = this.deadEyeGraphic.MatAt(facing);
             }
 
             if (material != null)
@@ -406,32 +252,27 @@
         {
             Material material = null;
 
+            if (HasLeftEyePatch || !HasLeftEyePatch && LeftIsSolid) return null;
+
             bool flag = true;
-            material = this.leftEyeGraphic.MatAt(facing, null);
-            if (portrait)
+            material = this.leftEyeGraphic.MatAt(facing);
+
+            if (!portrait)
             {
-
-                if (material != null)
+                if (this.LeftCanBlink)
                 {
-                    material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
-                }
-
-                return material;
-            }
-
-            if (this.LeftCanBlink)
-            {
-                if (this.asleep)
-                {
-                    flag = false;
-                    material = this.leftEyeClosedGraphic.MatAt(facing, null);
-                }
-
-                if (flag)
-                {
-                    if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterLeft)
+                    if (this.asleep)
                     {
-                        material = this.leftEyeClosedGraphic.MatAt(facing, null);
+                        flag = false;
+                        material = this.leftEyeClosedGraphic.MatAt(facing);
+                    }
+
+                    if (flag)
+                    {
+                        if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterLeft)
+                        {
+                            material = this.leftEyeClosedGraphic.MatAt(facing);
+                        }
                     }
                 }
             }
@@ -446,7 +287,7 @@
 
         public Material LeftEyePatchMatAt(Rot4 facing)
         {
-            Material material = this.leftEyePatchGraphic.MatAt(facing, null);
+            Material material = this.leftEyePatchGraphic.MatAt(facing);
 
             if (material != null)
             {
@@ -458,39 +299,32 @@
 
         public Material RightEyeMatAt(Rot4 facing, bool portrait)
         {
+            if (HasRightEyePatch || !HasRightEyePatch && RightIsSolid) return null;
+
             Material material = null;
             bool flag = true;
-            material = this.rightEyeGraphic.MatAt(facing, null);
+            material = this.rightEyeGraphic.MatAt(facing);
 
-            if (portrait)
+            if (!portrait)
             {
-                if (material != null)
+                if (this.RightCanBlink)
                 {
-                    material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
-                }
-
-                return material;
-            }
-
-            if (this.RightCanBlink)
-            {
-                if (this.asleep)
-                {
-                    flag = false;
-                    material = this.rightEyeClosedGraphic.MatAt(facing, null);
-                }
-
-                if (flag)
-                {
-                    if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterRight)
+                    if (this.asleep)
                     {
-                        material = this.rightEyeClosedGraphic.MatAt(facing, null);
+                        flag = false;
+                        material = this.rightEyeClosedGraphic.MatAt(facing);
+                    }
+
+                    if (flag)
+                    {
+                        if (Find.TickManager.TicksGame >= this.nextBlink + this.jitterRight)
+                        {
+                            material = this.rightEyeClosedGraphic.MatAt(facing);
+                        }
                     }
                 }
             }
-            else
-            {
-            }
+
 
             if (material != null)
             {
@@ -502,7 +336,7 @@
 
         public Material RightEyePatchMatAt(Rot4 facing)
         {
-            Material material = this.rightEyePatchGraphic.MatAt(facing, null);
+            Material material = this.rightEyePatchGraphic.MatAt(facing);
 
             if (material != null)
             {
@@ -530,11 +364,11 @@
             {
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
-                    material = this.mouthGraphic.MatAt(facing, null);
+                    material = this.MouthGraphic.MatAt(facing);
                 }
                 else if (bodyCondition == RotDrawMode.Rotting)
                 {
-                    material = this.mouthGraphic.MatAt(facing, null);
+                    material = this.MouthGraphic.MatAt(facing);
                 }
 
                 if (material != null)
@@ -551,9 +385,9 @@
         public Material WrinkleMatAt(Rot4 facing)
         {
             Material material = null;
-            if (this.isOld && FS_Settings.UseWrinkles)
+            if (this.IsOld && FS_Settings.UseWrinkles)
             {
-                material = this.wrinkleGraphic.MatAt(facing, null);
+                material = this.wrinkleGraphic.MatAt(facing);
             }
 
             if (material != null)
@@ -574,15 +408,15 @@
 
         private string SkinColorHex;
 
-        private string leftEyeClosedTexPath = null;
+        private string leftEyeClosedTexPath;
 
-        private string leftEyePatchTexPath = null;
+        private string leftEyePatchTexPath;
 
         private string leftEyeTexPath;
 
         private string rightEyeClosedTexPath;
 
-        private string rightEyePatchTexPath = null;
+        private string rightEyePatchTexPath;
 
         private string rightEyeTexPath;
         #endregion
@@ -591,17 +425,17 @@
 
 
 
-        public bool LeftIsSolid = false;
+        public bool LeftIsSolid;
 
-        public bool RightIsSolid = false;
+        public bool RightIsSolid;
 
         public bool drawMouth = true;
 
-        public bool hasLeftEyePatch = false;
+        public bool HasLeftEyePatch;
 
-        public bool hasRightEyePatch = false;
+        public bool HasRightEyePatch;
 
-        public bool isOld;
+        public bool IsOld;
 
         public bool optimized;
         private bool halfAnimX;
@@ -621,15 +455,15 @@
 
         private float factorY = 0.01f;
 
-        private float flippedX = 0f;
+        private float flippedX;
 
-        private float flippedY = 0f;
+        private float flippedY;
 
 
         // private float blinkRate;
-        private int jitterLeft = 0;
+        private int jitterLeft;
 
-        private int jitterRight = 0;
+        private int jitterRight;
 
         private int lastBlinkended;
 
@@ -652,44 +486,7 @@
         #region Methods
 
         // Verse.PawnGraphicSet
-        public GraphicMeshSet MouthMeshSet
-        {
-            get
-            {
-                switch (this.pawn.gender)
-                {
-                    case Gender.Male:
-                        if (this.pawn.story.crownType == CrownType.Average)
-                        {
-                            return MeshPoolFs.humanlikeMouthSetAverageMale;
-                        }
-
-                        if (this.pawn.story.crownType == CrownType.Narrow)
-                        {
-                            return MeshPoolFs.humanlikeMouthSetNarrowMale;
-                        }
-
-                        break;
-
-                    case Gender.Female:
-                        if (this.pawn.story.crownType == CrownType.Average)
-                        {
-                            return MeshPoolFs.humanlikeMouthSetAverageFemale;
-                        }
-
-                        if (this.pawn.story.crownType == CrownType.Narrow)
-                        {
-                            return MeshPoolFs.humanlikeMouthSetNarrowFemale;
-                        }
-
-                        break;
-
-                }
-                Log.Error("Unknown crown type: " + this.pawn.story.crownType);
-                return MeshPool.humanlikeHairSetAverage;
-            }
-        }
-
+        public GraphicMeshSet MouthMeshSet => MeshPoolFs.HumanlikeMouthSet[(int)this.fullHeadType];
 
         public bool SetHeadType()
         {
@@ -699,7 +496,6 @@
             {
                 return false;
             }
-
 
             if (this.pawn.story.HeadGraphicPath.Contains("Normal"))
             {
@@ -725,8 +521,8 @@
                 this.crownType = CrownType.Average;
             }
 
-            this.hasLeftEyePatch = false;
-            this.hasRightEyePatch = false;
+            this.HasLeftEyePatch = false;
+            this.HasRightEyePatch = false;
             this.LeftIsSolid = false;
             this.RightIsSolid = false;
 
@@ -749,12 +545,12 @@
 
             }
 #else
-            naturalMouth = true;
+            this.naturalMouth = true;
 #endif
+
             // "Eyes/Eye_" + this.pawn.gender + this.crownType + "_" + this.EyeDef.texPath + "_Right";
 
             // = "Eyes/Eye_" + this.pawn.gender + this.crownType + "_Closed_Right";
-
 
             // this.leftEyeTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownType + "_" + this.EyeDef.texPath
             // + "_Left";
@@ -788,15 +584,15 @@
 
                     if (hediff.Part == rightEye)
                     {
-                        this.rightEyePatchTexPath = "AddedParts/" + hediff.def.defName + "_Right"
-                                                    + "_" + this.crownType;
+                        this.rightEyePatchTexPath = "AddedParts/" + hediff.def.defName + "_Right" + "_"
+                                                    + this.crownType;
                         this.RightIsSolid = addedPartProps.isSolid;
                     }
 
                     if (hediff.Part == jaw)
                     {
                         this.mouthTexPath = "Mouth/Mouth_" + hediff.def.defName;
-                        naturalMouth = false;
+                        this.naturalMouth = false;
                     }
                 }
 
@@ -804,7 +600,10 @@
                 {
                     if (hediff.Part == leftEye)
                     {
-                        this.leftEyeTexPath = this.EyeTexPath("Missing", enums.Side.Left);// "Eyes/" + "ShotOut" + "_Left" + this.crownType;
+                        this.leftEyeTexPath =
+                            this.EyeTexPath(
+                                "Missing",
+                                enums.Side.Left); // "Eyes/" + "ShotOut" + "_Left" + this.crownType;
                         this.LeftCanBlink = false;
                     }
 
@@ -823,14 +622,17 @@
                     switch (this.headType)
                     {
                         case HeadType.Normal:
+                            fullHeadType = MeshPoolFs.FullHead.MaleAverageNormal;
                             this.headTypeX = FS_Settings.MaleAverageNormalOffsetX;
                             this.headTypeY = FS_Settings.MaleAverageNormalOffsetY;
                             break;
                         case HeadType.Pointy:
+                            fullHeadType = MeshPoolFs.FullHead.MaleAveragePointy;
                             this.headTypeX = FS_Settings.MaleAveragePointyOffsetX;
                             this.headTypeY = FS_Settings.MaleAveragePointyOffsetY;
                             break;
                         case HeadType.Wide:
+                            fullHeadType = MeshPoolFs.FullHead.MaleAverageWide;
                             this.headTypeX = FS_Settings.MaleAverageWideOffsetX;
                             this.headTypeY = FS_Settings.MaleAverageWideOffsetY;
                             break;
@@ -842,14 +644,17 @@
                     switch (this.headType)
                     {
                         case HeadType.Normal:
+                            fullHeadType = MeshPoolFs.FullHead.MaleNarrowNormal;
                             this.headTypeX = FS_Settings.MaleNarrowNormalOffsetX;
                             this.headTypeY = FS_Settings.MaleNarrowNormalOffsetY;
                             break;
                         case HeadType.Pointy:
+                            fullHeadType = MeshPoolFs.FullHead.MaleNarrowPointy;
                             this.headTypeX = FS_Settings.MaleNarrowPointyOffsetX;
                             this.headTypeY = FS_Settings.MaleNarrowPointyOffsetY;
                             break;
                         case HeadType.Wide:
+                            fullHeadType = MeshPoolFs.FullHead.MaleNarrowWide;
                             this.headTypeX = FS_Settings.MaleNarrowWideOffsetX;
                             this.headTypeY = FS_Settings.MaleNarrowWideOffsetY;
                             break;
@@ -857,21 +662,24 @@
                 }
             }
 
-            if (this.pawn.gender == Gender.Female)
+            else if (this.pawn.gender == Gender.Female)
             {
                 if (this.crownType == CrownType.Average)
                 {
                     switch (this.headType)
                     {
                         case HeadType.Normal:
+                            fullHeadType = MeshPoolFs.FullHead.FemaleAverageNormal;
                             this.headTypeX = FS_Settings.FemaleAverageNormalOffsetX;
                             this.headTypeY = FS_Settings.FemaleAverageNormalOffsetY;
                             break;
                         case HeadType.Pointy:
+                            fullHeadType = MeshPoolFs.FullHead.FemaleAveragePointy;
                             this.headTypeX = FS_Settings.FemaleAveragePointyOffsetX;
                             this.headTypeY = FS_Settings.FemaleAveragePointyOffsetY;
                             break;
                         case HeadType.Wide:
+                            fullHeadType = MeshPoolFs.FullHead.FemaleAverageWide;
                             this.headTypeX = FS_Settings.FemaleAverageWideOffsetX;
                             this.headTypeY = FS_Settings.FemaleAverageWideOffsetY;
                             break;
@@ -883,19 +691,26 @@
                     switch (this.headType)
                     {
                         case HeadType.Normal:
+                            fullHeadType = MeshPoolFs.FullHead.FemaleNarrowNormal;
                             this.headTypeX = FS_Settings.FemaleNarrowNormalOffsetX;
                             this.headTypeY = FS_Settings.FemaleNarrowNormalOffsetY;
                             break;
                         case HeadType.Pointy:
+                            fullHeadType = MeshPoolFs.FullHead.FemaleNarrowPointy;
                             this.headTypeX = FS_Settings.FemaleNarrowPointyOffsetX;
                             this.headTypeY = FS_Settings.FemaleNarrowPointyOffsetY;
                             break;
                         case HeadType.Wide:
+                            fullHeadType = MeshPoolFs.FullHead.FemaleNarrowWide;
                             this.headTypeX = FS_Settings.FemaleNarrowWideOffsetX;
                             this.headTypeY = FS_Settings.FemaleNarrowWideOffsetY;
                             break;
                     }
                 }
+            }
+            else
+            {
+                fullHeadType = MeshPoolFs.FullHead.MaleAverageNormal;
             }
 
             return true;
@@ -932,44 +747,39 @@
         {
             this.pawn = this.parent as Pawn;
 
-            //   Log.Message("FS " + this.pawn);
-
+            // Log.Message("FS " + this.pawn);
             if (this.pawn == null)
             {
-                //        Log.Message("Pawn is null, returning. ");
+                // Log.Message("Pawn is null, returning. ");
                 return;
             }
 
-            //      Log.Message("Choosing eyes... ");
-
+            // Log.Message("Choosing eyes... ");
             var faction = this.pawn.Faction?.def;
 
             if (faction == null) faction = FactionDefOf.PlayerColony;
 
             this.EyeDef = PawnFaceChooser.RandomEyeDefFor(this.pawn, faction);
-            //       Log.Message(EyeDef.defName);
 
+            // Log.Message(EyeDef.defName);
             this.BrowDef = PawnFaceChooser.RandomBrowDefFor(this.pawn, faction);
-            //    Log.Message(BrowDef.defName);
 
+            // Log.Message(BrowDef.defName);
             this.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(this.pawn);
-            //        Log.Message(WrinkleDef.defName);
 
-            //       this.MouthDef = PawnFaceChooser.RandomMouthDefFor(this.pawn, this.pawn.Faction.def);
+            // Log.Message(WrinkleDef.defName);
 
+            // this.MouthDef = PawnFaceChooser.RandomMouthDefFor(this.pawn, this.pawn.Faction.def);
             this.BeardDef = PawnFaceChooser.RandomBeardDefFor(this.pawn, faction);
-            //       Log.Message(BeardDef.defName);
 
+            // Log.Message(BeardDef.defName);
             this.HairColorOrg = this.pawn.story.hairColor;
 
             this.sameBeardColor = Rand.Value > 0.2f;
-            if (this.sameBeardColor)
-                this.BeardColor = _PawnHairColors.DarkerBeardColor(this.pawn.story.hairColor);
-            else
-                this.BeardColor = _PawnHairColors.RandomBeardColor();
+            if (this.sameBeardColor) this.BeardColor = _PawnHairColors.DarkerBeardColor(this.pawn.story.hairColor);
+            else this.BeardColor = _PawnHairColors.RandomBeardColor();
 
             this.optimized = true;
-
         }
 
         public bool InitializeGraphics()
@@ -989,7 +799,7 @@
                     this.BeardColor = _PawnHairColors.RandomBeardColor();
             }
 
-            this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
+            this.IsOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
 
             Color wrinkleColor = Color.Lerp(
                 this.pawn.story.SkinColor,
@@ -1024,7 +834,7 @@
 
             if (!this.naturalMouth)
             {
-                this.mouthGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                this.MouthGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 this.mouthTexPath,
                 ShaderDatabase.Transparent,
                 Vector2.one,
@@ -1032,7 +842,7 @@
             }
             else
             {
-                this.mouthGraphic = FacialGraphics.MouthGraphic03;
+                this.MouthGraphic = FacialGraphics.MouthGraphic03;
             }
 
             this.deadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
@@ -1049,7 +859,7 @@
                                                Color.white) as Graphic_Multi_AddedHeadParts;
                 if (this.leftEyePatchGraphic != null)
                 {
-                    this.hasLeftEyePatch = true;
+                    this.HasLeftEyePatch = true;
                 }
             }
 
@@ -1062,7 +872,7 @@
                                                 Color.white) as Graphic_Multi_AddedHeadParts;
                 if (this.rightEyePatchGraphic != null)
                 {
-                    this.hasRightEyePatch = true;
+                    this.HasRightEyePatch = true;
                 }
             }
 
@@ -1096,7 +906,7 @@
         // eyes closed time = > consciousness?
         // tiredness affect blink rate
         // Method used to animate the eye movement
-        private CellRect _viewRect = new CellRect();
+        private CellRect _viewRect;
 
         private bool LeftCanBlink;
 
@@ -1104,7 +914,7 @@
 
         private float mood = 0.5f;
 
-        public object rotationInt;
+        public int rotationInt;
 
         public float headTypeX;
 
@@ -1113,6 +923,8 @@
         public bool naturalMouth = true;
 
         private string mouthTexPath;
+
+        private MeshPoolFs.FullHead fullHeadType;
 
         public override void PostDraw()
         {
@@ -1131,7 +943,9 @@
             this._viewRect = this._viewRect.ExpandedBy(5);
 
             if (!this._viewRect.Contains(this.pawn.Position))
+            {
                 return;
+            }
 
             int tickManagerTicksGame = Find.TickManager.TicksGame;
             float x = Mathf.InverseLerp(this.lastBlinkended, this.nextBlink, tickManagerTicksGame);
@@ -1165,95 +979,100 @@
                 }
 
                 if (this.RightCanBlink)
-                    this.eyemoveR = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
+                    this.EyemoveR = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
                 if (this.LeftCanBlink)
-                    this.eyemoveL = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
+                    this.EyemoveL = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
             }
 
-            // float moveX = (float)Math.Sin(Find.TickManager.TicksGame * 0.1f) * this.factorX;
-            // float moveY = (float)Math.Cos(Find.TickManager.TicksGame * 0.1f) * this.factorY;
             if (tickManagerTicksGame > this.nextBlinkEnd)
             {
-                float ticksTillNextBlink = Rand.Range(60f, 240f);
-                float blinkDuration = Rand.Range(5f, 35f);
+                // Set upnext blinking cycle
+                this.SetNextBlink(tickManagerTicksGame);
 
-                // Log.Message(
-                // "FS Blinker: " + this.pawn + " - ticksTillNextBlinkORG: " + ticksTillNextBlink.ToString("N0")
-                // + " - blinkDurationORG: " + blinkDuration.ToString("N0"));
-                float dynamic = this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
-                float factor = Mathf.Lerp(0.125f, 1f, dynamic);
-
-                float dynamic2 = this.pawn.needs.rest.CurLevel;
-                float factor2 = Mathf.Lerp(0.125f, 1f, dynamic2);
-
-                ticksTillNextBlink *= factor * factor2;
-                blinkDuration /= factor * factor * factor2 * 2;
-
-                // Log.Message(
-                // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - Rest: "
-                // + dynamic2.ToStringPercent() + " - factorR: " + factor2.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
-                // + " - blinkDuration: " + blinkDuration.ToString("N0"));
-                this.nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
-                this.nextBlinkEnd = (int)(this.nextBlink + blinkDuration);
-
-                if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
-                {
-                    this.asleep = true;
-                    return;
-                }
-
-                this.asleep = false;
-
-                // this.jitterLeft = 1f;
-                // this.jitterRight = 1f;
-
-                // blinkRate = Mathf.Lerp(2f, 0.25f, this.pawn.needs.rest.CurLevel);
-
-
-                // range *= (int)blinkRate;
-                // blinkDuration /= (int)this.blinkRate;
-                if (Rand.Value > 0.9f)
-                {
-                    // early "nerous" blinking. I guss positive values have no effect ...
-                    this.jitterLeft = (int)Rand.Range(-10f, 90f);
-                    this.jitterRight = (int)Rand.Range(-10f, 90f);
-                }
-                else
-                {
-                    this.jitterLeft = 0;
-                    this.jitterRight = 0;
-                }
-
-                // only animate eye movement if animation lasts at least 2.5 seconds
-                if (ticksTillNextBlink > 80f)
-                {
-                    this.moveX = Rand.Value > 0.7f;
-                    this.moveY = Rand.Value > 0.85f;
-                    this.halfAnimX = Rand.Value > 0.3f;
-                    this.halfAnimY = Rand.Value > 0.3f;
-                    this.flippedX = Rand.Range(-1f, 1f);
-                    this.flippedY = Rand.Range(-1f, 1f);
-                }
-                else
-                {
-                    this.moveX = this.moveY = false;
-                }
-
-                this.lastBlinkended = tickManagerTicksGame;
-
+                // Make them smile.
                 if (this.naturalMouth)
                 {
                     this.mood = this.pawn.needs != null ? this.pawn.needs.mood.CurInstantLevel : 0.5f;
 
-                    if (this.mood > 0.85f) this.mouthGraphic = FacialGraphics.MouthGraphic01;
-                    else if (this.mood > 0.7f) this.mouthGraphic = FacialGraphics.MouthGraphic02;
-                    else if (this.mood > 0.55f) this.mouthGraphic = FacialGraphics.MouthGraphic03;
-                    else if (this.mood > 0.4f) this.mouthGraphic = FacialGraphics.MouthGraphic04;
-                    else if (this.mood > 0.25f) this.mouthGraphic = FacialGraphics.MouthGraphic05;
-                    else this.mouthGraphic = FacialGraphics.MouthGraphic06;
+                    if (this.mood > 0.85f) this.MouthGraphic = FacialGraphics.MouthGraphic01;
+                    else if (this.mood > 0.7f) this.MouthGraphic = FacialGraphics.MouthGraphic02;
+                    else if (this.mood > 0.55f) this.MouthGraphic = FacialGraphics.MouthGraphic03;
+                    else if (this.mood > 0.4f) this.MouthGraphic = FacialGraphics.MouthGraphic04;
+                    else if (this.mood > 0.25f) this.MouthGraphic = FacialGraphics.MouthGraphic05;
+                    else this.MouthGraphic = FacialGraphics.MouthGraphic06;
 
                 }
             }
+        }
+
+        private void SetNextBlink(int tickManagerTicksGame)
+        {
+            // Eye blinking controller
+            float ticksTillNextBlink = Rand.Range(60f, 240f);
+            float blinkDuration = Rand.Range(5f, 20f);
+
+            // Log.Message(
+            // "FS Blinker: " + this.pawn + " - ticksTillNextBlinkORG: " + ticksTillNextBlink.ToString("N0")
+            // + " - blinkDurationORG: " + blinkDuration.ToString("N0"));
+            float dynamic = this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
+            float factor = Mathf.Lerp(0.125f, 1f, dynamic);
+
+            float dynamic2 = this.pawn.needs.rest.CurLevel;
+            float factor2 = Mathf.Lerp(0.125f, 1f, dynamic2);
+
+            ticksTillNextBlink *= factor * factor2;
+            blinkDuration /= factor * factor * factor2 * 2;
+
+            // Log.Message(
+            // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - Rest: "
+            // + dynamic2.ToStringPercent() + " - factorR: " + factor2.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
+            // + " - blinkDuration: " + blinkDuration.ToString("N0"));
+            this.nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
+            this.nextBlinkEnd = (int)(this.nextBlink + blinkDuration);
+
+            if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
+            {
+                this.asleep = true;
+                return;
+            }
+
+            this.asleep = false;
+
+            // this.jitterLeft = 1f;
+            // this.jitterRight = 1f;
+
+            // blinkRate = Mathf.Lerp(2f, 0.25f, this.pawn.needs.rest.CurLevel);
+
+            // range *= (int)blinkRate;
+            // blinkDuration /= (int)this.blinkRate;
+            if (Rand.Value > 0.9f)
+            {
+                // early "nerous" blinking. I guss positive values have no effect ...
+                this.jitterLeft = (int)Rand.Range(-10f, 90f);
+                this.jitterRight = (int)Rand.Range(-10f, 90f);
+            }
+            else
+            {
+                this.jitterLeft = 0;
+                this.jitterRight = 0;
+            }
+
+            // only animate eye movement if animation lasts at least 2.5 seconds
+            if (ticksTillNextBlink > 80f)
+            {
+                this.moveX = Rand.Value > 0.7f;
+                this.moveY = Rand.Value > 0.85f;
+                this.halfAnimX = Rand.Value > 0.3f;
+                this.halfAnimY = Rand.Value > 0.3f;
+                this.flippedX = Rand.Range(-1f, 1f);
+                this.flippedY = Rand.Range(-1f, 1f);
+            }
+            else
+            {
+                this.moveX = this.moveY = false;
+            }
+
+            this.lastBlinkended = tickManagerTicksGame;
         }
 
         public override void PostExposeData()

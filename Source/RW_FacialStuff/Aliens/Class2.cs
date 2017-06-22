@@ -1,10 +1,14 @@
-﻿using Harmony;
-using RimWorld;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
+using Harmony;
+
+using RimWorld;
+
 using UnityEngine;
+
 using Verse;
 
 namespace AlienRace
@@ -44,9 +48,9 @@ namespace AlienRace
         public BodyPartDef tailBodyPart;
         public bool UseSkinColorForTail = true;
 
-        static MethodInfo meshInfo = AccessTools.Method(AccessTools.TypeByName("MeshMakerPlanes"), "NewPlaneMesh", new Type[] { typeof(Vector2), typeof(bool), typeof(bool), typeof(bool) });
+        static MethodInfo meshInfo = AccessTools.Method(AccessTools.TypeByName("MeshMakerPlanes"), "NewPlaneMesh", new[] { typeof(Vector2), typeof(bool), typeof(bool), typeof(bool) });
 
-        public string RandomAlienHead(string userpath, Gender gender) => userpath + (userpath == GraphicPaths.vanillaHeadPath ? gender.ToString() + "/" : "") + (this.UseGenderedHeads ? gender.ToString() + "_" : "") + this.aliencrowntypes[Rand.Range(0, this.aliencrowntypes.Count)];
+        public string RandomAlienHead(string userpath, Gender gender) => userpath + (userpath == GraphicPaths.vanillaHeadPath ? gender.ToString() + "/" : string.Empty) + (this.UseGenderedHeads ? gender.ToString() + "_" : string.Empty) + this.aliencrowntypes[Rand.Range(0, this.aliencrowntypes.Count)];
 
         public static Graphic GetNakedGraphic(BodyType bodyType, Shader shader, Color skinColor, Color skinColorSecond, string userpath) => GraphicDatabase.Get<Graphic_Multi>(userpath + "Naked_" + bodyType.ToString(), shader, Vector2.one, skinColor, skinColorSecond);
 
@@ -55,19 +59,19 @@ namespace AlienRace
             AlienComp alienComp = alien.TryGetComp<AlienComp>();
             if (alienComp.skinColor == Color.clear)
             {
-                alienComp.skinColor = (this.alienskincolorgen != null ? this.alienskincolorgen.NewRandomizedColor() : PawnSkinColors.GetSkinColor(alien.story.melanin));
-                alienComp.skinColorSecond = (this.alienskinsecondcolorgen != null ? this.alienskinsecondcolorgen.NewRandomizedColor() : alienComp.skinColor);
+                alienComp.skinColor = this.alienskincolorgen != null ? this.alienskincolorgen.NewRandomizedColor() : PawnSkinColors.GetSkinColor(alien.story.melanin);
+                alienComp.skinColorSecond = this.alienskinsecondcolorgen != null ? this.alienskinsecondcolorgen.NewRandomizedColor() : alienComp.skinColor;
             }
+
             return first ? alienComp.skinColor : alienComp.skinColorSecond;
         }
 
         public AlienPartGenerator() => LongEventHandler.QueueLongEvent(() =>
             {
-
                 {
                     if (!meshPools.Keys.Any(v => v.Equals(this.CustomDrawSize)))
                     {
-                        meshPools.Add(this.CustomDrawSize, new GraphicMeshSet[]
+                        meshPools.Add(this.CustomDrawSize, new[]
                                                                {
                                                                    new GraphicMeshSet(1.5f * this.CustomDrawSize.x, 1.5f * this.CustomDrawSize.y), // bodySet
                                                                    new GraphicMeshSet(1.5f * this.CustomDrawSize.x, 1.5f * this.CustomDrawSize.y), // headSet
@@ -88,7 +92,7 @@ namespace AlienRace
                 {
                     if (!meshPools.Keys.Any(v => v.Equals(this.CustomPortraitDrawSize)))
                     {
-                        meshPools.Add(this.CustomPortraitDrawSize, new GraphicMeshSet[]
+                        meshPools.Add(this.CustomPortraitDrawSize, new[]
                                                                        {
                                                                            new GraphicMeshSet(1.5f * this.CustomPortraitDrawSize.x, 1.5f * this.CustomPortraitDrawSize.y), // bodySet
                                                                            new GraphicMeshSet(1.5f * this.CustomPortraitDrawSize.x, 1.5f * this.CustomPortraitDrawSize.y), // headSet

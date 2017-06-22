@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Verse;
-using Verse.AI;
-
-namespace FaceStyling
+﻿namespace FacialStuff.FaceStyling_Bench
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Verse;
+    using Verse.AI;
+
     class FaceStyler : Building
     {
 
@@ -22,7 +23,6 @@ namespace FaceStyling
         public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn myPawn)
         {
             List<FloatMenuOption> list = new List<FloatMenuOption>();
-
             {
                 if (!myPawn.CanReserve(this))
                 {
@@ -33,6 +33,7 @@ namespace FaceStyling
                     item
                 };
                 }
+
                 if (!myPawn.CanReach(this, PathEndMode.Touch, Danger.Some))
                 {
                     FloatMenuOption item2 = new FloatMenuOption("CannotUseNoPath".Translate(), null);
@@ -46,9 +47,10 @@ namespace FaceStyling
                 Action action2 = delegate
                 {
                     // IntVec3 InteractionSquare = (this.Position + new IntVec3(0, 0, 1)).RotatedBy(this.Rotation);
-                    Job FaceStyleChanger = new Job(DefDatabase<JobDef>.GetNamed("FaceStyleChanger"), this, InteractionCell);
-                    if (!myPawn.jobs.TryTakeOrderedJob(FaceStyleChanger))//This is used to force go job, it will work even when drafted
+                    Job FaceStyleChanger = new Job(DefDatabase<JobDef>.GetNamed("FaceStyleChanger"), this, this.InteractionCell);
+                    if (!myPawn.jobs.TryTakeOrderedJob(FaceStyleChanger))
                     {
+                        // This is used to force go job, it will work even when drafted
                         myPawn.jobs.jobQueue.EnqueueFirst(FaceStyleChanger);
                         myPawn.jobs.StopAll();
                     }
@@ -58,6 +60,7 @@ namespace FaceStyling
 
                 list.Add(new FloatMenuOption("FSStylizeFace".Translate(), action2));
             }
+
             return list;
         }
 

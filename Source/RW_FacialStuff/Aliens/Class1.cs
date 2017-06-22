@@ -1,6 +1,8 @@
-﻿using RimWorld;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+
+using RimWorld;
+
 using Verse;
 
 namespace AlienRace
@@ -79,7 +81,7 @@ namespace AlienRace
         public string skeleton = "Things/Pawn/Humanlike/HumanoidDessicated";
         public string skull = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
         public string stump = "Things/Pawn/Humanlike/Heads/None_Average_Stump";
-        public string tail = "";
+        public string tail = string.Empty;
     }
 
     public sealed class HairSettings

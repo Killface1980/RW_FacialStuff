@@ -25,7 +25,7 @@ namespace FacialStuff.Detouring
 
             // if (!PawnApparelStatCaches.ContainsKey(pawn))
             // {
-            //     PawnApparelStatCaches.Add(pawn, new StatCache(pawn));
+            // PawnApparelStatCaches.Add(pawn, new StatCache(pawn));
             // }
             // return PawnApparelStatCaches[pawn];
         }
@@ -35,22 +35,19 @@ namespace FacialStuff.Detouring
     [HarmonyPatch(typeof(PawnGraphicSet), "ResolveAllGraphics")]
     static class ResolveAllGraphics_Patch
     {
-   //   [HarmonyPrefix]
-   //   [HarmonyAfter(new string[] { "rimworld.erdelf.alien_race.main" })]
-   //   public static void ResolveAllGraphics_Prefix(PawnGraphicSet __instance)
-   //   {
-   //       Pawn pawn = __instance.pawn;
-   //
-   //       CompFace faceComp = pawn.TryGetComp<CompFace>();
-   //  //     ThingDef_AlienRace alienProps = pawn.def as ThingDef_AlienRace;
-   //
-   //       if (faceComp != null)// || alienProps != null)
-   //       {
-   //           HaircutPawn hairPawn = SaveableCache.GetHairCache(pawn);
-   //           hairPawn.HairCutGraphic = CutHairDb.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
-   //       }
-   //   }
-
+   // [HarmonyPrefix]
+   // [HarmonyAfter(new string[] { "rimworld.erdelf.alien_race.main" })]
+   // public static void ResolveAllGraphics_Prefix(PawnGraphicSet __instance)
+   // {
+   // Pawn pawn = __instance.pawn;
+   // CompFace faceComp = pawn.TryGetComp<CompFace>();
+   // //     ThingDef_AlienRace alienProps = pawn.def as ThingDef_AlienRace;
+   // if (faceComp != null)// || alienProps != null)
+   // {
+   // HaircutPawn hairPawn = SaveableCache.GetHairCache(pawn);
+   // hairPawn.HairCutGraphic = CutHairDb.Get<Graphic_Multi>(pawn.story.hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, pawn.story.hairColor);
+   // }
+   // }
         [HarmonyPostfix]
         public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)
         {

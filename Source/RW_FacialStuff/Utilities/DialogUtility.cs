@@ -20,6 +20,7 @@ namespace FacialStuff.Utilities
                     backAct();
                 }
             }
+
             if (nextAct != null)
             {
                 Rect rect2 = new Rect(innerRect.width - BottomButSize.x, top, BottomButSize.x, BottomButSize.y);
@@ -29,6 +30,7 @@ namespace FacialStuff.Utilities
                 }
             }
         }
+
         public static bool DoMiddleButton(Rect innerRect, string label)
         {
             float top = innerRect.height - 38f;

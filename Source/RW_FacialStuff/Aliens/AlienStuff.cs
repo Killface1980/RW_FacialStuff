@@ -17,6 +17,7 @@ namespace FacialStuff.Aliens
                 {
                     AlienStuff.instance = new AlienStuff();
                 }
+
                 return AlienStuff.instance;
             }
         }

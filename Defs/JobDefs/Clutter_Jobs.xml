@@ -3,7 +3,7 @@
 
   <JobDef>
     <defName>FaceStyleChanger</defName>
-    <driverClass>FaceStyling.Job_FaceStyling</driverClass>
+    <driverClass>FacialStuff.FaceStyling_Bench.Job_FaceStyling</driverClass>
     <reportString>Going to the styling station.</reportString>
   </JobDef>
 

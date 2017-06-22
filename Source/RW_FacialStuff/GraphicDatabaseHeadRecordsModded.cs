@@ -36,21 +36,21 @@ namespace FacialStuff
 
             public HeadGraphicRecordVanillaCustom(string graphicPath)
             {
-                graphicPathVanillaCustom = graphicPath;
+                this.graphicPathVanillaCustom = graphicPath;
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
 
                 string[] array = fileNameWithoutExtension?.Split('_');
 
                 try
                 {
-                    crownType = (CrownType)((byte)ParseHelper.FromString(array[array.Length - 2], typeof(CrownType)));
+                    this.crownType = (CrownType)((byte)ParseHelper.FromString(array[array.Length - 2], typeof(CrownType)));
                     this.gender = (Gender)((byte)ParseHelper.FromString(array[array.Length - 3], typeof(Gender)));
                 }
                 catch (Exception ex)
                 {
                     Log.Error("Parse error with head graphic at " + graphicPath + ": " + ex.Message);
-                    crownType = CrownType.Undefined;
-                    gender = Gender.None;
+                    this.crownType = CrownType.Undefined;
+                    this.gender = Gender.None;
                 }
 
 
@@ -65,8 +65,9 @@ namespace FacialStuff
                         return this.graphics[i].Value;
                     }
                 }
-                Graphic_Multi graphicMultiHead = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(graphicPathVanillaCustom, ShaderDatabase.CutoutSkin, Vector2.one, color);
-                graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphicMultiHead));
+
+                Graphic_Multi graphicMultiHead = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(this.graphicPathVanillaCustom, ShaderDatabase.CutoutSkin, Vector2.one, color);
+                this.graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphicMultiHead));
                 return graphicMultiHead;
             }
         }
@@ -91,19 +92,19 @@ namespace FacialStuff
             public HeadGraphicRecordModded(Pawn pawn)
             {
                 this.pawn = pawn;
-                graphicPath = pawn.story.HeadGraphicPath;
-                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
+                this.graphicPath = pawn.story.HeadGraphicPath;
+                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(this.graphicPath);
                 string[] array = fileNameWithoutExtension?.Split('_');
                 try
                 {
-                    crownType = (CrownType)((byte)ParseHelper.FromString(array[array.Length - 2], typeof(CrownType)));
-                    gender = (Gender)((byte)ParseHelper.FromString(array[array.Length - 3], typeof(Gender)));
+                    this.crownType = (CrownType)((byte)ParseHelper.FromString(array[array.Length - 2], typeof(CrownType)));
+                    this.gender = (Gender)((byte)ParseHelper.FromString(array[array.Length - 3], typeof(Gender)));
                 }
                 catch (Exception ex)
                 {
-                    Log.Error("Parse error with head graphic at " + graphicPath + ": " + ex.Message);
-                    crownType = CrownType.Undefined;
-                    gender = Gender.None;
+                    Log.Error("Parse error with head graphic at " + this.graphicPath + ": " + ex.Message);
+                    this.crownType = CrownType.Undefined;
+                    this.gender = Gender.None;
                 }
 
 
@@ -113,13 +114,13 @@ namespace FacialStuff
             {
                 for (int i = 0; i < this.graphics.Count; i++)
                 {
-                    if (color.IndistinguishableFrom(graphics[i].Key))
+                    if (color.IndistinguishableFrom(this.graphics[i].Key))
                     {
-                        return graphics[i].Value;
+                        return this.graphics[i].Value;
                     }
                 }
 
-                Graphic_Multi graphic_Multi_Head = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(graphicPathModded, ShaderDatabase.Cutout, Vector2.one, color);
+                Graphic_Multi graphic_Multi_Head = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(this.graphicPathModded, ShaderDatabase.Cutout, Vector2.one, color);
                 this.graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphic_Multi_Head));
 
                 return graphic_Multi_Head;
@@ -135,11 +136,11 @@ namespace FacialStuff
             {
                 if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story.HeadGraphicPath.Remove(0, 22))
                 {
-                    //        Log.Message("Getting vanilla " + pawn.story.HeadGraphicPath.Remove(0, 22) + ".");
-
+                    // Log.Message("Getting vanilla " + pawn.story.HeadGraphicPath.Remove(0, 22) + ".");
                     return headGraphicRecordVanillaCustom.GetGraphic(color);
                 }
             }
+
             Log.Message(
                 "Tried to get pawn head at path " + pawn.story.HeadGraphicPath.Remove(0, 22)
                 + " that was not found. Defaulting...");
@@ -149,11 +150,12 @@ namespace FacialStuff
 
         public static void BuildDatabaseIfNecessary()
         {
-            //  headsVanillaCustom.Clear();
+            // headsVanillaCustom.Clear();
             if (headsVanillaCustom.Count > 0 && skull != null && stump != null)
             {
                 return;
             }
+
             headsVanillaCustom.Clear();
 
             headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Average_Normal"));
@@ -181,9 +183,7 @@ namespace FacialStuff
         }
 
 
-        //   private static List<Texture2D> _textures;
-
-
+        // private static List<Texture2D> _textures;
     }
 }
 

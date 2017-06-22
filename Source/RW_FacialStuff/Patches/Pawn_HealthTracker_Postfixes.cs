@@ -12,10 +12,10 @@ namespace FacialStuff.Detouring
 
     public static class Pawn_HealthTracker_Patches
     {
-        [HarmonyPatch(typeof(Pawn_HealthTracker), "AddHediff", new Type[] { typeof(Hediff), typeof(BodyPartRecord), typeof(DamageInfo) })]
+        [HarmonyPatch(typeof(Pawn_HealthTracker), "AddHediff", new[] { typeof(Hediff), typeof(BodyPartRecord), typeof(DamageInfo) })]
         public static class AddHediff_Postfix
         {
-            private static Type PawnRendererType = null;
+            private static Type PawnRendererType;
             private static FieldInfo PawnFieldInfo;
 
             private static void GetReflections()
@@ -57,7 +57,7 @@ namespace FacialStuff.Detouring
         [HarmonyPatch(typeof(Pawn_HealthTracker), "RestorePart")]
         public static class RestorePart_Postfix
         {
-            private static Type PawnRendererType = null;
+            private static Type PawnRendererType;
             private static FieldInfo PawnFieldInfo;
 
             private static void GetReflections()
@@ -81,8 +81,8 @@ namespace FacialStuff.Detouring
 
                 if (part.def == BodyPartDefOf.LeftEye || part.def == BodyPartDefOf.RightEye || part.def == BodyPartDefOf.Head)
                 {
-                    //     AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
-                    //     if (addedPartProps != null && addedPartProps.isBionic)
+                    // AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
+                    // if (addedPartProps != null && addedPartProps.isBionic)
                     pawn.Drawer.renderer.graphics.ResolveAllGraphics();
 
                 }

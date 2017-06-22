@@ -25,7 +25,7 @@ namespace FacialStuff.Initializer
         public override bool Inject()
         {
 
-            #region Automatic hookup
+            
             // Loop through all detour attributes and try to hook them up
             foreach (Type targetType in Assembly.GetTypes())
             {
@@ -52,10 +52,8 @@ namespace FacialStuff.Initializer
                     }
                 }
             }
-            #endregion
 
-#if develop
-            // Inject Dev Face tab
+#if develop // Inject Dev Face tab
             foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading.Where(td => td.category == ThingCategory.Pawn && td.race.Humanlike))
             {
                 if (def.inspectorTabs == null || def.inspectorTabs.Count == 0)

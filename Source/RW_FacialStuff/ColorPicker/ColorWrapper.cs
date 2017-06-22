@@ -11,7 +11,7 @@ namespace FaceStyling
 
         public ColorWrapper( Color color )
         {
-            Color = color;
+            this.Color = color;
         }
     }
 }

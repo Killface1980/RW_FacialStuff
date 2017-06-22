@@ -1,18 +1,18 @@
-﻿using System.Globalization;
-using UnityEngine;
-
-namespace FaceStyling.ColorPicker
+﻿namespace FacialStuff.ColorPicker
 {
+    using System.Globalization;
+
+    using UnityEngine;
+
     public class ColorHelper
     {
-
         /// <summary>
         /// From http://answers.unity3d.com/questions/701956/hsv-to-rgb-without-editorguiutilityhsvtorgb.html
         /// </summary>
         /// <param name="H"></param>
         /// <param name="S"></param>
         /// <param name="V"></param>
-        /// <param name="a"></param>
+        /// <param name="A"></param>
         /// <returns></returns>
         public static Color HSVtoRGB(float H, float S, float V, float A = 1f)
         {
@@ -124,6 +124,7 @@ namespace FaceStyling.ColorPicker
                 {
                     num = colorone;
                 }
+
                 float num2 = V - num;
                 if (num2 != 0f)
                 {
@@ -135,6 +136,7 @@ namespace FaceStyling.ColorPicker
                     S = 0f;
                     H = offset + (colorone - colortwo);
                 }
+
                 H /= 6f;
                 if (H < 0f)
                 {
@@ -197,9 +199,11 @@ namespace FaceStyling.ColorPicker
                 {
                     return false;
                 }
+
                 col = clr;
                 return true;
             }
+
             return false;
         }
 

@@ -26,11 +26,12 @@ namespace FacialStuff
                     return BaseContent.BadMat;
             }
         }
+
         public string GraphicPath
         {
             get
             {
-                return path;
+                return this.path;
             }
         }
 
@@ -38,7 +39,7 @@ namespace FacialStuff
         {
             get
             {
-                return mats[3];
+                return this.mats[3];
             }
         }
 
@@ -46,7 +47,7 @@ namespace FacialStuff
         {
             get
             {
-                return mats[2];
+                return this.mats[2];
             }
         }
 
@@ -54,7 +55,7 @@ namespace FacialStuff
         {
             get
             {
-                return mats[1];
+                return this.mats[1];
             }
         }
 
@@ -62,7 +63,7 @@ namespace FacialStuff
         {
             get
             {
-                return mats[0];
+                return this.mats[0];
             }
         }
 
@@ -70,17 +71,17 @@ namespace FacialStuff
         {
             get
             {
-                return this.MatRight == MatBack;
+                return this.MatRight == this.MatBack;
             }
         }
 
         public override void Init(GraphicRequest req)
         {
-            data = req.graphicData;
+            this.data = req.graphicData;
             this.path = req.path;
-            color = req.color;
-            colorTwo = req.colorTwo;
-            drawSize = req.drawSize;
+            this.color = req.color;
+            this.colorTwo = req.colorTwo;
+            this.drawSize = req.drawSize;
             Texture2D[] array = new Texture2D[4];
 
             string eyeType = null;
@@ -109,14 +110,17 @@ namespace FacialStuff
             }
             else
             {
-                Log.Message("Facial Stuff: Failed to get front texture at " + req.path + "_front" + " - Graphic_Multi_NaturalEyes");
+                Log.Message(
+                    "Facial Stuff: Failed to get front texture at " + req.path + "_front"
+                    + " - Graphic_Multi_NaturalEyes");
                 return;
-             //   array[2] = MaskTextures.BlankTexture();
+
+                // array[2] = MaskTextures.BlankTexture();
             }
 
             string sidePath = "Eyes/Eye_" + gender + "_" + crowntype + "_" + eyeType + "_side";
 
-            if (ContentFinder<Texture2D>.Get(sidePath, true))
+            if (ContentFinder<Texture2D>.Get(sidePath))
             {
                 if (side.Equals("Right"))
                 {
@@ -159,32 +163,34 @@ namespace FacialStuff
                 {
                     Log.Message("Array = null at: " + i);
                 }
+
                 MaterialRequest req2 = default(MaterialRequest);
                 req2.mainTex = array[i];
                 req2.shader = req.shader;
-                req2.color = color;
-                req2.colorTwo = colorTwo;
-                //        req2.maskTex = array2[i];
-                mats[i] = MaterialPool.MatFrom(req2);
+                req2.color = this.color;
+                req2.colorTwo = this.colorTwo;
+
+                // req2.maskTex = array2[i];
+                this.mats[i] = MaterialPool.MatFrom(req2);
             }
         }
 
         public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
         {
-            return GraphicDatabase.Get<Graphic_Multi>(path, newShader, drawSize, newColor, newColorTwo, data);
+            return GraphicDatabase.Get<Graphic_Multi>(this.path, newShader, this.drawSize, newColor, newColorTwo, this.data);
         }
 
         public override string ToString()
         {
-            return string.Concat("Multi(initPath=", path, ", color=", color, ", colorTwo=", colorTwo, ")");
+            return string.Concat("Multi(initPath=", this.path, ", color=", this.color, ", colorTwo=", this.colorTwo, ")");
         }
 
         public override int GetHashCode()
         {
             int seed = 0;
-            seed = Gen.HashCombine(seed, path);
-            seed = Gen.HashCombineStruct(seed, color);
-            return Gen.HashCombineStruct(seed, colorTwo);
+            seed = Gen.HashCombine(seed, this.path);
+            seed = Gen.HashCombineStruct(seed, this.color);
+            return Gen.HashCombineStruct(seed, this.colorTwo);
         }
     }
 

@@ -20,7 +20,7 @@
   <ThingDef ParentName="FSWorkTableBuildingBase">
     <DefName>FSStylist</DefName>
     <label>Face styling bench</label>
-    <ThingClass>FaceStyling.Facestyler</ThingClass>
+    <ThingClass>FacialStuff.FaceStyling_Bench.Facestyler</ThingClass>
     <Description>Place where faces go wild!</Description>
     <graphicData>
 	<shaderType>CutoutComplex</shaderType>

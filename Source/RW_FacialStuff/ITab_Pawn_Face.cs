@@ -36,7 +36,7 @@ namespace FacialStuff
         public override void OnOpen()
         {
 
-            //      this.thoughtScrollPosition = default(Vector2);
+            // this.thoughtScrollPosition = default(Vector2);
         }
 
         private int rotationInt = 2;
@@ -54,12 +54,13 @@ namespace FacialStuff
 
             if (faceComp.ignoreRenderer)
             {
-                rotationInt = GUILayout.SelectionGrid(rotationInt, psiToolbarStrings, 4);
+                this.rotationInt = GUILayout.SelectionGrid(this.rotationInt, this.psiToolbarStrings, 4);
             }
             else
             {
-                rotationInt = faceComp.pawn.Rotation.AsInt;
+                this.rotationInt = faceComp.pawn.Rotation.AsInt;
             }
+
             faceComp.rotationInt = this.rotationInt;
 
             var male = faceComp.pawn.gender == Gender.Male;
@@ -99,6 +100,7 @@ namespace FacialStuff
                                 -0.4f,
                                 0.4f);
                         }
+
                         break;
                     case HeadType.Pointy:
                         if (male)
@@ -131,22 +133,19 @@ namespace FacialStuff
                                 -0.4f,
                                 0.4f);
                         }
+
                         break;
                     case HeadType.Wide:
                         if (male)
                         {
                             GUILayout.Label(
                                 "MaleAverageWideOffsetX: " + FS_Settings.MaleAverageWideOffsetX.ToString("N5"));
-                            FS_Settings.MaleAverageWideOffsetX = GUILayout.HorizontalSlider(
-                                FS_Settings.MaleAverageWideOffsetX,
-                                -0.4f,
-                                0.4f);
+                            FS_Settings.MaleAverageWideOffsetX =
+                                GUILayout.HorizontalSlider(FS_Settings.MaleAverageWideOffsetX, -0.4f, 0.4f);
                             GUILayout.Label(
                                 "MaleAverageWideOffsetY: " + FS_Settings.MaleAverageWideOffsetY.ToString("N5"));
-                            FS_Settings.MaleAverageWideOffsetY = GUILayout.HorizontalSlider(
-                                FS_Settings.MaleAverageWideOffsetY,
-                                -0.4f,
-                                0.4f);
+                            FS_Settings.MaleAverageWideOffsetY =
+                                GUILayout.HorizontalSlider(FS_Settings.MaleAverageWideOffsetY, -0.4f, 0.4f);
                         }
                         else
                         {
@@ -163,10 +162,10 @@ namespace FacialStuff
                                 -0.4f,
                                 0.4f);
                         }
+
                         break;
                 }
             }
-
             else
             {
                 switch (faceComp.headType)
@@ -202,6 +201,7 @@ namespace FacialStuff
                                 -0.4f,
                                 0.4f);
                         }
+
                         break;
                     case HeadType.Pointy:
                         if (male)
@@ -234,22 +234,19 @@ namespace FacialStuff
                                 -0.4f,
                                 0.4f);
                         }
+
                         break;
                     case HeadType.Wide:
                         if (male)
                         {
                             GUILayout.Label(
                                 "MaleNarrowWideOffsetX: " + FS_Settings.MaleNarrowWideOffsetX.ToString("N5"));
-                            FS_Settings.MaleNarrowWideOffsetX = GUILayout.HorizontalSlider(
-                                FS_Settings.MaleNarrowWideOffsetX,
-                                -0.4f,
-                                0.4f);
+                            FS_Settings.MaleNarrowWideOffsetX =
+                                GUILayout.HorizontalSlider(FS_Settings.MaleNarrowWideOffsetX, -0.4f, 0.4f);
                             GUILayout.Label(
                                 "MaleNarrowWideOffsetY: " + FS_Settings.MaleNarrowWideOffsetY.ToString("N5"));
-                            FS_Settings.MaleNarrowWideOffsetY = GUILayout.HorizontalSlider(
-                                FS_Settings.MaleNarrowWideOffsetY,
-                                -0.4f,
-                                0.4f);
+                            FS_Settings.MaleNarrowWideOffsetY =
+                                GUILayout.HorizontalSlider(FS_Settings.MaleNarrowWideOffsetY, -0.4f, 0.4f);
                         }
                         else
                         {
@@ -266,28 +263,28 @@ namespace FacialStuff
                                 -0.4f,
                                 0.4f);
                         }
+
                         break;
                 }
-
             }
 
-            //  else
-            //  {
-            //      GUILayout.Label("FemaleOffsetY");
-            //      FS_Settings.FemaleOffsetY =
-            //          GUILayout.HorizontalSlider(FS_Settings.FemaleOffsetY, -0.4f, 0.4f);
-            //  }
-
+            // else
+            // {
+            // GUILayout.Label("FemaleOffsetY");
+            // FS_Settings.FemaleOffsetY =
+            // GUILayout.HorizontalSlider(FS_Settings.FemaleOffsetY, -0.4f, 0.4f);
+            // }
             GUILayout.EndVertical();
             GUILayout.EndArea();
-            //      NeedsCardUtility.DoNeedsMoodAndThoughts(new Rect(0f, 0f, this.size.x, this.size.y), base.SelPawn, ref this.thoughtScrollPosition);
+
+            // NeedsCardUtility.DoNeedsMoodAndThoughts(new Rect(0f, 0f, this.size.x, this.size.y), base.SelPawn, ref this.thoughtScrollPosition);
         }
 
         protected override void UpdateSize()
         {
-            size = new Vector2(350f, 350f);
+            this.size = new Vector2(350f, 350f);
 
-            //      this.size = NeedsCardUtility.GetSize(base.SelPawn);
+            // this.size = NeedsCardUtility.GetSize(base.SelPawn);
         }
     }
 }

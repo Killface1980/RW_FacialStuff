@@ -22,13 +22,13 @@ namespace FacialStuff
 
             if (!source.Any())
             {
-                source = from beard in DefDatabase<BeardDef>.AllDefs
-                         select beard;
+                source = from beard in DefDatabase<BeardDef>.AllDefs select beard;
             }
 
             BeardDef chosenBeard;
             float rand = Rand.Value;
-            //            if (UnityEngine.Random.Range(30, 50) > pawn.ageTracker.AgeBiologicalYearsFloat)
+
+            // if (UnityEngine.Random.Range(30, 50) > pawn.ageTracker.AgeBiologicalYearsFloat)
             if (pawn.ageTracker.AgeBiologicalYearsFloat < 19 || rand < 0.1f || pawn.gender == Gender.Female)
             {
                 chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
@@ -37,7 +37,6 @@ namespace FacialStuff
             {
                 chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Stubble");
             }
-
             else
             {
                 chosenBeard = source.RandomElementByWeight(beard => BeardChoiceLikelihoodFor(beard, pawn));
@@ -48,8 +47,7 @@ namespace FacialStuff
 
         public static EyeDef RandomEyeDefFor(Pawn pawn, FactionDef factionType)
         {
-
-            //       Log.Message("Selecting eyes.");
+            // Log.Message("Selecting eyes.");
             IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
                                          where eye.raceList.Contains(pawn.def)
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
@@ -57,16 +55,15 @@ namespace FacialStuff
 
             if (!source.Any())
             {
-     //       Log.Message("No eyes found, defaulting.");
-                source = from eye in DefDatabase<EyeDef>.AllDefs
-                         select eye;
+                // Log.Message("No eyes found, defaulting.");
+                source = from eye in DefDatabase<EyeDef>.AllDefs select eye;
             }
 
             EyeDef chosenEyes;
 
             chosenEyes = source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
-    //        Log.Message("Chosen eyes: " + chosenEyes);
 
+            // Log.Message("Chosen eyes: " + chosenEyes);
             return chosenEyes;
         }
 
@@ -83,6 +80,7 @@ namespace FacialStuff
                 source = from brow in DefDatabase<BrowDef>.AllDefs
                          select brow;
             }
+
             BrowDef chosenBrows;
 
             switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")))
@@ -93,24 +91,28 @@ namespace FacialStuff
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
+
                 case 1:
                     {
                         IEnumerable<BrowDef> filtered = source.Where(x => x.label.Contains("Aware"));
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
+
                 case 0:
                     {
                         IEnumerable<BrowDef> filtered = source.Where(x => !x.label.Contains("Depressed") && !x.label.Contains("Tired"));
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
+
                 case -1:
                     {
                         IEnumerable<BrowDef> filtered = source.Where(x => x.label.Contains("Tired"));
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
+
                 case -2:
                     {
                         IEnumerable<BrowDef> filtered = source.Where(x => x.label.Contains("Depressed"));
@@ -129,7 +131,7 @@ namespace FacialStuff
         {
             IEnumerable<WrinkleDef> source = from wrinkle in DefDatabase<WrinkleDef>.AllDefs
                                              where wrinkle.raceList.Contains(pawn.def)
-                                             where wrinkle.hairGender.ToString() == pawn.gender.ToString()  //.SharesElementWith(factionType.hairTags)
+                                             where wrinkle.hairGender.ToString() == pawn.gender.ToString()  // .SharesElementWith(factionType.hairTags)
                                              select wrinkle;
 
             WrinkleDef chosenWrinkles = source.FirstOrDefault();
@@ -137,7 +139,7 @@ namespace FacialStuff
             return chosenWrinkles;
         }
 
-        [Detour(typeof(PawnHairChooser), bindingFlags = (BindingFlags.Static | BindingFlags.Public))]
+        [Detour(typeof(PawnHairChooser), bindingFlags = BindingFlags.Static | BindingFlags.Public)]
         public static HairDef RandomHairDefFor(Pawn pawn, FactionDef factionType)
         {
 
@@ -154,6 +156,7 @@ namespace FacialStuff
             {
                 return 100f;
             }
+
             if (pawn.gender == Gender.Male)
             {
                 switch (eye.hairGender)
@@ -198,6 +201,7 @@ namespace FacialStuff
             {
                 return 100f;
             }
+
             if (pawn.gender == Gender.Male)
             {
                 switch (brow.hairGender)
@@ -265,6 +269,7 @@ namespace FacialStuff
                         return 1f;
                 }
             }
+
             if (pawn.gender == Gender.Female)
             {
                 return 0f;
@@ -305,6 +310,7 @@ namespace FacialStuff
                         return 0f;
                 }
             }
+
             if (pawn.gender == Gender.Female)
             {
                 if (hair.hairTags.Contains("MaleOnly"))
@@ -326,6 +332,7 @@ namespace FacialStuff
                         return 80f;
                 }
             }
+
             Log.Error(string.Concat("Unknown hair likelihood for ", hair, " with ", pawn));
             return 0f;
         }
