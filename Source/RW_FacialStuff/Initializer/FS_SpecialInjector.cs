@@ -5,11 +5,7 @@ using System.Reflection;
 using RW_FacialStuff.NoCCL;
 using Verse;
 
-#if NoCCL
 
-#else
-using CommunityCoreLibrary;
-#endif
 
 namespace RW_FacialStuff.Initializer
 {

@@ -13,10 +13,7 @@ namespace RW_FacialStuff
 
     public class CompFace : ThingComp
     {
-        public override void Initialize(CompProperties props)
-        {
-            this.props = props;
-        }
+
 
         private Pawn pawn;
 
