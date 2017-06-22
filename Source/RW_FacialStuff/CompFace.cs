@@ -622,17 +622,17 @@
                     switch (this.headType)
                     {
                         case HeadType.Normal:
-                            fullHeadType = MeshPoolFs.FullHead.MaleAverageNormal;
+                            fullHeadType = FullHead.MaleAverageNormal;
                             this.headTypeX = FS_Settings.MaleAverageNormalOffsetX;
                             this.headTypeY = FS_Settings.MaleAverageNormalOffsetY;
                             break;
                         case HeadType.Pointy:
-                            fullHeadType = MeshPoolFs.FullHead.MaleAveragePointy;
+                            fullHeadType = FullHead.MaleAveragePointy;
                             this.headTypeX = FS_Settings.MaleAveragePointyOffsetX;
                             this.headTypeY = FS_Settings.MaleAveragePointyOffsetY;
                             break;
                         case HeadType.Wide:
-                            fullHeadType = MeshPoolFs.FullHead.MaleAverageWide;
+                            fullHeadType = FullHead.MaleAverageWide;
                             this.headTypeX = FS_Settings.MaleAverageWideOffsetX;
                             this.headTypeY = FS_Settings.MaleAverageWideOffsetY;
                             break;
@@ -644,17 +644,17 @@
                     switch (this.headType)
                     {
                         case HeadType.Normal:
-                            fullHeadType = MeshPoolFs.FullHead.MaleNarrowNormal;
+                            fullHeadType = FullHead.MaleNarrowNormal;
                             this.headTypeX = FS_Settings.MaleNarrowNormalOffsetX;
                             this.headTypeY = FS_Settings.MaleNarrowNormalOffsetY;
                             break;
                         case HeadType.Pointy:
-                            fullHeadType = MeshPoolFs.FullHead.MaleNarrowPointy;
+                            fullHeadType = FullHead.MaleNarrowPointy;
                             this.headTypeX = FS_Settings.MaleNarrowPointyOffsetX;
                             this.headTypeY = FS_Settings.MaleNarrowPointyOffsetY;
                             break;
                         case HeadType.Wide:
-                            fullHeadType = MeshPoolFs.FullHead.MaleNarrowWide;
+                            fullHeadType = FullHead.MaleNarrowWide;
                             this.headTypeX = FS_Settings.MaleNarrowWideOffsetX;
                             this.headTypeY = FS_Settings.MaleNarrowWideOffsetY;
                             break;
@@ -669,17 +669,17 @@
                     switch (this.headType)
                     {
                         case HeadType.Normal:
-                            fullHeadType = MeshPoolFs.FullHead.FemaleAverageNormal;
+                            fullHeadType = FullHead.FemaleAverageNormal;
                             this.headTypeX = FS_Settings.FemaleAverageNormalOffsetX;
                             this.headTypeY = FS_Settings.FemaleAverageNormalOffsetY;
                             break;
                         case HeadType.Pointy:
-                            fullHeadType = MeshPoolFs.FullHead.FemaleAveragePointy;
+                            fullHeadType = FullHead.FemaleAveragePointy;
                             this.headTypeX = FS_Settings.FemaleAveragePointyOffsetX;
                             this.headTypeY = FS_Settings.FemaleAveragePointyOffsetY;
                             break;
                         case HeadType.Wide:
-                            fullHeadType = MeshPoolFs.FullHead.FemaleAverageWide;
+                            fullHeadType = FullHead.FemaleAverageWide;
                             this.headTypeX = FS_Settings.FemaleAverageWideOffsetX;
                             this.headTypeY = FS_Settings.FemaleAverageWideOffsetY;
                             break;
@@ -691,17 +691,17 @@
                     switch (this.headType)
                     {
                         case HeadType.Normal:
-                            fullHeadType = MeshPoolFs.FullHead.FemaleNarrowNormal;
+                            fullHeadType = FullHead.FemaleNarrowNormal;
                             this.headTypeX = FS_Settings.FemaleNarrowNormalOffsetX;
                             this.headTypeY = FS_Settings.FemaleNarrowNormalOffsetY;
                             break;
                         case HeadType.Pointy:
-                            fullHeadType = MeshPoolFs.FullHead.FemaleNarrowPointy;
+                            fullHeadType = FullHead.FemaleNarrowPointy;
                             this.headTypeX = FS_Settings.FemaleNarrowPointyOffsetX;
                             this.headTypeY = FS_Settings.FemaleNarrowPointyOffsetY;
                             break;
                         case HeadType.Wide:
-                            fullHeadType = MeshPoolFs.FullHead.FemaleNarrowWide;
+                            fullHeadType = FullHead.FemaleNarrowWide;
                             this.headTypeX = FS_Settings.FemaleNarrowWideOffsetX;
                             this.headTypeY = FS_Settings.FemaleNarrowWideOffsetY;
                             break;
@@ -710,7 +710,7 @@
             }
             else
             {
-                fullHeadType = MeshPoolFs.FullHead.MaleAverageNormal;
+                fullHeadType = FullHead.MaleAverageNormal;
             }
 
             return true;
@@ -718,18 +718,8 @@
 
         public string EyeTexPath(string eyeDefPath, enums.Side side, bool closed = false)
         {
-            string path = "Eyes/Eye_" + this.pawn.gender + "_" + this.crownType + "_";
-
-            if (closed)
-            {
-                path += "Closed";
-            }
-            else
-            {
-                path += eyeDefPath;
-            }
-
-            path += "_" + side;
+            if (closed) eyeDefPath = "Closed";
+            string path = "Eyes/Eye_" + eyeDefPath + "_" + this.pawn.gender + "_" + side;
 
             return path;
 
@@ -924,7 +914,7 @@
 
         private string mouthTexPath;
 
-        private MeshPoolFs.FullHead fullHeadType;
+        public FullHead fullHeadType;
 
         public override void PostDraw()
         {

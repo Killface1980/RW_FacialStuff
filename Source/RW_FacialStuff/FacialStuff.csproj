@@ -77,8 +77,9 @@
     <None Include="Aliens\Providers.cs" />
     <None Include="Aliens\CustomPawn.cs" />
     <None Include="BACKUP.cs" />
+    <Compile Include="enums\FullHead.cs" />
     <Compile Include="ITab_Pawn_Face.cs" />
-    <Compile Include="HeadType.cs" />
+    <Compile Include="enums\HeadType.cs" />
     <Compile Include="Defs\MouthDefOf.cs" />
     <Compile Include="FacialGraphics.cs" />
     <Compile Include="HaircutPawn.cs" />

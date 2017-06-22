@@ -86,7 +86,6 @@ namespace FacialStuff
 
             string eyeType = null;
             string side = null;
-            string crowntype = null;
             string gender = null;
 
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(req.path);
@@ -94,17 +93,16 @@ namespace FacialStuff
             string[] array2 = fileNameWithoutExtension.Split('_');
             try
             {
-                eyeType = array2[3];
-                side = array2[4];
-                crowntype = array2[2];
-                gender = array2[1];
+                eyeType = array2[1];
+                gender = array2[2];
+                side = array2[3];
             }
             catch (Exception ex)
             {
                 Log.Error("Parse error with head graphic at " + req.path + ": " + ex.Message);
             }
 
-            if (ContentFinder<Texture2D>.Get(req.path + "_front", false))
+            if (ContentFinder<Texture2D>.Get(req.path + "_front"))
             {
                 array[2] = ContentFinder<Texture2D>.Get(req.path + "_front");
             }
@@ -118,7 +116,7 @@ namespace FacialStuff
                 // array[2] = MaskTextures.BlankTexture();
             }
 
-            string sidePath = "Eyes/Eye_" + gender + "_" + crowntype + "_" + eyeType + "_side";
+            string sidePath = "Eyes/Eye_" + eyeType + "_" + gender  + "_side";
 
             if (ContentFinder<Texture2D>.Get(sidePath))
             {
@@ -143,7 +141,7 @@ namespace FacialStuff
             }
             else
             {
-                Log.Message("Facial Stuff: No texture found at " + sidePath + " - Graphic_Multi_AddedHeadParts");
+                Log.Message("Facial Stuff: No texture found at " + sidePath + " - Graphic_Multi_NaturalEyes");
                 array[3] = MaskTextures.BlankTexture();
             }
 

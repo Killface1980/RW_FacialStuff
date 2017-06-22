@@ -43,8 +43,27 @@ namespace FacialStuff
 
 
 
+        private const float YOffset_PrimaryEquipmentUnder = 0f;
+
+        private const float YOffset_Body = 0.0046875f;
+
+        private const float YOffsetInterval_Clothes = 0.0046875f;
+
+        private const float YOffset_Wounds = 0.01875f;
+
+        private const float YOffset_Shell = 0.0234375f;
+
+        private const float YOffset_Head = 0.0281250011f;
+
+        private const float YOffset_OnHead = 0.0328125022f;
+
+
+        private const float YOffset_Status = 0.0421875f;
+
+        private const float YOffsetOnFace = 0.00001f;
+
         // Verse.PawnRenderer
-  
+
 
         // private static readonly float[] HorMouthOffsetSex = new float[] { 0f, FS_Settings.MaleOffsetX, FS_Settings.FemaleOffsetX };
         // private static readonly float[] VerMouthOffsetSex = new float[] { 0f, FS_Settings.MaleOffsetY, FS_Settings.FemaleOffsetY };
@@ -106,7 +125,7 @@ namespace FacialStuff
                 if (renderBody)
                 {
                     Vector3 loc = rootLoc;
-                    loc.y += 0.0046875f;
+                    loc.y += YOffset_Body;
 
                     mesh = MeshPool.humanlikeBodySet.MeshAt(bodyFacing);
 
@@ -115,13 +134,13 @@ namespace FacialStuff
                     {
                         Material damagedMat = __instance.graphics.flasher.GetDamagedMat(list[i]);
                         GenDraw.DrawMeshNowOrLater(mesh, loc, quat, damagedMat, portrait);
-                        loc.y += 0.0046875f;
+                        loc.y += YOffsetInterval_Clothes;
                     }
 
                     if (bodyDrawType == RotDrawMode.Fresh)
                     {
                         Vector3 drawLoc = rootLoc;
-                        drawLoc.y += 0.01875f;
+                        drawLoc.y += YOffset_Wounds;
 
                         PawnWoundDrawer woundDrawer = (PawnWoundDrawer)WoundOverlayFieldInfo?.GetValue(__instance);
                         woundDrawer?.RenderOverBody(drawLoc, mesh, quat, portrait);
@@ -132,13 +151,13 @@ namespace FacialStuff
                 Vector3 a = rootLoc;
                 if (bodyFacing != Rot4.North)
                 {
-                    a.y += 0.0281250011f;
-                    vector.y += 0.0234375f;
+                    a.y += YOffset_Head;
+                    vector.y += YOffset_Shell;
                 }
                 else
                 {
-                    a.y += 0.0234375f;
-                    vector.y += 0.0281250011f;
+                    a.y += YOffset_Shell;
+                    vector.y += YOffset_Head;
                 }
 
                 if (__instance.graphics.headGraphic != null)
@@ -151,6 +170,9 @@ namespace FacialStuff
                     {
                         // locFacialY += faceComp.eyemove;
                         Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
+
+                        Mesh mesh2eyes = MeshPoolFs.HumanEyeSet[(int)faceComp.fullHeadType].MeshAt(headFacing);
+
                         GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, material, portrait);
                         locFacialY.y += 0.001f;
                         if (!headStump)
@@ -163,7 +185,7 @@ namespace FacialStuff
                             if (wrinkleMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, wrinkleMat, portrait);
-                                locFacialY.y += 0.00001f;
+                                locFacialY.y += YOffsetOnFace;
                             }
 
                             if (mouthMat != null)
@@ -173,13 +195,13 @@ namespace FacialStuff
 
                                 Vector3 drawLoc = locFacialY + quat * faceComp.BaseMouthOffsetAt(bodyFacing);
                                 GenDraw.DrawMeshNowOrLater(meshMouth, drawLoc, quat, mouthMat, portrait);
-                                locFacialY.y += 0.00001f;
+                                locFacialY.y += YOffsetOnFace;
                             }
 
                             if (beardMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, beardMat, portrait);
-                                locFacialY.y += 0.00001f;
+                                locFacialY.y += YOffsetOnFace;
                             }
 
                             if (pawn.Dead)
@@ -188,7 +210,7 @@ namespace FacialStuff
                                 if (deadEyeMat != null)
                                 {
                                     GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, deadEyeMat, portrait);
-                                    locFacialY.y += 0.00001f;
+                                    locFacialY.y += YOffsetOnFace;
                                 }
                             }
                             else
@@ -197,31 +219,31 @@ namespace FacialStuff
                                 if (leftEyeMat != null)
                                 {
                                     GenDraw.DrawMeshNowOrLater(
-                                        mesh2,
+                                        mesh2eyes,
                                         locFacialY + faceComp.EyemoveL,
                                         quat,
                                         leftEyeMat,
                                         portrait);
-                                    locFacialY.y += 0.00001f;
+                                    locFacialY.y += YOffsetOnFace;
                                 }
 
                                 Material rightEyeMat = faceComp.RightEyeMatAt(headFacing, portrait);
                                 if (rightEyeMat != null)
                                 {
                                     GenDraw.DrawMeshNowOrLater(
-                                        mesh2,
+                                        mesh2eyes,
                                         locFacialY + faceComp.EyemoveR,
                                         quat,
                                         rightEyeMat,
                                         portrait);
-                                    locFacialY.y += 0.00001f;
+                                    locFacialY.y += YOffsetOnFace;
                                 }
                             }
 
                             if (browMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, browMat, portrait);
-                                locFacialY.y += 0.00001f;
+                                locFacialY.y += YOffsetOnFace;
                             }
 
                             if (faceComp.HasLeftEyePatch)
@@ -230,7 +252,7 @@ namespace FacialStuff
                                 if (leftBionicMat != null)
                                 {
                                     GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, leftBionicMat, portrait);
-                                    locFacialY.y += 0.00001f;
+                                    locFacialY.y += YOffsetOnFace;
                                 }
                             }
 
@@ -241,14 +263,14 @@ namespace FacialStuff
                                 if (rightBionicMat != null)
                                 {
                                     GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, rightBionicMat, portrait);
-                                    locFacialY.y += 0.00001f;
+                                    locFacialY.y += YOffsetOnFace;
                                 }
                             }
                         }
                     }
 
                     Vector3 loc2 = rootLoc + b;
-                    loc2.y += 0.0328125022f;
+                    loc2.y += YOffset_OnHead;
                     loc2.y = Mathf.Max(loc2.y, locFacialY.y);
 
                     // loc2 += faceComp.eyemove;
@@ -258,37 +280,38 @@ namespace FacialStuff
                     {
                         Mesh mesh3 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
                         List<ApparelGraphicRecord> apparelGraphics = __instance.graphics.apparelGraphics;
-                        apparelGraphics.Where(apr => apr.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
-                            .ToList().ForEach(
-                                apr =>
+                        for (int j = 0; j < apparelGraphics.Count; j++)
+                        {
+                            if (apparelGraphics[j].sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
+                            {
+                                bool flagBody = true;
+                                if (FS_Settings.HideHatInBed)
+                                {
+                                    flagBody = renderBody;
+                                }
+
+                                if (flagBody)
+                                {
+                                    hatVisible = true;
+                                    if (FS_Settings.MergeHair)
                                     {
-                                        bool flagBody = true;
-                                        if (FS_Settings.HideHatInBed)
+                                        HaircutPawn hairPawn = SaveableCache.GetHairCache(pawn);
+                                        Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
+                                        if (hairCutMat != null)
                                         {
-                                            flagBody = renderBody;
+                                            GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, hairCutMat, portrait);
+                                            loc2.y += 0.0001f;
+
+                                            // loc2.y += 0.0328125022f;
                                         }
+                                    }
 
-                                        if (flagBody)
-                                        {
-                                            hatVisible = true;
-                                            if (FS_Settings.MergeHair)
-                                            {
-                                                HaircutPawn hairPawn = SaveableCache.GetHairCache(pawn);
-                                                Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
-                                                if (hairCutMat != null)
-                                                {
-                                                    GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, hairCutMat, portrait);
-                                                    loc2.y += 0.0001f;
-
-                                                    // loc2.y += 0.0328125022f;
-                                                }
-                                            }
-
-                                            Material material2 = apr.graphic.MatAt(bodyFacing);
-                                            material2 = __instance.graphics.flasher.GetDamagedMat(material2);
-                                            GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, material2, portrait);
-                                        }
-                                    });
+                                    Material material2 = apparelGraphics[j].graphic.MatAt(bodyFacing);
+                                    material2 = __instance.graphics.flasher.GetDamagedMat(material2);
+                                    GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, material2, portrait);
+                                }
+                            }
+                        }
                     }
 
                     if (!hatVisible && bodyDrawType != RotDrawMode.Dessicated && !headStump)
@@ -301,14 +324,16 @@ namespace FacialStuff
 
                 if (renderBody)
                 {
-                    __instance.graphics.apparelGraphics
-                        .Where(apr => apr.sourceApparel.def.apparel.LastLayer == ApparelLayer.Shell).ToList().ForEach(
-                            apr =>
-                                {
-                                    Material material3 = apr.graphic.MatAt(bodyFacing);
-                                    material3 = __instance.graphics.flasher.GetDamagedMat(material3);
-                                    GenDraw.DrawMeshNowOrLater(mesh, vector, quat, material3, portrait);
-                                });
+                    for (int k = 0; k < __instance.graphics.apparelGraphics.Count; k++)
+                    {
+                        ApparelGraphicRecord apparelGraphicRecord = __instance.graphics.apparelGraphics[k];
+                        if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer == ApparelLayer.Shell)
+                        {
+                            Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing, null);
+                            material3 = __instance.graphics.flasher.GetDamagedMat(material3);
+                            GenDraw.DrawMeshNowOrLater(mesh, vector, quat, material3, portrait);
+                        }
+                    }
                 }
             }
 
@@ -556,7 +581,7 @@ namespace FacialStuff
                 }
 
                 Vector3 bodyLoc = rootLoc;
-                bodyLoc.y += 0.0421875f;
+                bodyLoc.y += YOffset_Status;
 
                 ((PawnHeadOverlays)PawnHeadOverlaysFieldInfo?.GetValue(__instance))?.RenderStatusOverlays(
                     bodyLoc,

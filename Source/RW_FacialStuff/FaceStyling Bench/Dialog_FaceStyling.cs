@@ -12,6 +12,8 @@
 
     using RimWorld;
 
+    using RW_FacialStuff;
+
     using UnityEngine;
 
     using Verse;
@@ -978,11 +980,23 @@
             string nameStringShort = pawn.NameStringShort;
             Vector2 vector = Text.CalcSize(nameStringShort);
             Rect pawnHeadRect = new Rect(0f, -10f, _previewSize, _previewSize);
-            Rect pawnMouthRect = new Rect(pawnHeadRect);
-            pawnMouthRect.width /= 2;
-            pawnMouthRect.height /= 2;
-            pawnMouthRect.x += pawnHeadRect.width / 4;
-            pawnMouthRect.y += pawnHeadRect.height / 2;
+            Rect eyeRect = new Rect(pawnHeadRect);
+            eyeRect.width /= 2;
+            eyeRect.height /= 2;
+            eyeRect.x += pawnHeadRect.width / 4;
+            eyeRect.y += pawnHeadRect.height / 4;
+
+            if (faceComp.crownType == CrownType.Narrow)
+            {
+                var dist = eyeRect.width*0.1f;
+                eyeRect.width *= 0.8f;
+                eyeRect.x += dist;
+            }
+
+            Rect pawnMouthRect = new Rect(eyeRect);
+            pawnMouthRect.y += 20f;
+
+            //   pawnMouthRect.y += 10f;
 
             Rect pawnRect = new Rect(0f, 0f, _previewSize, _previewSize);
             Rect labelRect = new Rect(0f, pawnRect.yMax - vector.y, vector.x, vector.y);
@@ -993,77 +1007,51 @@
             labelRect = labelRect.CenteredOnXIn(pawnRect);
             for (int i = 0; i < DisplayGraphics.Length; i++)
             {
-                if (pawn.gender == Gender.Male)
+                if (DisplayGraphics[i]?.graphic?.MatFront == null)
                 {
-                    if (faceComp != null && (!this.NewBeard.drawMouth && faceComp.naturalMouth || !faceComp.drawMouth))
-                    {
-                        // layer 1-5 = body
-                        if (i <= (int)enums.GraphicSlotGroup.Shell)
-                        {
-                            if (DisplayGraphics[i].graphic != null)
-                            {
-                                DisplayGraphics[i].Draw(pawnRect);
-                            }
-                        }
-                        else
-                        {
-                            if (i != (int)enums.GraphicSlotGroup.Mouth)
-                            {
-                                if (DisplayGraphics[i].graphic != null)
-                                {
-                                    DisplayGraphics[i].Draw(pawnHeadRect);
-                                }
-                            }
-                        }
-                    }
-                    else if (DisplayGraphics[i].graphic != null)
-                    {
-                        if (i <= (int)enums.GraphicSlotGroup.Shell)
-                        {
-                            DisplayGraphics[i].Draw(pawnRect);
-                        }
-                        else if (i == (int)enums.GraphicSlotGroup.Mouth)
-                        {
-                            DisplayGraphics[i].Draw(pawnMouthRect);
-
-                        }
-                        else
-                        {
-                            DisplayGraphics[i].Draw(pawnHeadRect);
-                        }
-                    }
+                    continue;
                 }
-                else
+
                 {
+                    // layer 1-5 = body
                     if (i <= (int)enums.GraphicSlotGroup.Shell)
                     {
-                        if (DisplayGraphics[i].graphic != null)
                         {
                             DisplayGraphics[i].Draw(pawnRect);
                         }
                     }
-                    else if (i != (int)enums.GraphicSlotGroup.Beard)
+                    else
                     {
-                        if (!faceComp.drawMouth)
+                        switch (i)
                         {
-                            if (i != (int)enums.GraphicSlotGroup.Mouth)
-                            {
-                                if (DisplayGraphics[i].graphic != null)
+                            case (int)enums.GraphicSlotGroup.Beard:
                                 {
-                                    DisplayGraphics[i].Draw(pawnHeadRect);
+                                    if (pawn.gender == Gender.Male)
+                                    {
+                                        DisplayGraphics[i].Draw(pawnHeadRect);
+                                    }
+                                    break;
                                 }
-                            }
-                        }
-                        else if (i == (int)enums.GraphicSlotGroup.Mouth)
-                        {
-                            DisplayGraphics[i].Draw(pawnMouthRect);
-                        }
-                        else if (DisplayGraphics[i].graphic != null)
-                        {
-                            DisplayGraphics[i].Draw(pawnHeadRect);
+                            case (int)enums.GraphicSlotGroup.LeftEye:
+                            case (int)enums.GraphicSlotGroup.RightEye:
+                                {
+                                    DisplayGraphics[i].Draw(eyeRect);
+                                }
+                                break;
+                            case (int)enums.GraphicSlotGroup.Mouth:
+                                if (faceComp != null && faceComp.drawMouth)
+                                {
+                                    if ((this.NewBeard.drawMouth) || faceComp.naturalMouth)
+                                        DisplayGraphics[i].Draw(pawnMouthRect);
+                                }
+                                break;
+                            default:
+                                DisplayGraphics[i].Draw(pawnHeadRect);
+                                break;
                         }
                     }
                 }
+
             }
 
             // for (int i = 0; i < 8; i++)
