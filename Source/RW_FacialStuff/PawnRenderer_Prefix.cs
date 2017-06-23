@@ -168,10 +168,13 @@ namespace FacialStuff
                     Vector3 locFacialY = a + b;
                     if (material != null)
                     {
-                        // locFacialY += faceComp.eyemove;
                         Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
 
                         Mesh mesh2eyes = MeshPoolFs.HumanEyeSet[(int)faceComp.fullHeadType].MeshAt(headFacing);
+
+                        // Experiments with head motion
+                        // locFacialY += faceComp.eyemove;
+                        //// quat *= Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
 
                         GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, material, portrait);
                         locFacialY.y += 0.001f;
@@ -220,7 +223,7 @@ namespace FacialStuff
                                 {
                                     GenDraw.DrawMeshNowOrLater(
                                         mesh2eyes,
-                                        locFacialY + faceComp.EyemoveL,
+                                        locFacialY + faceComp.eyeWiggler.EyemoveL,
                                         quat,
                                         leftEyeMat,
                                         portrait);
@@ -232,7 +235,7 @@ namespace FacialStuff
                                 {
                                     GenDraw.DrawMeshNowOrLater(
                                         mesh2eyes,
-                                        locFacialY + faceComp.EyemoveR,
+                                        locFacialY + faceComp.eyeWiggler.EyemoveR,
                                         quat,
                                         rightEyeMat,
                                         portrait);
@@ -594,6 +597,5 @@ namespace FacialStuff
             return false;
         }
     }
-
 
 }

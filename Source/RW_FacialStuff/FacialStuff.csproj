@@ -68,6 +68,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Wiggler\PawnHeadWiggler.cs" />
+    <Compile Include="Wiggler\PawnEyeWiggler.cs" />
     <None Include="Aliens\Class1.cs" />
     <None Include="Aliens\Class2.cs" />
     <None Include="Aliens\ProviderAlienRaces.cs" />
