@@ -245,7 +245,7 @@ namespace FacialStuff
 
                             if (browMat != null)
                             {
-                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, browMat, portrait);
+                                GenDraw.DrawMeshNowOrLater(mesh2eyes, locFacialY, quat, browMat, portrait);
                                 locFacialY.y += YOffsetOnFace;
                             }
 

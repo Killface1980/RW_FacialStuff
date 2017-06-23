@@ -97,4 +97,17 @@
     </hairTags>
   </FacialStuff.Defs.BrowDef>
   
+  <FacialStuff.Defs.BrowDef>
+    <defName>Brow_Female_Mono</defName>
+    <label>Brow_Female_Mono</label>
+    <hairGender>Female</hairGender>
+    <raceList>
+      <li>Human</li>
+    </raceList>
+    <texPath>Mono</texPath>
+    <hairTags>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </FacialStuff.Defs.BrowDef>
 </DefPackage-BrowDef>

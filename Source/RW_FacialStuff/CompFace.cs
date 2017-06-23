@@ -39,7 +39,6 @@
         // todo: make dead eyes
         public EyeDef EyeDef;
 
-
         public FullHead fullHeadType;
 
         public Color HairColorOrg;
@@ -273,7 +272,7 @@
 
         public string BrowTexPath(BrowDef browDef)
         {
-            return "Brows/" + this.pawn.gender + "/Brow_" + this.pawn.gender + "_" + this.crownType + "_"
+            return "Brows/" + this.pawn.gender + "/Brow_" + this.pawn.gender + "_"
                    + browDef.texPath;
         }
 
@@ -671,7 +670,7 @@
             }
 
             // todo: head wiggler? move eyes to eyewiggler
-       // this.headWiggler.WigglerTick();
+            // this.headWiggler.WigglerTick();
             this.eyeWiggler.WigglerTick();
 
         }
@@ -738,34 +737,23 @@
             }
 
             this.eyeWiggler = new PawnEyeWiggler(this.pawn);
-       //     this.headWiggler = new PawnHeadWiggler(this.pawn);
+            //// this.headWiggler = new PawnHeadWiggler(this.pawn);
 
             this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
 
-            if (this.pawn.story.HeadGraphicPath.Contains("Normal"))
-            {
-                this.headType = HeadType.Normal;
-            }
+            this.SetHeadAndCrownType();
 
-            if (this.pawn.story.HeadGraphicPath.Contains("Pointy"))
-            {
-                this.headType = HeadType.Pointy;
-            }
+            this.ResetBoolsAndPaths();
 
-            if (this.pawn.story.HeadGraphicPath.Contains("Wide"))
-            {
-                this.headType = HeadType.Wide;
-            }
+            this.CheckForAddedOrMissingParts();
 
-            if (this.pawn.story.crownType == CrownType.Narrow)
-            {
-                this.crownType = CrownType.Narrow;
-            }
-            else
-            {
-                this.crownType = CrownType.Average;
-            }
+            this.SetHeadOffsets();
 
+            return true;
+        }
+
+        private void ResetBoolsAndPaths()
+        {
             this.HasLeftEyePatch = false;
             this.HasRightEyePatch = false;
             this.LeftIsSolid = false;
@@ -792,74 +780,38 @@
 #else
             this.naturalMouth = true;
 #endif
-
-            // "Eyes/Eye_" + this.pawn.gender + this.crownType + "_" + this.EyeDef.texPath + "_Right";
-
-            // = "Eyes/Eye_" + this.pawn.gender + this.crownType + "_Closed_Right";
-
-            // this.leftEyeTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownType + "_" + this.EyeDef.texPath
-            // + "_Left";
-            // this.leftEyeClosedTexPath = "Eyes/Eye_" + this.pawn.gender + this.crownType + "_Closed_Left";
             this.browTexPath = this.BrowTexPath(this.BrowDef);
+        }
 
-            foreach (Hediff hediff in this.pawn.health.hediffSet.hediffs)
+        private void SetHeadAndCrownType()
+        {
+            if (this.pawn.story.HeadGraphicPath.Contains("Normal"))
             {
-                List<BodyPartRecord> body = this.pawn.RaceProps.body.AllParts;
-
-                BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
-                BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
-                BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
-                AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
-
-                if (addedPartProps != null)
-                {
-                    // BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
-
-                    // if (hediff.Part == jaw)
-                    // {
-                    // this.ExtraJaw_texPath = "AddedParts/" + hediff.def.defName +  this.crownType;
-                    // }
-                    // BodyPartRecord leftEye = this.pawn.RaceProps.body.GetPartAtIndex(27);
-                    // BodyPartRecord rightEye = this.pawn.RaceProps.body.GetPartAtIndex(28);
-                    if (hediff.Part == leftEye)
-                    {
-                        this.leftEyePatchTexPath = "AddedParts/" + hediff.def.defName + "_Left" + "_" + this.crownType;
-                        this.LeftIsSolid = addedPartProps.isSolid;
-                    }
-
-                    if (hediff.Part == rightEye)
-                    {
-                        this.rightEyePatchTexPath = "AddedParts/" + hediff.def.defName + "_Right" + "_"
-                                                    + this.crownType;
-                        this.RightIsSolid = addedPartProps.isSolid;
-                    }
-
-                    if (hediff.Part == jaw)
-                    {
-                        this.mouthTexPath = "Mouth/Mouth_" + hediff.def.defName;
-                        this.naturalMouth = false;
-                    }
-                }
-
-                if (hediff.def == HediffDefOf.MissingBodyPart)
-                {
-                    if (hediff.Part == leftEye)
-                    {
-                        this.leftEyeTexPath =
-                            this.EyeTexPath(
-                                "Missing",
-                                enums.Side.Left); // "Eyes/" + "ShotOut" + "_Left" + this.crownType;
-                        this.eyeWiggler.leftCanBlink = false;
-                    }
-
-                    if (hediff.Part == rightEye)
-                    {
-                        this.rightEyeTexPath = this.EyeTexPath("Missing", enums.Side.Right);
-                        this.eyeWiggler.rightCanBlink = false;
-                    }
-                }
+                this.headType = HeadType.Normal;
             }
 
+            if (this.pawn.story.HeadGraphicPath.Contains("Pointy"))
+            {
+                this.headType = HeadType.Pointy;
+            }
+
+            if (this.pawn.story.HeadGraphicPath.Contains("Wide"))
+            {
+                this.headType = HeadType.Wide;
+            }
+
+            if (this.pawn.story.crownType == CrownType.Narrow)
+            {
+                this.crownType = CrownType.Narrow;
+            }
+            else
+            {
+                this.crownType = CrownType.Average;
+            }
+        }
+
+        private void SetHeadOffsets()
+        {
             if (this.pawn.gender == Gender.Male)
             {
                 if (this.crownType == CrownType.Average)
@@ -956,12 +908,55 @@
             {
                 this.fullHeadType = FullHead.MaleAverageNormal;
             }
-
-
-
-            return true;
         }
 
-        // todo: check textures
+        private void CheckForAddedOrMissingParts()
+        {
+            List<BodyPartRecord> body = this.pawn.RaceProps.body.AllParts;
+            foreach (Hediff hediff in this.pawn.health.hediffSet.hediffs)
+            {
+                BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
+                BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
+                BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
+                AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
+
+                if (addedPartProps != null)
+                {
+                    if (hediff.Part == leftEye)
+                    {
+                        this.leftEyePatchTexPath = "AddedParts/" + hediff.def.defName + "_Left" + "_" + this.crownType;
+                        this.LeftIsSolid = addedPartProps.isSolid;
+                    }
+
+                    if (hediff.Part == rightEye)
+                    {
+                        this.rightEyePatchTexPath = "AddedParts/" + hediff.def.defName + "_Right" + "_" + this.crownType;
+                        this.RightIsSolid = addedPartProps.isSolid;
+                    }
+
+                    if (hediff.Part == jaw)
+                    {
+                        this.mouthTexPath = "Mouth/Mouth_" + hediff.def.defName;
+                        this.naturalMouth = false;
+                    }
+                }
+
+                if (hediff.def == HediffDefOf.MissingBodyPart)
+                {
+                    if (hediff.Part == leftEye)
+                    {
+                        this.leftEyeTexPath =
+                            this.EyeTexPath("Missing", enums.Side.Left); // "Eyes/" + "ShotOut" + "_Left" + this.crownType;
+                        this.eyeWiggler.leftCanBlink = false;
+                    }
+
+                    if (hediff.Part == rightEye)
+                    {
+                        this.rightEyeTexPath = this.EyeTexPath("Missing", enums.Side.Right);
+                        this.eyeWiggler.rightCanBlink = false;
+                    }
+                }
+            }
+        }
     }
 }

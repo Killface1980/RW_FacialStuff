@@ -988,13 +988,13 @@
 
             if (faceComp.crownType == CrownType.Narrow)
             {
-                var dist = eyeRect.width*0.1f;
+                var dist = eyeRect.width * 0.1f;
                 eyeRect.width *= 0.8f;
                 eyeRect.x += dist;
             }
 
             Rect pawnMouthRect = new Rect(eyeRect);
-            pawnMouthRect.y += 20f;
+            pawnMouthRect.y += 30f;
 
             //   pawnMouthRect.y += 10f;
 
@@ -1034,6 +1034,7 @@
                                 }
                             case (int)enums.GraphicSlotGroup.LeftEye:
                             case (int)enums.GraphicSlotGroup.RightEye:
+                            case (int)enums.GraphicSlotGroup.Brows:
                                 {
                                     DisplayGraphics[i].Draw(eyeRect);
                                 }
