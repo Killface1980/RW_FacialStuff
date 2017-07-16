@@ -129,6 +129,8 @@
 
         private Graphic wrinkleGraphic;
 
+        private Graphic rottingWrinkleGraphic;
+
         // Verse.PawnGraphicSet
         public GraphicMeshSet MouthMeshSet => MeshPoolFs.HumanlikeMouthSet[(int)this.fullHeadType];
 
@@ -334,11 +336,11 @@
             this.sameBeardColor = Rand.Value > 0.2f;
             if (this.sameBeardColor)
             {
-                this.BeardColor = _PawnHairColors.DarkerBeardColor(this.pawn.story.hairColor);
+                this.BeardColor = PawnHairColors_PostFix.DarkerBeardColor(this.pawn.story.hairColor);
             }
             else
             {
-                this.BeardColor = _PawnHairColors.RandomBeardColor();
+                this.BeardColor = PawnHairColors_PostFix.RandomBeardColor();
             }
 
             this.optimized = true;
@@ -372,11 +374,11 @@
 
                 if (this.sameBeardColor)
                 {
-                    this.BeardColor = _PawnHairColors.DarkerBeardColor(this.pawn.story.hairColor);
+                    this.BeardColor = PawnHairColors_PostFix.DarkerBeardColor(this.pawn.story.hairColor);
                 }
                 else
                 {
-                    this.BeardColor = _PawnHairColors.RandomBeardColor();
+                    this.BeardColor = PawnHairColors_PostFix.RandomBeardColor();
                 }
             }
 
@@ -391,6 +393,12 @@
                 ShaderDatabase.Transparent,
                 Vector2.one,
                 wrinkleColor);
+
+            this.rottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                this.WrinkleDef.texPath + "_" + this.crownType + "_" + this.headType,
+                ShaderDatabase.Transparent,
+                Vector2.one,
+                wrinkleColor * Headhelper.skinRottingMultiplyColor);
 
             string path = this.BeardDef.texPath + "_" + this.crownType + "_" + this.headType;
 
@@ -618,12 +626,19 @@
             return material;
         }
 
-        public Material WrinkleMatAt(Rot4 facing)
+        public Material WrinkleMatAt(Rot4 facing, RotDrawMode bodyCondition)
         {
             Material material = null;
             if (this.isOld && FS_Settings.UseWrinkles)
             {
-                material = this.wrinkleGraphic.MatAt(facing);
+                if (bodyCondition == RotDrawMode.Fresh)
+                {
+                    material = this.wrinkleGraphic.MatAt(facing);
+                }
+               else if (bodyCondition == RotDrawMode.Rotting)
+                {
+                    material = this.rottingWrinkleGraphic.MatAt(facing);
+                }
             }
 
             if (material != null)

@@ -70,14 +70,6 @@
   <ItemGroup>
     <Compile Include="Wiggler\PawnHeadWiggler.cs" />
     <Compile Include="Wiggler\PawnEyeWiggler.cs" />
-    <None Include="Aliens\Class1.cs" />
-    <None Include="Aliens\Class2.cs" />
-    <None Include="Aliens\ProviderAlienRaces.cs" />
-    <None Include="Aliens\AlienRace.cs" />
-    <None Include="Aliens\AlienStuff.cs" />
-    <None Include="Aliens\ExtensionsColorGenerator.cs" />
-    <None Include="Aliens\Providers.cs" />
-    <None Include="Aliens\CustomPawn.cs" />
     <None Include="BACKUP.cs" />
     <Compile Include="enums\FullHead.cs" />
     <Compile Include="ITab_Pawn_Face.cs" />
@@ -86,7 +78,6 @@
     <Compile Include="FacialGraphics.cs" />
     <Compile Include="HaircutPawn.cs" />
     <Compile Include="FaceStyling Bench\GraphicSlotGroup.cs" />
-    <Compile Include="Patches\Pawn_HealthTracker_Postfixes.cs" />
     <Compile Include="Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="MeshPoolFs.cs" />
@@ -116,7 +107,7 @@
     <Compile Include="Detours\_PawnHairColors.cs" />
     <Compile Include="Detours\_PawnSkinColors.cs" />
     <Compile Include="PawnFaceChooser.cs" />
-    <Compile Include="Patches\PawnGraphicSet_Postfix.cs" />
+    <Compile Include="PawnGraphicSet_Postfix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

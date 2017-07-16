@@ -183,7 +183,7 @@ namespace FacialStuff
                             Material beardMat = faceComp.BeardMatAt(headFacing);
                             Material browMat = faceComp.BrowMatAt(headFacing);
                             Material mouthMat = faceComp.MouthMatAt(headFacing, bodyDrawType);
-                            Material wrinkleMat = faceComp.WrinkleMatAt(headFacing);
+                            Material wrinkleMat = faceComp.WrinkleMatAt(headFacing, bodyDrawType);
 
                             if (wrinkleMat != null)
                             {

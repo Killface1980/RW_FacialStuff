@@ -409,7 +409,7 @@
                 DisplayGraphics[(int)enums.GraphicSlotGroup.Hair].color = value;
                 if (faceComp != null && faceComp.sameBeardColor)
                 {
-                    DisplayGraphics[(int)enums.GraphicSlotGroup.Beard].color = _PawnHairColors.DarkerBeardColor(value);
+                    DisplayGraphics[(int)enums.GraphicSlotGroup.Beard].color = PawnHairColors_PostFix.DarkerBeardColor(value);
                 }
             }
         }
@@ -583,7 +583,7 @@
 
                             if (faceComp.sameBeardColor)
                             {
-                                faceComp.BeardColor = _PawnHairColors.DarkerBeardColor(pawn.story.hairColor);
+                                faceComp.BeardColor = PawnHairColors_PostFix.DarkerBeardColor(pawn.story.hairColor);
                             }
 
                             faceComp.BeardColor = this.NewBeardColour;
@@ -1141,7 +1141,7 @@
 
                 if (GUI.changed)
                 {
-                    if (faceComp.sameBeardColor) this.NewBeardColour = _PawnHairColors.DarkerBeardColor(this.NewHairColour);
+                    if (faceComp.sameBeardColor) this.NewBeardColour = PawnHairColors_PostFix.DarkerBeardColor(this.NewHairColour);
                 }
             }
 
@@ -1259,9 +1259,9 @@
                 int row = 0;
                 int count = 0;
 
-                foreach (KeyValuePair<string, Color> color in _PawnHairColors.HairColors)
+                foreach (Color color in PawnHairColors_PostFix.HairColors)
                 {
-                    this.DrawHairColorPickerCell(color.Value, set, color.Key);
+                    this.DrawHairColorPickerCell(color, set, color.ToString());
                     set.x += set.width + 10f;
 
                     count++;
@@ -1289,9 +1289,9 @@
                     int row = 0;
                     int count = 0;
 
-                    foreach (KeyValuePair<string, Color> color in _PawnHairColors.HairColors)
+                    foreach (Color color in PawnHairColors_PostFix.HairColors)
                     {
-                        this.DrawBeardColorPickerCell(color.Value, set, color.Key);
+                        this.DrawBeardColorPickerCell(color, set, color.ToString());
                         set.x += set.width + 10f;
 
                         count++;
@@ -1411,7 +1411,7 @@
 
             GUI.color = ColorSwatchBorder;
             GUI.DrawTexture(currentColorRect, BaseContent.WhiteTex);
-            GUI.color = _PawnSkinColors.GetSkinColor(this.NewMelanin);
+            GUI.color = PawnSkinColors.GetSkinColor(this.NewMelanin);
             GUI.DrawTexture(currentColorRect.ContractedBy(1), BaseContent.WhiteTex);
             GUI.color = Color.white;
 

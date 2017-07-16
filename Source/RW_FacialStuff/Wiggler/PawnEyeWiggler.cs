@@ -125,20 +125,19 @@
         {
             // Eye blinking controller
             float ticksTillNextBlink = Rand.Range(60f, 240f);
-            float blinkDuration = Rand.Range(5f, 20f);
+            float blinkDuration = Rand.Range(10f, 40f);
 
             // Log.Message(
             // "FS Blinker: " + this.pawn + " - ticksTillNextBlinkORG: " + ticksTillNextBlink.ToString("N0")
             // + " - blinkDurationORG: " + blinkDuration.ToString("N0"));
-            float dynamic = this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
-            float factor = Mathf.Lerp(0.125f, 1f, dynamic);
-
-            float dynamic2 = this.pawn.needs.rest.CurLevel;
-            float factor2 = Mathf.Lerp(0.125f, 1f, dynamic2);
-
-            ticksTillNextBlink *= factor * factor2;
-            blinkDuration /= factor * factor * factor2 * 2;
-
+//          float dynamic = this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
+//          float factor = Mathf.Lerp(0.125f, 1f, dynamic);
+//
+//          float dynamic2 = this.pawn.needs.rest.CurLevel;
+//          float factor2 = Mathf.Lerp(0.125f, 1f, dynamic2);
+//
+//          ticksTillNextBlink *= factor * factor2;
+//          blinkDuration /= factor * factor * factor2 * 2;
             // Log.Message(
             // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - Rest: "
             // + dynamic2.ToStringPercent() + " - factorR: " + factor2.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
