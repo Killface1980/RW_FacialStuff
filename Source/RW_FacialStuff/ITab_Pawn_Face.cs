@@ -2,6 +2,8 @@
 
 namespace FacialStuff
 {
+    using FacialStuff.Genetics;
+
     using RimWorld;
 
     using RW_FacialStuff;
@@ -22,7 +24,7 @@ namespace FacialStuff
         {
             get
             {
-                var faceComp = this.SelPawn.TryGetComp<CompFace>();
+                CompFace faceComp = this.SelPawn.TryGetComp<CompFace>();
                 return faceComp != null;
             }
         }
@@ -43,14 +45,35 @@ namespace FacialStuff
 
         protected override void FillTab()
         {
-            var faceComp = this.SelPawn.TryGetComp<CompFace>();
+            CompFace faceComp = this.SelPawn.TryGetComp<CompFace>();
 
             Rect rect = new Rect(10f, 10f, 330f, 330f);
-            GUILayout.BeginArea(rect);
+            Rect colRect = new Rect(rect.x, rect.y, rect.width / 3, 25f);
+
+            Widgets.DrawBoxSolid(colRect, this.SelPawn.story.SkinColor);
+            colRect.x += colRect.width;
+            Widgets.DrawBoxSolid(colRect, Class1.gradient_mel1.Evaluate(faceComp.melanin1));
+            colRect.x += colRect.width;
+            Widgets.DrawBoxSolid(colRect, Class1.gradient_mel2.Evaluate(faceComp.melanin2));
+
+            Rect checkbox = new Rect(rect.x, colRect.yMax + 15f, rect.width, 24f);
+
+            Widgets.CheckboxLabeled(checkbox, "Ignore renderer", ref faceComp.ignoreRenderer);
+
+            Rect pawnRect = new Rect(rect.x, checkbox.yMax, rect.width, 24f);
+
+            foreach (Pawn relatedPawn in this.SelPawn.relations.FamilyByBlood)
+            {
+
+                Widgets.Label(pawnRect, relatedPawn.ToString() + " - " + this.SelPawn.GetRelations(relatedPawn).GetEnumerator());
+                pawnRect.y += 24f;
+            }
+
+            Rect rect2 = new Rect(rect.x, pawnRect.yMax + 15f, rect.width, rect.height - checkbox.yMax);
+
+            GUILayout.BeginArea(rect2);
             GUILayout.BeginVertical();
 
-            faceComp.ignoreRenderer = true;
-            faceComp.ignoreRenderer = GUILayout.Toggle(faceComp.ignoreRenderer, "Ignore renderer");
 
             if (faceComp.ignoreRenderer)
             {
@@ -63,7 +86,7 @@ namespace FacialStuff
 
             faceComp.rotationInt = this.rotationInt;
 
-            var male = faceComp.pawn.gender == Gender.Male;
+            bool male = faceComp.pawn.gender == Gender.Male;
 
             if (faceComp.crownType == CrownType.Average)
             {

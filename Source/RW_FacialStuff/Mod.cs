@@ -71,6 +71,12 @@ namespace RW_FacialStuff
             BeginVertical();
             FS_Settings.HideHatInBed = Toggle(FS_Settings.HideHatInBed, "Settings.HideHatInBed".Translate());
             EndVertical();
+            BeginVertical();
+            FS_Settings.ShowExtraParts = Toggle(FS_Settings.ShowExtraParts, "Settings.ShowExtraParts".Translate());
+            EndVertical();
+            BeginVertical();
+            FS_Settings.UseHairDNA = Toggle(FS_Settings.UseHairDNA, "Settings.UseHairDNA".Translate());
+            EndVertical();
 
             // FlexibleSpace();
             // BeginVertical();
@@ -154,6 +160,10 @@ namespace RW_FacialStuff
 
         public static float FemaleNarrowWideOffsetY = 0.191195f;
 
+        public static bool ShowExtraParts = true;
+
+        public static bool UseHairDNA = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -161,41 +171,42 @@ namespace RW_FacialStuff
             Scribe_Values.Look(ref UseMouth, "UseMouth", false, true);
             Scribe_Values.Look(ref MergeHair, "MergeHair", false, true);
             Scribe_Values.Look(ref HideHatInBed, "HideHatInBed", false, true);
+            Scribe_Values.Look(ref ShowExtraParts, "ShowExtraParts", false, true);
+            Scribe_Values.Look(ref UseHairDNA, "UseHairDNA", false, true);
 
 #if develop
 
-
-            Scribe_Values.Look(ref MaleAverageNormalOffsetX, "MaleAverageNormalOffsetX");
-            Scribe_Values.Look(ref MaleAveragePointyOffsetX, "MaleAveragePointyOffsetX");
-            Scribe_Values.Look(ref MaleAverageWideOffsetX, "MaleAverageWideOffsetX");
-
-            Scribe_Values.Look(ref FemaleAverageNormalOffsetX, "FemaleAverageNormalOffsetX");
-            Scribe_Values.Look(ref FemaleAveragePointyOffsetX, "FemaleAveragePointyOffsetX");
-            Scribe_Values.Look(ref FemaleAverageWideOffsetX, "FemaleAverageWideOffsetX");
-
-            Scribe_Values.Look(ref MaleNarrowNormalOffsetX, "MaleNarrowNormalOffsetX");
-            Scribe_Values.Look(ref MaleNarrowPointyOffsetX, "MaleNarrowPointyOffsetX");
-            Scribe_Values.Look(ref MaleNarrowWideOffsetX, "MaleNarrowWideOffsetX");
-
-            Scribe_Values.Look(ref FemaleNarrowNormalOffsetX, "FemaleNarrowNormalOffsetX");
-            Scribe_Values.Look(ref FemaleNarrowPointyOffsetX, "FemaleNarrowPointyOffsetX");
-            Scribe_Values.Look(ref FemaleNarrowWideOffsetX, "FemaleNarrowWideOffsetX");
-
-            Scribe_Values.Look(ref MaleAverageNormalOffsetY, "MaleAverageNormalOffsetY");
-            Scribe_Values.Look(ref MaleAveragePointyOffsetY, "MaleAveragePointyOffsetY");
-            Scribe_Values.Look(ref MaleAverageWideOffsetY, "MaleAverageWideOffsetY");
-
-            Scribe_Values.Look(ref FemaleAverageNormalOffsetY, "FemaleAverageNormalOffsetY");
-            Scribe_Values.Look(ref FemaleAveragePointyOffsetY, "FemaleAveragePointyOffsetY");
-            Scribe_Values.Look(ref FemaleAverageWideOffsetY, "FemaleAverageWideOffsetY");
-
-            Scribe_Values.Look(ref MaleNarrowNormalOffsetY, "MaleNarrowNormalOffsetY");
-            Scribe_Values.Look(ref MaleNarrowPointyOffsetY, "MaleNarrowPointyOffsetY");
-            Scribe_Values.Look(ref MaleNarrowWideOffsetY, "MaleNarrowWideOffsetY");
-
-            Scribe_Values.Look(ref FemaleNarrowNormalOffsetY, "FemaleNarrowNormalOffsetY");
-            Scribe_Values.Look(ref FemaleNarrowPointyOffsetY, "FemaleNarrowPointyOffsetY");
-            Scribe_Values.Look(ref FemaleNarrowWideOffsetY, "FemaleNarrowWideOffsetY");
+      //    Scribe_Values.Look(ref MaleAverageNormalOffsetX, "MaleAverageNormalOffsetX");
+      //    Scribe_Values.Look(ref MaleAveragePointyOffsetX, "MaleAveragePointyOffsetX");
+      //    Scribe_Values.Look(ref MaleAverageWideOffsetX, "MaleAverageWideOffsetX");
+      //
+      //    Scribe_Values.Look(ref FemaleAverageNormalOffsetX, "FemaleAverageNormalOffsetX");
+      //    Scribe_Values.Look(ref FemaleAveragePointyOffsetX, "FemaleAveragePointyOffsetX");
+      //    Scribe_Values.Look(ref FemaleAverageWideOffsetX, "FemaleAverageWideOffsetX");
+      //
+      //    Scribe_Values.Look(ref MaleNarrowNormalOffsetX, "MaleNarrowNormalOffsetX");
+      //    Scribe_Values.Look(ref MaleNarrowPointyOffsetX, "MaleNarrowPointyOffsetX");
+      //    Scribe_Values.Look(ref MaleNarrowWideOffsetX, "MaleNarrowWideOffsetX");
+      //
+      //    Scribe_Values.Look(ref FemaleNarrowNormalOffsetX, "FemaleNarrowNormalOffsetX");
+      //    Scribe_Values.Look(ref FemaleNarrowPointyOffsetX, "FemaleNarrowPointyOffsetX");
+      //    Scribe_Values.Look(ref FemaleNarrowWideOffsetX, "FemaleNarrowWideOffsetX");
+      //
+      //    Scribe_Values.Look(ref MaleAverageNormalOffsetY, "MaleAverageNormalOffsetY");
+      //    Scribe_Values.Look(ref MaleAveragePointyOffsetY, "MaleAveragePointyOffsetY");
+      //    Scribe_Values.Look(ref MaleAverageWideOffsetY, "MaleAverageWideOffsetY");
+      //
+      //    Scribe_Values.Look(ref FemaleAverageNormalOffsetY, "FemaleAverageNormalOffsetY");
+      //    Scribe_Values.Look(ref FemaleAveragePointyOffsetY, "FemaleAveragePointyOffsetY");
+      //    Scribe_Values.Look(ref FemaleAverageWideOffsetY, "FemaleAverageWideOffsetY");
+      //
+      //    Scribe_Values.Look(ref MaleNarrowNormalOffsetY, "MaleNarrowNormalOffsetY");
+      //    Scribe_Values.Look(ref MaleNarrowPointyOffsetY, "MaleNarrowPointyOffsetY");
+      //    Scribe_Values.Look(ref MaleNarrowWideOffsetY, "MaleNarrowWideOffsetY");
+      //
+      //    Scribe_Values.Look(ref FemaleNarrowNormalOffsetY, "FemaleNarrowNormalOffsetY");
+      //    Scribe_Values.Look(ref FemaleNarrowPointyOffsetY, "FemaleNarrowPointyOffsetY");
+      //    Scribe_Values.Look(ref FemaleNarrowWideOffsetY, "FemaleNarrowWideOffsetY");
 #endif
         }
     }

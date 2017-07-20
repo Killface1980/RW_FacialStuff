@@ -34,9 +34,9 @@ namespace FacialStuff
                 graphic.Init(req);
                 allGraphics.Add(req, graphic);
 
-                var temptexturefront = new Texture2D(128, 128, TextureFormat.ARGB32, true);
-                var temptextureside = new Texture2D(128, 128, TextureFormat.ARGB32, true);
-                var temptextureback = new Texture2D(128, 128, TextureFormat.ARGB32, true);
+                Texture2D temptexturefront = new Texture2D(128, 128, TextureFormat.ARGB32, true);
+                Texture2D temptextureside = new Texture2D(128, 128, TextureFormat.ARGB32, true);
+                Texture2D temptextureback = new Texture2D(128, 128, TextureFormat.ARGB32, true);
 
 
                 temptexturefront = Headhelper.MakeReadable(graphic.MatFront.mainTexture as Texture2D);
@@ -98,7 +98,7 @@ namespace FacialStuff
                     Color maskColor = maskTex.GetPixel(x, y);
                     Color hairColor = hairTex.GetPixel(x, y);
 
-                    var final_color1 = hairColor * maskColor;
+                    Color final_color1 = hairColor * maskColor;
 
                     hairTex.SetPixel(x, y, final_color1);
                 }

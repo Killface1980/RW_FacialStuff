@@ -988,7 +988,7 @@
 
             if (faceComp.crownType == CrownType.Narrow)
             {
-                var dist = eyeRect.width * 0.1f;
+                float dist = eyeRect.width * 0.1f;
                 eyeRect.width *= 0.8f;
                 eyeRect.x += dist;
             }
@@ -996,8 +996,7 @@
             Rect pawnMouthRect = new Rect(eyeRect);
             pawnMouthRect.y += 30f;
 
-            //   pawnMouthRect.y += 10f;
-
+            // pawnMouthRect.y += 10f;
             Rect pawnRect = new Rect(0f, 0f, _previewSize, _previewSize);
             Rect labelRect = new Rect(0f, pawnRect.yMax - vector.y, vector.x, vector.y);
             Rect melaninRect = new Rect(2f, labelRect.yMax + _margin, _previewSize - 5f, 65f);
@@ -1011,7 +1010,6 @@
                 {
                     continue;
                 }
-
                 {
                     // layer 1-5 = body
                     if (i <= (int)enums.GraphicSlotGroup.Shell)
@@ -1030,21 +1028,25 @@
                                     {
                                         DisplayGraphics[i].Draw(pawnHeadRect);
                                     }
+
                                     break;
                                 }
+
                             case (int)enums.GraphicSlotGroup.LeftEye:
                             case (int)enums.GraphicSlotGroup.RightEye:
                             case (int)enums.GraphicSlotGroup.Brows:
                                 {
                                     DisplayGraphics[i].Draw(eyeRect);
                                 }
+
                                 break;
                             case (int)enums.GraphicSlotGroup.Mouth:
                                 if (faceComp != null && faceComp.drawMouth)
                                 {
-                                    if ((this.NewBeard.drawMouth) || faceComp.naturalMouth)
+                                    if (this.NewBeard.drawMouth || faceComp.naturalMouth)
                                         DisplayGraphics[i].Draw(pawnMouthRect);
                                 }
+
                                 break;
                             default:
                                 DisplayGraphics[i].Draw(pawnHeadRect);

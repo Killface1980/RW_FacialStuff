@@ -34,10 +34,11 @@
                 return 0f;
 
                 float num = Rand.Range(-15f, 15f);
-            //  if (Rand.Value < 0.5f)
-            //  {
-            //      num += 180f;
-            //  }
+
+                // if (Rand.Value < 0.5f)
+                // {
+                // num += 180f;
+                // }
                 return num;
             }
         }
@@ -49,14 +50,14 @@
 
         public void WigglerTick()
         {
-    //        if (this.pawn.Downed && this.pawn.Spawned && !this.pawn.InBed())
             {
-         //     this.ticksToIncapIcon--;
-         //     if (this.ticksToIncapIcon <= 0)
-         //     {
-         //         MoteMaker.ThrowMetaIcon(this.pawn.Position, this.pawn.Map, ThingDefOf.Mote_IncapIcon);
-         //         this.ticksToIncapIcon = 200;
-         //     }
+                // if (this.pawn.Downed && this.pawn.Spawned && !this.pawn.InBed())
+         // this.ticksToIncapIcon--;
+         // if (this.ticksToIncapIcon <= 0)
+         // {
+         // MoteMaker.ThrowMetaIcon(this.pawn.Position, this.pawn.Map, ThingDefOf.Mote_IncapIcon);
+         // this.ticksToIncapIcon = 200;
+         // }
                 if (this.pawn.Awake())
                 {
                     int num = Find.TickManager.TicksGame % 300 * 2;
@@ -89,10 +90,12 @@
                     {
                         this.downedAngle = 315f;
                     }
+
                     if (this.downedAngle < 45f)
                     {
                         this.downedAngle = 45f;
                     }
+
                     if (this.downedAngle > 135f && this.downedAngle < 225f)
                     {
                         if (this.downedAngle > 180f)
@@ -111,6 +114,7 @@
                     {
                         this.downedAngle -= 360f;
                     }
+
                     if (this.downedAngle < 0f)
                     {
                         this.downedAngle += 360f;

@@ -4,6 +4,7 @@
 
     using FacialStuff.Defs;
     using FacialStuff.Detouring;
+    using FacialStuff.Genetics;
     using FacialStuff.Wiggler;
 
     using RimWorld;
@@ -18,15 +19,14 @@
     public class CompFace : ThingComp
     {
 
-        public override void CompTick()
-        {
-        }
-
         public PawnHeadWiggler headWiggler;
 
         public PawnEyeWiggler eyeWiggler;
 
         public Color BeardColor = Color.clear;
+
+        public float melanin1 = 0f;
+        public float melanin2 = 0f;
 
         public BeardDef BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
 
@@ -80,10 +80,6 @@
 
 
 
-
-
-
-
         private float headTypeX;
 
         private float headTypeY;
@@ -91,7 +87,6 @@
         private bool isOld;
 
         // private float blinkRate;
-
         private Graphic_Multi_NaturalEyes leftEyeClosedGraphic;
 
         private string leftEyeClosedTexPath;
@@ -130,6 +125,8 @@
         private Graphic wrinkleGraphic;
 
         private Graphic rottingWrinkleGraphic;
+
+        public bool DNAoptimized;
 
         // Verse.PawnGraphicSet
         public GraphicMeshSet MouthMeshSet => MeshPoolFs.HumanlikeMouthSet[(int)this.fullHeadType];
@@ -298,9 +295,9 @@
             return material;
         }
 
+
         public void DefineFace()
         {
-            this.pawn = this.parent as Pawn;
 
             // Log.Message("FS " + this.pawn);
             if (this.pawn == null)
@@ -310,7 +307,7 @@
             }
 
             // Log.Message("Choosing eyes... ");
-            var faction = this.pawn.Faction?.def;
+            FactionDef faction = this.pawn.Faction?.def;
 
             if (faction == null)
             {
@@ -342,6 +339,8 @@
             {
                 this.BeardColor = PawnHairColors_PostFix.RandomBeardColor();
             }
+
+
 
             this.optimized = true;
         }
@@ -412,6 +411,7 @@
                 ShaderDatabase.Transparent,
                 Vector2.one,
                 this.BeardColor);
+
 
             this.browGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 this.browTexPath,
@@ -484,6 +484,7 @@
                                              ShaderDatabase.Transparent,
                                              Vector2.one,
                                              Color.black) as Graphic_Multi_NaturalEyes;
+
 
             return true;
         }
@@ -592,7 +593,6 @@
         }
 
         //// todo: make mouths dynamic, check textures?
-
         public Material MouthMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
             Material material = null;
@@ -635,7 +635,7 @@
                 {
                     material = this.wrinkleGraphic.MatAt(facing);
                 }
-               else if (bodyCondition == RotDrawMode.Rotting)
+                else if (bodyCondition == RotDrawMode.Rotting)
                 {
                     material = this.rottingWrinkleGraphic.MatAt(facing);
                 }
@@ -740,6 +740,12 @@
             Scribe_Values.Look(ref this.HairColorOrg, "HairColorOrg");
             Scribe_Values.Look(ref this.BeardColor, "BeardColor");
             Scribe_Values.Look(ref this.sameBeardColor, "sameBeardColor");
+
+            Scribe_Values.Look(ref this.melanin1, "melanin1");
+            Scribe_Values.Look(ref this.melanin2, "melanin2");
+            Scribe_Values.Look(ref this.DNAoptimized, "DNAoptimized");
+
+
         }
 
         public bool SetHeadType()
@@ -752,15 +758,18 @@
             }
 
             this.eyeWiggler = new PawnEyeWiggler(this.pawn);
-            //// this.headWiggler = new PawnHeadWiggler(this.pawn);
 
+            //// this.headWiggler = new PawnHeadWiggler(this.pawn);
             this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
 
             this.SetHeadAndCrownType();
 
             this.ResetBoolsAndPaths();
 
-            this.CheckForAddedOrMissingParts();
+            if (FS_Settings.ShowExtraParts)
+            {
+                this.CheckForAddedOrMissingParts();
+            }
 
             this.SetHeadOffsets();
 
@@ -786,15 +795,15 @@
             this.eyeWiggler.leftCanBlink = true;
             this.eyeWiggler.rightCanBlink = true;
 
-#if develop
-            {
-                naturalMouth = false;
-                this.mouthTexPath = "Mouth/Mouth_BionicJaw";
-
-            }
-#else
+//#if develop
+//            {
+//                naturalMouth = false;
+//                this.mouthTexPath = "Mouth/Mouth_BionicJaw";
+//
+//            }
+//#else
+//#endif
             this.naturalMouth = true;
-#endif
             this.browTexPath = this.BrowTexPath(this.BrowDef);
         }
 
@@ -972,6 +981,12 @@
                     }
                 }
             }
+        }
+
+        public void DefineDNA()
+        {
+            Class1.Genetics(this.pawn, this, out this.melanin1, out this.melanin2);
+            this.DNAoptimized = true;
         }
     }
 }

@@ -65,11 +65,10 @@
             HumanEyeSet[(int)FullHead.FemaleNarrowWide] = new GraphicMeshSet(0.6f, 0.75f);
 
 
-            //   HumanlikeMouthSetAverageMale = new GraphicMeshSet(HumanlikeMouthAverageWidthMale, HumanlikeMouthHeight);
-            //   HumanlikeMouthSetNarrowMale = new GraphicMeshSet(HumanlikeMouthNarrowWidthMale, HumanlikeMouthHeight);
-            //
-            //   HumanlikeMouthSetAverageFemale = new GraphicMeshSet(HumanlikeMouthAverageWidthFemale, HumanlikeMouthHeightFemale);
-            //   HumanlikeMouthSetNarrowFemale = new GraphicMeshSet(HumanlikeMouthNarrowWidthFemale, HumanlikeMouthHeightFemale);
+            // HumanlikeMouthSetAverageMale = new GraphicMeshSet(HumanlikeMouthAverageWidthMale, HumanlikeMouthHeight);
+            // HumanlikeMouthSetNarrowMale = new GraphicMeshSet(HumanlikeMouthNarrowWidthMale, HumanlikeMouthHeight);
+            // HumanlikeMouthSetAverageFemale = new GraphicMeshSet(HumanlikeMouthAverageWidthFemale, HumanlikeMouthHeightFemale);
+            // HumanlikeMouthSetNarrowFemale = new GraphicMeshSet(HumanlikeMouthNarrowWidthFemale, HumanlikeMouthHeightFemale);
         }
     }
 }
