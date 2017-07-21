@@ -8,6 +8,7 @@ using Verse;
 namespace FacialStuff.Detouring
 {
     using System;
+    using System.Linq;
     using System.Reflection;
 
     using FacialStuff.Genetics;
@@ -60,6 +61,11 @@ namespace FacialStuff.Detouring
 
             Color rotColor = pawn.story.SkinColor * Headhelper.skinRottingMultiplyColor;
 
+            if (!faceComp.optimized)
+            {
+                faceComp.DefineFace();
+            }
+
             if (FS_Settings.UseHairDNA)
             {
                 if (!faceComp.DNAoptimized)
@@ -71,11 +77,6 @@ namespace FacialStuff.Detouring
                     ShaderDatabase.Cutout,
                     Vector2.one,
                     pawn.story.hairColor);
-            }
-
-            if (!faceComp.optimized)
-            {
-                faceComp.DefineFace();
             }
 
             if (faceComp.SetHeadType())
@@ -212,9 +213,27 @@ namespace FacialStuff.Detouring
 
     #endregion
 
-    #region Hair Colour
+    #region Hair 
 
-    [HarmonyPatch(typeof(PawnHairColors), "RandomHairColor")]
+    [HarmonyPatch(typeof(PawnHairChooser), "RandomHairDefFor")]
+    public static class RandomHairDefFor_PostFix
+    {
+        [HarmonyPostfix]
+        public static void RandomHairDefFor(Pawn pawn, FactionDef factionType, ref HairDef __result)
+        {
+            if (pawn.TryGetComp<CompFace>() == null)
+            {
+                return;
+            }
+            IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
+                                          where hair.hairTags.SharesElementWith(factionType.hairTags)
+                                          select hair;
+
+            __result = source.RandomElementByWeight(hair => PawnFaceChooser.HairChoiceLikelihoodFor(hair, pawn));
+        }
+    }
+
+   // [HarmonyPatch(typeof(PawnHairColors), "RandomHairColor")]
     public static class PawnHairColors_PostFix
     {
         public static Color HairPlatinum = new Color32(255, 245, 226, 255);
@@ -270,7 +289,8 @@ namespace FacialStuff.Detouring
                     HairUltraViolet
                 };
 
-        [HarmonyPostfix]
+        //     [HarmonyPostfix]
+
         public static void RandomHairColor(ref Color __result, Color skinColor, int ageYears)
         {
             Color tempColor;
@@ -389,31 +409,6 @@ namespace FacialStuff.Detouring
             __result = Color.Lerp(tempColor, new Color32(245, 245, 245, 255), greyness);
         }
 
-        public static Color RandomBeardColor()
-        {
-            float value = Rand.Value;
-            Color tempColor = new Color();
-
-            // dark hair
-            if (value > 0.15f)
-            {
-                tempColor = Color.Lerp(HairPlatinum, HairYellowBlonde, Rand.Value);
-                tempColor = Color.Lerp(tempColor, HairTerraCotta, Rand.Range(0.3f, 1f));
-                tempColor = Color.Lerp(tempColor, HairMediumDarkBrown, Rand.Range(0.3f, 0.7f));
-                tempColor = Color.Lerp(tempColor, HairMidnightBlack, Rand.Range(0.1f, 0.8f));
-            }
-
-            // brown hair
-            else
-            {
-                tempColor = Color.Lerp(HairPlatinum, HairYellowBlonde, Rand.Value);
-                tempColor = Color.Lerp(tempColor, HairTerraCotta, Rand.Range(0f, 0.6f));
-                tempColor = Color.Lerp(tempColor, HairMediumDarkBrown, Rand.Range(0.3f, 1f));
-                tempColor = Color.Lerp(tempColor, HairMidnightBlack, Rand.Range(0f, 0.5f));
-            }
-
-            return tempColor;
-        }
 
         internal static Color DarkerBeardColor(Color value)
         {

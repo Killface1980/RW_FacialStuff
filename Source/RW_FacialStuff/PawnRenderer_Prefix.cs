@@ -172,8 +172,8 @@ namespace FacialStuff
 
                         // Experiments with head motion
                         // locFacialY += faceComp.eyemove;
-                        //// quat *= Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
-                        GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, material, portrait);
+                        var headQuat = quat;// * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
+                        GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, material, portrait);
                         locFacialY.y += 0.001f;
                         if (!headStump)
                         {
@@ -184,7 +184,7 @@ namespace FacialStuff
 
                             if (wrinkleMat != null)
                             {
-                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, wrinkleMat, portrait);
+                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, wrinkleMat, portrait);
                                 locFacialY.y += YOffsetOnFace;
                             }
 
@@ -193,14 +193,14 @@ namespace FacialStuff
                                 // Mesh meshMouth = __instance.graphics.HairMeshSet.MeshAt(headFacing);
                                 Mesh meshMouth = faceComp.MouthMeshSet.MeshAt(headFacing);
 
-                                Vector3 drawLoc = locFacialY + quat * faceComp.BaseMouthOffsetAt(bodyFacing);
-                                GenDraw.DrawMeshNowOrLater(meshMouth, drawLoc, quat, mouthMat, portrait);
+                                Vector3 drawLoc = locFacialY + headQuat * faceComp.BaseMouthOffsetAt(bodyFacing);
+                                GenDraw.DrawMeshNowOrLater(meshMouth, drawLoc, headQuat, mouthMat, portrait);
                                 locFacialY.y += YOffsetOnFace;
                             }
 
                             if (beardMat != null)
                             {
-                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, beardMat, portrait);
+                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, beardMat, portrait);
                                 locFacialY.y += YOffsetOnFace;
                             }
 
@@ -209,7 +209,7 @@ namespace FacialStuff
                                 Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, bodyDrawType);
                                 if (deadEyeMat != null)
                                 {
-                                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, deadEyeMat, portrait);
+                                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, deadEyeMat, portrait);
                                     locFacialY.y += YOffsetOnFace;
                                 }
                             }
@@ -221,7 +221,7 @@ namespace FacialStuff
                                     GenDraw.DrawMeshNowOrLater(
                                         mesh2eyes,
                                         locFacialY + faceComp.eyeWiggler.EyemoveL,
-                                        quat,
+                                        headQuat,
                                         leftEyeMat,
                                         portrait);
                                     locFacialY.y += YOffsetOnFace;
@@ -233,7 +233,7 @@ namespace FacialStuff
                                     GenDraw.DrawMeshNowOrLater(
                                         mesh2eyes,
                                         locFacialY + faceComp.eyeWiggler.EyemoveR,
-                                        quat,
+                                        headQuat,
                                         rightEyeMat,
                                         portrait);
                                     locFacialY.y += YOffsetOnFace;
@@ -242,7 +242,7 @@ namespace FacialStuff
 
                             if (browMat != null)
                             {
-                                GenDraw.DrawMeshNowOrLater(mesh2eyes, locFacialY, quat, browMat, portrait);
+                                GenDraw.DrawMeshNowOrLater(mesh2eyes, locFacialY, headQuat, browMat, portrait);
                                 locFacialY.y += YOffsetOnFace;
                             }
 
@@ -251,7 +251,7 @@ namespace FacialStuff
                                 Material leftBionicMat = faceComp.LeftEyePatchMatAt(headFacing);
                                 if (leftBionicMat != null)
                                 {
-                                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, leftBionicMat, portrait);
+                                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, leftBionicMat, portrait);
                                     locFacialY.y += YOffsetOnFace;
                                 }
                             }
@@ -262,7 +262,7 @@ namespace FacialStuff
 
                                 if (rightBionicMat != null)
                                 {
-                                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, quat, rightBionicMat, portrait);
+                                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, rightBionicMat, portrait);
                                     locFacialY.y += YOffsetOnFace;
                                 }
                             }

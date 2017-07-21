@@ -91,7 +91,7 @@ namespace FacialStuff.Detouring
         [Detour(typeof(PawnSkinColors), bindingFlags = BindingFlags.Static | BindingFlags.Public)]
         public static bool IsDarkSkin(Color color)
         {
-            Color skinColor = GetSkinColor(0.5f);
+            Color skinColor = GetSkinColor(0.6f); // edit: was 0.5f
             return color.r + color.g + color.b <= skinColor.r + skinColor.g + skinColor.b + 0.01f;
         }
 

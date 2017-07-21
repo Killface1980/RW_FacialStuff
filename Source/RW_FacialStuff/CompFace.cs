@@ -19,7 +19,7 @@
     public class CompFace : ThingComp
     {
 
-        public PawnHeadWiggler headWiggler;
+   //     public PawnHeadWiggler headWiggler;
 
         public PawnEyeWiggler eyeWiggler;
 
@@ -126,7 +126,7 @@
 
         private Graphic rottingWrinkleGraphic;
 
-        public bool DNAoptimized;
+        public bool DNAoptimized = false;
 
         // Verse.PawnGraphicSet
         public GraphicMeshSet MouthMeshSet => MeshPoolFs.HumanlikeMouthSet[(int)this.fullHeadType];
@@ -337,7 +337,7 @@
             }
             else
             {
-                this.BeardColor = PawnHairColors_PostFix.RandomBeardColor();
+                this.BeardColor = Class1.RandomBeardColor();
             }
 
 
@@ -366,21 +366,6 @@
             {
                 return false;
             }
-
-            if (this.BeardColor == Color.clear)
-            {
-                this.sameBeardColor = Rand.Value > 0.2f;
-
-                if (this.sameBeardColor)
-                {
-                    this.BeardColor = PawnHairColors_PostFix.DarkerBeardColor(this.pawn.story.hairColor);
-                }
-                else
-                {
-                    this.BeardColor = PawnHairColors_PostFix.RandomBeardColor();
-                }
-            }
-
 
             Color wrinkleColor = Color.Lerp(
                 this.pawn.story.SkinColor,
@@ -503,22 +488,26 @@
 
             if (!portrait)
             {
-                if (this.eyeWiggler.leftCanBlink)
+                if (FS_Settings.MakeThemBlink)
                 {
-                    if (this.eyeWiggler.asleep)
+                    if (this.eyeWiggler.leftCanBlink)
                     {
-                        flag = false;
-                        material = this.leftEyeClosedGraphic.MatAt(facing);
-                    }
-
-                    if (flag)
-                    {
-                        if (Find.TickManager.TicksGame >= this.eyeWiggler.nextBlink + this.eyeWiggler.jitterLeft)
+                        if (this.eyeWiggler.asleep)
                         {
+                            flag = false;
                             material = this.leftEyeClosedGraphic.MatAt(facing);
+                        }
+
+                        if (flag)
+                        {
+                            if (Find.TickManager.TicksGame >= this.eyeWiggler.nextBlink + this.eyeWiggler.jitterLeft)
+                            {
+                                material = this.leftEyeClosedGraphic.MatAt(facing);
+                            }
                         }
                     }
                 }
+
             }
 
             if (material != null)
@@ -554,19 +543,22 @@
 
             if (!portrait)
             {
-                if (this.eyeWiggler.rightCanBlink)
+                if (FS_Settings.MakeThemBlink)
                 {
-                    if (this.eyeWiggler.asleep)
+                    if (this.eyeWiggler.rightCanBlink)
                     {
-                        flag = false;
-                        material = this.rightEyeClosedGraphic.MatAt(facing);
-                    }
-
-                    if (flag)
-                    {
-                        if (Find.TickManager.TicksGame >= this.eyeWiggler.nextBlink + this.eyeWiggler.jitterRight)
+                        if (this.eyeWiggler.asleep)
                         {
+                            flag = false;
                             material = this.rightEyeClosedGraphic.MatAt(facing);
+                        }
+
+                        if (flag)
+                        {
+                            if (Find.TickManager.TicksGame >= this.eyeWiggler.nextBlink + this.eyeWiggler.jitterRight)
+                            {
+                                material = this.rightEyeClosedGraphic.MatAt(facing);
+                            }
                         }
                     }
                 }
@@ -685,7 +677,7 @@
             }
 
             // todo: head wiggler? move eyes to eyewiggler
-            // this.headWiggler.WigglerTick();
+        //     this.headWiggler.WigglerTick();
             this.eyeWiggler.WigglerTick();
 
         }
@@ -759,7 +751,7 @@
 
             this.eyeWiggler = new PawnEyeWiggler(this.pawn);
 
-            //// this.headWiggler = new PawnHeadWiggler(this.pawn);
+        //     this.headWiggler = new PawnHeadWiggler(this.pawn);
             this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
 
             this.SetHeadAndCrownType();
@@ -795,14 +787,14 @@
             this.eyeWiggler.leftCanBlink = true;
             this.eyeWiggler.rightCanBlink = true;
 
-//#if develop
-//            {
-//                naturalMouth = false;
-//                this.mouthTexPath = "Mouth/Mouth_BionicJaw";
-//
-//            }
-//#else
-//#endif
+            //#if develop
+            //            {
+            //                naturalMouth = false;
+            //                this.mouthTexPath = "Mouth/Mouth_BionicJaw";
+            //
+            //            }
+            //#else
+            //#endif
             this.naturalMouth = true;
             this.browTexPath = this.BrowTexPath(this.BrowDef);
         }

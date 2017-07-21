@@ -78,6 +78,10 @@ namespace RW_FacialStuff
             FS_Settings.UseHairDNA = Toggle(FS_Settings.UseHairDNA, "Settings.UseHairDNA".Translate());
             EndVertical();
 
+            BeginVertical();
+            FS_Settings.MakeThemBlink = Toggle(FS_Settings.MakeThemBlink, "Settings.MakeThemBlink".Translate());
+            EndVertical();
+
             // FlexibleSpace();
             // BeginVertical();
             // if (Button("Settings.Apply".Translate()))
@@ -164,6 +168,8 @@ namespace RW_FacialStuff
 
         public static bool UseHairDNA = true;
 
+        public static bool MakeThemBlink = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -173,6 +179,7 @@ namespace RW_FacialStuff
             Scribe_Values.Look(ref HideHatInBed, "HideHatInBed", false, true);
             Scribe_Values.Look(ref ShowExtraParts, "ShowExtraParts", false, true);
             Scribe_Values.Look(ref UseHairDNA, "UseHairDNA", false, true);
+            Scribe_Values.Look(ref MakeThemBlink, "MakeThemBlink", false, true);
 
 #if develop
 

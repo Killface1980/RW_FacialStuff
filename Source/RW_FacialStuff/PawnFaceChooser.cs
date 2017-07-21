@@ -139,16 +139,7 @@ namespace FacialStuff
             return chosenWrinkles;
         }
 
-        [Detour(typeof(PawnHairChooser), bindingFlags = BindingFlags.Static | BindingFlags.Public)]
-        public static HairDef RandomHairDefFor(Pawn pawn, FactionDef factionType)
-        {
 
-            IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
-                                          where hair.hairTags.SharesElementWith(factionType.hairTags)
-                                          select hair;
-
-            return source.RandomElementByWeight(hair => HairChoiceLikelihoodFor(hair, pawn));
-        }
 
         private static float EyeChoiceLikelihoodFor(EyeDef eye, Pawn pawn)
         {
@@ -280,7 +271,7 @@ namespace FacialStuff
         }
 
         // RimWorld.PawnHairChooser
-        private static float HairChoiceLikelihoodFor(HairDef hair, Pawn pawn)
+        public static float HairChoiceLikelihoodFor(HairDef hair, Pawn pawn)
         {
 
             if (pawn.gender == Gender.None)
