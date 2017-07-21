@@ -28,27 +28,27 @@ namespace FacialStuff.Detouring
                 new SkinColorData(
                     0f,
                     0f,
-                    new Color32(101, 56, 41, 255)),
+                    new Color32(255, 231, 213, 255)),
                 new SkinColorData(
                     0.1f,
                     0.085f,
-                    new Color32(127, 71, 51, 255)),
+                    new Color32(252, 215, 202, 255)),
                 new SkinColorData(
                     0.25f,
                     0.175f,
-                    new Color32(165, 93, 41, 255)),
+                    new Color32(248, 193, 189, 255)),
                 new SkinColorData(
                     0.35f,
                     0.225f,
-                    new Color32(211, 114, 76, 255)),
+                    new Color32(245, 210, 178, 255)),
                 new SkinColorData(
                     0.45f,
                     0.285f,
-                    new Color32(220, 138, 88, 255)),
+                    new Color32(240, 187, 140, 255)),
                 new SkinColorData(
                     0.5f,
                     0.35f,
-                    new Color32(255, 231, 179, 255)),
+                    new Color32(255, 186, 153, 255)),
                 new SkinColorData(
                     0.55f,
                     0.4f,
@@ -56,27 +56,27 @@ namespace FacialStuff.Detouring
                 new SkinColorData(
                     0.6f,
                     0.45f,
-                    new Color32(255, 186, 153, 255)),
+                    new Color32(255, 231, 179, 255)),
                 new SkinColorData(
                     0.65f,
                     0.6f,
-                    new Color32(240, 187, 140, 255)),
+                    new Color32(220, 138, 88, 255)),
                 new SkinColorData(
                     0.75f,
                     0.75f,
-                    new Color32(245, 210, 178, 255)),
+                    new Color32(211, 114, 76, 255)),
                 new SkinColorData(
                     0.85f,
                     0.85f,
-                    new Color32(248, 193, 189, 255)),
+                    new Color32(165, 93, 41, 255)),
                 new SkinColorData(
                     0.9f,
                     0.9f,
-                    new Color32(252, 215, 202, 255)),
+                    new Color32(127, 71, 51, 255)),
                 new SkinColorData(
                     1f,
                     1f,
-                    new Color32(255, 231, 213, 255))
+                    new Color32(101, 56, 41, 255)),
 
                 // Vanilla
 

@@ -53,6 +53,7 @@ namespace FacialStuff.Detouring
             {
                 return;
             }
+
             faceComp.pawn = pawn;
 
             BuildDatabaseIfNecessary();

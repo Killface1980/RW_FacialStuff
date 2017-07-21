@@ -29,15 +29,16 @@ namespace FacialStuff.Genetics
 
         public static void Genetics(Pawn pawn, CompFace face, out float melanin1, out float melanin2)
         {
+            melanin1 = melanin2 = 0f;
             if (face == null)
             {
-                melanin1 = melanin2 = 0f;
                 return;
             }
             CompFace mother = null;
             CompFace father = null;
             bool motherNull = false;
             bool fatherNull = false;
+
             if (pawn.GetMother() == null)
             {
                 motherNull = true;
@@ -55,38 +56,44 @@ namespace FacialStuff.Genetics
                 father = pawn.GetFather().TryGetComp<CompFace>();
             }
 
-            if (motherNull && fatherNull)
-            {
-                if (pawn.relations.FamilyByBlood.Any())
-                {
-                    CompFace compFace = pawn.relations.FamilyByBlood.FirstOrDefault().TryGetComp<CompFace>();
-                    var melaninx1 = compFace.melanin1;
-                    var melaninx2 = compFace.melanin2;
-                    melanin1 = GetRandomMelaninSimilarTo(melaninx1);
-                    melanin2 = GetRandomMelaninSimilarTo(melaninx2);
-                }
-                else
-                {
-                    melanin1 = Rand.Value;
-                    melanin2 = Rand.Range(0.15f, 1f);
-                    melanin1 += pawn.story.melanin / 2;
-                    melanin2 += pawn.story.melanin / 4;
-                }
-            }
-            else if (!motherNull && !fatherNull)
+
+            if (!motherNull && mother.DNAoptimized && !fatherNull && father.DNAoptimized)
             {
                 melanin1 = GetRandomChildHairColor(mother.melanin1, father.melanin1);
                 melanin2 = GetRandomChildHairColor(mother.melanin2, father.melanin2);
             }
-            else if (!motherNull)
+            else if (!motherNull && mother.DNAoptimized)
             {
                 melanin1 = GetRandomMelaninSimilarTo(mother.melanin1, 0f, 1f);
                 melanin2 = GetRandomMelaninSimilarTo(mother.melanin2, 0f, 1f);
             }
-            else// if (!flag2)
+            else if (!fatherNull && father.DNAoptimized)
             {
                 melanin1 = GetRandomMelaninSimilarTo(father.melanin1, 0f, 1f);
                 melanin2 = GetRandomMelaninSimilarTo(father.melanin2, 0f, 1f);
+            }
+            else //if (motherNull && fatherNull)
+            {
+                bool flag = true;
+                if (pawn.relations.FamilyByBlood.Any())
+                {
+                    var relPawn = pawn.relations.FamilyByBlood.FirstOrDefault(x => x.TryGetComp<CompFace>().DNAoptimized);
+                    if (relPawn != null)
+                    {
+                        CompFace relatedPawn = relPawn.TryGetComp<CompFace>();
+
+                        float melaninx1 = relatedPawn.melanin1;
+                        float melaninx2 = relatedPawn.melanin2;
+                        melanin1 = GetRandomMelaninSimilarTo(melaninx1);
+                        melanin2 = GetRandomMelaninSimilarTo(melaninx2);
+                        flag = false;
+                    }
+                }
+                if (flag)
+                {
+                    melanin1 = Rand.Range(pawn.story.melanin / 2, 1f);
+                    melanin2 = Rand.Range(pawn.story.melanin / 4, 1f);
+                }
             }
             //  Log.Message(
             //      pawn + " - " + melanin + " - " + face.melanin1 + " - " + face.melanin2 + " - " + mother?.melanin1
@@ -95,13 +102,15 @@ namespace FacialStuff.Genetics
             Color col = new Color(0.9f, 0.9f, 0.9f);
 
             // Build gradients
-            GradientColorKey[] gck = new GradientColorKey[3];
+            GradientColorKey[] gck = new GradientColorKey[4];
             gck[0].color = col;
             gck[0].time = 0.0f;
-            gck[1].color = HairYellowBlonde;
-            gck[1].time = 0.55f;
-            gck[2].color = HairTerraCotta;
-            gck[2].time = 0.95f;
+            gck[1].color = new Color32(255, 194, 71, 255);
+            gck[1].time = 0.41f;
+            gck[2].color = new Color32(255, 165, 51, 255);
+            gck[2].time = 0.65f;
+            gck[3].color = new Color32(255, 64, 0, 255);
+            gck[3].time = 0.97f;
             GradientAlphaKey[] gak = new GradientAlphaKey[2];
             gak[0].alpha = 1f;
             gak[0].time = 0.0f;
@@ -111,10 +120,12 @@ namespace FacialStuff.Genetics
 
             gck[0].color = col;
             gck[0].time = 0.0f;
-            gck[1].color = HairDarkBrown;
-            gck[1].time = 0.6f;
-            gck[2].color = HairMidnightBlack;
-            gck[2].time = 0.95f;
+            gck[1].color = new Color32(230, 194, 161, 255);
+            gck[1].time = 0.1f;
+            gck[2].color = new Color32(110, 59, 13, 255);
+            gck[2].time = 0.6f;
+            gck[3].color = new Color32(30, 14, 0, 255);
+            gck[3].time = 0.92f;
             gradient_mel1.SetKeys(gck, gak);
 
             var color = gradient_mel1.Evaluate(face.melanin1);
