@@ -52,13 +52,13 @@ namespace FacialStuff
 
             Widgets.DrawBoxSolid(colRect, this.SelPawn.story.SkinColor);
             colRect.x += colRect.width;
-            Widgets.DrawBoxSolid(colRect, Class1.gradient_mel1.Evaluate(faceComp.melanin1));
+            Widgets.DrawBoxSolid(colRect, HairMelanin.gradient_mel1.Evaluate(faceComp.melanin1));
             colRect.x += colRect.width;
-            Widgets.DrawBoxSolid(colRect, Class1.gradient_mel2.Evaluate(faceComp.melanin2));
+            Widgets.DrawBoxSolid(colRect, HairMelanin.gradient_mel2.Evaluate(faceComp.melanin2));
 
             Rect checkbox = new Rect(rect.x, colRect.yMax + 15f, rect.width, 24f);
 
-            Widgets.CheckboxLabeled(checkbox, "Ignore renderer", ref faceComp.ignoreRenderer);
+            Widgets.CheckboxLabeled(checkbox, "Ignore renderer", ref faceComp.IgnoreRenderer);
 
             Rect pawnRect = new Rect(rect.x, checkbox.yMax, rect.width, 24f);
 
@@ -75,7 +75,7 @@ namespace FacialStuff
             GUILayout.BeginVertical();
 
 
-            if (faceComp.ignoreRenderer)
+            if (faceComp.IgnoreRenderer)
             {
                 this.rotationInt = GUILayout.SelectionGrid(this.rotationInt, this.psiToolbarStrings, 4);
             }

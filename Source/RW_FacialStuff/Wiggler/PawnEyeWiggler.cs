@@ -1,8 +1,6 @@
 ﻿namespace FacialStuff.Wiggler
 
 {
-    using RimWorld;
-
     using UnityEngine;
 
     using Verse;

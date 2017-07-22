@@ -1,4 +1,5 @@
-﻿namespace FacialStuff.ColorPicker
+﻿// ReSharper disable All
+namespace FacialStuff.ColorPicker
 {
     using System.Globalization;
 

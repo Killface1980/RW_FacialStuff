@@ -12,8 +12,6 @@ using Verse;
 
 namespace FacialStuff
 {
-    using System.Linq;
-
     using FacialStuff.Detouring;
 
     using RW_FacialStuff;
@@ -95,7 +93,7 @@ namespace FacialStuff
             if (faceComp != null)
             {
 #if develop
-                if (faceComp.ignoreRenderer)
+                if (faceComp.IgnoreRenderer)
                 {
                     switch (faceComp.rotationInt)
                     {
@@ -215,7 +213,7 @@ namespace FacialStuff
                             }
                             else
                             {
-                                Material leftEyeMat = faceComp.LeftEyeMatAt(headFacing, portrait);
+                                Material leftEyeMat = faceComp.EyeLeftMatAt(headFacing, portrait);
                                 if (leftEyeMat != null)
                                 {
                                     GenDraw.DrawMeshNowOrLater(
@@ -227,7 +225,7 @@ namespace FacialStuff
                                     locFacialY.y += YOffsetOnFace;
                                 }
 
-                                Material rightEyeMat = faceComp.RightEyeMatAt(headFacing, portrait);
+                                Material rightEyeMat = faceComp.EyeRightMatAt(headFacing, portrait);
                                 if (rightEyeMat != null)
                                 {
                                     GenDraw.DrawMeshNowOrLater(
@@ -248,7 +246,7 @@ namespace FacialStuff
 
                             if (faceComp.HasLeftEyePatch)
                             {
-                                Material leftBionicMat = faceComp.LeftEyePatchMatAt(headFacing);
+                                Material leftBionicMat = faceComp.EyeLeftPatchMatAt(headFacing);
                                 if (leftBionicMat != null)
                                 {
                                     GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, leftBionicMat, portrait);
@@ -258,7 +256,7 @@ namespace FacialStuff
 
                             if (faceComp.HasRightEyePatch)
                             {
-                                Material rightBionicMat = faceComp.RightEyePatchMatAt(headFacing);
+                                Material rightBionicMat = faceComp.EyeRightPatchMatAt(headFacing);
 
                                 if (rightBionicMat != null)
                                 {

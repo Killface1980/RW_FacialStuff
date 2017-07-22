@@ -11,13 +11,9 @@ namespace FacialStuff.Detouring
     using System.Linq;
     using System.Reflection;
 
-    using FacialStuff.Genetics;
-
     using RW_FacialStuff;
 
     using static GraphicDatabaseHeadRecordsModded;
-
-    using static _PawnSkinColors;
 
     public static class SaveableCache
     {
@@ -48,6 +44,7 @@ namespace FacialStuff.Detouring
         {
             Pawn pawn = __instance.pawn;
 
+            // Check if race has face, else return
             CompFace faceComp = pawn.TryGetComp<CompFace>();
 
             if (faceComp == null)
@@ -55,20 +52,21 @@ namespace FacialStuff.Detouring
                 return;
             }
 
-            faceComp.pawn = pawn;
-
             BuildDatabaseIfNecessary();
 
+            // Custom rotting color, mixed with skin wone
             Color rotColor = pawn.story.SkinColor * Headhelper.skinRottingMultiplyColor;
 
-            if (!faceComp.optimized)
+            // Inital definition of a pawn's appearance. Run only once - ever.
+            if (!faceComp.IsOptimized)
             {
                 faceComp.DefineFace();
             }
 
+            // Added in 0.17.3 beta, needs to be separate till major update A18
             if (FS_Settings.UseHairDNA)
             {
-                if (!faceComp.DNAoptimized)
+                if (!faceComp.IsDNAoptimized)
                 {
                     faceComp.DefineDNA();
                 }
@@ -83,8 +81,7 @@ namespace FacialStuff.Detouring
             {
                 if (faceComp.InitializeGraphics())
                 {
-
-
+                    // Set up the hair cut graphic
                     HaircutPawn hairPawn = SaveableCache.GetHairCache(pawn);
                     hairPawn.HairCutGraphic = CutHairDb.Get<Graphic_Multi>(
                         pawn.story.hairDef.texPath,
@@ -412,7 +409,7 @@ namespace FacialStuff.Detouring
 
         internal static Color DarkerBeardColor(Color value)
         {
-            Color darken = new Color(0.8f, 0.8f, 0.8f);
+            Color darken = new Color(0.9f, 0.9f, 0.9f);
 
             return value * darken;
         }

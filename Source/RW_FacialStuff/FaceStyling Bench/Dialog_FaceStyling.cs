@@ -12,8 +12,6 @@
 
     using RimWorld;
 
-    using RW_FacialStuff;
-
     using UnityEngine;
 
     using Verse;
@@ -358,7 +356,7 @@
                     pawn,
                     faceComp.MouthGraphic,
                     pawn.def.uiIcon,
-                   faceComp.naturalMouth ? Color.black : Color.white);
+                   faceComp.HasNaturalMouth ? Color.black : Color.white);
 
                 this.SetGraphicSlot(
                     enums.GraphicSlotGroup.Beard,
@@ -407,7 +405,7 @@
             {
                 _newHairColour = value;
                 DisplayGraphics[(int)enums.GraphicSlotGroup.Hair].color = value;
-                if (faceComp != null && faceComp.sameBeardColor)
+                if (faceComp != null && faceComp.HasSameBeardColor)
                 {
                     DisplayGraphics[(int)enums.GraphicSlotGroup.Beard].color = PawnHairColors_PostFix.DarkerBeardColor(value);
                 }
@@ -581,7 +579,7 @@
                                 faceComp.BeardDef = this.NewBeard;
                             }
 
-                            if (faceComp.sameBeardColor)
+                            if (faceComp.HasSameBeardColor)
                             {
                                 faceComp.BeardColor = PawnHairColors_PostFix.DarkerBeardColor(pawn.story.hairColor);
                             }
@@ -696,7 +694,7 @@
                 {
                 }
 
-                if (!faceComp.sameBeardColor)
+                if (!faceComp.HasSameBeardColor)
                 {
                     colourWrapper.Color = this.NewBeardColour;
                     Find.WindowStack.Add(
@@ -1043,7 +1041,7 @@
                             case (int)enums.GraphicSlotGroup.Mouth:
                                 if (faceComp != null && faceComp.drawMouth)
                                 {
-                                    if (this.NewBeard.drawMouth || faceComp.naturalMouth)
+                                    if (this.NewBeard.drawMouth || faceComp.HasNaturalMouth)
                                         DisplayGraphics[i].Draw(pawnMouthRect);
                                 }
 
@@ -1138,12 +1136,12 @@
                 if (pawn.gender == Gender.Male)
                 {
                     set.y += 24f;
-                    Widgets.CheckboxLabeled(set, "Use same color for hair + beard", ref faceComp.sameBeardColor);
+                    Widgets.CheckboxLabeled(set, "Use same color for hair + beard", ref faceComp.HasSameBeardColor);
                 }
 
                 if (GUI.changed)
                 {
-                    if (faceComp.sameBeardColor) this.NewBeardColour = PawnHairColors_PostFix.DarkerBeardColor(this.NewHairColour);
+                    if (faceComp.HasSameBeardColor) this.NewBeardColour = PawnHairColors_PostFix.DarkerBeardColor(this.NewHairColour);
                 }
             }
 
@@ -1278,7 +1276,7 @@
                 }
             }
 
-            if (faceComp != null && !faceComp.sameBeardColor)
+            if (faceComp != null && !faceComp.HasSameBeardColor)
             {
                 if (this.Page == "beard")
                 {

@@ -106,6 +106,8 @@
     </raceList>
     <texPath>Mono</texPath>
     <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>

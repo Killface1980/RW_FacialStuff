@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace FacialStuff.Genetics
 {
@@ -13,7 +10,7 @@ namespace FacialStuff.Genetics
 
     using Verse;
 
-    public static class Class1
+    public static class HairMelanin
     {
 
         public static Color HairPlatinum = new Color32(255, 245, 226, 255);
@@ -77,17 +74,17 @@ namespace FacialStuff.Genetics
             }
 
 
-            if (!motherNull && mother.DNAoptimized && !fatherNull && father.DNAoptimized)
+            if (!motherNull && mother.IsDNAoptimized && !fatherNull && father.IsDNAoptimized)
             {
                 melanin1 = GetRandomChildHairColor(mother.melanin1, father.melanin1);
                 melanin2 = GetRandomChildHairColor(mother.melanin2, father.melanin2);
             }
-            else if (!motherNull && mother.DNAoptimized)
+            else if (!motherNull && mother.IsDNAoptimized)
             {
                 melanin1 = GetRandomMelaninSimilarTo(mother.melanin1, 0f, 1f);
                 melanin2 = GetRandomMelaninSimilarTo(mother.melanin2, 0f, 1f);
             }
-            else if (!fatherNull && father.DNAoptimized)
+            else if (!fatherNull && father.IsDNAoptimized)
             {
                 melanin1 = GetRandomMelaninSimilarTo(father.melanin1, 0f, 1f);
                 melanin2 = GetRandomMelaninSimilarTo(father.melanin2, 0f, 1f);
@@ -97,7 +94,7 @@ namespace FacialStuff.Genetics
                 bool flag = true;
                 if (pawn.relations.FamilyByBlood.Any())
                 {
-                    var relPawn = pawn.relations.FamilyByBlood.FirstOrDefault(x => x.TryGetComp<CompFace>().DNAoptimized);
+                    var relPawn = pawn.relations.FamilyByBlood.FirstOrDefault(x => x.TryGetComp<CompFace>().IsDNAoptimized);
                     if (relPawn != null)
                     {
                         CompFace relatedPawn = relPawn.TryGetComp<CompFace>();
@@ -130,9 +127,9 @@ namespace FacialStuff.Genetics
                 gck[1].color = new Color32(255, 194, 71, 255);
                 gck[1].time = 0.41f;
                 gck[2].color = new Color32(255, 165, 51, 255);
-                gck[2].time = 0.65f;
+                gck[2].time = 0.7f;
                 gck[3].color = new Color32(255, 64, 0, 255);
-                gck[3].time = 0.97f;
+                gck[3].time = 0.95f;
                 GradientAlphaKey[] gak = new GradientAlphaKey[2];
                 gak[0].alpha = 1f;
                 gak[0].time = 0.0f;
@@ -143,11 +140,11 @@ namespace FacialStuff.Genetics
                 gck[0].color = HairPlatinum;
                 gck[0].time = 0.0f;
                 gck[1].color = new Color32(184, 139, 96, 255);
-                gck[1].time = 0.33f;
+                gck[1].time = 0.3f;
                 gck[2].color = new Color32(110, 59, 13, 255);
-                gck[2].time = 0.66f;
+                gck[2].time = 0.6f;
                 gck[3].color = new Color32(30, 14, 0, 255);
-                gck[3].time = 0.92f;
+                gck[3].time = 0.85f;
                 gradient_mel1.SetKeys(gck, gak);
 
                 var color = gradient_mel1.Evaluate(face.melanin1);
@@ -157,9 +154,13 @@ namespace FacialStuff.Genetics
                 {
                     // age to become gray as float
                     float ageFloat = pawn.ageTracker.AgeBiologicalYearsFloat / 100;
-                    float agingBeginGreyFloat = Rand.Range(0.4f, 0.7f);
+                    float agingBeginGreyFloat = Rand.Range(0.35f, 0.45f);
+
+                    agingBeginGreyFloat += pawn.story.melanin * 0.05f + melanin1 * 0.05f + melanin2 * 0.05f;
 
                     float greySpan = Rand.Range(0.07f, 0.15f);
+
+                    greySpan += melanin1 * 0.15f;
 
                     float greyness = 0f;
 
@@ -169,18 +170,18 @@ namespace FacialStuff.Genetics
                     }
 
                     // Soften the greyness
-                    greyness *= 0.9f;
+                    //  greyness *= 0.95f;
 
                     // Even more - melanin
-                    if (PawnSkinColors.IsDarkSkin(pawn.story.SkinColor))
-                    {
-                        greyness *= Rand.Range(0.5f, 0.9f);
-                    }
-                     Log.Message(pawn.ToString());
-                     Log.Message(ageFloat.ToString());
-                     Log.Message(agingBeginGreyFloat.ToString());
-                     Log.Message(greySpan.ToString());
-                     Log.Message(greyness.ToString());
+                    // if (PawnSkinColors.IsDarkSkin(pawn.story.SkinColor))
+                    // {
+                    //     greyness *= Rand.Range(0.5f, 0.9f);
+                    // }
+                 // Log.Message(pawn.ToString());
+                 // Log.Message(ageFloat.ToString());
+                 // Log.Message(agingBeginGreyFloat.ToString());
+                 // Log.Message(greySpan.ToString());
+                 // Log.Message(greyness.ToString());
 
                     if (Rand.Value < 0.04f)
                     {
@@ -200,13 +201,13 @@ namespace FacialStuff.Genetics
                     {
                         pawn.story.hairColor = Color.Lerp(color, new Color(0.91f, 0.91f, 0.91f), greyness);
                     }
-                    face.sameBeardColor = Rand.Value > 0.2f;
+                    face.HasSameBeardColor = Rand.Value > 0.3f;
 
                     face.HairColorOrg = color;
 
-                    if (face.sameBeardColor)
+                    if (face.HasSameBeardColor)
                     {
-                        face.BeardColor = PawnHairColors_PostFix.DarkerBeardColor(color);
+                        face.BeardColor = PawnHairColors_PostFix.DarkerBeardColor(pawn.story.hairColor);
                     }
                     else
                     {
@@ -214,7 +215,7 @@ namespace FacialStuff.Genetics
 
                         color2 *= gradient_mel2.Evaluate(face.melanin2 + Rand.Range(-0.2f, 0.2f));
 
-                        face.BeardColor = color2;
+                        face.BeardColor = Color.Lerp(color2, new Color(0.91f, 0.91f, 0.91f), greyness * Rand.Value);
                     }
                 }
 

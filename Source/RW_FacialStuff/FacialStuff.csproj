@@ -62,13 +62,15 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.XML" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Genetics\Class1.cs" />
+    <Compile Include="PatchOperationFindMod.cs" />
+    <Compile Include="Genetics\HairMelanin.cs" />
     <Compile Include="Wiggler\PawnHeadWiggler.cs" />
     <Compile Include="Wiggler\PawnEyeWiggler.cs" />
     <None Include="BACKUP.cs" />
@@ -163,6 +165,7 @@
     </Content>
     <Content Include="..\..\Patches\HumanPatch.xml">
       <Link>Patches\HumanPatch.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup />
