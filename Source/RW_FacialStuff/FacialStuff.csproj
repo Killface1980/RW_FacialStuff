@@ -70,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Settings.cs" />
-    <Compile Include="PatchOperationFindMod.cs" />
+    <None Include="PatchOperationFindMod.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
     <Compile Include="Wiggler\PawnHeadWiggler.cs" />
     <Compile Include="Wiggler\PawnEyeWiggler.cs" />
@@ -92,7 +92,7 @@
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="Headhelper.cs" />
-    <Compile Include="NoCCL\DetourAttribute.cs" />
+    <None Include="NoCCL\DetourAttribute.cs" />
     <Compile Include="FacialStuff_Defs.cs" />
     <Compile Include="FaceStyling Bench\Dialog_FaceStyling.cs" />
     <Compile Include="FaceStyling Bench\Job_FaceStyling.cs" />
@@ -102,14 +102,13 @@
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphic_Multi_NaturalHeadParts.cs" />
-    <Compile Include="NoCCL\FS_SpecialInjector.cs" />
+    <None Include="NoCCL\FS_SpecialInjector.cs" />
     <Compile Include="MaskTextures.cs" />
     <Compile Include="Utilities\DialogUtility.cs" />
     <Compile Include="Controller.cs" />
-    <Compile Include="NoCCL\Detours.cs" />
-    <Compile Include="NoCCL\SpecialInjector.cs" />
-    <Compile Include="Detours\_PawnHairColors.cs" />
-    <Compile Include="Detours\_PawnSkinColors.cs" />
+    <None Include="NoCCL\Detours.cs" />
+    <None Include="NoCCL\SpecialInjector.cs" />
+    <Compile Include="PawnSkinColors_FS.cs" />
     <Compile Include="PawnFaceChooser.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

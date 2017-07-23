@@ -13,31 +13,94 @@ namespace FacialStuff.Detouring
 
     using static GraphicDatabaseHeadRecordsModded;
 
-    public static class SaveableCache
+    [StaticConstructorOnStartup]
+    class HarmonyPatches
     {
-        public static List<HaircutPawn> _pawnHairCache = new List<HaircutPawn>();
 
-        public static HaircutPawn GetHairCache(Pawn pawn)
+        static HarmonyPatches()
         {
-            foreach (HaircutPawn c in _pawnHairCache) if (c.Pawn == pawn) return c;
-            HaircutPawn n = new HaircutPawn { Pawn = pawn };
-            _pawnHairCache.Add(n);
-            return n;
+            HarmonyInstance harmony = HarmonyInstance.Create("com.facialstuff.rimworld.mod");
 
-            // if (!PawnApparelStatCaches.ContainsKey(pawn))
-            // {
-            // PawnApparelStatCaches.Add(pawn, new StatCache(pawn));
-            // }
-            // return PawnApparelStatCaches[pawn];
+            #region Graphics
+
+            harmony.Patch(
+                AccessTools.Method(typeof(PawnGraphicSet), nameof(PawnGraphicSet.ResolveAllGraphics)),
+                null,
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(ResolveAllGraphics_Postfix)));
+
+            harmony.Patch(
+                AccessTools.Method(
+                    typeof(PawnRenderer),
+                    "RenderPawnInternal",
+                    new Type[]
+                        {
+                            typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4),
+                            typeof(RotDrawMode), typeof(bool), typeof(bool)
+                        }),
+                new HarmonyMethod(typeof(HarmonyPatch_PawnRenderer), nameof(HarmonyPatch_PawnRenderer.RenderPawnInternal_Prefix)),
+                null,
+                null);
+
+            #endregion
+
+            #region HealthTracker
+
+            harmony.Patch(
+                AccessTools.Method(
+                    typeof(Pawn_HealthTracker),
+                    nameof(Pawn_HealthTracker.AddHediff),
+                    new[] { typeof(Hediff), typeof(BodyPartRecord), typeof(DamageInfo) }),
+                null,
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(AddHediff_Postfix)));
+
+            harmony.Patch(
+                AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.RestorePart)),
+                null,
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(RestorePart_Postfix)));
+
+            #endregion
+
+            harmony.Patch(
+                AccessTools.Method(typeof(PawnHairChooser), nameof(PawnHairChooser.RandomHairDefFor)),
+                null,
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(RandomHairDefFor_PostFix)));
+
+            #region SkinColors
+
+            harmony.Patch(
+                AccessTools.Method(typeof(PawnSkinColors), "GetSkinDataIndexOfMelanin"),
+                new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.GetSkinDataIndexOfMelanin_Prefix)),
+                null);
+
+            harmony.Patch(
+                AccessTools.Method(typeof(PawnSkinColors), nameof(PawnSkinColors.GetSkinColor)),
+                new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.GetSkinColor_Prefix)),
+                null);
+
+            harmony.Patch(
+                AccessTools.Method(typeof(PawnSkinColors), nameof(PawnSkinColors.GetSkinColor)),
+                new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.GetSkinColor_Prefix)),
+                null);
+
+            harmony.Patch(
+                AccessTools.Method(typeof(PawnSkinColors), nameof(PawnSkinColors.RandomMelanin)),
+                new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.RandomMelanin_Prefix)),
+                null);
+
+            harmony.Patch(
+                AccessTools.Method(typeof(PawnSkinColors), nameof(PawnSkinColors.GetMelaninCommonalityFactor)),
+                new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.GetMelaninCommonalityFactor_Prefix)),
+                null);
+
+            #endregion
+
+
+            //     harmony.PatchAll(Assembly.GetExecutingAssembly());
+
+            Log.Message("Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count() + " patches with harmony.");
+
         }
-    }
 
-    #region Graphics
-
-    [HarmonyPatch(typeof(PawnGraphicSet), "ResolveAllGraphics")]
-    static class ResolveAllGraphics_Patch
-    {
-        [HarmonyPostfix]
         public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)
         {
             Pawn pawn = __instance.pawn;
@@ -96,7 +159,7 @@ namespace FacialStuff.Detouring
                 if (faceComp.InitializeGraphics())
                 {
                     // Set up the hair cut graphic
-                    HaircutPawn hairPawn = SaveableCache.GetHairCache(pawn);
+                    HaircutPawn hairPawn = CutHairDb.GetHairCache(pawn);
                     hairPawn.HairCutGraphic = CutHairDb.Get<Graphic_Multi>(
                         pawn.story.hairDef.texPath,
                         ShaderDatabase.Cutout,
@@ -115,33 +178,9 @@ namespace FacialStuff.Detouring
                 }
             }
         }
-    }
 
-    #endregion
 
-    #region HealthTracker
-
-    [HarmonyPatch(
-        typeof(Pawn_HealthTracker),
-        "AddHediff",
-        new[] { typeof(Hediff), typeof(BodyPartRecord), typeof(DamageInfo) })]
-    public static class AddHediff_Postfix
-    {
-        private static Type PawnRendererType;
-
-        private static FieldInfo PawnFieldInfo;
-
-        private static void GetReflections()
-        {
-            if (PawnRendererType == null)
-            {
-                PawnRendererType = typeof(Pawn_HealthTracker);
-                PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
-            }
-        }
-
-        [HarmonyPostfix]
-        public static void CheckBionic(
+        public static void AddHediff_Postfix(
             Pawn_HealthTracker __instance,
             Hediff hediff,
             BodyPartRecord part = null,
@@ -163,15 +202,13 @@ namespace FacialStuff.Detouring
                 return;
             }
 
-            GetReflections();
-
             AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
             if (addedPartProps != null)
             {
                 if (part.def == BodyPartDefOf.LeftEye || part.def == BodyPartDefOf.RightEye
                     || part.def == BodyPartDefOf.Jaw)
                 {
-                    Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
+                    Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
                     if (pawn != null && pawn.Spawned)
                     {
                         pawn.Drawer.renderer.graphics.ResolveAllGraphics();
@@ -179,26 +216,8 @@ namespace FacialStuff.Detouring
                 }
             }
         }
-    }
 
-    [HarmonyPatch(typeof(Pawn_HealthTracker), "RestorePart")]
-    public static class RestorePart_Postfix
-    {
-        private static Type PawnRendererType;
-
-        private static FieldInfo PawnFieldInfo;
-
-        private static void GetReflections()
-        {
-            if (PawnRendererType == null)
-            {
-                PawnRendererType = typeof(Pawn_HealthTracker);
-                PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
-            }
-        }
-
-        [HarmonyPostfix]
-        public static void CheckBionic_RestorePart(
+        public static void RestorePart_Postfix(
             Pawn_HealthTracker __instance,
             BodyPartRecord part,
             Hediff diffException = null,
@@ -209,9 +228,8 @@ namespace FacialStuff.Detouring
                 return;
 
             }
-            GetReflections();
 
-            Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
+            Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
 
             if (part.def == BodyPartDefOf.LeftEye || part.def == BodyPartDefOf.RightEye
                 || part.def == BodyPartDefOf.Head)
@@ -221,17 +239,8 @@ namespace FacialStuff.Detouring
                 pawn.Drawer.renderer.graphics.ResolveAllGraphics();
             }
         }
-    }
 
-    #endregion
-
-    #region Hair 
-
-    [HarmonyPatch(typeof(PawnHairChooser), "RandomHairDefFor")]
-    public static class RandomHairDefFor_PostFix
-    {
-        [HarmonyPostfix]
-        public static void RandomHairDefFor(Pawn pawn, FactionDef factionType, ref HairDef __result)
+        public static void RandomHairDefFor_PostFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
         {
             if (pawn.TryGetComp<CompFace>() == null)
             {
@@ -243,8 +252,11 @@ namespace FacialStuff.Detouring
 
             __result = source.RandomElementByWeight(hair => PawnFaceChooser.HairChoiceLikelihoodFor(hair, pawn));
         }
+
     }
 
+
+    #region Hair 
     // [HarmonyPatch(typeof(PawnHairColors), "RandomHairColor")]
     public static class PawnHairColors_PostFix
     {
@@ -431,115 +443,4 @@ namespace FacialStuff.Detouring
     }
 
     #endregion
-
-    /*
-        #region Skin Color
-    
-        [HarmonyPatch(typeof(PawnSkinColors), "IsDarkSkin")]
-        public static class IsDarkSkin_PostFix
-        {
-    
-            [HarmonyPostfix]
-            public static void IsDarkSkin(ref bool __result, Color color)
-            {
-                Color skinColor = PawnSkinColors.GetSkinColor(0.5f);
-                __result = color.r + color.g + color.b <= skinColor.r + skinColor.g + skinColor.b + 0.01f;
-            }
-        }
-    
-        [HarmonyPatch(typeof(PawnSkinColors), "GetSkinColor")]
-        public static class GetSkinColor_PostFix
-        {
-            [HarmonyPostfix]
-            public static void GetSkinColor(ref Color __result, float melanin)
-            {
-                int skinDataLeftIndexByMelanin = 0;
-                GetSkinDataIndexOfMelanin_PostFix.GetSkinDataIndexOfMelanin(ref skinDataLeftIndexByMelanin, melanin);
-                if (skinDataLeftIndexByMelanin == _SkinColors.Length - 1)
-                {
-                    __result = _SkinColors[skinDataLeftIndexByMelanin].color;
-                    return;
-                }
-    
-                float t = Mathf.InverseLerp(_SkinColors[skinDataLeftIndexByMelanin].melanin, _SkinColors[skinDataLeftIndexByMelanin + 1].melanin, melanin);
-                __result = Color.Lerp(_SkinColors[skinDataLeftIndexByMelanin].color, _SkinColors[skinDataLeftIndexByMelanin + 1].color, t);
-            }
-    
-        }
-    
-        [HarmonyPatch(typeof(PawnSkinColors), "GetSkinDataIndexOfMelanin")]
-        public static class GetSkinDataIndexOfMelanin_PostFix
-        {
-            [HarmonyPostfix]
-            public static void GetSkinDataIndexOfMelanin(ref int __result, float melanin)
-            {
-                int result = 0;
-                for (int i = 0; i < _SkinColors.Length; i++)
-                {
-                    if (melanin < _SkinColors[i].melanin)
-                    {
-                        break;
-                    }
-    
-                    result = i;
-                }
-    
-                __result = result;
-            }
-    
-        }
-    
-        [HarmonyPatch(typeof(PawnSkinColors), "RandomMelanin")]
-        public static class RandomMelanin_PostFix
-        {
-            [HarmonyPostfix]
-            public static void RandomMelanin(ref float __result)
-            {
-                float value = Rand.Value;
-                int num = 0;
-                for (int i = 0; i < _SkinColors.Length; i++)
-                {
-                    if (value < _SkinColors[i].selector)
-                    {
-                        break;
-                    }
-    
-                    num = i;
-                }
-    
-                if (num == _SkinColors.Length - 1)
-                {
-                    __result = _SkinColors[num].melanin;
-                    return;
-                }
-    
-                float t = Mathf.InverseLerp(_SkinColors[num].selector, _SkinColors[num + 1].selector, value);
-                __result = Mathf.Lerp(_SkinColors[num].melanin, _SkinColors[num + 1].melanin, t);
-            }
-    
-        }
-    
-        [HarmonyPatch(typeof(PawnSkinColors), "GetMelaninCommonalityFactor")]
-        public static class GetMelaninCommonalityFactor_PostFix
-        {
-            [HarmonyPostfix]
-            public static void GetMelaninCommonalityFactor(ref float __result, float melanin)
-            {
-                int skinDataLeftIndexByWhiteness = 0;
-                GetSkinDataIndexOfMelanin_PostFix.GetSkinDataIndexOfMelanin(ref skinDataLeftIndexByWhiteness, melanin);
-                if (skinDataLeftIndexByWhiteness == _SkinColors.Length - 1)
-                {
-                    __result = GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness);
-                    return;
-                }
-    
-                float t = Mathf.InverseLerp(_SkinColors[skinDataLeftIndexByWhiteness].melanin, _SkinColors[skinDataLeftIndexByWhiteness + 1].melanin, melanin);
-                __result = Mathf.Lerp(GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness), GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness + 1), t);
-            }
-    
-        }
-    
-        #endregion
-    
-        */
 }

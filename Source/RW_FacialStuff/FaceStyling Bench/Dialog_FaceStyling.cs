@@ -526,18 +526,18 @@
                     GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
                         pawn.story.bodyType,
                         ShaderDatabase.CutoutSkin,
-                        _PawnSkinColors.GetSkinColor(this._newMelanin)),
+                        PawnSkinColors.GetSkinColor(this._newMelanin)),
                     pawn.def.uiIcon,
-                    _PawnSkinColors.GetSkinColor(this._newMelanin));
+                    PawnSkinColors.GetSkinColor(this._newMelanin));
 
                 this.SetGraphicSlot(
                     enums.GraphicSlotGroup.Head,
                     pawn,
                     GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(
                         pawn,
-                        _PawnSkinColors.GetSkinColor(this._newMelanin)),
+                        PawnSkinColors.GetSkinColor(this._newMelanin)),
                     pawn.def.uiIcon,
-                    _PawnSkinColors.GetSkinColor(this._newMelanin));
+                    PawnSkinColors.GetSkinColor(this._newMelanin));
             }
         }
 
@@ -1084,8 +1084,11 @@
 
             Widgets.DrawMenuSection(listRect);
 
-            Rect set = new Rect(selectionRect) { height = 30f, width = selectionRect.width / 2 - 10f };
-
+            Rect set = new Rect(selectionRect)
+                           {
+                               height = 30f, width = selectionRect.width / 2 - 10f
+                           };
+            set.y += 10f;
             // if (Widgets.ButtonText(set, "SelectFacePreset".Translate(), true, false))
             // {
             // var list = new List<FloatMenuOption>();
@@ -1355,17 +1358,17 @@
         // Blatantly stolen from Prepare Carefully
         private void DrawHumanlikeColorSelector(Rect melaninRect)
         {
-            int currentSwatchIndex = _PawnSkinColors.GetSkinDataIndexOfMelanin(this.NewMelanin);
-            Color currentSwatchColor = _PawnSkinColors._SkinColors[currentSwatchIndex].color;
+            int currentSwatchIndex = PawnSkinColors_FS.GetSkinDataIndexOfMelanin(this.NewMelanin);
+            Color currentSwatchColor = PawnSkinColors_FS._SkinColors[currentSwatchIndex].color;
 
             Rect swatchRect = new Rect(melaninRect.x, melaninRect.y, SwatchSize.x, SwatchSize.y);
 
             // Draw the swatch selection boxes.
-            int colorCount = _PawnSkinColors._SkinColors.Length;
+            int colorCount = PawnSkinColors_FS._SkinColors.Length;
             int clickedIndex = -1;
             for (int i = 0; i < colorCount; i++)
             {
-                Color color = _PawnSkinColors._SkinColors[i].color;
+                Color color = PawnSkinColors_FS._SkinColors[i].color;
 
                 // If the swatch is selected, draw a heavier border around it.
                 bool isThisSwatchSelected = i == currentSwatchIndex;
@@ -1421,7 +1424,7 @@
             // Figure out the lerp value so that we can draw the slider.
             float minValue = 0.00f;
             float maxValue = 0.99f;
-            float t = _PawnSkinColors.GetRelativeLerpValue(this.NewMelanin);
+            float t = PawnSkinColors_FS.GetRelativeLerpValue(this.NewMelanin);
             if (t < minValue)
             {
                 t = minValue;
@@ -1457,7 +1460,7 @@
                     currentSwatchIndex = clickedIndex;
                 }
 
-                float melaninLevel = _PawnSkinColors.GetValueFromRelativeLerp(currentSwatchIndex, newValue);
+                float melaninLevel = PawnSkinColors_FS.GetValueFromRelativeLerp(currentSwatchIndex, newValue);
                 this.NewMelanin = melaninLevel;
             }
         }

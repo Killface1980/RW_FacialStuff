@@ -107,5 +107,20 @@ namespace FacialStuff
             hairTex.Apply();
         }
 
+        public static List<HaircutPawn> _pawnHairCache = new List<HaircutPawn>();
+
+        public static HaircutPawn GetHairCache(Pawn pawn)
+        {
+            foreach (HaircutPawn c in _pawnHairCache) if (c.Pawn == pawn) return c;
+            HaircutPawn n = new HaircutPawn { Pawn = pawn };
+            _pawnHairCache.Add(n);
+            return n;
+
+            // if (!PawnApparelStatCaches.ContainsKey(pawn))
+            // {
+            // PawnApparelStatCaches.Add(pawn, new StatCache(pawn));
+            // }
+            // return PawnApparelStatCaches[pawn];
+        }
     }
 }

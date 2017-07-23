@@ -14,25 +14,11 @@ namespace FacialStuff
 {
     using FacialStuff.Detouring;
 
-    [StaticConstructorOnStartup]
-    class HarmonyPatches
-    {
-
-        static HarmonyPatches()
-        {
-            HarmonyInstance harmony = HarmonyInstance.Create("com.facialstuff.rimworld.mod");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
-
-            Log.Message("FacialStuff: Adding Harmony Prefix to PawnRenderer.RenderPawnInternal.");
-
-        }
-    }
-
-    [HarmonyPatch(typeof(PawnRenderer), "RenderPawnInternal", new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) })]
-    public static class PawnRenderer_RenderPawnInternal
+ //   [HarmonyPatch(typeof(PawnRenderer), "RenderPawnInternal", new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) })]
+    public static class HarmonyPatch_PawnRenderer
     {
         private static Type PawnRendererType;
-        private static FieldInfo PawnFieldInfo;
+       // private static FieldInfo PawnFieldInfo;
         private static FieldInfo WoundOverlayFieldInfo;
         private static MethodInfo DrawEquipmentMethodInfo;
         private static FieldInfo PawnHeadOverlaysFieldInfo;
@@ -68,20 +54,20 @@ namespace FacialStuff
             if (PawnRendererType == null)
             {
                 PawnRendererType = typeof(PawnRenderer);
-                PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
+               // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
                 WoundOverlayFieldInfo = PawnRendererType.GetField("woundOverlays", BindingFlags.NonPublic | BindingFlags.Instance);
                 DrawEquipmentMethodInfo = PawnRendererType.GetMethod("DrawEquipment", BindingFlags.NonPublic | BindingFlags.Instance);
                 PawnHeadOverlaysFieldInfo = PawnRendererType.GetField("statusOverlays", BindingFlags.NonPublic | BindingFlags.Instance);
             }
         }
 
-        [HarmonyAfter("rimworld.erdelf.alien_race.main")]
-        public static bool Prefix(PawnRenderer __instance, Vector3 rootLoc, Quaternion quat, bool renderBody, Rot4 bodyFacing, Rot4 headFacing, RotDrawMode bodyDrawType, bool portrait, bool headStump)
+   //     [HarmonyAfter("rimworld.erdelf.alien_race.main")]
+        public static bool RenderPawnInternal_Prefix(PawnRenderer __instance, Vector3 rootLoc, Quaternion quat, bool renderBody, Rot4 bodyFacing, Rot4 headFacing, RotDrawMode bodyDrawType, bool portrait, bool headStump)
         {
             GetReflections();
-            Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
+           // Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
 
-            // Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
+            Pawn pawn = __instance.graphics.pawn;
 
             CompFace faceComp = pawn.TryGetComp<CompFace>();
 
@@ -291,7 +277,7 @@ namespace FacialStuff
                                     hatVisible = true;
                                     if (Controller.settings.MergeHair)
                                     {
-                                        HaircutPawn hairPawn = SaveableCache.GetHairCache(pawn);
+                                        HaircutPawn hairPawn = CutHairDb.GetHairCache(pawn);
                                         Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
                                         if (hairCutMat != null)
                                         {

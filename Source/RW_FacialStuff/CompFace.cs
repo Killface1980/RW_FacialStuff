@@ -694,6 +694,7 @@ namespace FacialStuff
             Scribe_Values.Look(ref this.melanin1, "melanin1");
             Scribe_Values.Look(ref this.melanin2, "melanin2");
             Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
+            Scribe_Values.Look(ref this.IsSkinDNAoptimized, "IsSkinDNAoptimized");
             Scribe_Values.Look(ref this.IsDNAoptimized, "DNAoptimized");
 
             Scribe_Values.Look(ref this.MelaninOrg, "MelaninOrg");

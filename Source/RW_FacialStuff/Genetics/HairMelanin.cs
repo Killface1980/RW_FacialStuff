@@ -146,9 +146,9 @@ namespace FacialStuff.Genetics
                 gck[1].color = new Color32(184, 139, 96, 255);
                 gck[1].time = 0.2f;
                 gck[2].color = new Color32(110, 59, 13, 255);
-                gck[2].time = 0.6f;
+                gck[2].time = 0.7f;
                 gck[3].color = new Color32(30, 14, 0, 255);
-                gck[3].time = 0.85f;
+                gck[3].time = 0.95f;
                 gradient_mel1.SetKeys(gck, gak);
 
                 var color = gradient_mel1.Evaluate(face.melanin1);
@@ -189,36 +189,40 @@ namespace FacialStuff.Genetics
 
                     var factionColor = Rand.Value;
                     var limit = 0.98f;
-                    if (pawn.Faction.def == FactionDefOf.Outlander)
+
+                    if (Controller.settings.UseDNAByFaction)
                     {
-                        limit *= 0.8f;
-                    }
-                    if (pawn.Faction.def == FactionDefOf.Pirate)
-                    {
-                        limit *= 0.5f;
+                        if (pawn.Faction.def == FactionDefOf.Outlander)
+                        {
+                            limit *= 0.8f;
+                        }
+                        if (pawn.Faction.def == FactionDefOf.Pirate)
+                        {
+                            limit *= 0.5f;
+                        }
                     }
 
-                        if (factionColor > limit)
-                        {
-                            Color color2;
-                            float rand = Rand.Value;
-                            if (rand < 0.1f) color2 = HairDarkPurple;
-                            else if (rand < 0.2f) color2 = HairBlueSteel;
-                            else if (rand < 0.3f) color2 = HairBurgundyBistro;
-                            else if (rand < 0.4f) color2 = HairGreenGrape;
-                            else if (rand < 0.5f) color2 = HairMysticTurquois;
-                            else if (rand < 0.6f) color2 = HairPinkPearl;
-                            else if (rand < 0.7f) color2 = HairPurplePassion;
-                            else if (rand < 0.8f) color2 = HairRosaRosa;
-                            else if (rand < 0.9f) color2 = HairRubyRed;
-                            else color2 = HairUltraViolet;
+                    if (factionColor > limit)
+                    {
+                        Color color2;
+                        float rand = Rand.Value;
+                        if (rand < 0.1f) color2 = HairDarkPurple;
+                        else if (rand < 0.2f) color2 = HairBlueSteel;
+                        else if (rand < 0.3f) color2 = HairBurgundyBistro;
+                        else if (rand < 0.4f) color2 = HairGreenGrape;
+                        else if (rand < 0.5f) color2 = HairMysticTurquois;
+                        else if (rand < 0.6f) color2 = HairPinkPearl;
+                        else if (rand < 0.7f) color2 = HairPurplePassion;
+                        else if (rand < 0.8f) color2 = HairRosaRosa;
+                        else if (rand < 0.9f) color2 = HairRubyRed;
+                        else color2 = HairUltraViolet;
 
-                            pawn.story.hairColor = Color.Lerp(color,color2, Rand.Range(0.66f, 1f));
-                        }
-                        else
-                        {
-                            pawn.story.hairColor = Color.Lerp(color, new Color(0.91f, 0.91f, 0.91f), greyness);
-                        }
+                        pawn.story.hairColor = Color.Lerp(color, color2, Rand.Range(0.66f, 1f));
+                    }
+                    else
+                    {
+                        pawn.story.hairColor = Color.Lerp(color, new Color(0.91f, 0.91f, 0.91f), greyness);
+                    }
 
                     face.HasSameBeardColor = Rand.Value > 0.3f;
 
@@ -245,10 +249,8 @@ namespace FacialStuff.Genetics
         public static void SkinGenetics(Pawn pawn, CompFace face, out float factionMelanin)
         {
             factionMelanin = pawn.story.melanin;
-            if (pawn.Faction.def != FactionDefOf.Tribe && pawn.Faction.def != FactionDefOf.PlayerTribe)
-            {
-                return;
-            }
+            bool isTribal = pawn.Faction?.def == FactionDefOf.Tribe || pawn.Faction?.def == FactionDefOf.PlayerTribe;
+            bool isSpacer = pawn.Faction?.def == FactionDefOf.Spacer || pawn.Faction?.def == FactionDefOf.SpacerHostile;
 
             if (face == null)
             {
@@ -307,9 +309,28 @@ namespace FacialStuff.Genetics
                 }
                 if (flag)
                 {
-                    SimpleCurve curve = new SimpleCurve { new CurvePoint(0f, 0.6f), new CurvePoint(1f, 1f) };
-
-                    factionMelanin = curve.Evaluate(pawn.story.melanin);
+                    if (isTribal)
+                    {
+                        SimpleCurve curve =
+                            new SimpleCurve
+                                {
+                                    new CurvePoint(0f, 0f),
+                                    new CurvePoint(0.2f, 0.5f),
+                                    new CurvePoint(1f, 1f)
+                                };
+                        factionMelanin = curve.Evaluate(pawn.story.melanin);
+                    }
+                    if (isSpacer)
+                    {
+                        SimpleCurve curve =
+                            new SimpleCurve
+                                {
+                                    new CurvePoint(0f, 0.0f),
+                                    new CurvePoint(0.5f, 0.25f),
+                                    new CurvePoint(1f, 1f)
+                                };
+                        factionMelanin = curve.Evaluate(pawn.story.melanin);
+                    }
                 }
             }
 
