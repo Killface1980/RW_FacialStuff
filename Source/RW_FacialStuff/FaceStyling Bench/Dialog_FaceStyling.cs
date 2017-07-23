@@ -569,6 +569,7 @@
                         pawn.story.hairColor = this.NewHairColour;
                         pawn.story.hairDef = this.NewHair;
                         pawn.story.melanin = this.NewMelanin;
+                        faceComp.MelaninOrg = this.NewMelanin;
 
                         if (faceComp != null)
                         {
@@ -996,7 +997,7 @@
 
             // pawnMouthRect.y += 10f;
             Rect pawnRect = new Rect(0f, 0f, _previewSize, _previewSize);
-            Rect labelRect = new Rect(0f, pawnRect.yMax - vector.y, vector.x, vector.y);
+            Rect labelRect = new Rect(0f, pawnRect.yMax - vector.y-10f, vector.x, vector.y);
             Rect melaninRect = new Rect(2f, labelRect.yMax + _margin, _previewSize - 5f, 65f);
             Rect selectionRect = new Rect(0f, melaninRect.yMax + _margin, _previewSize, _previewSize);
             Rect listRect = new Rect(_previewSize + _margin, 0f, _listWidth, parentRect.height - _margin * 2);
@@ -1076,7 +1077,9 @@
 
             // float spacing = 10f;
             if (faceComp != null)
+            {
                 this.DrawHumanlikeColorSelector(melaninRect);
+            }
 
 
             Widgets.DrawMenuSection(listRect);
@@ -1343,7 +1346,7 @@
             return result;
         }
 
-        private static Vector2 SwatchSize = new Vector2(14, 14);
+        private static Vector2 SwatchSize = new Vector2(13, 14);
         private static Vector2 SwatchSpacing = new Vector2(20, 20);
         private static Color ColorSwatchBorder = new Color(0.77255f, 0.77255f, 0.77255f);
         private static Color ColorSwatchSelection = new Color(0.9098f, 0.9098f, 0.9098f);
@@ -1358,7 +1361,7 @@
             Rect swatchRect = new Rect(melaninRect.x, melaninRect.y, SwatchSize.x, SwatchSize.y);
 
             // Draw the swatch selection boxes.
-            int colorCount = _PawnSkinColors._SkinColors.Length - 1;
+            int colorCount = _PawnSkinColors._SkinColors.Length;
             int clickedIndex = -1;
             for (int i = 0; i < colorCount; i++)
             {

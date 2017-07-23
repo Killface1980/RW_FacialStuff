@@ -11,8 +11,6 @@ namespace FacialStuff.Detouring
     using System.Linq;
     using System.Reflection;
 
-    using RW_FacialStuff;
-
     using static GraphicDatabaseHeadRecordsModded;
 
     public static class SaveableCache
@@ -52,10 +50,20 @@ namespace FacialStuff.Detouring
                 return;
             }
 
+            if (pawn.Faction == null)
+            {
+                pawn.SetFactionDirect(Faction.OfPlayer);
+            }
+
             BuildDatabaseIfNecessary();
 
             // Custom rotting color, mixed with skin wone
             Color rotColor = pawn.story.SkinColor * Headhelper.skinRottingMultiplyColor;
+
+            if (faceComp.FacePawn == null)
+            {
+                faceComp.SetFaceOwner(pawn);
+            }
 
             // Inital definition of a pawn's appearance. Run only once - ever.
             if (!faceComp.IsOptimized)
@@ -63,19 +71,25 @@ namespace FacialStuff.Detouring
                 faceComp.DefineFace();
             }
 
-            // Added in 0.17.3 beta, needs to be separate till major update A18
-            if (FS_Settings.UseHairDNA)
+            if (!faceComp.IsSkinDNAoptimized)
             {
-                if (!faceComp.IsDNAoptimized)
-                {
-                    faceComp.DefineDNA();
-                }
+                faceComp.DefineSkinDNA();
+            }
+            if (!faceComp.IsDNAoptimized)
+            {
+                faceComp.DefineHairDNA();
+            }
+
+            // Added in 0.17.3 beta, needs to be separate till major update A18
+            if (Controller.settings.UseHairDNA)
+            {
                 __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(
                     pawn.story.hairDef.texPath,
                     ShaderDatabase.Cutout,
                     Vector2.one,
                     pawn.story.hairColor);
             }
+
 
             if (faceComp.SetHeadType())
             {
@@ -89,6 +103,7 @@ namespace FacialStuff.Detouring
                         Vector2.one,
                         pawn.story.hairColor);
 
+                    __instance.nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
                     __instance.headGraphic = GetModdedHeadNamed(pawn, pawn.story.SkinColor);
                     __instance.desiccatedHeadGraphic = GetModdedHeadNamed(pawn, rotColor);
                     __instance.desiccatedHeadStumpGraphic = GetStump(rotColor);
@@ -132,7 +147,7 @@ namespace FacialStuff.Detouring
             BodyPartRecord part = null,
             DamageInfo? dinfo = null)
         {
-            if (!FS_Settings.ShowExtraParts)
+            if (!Controller.settings.ShowExtraParts)
             {
                 return;
 
@@ -189,7 +204,7 @@ namespace FacialStuff.Detouring
             Hediff diffException = null,
             bool checkStateChange = true)
         {
-            if (!FS_Settings.ShowExtraParts)
+            if (!Controller.settings.ShowExtraParts)
             {
                 return;
 
@@ -230,7 +245,7 @@ namespace FacialStuff.Detouring
         }
     }
 
-   // [HarmonyPatch(typeof(PawnHairColors), "RandomHairColor")]
+    // [HarmonyPatch(typeof(PawnHairColors), "RandomHairColor")]
     public static class PawnHairColors_PostFix
     {
         public static Color HairPlatinum = new Color32(255, 245, 226, 255);

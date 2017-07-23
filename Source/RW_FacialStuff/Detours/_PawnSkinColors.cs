@@ -74,9 +74,13 @@ namespace FacialStuff.Detouring
                     0.9f,
                     new Color32(127, 71, 51, 255)),
                 new SkinColorData(
-                    1f,
-                    1f,
+                    0.95f,
+                    0.95f,
                     new Color32(101, 56, 41, 255)),
+            new SkinColorData(
+                    1f,
+                    1f,
+                    new Color32(75, 38, 26, 255)),
 
                 // Vanilla
 

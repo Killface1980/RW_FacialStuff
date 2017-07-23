@@ -12,8 +12,6 @@ namespace FacialStuff
     using RimWorld;
     using RimWorld.Planet;
 
-    using RW_FacialStuff;
-
     using UnityEngine;
 
     using Verse;
@@ -63,7 +61,7 @@ namespace FacialStuff
 
         public Graphic_Multi_NaturalHeadParts MouthGraphic;
 
-        public Pawn pawn;
+        private Pawn facePawn;
 
         public int rotationInt;
 
@@ -112,11 +110,19 @@ namespace FacialStuff
         private string texPathEyeRightPatch;
         private Graphic wrinkleGraphic;
 
+        public float MelaninOrg;
+
+        public float factionMelanin;
+
+        public bool IsSkinDNAoptimized;
+
         #endregion Fields
 
         #region Properties
 
         public GraphicMeshSet MouthMeshSet => MeshPoolFs.HumanlikeMouthSet[(int)this.fullHeadType];
+
+        public Pawn FacePawn  => this.facePawn; 
 
         #endregion Properties
 
@@ -135,39 +141,39 @@ namespace FacialStuff
                     case HeadType.Normal:
                         if (male)
                         {
-                            headTypeX = FS_Settings.MaleAverageNormalOffsetX;
-                            headTypeY = FS_Settings.MaleAverageNormalOffsetY;
+                            headTypeX = Controller.settings.MaleAverageNormalOffsetX;
+                            headTypeY = Controller.settings.MaleAverageNormalOffsetY;
                         }
                         else
                         {
-                            headTypeX = FS_Settings.FemaleAverageNormalOffsetX;
-                            headTypeY = FS_Settings.FemaleAverageNormalOffsetY;
+                            headTypeX = Controller.settings.FemaleAverageNormalOffsetX;
+                            headTypeY = Controller.settings.FemaleAverageNormalOffsetY;
                         }
                         break;
 
                     case HeadType.Pointy:
                         if (male)
                         {
-                            headTypeX = FS_Settings.MaleAveragePointyOffsetX;
-                            headTypeY = FS_Settings.MaleAveragePointyOffsetY;
+                            headTypeX = Controller.settings.MaleAveragePointyOffsetX;
+                            headTypeY = Controller.settings.MaleAveragePointyOffsetY;
                         }
                         else
                         {
-                            headTypeX = FS_Settings.FemaleAveragePointyOffsetX;
-                            headTypeY = FS_Settings.FemaleAveragePointyOffsetY;
+                            headTypeX = Controller.settings.FemaleAveragePointyOffsetX;
+                            headTypeY = Controller.settings.FemaleAveragePointyOffsetY;
                         }
                         break;
 
                     case HeadType.Wide:
                         if (male)
                         {
-                            headTypeX = FS_Settings.MaleAverageWideOffsetX;
-                            headTypeY = FS_Settings.MaleAverageWideOffsetY;
+                            headTypeX = Controller.settings.MaleAverageWideOffsetX;
+                            headTypeY = Controller.settings.MaleAverageWideOffsetY;
                         }
                         else
                         {
-                            headTypeX = FS_Settings.FemaleAverageWideOffsetX;
-                            headTypeY = FS_Settings.FemaleAverageWideOffsetY;
+                            headTypeX = Controller.settings.FemaleAverageWideOffsetX;
+                            headTypeY = Controller.settings.FemaleAverageWideOffsetY;
                         }
                         break;
                 }
@@ -179,39 +185,39 @@ namespace FacialStuff
                     case HeadType.Normal:
                         if (male)
                         {
-                            headTypeX = FS_Settings.MaleNarrowNormalOffsetX;
-                            headTypeY = FS_Settings.MaleNarrowNormalOffsetY;
+                            headTypeX = Controller.settings.MaleNarrowNormalOffsetX;
+                            headTypeY = Controller.settings.MaleNarrowNormalOffsetY;
                         }
                         else
                         {
-                            headTypeX = FS_Settings.FemaleNarrowNormalOffsetX;
-                            headTypeY = FS_Settings.FemaleNarrowNormalOffsetY;
+                            headTypeX = Controller.settings.FemaleNarrowNormalOffsetX;
+                            headTypeY = Controller.settings.FemaleNarrowNormalOffsetY;
                         }
                         break;
 
                     case HeadType.Pointy:
                         if (male)
                         {
-                            headTypeX = FS_Settings.MaleNarrowPointyOffsetX;
-                            headTypeY = FS_Settings.MaleNarrowPointyOffsetY;
+                            headTypeX = Controller.settings.MaleNarrowPointyOffsetX;
+                            headTypeY = Controller.settings.MaleNarrowPointyOffsetY;
                         }
                         else
                         {
-                            headTypeX = FS_Settings.FemaleNarrowPointyOffsetX;
-                            headTypeY = FS_Settings.FemaleNarrowPointyOffsetY;
+                            headTypeX = Controller.settings.FemaleNarrowPointyOffsetX;
+                            headTypeY = Controller.settings.FemaleNarrowPointyOffsetY;
                         }
                         break;
 
                     case HeadType.Wide:
                         if (male)
                         {
-                            headTypeX = FS_Settings.MaleNarrowWideOffsetX;
-                            headTypeY = FS_Settings.MaleNarrowWideOffsetY;
+                            headTypeX = Controller.settings.MaleNarrowWideOffsetX;
+                            headTypeY = Controller.settings.MaleNarrowWideOffsetY;
                         }
                         else
                         {
-                            headTypeX = FS_Settings.FemaleNarrowWideOffsetX;
-                            headTypeY = FS_Settings.FemaleNarrowWideOffsetY;
+                            headTypeX = Controller.settings.FemaleNarrowWideOffsetX;
+                            headTypeY = Controller.settings.FemaleNarrowWideOffsetY;
                         }
                         break;
                 }
@@ -236,13 +242,13 @@ namespace FacialStuff
             }
 
             Material material = null;
-            if (this.pawn.gender == Gender.Male)
+            if (this.FacePawn.gender == Gender.Male)
             {
                 material = this.beardGraphic.MatAt(facing);
 
                 if (material != null)
                 {
-                    material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                    material = this.FacePawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
                 }
             }
 
@@ -256,7 +262,7 @@ namespace FacialStuff
 
             if (material != null)
             {
-                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                material = this.FacePawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -264,7 +270,7 @@ namespace FacialStuff
 
         public string BrowTexPath(BrowDef browDef)
         {
-            return "Brows/" + this.pawn.gender + "/Brow_" + this.pawn.gender + "_" + browDef.texPath;
+            return "Brows/" + this.FacePawn.gender + "/Brow_" + this.FacePawn.gender + "_" + browDef.texPath;
         }
 
         public Material DeadEyeMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
@@ -281,7 +287,7 @@ namespace FacialStuff
 
             if (material != null)
             {
-                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                material = this.FacePawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -290,10 +296,16 @@ namespace FacialStuff
         /// <summary>
         /// Sets the hair melanin for pawns. Checks for relatives by blood to be consistent within the family.
         /// </summary>
-        public void DefineDNA()
+        public void DefineHairDNA()
         {
-            HairMelanin.Genetics(this.pawn, this, out this.melanin1, out this.melanin2);
+            HairMelanin.HairGenetics(this.FacePawn, this, out this.melanin1, out this.melanin2);
             this.IsDNAoptimized = true;
+        }
+
+        public void DefineSkinDNA()
+        {
+            HairMelanin.SkinGenetics(this.FacePawn, this, out this.factionMelanin);
+            this.IsSkinDNAoptimized = true;
         }
 
         /// <summary>
@@ -301,43 +313,37 @@ namespace FacialStuff
         /// </summary>
         public void DefineFace()
         {
-            this.pawn = this.parent as Pawn;
 
             // Log.Message("FS " + this.pawn);
-            if (this.pawn == null)
+            if (this.FacePawn == null)
             {
                 // Log.Message("Pawn is null, returning. ");
                 return;
             }
 
             // Log.Message("Choosing eyes... ");
-            FactionDef faction = this.pawn.Faction?.def;
+            FactionDef faction = this.FacePawn.Faction?.def;
 
-            if (faction == null)
-            {
-                faction = FactionDefOf.PlayerColony;
-            }
-
-            this.EyeDef = PawnFaceChooser.RandomEyeDefFor(this.pawn, faction);
+            this.EyeDef = PawnFaceChooser.RandomEyeDefFor(this.FacePawn, faction);
 
             // Log.Message(EyeDef.defName);
-            this.BrowDef = PawnFaceChooser.RandomBrowDefFor(this.pawn, faction);
+            this.BrowDef = PawnFaceChooser.RandomBrowDefFor(this.FacePawn, faction);
 
             // Log.Message(BrowDef.defName);
-            this.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(this.pawn);
+            this.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(this.FacePawn);
 
             // Log.Message(WrinkleDef.defName);
 
             // this.MouthDef = PawnFaceChooser.RandomMouthDefFor(this.pawn, this.pawn.Faction.def);
-            this.BeardDef = PawnFaceChooser.RandomBeardDefFor(this.pawn, faction);
+            this.BeardDef = PawnFaceChooser.RandomBeardDefFor(this.FacePawn, faction);
 
             // Log.Message(BeardDef.defName);
-            this.HairColorOrg = this.pawn.story.hairColor;
+            this.HairColorOrg = this.FacePawn.story.hairColor;
 
             this.HasSameBeardColor = Rand.Value > 0.2f;
             if (this.HasSameBeardColor)
             {
-                this.BeardColor = PawnHairColors_PostFix.DarkerBeardColor(this.pawn.story.hairColor);
+                this.BeardColor = PawnHairColors_PostFix.DarkerBeardColor(this.FacePawn.story.hairColor);
             }
             else
             {
@@ -359,7 +365,7 @@ namespace FacialStuff
 
             if (!portrait)
             {
-                if (FS_Settings.MakeThemBlink)
+                if (Controller.settings.MakeThemBlink)
                 {
                     if (this.eyeWiggler.leftCanBlink)
                     {
@@ -382,7 +388,7 @@ namespace FacialStuff
 
             if (material != null)
             {
-                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                material = this.FacePawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -394,7 +400,7 @@ namespace FacialStuff
 
             if (material != null)
             {
-                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                material = this.FacePawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -412,7 +418,7 @@ namespace FacialStuff
 
             if (!portrait)
             {
-                if (FS_Settings.MakeThemBlink)
+                if (Controller.settings.MakeThemBlink)
                 {
                     if (this.eyeWiggler.rightCanBlink)
                     {
@@ -435,7 +441,7 @@ namespace FacialStuff
 
             if (material != null)
             {
-                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                material = this.FacePawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -447,7 +453,7 @@ namespace FacialStuff
 
             if (material != null)
             {
-                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                material = this.FacePawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -463,7 +469,7 @@ namespace FacialStuff
         {
 
 
-            string path = "Eyes/Eye_" + eyeDefPath + "_" + this.pawn.gender + "_" + side;
+            string path = "Eyes/Eye_" + eyeDefPath + "_" + this.FacePawn.gender + "_" + side;
 
             return path;
 
@@ -477,15 +483,20 @@ namespace FacialStuff
         /// <returns>True if all went well.</returns>
         public bool InitializeGraphics()
         {
-            if (this.pawn == null)
+            if (this.FacePawn == null)
             {
                 return false;
             }
 
+            if (this.FacePawn.Dead)
+            {
+                
+            }
+
             Color wrinkleColor = Color.Lerp(
-                this.pawn.story.SkinColor,
-                this.pawn.story.SkinColor * this.pawn.story.SkinColor,
-                Mathf.InverseLerp(50f, 100f, this.pawn.ageTracker.AgeBiologicalYearsFloat));
+                this.FacePawn.story.SkinColor,
+                this.FacePawn.story.SkinColor * this.FacePawn.story.SkinColor,
+                Mathf.InverseLerp(50f, 100f, this.FacePawn.ageTracker.AgeBiologicalYearsFloat));
 
             this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 this.WrinkleDef.texPath + "_" + this.crownType + "_" + this.headType,
@@ -499,15 +510,15 @@ namespace FacialStuff
                 Vector2.one,
                 wrinkleColor * Headhelper.skinRottingMultiplyColor);
 
-            string path = this.BeardDef.texPath + "_" + this.crownType + "_" + this.headType;
+            string beardDefTexPath = this.BeardDef.texPath + "_" + this.crownType + "_" + this.headType;
 
             if (this.BeardDef == DefDatabase<BeardDef>.GetNamed("Beard_Shaved"))
             {
-                path = this.BeardDef.texPath;
+                beardDefTexPath = this.BeardDef.texPath;
             }
 
             this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                path,
+                beardDefTexPath,
                 ShaderDatabase.Transparent,
                 Vector2.one,
                 this.BeardColor);
@@ -566,7 +577,7 @@ namespace FacialStuff
                                       this.texPathEyeLeft,
                                       ShaderDatabase.Transparent,
                                       Vector2.one,
-                                      this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
+                                      this.FacePawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
             this.eyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                             this.texPathEyeLeftClosed,
                                             ShaderDatabase.Transparent,
@@ -577,7 +588,7 @@ namespace FacialStuff
                                        this.texPathEyeRight,
                                        ShaderDatabase.Transparent,
                                        Vector2.one,
-                                       this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
+                                       this.FacePawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
             this.eyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                              this.texPathEyeRightClosed,
                                              ShaderDatabase.Transparent,
@@ -593,13 +604,13 @@ namespace FacialStuff
             Material material = null;
             if (this.HasNaturalMouth)
             {
-                if (!FS_Settings.UseMouth || !this.drawMouth)
+                if (!Controller.settings.UseMouth || !this.drawMouth)
                 {
                     return null;
                 }
             }
 
-            bool flag = this.pawn.gender == Gender.Female;
+            bool flag = this.FacePawn.gender == Gender.Female;
 
             if (flag || !flag && this.BeardDef.drawMouth || !this.BeardDef.drawMouth && !this.HasNaturalMouth)
             {
@@ -614,7 +625,7 @@ namespace FacialStuff
 
                 if (material != null)
                 {
-                    material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                    material = this.FacePawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
                 }
             }
 
@@ -628,7 +639,7 @@ namespace FacialStuff
         public override void PostDraw()
         {
             base.PostDraw();
-            if (!this.pawn.Spawned)
+            if (!this.FacePawn.Spawned)
             {
                 return;
             }
@@ -641,7 +652,7 @@ namespace FacialStuff
             this._viewRect = Find.CameraDriver.CurrentViewRect;
             this._viewRect = this._viewRect.ExpandedBy(5);
 
-            if (!this._viewRect.Contains(this.pawn.Position))
+            if (!this._viewRect.Contains(this.FacePawn.Position))
             {
                 return;
             }
@@ -662,7 +673,7 @@ namespace FacialStuff
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_References.Look(ref this.pawn, "Pawn");
+            Scribe_References.Look(ref this.facePawn, "facePawn");
 
             Scribe_Defs.Look(ref this.EyeDef, "EyeDef");
             Scribe_Defs.Look(ref this.BrowDef, "BrowDef");
@@ -682,7 +693,10 @@ namespace FacialStuff
 
             Scribe_Values.Look(ref this.melanin1, "melanin1");
             Scribe_Values.Look(ref this.melanin2, "melanin2");
+            Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
             Scribe_Values.Look(ref this.IsDNAoptimized, "DNAoptimized");
+
+            Scribe_Values.Look(ref this.MelaninOrg, "MelaninOrg");
         }
 
         /// <summary>
@@ -691,21 +705,21 @@ namespace FacialStuff
         /// <returns>Success</returns>
         public bool SetHeadType()
         {
-            if (this.pawn == null)
+            if (this.FacePawn == null)
             {
                 return false;
             }
 
-            this.eyeWiggler = new PawnEyeWiggler(this.pawn);
+            this.eyeWiggler = new PawnEyeWiggler(this.FacePawn);
 
             // this.headWiggler = new PawnHeadWiggler(this.pawn);
-            this.IsOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
+            this.IsOld = this.FacePawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
 
             this.SetHeadAndCrownType();
 
             this.ResetBoolsAndPaths();
 
-            if (FS_Settings.ShowExtraParts)
+            if (Controller.settings.ShowExtraParts)
             {
                 this.CheckForAddedOrMissingParts();
             }
@@ -718,7 +732,7 @@ namespace FacialStuff
         public Material WrinkleMatAt(Rot4 facing, RotDrawMode bodyCondition)
         {
             Material material = null;
-            if (this.IsOld && FS_Settings.UseWrinkles)
+            if (this.IsOld && Controller.settings.UseWrinkles)
             {
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
@@ -732,7 +746,7 @@ namespace FacialStuff
 
             if (material != null)
             {
-                material = this.pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                material = this.FacePawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -740,8 +754,8 @@ namespace FacialStuff
 
         private void CheckForAddedOrMissingParts()
         {
-            List<BodyPartRecord> body = this.pawn.RaceProps.body.AllParts;
-            foreach (Hediff hediff in this.pawn.health.hediffSet.hediffs)
+            List<BodyPartRecord> body = this.FacePawn.RaceProps.body.AllParts;
+            foreach (Hediff hediff in this.FacePawn.health.hediffSet.hediffs)
             {
                 BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
                 BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
@@ -822,22 +836,22 @@ namespace FacialStuff
 
         private void SetHeadAndCrownType()
         {
-            if (this.pawn.story.HeadGraphicPath.Contains("Normal"))
+            if (this.FacePawn.story.HeadGraphicPath.Contains("Normal"))
             {
                 this.headType = HeadType.Normal;
             }
 
-            if (this.pawn.story.HeadGraphicPath.Contains("Pointy"))
+            if (this.FacePawn.story.HeadGraphicPath.Contains("Pointy"))
             {
                 this.headType = HeadType.Pointy;
             }
 
-            if (this.pawn.story.HeadGraphicPath.Contains("Wide"))
+            if (this.FacePawn.story.HeadGraphicPath.Contains("Wide"))
             {
                 this.headType = HeadType.Wide;
             }
 
-            if (this.pawn.story.crownType == CrownType.Narrow)
+            if (this.FacePawn.story.crownType == CrownType.Narrow)
             {
                 this.crownType = CrownType.Narrow;
             }
@@ -849,7 +863,7 @@ namespace FacialStuff
 
         private void SetHeadOffsets()
         {
-            if (this.pawn.gender == Gender.Male)
+            if (this.FacePawn.gender == Gender.Male)
             {
                 if (this.crownType == CrownType.Average)
                 {
@@ -857,20 +871,20 @@ namespace FacialStuff
                     {
                         case HeadType.Normal:
                             this.fullHeadType = FullHead.MaleAverageNormal;
-                            this.headTypeX = FS_Settings.MaleAverageNormalOffsetX;
-                            this.headTypeY = FS_Settings.MaleAverageNormalOffsetY;
+                            this.headTypeX = Controller.settings.MaleAverageNormalOffsetX;
+                            this.headTypeY = Controller.settings.MaleAverageNormalOffsetY;
                             break;
 
                         case HeadType.Pointy:
                             this.fullHeadType = FullHead.MaleAveragePointy;
-                            this.headTypeX = FS_Settings.MaleAveragePointyOffsetX;
-                            this.headTypeY = FS_Settings.MaleAveragePointyOffsetY;
+                            this.headTypeX = Controller.settings.MaleAveragePointyOffsetX;
+                            this.headTypeY = Controller.settings.MaleAveragePointyOffsetY;
                             break;
 
                         case HeadType.Wide:
                             this.fullHeadType = FullHead.MaleAverageWide;
-                            this.headTypeX = FS_Settings.MaleAverageWideOffsetX;
-                            this.headTypeY = FS_Settings.MaleAverageWideOffsetY;
+                            this.headTypeX = Controller.settings.MaleAverageWideOffsetX;
+                            this.headTypeY = Controller.settings.MaleAverageWideOffsetY;
                             break;
                     }
                 }
@@ -881,25 +895,25 @@ namespace FacialStuff
                     {
                         case HeadType.Normal:
                             this.fullHeadType = FullHead.MaleNarrowNormal;
-                            this.headTypeX = FS_Settings.MaleNarrowNormalOffsetX;
-                            this.headTypeY = FS_Settings.MaleNarrowNormalOffsetY;
+                            this.headTypeX = Controller.settings.MaleNarrowNormalOffsetX;
+                            this.headTypeY = Controller.settings.MaleNarrowNormalOffsetY;
                             break;
 
                         case HeadType.Pointy:
                             this.fullHeadType = FullHead.MaleNarrowPointy;
-                            this.headTypeX = FS_Settings.MaleNarrowPointyOffsetX;
-                            this.headTypeY = FS_Settings.MaleNarrowPointyOffsetY;
+                            this.headTypeX = Controller.settings.MaleNarrowPointyOffsetX;
+                            this.headTypeY = Controller.settings.MaleNarrowPointyOffsetY;
                             break;
 
                         case HeadType.Wide:
                             this.fullHeadType = FullHead.MaleNarrowWide;
-                            this.headTypeX = FS_Settings.MaleNarrowWideOffsetX;
-                            this.headTypeY = FS_Settings.MaleNarrowWideOffsetY;
+                            this.headTypeX = Controller.settings.MaleNarrowWideOffsetX;
+                            this.headTypeY = Controller.settings.MaleNarrowWideOffsetY;
                             break;
                     }
                 }
             }
-            else if (this.pawn.gender == Gender.Female)
+            else if (this.FacePawn.gender == Gender.Female)
             {
                 if (this.crownType == CrownType.Average)
                 {
@@ -907,20 +921,20 @@ namespace FacialStuff
                     {
                         case HeadType.Normal:
                             this.fullHeadType = FullHead.FemaleAverageNormal;
-                            this.headTypeX = FS_Settings.FemaleAverageNormalOffsetX;
-                            this.headTypeY = FS_Settings.FemaleAverageNormalOffsetY;
+                            this.headTypeX = Controller.settings.FemaleAverageNormalOffsetX;
+                            this.headTypeY = Controller.settings.FemaleAverageNormalOffsetY;
                             break;
 
                         case HeadType.Pointy:
                             this.fullHeadType = FullHead.FemaleAveragePointy;
-                            this.headTypeX = FS_Settings.FemaleAveragePointyOffsetX;
-                            this.headTypeY = FS_Settings.FemaleAveragePointyOffsetY;
+                            this.headTypeX = Controller.settings.FemaleAveragePointyOffsetX;
+                            this.headTypeY = Controller.settings.FemaleAveragePointyOffsetY;
                             break;
 
                         case HeadType.Wide:
                             this.fullHeadType = FullHead.FemaleAverageWide;
-                            this.headTypeX = FS_Settings.FemaleAverageWideOffsetX;
-                            this.headTypeY = FS_Settings.FemaleAverageWideOffsetY;
+                            this.headTypeX = Controller.settings.FemaleAverageWideOffsetX;
+                            this.headTypeY = Controller.settings.FemaleAverageWideOffsetY;
                             break;
                     }
                 }
@@ -931,20 +945,20 @@ namespace FacialStuff
                     {
                         case HeadType.Normal:
                             this.fullHeadType = FullHead.FemaleNarrowNormal;
-                            this.headTypeX = FS_Settings.FemaleNarrowNormalOffsetX;
-                            this.headTypeY = FS_Settings.FemaleNarrowNormalOffsetY;
+                            this.headTypeX = Controller.settings.FemaleNarrowNormalOffsetX;
+                            this.headTypeY = Controller.settings.FemaleNarrowNormalOffsetY;
                             break;
 
                         case HeadType.Pointy:
                             this.fullHeadType = FullHead.FemaleNarrowPointy;
-                            this.headTypeX = FS_Settings.FemaleNarrowPointyOffsetX;
-                            this.headTypeY = FS_Settings.FemaleNarrowPointyOffsetY;
+                            this.headTypeX = Controller.settings.FemaleNarrowPointyOffsetX;
+                            this.headTypeY = Controller.settings.FemaleNarrowPointyOffsetY;
                             break;
 
                         case HeadType.Wide:
                             this.fullHeadType = FullHead.FemaleNarrowWide;
-                            this.headTypeX = FS_Settings.FemaleNarrowWideOffsetX;
-                            this.headTypeY = FS_Settings.FemaleNarrowWideOffsetY;
+                            this.headTypeX = Controller.settings.FemaleNarrowWideOffsetX;
+                            this.headTypeY = Controller.settings.FemaleNarrowWideOffsetY;
                             break;
                     }
                 }
@@ -957,7 +971,7 @@ namespace FacialStuff
 
         private void SetMouthAccordingToMoodLevel()
         {
-            this.mood = this.pawn.needs?.mood?.CurInstantLevel ?? 0.5f;
+            this.mood = this.FacePawn.needs?.mood?.CurInstantLevel ?? 0.5f;
 
             if (this.mood > 0.85f)
             {
@@ -987,5 +1001,9 @@ namespace FacialStuff
 
         #endregion Methods
 
+        public void SetFaceOwner(Pawn pawn)
+        {
+            this.facePawn = pawn;
+        }
     }
 }

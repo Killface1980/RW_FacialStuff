@@ -14,8 +14,6 @@ namespace FacialStuff
 {
     using FacialStuff.Detouring;
 
-    using RW_FacialStuff;
-
     [StaticConstructorOnStartup]
     class HarmonyPatches
     {
@@ -283,7 +281,7 @@ namespace FacialStuff
                             if (apparelGraphics[j].sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
                             {
                                 bool flagBody = true;
-                                if (FS_Settings.HideHatInBed)
+                                if (Controller.settings.HideHatInBed)
                                 {
                                     flagBody = renderBody;
                                 }
@@ -291,7 +289,7 @@ namespace FacialStuff
                                 if (flagBody)
                                 {
                                     hatVisible = true;
-                                    if (FS_Settings.MergeHair)
+                                    if (Controller.settings.MergeHair)
                                     {
                                         HaircutPawn hairPawn = SaveableCache.GetHairCache(pawn);
                                         Material hairCutMat = hairPawn.HairCutMatAt(headFacing);

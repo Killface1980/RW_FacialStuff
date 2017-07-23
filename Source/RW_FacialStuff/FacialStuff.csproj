@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Settings.cs" />
     <Compile Include="PatchOperationFindMod.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
     <Compile Include="Wiggler\PawnHeadWiggler.cs" />
@@ -104,7 +105,7 @@
     <Compile Include="NoCCL\FS_SpecialInjector.cs" />
     <Compile Include="MaskTextures.cs" />
     <Compile Include="Utilities\DialogUtility.cs" />
-    <Compile Include="Mod.cs" />
+    <Compile Include="Controller.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="NoCCL\SpecialInjector.cs" />
     <Compile Include="Detours\_PawnHairColors.cs" />

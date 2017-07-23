@@ -2,6 +2,8 @@
 
 namespace FacialStuff.Genetics
 {
+    using System;
+
     using FacialStuff.Detouring;
 
     using RimWorld;
@@ -44,7 +46,7 @@ namespace FacialStuff.Genetics
         public static Gradient gradient_mel2 = new Gradient();
         public static Gradient gradient_mel1 = new Gradient();
 
-        public static void Genetics(Pawn pawn, CompFace face, out float melanin1, out float melanin2)
+        public static void HairGenetics(Pawn pawn, CompFace face, out float melanin1, out float melanin2)
         {
             melanin1 = melanin2 = 0f;
             if (face == null)
@@ -124,10 +126,12 @@ namespace FacialStuff.Genetics
                 GradientColorKey[] gck = new GradientColorKey[4];
                 gck[0].color = HairPlatinum;
                 gck[0].time = 0.0f;
-                gck[1].color = new Color32(255, 194, 71, 255);
-                gck[1].time = 0.41f;
-                gck[2].color = new Color32(255, 165, 51, 255);
-                gck[2].time = 0.7f;
+                gck[1].color = new Color32(240, 234, 169, 255);
+                //    gck[1].color = new Color32(255, 194, 71, 255);
+                gck[1].time = 0.6f;
+                gck[2].color = new Color32(255, 222, 71, 255);
+                //     gck[2].color = new Color32(255, 165, 51, 255);
+                gck[2].time = 0.8f;
                 gck[3].color = new Color32(255, 64, 0, 255);
                 gck[3].time = 0.95f;
                 GradientAlphaKey[] gak = new GradientAlphaKey[2];
@@ -140,7 +144,7 @@ namespace FacialStuff.Genetics
                 gck[0].color = HairPlatinum;
                 gck[0].time = 0.0f;
                 gck[1].color = new Color32(184, 139, 96, 255);
-                gck[1].time = 0.3f;
+                gck[1].time = 0.2f;
                 gck[2].color = new Color32(110, 59, 13, 255);
                 gck[2].time = 0.6f;
                 gck[3].color = new Color32(30, 14, 0, 255);
@@ -177,30 +181,45 @@ namespace FacialStuff.Genetics
                     // {
                     //     greyness *= Rand.Range(0.5f, 0.9f);
                     // }
-                 // Log.Message(pawn.ToString());
-                 // Log.Message(ageFloat.ToString());
-                 // Log.Message(agingBeginGreyFloat.ToString());
-                 // Log.Message(greySpan.ToString());
-                 // Log.Message(greyness.ToString());
+                    // Log.Message(pawn.ToString());
+                    // Log.Message(ageFloat.ToString());
+                    // Log.Message(agingBeginGreyFloat.ToString());
+                    // Log.Message(greySpan.ToString());
+                    // Log.Message(greyness.ToString());
 
-                    if (Rand.Value < 0.04f)
+                    var factionColor = Rand.Value;
+                    var limit = 0.98f;
+                    if (pawn.Faction.def == FactionDefOf.Outlander)
                     {
-                        float rand = Rand.Value;
-                        if (rand < 0.1f) pawn.story.hairColor = HairDarkPurple;
-                        else if (rand < 0.2f) pawn.story.hairColor = HairBlueSteel;
-                        else if (rand < 0.3f) pawn.story.hairColor = HairBurgundyBistro;
-                        else if (rand < 0.4f) pawn.story.hairColor = HairGreenGrape;
-                        else if (rand < 0.5f) pawn.story.hairColor = HairMysticTurquois;
-                        else if (rand < 0.6f) pawn.story.hairColor = HairPinkPearl;
-                        else if (rand < 0.7f) pawn.story.hairColor = HairPurplePassion;
-                        else if (rand < 0.8f) pawn.story.hairColor = HairRosaRosa;
-                        else if (rand < 0.9f) pawn.story.hairColor = HairRubyRed;
-                        else pawn.story.hairColor = HairUltraViolet;
+                        limit *= 0.8f;
                     }
-                    else
+                    if (pawn.Faction.def == FactionDefOf.Pirate)
                     {
-                        pawn.story.hairColor = Color.Lerp(color, new Color(0.91f, 0.91f, 0.91f), greyness);
+                        limit *= 0.5f;
                     }
+
+                        if (factionColor > limit)
+                        {
+                            Color color2;
+                            float rand = Rand.Value;
+                            if (rand < 0.1f) color2 = HairDarkPurple;
+                            else if (rand < 0.2f) color2 = HairBlueSteel;
+                            else if (rand < 0.3f) color2 = HairBurgundyBistro;
+                            else if (rand < 0.4f) color2 = HairGreenGrape;
+                            else if (rand < 0.5f) color2 = HairMysticTurquois;
+                            else if (rand < 0.6f) color2 = HairPinkPearl;
+                            else if (rand < 0.7f) color2 = HairPurplePassion;
+                            else if (rand < 0.8f) color2 = HairRosaRosa;
+                            else if (rand < 0.9f) color2 = HairRubyRed;
+                            else color2 = HairUltraViolet;
+
+                            pawn.story.hairColor = Color.Lerp(color,color2, Rand.Range(0.66f, 1f));
+                        }
+                        else
+                        {
+                            pawn.story.hairColor = Color.Lerp(color, new Color(0.91f, 0.91f, 0.91f), greyness);
+                        }
+
                     face.HasSameBeardColor = Rand.Value > 0.3f;
 
                     face.HairColorOrg = color;
@@ -220,6 +239,93 @@ namespace FacialStuff.Genetics
                 }
 
             }
+
+        }
+
+        public static void SkinGenetics(Pawn pawn, CompFace face, out float factionMelanin)
+        {
+            factionMelanin = pawn.story.melanin;
+            if (pawn.Faction.def != FactionDefOf.Tribe && pawn.Faction.def != FactionDefOf.PlayerTribe)
+            {
+                return;
+            }
+
+            if (face == null)
+            {
+                return;
+            }
+            face.MelaninOrg = pawn.story.melanin;
+            CompFace mother = null;
+            CompFace father = null;
+            bool motherNull = false;
+            bool fatherNull = false;
+
+            if (pawn.GetMother() == null)
+            {
+                motherNull = true;
+            }
+            else
+            {
+                mother = pawn.GetMother().TryGetComp<CompFace>();
+            }
+            if (pawn.GetFather() == null)
+            {
+                fatherNull = true;
+            }
+            else
+            {
+                father = pawn.GetFather().TryGetComp<CompFace>();
+            }
+
+            bool flag = true;
+
+            if (!motherNull && mother.IsSkinDNAoptimized && !fatherNull && father.IsSkinDNAoptimized)
+            {
+                factionMelanin = GetRandomChildHairColor(mother.factionMelanin, father.factionMelanin);
+            }
+            else if (!motherNull && mother.IsSkinDNAoptimized)
+            {
+                factionMelanin = GetRandomMelaninSimilarTo(mother.factionMelanin, 0f, 1f);
+            }
+            else if (!fatherNull && father.IsSkinDNAoptimized)
+            {
+                factionMelanin = GetRandomMelaninSimilarTo(father.factionMelanin, 0f, 1f);
+            }
+            else // if (motherNull && fatherNull)
+            {
+                if (pawn.relations.FamilyByBlood.Any())
+                {
+                    var relPawn = pawn.relations.FamilyByBlood.FirstOrDefault(x => x.TryGetComp<CompFace>().IsSkinDNAoptimized);
+                    if (relPawn != null)
+                    {
+                        CompFace relatedPawn = relPawn.TryGetComp<CompFace>();
+
+                        float melaninx1 = relatedPawn.factionMelanin;
+                        factionMelanin = GetRandomMelaninSimilarTo(melaninx1);
+                        flag = false;
+                    }
+                }
+                if (flag)
+                {
+                    SimpleCurve curve = new SimpleCurve { new CurvePoint(0f, 0.6f), new CurvePoint(1f, 1f) };
+
+                    factionMelanin = curve.Evaluate(pawn.story.melanin);
+                }
+            }
+
+            if (Controller.settings.UseDNAByFaction)
+            {
+                if (Math.Abs(pawn.story.melanin - factionMelanin) > 0.01f)
+                {
+                    pawn.story.melanin = factionMelanin;
+                }
+            }
+
+            face.IsDNAoptimized = false;
+            //  Log.Message(
+            //      pawn + " - " + melanin + " - " + face.melanin1 + " - " + face.melanin2 + " - " + mother?.melanin1
+            //      + mother?.melanin2 + father?.melanin1 + father?.melanin2);
+
 
         }
 
