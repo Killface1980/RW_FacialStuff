@@ -7,39 +7,131 @@ using Verse;
 
 namespace FacialStuff
 {
+    using System;
+
     using FacialStuff.Defs;
 
     public static class PawnFaceChooser
     {
-        public static BeardDef RandomBeardDefFor(Pawn pawn, FactionDef factionType)
+        public static void RandomBeardDefFor(Pawn pawn, FactionDef factionType, out BeardDef mainBeard, out MoustacheDef moustache)
         {
-            IEnumerable<BeardDef> source = from beard in DefDatabase<BeardDef>.AllDefs
-                                           where beard.raceList.Contains(pawn.def)
-                                           where beard.hairTags.SharesElementWith(factionType.hairTags)
-                                           select beard;
+            if (pawn.gender != Gender.Male)
+            {
+                mainBeard = BeardDefOf.Beard_Shaved;
+                moustache = MoustacheDefOf.Shaved;
+                return;
+            }
+            BeardRoulette(pawn, factionType, out mainBeard, out moustache);
+        }
+
+        public static BeardDef RandomBeardDefFor(Pawn pawn, BeardType type)
+        {
+            IEnumerable<BeardDef> source;
+            {
+                source = from beard in DefDatabase<BeardDef>.AllDefs
+                         where beard.raceList.Contains(pawn.def)
+                         where beard.beardType == type
+                         select beard;
+            }
+
 
             if (!source.Any())
             {
                 source = from beard in DefDatabase<BeardDef>.AllDefs select beard;
             }
 
+
             BeardDef chosenBeard;
             float rand = Rand.Value;
+            bool flag = false;
 
-            // if (UnityEngine.Random.Range(30, 50) > pawn.ageTracker.AgeBiologicalYearsFloat)
             if (pawn.ageTracker.AgeBiologicalYearsFloat < 19 || rand < 0.1f || pawn.gender == Gender.Female)
             {
-                chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
+                chosenBeard = BeardDefOf.Beard_Shaved;
+                flag = true;
             }
             else if (rand < 0.15f)
             {
-                chosenBeard = DefDatabase<BeardDef>.GetNamed("Beard_Stubble");
+                chosenBeard = BeardDefOf.Beard_Stubble;
             }
             else
             {
                 chosenBeard = source.RandomElementByWeight(beard => BeardChoiceLikelihoodFor(beard, pawn));
             }
 
+            return chosenBeard;
+        }
+
+        private static void BeardRoulette(Pawn pawn, FactionDef factionType, out BeardDef mainBeard, out MoustacheDef moustache)
+        {
+            moustache = MoustacheDefOf.Shaved;
+            IEnumerable<BeardDef> source;
+            {
+                source = from beard in DefDatabase<BeardDef>.AllDefs
+                         where beard.raceList.Contains(pawn.def)
+                         where beard.hairTags.SharesElementWith(factionType.hairTags)
+                         select beard;
+            }
+
+
+            if (!source.Any())
+            {
+                source = from beard in DefDatabase<BeardDef>.AllDefs select beard;
+            }
+
+
+            BeardDef chosenBeard;
+            float rand = Rand.Value;
+            bool flag = false;
+
+            if (pawn.ageTracker.AgeBiologicalYearsFloat < 19)
+            {
+                chosenBeard = BeardDefOf.Beard_Shaved;
+                flag = true;
+            }
+            else if (rand < 0.15f)
+            {
+                chosenBeard = BeardDefOf.Beard_Shaved;
+            }
+            else if (rand < 0.35f)
+            {
+                chosenBeard = BeardDefOf.Beard_Stubble;
+            }
+            else
+            {
+                chosenBeard = source.RandomElementByWeight(beard => BeardChoiceLikelihoodFor(beard, pawn));
+            }
+
+
+            mainBeard = chosenBeard;
+            if (!flag && mainBeard.beardType != BeardType.FullBeard)
+            {
+                moustache = MoustacheRoulette(pawn, factionType);
+            }
+
+        }
+
+        private static MoustacheDef MoustacheRoulette(Pawn pawn, FactionDef factionType)
+        {
+            IEnumerable<MoustacheDef> source = from beard in DefDatabase<MoustacheDef>.AllDefs
+                                 where beard.raceList.Contains(pawn.def)
+                                 where beard.hairTags.SharesElementWith(factionType.hairTags)
+                                 select beard;
+
+            if (!source.Any())
+            {
+                source = from beard in DefDatabase<MoustacheDef>.AllDefs select beard;
+            }
+            else
+            {
+                return MoustacheDefOf.Shaved;
+            }
+
+            MoustacheDef chosenBeard;
+
+            {
+                chosenBeard = source.RandomElementByWeight(beard => TacheChoiceLikelihoodFor(beard, pawn));
+            }
             return chosenBeard;
         }
 
@@ -230,6 +322,45 @@ namespace FacialStuff
         }
 
         private static float BeardChoiceLikelihoodFor(BeardDef beard, Pawn pawn)
+        {
+
+            if (pawn.gender == Gender.None)
+            {
+                return 0f;
+            }
+
+            if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 37)
+            {
+                return 0f;
+            }
+
+            if (pawn.gender == Gender.Male)
+            {
+                switch (beard.hairGender)
+                {
+                    case HairGender.Male:
+                        return 70f;
+                    case HairGender.MaleUsually:
+                        return 30f;
+                    case HairGender.Any:
+                        return 60f;
+                    case HairGender.FemaleUsually:
+                        return 5f;
+                    case HairGender.Female:
+                        return 1f;
+                }
+            }
+
+            if (pawn.gender == Gender.Female)
+            {
+                return 0f;
+            }
+
+            Log.Error(string.Concat("Unknown hair likelihood for ", beard, " with ", pawn));
+            return 0f;
+        }
+
+        private static float TacheChoiceLikelihoodFor(MoustacheDef beard, Pawn pawn)
         {
 
             if (pawn.gender == Gender.None)

@@ -3,9 +3,10 @@
 
     public enum BeardType : byte
     {
-        Moustache,
         LowerBeard,
-        FullBeard
+        FullBeard,
+
+        None
     }
 
 }

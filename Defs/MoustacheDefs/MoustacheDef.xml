@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<DefPackage-MoustacheDef>
+
+  <FacialStuff.Defs.MoustacheDef>
+    <defName>Moustache_DoctorWatson</defName>
+    <label>Doctor Watson</label>
+    <raceList>
+      <li>Human</li>
+    </raceList>
+    <texPath>Moustaches/Moustache_DoctorWatson</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </FacialStuff.Defs.MoustacheDef>
+  
+  <FacialStuff.Defs.MoustacheDef>
+    <defName>Moustache_MisterSlave</defName>
+    <label>Mister Slave</label>
+    <raceList>
+      <li>Human</li>
+    </raceList>
+    <texPath>Moustaches/Moustache_MisterSlave</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </FacialStuff.Defs.MoustacheDef> 
+  
+  <FacialStuff.Defs.MoustacheDef>
+    <defName>Shaved</defName>
+    <label>Shaved</label>
+    <raceList>
+      <li>Human</li>
+    </raceList>
+    <texPath>Moustaches/Moustache_Shaved</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </FacialStuff.Defs.MoustacheDef>
+
+</DefPackage-MoustacheDef>

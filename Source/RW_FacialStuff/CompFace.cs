@@ -23,7 +23,7 @@ namespace FacialStuff
 
         public Color BeardColor = Color.clear;
 
-        public BeardDef BeardDef = DefDatabase<BeardDef>.GetNamed("Beard_Shaved");
+        public BeardDef beardDef = BeardDefOf.Beard_Shaved;
 
         public BrowDef BrowDef;
 
@@ -69,7 +69,8 @@ namespace FacialStuff
 
         private CellRect _viewRect;
 
-        private Graphic beardGraphic;
+        private Graphic mainBeardGraphic;
+        private Graphic upperBeardGraphic;
 
         private Graphic browGraphic;
 
@@ -116,13 +117,15 @@ namespace FacialStuff
 
         public bool IsSkinDNAoptimized;
 
+        public MoustacheDef moustacheDef;
+
         #endregion Fields
 
         #region Properties
 
         public GraphicMeshSet MouthMeshSet => MeshPoolFs.HumanlikeMouthSet[(int)this.fullHeadType];
 
-        public Pawn FacePawn  => this.facePawn; 
+        public Pawn FacePawn => this.facePawn;
 
         #endregion Properties
 
@@ -244,7 +247,28 @@ namespace FacialStuff
             Material material = null;
             if (this.FacePawn.gender == Gender.Male)
             {
-                material = this.beardGraphic.MatAt(facing);
+                material = this.mainBeardGraphic.MatAt(facing);
+
+                if (material != null)
+                {
+                    material = this.FacePawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                }
+            }
+
+            return material;
+        }
+
+        public Material UpperBeardMatAt(Rot4 facing)
+        {
+            if (!this.HasNaturalMouth || this.moustacheDef == null)
+            {
+                return null;
+            }
+
+            Material material = null;
+            if (this.FacePawn.gender == Gender.Male)
+            {
+                material = this.upperBeardGraphic.MatAt(facing);
 
                 if (material != null)
                 {
@@ -335,7 +359,7 @@ namespace FacialStuff
             // Log.Message(WrinkleDef.defName);
 
             // this.MouthDef = PawnFaceChooser.RandomMouthDefFor(this.pawn, this.pawn.Faction.def);
-            this.BeardDef = PawnFaceChooser.RandomBeardDefFor(this.FacePawn, faction);
+            PawnFaceChooser.RandomBeardDefFor(this.FacePawn, faction, out this.beardDef, out this.moustacheDef);
 
             // Log.Message(BeardDef.defName);
             this.HairColorOrg = this.FacePawn.story.hairColor;
@@ -490,7 +514,7 @@ namespace FacialStuff
 
             if (this.FacePawn.Dead)
             {
-                
+
             }
 
             Color wrinkleColor = Color.Lerp(
@@ -510,15 +534,26 @@ namespace FacialStuff
                 Vector2.one,
                 wrinkleColor * Headhelper.skinRottingMultiplyColor);
 
-            string beardDefTexPath = this.BeardDef.texPath + "_" + this.crownType + "_" + this.headType;
+            string mainBeardDefTexPath = this.beardDef.texPath + "_" + this.crownType + "_" + this.headType;
 
-            if (this.BeardDef == DefDatabase<BeardDef>.GetNamed("Beard_Shaved"))
+            if (this.moustacheDef != null)
             {
-                beardDefTexPath = this.BeardDef.texPath;
+                string upperBeardDefTexPath = this.moustacheDef.texPath;
+
+                this.upperBeardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    upperBeardDefTexPath,
+                    ShaderDatabase.Transparent,
+                    Vector2.one,
+                    this.BeardColor);
             }
 
-            this.beardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                beardDefTexPath,
+            if (this.beardDef == BeardDefOf.Beard_Shaved)
+            {
+                mainBeardDefTexPath = this.beardDef.texPath;
+            }
+
+            this.mainBeardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                mainBeardDefTexPath,
                 ShaderDatabase.Transparent,
                 Vector2.one,
                 this.BeardColor);
@@ -602,17 +637,18 @@ namespace FacialStuff
         public Material MouthMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
             Material material = null;
-            if (this.HasNaturalMouth)
+            if (!this.HasNaturalMouth)
             {
-                if (!Controller.settings.UseMouth || !this.drawMouth)
-                {
-                    return null;
-                }
+                return null;
+            }
+            if (!Controller.settings.UseMouth || !this.drawMouth)
+            {
+                return null;
             }
 
-            bool flag = this.FacePawn.gender == Gender.Female;
+            bool flag2 = this.moustacheDef == MoustacheDefOf.Shaved;
 
-            if (flag || !flag && this.BeardDef.drawMouth || !this.BeardDef.drawMouth && !this.HasNaturalMouth)
+            if (flag2)
             {
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
@@ -680,7 +716,8 @@ namespace FacialStuff
 
             // Scribe_Defs.Look(ref this.MouthDef, "MouthDef");
             Scribe_Defs.Look(ref this.WrinkleDef, "WrinkleDef");
-            Scribe_Defs.Look(ref this.BeardDef, "BeardDef");
+            Scribe_Defs.Look(ref this.beardDef, "BeardDef");
+            Scribe_Defs.Look(ref this.moustacheDef, "moustacheDef");
             Scribe_Values.Look(ref this.IsOptimized, "optimized");
             Scribe_Values.Look(ref this.drawMouth, "drawMouth");
 

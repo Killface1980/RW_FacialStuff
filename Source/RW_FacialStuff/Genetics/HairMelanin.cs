@@ -165,7 +165,7 @@ namespace FacialStuff.Genetics
                     float greySpan = Rand.Range(0.07f, 0.15f);
 
                     greySpan += melanin1 * 0.15f;
-
+                    greySpan += pawn.story.melanin * 0.25f;
                     float greyness = 0f;
 
                     if (ageFloat > agingBeginGreyFloat)
@@ -221,7 +221,7 @@ namespace FacialStuff.Genetics
                     }
                     else
                     {
-                        pawn.story.hairColor = Color.Lerp(color, new Color(0.91f, 0.91f, 0.91f), greyness);
+                        pawn.story.hairColor = Color.Lerp(color, new Color(0.86f, 0.86f, 0.86f), greyness);
                     }
 
                     face.HasSameBeardColor = Rand.Value > 0.3f;

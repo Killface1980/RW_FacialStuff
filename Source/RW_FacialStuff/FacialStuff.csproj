@@ -69,7 +69,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="enums\HeadType - Kopieren.cs" />
+    <Compile Include="Defs\BeardDefOf.cs" />
+    <Compile Include="Defs\MoustacheDefOf.cs" />
+    <Compile Include="Defs\MoustacheDef.cs" />
+    <Compile Include="Defs\BeardDef.cs" />
+    <Compile Include="Defs\BrowDef.cs" />
+    <Compile Include="Defs\EyeDef.cs" />
+    <Compile Include="Defs\MouthDef.cs" />
+    <Compile Include="Defs\WrinkleDef.cs" />
+    <Compile Include="enums\BeardType.cs" />
+    <Compile Include="enums\DialoguePage.Page.cs" />
     <Compile Include="Settings.cs" />
     <None Include="PatchOperationFindMod.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
@@ -94,7 +103,6 @@
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="Headhelper.cs" />
     <None Include="NoCCL\DetourAttribute.cs" />
-    <Compile Include="Defs\FacialStuff_Defs.cs" />
     <Compile Include="FaceStyling Bench\Dialog_FaceStyling.cs" />
     <Compile Include="FaceStyling Bench\Job_FaceStyling.cs" />
     <Compile Include="FaceStyling Bench\FaceStyler.cs" />
@@ -119,6 +127,9 @@
       <Link>About.xml</Link>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="..\..\Defs\BeardDefs\BeardDef.xml">
+      <Link>Defs\FacialDefs\BeardDef.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\BrowDefs\BrowDef_Female.xml">
       <Link>Defs\FacialDefs\BrowDef_Female.xml</Link>
     </Content>
@@ -132,9 +143,6 @@
     <Content Include="..\..\Defs\EyeDefs\EyeDef_Male.xml">
       <Link>Defs\FacialDefs\EyeDef_Male.xml</Link>
     </Content>
-    <Content Include="..\..\Defs\HairDefs\BeardDef.xml">
-      <Link>Defs\FacialDefs\BeardDef.xml</Link>
-    </Content>
     <Content Include="..\..\Defs\HairDefs\HairsBeGone.xml">
       <Link>Defs\FacialDefs\HairsBeGone.xml</Link>
     </Content>
@@ -147,6 +155,9 @@
     </Content>
     <Content Include="..\..\Defs\JobDefs\Clutter_Jobs.xml">
       <Link>Defs\Clutter_Jobs.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\MoustacheDefs\MoustacheDef.xml">
+      <Link>Defs\FacialDefs\MoustacheDef.xml</Link>
     </Content>
     <Content Include="..\..\Defs\MouthDefs\MouthDef.xml">
       <Link>Defs\FacialDefs\MouthDef.xml</Link>

@@ -5,7 +5,6 @@
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Anchor</defName>
     <label>Anchor</label>
-    <hairGender>Male</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -19,7 +18,6 @@
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Balbo</defName>
     <label>Balbo</label>
-    <hairGender>Male</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -32,8 +30,7 @@
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_ChinCurtain</defName>
-    <label>ChinCurtain</label>
-    <hairGender>Male</hairGender>
+    <label>Chin Curtain</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -44,11 +41,12 @@
       <li>Punk</li>
     </hairTags>
     <drawMouth>true</drawMouth>
+    <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_ChinPuff</defName>
-    <label>ChinPuff</label>
+    <label>Chin Puff</label>
     <hairGender>MaleUsually</hairGender>
     <raceList>
       <li>Human</li>
@@ -63,8 +61,7 @@
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_DuckTail</defName>
-    <label>DuckTail</label>
-    <hairGender>Male</hairGender>
+    <label>Duck Tail</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -78,7 +75,7 @@
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_ElInsecto</defName>
-    <label>ElInsecto</label>
+    <label>El Insecto</label>
     <hairGender>MaleUsually</hairGender>
     <raceList>
       <li>Human</li>
@@ -89,11 +86,12 @@
       <li>Tribal</li>
     </hairTags>
 	  <drawMouth>true</drawMouth>
+    <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_FranzJoseph</defName>
-    <label>FranzJoseph</label>
+    <label>Franz Joseph</label>
     <hairGender>MaleUsually</hairGender>
     <raceList>
       <li>Human</li>
@@ -107,8 +105,7 @@
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_FrenchFork</defName>
-    <label>FrenchFork</label>
-    <hairGender>Male</hairGender>
+    <label>French Fork</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -122,8 +119,7 @@
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_FriendlyMuttonChops</defName>
-    <label>FriendlyMuttonChops</label>
-    <hairGender>Male</hairGender>
+    <label>Friendly Mutton Chops</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -138,8 +134,7 @@
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_FullBeard</defName>
-    <label>FullBeard</label>
-    <hairGender>Male</hairGender>
+    <label>Full Beard</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -155,7 +150,6 @@
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Garibaldi</defName>
     <label>Garibaldi</label>
-    <hairGender>Male</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -172,7 +166,6 @@
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Goatee</defName>
     <label>Goatee</label>
-    <hairGender>Male</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -181,12 +174,12 @@
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
+    <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Hollywoodian</defName>
     <label>Hollywoodian</label>
-    <hairGender>Male</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -229,8 +222,7 @@
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_MuttonChops</defName>
-    <label>MuttonChops</label>
-    <hairGender>Male</hairGender>
+    <label>Mutton Chops</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -241,11 +233,12 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_NapoleonIIIImperial</defName>
-    <label>NapoleonIIIImperial</label>
+    <label>Napoleon III Imperial</label>
     <hairGender>MaleUsually</hairGender>
     <raceList>
       <li>Human</li>
@@ -260,8 +253,7 @@
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_OldDutch</defName>
-    <label>OldDutch</label>
-    <hairGender>Male</hairGender>
+    <label>Old Dutch</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -272,12 +264,12 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_PetiteGoatee</defName>
-    <label>PetiteGoatee</label>
-    <hairGender>Male</hairGender>
+    <label>Petite Goatee</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -286,12 +278,12 @@
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
+    <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_SoulPatch</defName>
-    <label>SoulPatch</label>
-    <hairGender>Male</hairGender>
+    <label>Soul Patch</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -300,6 +292,7 @@
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
+    <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
@@ -333,11 +326,12 @@
       <li>Tribal</li>
     </hairTags>
 	  <drawMouth>true</drawMouth>
+    <beardType>None</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_TheKlingon</defName>
-    <label>TheKlingon</label>
+    <label>The Klingon</label>
     <hairGender>MaleUsually</hairGender>
     <raceList>
       <li>Human</li>
@@ -351,8 +345,7 @@
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_TheSparrow</defName>
-    <label>TheSparrow</label>
-    <hairGender>Male</hairGender>
+    <label>The Sparrow</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -364,8 +357,7 @@
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_TheWinnfield</defName>
-    <label>TheWinnfield</label>
-    <hairGender>Male</hairGender>
+    <label>The Winnfield</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -378,7 +370,7 @@
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_TheZappa</defName>
-    <label>TheZappa</label>
+    <label>The Zappa</label>
     <hairGender>MaleUsually</hairGender>
     <raceList>
       <li>Human</li>
@@ -392,8 +384,7 @@
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_VanDyke</defName>
-    <label>VanDyke</label>
-    <hairGender>Male</hairGender>
+    <label>Van Dyke</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -419,12 +410,12 @@
       <li>Tribal</li>
     </hairTags>
     <drawMouth>true</drawMouth>
+    <beardType>None</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_CoolSteiner</defName>
-    <label>CoolSteiner</label>
-    <hairGender>Male</hairGender>
+    <label>Cool Steiner</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -440,8 +431,7 @@
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_CaptainTiebeard</defName>
-    <label>CaptainTiebeard</label>
-    <hairGender>Male</hairGender>
+    <label>Captain Tiebeard</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -454,7 +444,6 @@
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Santa</defName>
     <label>Santa</label>
-    <hairGender>Male</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -470,8 +459,7 @@
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_TwinPeaks</defName>
-    <label>TwinPeaks</label>
-    <hairGender>Male</hairGender>
+    <label>Twin Peaks</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -484,5 +472,5 @@
       <li>MaleOld</li>
     </hairTags>
   </FacialStuff.Defs.BeardDef>
-
+  
 </DefPackage-BeardDef>

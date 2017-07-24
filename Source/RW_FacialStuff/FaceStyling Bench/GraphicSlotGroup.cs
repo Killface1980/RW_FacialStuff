@@ -37,6 +37,8 @@
             /// </summary>
             Beard,
 
+            Moustache,
+
             Hair,
 
             Overhead,
