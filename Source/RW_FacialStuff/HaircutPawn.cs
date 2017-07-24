@@ -4,13 +4,13 @@
 
     using Verse;
 
-   public class HaircutPawn
+    public class HaircutPawn
     {
         public Pawn Pawn;
 
         public Graphic HairCutGraphic;
 
-        public  Material HairCutMatAt(Rot4 facing)
+        public Material HairCutMatAt(Rot4 facing)
         {
             Material material = this.HairCutGraphic.MatAt(facing);
 

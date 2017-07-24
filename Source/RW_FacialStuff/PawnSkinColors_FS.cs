@@ -7,21 +7,7 @@ namespace FacialStuff.Detouring
 {
     public static class PawnSkinColors_FS
     {
-        public struct SkinColorData
-        {
-            public float melanin;
-
-            public float selector;
-
-            public Color color;
-
-            public SkinColorData(float melanin, float selector, Color color)
-            {
-                this.melanin = melanin;
-                this.selector = selector;
-                this.color = color;
-            }
-        }
+        #region Fields
 
         public static readonly SkinColorData[] _SkinColors =
             {
@@ -54,15 +40,15 @@ namespace FacialStuff.Detouring
                     0.7f,
                     new Color32(218, 136, 87, 255)), // s 0.6, b 0.85
                 new SkinColorData(
-                    0.75f,
+                    0.65f,
                     0.785f,
                     new Color32(165, 93, 41, 255)),// s 0.75, b 0.65
                 new SkinColorData(
-                    0.85f,
+                    0.75f,
                     0.85f,
                     new Color32(127, 71, 51, 255)),// s 0.6, b 0.5
                 new SkinColorData(
-                    0.925f,
+                    0.9f,
                     0.9f,
                     new Color32(101, 56, 41, 255)),// s 0.6, b 0.95
             new SkinColorData(
@@ -80,11 +66,35 @@ namespace FacialStuff.Detouring
                 // new SkinColorData(1f, 1f, new Color(0.9490196f, 0.929411769f, 0.8784314f))
             };
 
-        public static bool IsDarkSkin_Prefix(ref bool __result, Color color)
+        #endregion Fields
+
+        #region Methods
+
+        public static bool GetMelaninCommonalityFactor_Prefix(ref float __result, float melanin)
         {
-            Color skinColor = GetSkinColor(0.5f); 
-            __result = color.r + color.g + color.b <= skinColor.r + skinColor.g + skinColor.b + 0.01f;
+            int skinDataLeftIndexByWhiteness = GetSkinDataIndexOfMelanin(melanin);
+            if (skinDataLeftIndexByWhiteness == _SkinColors.Length - 1)
+            {
+                __result = GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness);
+                return false;
+            }
+
+            float t = Mathf.InverseLerp(_SkinColors[skinDataLeftIndexByWhiteness].melanin, _SkinColors[skinDataLeftIndexByWhiteness + 1].melanin, melanin);
+            __result = Mathf.Lerp(GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness), GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness + 1), t);
             return false;
+        }
+
+        // FS bench
+        public static float GetRelativeLerpValue(float value)
+        {
+            int leftIndexForValue = GetSkinDataIndexOfMelanin(value);
+            if (leftIndexForValue == _SkinColors.Length - 1)
+            {
+                return 0f;
+            }
+
+            int num = leftIndexForValue + 1;
+            return Mathf.InverseLerp(_SkinColors[leftIndexForValue].melanin, _SkinColors[num].melanin, value);
         }
 
         public static Color GetSkinColor(float melanin)
@@ -112,6 +122,58 @@ namespace FacialStuff.Detouring
             return false;
         }
 
+        public static int GetSkinDataIndexOfMelanin(float melanin)
+        {
+            int result = 0;
+            for (int i = 0; i < _SkinColors.Length; i++)
+            {
+                if (melanin < _SkinColors[i].melanin)
+                {
+                    break;
+                }
+                result = i;
+            }
+            return result;
+        }
+
+        public static bool GetSkinDataIndexOfMelanin_Prefix(ref int __result, float melanin)
+        {
+            int result = 0;
+            for (int i = 0; i < _SkinColors.Length; i++)
+            {
+                if (melanin < _SkinColors[i].melanin)
+                {
+                    break;
+                }
+                result = i;
+            }
+            __result = result;
+            return false;
+        }
+
+        public static float GetValueFromRelativeLerp(int leftIndex, float lerp)
+        {
+            if (leftIndex >= _SkinColors.Length - 1)
+            {
+                return 1f;
+            }
+
+            if (leftIndex < 0)
+            {
+                return 0f;
+            }
+
+            int num = leftIndex + 1;
+            return Mathf.Lerp(_SkinColors[leftIndex].melanin, _SkinColors[num].melanin, lerp);
+        }
+
+        public static bool IsDarkSkin_Prefix(ref bool __result, Color color)
+        {
+            Color skinColor = GetSkinColor(0.5f);
+            __result = color.r + color.g + color.b <= skinColor.r + skinColor.g + skinColor.b + 0.01f;
+            return false;
+        }
+
         public static bool RandomMelanin_Prefix(ref float __result)
         {
             float value = Rand.Value;
@@ -136,20 +198,6 @@ namespace FacialStuff.Detouring
             __result = Mathf.Lerp(_SkinColors[num].melanin, _SkinColors[num + 1].melanin, t);
             return false;
 
-        }
-
-        public static bool GetMelaninCommonalityFactor_Prefix(ref float __result, float melanin)
-        {
-            int skinDataLeftIndexByWhiteness = GetSkinDataIndexOfMelanin(melanin);
-            if (skinDataLeftIndexByWhiteness == _SkinColors.Length - 1)
-            {
-                __result = GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness);
-                return false;
-            }
-
-            float t = Mathf.InverseLerp(_SkinColors[skinDataLeftIndexByWhiteness].melanin, _SkinColors[skinDataLeftIndexByWhiteness + 1].melanin, melanin);
-            __result = Mathf.Lerp(GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness), GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness + 1), t);
-            return false;
         }
 
         private static float GetSkinCommonalityFactor(int skinDataIndex)
@@ -187,61 +235,33 @@ namespace FacialStuff.Detouring
             return num;
         }
 
-        public static int GetSkinDataIndexOfMelanin(float melanin)
+        #endregion Methods
+
+        #region Structs
+
+        public struct SkinColorData
         {
-            int result = 0;
-            for (int i = 0; i < _SkinColors.Length; i++)
+            #region Fields
+
+            public Color color;
+            public float melanin;
+
+            public float selector;
+
+            #endregion Fields
+
+            #region Constructors
+
+            public SkinColorData(float melanin, float selector, Color color)
             {
-                if (melanin < _SkinColors[i].melanin)
-                {
-                    break;
-                }
-                result = i;
+                this.melanin = melanin;
+                this.selector = selector;
+                this.color = color;
             }
-            return result;
+
+            #endregion Constructors
         }
 
-        public static bool GetSkinDataIndexOfMelanin_Prefix(ref int __result, float melanin)
-        {
-            int result = 0;
-            for (int i = 0; i < _SkinColors.Length; i++)
-            {
-                if (melanin < _SkinColors[i].melanin)
-                {
-                    break;
-                }
-                result = i;
-            }
-            __result = result;
-            return false;
-        }
-        // FS bench
-        public static float GetRelativeLerpValue(float value)
-        {
-            int leftIndexForValue = GetSkinDataIndexOfMelanin(value);
-            if (leftIndexForValue == _SkinColors.Length - 1)
-            {
-                return 0f;
-            }
-
-            int num = leftIndexForValue + 1;
-            return Mathf.InverseLerp(_SkinColors[leftIndexForValue].melanin, _SkinColors[num].melanin, value);
-        }
-
-        public static float GetValueFromRelativeLerp(int leftIndex, float lerp)
-        {
-            if (leftIndex >= _SkinColors.Length - 1)
-            {
-                return 1f;
-            }
-
-            if (leftIndex < 0)
-            {
-                return 0f;
-            }
-
-            int num = leftIndex + 1;
-            return Mathf.Lerp(_SkinColors[leftIndex].melanin, _SkinColors[num].melanin, lerp);
-        }
+        #endregion Structs
     }
 }

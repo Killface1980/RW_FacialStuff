@@ -1,27 +1,25 @@
-﻿using System.Collections.Generic;
-
-using Harmony;
-using RimWorld;
-using UnityEngine;
-using Verse;
-
-namespace FacialStuff.Detouring
+﻿namespace FacialStuff.Detouring
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
+
+    using Harmony;
+
+    using RimWorld;
+
+    using UnityEngine;
+
+    using Verse;
 
     using static GraphicDatabaseHeadRecordsModded;
 
     [StaticConstructorOnStartup]
     class HarmonyPatches
     {
-
         static HarmonyPatches()
         {
             HarmonyInstance harmony = HarmonyInstance.Create("com.facialstuff.rimworld.mod");
-
-            #region Graphics
 
             harmony.Patch(
                 AccessTools.Method(typeof(PawnGraphicSet), nameof(PawnGraphicSet.ResolveAllGraphics)),
@@ -32,16 +30,15 @@ namespace FacialStuff.Detouring
                 AccessTools.Method(
                     typeof(PawnRenderer),
                     "RenderPawnInternal",
-                    new Type[]
+                    new[]
                         {
                             typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4),
                             typeof(RotDrawMode), typeof(bool), typeof(bool)
                         }),
-                new HarmonyMethod(typeof(HarmonyPatch_PawnRenderer), nameof(HarmonyPatch_PawnRenderer.RenderPawnInternal_Prefix)),
-                null,
+                new HarmonyMethod(
+                    typeof(HarmonyPatch_PawnRenderer),
+                    nameof(HarmonyPatch_PawnRenderer.RenderPawnInternal_Prefix)),
                 null);
-
-            #endregion
 
             #region HealthTracker
 
@@ -60,16 +57,22 @@ namespace FacialStuff.Detouring
 
             #endregion
 
+            #region Hair
+
             harmony.Patch(
                 AccessTools.Method(typeof(PawnHairChooser), nameof(PawnHairChooser.RandomHairDefFor)),
-                null,
-                new HarmonyMethod(typeof(HarmonyPatches), nameof(RandomHairDefFor_PostFix)));
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(RandomHairDefFor_PreFix)),
+               null);
+
+            #endregion
 
             #region SkinColors
 
             harmony.Patch(
                 AccessTools.Method(typeof(PawnSkinColors), "GetSkinDataIndexOfMelanin"),
-                new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.GetSkinDataIndexOfMelanin_Prefix)),
+                new HarmonyMethod(
+                    typeof(PawnSkinColors_FS),
+                    nameof(PawnSkinColors_FS.GetSkinDataIndexOfMelanin_Prefix)),
                 null);
 
             harmony.Patch(
@@ -89,16 +92,17 @@ namespace FacialStuff.Detouring
 
             harmony.Patch(
                 AccessTools.Method(typeof(PawnSkinColors), nameof(PawnSkinColors.GetMelaninCommonalityFactor)),
-                new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.GetMelaninCommonalityFactor_Prefix)),
+                new HarmonyMethod(
+                    typeof(PawnSkinColors_FS),
+                    nameof(PawnSkinColors_FS.GetMelaninCommonalityFactor_Prefix)),
                 null);
 
             #endregion
 
-
-            //     harmony.PatchAll(Assembly.GetExecutingAssembly());
-
-            Log.Message("Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count() + " patches with harmony.");
-
+            // harmony.PatchAll(Assembly.GetExecutingAssembly());
+            Log.Message(
+                "Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count()
+                + " patches with harmony.");
         }
 
         public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)
@@ -138,6 +142,7 @@ namespace FacialStuff.Detouring
             {
                 faceComp.DefineSkinDNA();
             }
+
             if (!faceComp.IsDNAoptimized)
             {
                 faceComp.DefineHairDNA();
@@ -153,7 +158,6 @@ namespace FacialStuff.Detouring
                     pawn.story.hairColor);
             }
 
-
             if (faceComp.SetHeadType())
             {
                 if (faceComp.InitializeGraphics())
@@ -166,7 +170,10 @@ namespace FacialStuff.Detouring
                         Vector2.one,
                         pawn.story.hairColor);
 
-                    __instance.nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(pawn.story.bodyType, ShaderDatabase.CutoutSkin, pawn.story.SkinColor);
+                    __instance.nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
+                        pawn.story.bodyType,
+                        ShaderDatabase.CutoutSkin,
+                        pawn.story.SkinColor);
                     __instance.headGraphic = GetModdedHeadNamed(pawn, pawn.story.SkinColor);
                     __instance.desiccatedHeadGraphic = GetModdedHeadNamed(pawn, rotColor);
                     __instance.desiccatedHeadStumpGraphic = GetStump(rotColor);
@@ -179,7 +186,6 @@ namespace FacialStuff.Detouring
             }
         }
 
-
         public static void AddHediff_Postfix(
             Pawn_HealthTracker __instance,
             Hediff hediff,
@@ -189,7 +195,6 @@ namespace FacialStuff.Detouring
             if (!Controller.settings.ShowExtraParts)
             {
                 return;
-
             }
 
             if (Current.ProgramState != ProgramState.Playing)
@@ -226,7 +231,6 @@ namespace FacialStuff.Detouring
             if (!Controller.settings.ShowExtraParts)
             {
                 return;
-
             }
 
             Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
@@ -240,23 +244,24 @@ namespace FacialStuff.Detouring
             }
         }
 
-        public static void RandomHairDefFor_PostFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
+        public static bool RandomHairDefFor_PreFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
         {
             if (pawn.TryGetComp<CompFace>() == null)
             {
-                return;
+                return true;
             }
+
             IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
                                           where hair.hairTags.SharesElementWith(factionType.hairTags)
                                           select hair;
 
             __result = source.RandomElementByWeight(hair => PawnFaceChooser.HairChoiceLikelihoodFor(hair, pawn));
+            return false;
         }
-
     }
 
-
     #region Hair 
+
     // [HarmonyPatch(typeof(PawnHairColors), "RandomHairColor")]
     public static class PawnHairColors_PostFix
     {
@@ -313,8 +318,7 @@ namespace FacialStuff.Detouring
                     HairUltraViolet
                 };
 
-        //     [HarmonyPostfix]
-
+        // [HarmonyPostfix]
         public static void RandomHairColor(ref Color __result, Color skinColor, int ageYears)
         {
             Color tempColor;
@@ -340,13 +344,35 @@ namespace FacialStuff.Detouring
                     return;
                 }
 
-                if (rand < 0.4f) __result = HairGreenGrape;
-                else if (rand < 0.5f) __result = HairMysticTurquois;
-                else if (rand < 0.6f) __result = HairPinkPearl;
-                else if (rand < 0.7f) __result = HairPurplePassion;
-                else if (rand < 0.8f) __result = HairRosaRosa;
-                else if (rand < 0.9f) __result = HairRubyRed;
-                else __result = HairUltraViolet;
+                if (rand < 0.4f)
+                {
+                    __result = HairGreenGrape;
+                }
+                else if (rand < 0.5f)
+                {
+                    __result = HairMysticTurquois;
+                }
+                else if (rand < 0.6f)
+                {
+                    __result = HairPinkPearl;
+                }
+                else if (rand < 0.7f)
+                {
+                    __result = HairPurplePassion;
+                }
+                else if (rand < 0.8f)
+                {
+                    __result = HairRosaRosa;
+                }
+                else if (rand < 0.9f)
+                {
+                    __result = HairRubyRed;
+                }
+                else
+                {
+                    __result = HairUltraViolet;
+                }
+
                 return;
             }
 
@@ -432,7 +458,6 @@ namespace FacialStuff.Detouring
 
             __result = Color.Lerp(tempColor, new Color32(245, 245, 245, 255), greyness);
         }
-
 
         internal static Color DarkerBeardColor(Color value)
         {

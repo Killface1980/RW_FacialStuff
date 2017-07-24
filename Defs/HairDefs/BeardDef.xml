@@ -58,6 +58,7 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
+    <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>

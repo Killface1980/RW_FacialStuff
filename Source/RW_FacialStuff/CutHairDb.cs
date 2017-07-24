@@ -10,12 +10,18 @@ namespace FacialStuff
     [StaticConstructorOnStartup]
     public static class CutHairDb
     {
+        #region Fields
+
+        public static List<HaircutPawn> _pawnHairCache = new List<HaircutPawn>();
         private static Dictionary<GraphicRequest, Graphic> allGraphics = new Dictionary<GraphicRequest, Graphic>();
         private static Texture2D maskTexFrontBack;
 
         private static Texture2D maskTexSide;
 
-        // Verse.GraphicDatabase
+        #endregion Fields
+
+        #region Methods
+
         public static Graphic Get<T>(string path, Shader shader, Vector2 drawSize, Color color) where T : Graphic, new()
         {
             // Added second 'color' to get a separate graphic
@@ -23,6 +29,40 @@ namespace FacialStuff
             return GetInner<T>(req);
 
 
+        }
+
+        public static HaircutPawn GetHairCache(Pawn pawn)
+        {
+            foreach (HaircutPawn c in _pawnHairCache) if (c.Pawn == pawn) return c;
+            HaircutPawn n = new HaircutPawn { Pawn = pawn };
+            _pawnHairCache.Add(n);
+            return n;
+
+            // if (!PawnApparelStatCaches.ContainsKey(pawn))
+            // {
+            // PawnApparelStatCaches.Add(pawn, new StatCache(pawn));
+            // }
+            // return PawnApparelStatCaches[pawn];
+        }
+
+        private static void CutOutHair(ref Texture2D hairTex, Texture2D maskTex)
+        {
+
+            for (int x = 0; x < hairTex.width; x++)
+            {
+                for (int y = 0; y < hairTex.height; y++)
+                {
+
+                    Color maskColor = maskTex.GetPixel(x, y);
+                    Color hairColor = hairTex.GetPixel(x, y);
+
+                    Color final_color1 = hairColor * maskColor;
+
+                    hairTex.SetPixel(x, y, final_color1);
+                }
+            }
+
+            hairTex.Apply();
         }
 
         private static T GetInner<T>(GraphicRequest req) where T : Graphic, new()
@@ -87,40 +127,6 @@ namespace FacialStuff
             return (T)((object)graphic);
         }
 
-        private static void CutOutHair(ref Texture2D hairTex, Texture2D maskTex)
-        {
-
-            for (int x = 0; x < hairTex.width; x++)
-            {
-                for (int y = 0; y < hairTex.height; y++)
-                {
-
-                    Color maskColor = maskTex.GetPixel(x, y);
-                    Color hairColor = hairTex.GetPixel(x, y);
-
-                    Color final_color1 = hairColor * maskColor;
-
-                    hairTex.SetPixel(x, y, final_color1);
-                }
-            }
-
-            hairTex.Apply();
-        }
-
-        public static List<HaircutPawn> _pawnHairCache = new List<HaircutPawn>();
-
-        public static HaircutPawn GetHairCache(Pawn pawn)
-        {
-            foreach (HaircutPawn c in _pawnHairCache) if (c.Pawn == pawn) return c;
-            HaircutPawn n = new HaircutPawn { Pawn = pawn };
-            _pawnHairCache.Add(n);
-            return n;
-
-            // if (!PawnApparelStatCaches.ContainsKey(pawn))
-            // {
-            // PawnApparelStatCaches.Add(pawn, new StatCache(pawn));
-            // }
-            // return PawnApparelStatCaches[pawn];
-        }
+        #endregion Methods
     }
 }

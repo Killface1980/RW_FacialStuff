@@ -11,8 +11,6 @@ namespace FacialStuff
 
     public static class PawnFaceChooser
     {
-
-
         public static BeardDef RandomBeardDefFor(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<BeardDef> source = from beard in DefDatabase<BeardDef>.AllDefs

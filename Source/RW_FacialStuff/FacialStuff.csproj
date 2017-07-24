@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="enums\HeadType - Kopieren.cs" />
     <Compile Include="Settings.cs" />
     <None Include="PatchOperationFindMod.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
@@ -93,7 +94,7 @@
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="Headhelper.cs" />
     <None Include="NoCCL\DetourAttribute.cs" />
-    <Compile Include="FacialStuff_Defs.cs" />
+    <Compile Include="Defs\FacialStuff_Defs.cs" />
     <Compile Include="FaceStyling Bench\Dialog_FaceStyling.cs" />
     <Compile Include="FaceStyling Bench\Job_FaceStyling.cs" />
     <Compile Include="FaceStyling Bench\FaceStyler.cs" />
