@@ -86,7 +86,7 @@
     <Compile Include="Wiggler\PawnEyeWiggler.cs" />
     <None Include="BACKUP.cs" />
     <Compile Include="enums\FullHead.cs" />
-    <Compile Include="ITab_Pawn_Face.cs" />
+    <None Include="ITab_Pawn_Face.cs" />
     <Compile Include="enums\HeadType.cs" />
     <Compile Include="Defs\MouthDefOf.cs" />
     <Compile Include="FacialGraphics.cs" />

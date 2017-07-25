@@ -9,6 +9,8 @@ namespace FacialStuff
     using FacialStuff.Genetics;
     using FacialStuff.Wiggler;
 
+    using JetBrains.Annotations;
+
     using RimWorld;
     using RimWorld.Planet;
 
@@ -21,19 +23,15 @@ namespace FacialStuff
 
         #region Fields
 
-        public Color BeardColor = Color.clear;
-
-        public BeardDef beardDef = BeardDefOf.Beard_Shaved;
-
-        public BrowDef BrowDef;
-
         public CrownType crownType;
 
         public bool drawMouth = true;
 
-        public EyeDef EyeDef;
+        private EyeDef eyeDef;
 
         public PawnEyeWiggler eyeWiggler;
+
+        public float factionMelanin;
 
         public FullHead fullHeadType;
 
@@ -55,22 +53,32 @@ namespace FacialStuff
 
         public bool IsOptimized;
 
-        public float melanin1 = 0f;
+        public bool IsSkinDNAoptimized;
 
-        public float melanin2 = 0f;
+        private float euMelanin = 0f;
+
+        private float pheoMelanin = 0f;
+        private float cuticula = 0f;
+        public float Cuticula =>this.cuticula;
+
+        public float MelaninOrg;
+
+        private MoustacheDef moustacheDef = MoustacheDefOf.Shaved;
 
         public Graphic_Multi_NaturalHeadParts MouthGraphic;
 
-        private Pawn facePawn;
-
         public int rotationInt;
 
-        public WrinkleDef WrinkleDef;
+        [CanBeNull]
+        private WrinkleDef wrinkleDef;
 
         private CellRect _viewRect;
 
-        private Graphic mainBeardGraphic;
-        private Graphic upperBeardGraphic;
+        private Color beardColor = Color.clear;
+
+        private BeardDef beardDef = BeardDefOf.Beard_Shaved;
+
+        private BrowDef browDef;
 
         private Graphic browGraphic;
 
@@ -88,6 +96,8 @@ namespace FacialStuff
 
         private Graphic_Multi_AddedHeadParts eyeRightPatchGraphic;
 
+        private Pawn facePawn;
+
         private float headTypeX;
 
         private float headTypeY;
@@ -95,37 +105,70 @@ namespace FacialStuff
         // private float blinkRate;
         // public PawnHeadWiggler headWiggler;
         // todo: make proper dead eyes
-        private bool IsLeftEyeSolid;
-        private bool IsOld;
-        private bool IsRightEyeSolid;
+        private bool isLeftEyeSolid;
+
+        private bool isOld;
+
+        private bool isRightEyeSolid;
+
+        private Graphic mainBeardGraphic;
+
         private float mood = 0.5f;
-        private string texPathMouth;
+
+        private Graphic moustacheGraphic;
+
         private Graphic rottingWrinkleGraphic;
-        private string SkinColorHex;
+
+        private string skinColorHex;
+
         private string texPathBrow;
+
         private string texPathEyeLeft;
+
         private string texPathEyeLeftClosed;
+
         private string texPathEyeLeftPatch;
+
         private string texPathEyeRight;
+
         private string texPathEyeRightClosed;
+
         private string texPathEyeRightPatch;
+
+        private string texPathMouth;
+
         private Graphic wrinkleGraphic;
-
-        public float MelaninOrg;
-
-        public float factionMelanin;
-
-        public bool IsSkinDNAoptimized;
-
-        public MoustacheDef moustacheDef;
 
         #endregion Fields
 
         #region Properties
 
-        public GraphicMeshSet MouthMeshSet => MeshPoolFs.HumanlikeMouthSet[(int)this.fullHeadType];
+        public Color BeardColor
+        {
+            get => this.beardColor;
+            set => this.beardColor = value;
+        }
+
+        public BeardDef BeardDef
+        {
+            get => this.beardDef;
+            set => this.beardDef = value;
+        }
+
+        public BrowDef BrowDef
+        {
+            get => browDef;
+            set => browDef = value;
+        }
+
 
         public Pawn FacePawn => this.facePawn;
+        public GraphicMeshSet MouthMeshSet => MeshPoolFs.HumanlikeMouthSet[(int)this.fullHeadType];
+
+        public float EuMelanin { get => this.euMelanin; set => this.euMelanin = value; }
+        public float PheoMelanin { get => this.pheoMelanin; set => this.pheoMelanin = value; }
+        public EyeDef EyeDef { get => eyeDef; set => eyeDef = value; }
+        public MoustacheDef MoustacheDef { get => moustacheDef; set => moustacheDef = value; }
 
         #endregion Properties
 
@@ -258,27 +301,6 @@ namespace FacialStuff
             return material;
         }
 
-        public Material UpperBeardMatAt(Rot4 facing)
-        {
-            if (!this.HasNaturalMouth || this.moustacheDef == null)
-            {
-                return null;
-            }
-
-            Material material = null;
-            if (this.FacePawn.gender == Gender.Male)
-            {
-                material = this.upperBeardGraphic.MatAt(facing);
-
-                if (material != null)
-                {
-                    material = this.FacePawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
-                }
-            }
-
-            return material;
-        }
-
         public Material BrowMatAt(Rot4 facing)
         {
             Material material;
@@ -295,6 +317,55 @@ namespace FacialStuff
         public string BrowTexPath(BrowDef browDef)
         {
             return "Brows/" + this.FacePawn.gender + "/Brow_" + this.FacePawn.gender + "_" + browDef.texPath;
+        }
+
+        public void CheckForAddedOrMissingParts()
+        {
+            List<BodyPartRecord> body = this.FacePawn.RaceProps.body.AllParts;
+            foreach (Hediff hediff in this.FacePawn.health.hediffSet.hediffs)
+            {
+                BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
+                BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
+                BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
+                AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
+
+                if (addedPartProps != null)
+                {
+                    if (hediff.Part == leftEye)
+                    {
+                        this.texPathEyeLeftPatch = "AddedParts/" + hediff.def.defName + "_Left" + "_" + this.crownType;
+                        this.isLeftEyeSolid = addedPartProps.isSolid;
+                    }
+
+                    if (hediff.Part == rightEye)
+                    {
+                        this.texPathEyeRightPatch = "AddedParts/" + hediff.def.defName + "_Right" + "_"
+                                                    + this.crownType;
+                        this.isRightEyeSolid = addedPartProps.isSolid;
+                    }
+
+                    if (hediff.Part == jaw)
+                    {
+                        this.texPathMouth = "Mouth/Mouth_" + hediff.def.defName;
+                        this.HasNaturalMouth = false;
+                    }
+                }
+
+                if (hediff.def == HediffDefOf.MissingBodyPart)
+                {
+                    if (hediff.Part == leftEye)
+                    {
+                        this.texPathEyeLeft = this.EyeTexPath("Missing", enums.Side.Left);
+                        this.eyeWiggler.leftCanBlink = false;
+                    }
+
+                    if (hediff.Part == rightEye)
+                    {
+                        this.texPathEyeRight = this.EyeTexPath("Missing", enums.Side.Right);
+                        this.eyeWiggler.rightCanBlink = false;
+                    }
+                }
+            }
         }
 
         public Material DeadEyeMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
@@ -315,21 +386,6 @@ namespace FacialStuff
             }
 
             return material;
-        }
-
-        /// <summary>
-        /// Sets the hair melanin for pawns. Checks for relatives by blood to be consistent within the family.
-        /// </summary>
-        public void DefineHairDNA()
-        {
-            HairMelanin.HairGenetics(this.FacePawn, this, out this.melanin1, out this.melanin2);
-            this.IsDNAoptimized = true;
-        }
-
-        public void DefineSkinDNA()
-        {
-            HairMelanin.SkinGenetics(this.FacePawn, this, out this.factionMelanin);
-            this.IsSkinDNAoptimized = true;
         }
 
         /// <summary>
@@ -354,7 +410,7 @@ namespace FacialStuff
             this.BrowDef = PawnFaceChooser.RandomBrowDefFor(this.FacePawn, faction);
 
             // Log.Message(BrowDef.defName);
-            this.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(this.FacePawn);
+            this.wrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(this.FacePawn);
 
             // Log.Message(WrinkleDef.defName);
 
@@ -377,9 +433,26 @@ namespace FacialStuff
             this.IsOptimized = true;
         }
 
+        /// <summary>
+        /// Sets the hair melanin for pawns. Checks for relatives by blood to be consistent within the family.
+        /// </summary>
+        public void DefineHairDNA()
+        {
+            HairMelanin.HairGenetics(this.FacePawn, this, out this.euMelanin, out this.pheoMelanin, out this.cuticula);
+            this.IsDNAoptimized = true;
+        }
+
+        // TODO: Remove or make usable
+        public void DefineSkinDNA()
+        {
+            return;
+            HairMelanin.SkinGenetics(this.FacePawn, this, out this.factionMelanin);
+            this.IsSkinDNAoptimized = true;
+        }
+
         public Material EyeLeftMatAt(Rot4 facing, bool portrait)
         {
-            if (this.HasLeftEyePatch || !this.HasLeftEyePatch && this.IsLeftEyeSolid)
+            if (this.HasLeftEyePatch || !this.HasLeftEyePatch && this.isLeftEyeSolid)
             {
                 return null;
             }
@@ -432,7 +505,7 @@ namespace FacialStuff
 
         public Material EyeRightMatAt(Rot4 facing, bool portrait)
         {
-            if (this.HasRightEyePatch || (!this.HasRightEyePatch && this.IsRightEyeSolid))
+            if (this.HasRightEyePatch || (!this.HasRightEyePatch && this.isRightEyeSolid))
             {
                 return null;
             }
@@ -483,12 +556,6 @@ namespace FacialStuff
             return material;
         }
 
-        private string EyeClosedTexPath(enums.Side side)
-        {
-
-            return this.EyeTexPath("Closed", side);
-        }
-
         public string EyeTexPath(string eyeDefPath, enums.Side side)
         {
 
@@ -523,33 +590,33 @@ namespace FacialStuff
                 Mathf.InverseLerp(50f, 100f, this.FacePawn.ageTracker.AgeBiologicalYearsFloat));
 
             this.wrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                this.WrinkleDef.texPath + "_" + this.crownType + "_" + this.headType,
+                this.wrinkleDef.texPath + "_" + this.crownType + "_" + this.headType,
                 ShaderDatabase.Transparent,
                 Vector2.one,
                 wrinkleColor);
 
             this.rottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                this.WrinkleDef.texPath + "_" + this.crownType + "_" + this.headType,
+                this.wrinkleDef.texPath + "_" + this.crownType + "_" + this.headType,
                 ShaderDatabase.Transparent,
                 Vector2.one,
                 wrinkleColor * Headhelper.skinRottingMultiplyColor);
 
-            string mainBeardDefTexPath = this.beardDef.texPath + "_" + this.crownType + "_" + this.headType;
+            string mainBeardDefTexPath = this.BeardDef.texPath + "_" + this.crownType + "_" + this.headType;
 
-            if (this.moustacheDef != null)
+            if (this.MoustacheDef != null)
             {
-                string upperBeardDefTexPath = this.moustacheDef.texPath;
+                string moustacheDefTexPath = this.MoustacheDef.texPath;
 
-                this.upperBeardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                    upperBeardDefTexPath,
+                this.moustacheGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    moustacheDefTexPath,
                     ShaderDatabase.Transparent,
                     Vector2.one,
                     this.BeardColor);
             }
 
-            if (this.beardDef == BeardDefOf.Beard_Shaved)
+            if (this.BeardDef == BeardDefOf.Beard_Shaved)
             {
-                mainBeardDefTexPath = this.beardDef.texPath;
+                mainBeardDefTexPath = this.BeardDef.texPath;
             }
 
             this.mainBeardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
@@ -633,22 +700,38 @@ namespace FacialStuff
             return true;
         }
 
-        //// todo: make mouths dynamic, check textures?
-        public Material MouthMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
+        public Material MoustacheMatAt(Rot4 facing)
         {
-            Material material = null;
-            if (!this.HasNaturalMouth)
+            if (!this.HasNaturalMouth || this.MoustacheDef == MoustacheDefOf.Shaved)
             {
                 return null;
             }
+
+            Material material = null;
+            if (this.FacePawn.gender == Gender.Male)
+            {
+                material = this.moustacheGraphic.MatAt(facing);
+
+                if (material != null)
+                {
+                    material = this.FacePawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
+                }
+            }
+
+            return material;
+        }
+   
+        public Material MouthMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
+        {
+            Material material = null;
             if (!Controller.settings.UseMouth || !this.drawMouth)
             {
                 return null;
             }
 
-            bool flag2 = this.moustacheDef == MoustacheDefOf.Shaved;
+            bool flag2 = this.MoustacheDef == MoustacheDefOf.Shaved;
 
-            if (flag2)
+            if (flag2 || !this.HasNaturalMouth)
             {
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
@@ -668,34 +751,18 @@ namespace FacialStuff
             return material;
         }
 
-        // todo: eyes closed when anaesthetic
-        // eyes closed time = > consciousness?
-        // tiredness affect blink rate
-        // Method used to animate the eye movement
         public override void PostDraw()
         {
             base.PostDraw();
-            if (!this.FacePawn.Spawned)
+
+            if (!this.FacePawn.Spawned || this.FacePawn.Dead)
             {
                 return;
             }
 
-            if (WorldRendererUtility.WorldRenderedNow)
+            if (this.HasNaturalMouth)
             {
-                return;
-            }
-
-            this._viewRect = Find.CameraDriver.CurrentViewRect;
-            this._viewRect = this._viewRect.ExpandedBy(5);
-
-            if (!this._viewRect.Contains(this.FacePawn.Position))
-            {
-                return;
-            }
-
-            if (Find.TickManager.TicksGame > this.eyeWiggler.nextBlinkEnd)
-            {
-                if (this.HasNaturalMouth)
+                if (Find.TickManager.TicksGame > this.eyeWiggler.nextBlinkEnd)
                 {
                     this.SetMouthAccordingToMoodLevel();
                 }
@@ -711,30 +778,41 @@ namespace FacialStuff
             base.PostExposeData();
             Scribe_References.Look(ref this.facePawn, "facePawn");
 
-            Scribe_Defs.Look(ref this.EyeDef, "EyeDef");
-            Scribe_Defs.Look(ref this.BrowDef, "BrowDef");
+            Scribe_Defs.Look(ref this.eyeDef, "EyeDef");
+            Scribe_Defs.Look(ref this.browDef, "BrowDef");
 
             // Scribe_Defs.Look(ref this.MouthDef, "MouthDef");
-            Scribe_Defs.Look(ref this.WrinkleDef, "WrinkleDef");
+            Scribe_Defs.Look(ref this.wrinkleDef, "WrinkleDef");
             Scribe_Defs.Look(ref this.beardDef, "BeardDef");
-            Scribe_Defs.Look(ref this.moustacheDef, "moustacheDef");
+            Scribe_Defs.Look(ref this.moustacheDef, "MoustacheDef");
             Scribe_Values.Look(ref this.IsOptimized, "optimized");
             Scribe_Values.Look(ref this.drawMouth, "drawMouth");
 
             Scribe_Values.Look(ref this.headType, "headType");
             Scribe_Values.Look(ref this.crownType, "crownType");
-            Scribe_Values.Look(ref this.SkinColorHex, "SkinColorHex");
+            Scribe_Values.Look(ref this.skinColorHex, "SkinColorHex");
             Scribe_Values.Look(ref this.HairColorOrg, "HairColorOrg");
-            Scribe_Values.Look(ref this.BeardColor, "BeardColor");
+            Scribe_Values.Look(ref this.beardColor, "BeardColor");
             Scribe_Values.Look(ref this.HasSameBeardColor, "sameBeardColor");
 
-            Scribe_Values.Look(ref this.melanin1, "melanin1");
-            Scribe_Values.Look(ref this.melanin2, "melanin2");
+            Scribe_Values.Look(ref this.euMelanin, "euMelanin");
+            Scribe_Values.Look(ref this.pheoMelanin, "pheoMelanin");
+
+
             Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
             Scribe_Values.Look(ref this.IsSkinDNAoptimized, "IsSkinDNAoptimized");
             Scribe_Values.Look(ref this.IsDNAoptimized, "DNAoptimized");
 
             Scribe_Values.Look(ref this.MelaninOrg, "MelaninOrg");
+
+            // TODO: Old values for updating
+            Scribe_Values.Look(ref this.euMelanin, "melanin1");
+            Scribe_Values.Look(ref this.pheoMelanin, "melanin2");
+        }
+
+        public void SetFaceOwner(Pawn pawn)
+        {
+            this.facePawn = pawn;
         }
 
         /// <summary>
@@ -751,7 +829,7 @@ namespace FacialStuff
             this.eyeWiggler = new PawnEyeWiggler(this.FacePawn);
 
             // this.headWiggler = new PawnHeadWiggler(this.pawn);
-            this.IsOld = this.FacePawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
+            this.isOld = this.FacePawn.ageTracker.AgeBiologicalYearsFloat >= 50f;
 
             this.SetHeadAndCrownType();
 
@@ -770,7 +848,7 @@ namespace FacialStuff
         public Material WrinkleMatAt(Rot4 facing, RotDrawMode bodyCondition)
         {
             Material material = null;
-            if (this.IsOld && Controller.settings.UseWrinkles)
+            if (this.isOld && Controller.settings.UseWrinkles)
             {
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
@@ -790,64 +868,17 @@ namespace FacialStuff
             return material;
         }
 
-        private void CheckForAddedOrMissingParts()
+        private string EyeClosedTexPath(enums.Side side)
         {
-            List<BodyPartRecord> body = this.FacePawn.RaceProps.body.AllParts;
-            foreach (Hediff hediff in this.FacePawn.health.hediffSet.hediffs)
-            {
-                BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
-                BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
-                BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
-                AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
 
-                if (addedPartProps != null)
-                {
-                    if (hediff.Part == leftEye)
-                    {
-                        this.texPathEyeLeftPatch = "AddedParts/" + hediff.def.defName + "_Left" + "_" + this.crownType;
-                        this.IsLeftEyeSolid = addedPartProps.isSolid;
-                    }
-
-                    if (hediff.Part == rightEye)
-                    {
-                        this.texPathEyeRightPatch = "AddedParts/" + hediff.def.defName + "_Right" + "_"
-                                                    + this.crownType;
-                        this.IsRightEyeSolid = addedPartProps.isSolid;
-                    }
-
-                    if (hediff.Part == jaw)
-                    {
-                        this.texPathMouth = "Mouth/Mouth_" + hediff.def.defName;
-                        this.HasNaturalMouth = false;
-                    }
-                }
-
-                if (hediff.def == HediffDefOf.MissingBodyPart)
-                {
-                    if (hediff.Part == leftEye)
-                    {
-                        this.texPathEyeLeft =
-                            this.EyeTexPath(
-                                "Missing",
-                                enums.Side.Left); // "Eyes/" + "ShotOut" + "_Left" + this.crownType;
-                        this.eyeWiggler.leftCanBlink = false;
-                    }
-
-                    if (hediff.Part == rightEye)
-                    {
-                        this.texPathEyeRight = this.EyeTexPath("Missing", enums.Side.Right);
-                        this.eyeWiggler.rightCanBlink = false;
-                    }
-                }
-            }
+            return this.EyeTexPath("Closed", side);
         }
-
         private void ResetBoolsAndPaths()
         {
             this.HasLeftEyePatch = false;
             this.HasRightEyePatch = false;
-            this.IsLeftEyeSolid = false;
-            this.IsRightEyeSolid = false;
+            this.isLeftEyeSolid = false;
+            this.isRightEyeSolid = false;
 
             this.texPathEyeLeftPatch = null;
             this.texPathEyeRightPatch = null;
@@ -1038,10 +1069,5 @@ namespace FacialStuff
         }
 
         #endregion Methods
-
-        public void SetFaceOwner(Pawn pawn)
-        {
-            this.facePawn = pawn;
-        }
     }
 }

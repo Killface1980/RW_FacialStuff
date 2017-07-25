@@ -43,12 +43,12 @@ namespace FacialStuff.Genetics
 
         public static Color HairUltraViolet = new Color32(191, 53, 132, 255);
 
-        public static Gradient gradient_mel2 = new Gradient();
-        public static Gradient gradient_mel1 = new Gradient();
+        public static Gradient GradientMel2 = new Gradient();
+        public static Gradient GradientMel1 = new Gradient();
 
-        public static void HairGenetics(Pawn pawn, CompFace face, out float melanin1, out float melanin2)
+        public static void HairGenetics(Pawn pawn, CompFace face, out float euMelanin, out float pheoMelanin, out float cuticula)
         {
-            melanin1 = melanin2 = 0f;
+            euMelanin = pheoMelanin = cuticula = 0f;
             if (face == null)
             {
                 return;
@@ -78,18 +78,21 @@ namespace FacialStuff.Genetics
 
             if (!motherNull && mother.IsDNAoptimized && !fatherNull && father.IsDNAoptimized)
             {
-                melanin1 = GetRandomChildHairColor(mother.melanin1, father.melanin1);
-                melanin2 = GetRandomChildHairColor(mother.melanin2, father.melanin2);
+                euMelanin = GetRandomChildHairColor(mother.EuMelanin, father.EuMelanin);
+                pheoMelanin = GetRandomChildHairColor(mother.PheoMelanin, father.PheoMelanin);
+                cuticula = GetRandomChildHairColor(mother.Cuticula, father.Cuticula);
             }
             else if (!motherNull && mother.IsDNAoptimized)
             {
-                melanin1 = GetRandomMelaninSimilarTo(mother.melanin1, 0f, 1f);
-                melanin2 = GetRandomMelaninSimilarTo(mother.melanin2, 0f, 1f);
+                euMelanin = GetRandomMelaninSimilarTo(mother.EuMelanin, 0f, 1f);
+                pheoMelanin = GetRandomMelaninSimilarTo(mother.PheoMelanin, 0f, 1f);
+                cuticula = GetRandomMelaninSimilarTo(mother.Cuticula, 0f, 1f);
             }
             else if (!fatherNull && father.IsDNAoptimized)
             {
-                melanin1 = GetRandomMelaninSimilarTo(father.melanin1, 0f, 1f);
-                melanin2 = GetRandomMelaninSimilarTo(father.melanin2, 0f, 1f);
+                euMelanin = GetRandomMelaninSimilarTo(father.EuMelanin, 0f, 1f);
+                pheoMelanin = GetRandomMelaninSimilarTo(father.PheoMelanin, 0f, 1f);
+                cuticula = GetRandomMelaninSimilarTo(father.Cuticula, 0f, 1f);
             }
             else //if (motherNull && fatherNull)
             {
@@ -101,70 +104,81 @@ namespace FacialStuff.Genetics
                     {
                         CompFace relatedPawn = relPawn.TryGetComp<CompFace>();
 
-                        float melaninx1 = relatedPawn.melanin1;
-                        float melaninx2 = relatedPawn.melanin2;
-                        melanin1 = GetRandomMelaninSimilarTo(melaninx1);
-                        melanin2 = GetRandomMelaninSimilarTo(melaninx2);
+                        float melaninx1 = relatedPawn.EuMelanin;
+                        float melaninx2 = relatedPawn.PheoMelanin;
+                        float cuticulax = relatedPawn.Cuticula;
+                        euMelanin = GetRandomMelaninSimilarTo(melaninx1);
+                        pheoMelanin = GetRandomMelaninSimilarTo(melaninx2);
+                        cuticula = GetRandomMelaninSimilarTo(cuticulax);
                         flag = false;
                     }
                 }
                 if (flag)
                 {
-                    melanin1 = Rand.Range(pawn.story.melanin * 0.75f, Mathf.Min(pawn.story.melanin * 1.5f + 0.1f, 1f));
-                    melanin2 = Rand.Range(pawn.story.melanin / 2, 1f);
+                    euMelanin = Rand.Range(pawn.story.melanin * 0.75f, Mathf.Min(pawn.story.melanin * 1.5f + 0.1f, 1f));
+                    pheoMelanin = Rand.Range(pawn.story.melanin / 2, 1f);
+                    cuticula = Rand.Range(0.5f, 1.5f);
                 }
             }
             //  Log.Message(
-            //      pawn + " - " + melanin + " - " + face.melanin1 + " - " + face.melanin2 + " - " + mother?.melanin1
-            //      + mother?.melanin2 + father?.melanin1 + father?.melanin2);
+            //      pawn + " - " + melanin + " - " + face.euMelanin + " - " + face.pheoMelanin + " - " + mother?.euMelanin
+            //      + mother?.pheoMelanin + father?.euMelanin + father?.pheoMelanin);
 
 
             // Check if the player has already set a custom color, else dna!
             if (pawn.story.hairColor == face.HairColorOrg)
             {
                 // Build gradients
-                GradientColorKey[] gck = new GradientColorKey[4];
-                gck[0].color = HairPlatinum;
-                gck[0].time = 0.0f;
-                gck[1].color = new Color32(240, 234, 169, 255);
-                //    gck[1].color = new Color32(255, 194, 71, 255);
-                gck[1].time = 0.6f;
-                gck[2].color = new Color32(255, 222, 71, 255);
-                //     gck[2].color = new Color32(255, 165, 51, 255);
-                gck[2].time = 0.8f;
-                gck[3].color = new Color32(255, 64, 0, 255);
-                gck[3].time = 0.95f;
                 GradientAlphaKey[] gak = new GradientAlphaKey[2];
                 gak[0].alpha = 1f;
                 gak[0].time = 0.0f;
                 gak[1].alpha = 1f;
                 gak[1].time = 1f;
-                gradient_mel2.SetKeys(gck, gak);
 
-                gck[0].color = HairPlatinum;
-                gck[0].time = 0.0f;
-                gck[1].color = new Color32(184, 139, 96, 255);
-                gck[1].time = 0.2f;
-                gck[2].color = new Color32(110, 59, 13, 255);
-                gck[2].time = 0.7f;
-                gck[3].color = new Color32(30, 14, 0, 255);
-                gck[3].time = 0.95f;
-                gradient_mel1.SetKeys(gck, gak);
+                GradientColorKey[] phyo = new GradientColorKey[5];
+                GradientColorKey[] eu = new GradientColorKey[5];
 
-                var color = gradient_mel1.Evaluate(face.melanin1);
+                eu[0].color = HairPlatinum;
+                eu[0].time = 0.0f;
+                eu[1].color = new Color32(139, 108, 66, 255);
+                eu[1].time = 0.55f;
+                eu[2].color = new Color32(91, 60, 17, 255);
+                eu[2].time = 0.7f;
+                eu[3].color = new Color32(47, 30, 14, 255);
+                eu[3].time = 0.85f;
+                eu[4].color = new Color32(0, 0, 0, 255);
+                eu[4].time = 1f;
+                GradientMel1.SetKeys(eu, gak);
 
-                color *= gradient_mel2.Evaluate(face.melanin2);
+                phyo[0].color = HairPlatinum;
+                phyo[0].time = 0.0f;
+                phyo[1].color = new Color32(226, 188, 116, 255);
+                phyo[1].time = 0.65f;
+                phyo[2].color = new Color32(231, 168, 84, 255);
+                phyo[2].time = 0.75f;
+                phyo[3].color = new Color32(173, 79, 9, 255);
+                phyo[3].time = 0.85f;
+                phyo[4].color = new Color32(157, 62, 12, 255);
+                phyo[4].time = 0.95f;
+
+                GradientMel2.SetKeys(phyo, gak);
+
+
+
+                var color = GradientMel1.Evaluate(face.EuMelanin);
+
+                color *= GradientMel2.Evaluate(face.PheoMelanin);
                 // Aging
                 {
                     // age to become gray as float
                     float ageFloat = pawn.ageTracker.AgeBiologicalYearsFloat / 100;
                     float agingBeginGreyFloat = Rand.Range(0.35f, 0.45f);
 
-                    agingBeginGreyFloat += pawn.story.melanin * 0.05f + melanin1 * 0.05f + melanin2 * 0.05f;
+                    agingBeginGreyFloat += pawn.story.melanin * 0.05f + euMelanin * 0.05f + pheoMelanin * 0.05f;
 
                     float greySpan = Rand.Range(0.07f, 0.15f);
 
-                    greySpan += melanin1 * 0.15f;
+                    greySpan += euMelanin * 0.15f;
                     greySpan += pawn.story.melanin * 0.25f;
                     float greyness = 0f;
 
@@ -192,13 +206,13 @@ namespace FacialStuff.Genetics
 
                     if (Controller.settings.UseDNAByFaction)
                     {
-                        if (pawn.Faction.def == FactionDefOf.Outlander)
+                        if (pawn.Faction.def == FactionDefOf.Spacer || pawn.Faction.def == FactionDefOf.SpacerHostile)
                         {
-                            limit *= 0.8f;
+                            limit *= 0.6f;
                         }
                         if (pawn.Faction.def == FactionDefOf.Pirate)
                         {
-                            limit *= 0.5f;
+                            limit *= 0.8f;
                         }
                     }
 
@@ -217,10 +231,20 @@ namespace FacialStuff.Genetics
                         else if (rand < 0.9f) color2 = HairRubyRed;
                         else color2 = HairUltraViolet;
 
+                        Color.RGBToHSV(color2, out float h, out float s, out float v);
+                        s *= cuticula;
+
+                        color2 = Color.HSVToRGB(h, s, v);
+
                         pawn.story.hairColor = Color.Lerp(color, color2, Rand.Range(0.66f, 1f));
                     }
                     else
                     {
+                        Color.RGBToHSV(color, out float h, out float s, out float v);
+                        s *= cuticula;
+
+                        color = Color.HSVToRGB(h, s, v);
+
                         pawn.story.hairColor = Color.Lerp(color, new Color(0.86f, 0.86f, 0.86f), greyness);
                     }
 
@@ -234,9 +258,9 @@ namespace FacialStuff.Genetics
                     }
                     else
                     {
-                        var color2 = gradient_mel1.Evaluate(face.melanin1 + Rand.Range(-0.2f, 0.2f));
+                        var color2 = GradientMel1.Evaluate(face.EuMelanin + Rand.Range(-0.2f, 0.2f));
 
-                        color2 *= gradient_mel2.Evaluate(face.melanin2 + Rand.Range(-0.2f, 0.2f));
+                        color2 *= GradientMel2.Evaluate(face.PheoMelanin + Rand.Range(-0.2f, 0.2f));
 
                         face.BeardColor = Color.Lerp(color2, new Color(0.91f, 0.91f, 0.91f), greyness * Rand.Value);
                     }
@@ -344,8 +368,8 @@ namespace FacialStuff.Genetics
 
             face.IsDNAoptimized = false;
             //  Log.Message(
-            //      pawn + " - " + melanin + " - " + face.melanin1 + " - " + face.melanin2 + " - " + mother?.melanin1
-            //      + mother?.melanin2 + father?.melanin1 + father?.melanin2);
+            //      pawn + " - " + melanin + " - " + face.euMelanin + " - " + face.pheoMelanin + " - " + mother?.euMelanin
+            //      + mother?.pheoMelanin + father?.euMelanin + father?.pheoMelanin);
 
 
         }

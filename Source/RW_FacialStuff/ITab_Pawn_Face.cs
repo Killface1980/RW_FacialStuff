@@ -50,9 +50,9 @@ namespace FacialStuff
 
             Widgets.DrawBoxSolid(colRect, this.SelPawn.story.SkinColor);
             colRect.x += colRect.width;
-            Widgets.DrawBoxSolid(colRect, HairMelanin.gradient_mel1.Evaluate(faceComp.melanin1));
+            Widgets.DrawBoxSolid(colRect, HairMelanin.GradientMel1.Evaluate(faceComp.EuMelanin));
             colRect.x += colRect.width;
-            Widgets.DrawBoxSolid(colRect, HairMelanin.gradient_mel2.Evaluate(faceComp.melanin2));
+            Widgets.DrawBoxSolid(colRect, HairMelanin.GradientMel2.Evaluate(faceComp.PheoMelanin));
 
             Rect checkbox = new Rect(rect.x, colRect.yMax + 15f, rect.width, 24f);
 

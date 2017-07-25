@@ -124,9 +124,6 @@
 
             BuildDatabaseIfNecessary();
 
-            // Custom rotting color, mixed with skin wone
-            Color rotColor = pawn.story.SkinColor * Headhelper.skinRottingMultiplyColor;
-
             if (faceComp.FacePawn == null)
             {
                 faceComp.SetFaceOwner(pawn);
@@ -157,6 +154,9 @@
                     Vector2.one,
                     pawn.story.hairColor);
             }
+   
+            // Custom rotting color, mixed with skin tone
+            Color rotColor = pawn.story.SkinColor * Headhelper.skinRottingMultiplyColor;
 
             if (faceComp.SetHeadType())
             {
@@ -201,7 +201,11 @@
             {
                 return;
             }
-
+            Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
+            if (!pawn.Spawned)
+            {
+                return;
+            }
             if (part == null)
             {
                 return;
@@ -213,9 +217,10 @@
                 if (part.def == BodyPartDefOf.LeftEye || part.def == BodyPartDefOf.RightEye
                     || part.def == BodyPartDefOf.Jaw)
                 {
-                    Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
-                    if (pawn != null && pawn.Spawned)
+                    CompFace face = pawn.TryGetComp<CompFace>();
+                    if (face != null)
                     {
+                        face.CheckForAddedOrMissingParts();
                         pawn.Drawer.renderer.graphics.ResolveAllGraphics();
                     }
                 }
@@ -228,19 +233,31 @@
             Hediff diffException = null,
             bool checkStateChange = true)
         {
+            if (Current.ProgramState != ProgramState.Playing)
+            {
+                return;
+            }
+
             if (!Controller.settings.ShowExtraParts)
             {
                 return;
             }
 
             Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
+            if (!pawn.Spawned)
+            {
+                return;
+            }
 
             if (part.def == BodyPartDefOf.LeftEye || part.def == BodyPartDefOf.RightEye
                 || part.def == BodyPartDefOf.Head)
             {
-                // AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
-                // if (addedPartProps != null && addedPartProps.isBionic)
-                pawn.Drawer.renderer.graphics.ResolveAllGraphics();
+                CompFace face = pawn.TryGetComp<CompFace>();
+                if (face != null)
+                {
+                    face.CheckForAddedOrMissingParts();
+                    pawn.Drawer.renderer.graphics.ResolveAllGraphics();
+                }
             }
         }
 

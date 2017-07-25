@@ -160,7 +160,7 @@ namespace FacialStuff
                         if (!headStump)
                         {
                             Material beardMat = faceComp.BeardMatAt(headFacing);
-                            Material upperBeardMat = faceComp.UpperBeardMatAt(headFacing);
+                            Material moustacheMatAt = faceComp.MoustacheMatAt(headFacing);
                             Material browMat = faceComp.BrowMatAt(headFacing);
                             Material mouthMat = faceComp.MouthMatAt(headFacing, bodyDrawType);
                             Material wrinkleMat = faceComp.WrinkleMatAt(headFacing, bodyDrawType);
@@ -187,9 +187,9 @@ namespace FacialStuff
                                 locFacialY.y += YOffsetOnFace;
                             }
 
-                            if (upperBeardMat != null)
+                            if (moustacheMatAt != null)
                             {
-                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, upperBeardMat, portrait);
+                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, moustacheMatAt, portrait);
                                 locFacialY.y += YOffsetOnFace;
                             }
 

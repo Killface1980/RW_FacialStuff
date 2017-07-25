@@ -286,15 +286,15 @@
 
             if (faceComp != null)
             {
-                if (faceComp.beardDef == null)
+                if (faceComp.BeardDef == null)
                 {
-                    faceComp.beardDef = BeardDefOf.Beard_Shaved;
+                    faceComp.BeardDef = BeardDefOf.Beard_Shaved;
                 }
 
                 originalColour = faceComp.HairColorOrg;
                 _newBeardColour = faceComp.BeardColor;
-                _newBeard = originalBeard = faceComp.beardDef;
-                _newMoustache = originalUpperBeard = faceComp.moustacheDef;
+                _newBeard = originalBeard = faceComp.BeardDef;
+                _newMoustache = originalUpperBeard = faceComp.MoustacheDef;
                 _newEye = originalEye = faceComp.EyeDef;
                 _newBrow = originalBrow = faceComp.BrowDef;
             }
@@ -395,16 +395,16 @@
                 this.SetGraphicSlot(
                     enums.GraphicSlotGroup.Beard,
                     pawn,
-                    this.BeardGraphic(faceComp.beardDef),
+                    this.BeardGraphic(faceComp.BeardDef),
                     pawn.def.uiIcon,
                     faceComp.BeardColor);
-                if (faceComp.moustacheDef != null)
+                if (faceComp.MoustacheDef != null)
                 {
 
                     this.SetGraphicSlot(
                         enums.GraphicSlotGroup.Moustache,
                         pawn,
-                        this.MoustacheGraphic(faceComp.moustacheDef),
+                        this.MoustacheGraphic(faceComp.MoustacheDef),
                         pawn.def.uiIcon,
                         faceComp.BeardColor);
                 }
@@ -667,8 +667,8 @@
                             // FS additions
                             if (pawn.gender == Gender.Male)
                             {
-                                faceComp.beardDef = this.NewBeard;
-                                faceComp.moustacheDef = this.NewMoustache;
+                                faceComp.BeardDef = this.NewBeard;
+                                faceComp.MoustacheDef = this.NewMoustache;
                             }
 
                             if (faceComp.HasSameBeardColor)
@@ -1240,7 +1240,7 @@
                             case (int)enums.GraphicSlotGroup.Mouth:
                                 if (faceComp != null && faceComp.drawMouth)
                                 {
-                                    if (this.NewBeard.drawMouth && (this.NewMoustache == null || this.NewMoustache == MoustacheDefOf.Shaved || faceComp.HasNaturalMouth))
+                                    if (this.NewBeard.drawMouth && (this.NewMoustache == MoustacheDefOf.Shaved))
                                         DisplayGraphics[i].Draw(pawnMouthRect);
                                 }
 
