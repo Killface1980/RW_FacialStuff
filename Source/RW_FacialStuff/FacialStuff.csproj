@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HumanMouthGraphics.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />
     <Compile Include="Defs\MoustacheDefOf.cs" />
     <Compile Include="Defs\MoustacheDef.cs" />
@@ -77,23 +78,23 @@
     <Compile Include="Defs\EyeDef.cs" />
     <Compile Include="Defs\MouthDef.cs" />
     <Compile Include="Defs\WrinkleDef.cs" />
-    <Compile Include="enums\BeardType.cs" />
-    <Compile Include="enums\DialoguePage.Page.cs" />
+    <Compile Include="Enums\BeardType.cs" />
+    <Compile Include="Enums\DialoguePage.Page.cs" />
     <Compile Include="Settings.cs" />
     <None Include="PatchOperationFindMod.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
     <Compile Include="Wiggler\PawnHeadWiggler.cs" />
     <Compile Include="Wiggler\PawnEyeWiggler.cs" />
     <None Include="BACKUP.cs" />
-    <Compile Include="enums\FullHead.cs" />
+    <Compile Include="Enums\FullHead.cs" />
     <None Include="ITab_Pawn_Face.cs" />
-    <Compile Include="enums\HeadType.cs" />
+    <Compile Include="Enums\HeadType.cs" />
     <Compile Include="Defs\MouthDefOf.cs" />
     <Compile Include="FacialGraphics.cs" />
-    <Compile Include="HaircutPawn.cs" />
+    <Compile Include="HairCutPawn.cs" />
     <Compile Include="FaceStyling Bench\GraphicSlotGroup.cs" />
-    <Compile Include="Graphic_Multi_NaturalEyes.cs" />
-    <Compile Include="Graphic_Multi_AddedHeadParts.cs" />
+    <Compile Include="Graphics_FS\Graphic_Multi_NaturalEyes.cs" />
+    <Compile Include="Graphics_FS\Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="MeshPoolFs.cs" />
     <Compile Include="CutHairDb.cs" />
     <Compile Include="PawnRenderer_Prefix.cs" />
@@ -101,7 +102,7 @@
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
-    <Compile Include="Headhelper.cs" />
+    <Compile Include="HeadHelper.cs" />
     <None Include="NoCCL\DetourAttribute.cs" />
     <Compile Include="FaceStyling Bench\Dialog_FaceStyling.cs" />
     <Compile Include="FaceStyling Bench\Job_FaceStyling.cs" />
@@ -109,11 +110,10 @@
     <None Include="FaceStyling Bench\Preset.cs" />
     <None Include="FaceStyling Bench\PresetDatabase.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
-    <Compile Include="GraphicNamesInFolder.cs" />
-    <Compile Include="Graphic_Multi_NaturalHeadParts.cs" />
+    <None Include="GraphicNamesInFolder.cs" />
+    <Compile Include="Graphics_FS\Graphic_Multi_NaturalHeadParts.cs" />
     <None Include="NoCCL\FS_SpecialInjector.cs" />
-    <Compile Include="MaskTextures.cs" />
-    <Compile Include="Utilities\DialogUtility.cs" />
+    <Compile Include="FaceStyling Bench\DialogUtility.cs" />
     <Compile Include="Controller.cs" />
     <None Include="NoCCL\Detours.cs" />
     <None Include="NoCCL\SpecialInjector.cs" />

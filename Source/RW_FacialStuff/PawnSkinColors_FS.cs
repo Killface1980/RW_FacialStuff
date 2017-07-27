@@ -42,15 +42,15 @@ namespace FacialStuff.Detouring
                 new SkinColorData(
                     0.65f,
                     0.785f,
-                    new Color32(165, 93, 41, 255)),// s 0.75, b 0.65
+                    new Color32(165, 93, 41, 255)), // s 0.75, b 0.65
                 new SkinColorData(
                     0.75f,
                     0.85f,
-                    new Color32(127, 71, 51, 255)),// s 0.6, b 0.5
+                    new Color32(127, 71, 51, 255)), // s 0.6, b 0.5
                 new SkinColorData(
                     0.9f,
                     0.9f,
-                    new Color32(101, 56, 41, 255)),// s 0.6, b 0.95
+                    new Color32(101, 56, 41, 255)), // s 0.6, b 0.95
             new SkinColorData(
                     1f,
                     1f,
@@ -104,6 +104,7 @@ namespace FacialStuff.Detouring
             {
                 return _SkinColors[skinDataIndexOfMelanin].color;
             }
+
             float t = Mathf.InverseLerp(_SkinColors[skinDataIndexOfMelanin].melanin, _SkinColors[skinDataIndexOfMelanin + 1].melanin, melanin);
             return Color.Lerp(_SkinColors[skinDataIndexOfMelanin].color, _SkinColors[skinDataIndexOfMelanin + 1].color, t);
         }
@@ -131,8 +132,10 @@ namespace FacialStuff.Detouring
                 {
                     break;
                 }
+
                 result = i;
             }
+
             return result;
         }
 
@@ -145,8 +148,10 @@ namespace FacialStuff.Detouring
                 {
                     break;
                 }
+
                 result = i;
             }
+
             __result = result;
             return false;
         }

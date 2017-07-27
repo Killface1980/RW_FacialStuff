@@ -6,10 +6,9 @@ using System.Text;
 namespace FacialStuff
 {
     using UnityEngine;
+    using static UnityEngine.GUILayout;
 
     using Verse;
-
-    using static UnityEngine.GUILayout;
 
     public class Settings : ModSettings
     {
@@ -30,11 +29,17 @@ namespace FacialStuff
         public bool UseMouth => this.useMouth;
 
         public bool UseWrinkles => this.useWrinkles;
+
         public bool MergeHair => this.mergeHair;
+
         public bool HideHatInBed => this.hideHatInBed;
+
         public bool ShowExtraParts => this.showExtraParts;
+
         public bool UseHairDNA => this.useHairDNA;
+
         public bool MakeThemBlink => this.makeThemBlink;
+
         public bool UseDNAByFaction => this.useDNAByFaction;
 
         public float MaleAverageNormalOffsetX = 0.2314465f;
@@ -154,29 +159,19 @@ namespace FacialStuff
             BeginArea(inRect);
             BeginVertical();
             this.useWrinkles = Toggle(this.useWrinkles, "Settings.UseWrinkles".Translate());
-            EndVertical();
-            BeginVertical();
+
             this.useMouth = Toggle(this.useMouth, "Settings.UseMouth".Translate());
-            EndVertical();
-            BeginVertical();
+
             this.mergeHair = Toggle(this.mergeHair, "Settings.MergeHair".Translate());
-            EndVertical();
-            BeginVertical();
+
             this.hideHatInBed = Toggle(this.hideHatInBed, "Settings.HideHatInBed".Translate());
-            EndVertical();
-            BeginVertical();
+
             this.showExtraParts = Toggle(this.showExtraParts, "Settings.ShowExtraParts".Translate());
-            EndVertical();
 
-            BeginVertical();
             this.useDNAByFaction = Toggle(this.useDNAByFaction, "Settings.UseDNAByFaction".Translate());
-            EndVertical();
 
-            BeginVertical();
             this.useHairDNA = Toggle(this.useHairDNA, "Settings.UseHairDNA".Translate());
-            EndVertical();
 
-            BeginVertical();
             this.makeThemBlink = Toggle(this.makeThemBlink, "Settings.MakeThemBlink".Translate());
             EndVertical();
 

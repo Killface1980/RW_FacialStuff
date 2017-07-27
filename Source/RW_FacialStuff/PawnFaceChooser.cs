@@ -21,11 +21,17 @@ namespace FacialStuff
                 moustache = MoustacheDefOf.Shaved;
                 return;
             }
+
             BeardRoulette(pawn, factionType, out mainBeard, out moustache);
         }
 
         public static BeardDef RandomBeardDefFor(Pawn pawn, BeardType type)
         {
+            if (pawn.gender != Gender.Male)
+            {
+                return BeardDefOf.Beard_Shaved;
+            }
+
             IEnumerable<BeardDef> source;
             {
                 source = from beard in DefDatabase<BeardDef>.AllDefs
@@ -43,12 +49,10 @@ namespace FacialStuff
 
             BeardDef chosenBeard;
             float rand = Rand.Value;
-            bool flag = false;
 
-            if (pawn.ageTracker.AgeBiologicalYearsFloat < 19 || rand < 0.1f || pawn.gender == Gender.Female)
+            if (pawn.ageTracker.AgeBiologicalYearsFloat < 19 || rand < 0.1f)
             {
                 chosenBeard = BeardDefOf.Beard_Shaved;
-                flag = true;
             }
             else if (rand < 0.15f)
             {
@@ -89,11 +93,11 @@ namespace FacialStuff
                 chosenBeard = BeardDefOf.Beard_Shaved;
                 flag = true;
             }
-            else if (rand < 0.15f)
+            else if (rand < 0.1f)
             {
                 chosenBeard = BeardDefOf.Beard_Shaved;
             }
-            else if (rand < 0.35f)
+            else if (rand < 0.25f)
             {
                 chosenBeard = BeardDefOf.Beard_Stubble;
             }
@@ -128,10 +132,10 @@ namespace FacialStuff
             }
 
             MoustacheDef chosenBeard;
-
             {
                 chosenBeard = source.RandomElementByWeight(beard => TacheChoiceLikelihoodFor(beard, pawn));
             }
+
             return chosenBeard;
         }
 

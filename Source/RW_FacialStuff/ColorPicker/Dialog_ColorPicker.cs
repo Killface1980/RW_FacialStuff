@@ -13,8 +13,6 @@
     {
         #region Fields
 
-        public static ColorPresets presets;
-
         // the color we're going to pass out if requested
         public Color Color = Color.blue;
 
@@ -40,27 +38,15 @@
 
         private Controls _activeControl = Controls.none;
 
-        private Color _alphaBGColorA = Color.white;
-
-        private Color _alphaBGColorB = new Color(.85f, .85f, .85f);
-
         private Action _callback;
 
         private Texture2D _colorPickerBG;
 
         private Texture2D _huePickerBG;
 
-        private Texture2D _alphaPickerBG;
-
         private Texture2D _tempPreviewBG;
 
         private Texture2D _previewBG;
-
-        private Texture2D _pickerAlphaBG;
-
-        private Texture2D _sliderAlphaBG;
-
-        private Texture2D _previewAlphaBG;
 
         private string _hexOut;
 
@@ -148,19 +134,6 @@
             }
         }
 
-        public Texture2D AlphaPickerBG
-        {
-            get
-            {
-                if (this._alphaPickerBG == null)
-                {
-                    this.CreateAlphaPickerBG();
-                }
-
-                return this._alphaPickerBG;
-            }
-        }
-
         public Texture2D ColorPickerBG
         {
             get
@@ -186,7 +159,6 @@
                 this._H = Mathf.Clamp(value, 0f, 1f);
                 this.Notify_HSVUpdated();
                 this.CreateColorPickerBG();
-                this.CreateAlphaPickerBG();
             }
         }
 
@@ -200,32 +172,6 @@
                 }
 
                 return this._huePickerBG;
-            }
-        }
-
-        public Texture2D PickerAlphaBG
-        {
-            get
-            {
-                if (this._pickerAlphaBG == null)
-                {
-                    this._pickerAlphaBG = this.CreateAlphaBG(this.pickerSize, this.pickerSize);
-                }
-
-                return this._pickerAlphaBG;
-            }
-        }
-
-        public Texture2D PreviewAlphaBG
-        {
-            get
-            {
-                if (this._previewAlphaBG == null)
-                {
-                    this._previewAlphaBG = this.CreateAlphaBG(this.previewSize, this.previewSize);
-                }
-
-                return this._previewAlphaBG;
             }
         }
 
@@ -253,20 +199,6 @@
             {
                 this._S = Mathf.Clamp(value, 0f, 1f);
                 this.Notify_HSVUpdated();
-                this.CreateAlphaPickerBG();
-            }
-        }
-
-        public Texture2D SliderAlphaBG
-        {
-            get
-            {
-                if (this._sliderAlphaBG == null)
-                {
-                    this._sliderAlphaBG = this.CreateAlphaBG(this.sliderWidth, this.pickerSize);
-                }
-
-                return this._sliderAlphaBG;
             }
         }
 
@@ -307,7 +239,6 @@
             {
                 this._V = Mathf.Clamp(value, 0f, 1f);
                 this.Notify_HSVUpdated();
-                this.CreateAlphaPickerBG();
             }
         }
 
@@ -353,17 +284,16 @@
             // pickers & sliders
             Rect pickerRect = new Rect(inRect.xMin, inRect.yMin, this.pickerSize, this.pickerSize);
             Rect hueRect = new Rect(pickerRect.xMax + this._margin, inRect.yMin, this.sliderWidth, this.pickerSize);
-            Rect alphaRect = new Rect(hueRect.xMax + this._margin, inRect.yMin, this.sliderWidth, this.pickerSize);
 
             // previews
-            Rect previewRect = new Rect(alphaRect.xMax + this._margin, inRect.yMin, this.previewSize, this.previewSize);
+            Rect previewRect = new Rect(hueRect.xMax + this._margin, inRect.yMin, this.previewSize, this.previewSize);
             Rect previewOldRect = new Rect(previewRect.xMax, inRect.yMin, this.previewSize, this.previewSize);
 
             // buttons and textfields
-            Rect okRect = new Rect(alphaRect.xMax + this._margin, inRect.yMax - this._fieldHeight, this.previewSize * 2, this._fieldHeight);
-            Rect applyRect = new Rect(alphaRect.xMax + this._margin, inRect.yMax - 2 * this._fieldHeight - this._margin, this.previewSize - this._margin / 2, this._fieldHeight);
+            Rect okRect = new Rect(hueRect.xMax + this._margin, inRect.yMax - this._fieldHeight, this.previewSize * 2, this._fieldHeight);
+            Rect applyRect = new Rect(hueRect.xMax + this._margin, inRect.yMax - 2 * this._fieldHeight - this._margin, this.previewSize - this._margin / 2, this._fieldHeight);
             Rect cancelRect = new Rect(applyRect.xMax + this._margin, applyRect.yMin, this.previewSize - this._margin / 2, this._fieldHeight);
-            Rect hexRect = new Rect(alphaRect.xMax + this._margin, inRect.yMax - 3 * this._fieldHeight - 2 * this._margin, this.previewSize * 2, this._fieldHeight);
+            Rect hexRect = new Rect(hueRect.xMax + this._margin, inRect.yMax - 3 * this._fieldHeight - 2 * this._margin, this.previewSize * 2, this._fieldHeight);
 
             // move ok/cancel buttons for the simple view with buttons
             if (!this._preview && !this._autoApply)
@@ -373,19 +303,9 @@
                 okRect.x += (this.pickerSize + this._margin) / 2;
             }
 
-            // draw transparency backgrounds
-            GUI.DrawTexture(pickerRect, this.PickerAlphaBG);
-            GUI.DrawTexture(alphaRect, this.SliderAlphaBG);
-            if (this._preview)
-            {
-                GUI.DrawTexture(previewRect, this.PreviewAlphaBG);
-                GUI.DrawTexture(previewOldRect, this.PreviewAlphaBG);
-            }
-
             // draw picker foregrounds
             GUI.DrawTexture(pickerRect, this.ColorPickerBG);
             GUI.DrawTexture(hueRect, this.HuePickerBG);
-            GUI.DrawTexture(alphaRect, this.AlphaPickerBG);
             if (this._preview)
             {
                 GUI.DrawTexture(previewRect, this.TempPreviewBG);
@@ -395,16 +315,13 @@
             // draw slider handles
             Rect hueHandleRect = new Rect(hueRect.xMin - 3f, hueRect.yMin + this._huePosition - this.handleSize / 2, this.sliderWidth + 6f, this.handleSize);
             Rect pickerHandleRect = new Rect(pickerRect.xMin + this._pickerPosition.x - this.handleSize / 2, pickerRect.yMin + this._pickerPosition.y - this.handleSize / 2, this.handleSize, this.handleSize);
-            Rect alphaHandleRect = new Rect(alphaRect.xMin - 3f, alphaRect.yMin + this._alphaPosition - this.handleSize / 2, this.sliderWidth + 6f, this.handleSize);
             GUI.DrawTexture(hueHandleRect, this.TempPreviewBG);
             GUI.DrawTexture(pickerHandleRect, this.TempPreviewBG);
-            GUI.DrawTexture(alphaHandleRect, this.TempPreviewBG);
 
             // border on slider handles
             GUI.color = Color.gray;
             Widgets.DrawBox(hueHandleRect);
             Widgets.DrawBox(pickerHandleRect);
-            Widgets.DrawBox(alphaHandleRect);
             GUI.color = Color.white;
 
             
@@ -453,30 +370,6 @@
                     float PositionInRect = MousePosition - hueRect.yMin;
 
                     this.HueAction(PositionInRect);
-                }
-            }
-
-            // alpha picker interaction
-            if (Mouse.IsOver(alphaRect))
-            {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    this._activeControl = Controls.alphaPicker;
-                }
-
-                if (Event.current.type == EventType.ScrollWheel)
-                {
-                    this.A -= Event.current.delta.y * this.UnitsPerPixel;
-                    this._alphaPosition = Mathf.Clamp(this._alphaPosition + Event.current.delta.y, 0f, this.pickerSize);
-                    Event.current.Use();
-                }
-
-                if (this._activeControl == Controls.alphaPicker)
-                {
-                    float MousePosition = Event.current.mousePosition.y;
-                    float PositionInRect = MousePosition - alphaRect.yMin;
-
-                    this.AlphaAction(PositionInRect);
                 }
             }
 
@@ -558,10 +451,6 @@
             // rebuild textures
             this.CreateColorPickerBG();
             this.CreateHuePickerBG();
-            if (this._preview)
-            {
-                this.CreateAlphaPickerBG();
-            }
 
             // set slider positions
             this._huePosition = (1f - this._H) / this.UnitsPerPixel;
@@ -593,7 +482,6 @@
             this._V = 1 - this.UnitsPerPixel * pos.y;
 
             // rebuild textures
-            this.CreateAlphaPickerBG();
             this.Notify_HSVUpdated();
             this._pickerPosition = pos;
         }
@@ -672,60 +560,6 @@
             this.windowRect.height = size.y;
         }
 
-        private Texture2D CreateAlphaBG(int width, int height)
-        {
-            Texture2D tex = new Texture2D(width, height);
-
-            // initialize color arrays for blocks
-            Color[] bgA = new Color[this.alphaBGBlockSize * this.alphaBGBlockSize];
-            for (int i = 0; i < bgA.Length; i++)
-            {
-                bgA[i] = this._alphaBGColorA;
-            }
-
-            Color[] bgB = new Color[this.alphaBGBlockSize * this.alphaBGBlockSize];
-            for (int i = 0; i < bgB.Length; i++)
-            {
-                bgB[i] = this._alphaBGColorB;
-            }
-
-            // set blocks of pixels at a time
-            // this also sets border blocks, meaning it'll try to set out of bounds pixels.
-            int row = 0;
-            for (int x = 0; x < width; x = x + this.alphaBGBlockSize)
-            {
-                int column = row;
-                for (int y = 0; y < height; y = y + this.alphaBGBlockSize)
-                {
-                    tex.SetPixels(x, y, this.alphaBGBlockSize, this.alphaBGBlockSize, column % 2 == 0 ? bgA : bgB);
-                    column++;
-                }
-
-                row++;
-            }
-
-            tex.Apply();
-            return tex;
-        }
-
-        private void CreateAlphaPickerBG()
-        {
-            if (this._alphaPickerBG == null)
-            {
-                this._alphaPickerBG = new Texture2D(1, this.pickerSize);
-            }
-
-            int h = this.pickerSize;
-            float hu = 1f / h;
-
-            // RGB color from cache, increasing a
-            for (int y = 0; y < h; y++)
-            {
-                this._alphaPickerBG.SetPixel(0, y, new Color(this.tempColor.r, this.tempColor.g, this.tempColor.b, y * hu));
-            }
-
-            this._alphaPickerBG.Apply();
-        }
 
         private void CreateColorPickerBG()
         {
@@ -774,69 +608,5 @@
         }
 
         #endregion Methods
-
-        #region Classes
-
-        public class ColorPresets
-        {
-            #region Fields
-
-            // share 'presets' across instances.
-            private static List<Color> _presets = new List<Color>();
-
-            private float _minimumBoxSize = 10f;
-            private Dialog_ColorPicker _parent;
-            private int _size = 10;
-
-            #endregion Fields
-
-            #region Constructors
-
-            public ColorPresets(Dialog_ColorPicker parent, int size = 10)
-            {
-                this._parent = parent;
-                this._size = size;
-            }
-
-            #endregion Constructors
-
-            #region Properties
-
-            // only allow read.
-            public List<Color> Presets
-            {
-                get
-                {
-                    return _presets;
-                }
-            }
-
-            #endregion Properties
-
-            #region Methods
-
-            public void Add(Color col)
-            {
-                // First in, first out.
-                // add latest element to the back of the list
-                _presets.Add(col);
-
-                // pop elements from the front until the list is short enough (should really only be once).
-                while (_presets.Count > this._size)
-                {
-                    _presets.RemoveAt(0);
-                }
-            }
-
-            // draw presets and interactivity.
-            public void DrawPresetBoxes()
-            {
-                // TODO: this.
-            }
-
-            #endregion Methods
-        }
-
-        #endregion Classes
     }
 }

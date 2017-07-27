@@ -1,6 +1,6 @@
-﻿namespace FacialStuff
+namespace FacialStuff
 {
-    public class enums
+    public static class Enums
     {
         public enum GraphicSlotGroup
         {

@@ -1,8 +1,9 @@
-﻿using UnityEngine;
-using Verse;
-
-namespace FacialStuff
+﻿namespace FacialStuff.Graphics_FS
 {
+    using UnityEngine;
+
+    using Verse;
+
     // public class GraphicModded: Graphic
     // {
     // public virtual Material MatFrontNarrow { get; }
@@ -111,7 +112,7 @@ namespace FacialStuff
             }
             else
             {
-                array[0] = MaskTextures.BlankTexture();
+                array[0] = HeadHelper.BlankTexture();
             }
 
             // Texture2D[] array2 = new Texture2D[3];

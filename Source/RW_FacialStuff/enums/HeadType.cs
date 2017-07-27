@@ -5,7 +5,8 @@
     {
         Normal,
         Pointy,
-        Wide
+        Wide,
+        Undefined
     }
 
 }

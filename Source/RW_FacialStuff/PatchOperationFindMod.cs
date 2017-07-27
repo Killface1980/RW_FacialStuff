@@ -16,6 +16,7 @@ namespace FacialStuff
             {
                 return false;
             }
+
             return ModsConfig.ActiveModsInLoadOrder.Any(m => m.Name == modName);
         }
     }

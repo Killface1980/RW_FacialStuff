@@ -4,7 +4,7 @@
 
     using Verse;
 
-    public class HaircutPawn
+    public class HairCutPawn
     {
         public Pawn Pawn;
 

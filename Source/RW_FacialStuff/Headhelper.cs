@@ -5,8 +5,104 @@
     using Verse;
 
     [StaticConstructorOnStartup]
-    public static class Headhelper
+    public static class HeadHelper
     {
+        private static Texture2D blankTexture;
+
+        private static bool blankExists;
+
+        public static Color DarkerBeardColor(Color value)
+        {
+            Color darken = new Color(0.9f, 0.9f, 0.9f);
+
+            return value * darken;
+        }
+
+        public static Texture2D BlankTexture()
+        {
+            if (blankExists)
+            {
+                return blankTexture;
+            }
+
+            blankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
+
+            for (int x = 0; x < blankTexture.width; x++)
+            {
+                for (int y = 0; y < blankTexture.height; y++)
+                {
+                    blankTexture.SetPixel(x, y, Color.clear);
+                }
+            }
+
+            blankTexture.name = "Blank";
+
+            blankTexture.Compress(false);
+            blankTexture.Apply(false, true);
+            blankExists = true;
+            return blankTexture;
+        }
+
+        private static Texture2D maskTexNarrowFrontBack;
+
+        private static Texture2D maskTexNarrowSide;
+
+        private static Texture2D maskTexAverageFrontBack;
+
+        private static Texture2D maskTexAverageSide;
+
+        public static Texture2D MaskTex_Narrow_FrontBack
+        {
+            get
+            {
+                if (maskTexNarrowFrontBack == null)
+                {
+                    maskTexNarrowFrontBack = HeadHelper.MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back"));
+                }
+
+                return maskTexNarrowFrontBack;
+            }
+        }
+
+        public static Texture2D MaskTex_Narrow_Side
+        {
+            get
+            {
+                if (maskTexNarrowSide == null)
+                {
+                    maskTexNarrowSide = HeadHelper.MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_side"));
+                }
+
+                return maskTexNarrowSide;
+            }
+        }
+
+        public static Texture2D MaskTex_Average_FrontBack
+        {
+            get
+            {
+                if (maskTexAverageFrontBack == null)
+                {
+                    maskTexAverageFrontBack = HeadHelper.MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"));
+                }
+
+                return maskTexAverageFrontBack;
+            }
+        }
+
+        public static Texture2D MaskTex_Average_Side
+        {
+            get
+            {
+                if (maskTexAverageSide == null)
+                {
+                    maskTexAverageSide = HeadHelper.MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_side"));
+                }
+
+                return maskTexAverageSide;
+            }
+        }
+
         public static readonly Color skinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
         public static Texture2D MakeReadable(Texture2D texture)

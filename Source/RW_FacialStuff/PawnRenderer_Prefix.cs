@@ -14,16 +14,17 @@ namespace FacialStuff
 {
     using FacialStuff.Detouring;
 
- //   [HarmonyPatch(typeof(PawnRenderer), "RenderPawnInternal", new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) })]
+ // [HarmonyPatch(typeof(PawnRenderer), "RenderPawnInternal", new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) })]
     public static class HarmonyPatch_PawnRenderer
     {
         private static Type PawnRendererType;
-       // private static FieldInfo PawnFieldInfo;
+
+        // private static FieldInfo PawnFieldInfo;
         private static FieldInfo WoundOverlayFieldInfo;
+
         private static MethodInfo DrawEquipmentMethodInfo;
+
         private static FieldInfo PawnHeadOverlaysFieldInfo;
-
-
 
         private const float YOffset_PrimaryEquipmentUnder = 0f;
 
@@ -39,13 +40,11 @@ namespace FacialStuff
 
         private const float YOffset_OnHead = 0.0328125022f;
 
-
         private const float YOffset_Status = 0.0421875f;
 
         private const float YOffsetOnFace = 0.00001f;
 
         // Verse.PawnRenderer
-
 
         // private static readonly float[] HorMouthOffsetSex = new float[] { 0f, FS_Settings.MaleOffsetX, FS_Settings.FemaleOffsetX };
         // private static readonly float[] VerMouthOffsetSex = new float[] { 0f, FS_Settings.MaleOffsetY, FS_Settings.FemaleOffsetY };
@@ -54,23 +53,38 @@ namespace FacialStuff
             if (PawnRendererType == null)
             {
                 PawnRendererType = typeof(PawnRenderer);
-               // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
-                WoundOverlayFieldInfo = PawnRendererType.GetField("woundOverlays", BindingFlags.NonPublic | BindingFlags.Instance);
-                DrawEquipmentMethodInfo = PawnRendererType.GetMethod("DrawEquipment", BindingFlags.NonPublic | BindingFlags.Instance);
-                PawnHeadOverlaysFieldInfo = PawnRendererType.GetField("statusOverlays", BindingFlags.NonPublic | BindingFlags.Instance);
+
+                // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
+                WoundOverlayFieldInfo = PawnRendererType.GetField(
+                    "woundOverlays",
+                    BindingFlags.NonPublic | BindingFlags.Instance);
+                DrawEquipmentMethodInfo = PawnRendererType.GetMethod(
+                    "DrawEquipment",
+                    BindingFlags.NonPublic | BindingFlags.Instance);
+                PawnHeadOverlaysFieldInfo = PawnRendererType.GetField(
+                    "statusOverlays",
+                    BindingFlags.NonPublic | BindingFlags.Instance);
             }
         }
 
-   //     [HarmonyAfter("rimworld.erdelf.alien_race.main")]
-        public static bool RenderPawnInternal_Prefix(PawnRenderer __instance, Vector3 rootLoc, Quaternion quat, bool renderBody, Rot4 bodyFacing, Rot4 headFacing, RotDrawMode bodyDrawType, bool portrait, bool headStump)
+        // [HarmonyAfter("rimworld.erdelf.alien_race.main")]
+        public static bool RenderPawnInternal_Prefix(
+            PawnRenderer __instance,
+            Vector3 rootLoc,
+            Quaternion quat,
+            bool renderBody,
+            Rot4 bodyFacing,
+            Rot4 headFacing,
+            RotDrawMode bodyDrawType,
+            bool portrait,
+            bool headStump)
         {
             GetReflections();
-           // Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
 
+            // Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
             Pawn pawn = __instance.graphics.pawn;
 
             CompFace faceComp = pawn.TryGetComp<CompFace>();
-
 
             Mesh mesh = null;
 
@@ -150,11 +164,12 @@ namespace FacialStuff
                     {
                         Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
 
-                        Mesh mesh2eyes = MeshPoolFs.HumanEyeSet[(int)faceComp.fullHeadType].MeshAt(headFacing);
+                        Mesh mesh2eyes = MeshPoolFs.HumanEyeSet[(int)faceComp.FullHeadType].MeshAt(headFacing);
 
                         // Experiments with head motion
                         // locFacialY += faceComp.eyemove;
-                        var headQuat = quat;// * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
+                        Quaternion
+                            headQuat = quat; // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
                         GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, material, portrait);
                         locFacialY.y += 0.001f;
                         if (!headStump)
@@ -209,7 +224,7 @@ namespace FacialStuff
                                 {
                                     GenDraw.DrawMeshNowOrLater(
                                         mesh2eyes,
-                                        locFacialY + faceComp.eyeWiggler.EyemoveL,
+                                        locFacialY + faceComp.EyeWiggler.EyeMoveL,
                                         headQuat,
                                         leftEyeMat,
                                         portrait);
@@ -221,7 +236,7 @@ namespace FacialStuff
                                 {
                                     GenDraw.DrawMeshNowOrLater(
                                         mesh2eyes,
-                                        locFacialY + faceComp.eyeWiggler.EyemoveR,
+                                        locFacialY + faceComp.EyeWiggler.EyeMoveR,
                                         headQuat,
                                         rightEyeMat,
                                         portrait);
@@ -284,7 +299,7 @@ namespace FacialStuff
                                     hatVisible = true;
                                     if (Controller.settings.MergeHair)
                                     {
-                                        HaircutPawn hairPawn = CutHairDb.GetHairCache(pawn);
+                                        HairCutPawn hairPawn = CutHairDb.GetHairCache(pawn);
                                         Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
                                         if (hairCutMat != null)
                                         {
@@ -358,5 +373,4 @@ namespace FacialStuff
             return false;
         }
     }
-
 }

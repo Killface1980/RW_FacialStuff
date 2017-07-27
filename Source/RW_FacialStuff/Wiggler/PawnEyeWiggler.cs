@@ -7,42 +7,17 @@
 
     public class PawnEyeWiggler
     {
-        private bool moveX;
+        #region Constructors
 
-        private bool moveY;
+        public PawnEyeWiggler(Pawn pawn)
+        {
+            this.pawn = pawn;
+        }
 
-        private Pawn pawn;
+        #endregion Constructors
 
-        private bool halfAnimX;
+        #region Fields
 
-        private bool halfAnimY;
-
-        public int jitterLeft;
-
-        public int jitterRight;
-        private float flippedX;
-
-        private float flippedY;
-
-
-        public Vector3 EyemoveL = new Vector3(0, 0, 0);
-
-        public Vector3 EyemoveR = new Vector3(0, 0, 0);
-
-        private int lastBlinkended;
-
-        public bool leftCanBlink;
-
-        public int nextBlink = -5000;
-
-        public bool asleep;
-
-        public int nextBlinkEnd = -5000;
-
-        public bool rightCanBlink;
-        private float factorX = 0.02f;
-
-        private float factorY = 0.01f;
         private static readonly SimpleCurve EyeMotionFullCurve =
             new SimpleCurve
                 {
@@ -60,16 +35,112 @@
                     new CurvePoint(0.65f, 1f),
                     new CurvePoint(0.75f, 0f)
                 };
-        public PawnEyeWiggler(Pawn pawn)
+
+        private Vector3 eyeMoveL = new Vector3(0, 0, 0);
+
+        private Vector3 eyeMoveR = new Vector3(0, 0, 0);
+
+        private float factorX = 0.02f;
+
+        private float factorY = 0.01f;
+
+        private float flippedX;
+
+        private float flippedY;
+
+        private bool halfAnimX;
+
+        private bool halfAnimY;
+
+        private bool isAsleep;
+
+        private int jitterLeft;
+
+        private int jitterRight;
+
+        private int lastBlinkended;
+
+        private bool leftCanBlink;
+
+        private bool moveX;
+
+        private bool moveY;
+
+        private int nextBlink = -5000;
+
+        private int nextBlinkEnd = -5000;
+
+        private Pawn pawn;
+
+        private bool rightCanBlink;
+
+        #endregion Fields
+
+        #region Properties
+
+        public Vector3 EyeMoveL
         {
-            this.pawn = pawn;
+            get => this.eyeMoveL;
+            set => this.eyeMoveL = value;
         }
+
+        public Vector3 EyeMoveR
+        {
+            get => this.eyeMoveR;
+            set => this.eyeMoveR = value;
+        }
+
+        public bool IsAsleep
+        {
+            get => this.isAsleep;
+            set => this.isAsleep = value;
+        }
+
+        public int JitterLeft
+        {
+            get => this.jitterLeft;
+            set => this.jitterLeft = value;
+        }
+
+        public int JitterRight
+        {
+            get => this.jitterRight;
+            set => this.jitterRight = value;
+        }
+
+        public bool LeftCanBlink
+        {
+            get => this.leftCanBlink;
+            set => this.leftCanBlink = value;
+        }
+
+        public int NextBlink
+        {
+            get => this.nextBlink;
+            set => this.nextBlink = value;
+        }
+
+        public int NextBlinkEnd
+        {
+            get => this.nextBlinkEnd;
+            set => this.nextBlinkEnd = value;
+        }
+
+        public bool RightCanBlink
+        {
+            get => this.rightCanBlink;
+            set => this.rightCanBlink = value;
+        }
+
+        #endregion Properties
+
+        #region Methods
 
         public void WigglerTick()
         {
             int tickManagerTicksGame = Find.TickManager.TicksGame;
 
-            float x = Mathf.InverseLerp(this.lastBlinkended, this.nextBlink, tickManagerTicksGame);
+            float x = Mathf.InverseLerp(this.lastBlinkended, this.NextBlink, tickManagerTicksGame);
             float movePixel = 0f;
             float movePixelY = 0f;
 
@@ -99,18 +170,18 @@
                     }
                 }
 
-                if (this.rightCanBlink)
+                if (this.RightCanBlink)
                 {
-                    this.EyemoveR = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
+                    this.EyeMoveR = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
                 }
 
-                if (this.leftCanBlink)
+                if (this.LeftCanBlink)
                 {
-                    this.EyemoveL = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
+                    this.EyeMoveL = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
                 }
             }
 
-            if (tickManagerTicksGame > this.nextBlinkEnd)
+            if (tickManagerTicksGame > this.NextBlinkEnd)
             {
                 // Set upnext blinking cycle
                 this.SetNextBlink(tickManagerTicksGame);
@@ -139,19 +210,19 @@
             // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - Rest: "
             // + dynamic2.ToStringPercent() + " - factorR: " + factor2.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
             // + " - blinkDuration: " + blinkDuration.ToString("N0"));
-            this.nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
-            this.nextBlinkEnd = (int)(this.nextBlink + blinkDuration);
+            this.NextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
+            this.NextBlinkEnd = (int)(this.NextBlink + blinkDuration);
 
             if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
             {
-                this.asleep = true;
+                this.IsAsleep = true;
                 return;
             }
 
-            this.asleep = false;
+            this.IsAsleep = false;
 
-            // this.jitterLeft = 1f;
-            // this.jitterRight = 1f;
+            // this.JitterLeft = 1f;
+            // this.JitterRight = 1f;
 
             // blinkRate = Mathf.Lerp(2f, 0.25f, this.pawn.needs.rest.CurLevel);
 
@@ -160,13 +231,13 @@
             if (Rand.Value > 0.9f)
             {
                 // early "nerous" blinking. I guss positive values have no effect ...
-                this.jitterLeft = (int)Rand.Range(-10f, 90f);
-                this.jitterRight = (int)Rand.Range(-10f, 90f);
+                this.JitterLeft = (int)Rand.Range(-10f, 90f);
+                this.JitterRight = (int)Rand.Range(-10f, 90f);
             }
             else
             {
-                this.jitterLeft = 0;
-                this.jitterRight = 0;
+                this.JitterLeft = 0;
+                this.JitterRight = 0;
             }
 
             // only animate eye movement if animation lasts at least 2.5 seconds
@@ -186,5 +257,7 @@
 
             this.lastBlinkended = tickManagerTicksGame;
         }
+
+        #endregion Methods
     }
 }

@@ -12,6 +12,13 @@
     <repairEffect>Repair</repairEffect>
     <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
     <filthLeaving>BuildingRubble</filthLeaving>
+    <statBases>
+      <SellPriceFactor>0.70</SellPriceFactor>
+    </statBases>
+    
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.20</staticSunShadowHeight>
+    <canOverlapZones>false</canOverlapZones>
   </ThingDef>
   
 
@@ -23,7 +30,6 @@
     <ThingClass>FacialStuff.FaceStyling_Bench.Facestyler</ThingClass>
     <Description>Place where faces go wild!</Description>
     <graphicData>
-	<shaderType>CutoutComplex</shaderType>
       <texPath>Clutter/Tables/StylingBench</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(2,1)</drawSize>
@@ -44,7 +50,7 @@
     <useHitPoints>True</useHitPoints>
     <minifiedDef>MinifiedFurniture</minifiedDef>
     <statBases>
-      <WorkToMake>2000</WorkToMake>
+      <WorkToBuild>2000</WorkToBuild>
       <MaxHitPoints>180</MaxHitPoints>
       <Flammability>1.0</Flammability>
       <Cleanliness>-15</Cleanliness>
@@ -54,7 +60,6 @@
     <Passability>PassThroughOnly</Passability>
     <pathCost>60</pathCost>
     <hasInteractionCell>True</hasInteractionCell>
-	
     <interactionCellOffset>(0,0,1)</interactionCellOffset>
     <surfaceType>Item</surfaceType>
   </ThingDef>

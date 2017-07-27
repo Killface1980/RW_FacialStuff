@@ -12,7 +12,7 @@ namespace FacialStuff
     {
         #region Fields
 
-        public static List<HaircutPawn> _pawnHairCache = new List<HaircutPawn>();
+        private static List<HairCutPawn> _pawnHairCache = new List<HairCutPawn>();
         private static Dictionary<GraphicRequest, Graphic> allGraphics = new Dictionary<GraphicRequest, Graphic>();
         private static Texture2D maskTexFrontBack;
 
@@ -31,10 +31,10 @@ namespace FacialStuff
 
         }
 
-        public static HaircutPawn GetHairCache(Pawn pawn)
+        public static HairCutPawn GetHairCache(Pawn pawn)
         {
-            foreach (HaircutPawn c in _pawnHairCache) if (c.Pawn == pawn) return c;
-            HaircutPawn n = new HaircutPawn { Pawn = pawn };
+            foreach (HairCutPawn c in _pawnHairCache) if (c.Pawn == pawn) return c;
+            HairCutPawn n = new HairCutPawn { Pawn = pawn };
             _pawnHairCache.Add(n);
             return n;
 
@@ -79,13 +79,13 @@ namespace FacialStuff
                 Texture2D temptextureback = new Texture2D(128, 128, TextureFormat.ARGB32, true);
 
 
-                temptexturefront = Headhelper.MakeReadable(graphic.MatFront.mainTexture as Texture2D);
-                temptextureside = Headhelper.MakeReadable(graphic.MatSide.mainTexture as Texture2D);
-                temptextureback = Headhelper.MakeReadable(graphic.MatBack.mainTexture as Texture2D);
+                temptexturefront = HeadHelper.MakeReadable(graphic.MatFront.mainTexture as Texture2D);
+                temptextureside = HeadHelper.MakeReadable(graphic.MatSide.mainTexture as Texture2D);
+                temptextureback = HeadHelper.MakeReadable(graphic.MatBack.mainTexture as Texture2D);
 
                 // intentional, only 1 mask tex. todo: rename, cleanup
-                maskTexFrontBack = MaskTextures.MaskTex_Average_FrontBack;
-                maskTexSide = MaskTextures.MaskTex_Narrow_Side;
+                maskTexFrontBack = HeadHelper.MaskTex_Average_FrontBack;
+                maskTexSide = HeadHelper.MaskTex_Narrow_Side;
 
                 CutOutHair(ref temptexturefront, maskTexFrontBack);
 
