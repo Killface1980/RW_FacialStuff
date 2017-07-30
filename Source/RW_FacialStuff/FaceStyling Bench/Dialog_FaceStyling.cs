@@ -1290,7 +1290,7 @@
             // }
             if (Widgets.ButtonText(set, "Hair"))
             {
-                this.Page = DialoguePage.hair;
+                this.Page = DialoguePage.Hair;
             }
 
             set.x += set.width + 10f;
@@ -1299,7 +1299,7 @@
                 {
                     if (Widgets.ButtonText(set, "Beard"))
                     {
-                        this.Page = DialoguePage.beard;
+                        this.Page = DialoguePage.Beard;
                     }
                 }
 
@@ -1310,7 +1310,7 @@
             if (faceComp != null)
                 if (Widgets.ButtonText(set, "Eye"))
                 {
-                    this.Page = DialoguePage.eye;
+                    this.Page = DialoguePage.Eye;
                 }
 
             set.x += set.width + 10f;
@@ -1318,7 +1318,7 @@
             if (faceComp != null)
                 if (Widgets.ButtonText(set, "Brow"))
                 {
-                    this.Page = DialoguePage.brow;
+                    this.Page = DialoguePage.Brow;
                 }
 
             set.y += 36f;
@@ -1349,7 +1349,7 @@
             set.y += 36f;
             set.x = selectionRect.x;
 
-            if (this.Page == DialoguePage.hair)
+            if (this.Page == DialoguePage.Hair)
             {
                 set.x = selectionRect.x;
                 GUI.color = Color.gray;
@@ -1384,7 +1384,7 @@
 
             if (faceComp != null)
             {
-                if (this.Page == DialoguePage.eye)
+                if (this.Page == DialoguePage.Eye)
                 {
                     set.x = selectionRect.x;
                     GUI.color = Color.gray;
@@ -1408,7 +1408,7 @@
                     }
                 }
 
-                if (this.Page == DialoguePage.brow)
+                if (this.Page == DialoguePage.Brow)
                 {
                     set.x = selectionRect.x;
                     GUI.color = Color.gray;
@@ -1434,18 +1434,18 @@
                     this.DrawBrowPicker(listRect);
                 }
 
-                if (this.Page == DialoguePage.beard)
+                if (this.Page == DialoguePage.Beard)
                 {
                     this.DrawBeardPicker(listRect);
                 }
 
-                if (this.Page == DialoguePage.eye)
+                if (this.Page == DialoguePage.Eye)
                 {
                     this.DrawEyePicker(listRect);
                 }
             }
 
-            if (this.Page == DialoguePage.hair)
+            if (this.Page == DialoguePage.Hair)
             {
                 set.y += 36f;
                 set.width = selectionRect.width / 7.5f - 10f;
@@ -1476,7 +1476,7 @@
 
             if (faceComp != null && !faceComp.HasSameBeardColor)
             {
-                if (this.Page == DialoguePage.beard)
+                if (this.Page == DialoguePage.Beard)
                 {
                     set.width = selectionRect.width / 7.5f - 10f;
                     set.x = selectionRect.x;
@@ -1545,7 +1545,7 @@
         private static Color ColorSwatchBorder = new Color(0.77255f, 0.77255f, 0.77255f);
         private static Color ColorSwatchSelection = new Color(0.9098f, 0.9098f, 0.9098f);
 
-        private DialoguePage Page = DialoguePage.hair;
+        private DialoguePage Page = DialoguePage.Hair;
 
 
         // Blatantly stolen from Prepare Carefully

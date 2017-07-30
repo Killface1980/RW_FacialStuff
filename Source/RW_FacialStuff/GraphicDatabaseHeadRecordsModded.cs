@@ -13,7 +13,6 @@ namespace FacialStuff
     {
         public static List<HeadGraphicRecordVanillaCustom> headsVanillaCustom = new List<HeadGraphicRecordVanillaCustom>();
 
-        public static List<HeadGraphicRecordModded> headsModded = new List<HeadGraphicRecordModded>();
 
         private static HeadGraphicRecordVanillaCustom skull;
         private static HeadGraphicRecordVanillaCustom stump;

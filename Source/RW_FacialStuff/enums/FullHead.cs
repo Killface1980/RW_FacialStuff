@@ -15,6 +15,7 @@
         FemaleNarrowNormal = 9,
         FemaleNarrowPointy = 10,
         FemaleNarrowWide = 11,
+        Undefined
     }
 
 }

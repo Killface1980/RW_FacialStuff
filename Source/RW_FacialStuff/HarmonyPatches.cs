@@ -126,10 +126,11 @@
                 faceComp.DefineFace();
             }
 
-            if (!faceComp.IsSkinDNAoptimized)
-            {
-                faceComp.DefineSkinDNA();
-            }
+            // Need: get the traditional habitat of a faction => not suitable, as factions are scattered around the globe
+         // if (!faceComp.IsSkinDNAoptimized)
+         // {
+         //     faceComp.DefineSkinDNA();
+         // }
 
             if (!faceComp.IsDNAoptimized)
             {
@@ -183,12 +184,12 @@
             BodyPartRecord part = null,
             DamageInfo? dinfo = null)
         {
-            if (!Controller.settings.ShowExtraParts)
+            if (Current.ProgramState != ProgramState.Playing)
             {
                 return;
             }
 
-            if (Current.ProgramState != ProgramState.Playing)
+            if (!Controller.settings.ShowExtraParts)
             {
                 return;
             }
@@ -222,9 +223,7 @@
 
         public static void RestorePart_Postfix(
             Pawn_HealthTracker __instance,
-            BodyPartRecord part,
-            Hediff diffException = null,
-            bool checkStateChange = true)
+            BodyPartRecord part)
         {
             if (Current.ProgramState != ProgramState.Playing)
             {

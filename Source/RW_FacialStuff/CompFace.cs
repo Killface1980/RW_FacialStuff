@@ -54,7 +54,7 @@ namespace FacialStuff
         private Graphic_Multi_NaturalEyes eyeRightGraphic;
         private Graphic_Multi_AddedHeadParts eyeRightPatchGraphic;
         private PawnEyeWiggler eyeWiggler;
-        private FullHead fullHeadType;
+        private FullHead fullHeadType = FullHead.Undefined;
         private bool hasSameBeardColor;
         private float headTypeX;
         private float headTypeY;
@@ -212,7 +212,7 @@ namespace FacialStuff
 
         public CrownType PawnCrownType => this.FacePawn.story.crownType;
 
-        public float FactionMelanin { get => factionMelanin; set => factionMelanin = value; }
+        public float FactionMelanin { get => this.factionMelanin; set => this.factionMelanin = value; }
 
         public HeadType PawnHeadType
         {
@@ -235,6 +235,7 @@ namespace FacialStuff
                         this.pawnHeadType = HeadType.Wide;
                     }
                 }
+
                 return this.pawnHeadType;
             }
         }
@@ -363,7 +364,7 @@ namespace FacialStuff
 
                 if (material != null)
                 {
-                    material = flasher.GetDamagedMat(material);
+                    material = this.flasher.GetDamagedMat(material);
                 }
             }
 
@@ -377,7 +378,7 @@ namespace FacialStuff
 
             if (material != null)
             {
-                material = flasher.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -452,7 +453,7 @@ namespace FacialStuff
 
             if (material != null)
             {
-                material = flasher.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -491,14 +492,9 @@ namespace FacialStuff
             this.HairColorOrg = this.FacePawn.story.hairColor;
 
             this.HasSameBeardColor = Rand.Value > 0.2f;
-            if (this.HasSameBeardColor)
-            {
-                this.BeardColor = HeadHelper.DarkerBeardColor(this.FacePawn.story.hairColor);
-            }
-            else
-            {
-                this.BeardColor = HairMelanin.RandomBeardColor();
-            }
+            this.BeardColor = this.HasSameBeardColor
+                                  ? HeadHelper.DarkerBeardColor(this.FacePawn.story.hairColor)
+                                  : HairMelanin.RandomBeardColor();
 
             this.IsOptimized = true;
         }
@@ -515,7 +511,6 @@ namespace FacialStuff
         // TODO: Remove or make usable
         public void DefineSkinDNA()
         {
-            return;
             HairMelanin.SkinGenetics(this.FacePawn, this, out this.factionMelanin);
             this.IsSkinDNAoptimized = true;
         }
@@ -528,35 +523,23 @@ namespace FacialStuff
                 return null;
             }
 
-            bool flag = true;
             Material material = this.eyeLeftGraphic.MatAt(facing);
 
             if (!portrait)
             {
-                if (Controller.settings.MakeThemBlink)
+                if (Controller.settings.MakeThemBlink && this.EyeWiggler.LeftCanBlink)
                 {
-                    if (this.EyeWiggler.LeftCanBlink)
+                    bool blinkNow = Find.TickManager.TicksGame >= this.EyeWiggler.NextBlink + this.EyeWiggler.JitterLeft;
+                    if (this.EyeWiggler.IsAsleep || blinkNow)
                     {
-                        if (this.EyeWiggler.IsAsleep)
-                        {
-                            flag = false;
-                            material = this.eyeLeftClosedGraphic.MatAt(facing);
-                        }
-
-                        if (flag)
-                        {
-                            if (Find.TickManager.TicksGame >= this.EyeWiggler.NextBlink + this.EyeWiggler.JitterLeft)
-                            {
-                                material = this.eyeLeftClosedGraphic.MatAt(facing);
-                            }
-                        }
+                        material = this.eyeLeftClosedGraphic.MatAt(facing);
                     }
                 }
             }
 
             if (material != null)
             {
-                material = flasher.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -568,7 +551,7 @@ namespace FacialStuff
 
             if (material != null)
             {
-                material = flasher.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -582,35 +565,25 @@ namespace FacialStuff
                 return null;
             }
 
-            bool flag = true;
             Material material = this.eyeRightGraphic.MatAt(facing);
 
             if (!portrait)
             {
-                if (Controller.settings.MakeThemBlink)
+                if (Controller.settings.MakeThemBlink && this.EyeWiggler.RightCanBlink)
                 {
-                    if (this.EyeWiggler.RightCanBlink)
-                    {
-                        if (this.EyeWiggler.IsAsleep)
-                        {
-                            flag = false;
-                            material = this.eyeRightClosedGraphic.MatAt(facing);
-                        }
+                    bool blinkNow = Find.TickManager.TicksGame
+                                    >= this.EyeWiggler.NextBlink + this.EyeWiggler.JitterRight;
 
-                        if (flag)
-                        {
-                            if (Find.TickManager.TicksGame >= this.EyeWiggler.NextBlink + this.EyeWiggler.JitterRight)
-                            {
-                                material = this.eyeRightClosedGraphic.MatAt(facing);
-                            }
-                        }
+                    if (this.EyeWiggler.IsAsleep || blinkNow)
+                    {
+                        material = this.eyeRightClosedGraphic.MatAt(facing);
                     }
                 }
             }
 
             if (material != null)
             {
-                material = flasher.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -622,7 +595,7 @@ namespace FacialStuff
 
             if (material != null)
             {
-                material = flasher.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -671,20 +644,17 @@ namespace FacialStuff
         [CanBeNull]
         public Material MoustacheMatAt(Rot4 facing)
         {
-            if (!this.HasNaturalMouth || this.MoustacheDef == MoustacheDefOf.Shaved)
+            if (!this.HasNaturalMouth || this.MoustacheDef == MoustacheDefOf.Shaved || this.MoustacheDef == null)
             {
                 return null;
             }
 
             Material material = null;
-            if (this.FacePawn.gender == Gender.Male)
-            {
-                material = this.moustacheGraphic.MatAt(facing);
+            material = this.moustacheGraphic.MatAt(facing);
 
-                if (material != null)
-                {
-                    material = flasher.GetDamagedMat(material);
-                }
+            if (material != null)
+            {
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -701,6 +671,7 @@ namespace FacialStuff
             {
                 return null;
             }
+
             if (bodyCondition == RotDrawMode.Fresh)
             {
                 material = this.MouthGraphic.MatAt(facing);

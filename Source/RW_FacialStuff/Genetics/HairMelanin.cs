@@ -228,12 +228,12 @@ namespace FacialStuff.Genetics
 
                     if (Controller.settings.UseDNAByFaction)
                     {
-                        if (pawn.Faction.def == FactionDefOf.Spacer || pawn.Faction.def == FactionDefOf.SpacerHostile)
+                        if (pawn.Faction.def.techLevel >= TechLevel.Spacer)
                         {
                             limit *= pawn.gender == Gender.Female ? 0.5f : 0.8f;
                         }
 
-                        if (pawn.Faction.def == FactionDefOf.Pirate)
+                        if (pawn.Faction.def.techLevel == TechLevel.Industrial)
                         {
                             limit *= pawn.gender == Gender.Female ? 0.75f : 0.9f;
                         }

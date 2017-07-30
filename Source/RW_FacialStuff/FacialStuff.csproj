@@ -79,7 +79,7 @@
     <Compile Include="Defs\MouthDef.cs" />
     <Compile Include="Defs\WrinkleDef.cs" />
     <Compile Include="Enums\BeardType.cs" />
-    <Compile Include="Enums\DialoguePage.Page.cs" />
+    <Compile Include="Enums\DialoguePage.cs" />
     <Compile Include="Settings.cs" />
     <None Include="PatchOperationFindMod.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />

@@ -2,12 +2,12 @@
 {
     public enum DialoguePage : byte
     {
-        hair,
+        Hair,
 
-        beard,
+        Beard,
 
-        eye,
+        Eye,
 
-        brow,
+        Brow,
     }
 }

@@ -42,6 +42,8 @@ namespace FacialStuff
 
         public bool UseDNAByFaction => this.useDNAByFaction;
 
+        public bool UseWeirdHairChoices => this.useWeirdHairChoices;
+
         public float MaleAverageNormalOffsetX = 0.2314465f;
 
         public  float MaleAveragePointyOffsetX = 0.2339623f;
@@ -91,6 +93,7 @@ namespace FacialStuff
         public  float FemaleNarrowWideOffsetY = 0.191195f;
 
         private bool useDNAByFaction = false;
+        private bool useWeirdHairChoices = false;
 
         public override void ExposeData()
         {
@@ -101,6 +104,7 @@ namespace FacialStuff
             Scribe_Values.Look(ref this.hideHatInBed, "hideHatInBed", false, true);
             Scribe_Values.Look(ref this.showExtraParts, "showExtraParts", false, true);
             Scribe_Values.Look(ref this.useHairDNA, "useHairDNA", false, true);
+            Scribe_Values.Look(ref this.useWeirdHairChoices, "useWeirdHairChoices", false, true);
             Scribe_Values.Look(ref this.useDNAByFaction, "useDNAByFaction", false, true);
             Scribe_Values.Look(ref this.makeThemBlink, "makeThemBlink", false, true);
 
@@ -169,6 +173,8 @@ namespace FacialStuff
             this.showExtraParts = Toggle(this.showExtraParts, "Settings.ShowExtraParts".Translate());
 
             this.useDNAByFaction = Toggle(this.useDNAByFaction, "Settings.UseDNAByFaction".Translate());
+
+            this.useWeirdHairChoices = Toggle(this.useWeirdHairChoices, "Settings.UseWeirdHairChoices".Translate());
 
             this.useHairDNA = Toggle(this.useHairDNA, "Settings.UseHairDNA".Translate());
 

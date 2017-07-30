@@ -14,7 +14,7 @@ namespace FacialStuff
 {
     using FacialStuff.Detouring;
 
- // [HarmonyPatch(typeof(PawnRenderer), "RenderPawnInternal", new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) })]
+    // [HarmonyPatch(typeof(PawnRenderer), "RenderPawnInternal", new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) })]
     public static class HarmonyPatch_PawnRenderer
     {
         private static Type PawnRendererType;
@@ -208,16 +208,17 @@ namespace FacialStuff
                                 locFacialY.y += YOffsetOnFace;
                             }
 
-                            if (pawn.Dead)
-                            {
-                                Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, bodyDrawType);
-                                if (deadEyeMat != null)
-                                {
-                                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, deadEyeMat, portrait);
-                                    locFacialY.y += YOffsetOnFace;
-                                }
-                            }
-                            else
+                            // Deactivated, looks kinda crappy ATM
+                            // if (pawn.Dead)
+                            // {
+                            //     Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, bodyDrawType);
+                            //     if (deadEyeMat != null)
+                            //     {
+                            //         GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, deadEyeMat, portrait);
+                            //         locFacialY.y += YOffsetOnFace;
+                            //     }
+                            // }
+                            // else
                             {
                                 Material leftEyeMat = faceComp.EyeLeftMatAt(headFacing, portrait);
                                 if (leftEyeMat != null)

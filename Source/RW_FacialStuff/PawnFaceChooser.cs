@@ -118,9 +118,9 @@ namespace FacialStuff
         private static MoustacheDef MoustacheRoulette(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<MoustacheDef> source = from beard in DefDatabase<MoustacheDef>.AllDefs
-                                 where beard.raceList.Contains(pawn.def)
-                                 where beard.hairTags.SharesElementWith(factionType.hairTags)
-                                 select beard;
+                                               where beard.raceList.Contains(pawn.def)
+                                               where beard.hairTags.SharesElementWith(factionType.hairTags)
+                                               select beard;
 
             if (!source.Any())
             {
@@ -411,7 +411,58 @@ namespace FacialStuff
             {
                 return 100f;
             }
+            if (Controller.settings.UseWeirdHairChoices)
+            {
+                // The more advanced, the weirder they get
+                if (pawn.Faction.def.techLevel >= TechLevel.Spacer)
+                {
+                    if (pawn.gender == Gender.Male)
+                    {
+                        if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 60)
+                        {
+                            return 0f;
+                        }
 
+                        switch (hair.hairGender)
+                        {
+                            case HairGender.Male:
+                                return 15f;
+                            case HairGender.MaleUsually:
+                                return 30f;
+                            case HairGender.Any:
+                                return 35f;
+                            case HairGender.FemaleUsually:
+                                return 30f;
+                            case HairGender.Female:
+                                return 15f;
+                        }
+                    }
+
+                    if (pawn.gender == Gender.Female)
+                    {
+                        if (hair.hairTags.Contains("MaleOnly"))
+                        {
+                            return 1f;
+                        }
+
+                        switch (hair.hairGender)
+                        {
+                            case HairGender.Male:
+                                return 15f;
+                            case HairGender.MaleUsually:
+                                return 30f;
+                            case HairGender.Any:
+                                return 35f;
+                            case HairGender.FemaleUsually:
+                                return 30f;
+                            case HairGender.Female:
+                                return 15f;
+                        }
+                    }
+                }
+            }
+
+            // Everyone else
             if (pawn.gender == Gender.Male)
             {
 
@@ -423,9 +474,9 @@ namespace FacialStuff
                 switch (hair.hairGender)
                 {
                     case HairGender.Male:
-                        return 80f;
+                        return 70f;
                     case HairGender.MaleUsually:
-                        return 40f;
+                        return 30f;
                     case HairGender.Any:
                         return 50f;
                     case HairGender.FemaleUsually:
@@ -451,9 +502,9 @@ namespace FacialStuff
                     case HairGender.Any:
                         return 50f;
                     case HairGender.FemaleUsually:
-                        return 40f;
+                        return 30f;
                     case HairGender.Female:
-                        return 80f;
+                        return 70f;
                 }
             }
 
