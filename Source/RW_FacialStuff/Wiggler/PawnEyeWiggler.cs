@@ -1,6 +1,8 @@
 ﻿namespace FacialStuff.Wiggler
 
 {
+    using System;
+
     using RimWorld;
 
     using UnityEngine;
@@ -119,13 +121,11 @@
         public int NextBlink
         {
             get => this.nextBlink;
-            set => this.nextBlink = value;
         }
 
         public int NextBlinkEnd
         {
             get => this.nextBlinkEnd;
-            set => this.nextBlinkEnd = value;
         }
 
         public bool RightCanBlink
@@ -198,19 +198,19 @@
             float ticksTillNextBlink = Rand.Range(60f, 240f);
             float blinkDuration = Rand.Range(10f, 40f);
 
-          // Log.Message(
-          // "FS Blinker: " + this.pawn + " - ticksTillNextBlinkORG: " + ticksTillNextBlink.ToString("N0")
-          // + " - blinkDurationORG: " + blinkDuration.ToString("N0"));
+            // Log.Message(
+            // "FS Blinker: " + this.pawn + " - ticksTillNextBlinkORG: " + ticksTillNextBlink.ToString("N0")
+            // + " - blinkDurationORG: " + blinkDuration.ToString("N0"));
 
-             float dynamic = this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
-             float factor = Mathf.Lerp(0.125f, 1f, dynamic);
-             ticksTillNextBlink *= factor;
-             blinkDuration /= factor  * 2;
-          // Log.Message(
-          // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
-          // + " - blinkDuration: " + blinkDuration.ToString("N0"));
-            this.NextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
-            this.NextBlinkEnd = (int)(this.NextBlink + blinkDuration);
+            float dynamic = this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
+            float factor = Mathf.Lerp(0.1f, 1f, dynamic);
+            ticksTillNextBlink *= factor;
+            blinkDuration /= Mathf.Pow(factor, 3f);
+            // Log.Message(
+            // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
+            // + " - blinkDuration: " + blinkDuration.ToString("N0"));
+            this.nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
+            this.nextBlinkEnd = (int)(this.NextBlink + blinkDuration);
 
             if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
             {

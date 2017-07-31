@@ -1457,20 +1457,17 @@
                 int row = 0;
                 int count = 0;
 
-                foreach (Color color in HairMelanin.HairColors)
+                foreach (Color color in HairMelanin.NaturalHairColors)
                 {
                     this.DrawHairColorPickerCell(color, set, color.ToString());
                     set.x += set.width + 10f;
-
-                    count++;
-                    if (count >= 6 && row == 0)
-                    {
-                        set.y += 36f;
-                        set.x = selectionRect.x;
-                        set.width = selectionRect.width / 10f - 10f;
-                        row++;
-                        count = 0;
-                    }
+                }
+                set.x = selectionRect.x;
+                set.y += 36f;
+                foreach (Color color in HairMelanin.ArtificialHairColors)
+                {
+                    this.DrawHairColorPickerCell(color, set, color.ToString());
+                    set.x += set.width + 10f;
                 }
             }
 
@@ -1487,20 +1484,17 @@
                     int row = 0;
                     int count = 0;
 
-                    foreach (Color color in HairMelanin.HairColors)
+                    foreach (Color color in HairMelanin.NaturalHairColors)
                     {
                         this.DrawBeardColorPickerCell(color, set, color.ToString());
                         set.x += set.width + 10f;
-
-                        count++;
-                        if (count >= 6 && row == 0)
-                        {
-                            set.y += 36f;
-                            set.x = selectionRect.x;
-                            set.width = selectionRect.width / 10f - 10f;
-                            row++;
-                            count = 0;
-                        }
+                    }
+                    set.x = selectionRect.x;
+                    set.y += 36f;
+                    foreach (Color color in HairMelanin.ArtificialHairColors)
+                    {
+                        this.DrawBeardColorPickerCell(color, set, color.ToString());
+                        set.x += set.width + 10f;
                     }
                 }
             }

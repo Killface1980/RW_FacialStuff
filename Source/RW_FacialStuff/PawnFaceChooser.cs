@@ -411,10 +411,11 @@ namespace FacialStuff
             {
                 return 100f;
             }
+
             if (Controller.settings.UseWeirdHairChoices)
             {
                 // The more advanced, the weirder they get
-                if (pawn.Faction.def.techLevel >= TechLevel.Spacer)
+                if (pawn.Faction.def.techLevel > TechLevel.Industrial)
                 {
                     if (pawn.gender == Gender.Male)
                     {

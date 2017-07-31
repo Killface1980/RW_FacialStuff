@@ -25,25 +25,21 @@ namespace FacialStuff.Genetics
 
         public static Color HairMidnightBlack = new Color32(30, 30, 30, 255);
 
-        private static Color HairDarkPurple = new Color32(162, 47, 115, 255);
-
-        private static Color HairBlueSteel = new Color32(57, 115, 199, 255);
-
-        private static Color HairBurgundyBistro = new Color32(206, 38, 58, 255);
 
         private static Color HairGreenGrape = new Color32(124, 189, 14, 255);
-
         private static Color HairMysticTurquois = new Color32(71, 191, 165, 255);
-
-        private static Color HairPinkPearl = new Color32(230, 74, 153, 255);
+        private static Color HairBlueSteel = new Color32(57, 115, 199, 255);
 
         private static Color HairPurplePassion = new Color32(145, 50, 191, 255);
 
         private static Color HairRosaRosa = new Color32(215, 168, 255, 255);
 
-        private static Color HairRubyRed = new Color32(227, 35, 41, 255);
+        private static Color HairUltraViolet = new Color32(191, 53, 132, 255);
 
-        private static Color HairUltraViolet = new Color32(191, 53, 132, 255); public static List<Color> HairColors =
+        private static Color HairBurgundyBistro = new Color32(206, 38, 58, 255);
+
+
+        public static List<Color> NaturalHairColors =
             new List<Color>()
                 {
                     HairPlatinum,
@@ -51,16 +47,18 @@ namespace FacialStuff.Genetics
                     HairTerraCotta,
                     HairDarkBrown,
                     HairMidnightBlack,
-                    HairDarkPurple,
-                    HairBlueSteel,
-                    HairBurgundyBistro,
+                };
+
+        public static List<Color> ArtificialHairColors =
+            new List<Color>()
+                {
                     HairGreenGrape,
                     HairMysticTurquois,
-                    HairPinkPearl,
+                    HairBlueSteel,
                     HairPurplePassion,
                     HairRosaRosa,
-                    HairRubyRed,
-                    HairUltraViolet
+                    HairUltraViolet,
+                    HairBurgundyBistro,
                 };
 
         private static Gradient GradientPheoMelanin = new Gradient();
@@ -228,14 +226,14 @@ namespace FacialStuff.Genetics
 
                     if (Controller.settings.UseDNAByFaction)
                     {
-                        if (pawn.Faction.def.techLevel >= TechLevel.Spacer)
+                        if (pawn.Faction.def.techLevel > TechLevel.Industrial)
                         {
-                            limit *= pawn.gender == Gender.Female ? 0.5f : 0.8f;
-                        }
+                            limit *= pawn.gender == Gender.Female ? 0.7f : 0.9f;
 
-                        if (pawn.Faction.def.techLevel == TechLevel.Industrial)
-                        {
-                            limit *= pawn.gender == Gender.Female ? 0.75f : 0.9f;
+                            float techMod = (pawn.Faction.def.techLevel - TechLevel.Industrial) / 5f;
+                            SimpleCurve ageCure =
+                                new SimpleCurve { { 0.1f, 1f }, { 0.25f, 1f - techMod }, { 0.6f, 0.9f } };
+                            limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
                         }
                     }
 
@@ -243,15 +241,12 @@ namespace FacialStuff.Genetics
                     {
                         Color color2;
                         float rand = Rand.Value;
-                        if (rand < 0.1f) color2 = HairDarkPurple;
-                        else if (rand < 0.2f) color2 = HairBlueSteel;
+                        if (rand < 0.15f) color2 = HairBlueSteel;
                         else if (rand < 0.3f) color2 = HairBurgundyBistro;
-                        else if (rand < 0.4f) color2 = HairGreenGrape;
-                        else if (rand < 0.5f) color2 = HairMysticTurquois;
-                        else if (rand < 0.6f) color2 = HairPinkPearl;
-                        else if (rand < 0.7f) color2 = HairPurplePassion;
-                        else if (rand < 0.8f) color2 = HairRosaRosa;
-                        else if (rand < 0.9f) color2 = HairRubyRed;
+                        else if (rand < 0.45f) color2 = HairGreenGrape;
+                        else if (rand < 0.6f) color2 = HairMysticTurquois;
+                        else if (rand < 0.75f) color2 = HairPurplePassion;
+                        else if (rand < 0.9f) color2 = HairRosaRosa;
                         else color2 = HairUltraViolet;
 
                         Color.RGBToHSV(color2, out float h, out float s, out float v);
