@@ -29,10 +29,10 @@
                     FaceStyler faceStyler = this.TargetA.Thing as FaceStyler;
                     if (faceStyler != null)
                     {
-                        FaceStyler rainbowSquieerl2 = (FaceStyler) this.TargetA.Thing;
+                        FaceStyler thing = (FaceStyler)this.TargetA.Thing;
                         if (this.GetActor().Position == this.TargetA.Thing.InteractionCell)
                         {
-                            rainbowSquieerl2.FaceStyling(this.GetActor());
+                            thing.FaceStyling(this.GetActor());
                         }
                     }
                     else

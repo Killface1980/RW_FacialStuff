@@ -9,6 +9,7 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -20,6 +21,7 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -31,6 +33,7 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -42,6 +45,7 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -125,6 +129,7 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -136,6 +141,7 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -147,6 +153,7 @@
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
+      <li>MaleOld</li>
     </hairTags>
   </HairDef>
 
@@ -158,6 +165,7 @@
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
+		  <li>MaleOld</li>
 		</hairTags>
   </HairDef>
 

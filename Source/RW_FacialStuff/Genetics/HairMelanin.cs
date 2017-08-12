@@ -65,7 +65,7 @@ namespace FacialStuff.Genetics
 
         private static Gradient GradientEuMelanin = new Gradient();
 
-        public static void HairGenetics(Pawn pawn, CompFace face, out float euMelanin, out float pheoMelanin, out float cuticula)
+        public static void GenerateHairMelaninAndCuticula(Pawn pawn, CompFace face, out float euMelanin, out float pheoMelanin, out float cuticula)
         {
             euMelanin = pheoMelanin = cuticula = 0f;
             if (face == null)
@@ -223,18 +223,13 @@ namespace FacialStuff.Genetics
                     // Log.Message(greyness.ToString());
                     float factionColor = Rand.Value;
                     float limit = 0.98f;
-
-                    if (Controller.settings.UseDNAByFaction)
+                    if (pawn.Faction.def.techLevel > TechLevel.Industrial)
                     {
-                        if (pawn.Faction.def.techLevel > TechLevel.Industrial)
-                        {
-                            limit *= pawn.gender == Gender.Female ? 0.7f : 0.9f;
+                        limit *= pawn.gender == Gender.Female ? 0.7f : 0.9f;
 
-                            float techMod = (pawn.Faction.def.techLevel - TechLevel.Industrial) / 5f;
-                            SimpleCurve ageCure =
-                                new SimpleCurve { { 0.1f, 1f }, { 0.25f, 1f - techMod }, { 0.6f, 0.9f } };
-                            limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
-                        }
+                        float techMod = (pawn.Faction.def.techLevel - TechLevel.Industrial) / 5f;
+                        SimpleCurve ageCure = new SimpleCurve { { 0.1f, 1f }, { 0.25f, 1f - techMod }, { 0.6f, 0.9f } };
+                        limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
                     }
 
                     if (factionColor > limit)

@@ -1,7 +1,6 @@
 ﻿namespace FacialStuff.ColorPicker
 {
     using System;
-    using System.Collections.Generic;
 
     using FaceStyling;
 

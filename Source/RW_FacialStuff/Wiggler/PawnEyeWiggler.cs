@@ -1,8 +1,6 @@
 ﻿namespace FacialStuff.Wiggler
 
 {
-    using System;
-
     using RimWorld;
 
     using UnityEngine;
@@ -192,6 +190,9 @@
             }
         }
 
+        private SimpleCurve consciousnessCurve =
+            new SimpleCurve { new CurvePoint(0f, 10f), new CurvePoint(0.5f, 3f), new CurvePoint(1f, 1f) };
+
         private void SetNextBlink(int tickManagerTicksGame)
         {
             // Eye blinking controller
@@ -202,10 +203,17 @@
             // "FS Blinker: " + this.pawn + " - ticksTillNextBlinkORG: " + ticksTillNextBlink.ToString("N0")
             // + " - blinkDurationORG: " + blinkDuration.ToString("N0"));
 
-            float dynamic = this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
-            float factor = Mathf.Lerp(0.1f, 1f, dynamic);
-            ticksTillNextBlink *= factor;
-            blinkDuration /= Mathf.Pow(factor, 3f);
+            // TODO: use a curve for evaluation => more control, precise setting of blinking
+             float consciousness = this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
+             float rest = this.pawn.needs.rest.CurLevel;
+
+            ticksTillNextBlink /= this.consciousnessCurve.Evaluate(consciousness);
+            blinkDuration *= this.consciousnessCurve.Evaluate(consciousness);
+
+           // float factor = Mathf.Lerp(0.1f, 1f, dynamic);
+           // ticksTillNextBlink *= factor;
+           // blinkDuration /= Mathf.Pow(factor, 3f);
+
             // Log.Message(
             // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
             // + " - blinkDuration: " + blinkDuration.ToString("N0"));

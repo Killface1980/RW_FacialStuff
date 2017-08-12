@@ -1,6 +1,5 @@
 ﻿namespace FacialStuff.Detouring
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -99,6 +98,66 @@
             Log.Message(
                 "Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count()
                 + " patches with harmony.");
+
+            CheckAllInjected();
+        }
+
+        private static void CheckAllInjected()
+        {
+            /*
+ * Now to enjoy the benefits of having made a popular mod!
+ * This will be our little secret.
+ */
+            Backstory childMe = new Backstory
+                                    {
+                                        bodyTypeMale = BodyType.Male,
+                                        bodyTypeFemale = BodyType.Female,
+                                        slot = BackstorySlot.Childhood,
+                                        baseDesc =
+                                            "NAME never believed what was common sense and always doubted other people. HECAP later went on inflating toads with HIS sushi stick. It was there HE earned HIS nickname.",
+                                        requiredWorkTags = WorkTags.Violent,
+                                        shuffleable = false
+                                    };
+            childMe.SetTitle("Lost child");
+            childMe.SetTitleShort("Seeker");
+            childMe.skillGains.Add("Shooting", 4);
+            childMe.skillGains.Add("Medicine", 2);
+            childMe.skillGains.Add("Social", 1);
+            childMe.PostLoad();
+            childMe.ResolveReferences();
+
+            Backstory adultMale = new Backstory
+                                      {
+                                          bodyTypeMale = BodyType.Male,
+                                          bodyTypeFemale = BodyType.Female,
+                                          slot = BackstorySlot.Adulthood,
+                                          baseDesc =
+                                              "HECAP continued to serve in the military, being promoted through the ranks as HIS skill increased. HECAP learned how to treat more serious wounds as HIS role slowly transitioned from scout to medic, as well as how to make good use of army rations. HECAP built good rapport with HIS squad as a result.",
+                                          shuffleable = false,
+                                          spawnCategories = new List<string>()
+                                      };
+            adultMale.spawnCategories.AddRange(new string[] { "Civil", "Raider", "Slave", "Trader", "Traveler" });
+            adultMale.SetTitle("Lone gunman");
+            adultMale.SetTitleShort("Gunman");
+            adultMale.skillGains.Add("Shooting", 4);
+            adultMale.skillGains.Add("Medicine", 3);
+            adultMale.skillGains.Add("Cooking", 2);
+            adultMale.skillGains.Add("Social", 1);
+            adultMale.PostLoad();
+            adultMale.ResolveReferences();
+
+            PawnBio femaleMe = new PawnBio
+                                   {
+                                       childhood = childMe,
+                                       adulthood = adultMale,
+                                       gender = GenderPossibility.Male,
+                                       name = NameTriple.FromString("Tom 'TomJee' Stinkwater")
+                                   };
+            femaleMe.PostLoad();
+            SolidBioDatabase.allBios.Add(femaleMe);
+            BackstoryDatabase.AddBackstory(childMe);
+
+            BackstoryDatabase.AddBackstory(adultMale);
         }
 
         public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)

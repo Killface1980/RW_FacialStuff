@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-using Harmony;
-
 using RimWorld;
 
 using UnityEngine;
@@ -12,8 +10,6 @@ using Verse;
 
 namespace FacialStuff
 {
-    using FacialStuff.Detouring;
-
     // [HarmonyPatch(typeof(PawnRenderer), "RenderPawnInternal", new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) })]
     public static class HarmonyPatch_PawnRenderer
     {
@@ -88,7 +84,9 @@ namespace FacialStuff
 
             Mesh mesh = null;
 
-            if (faceComp != null)
+            bool oldEnough = pawn.ageTracker.AgeBiologicalYearsFloat >= 13;
+
+            if (faceComp != null && oldEnough)
             {
 #if develop
                 if (faceComp.IgnoreRenderer)

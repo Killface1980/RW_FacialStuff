@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FacialStuff
+﻿namespace FacialStuff
 {
     using FacialStuff.Graphics_FS;
-
-    using Verse;
 
     public static class HumanMouthGraphics
     {
