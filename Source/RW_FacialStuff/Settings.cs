@@ -160,7 +160,7 @@
                 ColumnWidth = inRect.width / 2
             };
             list.Begin(inRect);
-            list.CheckboxLabeled("Settings.MakeThemBlink".Translate(), ref this.makeThemBlink, "MakeThemBlinkTooltip".Translate());
+            list.CheckboxLabeled("Settings.MakeThemBlink".Translate(), ref this.makeThemBlink, "Settings.MakeThemBlinkTooltip".Translate());
             list.CheckboxLabeled("Settings.UseMouth".Translate(), ref this.useMouth, "Settings.UseMouthTooltip".Translate());
             list.CheckboxLabeled("Settings.UseWrinkles".Translate(), ref this.useWrinkles, "Settings.UseWrinklesTooltip".Translate());
             list.CheckboxLabeled("Settings.MergeHair".Translate(), ref this.mergeHair, "Settings.MergeHairTooltip".Translate());

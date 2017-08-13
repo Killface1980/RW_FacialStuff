@@ -128,7 +128,7 @@ namespace FacialStuff.Graphics_FS
                     }
                     else
                     {
-                        array[3] = HeadHelper.BlankTexture();
+                        array[3] = FacialGraphics.BlankTexture();
                     }
                 }
                 else
@@ -144,7 +144,7 @@ namespace FacialStuff.Graphics_FS
                     }
                     else
                     {
-                        array[1] = HeadHelper.BlankTexture();
+                        array[1] = FacialGraphics.BlankTexture();
                     }
                 }
                 else
@@ -155,7 +155,7 @@ namespace FacialStuff.Graphics_FS
             else
             {
                 Log.Message("Facial Stuff: No texture found at " + addedpartName + "_" + crowntype + "_side" + " - Graphic_Multi_AddedHeadParts");
-                array[3] = HeadHelper.BlankTexture();
+                array[3] = FacialGraphics.BlankTexture();
             }
 
 
@@ -165,7 +165,7 @@ namespace FacialStuff.Graphics_FS
             }
             else
             {
-                array[0] = HeadHelper.BlankTexture();
+                array[0] = FacialGraphics.BlankTexture();
             }
 
             for (int i = 0; i < 4; i++)

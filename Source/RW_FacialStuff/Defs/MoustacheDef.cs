@@ -11,7 +11,7 @@ namespace FacialStuff.Defs
 
         public bool drawMouth = false;
 
-        public HairGender hairGender = HairGender.Any;
+        public HairGender hairGender = HairGender.Male;
 
         public List<string> hairTags = new List<string>();
 

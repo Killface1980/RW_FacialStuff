@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
   <Settings.UseWrinkles>Add wrinkles to colonists</Settings.UseWrinkles>
-  <Settings.UseWrinklesToolTip>Wrinkles for older pawns</Settings.UseWrinklesToolTip>
+  <Settings.UseWrinklesTooltip>Wrinkles for older pawns</Settings.UseWrinklesTooltip>
   <Settings.UseMouth>Add mouths to colonists</Settings.UseMouth>
-  <Settings.UseMouthToolTip>Animated mouths to make pawns show their feelings.</Settings.UseMouthToolTip>
-	<Settings.MergeHair>Show hair under hat.</Settings.MergeHair>
-  <Settings.MergeHairToolTip>Displays a modified hair texture below worn hats.</Settings.MergeHairToolTip>
+  <Settings.UseMouthTooltip>Animated mouths to make pawns show their feelings.</Settings.UseMouthTooltip>
+	<Settings.MergeHair>Show hair under hat</Settings.MergeHair>
+  <Settings.MergeHairTooltip>Displays a modified hair texture below worn hats.</Settings.MergeHairTooltip>
   <Settings.HideHatWhileRoofed>Hide hats while roofed</Settings.HideHatWhileRoofed>
-  <Settings.HideHatWhileRoofedToolTip>Hats are not visible on pawns while indoors.</Settings.HideHatWhileRoofedToolTip>
+  <Settings.HideHatWhileRoofedTooltip>Hats are not visible on pawns while indoors.</Settings.HideHatWhileRoofedTooltip>
 	<Settings.HideHatInBed>Hide hats in bed</Settings.HideHatInBed>
-  <Settings.HideHatInBedToolTip>Hats are not visible when the body is not drawn.</Settings.HideHatInBedToolTip>
+  <Settings.HideHatInBedTooltip>Hats are not visible when the body is not drawn.</Settings.HideHatInBedTooltip>
   <Settings.Apply>Save and apply settings.</Settings.Apply>
   <FaceStylerTitle>Face Styler</FaceStylerTitle>
   <FacialStuffColorChangerButtonAccept>Accept new style</FacialStuffColorChangerButtonAccept>
   <FSStylizeFace>Edit colonists's appearance</FSStylizeFace>
 
   <Settings.ShowExtraParts>Show extra parts</Settings.ShowExtraParts>
-  <Settings.ShowExtraPartsToolTip>Display removed or added head parts</Settings.ShowExtraPartsToolTip>
+  <Settings.ShowExtraPartsTooltip>Display removed or added head parts</Settings.ShowExtraPartsTooltip>
   <Settings.UseWeirdHairChoices>Fancy hair styles</Settings.UseWeirdHairChoices>
-  <Settings.UseWeirdHairChoicesToolTip>Adds 'weird' hair choices similar to vanilla. The more advanced a faction is, the more likely they will tend to unnatural hair color or non traditional gender roles.</Settings.UseWeirdHairChoicesToolTip>
+  <Settings.UseWeirdHairChoicesTooltip>Adds 'weird' hair choices similar to vanilla. The more advanced a faction is, the more likely they will tend to unnatural hair color or non traditional gender roles.</Settings.UseWeirdHairChoicesTooltip>
   <Settings.UseHairDNA>Use hair DNA</Settings.UseHairDNA>
-  <Settings.UseHairDNAToolTip>Enables this mod to keep hair colors consistent across family ties.</Settings.UseHairDNAToolTip>
+  <Settings.UseHairDNATooltip>Enables this mod to keep hair colors consistent across family ties.</Settings.UseHairDNATooltip>
   <Settings.MakeThemBlink>Enable eye animation</Settings.MakeThemBlink>
-  <Settings.MakeThemBlinkToolTip>Colonists stop staring at you.</Settings.MakeThemBlinkToolTip>
+  <Settings.MakeThemBlinkTooltip>Colonists stop staring at you.</Settings.MakeThemBlinkTooltip>
 
 </LanguageData>

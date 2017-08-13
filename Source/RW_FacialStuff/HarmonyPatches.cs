@@ -204,7 +204,7 @@
 
    
             // Custom rotting color, mixed with skin tone
-            Color rotColor = pawn.story.SkinColor * HeadHelper.skinRottingMultiplyColor;
+            Color rotColor = pawn.story.SkinColor * FacialGraphics.skinRottingMultiplyColor;
 
             if (faceComp.SetHeadType())
             {

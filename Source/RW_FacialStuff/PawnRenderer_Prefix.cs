@@ -40,7 +40,7 @@ namespace FacialStuff
 
         private const float YOffset_Status = 0.0421875f;
 
-        private const float YOffsetOnFace = 0.00001f;
+        private const float YOffsetOnFace = 0.0001f;
 
         // Verse.PawnRenderer
 

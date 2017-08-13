@@ -292,7 +292,7 @@ namespace FacialStuff.Genetics
 
                     if (face.HasSameBeardColor)
                     {
-                        face.BeardColor = HeadHelper.DarkerBeardColor(pawn.story.hairColor);
+                        face.BeardColor = FacialGraphics.DarkerBeardColor(pawn.story.hairColor);
                     }
                     else
                     {

@@ -84,13 +84,13 @@ namespace FacialStuff
                 Texture2D temptextureback = new Texture2D(128, 128, TextureFormat.ARGB32, true);
 
 
-                temptexturefront = HeadHelper.MakeReadable(graphic.MatFront.mainTexture as Texture2D);
-                temptextureside = HeadHelper.MakeReadable(graphic.MatSide.mainTexture as Texture2D);
-                temptextureback = HeadHelper.MakeReadable(graphic.MatBack.mainTexture as Texture2D);
+                temptexturefront = FacialGraphics.MakeReadable(graphic.MatFront.mainTexture as Texture2D);
+                temptextureside = FacialGraphics.MakeReadable(graphic.MatSide.mainTexture as Texture2D);
+                temptextureback = FacialGraphics.MakeReadable(graphic.MatBack.mainTexture as Texture2D);
 
                 // intentional, only 1 mask tex. todo: rename, cleanup
-                maskTexFrontBack = HeadHelper.MaskTex_Average_FrontBack;
-                maskTexSide = HeadHelper.MaskTex_Narrow_Side;
+                maskTexFrontBack = FacialGraphics.MaskTex_Average_FrontBack;
+                maskTexSide = FacialGraphics.MaskTex_Narrow_Side;
 
                 CutOutHair(ref temptexturefront, maskTexFrontBack);
 

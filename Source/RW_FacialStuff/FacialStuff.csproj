@@ -84,7 +84,7 @@
     <Compile Include="Settings.cs" />
     <None Include="PatchOperationFindMod.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
-    <Compile Include="Wiggler\PawnHeadWiggler.cs" />
+    <None Include="Wiggler\PawnHeadWiggler.cs" />
     <Compile Include="Wiggler\PawnEyeWiggler.cs" />
     <Compile Include="Enums\FullHead.cs" />
     <None Include="ITab_Pawn_Face.cs" />
@@ -101,14 +101,12 @@
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
-    <Compile Include="HeadHelper.cs" />
     <Compile Include="FaceStyling Bench\Dialog_FaceStyling.cs" />
     <Compile Include="FaceStyling Bench\Job_FaceStyling.cs" />
     <Compile Include="FaceStyling Bench\FaceStyler.cs" />
     <None Include="FaceStyling Bench\Preset.cs" />
     <None Include="FaceStyling Bench\PresetDatabase.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
-    <None Include="GraphicNamesInFolder.cs" />
     <Compile Include="Graphics_FS\Graphic_Multi_NaturalHeadParts.cs" />
     <Compile Include="FaceStyling Bench\DialogUtility.cs" />
     <Compile Include="Controller.cs" />

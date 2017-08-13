@@ -1,28 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
   <Settings.UseWrinkles>Benutze Falten</Settings.UseWrinkles>
-  <Settings.UseWrinklesToolTip>Falten für ältere Charaktere</Settings.UseWrinklesToolTip>
+  <Settings.UseWrinklesTooltip>Falten für ältere Charaktere</Settings.UseWrinklesTooltip>
   <Settings.UseMouth>Kolonist hat Mund</Settings.UseMouth>
-  <Settings.UseMouthToolTip>Animierte Münder.</Settings.UseMouthToolTip>
+  <Settings.UseMouthTooltip>Animierte Münder.</Settings.UseMouthTooltip>
 	<Settings.MergeHair>Zeige Haare unter Kopfbedeckung.</Settings.MergeHair>
-  <Settings.MergeHairToolTip>Macht Haar sichtbar.</Settings.MergeHairToolTip>
+  <Settings.MergeHairTooltip>Macht Haar sichtbar.</Settings.MergeHairTooltip>
   <Settings.HideHatWhileRoofed>Blende Hüte in überdachten Gebieten aus</Settings.HideHatWhileRoofed>
-  <Settings.HideHatWhileRoofedToolTip>Hüte sind in Räumen nicht sichtbar.</Settings.HideHatWhileRoofedToolTip>
+  <Settings.HideHatWhileRoofedTooltip>Hüte sind in Räumen nicht sichtbar.</Settings.HideHatWhileRoofedTooltip>
 	<Settings.HideHatInBed>Blende Hüte im Bett aus</Settings.HideHatInBed>
-  <Settings.HideHatInBedToolTip>Hüte sind nicht sichtbar wenn der Körper nicht dargestellt wird.</Settings.HideHatInBedToolTip>
+  <Settings.HideHatInBedTooltip>Hüte sind nicht sichtbar wenn der Körper nicht dargestellt wird.</Settings.HideHatInBedTooltip>
   <Settings.Apply>Einstellungen speichern und übernehmen.</Settings.Apply>
   <FaceStylerTitle>Face Styler</FaceStylerTitle>
   <FacialStuffColorChangerButtonAccept>Check den neuen Style aus</FacialStuffColorChangerButtonAccept>
   <FSStylizeFace>Bearbeite Aussehen des Kolonisten</FSStylizeFace>
 
   <Settings.ShowExtraParts>Zeige Extra-Teile an</Settings.ShowExtraParts>
-  <Settings.ShowExtraPartsToolTip>Zeige entfernte oder hinzugefügte Körperteile</Settings.ShowExtraPartsToolTip>
+  <Settings.ShowExtraPartsTooltip>Zeige entfernte oder hinzugefügte Körperteile</Settings.ShowExtraPartsTooltip>
   <Settings.UseWeirdHairChoices>Fluffige Haare</Settings.UseWeirdHairChoices>
-  <Settings.UseWeirdHairChoicesToolTip>Fügt 'besondere' Haarauswahle hinzu, ähnlich wie Vanilla. Je forgeschrittener eine Fraktion, desto eher wird die Haarfarbe künstlicher Natur sein. Auch die Auswahl der Frisur ist progressiver.</Settings.UseWeirdHairChoicesToolTip>
+  <Settings.UseWeirdHairChoicesTooltip>Fügt 'besondere' Haarauswahle hinzu, ähnlich wie Vanilla. Je forgeschrittener eine Fraktion, desto eher wird die Haarfarbe künstlicher Natur sein. Auch die Auswahl der Frisur ist progressiver.</Settings.UseWeirdHairChoicesTooltip>
   <Settings.UseHairDNA>Benutze Haar-DNS</Settings.UseHairDNA>
-  <Settings.UseHairDNAToolTip>Ermöglicht gleich bleibende Haarfarben innerhalb der Familie.</Settings.UseHairDNAToolTip>
+  <Settings.UseHairDNATooltip>Ermöglicht gleich bleibende Haarfarben innerhalb der Familie.</Settings.UseHairDNATooltip>
   <Settings.MakeThemBlink>Animiere Augen</Settings.MakeThemBlink>
-  <Settings.MakeThemBlinkToolTip>Jetzt wird geblinzelt.</Settings.MakeThemBlinkToolTip>
+  <Settings.MakeThemBlinkTooltip>Jetzt wird geblinzelt.</Settings.MakeThemBlinkTooltip>
 
 
 </LanguageData>

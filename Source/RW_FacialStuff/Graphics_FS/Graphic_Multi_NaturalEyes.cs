@@ -123,7 +123,7 @@
             {
                 if (side.Equals("Right"))
                 {
-                    array[3] = HeadHelper.BlankTexture();
+                    array[3] = FacialGraphics.BlankTexture();
                 }
                 else
                 {
@@ -133,7 +133,7 @@
                 if (side.Equals("Left"))
                 {
 
-                    array[1] = HeadHelper.BlankTexture();
+                    array[1] = FacialGraphics.BlankTexture();
                 }
                 else
                 {
@@ -143,7 +143,7 @@
             else
             {
                 Log.Message("Facial Stuff: No texture found at " + sidePath + " - Graphic_Multi_NaturalEyes");
-                array[3] = HeadHelper.BlankTexture();
+                array[3] = FacialGraphics.BlankTexture();
             }
 
 
@@ -153,7 +153,7 @@
             }
             else
             {
-                array[0] = HeadHelper.BlankTexture();
+                array[0] = FacialGraphics.BlankTexture();
             }
 
             for (int i = 0; i < 4; i++)

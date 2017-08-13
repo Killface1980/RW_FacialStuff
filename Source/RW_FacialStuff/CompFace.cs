@@ -504,7 +504,7 @@
 
             this.HasSameBeardColor = Rand.Value > 0.2f;
             this.BeardColor = this.HasSameBeardColor
-                                  ? HeadHelper.DarkerBeardColor(this.FacePawn.story.hairColor)
+                                  ? FacialGraphics.DarkerBeardColor(this.FacePawn.story.hairColor)
                                   : HairMelanin.RandomBeardColor();
 
             this.IsOptimized = true;
@@ -912,7 +912,7 @@
                 this.wrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
                 ShaderDatabase.Transparent,
                 Vector2.one,
-                wrinkleColor * HeadHelper.skinRottingMultiplyColor);
+                wrinkleColor * FacialGraphics.skinRottingMultiplyColor);
         }
 
         private void ResetBoolsAndPaths()

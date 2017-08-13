@@ -3,6 +3,19 @@
 <DefPackage-MoustacheDef>
 
   <FacialStuff.Defs.MoustacheDef>
+    <defName>Moustache_Chaplin</defName>
+    <label>Chaplin</label>
+    <raceList>
+      <li>Human</li>
+    </raceList>
+    <texPath>Moustaches/Moustache_Chaplin</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </FacialStuff.Defs.MoustacheDef>
+  
+  <FacialStuff.Defs.MoustacheDef>
     <defName>Moustache_DoctorWatson</defName>
     <label>Doctor Watson</label>
     <raceList>
@@ -13,7 +26,48 @@
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
+    </hairTags>
+  </FacialStuff.Defs.MoustacheDef>
+  
+  <FacialStuff.Defs.MoustacheDef>
+    <defName>Moustache_FishTail</defName>
+    <label>Freddie Fishtail</label>
+    <raceList>
+      <li>Human</li>
+    </raceList>
+    <texPath>Moustaches/Moustache_FishTail</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
       <li>Tribal</li>
+    </hairTags>
+  </FacialStuff.Defs.MoustacheDef>
+  
+  <FacialStuff.Defs.MoustacheDef>
+    <defName>Moustache_LeChef</defName>
+    <label>Le Chef</label>
+    <raceList>
+      <li>Human</li>
+    </raceList>
+    <texPath>Moustaches/Moustache_LeChef</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+    </hairTags>
+  </FacialStuff.Defs.MoustacheDef>
+  
+  <FacialStuff.Defs.MoustacheDef>
+    <defName>Moustache_LittleWatson</defName>
+    <label>Little Watson</label>
+    <raceList>
+      <li>Human</li>
+    </raceList>
+    <texPath>Moustaches/Moustache_LittleWatson</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
     </hairTags>
   </FacialStuff.Defs.MoustacheDef>
   
@@ -25,10 +79,8 @@
     </raceList>
     <texPath>Moustaches/Moustache_MisterSlave</texPath>
     <hairTags>
-      <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
-      <li>Tribal</li>
     </hairTags>
   </FacialStuff.Defs.MoustacheDef> 
   
@@ -46,5 +98,35 @@
       <li>Tribal</li>
     </hairTags>
   </FacialStuff.Defs.MoustacheDef>
+
+  <FacialStuff.Defs.MoustacheDef>
+    <defName>Moustache_Souvarov</defName>
+    <label>Master Souvarov</label>
+    <raceList>
+      <li>Human</li>
+    </raceList>
+    <texPath>Moustaches/Moustache_Souvarov</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+    </hairTags>
+  </FacialStuff.Defs.MoustacheDef>
+  
+  <FacialStuff.Defs.MoustacheDef>
+    <defName>Moustache_Western</defName>
+    <label>Gunslinger</label>
+    <raceList>
+      <li>Human</li>
+    </raceList>
+    <texPath>Moustaches/Moustache_Western</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </FacialStuff.Defs.MoustacheDef>
+
 
 </DefPackage-MoustacheDef>

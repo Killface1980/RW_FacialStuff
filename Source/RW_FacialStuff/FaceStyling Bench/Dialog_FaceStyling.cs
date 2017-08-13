@@ -415,7 +415,8 @@
                 DisplayGraphics[(int)Enums.GraphicSlotGroup.Hair].color = value;
                 if (faceComp != null && faceComp.HasSameBeardColor)
                 {
-                    DisplayGraphics[(int)Enums.GraphicSlotGroup.Beard].color = HeadHelper.DarkerBeardColor(value);
+                    DisplayGraphics[(int)Enums.GraphicSlotGroup.Beard].color = FacialGraphics.DarkerBeardColor(value);
+                    DisplayGraphics[(int)Enums.GraphicSlotGroup.Moustache].color = FacialGraphics.DarkerBeardColor(value);
                 }
             }
         }
@@ -529,7 +530,7 @@
 
                             if (faceComp.HasSameBeardColor)
                             {
-                                faceComp.BeardColor = HeadHelper.DarkerBeardColor(pawn.story.hairColor);
+                                faceComp.BeardColor = FacialGraphics.DarkerBeardColor(pawn.story.hairColor);
                             }
 
                             faceComp.BeardColor = this.NewBeardColour;
@@ -1239,50 +1240,48 @@
                 {
                     continue;
                 }
+                // layer 1-5 = body
+                if (i <= (int)Enums.GraphicSlotGroup.Shell)
                 {
-                    // layer 1-5 = body
-                    if (i <= (int)Enums.GraphicSlotGroup.Shell)
                     {
-                        {
-                            DisplayGraphics[i].Draw(pawnRect);
-                        }
+                        DisplayGraphics[i].Draw(pawnRect);
                     }
-                    else
+                }
+                else
+                {
+                    switch (i)
                     {
-                        switch (i)
-                        {
-                            case (int)Enums.GraphicSlotGroup.Beard:
+                        case (int)Enums.GraphicSlotGroup.Beard:
+                            {
+                                if (pawn.gender == Gender.Male)
                                 {
-                                    if (pawn.gender == Gender.Male)
-                                    {
-                                        DisplayGraphics[i].Draw(pawnHeadRect);
-                                    }
-
-                                    break;
-                                }
-
-                            case (int)Enums.GraphicSlotGroup.LeftEye:
-                            case (int)Enums.GraphicSlotGroup.RightEye:
-                            case (int)Enums.GraphicSlotGroup.Brows:
-                                {
-                                    DisplayGraphics[i].Draw(eyeRect);
+                                    DisplayGraphics[i].Draw(pawnHeadRect);
                                 }
 
                                 break;
-                            case (int)Enums.GraphicSlotGroup.Mouth:
-                                if (faceComp != null && faceComp.DrawMouth)
-                                {
-                                    if (this.NewBeard.drawMouth && (this.NewMoustache == MoustacheDefOf.Shaved))
-                                    {
-                                        DisplayGraphics[i].Draw(pawnMouthRect);
-                                    }
-                                }
+                            }
 
-                                break;
-                            default:
-                                DisplayGraphics[i].Draw(pawnHeadRect);
-                                break;
-                        }
+                        case (int)Enums.GraphicSlotGroup.LeftEye:
+                        case (int)Enums.GraphicSlotGroup.RightEye:
+                        case (int)Enums.GraphicSlotGroup.Brows:
+                            {
+                                DisplayGraphics[i].Draw(eyeRect);
+                            }
+
+                            break;
+                        case (int)Enums.GraphicSlotGroup.Mouth:
+                            if (faceComp != null && faceComp.DrawMouth)
+                            {
+                                if (this.NewBeard.drawMouth && (this.NewMoustache == MoustacheDefOf.Shaved))
+                                {
+                                    DisplayGraphics[i].Draw(pawnMouthRect);
+                                }
+                            }
+
+                            break;
+                        default:
+                            DisplayGraphics[i].Draw(pawnHeadRect);
+                            break;
                     }
                 }
             }
@@ -1291,7 +1290,7 @@
                 new Rect(labelRect.xMin - 3f, labelRect.yMin, labelRect.width + 6f, labelRect.height),
                 _nameBackground);
             Widgets.Label(labelRect, nameStringShort);
-            float width = _previewSize;
+
 
             // float spacing = 10f;
             if (faceComp != null)
@@ -1367,7 +1366,7 @@
                 if (GUI.changed)
                 {
                     if (faceComp.HasSameBeardColor)
-                        this.NewBeardColour = HeadHelper.DarkerBeardColor(this.NewHairColour);
+                        this.NewBeardColour = FacialGraphics.DarkerBeardColor(this.NewHairColour);
                 }
             }
 
