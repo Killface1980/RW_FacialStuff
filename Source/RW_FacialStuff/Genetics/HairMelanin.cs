@@ -176,11 +176,11 @@ namespace FacialStuff.Genetics
                 phyo[0].color = HairPlatinum;
                 phyo[0].time = 0.0f;
                 phyo[1].color = new Color32(226, 188, 116, 255);
-                phyo[1].time = 0.65f;
+                phyo[1].time = 0.35f;
                 phyo[2].color = new Color32(231, 168, 84, 255);
-                phyo[2].time = 0.75f;
+                phyo[2].time = 0.55f;
                 phyo[3].color = new Color32(173, 79, 9, 255);
-                phyo[3].time = 0.85f;
+                phyo[3].time = 0.75f;
                 phyo[4].color = new Color32(157, 62, 12, 255);
                 phyo[4].time = 0.95f;
 
@@ -221,6 +221,10 @@ namespace FacialStuff.Genetics
                     // Log.Message(agingBeginGreyFloat.ToString());
                     // Log.Message(greySpan.ToString());
                     // Log.Message(greyness.ToString());
+
+                    // Special hair colors
+
+
                     float factionColor = Rand.Value;
                     float limit = 0.98f;
                     if (pawn.Faction.def.techLevel > TechLevel.Industrial)
@@ -232,17 +236,38 @@ namespace FacialStuff.Genetics
                         limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
                     }
 
-                    if (factionColor > limit)
+                    if (factionColor > limit && pawn.ageTracker.AgeBiologicalYearsFloat > 16)
                     {
                         Color color2;
                         float rand = Rand.Value;
-                        if (rand < 0.15f) color2 = HairBlueSteel;
-                        else if (rand < 0.3f) color2 = HairBurgundyBistro;
-                        else if (rand < 0.45f) color2 = HairGreenGrape;
-                        else if (rand < 0.6f) color2 = HairMysticTurquois;
-                        else if (rand < 0.75f) color2 = HairPurplePassion;
-                        else if (rand < 0.9f) color2 = HairRosaRosa;
-                        else color2 = HairUltraViolet;
+                        if (rand < 0.15f)
+                        {
+                            color2 = HairBlueSteel;
+                        }
+                        else if (rand < 0.3f)
+                        {
+                            color2 = HairBurgundyBistro;
+                        }
+                        else if (rand < 0.45f)
+                        {
+                            color2 = HairGreenGrape;
+                        }
+                        else if (rand < 0.6f)
+                        {
+                            color2 = HairMysticTurquois;
+                        }
+                        else if (rand < 0.75f)
+                        {
+                            color2 = HairPurplePassion;
+                        }
+                        else if (rand < 0.9f)
+                        {
+                            color2 = HairRosaRosa;
+                        }
+                        else
+                        {
+                            color2 = HairUltraViolet;
+                        }
 
                         Color.RGBToHSV(color2, out float h, out float s, out float v);
                         s *= cuticula;

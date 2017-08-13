@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CutHairDB.cs" />
     <Compile Include="HumanMouthGraphics.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />
     <Compile Include="Defs\MoustacheDefOf.cs" />
@@ -85,7 +86,6 @@
     <Compile Include="Genetics\HairMelanin.cs" />
     <Compile Include="Wiggler\PawnHeadWiggler.cs" />
     <Compile Include="Wiggler\PawnEyeWiggler.cs" />
-    <None Include="BACKUP.cs" />
     <Compile Include="Enums\FullHead.cs" />
     <None Include="ITab_Pawn_Face.cs" />
     <Compile Include="Enums\HeadType.cs" />
@@ -96,7 +96,6 @@
     <Compile Include="Graphics_FS\Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="Graphics_FS\Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="MeshPoolFs.cs" />
-    <Compile Include="CutHairDb.cs" />
     <Compile Include="PawnRenderer_Prefix.cs" />
     <Compile Include="CompFace.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />

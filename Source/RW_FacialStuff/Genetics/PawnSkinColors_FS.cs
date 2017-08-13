@@ -15,35 +15,31 @@ namespace FacialStuff.Detouring
                     new Color32(255, 233, 217, 255)), // s 0.15, b 1.0
                 new SkinColorData(
                     0.15f,
-                    0.15f,
+                    0.1f,
                     new Color32(242, 196, 193, 255)), // s 0.2, b 0.95
                 new SkinColorData(
                     0.25f,
-                    0.225f,
+                    0.25f,
                     new Color32(243, 210, 181, 255)), // s 0.25, b 0.95
                 new SkinColorData(
+                    0.4f,
                     0.35f,
-                    0.285f,
                     new Color32(242, 190, 145, 255)), // s 0.4, b 0.95
                 new SkinColorData(
-                    0.4f,
-                    0.385f,
-                    new Color32(255, 220, 179, 255)), // s 0.3, b 1.0
-                new SkinColorData(
+                    0.55f,
                     0.45f,
-                    0.5f,
                     new Color32(255, 231, 179, 255)), // s 0.3, b 1.0
                 new SkinColorData(
-                    0.5f,
-                    0.7f,
+                    0.6f,
+                    0.6f,
                     new Color32(218, 136, 87, 255)), // s 0.6, b 0.85
                 new SkinColorData(
-                    0.65f,
-                    0.785f,
+                    0.7f,
+                    0.7f,
                     new Color32(165, 93, 41, 255)), // s 0.75, b 0.65
                 new SkinColorData(
-                    0.75f,
-                    0.85f,
+                    0.8f,
+                    0.8f,
                     new Color32(127, 71, 51, 255)), // s 0.6, b 0.5
                 new SkinColorData(
                     0.9f,

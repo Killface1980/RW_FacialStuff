@@ -194,17 +194,14 @@
             if (!faceComp.IsDNAoptimized)
             {
                 faceComp.DefineHairDNA();
-            }
 
-            // Added in 0.17.3 beta, needs to be separate till major update A18
-            if (Controller.settings.UseHairDNA)
-            {
                 __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(
                     pawn.story.hairDef.texPath,
                     ShaderDatabase.Cutout,
                     Vector2.one,
                     pawn.story.hairColor);
             }
+
    
             // Custom rotting color, mixed with skin tone
             Color rotColor = pawn.story.SkinColor * HeadHelper.skinRottingMultiplyColor;
@@ -214,8 +211,8 @@
                 if (faceComp.InitializeGraphics())
                 {
                     // Set up the hair cut graphic
-                    HairCutPawn hairPawn = CutHairDb.GetHairCache(pawn);
-                    hairPawn.HairCutGraphic = CutHairDb.Get<Graphic_Multi>(
+                    HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
+                    hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi>(
                         pawn.story.hairDef.texPath,
                         ShaderDatabase.Cutout,
                         Vector2.one,
@@ -236,6 +233,8 @@
                 }
             }
         }
+
+
 
         public static void AddHediff_Postfix(
             Pawn_HealthTracker __instance,

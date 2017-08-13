@@ -8,7 +8,7 @@ namespace FacialStuff
     using Verse;
 
     [StaticConstructorOnStartup]
-    public static class CutHairDb
+    public static class CutHairDB
     {
         #region Fields
 
@@ -28,12 +28,17 @@ namespace FacialStuff
             GraphicRequest req = new GraphicRequest(typeof(T), path, shader, drawSize, color, color, null, 0);
             return GetInner<T>(req);
 
-
         }
 
         public static HairCutPawn GetHairCache(Pawn pawn)
         {
-            foreach (HairCutPawn c in _pawnHairCache) if (c.Pawn == pawn) return c;
+            foreach (HairCutPawn c in _pawnHairCache)
+            {
+                if (c.Pawn == pawn)
+                {
+                    return c;
+                }
+            }
             HairCutPawn n = new HairCutPawn { Pawn = pawn };
             _pawnHairCache.Add(n);
             return n;
@@ -73,7 +78,7 @@ namespace FacialStuff
                 graphic = Activator.CreateInstance<T>();
                 graphic.Init(req);
                 allGraphics.Add(req, graphic);
-
+                
                 Texture2D temptexturefront = new Texture2D(128, 128, TextureFormat.ARGB32, true);
                 Texture2D temptextureside = new Texture2D(128, 128, TextureFormat.ARGB32, true);
                 Texture2D temptextureback = new Texture2D(128, 128, TextureFormat.ARGB32, true);

@@ -7,17 +7,17 @@
 
     public class Settings : ModSettings
     {
-        private  bool useMouth = true;
+        private bool useMouth = true;
 
         private bool useWrinkles = true;
 
         private bool mergeHair = true;
 
+        private bool hideHatWhileRoofed = true;
+
         private bool hideHatInBed = true;
 
         private bool showExtraParts = true;
-
-        private bool useHairDNA = true;
 
         private bool makeThemBlink = true;
 
@@ -27,11 +27,11 @@
 
         public bool MergeHair => this.mergeHair;
 
+        public bool HideHatWhileRoofed => this.hideHatWhileRoofed;
+
         public bool HideHatInBed => this.hideHatInBed;
 
         public bool ShowExtraParts => this.showExtraParts;
-
-        public bool UseHairDNA => this.useHairDNA;
 
         public bool MakeThemBlink => this.makeThemBlink;
 
@@ -41,51 +41,51 @@
 
         public float MaleAverageNormalOffsetX = 0.2314465f;
 
-        public  float MaleAveragePointyOffsetX = 0.2339623f;
+        public float MaleAveragePointyOffsetX = 0.2339623f;
 
-        public  float MaleAverageWideOffsetX = 0.2616352f;
+        public float MaleAverageWideOffsetX = 0.2616352f;
 
-        public  float FemaleAverageNormalOffsetX = 0.1761006f;
+        public float FemaleAverageNormalOffsetX = 0.1761006f;
 
-        public  float FemaleAveragePointyOffsetX = 0.1937107f;
+        public float FemaleAveragePointyOffsetX = 0.1937107f;
 
-        public  float FemaleAverageWideOffsetX = 0.2062893f;
+        public float FemaleAverageWideOffsetX = 0.2062893f;
 
-        public  float MaleNarrowNormalOffsetX = 0.163522f;
+        public float MaleNarrowNormalOffsetX = 0.163522f;
 
-        public  float MaleNarrowPointyOffsetX = 0.1534591f;
+        public float MaleNarrowPointyOffsetX = 0.1534591f;
 
-        public  float MaleNarrowWideOffsetX = 0.1559749f;
+        public float MaleNarrowWideOffsetX = 0.1559749f;
 
-        public  float FemaleNarrowNormalOffsetX = 0.1383648f;
+        public float FemaleNarrowNormalOffsetX = 0.1383648f;
 
-        public  float FemaleNarrowPointyOffsetX = 0.1534591f;
+        public float FemaleNarrowPointyOffsetX = 0.1534591f;
 
-        public  float FemaleNarrowWideOffsetX = 0.1610063f;
+        public float FemaleNarrowWideOffsetX = 0.1610063f;
 
-        public  float MaleAverageNormalOffsetY = 0.17862f;
+        public float MaleAverageNormalOffsetY = 0.17862f;
 
-        public  float MaleAveragePointyOffsetY = 0.17107f;
+        public float MaleAveragePointyOffsetY = 0.17107f;
 
-        public  float MaleAverageWideOffsetY = 0.1735849f;
+        public float MaleAverageWideOffsetY = 0.1735849f;
 
-        public  float FemaleAverageNormalOffsetY = 0.18113f;
+        public float FemaleAverageNormalOffsetY = 0.18113f;
 
-        public  float FemaleAveragePointyOffsetY = 0.163522f;
+        public float FemaleAveragePointyOffsetY = 0.163522f;
 
-        public  float FemaleAverageWideOffsetY = 0.1861635f;
+        public float FemaleAverageWideOffsetY = 0.1861635f;
 
-        public  float MaleNarrowNormalOffsetY = 0.20337f;
+        public float MaleNarrowNormalOffsetY = 0.20337f;
 
-        public  float MaleNarrowPointyOffsetY = 0.19874f;
+        public float MaleNarrowPointyOffsetY = 0.19874f;
 
-        public  float MaleNarrowWideOffsetY = 0.2064151f;
+        public float MaleNarrowWideOffsetY = 0.2064151f;
 
-        public  float FemaleNarrowNormalOffsetY = 0.2012579f;
+        public float FemaleNarrowNormalOffsetY = 0.2012579f;
 
-        public  float FemaleNarrowPointyOffsetY = 0.21635f;
+        public float FemaleNarrowPointyOffsetY = 0.21635f;
 
-        public  float FemaleNarrowWideOffsetY = 0.191195f;
+        public float FemaleNarrowWideOffsetY = 0.191195f;
 
         private bool useDNAByFaction = false;
         private bool useWeirdHairChoices = false;
@@ -96,11 +96,11 @@
             Scribe_Values.Look(ref this.useWrinkles, "useWrinkles", false, true);
             Scribe_Values.Look(ref this.useMouth, "useMouth", false, true);
             Scribe_Values.Look(ref this.mergeHair, "mergeHair", false, true);
+            Scribe_Values.Look(ref this.hideHatWhileRoofed, "hideHatWhileRoofed", false, true);
             Scribe_Values.Look(ref this.hideHatInBed, "hideHatInBed", false, true);
             Scribe_Values.Look(ref this.showExtraParts, "showExtraParts", false, true);
-            Scribe_Values.Look(ref this.useHairDNA, "useHairDNA", false, true);
             Scribe_Values.Look(ref this.useWeirdHairChoices, "useWeirdHairChoices", false, true);
-            Scribe_Values.Look(ref this.useDNAByFaction, "useDNAByFaction", false, true);
+            //  Scribe_Values.Look(ref this.useDNAByFaction, "useDNAByFaction", false, true);
             Scribe_Values.Look(ref this.makeThemBlink, "makeThemBlink", false, true);
 
 #if develop // Scribe_Values.Look(ref MaleAverageNormalOffsetX, "MaleAverageNormalOffsetX");
@@ -155,26 +155,23 @@
 
         public void DoWindowContents(Rect inRect)
         {
-            BeginArea(inRect);
-            BeginVertical();
-            this.useWrinkles = Toggle(this.useWrinkles, "Settings.UseWrinkles".Translate());
+            Listing_Standard list = new Listing_Standard(GameFont.Small)
+            {
+                ColumnWidth = inRect.width / 2
+            };
+            list.Begin(inRect);
+            list.CheckboxLabeled("Settings.MakeThemBlink".Translate(), ref this.makeThemBlink, "MakeThemBlinkTooltip".Translate());
+            list.CheckboxLabeled("Settings.UseMouth".Translate(), ref this.useMouth, "Settings.UseMouthTooltip".Translate());
+            list.CheckboxLabeled("Settings.UseWrinkles".Translate(), ref this.useWrinkles, "Settings.UseWrinklesTooltip".Translate());
+            list.CheckboxLabeled("Settings.MergeHair".Translate(), ref this.mergeHair, "Settings.MergeHairTooltip".Translate());
+            list.CheckboxLabeled("Settings.HideHatWhileRoofed".Translate(), ref this.hideHatWhileRoofed, "Settings.HideHatWhileRoofedTooltip".Translate());
+            list.CheckboxLabeled("Settings.HideHatInBed".Translate(), ref this.hideHatInBed, "Settings.HideHatInBedTooltip".Translate());
+            list.CheckboxLabeled("Settings.ShowExtraParts".Translate(), ref this.showExtraParts, "Settings.ShowExtraPartsTooltip".Translate());
+            list.CheckboxLabeled("Settings.UseWeirdHairChoices".Translate(), ref this.useWeirdHairChoices, "Settings.UseWeirdHairChoicesTooltip".Translate());
 
-            this.useMouth = Toggle(this.useMouth, "Settings.UseMouth".Translate());
+            //  this.useDNAByFaction = Toggle(this.useDNAByFaction, "Settings.UseDNAByFaction".Translate());
 
-            this.mergeHair = Toggle(this.mergeHair, "Settings.MergeHair".Translate());
-
-            this.hideHatInBed = Toggle(this.hideHatInBed, "Settings.HideHatInBed".Translate());
-
-            this.showExtraParts = Toggle(this.showExtraParts, "Settings.ShowExtraParts".Translate());
-
-            this.useDNAByFaction = Toggle(this.useDNAByFaction, "Settings.UseDNAByFaction".Translate());
-
-            this.useWeirdHairChoices = Toggle(this.useWeirdHairChoices, "Settings.UseWeirdHairChoices".Translate());
-
-            this.useHairDNA = Toggle(this.useHairDNA, "Settings.UseHairDNA".Translate());
-
-            this.makeThemBlink = Toggle(this.makeThemBlink, "Settings.MakeThemBlink".Translate());
-            EndVertical();
+            list.End();
 
             // FlexibleSpace();
             // BeginVertical();
@@ -196,7 +193,6 @@
             // }
             // EndVertical();
             // FlexibleSpace();
-            EndArea();
         }
     }
 
