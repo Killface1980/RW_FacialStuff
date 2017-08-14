@@ -104,20 +104,20 @@
 
         private static void CheckAllInjected()
         {
-            /*
- * Now to enjoy the benefits of having made a popular mod!
- * This will be our little secret.
- */
+            //
+            // Now to enjoy the benefits of having made a popular mod!
+            // This will be our little secret.
+            //
             Backstory childMe = new Backstory
-                                    {
-                                        bodyTypeMale = BodyType.Male,
-                                        bodyTypeFemale = BodyType.Female,
-                                        slot = BackstorySlot.Childhood,
-                                        baseDesc =
+            {
+                bodyTypeMale = BodyType.Male,
+                bodyTypeFemale = BodyType.Female,
+                slot = BackstorySlot.Childhood,
+                baseDesc =
                                             "NAME never believed what was common sense and always doubted other people. HECAP later went on inflating toads with HIS sushi stick. It was there HE earned HIS nickname.",
-                                        requiredWorkTags = WorkTags.Violent,
-                                        shuffleable = false
-                                    };
+                requiredWorkTags = WorkTags.Violent,
+                shuffleable = false
+            };
             childMe.SetTitle("Lost child");
             childMe.SetTitleShort("Seeker");
             childMe.skillGains.Add("Shooting", 4);
@@ -127,15 +127,15 @@
             childMe.ResolveReferences();
 
             Backstory adultMale = new Backstory
-                                      {
-                                          bodyTypeMale = BodyType.Male,
-                                          bodyTypeFemale = BodyType.Female,
-                                          slot = BackstorySlot.Adulthood,
-                                          baseDesc =
+            {
+                bodyTypeMale = BodyType.Male,
+                bodyTypeFemale = BodyType.Female,
+                slot = BackstorySlot.Adulthood,
+                baseDesc =
                                               "HECAP continued to serve in the military, being promoted through the ranks as HIS skill increased. HECAP learned how to treat more serious wounds as HIS role slowly transitioned from scout to medic, as well as how to make good use of army rations. HECAP built good rapport with HIS squad as a result.",
-                                          shuffleable = false,
-                                          spawnCategories = new List<string>()
-                                      };
+                shuffleable = false,
+                spawnCategories = new List<string>()
+            };
             adultMale.spawnCategories.AddRange(new string[] { "Civil", "Raider", "Slave", "Trader", "Traveler" });
             adultMale.SetTitle("Lone gunman");
             adultMale.SetTitleShort("Gunman");
@@ -146,15 +146,15 @@
             adultMale.PostLoad();
             adultMale.ResolveReferences();
 
-            PawnBio femaleMe = new PawnBio
-                                   {
-                                       childhood = childMe,
-                                       adulthood = adultMale,
-                                       gender = GenderPossibility.Male,
-                                       name = NameTriple.FromString("Tom 'TomJee' Stinkwater")
-                                   };
-            femaleMe.PostLoad();
-            SolidBioDatabase.allBios.Add(femaleMe);
+            PawnBio me = new PawnBio
+            {
+                childhood = childMe,
+                adulthood = adultMale,
+                gender = GenderPossibility.Male,
+                name = NameTriple.FromString("Tom 'TomJee' Stinkwater")
+            };
+            me.PostLoad();
+            SolidBioDatabase.allBios.Add(me);
             BackstoryDatabase.AddBackstory(childMe);
 
             BackstoryDatabase.AddBackstory(adultMale);
@@ -186,11 +186,12 @@
             }
 
             // Need: get the traditional habitat of a faction => not suitable, as factions are scattered around the globe
-         // if (!faceComp.IsSkinDNAoptimized)
-         // {
-         //     faceComp.DefineSkinDNA();
-         // }
+            // if (!faceComp.IsSkinDNAoptimized)
+            // {
+            //     faceComp.DefineSkinDNA();
+            // }
 
+            // Hair color is defined here. Can't use RandomHairColor as FS checks for existing relations
             if (!faceComp.IsDNAoptimized)
             {
                 faceComp.DefineHairDNA();
@@ -202,9 +203,9 @@
                     pawn.story.hairColor);
             }
 
-   
+
             // Custom rotting color, mixed with skin tone
-            Color rotColor = pawn.story.SkinColor * FacialGraphics.skinRottingMultiplyColor;
+            Color rotColor = pawn.story.SkinColor * FacialGraphics.SkinRottingMultiplyColor;
 
             if (faceComp.SetHeadType())
             {

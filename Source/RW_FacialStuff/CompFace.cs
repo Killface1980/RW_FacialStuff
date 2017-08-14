@@ -18,13 +18,16 @@
     public class CompFace : ThingComp
     {
 
-        #region Fields
+        #region Public Fields
 
-        public bool HasLeftEyePatch => hasLeftEyePatch;
-        public bool HasRightEyePatch => hasRightEyePatch;
         public bool IgnoreRenderer;
         public Graphic_Multi_NaturalHeadParts MouthGraphic;
         public int rotationInt;
+
+        #endregion Public Fields
+
+        #region Private Fields
+
         private Color beardColor = Color.clear;
         private BeardDef beardDef = BeardDefOf.Beard_Shaved;
         private BrowDef browDef;
@@ -46,7 +49,9 @@
         private DamageFlasher flasher;
         private FullHead fullHeadType = FullHead.Undefined;
         private Color hairColorOrg;
+        private bool hasLeftEyePatch;
         private bool hasNaturalMouth = true;
+        private bool hasRightEyePatch;
         private bool hasSameBeardColor;
         private float headTypeX;
         private float headTypeY;
@@ -79,16 +84,11 @@
         private string texPathEyeRightPatch;
         private string texPathMouth;
         private WrinkleDef wrinkleDef;
-
         private Graphic wrinkleGraphic;
 
-        private bool hasRightEyePatch;
+        #endregion Private Fields
 
-        private bool hasLeftEyePatch;
-
-        #endregion Fields
-
-        #region Properties
+        #region Public Properties
 
         public Color BeardColor
         {
@@ -109,7 +109,6 @@
         }
 
         public float Cuticula => this.cuticula;
-
         public bool DrawMouth
         {
             get => this.drawMouth;
@@ -142,8 +141,8 @@
                 return this.facePawn;
             }
         }
-        public float FactionMelanin { get => this.factionMelanin; set => this.factionMelanin = value; }
 
+        public float FactionMelanin { get => this.factionMelanin; set => this.factionMelanin = value; }
         public FullHead FullHeadType
         {
             get => this.fullHeadType;
@@ -156,11 +155,13 @@
             set => this.hairColorOrg = value;
         }
 
+        public bool HasLeftEyePatch => hasLeftEyePatch;
         public bool HasNaturalMouth
         {
             get => this.hasNaturalMouth;
         }
 
+        public bool HasRightEyePatch => hasRightEyePatch;
         public bool HasSameBeardColor
         {
             get => this.hasSameBeardColor;
@@ -233,6 +234,10 @@
             set => this.pheoMelanin = value;
         }
 
+        #endregion Public Properties
+
+        #region Private Properties
+
         private bool EyeLeftBlinkNow
         {
             get
@@ -251,9 +256,9 @@
             }
         }
 
-        #endregion Properties
+        #endregion Private Properties
 
-        #region Methods
+        #region Public Methods
 
         public Vector3 BaseMouthOffsetAt(Rot4 rotation)
         {
@@ -673,7 +678,7 @@
 
             return material;
         }
-        [CanBeNull]
+
         public Material MouthMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
             Material material = null;
@@ -813,6 +818,133 @@
             return material;
         }
 
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private void CheckFemaleCrownType()
+        {
+            switch (this.PawnCrownType)
+            {
+                case CrownType.Average:
+                    this.CheckFemaleCrownTypeAverage();
+                    break;
+                case CrownType.Narrow:
+                    this.CheckFemaleCrownTypeNarrow();
+                    break;
+            }
+        }
+
+        private void CheckFemaleCrownTypeAverage()
+        {
+            switch (this.PawnHeadType)
+            {
+                case HeadType.Normal:
+                    this.FullHeadType = FullHead.FemaleAverageNormal;
+                    this.headTypeX = Controller.settings.FemaleAverageNormalOffsetX;
+                    this.headTypeY = Controller.settings.FemaleAverageNormalOffsetY;
+                    break;
+
+                case HeadType.Pointy:
+                    this.FullHeadType = FullHead.FemaleAveragePointy;
+                    this.headTypeX = Controller.settings.FemaleAveragePointyOffsetX;
+                    this.headTypeY = Controller.settings.FemaleAveragePointyOffsetY;
+                    break;
+
+                case HeadType.Wide:
+                    this.FullHeadType = FullHead.FemaleAverageWide;
+                    this.headTypeX = Controller.settings.FemaleAverageWideOffsetX;
+                    this.headTypeY = Controller.settings.FemaleAverageWideOffsetY;
+                    break;
+            }
+        }
+
+        private void CheckFemaleCrownTypeNarrow()
+        {
+            switch (this.PawnHeadType)
+            {
+                case HeadType.Normal:
+                    this.FullHeadType = FullHead.FemaleNarrowNormal;
+                    this.headTypeX = Controller.settings.FemaleNarrowNormalOffsetX;
+                    this.headTypeY = Controller.settings.FemaleNarrowNormalOffsetY;
+                    break;
+
+                case HeadType.Pointy:
+                    this.FullHeadType = FullHead.FemaleNarrowPointy;
+                    this.headTypeX = Controller.settings.FemaleNarrowPointyOffsetX;
+                    this.headTypeY = Controller.settings.FemaleNarrowPointyOffsetY;
+                    break;
+
+                case HeadType.Wide:
+                    this.FullHeadType = FullHead.FemaleNarrowWide;
+                    this.headTypeX = Controller.settings.FemaleNarrowWideOffsetX;
+                    this.headTypeY = Controller.settings.FemaleNarrowWideOffsetY;
+                    break;
+            }
+        }
+
+        private void CheckMaleCrownType()
+        {
+            switch (this.PawnCrownType)
+            {
+                case CrownType.Average:
+                    this.CheckMaleCrownTypeAverage();
+                    break;
+
+                case CrownType.Narrow:
+                    this.CheckMaleCrownTypeNarrow();
+                    break;
+            }
+        }
+
+        private void CheckMaleCrownTypeAverage()
+        {
+            switch (this.PawnHeadType)
+            {
+                case HeadType.Normal:
+                    this.FullHeadType = FullHead.MaleAverageNormal;
+                    this.headTypeX = Controller.settings.MaleAverageNormalOffsetX;
+                    this.headTypeY = Controller.settings.MaleAverageNormalOffsetY;
+                    break;
+
+                case HeadType.Pointy:
+                    this.FullHeadType = FullHead.MaleAveragePointy;
+                    this.headTypeX = Controller.settings.MaleAveragePointyOffsetX;
+                    this.headTypeY = Controller.settings.MaleAveragePointyOffsetY;
+                    break;
+
+                case HeadType.Wide:
+                    this.FullHeadType = FullHead.MaleAverageWide;
+                    this.headTypeX = Controller.settings.MaleAverageWideOffsetX;
+                    this.headTypeY = Controller.settings.MaleAverageWideOffsetY;
+                    break;
+            }
+        }
+
+        private void CheckMaleCrownTypeNarrow()
+        {
+            switch (this.PawnHeadType)
+            {
+                case HeadType.Normal:
+                    this.FullHeadType = FullHead.MaleNarrowNormal;
+                    this.headTypeX = Controller.settings.MaleNarrowNormalOffsetX;
+                    this.headTypeY = Controller.settings.MaleNarrowNormalOffsetY;
+                    break;
+
+                case HeadType.Pointy:
+                    this.FullHeadType = FullHead.MaleNarrowPointy;
+                    this.headTypeX = Controller.settings.MaleNarrowPointyOffsetX;
+                    this.headTypeY = Controller.settings.MaleNarrowPointyOffsetY;
+                    break;
+
+                case HeadType.Wide:
+                    this.FullHeadType = FullHead.MaleNarrowWide;
+                    this.headTypeX = Controller.settings.MaleNarrowWideOffsetX;
+                    this.headTypeY = Controller.settings.MaleNarrowWideOffsetY;
+                    break;
+            }
+        }
+
         private string EyeClosedTexPath(Enums.Side side)
         {
             return this.EyeTexPath("Closed", side);
@@ -912,7 +1044,7 @@
                 this.wrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
                 ShaderDatabase.Transparent,
                 Vector2.one,
-                wrinkleColor * FacialGraphics.skinRottingMultiplyColor);
+                wrinkleColor * FacialGraphics.SkinRottingMultiplyColor);
         }
 
         private void ResetBoolsAndPaths()
@@ -990,140 +1122,16 @@
                     break;
             }
         }
-
-        private void CheckFemaleCrownType()
-        {
-            switch (this.PawnCrownType)
-            {
-                case CrownType.Average:
-                    this.CheckFemaleCrownTypeAverage();
-                    break;
-                case CrownType.Narrow:
-                    this.CheckFemaleCrownTypeNarrow();
-                    break;
-            }
-        }
-
-        private void CheckFemaleCrownTypeNarrow()
-        {
-            switch (this.PawnHeadType)
-            {
-                case HeadType.Normal:
-                    this.FullHeadType = FullHead.FemaleNarrowNormal;
-                    this.headTypeX = Controller.settings.FemaleNarrowNormalOffsetX;
-                    this.headTypeY = Controller.settings.FemaleNarrowNormalOffsetY;
-                    break;
-
-                case HeadType.Pointy:
-                    this.FullHeadType = FullHead.FemaleNarrowPointy;
-                    this.headTypeX = Controller.settings.FemaleNarrowPointyOffsetX;
-                    this.headTypeY = Controller.settings.FemaleNarrowPointyOffsetY;
-                    break;
-
-                case HeadType.Wide:
-                    this.FullHeadType = FullHead.FemaleNarrowWide;
-                    this.headTypeX = Controller.settings.FemaleNarrowWideOffsetX;
-                    this.headTypeY = Controller.settings.FemaleNarrowWideOffsetY;
-                    break;
-            }
-        }
-
-        private void CheckFemaleCrownTypeAverage()
-        {
-            switch (this.PawnHeadType)
-            {
-                case HeadType.Normal:
-                    this.FullHeadType = FullHead.FemaleAverageNormal;
-                    this.headTypeX = Controller.settings.FemaleAverageNormalOffsetX;
-                    this.headTypeY = Controller.settings.FemaleAverageNormalOffsetY;
-                    break;
-
-                case HeadType.Pointy:
-                    this.FullHeadType = FullHead.FemaleAveragePointy;
-                    this.headTypeX = Controller.settings.FemaleAveragePointyOffsetX;
-                    this.headTypeY = Controller.settings.FemaleAveragePointyOffsetY;
-                    break;
-
-                case HeadType.Wide:
-                    this.FullHeadType = FullHead.FemaleAverageWide;
-                    this.headTypeX = Controller.settings.FemaleAverageWideOffsetX;
-                    this.headTypeY = Controller.settings.FemaleAverageWideOffsetY;
-                    break;
-            }
-        }
-
-        private void CheckMaleCrownType()
-        {
-            switch (this.PawnCrownType)
-            {
-                case CrownType.Average:
-                    this.CheckMaleCrownTypeAverage();
-                    break;
-
-                case CrownType.Narrow:
-                    this.CheckMaleCrownTypeNarrow();
-                    break;
-            }
-        }
-
-        private void CheckMaleCrownTypeNarrow()
-        {
-            switch (this.PawnHeadType)
-            {
-                case HeadType.Normal:
-                    this.FullHeadType = FullHead.MaleNarrowNormal;
-                    this.headTypeX = Controller.settings.MaleNarrowNormalOffsetX;
-                    this.headTypeY = Controller.settings.MaleNarrowNormalOffsetY;
-                    break;
-
-                case HeadType.Pointy:
-                    this.FullHeadType = FullHead.MaleNarrowPointy;
-                    this.headTypeX = Controller.settings.MaleNarrowPointyOffsetX;
-                    this.headTypeY = Controller.settings.MaleNarrowPointyOffsetY;
-                    break;
-
-                case HeadType.Wide:
-                    this.FullHeadType = FullHead.MaleNarrowWide;
-                    this.headTypeX = Controller.settings.MaleNarrowWideOffsetX;
-                    this.headTypeY = Controller.settings.MaleNarrowWideOffsetY;
-                    break;
-            }
-        }
-
-        private void CheckMaleCrownTypeAverage()
-        {
-            switch (this.PawnHeadType)
-            {
-                case HeadType.Normal:
-                    this.FullHeadType = FullHead.MaleAverageNormal;
-                    this.headTypeX = Controller.settings.MaleAverageNormalOffsetX;
-                    this.headTypeY = Controller.settings.MaleAverageNormalOffsetY;
-                    break;
-
-                case HeadType.Pointy:
-                    this.FullHeadType = FullHead.MaleAveragePointy;
-                    this.headTypeX = Controller.settings.MaleAveragePointyOffsetX;
-                    this.headTypeY = Controller.settings.MaleAveragePointyOffsetY;
-                    break;
-
-                case HeadType.Wide:
-                    this.FullHeadType = FullHead.MaleAverageWide;
-                    this.headTypeX = Controller.settings.MaleAverageWideOffsetX;
-                    this.headTypeY = Controller.settings.MaleAverageWideOffsetY;
-                    break;
-            }
-        }
-
         private void SetMouthAccordingToMoodLevel()
         {
             this.mood = this.FacePawn.needs?.mood?.CurInstantLevel ?? 0.5f;
 
-            int skinDataIndexOfMelanin = HumanMouthGraphics.GetMouthTextureIndexOfMood(this.mood);
+            int mouthTextureIndexOfMood = HumanMouthGraphics.GetMouthTextureIndexOfMood(this.mood);
 
-            this.MouthGraphic = HumanMouthGraphics.HumanMouthGraphic[skinDataIndexOfMelanin].graphic;
+            this.MouthGraphic = HumanMouthGraphics.HumanMouthGraphic[mouthTextureIndexOfMood].graphic;
         }
 
-        #endregion Methods
+        #endregion Private Methods
 
     }
 }

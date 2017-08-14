@@ -24,6 +24,8 @@ namespace FacialStuff
 
         private static FieldInfo PawnHeadOverlaysFieldInfo;
 
+        private const string DrawFullhair = "DrawFullHair";
+
         private const float YOffset_PrimaryEquipmentUnder = 0f;
 
         private const float YOffset_Body = 0.0046875f;
@@ -283,7 +285,7 @@ namespace FacialStuff
                 loc2.y = Mathf.Max(loc2.y, locFacialY.y);
 
                 // loc2 += faceComp.eyemove;
-                bool wearsHatAndHasHairBelow = false;
+                bool showFullHair = true;
 
                 if (!portrait || !Prefs.HatsOnlyOnMap)
                 {
@@ -312,7 +314,8 @@ namespace FacialStuff
                             if (showHat)
                             {
                                 // Draw hair if player demands it
-                                wearsHatAndHasHairBelow = true;
+                                showFullHair = false;
+
                                 // Display the hair cut
                                 if (Controller.settings.MergeHair)
                                 {
@@ -326,17 +329,26 @@ namespace FacialStuff
                                         // loc2.y += 0.0328125022f;
                                     }
                                 }
+
                                 // Now draw the hat
                                 Material material2 = apparelGraphics[j].graphic.MatAt(bodyFacing);
                                 material2 = __instance.graphics.flasher.GetDamagedMat(material2);
                                 GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, material2, portrait);
+
+                                // Check if the full hair should be drawn below the head gear
+                                if (apparelGraphics[j].sourceApparel.def.apparel.tags.Contains(DrawFullhair))
+                                {
+                                    showFullHair = true;
+                                }
+
+
                             }
                         }
                     }
                 }
 
                 // Draw regular hair if no hat worn
-                if (!wearsHatAndHasHairBelow && bodyDrawType != RotDrawMode.Dessicated && !headStump)
+                if (showFullHair && bodyDrawType != RotDrawMode.Dessicated && !headStump)
                 {
                     Mesh mesh4 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
                     Material mat = __instance.graphics.HairMatAt(headFacing);

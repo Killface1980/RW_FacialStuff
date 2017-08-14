@@ -750,7 +750,7 @@
                 }
                 else
                 {
-                    if (this.NewBeard == BeardDefOf.Beard_Shaved)
+                    if (this.NewBeard == BeardDefOf.Beard_Shaved || this.NewMoustache != MoustacheDefOf.Shaved)
                     {
                         Widgets.DrawBoxSolid(rect.ContractedBy(3f), new Color(0.29f, 0.7f, 0.8f, 0.3f));
                     }
@@ -1480,9 +1480,6 @@
                 this.DrawHairColorPickerCell(originalColour, set, "Original");
                 set.x += set.width * 1.5f + 10f;
 
-                int row = 0;
-                int count = 0;
-
                 foreach (Color color in HairMelanin.NaturalHairColors)
                 {
                     this.DrawHairColorPickerCell(color, set, color.ToString());
@@ -1506,9 +1503,6 @@
 
                     this.DrawBeardColorPickerCell(this.NewHairColour, set, "Hair color");
                     set.x += set.width * 1.5f + 10f;
-
-                    int row = 0;
-                    int count = 0;
 
                     foreach (Color color in HairMelanin.NaturalHairColors)
                     {

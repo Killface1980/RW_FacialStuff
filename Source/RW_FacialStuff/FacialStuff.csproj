@@ -70,7 +70,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CutHairDB.cs" />
-    <Compile Include="HumanMouthGraphics.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />
     <Compile Include="Defs\MoustacheDefOf.cs" />
     <Compile Include="Defs\MoustacheDef.cs" />
@@ -81,6 +80,8 @@
     <Compile Include="Defs\WrinkleDef.cs" />
     <Compile Include="Enums\BeardType.cs" />
     <Compile Include="Enums\DialoguePage.cs" />
+    <Compile Include="HumanMouthGraphics.cs" />
+    <None Include="MouthGraphicData.cs" />
     <Compile Include="Settings.cs" />
     <None Include="PatchOperationFindMod.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
@@ -96,7 +97,7 @@
     <Compile Include="Graphics_FS\Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="Graphics_FS\Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="MeshPoolFs.cs" />
-    <Compile Include="PawnRenderer_Prefix.cs" />
+    <Compile Include="Harmony\PawnRenderer_Prefix.cs" />
     <Compile Include="CompFace.cs" />
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
@@ -112,7 +113,7 @@
     <Compile Include="Controller.cs" />
     <Compile Include="Genetics\PawnSkinColors_FS.cs" />
     <Compile Include="PawnFaceChooser.cs" />
-    <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="Harmony\HarmonyPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

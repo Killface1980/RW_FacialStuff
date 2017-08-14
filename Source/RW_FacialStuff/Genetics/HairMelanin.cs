@@ -164,11 +164,11 @@ namespace FacialStuff.Genetics
                 eu[0].color = HairPlatinum;
                 eu[0].time = 0.0f;
                 eu[1].color = new Color32(139, 108, 66, 255);
-                eu[1].time = 0.4f;
+                eu[1].time = 0.45f;
                 eu[2].color = new Color32(91, 60, 17, 255);
-                eu[2].time = 0.6f;
+                eu[2].time = 0.65f;
                 eu[3].color = new Color32(47, 30, 14, 255);
-                eu[3].time = 0.8f;
+                eu[3].time = 0.85f;
                 eu[4].color = new Color32(0, 0, 0, 255);
                 eu[4].time = 1f;
                 GradientEuMelanin.SetKeys(eu, gak);
