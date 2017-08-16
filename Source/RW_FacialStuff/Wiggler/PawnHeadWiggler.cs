@@ -52,12 +52,12 @@
         {
             {
                 // if (this.pawn.Downed && this.pawn.Spawned && !this.pawn.InBed())
-         // this.ticksToIncapIcon--;
-         // if (this.ticksToIncapIcon <= 0)
-         // {
-         // MoteMaker.ThrowMetaIcon(this.pawn.Position, this.pawn.Map, ThingDefOf.Mote_IncapIcon);
-         // this.ticksToIncapIcon = 200;
-         // }
+                // this.ticksToIncapIcon--;
+                // if (this.ticksToIncapIcon <= 0)
+                // {
+                // MoteMaker.ThrowMetaIcon(this.pawn.Position, this.pawn.Map, ThingDefOf.Mote_IncapIcon);
+                // this.ticksToIncapIcon = 200;
+                // }
                 if (this.pawn.Awake())
                 {
                     int num = Find.TickManager.TicksGame % 300 * 2;

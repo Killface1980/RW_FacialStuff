@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using RimWorld;
-using Verse;
-
-namespace FacialStuff.Defs
+﻿namespace FacialStuff.Defs
 {
+    using RimWorld;
+    using System.Collections.Generic;
+    using Verse;
 
     public class BeardDef : Def
     {
-        public string texPath;
+        public BeardType beardType = BeardType.FullBeard;
 
         public bool drawMouth;
 
@@ -17,7 +16,6 @@ namespace FacialStuff.Defs
 
         public List<ThingDef> raceList = new List<ThingDef>();
 
-        public BeardType beardType = BeardType.FullBeard;
+        public string texPath;
     }
 }
-

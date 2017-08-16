@@ -6,5 +6,4 @@
     <driverClass>FacialStuff.FaceStyling_Bench.Job_FaceStyling</driverClass>
     <reportString>Going to the styling station.</reportString>
   </JobDef>
-
 </JobDefs>

@@ -38,13 +38,9 @@
                     new CurvePoint(0.75f, 0f)
                 };
 
-        private Vector3 eyeMoveL = new Vector3(0, 0, 0);
+        private readonly float factorX = 0.02f;
 
-        private Vector3 eyeMoveR = new Vector3(0, 0, 0);
-
-        private float factorX = 0.02f;
-
-        private float factorY = 0.01f;
+        private readonly float factorY = 0.01f;
 
         private float flippedX;
 
@@ -54,83 +50,35 @@
 
         private bool halfAnimY;
 
-        private bool isAsleep;
-
-        private int jitterLeft;
-
-        private int jitterRight;
-
         private int lastBlinkended;
-
-        private bool leftCanBlink;
 
         private bool moveX;
 
         private bool moveY;
 
-        private int nextBlink = -5000;
-
-        private int nextBlinkEnd = -5000;
-
-        private Pawn pawn;
-
-        private bool rightCanBlink;
+        private readonly Pawn pawn;
 
         #endregion Fields
 
         #region Properties
 
-        public Vector3 EyeMoveL
-        {
-            get => this.eyeMoveL;
-            set => this.eyeMoveL = value;
-        }
+        public Vector3 EyeMoveL { get; set; } = new Vector3(0, 0, 0);
 
-        public Vector3 EyeMoveR
-        {
-            get => this.eyeMoveR;
-            set => this.eyeMoveR = value;
-        }
+        public Vector3 EyeMoveR { get; set; } = new Vector3(0, 0, 0);
 
-        public bool IsAsleep
-        {
-            get => this.isAsleep;
-            set => this.isAsleep = value;
-        }
+        public bool IsAsleep { get; set; }
 
-        public int JitterLeft
-        {
-            get => this.jitterLeft;
-            set => this.jitterLeft = value;
-        }
+        public int JitterLeft { get; set; }
 
-        public int JitterRight
-        {
-            get => this.jitterRight;
-            set => this.jitterRight = value;
-        }
+        public int JitterRight { get; set; }
 
-        public bool LeftCanBlink
-        {
-            get => this.leftCanBlink;
-            set => this.leftCanBlink = value;
-        }
+        public bool LeftCanBlink { get; set; }
 
-        public int NextBlink
-        {
-            get => this.nextBlink;
-        }
+        public int NextBlink { get; private set; } = -5000;
 
-        public int NextBlinkEnd
-        {
-            get => this.nextBlinkEnd;
-        }
+        public int NextBlinkEnd { get; private set; } = -5000;
 
-        public bool RightCanBlink
-        {
-            get => this.rightCanBlink;
-            set => this.rightCanBlink = value;
-        }
+        public bool RightCanBlink { get; set; }
 
         #endregion Properties
 
@@ -190,7 +138,7 @@
             }
         }
 
-        private SimpleCurve consciousnessCurve =
+        private readonly SimpleCurve consciousnessCurve =
             new SimpleCurve { new CurvePoint(0f, 10f), new CurvePoint(0.5f, 3f), new CurvePoint(1f, 1f) };
 
         private void SetNextBlink(int tickManagerTicksGame)
@@ -204,21 +152,21 @@
             // + " - blinkDurationORG: " + blinkDuration.ToString("N0"));
 
             // TODO: use a curve for evaluation => more control, precise setting of blinking
-             float consciousness = this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
-             float rest = this.pawn.needs.rest.CurLevel;
+            float consciousness = this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
+            float rest = this.pawn.needs.rest.CurLevel;
 
             ticksTillNextBlink /= this.consciousnessCurve.Evaluate(consciousness);
             blinkDuration *= this.consciousnessCurve.Evaluate(consciousness);
 
-           // float factor = Mathf.Lerp(0.1f, 1f, dynamic);
-           // ticksTillNextBlink *= factor;
-           // blinkDuration /= Mathf.Pow(factor, 3f);
+            // float factor = Mathf.Lerp(0.1f, 1f, dynamic);
+            // ticksTillNextBlink *= factor;
+            // blinkDuration /= Mathf.Pow(factor, 3f);
 
             // Log.Message(
             // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
             // + " - blinkDuration: " + blinkDuration.ToString("N0"));
-            this.nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
-            this.nextBlinkEnd = (int)(this.NextBlink + blinkDuration);
+            this.NextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
+            this.NextBlinkEnd = (int)(this.NextBlink + blinkDuration);
 
             if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
             {

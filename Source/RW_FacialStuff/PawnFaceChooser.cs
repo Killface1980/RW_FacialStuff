@@ -1,19 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-using RimWorld;
-
-using Verse;
-
-namespace FacialStuff
+﻿namespace FacialStuff
 {
-    using System;
-
     using FacialStuff.Defs;
+    using RimWorld;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Verse;
 
     public static class PawnFaceChooser
     {
-        public static void RandomBeardDefFor(Pawn pawn, FactionDef factionType, out BeardDef mainBeard, out MoustacheDef moustache)
+        public static void RandomBeardDefFor(
+            Pawn pawn,
+            FactionDef factionType,
+            out BeardDef mainBeard,
+            out MoustacheDef moustache)
         {
             if (pawn.gender != Gender.Male)
             {
@@ -40,12 +40,10 @@ namespace FacialStuff
                          select beard;
             }
 
-
             if (!source.Any())
             {
                 source = from beard in DefDatabase<BeardDef>.AllDefs select beard;
             }
-
 
             BeardDef chosenBeard;
             float rand = Rand.Value;
@@ -66,7 +64,11 @@ namespace FacialStuff
             return chosenBeard;
         }
 
-        private static void BeardRoulette(Pawn pawn, FactionDef factionType, out BeardDef mainBeard, out MoustacheDef moustache)
+        private static void BeardRoulette(
+            Pawn pawn,
+            FactionDef factionType,
+            out BeardDef mainBeard,
+            out MoustacheDef moustache)
         {
             moustache = MoustacheDefOf.Shaved;
             IEnumerable<BeardDef> source;
@@ -77,12 +79,10 @@ namespace FacialStuff
                          select beard;
             }
 
-
             if (!source.Any())
             {
                 source = from beard in DefDatabase<BeardDef>.AllDefs select beard;
             }
-
 
             BeardDef chosenBeard;
             float rand = Rand.Value;
@@ -106,13 +106,11 @@ namespace FacialStuff
                 chosenBeard = source.RandomElementByWeight(beard => BeardChoiceLikelihoodFor(beard, pawn));
             }
 
-
             mainBeard = chosenBeard;
             if (!flag && mainBeard.beardType != BeardType.FullBeard)
             {
                 moustache = MoustacheRoulette(pawn, factionType);
             }
-
         }
 
         private static MoustacheDef MoustacheRoulette(Pawn pawn, FactionDef factionType)
@@ -163,7 +161,6 @@ namespace FacialStuff
 
         public static BrowDef RandomBrowDefFor(Pawn pawn, FactionDef factionType)
         {
-
             IEnumerable<BrowDef> source = from brow in DefDatabase<BrowDef>.AllDefs
                                           where brow.raceList.Contains(pawn.def)
                                           where brow.hairTags.SharesElementWith(factionType.hairTags)
@@ -171,8 +168,7 @@ namespace FacialStuff
 
             if (!source.Any())
             {
-                source = from brow in DefDatabase<BrowDef>.AllDefs
-                         select brow;
+                source = from brow in DefDatabase<BrowDef>.AllDefs select brow;
             }
 
             BrowDef chosenBrows;
@@ -195,7 +191,8 @@ namespace FacialStuff
 
                 case 0:
                     {
-                        IEnumerable<BrowDef> filtered = source.Where(x => !x.label.Contains("Depressed") && !x.label.Contains("Tired"));
+                        IEnumerable<BrowDef> filtered =
+                            source.Where(x => !x.label.Contains("Depressed") && !x.label.Contains("Tired"));
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
@@ -213,7 +210,6 @@ namespace FacialStuff
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
-
             }
 
             chosenBrows = source.RandomElementByWeight(brow => BrowChoiceLikelihoodFor(brow, pawn));
@@ -225,15 +221,14 @@ namespace FacialStuff
         {
             IEnumerable<WrinkleDef> source = from wrinkle in DefDatabase<WrinkleDef>.AllDefs
                                              where wrinkle.raceList.Contains(pawn.def)
-                                             where wrinkle.hairGender.ToString() == pawn.gender.ToString()  // .SharesElementWith(factionType.hairTags)
+                                             where wrinkle.hairGender.ToString()
+                                                   == pawn.gender.ToString() // .SharesElementWith(factionType.hairTags)
                                              select wrinkle;
 
             WrinkleDef chosenWrinkles = source.FirstOrDefault();
 
             return chosenWrinkles;
         }
-
-
 
         private static float EyeChoiceLikelihoodFor(EyeDef eye, Pawn pawn)
         {
@@ -246,16 +241,11 @@ namespace FacialStuff
             {
                 switch (eye.hairGender)
                 {
-                    case HairGender.Male:
-                        return 70f;
-                    case HairGender.MaleUsually:
-                        return 30f;
-                    case HairGender.Any:
-                        return 60f;
-                    case HairGender.FemaleUsually:
-                        return 5f;
-                    case HairGender.Female:
-                        return 1f;
+                    case HairGender.Male: return 70f;
+                    case HairGender.MaleUsually: return 30f;
+                    case HairGender.Any: return 60f;
+                    case HairGender.FemaleUsually: return 5f;
+                    case HairGender.Female: return 1f;
                 }
             }
 
@@ -263,16 +253,11 @@ namespace FacialStuff
             {
                 switch (eye.hairGender)
                 {
-                    case HairGender.Female:
-                        return 70f;
-                    case HairGender.FemaleUsually:
-                        return 30f;
-                    case HairGender.Any:
-                        return 60f;
-                    case HairGender.MaleUsually:
-                        return 5f;
-                    case HairGender.Male:
-                        return 1f;
+                    case HairGender.Female: return 70f;
+                    case HairGender.FemaleUsually: return 30f;
+                    case HairGender.Any: return 60f;
+                    case HairGender.MaleUsually: return 5f;
+                    case HairGender.Male: return 1f;
                 }
             }
 
@@ -291,16 +276,11 @@ namespace FacialStuff
             {
                 switch (brow.hairGender)
                 {
-                    case HairGender.Male:
-                        return 70f;
-                    case HairGender.MaleUsually:
-                        return 30f;
-                    case HairGender.Any:
-                        return 60f;
-                    case HairGender.FemaleUsually:
-                        return 0f;
-                    case HairGender.Female:
-                        return 0f;
+                    case HairGender.Male: return 70f;
+                    case HairGender.MaleUsually: return 30f;
+                    case HairGender.Any: return 60f;
+                    case HairGender.FemaleUsually: return 0f;
+                    case HairGender.Female: return 0f;
                 }
             }
 
@@ -308,16 +288,11 @@ namespace FacialStuff
             {
                 switch (brow.hairGender)
                 {
-                    case HairGender.Female:
-                        return 70f;
-                    case HairGender.FemaleUsually:
-                        return 30f;
-                    case HairGender.Any:
-                        return 60f;
-                    case HairGender.MaleUsually:
-                        return 0f;
-                    case HairGender.Male:
-                        return 0f;
+                    case HairGender.Female: return 70f;
+                    case HairGender.FemaleUsually: return 30f;
+                    case HairGender.Any: return 60f;
+                    case HairGender.MaleUsually: return 0f;
+                    case HairGender.Male: return 0f;
                 }
             }
 
@@ -327,7 +302,6 @@ namespace FacialStuff
 
         private static float BeardChoiceLikelihoodFor(BeardDef beard, Pawn pawn)
         {
-
             if (pawn.gender == Gender.None)
             {
                 return 0f;
@@ -342,16 +316,11 @@ namespace FacialStuff
             {
                 switch (beard.hairGender)
                 {
-                    case HairGender.Male:
-                        return 70f;
-                    case HairGender.MaleUsually:
-                        return 30f;
-                    case HairGender.Any:
-                        return 60f;
-                    case HairGender.FemaleUsually:
-                        return 5f;
-                    case HairGender.Female:
-                        return 1f;
+                    case HairGender.Male: return 70f;
+                    case HairGender.MaleUsually: return 30f;
+                    case HairGender.Any: return 60f;
+                    case HairGender.FemaleUsually: return 5f;
+                    case HairGender.Female: return 1f;
                 }
             }
 
@@ -366,7 +335,6 @@ namespace FacialStuff
 
         private static float TacheChoiceLikelihoodFor(MoustacheDef beard, Pawn pawn)
         {
-
             if (pawn.gender == Gender.None)
             {
                 return 0f;
@@ -381,16 +349,11 @@ namespace FacialStuff
             {
                 switch (beard.hairGender)
                 {
-                    case HairGender.Male:
-                        return 70f;
-                    case HairGender.MaleUsually:
-                        return 30f;
-                    case HairGender.Any:
-                        return 60f;
-                    case HairGender.FemaleUsually:
-                        return 5f;
-                    case HairGender.Female:
-                        return 1f;
+                    case HairGender.Male: return 70f;
+                    case HairGender.MaleUsually: return 30f;
+                    case HairGender.Any: return 60f;
+                    case HairGender.FemaleUsually: return 5f;
+                    case HairGender.Female: return 1f;
                 }
             }
 
@@ -406,7 +369,6 @@ namespace FacialStuff
         // RimWorld.PawnHairChooser
         public static float HairChoiceLikelihoodFor(HairDef hair, Pawn pawn)
         {
-
             if (pawn.gender == Gender.None)
             {
                 return 100f;
@@ -419,15 +381,13 @@ namespace FacialStuff
                 {
                     switch (pawn.Faction.def.techLevel)
                     {
-                        case TechLevel.Undefined:
-                            break;
-                        case TechLevel.Animal:
-                            break;
+                        case TechLevel.Undefined: break;
+                        case TechLevel.Animal: break;
+
                         // More traditional gender roles
                         case TechLevel.Neolithic:
                             if (pawn.gender == Gender.Male)
                             {
-
                                 if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 21)
                                 {
                                     return 0f;
@@ -435,16 +395,11 @@ namespace FacialStuff
 
                                 switch (hair.hairGender)
                                 {
-                                    case HairGender.Male:
-                                        return 70f;
-                                    case HairGender.MaleUsually:
-                                        return 40f;
-                                    case HairGender.Any:
-                                        return 30f;
-                                    case HairGender.FemaleUsually:
-                                        return 3f;
-                                    case HairGender.Female:
-                                        return 1f;
+                                    case HairGender.Male: return 70f;
+                                    case HairGender.MaleUsually: return 40f;
+                                    case HairGender.Any: return 30f;
+                                    case HairGender.FemaleUsually: return 3f;
+                                    case HairGender.Female: return 1f;
                                 }
                             }
 
@@ -457,24 +412,20 @@ namespace FacialStuff
 
                                 switch (hair.hairGender)
                                 {
-                                    case HairGender.Male:
-                                        return 1f;
-                                    case HairGender.MaleUsually:
-                                        return 3f;
-                                    case HairGender.Any:
-                                        return 30f;
-                                    case HairGender.FemaleUsually:
-                                        return 40f;
-                                    case HairGender.Female:
-                                        return 70f;
+                                    case HairGender.Male: return 1f;
+                                    case HairGender.MaleUsually: return 3f;
+                                    case HairGender.Any: return 30f;
+                                    case HairGender.FemaleUsually: return 40f;
+                                    case HairGender.Female: return 70f;
                                 }
                             }
+
                             break;
+
                         // Fashion victims
                         case TechLevel.Medieval:
                             if (pawn.gender == Gender.Male)
                             {
-
                                 if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 21)
                                 {
                                     return 0f;
@@ -482,16 +433,11 @@ namespace FacialStuff
 
                                 switch (hair.hairGender)
                                 {
-                                    case HairGender.Male:
-                                        return 70f;
-                                    case HairGender.MaleUsually:
-                                        return 30f;
-                                    case HairGender.Any:
-                                        return 40f;
-                                    case HairGender.FemaleUsually:
-                                        return 5f;
-                                    case HairGender.Female:
-                                        return 1f;
+                                    case HairGender.Male: return 70f;
+                                    case HairGender.MaleUsually: return 30f;
+                                    case HairGender.Any: return 40f;
+                                    case HairGender.FemaleUsually: return 5f;
+                                    case HairGender.Female: return 1f;
                                 }
                             }
 
@@ -504,24 +450,20 @@ namespace FacialStuff
 
                                 switch (hair.hairGender)
                                 {
-                                    case HairGender.Male:
-                                        return 1f;
-                                    case HairGender.MaleUsually:
-                                        return 5f;
-                                    case HairGender.Any:
-                                        return 40f;
-                                    case HairGender.FemaleUsually:
-                                        return 30f;
-                                    case HairGender.Female:
-                                        return 70f;
+                                    case HairGender.Male: return 1f;
+                                    case HairGender.MaleUsually: return 5f;
+                                    case HairGender.Any: return 40f;
+                                    case HairGender.FemaleUsually: return 30f;
+                                    case HairGender.Female: return 70f;
                                 }
                             }
+
                             break;
-                            // High affection to unisex
+
+                        // High affection to unisex
                         case TechLevel.Industrial:
                             if (pawn.gender == Gender.Male)
                             {
-
                                 if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 21)
                                 {
                                     return 0f;
@@ -529,16 +471,11 @@ namespace FacialStuff
 
                                 switch (hair.hairGender)
                                 {
-                                    case HairGender.Male:
-                                        return 60f;
-                                    case HairGender.MaleUsually:
-                                        return 40f;
-                                    case HairGender.Any:
-                                        return 70f;
-                                    case HairGender.FemaleUsually:
-                                        return 10f;
-                                    case HairGender.Female:
-                                        return 1f;
+                                    case HairGender.Male: return 60f;
+                                    case HairGender.MaleUsually: return 40f;
+                                    case HairGender.Any: return 70f;
+                                    case HairGender.FemaleUsually: return 10f;
+                                    case HairGender.Female: return 1f;
                                 }
                             }
 
@@ -551,18 +488,14 @@ namespace FacialStuff
 
                                 switch (hair.hairGender)
                                 {
-                                    case HairGender.Male:
-                                        return 1f;
-                                    case HairGender.MaleUsually:
-                                        return 10f;
-                                    case HairGender.Any:
-                                        return 70f;
-                                    case HairGender.FemaleUsually:
-                                        return 40f;
-                                    case HairGender.Female:
-                                        return 60f;
+                                    case HairGender.Male: return 1f;
+                                    case HairGender.MaleUsually: return 10f;
+                                    case HairGender.Any: return 70f;
+                                    case HairGender.FemaleUsually: return 40f;
+                                    case HairGender.Female: return 60f;
                                 }
                             }
+
                             break;
 
                         // Gender roles don't really matter any more
@@ -578,16 +511,11 @@ namespace FacialStuff
 
                                 switch (hair.hairGender)
                                 {
-                                    case HairGender.Male:
-                                        return 15f;
-                                    case HairGender.MaleUsually:
-                                        return 30f;
-                                    case HairGender.Any:
-                                        return 35f;
-                                    case HairGender.FemaleUsually:
-                                        return 30f;
-                                    case HairGender.Female:
-                                        return 15f;
+                                    case HairGender.Male: return 15f;
+                                    case HairGender.MaleUsually: return 30f;
+                                    case HairGender.Any: return 35f;
+                                    case HairGender.FemaleUsually: return 30f;
+                                    case HairGender.Female: return 15f;
                                 }
                             }
 
@@ -600,22 +528,17 @@ namespace FacialStuff
 
                                 switch (hair.hairGender)
                                 {
-                                    case HairGender.Male:
-                                        return 15f;
-                                    case HairGender.MaleUsually:
-                                        return 30f;
-                                    case HairGender.Any:
-                                        return 35f;
-                                    case HairGender.FemaleUsually:
-                                        return 30f;
-                                    case HairGender.Female:
-                                        return 15f;
+                                    case HairGender.Male: return 15f;
+                                    case HairGender.MaleUsually: return 30f;
+                                    case HairGender.Any: return 35f;
+                                    case HairGender.FemaleUsually: return 30f;
+                                    case HairGender.Female: return 15f;
                                 }
                             }
 
                             break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+
+                        default: throw new ArgumentOutOfRangeException();
                     }
 
                     if (pawn.Faction.def.techLevel >= TechLevel.Spacer)
@@ -629,16 +552,11 @@ namespace FacialStuff
 
                             switch (hair.hairGender)
                             {
-                                case HairGender.Male:
-                                    return 15f;
-                                case HairGender.MaleUsually:
-                                    return 30f;
-                                case HairGender.Any:
-                                    return 35f;
-                                case HairGender.FemaleUsually:
-                                    return 30f;
-                                case HairGender.Female:
-                                    return 15f;
+                                case HairGender.Male: return 15f;
+                                case HairGender.MaleUsually: return 30f;
+                                case HairGender.Any: return 35f;
+                                case HairGender.FemaleUsually: return 30f;
+                                case HairGender.Female: return 15f;
                             }
                         }
 
@@ -651,16 +569,11 @@ namespace FacialStuff
 
                             switch (hair.hairGender)
                             {
-                                case HairGender.Male:
-                                    return 15f;
-                                case HairGender.MaleUsually:
-                                    return 30f;
-                                case HairGender.Any:
-                                    return 35f;
-                                case HairGender.FemaleUsually:
-                                    return 30f;
-                                case HairGender.Female:
-                                    return 15f;
+                                case HairGender.Male: return 15f;
+                                case HairGender.MaleUsually: return 30f;
+                                case HairGender.Any: return 35f;
+                                case HairGender.FemaleUsually: return 30f;
+                                case HairGender.Female: return 15f;
                             }
                         }
                     }
@@ -670,7 +583,6 @@ namespace FacialStuff
             // Everyone else
             if (pawn.gender == Gender.Male)
             {
-
                 if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 35)
                 {
                     return 0f;
@@ -678,16 +590,11 @@ namespace FacialStuff
 
                 switch (hair.hairGender)
                 {
-                    case HairGender.Male:
-                        return 70f;
-                    case HairGender.MaleUsually:
-                        return 30f;
-                    case HairGender.Any:
-                        return 50f;
-                    case HairGender.FemaleUsually:
-                        return 0f;
-                    case HairGender.Female:
-                        return 0f;
+                    case HairGender.Male: return 70f;
+                    case HairGender.MaleUsually: return 30f;
+                    case HairGender.Any: return 50f;
+                    case HairGender.FemaleUsually: return 0f;
+                    case HairGender.Female: return 0f;
                 }
             }
 
@@ -700,22 +607,16 @@ namespace FacialStuff
 
                 switch (hair.hairGender)
                 {
-                    case HairGender.Male:
-                        return 0f;
-                    case HairGender.MaleUsually:
-                        return 0f;
-                    case HairGender.Any:
-                        return 50f;
-                    case HairGender.FemaleUsually:
-                        return 30f;
-                    case HairGender.Female:
-                        return 70f;
+                    case HairGender.Male: return 0f;
+                    case HairGender.MaleUsually: return 0f;
+                    case HairGender.Any: return 50f;
+                    case HairGender.FemaleUsually: return 30f;
+                    case HairGender.Female: return 70f;
                 }
             }
 
             Log.Error(string.Concat("Unknown hair likelihood for ", hair, " with ", pawn));
             return 0f;
         }
-
     }
 }

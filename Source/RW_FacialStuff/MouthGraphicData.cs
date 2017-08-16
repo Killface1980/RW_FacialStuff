@@ -11,7 +11,6 @@
             public Graphic_Multi_NaturalHeadParts graphic;
             public float mood;
 
-
             #endregion Fields
 
             #region Constructors

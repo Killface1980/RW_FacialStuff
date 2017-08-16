@@ -80,7 +80,7 @@
       <li>Tribal</li>
     </hairTags>
   </FacialStuff.Defs.MouthDef>
-  
+
   <FacialStuff.Defs.MouthDef>
     <defName>Mouth_Mood06</defName>
     <label>EFA-Smile</label>
@@ -95,8 +95,8 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </FacialStuff.Defs.MouthDef>   
-	
+  </FacialStuff.Defs.MouthDef>
+
 	<FacialStuff.Defs.MouthDef>
     <defName>Mouth_BionicJaw</defName>
     <label>BionicJaw</label>
@@ -110,6 +110,5 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </FacialStuff.Defs.MouthDef> 
-		
+  </FacialStuff.Defs.MouthDef>
 </DefPackage-MouthDef>

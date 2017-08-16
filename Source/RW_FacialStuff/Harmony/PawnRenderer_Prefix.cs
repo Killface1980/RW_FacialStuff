@@ -1,29 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-
-using RimWorld;
-
-using UnityEngine;
-
-using Verse;
-
-namespace FacialStuff
+﻿namespace FacialStuff
 {
     using Harmony;
+    using RimWorld;
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using UnityEngine;
+    using Verse;
 
     // [HarmonyPatch(typeof(PawnRenderer), "RenderPawnInternal", new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) })]
     public static class HarmonyPatch_PawnRenderer
     {
-        private static Type PawnRendererType;
-
-        // private static FieldInfo PawnFieldInfo;
-        private static FieldInfo WoundOverlayFieldInfo;
-
-        private static MethodInfo DrawEquipmentMethodInfo;
-
-        private static FieldInfo PawnHeadOverlaysFieldInfo;
-
         private const string DrawFullhair = "DrawFullHair";
 
         private const float YOffset_PrimaryEquipmentUnder = 0f;
@@ -42,7 +29,16 @@ namespace FacialStuff
 
         private const float YOffset_Status = 0.0421875f;
 
-        private const float YOffsetOnFace = 0.0001f;
+        private const float YOffsetOnFace = 0.01f;
+
+        private static Type PawnRendererType;
+
+        // private static FieldInfo PawnFieldInfo;
+        private static FieldInfo WoundOverlayFieldInfo;
+
+        private static MethodInfo DrawEquipmentMethodInfo;
+
+        private static FieldInfo PawnHeadOverlaysFieldInfo;
 
         // Verse.PawnRenderer
 
@@ -69,15 +65,15 @@ namespace FacialStuff
 
         [HarmonyAfter("rimworld.erdelf.alien_race.main")]
         public static bool RenderPawnInternal_Prefix(
-           PawnRenderer __instance,
-           Vector3 rootLoc,
-           Quaternion quat,
-           bool renderBody,
-           Rot4 bodyFacing,
-           Rot4 headFacing,
-           RotDrawMode bodyDrawType,
-           bool portrait,
-           bool headStump)
+            PawnRenderer __instance,
+            Vector3 rootLoc,
+            Quaternion quat,
+            bool renderBody,
+            Rot4 bodyFacing,
+            Rot4 headFacing,
+            RotDrawMode bodyDrawType,
+            bool portrait,
+            bool headStump)
         {
             GetReflections();
 
@@ -88,7 +84,7 @@ namespace FacialStuff
 
             bool oldEnough = pawn.ageTracker.AgeBiologicalYearsFloat >= 13;
 
-            // Let vanilla do the job if no FacePawn or pawn not a teenager 
+            // Let vanilla do the job if no FacePawn or pawn not a teenager
             if (faceComp == null || !oldEnough)
             {
                 return true;
@@ -103,12 +99,15 @@ namespace FacialStuff
                         case 0:
                             bodyFacing = Rot4.North;
                             break;
+
                         case 1:
                             bodyFacing = Rot4.East;
                             break;
+
                         case 2:
                             bodyFacing = Rot4.South;
                             break;
+
                         case 3:
                             bodyFacing = Rot4.West;
                             break;
@@ -217,15 +216,15 @@ namespace FacialStuff
                         // Deactivated, looks kinda crappy ATM
                         // if (pawn.Dead)
                         // {
-                        //     Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, bodyDrawType);
-                        //     if (deadEyeMat != null)
-                        //     {
-                        //         GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, deadEyeMat, portrait);
-                        //         locFacialY.y += YOffsetOnFace;
-                        //     }
+                        // Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, bodyDrawType);
+                        // if (deadEyeMat != null)
+                        // {
+                        // GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, deadEyeMat, portrait);
+                        // locFacialY.y += YOffsetOnFace;
                         // }
-                        // else
                         {
+                            // }
+                            // else
                             Material leftEyeMat = faceComp.EyeLeftMatAt(headFacing, portrait);
                             if (leftEyeMat != null)
                             {
@@ -296,6 +295,7 @@ namespace FacialStuff
                         if (apparelGraphics[j].sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
                         {
                             bool showHat = true;
+
                             // removes the hat if the body is not shown
                             if (Controller.settings.HideHatInBed)
                             {
@@ -313,35 +313,37 @@ namespace FacialStuff
 
                             if (showHat)
                             {
-                                // Draw hair if player demands it
                                 showFullHair = false;
 
-                                // Display the hair cut
-                                if (Controller.settings.MergeHair)
+                                // Draw regular hair if appparel allows it
+                                if (apparelGraphics[j].sourceApparel.def.apparel.tags.Contains(DrawFullhair))
                                 {
+                                    if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
+                                    {
+                                        Mesh mesh4 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
+                                        Material mat = __instance.graphics.HairMatAt(headFacing);
+                                        GenDraw.DrawMeshNowOrLater(mesh4, loc2, quat, mat, portrait);
+                                        loc2.y += YOffsetOnFace;
+                                    }
+                                }
+                                else if (Controller.settings.MergeHair)
+                                {
+                                    // Display the hair cut
                                     HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
                                     Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
                                     if (hairCutMat != null)
                                     {
                                         GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, hairCutMat, portrait);
-                                        loc2.y += 0.0001f;
+                                        loc2.y += YOffsetOnFace;
 
                                         // loc2.y += 0.0328125022f;
                                     }
                                 }
 
-                                // Now draw the hat
+                                // Now draw the actual hat
                                 Material material2 = apparelGraphics[j].graphic.MatAt(bodyFacing);
                                 material2 = __instance.graphics.flasher.GetDamagedMat(material2);
                                 GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, material2, portrait);
-
-                                // Check if the full hair should be drawn below the head gear
-                                if (apparelGraphics[j].sourceApparel.def.apparel.tags.Contains(DrawFullhair))
-                                {
-                                    showFullHair = true;
-                                }
-
-
                             }
                         }
                     }

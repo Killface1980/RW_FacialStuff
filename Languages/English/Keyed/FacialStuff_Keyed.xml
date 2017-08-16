@@ -23,5 +23,6 @@
   <Settings.UseHairDNATooltip>Enables this mod to keep hair colors consistent across family ties.</Settings.UseHairDNATooltip>
   <Settings.MakeThemBlink>Enable eye animation</Settings.MakeThemBlink>
   <Settings.MakeThemBlinkTooltip>Colonists stop staring at you.</Settings.MakeThemBlinkTooltip>
-
+  <Settings.UseCaching>EXPERIMENTAL: Export cached hair cuts</Settings.UseCaching>
+  <Settings.UseCachingTooltip>Export hair cut textures to the mod folder as png. Please deactivate in case something goes wrong.</Settings.UseCachingTooltip>
 </LanguageData>

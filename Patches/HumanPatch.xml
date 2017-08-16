@@ -13,10 +13,10 @@
         <value>
           <comps />
         </value>
-      </li>  
+      </li>
     </operations>
-  </Operation> 
-  
+  </Operation>
+
   <Operation Class="PatchOperationSequence">
     <success>Always</success>
     <operations>
@@ -43,7 +43,7 @@
     </value>
   </Operation>
 -->
-  <!-- 
+  <!--
   <Operation Class="PatchOperationSequence">
     <success>Always</success>
     <operations>
@@ -70,7 +70,4 @@
     </value>
   </Operation>
   -->
-
-
-
 </Patch>

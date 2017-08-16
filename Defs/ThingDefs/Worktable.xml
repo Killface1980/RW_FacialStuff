@@ -15,12 +15,11 @@
     <statBases>
       <SellPriceFactor>0.70</SellPriceFactor>
     </statBases>
-    
+
     <castEdgeShadows>true</castEdgeShadows>
     <staticSunShadowHeight>0.20</staticSunShadowHeight>
     <canOverlapZones>false</canOverlapZones>
   </ThingDef>
-  
 
 <!--Children-->
 
@@ -63,6 +62,4 @@
     <interactionCellOffset>(0,0,1)</interactionCellOffset>
     <surfaceType>Item</surfaceType>
   </ThingDef>
- 
-
 </Buildings>

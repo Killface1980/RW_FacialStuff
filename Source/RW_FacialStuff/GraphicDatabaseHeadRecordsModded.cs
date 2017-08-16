@@ -1,37 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
-using UnityEngine;
-using Verse;
-
-namespace FacialStuff
+﻿namespace FacialStuff
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
+
+    using UnityEngine;
+
+    using Verse;
 
     public static class GraphicDatabaseHeadRecordsModded
     {
-        public static List<HeadGraphicRecordVanillaCustom> headsVanillaCustom = new List<HeadGraphicRecordVanillaCustom>();
+        #region Nested type: HeadGraphicRecordVanillaCustom
 
-
-        private static HeadGraphicRecordVanillaCustom skull;
-        private static HeadGraphicRecordVanillaCustom stump;
-
-        private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
-        private static readonly string StumpPath = "Things/Pawn/Humanlike/Heads/None_Average_Stump";
-
-
-        public static int headIndex = 0;
+        #region Public Classes
 
         public class HeadGraphicRecordVanillaCustom
         {
-            public Gender gender;
+            #region Private Fields
 
-            public CrownType crownType;
+            private readonly List<KeyValuePair<Color, Graphic_Multi>> graphics =
+                new List<KeyValuePair<Color, Graphic_Multi>>();
 
-            public string graphicPathVanillaCustom;
+            #endregion Private Fields
 
-            private List<KeyValuePair<Color, Graphic_Multi>> graphics = new List<KeyValuePair<Color, Graphic_Multi>>();
+            #region Public Constructors
 
             public HeadGraphicRecordVanillaCustom(string graphicPath)
             {
@@ -42,8 +35,9 @@ namespace FacialStuff
 
                 try
                 {
-                    this.crownType = (CrownType)((byte)ParseHelper.FromString(array[array.Length - 2], typeof(CrownType)));
-                    this.gender = (Gender)((byte)ParseHelper.FromString(array[array.Length - 3], typeof(Gender)));
+                    this.crownType =
+                        (CrownType)(byte)ParseHelper.FromString(array[array.Length - 2], typeof(CrownType));
+                    this.gender = (Gender)(byte)ParseHelper.FromString(array[array.Length - 3], typeof(Gender));
                 }
                 catch (Exception ex)
                 {
@@ -51,9 +45,11 @@ namespace FacialStuff
                     this.crownType = CrownType.Undefined;
                     this.gender = Gender.None;
                 }
-
-
             }
+
+            #endregion Public Constructors
+
+            #region Public Methods
 
             public Graphic_Multi GetGraphic(Color color)
             {
@@ -65,87 +61,54 @@ namespace FacialStuff
                     }
                 }
 
-                Graphic_Multi graphicMultiHead = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(this.graphicPathVanillaCustom, ShaderDatabase.CutoutSkin, Vector2.one, color);
+                Graphic_Multi graphicMultiHead = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(
+                    this.graphicPathVanillaCustom,
+                    ShaderDatabase.CutoutSkin,
+                    Vector2.one,
+                    color);
                 this.graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphicMultiHead));
                 return graphicMultiHead;
             }
-        }
 
+            #endregion Public Methods
 
-        public class HeadGraphicRecordModded
-        {
-            public Pawn pawn;
-
-            public List<KeyValuePair<Color, Graphic_Multi>> graphics = new List<KeyValuePair<Color, Graphic_Multi>>();
-
-            public bool unique = false;
-
-            public Gender gender;
+            #region Public Fields
 
             public CrownType crownType;
 
-            public string graphicPath;
+            public Gender gender;
 
-            public string graphicPathModded;
+            public string graphicPathVanillaCustom;
 
-            public HeadGraphicRecordModded(Pawn pawn)
-            {
-                this.pawn = pawn;
-                this.graphicPath = pawn.story.HeadGraphicPath;
-                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(this.graphicPath);
-                string[] array = fileNameWithoutExtension?.Split('_');
-                try
-                {
-                    this.crownType = (CrownType)((byte)ParseHelper.FromString(array[array.Length - 2], typeof(CrownType)));
-                    this.gender = (Gender)((byte)ParseHelper.FromString(array[array.Length - 3], typeof(Gender)));
-                }
-                catch (Exception ex)
-                {
-                    Log.Error("Parse error with head graphic at " + this.graphicPath + ": " + ex.Message);
-                    this.crownType = CrownType.Undefined;
-                    this.gender = Gender.None;
-                }
-
-
-            }
-
-            public Graphic_Multi GetGraphicBlank(Color color)
-            {
-                for (int i = 0; i < this.graphics.Count; i++)
-                {
-                    if (color.IndistinguishableFrom(this.graphics[i].Key))
-                    {
-                        return this.graphics[i].Value;
-                    }
-                }
-
-                Graphic_Multi graphic_Multi_Head = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(this.graphicPathModded, ShaderDatabase.Cutout, Vector2.one, color);
-                this.graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphic_Multi_Head));
-
-                return graphic_Multi_Head;
-            }
-
+            #endregion Public Fields
         }
 
+        #endregion Public Classes
 
-        public static Graphic_Multi GetModdedHeadNamed(Pawn pawn, Color color)
-        {
-            BuildDatabaseIfNecessary();
-            foreach (HeadGraphicRecordVanillaCustom headGraphicRecordVanillaCustom in headsVanillaCustom)
-            {
-                if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story.HeadGraphicPath.Remove(0, 22))
-                {
-                    // Log.Message("Getting vanilla " + pawn.story.HeadGraphicPath.Remove(0, 22) + ".");
-                    return headGraphicRecordVanillaCustom.GetGraphic(color);
-                }
-            }
+        #endregion Nested type: HeadGraphicRecordVanillaCustom
 
-            Log.Message(
-                "Tried to get pawn head at path " + pawn.story.HeadGraphicPath.Remove(0, 22)
-                + " that was not found. Defaulting...");
+        #region Public Fields
 
-            return headsVanillaCustom.First().GetGraphic(color);
-        }
+        public static int headIndex = 0;
+
+        public static List<HeadGraphicRecordVanillaCustom> headsVanillaCustom =
+            new List<HeadGraphicRecordVanillaCustom>();
+
+        #endregion Public Fields
+
+        #region Private Fields
+
+        private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
+
+        private static readonly string StumpPath = "Things/Pawn/Humanlike/Heads/None_Average_Stump";
+
+        private static HeadGraphicRecordVanillaCustom skull;
+
+        private static HeadGraphicRecordVanillaCustom stump;
+
+        #endregion Private Fields
+
+        #region Public Methods
 
         public static void BuildDatabaseIfNecessary()
         {
@@ -175,15 +138,31 @@ namespace FacialStuff
             stump = new HeadGraphicRecordVanillaCustom(StumpPath);
         }
 
+        public static Graphic_Multi GetModdedHeadNamed(Pawn pawn, Color color)
+        {
+            BuildDatabaseIfNecessary();
+            foreach (HeadGraphicRecordVanillaCustom headGraphicRecordVanillaCustom in headsVanillaCustom)
+            {
+                if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story.HeadGraphicPath.Remove(0, 22))
+                {
+                    // Log.Message("Getting vanilla " + pawn.story.HeadGraphicPath.Remove(0, 22) + ".");
+                    return headGraphicRecordVanillaCustom.GetGraphic(color);
+                }
+            }
+
+            Log.Message(
+                "Tried to get pawn head at path " + pawn.story.HeadGraphicPath.Remove(0, 22)
+                + " that was not found. Defaulting...");
+
+            return headsVanillaCustom.First().GetGraphic(color);
+        }
+
         public static Graphic_Multi GetStump(Color skinColor)
         {
             BuildDatabaseIfNecessary();
             return stump.GetGraphic(skinColor);
         }
 
-
-        // private static List<Texture2D> _textures;
+        #endregion Public Methods
     }
 }
-
-

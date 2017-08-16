@@ -1,14 +1,11 @@
-﻿using System.Collections.Generic;
-using RimWorld;
-using Verse;
-
-namespace FacialStuff.Defs
+﻿namespace FacialStuff.Defs
 {
+    using RimWorld;
+    using System.Collections.Generic;
+    using Verse;
 
     public class MoustacheDef : Def
     {
-        public string texPath;
-
         public bool drawMouth = false;
 
         public HairGender hairGender = HairGender.Male;
@@ -17,6 +14,6 @@ namespace FacialStuff.Defs
 
         public List<ThingDef> raceList = new List<ThingDef>();
 
+        public string texPath;
     }
 }
-

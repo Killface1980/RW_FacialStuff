@@ -35,7 +35,6 @@ namespace FacialStuff
 
         public override void OnOpen()
         {
-
             // this.thoughtScrollPosition = default(Vector2);
         }
 
@@ -62,7 +61,6 @@ namespace FacialStuff
 
             foreach (Pawn relatedPawn in this.SelPawn.relations.FamilyByBlood)
             {
-
                 Widgets.Label(pawnRect, relatedPawn.ToString() + " - " + this.SelPawn.GetRelations(relatedPawn).GetEnumerator());
                 pawnRect.y += 24f;
             }
@@ -71,7 +69,6 @@ namespace FacialStuff
 
             GUILayout.BeginArea(rect2);
             GUILayout.BeginVertical();
-
 
             if (faceComp.IgnoreRenderer)
             {
@@ -123,6 +120,7 @@ namespace FacialStuff
                         }
 
                         break;
+
                     case HeadType.Pointy:
                         if (male)
                         {
@@ -156,6 +154,7 @@ namespace FacialStuff
                         }
 
                         break;
+
                     case HeadType.Wide:
                         if (male)
                         {
@@ -224,6 +223,7 @@ namespace FacialStuff
                         }
 
                         break;
+
                     case HeadType.Pointy:
                         if (male)
                         {
@@ -257,6 +257,7 @@ namespace FacialStuff
                         }
 
                         break;
+
                     case HeadType.Wide:
                         if (male)
                         {

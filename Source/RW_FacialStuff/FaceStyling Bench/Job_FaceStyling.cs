@@ -9,8 +9,11 @@
     public class Job_FaceStyling : JobDriver
     {
         private const TargetIndex ColorChanger = TargetIndex.A;
+
         private const TargetIndex CellInd = TargetIndex.B;
-        private static string ErrorMessage = "Hairstyling job called on building that is not Cabinet";
+
+        private static readonly string ErrorMessage = "Hairstyling job called on building that is not Cabinet";
+
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDestroyedOrNull(TargetIndex.A);
@@ -23,25 +26,25 @@
         private Toil Toils_WaitWithSoundAndEffect()
         {
             return new Toil
-            {
-                initAction = delegate
-                {
-                    FaceStyler faceStyler = this.TargetA.Thing as FaceStyler;
-                    if (faceStyler != null)
-                    {
-                        FaceStyler thing = (FaceStyler)this.TargetA.Thing;
-                        if (this.GetActor().Position == this.TargetA.Thing.InteractionCell)
-                        {
-                            thing.FaceStyling(this.GetActor());
-                        }
-                    }
-                    else
-                    {
-                        Log.Error(ErrorMessage.Translate());
-                    }
-                },
-                defaultCompleteMode = ToilCompleteMode.Instant
-            };
+                       {
+                           initAction = delegate
+                               {
+                                   FaceStyler faceStyler = this.TargetA.Thing as FaceStyler;
+                                   if (faceStyler != null)
+                                   {
+                                       FaceStyler thing = (FaceStyler)this.TargetA.Thing;
+                                       if (this.GetActor().Position == this.TargetA.Thing.InteractionCell)
+                                       {
+                                           thing.FaceStyling(this.GetActor());
+                                       }
+                                   }
+                                   else
+                                   {
+                                       Log.Error(ErrorMessage.Translate());
+                                   }
+                               },
+                           defaultCompleteMode = ToilCompleteMode.Instant
+                       };
         }
     }
 }

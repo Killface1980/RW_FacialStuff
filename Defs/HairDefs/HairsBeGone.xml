@@ -120,7 +120,7 @@
       <li>MaleOld</li>
     </hairTags>
   </HairDef>
-  
+
   <HairDef>
     <defName>WavyBald01</defName>
     <label>wavybald01</label>
@@ -180,7 +180,7 @@
       <li>MaleOld</li>
     </hairTags>
   </HairDef>
-  
+
   <HairDef>
     <defName>WavyBald06</defName>
     <label>wavybald06</label>
@@ -192,7 +192,7 @@
       <li>MaleOld</li>
     </hairTags>
   </HairDef>
-  
+
   <HairDef>
     <defName>WavyBald07</defName>
     <label>wavybald07</label>
@@ -204,7 +204,7 @@
       <li>MaleOld</li>
     </hairTags>
   </HairDef>
-  
+
   <HairDef>
     <defName>WavyBald08</defName>
     <label>wavybald08</label>
@@ -216,7 +216,7 @@
       <li>MaleOld</li>
     </hairTags>
   </HairDef>
-  
+
   <HairDef>
     <defName>WavyBald09</defName>
     <label>wavybald09</label>
@@ -228,7 +228,7 @@
       <li>MaleOld</li>
     </hairTags>
   </HairDef>
-  
+
   <HairDef>
     <defName>WavyBald10</defName>
     <label>wavybald10</label>
@@ -354,7 +354,7 @@
       <li>MaleOld</li>
     </hairTags>
   </HairDef>
-  
+
   <HairDef>
     <defName>BraidedKnotBald</defName>
     <label>braided knot bald</label>
@@ -378,5 +378,4 @@
       <li>MaleOld</li>
     </hairTags>
   </HairDef>
-
 </DefPackage-HairDef>

@@ -1,17 +1,17 @@
-﻿using UnityEngine;
-
-namespace FaceStyling
+﻿namespace FaceStyling
 {
+    using UnityEngine;
+
     /// <summary>
-    /// This class exists only to have a reference headType for Color.
+    ///     This class exists only to have a reference headType for Color.
     /// </summary>
     public class ColorWrapper
     {
-        public Color Color { get; set; }
-
-        public ColorWrapper( Color color )
+        public ColorWrapper(Color color)
         {
             this.Color = color;
         }
+
+        public Color Color { get; set; }
     }
 }

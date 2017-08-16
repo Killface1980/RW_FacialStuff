@@ -10,43 +10,58 @@
     [StaticConstructorOnStartup]
     public static class FacialGraphics
     {
+        public static void InitializeMouthGraphics()
+        {
+            MouthGraphic01 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                                 MouthDefOf.Mouth_Mood01.texPath,
+                                 ShaderDatabase.Transparent,
+                                 Vector2.one,
+                                 Color.black) as Graphic_Multi_NaturalHeadParts;
+
+            MouthGraphic02 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                                 MouthDefOf.Mouth_Mood02.texPath,
+                                 ShaderDatabase.Transparent,
+                                 Vector2.one,
+                                 Color.black) as Graphic_Multi_NaturalHeadParts;
+
+            MouthGraphic03 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                                 MouthDefOf.Mouth_Mood03.texPath,
+                                 ShaderDatabase.Transparent,
+                                 Vector2.one,
+                                 Color.black) as Graphic_Multi_NaturalHeadParts;
+
+            MouthGraphic04 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                                 MouthDefOf.Mouth_Mood04.texPath,
+                                 ShaderDatabase.Transparent,
+                                 Vector2.one,
+                                 Color.black) as Graphic_Multi_NaturalHeadParts;
+
+            MouthGraphic05 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                                 MouthDefOf.Mouth_Mood05.texPath,
+                                 ShaderDatabase.Transparent,
+                                 Vector2.one,
+                                 Color.black) as Graphic_Multi_NaturalHeadParts;
+
+            MouthGraphic06 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                                 MouthDefOf.Mouth_Mood06.texPath,
+                                 ShaderDatabase.Transparent,
+                                 Vector2.one,
+                                 Color.black) as Graphic_Multi_NaturalHeadParts;
+        }
+
         #region Public Fields
 
-        public static readonly Graphic_Multi_NaturalHeadParts MouthGraphic01 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-            MouthDefOf.Mouth_Mood01.texPath,
-            ShaderDatabase.Transparent,
-            Vector2.one,
-            Color.black) as Graphic_Multi_NaturalHeadParts;
+        public static Graphic_Multi_NaturalHeadParts MouthGraphic01;
 
-        public static readonly Graphic_Multi_NaturalHeadParts MouthGraphic02 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-            MouthDefOf.Mouth_Mood02.texPath,
-            ShaderDatabase.Transparent,
-            Vector2.one,
-            Color.black) as Graphic_Multi_NaturalHeadParts;
+        public static Graphic_Multi_NaturalHeadParts MouthGraphic02;
 
-        public static readonly Graphic_Multi_NaturalHeadParts MouthGraphic03 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-            MouthDefOf.Mouth_Mood03.texPath,
-            ShaderDatabase.Transparent,
-            Vector2.one,
-            Color.black) as Graphic_Multi_NaturalHeadParts;
+        public static Graphic_Multi_NaturalHeadParts MouthGraphic03;
 
-        public static readonly Graphic_Multi_NaturalHeadParts MouthGraphic04 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-            MouthDefOf.Mouth_Mood04.texPath,
-            ShaderDatabase.Transparent,
-            Vector2.one,
-            Color.black) as Graphic_Multi_NaturalHeadParts;
+        public static Graphic_Multi_NaturalHeadParts MouthGraphic04;
 
-        public static readonly Graphic_Multi_NaturalHeadParts MouthGraphic05 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-            MouthDefOf.Mouth_Mood05.texPath,
-            ShaderDatabase.Transparent,
-            Vector2.one,
-            Color.black) as Graphic_Multi_NaturalHeadParts;
+        public static Graphic_Multi_NaturalHeadParts MouthGraphic05;
 
-        public static readonly Graphic_Multi_NaturalHeadParts MouthGraphic06 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-            MouthDefOf.Mouth_Mood06.texPath,
-            ShaderDatabase.Transparent,
-            Vector2.one,
-            Color.black) as Graphic_Multi_NaturalHeadParts;
+        public static Graphic_Multi_NaturalHeadParts MouthGraphic06;
 
         public static readonly Color SkinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
@@ -55,7 +70,9 @@
         #region Private Fields
 
         private static bool blankExists;
+
         private static Texture2D blankTexture;
+
         private static Texture2D maskTexAverageFrontBack;
 
         private static Texture2D maskTexAverageSide;
@@ -74,7 +91,8 @@
             {
                 if (maskTexAverageFrontBack == null)
                 {
-                    maskTexAverageFrontBack = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"));
+                    maskTexAverageFrontBack = MakeReadable(
+                        ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"));
                 }
 
                 return maskTexAverageFrontBack;
@@ -100,7 +118,8 @@
             {
                 if (maskTexNarrowFrontBack == null)
                 {
-                    maskTexNarrowFrontBack = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back"));
+                    maskTexNarrowFrontBack = MakeReadable(
+                        ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back"));
                 }
 
                 return maskTexNarrowFrontBack;

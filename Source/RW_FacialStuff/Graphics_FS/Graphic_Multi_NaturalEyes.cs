@@ -9,70 +9,29 @@
 
     public class Graphic_Multi_NaturalEyes : Graphic
     {
-        private Material[] mats = new Material[4];
+        private readonly Material[] mats = new Material[4];
+
+        public string GraphicPath => this.path;
+
+        public Material MatLeft => this.mats[3];
+
+        public override Material MatFront => this.mats[2];
+
+        public Material MatRight => this.mats[1];
+
+        public override Material MatBack => this.mats[0];
+
+        public override bool ShouldDrawRotated => this.MatRight == this.MatBack;
 
         public override Material MatAt(Rot4 rot, Thing thing = null)
         {
             switch (rot.AsInt)
             {
-                case 0:
-                    return this.MatBack;
-                case 1:
-                    return this.MatRight;
-                case 2:
-                    return this.MatFront;
-                case 3:
-                    return this.MatLeft;
-                default:
-                    return BaseContent.BadMat;
-            }
-        }
-
-        public string GraphicPath
-        {
-            get
-            {
-                return this.path;
-            }
-        }
-
-        public  Material MatLeft
-        {
-            get
-            {
-                return this.mats[3];
-            }
-        }
-
-        public override Material MatFront
-        {
-            get
-            {
-                return this.mats[2];
-            }
-        }
-
-        public  Material MatRight
-        {
-            get
-            {
-                return this.mats[1];
-            }
-        }
-
-        public override Material MatBack
-        {
-            get
-            {
-                return this.mats[0];
-            }
-        }
-
-        public override bool ShouldDrawRotated
-        {
-            get
-            {
-                return this.MatRight == this.MatBack;
+                case 0: return this.MatBack;
+                case 1: return this.MatRight;
+                case 2: return this.MatFront;
+                case 3: return this.MatLeft;
+                default: return BaseContent.BadMat;
             }
         }
 
@@ -117,7 +76,7 @@
                 // array[2] = MaskTextures.BlankTexture();
             }
 
-            string sidePath = "Eyes/Eye_" + eyeType + "_" + gender  + "_side";
+            string sidePath = "Eyes/Eye_" + eyeType + "_" + gender + "_side";
 
             if (ContentFinder<Texture2D>.Get(sidePath))
             {
@@ -132,7 +91,6 @@
 
                 if (side.Equals("Left"))
                 {
-
                     array[1] = FacialGraphics.BlankTexture();
                 }
                 else
@@ -145,7 +103,6 @@
                 Log.Message("Facial Stuff: No texture found at " + sidePath + " - Graphic_Multi_NaturalEyes");
                 array[3] = FacialGraphics.BlankTexture();
             }
-
 
             if (ContentFinder<Texture2D>.Get(req.path + "_back", false))
             {
@@ -176,12 +133,25 @@
 
         public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
         {
-            return GraphicDatabase.Get<Graphic_Multi>(this.path, newShader, this.drawSize, newColor, newColorTwo, this.data);
+            return GraphicDatabase.Get<Graphic_Multi>(
+                this.path,
+                newShader,
+                this.drawSize,
+                newColor,
+                newColorTwo,
+                this.data);
         }
 
         public override string ToString()
         {
-            return string.Concat("Multi(initPath=", this.path, ", color=", this.color, ", colorTwo=", this.colorTwo, ")");
+            return string.Concat(
+                "Multi(initPath=",
+                this.path,
+                ", color=",
+                this.color,
+                ", colorTwo=",
+                this.colorTwo,
+                ")");
         }
 
         public override int GetHashCode()
@@ -192,5 +162,4 @@
             return Gen.HashCombineStruct(seed, this.colorTwo);
         }
     }
-
 }

@@ -2,6 +2,8 @@ namespace FacialStuff
 {
     public static class Enums
     {
+        #region GraphicSlotGroup enum
+
         public enum GraphicSlotGroup
         {
             Invalid = -1,
@@ -23,17 +25,17 @@ namespace FacialStuff
             LeftEye,
 
             /// <summary>
-            /// The brows.
+            ///     The brows.
             /// </summary>
             Brows,
 
             /// <summary>
-            /// The mouth.
+            ///     The mouth.
             /// </summary>
             Mouth,
 
             /// <summary>
-            /// The beard.
+            ///     The beard.
             /// </summary>
             Beard,
 
@@ -46,12 +48,17 @@ namespace FacialStuff
             NumberOfTypes
         }
 
+        #endregion GraphicSlotGroup enum
+
+        #region Side enum
+
         public enum Side
         {
             Left = 0,
 
-            Right = 1,
-
+            Right = 1
         }
+
+        #endregion Side enum
     }
 }

@@ -8,6 +8,6 @@
 
         Eye,
 
-        Brow,
+        Brow
     }
 }

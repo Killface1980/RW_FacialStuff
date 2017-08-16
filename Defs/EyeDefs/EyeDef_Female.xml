@@ -16,7 +16,7 @@
       <li>Tribal</li>
     </hairTags>
   </FacialStuff.Defs.EyeDef>
-  
+
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_RD</defName>
     <label>Female_RD</label>
@@ -32,7 +32,7 @@
       <li>Tribal</li>
     </hairTags>
   </FacialStuff.Defs.EyeDef>
-  
+
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_OV</defName>
     <label>Female_OV</label>
@@ -48,7 +48,7 @@
       <li>Tribal</li>
     </hairTags>
   </FacialStuff.Defs.EyeDef>
-  
+
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_SM</defName>
     <label>Female_SM</label>

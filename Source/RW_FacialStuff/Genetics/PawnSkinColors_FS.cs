@@ -1,8 +1,9 @@
-using UnityEngine;
-using Verse;
-
 namespace FacialStuff.Detouring
 {
+    using UnityEngine;
+
+    using Verse;
+
     public static class PawnSkinColors_FS
     {
         #region Fields
@@ -12,31 +13,59 @@ namespace FacialStuff.Detouring
                 new SkinColorData(
                     0f,
                     0f,
-                    new Color32(255, 233, 217, 255)), // s 0.15, b 1.0
+                    new Color32(
+                        255,
+                        233,
+                        217,
+                        255)), // s 0.15, b 1.0
                 new SkinColorData(
                     0.15f,
                     0.1f,
-                    new Color32(242, 196, 193, 255)), // s 0.2, b 0.95
+                    new Color32(
+                        242,
+                        196,
+                        193,
+                        255)), // s 0.2, b 0.95
                 new SkinColorData(
                     0.25f,
                     0.25f,
-                    new Color32(243, 210, 181, 255)), // s 0.25, b 0.95
+                    new Color32(
+                        243,
+                        210,
+                        181,
+                        255)), // s 0.25, b 0.95
                 new SkinColorData(
                     0.4f,
                     0.35f,
-                    new Color32(242, 190, 145, 255)), // s 0.4, b 0.95
+                    new Color32(
+                        242,
+                        190,
+                        145,
+                        255)), // s 0.4, b 0.95
                 new SkinColorData(
                     0.55f,
                     0.45f,
-                    new Color32(255, 231, 179, 255)), // s 0.3, b 1.0
+                    new Color32(
+                        255,
+                        231,
+                        179,
+                        255)), // s 0.3, b 1.0
                 new SkinColorData(
                     0.6f,
                     0.6f,
-                    new Color32(218, 136, 87, 255)), // s 0.6, b 0.85
+                    new Color32(
+                        218,
+                        136,
+                        87,
+                        255)), // s 0.6, b 0.85
                 new SkinColorData(
                     0.7f,
                     0.7f,
-                    new Color32(165, 93, 41, 255)), // s 0.75, b 0.65
+                    new Color32(
+                        165,
+                        93,
+                        41,
+                        255)), // s 0.75, b 0.65
                 new SkinColorData(
                     0.8f,
                     0.8f,
@@ -44,8 +73,12 @@ namespace FacialStuff.Detouring
                 new SkinColorData(
                     0.9f,
                     0.9f,
-                    new Color32(101, 56, 41, 255)), // s 0.6, b 0.95
-            new SkinColorData(
+                    new Color32(
+                        101,
+                        56,
+                        41,
+                        255)), // s 0.6, b 0.95
+                new SkinColorData(
                     1f,
                     1f,
                     new Color32(76, 36, 23, 255)) // s 0.7, b 0.3
@@ -62,6 +95,38 @@ namespace FacialStuff.Detouring
 
         #endregion Fields
 
+        #region Nested type: SkinColorData
+
+        #region Structs
+
+        public struct SkinColorData
+        {
+            #region Fields
+
+            public Color color;
+
+            public float melanin;
+
+            public float selector;
+
+            #endregion Fields
+
+            #region Constructors
+
+            public SkinColorData(float melanin, float selector, Color color)
+            {
+                this.melanin = melanin;
+                this.selector = selector;
+                this.color = color;
+            }
+
+            #endregion Constructors
+        }
+
+        #endregion Structs
+
+        #endregion Nested type: SkinColorData
+
         #region Methods
 
         public static bool GetMelaninCommonalityFactor_Prefix(ref float __result, float melanin)
@@ -73,8 +138,14 @@ namespace FacialStuff.Detouring
                 return false;
             }
 
-            float t = Mathf.InverseLerp(_SkinColors[skinDataLeftIndexByWhiteness].melanin, _SkinColors[skinDataLeftIndexByWhiteness + 1].melanin, melanin);
-            __result = Mathf.Lerp(GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness), GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness + 1), t);
+            float t = Mathf.InverseLerp(
+                _SkinColors[skinDataLeftIndexByWhiteness].melanin,
+                _SkinColors[skinDataLeftIndexByWhiteness + 1].melanin,
+                melanin);
+            __result = Mathf.Lerp(
+                GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness),
+                GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness + 1),
+                t);
             return false;
         }
 
@@ -99,8 +170,14 @@ namespace FacialStuff.Detouring
                 return _SkinColors[skinDataIndexOfMelanin].color;
             }
 
-            float t = Mathf.InverseLerp(_SkinColors[skinDataIndexOfMelanin].melanin, _SkinColors[skinDataIndexOfMelanin + 1].melanin, melanin);
-            return Color.Lerp(_SkinColors[skinDataIndexOfMelanin].color, _SkinColors[skinDataIndexOfMelanin + 1].color, t);
+            float t = Mathf.InverseLerp(
+                _SkinColors[skinDataIndexOfMelanin].melanin,
+                _SkinColors[skinDataIndexOfMelanin + 1].melanin,
+                melanin);
+            return Color.Lerp(
+                _SkinColors[skinDataIndexOfMelanin].color,
+                _SkinColors[skinDataIndexOfMelanin + 1].color,
+                t);
         }
 
         public static bool GetSkinColor_Prefix(ref Color __result, float melanin)
@@ -112,8 +189,14 @@ namespace FacialStuff.Detouring
                 return false;
             }
 
-            float t = Mathf.InverseLerp(_SkinColors[skinDataLeftIndexByMelanin].melanin, _SkinColors[skinDataLeftIndexByMelanin + 1].melanin, melanin);
-            __result = Color.Lerp(_SkinColors[skinDataLeftIndexByMelanin].color, _SkinColors[skinDataLeftIndexByMelanin + 1].color, t);
+            float t = Mathf.InverseLerp(
+                _SkinColors[skinDataLeftIndexByMelanin].melanin,
+                _SkinColors[skinDataLeftIndexByMelanin + 1].melanin,
+                melanin);
+            __result = Color.Lerp(
+                _SkinColors[skinDataLeftIndexByMelanin].color,
+                _SkinColors[skinDataLeftIndexByMelanin + 1].color,
+                t);
             return false;
         }
 
@@ -196,7 +279,6 @@ namespace FacialStuff.Detouring
             float t = Mathf.InverseLerp(_SkinColors[num].selector, _SkinColors[num + 1].selector, value);
             __result = Mathf.Lerp(_SkinColors[num].melanin, _SkinColors[num + 1].melanin, t);
             return false;
-
         }
 
         private static float GetSkinCommonalityFactor(int skinDataIndex)
@@ -235,32 +317,5 @@ namespace FacialStuff.Detouring
         }
 
         #endregion Methods
-
-        #region Structs
-
-        public struct SkinColorData
-        {
-            #region Fields
-
-            public Color color;
-            public float melanin;
-
-            public float selector;
-
-            #endregion Fields
-
-            #region Constructors
-
-            public SkinColorData(float melanin, float selector, Color color)
-            {
-                this.melanin = melanin;
-                this.selector = selector;
-                this.color = color;
-            }
-
-            #endregion Constructors
-        }
-
-        #endregion Structs
     }
 }

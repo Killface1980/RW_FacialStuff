@@ -6,9 +6,9 @@
 
     public class HairCutPawn
     {
-        public Pawn Pawn;
-
         public Graphic HairCutGraphic;
+
+        public Pawn Pawn;
 
         public Material HairCutMatAt(Rot4 facing)
         {

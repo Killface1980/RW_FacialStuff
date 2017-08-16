@@ -13,55 +13,19 @@
     // class taken from vanilla, base is Graphic_Multi; needed for adding stuff AFTER game has loaded
     public class Graphic_Multi_NaturalHeadParts : Graphic
     {
-        private Material[] mats = new Material[3];
+        private readonly Material[] mats = new Material[3];
 
-        public string GraphicPath
-        {
-            get
-            {
-                return this.path;
-            }
-        }
+        public string GraphicPath => this.path;
 
-        public override Material MatSingle
-        {
-            get
-            {
-                return this.mats[2];
-            }
-        }
+        public override Material MatSingle => this.mats[2];
 
-        public override Material MatFront
-        {
-            get
-            {
-                return this.mats[2];
-            }
-        }
+        public override Material MatFront => this.mats[2];
 
-        public override Material MatSide
-        {
-            get
-            {
-                return this.mats[1];
-            }
-        }
+        public override Material MatSide => this.mats[1];
 
-        public override Material MatBack
-        {
-            get
-            {
-                return this.mats[0];
-            }
-        }
+        public override Material MatBack => this.mats[0];
 
-        public override bool ShouldDrawRotated
-        {
-            get
-            {
-                return this.MatSide == this.MatBack;
-            }
-        }
+        public override bool ShouldDrawRotated => this.MatSide == this.MatBack;
 
         public override void Init(GraphicRequest req)
         {
@@ -97,7 +61,6 @@
 
             // if (array[1] == null)
             // {
-
             // array[1] = LoadTexture(req.path + "_side");
 
             // }

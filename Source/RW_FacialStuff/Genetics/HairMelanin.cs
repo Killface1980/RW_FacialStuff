@@ -1,22 +1,17 @@
-﻿using System.Linq;
-
-namespace FacialStuff.Genetics
+﻿namespace FacialStuff.Genetics
 {
+    using FacialStuff.Detouring;
+    using RimWorld;
     using System;
     using System.Collections.Generic;
-
-    using FacialStuff.Detouring;
-
-    using RimWorld;
-
+    using System.Linq;
     using UnityEngine;
-
     using Verse;
 
     public static class HairMelanin
     {
-
         public static Color HairPlatinum = new Color32(255, 245, 226, 255);
+
         public static Color HairYellowBlonde = new Color32(255, 203, 89, 255);
 
         public static Color HairTerraCotta = new Color32(185, 49, 4, 255);
@@ -25,32 +20,25 @@ namespace FacialStuff.Genetics
 
         public static Color HairMidnightBlack = new Color32(30, 30, 30, 255);
 
+        private static readonly Color HairGreenGrape = new Color32(124, 189, 14, 255);
 
-        private static Color HairGreenGrape = new Color32(124, 189, 14, 255);
-        private static Color HairMysticTurquois = new Color32(71, 191, 165, 255);
-        private static Color HairBlueSteel = new Color32(57, 115, 199, 255);
+        private static readonly Color HairMysticTurquois = new Color32(71, 191, 165, 255);
 
-        private static Color HairPurplePassion = new Color32(145, 50, 191, 255);
+        private static readonly Color HairBlueSteel = new Color32(57, 115, 199, 255);
 
-        private static Color HairRosaRosa = new Color32(215, 168, 255, 255);
+        private static readonly Color HairPurplePassion = new Color32(145, 50, 191, 255);
 
-        private static Color HairUltraViolet = new Color32(191, 53, 132, 255);
+        private static readonly Color HairRosaRosa = new Color32(215, 168, 255, 255);
 
-        private static Color HairBurgundyBistro = new Color32(206, 38, 58, 255);
+        private static readonly Color HairUltraViolet = new Color32(191, 53, 132, 255);
 
+        private static readonly Color HairBurgundyBistro = new Color32(206, 38, 58, 255);
 
         public static List<Color> NaturalHairColors =
-            new List<Color>()
-                {
-                    HairPlatinum,
-                    HairYellowBlonde,
-                    HairTerraCotta,
-                    HairDarkBrown,
-                    HairMidnightBlack,
-                };
+            new List<Color> { HairPlatinum, HairYellowBlonde, HairTerraCotta, HairDarkBrown, HairMidnightBlack };
 
         public static List<Color> ArtificialHairColors =
-            new List<Color>()
+            new List<Color>
                 {
                     HairGreenGrape,
                     HairMysticTurquois,
@@ -58,14 +46,19 @@ namespace FacialStuff.Genetics
                     HairPurplePassion,
                     HairRosaRosa,
                     HairUltraViolet,
-                    HairBurgundyBistro,
+                    HairBurgundyBistro
                 };
 
-        private static Gradient GradientPheoMelanin = new Gradient();
+        private static readonly Gradient GradientPheoMelanin = new Gradient();
 
-        private static Gradient GradientEuMelanin = new Gradient();
+        private static readonly Gradient GradientEuMelanin = new Gradient();
 
-        public static void GenerateHairMelaninAndCuticula(Pawn pawn, CompFace face, out float euMelanin, out float pheoMelanin, out float cuticula)
+        public static void GenerateHairMelaninAndCuticula(
+            Pawn pawn,
+            CompFace face,
+            out float euMelanin,
+            out float pheoMelanin,
+            out float cuticula)
         {
             euMelanin = pheoMelanin = cuticula = 0f;
             if (face == null)
@@ -164,11 +157,11 @@ namespace FacialStuff.Genetics
                 eu[0].color = HairPlatinum;
                 eu[0].time = 0.0f;
                 eu[1].color = new Color32(139, 108, 66, 255);
-                eu[1].time = 0.45f;
+                eu[1].time = 0.6f;
                 eu[2].color = new Color32(91, 60, 17, 255);
-                eu[2].time = 0.65f;
+                eu[2].time = 0.75f;
                 eu[3].color = new Color32(47, 30, 14, 255);
-                eu[3].time = 0.85f;
+                eu[3].time = 0.9f;
                 eu[4].color = new Color32(0, 0, 0, 255);
                 eu[4].time = 1f;
                 GradientEuMelanin.SetKeys(eu, gak);
@@ -176,12 +169,12 @@ namespace FacialStuff.Genetics
                 phyo[0].color = HairPlatinum;
                 phyo[0].time = 0.0f;
                 phyo[1].color = new Color32(226, 188, 116, 255);
-                phyo[1].time = 0.35f;
+                phyo[1].time = 0.25f;
                 phyo[2].color = new Color32(231, 168, 84, 255);
-                phyo[2].time = 0.55f;
+                phyo[2].time = 0.5f;
                 phyo[3].color = new Color32(173, 79, 9, 255);
                 phyo[3].time = 0.75f;
-                phyo[4].color = new Color32(157, 62, 12, 255);
+                phyo[4].color = new Color32(157, 54, 0, 255);
                 phyo[4].time = 0.95f;
 
                 GradientPheoMelanin.SetKeys(phyo, gak);
@@ -223,8 +216,6 @@ namespace FacialStuff.Genetics
                     // Log.Message(greyness.ToString());
 
                     // Special hair colors
-
-
                     float factionColor = Rand.Value;
                     float limit = 0.98f;
                     if (pawn.Faction.def.techLevel > TechLevel.Industrial)
@@ -424,7 +415,10 @@ namespace FacialStuff.Genetics
             // dark hair
             if (value > 0.15f)
             {
-                tempColor = Color.Lerp(PawnHairColors_PostFix.HairPlatinum, PawnHairColors_PostFix.HairYellowBlonde, Rand.Value);
+                tempColor = Color.Lerp(
+                    PawnHairColors_PostFix.HairPlatinum,
+                    PawnHairColors_PostFix.HairYellowBlonde,
+                    Rand.Value);
                 tempColor = Color.Lerp(tempColor, PawnHairColors_PostFix.HairTerraCotta, Rand.Range(0.3f, 1f));
                 tempColor = Color.Lerp(tempColor, PawnHairColors_PostFix.HairMediumDarkBrown, Rand.Range(0.3f, 0.7f));
                 tempColor = Color.Lerp(tempColor, PawnHairColors_PostFix.HairMidnightBlack, Rand.Range(0.1f, 0.8f));
@@ -433,7 +427,10 @@ namespace FacialStuff.Genetics
             // brown hair
             else
             {
-                tempColor = Color.Lerp(PawnHairColors_PostFix.HairPlatinum, PawnHairColors_PostFix.HairYellowBlonde, Rand.Value);
+                tempColor = Color.Lerp(
+                    PawnHairColors_PostFix.HairPlatinum,
+                    PawnHairColors_PostFix.HairYellowBlonde,
+                    Rand.Value);
                 tempColor = Color.Lerp(tempColor, PawnHairColors_PostFix.HairTerraCotta, Rand.Range(0f, 0.6f));
                 tempColor = Color.Lerp(tempColor, PawnHairColors_PostFix.HairMediumDarkBrown, Rand.Range(0.3f, 1f));
                 tempColor = Color.Lerp(tempColor, PawnHairColors_PostFix.HairMidnightBlack, Rand.Range(0f, 0.5f));

@@ -3,10 +3,8 @@
     using Verse;
 
     [StaticConstructorOnStartup]
-    public static partial class MeshPoolFs
+    public static class MeshPoolFs
     {
-        public static readonly GraphicMeshSet[] HumanlikeMouthSet = new GraphicMeshSet[12];
-
         private const float HumanlikeMouthHeight = 0.75f;
 
         private const float HumanlikeMouthHeightFemale = 0.6f;
@@ -18,6 +16,8 @@
         private const float HumanlikeMouthAverageWidthFemale = 0.6f;
 
         private const float HumanlikeMouthNarrowWidthFemale = 0.5f;
+
+        public static readonly GraphicMeshSet[] HumanlikeMouthSet = new GraphicMeshSet[12];
 
         public static readonly GraphicMeshSet HumanlikeMouthSetAverageMale;
 
@@ -47,7 +47,6 @@
             HumanlikeMouthSet[(int)FullHead.FemaleNarrowPointy] = new GraphicMeshSet(0.45f, 0.65f);
             HumanlikeMouthSet[(int)FullHead.FemaleNarrowWide] = new GraphicMeshSet(0.55f, 0.65f);
 
-
             HumanEyeSet[(int)FullHead.MaleAverageNormal] = new GraphicMeshSet(0.75f, 0.75f);
             HumanEyeSet[(int)FullHead.MaleAveragePointy] = new GraphicMeshSet(0.75f, 0.75f);
             HumanEyeSet[(int)FullHead.MaleAverageWide] = new GraphicMeshSet(0.75f, 0.75f);
@@ -63,7 +62,6 @@
             HumanEyeSet[(int)FullHead.FemaleNarrowNormal] = new GraphicMeshSet(0.6f, 0.75f);
             HumanEyeSet[(int)FullHead.FemaleNarrowPointy] = new GraphicMeshSet(0.6f, 0.75f);
             HumanEyeSet[(int)FullHead.FemaleNarrowWide] = new GraphicMeshSet(0.6f, 0.75f);
-
 
             // HumanlikeMouthSetAverageMale = new GraphicMeshSet(HumanlikeMouthAverageWidthMale, HumanlikeMouthHeight);
             // HumanlikeMouthSetNarrowMale = new GraphicMeshSet(HumanlikeMouthNarrowWidthMale, HumanlikeMouthHeight);

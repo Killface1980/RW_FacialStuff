@@ -8,20 +8,22 @@
 
     public class Controller : Mod
     {
-        #region Fields
-
-        public override string SettingsCategory() => "Facial Stuff";
-
-        public static Settings settings;
-
-        #endregion
-
         public Controller(ModContentPack content)
             : base(content)
         {
             settings = this.GetSettings<Settings>();
         }
 
+        #region Fields
+
+        public override string SettingsCategory()
+        {
+            return "Facial Stuff";
+        }
+
+        public static Settings settings;
+
+        #endregion Fields
 
         #region Methods
 
@@ -59,8 +61,7 @@
         }
     }
 
-
-    #endregion
+    #endregion Methods
 
     // Backup:
     // <MaleAverageOffsetX>0.04716981</MaleAverageOffsetX>
@@ -78,4 +79,3 @@
     // <FemaleAveragePointyOffsetX>0.02452831</FemaleAveragePointyOffsetX>
     // <FemaleAverageWideOffsetX>0.04150943</FemaleAverageWideOffsetX>
 }
-

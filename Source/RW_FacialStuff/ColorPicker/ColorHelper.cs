@@ -1,5 +1,4 @@
-﻿// ReSharper disable All
-namespace FacialStuff.ColorPicker
+﻿namespace FacialStuff.ColorPicker
 {
     using System.Globalization;
 
@@ -8,7 +7,7 @@ namespace FacialStuff.ColorPicker
     public class ColorHelper
     {
         /// <summary>
-        /// From http://answers.unity3d.com/questions/701956/hsv-to-rgb-without-editorguiutilityhsvtorgb.html
+        ///     From http://answers.unity3d.com/questions/701956/hsv-to-rgb-without-editorguiutilityhsvtorgb.html
         /// </summary>
         /// <param name="H"></param>
         /// <param name="S"></param>
@@ -41,36 +40,43 @@ namespace FacialStuff.ColorPicker
                     col.g = v1;
                     col.b = v2;
                     break;
+
                 case 1:
                     col.r = V;
                     col.g = v3;
                     col.b = v1;
                     break;
+
                 case 2:
                     col.r = v2;
                     col.g = V;
                     col.b = v1;
                     break;
+
                 case 3:
                     col.r = v1;
                     col.g = V;
                     col.b = v3;
                     break;
+
                 case 4:
                     col.r = v1;
                     col.g = v2;
                     col.b = V;
                     break;
+
                 case 5:
                     col.r = v3;
                     col.g = v1;
                     col.b = V;
                     break;
+
                 case 6:
                     col.r = V;
                     col.g = v1;
                     col.b = v2;
                     break;
+
                 case 7:
                     col.r = V;
                     col.g = v3;
@@ -85,7 +91,7 @@ namespace FacialStuff.ColorPicker
         }
 
         /// <summary>
-        /// From http://answers.unity3d.com/comments/865281/view.html
+        ///     From http://answers.unity3d.com/comments/865281/view.html
         /// </summary>
         /// <param name="rgbColor"></param>
         /// <param name="H"></param>
@@ -111,7 +117,14 @@ namespace FacialStuff.ColorPicker
         }
 
         // From http://answers.unity3d.com/comments/865281/view.html
-        private static void RGBtoHSV_Helper(float offset, float dominantcolor, float colorone, float colortwo, out float H, out float S, out float V)
+        private static void RGBtoHSV_Helper(
+            float offset,
+            float dominantcolor,
+            float colorone,
+            float colortwo,
+            out float H,
+            out float S,
+            out float V)
         {
             V = dominantcolor;
             if (V != 0f)
@@ -163,9 +176,8 @@ namespace FacialStuff.ColorPicker
             return "#" + r.ToString("X2") + g.ToString("X2") + b.ToString("X2") + a.ToString("X2");
         }
 
-
         /// <summary>
-        /// Attempt to get a numerical representation of an RGB(A) hexademical color string.
+        ///     Attempt to get a numerical representation of an RGB(A) hexademical color string.
         /// </summary>
         /// <param name="hex">7 or 9 long string (including hashtag)</param>
         /// <param name="col">updated with the parsed color on succes</param>
@@ -173,13 +185,7 @@ namespace FacialStuff.ColorPicker
         public static bool TryHexToRGB(string hex, ref Color col)
         {
             Color clr = new Color(0, 0, 0);
-            if (
-                (hex != null) &&
-                (
-                    (hex.Length == 9) ||
-                    (hex.Length == 7)
-                )
-            )
+            if (hex != null && (hex.Length == 9 || hex.Length == 7))
             {
                 try
                 {
@@ -207,7 +213,5 @@ namespace FacialStuff.ColorPicker
 
             return false;
         }
-
     }
-
 }

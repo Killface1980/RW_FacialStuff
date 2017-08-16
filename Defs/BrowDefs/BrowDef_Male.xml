@@ -95,8 +95,8 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </FacialStuff.Defs.BrowDef>  
-	
+  </FacialStuff.Defs.BrowDef>
+
 	<FacialStuff.Defs.BrowDef>
     <defName>Brow_Male_Mono</defName>
     <label>Brow_Male_Mono</label>
@@ -112,5 +112,4 @@
       <li>Tribal</li>
     </hairTags>
   </FacialStuff.Defs.BrowDef>
-
 </DefPackage-BrowDef>

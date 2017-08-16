@@ -23,6 +23,6 @@
   <Settings.UseHairDNATooltip>Ermöglicht gleich bleibende Haarfarben innerhalb der Familie.</Settings.UseHairDNATooltip>
   <Settings.MakeThemBlink>Animiere Augen</Settings.MakeThemBlink>
   <Settings.MakeThemBlinkTooltip>Jetzt wird geblinzelt.</Settings.MakeThemBlinkTooltip>
-
-
+  <Settings.UseCaching>EXPERIMENTAL: Exportiere HairCache</Settings.UseCaching>
+  <Settings.UseCachingTooltip>Exportiert erstellte HairCut-Texturen als png in das Mod-Verzeichnis. Bitte deaktivieren falls irgendetwas nicht funktioniert.</Settings.UseCachingTooltip>
 </LanguageData>

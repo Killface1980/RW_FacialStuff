@@ -1,15 +1,60 @@
 ﻿namespace FacialStuff.ColorPicker
 {
-    using System;
-
     using FaceStyling;
-
+    using System;
     using UnityEngine;
-
     using Verse;
 
     public class Dialog_ColorPicker : Window
     {
+        #region Constructors
+
+        /// <summary>
+        ///     Call with a ColorWrapper object containing the color to be changed, with an optional callback which is called when
+        ///     Apply or OK are clicked.
+        ///     Setting draggable = true will break sliders for now.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="callback"></param>
+        public Dialog_ColorPicker(
+            ColorWrapper color,
+            Action callback = null,
+            bool preview = true,
+            bool autoApply = false)
+        {
+            // TODO: figure out if sliders and draggable = true can coexist.
+            // using Event.current.Use() prevents further drawing of the tab and closes parent(s).
+            this._wrapper = color;
+            this._callback = callback;
+            this._preview = preview;
+            this._autoApply = autoApply;
+            this.Color = this._wrapper.Color;
+            this.tempColor = this._wrapper.Color;
+
+            this.Notify_RGBUpdated();
+        }
+
+        #endregion Constructors
+
+        #region Nested type: Controls
+
+        #region Enums
+
+        private enum Controls
+        {
+            colorPicker,
+
+            huePicker,
+
+            alphaPicker,
+
+            none
+        }
+
+        #endregion Enums
+
+        #endregion Nested type: Controls
+
         #region Fields
 
         // the color we're going to pass out if requested
@@ -30,14 +75,14 @@
         public int previewSize = 90;
 
         public int // odd multiple of alphaBGblocksize forces alternation of the background texture grid.
-                            handleSize = 10;
+            handleSize = 10;
 
         // used in the picker only
         public Color tempColor = Color.white;
 
         private Controls _activeControl = Controls.none;
 
-        private Action _callback;
+        private readonly Action _callback;
 
         private Texture2D _colorPickerBG;
 
@@ -51,9 +96,9 @@
 
         private string _hexIn;
 
-        private float _margin = 6f;
+        private readonly float _margin = 6f;
 
-        private float _fieldHeight = 30f;
+        private readonly float _fieldHeight = 30f;
 
         private float _huePosition;
 
@@ -71,59 +116,20 @@
 
         private Vector2 _pickerPosition = Vector2.zero;
 
-        private bool _preview = true;
+        private readonly bool _preview = true;
 
-        private bool _autoApply;
+        private readonly bool _autoApply;
 
         // reference headType containing the in/out parameter
-        private ColorWrapper _wrapper;
+        private readonly ColorWrapper _wrapper;
 
         #endregion Fields
-
-        #region Constructors
-
-        /// <summary>
-        /// Call with a ColorWrapper object containing the color to be changed, with an optional callback which is called when Apply or OK are clicked.
-        /// Setting draggable = true will break sliders for now.
-        /// </summary>
-        /// <param name="color"></param>
-        /// <param name="callback"></param>
-        public Dialog_ColorPicker(ColorWrapper color, Action callback = null, bool preview = true, bool autoApply = false)
-        {
-            // TODO: figure out if sliders and draggable = true can coexist.
-            // using Event.current.Use() prevents further drawing of the tab and closes parent(s).
-            this._wrapper = color;
-            this._callback = callback;
-            this._preview = preview;
-            this._autoApply = autoApply;
-            this.Color = this._wrapper.Color;
-            this.tempColor = this._wrapper.Color;
-
-            this.Notify_RGBUpdated();
-        }
-
-        #endregion Constructors
-
-        #region Enums
-
-        private enum Controls
-        {
-            colorPicker,
-            huePicker,
-            alphaPicker,
-            none
-        }
-
-        #endregion Enums
 
         #region Properties
 
         public float A
         {
-            get
-            {
-                return this._A;
-            }
+            get => this._A;
 
             set
             {
@@ -148,10 +154,7 @@
 
         public float H
         {
-            get
-            {
-                return this._H;
-            }
+            get => this._H;
 
             set
             {
@@ -189,10 +192,7 @@
 
         public float S
         {
-            get
-            {
-                return this._S;
-            }
+            get => this._S;
 
             set
             {
@@ -229,10 +229,7 @@
 
         public float V
         {
-            get
-            {
-                return this._V;
-            }
+            get => this._V;
 
             set
             {
@@ -243,10 +240,7 @@
 
         public Vector2 WindowSize
         {
-            get
-            {
-                return this.windowSize;
-            }
+            get => this.windowSize;
 
             set
             {
@@ -289,15 +283,35 @@
             Rect previewOldRect = new Rect(previewRect.xMax, inRect.yMin, this.previewSize, this.previewSize);
 
             // buttons and textfields
-            Rect okRect = new Rect(hueRect.xMax + this._margin, inRect.yMax - this._fieldHeight, this.previewSize * 2, this._fieldHeight);
-            Rect applyRect = new Rect(hueRect.xMax + this._margin, inRect.yMax - 2 * this._fieldHeight - this._margin, this.previewSize - this._margin / 2, this._fieldHeight);
-            Rect cancelRect = new Rect(applyRect.xMax + this._margin, applyRect.yMin, this.previewSize - this._margin / 2, this._fieldHeight);
-            Rect hexRect = new Rect(hueRect.xMax + this._margin, inRect.yMax - 3 * this._fieldHeight - 2 * this._margin, this.previewSize * 2, this._fieldHeight);
+            Rect okRect = new Rect(
+                hueRect.xMax + this._margin,
+                inRect.yMax - this._fieldHeight,
+                this.previewSize * 2,
+                this._fieldHeight);
+            Rect applyRect = new Rect(
+                hueRect.xMax + this._margin,
+                inRect.yMax - 2 * this._fieldHeight - this._margin,
+                this.previewSize - this._margin / 2,
+                this._fieldHeight);
+            Rect cancelRect = new Rect(
+                applyRect.xMax + this._margin,
+                applyRect.yMin,
+                this.previewSize - this._margin / 2,
+                this._fieldHeight);
+            Rect hexRect = new Rect(
+                hueRect.xMax + this._margin,
+                inRect.yMax - 3 * this._fieldHeight - 2 * this._margin,
+                this.previewSize * 2,
+                this._fieldHeight);
 
             // move ok/cancel buttons for the simple view with buttons
             if (!this._preview && !this._autoApply)
             {
-                cancelRect = new Rect(inRect.xMin, pickerRect.yMax + this._margin, (this.pickerSize - this._margin) / 2, this._fieldHeight);
+                cancelRect = new Rect(
+                    inRect.xMin,
+                    pickerRect.yMax + this._margin,
+                    (this.pickerSize - this._margin) / 2,
+                    this._fieldHeight);
                 okRect = cancelRect;
                 okRect.x += (this.pickerSize + this._margin) / 2;
             }
@@ -312,8 +326,16 @@
             }
 
             // draw slider handles
-            Rect hueHandleRect = new Rect(hueRect.xMin - 3f, hueRect.yMin + this._huePosition - this.handleSize / 2, this.sliderWidth + 6f, this.handleSize);
-            Rect pickerHandleRect = new Rect(pickerRect.xMin + this._pickerPosition.x - this.handleSize / 2, pickerRect.yMin + this._pickerPosition.y - this.handleSize / 2, this.handleSize, this.handleSize);
+            Rect hueHandleRect = new Rect(
+                hueRect.xMin - 3f,
+                hueRect.yMin + this._huePosition - this.handleSize / 2,
+                this.sliderWidth + 6f,
+                this.handleSize);
+            Rect pickerHandleRect = new Rect(
+                pickerRect.xMin + this._pickerPosition.x - this.handleSize / 2,
+                pickerRect.yMin + this._pickerPosition.y - this.handleSize / 2,
+                this.handleSize,
+                this.handleSize);
             GUI.DrawTexture(hueHandleRect, this.TempPreviewBG);
             GUI.DrawTexture(pickerHandleRect, this.TempPreviewBG);
 
@@ -322,8 +344,6 @@
             Widgets.DrawBox(hueHandleRect);
             Widgets.DrawBox(pickerHandleRect);
             GUI.color = Color.white;
-
-            
 
             // reset active control on mouseup
             if (Input.GetMouseButtonUp(0))
@@ -413,8 +433,6 @@
             }
 
             GUI.color = Color.white;
-
-            
         }
 
         public void HueAction(float pos)
@@ -558,7 +576,6 @@
             this.windowRect.width = size.x;
             this.windowRect.height = size.y;
         }
-
 
         private void CreateColorPickerBG()
         {

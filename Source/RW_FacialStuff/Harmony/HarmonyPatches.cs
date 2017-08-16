@@ -1,16 +1,10 @@
 ﻿namespace FacialStuff.Detouring
 {
+    using Harmony;
+    using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
-
-    using static GraphicDatabaseHeadRecordsModded;
-
-    using Harmony;
-
-    using RimWorld;
-
     using UnityEngine;
-
     using Verse;
 
     [StaticConstructorOnStartup]
@@ -52,16 +46,10 @@
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(RestorePart_Postfix)));
 
-            #region Hair
-
             harmony.Patch(
                 AccessTools.Method(typeof(PawnHairChooser), nameof(PawnHairChooser.RandomHairDefFor)),
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(RandomHairDefFor_PreFix)),
-               null);
-
-            #endregion
-
-            #region SkinColors
+                null);
 
             harmony.Patch(
                 AccessTools.Method(typeof(PawnSkinColors), "GetSkinDataIndexOfMelanin"),
@@ -92,9 +80,8 @@
                     nameof(PawnSkinColors_FS.GetMelaninCommonalityFactor_Prefix)),
                 null);
 
-            #endregion
+            FacialGraphics.InitializeMouthGraphics();
 
-            // harmony.PatchAll(Assembly.GetExecutingAssembly());
             Log.Message(
                 "Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count()
                 + " patches with harmony.");
@@ -104,10 +91,8 @@
 
         private static void CheckAllInjected()
         {
-            //
             // Now to enjoy the benefits of having made a popular mod!
             // This will be our little secret.
-            //
             Backstory childMe = new Backstory
             {
                 bodyTypeMale = BodyType.Male,
@@ -136,7 +121,7 @@
                 shuffleable = false,
                 spawnCategories = new List<string>()
             };
-            adultMale.spawnCategories.AddRange(new string[] { "Civil", "Raider", "Slave", "Trader", "Traveler" });
+            adultMale.spawnCategories.AddRange(new[] { "Civil", "Raider", "Slave", "Trader", "Traveler" });
             adultMale.SetTitle("Lone gunman");
             adultMale.SetTitleShort("Gunman");
             adultMale.skillGains.Add("Shooting", 4);
@@ -177,7 +162,7 @@
                 pawn.SetFactionDirect(Faction.OfPlayer);
             }
 
-            BuildDatabaseIfNecessary();
+            GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
 
             // Inital definition of a pawn's appearance. Run only once - ever.
             if (!faceComp.IsOptimized)
@@ -188,7 +173,7 @@
             // Need: get the traditional habitat of a faction => not suitable, as factions are scattered around the globe
             // if (!faceComp.IsSkinDNAoptimized)
             // {
-            //     faceComp.DefineSkinDNA();
+            // faceComp.DefineSkinDNA();
             // }
 
             // Hair color is defined here. Can't use RandomHairColor as FS checks for existing relations
@@ -203,7 +188,6 @@
                     pawn.story.hairColor);
             }
 
-
             // Custom rotting color, mixed with skin tone
             Color rotColor = pawn.story.SkinColor * FacialGraphics.SkinRottingMultiplyColor;
 
@@ -212,20 +196,23 @@
                 if (faceComp.InitializeGraphics())
                 {
                     // Set up the hair cut graphic
-                    HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
-                    hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi>(
-                        pawn.story.hairDef.texPath,
-                        ShaderDatabase.Cutout,
-                        Vector2.one,
-                        pawn.story.hairColor);
+                    if (Controller.settings.MergeHair)
+                    {
+                        HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
+                        hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi>(
+                            pawn.story.hairDef.texPath,
+                            ShaderDatabase.Cutout,
+                            Vector2.one,
+                            pawn.story.hairColor);
+                    }
 
                     __instance.nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
                         pawn.story.bodyType,
                         ShaderDatabase.CutoutSkin,
                         pawn.story.SkinColor);
-                    __instance.headGraphic = GetModdedHeadNamed(pawn, pawn.story.SkinColor);
-                    __instance.desiccatedHeadGraphic = GetModdedHeadNamed(pawn, rotColor);
-                    __instance.desiccatedHeadStumpGraphic = GetStump(rotColor);
+                    __instance.headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.SkinColor);
+                    __instance.desiccatedHeadGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
+                    __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
                     __instance.rottingGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
                         pawn.story.bodyType,
                         ShaderDatabase.CutoutSkin,
@@ -234,8 +221,6 @@
                 }
             }
         }
-
-
 
         public static void AddHediff_Postfix(
             Pawn_HealthTracker __instance,
@@ -280,9 +265,7 @@
             }
         }
 
-        public static void RestorePart_Postfix(
-            Pawn_HealthTracker __instance,
-            BodyPartRecord part)
+        public static void RestorePart_Postfix(Pawn_HealthTracker __instance, BodyPartRecord part)
         {
             if (Current.ProgramState != ProgramState.Playing)
             {
@@ -328,7 +311,7 @@
         }
     }
 
-    #region Hair 
+    #region Hair
 
     // [HarmonyPatch(typeof(PawnHairColors), "RandomHairColor")]
     public static class PawnHairColors_PostFix
@@ -364,8 +347,7 @@
         public static Color HairRubyRed = new Color32(227, 35, 41, 255);
 
         public static Color HairUltraViolet = new Color32(191, 53, 132, 255);
-
     }
 
-    #endregion
+    #endregion Hair
 }

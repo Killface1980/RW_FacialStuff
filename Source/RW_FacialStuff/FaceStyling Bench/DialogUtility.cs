@@ -1,13 +1,17 @@
-using System;
-using UnityEngine;
-using Verse;
-
 namespace FacialStuff.Utilities
 {
+    using System;
+
+    using UnityEngine;
+
+    using Verse;
+
     public static class DialogUtility
     {
         public const float BottomAreaHeight = 38f;
+
         private static readonly Vector2 BottomButSize = new Vector2(150f, 38f);
+
         public static void DoNextBackButtons(Rect innerRect, string nextLabel, Action nextAct, Action backAct)
         {
             float top = innerRect.height - 38f;

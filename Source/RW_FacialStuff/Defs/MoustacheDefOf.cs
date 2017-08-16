@@ -5,6 +5,6 @@
     [DefOf]
     public static class MoustacheDefOf
     {
-        public static  MoustacheDef Shaved;
+        public static MoustacheDef Shaved;
     }
 }
