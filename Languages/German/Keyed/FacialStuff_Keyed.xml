@@ -6,10 +6,10 @@
   <Settings.UseMouthTooltip>Animierte Münder.</Settings.UseMouthTooltip>
 	<Settings.MergeHair>Zeige Haare unter Kopfbedeckung.</Settings.MergeHair>
   <Settings.MergeHairTooltip>Macht Haar sichtbar.</Settings.MergeHairTooltip>
-  <Settings.HideHatWhileRoofed>Blende Hüte in überdachten Gebieten aus</Settings.HideHatWhileRoofed>
-  <Settings.HideHatWhileRoofedTooltip>Hüte sind in Räumen nicht sichtbar.</Settings.HideHatWhileRoofedTooltip>
+  <Settings.HideHatWhileRoofed>Zeige Hüte nur draußen</Settings.HideHatWhileRoofed>
+  <Settings.HideHatWhileRoofedTooltip>Facial Stuff:\nHüte sind in Räumen nicht sichtbar.</Settings.HideHatWhileRoofedTooltip>
 	<Settings.HideHatInBed>Blende Hüte im Bett aus</Settings.HideHatInBed>
-  <Settings.HideHatInBedTooltip>Hüte sind nicht sichtbar wenn der Körper nicht dargestellt wird.</Settings.HideHatInBedTooltip>
+  <Settings.HideHatInBedTooltip>Facial Stuff:\nHüte sind nur sichtbar wenn der Körper dargestellt wird.</Settings.HideHatInBedTooltip>
   <Settings.Apply>Einstellungen speichern und übernehmen.</Settings.Apply>
   <FaceStylerTitle>Face Styler</FaceStylerTitle>
   <FacialStuffColorChangerButtonAccept>Check den neuen Style aus</FacialStuffColorChangerButtonAccept>
@@ -25,4 +25,6 @@
   <Settings.MakeThemBlinkTooltip>Jetzt wird geblinzelt.</Settings.MakeThemBlinkTooltip>
   <Settings.UseCaching>EXPERIMENTAL: Exportiere HairCache</Settings.UseCaching>
   <Settings.UseCachingTooltip>Exportiert erstellte HairCut-Texturen als png in das Mod-Verzeichnis. Bitte deaktivieren falls irgendetwas nicht funktioniert.</Settings.UseCachingTooltip>
+  <CannotUseNoFacePawn>HECAP can't use this as HECAP has no defined face.</CannotUseNoFacePawn>
+
 </LanguageData>

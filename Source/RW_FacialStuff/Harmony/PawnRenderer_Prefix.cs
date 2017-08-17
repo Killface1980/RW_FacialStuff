@@ -29,7 +29,7 @@
 
         private const float YOffset_Status = 0.0421875f;
 
-        private const float YOffsetOnFace = 0.01f;
+        private const float YOffsetOnFace = 0.0001f;
 
         private static Type PawnRendererType;
 
@@ -170,7 +170,7 @@
                 {
                     Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
 
-                    Mesh mesh2eyes = MeshPoolFs.HumanEyeSet[(int)faceComp.FullHeadType].MeshAt(headFacing);
+                    Mesh mesh2eyes = MeshPoolFS.HumanEyeSet[(int)faceComp.FullHeadType].MeshAt(headFacing);
 
                     // Experiments with head motion
                     // locFacialY += faceComp.eyemove;
@@ -256,7 +256,7 @@
                             locFacialY.y += YOffsetOnFace;
                         }
 
-                        if (faceComp.HasLeftEyePatch)
+                        if (faceComp.HasEyePatchLeft)
                         {
                             Material leftBionicMat = faceComp.EyeLeftPatchMatAt(headFacing);
                             if (leftBionicMat != null)
@@ -266,7 +266,7 @@
                             }
                         }
 
-                        if (faceComp.HasRightEyePatch)
+                        if (faceComp.HasEyePatchRight)
                         {
                             Material rightBionicMat = faceComp.EyeRightPatchMatAt(headFacing);
 
@@ -365,7 +365,7 @@
                     ApparelGraphicRecord apparelGraphicRecord = __instance.graphics.apparelGraphics[k];
                     if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer == ApparelLayer.Shell)
                     {
-                        Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing, null);
+                        Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing);
                         material3 = __instance.graphics.flasher.GetDamagedMat(material3);
                         GenDraw.DrawMeshNowOrLater(mesh, vector, quat, material3, portrait);
                     }

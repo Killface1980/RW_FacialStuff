@@ -1,4 +1,5 @@
-﻿namespace FaceStyling
+﻿// ReSharper disable All
+namespace FaceStyling
 {
     using UnityEngine;
 

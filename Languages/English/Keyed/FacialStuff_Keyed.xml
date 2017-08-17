@@ -6,10 +6,10 @@
   <Settings.UseMouthTooltip>Animated mouths to make pawns show their feelings.</Settings.UseMouthTooltip>
 	<Settings.MergeHair>Show hair under hat</Settings.MergeHair>
   <Settings.MergeHairTooltip>Displays a modified hair texture below worn hats.</Settings.MergeHairTooltip>
-  <Settings.HideHatWhileRoofed>Hide hats while roofed</Settings.HideHatWhileRoofed>
-  <Settings.HideHatWhileRoofedTooltip>Hats are not visible on pawns while indoors.</Settings.HideHatWhileRoofedTooltip>
-	<Settings.HideHatInBed>Hide hats in bed</Settings.HideHatInBed>
-  <Settings.HideHatInBedTooltip>Hats are not visible when the body is not drawn.</Settings.HideHatInBedTooltip>
+  <Settings.HideHatWhileRoofed>Hats shown only while outdoors</Settings.HideHatWhileRoofed>
+  <Settings.HideHatWhileRoofedTooltip>Facial Stuff:\nHats are not visible on pawns while indoors.</Settings.HideHatWhileRoofedTooltip>
+	<Settings.HideHatInBed>Don't show hats in bed</Settings.HideHatInBed>
+  <Settings.HideHatInBedTooltip>Facial Stuff:\nHats are not visible if the body is not drawn.</Settings.HideHatInBedTooltip>
   <Settings.Apply>Save and apply settings.</Settings.Apply>
   <FaceStylerTitle>Face Styler</FaceStylerTitle>
   <FacialStuffColorChangerButtonAccept>Accept new style</FacialStuffColorChangerButtonAccept>
@@ -25,4 +25,5 @@
   <Settings.MakeThemBlinkTooltip>Colonists stop staring at you.</Settings.MakeThemBlinkTooltip>
   <Settings.UseCaching>EXPERIMENTAL: Export cached hair cuts</Settings.UseCaching>
   <Settings.UseCachingTooltip>Export hair cut textures to the mod folder as png. Please deactivate in case something goes wrong.</Settings.UseCachingTooltip>
+  <CannotUseNoFacePawn>HECAP can't use this as HECAP has no defined face.</CannotUseNoFacePawn>
 </LanguageData>

@@ -1,22 +1,27 @@
 ﻿namespace FacialStuff
 {
+    using System.Collections.Generic;
+
     using FacialStuff.Defs;
+    using FacialStuff.Enums;
     using FacialStuff.Genetics;
     using FacialStuff.Graphics_FS;
     using FacialStuff.Wiggler;
+
     using JetBrains.Annotations;
+
     using RimWorld;
-    using System.Collections.Generic;
+
     using UnityEngine;
+
     using Verse;
 
     public class CompFace : ThingComp
     {
+
         #region Public Fields
 
         public bool IgnoreRenderer;
-
-        public Graphic_Multi_NaturalHeadParts MouthGraphic;
 
         public int rotationInt;
 
@@ -25,113 +30,68 @@
         #region Private Fields
 
         private Color beardColor = Color.clear;
-
         private BeardDef beardDef = BeardDefOf.Beard_Shaved;
-
         private BrowDef browDef;
-
         private Graphic browGraphic;
-
         private float cuticula;
-
         private Graphic deadEyeGraphic;
-
         private bool drawMouth = true;
-
         private float euMelanin;
-
         private EyeDef eyeDef;
-
         private Graphic_Multi_NaturalEyes eyeLeftClosedGraphic;
-
         private Graphic_Multi_NaturalEyes eyeLeftGraphic;
-
         private Graphic_Multi_AddedHeadParts eyeLeftPatchGraphic;
-
         private Graphic_Multi_NaturalEyes eyeRightClosedGraphic;
-
         private Graphic_Multi_NaturalEyes eyeRightGraphic;
-
         private Graphic_Multi_AddedHeadParts eyeRightPatchGraphic;
-
         private Pawn facePawn;
-
         private float factionMelanin;
-
         private DamageFlasher flasher;
-
         private Color hairColorOrg;
-
         private bool hasSameBeardColor;
-
         private float headTypeX;
-
         private float headTypeY;
-
         private bool isDNAoptimized;
-
         // private float blinkRate;
         // public PawnHeadWiggler headWiggler;
         // todo: make proper dead eyes
         private bool isLeftEyeSolid;
 
         private bool isOld;
-
         private bool isOptimized;
-
         private bool isRightEyeSolid;
-
         private bool isSkinDNAoptimized;
-
         private Graphic mainBeardGraphic;
-
         private float melaninOrg;
-
         private float mood = 0.5f;
-
         private MoustacheDef moustacheDef = MoustacheDefOf.Shaved;
-
         private Graphic moustacheGraphic;
-
+        private Graphic_Multi_NaturalHeadParts mouthGraphic;
         private CrownType pawnCrownType = CrownType.Undefined;
-
         private HeadType pawnHeadType = HeadType.Undefined;
-
         private float pheoMelanin;
-
         private Graphic rottingWrinkleGraphic;
-
         private string skinColorHex;
-
         private string texPathBrow;
-
         private string texPathEyeLeft;
-
         private string texPathEyeLeftClosed;
-
         private string texPathEyeLeftPatch;
-
         private string texPathEyeRight;
-
         private string texPathEyeRightClosed;
-
         private string texPathEyeRightPatch;
-
         private string texPathMouth;
-
         private WrinkleDef wrinkleDef;
-
         private Graphic wrinkleGraphic;
+
+        private bool hasEyePatchLeft;
+
+        private bool hasEyePatchRight;
 
         #endregion Private Fields
 
         #region Public Properties
 
-        public Color BeardColor
-        {
-            get => this.beardColor;
-            set => this.beardColor = value;
-        }
+        public Color BeardColor=> this.beardColor;
 
         public BeardDef BeardDef
         {
@@ -146,7 +106,6 @@
         }
 
         public float Cuticula => this.cuticula;
-
         public bool DrawMouth
         {
             get => this.drawMouth;
@@ -166,7 +125,6 @@
         }
 
         public PawnEyeWiggler EyeWiggler { get; set; }
-
         public Pawn FacePawn
         {
             get
@@ -188,18 +146,19 @@
         }
 
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
-
         public Color HairColorOrg
         {
             get => this.hairColorOrg;
             set => this.hairColorOrg = value;
         }
 
-        public bool HasLeftEyePatch { get; private set; }
+        public bool HasEyePatchLeft=> this.hasEyePatchLeft;
+
 
         public bool HasNaturalMouth { get; private set; } = true;
 
-        public bool HasRightEyePatch { get; private set; }
+        public bool HasEyePatchRight=> this.hasEyePatchRight;
+
 
         public bool HasSameBeardColor
         {
@@ -237,7 +196,8 @@
             set => this.moustacheDef = value;
         }
 
-        public GraphicMeshSet MouthMeshSet => MeshPoolFs.HumanlikeMouthSet[(int)this.FullHeadType];
+        public Graphic_Multi_NaturalHeadParts MouthGraphic => this.mouthGraphic;
+        public GraphicMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
 
         public CrownType PawnCrownType => this.FacePawn.story.crownType;
 
@@ -482,13 +442,13 @@
                     if (hediff.Part == leftEye)
                     {
                         this.texPathEyeLeft = this.EyeTexPath("Missing", Enums.Side.Left);
-                        this.EyeWiggler.LeftCanBlink = false;
+                        this.EyeWiggler.EyeLeftCanBlink = false;
                     }
 
                     if (hediff.Part == rightEye)
                     {
                         this.texPathEyeRight = this.EyeTexPath("Missing", Enums.Side.Right);
-                        this.EyeWiggler.RightCanBlink = false;
+                        this.EyeWiggler.EyeRightCanBlink = false;
                     }
                 }
             }
@@ -546,10 +506,8 @@
             // Log.Message(BeardDef.defName);
             this.HairColorOrg = this.FacePawn.story.hairColor;
 
-            this.HasSameBeardColor = Rand.Value > 0.2f;
-            this.BeardColor = this.HasSameBeardColor
-                                  ? FacialGraphics.DarkerBeardColor(this.FacePawn.story.hairColor)
-                                  : HairMelanin.RandomBeardColor();
+            this.HasSameBeardColor = true;
+            this.beardColor = FacialGraphics.DarkerBeardColor(this.FacePawn.story.hairColor);
 
             this.IsOptimized = true;
         }
@@ -578,12 +536,12 @@
         [CanBeNull]
         public Material EyeLeftMatAt(Rot4 facing, bool portrait)
         {
-            if (this.HasLeftEyePatch)
+            if (this.HasEyePatchLeft)
             {
                 return null;
             }
 
-            if (!this.HasLeftEyePatch && this.isLeftEyeSolid)
+            if (!this.HasEyePatchLeft && this.isLeftEyeSolid)
             {
                 return null;
             }
@@ -592,7 +550,7 @@
 
             if (!portrait)
             {
-                if (Controller.settings.MakeThemBlink && this.EyeWiggler.LeftCanBlink)
+                if (Controller.settings.MakeThemBlink && this.EyeWiggler.EyeLeftCanBlink)
                 {
                     if (this.EyeWiggler.IsAsleep || this.EyeLeftBlinkNow)
                     {
@@ -624,12 +582,12 @@
         [CanBeNull]
         public Material EyeRightMatAt(Rot4 facing, bool portrait)
         {
-            if (this.HasRightEyePatch)
+            if (this.HasEyePatchRight)
             {
                 return null;
             }
 
-            if (!this.HasRightEyePatch && this.isRightEyeSolid)
+            if (!this.HasEyePatchRight && this.isRightEyeSolid)
             {
                 return null;
             }
@@ -638,7 +596,7 @@
 
             if (!portrait)
             {
-                if (Controller.settings.MakeThemBlink && this.EyeWiggler.RightCanBlink)
+                if (Controller.settings.MakeThemBlink && this.EyeWiggler.EyeRightCanBlink)
                 {
                     if (this.EyeWiggler.IsAsleep || this.EyeRightBlinkNow)
                     {
@@ -1070,7 +1028,7 @@
         {
             if (!this.HasNaturalMouth)
             {
-                this.MouthGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                this.mouthGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                         this.texPathMouth,
                                         ShaderDatabase.Transparent,
                                         Vector2.one,
@@ -1078,7 +1036,7 @@
             }
             else
             {
-                this.MouthGraphic = FacialGraphics.MouthGraphic03;
+                this.mouthGraphic = FacialGraphics.MouthGraphic03;
             }
         }
 
@@ -1104,8 +1062,8 @@
 
         private void ResetBoolsAndPaths()
         {
-            this.HasLeftEyePatch = false;
-            this.HasRightEyePatch = false;
+            this.hasEyePatchLeft = false;
+            this.hasEyePatchRight = false;
             this.isLeftEyeSolid = false;
             this.isRightEyeSolid = false;
 
@@ -1118,8 +1076,8 @@
             this.texPathEyeLeft = this.EyeTexPath(this.EyeDef.texPath, Enums.Side.Left);
             this.texPathEyeLeftClosed = this.EyeClosedTexPath(Enums.Side.Left);
 
-            this.EyeWiggler.LeftCanBlink = true;
-            this.EyeWiggler.RightCanBlink = true;
+            this.EyeWiggler.EyeLeftCanBlink = true;
+            this.EyeWiggler.EyeRightCanBlink = true;
 
             // #if develop
             // {
@@ -1143,7 +1101,7 @@
                                                Color.white) as Graphic_Multi_AddedHeadParts;
                 if (this.eyeLeftPatchGraphic != null)
                 {
-                    this.HasLeftEyePatch = true;
+                    this.hasEyePatchLeft = true;
                 }
             }
 
@@ -1156,7 +1114,7 @@
                                                 Color.white) as Graphic_Multi_AddedHeadParts;
                 if (this.eyeRightPatchGraphic != null)
                 {
-                    this.HasRightEyePatch = true;
+                    this.hasEyePatchRight = true;
                 }
             }
         }
@@ -1185,9 +1143,14 @@
 
             int mouthTextureIndexOfMood = HumanMouthGraphics.GetMouthTextureIndexOfMood(this.mood);
 
-            this.MouthGraphic = HumanMouthGraphics.HumanMouthGraphic[mouthTextureIndexOfMood].graphic;
+            this.mouthGraphic = HumanMouthGraphics.HumanMouthGraphic[mouthTextureIndexOfMood].graphic;
         }
 
         #endregion Private Methods
+
+        public void SetBeardColor(Color newBeardColour)
+        {
+            this.beardColor = newBeardColour;
+        }
     }
 }

@@ -1,43 +1,17 @@
 ﻿namespace FacialStuff.Genetics
 {
-    using FacialStuff.Detouring;
-    using RimWorld;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using RimWorld;
     using UnityEngine;
     using Verse;
 
     public static class HairMelanin
     {
-        public static Color HairPlatinum = new Color32(255, 245, 226, 255);
+        #region Public Fields
 
-        public static Color HairYellowBlonde = new Color32(255, 203, 89, 255);
-
-        public static Color HairTerraCotta = new Color32(185, 49, 4, 255);
-
-        public static Color HairDarkBrown = new Color32(79, 47, 17, 255);
-
-        public static Color HairMidnightBlack = new Color32(30, 30, 30, 255);
-
-        private static readonly Color HairGreenGrape = new Color32(124, 189, 14, 255);
-
-        private static readonly Color HairMysticTurquois = new Color32(71, 191, 165, 255);
-
-        private static readonly Color HairBlueSteel = new Color32(57, 115, 199, 255);
-
-        private static readonly Color HairPurplePassion = new Color32(145, 50, 191, 255);
-
-        private static readonly Color HairRosaRosa = new Color32(215, 168, 255, 255);
-
-        private static readonly Color HairUltraViolet = new Color32(191, 53, 132, 255);
-
-        private static readonly Color HairBurgundyBistro = new Color32(206, 38, 58, 255);
-
-        public static List<Color> NaturalHairColors =
-            new List<Color> { HairPlatinum, HairYellowBlonde, HairTerraCotta, HairDarkBrown, HairMidnightBlack };
-
-        public static List<Color> ArtificialHairColors =
+        public static readonly List<Color> ArtificialHairColors =
             new List<Color>
                 {
                     HairGreenGrape,
@@ -49,9 +23,32 @@
                     HairBurgundyBistro
                 };
 
-        private static readonly Gradient GradientPheoMelanin = new Gradient();
+        public static List<Color> NaturalHairColors =
+            new List<Color> { HairPlatinum, HairYellowBlonde, HairTerraCotta, HairDarkBrown, HairMidnightBlack };
+
+        #endregion Public Fields
+
+        #region Private Fields
 
         private static readonly Gradient GradientEuMelanin = new Gradient();
+        private static readonly Gradient GradientPheoMelanin = new Gradient();
+        private static readonly Color HairBlueSteel = new Color32(57, 115, 199, 255);
+        private static readonly Color HairBurgundyBistro = new Color32(206, 38, 58, 255);
+        private static readonly Color HairGreenGrape = new Color32(124, 189, 14, 255);
+        private static readonly Color HairMysticTurquois = new Color32(71, 191, 165, 255);
+        private static readonly Color HairPurplePassion = new Color32(145, 50, 191, 255);
+        private static readonly Color HairRosaRosa = new Color32(215, 168, 255, 255);
+        private static readonly Color HairUltraViolet = new Color32(191, 53, 132, 255);
+        private static readonly Color HairDarkBrown = new Color32(79, 47, 17, 255);
+        private static readonly Color HairMidnightBlack = new Color32(30, 30, 30, 255);
+        private static readonly Color HairPlatinum = new Color32(255, 245, 226, 255);
+
+        private static readonly Color HairTerraCotta = new Color32(185, 49, 4, 255);
+        private static readonly Color HairYellowBlonde = new Color32(255, 203, 89, 255);
+
+        #endregion Private Fields
+
+        #region Public Methods
 
         public static void GenerateHairMelaninAndCuticula(
             Pawn pawn,
@@ -97,15 +94,15 @@
             }
             else if (!motherNull && mother.IsDNAoptimized)
             {
-                euMelanin = GetRandomMelaninSimilarTo(mother.EuMelanin, 0f, 1f);
-                pheoMelanin = GetRandomMelaninSimilarTo(mother.PheoMelanin, 0f, 1f);
-                cuticula = GetRandomMelaninSimilarTo(mother.Cuticula, 0f, 1f);
+                euMelanin = GetRandomMelaninSimilarTo(mother.EuMelanin);
+                pheoMelanin = GetRandomMelaninSimilarTo(mother.PheoMelanin);
+                cuticula = GetRandomMelaninSimilarTo(mother.Cuticula);
             }
             else if (!fatherNull && father.IsDNAoptimized)
             {
-                euMelanin = GetRandomMelaninSimilarTo(father.EuMelanin, 0f, 1f);
-                pheoMelanin = GetRandomMelaninSimilarTo(father.PheoMelanin, 0f, 1f);
-                cuticula = GetRandomMelaninSimilarTo(father.Cuticula, 0f, 1f);
+                euMelanin = GetRandomMelaninSimilarTo(father.EuMelanin);
+                pheoMelanin = GetRandomMelaninSimilarTo(father.PheoMelanin);
+                cuticula = GetRandomMelaninSimilarTo(father.Cuticula);
             }
             else
             {
@@ -283,7 +280,7 @@
 
                     if (face.HasSameBeardColor)
                     {
-                        face.BeardColor = FacialGraphics.DarkerBeardColor(pawn.story.hairColor);
+                        face.SetBeardColor(FacialGraphics.DarkerBeardColor(pawn.story.hairColor));
                     }
                     else
                     {
@@ -291,10 +288,23 @@
 
                         color2 *= GradientPheoMelanin.Evaluate(face.PheoMelanin + Rand.Range(-0.2f, 0.2f));
 
-                        face.BeardColor = Color.Lerp(color2, new Color(0.91f, 0.91f, 0.91f), greyness * Rand.Value);
+                        face.SetBeardColor(Color.Lerp(color2, new Color(0.91f, 0.91f, 0.91f), greyness * Rand.Value));
                     }
                 }
             }
+        }
+
+        private static float GetRandomChildHairColor(float fatherMelanin, float motherMelanin)
+        {
+            float clampMin = Mathf.Min(fatherMelanin, motherMelanin);
+            float clampMax = Mathf.Max(fatherMelanin, motherMelanin);
+            float value = (fatherMelanin + motherMelanin) / 2f;
+            return GetRandomMelaninSimilarTo(value, clampMin, clampMax);
+        }
+
+        private static float GetRandomMelaninSimilarTo(float value, float clampMin = 0f, float clampMax = 1f)
+        {
+            return Mathf.Clamp01(Mathf.Clamp(Rand.Gaussian(value, 0.05f), clampMin, clampMax));
         }
 
         // Deactivated for now, as there's no way to get the pawn's birth biome and full history, considered mostly racist
@@ -341,11 +351,11 @@
             }
             else if (!motherNull && mother.IsSkinDNAoptimized)
             {
-                factionMelanin = GetRandomMelaninSimilarTo(mother.FactionMelanin, 0f, 1f);
+                factionMelanin = GetRandomMelaninSimilarTo(mother.FactionMelanin);
             }
             else if (!fatherNull && father.IsSkinDNAoptimized)
             {
-                factionMelanin = GetRandomMelaninSimilarTo(father.FactionMelanin, 0f, 1f);
+                factionMelanin = GetRandomMelaninSimilarTo(father.FactionMelanin);
             }
             else
             {
@@ -407,49 +417,6 @@
             // + mother?.pheoMelanin + father?.euMelanin + father?.pheoMelanin);
         }
 
-        public static Color RandomBeardColor()
-        {
-            float value = Rand.Value;
-            Color tempColor = new Color();
-
-            // dark hair
-            if (value > 0.15f)
-            {
-                tempColor = Color.Lerp(
-                    PawnHairColors_PostFix.HairPlatinum,
-                    PawnHairColors_PostFix.HairYellowBlonde,
-                    Rand.Value);
-                tempColor = Color.Lerp(tempColor, PawnHairColors_PostFix.HairTerraCotta, Rand.Range(0.3f, 1f));
-                tempColor = Color.Lerp(tempColor, PawnHairColors_PostFix.HairMediumDarkBrown, Rand.Range(0.3f, 0.7f));
-                tempColor = Color.Lerp(tempColor, PawnHairColors_PostFix.HairMidnightBlack, Rand.Range(0.1f, 0.8f));
-            }
-
-            // brown hair
-            else
-            {
-                tempColor = Color.Lerp(
-                    PawnHairColors_PostFix.HairPlatinum,
-                    PawnHairColors_PostFix.HairYellowBlonde,
-                    Rand.Value);
-                tempColor = Color.Lerp(tempColor, PawnHairColors_PostFix.HairTerraCotta, Rand.Range(0f, 0.6f));
-                tempColor = Color.Lerp(tempColor, PawnHairColors_PostFix.HairMediumDarkBrown, Rand.Range(0.3f, 1f));
-                tempColor = Color.Lerp(tempColor, PawnHairColors_PostFix.HairMidnightBlack, Rand.Range(0f, 0.5f));
-            }
-
-            return tempColor;
-        }
-
-        public static float GetRandomMelaninSimilarTo(float value, float clampMin = 0f, float clampMax = 1f)
-        {
-            return Mathf.Clamp01(Mathf.Clamp(Rand.Gaussian(value, 0.05f), clampMin, clampMax));
-        }
-
-        public static float GetRandomChildHairColor(float fatherMelanin, float motherMelanin)
-        {
-            float clampMin = Mathf.Min(fatherMelanin, motherMelanin);
-            float clampMax = Mathf.Max(fatherMelanin, motherMelanin);
-            float value = (fatherMelanin + motherMelanin) / 2f;
-            return GetRandomMelaninSimilarTo(value, clampMin, clampMax);
-        }
+        #endregion Public Methods
     }
 }

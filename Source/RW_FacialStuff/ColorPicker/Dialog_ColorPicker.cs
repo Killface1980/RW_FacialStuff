@@ -1,4 +1,5 @@
-﻿namespace FacialStuff.ColorPicker
+﻿// ReSharper disable All
+namespace FacialStuff.ColorPicker
 {
     using FaceStyling;
     using System;
@@ -7,7 +8,82 @@
 
     public class Dialog_ColorPicker : Window
     {
-        #region Constructors
+
+        #region Public Fields
+
+        public int alphaBGBlockSize = 10;
+
+        // the color we're going to pass out if requested
+        public Color Color = Color.blue;
+
+        public int // odd multiple of alphaBGblocksize forces alternation of the background texture grid.
+                    handleSize = 10;
+
+        public Vector2 initialPosition = Vector2.zero;
+
+        public int numPresets = 0;
+
+        public int pickerSize = 200;
+
+        public int previewSize = 90;
+
+        public int sliderWidth = 15;
+
+        // used in the picker only
+        public Color tempColor = Color.white;
+
+        public Vector2 windowSize = Vector2.zero;
+
+        #endregion Public Fields
+
+        #region Private Fields
+
+        private readonly bool _autoApply;
+
+        private readonly Action _callback;
+
+        private readonly float _fieldHeight = 30f;
+
+        private readonly float _margin = 6f;
+
+        private readonly bool _preview = true;
+
+        // reference headType containing the in/out parameter
+        private readonly ColorWrapper _wrapper;
+
+        private float _A = 1f;
+
+        private Controls _activeControl = Controls.none;
+
+        private float _alphaPosition;
+
+        private Texture2D _colorPickerBG;
+
+        private float _H;
+
+        private string _hexIn;
+
+        private string _hexOut;
+
+        private Texture2D _huePickerBG;
+
+        private float _huePosition;
+
+        private Vector2 _pickerPosition = Vector2.zero;
+
+        private Texture2D _previewBG;
+
+        private float _S = 1f;
+
+        private Texture2D _tempPreviewBG;
+
+        private float _unitsPerPixel;
+
+        private float _V = 1f;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         /// <summary>
         ///     Call with a ColorWrapper object containing the color to be changed, with an optional callback which is called when
@@ -34,11 +110,9 @@
             this.Notify_RGBUpdated();
         }
 
-        #endregion Constructors
+        #endregion Public Constructors
 
-        #region Nested type: Controls
-
-        #region Enums
+        #region Private Enums
 
         private enum Controls
         {
@@ -51,81 +125,9 @@
             none
         }
 
-        #endregion Enums
+        #endregion Private Enums
 
-        #endregion Nested type: Controls
-
-        #region Fields
-
-        // the color we're going to pass out if requested
-        public Color Color = Color.blue;
-
-        public Vector2 initialPosition = Vector2.zero;
-
-        public Vector2 windowSize = Vector2.zero;
-
-        public int numPresets = 0;
-
-        public int pickerSize = 200;
-
-        public int sliderWidth = 15;
-
-        public int alphaBGBlockSize = 10;
-
-        public int previewSize = 90;
-
-        public int // odd multiple of alphaBGblocksize forces alternation of the background texture grid.
-            handleSize = 10;
-
-        // used in the picker only
-        public Color tempColor = Color.white;
-
-        private Controls _activeControl = Controls.none;
-
-        private readonly Action _callback;
-
-        private Texture2D _colorPickerBG;
-
-        private Texture2D _huePickerBG;
-
-        private Texture2D _tempPreviewBG;
-
-        private Texture2D _previewBG;
-
-        private string _hexOut;
-
-        private string _hexIn;
-
-        private readonly float _margin = 6f;
-
-        private readonly float _fieldHeight = 30f;
-
-        private float _huePosition;
-
-        private float _alphaPosition;
-
-        private float _unitsPerPixel;
-
-        private float _H;
-
-        private float _S = 1f;
-
-        private float _V = 1f;
-
-        private float _A = 1f;
-
-        private Vector2 _pickerPosition = Vector2.zero;
-
-        private readonly bool _preview = true;
-
-        private readonly bool _autoApply;
-
-        // reference headType containing the in/out parameter
-        private readonly ColorWrapper _wrapper;
-
-        #endregion Fields
-
-        #region Properties
+        #region Public Properties
 
         public float A
         {
@@ -249,9 +251,9 @@
             }
         }
 
-        #endregion Properties
+        #endregion Public Properties
 
-        #region Methods
+        #region Public Methods
 
         public void AlphaAction(float pos)
         {
@@ -577,6 +579,10 @@
             this.windowRect.height = size.y;
         }
 
+        #endregion Public Methods
+
+        #region Private Methods
+
         private void CreateColorPickerBG()
         {
             if (this._colorPickerBG == null)
@@ -623,6 +629,7 @@
             this._huePickerBG.Apply();
         }
 
-        #endregion Methods
+        #endregion Private Methods
+
     }
 }

@@ -10,13 +10,15 @@
     using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
+
+    using FacialStuff.Enums;
+
     using UnityEngine;
     using Verse;
 
     [StaticConstructorOnStartup]
-    public class Dialog_FaceStyling : Window
+    public class DialogFaceStyling : Window
     {
-        #region Nested type: GraphicsDisp
 
         // private FacePreset _selFacePresetInt;
 
@@ -30,145 +32,57 @@
         // }
         // }
 
-        #region Classes
-
-        // private void CheckSelectedFacePresetHasName()
-        // {
-        // if (SelectedFacePreset != null && SelectedFacePreset.label.NullOrEmpty())
-        // {
-        // SelectedFacePreset.label = "Unnamed";
-        // }
-        // }
-        public class GraphicsDisp
-        {
-            #region Properties
-
-            public bool Valid => this.thing != null;
-
-            #endregion Properties
-
-            #region Fields
-
-            public Color color = Color.white;
-
-            public Graphic graphic;
-
-            public Texture2D icon;
-
-            public Thing thing;
-
-            private readonly float yOffset;
-
-            #endregion Fields
-
-            #region Constructors
-
-            public GraphicsDisp()
-            {
-                this.thing = null;
-                this.graphic = null;
-                this.icon = null;
-                this.yOffset = 0f;
-            }
-
-            public GraphicsDisp(Thing thing, Graphic graphic, Texture2D icon, Color color, float yOffset)
-            {
-                this.thing = thing;
-                this.graphic = graphic;
-                this.icon = icon;
-                this.color = color;
-                this.yOffset = yOffset;
-            }
-
-            #endregion Constructors
-
-            #region Methods
-
-            public void Draw(Rect rect)
-            {
-                if (this.Valid && this.graphic != null)
-                {
-                    Rect position = new Rect(rect.x, rect.y + this.yOffset, rect.width, rect.height);
-                    GUI.color = this.color;
-                    GUI.DrawTexture(position, this.graphic.MatFront.mainTexture);
-                    GUI.color = Color.white;
-                }
-            }
-
-            public void DrawIcon(Rect rect)
-            {
-                if (this.Valid && this.icon != null)
-                {
-                    GUI.color = this.color;
-                    GUI.DrawTexture(rect, this.icon);
-                    GUI.color = Color.white;
-                }
-            }
-
-            #endregion Methods
-        }
-
-        #endregion Classes
-
-        #endregion Nested type: GraphicsDisp
-
-        #region Fields
-
-        private static readonly int _columns;
-
-        private static readonly float _entrySize;
-
-        private static readonly List<BeardDef> _fullBeardDefs;
-
-        private static readonly float _iconSize;
-
-        private static readonly float _listWidth;
-
-        private static readonly List<BeardDef> _lowerBeardDefs;
+        #region Private Fields
 
         // private static Texture2D _icon;
-        private static readonly float _margin;
-
-        private static readonly List<MoustacheDef> _moustacheDefs;
-
-        private static readonly Texture2D _nameBackground;
-
-        private static readonly float _previewSize;
-
-        private static readonly string _title;
-
-        private static readonly float _titleHeight;
-
-        private static List<BrowDef> _browDefs;
-
-        private static List<EyeDef> _eyeDefs;
-
-        private static List<HairDef> _hairDefs;
-
-        private static BeardDef _newBeard;
-
-        private static Color _newBeardColour;
-
-        private static BrowDef _newBrow;
-
-        private static EyeDef _newEye;
-
-        private static HairDef _newHair;
-
-        private static Color _newHairColour;
-
-        private static MoustacheDef _newMoustache;
+        private static readonly float MarginFS;
 
         private static readonly Color ColorSwatchBorder = new Color(0.77255f, 0.77255f, 0.77255f);
-
         private static readonly Color ColorSwatchSelection = new Color(0.9098f, 0.9098f, 0.9098f);
+        private static readonly int Columns;
+
+        private static readonly float EntrySize;
+
+        private static readonly List<BeardDef> FullBeardDefs;
+
+        private static readonly float IconSize;
+
+        private static readonly float ListWidth;
+
+        private static readonly List<BeardDef> LowerBeardDefs;
+        private static readonly List<MoustacheDef> MoustacheDefs;
+
+        private static readonly Texture2D NameBackground;
+
+        private static readonly float PreviewSize;
+
+        private static readonly string Title;
+
+        private static readonly float TitleHeight;
+        private static readonly List<string> VanillaHairTags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
+
+        private static List<BrowDef> browDefs;
 
         private static ColorWrapper colourWrapper;
-
-        private static GraphicsDisp[] DisplayGraphics;
+        private static GraphicsDisp[] displayGraphics;
+        private static List<EyeDef> eyeDefs;
 
         private static CompFace faceComp;
+        private static List<HairDef> hairDefs;
 
+        private static BeardDef newBeard;
+
+        private static Color newBeardColour;
+
+        private static BrowDef newBrow;
+
+        private static EyeDef newEye;
+
+        private static HairDef newHair;
+
+        private static Color newHairColour;
+
+        private static MoustacheDef newMoustache;
         private static BeardDef originalBeard;
 
         private static BrowDef originalBrow;
@@ -183,58 +97,55 @@
 
         private static Pawn pawn;
 
-        private static Vector2 SwatchSize = new Vector2(13, 14);
+        private static Vector2 swatchSize = new Vector2(13, 14);
 
-        private static Vector2 SwatchSpacing = new Vector2(20, 20);
-
-        private static readonly List<string> vanillaHairTags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
+        private static Vector2 swatchSpacing = new Vector2(20, 20);
 
         private readonly float originalMelanin;
 
-        private float _newMelanin;
+        private float newMelanin;
 
-        private Vector2 _scrollPosition = Vector2.zero;
+        private DialoguePage page = DialoguePage.Hair;
+        private Vector2 scrollPosition = Vector2.zero;
 
-        private DialoguePage Page = DialoguePage.Hair;
+        #endregion Private Fields
 
-        #endregion Fields
+        #region Public Constructors
 
-        #region Constructors
-
-        static Dialog_FaceStyling()
+        static DialogFaceStyling()
         {
-            _title = "FaceStylerTitle".Translate();
-            _titleHeight = 30f;
-            _previewSize = 250f;
+            Title = "FaceStylerTitle".Translate();
+            TitleHeight = 30f;
+            PreviewSize = 250f;
 
             // _previewSize = 100f;
-            _iconSize = 24f;
+            IconSize = 24f;
 
             // _icon = ContentFinder<Texture2D>.Get("ClothIcon");
-            _margin = 6f;
-            _listWidth = 450f;
+            MarginFS = 6f;
+            ListWidth = 450f;
 
             // _listWidth = 200f;
-            _columns = 5;
-            _entrySize = _listWidth / _columns;
-            _nameBackground = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0.3f));
+            Columns = 5;
+            EntrySize = ListWidth / Columns;
+            NameBackground = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0.3f));
 
-            _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
-                x => x.hairTags.SharesElementWith(vanillaHairTags));
-            _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
-            _fullBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType == BeardType.FullBeard)
+            hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                x => x.hairTags.SharesElementWith(VanillaHairTags));
+            eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
+            FullBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType == BeardType.FullBeard)
                 .ToList();
-            _lowerBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType != BeardType.FullBeard)
+            LowerBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType != BeardType.FullBeard)
                 .ToList();
-            _moustacheDefs = DefDatabase<MoustacheDef>.AllDefsListForReading;
+            MoustacheDefs = DefDatabase<MoustacheDef>.AllDefsListForReading;
 
-            _browDefs = DefDatabase<BrowDef>.AllDefsListForReading;
-            _fullBeardDefs.SortBy(i => i.LabelCap);
-            _lowerBeardDefs.SortBy(i => i.LabelCap);
-            _moustacheDefs.SortBy(i => i.LabelCap);
+            browDefs = DefDatabase<BrowDef>.AllDefsListForReading;
+            FullBeardDefs.SortBy(i => i.LabelCap);
+            LowerBeardDefs.SortBy(i => i.LabelCap);
+            MoustacheDefs.SortBy(i => i.LabelCap);
         }
 
-        public Dialog_FaceStyling(Pawn p)
+        public DialogFaceStyling(Pawn p)
         {
             pawn = p;
             faceComp = pawn.TryGetComp<CompFace>();
@@ -247,11 +158,11 @@
                 }
 
                 originalColour = faceComp.HairColorOrg;
-                _newBeardColour = faceComp.BeardColor;
-                _newBeard = originalBeard = faceComp.BeardDef;
-                _newMoustache = originalUpperBeard = faceComp.MoustacheDef;
-                _newEye = originalEye = faceComp.EyeDef;
-                _newBrow = originalBrow = faceComp.BrowDef;
+                newBeardColour = faceComp.BeardColor;
+                newBeard = originalBeard = faceComp.BeardDef;
+                newMoustache = originalUpperBeard = faceComp.MoustacheDef;
+                newEye = originalEye = faceComp.EyeDef;
+                newBrow = originalBrow = faceComp.BrowDef;
             }
             else
             {
@@ -262,18 +173,18 @@
             this.forcePause = true;
             this.closeOnClickedOutside = false;
 
-            _newHairColour = pawn.story.hairColor;
+            newHairColour = pawn.story.hairColor;
 
             colourWrapper = new ColorWrapper(Color.cyan);
 
-            this._newMelanin = this.originalMelanin = pawn.story.melanin;
+            this.newMelanin = this.originalMelanin = pawn.story.melanin;
 
-            _newHair = originalHair = pawn.story.hairDef;
+            newHair = originalHair = pawn.story.hairDef;
 
-            DisplayGraphics = new GraphicsDisp[(int)Enums.GraphicSlotGroup.NumberOfTypes];
+            displayGraphics = new GraphicsDisp[(int)Enums.GraphicSlotGroup.NumberOfTypes];
             for (int i = 0; i < (int)Enums.GraphicSlotGroup.NumberOfTypes; i++)
             {
-                DisplayGraphics[i] = new GraphicsDisp();
+                displayGraphics[i] = new GraphicsDisp();
             }
 
             this.SetGraphicSlot(
@@ -377,25 +288,25 @@
             }
         }
 
-        #endregion Constructors
+        #endregion Public Constructors
 
-        #region Properties
+        #region Public Properties
 
         public override Vector2 InitialSize => new Vector2(
-            _previewSize + _margin + _listWidth + 36f,
-            40f + _previewSize * 2f + _margin * 3f + 38f + 36f + 80f);
+                    PreviewSize + MarginFS + ListWidth + 36f,
+                    40f + PreviewSize * 2f + MarginFS * 3f + 38f + 36f + 80f);
 
         public BeardDef NewBeard
         {
-            get => _newBeard;
+            get => newBeard;
 
             set
             {
-                _newBeard = value;
+                newBeard = value;
 
                 if (value.beardType == BeardType.FullBeard)
                 {
-                    _newMoustache = MoustacheDefOf.Shaved;
+                    newMoustache = MoustacheDefOf.Shaved;
                 }
 
                 this.SetGraphicSlot(
@@ -408,7 +319,7 @@
                 this.SetGraphicSlot(
                     Enums.GraphicSlotGroup.Moustache,
                     pawn,
-                    this.MoustacheGraphic(_newMoustache),
+                    this.MoustacheGraphic(newMoustache),
                     pawn.def.uiIcon,
                     this.NewBeardColour);
             }
@@ -416,23 +327,23 @@
 
         public Color NewBeardColour
         {
-            get => _newBeardColour;
+            get => newBeardColour;
 
             set
             {
-                _newBeardColour = value;
-                DisplayGraphics[(int)Enums.GraphicSlotGroup.Beard].color = value;
-                DisplayGraphics[(int)Enums.GraphicSlotGroup.Moustache].color = value;
+                newBeardColour = value;
+                displayGraphics[(int)Enums.GraphicSlotGroup.Beard].Color = value;
+                displayGraphics[(int)Enums.GraphicSlotGroup.Moustache].Color = value;
             }
         }
 
         public BrowDef NewBrow
         {
-            get => _newBrow;
+            get => newBrow;
 
             set
             {
-                _newBrow = value;
+                newBrow = value;
                 this.SetGraphicSlot(
                     Enums.GraphicSlotGroup.Brows,
                     pawn,
@@ -444,11 +355,11 @@
 
         public EyeDef NewEye
         {
-            get => _newEye;
+            get => newEye;
 
             set
             {
-                _newEye = value;
+                newEye = value;
 
                 this.SetGraphicSlot(
                     Enums.GraphicSlotGroup.RightEye,
@@ -468,11 +379,11 @@
 
         public HairDef NewHair
         {
-            get => _newHair;
+            get => newHair;
 
             set
             {
-                _newHair = value;
+                newHair = value;
                 this.SetGraphicSlot(
                     Enums.GraphicSlotGroup.Hair,
                     pawn,
@@ -484,16 +395,16 @@
 
         public Color NewHairColour
         {
-            get => _newHairColour;
+            get => newHairColour;
 
             set
             {
-                _newHairColour = value;
-                DisplayGraphics[(int)Enums.GraphicSlotGroup.Hair].color = value;
+                newHairColour = value;
+                displayGraphics[(int)Enums.GraphicSlotGroup.Hair].Color = value;
                 if (faceComp != null && faceComp.HasSameBeardColor)
                 {
-                    DisplayGraphics[(int)Enums.GraphicSlotGroup.Beard].color = FacialGraphics.DarkerBeardColor(value);
-                    DisplayGraphics[(int)Enums.GraphicSlotGroup.Moustache].color =
+                    displayGraphics[(int)Enums.GraphicSlotGroup.Beard].Color = FacialGraphics.DarkerBeardColor(value);
+                    displayGraphics[(int)Enums.GraphicSlotGroup.Moustache].Color =
                         FacialGraphics.DarkerBeardColor(value);
                 }
             }
@@ -501,43 +412,43 @@
 
         public float NewMelanin
         {
-            get => this._newMelanin;
+            get => this.newMelanin;
 
             set
             {
-                this._newMelanin = value;
+                this.newMelanin = value;
                 this.SetGraphicSlot(
                     Enums.GraphicSlotGroup.Body,
                     pawn,
                     GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
                         pawn.story.bodyType,
                         ShaderDatabase.CutoutSkin,
-                        PawnSkinColors.GetSkinColor(this._newMelanin)),
+                        PawnSkinColors.GetSkinColor(this.newMelanin)),
                     pawn.def.uiIcon,
-                    PawnSkinColors.GetSkinColor(this._newMelanin));
+                    PawnSkinColors.GetSkinColor(this.newMelanin));
 
                 this.SetGraphicSlot(
                     Enums.GraphicSlotGroup.Head,
                     pawn,
                     GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(
                         pawn,
-                        PawnSkinColors.GetSkinColor(this._newMelanin)),
+                        PawnSkinColors.GetSkinColor(this.newMelanin)),
                     pawn.def.uiIcon,
-                    PawnSkinColors.GetSkinColor(this._newMelanin));
+                    PawnSkinColors.GetSkinColor(this.newMelanin));
             }
         }
 
         public MoustacheDef NewMoustache
         {
-            get => _newMoustache;
+            get => newMoustache;
 
             set
             {
-                _newMoustache = value;
+                newMoustache = value;
 
-                if (_newBeard.beardType == BeardType.FullBeard)
+                if (newBeard.beardType == BeardType.FullBeard)
                 {
-                    _newBeard = PawnFaceChooser.RandomBeardDefFor(pawn, BeardType.LowerBeard);
+                    newBeard = PawnFaceChooser.RandomBeardDefFor(pawn, BeardType.LowerBeard);
                 }
 
                 this.SetGraphicSlot(
@@ -550,28 +461,28 @@
                 this.SetGraphicSlot(
                     Enums.GraphicSlotGroup.Beard,
                     pawn,
-                    this.BeardGraphic(_newBeard),
+                    this.BeardGraphic(newBeard),
                     pawn.def.uiIcon,
                     this.NewBeardColour);
             }
         }
 
-        #endregion Properties
+        #endregion Public Properties
 
-        #region Methods
+        #region Public Methods
 
         public override void DoWindowContents(Rect inRect)
         {
-            Rect rect = new Rect(_iconSize + _margin, 0f, inRect.width - _iconSize - _margin, _titleHeight);
+            Rect rect = new Rect(IconSize + MarginFS, 0f, inRect.width - IconSize - MarginFS, TitleHeight);
             Text.Font = GameFont.Medium;
             Text.Anchor = TextAnchor.MiddleLeft;
-            Widgets.Label(rect, _title);
+            Widgets.Label(rect, Title);
             Text.Anchor = TextAnchor.UpperLeft;
             Text.Font = GameFont.Small;
 
             // Rect iconPosition = new Rect(0f, 0f, _iconSize, _iconSize).CenteredOnYIn(rect);
             // GUI.DrawTexture(iconPosition, _icon);
-            this.DrawUI(new Rect(0f, _titleHeight, inRect.width, inRect.height - _titleHeight - 25f - _margin * 2));
+            this.DrawUi(new Rect(0f, TitleHeight, inRect.width, inRect.height - TitleHeight - 25f - MarginFS * 2));
             DialogUtility.DoNextBackButtons(
                 inRect,
                 "FacialStuffColorChangerButtonAccept".Translate(),
@@ -599,12 +510,10 @@
                                 faceComp.MoustacheDef = this.NewMoustache;
                             }
 
-                            if (faceComp.HasSameBeardColor)
-                            {
-                                faceComp.BeardColor = FacialGraphics.DarkerBeardColor(pawn.story.hairColor);
-                            }
-
-                            faceComp.BeardColor = this.NewBeardColour;
+                            faceComp.SetBeardColor(
+                                faceComp.HasSameBeardColor
+                                    ? FacialGraphics.DarkerBeardColor(pawn.story.hairColor)
+                                    : this.NewBeardColour);
 
                             faceComp.EyeDef = this.NewEye;
                             faceComp.BrowDef = this.NewBrow;
@@ -622,28 +531,28 @@
             switch (pawn.gender)
             {
                 case Gender.Male:
-                    _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
-                        x => x.hairTags.SharesElementWith(vanillaHairTags)
+                    hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                        x => x.hairTags.SharesElementWith(VanillaHairTags)
                              && (x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually));
-                    _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
+                    eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
                         x => x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually);
-                    _browDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
+                    browDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
                         x => x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually);
                     break;
 
                 case Gender.Female:
-                    _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
-                        x => x.hairTags.SharesElementWith(vanillaHairTags)
+                    hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                        x => x.hairTags.SharesElementWith(VanillaHairTags)
                              && (x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually));
-                    _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
+                    eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
                         x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
-                    _browDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
+                    browDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
                         x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
                     break;
             }
-            _hairDefs.SortBy(i => i.LabelCap);
-            _eyeDefs.SortBy(i => i.LabelCap);
-            _browDefs.SortBy(i => i.LabelCap);
+            hairDefs.SortBy(i => i.LabelCap);
+            eyeDefs.SortBy(i => i.LabelCap);
+            browDefs.SortBy(i => i.LabelCap);
         }
 
         public override void PreClose()
@@ -652,6 +561,10 @@
             {
             }
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         private Graphic ApparelGraphic(ThingDef def, BodyType bodyType)
         {
@@ -747,7 +660,7 @@
                         false,
                         true)
                     {
-                        initialPosition = new Vector2(this.windowRect.xMax + _margin, this.windowRect.yMin)
+                        initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
                     });
             }
         }
@@ -756,55 +669,55 @@
         {
             Rect rect2 = rect.ContractedBy(1f);
             Rect rect3 = rect2;
-            int num7 = Mathf.CeilToInt(_fullBeardDefs.Count / (float)_columns);
-            int num8 = Mathf.CeilToInt(_moustacheDefs.Count / (float)_columns);
-            int num9 = Mathf.CeilToInt(_lowerBeardDefs.Count / (float)_columns);
+            int num7 = Mathf.CeilToInt(FullBeardDefs.Count / (float)Columns);
+            int num8 = Mathf.CeilToInt(MoustacheDefs.Count / (float)Columns);
+            int num9 = Mathf.CeilToInt(LowerBeardDefs.Count / (float)Columns);
 
             int nums = num7 + num8 + num9;
-            rect3.height = nums * _entrySize;
-            Vector2 vector = new Vector2(_entrySize, _entrySize);
+            rect3.height = nums * EntrySize;
+            Vector2 vector = new Vector2(EntrySize, EntrySize);
             if (rect3.height > rect2.height)
             {
-                vector.x -= 16f / _columns;
-                vector.y -= 16f / _columns;
+                vector.x -= 16f / Columns;
+                vector.y -= 16f / Columns;
                 rect3.width -= 16f;
                 rect3.height = vector.y * nums;
             }
 
             Rect selectHair = rect;
             selectHair.height = 30f;
-            Widgets.BeginScrollView(rect2, ref this._scrollPosition, rect3);
+            Widgets.BeginScrollView(rect2, ref this.scrollPosition, rect3);
             GUI.BeginGroup(rect3);
 
             float curY = 0f;
             float thisY = 0f;
-            for (int i = 0; i < _moustacheDefs.Count; i++)
+            for (int i = 0; i < MoustacheDefs.Count; i++)
             {
-                int num2 = i / _columns;
-                int num3 = i % _columns;
+                int num2 = i / Columns;
+                int num3 = i % Columns;
                 Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
-                this.DrawMoustachePickerCell(_moustacheDefs[i], rect4);
+                this.DrawMoustachePickerCell(MoustacheDefs[i], rect4);
                 thisY = rect4.yMax;
             }
 
             curY = thisY;
-            for (int i = 0; i < _lowerBeardDefs.Count; i++)
+            for (int i = 0; i < LowerBeardDefs.Count; i++)
             {
-                int num2 = i / _columns;
-                int num3 = i % _columns;
+                int num2 = i / Columns;
+                int num3 = i % Columns;
                 Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y + curY, vector.x, vector.y);
-                this.DrawBeardPickerCell(_lowerBeardDefs[i], rect4);
+                this.DrawBeardPickerCell(LowerBeardDefs[i], rect4);
                 thisY = rect4.yMax;
             }
 
             curY = thisY;
 
-            for (int i = 0; i < _fullBeardDefs.Count; i++)
+            for (int i = 0; i < FullBeardDefs.Count; i++)
             {
-                int num2 = i / _columns;
-                int num3 = i % _columns;
+                int num2 = i / Columns;
+                int num3 = i % Columns;
                 Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y + curY, vector.x, vector.y);
-                this.DrawBeardPickerCell(_fullBeardDefs[i], rect4);
+                this.DrawBeardPickerCell(FullBeardDefs[i], rect4);
             }
 
             GUI.EndGroup();
@@ -813,7 +726,7 @@
 
         private void DrawBeardPickerCell(BeardDef beard, Rect rect)
         {
-            if (_newMoustache != MoustacheDefOf.Shaved)
+            if (newMoustache != MoustacheDefOf.Shaved)
             {
                 if (beard.beardType == BeardType.FullBeard)
                 {
@@ -868,7 +781,7 @@
                             true)
                         {
                             initialPosition = new Vector2(
-                                    this.windowRect.xMax + _margin,
+                                    this.windowRect.xMax + MarginFS,
                                     this.windowRect.yMin)
                         });
                 }
@@ -879,29 +792,29 @@
         {
             Rect rect2 = rect.ContractedBy(1f);
             Rect rect3 = rect2;
-            int num = Mathf.CeilToInt(_browDefs.Count / (float)_columns);
+            int num = Mathf.CeilToInt(browDefs.Count / (float)Columns);
 
-            rect3.height = num * _entrySize;
-            Vector2 vector = new Vector2(_entrySize, _entrySize);
+            rect3.height = num * EntrySize;
+            Vector2 vector = new Vector2(EntrySize, EntrySize);
             if (rect3.height > rect2.height)
             {
-                vector.x -= 16f / _columns;
-                vector.y -= 16f / _columns;
+                vector.x -= 16f / Columns;
+                vector.y -= 16f / Columns;
                 rect3.width -= 16f;
                 rect3.height = vector.y * num;
             }
 
             Rect selectHair = rect;
             selectHair.height = 30f;
-            Widgets.BeginScrollView(rect2, ref this._scrollPosition, rect3);
+            Widgets.BeginScrollView(rect2, ref this.scrollPosition, rect3);
             GUI.BeginGroup(rect3);
 
-            for (int i = 0; i < _browDefs.Count; i++)
+            for (int i = 0; i < browDefs.Count; i++)
             {
-                int num2 = i / _columns;
-                int num3 = i % _columns;
+                int num2 = i / Columns;
+                int num3 = i % Columns;
                 Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
-                this.DrawBrowPickerCell(_browDefs[i], rect4);
+                this.DrawBrowPickerCell(browDefs[i], rect4);
             }
 
             GUI.EndGroup();
@@ -939,29 +852,29 @@
         {
             Rect rect2 = rect.ContractedBy(1f);
             Rect rect3 = rect2;
-            int num = Mathf.CeilToInt(_eyeDefs.Count / (float)_columns);
+            int num = Mathf.CeilToInt(eyeDefs.Count / (float)Columns);
 
-            rect3.height = num * _entrySize;
-            Vector2 vector = new Vector2(_entrySize, _entrySize);
+            rect3.height = num * EntrySize;
+            Vector2 vector = new Vector2(EntrySize, EntrySize);
             if (rect3.height > rect2.height)
             {
-                vector.x -= 16f / _columns;
-                vector.y -= 16f / _columns;
+                vector.x -= 16f / Columns;
+                vector.y -= 16f / Columns;
                 rect3.width -= 16f;
                 rect3.height = vector.y * num;
             }
 
             Rect selectHair = rect;
             selectHair.height = 30f;
-            Widgets.BeginScrollView(rect2, ref this._scrollPosition, rect3);
+            Widgets.BeginScrollView(rect2, ref this.scrollPosition, rect3);
             GUI.BeginGroup(rect3);
 
-            for (int i = 0; i < _eyeDefs.Count; i++)
+            for (int i = 0; i < eyeDefs.Count; i++)
             {
-                int num2 = i / _columns;
-                int num3 = i % _columns;
+                int num2 = i / Columns;
+                int num3 = i % Columns;
                 Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
-                this.DrawEyePickerCell(_eyeDefs[i], rect4);
+                this.DrawEyePickerCell(eyeDefs[i], rect4);
             }
 
             GUI.EndGroup();
@@ -1022,7 +935,7 @@
                         false,
                         true)
                     {
-                        initialPosition = new Vector2(this.windowRect.xMax + _margin, this.windowRect.yMin)
+                        initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
                     });
             }
         }
@@ -1031,29 +944,29 @@
         {
             Rect rect2 = rect.ContractedBy(1f);
             Rect rect3 = rect2;
-            int num = Mathf.CeilToInt(_hairDefs.Count / (float)_columns);
+            int num = Mathf.CeilToInt(hairDefs.Count / (float)Columns);
 
-            rect3.height = num * _entrySize;
-            Vector2 vector = new Vector2(_entrySize, _entrySize);
+            rect3.height = num * EntrySize;
+            Vector2 vector = new Vector2(EntrySize, EntrySize);
             if (rect3.height > rect2.height)
             {
-                vector.x -= 16f / _columns;
-                vector.y -= 16f / _columns;
+                vector.x -= 16f / Columns;
+                vector.y -= 16f / Columns;
                 rect3.width -= 16f;
                 rect3.height = vector.y * num;
             }
 
             Rect selectHair = rect;
             selectHair.height = 30f;
-            Widgets.BeginScrollView(rect2, ref this._scrollPosition, rect3);
+            Widgets.BeginScrollView(rect2, ref this.scrollPosition, rect3);
             GUI.BeginGroup(rect3);
 
-            for (int i = 0; i < _hairDefs.Count; i++)
+            for (int i = 0; i < hairDefs.Count; i++)
             {
-                int num2 = i / _columns;
-                int num3 = i % _columns;
+                int num2 = i / Columns;
+                int num3 = i % Columns;
                 Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
-                this.DrawHairPickerCell(_hairDefs[i], rect4);
+                this.DrawHairPickerCell(hairDefs[i], rect4);
             }
 
             GUI.EndGroup();
@@ -1097,7 +1010,7 @@
                         false,
                         true)
                     {
-                        initialPosition = new Vector2(this.windowRect.xMax + _margin, this.windowRect.yMin)
+                        initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
                     });
             }
         }
@@ -1108,7 +1021,7 @@
             int currentSwatchIndex = PawnSkinColors_FS.GetSkinDataIndexOfMelanin(this.NewMelanin);
             Color currentSwatchColor = PawnSkinColors_FS._SkinColors[currentSwatchIndex].color;
 
-            Rect swatchRect = new Rect(melaninRect.x, melaninRect.y, SwatchSize.x, SwatchSize.y);
+            Rect swatchRect = new Rect(melaninRect.x, melaninRect.y, swatchSize.x, swatchSize.y);
 
             // Draw the swatch selection boxes.
             int colorCount = PawnSkinColors_FS._SkinColors.Length;
@@ -1124,14 +1037,14 @@
                     Rect selectionRect = new Rect(
                         swatchRect.x - 2,
                         swatchRect.y - 2,
-                        SwatchSize.x + 4,
-                        SwatchSize.y + 4);
+                        swatchSize.x + 4,
+                        swatchSize.y + 4);
                     GUI.color = ColorSwatchSelection;
                     GUI.DrawTexture(selectionRect, BaseContent.WhiteTex);
                 }
 
                 // Draw the border around the swatch.
-                Rect borderRect = new Rect(swatchRect.x - 1, swatchRect.y - 1, SwatchSize.x + 2, SwatchSize.y + 2);
+                Rect borderRect = new Rect(swatchRect.x - 1, swatchRect.y - 1, swatchSize.x + 2, swatchSize.y + 2);
                 GUI.color = ColorSwatchBorder;
                 GUI.DrawTexture(borderRect, BaseContent.WhiteTex);
 
@@ -1150,10 +1063,10 @@
                 }
 
                 // Advance the swatch rect cursor position and wrap it if necessary.
-                swatchRect.x += SwatchSpacing.x;
-                if (swatchRect.x >= melaninRect.width - SwatchSize.x)
+                swatchRect.x += swatchSpacing.x;
+                if (swatchRect.x >= melaninRect.width - swatchSize.x)
                 {
-                    swatchRect.y += SwatchSpacing.y;
+                    swatchRect.y += swatchSpacing.y;
                     swatchRect.x = melaninRect.x;
                 }
             }
@@ -1163,7 +1076,7 @@
             Rect currentColorRect = new Rect(melaninRect.x, swatchRect.y + 4, 25, 25);
             if (swatchRect.x != melaninRect.x)
             {
-                currentColorRect.y += SwatchSpacing.y;
+                currentColorRect.y += swatchSpacing.y;
             }
 
             GUI.color = ColorSwatchBorder;
@@ -1222,7 +1135,7 @@
 
         private void DrawMoustachePickerCell(MoustacheDef moustache, Rect rect)
         {
-            if (_newBeard.beardType == BeardType.FullBeard)
+            if (newBeard.beardType == BeardType.FullBeard)
             {
                 Widgets.DrawBoxSolid(rect.ContractedBy(3f), new Color(0.8f, 0f, 0f, 0.3f));
             }
@@ -1274,19 +1187,19 @@
                             true)
                         {
                             initialPosition = new Vector2(
-                                    this.windowRect.xMax + _margin,
+                                    this.windowRect.xMax + MarginFS,
                                     this.windowRect.yMin)
                         });
                 }
             }
         }
 
-        private void DrawUI(Rect parentRect)
+        private void DrawUi(Rect parentRect)
         {
             GUI.BeginGroup(parentRect);
             string nameStringShort = pawn.NameStringShort;
             Vector2 vector = Text.CalcSize(nameStringShort);
-            Rect pawnHeadRect = new Rect(0f, -10f, _previewSize, _previewSize);
+            Rect pawnHeadRect = new Rect(0f, -10f, PreviewSize, PreviewSize);
             Rect eyeRect = new Rect(pawnHeadRect);
             eyeRect.width /= 2;
             eyeRect.height /= 2;
@@ -1304,16 +1217,16 @@
             pawnMouthRect.y += 30f;
 
             // pawnMouthRect.y += 10f;
-            Rect pawnRect = new Rect(0f, 0f, _previewSize, _previewSize);
+            Rect pawnRect = new Rect(0f, 0f, PreviewSize, PreviewSize);
             Rect labelRect = new Rect(0f, pawnRect.yMax - vector.y - 10f, vector.x, vector.y);
-            Rect melaninRect = new Rect(2f, labelRect.yMax + _margin, _previewSize - 5f, 65f);
-            Rect selectionRect = new Rect(0f, melaninRect.yMax + _margin, _previewSize, _previewSize);
-            Rect listRect = new Rect(_previewSize + _margin, 0f, _listWidth, parentRect.height - _margin * 2);
+            Rect melaninRect = new Rect(2f, labelRect.yMax + MarginFS, PreviewSize - 5f, 65f);
+            Rect selectionRect = new Rect(0f, melaninRect.yMax + MarginFS, PreviewSize, PreviewSize);
+            Rect listRect = new Rect(PreviewSize + MarginFS, 0f, ListWidth, parentRect.height - MarginFS * 2);
 
             labelRect = labelRect.CenteredOnXIn(pawnRect);
-            for (int i = 0; i < DisplayGraphics.Length; i++)
+            for (int i = 0; i < displayGraphics.Length; i++)
             {
-                if (DisplayGraphics[i]?.graphic?.MatFront == null)
+                if (displayGraphics[i]?.Graphic?.MatFront == null)
                 {
                     continue;
                 }
@@ -1322,7 +1235,7 @@
                 if (i <= (int)Enums.GraphicSlotGroup.Shell)
                 {
                     {
-                        DisplayGraphics[i].Draw(pawnRect);
+                        displayGraphics[i].Draw(pawnRect);
                     }
                 }
                 else
@@ -1333,7 +1246,7 @@
                             {
                                 if (pawn.gender == Gender.Male)
                                 {
-                                    DisplayGraphics[i].Draw(pawnHeadRect);
+                                    displayGraphics[i].Draw(pawnHeadRect);
                                 }
 
                                 break;
@@ -1343,7 +1256,7 @@
                         case (int)Enums.GraphicSlotGroup.RightEye:
                         case (int)Enums.GraphicSlotGroup.Brows:
                             {
-                                DisplayGraphics[i].Draw(eyeRect);
+                                displayGraphics[i].Draw(eyeRect);
                             }
 
                             break;
@@ -1353,14 +1266,14 @@
                             {
                                 if (this.NewBeard.drawMouth && this.NewMoustache == MoustacheDefOf.Shaved)
                                 {
-                                    DisplayGraphics[i].Draw(pawnMouthRect);
+                                    displayGraphics[i].Draw(pawnMouthRect);
                                 }
                             }
 
                             break;
 
                         default:
-                            DisplayGraphics[i].Draw(pawnHeadRect);
+                            displayGraphics[i].Draw(pawnHeadRect);
                             break;
                     }
                 }
@@ -1368,7 +1281,7 @@
 
             GUI.DrawTexture(
                 new Rect(labelRect.xMin - 3f, labelRect.yMin, labelRect.width + 6f, labelRect.height),
-                _nameBackground);
+                NameBackground);
             Widgets.Label(labelRect, nameStringShort);
 
             // float spacing = 10f;
@@ -1395,7 +1308,7 @@
             // }
             if (Widgets.ButtonText(set, "Hair"))
             {
-                this.Page = DialoguePage.Hair;
+                this.page = DialoguePage.Hair;
             }
 
             set.x += set.width + 10f;
@@ -1405,7 +1318,7 @@
                 {
                     if (Widgets.ButtonText(set, "Beard"))
                     {
-                        this.Page = DialoguePage.Beard;
+                        this.page = DialoguePage.Beard;
                     }
                 }
             }
@@ -1418,7 +1331,7 @@
             {
                 if (Widgets.ButtonText(set, "Eye"))
                 {
-                    this.Page = DialoguePage.Eye;
+                    this.page = DialoguePage.Eye;
                 }
             }
 
@@ -1428,7 +1341,7 @@
             {
                 if (Widgets.ButtonText(set, "Brow"))
                 {
-                    this.Page = DialoguePage.Brow;
+                    this.page = DialoguePage.Brow;
                 }
             }
 
@@ -1462,7 +1375,7 @@
             set.y += 36f;
             set.x = selectionRect.x;
 
-            if (this.Page == DialoguePage.Hair)
+            if (this.page == DialoguePage.Hair)
             {
                 set.x = selectionRect.x;
                 GUI.color = Color.gray;
@@ -1472,27 +1385,27 @@
                 set.width = selectionRect.width / 3 - 10f;
                 if (Widgets.ButtonText(set, "Female"))
                 {
-                    _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
-                        x => x.hairTags.SharesElementWith(vanillaHairTags)
+                    hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                        x => x.hairTags.SharesElementWith(VanillaHairTags)
                              && (x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually));
-                    _hairDefs.SortBy(i => i.LabelCap);
+                    hairDefs.SortBy(i => i.LabelCap);
                 }
 
                 set.x += set.width + 10f;
                 if (Widgets.ButtonText(set, "Male"))
                 {
-                    _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
-                        x => x.hairTags.SharesElementWith(vanillaHairTags)
+                    hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                        x => x.hairTags.SharesElementWith(VanillaHairTags)
                              && (x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually));
-                    _hairDefs.SortBy(i => i.LabelCap);
+                    hairDefs.SortBy(i => i.LabelCap);
                 }
 
                 set.x += set.width + 10f;
                 if (Widgets.ButtonText(set, "Any"))
                 {
-                    _hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
-                        x => x.hairTags.SharesElementWith(vanillaHairTags) && x.hairGender == HairGender.Any);
-                    _hairDefs.SortBy(i => i.LabelCap);
+                    hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                        x => x.hairTags.SharesElementWith(VanillaHairTags) && x.hairGender == HairGender.Any);
+                    hairDefs.SortBy(i => i.LabelCap);
                 }
 
                 this.DrawHairPicker(listRect);
@@ -1500,7 +1413,7 @@
 
             if (faceComp != null)
             {
-                if (this.Page == DialoguePage.Eye)
+                if (this.page == DialoguePage.Eye)
                 {
                     set.x = selectionRect.x;
                     GUI.color = Color.gray;
@@ -1510,21 +1423,21 @@
 
                     if (Widgets.ButtonText(set, "Female"))
                     {
-                        _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
+                        eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
                             x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
-                        _eyeDefs.SortBy(i => i.LabelCap);
+                        eyeDefs.SortBy(i => i.LabelCap);
                     }
 
                     set.x += set.width + 10f;
                     if (Widgets.ButtonText(set, "Male"))
                     {
-                        _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
+                        eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
                             x => x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually);
-                        _eyeDefs.SortBy(i => i.LabelCap);
+                        eyeDefs.SortBy(i => i.LabelCap);
                     }
                 }
 
-                if (this.Page == DialoguePage.Brow)
+                if (this.page == DialoguePage.Brow)
                 {
                     set.x = selectionRect.x;
                     GUI.color = Color.gray;
@@ -1534,34 +1447,34 @@
 
                     if (Widgets.ButtonText(set, "Female"))
                     {
-                        _browDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
+                        browDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
                             x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
-                        _browDefs.SortBy(i => i.LabelCap);
+                        browDefs.SortBy(i => i.LabelCap);
                     }
 
                     set.x += set.width + 10f;
                     if (Widgets.ButtonText(set, "Male"))
                     {
-                        _browDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
+                        browDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
                             x => x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually);
-                        _browDefs.SortBy(i => i.LabelCap);
+                        browDefs.SortBy(i => i.LabelCap);
                     }
 
                     this.DrawBrowPicker(listRect);
                 }
 
-                if (this.Page == DialoguePage.Beard)
+                if (this.page == DialoguePage.Beard)
                 {
                     this.DrawBeardPicker(listRect);
                 }
 
-                if (this.Page == DialoguePage.Eye)
+                if (this.page == DialoguePage.Eye)
                 {
                     this.DrawEyePicker(listRect);
                 }
             }
 
-            if (this.Page == DialoguePage.Hair)
+            if (this.page == DialoguePage.Hair)
             {
                 set.y += 36f;
                 set.width = selectionRect.width / 7.5f - 10f;
@@ -1587,7 +1500,7 @@
 
             if (faceComp != null && !faceComp.HasSameBeardColor)
             {
-                if (this.Page == DialoguePage.Beard)
+                if (this.page == DialoguePage.Beard)
                 {
                     set.width = selectionRect.width / 7.5f - 10f;
                     set.x = selectionRect.x;
@@ -1737,15 +1650,15 @@
         }
 
         private void SetGraphicSlot(
-            Enums.GraphicSlotGroup slotIndex,
-            Thing newThing,
-            Graphic newGraphic,
-            Texture2D newIcon,
-            Color newColor)
+                    Enums.GraphicSlotGroup slotIndex,
+                    Thing newThing,
+                    Graphic newGraphic,
+                    Texture2D newIcon,
+                    Color newColor)
         {
             if (slotIndex < Enums.GraphicSlotGroup.Head)
             {
-                DisplayGraphics[(int)slotIndex] = new GraphicsDisp(newThing, newGraphic, newIcon, newColor, 0f);
+                displayGraphics[(int)slotIndex] = new GraphicsDisp(newThing, newGraphic, newIcon, newColor, 0f);
             }
 
             // else if (slotIndex >= GraphicSlotGroup.Hair)
@@ -1756,10 +1669,94 @@
             // if (slotIndex == GraphicSlotGroup.Head)
             else
             {
-                DisplayGraphics[(int)slotIndex] = new GraphicsDisp(newThing, newGraphic, newIcon, newColor, -40f);
+                displayGraphics[(int)slotIndex] = new GraphicsDisp(newThing, newGraphic, newIcon, newColor, -40f);
             }
         }
 
-        #endregion Methods
+        #endregion Private Methods
+
+        #region Public Classes
+
+        // private void CheckSelectedFacePresetHasName()
+        // {
+        // if (SelectedFacePreset != null && SelectedFacePreset.label.NullOrEmpty())
+        // {
+        // SelectedFacePreset.label = "Unnamed";
+        // }
+        // }
+        public class GraphicsDisp
+        {
+
+            #region Public Fields
+
+            public Color Color = Color.white;
+            public Graphic Graphic;
+            public Texture2D Icon;
+            public Thing Thing;
+
+            #endregion Public Fields
+
+            #region Private Fields
+
+            private readonly float yOffset;
+
+            #endregion Private Fields
+
+            #region Public Constructors
+
+            public GraphicsDisp()
+            {
+                this.Thing = null;
+                this.Graphic = null;
+                this.Icon = null;
+                this.yOffset = 0f;
+            }
+
+            public GraphicsDisp(Thing thing, Graphic graphic, Texture2D icon, Color color, float yOffset)
+            {
+                this.Thing = thing;
+                this.Graphic = graphic;
+                this.Icon = icon;
+                this.Color = color;
+                this.yOffset = yOffset;
+            }
+
+            #endregion Public Constructors
+
+            #region Public Properties
+
+            public bool Valid => this.Thing != null;
+
+            #endregion Public Properties
+
+            #region Public Methods
+
+            public void Draw(Rect rect)
+            {
+                if (this.Valid && this.Graphic != null)
+                {
+                    Rect position = new Rect(rect.x, rect.y + this.yOffset, rect.width, rect.height);
+                    GUI.color = this.Color;
+                    GUI.DrawTexture(position, this.Graphic.MatFront.mainTexture);
+                    GUI.color = Color.white;
+                }
+            }
+
+            public void DrawIcon(Rect rect)
+            {
+                if (this.Valid && this.Icon != null)
+                {
+                    GUI.color = this.Color;
+                    GUI.DrawTexture(rect, this.Icon);
+                    GUI.color = Color.white;
+                }
+            }
+
+            #endregion Public Methods
+
+        }
+
+        #endregion Public Classes
+
     }
 }

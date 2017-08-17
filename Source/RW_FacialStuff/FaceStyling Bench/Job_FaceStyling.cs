@@ -8,11 +8,15 @@
     // ReSharper disable once UnusedMember.Global
     public class Job_FaceStyling : JobDriver
     {
-        private const TargetIndex ColorChanger = TargetIndex.A;
+        #region Private Fields
 
         private const TargetIndex CellInd = TargetIndex.B;
+        private const TargetIndex ColorChanger = TargetIndex.A;
+        private static readonly string ErrorMessage = "FaceStyling job called on building that is not Cabinet";
 
-        private static readonly string ErrorMessage = "Hairstyling job called on building that is not Cabinet";
+        #endregion Private Fields
+
+        #region Protected Methods
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
@@ -22,6 +26,10 @@
             yield return Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell);
             yield return this.Toils_WaitWithSoundAndEffect();
         }
+
+        #endregion Protected Methods
+
+        #region Private Methods
 
         private Toil Toils_WaitWithSoundAndEffect()
         {
@@ -46,5 +54,7 @@
                            defaultCompleteMode = ToilCompleteMode.Instant
                        };
         }
+
+        #endregion Private Methods
     }
 }

@@ -1,8 +1,8 @@
-namespace FacialStuff
+namespace FacialStuff.Enums
 {
-    public static class Enums
-    {
-        #region GraphicSlotGroup enum
+    
+
+        #region Public Enums
 
         public enum GraphicSlotGroup
         {
@@ -48,17 +48,7 @@ namespace FacialStuff
             NumberOfTypes
         }
 
-        #endregion GraphicSlotGroup enum
+        #endregion Public Enums
 
-        #region Side enum
-
-        public enum Side
-        {
-            Left = 0,
-
-            Right = 1
-        }
-
-        #endregion Side enum
-    }
+    
 }

@@ -80,6 +80,7 @@
     <Compile Include="Defs\WrinkleDef.cs" />
     <Compile Include="Enums\BeardType.cs" />
     <Compile Include="Enums\DialoguePage.cs" />
+    <Compile Include="Enums\Side.cs" />
     <Compile Include="HumanMouthGraphics.cs" />
     <None Include="MouthGraphicData.cs" />
     <Compile Include="Settings.cs" />
@@ -93,7 +94,7 @@
     <Compile Include="Defs\MouthDefOf.cs" />
     <Compile Include="FacialGraphics.cs" />
     <Compile Include="HairCutPawn.cs" />
-    <Compile Include="FaceStyling Bench\GraphicSlotGroup.cs" />
+    <Compile Include="Enums\GraphicSlotGroup.cs" />
     <Compile Include="Graphics_FS\Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="Graphics_FS\Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="MeshPoolFs.cs" />

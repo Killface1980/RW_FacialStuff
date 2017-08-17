@@ -48,7 +48,8 @@
                         CompFace faceComp = pawn.TryGetComp<CompFace>();
                         if (faceComp != null)
                         {
-                            pawn.Drawer.renderer.graphics.ResolveAllGraphics();
+                            // This will force the renderer to make "AllResolved" return false, if pawn is drawn
+                            pawn.Drawer.renderer.graphics.nakedGraphic = null;
                         }
                     }
                 }

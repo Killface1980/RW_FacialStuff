@@ -1,35 +1,38 @@
 ﻿namespace FacialStuff
 {
+    using FacialStuff.Enums;
+
     using Verse;
 
     [StaticConstructorOnStartup]
-    public static class MeshPoolFs
+    public static class MeshPoolFS
     {
+        #region Public Fields
+
+        public static readonly GraphicMeshSet[] HumanEyeSet = new GraphicMeshSet[12];
+        public static readonly GraphicMeshSet[] HumanlikeMouthSet = new GraphicMeshSet[12];
+        public static readonly GraphicMeshSet HumanlikeMouthSetAverageFemale;
+        public static readonly GraphicMeshSet HumanlikeMouthSetAverageMale;
+        public static readonly GraphicMeshSet HumanlikeMouthSetNarrowFemale;
+        public static readonly GraphicMeshSet HumanlikeMouthSetNarrowMale;
+
+        #endregion Public Fields
+
+        #region Private Fields
+
+        private const float HumanlikeMouthAverageWidthFemale = 0.6f;
+        private const float HumanlikeMouthAverageWidthMale = 0.7f;
         private const float HumanlikeMouthHeight = 0.75f;
 
         private const float HumanlikeMouthHeightFemale = 0.6f;
-
-        private const float HumanlikeMouthAverageWidthMale = 0.7f;
-
+        private const float HumanlikeMouthNarrowWidthFemale = 0.5f;
         private const float HumanlikeMouthNarrowWidthMale = 0.6f;
 
-        private const float HumanlikeMouthAverageWidthFemale = 0.6f;
+        #endregion Private Fields
 
-        private const float HumanlikeMouthNarrowWidthFemale = 0.5f;
+        #region Public Constructors
 
-        public static readonly GraphicMeshSet[] HumanlikeMouthSet = new GraphicMeshSet[12];
-
-        public static readonly GraphicMeshSet HumanlikeMouthSetAverageMale;
-
-        public static readonly GraphicMeshSet HumanlikeMouthSetNarrowMale;
-
-        public static readonly GraphicMeshSet HumanlikeMouthSetAverageFemale;
-
-        public static readonly GraphicMeshSet HumanlikeMouthSetNarrowFemale;
-
-        public static readonly GraphicMeshSet[] HumanEyeSet = new GraphicMeshSet[12];
-
-        static MeshPoolFs()
+        static MeshPoolFS()
         {
             HumanlikeMouthSet[(int)FullHead.MaleAverageNormal] = new GraphicMeshSet(0.7f, 0.75f);
             HumanlikeMouthSet[(int)FullHead.MaleAveragePointy] = new GraphicMeshSet(0.65f, 0.75f);
@@ -68,5 +71,7 @@
             // HumanlikeMouthSetAverageFemale = new GraphicMeshSet(HumanlikeMouthAverageWidthFemale, HumanlikeMouthHeightFemale);
             // HumanlikeMouthSetNarrowFemale = new GraphicMeshSet(HumanlikeMouthNarrowWidthFemale, HumanlikeMouthHeightFemale);
         }
+
+        #endregion Public Constructors
     }
 }

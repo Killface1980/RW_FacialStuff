@@ -1,5 +1,7 @@
-﻿namespace FacialStuff.ColorPicker
+﻿// ReSharper disable All
+namespace FacialStuff.ColorPicker
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
 
     using UnityEngine;

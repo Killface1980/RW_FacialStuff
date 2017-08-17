@@ -8,14 +8,11 @@
 
     internal class FaceStyler : Building
     {
-        public override void SpawnSetup(Map map, bool respawningAfterLoad)
-        {
-            base.SpawnSetup(map, respawningAfterLoad);
-        }
+        #region Public Methods
 
         public void FaceStyling(Pawn pawn)
         {
-            Find.WindowStack.Add(new Dialog_FaceStyling(pawn));
+            Find.WindowStack.Add(new DialogFaceStyling(pawn));
         }
 
         public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn myPawn)
@@ -32,6 +29,12 @@
                 {
                     FloatMenuOption item2 = new FloatMenuOption("CannotUseNoPath".Translate(), null);
                     return new List<FloatMenuOption> { item2 };
+                }
+
+                if (myPawn.TryGetComp<CompFace>() == null)
+                {
+                    FloatMenuOption item3 = new FloatMenuOption("CannotUseNoFacePawn".Translate(), null);
+                    return new List<FloatMenuOption> { item3 };
                 }
 
                 Action action2 = delegate
@@ -54,5 +57,12 @@
 
             return list;
         }
+
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
+        {
+            base.SpawnSetup(map, respawningAfterLoad);
+        }
+
+        #endregion Public Methods
     }
 }

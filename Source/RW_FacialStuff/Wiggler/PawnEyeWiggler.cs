@@ -1,5 +1,5 @@
-﻿namespace FacialStuff.Wiggler
-
+﻿// ReSharper disable MissingXmlDoc
+namespace FacialStuff.Wiggler
 {
     using RimWorld;
 
@@ -9,16 +9,8 @@
 
     public class PawnEyeWiggler
     {
-        #region Constructors
 
-        public PawnEyeWiggler(Pawn pawn)
-        {
-            this.pawn = pawn;
-        }
-
-        #endregion Constructors
-
-        #region Fields
+        #region Private Fields
 
         private static readonly SimpleCurve EyeMotionFullCurve =
             new SimpleCurve
@@ -38,9 +30,17 @@
                     new CurvePoint(0.75f, 0f)
                 };
 
+        private readonly SimpleCurve consciousnessCurve =
+            new SimpleCurve { new CurvePoint(0f, 10f), new CurvePoint(0.5f, 3f), new CurvePoint(1f, 1f) };
+
         private readonly float factorX = 0.02f;
 
         private readonly float factorY = 0.01f;
+
+        private readonly Pawn pawn;
+
+        private Vector3 eyeMoveL = new Vector3(0, 0, 0);
+        private Vector3 eyeMoveR = new Vector3(0, 0, 0);
 
         private float flippedX;
 
@@ -50,39 +50,52 @@
 
         private bool halfAnimY;
 
+        private bool isAsleep;
+        private int jitterLeft;
+        private int jitterRight;
         private int lastBlinkended;
 
         private bool moveX;
 
         private bool moveY;
 
-        private readonly Pawn pawn;
+        private int nextBlink = -5000;
 
-        #endregion Fields
+        private int nextBlinkEnd = -5000;
 
-        #region Properties
+        #endregion Private Fields
 
-        public Vector3 EyeMoveL { get; set; } = new Vector3(0, 0, 0);
+        #region Public Constructors
 
-        public Vector3 EyeMoveR { get; set; } = new Vector3(0, 0, 0);
+        public PawnEyeWiggler(Pawn pawn)
+        {
+            this.pawn = pawn;
+        }
 
-        public bool IsAsleep { get; set; }
+        #endregion Public Constructors
 
-        public int JitterLeft { get; set; }
+        #region Public Properties
 
-        public int JitterRight { get; set; }
+        public bool EyeLeftCanBlink { get; set; }
 
-        public bool LeftCanBlink { get; set; }
+        public Vector3 EyeMoveL => this.eyeMoveL;
 
-        public int NextBlink { get; private set; } = -5000;
+        public Vector3 EyeMoveR => this.eyeMoveR;
 
-        public int NextBlinkEnd { get; private set; } = -5000;
+        public bool EyeRightCanBlink { get; set; }
 
-        public bool RightCanBlink { get; set; }
+        public bool IsAsleep => this.isAsleep;
+        public int JitterLeft => this.jitterLeft;
 
-        #endregion Properties
 
-        #region Methods
+        public int JitterRight => this.jitterRight;
+        public int NextBlink => this.nextBlink;
+
+        public int NextBlinkEnd => this.nextBlinkEnd;
+
+        #endregion Public Properties
+
+        #region Public Methods
 
         public void WigglerTick()
         {
@@ -118,14 +131,14 @@
                     }
                 }
 
-                if (this.RightCanBlink)
+                if (this.EyeRightCanBlink)
                 {
-                    this.EyeMoveR = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
+                    this.eyeMoveR = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
                 }
 
-                if (this.LeftCanBlink)
+                if (this.EyeLeftCanBlink)
                 {
-                    this.EyeMoveL = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
+                    this.eyeMoveL = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
                 }
             }
 
@@ -138,8 +151,9 @@
             }
         }
 
-        private readonly SimpleCurve consciousnessCurve =
-            new SimpleCurve { new CurvePoint(0f, 10f), new CurvePoint(0.5f, 3f), new CurvePoint(1f, 1f) };
+        #endregion Public Methods
+
+        #region Private Methods
 
         private void SetNextBlink(int tickManagerTicksGame)
         {
@@ -165,16 +179,16 @@
             // Log.Message(
             // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
             // + " - blinkDuration: " + blinkDuration.ToString("N0"));
-            this.NextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
-            this.NextBlinkEnd = (int)(this.NextBlink + blinkDuration);
+            this.nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
+            this.nextBlinkEnd = (int)(this.NextBlink + blinkDuration);
 
             if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
             {
-                this.IsAsleep = true;
+                this.isAsleep = true;
                 return;
             }
 
-            this.IsAsleep = false;
+            this.isAsleep = false;
 
             // this.JitterLeft = 1f;
             // this.JitterRight = 1f;
@@ -186,13 +200,13 @@
             if (Rand.Value > 0.9f)
             {
                 // early "nerous" blinking. I guss positive values have no effect ...
-                this.JitterLeft = (int)Rand.Range(-10f, 90f);
-                this.JitterRight = (int)Rand.Range(-10f, 90f);
+                this.jitterLeft = (int)Rand.Range(-10f, 90f);
+                this.jitterRight = (int)Rand.Range(-10f, 90f);
             }
             else
             {
-                this.JitterLeft = 0;
-                this.JitterRight = 0;
+                this.jitterLeft = 0;
+                this.jitterRight = 0;
             }
 
             // only animate eye movement if animation lasts at least 2.5 seconds
@@ -213,6 +227,7 @@
             this.lastBlinkended = tickManagerTicksGame;
         }
 
-        #endregion Methods
+        #endregion Private Methods
+
     }
 }

@@ -4,8 +4,65 @@
     using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
+    using System.Reflection.Emit;
+
     using UnityEngine;
     using Verse;
+    using Verse.AI;
+
+    // [HarmonyPatch(typeof(RimWorld.Dialog_Options))]
+    // [HarmonyPatch("DoWindowContents")]
+    // public static class Dialog_FormCaravan_CheckForErrors_Patch
+    // {
+    //     static IEnumerable<CodeInstruction>Transpiler(IEnumerable<CodeInstruction> instructions)
+    //     {
+    //         var foundMassUsageMethod = false;
+    //         int startIndex = -1, endIndex = -1;
+    // 
+    //         var codes = new List<CodeInstruction>(instructions);
+    //         for (int i = 0; i < codes.Count; i++)
+    //         {
+    //             if (codes[i].opcode == OpCodes.Ret)
+    //             {
+    //                 if (foundMassUsageMethod)
+    //                 {
+    //                     Log.Error("END " + i);
+    // 
+    //                     endIndex = i; // include current 'ret'
+    //                     break;
+    //                 }
+    //                 else
+    //                 {
+    //                     Log.Error("START " + (i + 1));
+    // 
+    //                     startIndex = i + 1; // exclude current 'ret'
+    // 
+    //                     for (int j = startIndex; j < codes.Count; j++)
+    //                     {
+    //                         if (codes[j].opcode == OpCodes.Ret)
+    //                             break;
+    //                         var strOperand = codes[j].operand as String;
+    //                         if (strOperand == "TooBigCaravanMassUsage")
+    //                         {
+    //                             foundMassUsageMethod = true;
+    //                             break;
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         if (startIndex > -1 && endIndex > -1)
+    //         {
+    //             // we cannot remove the first code of our range since some jump actually jumps to
+    //             // it, so we replace it with a no-op instead of fixing that jump (easier).
+    //             codes[startIndex].opcode = OpCodes.Nop;
+    //             codes.RemoveRange(startIndex + 1, endIndex - startIndex - 1);
+    //         }
+    // 
+    //         return codes.AsEnumerable();
+    //     }
+    // }
 
     [StaticConstructorOnStartup]
     public class HarmonyPatches
@@ -13,6 +70,7 @@
         static HarmonyPatches()
         {
             HarmonyInstance harmony = HarmonyInstance.Create("com.facialstuff.rimworld.mod");
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             harmony.Patch(
                 AccessTools.Method(typeof(PawnGraphicSet), nameof(PawnGraphicSet.ResolveAllGraphics)),
@@ -80,6 +138,7 @@
                     nameof(PawnSkinColors_FS.GetMelaninCommonalityFactor_Prefix)),
                 null);
 
+
             FacialGraphics.InitializeMouthGraphics();
 
             Log.Message(
@@ -89,61 +148,6 @@
             CheckAllInjected();
         }
 
-        private static void CheckAllInjected()
-        {
-            // Now to enjoy the benefits of having made a popular mod!
-            // This will be our little secret.
-            Backstory childMe = new Backstory
-            {
-                bodyTypeMale = BodyType.Male,
-                bodyTypeFemale = BodyType.Female,
-                slot = BackstorySlot.Childhood,
-                baseDesc =
-                                            "NAME never believed what was common sense and always doubted other people. HECAP later went on inflating toads with HIS sushi stick. It was there HE earned HIS nickname.",
-                requiredWorkTags = WorkTags.Violent,
-                shuffleable = false
-            };
-            childMe.SetTitle("Lost child");
-            childMe.SetTitleShort("Seeker");
-            childMe.skillGains.Add("Shooting", 4);
-            childMe.skillGains.Add("Medicine", 2);
-            childMe.skillGains.Add("Social", 1);
-            childMe.PostLoad();
-            childMe.ResolveReferences();
-
-            Backstory adultMale = new Backstory
-            {
-                bodyTypeMale = BodyType.Male,
-                bodyTypeFemale = BodyType.Female,
-                slot = BackstorySlot.Adulthood,
-                baseDesc =
-                                              "HECAP continued to serve in the military, being promoted through the ranks as HIS skill increased. HECAP learned how to treat more serious wounds as HIS role slowly transitioned from scout to medic, as well as how to make good use of army rations. HECAP built good rapport with HIS squad as a result.",
-                shuffleable = false,
-                spawnCategories = new List<string>()
-            };
-            adultMale.spawnCategories.AddRange(new[] { "Civil", "Raider", "Slave", "Trader", "Traveler" });
-            adultMale.SetTitle("Lone gunman");
-            adultMale.SetTitleShort("Gunman");
-            adultMale.skillGains.Add("Shooting", 4);
-            adultMale.skillGains.Add("Medicine", 3);
-            adultMale.skillGains.Add("Cooking", 2);
-            adultMale.skillGains.Add("Social", 1);
-            adultMale.PostLoad();
-            adultMale.ResolveReferences();
-
-            PawnBio me = new PawnBio
-            {
-                childhood = childMe,
-                adulthood = adultMale,
-                gender = GenderPossibility.Male,
-                name = NameTriple.FromString("Tom 'TomJee' Stinkwater")
-            };
-            me.PostLoad();
-            SolidBioDatabase.allBios.Add(me);
-            BackstoryDatabase.AddBackstory(childMe);
-
-            BackstoryDatabase.AddBackstory(adultMale);
-        }
 
         public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)
         {
@@ -164,6 +168,19 @@
 
             GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
 
+            // Hair color is defined here. Can't use RandomHairColor as FS checks for existing relations
+            // todo: will be merged with IsOptimized in A18
+            if (!faceComp.IsDNAoptimized)
+            {
+                faceComp.DefineHairDNA();
+
+                __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(
+                    pawn.story.hairDef.texPath,
+                    ShaderDatabase.Cutout,
+                    Vector2.one,
+                    pawn.story.hairColor);
+            }
+
             // Inital definition of a pawn's appearance. Run only once - ever.
             if (!faceComp.IsOptimized)
             {
@@ -176,17 +193,7 @@
             // faceComp.DefineSkinDNA();
             // }
 
-            // Hair color is defined here. Can't use RandomHairColor as FS checks for existing relations
-            if (!faceComp.IsDNAoptimized)
-            {
-                faceComp.DefineHairDNA();
 
-                __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(
-                    pawn.story.hairDef.texPath,
-                    ShaderDatabase.Cutout,
-                    Vector2.one,
-                    pawn.story.hairColor);
-            }
 
             // Custom rotting color, mixed with skin tone
             Color rotColor = pawn.story.SkinColor * FacialGraphics.SkinRottingMultiplyColor;
@@ -309,45 +316,113 @@
             __result = source.RandomElementByWeight(hair => PawnFaceChooser.HairChoiceLikelihoodFor(hair, pawn));
             return false;
         }
+
+        private static void CheckAllInjected()
+        {
+            // Now to enjoy the benefits of having made a popular mod!
+            // This will be our little secret.
+            Backstory childMe = new Backstory
+            {
+                bodyTypeMale = BodyType.Male,
+                bodyTypeFemale = BodyType.Female,
+                slot = BackstorySlot.Childhood,
+                baseDesc =
+                                            "NAME never believed what was common sense and always doubted other people. HECAP later went on inflating toads with HIS sushi stick. It was there HE earned HIS nickname.",
+                requiredWorkTags = WorkTags.Violent,
+                shuffleable = false
+            };
+            childMe.SetTitle("Lost child");
+            childMe.SetTitleShort("Seeker");
+            childMe.skillGains.Add("Shooting", 4);
+            childMe.skillGains.Add("Medicine", 2);
+            childMe.skillGains.Add("Social", 1);
+            childMe.PostLoad();
+            childMe.ResolveReferences();
+
+            Backstory adultMale = new Backstory
+            {
+                bodyTypeMale = BodyType.Male,
+                bodyTypeFemale = BodyType.Female,
+                slot = BackstorySlot.Adulthood,
+                baseDesc =
+                                              "HECAP continued to serve in the military, being promoted through the ranks as HIS skill increased. HECAP learned how to treat more serious wounds as HIS role slowly transitioned from scout to medic, as well as how to make good use of army rations. HECAP built good rapport with HIS squad as a result.",
+                shuffleable = false,
+                spawnCategories = new List<string>()
+            };
+            adultMale.spawnCategories.AddRange(new[] { "Civil", "Raider", "Slave", "Trader", "Traveler" });
+            adultMale.SetTitle("Lone gunman");
+            adultMale.SetTitleShort("Gunman");
+            adultMale.skillGains.Add("Shooting", 4);
+            adultMale.skillGains.Add("Medicine", 3);
+            adultMale.skillGains.Add("Cooking", 2);
+            adultMale.skillGains.Add("Social", 1);
+            adultMale.PostLoad();
+            adultMale.ResolveReferences();
+
+            PawnBio me = new PawnBio
+            {
+                childhood = childMe,
+                adulthood = adultMale,
+                gender = GenderPossibility.Male,
+                name = NameTriple.FromString("Tom 'TomJee' Stinkwater")
+            };
+            me.PostLoad();
+            SolidBioDatabase.allBios.Add(me);
+            BackstoryDatabase.AddBackstory(childMe);
+
+            BackstoryDatabase.AddBackstory(adultMale);
+        }
+
     }
-
-    #region Hair
-
-    // [HarmonyPatch(typeof(PawnHairColors), "RandomHairColor")]
-    public static class PawnHairColors_PostFix
+    [HarmonyPatch(typeof(Dialog_Options))]
+    [HarmonyPatch("DoWindowContents")]
+    static class Dialog_Options_DoWindowContents_Patch
     {
-        public static Color HairPlatinum = new Color32(255, 245, 226, 255);
+        static void MoreStuff(Listing_Standard listing_Standard)
+        {
+            bool hatsOnlyOnMap = Controller.settings.HideHatWhileRoofed;
+            listing_Standard.CheckboxLabeled("Settings.HideHatWhileRoofed".Translate(), ref hatsOnlyOnMap, "Settings.HideHatWhileRoofedTooltip".Translate());
+            if (hatsOnlyOnMap != Controller.settings.HideHatWhileRoofed)
+            {
+                Controller.settings.HideHatWhileRoofed = hatsOnlyOnMap;
+                Controller.settings.Write();
+                //    PortraitsCache.Clear();
+            }
 
-        public static Color HairYellowBlonde = new Color32(255, 203, 89, 255);
+            bool noHatsInBed = Controller.settings.HideHatInBed;
+            listing_Standard.CheckboxLabeled("Settings.HideHatInBed".Translate(), ref noHatsInBed, "Settings.HideHatInBedTooltip".Translate());
+            if (noHatsInBed != Controller.settings.HideHatWhileRoofed)
+            {
+                Controller.settings.HideHatInBed = noHatsInBed;
+                Controller.settings.Write();
+                // PortraitsCache.Clear();
+            }
 
-        public static Color HairTerraCotta = new Color32(185, 49, 4, 255);
 
-        public static Color HairMediumDarkBrown = new Color32(110, 70, 10, 255);
+            // bool hatsOnlyOnMap = Prefs.HatsOnlyOnMap;
+            // listing_Standard.CheckboxLabeled("HatsShownOnlyOnMap".Translate(), ref hatsOnlyOnMap, null);
+            // if (hatsOnlyOnMap != Prefs.HatsOnlyOnMap)
+            // {
+            //     PortraitsCache.Clear();
+            // }
+            // Prefs.HatsOnlyOnMap = hatsOnlyOnMap;
+        }
 
-        public static Color HairDarkBrown = new Color32(64, 41, 19, 255);
+        static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            var m_set_HatsOnlyOnMap = AccessTools.Method(typeof(Prefs), "set_HatsOnlyOnMap");
+            var m_MoreStuff = AccessTools.Method(typeof(Dialog_Options_DoWindowContents_Patch), "MoreStuff");
 
-        public static Color HairMidnightBlack = new Color32(30, 30, 30, 255);
+            foreach (var instruction in instructions)
+            {
+                yield return instruction;
+                if (instruction.opcode == OpCodes.Call && instruction.operand == m_set_HatsOnlyOnMap)
+                {
+                    yield return new CodeInstruction(OpCodes.Ldloc_1);
+                    yield return new CodeInstruction(OpCodes.Call, m_MoreStuff);
+                }
+            }
 
-        public static Color HairDarkPurple = new Color32(162, 47, 115, 255);
-
-        public static Color HairBlueSteel = new Color32(57, 115, 199, 255);
-
-        public static Color HairBurgundyBistro = new Color32(206, 38, 58, 255);
-
-        public static Color HairGreenGrape = new Color32(124, 189, 14, 255);
-
-        public static Color HairMysticTurquois = new Color32(71, 191, 165, 255);
-
-        public static Color HairPinkPearl = new Color32(230, 74, 153, 255);
-
-        public static Color HairPurplePassion = new Color32(145, 50, 191, 255);
-
-        public static Color HairRosaRosa = new Color32(215, 168, 255, 255);
-
-        public static Color HairRubyRed = new Color32(227, 35, 41, 255);
-
-        public static Color HairUltraViolet = new Color32(191, 53, 132, 255);
+        }
     }
-
-    #endregion Hair
 }
