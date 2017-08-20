@@ -25,7 +25,7 @@
 
   <FacialStuffEditor.CannotUseNoFacePawn>{0} can't use this. Humans only.</FacialStuffEditor.CannotUseNoFacePawn>
   <FacialStuffEditor.FaceStylerTitle>Face Styler</FacialStuffEditor.FaceStylerTitle>
-  <FacialStuffEditor.Accept>Accept new style</FacialStuffEditor.Accept>
+  <FacialStuffEditor.Accept>Accept and save</FacialStuffEditor.Accept>
   <FacialStuffEditor.EditFace>Edit colonists's appearance</FacialStuffEditor.EditFace>
 
   <!-- Dresser -->

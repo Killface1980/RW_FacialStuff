@@ -7,10 +7,4 @@
     <reportString>Going to the styling station.</reportString>
   </JobDef>
 
-  <JobDef>
-    <defName>ChangeBodyFS</defName>
-    <driverClass>FacialStuffEditor.DresserJobDriver.JobDriver_ChangeBody</driverClass>
-    <reportString>Change body attributes.</reportString>
-  </JobDef>
-
 </JobDefs>

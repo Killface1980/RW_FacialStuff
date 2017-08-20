@@ -43,23 +43,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UI\DresserUI.cs" />
-    <Compile Include="UI\DTO\DresserDTO.cs" />
-    <Compile Include="UI\DTO\DresserDtoFactory.cs" />
-    <Compile Include="UI\DTO\SelectionWidgetDTOs\ASelectionWidgetDTO.cs" />
-    <Compile Include="UI\DTO\SelectionWidgetDTOs\BodyTypeSelectionDTO.cs" />
-    <Compile Include="UI\DTO\SelectionWidgetDTOs\GenderSelectionDTO.cs" />
-    <Compile Include="DresserJobDriver\JobDriver_ChangeBody.cs" />
-    <Compile Include="UI\DTO\SelectionWidgetDTOs\HeadTypeSelectionDTO.cs" />
-    <Compile Include="UI\DTO\SelectionWidgetDTOs\SliderWidgetDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\Util\WidgetUtil.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RW_FacialStuff\FacialStuff.csproj">
-      <Project>{f3da945b-ab1b-492c-9c59-a17e61362aa5}</Project>
-      <Name>FacialStuff</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

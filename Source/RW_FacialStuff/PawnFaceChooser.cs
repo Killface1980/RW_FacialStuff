@@ -415,31 +415,18 @@
 
         private static float BeardChoiceLikelihoodFor(BeardDef beard, Pawn pawn)
         {
-            if (pawn.gender == Gender.None)
-            {
-                return 0f;
-            }
-
             if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 37)
             {
                 return 0f;
             }
 
-            if (pawn.gender == Gender.Male)
+            switch (beard.hairGender)
             {
-                switch (beard.hairGender)
-                {
-                    case HairGender.Male: return 70f;
-                    case HairGender.MaleUsually: return 30f;
-                    case HairGender.Any: return 60f;
-                    case HairGender.FemaleUsually: return 5f;
-                    case HairGender.Female: return 1f;
-                }
-            }
-
-            if (pawn.gender == Gender.Female)
-            {
-                return 0f;
+                case HairGender.Male: return 70f;
+                case HairGender.MaleUsually: return 30f;
+                case HairGender.Any: return 60f;
+                case HairGender.FemaleUsually: return 5f;
+                case HairGender.Female: return 1f;
             }
 
             Log.Error(string.Concat("Unknown beard likelihood for ", beard, " with ", pawn));

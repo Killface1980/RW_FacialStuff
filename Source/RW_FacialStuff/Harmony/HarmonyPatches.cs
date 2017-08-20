@@ -170,10 +170,10 @@
 
             __instance.ClearCache();
 
-           // if (pawn.Faction == null)
-           // {
-           //     pawn.SetFactionDirect(Faction.OfPlayer);
-           // }
+            // if (pawn.Faction == null)
+            // {
+            //     pawn.SetFactionDirect(Faction.OfPlayer);
+            // }
 
             GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
 
@@ -284,18 +284,20 @@
             {
                 return;
             }
-
-            if (!Controller.settings.ShowExtraParts)
+            Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
+            if (pawn == null)
             {
                 return;
             }
 
-            Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
             if (!pawn.Spawned)
             {
                 return;
             }
-
+            if (!Controller.settings.ShowExtraParts)
+            {
+                return;
+            }
             if (part.def == BodyPartDefOf.LeftEye || part.def == BodyPartDefOf.RightEye
                 || part.def == BodyPartDefOf.Head)
             {

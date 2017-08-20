@@ -347,11 +347,11 @@ namespace FacialStuff.ColorPicker
             Widgets.DrawBox(pickerHandleRect);
             GUI.color = Color.white;
 
-            // reset active control on mouseup
-            if (Input.GetMouseButtonUp(0))
-            {
-                this._activeControl = Controls.none;
-            }
+            // // reset active control on mouseup
+            // if (Input.GetMouseButtonUp(0))
+            // {
+            //     this._activeControl = Controls.none;
+            // }
 
             // colorpicker interaction
             if (Mouse.IsOver(pickerRect))
@@ -367,6 +367,7 @@ namespace FacialStuff.ColorPicker
                     Vector2 PositionInRect = MousePosition - new Vector2(pickerRect.xMin, pickerRect.yMin);
 
                     this.PickerAction(PositionInRect);
+                    this._activeControl = Controls.none;
                 }
             }
 
@@ -391,6 +392,7 @@ namespace FacialStuff.ColorPicker
                     float PositionInRect = MousePosition - hueRect.yMin;
 
                     this.HueAction(PositionInRect);
+                    this._activeControl = Controls.none;
                 }
             }
 

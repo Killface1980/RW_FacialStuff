@@ -29,7 +29,7 @@
 
         private const float YOffset_Status = 0.0421875f;
 
-        private const float YOffsetOnFace = 0.001f;
+        private const float YOffsetOnFace = 0.0001f;
 
         private static Type PawnRendererType;
 

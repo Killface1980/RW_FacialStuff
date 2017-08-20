@@ -80,8 +80,19 @@
     <Compile Include="Defs\MouthDef.cs" />
     <Compile Include="Defs\WrinkleDef.cs" />
     <Compile Include="Enums\BeardType.cs" />
-    <Compile Include="Enums\DialoguePage.cs" />
+    <None Include="Enums\DialoguePage.cs" />
     <Compile Include="Enums\Side.cs" />
+    <Compile Include="FaceStyling_Bench\Dialog_FaceStyling.cs" />
+    <None Include="FaceStyling_Bench\DresserJobDriver\JobDriver_ChangeBody.cs" />
+    <None Include="FaceStyling_Bench\UI\DresserUI.cs" />
+    <Compile Include="FaceStyling_Bench\UI\DTO\DresserDTO.cs" />
+    <Compile Include="FaceStyling_Bench\UI\DTO\DresserDtoFactory.cs" />
+    <Compile Include="FaceStyling_Bench\UI\DTO\SelectionWidgetDTOs\ASelectionWidgetDTO.cs" />
+    <Compile Include="FaceStyling_Bench\UI\DTO\SelectionWidgetDTOs\BodyTypeSelectionDTO.cs" />
+    <Compile Include="FaceStyling_Bench\UI\DTO\SelectionWidgetDTOs\GenderSelectionDTO.cs" />
+    <Compile Include="FaceStyling_Bench\UI\DTO\SelectionWidgetDTOs\HeadTypeSelectionDTO.cs" />
+    <Compile Include="FaceStyling_Bench\UI\DTO\SelectionWidgetDTOs\SliderWidgetDTO.cs" />
+    <Compile Include="FaceStyling_Bench\UI\Util\WidgetUtil.cs" />
     <Compile Include="HumanMouthGraphics.cs" />
     <None Include="MouthGraphicData.cs" />
     <Compile Include="Settings.cs" />
@@ -95,7 +106,7 @@
     <Compile Include="Defs\MouthDefOf.cs" />
     <Compile Include="FacialGraphics.cs" />
     <Compile Include="HairCutPawn.cs" />
-    <Compile Include="Enums\GraphicSlotGroup.cs" />
+    <None Include="Enums\GraphicSlotGroup.cs" />
     <Compile Include="Graphics_FS\Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="Graphics_FS\Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="MeshPoolFs.cs" />
@@ -104,14 +115,13 @@
     <Compile Include="ColorPicker\ColorWrapper.cs" />
     <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
-    <Compile Include="FaceStyling Bench\Dialog_FaceStyling.cs" />
-    <Compile Include="FaceStyling Bench\Job_FaceStyling.cs" />
-    <Compile Include="FaceStyling Bench\FaceStyler.cs" />
-    <None Include="FaceStyling Bench\Preset.cs" />
-    <None Include="FaceStyling Bench\PresetDatabase.cs" />
+    <Compile Include="FaceStyling_Bench\Job_FaceStyling.cs" />
+    <Compile Include="FaceStyling_Bench\FaceStyler.cs" />
+    <None Include="FaceStyling_Bench\Preset.cs" />
+    <None Include="FaceStyling_Bench\PresetDatabase.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="Graphics_FS\Graphic_Multi_NaturalHeadParts.cs" />
-    <Compile Include="FaceStyling Bench\DialogUtility.cs" />
+    <Compile Include="FaceStyling_Bench\DialogUtility.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Genetics\PawnSkinColors_FS.cs" />
     <Compile Include="PawnFaceChooser.cs" />
@@ -176,7 +186,6 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
