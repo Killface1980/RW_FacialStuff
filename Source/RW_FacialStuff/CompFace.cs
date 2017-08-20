@@ -429,52 +429,58 @@
 
         public void CheckForAddedOrMissingParts()
         {
-            List<BodyPartRecord> body = this.FacePawn.RaceProps.body.AllParts;
+            List<BodyPartRecord> body = this.FacePawn.RaceProps?.body?.AllParts;
             List<Hediff> hediffSetHediffs = this.FacePawn.health?.hediffSet?.hediffs;
-            if (!hediffSetHediffs.NullOrEmpty())
             {
-                foreach (Hediff hediff in hediffSetHediffs)
+                if (hediffSetHediffs != null && body != null)
                 {
-                    BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
-                    BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
-                    BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
-                    AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
-
-                    if (addedPartProps != null)
+                    foreach (Hediff hediff in hediffSetHediffs)
                     {
-                        if (hediff.Part == leftEye)
+                        if (hediff == null)
                         {
-                            this.texPathEyeLeftPatch = "AddedParts/" + hediff.def.defName + "_Left" + "_"
-                                                       + this.PawnCrownType;
-                            this.isLeftEyeSolid = addedPartProps.isSolid;
+                            continue;
+                        }
+                        BodyPartRecord leftEye = body.Find(x => x?.def == BodyPartDefOf.LeftEye);
+                        BodyPartRecord rightEye = body.Find(x => x?.def == BodyPartDefOf.RightEye);
+                        BodyPartRecord jaw = body.Find(x => x?.def == BodyPartDefOf.Jaw);
+                        AddedBodyPartProps addedPartProps = hediff?.def?.addedPartProps;
+
+                        if (addedPartProps != null)
+                        {
+                            if (hediff.Part == leftEye)
+                            {
+                                this.texPathEyeLeftPatch =
+                                    "AddedParts/" + hediff.def.defName + "_Left" + "_" + this.PawnCrownType;
+                                this.isLeftEyeSolid = addedPartProps.isSolid;
+                            }
+
+                            if (hediff.Part == rightEye)
+                            {
+                                this.texPathEyeRightPatch =
+                                    "AddedParts/" + hediff.def.defName + "_Right" + "_" + this.PawnCrownType;
+                                this.isRightEyeSolid = addedPartProps.isSolid;
+                            }
+
+                            if (hediff.Part == jaw)
+                            {
+                                this.texPathMouth = "Mouth/Mouth_" + hediff.def.defName;
+                                this.HasNaturalMouth = false;
+                            }
                         }
 
-                        if (hediff.Part == rightEye)
+                        if (hediff.def == HediffDefOf.MissingBodyPart)
                         {
-                            this.texPathEyeRightPatch = "AddedParts/" + hediff.def.defName + "_Right" + "_"
-                                                        + this.PawnCrownType;
-                            this.isRightEyeSolid = addedPartProps.isSolid;
-                        }
+                            if (hediff.Part == leftEye)
+                            {
+                                this.texPathEyeLeft = this.EyeTexPath("Missing", Enums.Side.Left);
+                                this.EyeWiggler.EyeLeftCanBlink = false;
+                            }
 
-                        if (hediff.Part == jaw)
-                        {
-                            this.texPathMouth = "Mouth/Mouth_" + hediff.def.defName;
-                            this.HasNaturalMouth = false;
-                        }
-                    }
-
-                    if (hediff.def == HediffDefOf.MissingBodyPart)
-                    {
-                        if (hediff.Part == leftEye)
-                        {
-                            this.texPathEyeLeft = this.EyeTexPath("Missing", Enums.Side.Left);
-                            this.EyeWiggler.EyeLeftCanBlink = false;
-                        }
-
-                        if (hediff.Part == rightEye)
-                        {
-                            this.texPathEyeRight = this.EyeTexPath("Missing", Enums.Side.Right);
-                            this.EyeWiggler.EyeRightCanBlink = false;
+                            if (hediff.Part == rightEye)
+                            {
+                                this.texPathEyeRight = this.EyeTexPath("Missing", Enums.Side.Right);
+                                this.EyeWiggler.EyeRightCanBlink = false;
+                            }
                         }
                     }
                 }
