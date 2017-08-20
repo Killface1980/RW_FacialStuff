@@ -11,9 +11,6 @@
 	<Settings.HideHatInBed>Blende Hüte im Bett aus</Settings.HideHatInBed>
   <Settings.HideHatInBedTooltip>Facial Stuff:\nHüte sind nur sichtbar wenn der Körper dargestellt wird.</Settings.HideHatInBedTooltip>
   <Settings.Apply>Einstellungen speichern und übernehmen.</Settings.Apply>
-  <FaceStylerTitle>Face Styler</FaceStylerTitle>
-  <FacialStuffColorChangerButtonAccept>Check den neuen Style aus</FacialStuffColorChangerButtonAccept>
-  <FSStylizeFace>Bearbeite Aussehen des Kolonisten</FSStylizeFace>
 
   <Settings.ShowExtraParts>Zeige Extra-Teile an</Settings.ShowExtraParts>
   <Settings.ShowExtraPartsTooltip>Zeige entfernte oder hinzugefügte Körperteile</Settings.ShowExtraPartsTooltip>
@@ -25,6 +22,35 @@
   <Settings.MakeThemBlinkTooltip>Jetzt wird geblinzelt.</Settings.MakeThemBlinkTooltip>
   <Settings.UseCaching>EXPERIMENTAL: Exportiere HairCache</Settings.UseCaching>
   <Settings.UseCachingTooltip>Exportiert erstellte HairCut-Texturen als png in das Mod-Verzeichnis. Bitte deaktivieren falls irgendetwas nicht funktioniert.</Settings.UseCachingTooltip>
-  <CannotUseNoFacePawn>HECAP can't use this as HECAP has no defined face.</CannotUseNoFacePawn>
+
+  <FacialStuffEditor.CannotUseNoFacePawn>{0} kann das nicht nutzen. Nur für Menschen.</FacialStuffEditor.CannotUseNoFacePawn>
+
+  <FacialStuffEditor.FaceStylerTitle>Face Styler</FacialStuffEditor.FaceStylerTitle>
+  <FacialStuffEditor.Accept>Check den neuen Style aus</FacialStuffEditor.Accept>
+  <FacialStuffEditor.EditFace>Bearbeite Aussehen des Kolonisten</FacialStuffEditor.EditFace>
+
+  <!-- Dresser -->
+
+  <!-- Common Strings -->
+  <FacialStuffEditor.Save>Speichern</FacialStuffEditor.Save>
+  <FacialStuffEditor.Reset>Zurücksetzen</FacialStuffEditor.Reset>
+
+  <!-- Dresser UI -->
+  <FacialStuffEditor.BodyType>Körpertyp</FacialStuffEditor.BodyType>
+  <FacialStuffEditor.HeadType>Kopftyp</FacialStuffEditor.HeadType>
+  <FacialStuffEditor.SkinColor>Hautfarbe</FacialStuffEditor.SkinColor>
+  <FacialStuffEditor.Gender>Geschlecht</FacialStuffEditor.Gender>
+  <FacialStuffEditor.HairStyle>Haarstil</FacialStuffEditor.HairStyle>
+  <FacialStuffEditor.AgeBiological>Biologisches Alter</FacialStuffEditor.AgeBiological>
+  <FacialStuffEditor.AgeChronological>Chronologisches Alter</FacialStuffEditor.AgeChronological>
+
+  <!-- Help Text -->
+  <FacialStuffEditor.GenderChangeWarning>Diese Werte zu ändern, könnte negative Auswirkungen auf das Spiel haben.\nBenutzung auf eigene Gefahr.</FacialStuffEditor.GenderChangeWarning>
+  <!-- Job Toils -->
+  <FacialStuffEditor.ChangeBody>Ändere Körperattribute</FacialStuffEditor.ChangeBody>
+  <!-- Mod Settings -->
+  <FacialStuffEditor.ShowBodyChange>Erlaube die Änderung des Körpertyps</FacialStuffEditor.ShowBodyChange>
+  <FacialStuffEditor.ShowGenderAgeChange>Erlaube die Änderung von Alter und Geschlecht</FacialStuffEditor.ShowGenderAgeChange>
+
 
 </LanguageData>

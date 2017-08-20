@@ -3,11 +3,14 @@
     using System;
     using System.Collections.Generic;
 
+
     using Verse;
     using Verse.AI;
 
-    internal class FaceStyler : Building
+    public class FaceStyler : Building
     {
+        public readonly JobDef changeBodyJobDef = DefDatabase<JobDef>.GetNamed("ChangeBodyFS", true);
+
         #region Public Methods
 
         public void FaceStyling(Pawn pawn)
@@ -15,25 +18,25 @@
             Find.WindowStack.Add(new DialogFaceStyling(pawn));
         }
 
-        public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn myPawn)
+        public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn pawn)
         {
             List<FloatMenuOption> list = new List<FloatMenuOption>();
             {
-                if (!myPawn.CanReserve(this))
+                if (!pawn.CanReserve(this))
                 {
                     FloatMenuOption item = new FloatMenuOption("CannotUseReserved".Translate(), null);
                     return new List<FloatMenuOption> { item };
                 }
 
-                if (!myPawn.CanReach(this, PathEndMode.Touch, Danger.Some))
+                if (!pawn.CanReach(this, PathEndMode.Touch, Danger.Some))
                 {
                     FloatMenuOption item2 = new FloatMenuOption("CannotUseNoPath".Translate(), null);
                     return new List<FloatMenuOption> { item2 };
                 }
 
-                if (myPawn.TryGetComp<CompFace>() == null)
+                if (pawn.TryGetComp<CompFace>() == null)
                 {
-                    FloatMenuOption item3 = new FloatMenuOption("CannotUseNoFacePawn".Translate(), null);
+                    FloatMenuOption item3 = new FloatMenuOption("FacialStuffEditor.CannotUseNoFacePawn".Translate(pawn), null);
                     return new List<FloatMenuOption> { item3 };
                 }
 
@@ -44,23 +47,29 @@
                             DefDatabase<JobDef>.GetNamed("FaceStyleChanger"),
                             this,
                             this.InteractionCell);
-                        if (!myPawn.jobs.TryTakeOrderedJob(FaceStyleChanger))
+                        if (!pawn.jobs.TryTakeOrderedJob(FaceStyleChanger))
                         {
                             // This is used to force go job, it will work even when drafted
-                            myPawn.jobs.jobQueue.EnqueueFirst(FaceStyleChanger);
-                            myPawn.jobs.StopAll();
+                            pawn.jobs.jobQueue.EnqueueFirst(FaceStyleChanger);
+                            pawn.jobs.StopAll();
                         }
                     };
 
-                list.Add(new FloatMenuOption("FSStylizeFace".Translate(), action2));
+                list.Add(new FloatMenuOption("FacialStuffEditor.EditFace".Translate(), action2));
+
+                if (Controller.settings.ShowBodyChange)
+                {
+                    list.Add(new FloatMenuOption(
+                        "FacialStuffEditor.ChangeBody".Translate(),
+                        delegate
+                            {
+                                Job job = new Job(this.changeBodyJobDef, this);
+                                pawn.jobs.TryTakeOrderedJob(job);
+                            }));
+                }
             }
 
             return list;
-        }
-
-        public override void SpawnSetup(Map map, bool respawningAfterLoad)
-        {
-            base.SpawnSetup(map, respawningAfterLoad);
         }
 
         #endregion Public Methods

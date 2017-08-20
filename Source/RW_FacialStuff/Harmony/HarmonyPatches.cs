@@ -160,11 +160,20 @@
             {
                 return;
             }
+            faceComp.OldEnough = pawn.ageTracker.AgeBiologicalYearsFloat >= 13;
 
-            if (pawn.Faction == null)
+            // Return if child
+            if (!faceComp.OldEnough)
             {
-                pawn.SetFactionDirect(Faction.OfPlayer);
+                return;
             }
+
+            __instance.ClearCache();
+
+           // if (pawn.Faction == null)
+           // {
+           //     pawn.SetFactionDirect(Faction.OfPlayer);
+           // }
 
             GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
 
@@ -173,7 +182,6 @@
             if (!faceComp.IsDNAoptimized)
             {
                 faceComp.DefineHairDNA();
-
                 __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(
                     pawn.story.hairDef.texPath,
                     ShaderDatabase.Cutout,
@@ -192,8 +200,6 @@
             // {
             // faceComp.DefineSkinDNA();
             // }
-
-
 
             // Custom rotting color, mixed with skin tone
             Color rotColor = pawn.story.SkinColor * FacialGraphics.SkinRottingMultiplyColor;
@@ -224,7 +230,7 @@
                         pawn.story.bodyType,
                         ShaderDatabase.CutoutSkin,
                         rotColor);
-                    PortraitsCache.Clear();
+                    PortraitsCache.SetDirty(pawn);
                 }
             }
         }
@@ -374,6 +380,7 @@
         }
 
     }
+
     [HarmonyPatch(typeof(Dialog_Options))]
     [HarmonyPatch("DoWindowContents")]
     static class Dialog_Options_DoWindowContents_Patch

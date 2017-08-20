@@ -58,7 +58,7 @@
         private bool isLeftEyeSolid;
 
         private bool isOld;
-        private bool isOptimized;
+        private bool isOptimized = false;
         private bool isRightEyeSolid;
         private bool isSkinDNAoptimized;
         private Graphic mainBeardGraphic;
@@ -87,11 +87,19 @@
 
         private bool hasEyePatchRight;
 
+        private bool oldEnough;
+
+        public bool OldEnough
+        {
+            get => oldEnough;
+            set => this.oldEnough = value;
+        }
+
         #endregion Private Fields
 
         #region Public Properties
 
-        public Color BeardColor=> this.beardColor;
+        public Color BeardColor => this.beardColor;
 
         public BeardDef BeardDef
         {
@@ -152,12 +160,12 @@
             set => this.hairColorOrg = value;
         }
 
-        public bool HasEyePatchLeft=> this.hasEyePatchLeft;
+        public bool HasEyePatchLeft => this.hasEyePatchLeft;
 
 
         public bool HasNaturalMouth { get; private set; } = true;
 
-        public bool HasEyePatchRight=> this.hasEyePatchRight;
+        public bool HasEyePatchRight => this.hasEyePatchRight;
 
 
         public bool HasSameBeardColor
@@ -172,11 +180,7 @@
             set => this.isDNAoptimized = value;
         }
 
-        public bool IsOptimized
-        {
-            get => this.isOptimized;
-            set => this.isOptimized = value;
-        }
+        public bool IsOptimized => this.isOptimized;
 
         public bool IsSkinDNAoptimized
         {
@@ -199,13 +203,32 @@
         public Graphic_Multi_NaturalHeadParts MouthGraphic => this.mouthGraphic;
         public GraphicMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
 
-        public CrownType PawnCrownType => this.FacePawn.story.crownType;
+        public CrownType PawnCrownType
+        {
+            get
+            {
+                {
+                    if (this.FacePawn.story.HeadGraphicPath.Contains("Narrow"))
+                    {
+                        this.pawnCrownType = CrownType.Narrow;
+                        this.FacePawn.story.crownType = CrownType.Narrow;
+                    }
+                    else
+                    {
+                        this.pawnCrownType = CrownType.Average;
+                        this.FacePawn.story.crownType = CrownType.Average;
+
+                    }
+                }
+                return this.pawnCrownType;
+
+            }
+        }
 
         public HeadType PawnHeadType
         {
             get
             {
-                if (this.pawnHeadType == HeadType.Undefined)
                 {
                     if (this.FacePawn.story.HeadGraphicPath.Contains("Normal"))
                     {
@@ -367,13 +390,12 @@
 
         public Material BeardMatAt(Rot4 facing)
         {
-            if (!this.HasNaturalMouth)
+            if (!this.HasNaturalMouth || this.FacePawn.gender == Gender.Female)
             {
                 return null;
             }
 
             Material material = null;
-            if (this.FacePawn.gender == Gender.Male)
             {
                 material = this.mainBeardGraphic.MatAt(facing);
 
@@ -509,7 +531,7 @@
             this.HasSameBeardColor = true;
             this.beardColor = FacialGraphics.DarkerBeardColor(this.FacePawn.story.hairColor);
 
-            this.IsOptimized = true;
+            this.isOptimized = true;
         }
 
         /// <summary>
@@ -666,7 +688,7 @@
 
         public Material MoustacheMatAt(Rot4 facing)
         {
-            if (!this.HasNaturalMouth || this.MoustacheDef == MoustacheDefOf.Shaved || this.MoustacheDef == null)
+            if (!this.HasNaturalMouth || this.MoustacheDef == MoustacheDefOf.Shaved || this.MoustacheDef == null || this.FacePawn.gender == Gender.Female)
             {
                 return null;
             }
@@ -682,22 +704,31 @@
             return material;
         }
 
-        public Material MouthMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
+        public Material MouthMatAt(Rot4 facing, bool portrait, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
             Material material = null;
-            if (!Controller.settings.UseMouth || !this.DrawMouth || !this.BeardDef.drawMouth
-                || this.MoustacheDef != MoustacheDefOf.Shaved)
+            if (!Controller.settings.UseMouth || !this.DrawMouth)
             {
                 return null;
             }
-
-            if (bodyCondition == RotDrawMode.Fresh)
+            if (this.FacePawn.gender == Gender.Male && (!this.BeardDef.drawMouth || this.MoustacheDef != MoustacheDefOf.Shaved))
             {
-                material = this.MouthGraphic.MatAt(facing);
+                return null;
             }
-            else if (bodyCondition == RotDrawMode.Rotting)
+            if (portrait)
             {
-                material = this.MouthGraphic.MatAt(facing);
+                material = FacialGraphics.MouthGraphic03.MatAt(facing);
+            }
+            else
+            {
+                if (bodyCondition == RotDrawMode.Fresh)
+                {
+                    material = this.MouthGraphic.MatAt(facing);
+                }
+                else if (bodyCondition == RotDrawMode.Rotting)
+                {
+                    material = this.MouthGraphic.MatAt(facing);
+                }
             }
 
             if (material != null)
@@ -711,8 +742,7 @@
         public override void PostDraw()
         {
             base.PostDraw();
-
-            if (!this.FacePawn.Spawned || this.FacePawn.Dead)
+            if (!this.FacePawn.Spawned || this.FacePawn.Dead || !this.IsOptimized || !this.OldEnough)
             {
                 return;
             }
@@ -728,6 +758,7 @@
             // todo: head wiggler? move eyes to eyewiggler
             // this.headWiggler.WigglerTick();
             this.EyeWiggler.WigglerTick();
+
         }
 
         public override void PostExposeData()
@@ -779,7 +810,6 @@
             {
                 return false;
             }
-
             this.EyeWiggler = new PawnEyeWiggler(this.FacePawn);
 
             // this.headWiggler = new PawnHeadWiggler(this.pawn);
@@ -791,7 +821,6 @@
             {
                 this.CheckForAddedOrMissingParts();
             }
-
             this.SetHeadOffsets();
 
             return true;

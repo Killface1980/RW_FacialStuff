@@ -11,20 +11,32 @@
     {
         #region Public Fields
 
-        public static readonly List<Color> ArtificialHairColors =
-            new List<Color>
-                {
-                    HairGreenGrape,
-                    HairMysticTurquois,
-                    HairBlueSteel,
-                    HairPurplePassion,
-                    HairRosaRosa,
-                    HairUltraViolet,
-                    HairBurgundyBistro
-                };
+        public static List<Color> ArtificialHairColors;
 
-        public static List<Color> NaturalHairColors =
-            new List<Color> { HairPlatinum, HairYellowBlonde, HairTerraCotta, HairDarkBrown, HairMidnightBlack };
+        public static List<Color> NaturalHairColors;
+
+        public static void InitializeColors()
+        {
+            NaturalHairColors = new List<Color>
+                                    {
+                                        HairPlatinum,
+                                        HairYellowBlonde,
+                                        HairTerraCotta,
+                                        HairDarkBrown,
+                                        HairMidnightBlack
+                                    };
+
+            ArtificialHairColors = new List<Color>()
+                                       {
+                                           HairGreenGrape,
+                                           HairMysticTurquois,
+                                           HairBlueSteel,
+                                           HairPurplePassion,
+                                           HairRosaRosa,
+                                           HairUltraViolet,
+                                           HairBurgundyBistro
+                                       };
+        }
 
         #endregion Public Fields
 

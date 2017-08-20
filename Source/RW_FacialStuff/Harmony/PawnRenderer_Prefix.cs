@@ -29,7 +29,7 @@
 
         private const float YOffset_Status = 0.0421875f;
 
-        private const float YOffsetOnFace = 0.0001f;
+        private const float YOffsetOnFace = 0.001f;
 
         private static Type PawnRendererType;
 
@@ -80,12 +80,15 @@
             // Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
             Pawn pawn = __instance.graphics.pawn;
 
+            if (!__instance.graphics.AllResolved)
+            {
+                __instance.graphics.ResolveAllGraphics();
+            }
+
             CompFace faceComp = pawn.TryGetComp<CompFace>();
 
-            bool oldEnough = pawn.ageTracker.AgeBiologicalYearsFloat >= 13;
-
             // Let vanilla do the job if no FacePawn or pawn not a teenager
-            if (faceComp == null || !oldEnough)
+            if (faceComp == null || !faceComp.OldEnough)
             {
                 return true;
             }
@@ -116,11 +119,6 @@
                 }
 #endif
 
-            if (!__instance.graphics.AllResolved)
-            {
-                __instance.graphics.ResolveAllGraphics();
-            }
-
             // Regular FacePawn rendering 14+ years
             if (renderBody)
             {
@@ -129,10 +127,10 @@
 
                 mesh = MeshPool.humanlikeBodySet.MeshAt(bodyFacing);
 
-                List<Material> list = __instance.graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
-                for (int i = 0; i < list.Count; i++)
+                List<Material> bodyBaseAt = __instance.graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
+                for (int i = 0; i < bodyBaseAt.Count; i++)
                 {
-                    Material damagedMat = __instance.graphics.flasher.GetDamagedMat(list[i]);
+                    Material damagedMat = __instance.graphics.flasher.GetDamagedMat(bodyBaseAt[i]);
                     GenDraw.DrawMeshNowOrLater(mesh, loc, quat, damagedMat, portrait);
                     loc.y += YOffsetInterval_Clothes;
                 }
@@ -176,13 +174,11 @@
                     // locFacialY += faceComp.eyemove;
                     Quaternion headQuat = quat; // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
                     GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, material, portrait);
-                    locFacialY.y += 0.001f;
+                    locFacialY.y += YOffsetOnFace;
                     if (!headStump)
                     {
-                        Material beardMat = faceComp.BeardMatAt(headFacing);
-                        Material moustacheMatAt = faceComp.MoustacheMatAt(headFacing);
                         Material browMat = faceComp.BrowMatAt(headFacing);
-                        Material mouthMat = faceComp.MouthMatAt(headFacing, bodyDrawType);
+                        Material mouthMat = faceComp.MouthMatAt(headFacing, portrait, bodyDrawType);
                         Material wrinkleMat = faceComp.WrinkleMatAt(headFacing, bodyDrawType);
 
                         if (wrinkleMat != null)
@@ -191,63 +187,28 @@
                             locFacialY.y += YOffsetOnFace;
                         }
 
-                        if (mouthMat != null)
+                        Material leftEyeMat = faceComp.EyeLeftMatAt(headFacing, portrait);
+                        if (leftEyeMat != null)
                         {
-                            // Mesh meshMouth = __instance.graphics.HairMeshSet.MeshAt(headFacing);
-                            Mesh meshMouth = faceComp.MouthMeshSet.MeshAt(headFacing);
-
-                            Vector3 drawLoc = locFacialY + headQuat * faceComp.BaseMouthOffsetAt(bodyFacing);
-                            GenDraw.DrawMeshNowOrLater(meshMouth, drawLoc, headQuat, mouthMat, portrait);
+                            GenDraw.DrawMeshNowOrLater(
+                                mesh2eyes,
+                                locFacialY + faceComp.EyeWiggler.EyeMoveL,
+                                headQuat,
+                                leftEyeMat,
+                                portrait);
                             locFacialY.y += YOffsetOnFace;
                         }
 
-                        if (beardMat != null)
+                        Material rightEyeMat = faceComp.EyeRightMatAt(headFacing, portrait);
+                        if (rightEyeMat != null)
                         {
-                            GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, beardMat, portrait);
+                            GenDraw.DrawMeshNowOrLater(
+                                mesh2eyes,
+                                locFacialY + faceComp.EyeWiggler.EyeMoveR,
+                                headQuat,
+                                rightEyeMat,
+                                portrait);
                             locFacialY.y += YOffsetOnFace;
-                        }
-
-                        if (moustacheMatAt != null)
-                        {
-                            GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, moustacheMatAt, portrait);
-                            locFacialY.y += YOffsetOnFace;
-                        }
-
-                        // Deactivated, looks kinda crappy ATM
-                        // if (pawn.Dead)
-                        // {
-                        // Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, bodyDrawType);
-                        // if (deadEyeMat != null)
-                        // {
-                        // GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, deadEyeMat, portrait);
-                        // locFacialY.y += YOffsetOnFace;
-                        // }
-                        {
-                            // }
-                            // else
-                            Material leftEyeMat = faceComp.EyeLeftMatAt(headFacing, portrait);
-                            if (leftEyeMat != null)
-                            {
-                                GenDraw.DrawMeshNowOrLater(
-                                    mesh2eyes,
-                                    locFacialY + faceComp.EyeWiggler.EyeMoveL,
-                                    headQuat,
-                                    leftEyeMat,
-                                    portrait);
-                                locFacialY.y += YOffsetOnFace;
-                            }
-
-                            Material rightEyeMat = faceComp.EyeRightMatAt(headFacing, portrait);
-                            if (rightEyeMat != null)
-                            {
-                                GenDraw.DrawMeshNowOrLater(
-                                    mesh2eyes,
-                                    locFacialY + faceComp.EyeWiggler.EyeMoveR,
-                                    headQuat,
-                                    rightEyeMat,
-                                    portrait);
-                                locFacialY.y += YOffsetOnFace;
-                            }
                         }
 
                         if (browMat != null)
@@ -276,14 +237,54 @@
                                 locFacialY.y += YOffsetOnFace;
                             }
                         }
+
+                        if (mouthMat != null)
+                        {
+                            // Mesh meshMouth = __instance.graphics.HairMeshSet.MeshAt(headFacing);
+                            Mesh meshMouth = faceComp.MouthMeshSet.MeshAt(headFacing);
+
+                            Vector3 drawLoc = locFacialY + headQuat * faceComp.BaseMouthOffsetAt(bodyFacing);
+                            GenDraw.DrawMeshNowOrLater(meshMouth, drawLoc, headQuat, mouthMat, portrait);
+                            locFacialY.y += YOffsetOnFace;
+                        }
+                        // Portrait obviously ignores the y offset, thus render the beard after the body apparel
+                        if (!portrait)
+                        {
+                            Material beardMat = faceComp.BeardMatAt(headFacing);
+                            Material moustacheMatAt = faceComp.MoustacheMatAt(headFacing);
+
+                            if (beardMat != null)
+                            {
+                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, beardMat, portrait);
+                                locFacialY.y += YOffsetOnFace;
+                            }
+
+                            if (moustacheMatAt != null)
+                            {
+                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, moustacheMatAt, portrait);
+                                locFacialY.y += YOffsetOnFace;
+                            }
+                        }
+
+                        // Deactivated, looks kinda crappy ATM
+                        // if (pawn.Dead)
+                        // {
+                        // Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, bodyDrawType);
+                        // if (deadEyeMat != null)
+                        // {
+                        // GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, deadEyeMat, portrait);
+                        // locFacialY.y += YOffsetOnFace;
+                        // }
+
+                        // }
+                        // else
+
                     }
                 }
 
                 Vector3 loc2 = rootLoc + b;
                 loc2.y += YOffset_OnHead;
-                loc2.y = Mathf.Max(loc2.y, locFacialY.y);
 
-                // loc2 += faceComp.eyemove;
                 bool showFullHair = true;
 
                 if (!portrait || !Prefs.HatsOnlyOnMap)
@@ -371,7 +372,29 @@
                     }
                 }
             }
+            // Draw the beard, for the RenderPortrait
+            if (portrait && !headStump)
+            {
+                Material beardMat = faceComp.BeardMatAt(headFacing);
+                Material moustacheMatAt = faceComp.MoustacheMatAt(headFacing);
+                Quaternion headQuat = quat; // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
+                Vector3 b = quat * __instance.BaseHeadOffsetAt(headFacing);
+                Vector3 locFacialY = a + b;
 
+                Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
+
+                if (beardMat != null)
+                {
+                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, beardMat, portrait);
+                    locFacialY.y += YOffsetOnFace;
+                }
+
+                if (moustacheMatAt != null)
+                {
+                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, moustacheMatAt, portrait);
+                    locFacialY.y += YOffsetOnFace;
+                }
+            }
             if (!portrait)
             {
                 // Traverse.Create(__instance).Method("DrawEquipment", new object[] { rootLoc }).GetValue();

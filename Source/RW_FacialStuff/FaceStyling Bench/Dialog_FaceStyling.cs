@@ -114,7 +114,7 @@
 
         static DialogFaceStyling()
         {
-            Title = "FaceStylerTitle".Translate();
+            Title = "FacialStuffEditor.FaceStylerTitle".Translate();
             TitleHeight = 30f;
             PreviewSize = 250f;
 
@@ -480,12 +480,17 @@
             Text.Anchor = TextAnchor.UpperLeft;
             Text.Font = GameFont.Small;
 
+            if (HairMelanin.NaturalHairColors.NullOrEmpty())
+            {
+                HairMelanin.InitializeColors();
+            }
+
             // Rect iconPosition = new Rect(0f, 0f, _iconSize, _iconSize).CenteredOnYIn(rect);
             // GUI.DrawTexture(iconPosition, _icon);
             this.DrawUi(new Rect(0f, TitleHeight, inRect.width, inRect.height - TitleHeight - 25f - MarginFS * 2));
             DialogUtility.DoNextBackButtons(
                 inRect,
-                "FacialStuffColorChangerButtonAccept".Translate(),
+                "FacialStuffEditor.Accept".Translate(),
                 delegate
                     {
                         // update render for graphics

@@ -287,13 +287,6 @@
             out BeardDef mainBeard,
             out MoustacheDef moustache)
         {
-            if (pawn.gender != Gender.Male)
-            {
-                mainBeard = BeardDefOf.Beard_Shaved;
-                moustache = MoustacheDefOf.Shaved;
-                return;
-            }
-
             BeardRoulette(pawn, factionType, out mainBeard, out moustache);
         }
 
@@ -574,11 +567,6 @@
 
         private static MoustacheDef MoustacheRoulette(Pawn pawn, FactionDef factionType)
         {
-            if (pawn.gender != Gender.Male)
-            {
-                return MoustacheDefOf.Shaved;
-            }
-
             IEnumerable<MoustacheDef> source = from moustache in DefDatabase<MoustacheDef>.AllDefs
                                                where moustache.raceList.Contains(pawn.def)
                                                where moustache.hairTags.SharesElementWith(factionType.hairTags)
@@ -608,23 +596,14 @@
                 return 0f;
             }
 
-            switch (pawn.gender)
-            {
-                case Gender.None:
-                    return 0f;
-                case Gender.Male:
-                    switch (beard.hairGender)
-                    {
-                        case HairGender.Male: return 70f;
-                        case HairGender.MaleUsually: return 30f;
-                        case HairGender.Any: return 60f;
-                        case HairGender.FemaleUsually: return 5f;
-                        case HairGender.Female: return 1f;
-                    }
-                    break;
 
-                case Gender.Female:
-                    return 0f;
+            switch (beard.hairGender)
+            {
+                case HairGender.Male: return 70f;
+                case HairGender.MaleUsually: return 30f;
+                case HairGender.Any: return 60f;
+                case HairGender.FemaleUsually: return 5f;
+                case HairGender.Female: return 1f;
             }
 
             Log.Error(string.Concat("Unknown tache likelihood for ", beard, " with ", pawn));

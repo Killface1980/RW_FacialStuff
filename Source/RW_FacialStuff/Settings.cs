@@ -7,6 +7,7 @@ namespace FacialStuff
 
     public class Settings : ModSettings
     {
+
         #region Public Fields
 
         public float FemaleAverageNormalOffsetX = 0.1761006f;
@@ -65,6 +66,10 @@ namespace FacialStuff
         private bool useWeirdHairChoices = true;
         private bool useWrinkles = true;
 
+        private bool showBodyChange = false;
+
+        private bool showGenderAgeChange = false;
+
         #endregion Private Fields
 
         #region Public Properties
@@ -96,6 +101,10 @@ namespace FacialStuff
         public bool UseWeirdHairChoices => this.useWeirdHairChoices;
 
         public bool UseWrinkles => this.useWrinkles;
+
+        public bool ShowBodyChange => showBodyChange;
+
+        public bool ShowGenderAgeChange => showGenderAgeChange;
 
         #endregion Public Properties
 
@@ -138,6 +147,13 @@ namespace FacialStuff
                 "Settings.UseWeirdHairChoices".Translate(),
                 ref this.useWeirdHairChoices,
                 "Settings.UseWeirdHairChoicesTooltip".Translate());
+            list.CheckboxLabeled(
+                "FacialStuffEditor.ShowBodyChange".Translate(),
+                ref this.showBodyChange);
+            list.CheckboxLabeled(
+                "FacialStuffEditor.ShowGenderAgeChange".Translate(),
+                ref this.showGenderAgeChange);
+
             list.CheckboxLabeled(
                 "Settings.UseCaching".Translate(),
                 ref this.useCaching,
@@ -182,8 +198,11 @@ namespace FacialStuff
             // Scribe_Values.Look(ref this.useDNAByFaction, "useDNAByFaction", false, true);
             Scribe_Values.Look(ref this.makeThemBlink, "makeThemBlink", false, true);
             Scribe_Values.Look(ref this.useCaching, "useCaching", false, true);
+            Scribe_Values.Look(ref this.showBodyChange, "showBodyChange", false, true);
+            Scribe_Values.Look(ref this.showGenderAgeChange, "showGenderAgeChange", false, true);
 
-#if develop // Scribe_Values.Look(ref MaleAverageNormalOffsetX, "MaleAverageNormalOffsetX");
+#if develop 
+            // Scribe_Values.Look(ref MaleAverageNormalOffsetX, "MaleAverageNormalOffsetX");
 
 // Scribe_Values.Look(ref MaleAveragePointyOffsetX, "MaleAveragePointyOffsetX");
 
@@ -234,5 +253,6 @@ namespace FacialStuff
         }
 
         #endregion Public Methods
+
     }
 }
