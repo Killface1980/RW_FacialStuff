@@ -46,11 +46,21 @@
 
   <!-- Help Text -->
   <FacialStuffEditor.GenderChangeWarning>Diese Werte zu ändern, könnte negative Auswirkungen auf das Spiel haben.\nBenutzung auf eigene Gefahr.</FacialStuffEditor.GenderChangeWarning>
-  <!-- Job Toils -->
-  <FacialStuffEditor.ChangeBody>Ändere Körperattribute</FacialStuffEditor.ChangeBody>
   <!-- Mod Settings -->
   <FacialStuffEditor.ShowBodyChange>Erlaube die Änderung des Körpertyps</FacialStuffEditor.ShowBodyChange>
   <FacialStuffEditor.ShowGenderAgeChange>Erlaube die Änderung von Alter und Geschlecht</FacialStuffEditor.ShowGenderAgeChange>
+
+
+
+  <FacialStuffEditor.Any>Beliebig</FacialStuffEditor.Any>
+  <FacialStuffEditor.Original>Original</FacialStuffEditor.Original>
+  <FacialStuffEditor.Hair>Haar</FacialStuffEditor.Hair>
+  <FacialStuffEditor.Beard>Bärte</FacialStuffEditor.Beard>
+  <FacialStuffEditor.Eye>Äuglein</FacialStuffEditor.Eye>
+  <FacialStuffEditor.Brow>Braue</FacialStuffEditor.Brow>
+  <FacialStuffEditor.TypeSelector>Typ Selector</FacialStuffEditor.TypeSelector>
+  <FacialStuffEditor.DrawMouth>Zeige Mund an wenn möglich</FacialStuffEditor.DrawMouth>
+  <FacialStuffEditor.SameColor>Gleiche Farbe für Haar und Bart</FacialStuffEditor.SameColor>
 
 
 </LanguageData>

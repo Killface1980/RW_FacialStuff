@@ -431,21 +431,22 @@
         {
             List<BodyPartRecord> body = this.FacePawn.RaceProps?.body?.AllParts;
             List<Hediff> hediffSetHediffs = this.FacePawn.health?.hediffSet?.hediffs;
+            if (hediffSetHediffs != null && body != null)
             {
-                if (hediffSetHediffs != null && body != null)
+                foreach (Hediff hediff in hediffSetHediffs)
                 {
-                    foreach (Hediff hediff in hediffSetHediffs)
+                    if (hediff == null || hediff.def == null || hediff.def.defName == null)
                     {
-                        if (hediff == null)
-                        {
-                            continue;
-                        }
-                        BodyPartRecord leftEye = body.Find(x => x?.def == BodyPartDefOf.LeftEye);
-                        BodyPartRecord rightEye = body.Find(x => x?.def == BodyPartDefOf.RightEye);
-                        BodyPartRecord jaw = body.Find(x => x?.def == BodyPartDefOf.Jaw);
-                        AddedBodyPartProps addedPartProps = hediff?.def?.addedPartProps;
+                        continue;
+                    }
+                    BodyPartRecord leftEye = body.Find(x => x?.def == BodyPartDefOf.LeftEye);
+                    BodyPartRecord rightEye = body.Find(x => x?.def == BodyPartDefOf.RightEye);
+                    BodyPartRecord jaw = body.Find(x => x?.def == BodyPartDefOf.Jaw);
+                    AddedBodyPartProps addedPartProps = hediff.def?.addedPartProps;
 
-                        if (addedPartProps != null)
+                    if (addedPartProps != null)
+                    {
+                        if (hediff.def.defName != null)
                         {
                             if (hediff.Part == leftEye)
                             {
@@ -456,8 +457,8 @@
 
                             if (hediff.Part == rightEye)
                             {
-                                this.texPathEyeRightPatch =
-                                    "AddedParts/" + hediff.def.defName + "_Right" + "_" + this.PawnCrownType;
+                                this.texPathEyeRightPatch = "AddedParts/" + hediff.def.defName + "_Right" + "_"
+                                                            + this.PawnCrownType;
                                 this.isRightEyeSolid = addedPartProps.isSolid;
                             }
 
@@ -468,19 +469,20 @@
                             }
                         }
 
-                        if (hediff.def == HediffDefOf.MissingBodyPart)
-                        {
-                            if (hediff.Part == leftEye)
-                            {
-                                this.texPathEyeLeft = this.EyeTexPath("Missing", Enums.Side.Left);
-                                this.EyeWiggler.EyeLeftCanBlink = false;
-                            }
+                    }
 
-                            if (hediff.Part == rightEye)
-                            {
-                                this.texPathEyeRight = this.EyeTexPath("Missing", Enums.Side.Right);
-                                this.EyeWiggler.EyeRightCanBlink = false;
-                            }
+                    if (hediff.def == HediffDefOf.MissingBodyPart)
+                    {
+                        if (hediff.Part == leftEye)
+                        {
+                            this.texPathEyeLeft = this.EyeTexPath("Missing", Enums.Side.Left);
+                            this.EyeWiggler.EyeLeftCanBlink = false;
+                        }
+
+                        if (hediff.Part == rightEye)
+                        {
+                            this.texPathEyeRight = this.EyeTexPath("Missing", Enums.Side.Right);
+                            this.EyeWiggler.EyeRightCanBlink = false;
                         }
                     }
                 }

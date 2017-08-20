@@ -45,10 +45,19 @@
 
   <!-- Help Text -->
   <FacialStuffEditor.GenderChangeWarning>Changing these values may have adverse effects.\nUse at own risk.</FacialStuffEditor.GenderChangeWarning>
-  <!-- Job Toils -->
-  <FacialStuffEditor.ChangeBody>Change body attributes</FacialStuffEditor.ChangeBody>
   <!-- Mod Settings -->
   <FacialStuffEditor.ShowBodyChange>Allow Body Change</FacialStuffEditor.ShowBodyChange>
   <FacialStuffEditor.ShowGenderAgeChange>Allow Gender and Age Change</FacialStuffEditor.ShowGenderAgeChange>
-
+ 
+  
+  
+  <FacialStuffEditor.Any>any</FacialStuffEditor.Any>
+  <FacialStuffEditor.Original>Original</FacialStuffEditor.Original>
+  <FacialStuffEditor.Hair>Hair</FacialStuffEditor.Hair>
+  <FacialStuffEditor.Beard>Beard</FacialStuffEditor.Beard>
+  <FacialStuffEditor.Eye>Eye</FacialStuffEditor.Eye>
+  <FacialStuffEditor.Brow>Brow</FacialStuffEditor.Brow>
+  <FacialStuffEditor.TypeSelector>Type Selector</FacialStuffEditor.TypeSelector>
+  <FacialStuffEditor.DrawMouth>Draw colonist mouth if suitable</FacialStuffEditor.DrawMouth>
+  <FacialStuffEditor.SameColor>Use same color for hair + beard</FacialStuffEditor.SameColor>
 </LanguageData>

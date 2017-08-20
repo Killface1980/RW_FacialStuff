@@ -25,8 +25,6 @@
 
     using Verse;
 
-    using static GraphicDatabaseHeadRecordsModded;
-
     [StaticConstructorOnStartup]
     public class DialogFaceStyling : Window
     {
@@ -85,8 +83,6 @@
 
         private static ColorWrapper colourWrapper;
 
-        private static GraphicsDisp[] displayGraphics;
-
         private static List<EyeDef> eyeDefs;
 
         private static CompFace faceComp;
@@ -113,21 +109,21 @@
 
         private static MoustacheDef newMoustache;
 
-        private static BeardDef originalBeard;
+        private BeardDef originalBeard;
 
-        private static Color originalBeardColor;
+        private Color originalBeardColor;
 
-        private static BrowDef originalBrow;
+        private BrowDef originalBrow;
 
-        private static EyeDef originalEye;
+        private EyeDef originalEye;
 
-        private static HairDef originalHair;
+        private HairDef originalHair;
 
-        private static Color originalHairColor;
+        private Color originalHairColor;
 
-        private static float originalMelanin;
+        private float originalMelanin;
 
-        private static MoustacheDef originalMoustache;
+        private MoustacheDef originalMoustache;
 
         private static Pawn pawn;
 
@@ -223,28 +219,28 @@
                 faceComp.BeardDef = BeardDefOf.Beard_Shaved;
             }
 
-            originalHairColor = pawn.story.hairColor;
-            newBeardColor = originalBeardColor = faceComp.BeardColor;
-            newBeard = originalBeard = faceComp.BeardDef;
-            newMoustache = originalMoustache = faceComp.MoustacheDef;
-            newEye = originalEye = faceComp.EyeDef;
-            newBrow = originalBrow = faceComp.BrowDef;
+            this.originalHairColor = pawn.story.hairColor;
+            newBeardColor = this.originalBeardColor = faceComp.BeardColor;
+            newBeard = this.originalBeard = faceComp.BeardDef;
+            newMoustache = this.originalMoustache = faceComp.MoustacheDef;
+            newEye = this.originalEye = faceComp.EyeDef;
+            newBrow = this.originalBrow = faceComp.BrowDef;
 
             newHairColor = pawn.story.hairColor;
 
             colourWrapper = new ColorWrapper(Color.cyan);
 
-            newMelanin = originalMelanin = pawn.story.melanin;
+            newMelanin = this.originalMelanin = pawn.story.melanin;
 
-            newHair = originalHair = pawn.story.hairDef;
+            newHair = this.originalHair = pawn.story.hairDef;
 
-            originalBodyType = pawn.story.bodyType;
-            originalGender = pawn.gender;
+            this.originalBodyType = pawn.story.bodyType;
+            this.originalGender = pawn.gender;
             this.originalHeadGraphicPath = pawn.story.HeadGraphicPath;
-            originalCrownType = pawn.story.crownType;
+            this.originalCrownType = pawn.story.crownType;
 
-            originalAgeBio = pawn.ageTracker.AgeBiologicalTicks;
-            originalAgeChrono = pawn.ageTracker.AgeChronologicalTicks;
+            this.originalAgeBio = pawn.ageTracker.AgeBiologicalTicks;
+            this.originalAgeChrono = pawn.ageTracker.AgeChronologicalTicks;
 
             // this.absorbInputAroundWindow = false;
             this.closeOnClickedOutside = false;
@@ -359,12 +355,12 @@
             set
             {
                 newHairColor = value;
-                UpdatePawn(this.NewHair, value);
+                this.UpdatePawn(this.NewHair, value);
 
                 if (faceComp != null && faceComp.HasSameBeardColor)
                 {
                     var color = FacialGraphics.DarkerBeardColor(value);
-                    UpdatePawn(this.NewBeard, color);
+                    this.UpdatePawn(this.NewBeard, color);
 
                 }
             }
@@ -438,6 +434,7 @@
                     PortraitsCache.SetDirty(pawn);
                     this.rerenderPawn = false;
                 }
+
                 if (!this.initialized)
                 {
                     this.dresserDto = new DresserDTO(pawn);
@@ -457,7 +454,7 @@
             List<TabRecord> list = new List<TabRecord>();
 
             TabRecord item = new TabRecord(
-                "Hair".Translate(),
+                "FacialStuffEditor.Hair".Translate(),
                 delegate { this.tab = FaceStyleTab.Hair; },
                 this.tab == FaceStyleTab.Hair);
             list.Add(item);
@@ -465,20 +462,20 @@
             if (pawn.gender == Gender.Male)
             {
                 TabRecord item2 = new TabRecord(
-                    "Beard".Translate(),
+                    "FacialStuffEditor.Beard".Translate(),
                     delegate { this.tab = FaceStyleTab.Beard; },
                     this.tab == FaceStyleTab.Beard);
                 list.Add(item2);
             }
 
             TabRecord item3 = new TabRecord(
-                "Eye".Translate(),
+                "FacialStuffEditor.Eye".Translate(),
                 delegate { this.tab = FaceStyleTab.Eye; },
                 this.tab == FaceStyleTab.Eye);
             list.Add(item3);
 
             TabRecord item4 = new TabRecord(
-                "Brow".Translate(),
+                "FacialStuffEditor.Brow".Translate(),
                 delegate { this.tab = FaceStyleTab.Brow; },
                 this.tab == FaceStyleTab.Brow);
             list.Add(item4);
@@ -486,7 +483,7 @@
             if (Controller.settings.ShowBodyChange)
             {
                 TabRecord item5 = new TabRecord(
-                    "TypeSelector".Translate(),
+                    "FacialStuffEditor.TypeSelector".Translate(),
                     delegate { this.tab = FaceStyleTab.TypeSelector; },
                     this.tab == FaceStyleTab.TypeSelector);
                 list.Add(item5);
@@ -511,6 +508,7 @@
                         while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker), false))
                         {
                         }
+
                         this.ResetPawnFace();
                     });
         }
@@ -567,12 +565,13 @@
             string stringValue;
             if (value == -1)
             {
-                stringValue = "";
+                stringValue = string.Empty;
             }
             else
             {
                 stringValue = (value / factor).ToString();
             }
+
             string result = WidgetUtil.AddNumberTextInput(labelLeft, top, inputLeft, inputWidth, label, stringValue);
             try
             {
@@ -594,6 +593,7 @@
                         if (value > maxValue || value < 0)
                             value = maxValue;
                     }
+
                     return true;
                 }
             }
@@ -675,6 +675,7 @@
                                 {
                                     this.NewHairColor = colourWrapper.Color;
                                 }
+
                                 this.NewBeardColor = colourWrapper.Color;
                             },
                         false,
@@ -795,7 +796,6 @@
             while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
             {
             }
-
             {
                 colourWrapper.Color = faceComp.HasSameBeardColor ? this.NewHairColor : this.NewBeardColor;
                 Find.WindowStack.Add(
@@ -807,10 +807,13 @@
                                 {
                                     this.NewHairColor = colourWrapper.Color;
                                 }
+
                                 this.NewBeardColor = colourWrapper.Color;
                             },
                         false,
-                        true) { initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin) });
+                        true) {
+                                 initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin) 
+                              });
             }
         }
 
@@ -998,7 +1001,7 @@
             list.Add(item2);
 
             TabRecord item3 = new TabRecord(
-                "Any".Translate(),
+                "FacialStuffEditor.Any".Translate(),
                 delegate
                     {
                         hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
@@ -1355,13 +1358,13 @@
             Widgets.Label(labelRect, nameStringShort);
 
             // float spacing = 10f;
-
             this.DrawHumanlikeColorSelector(melaninRect);
 
             if (this.tab == FaceStyleTab.Hair)
             {
                 listRect.yMin += TabDrawer.TabHeight;
             }
+
             Widgets.DrawMenuSection(listRect);
 
             Rect set = new Rect(selectionRect) { height = 30f, width = selectionRect.width / 2 - 10f };
@@ -1379,18 +1382,17 @@
             // Find.WindowStack.Add(new FloatMenu(list));
             // }
 
-
             set.x = selectionRect.x;
             set.width = selectionRect.width - 5f;
 
             bool faceCompDrawMouth = faceComp.DrawMouth;
-            Widgets.CheckboxLabeled(set, "Draw colonist mouth if suitable", ref faceCompDrawMouth);
+            Widgets.CheckboxLabeled(set, "FacialStuffEditor.DrawMouth".Translate(), ref faceCompDrawMouth);
             faceComp.DrawMouth = faceCompDrawMouth;
             if (pawn.gender == Gender.Male)
             {
                 set.y += 24f;
                 bool faceCompHasSameBeardColor = faceComp.HasSameBeardColor;
-                Widgets.CheckboxLabeled(set, "Use same color for hair + beard", ref faceCompHasSameBeardColor);
+                Widgets.CheckboxLabeled(set, "FacialStuffEditor.SameColor".Translate(), ref faceCompHasSameBeardColor);
                 faceComp.HasSameBeardColor = faceCompHasSameBeardColor;
             }
 
@@ -1439,7 +1441,7 @@
                 set.width = selectionRect.width / 7.5f - 10f;
                 set.x = selectionRect.x;
 
-                this.DrawHairColorPickerCell(faceComp.HairColorOrg, set, "OriginalColor".Translate());
+                this.DrawHairColorPickerCell(faceComp.HairColorOrg, set, "FacialStuffEditor.Original".Translate());
                 set.x += set.width * 1.5f + 10f;
 
                 foreach (Color color in HairMelanin.NaturalHairColors)
@@ -1455,6 +1457,7 @@
                     this.DrawHairColorPickerCell(color, set, color.ToString());
                     set.x += set.width + 10f;
                 }
+
                 this.DrawHairPicker(listRect);
 
             }
@@ -1465,7 +1468,7 @@
                     set.width = selectionRect.width / 7.5f - 10f;
                     set.x = selectionRect.x;
 
-                    this.DrawBeardColorPickerCell(originalBeardColor, set, "OriginalColor".Translate());
+                    this.DrawBeardColorPickerCell(originalBeardColor, set, "FacialStuffEditor.Original".Translate());
                     set.x += set.width * 1.5f + 10f;
 
                     foreach (Color color in HairMelanin.NaturalHairColors)
@@ -1482,13 +1485,16 @@
                         set.x += set.width + 10f;
                     }
                 }
+
                 this.DrawBeardPicker(listRect);
 
             }
+
             if (this.tab == FaceStyleTab.TypeSelector)
             {
                 this.DrawTypeSelector(listRect);
             }
+
             GUI.EndGroup();
         }
 
@@ -1566,17 +1572,17 @@
             this.NewMoustache = originalMoustache;
 
             faceComp.HasSameBeardColor = hadSameBeardColor;
-            NewBeardColor = originalBeardColor;
+            this.NewBeardColor = originalBeardColor;
 
             this.NewEye = originalEye;
             this.NewBrow = originalBrow;
 
-            pawn.story.bodyType = originalBodyType;
-            pawn.gender = originalGender;
+            pawn.story.bodyType = this.originalBodyType;
+            pawn.gender = this.originalGender;
             typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pawn.story, this.originalHeadGraphicPath);
-            pawn.story.crownType = originalCrownType;
-            pawn.ageTracker.AgeBiologicalTicks = originalAgeBio;
-            pawn.ageTracker.AgeChronologicalTicks = originalAgeChrono;
+            pawn.story.crownType = this.originalCrownType;
+            pawn.ageTracker.AgeBiologicalTicks = this.originalAgeBio;
+            pawn.ageTracker.AgeChronologicalTicks = this.originalAgeChrono;
 
             this.rerenderPawn = true;
         }
@@ -1647,10 +1653,12 @@
                 {
                     faceComp.SetBeardColor((Color)newValue);
                 }
+
                 if (type is HairDef)
                 {
                     pawn.story.hairColor = (Color)newValue;
                 }
+
                 // skin color
                 if (type is float && newValue is Color)
                 {
@@ -1660,6 +1668,7 @@
 
             this.rerenderPawn = true;
         }
+
         private void UpdatePawn(object sender, object value, object value2 = null)
         {
             if (sender != null)
@@ -1683,6 +1692,7 @@
                     this.NewMelanin = (float)value;
                 }
             }
+
             this.rerenderPawn = true;
         }
 
@@ -1697,77 +1707,6 @@
         // SelectedFacePreset.label = "Unnamed";
         // }
         // }
-        public class GraphicsDisp
-        {
-
-            #region Public Fields
-
-            public Color Color = Color.white;
-            public Graphic Graphic;
-            public Texture2D Icon;
-            public Thing Thing;
-
-            #endregion Public Fields
-
-            #region Private Fields
-
-            private readonly float yOffset;
-
-            #endregion Private Fields
-
-            #region Public Constructors
-
-            public GraphicsDisp()
-            {
-                this.Thing = null;
-                this.Graphic = null;
-                this.Icon = null;
-                this.yOffset = 0f;
-            }
-
-            public GraphicsDisp(Thing thing, Graphic graphic, Texture2D icon, Color color, float yOffset)
-            {
-                this.Thing = thing;
-                this.Graphic = graphic;
-                this.Icon = icon;
-                this.Color = color;
-                this.yOffset = yOffset;
-            }
-
-            #endregion Public Constructors
-
-            #region Public Properties
-
-            public bool Valid => this.Thing != null;
-
-            #endregion Public Properties
-
-            #region Public Methods
-
-            public void Draw(Rect rect)
-            {
-                if (this.Valid && this.Graphic != null)
-                {
-                    Rect position = new Rect(rect.x, rect.y + this.yOffset, rect.width, rect.height);
-                    GUI.color = this.Color;
-                    GUI.DrawTexture(position, this.Graphic.MatFront.mainTexture);
-                    GUI.color = Color.white;
-                }
-            }
-
-            public void DrawIcon(Rect rect)
-            {
-                if (this.Valid && this.Icon != null)
-                {
-                    GUI.color = this.Color;
-                    GUI.DrawTexture(rect, this.Icon);
-                    GUI.color = Color.white;
-                }
-            }
-
-            #endregion Public Methods
-
-        }
 
         #endregion Public Classes
 

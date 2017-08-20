@@ -100,9 +100,9 @@
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(AddHediff_Postfix)));
 
             harmony.Patch(
-                AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.RestorePart)),
+                AccessTools.Method(typeof(Pawn_HealthTracker), nameof(HediffSet.DirtyCache)),
                 null,
-                new HarmonyMethod(typeof(HarmonyPatches), nameof(RestorePart_Postfix)));
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(DirtyCache_Postfix)));
 
             harmony.Patch(
                 AccessTools.Method(typeof(PawnHairChooser), nameof(PawnHairChooser.RandomHairDefFor)),
@@ -278,19 +278,19 @@
             }
         }
 
-        public static void RestorePart_Postfix(Pawn_HealthTracker __instance, BodyPartRecord part)
+        public static void DirtyCache_Postfix(HediffSet __instance)
         {
             if (Current.ProgramState != ProgramState.Playing)
             {
                 return;
             }
-            Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
+            Pawn pawn = __instance.pawn;
             if (pawn == null)
             {
                 return;
             }
 
-            if (!pawn.Spawned)
+            if (!pawn.Spawned|| !pawn.RaceProps.Humanlike)
             {
                 return;
             }
@@ -298,8 +298,6 @@
             {
                 return;
             }
-            if (part.def == BodyPartDefOf.LeftEye || part.def == BodyPartDefOf.RightEye
-                || part.def == BodyPartDefOf.Head)
             {
                 CompFace face = pawn.TryGetComp<CompFace>();
                 if (face != null)
