@@ -31,7 +31,7 @@
                                 AccessTools.Method(
                                     typeof(EdB.PrepareCarefully.PresetLoaderVersion3),
                                     "LoadPawn",
-                                    new Type[] { typeof(EdB.PrepareCarefully.SaveRecordPawnV3) }),
+                                    new[] { typeof(EdB.PrepareCarefully.SaveRecordPawnV3) }),
                                 null,
                                 new HarmonyMethod(typeof(PresetLoaderPatch), "LoadFace"));
 
@@ -39,7 +39,7 @@
                                 AccessTools.Method(
                                     typeof(EdB.PrepareCarefully.PresetSaver),
                                     "SaveToFile",
-                                    new Type[] { typeof(EdB.PrepareCarefully.PrepareCarefully), typeof(string) }),
+                                    new[] { typeof(EdB.PrepareCarefully.PrepareCarefully), typeof(string) }),
                                 null,
                                 null,
                                 new HarmonyMethod(typeof(PresetSaverPatch), "SavePawnRef"));
@@ -48,7 +48,7 @@
                                 AccessTools.Method(
                                     typeof(EdB.PrepareCarefully.ColonistSaver),
                                     "SaveToFile",
-                                    new Type[] { typeof(EdB.PrepareCarefully.CustomPawn), typeof(string) }),
+                                    new[] { typeof(EdB.PrepareCarefully.CustomPawn), typeof(string) }),
                                 null,
                                 null,
                                 new HarmonyMethod(typeof(PresetSaverPatch), "SavePawnRef"));

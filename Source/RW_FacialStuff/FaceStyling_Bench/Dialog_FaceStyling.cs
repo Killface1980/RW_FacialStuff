@@ -178,7 +178,7 @@
             ListWidth = 450f;
 
             // _listWidth = 200f;
-            Columns = 5;
+            Columns = 4;
             EntrySize = ListWidth / Columns;
             NameBackground = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0.3f));
 
@@ -717,7 +717,7 @@
                 int num2 = i / Columns;
                 int num3 = i % Columns;
                 Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
-                this.DrawMoustachePickerCell(MoustacheDefs[i], rect4);
+                this.DrawMoustachePickerCell(MoustacheDefs[i], rect4.ContractedBy(3f));
                 thisY = rect4.yMax;
             }
 
@@ -727,7 +727,7 @@
                 int num2 = i / Columns;
                 int num3 = i % Columns;
                 Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y + curY, vector.x, vector.y);
-                this.DrawBeardPickerCell(LowerBeardDefs[i], rect4);
+                this.DrawBeardPickerCell(LowerBeardDefs[i], rect4.ContractedBy(3f));
                 thisY = rect4.yMax;
             }
 
@@ -738,7 +738,7 @@
                 int num2 = i / Columns;
                 int num3 = i % Columns;
                 Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y + curY, vector.x, vector.y);
-                this.DrawBeardPickerCell(FullBeardDefs[i], rect4);
+                this.DrawBeardPickerCell(FullBeardDefs[i], rect4.ContractedBy(3f));
             }
 
             GUI.EndGroup();
@@ -765,8 +765,12 @@
                     }
                 }
             }
-
+            GUI.color = pawn.story.SkinColor;
+            GUI.DrawTexture(rect, pawn.Drawer.renderer.graphics.headGraphic.MatFront.mainTexture);
+            GUI.color = faceComp.pawnFace.HasSameBeardColor ? pawn.story.hairColor : this.NewBeardColor;
             GUI.DrawTexture(rect, this.BeardGraphic(beard).MatFront.mainTexture);
+            GUI.color = Color.white;
+
             string text = beard.LabelCap;
             Widgets.DrawHighlightIfMouseover(rect);
             if (beard == this.NewBeard)
@@ -783,6 +787,7 @@
                 }
             }
 
+            Widgets.Label(rect, text);
             TooltipHandler.TipRegion(rect, text);
             if (Widgets.ButtonInvisible(rect))
             {
@@ -844,7 +849,7 @@
                 int num2 = i / Columns;
                 int num3 = i % Columns;
                 Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
-                this.DrawBrowPickerCell(browDefs[i], rect4);
+                this.DrawBrowPickerCell(browDefs[i], rect4.ContractedBy(3f));
             }
 
             GUI.EndGroup();
@@ -870,6 +875,7 @@
                 }
             }
 
+            Widgets.Label(rect, text);
             TooltipHandler.TipRegion(rect, text);
             if (Widgets.ButtonInvisible(rect))
             {
@@ -904,7 +910,7 @@
                 int num2 = i / Columns;
                 int num3 = i % Columns;
                 Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
-                this.DrawEyePickerCell(eyeDefs[i], rect4);
+                this.DrawEyePickerCell(eyeDefs[i], rect4.ContractedBy(3f));
             }
 
             GUI.EndGroup();
@@ -931,6 +937,7 @@
                 }
             }
 
+            Widgets.Label(rect, text);
             TooltipHandler.TipRegion(rect, text);
             if (Widgets.ButtonInvisible(rect))
             {
@@ -1040,7 +1047,7 @@
                 int num2 = i / Columns;
                 int num3 = i % Columns;
                 Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
-                this.DrawHairPickerCell(hairDefs[i], rect4);
+                this.DrawHairPickerCell(hairDefs[i], rect4.ContractedBy(3f));
             }
 
             GUI.EndGroup();
@@ -1049,7 +1056,12 @@
 
         private void DrawHairPickerCell(HairDef hair, Rect rect)
         {
+            GUI.color = pawn.story.SkinColor;
+            GUI.DrawTexture(rect, pawn.Drawer.renderer.graphics.headGraphic.MatFront.mainTexture);
+            GUI.color = pawn.story.hairColor;
             GUI.DrawTexture(rect, this.HairGraphic(hair).MatFront.mainTexture);
+            GUI.color = Color.white;
+
             string text = hair.LabelCap;
             Widgets.DrawHighlightIfMouseover(rect);
             if (hair == this.NewHair)
@@ -1077,17 +1089,17 @@
                 }
                 {
 
-                colourWrapper.Color = this.NewHairColor;
+                    colourWrapper.Color = this.NewHairColor;
 
-                Find.WindowStack.Add(
-                    new Dialog_ColorPicker(
-                        colourWrapper,
-                        delegate { this.NewHairColor = colourWrapper.Color; },
-                        false,
-                        true)
-                    {
-                        initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
-                    });
+                    Find.WindowStack.Add(
+                        new Dialog_ColorPicker(
+                            colourWrapper,
+                            delegate { this.NewHairColor = colourWrapper.Color; },
+                            false,
+                            true)
+                        {
+                            initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
+                        });
                 }
 
             }
@@ -1235,8 +1247,12 @@
                     Widgets.DrawBoxSolid(rect.ContractedBy(3f), new Color(0.8f, 0.8f, 0.8f, 0.3f));
                 }
             }
-
+            GUI.color = pawn.story.SkinColor;
+            GUI.DrawTexture(rect, pawn.Drawer.renderer.graphics.headGraphic.MatFront.mainTexture);
+            GUI.color = faceComp.pawnFace.HasSameBeardColor ? pawn.story.hairColor : this.NewBeardColor;
             GUI.DrawTexture(rect, this.MoustacheGraphic(moustache).MatFront.mainTexture);
+            GUI.color = Color.white;
+
             string text = moustache.LabelCap;
             Widgets.DrawHighlightIfMouseover(rect);
             if (moustache == this.NewMoustache)
@@ -1253,6 +1269,7 @@
                 }
             }
 
+            Widgets.Label(rect, text);
             TooltipHandler.TipRegion(rect, text);
             if (Widgets.ButtonInvisible(rect))
             {
@@ -1568,7 +1585,7 @@
 
         private void ResetPawnFace()
         {
-            reInit = true;
+            this.reInit = true;
             this.NewHairColor = this.originalHairColor;
             this.NewHair = this.originalHair;
             this.NewMelanin = this.originalMelanin;

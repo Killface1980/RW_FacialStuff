@@ -80,10 +80,6 @@
 
         #endregion Private Fields
 
-        #region Public Constructors
-
-        #endregion Public Constructors
-
         #region Public Properties
 
         // {
@@ -292,6 +288,7 @@
 
             return material;
         }
+
         public Material BrowMatAt(Rot4 facing)
         {
             Material material;
@@ -406,8 +403,8 @@
         // TODO: Remove or make usable
         // public void DefineSkinDNA()
         // {
-        //     HairMelanin.SkinGenetics(this.Pawn, this, out this.factionMelanin);
-        //     this.IsSkinDNAoptimized = true;
+        // HairMelanin.SkinGenetics(this.Pawn, this, out this.factionMelanin);
+        // this.IsSkinDNAoptimized = true;
         // }
 
         public Material EyeLeftMatAt(Rot4 facing, bool portrait)
@@ -633,7 +630,6 @@
                     var pawn = this.parent as Pawn;
                     if (pawn != null)
                     {
-
                         this.pawnFace = new PawnFace(pawn, false);
 
                         Scribe_Values.Look(ref this.pawnFace.HairColorOrg, "HairColorOrg");
@@ -647,7 +643,6 @@
                         Scribe_Values.Look(ref this.pawnFace.DrawMouth, "drawMouth");
                         Scribe_Values.Look(ref this.pawnFace.CrownType, "crownType");
 
-
                         Scribe_Values.Look(ref this.pawnFace.HasSameBeardColor, "sameBeardColor");
 
                         Scribe_Values.Look(ref this.pawnFace.EuMelanin, "euMelanin");
@@ -655,11 +650,13 @@
                         Scribe_Values.Look(ref this.pawnFace.PheoMelanin, "pheoMelanin");
                         Scribe_Values.Look(ref this.pawnFace.EuMelanin, "melanin1");
                         Scribe_Values.Look(ref this.pawnFace.PheoMelanin, "melanin2");
-                   //     Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
+
+                        // Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
                         if (this.pawnFace.MoustacheDef == null)
                         {
                             this.pawnFace.MoustacheDef = MoustacheDefOf.Shaved;
                         }
+
                         this.updated = true;
                     }
                 }

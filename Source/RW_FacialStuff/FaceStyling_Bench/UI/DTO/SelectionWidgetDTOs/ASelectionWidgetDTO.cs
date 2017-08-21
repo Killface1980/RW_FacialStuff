@@ -70,6 +70,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
                 this.index = 0;
             this.IndexChanged();
         }
+
         public abstract void ResetToDefault();
 
         #endregion Public Methods

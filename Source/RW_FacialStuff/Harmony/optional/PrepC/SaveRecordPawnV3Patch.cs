@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using EdB.PrepareCarefully;
+
     using FacialStuff;
 
     using global::Harmony;
@@ -12,9 +14,9 @@
     public static class SaveRecordPawnV3Patch
     {
         [HarmonyPostfix]
-        public static void ExposeFaceData(EdB.PrepareCarefully.SaveRecordPawnV3 __instance)
+        public static void ExposeFaceData(SaveRecordPawnV3 __instance)
         {
-            EdB.PrepareCarefully.CustomPawn customPawn = customPawns[__instance.id] as EdB.PrepareCarefully.CustomPawn;
+            CustomPawn customPawn = customPawns[__instance.id] as EdB.PrepareCarefully.CustomPawn;
             if (customPawns.Keys.Contains(__instance.id) && Scribe.mode == LoadSaveMode.Saving)
             {
                 if (customPawn?.Pawn.TryGetComp<CompFace>() != null)

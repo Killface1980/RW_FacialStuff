@@ -1,12 +1,13 @@
 ﻿namespace FacialStuff
 {
-    using FacialStuff.Defs;
-    using RimWorld;
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using FacialStuff.Defs;
     using FacialStuff.Enums;
+
+    using RimWorld;
 
     using Verse;
 

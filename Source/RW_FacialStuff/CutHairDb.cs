@@ -77,6 +77,7 @@
                     ModMetaData mod = ModLister.AllInstalledMods.FirstOrDefault(x => x.Active && x.Name.StartsWith("Facial Stuff"));
                     modPath = mod.RootDir + "/Textures/MergedHair/";
                 }
+
                 return modPath;
             }
         }
@@ -101,6 +102,7 @@
                     if (ContentFinder<Texture2D>.Get(req.path + "_back", false) != null)
                     {
                         graphic.Init(req);
+
                         // graphic.MatFront.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_front");
                         // graphic.MatSide.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_side");
                         // graphic.MatBack.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_back");
@@ -139,6 +141,7 @@
                             byte[] bytes3 = temptextureback.EncodeToPNG();
                             File.WriteAllBytes(req.path + "_back.png", bytes3);
                         }
+
                         temptexturefront.Compress(true);
                         temptextureside.Compress(true);
                         temptextureback.Compress(true);
@@ -164,6 +167,7 @@
 
                     // }
                 }
+
                 return (T)graphic;
 
                 #endregion Methods
@@ -230,6 +234,7 @@
 
                     // }
                 }
+
                 return (T)graphic;
 
             }

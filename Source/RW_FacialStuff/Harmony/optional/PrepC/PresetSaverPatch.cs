@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using EdB.PrepareCarefully;
+
     using global::Harmony;
 
     public static class PresetSaverPatch
@@ -23,20 +25,22 @@
                         AccessTools.Method(
                             typeof(PresetSaverPatch),
                             "AddFaceToDictionary",
-                            new Type[] { typeof(EdB.PrepareCarefully.CustomPawn) }));
+                            new[] { typeof(EdB.PrepareCarefully.CustomPawn) }));
                     yield return last;
                 }
+
                 yield return itr;
                 last = itr;
             }
         }
 
-        public static void AddFaceToDictionary(EdB.PrepareCarefully.CustomPawn pawn)
+        public static void AddFaceToDictionary(CustomPawn pawn)
         {
             if (SaveRecordPawnV3Patch.customPawns.ContainsKey(pawn.Id))
             {
                 SaveRecordPawnV3Patch.customPawns.Remove(pawn.Id);
             }
+
             SaveRecordPawnV3Patch.customPawns.Add(pawn.Id, pawn);
         }
     }

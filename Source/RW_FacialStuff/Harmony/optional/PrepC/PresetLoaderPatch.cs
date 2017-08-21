@@ -2,6 +2,8 @@
 {
     using System.Linq;
 
+    using EdB.PrepareCarefully;
+
     using FacialStuff;
 
     using global::Harmony;
@@ -11,7 +13,7 @@
     public static class PresetLoaderPatch
     {
         [HarmonyPostfix]
-        public static void LoadFace(ref EdB.PrepareCarefully.CustomPawn __result, EdB.PrepareCarefully.SaveRecordPawnV3 record)
+        public static void LoadFace(ref CustomPawn __result, SaveRecordPawnV3 record)
         {
             if (SaveRecordPawnV3Patch.savedPawns.Keys.Contains(record))
             {

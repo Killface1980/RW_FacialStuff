@@ -35,7 +35,6 @@
 		}
 	}
 	*/
-
     public static class GoogleTranslator
     {
         static GoogleTranslator()
@@ -48,11 +47,12 @@
             }
 
             cache = new Dictionary<string, string>();
+
             // TODO: load cache from file
         }
 
         static Dictionary<string, string> languageTokens;
-        static string[] tokens = new string[] {
+        static string[] tokens = new[] {
                                                       "Afrikaans;af", "Arabic;ar", "Basque;eu",
                                                       "Belarusian;be", "Bulgarian;bg", "Catalan;ca",
                                                       "Chinese;ch", "Czech;cs", "Danish;da",
@@ -87,15 +87,17 @@
             Log.Warning("# " + key + " => " + url);
 
             var saved = ServicePointManager.ServerCertificateValidationCallback;
-            var result = "";
+            var result = string.Empty;
             try
             {
-                ServicePointManager.ServerCertificateValidationCallback = delegate (
+                ServicePointManager.ServerCertificateValidationCallback = delegate(
                     object s,
                     X509Certificate certificate,
                     X509Chain chain,
                     SslPolicyErrors sslPolicyErrors)
-                    { return true; };
+                    {
+                        return true;
+                    };
 
                 var webClient = new WebClient() { Encoding = Encoding.GetEncoding("iso-8859-1") };
                 var html = webClient.DownloadString(url);
@@ -106,18 +108,20 @@
                     Log.Error("HTML: " + html);
                     throw new Exception("matches.Count is " + matches.Count);
                 }
+
                 var groups = matches[0].Groups;
                 if (groups.Count != 2)
                 {
                     Log.Error("HTML: " + html);
                     throw new Exception("groups.Count is " + groups.Count);
                 }
+
                 result = HttpUtility.HtmlDecode(groups[1].Value);
             }
             catch (Exception e)
             {
                 Log.Error("Cannot load " + url + ": " + e);
-                result = "";
+                result = string.Empty;
             }
             finally
             {
@@ -126,8 +130,8 @@
 
             Log.Warning(key + " => " + result);
             cache[key] = result;
-            // TODO: save cache to file
 
+            // TODO: save cache to file
             return result;
         }
     }

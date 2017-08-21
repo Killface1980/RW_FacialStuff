@@ -83,6 +83,7 @@ namespace FacialStuff._translate
 #endif
                 return currentEncoder;
             }
+
 #if NET_4_0
 			set {
 				if (value == null)
@@ -118,6 +119,7 @@ namespace FacialStuff._translate
         public HttpEncoder()
         {
         }
+
 #if NET_4_0
 		protected internal virtual
 #else
@@ -125,12 +127,12 @@ namespace FacialStuff._translate
 #endif
             void HeaderNameValueEncode(string headerName, string headerValue, out string encodedHeaderName, out string encodedHeaderValue)
         {
-            if (String.IsNullOrEmpty(headerName))
+            if (string.IsNullOrEmpty(headerName))
                 encodedHeaderName = headerName;
             else
                 encodedHeaderName = EncodeHeaderString(headerName);
 
-            if (String.IsNullOrEmpty(headerValue))
+            if (string.IsNullOrEmpty(headerValue))
                 encodedHeaderValue = headerValue;
             else
                 encodedHeaderValue = EncodeHeaderString(headerValue);
@@ -154,7 +156,7 @@ namespace FacialStuff._translate
                 ch = input[i];
 
                 if ((ch < 32 && ch != 9) || ch == 127)
-                    StringBuilderAppend(String.Format("%{0:x2}", (int)ch), ref sb);
+                    StringBuilderAppend(string.Format("%{0:x2}", (int)ch), ref sb);
             }
 
             if (sb != null)
@@ -162,6 +164,7 @@ namespace FacialStuff._translate
 
             return input;
         }
+
 #if NET_4_0
 		protected internal virtual void HtmlAttributeEncode (string value, TextWriter output)
 		{
@@ -223,7 +226,7 @@ namespace FacialStuff._translate
 #endif
             string UrlPathEncode(string value)
         {
-            if (String.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
                 return value;
 
             MemoryStream result = new MemoryStream();
@@ -263,7 +266,7 @@ namespace FacialStuff._translate
                 return null;
 
             if (s.Length == 0)
-                return String.Empty;
+                return string.Empty;
 
             bool needEncode = false;
             for (int i = 0; i < s.Length; i++)
@@ -343,7 +346,7 @@ namespace FacialStuff._translate
                 return null;
 
             if (s.Length == 0)
-                return String.Empty;
+                return string.Empty;
 #endif
             bool needEncode = false;
             for (int i = 0; i < s.Length; i++)
@@ -392,20 +395,18 @@ namespace FacialStuff._translate
 
         internal static string HtmlDecode(string s)
         {
-            if (s == null)
-                return null;
+            if (s == null) return null;
 
-            if (s.Length == 0)
-                return String.Empty;
+            if (s.Length == 0) return string.Empty;
 
-            if (s.IndexOf('&') == -1)
-                return s;
+            if (s.IndexOf('&') == -1) return s;
 #if NET_4_0
 			StringBuilder rawEntity = new StringBuilder ();
 #endif
             StringBuilder entity = new StringBuilder();
             StringBuilder output = new StringBuilder();
             int len = s.Length;
+
             // 0 -> nothing,
             // 1 -> right after '&'
             // 2 -> between '&' and ';' but no '#'
@@ -432,6 +433,7 @@ namespace FacialStuff._translate
                     {
                         output.Append(c);
                     }
+
                     continue;
                 }
 
@@ -471,6 +473,7 @@ namespace FacialStuff._translate
                         {
                             state = 3;
                         }
+
                         entity.Append(c);
 #if NET_4_0
 						rawEntity.Append (c);
@@ -513,6 +516,7 @@ namespace FacialStuff._translate
                         {
                             output.Append((char)number);
                         }
+
                         state = 0;
                         entity.Length = 0;
 #if NET_4_0
@@ -528,7 +532,7 @@ namespace FacialStuff._translate
 						rawEntity.Append (c);
 #endif
                     }
-                    else if (Char.IsDigit(c))
+                    else if (char.IsDigit(c))
                     {
                         number = number * 10 + ((int)c - '0');
                         have_trailing_digits = true;
@@ -551,6 +555,7 @@ namespace FacialStuff._translate
                             entity.Append(number.ToString(Helpers.InvariantCulture));
                             have_trailing_digits = false;
                         }
+
                         entity.Append(c);
                     }
                 }
@@ -564,25 +569,24 @@ namespace FacialStuff._translate
             {
                 output.Append(number.ToString(Helpers.InvariantCulture));
             }
+
             return output.ToString();
         }
 
         internal static bool NotEncoded(char c)
         {
-            return (c == '!' || c == '(' || c == ')' || c == '*' || c == '-' || c == '.' || c == '_'
+            return c == '!' || c == '(' || c == ')' || c == '*' || c == '-' || c == '.' || c == '_'
 #if !NET_4_0
-                    || c == '\''
-#endif
-                   );
+                    || c == '\'';
         }
 
         internal static void UrlEncodeChar(char c, Stream result, bool isUnicode)
         {
             if (c > 255)
             {
-                //FIXME: what happens when there is an internal error?
-                //if (!isUnicode)
-                //	throw new ArgumentOutOfRangeException ("c", c, "c must be less than 256");
+                // FIXME: what happens when there is an internal error?
+                // if (!isUnicode)
+                // 	throw new ArgumentOutOfRangeException ("c", c, "c must be less than 256");
                 int idx;
                 int i = (int)c;
 
@@ -604,11 +608,13 @@ namespace FacialStuff._translate
                 result.WriteByte((byte)c);
                 return;
             }
+
             if (c == ' ')
             {
                 result.WriteByte((byte)'+');
                 return;
             }
+
             if ((c < '0') ||
                 (c < 'A' && c > '9') ||
                 (c > 'Z' && c < 'a') ||

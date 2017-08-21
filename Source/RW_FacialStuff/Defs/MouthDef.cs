@@ -6,8 +6,10 @@
 // ReSharper disable CollectionNeverUpdated.Global
 namespace FacialStuff.Defs
 {
-    using RimWorld;
     using System.Collections.Generic;
+
+    using RimWorld;
+
     using Verse;
 
     public class MouthDef : Def

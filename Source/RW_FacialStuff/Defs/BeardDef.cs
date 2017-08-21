@@ -6,10 +6,11 @@
 // ReSharper disable CollectionNeverUpdated.Global
 namespace FacialStuff.Defs
 {
-    using RimWorld;
     using System.Collections.Generic;
 
     using FacialStuff.Enums;
+
+    using RimWorld;
 
     using Verse;
 

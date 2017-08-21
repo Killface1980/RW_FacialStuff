@@ -1,10 +1,13 @@
 ﻿namespace FacialStuff
 {
-    using RimWorld;
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
+    using RimWorld;
+
     using UnityEngine;
+
     using Verse;
 
     // [HarmonyPatch(typeof(PawnRenderer), "RenderPawnInternal", new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) })]
@@ -62,7 +65,7 @@
             }
         }
 
-     //   [HarmonyBefore("rimworld.erdelf.alien_race.main", "rimworld.jecrell.cthulhu.cults", "net.pardeike.zombieland")]
+     // [HarmonyBefore("rimworld.erdelf.alien_race.main", "rimworld.jecrell.cthulhu.cults", "net.pardeike.zombieland")]
         public static bool RenderPawnInternal_Prefix(
             PawnRenderer __instance,
             Vector3 rootLoc,
@@ -251,6 +254,7 @@
                             GenDraw.DrawMeshNowOrLater(meshMouth, drawLoc, headQuat, mouthMat, portrait);
                             locFacialY.y += YOffsetOnFace;
                         }
+
                         // Portrait obviously ignores the y offset, thus render the beard after the body apparel
                         if (!portrait)
                         {
@@ -282,7 +286,6 @@
 
                         // }
                         // else
-
                     }
                 }
 
@@ -376,6 +379,7 @@
                     }
                 }
             }
+
             // Draw the beard, for the RenderPortrait
             if (portrait && !headStump)
             {
@@ -399,6 +403,7 @@
                     locFacialY.y += YOffsetOnFace;
                 }
             }
+
             if (!portrait)
             {
                 // Traverse.Create(__instance).Method("DrawEquipment", new object[] { rootLoc }).GetValue();

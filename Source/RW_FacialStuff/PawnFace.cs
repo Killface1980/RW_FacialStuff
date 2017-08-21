@@ -46,8 +46,7 @@
 
         public Color HairColorOrg;
 
-        //  public float MelaninOrg;
-
+        // public float MelaninOrg;
 
         #endregion Public Fields
 
@@ -82,7 +81,8 @@
             }
 
             this.IsOptimized = true;
-            //    this.MelaninOrg = pawn.story.melanin;
+
+            // this.MelaninOrg = pawn.story.melanin;
         }
 
         #endregion Public Constructors
@@ -110,7 +110,7 @@
             Scribe_Values.Look(ref this.HairColor, "hairColor");
             Scribe_Values.Look(ref this.HairColorOrg, "hairColorOrg");
 
-            //  Scribe_Values.Look(ref this.MelaninOrg, "melaninOrg");
+            // Scribe_Values.Look(ref this.MelaninOrg, "melaninOrg");
 
             // Scribe_Values.Look(ref this.skinColorHex, "SkinColorHex");
             // Scribe_Values.Look(ref this.hairColorOrg, "HairColorOrg");

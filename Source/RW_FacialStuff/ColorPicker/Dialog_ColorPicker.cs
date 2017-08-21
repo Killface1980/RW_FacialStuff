@@ -1,9 +1,12 @@
 ﻿// ReSharper disable All
 namespace FacialStuff.ColorPicker
 {
-    using FaceStyling;
     using System;
+
+    using FaceStyling;
+
     using UnityEngine;
+
     using Verse;
 
     public class Dialog_ColorPicker : Window
@@ -350,7 +353,7 @@ namespace FacialStuff.ColorPicker
             // // reset active control on mouseup
             // if (Input.GetMouseButtonUp(0))
             // {
-            //     this._activeControl = Controls.none;
+            // this._activeControl = Controls.none;
             // }
 
             // colorpicker interaction

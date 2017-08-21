@@ -70,7 +70,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             {
                 if (this.headTypes[i].Equals(headType))
                 {
-                    base.index = i;
+                    this.index = i;
                     break;
                 }
             }
@@ -82,17 +82,19 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             {
                 if (value == Gender.Female)
                 {
-                    this.savedMaleIndex = base.index;
+                    this.savedMaleIndex = this.index;
                     this.headTypes = this.femaleHeadTypes;
-                    base.index = this.savedFemaleIndex;
+                    this.index = this.savedFemaleIndex;
                 }
-                else // Male
+                else
                 {
-                    this.savedFemaleIndex = base.index;
+                    // Male
+                    this.savedFemaleIndex = this.index;
                     this.headTypes = this.maleHeadTypes;
-                    base.index = this.savedMaleIndex;
+                    this.index = this.savedMaleIndex;
                 }
-                base.IndexChanged();
+
+                this.IndexChanged();
             }
         }
 
@@ -108,7 +110,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                string[] array = this.headTypes[base.index].Split(new char[] { '_' }, StringSplitOptions.None);
+                string[] array = this.headTypes[this.index].Split(new[] { '_' }, StringSplitOptions.None);
                 return array[array.Count<string>() - 2] + ", " + array[array.Count<string>() - 1];
             }
         }
@@ -117,11 +119,11 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                this.selectedItem2 = this.headTypes[base.index].Contains("Narrow")
+                this.selectedItem2 = this.headTypes[this.index].Contains("Narrow")
                                          ? CrownType.Narrow
                                          : CrownType.Average;
 
-                return this.headTypes[base.index];
+                return this.headTypes[this.index];
             }
         }
 
@@ -145,7 +147,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         public override void ResetToDefault()
         {
             this.FindIndex(this.OriginalHeadType);
-            base.IndexChanged();
+            this.IndexChanged();
         }
     }
 }

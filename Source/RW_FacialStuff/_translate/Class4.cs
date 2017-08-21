@@ -38,10 +38,10 @@ namespace FacialStuff._translate
     using System.IO;
     using System.Text;
 
-    //#if !MONOTOUCH
-    //    // CAS - no InheritanceDemand here as the class is sealed
-    //    [AspNetHostingPermission(SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
-    //#endif
+    // #if !MONOTOUCH
+    // // CAS - no InheritanceDemand here as the class is sealed
+    // [AspNetHostingPermission(SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
+    // #endif
     public sealed class HttpUtility
     {
         sealed class HttpQSCollection : NameValueCollection
@@ -50,13 +50,14 @@ namespace FacialStuff._translate
             {
                 int count = this.Count;
                 if (count == 0)
-                    return "";
+                    return string.Empty;
                 StringBuilder sb = new StringBuilder();
                 string[] keys = this.AllKeys;
                 for (int i = 0; i < count; i++)
                 {
                     sb.AppendFormat("{0}={1}&", keys[i], this[keys[i]]);
                 }
+
                 if (sb.Length > 0)
                     sb.Length--;
                 return sb.ToString();
@@ -83,6 +84,7 @@ namespace FacialStuff._translate
                 throw new NullReferenceException(".NET emulation");
 #endif
             }
+
 #if NET_4_0
 			HttpEncoder.Current.HtmlAttributeEncode (s, output);
 #else
@@ -119,7 +121,7 @@ namespace FacialStuff._translate
         {
             if (ch > 255)
             {
-                foreach (byte b in e.GetBytes(new char[] { ch }))
+                foreach (byte b in e.GetBytes(new[] { ch }))
                     buf.Add(b);
             }
             else
@@ -168,6 +170,7 @@ namespace FacialStuff._translate
                     {
                         WriteCharBytes(bytes, '%', e);
                     }
+
                     continue;
                 }
 
@@ -245,7 +248,7 @@ namespace FacialStuff._translate
             if (bytes == null)
                 return null;
             if (count == 0)
-                return String.Empty;
+                return string.Empty;
 
             if (bytes == null)
                 throw new ArgumentNullException("bytes");
@@ -272,6 +275,7 @@ namespace FacialStuff._translate
                             output.Append(GetChars(acc, e));
                             acc.SetLength(0);
                         }
+
                         xchar = GetChar(bytes, i + 2, 4);
                         if (xchar != -1)
                         {
@@ -369,6 +373,7 @@ namespace FacialStuff._translate
                         i += 2;
                     }
                 }
+
                 result.WriteByte((byte)c);
             }
 
@@ -385,8 +390,8 @@ namespace FacialStuff._translate
             if (s == null)
                 return null;
 
-            if (s == String.Empty)
-                return String.Empty;
+            if (s == string.Empty)
+                return string.Empty;
 
             bool needEncode = false;
             int len = s.Length;
@@ -418,7 +423,7 @@ namespace FacialStuff._translate
                 return null;
 
             if (bytes.Length == 0)
-                return String.Empty;
+                return string.Empty;
 
             return Encoding.ASCII.GetString(UrlEncodeToBytes(bytes, 0, bytes.Length));
         }
@@ -429,7 +434,7 @@ namespace FacialStuff._translate
                 return null;
 
             if (bytes.Length == 0)
-                return String.Empty;
+                return string.Empty;
 
             return Encoding.ASCII.GetString(UrlEncodeToBytes(bytes, offset, count));
         }
@@ -494,6 +499,7 @@ namespace FacialStuff._translate
             {
                 HttpEncoder.UrlEncodeChar(c, result, true);
             }
+
             return result.ToArray();
         }
 
@@ -533,7 +539,7 @@ namespace FacialStuff._translate
 #endif
             }
 
-            if (!String.IsNullOrEmpty(s))
+            if (!string.IsNullOrEmpty(s))
             {
 #if NET_4_0
 				HttpEncoder.Current.HtmlDecode (s, output);
@@ -574,7 +580,7 @@ namespace FacialStuff._translate
 #endif
             }
 
-            if (!String.IsNullOrEmpty(s))
+            if (!string.IsNullOrEmpty(s))
             {
 #if NET_4_0
 				HttpEncoder.Current.HtmlEncode (s, output);
@@ -583,6 +589,7 @@ namespace FacialStuff._translate
 #endif
             }
         }
+
 #if NET_4_0
 		public static string HtmlEncode (object value)
 		{
@@ -742,6 +749,7 @@ namespace FacialStuff._translate
                 {
                     name = UrlDecode(decoded.Substring(namePos, valuePos - namePos - 1), encoding);
                 }
+
                 if (valueEnd < 0)
                 {
                     namePos = -1;
@@ -751,6 +759,7 @@ namespace FacialStuff._translate
                 {
                     namePos = valueEnd + 1;
                 }
+
                 value = UrlDecode(decoded.Substring(valuePos, valueEnd - valuePos), encoding);
 
                 result.Add(name, value);
@@ -758,6 +767,7 @@ namespace FacialStuff._translate
                     break;
             }
         }
+
         #endregion // Methods
     }
 }

@@ -102,9 +102,9 @@ namespace FacialStuff
 
         public bool UseWrinkles => this.useWrinkles;
 
-        public bool ShowBodyChange => showBodyChange;
+        public bool ShowBodyChange => this.showBodyChange;
 
-        public bool ShowGenderAgeChange => showGenderAgeChange;
+        public bool ShowGenderAgeChange => this.showGenderAgeChange;
 
         #endregion Public Properties
 
@@ -132,13 +132,13 @@ namespace FacialStuff
                 "Settings.MergeHairTooltip".Translate());
 
             // list.CheckboxLabeled(
-            //    "Settings.HideHatWhileRoofed".Translate(),
-            //    ref this.hideHatWhileRoofed,
-            //    "Settings.HideHatWhileRoofedTooltip".Translate());
+            // "Settings.HideHatWhileRoofed".Translate(),
+            // ref this.hideHatWhileRoofed,
+            // "Settings.HideHatWhileRoofedTooltip".Translate());
             // list.CheckboxLabeled(
-            //    "Settings.HideHatInBed".Translate(),
-            //    ref this.hideHatInBed,
-            //    "Settings.HideHatInBedTooltip".Translate());
+            // "Settings.HideHatInBed".Translate(),
+            // ref this.hideHatInBed,
+            // "Settings.HideHatInBedTooltip".Translate());
             list.CheckboxLabeled(
                 "Settings.ShowExtraParts".Translate(),
                 ref this.showExtraParts,

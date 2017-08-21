@@ -68,7 +68,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             {
                 if (this.bodyTypes[i] == bodyType)
                 {
-                    base.index = i;
+                    this.index = i;
                     break;
                 }
             }
@@ -87,8 +87,9 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
                         bodyType = BodyType.Female;
                     }
                 }
-                else // Male
+                else
                 {
+                    // Male
                     this.bodyTypes = this.maleBodyTypes;
                     if (bodyType == BodyType.Female)
                     {
@@ -97,7 +98,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
                 }
 
                 this.FindIndex(bodyType);
-                base.IndexChanged();
+                this.IndexChanged();
             }
         }
 
@@ -121,7 +122,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.bodyTypes[base.index].ToString();
+                return this.bodyTypes[this.index].ToString();
             }
         }
 
@@ -129,14 +130,14 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.bodyTypes[base.index];
+                return this.bodyTypes[this.index];
             }
         }
 
         public override void ResetToDefault()
         {
             this.FindIndex(this.OriginalBodyType);
-            base.IndexChanged();
+            this.IndexChanged();
         }
     }
 }

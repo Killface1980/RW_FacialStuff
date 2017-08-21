@@ -1,5 +1,7 @@
 ﻿namespace FacialStuff.Harmony.optional.PrepC
 {
+    using EdB.PrepareCarefully;
+
     using FacialStuff;
     using FacialStuff.FaceStyling_Bench;
 
@@ -15,7 +17,7 @@
     public static class PanelBackstoryPatch
     {
         [HarmonyPostfix]
-        public static void AddFaceEditButton(EdB.PrepareCarefully.PanelBackstory __instance, EdB.PrepareCarefully.State state)
+        public static void AddFaceEditButton(PanelBackstory __instance, State state)
         {
             Rect panelRect = __instance.PanelRect;
             Pawn pawn = state.CurrentPawn.Pawn;
@@ -36,6 +38,7 @@
                 {
                     GUI.color = new Color(0.623529f, 0.623529f, 0.623529f);
                 }
+
                 GUI.DrawTexture(rect, ContentFinder<Texture2D>.Get("Buttons/ButtonFace", true));
                 if (Widgets.ButtonInvisible(rect, false))
                 {
