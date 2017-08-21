@@ -2,6 +2,8 @@
 {
     using System;
 
+    using FacialStuff.Harmony.optional.PrepC;
+
     using global::Harmony;
 
     using Verse;
@@ -23,14 +25,16 @@
                             harmony.Patch(
                                 AccessTools.Method(typeof(EdB.PrepareCarefully.PanelBackstory), "DrawPanelContent"),
                                 null,
-                                new HarmonyMethod(typeof(PanelBackstoryPatch), "AddPsycheEditButton"));
+                                new HarmonyMethod(typeof(PanelBackstoryPatch), "AddFaceEditButton"));
+
                             harmony.Patch(
                                 AccessTools.Method(
                                     typeof(EdB.PrepareCarefully.PresetLoaderVersion3),
                                     "LoadPawn",
                                     new Type[] { typeof(EdB.PrepareCarefully.SaveRecordPawnV3) }),
                                 null,
-                                new HarmonyMethod(typeof(PresetLoaderPatch), "AddPsyche"));
+                                new HarmonyMethod(typeof(PresetLoaderPatch), "LoadFace"));
+
                             harmony.Patch(
                                 AccessTools.Method(
                                     typeof(EdB.PrepareCarefully.PresetSaver),
@@ -39,6 +43,7 @@
                                 null,
                                 null,
                                 new HarmonyMethod(typeof(PresetSaverPatch), "SavePawnRef"));
+
                             harmony.Patch(
                                 AccessTools.Method(
                                     typeof(EdB.PrepareCarefully.ColonistSaver),
@@ -47,10 +52,11 @@
                                 null,
                                 null,
                                 new HarmonyMethod(typeof(PresetSaverPatch), "SavePawnRef"));
+
                             harmony.Patch(
                                 AccessTools.Method(typeof(EdB.PrepareCarefully.SaveRecordPawnV3), "ExposeData"),
                                 null,
-                                new HarmonyMethod(typeof(SaveRecordPawnV3Patch), "ExposePsycheData"));
+                                new HarmonyMethod(typeof(SaveRecordPawnV3Patch), nameof(SaveRecordPawnV3Patch.ExposeFaceData)));
                         }
                     }))();
             }

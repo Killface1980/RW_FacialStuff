@@ -12,7 +12,7 @@ namespace Psychology.PrepareCarefully
 
     public class SaveRecordPsycheV3 : IExposable
     {
-        public List<PersonalFace> visuals = new List<PersonalFace>();
+        private PawnFace visuals;
 
         public SaveRecordPsycheV3()
         {
@@ -23,15 +23,15 @@ namespace Psychology.PrepareCarefully
             CompFace face = pawn.TryGetComp<CompFace>();
             if (face != null)
             {
-                this.visuals = face.PersonalFaceSettings;
+                this.visuals = face.pawnFace;
             }
         }
 
         public void ExposeData()
         {
-            if (Scribe.mode == LoadSaveMode.Saving || Scribe.loader.curXmlParent["personality"] != null)
+            if (Scribe.mode == LoadSaveMode.Saving || Scribe.loader.curXmlParent["visuals"] != null)
             {
-                Scribe_Collections.Look(ref this.visuals, "visuals", LookMode.Deep, null);
+                Scribe_Deep.Look(ref this.visuals, "visuals");
             }
         }
     }

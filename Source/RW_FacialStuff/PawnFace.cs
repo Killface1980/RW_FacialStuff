@@ -15,22 +15,39 @@
         #region Public Fields
 
         public Color BeardColor;
+
         public BeardDef BeardDef;
+
         public BrowDef BrowDef;
+
         public CrownType CrownType;
-        public float Cuticula;
+
         public bool DrawMouth;
-        public float EuMelanin;
-        public EyeDef EyeDef;
+
         public bool HasSameBeardColor;
-        public bool IsDNAoptimized;
+
         public bool IsOptimized;
-        public MoustacheDef MoustacheDef;
-        public HeadType PawnHeadType;
+
+        public float Cuticula;
+
+        public float EuMelanin;
+
         public float PheoMelanin;
+
+        public EyeDef EyeDef;
+
+        public MoustacheDef MoustacheDef;
+
+        public HeadType PawnHeadType;
+
         public WrinkleDef WrinkleDef;
 
-        public Pawn pawn;
+        public Color HairColor;
+
+        public Color HairColorOrg;
+
+      //  public float MelaninOrg;
+
 
         #endregion Public Fields
 
@@ -38,7 +55,6 @@
 
         public PawnFace(Pawn pawn)
         {
-            this.pawn = pawn;
             FactionDef faction = pawn.Faction?.def;
 
             this.EyeDef = PawnFaceChooser.RandomEyeDefFor(pawn, faction);
@@ -54,12 +70,16 @@
                 out this.EuMelanin,
                 out this.PheoMelanin,
                 out this.Cuticula,
+                out this.HairColor,
+                out this.HairColorOrg,
                 out this.BeardColor);
-            this.IsDNAoptimized = true;
             this.CrownType = pawn.story.crownType;
             this.PawnHeadType = HeadType.Undefined;
 
+            pawn.story.hairColor = this.HairColor;
+
             this.IsOptimized = true;
+        //    this.MelaninOrg = pawn.story.melanin;
         }
 
         #endregion Public Constructors
@@ -73,7 +93,6 @@
             Scribe_Defs.Look(ref this.BeardDef, "BeardDef");
             Scribe_Defs.Look(ref this.MoustacheDef, "MoustacheDef");
 
-            Scribe_Values.Look(ref this.pawn, "pawn");
             Scribe_Values.Look(ref this.IsOptimized, "optimized");
             Scribe_Values.Look(ref this.DrawMouth, "drawMouth");
 
@@ -85,15 +104,18 @@
             Scribe_Values.Look(ref this.PheoMelanin, "pheoMelanin");
             Scribe_Values.Look(ref this.Cuticula, "cuticula");
 
-            Scribe_Values.Look(ref this.IsDNAoptimized, "DNAoptimized");
+            Scribe_Values.Look(ref this.HairColor, "hairColor");
+            Scribe_Values.Look(ref this.HairColorOrg, "hairColorOrg");
+
+            //  Scribe_Values.Look(ref this.MelaninOrg, "melaninOrg");
 
             // Scribe_Values.Look(ref this.skinColorHex, "SkinColorHex");
             // Scribe_Values.Look(ref this.hairColorOrg, "HairColorOrg");
             // Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
             // Scribe_Values.Look(ref this.isSkinDNAoptimized, "IsSkinDNAoptimized");
             // Scribe_Values.Look(ref this.melaninOrg, "MelaninOrg");
-
         }
-    }
 
+
+    }
 }

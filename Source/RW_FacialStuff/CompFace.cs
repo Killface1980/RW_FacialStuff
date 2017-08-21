@@ -39,7 +39,6 @@
 
         private DamageFlasher flasher;
 
-        private Color hairColorOrg = Color.clear;
 
         private float headTypeX;
 
@@ -54,15 +53,11 @@
 
         private bool isRightEyeSolid;
 
-        private bool isSkinDNAoptimized;
 
-
-        private float melaninOrg;
 
         private float mood = 0.5f;
 
 
-        private string skinColorHex;
 
         private string texPathBrow;
 
@@ -104,26 +99,14 @@
         }
 
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
-        public Color HairColorOrg
-        {
-            get => this.hairColorOrg;
-            set => this.hairColorOrg = value;
-        }
+
+
 
         public bool HasEyePatchLeft { get; private set; }
         public bool HasEyePatchRight { get; private set; }
         public bool HasNaturalMouth { get; private set; } = true;
-        public bool IsSkinDNAoptimized
-        {
-            get => this.isSkinDNAoptimized;
-            set => this.isSkinDNAoptimized = value;
-        }
 
-        public float MelaninOrg
-        {
-            get => this.melaninOrg;
-            set => this.melaninOrg = value;
-        }
+
 
         public GraphicMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
         public bool OldEnough { get; set; }
@@ -421,13 +404,12 @@
         /// </summary>
 
         // TODO: Remove or make usable
-        public void DefineSkinDNA()
-        {
-            HairMelanin.SkinGenetics(this.Pawn, this, out this.factionMelanin);
-            this.IsSkinDNAoptimized = true;
-        }
+        // public void DefineSkinDNA()
+        // {
+        //     HairMelanin.SkinGenetics(this.Pawn, this, out this.factionMelanin);
+        //     this.IsSkinDNAoptimized = true;
+        // }
 
-        [CanBeNull]
         public Material EyeLeftMatAt(Rot4 facing, bool portrait)
         {
             if (this.HasEyePatchLeft)
@@ -652,7 +634,11 @@
                     if (pawn != null)
                     {
 
-                        this.pawnFace = new PawnFace { pawn = pawn };
+                        this.pawnFace = new PawnFace
+                        {
+                            IsOptimized = true,
+                        };
+                        Scribe_Values.Look(ref this.pawnFace.HairColorOrg, "HairColorOrg");
 
                         Scribe_Defs.Look(ref this.pawnFace.EyeDef, "EyeDef");
                         Scribe_Defs.Look(ref this.pawnFace.BrowDef, "BrowDef");
@@ -669,9 +655,9 @@
                         Scribe_Values.Look(ref this.pawnFace.EuMelanin, "euMelanin");
                         Scribe_Values.Look(ref this.pawnFace.BeardColor, "BeardColor");
                         Scribe_Values.Look(ref this.pawnFace.PheoMelanin, "pheoMelanin");
-                        Scribe_Values.Look(ref this.pawnFace.IsDNAoptimized, "DNAoptimized");
                         Scribe_Values.Look(ref this.pawnFace.EuMelanin, "melanin1");
                         Scribe_Values.Look(ref this.pawnFace.PheoMelanin, "melanin2");
+                   //     Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
                         if (this.pawnFace.MoustacheDef == null)
                         {
                             this.pawnFace.MoustacheDef = MoustacheDefOf.Shaved;
@@ -680,17 +666,20 @@
                     }
                 }
 
-            Scribe_Values.Look(ref this.Pawn, "pawn");
+            Scribe_References.Look(ref this.Pawn, "Pawn");
 
             Scribe_Values.Look(ref this.dontrender, "dontrender");
-            Scribe_Values.Look(ref this.skinColorHex, "SkinColorHex");
-            Scribe_Values.Look(ref this.hairColorOrg, "HairColorOrg");
             Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
-            Scribe_Values.Look(ref this.isSkinDNAoptimized, "IsSkinDNAoptimized");
-
-            Scribe_Values.Look(ref this.melaninOrg, "MelaninOrg");
 
             Scribe_Deep.Look(ref this.pawnFace, "pawnFace");
+        }
+
+        public void ExposeFaceData()
+        {
+            if (Scribe.mode == LoadSaveMode.Saving || Scribe.loader.curXmlParent["PawnFace"] != null)
+            {
+                Scribe_Deep.Look(ref this.pawnFace, "PawnFace");
+            }
         }
 
         /// <summary>
@@ -707,7 +696,8 @@
 
             this.flasher = this.Pawn.Drawer.renderer.graphics.flasher;
             this.EyeWiggler = new PawnEyeWiggler(this.Pawn);
-            if (this.pawnFace.pawn == null)
+
+            if (!this.pawnFace.IsOptimized)
             {
                 this.pawnFace = new PawnFace(this.Pawn);
             }

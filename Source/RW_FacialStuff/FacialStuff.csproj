@@ -99,6 +99,7 @@
     <None Include="Enums\DialoguePage.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="FaceGraphicParts.cs" />
+    <None Include="FaceStyling_Bench\Dialog_FaceStyling - Kopieren.cs" />
     <Compile Include="FaceStyling_Bench\Dialog_FaceStyling.cs" />
     <None Include="FaceStyling_Bench\DresserJobDriver\JobDriver_ChangeBody.cs" />
     <None Include="FaceStyling_Bench\UI\DresserUI.cs" />
@@ -110,10 +111,13 @@
     <Compile Include="FaceStyling_Bench\UI\DTO\SelectionWidgetDTOs\HeadTypeSelectionDTO.cs" />
     <Compile Include="FaceStyling_Bench\UI\DTO\SelectionWidgetDTOs\SliderWidgetDTO.cs" />
     <Compile Include="FaceStyling_Bench\UI\Util\WidgetUtil.cs" />
-    <None Include="Harmony\optional\Harmony_EdBPrepareCarefully.cs" />
+    <Compile Include="Harmony\optional\Harmony_EdBPrepareCarefully.cs" />
     <Compile Include="Harmony\optional\Harmony_Werewolf.cs" />
-    <None Include="Harmony\optional\PrepC\Class1.cs" />
     <None Include="Harmony\optional\PrepC\Class2.cs" />
+    <Compile Include="Harmony\optional\PrepC\PanelBackstoryPatch.cs" />
+    <Compile Include="Harmony\optional\PrepC\PresetSaverPatch.cs" />
+    <Compile Include="Harmony\optional\PrepC\PresetLoaderPatch.cs" />
+    <Compile Include="Harmony\optional\PrepC\SaveRecordPawnV3Patch.cs" />
     <Compile Include="Harmony\optional\Werewolf_Patches.cs" />
     <Compile Include="HumanMouthGraphics.cs" />
     <None Include="MouthGraphicData.cs" />

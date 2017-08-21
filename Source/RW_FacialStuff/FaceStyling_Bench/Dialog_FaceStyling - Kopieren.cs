@@ -26,7 +26,7 @@
     using Verse;
 
     [StaticConstructorOnStartup]
-    public class DialogFaceStyling : Window
+    public class DialogFaceStyling_PrepC : Window
     {
         #region Public Fields
 
@@ -159,13 +159,12 @@
 
         private object heads;
 
-        private bool reInit;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        static DialogFaceStyling()
+        static DialogFaceStyling_PrepC()
         {
             Title = "FacialStuffEditor.FaceStylerTitle".Translate();
             TitleHeight = 30f;
@@ -197,8 +196,9 @@
             MoustacheDefs.SortBy(i => i.LabelCap);
         }
 
-        public DialogFaceStyling(Pawn p)
+        public DialogFaceStyling_PrepC(Pawn p)
         {
+
             pawn = p;
             faceComp = pawn.TryGetComp<CompFace>();
             hats = Prefs.HatsOnlyOnMap;
@@ -219,7 +219,7 @@
                 faceComp.pawnFace.BeardDef = BeardDefOf.Beard_Shaved;
             }
 
-            this.originalHairColor = pawn.story.hairColor;
+            this.originalHairColor = faceComp.pawnFace.HairColorOrg;
             newBeardColor = this.originalBeardColor = faceComp.pawnFace.BeardColor;
             newBeard = this.originalBeard = faceComp.pawnFace.BeardDef;
             newMoustache = this.originalMoustache = faceComp.pawnFace.MoustacheDef;
@@ -294,7 +294,7 @@
                 newBeard = value;
 
                 this.UpdatePawn(value);
-                if (value.beardType == BeardType.FullBeard && !this.reInit)
+                if (value.beardType == BeardType.FullBeard)
                 {
                     newMoustache = MoustacheDefOf.Shaved;
                     this.UpdatePawn(MoustacheDefOf.Shaved);
@@ -357,7 +357,7 @@
                 newHairColor = value;
                 this.UpdatePawn(this.NewHair, value);
 
-                if (faceComp != null && faceComp.pawnFace.HasSameBeardColor && !this.reInit)
+                if (faceComp != null && faceComp.pawnFace.HasSameBeardColor)
                 {
                     var color = FacialGraphics.DarkerBeardColor(value);
                     this.UpdatePawn(this.NewBeard, color);
@@ -386,7 +386,7 @@
                 newMoustache = value;
                 this.UpdatePawn(value);
 
-                if (newBeard.beardType == BeardType.FullBeard && !this.reInit)
+                if (newBeard.beardType == BeardType.FullBeard)
                 {
                     newBeard = PawnFaceChooser.RandomBeardDefFor(pawn, BeardType.LowerBeard);
                     this.UpdatePawn(newBeard);
@@ -1071,11 +1071,9 @@
             if (Widgets.ButtonInvisible(rect))
             {
                 this.NewHair = hair;
-
                 while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
                 {
                 }
-                {
 
                 colourWrapper.Color = this.NewHairColor;
 
@@ -1088,8 +1086,6 @@
                     {
                         initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
                     });
-                }
-
             }
         }
 
@@ -1568,7 +1564,6 @@
 
         private void ResetPawnFace()
         {
-            reInit = true;
             this.NewHairColor = this.originalHairColor;
             this.NewHair = this.originalHair;
             this.NewMelanin = this.originalMelanin;
@@ -1589,7 +1584,6 @@
             pawn.ageTracker.AgeBiologicalTicks = this.originalAgeBio;
             pawn.ageTracker.AgeChronologicalTicks = this.originalAgeChrono;
 
-            this.reInit = false;
             this.rerenderPawn = true;
         }
 
