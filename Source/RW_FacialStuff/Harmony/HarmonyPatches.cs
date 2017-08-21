@@ -1,15 +1,15 @@
 ﻿namespace FacialStuff.Detouring
 {
-    using Harmony;
     using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
 
+    using global::Harmony;
+
     using UnityEngine;
     using Verse;
-    using Verse.AI;
 
     // [HarmonyPatch(typeof(RimWorld.Dialog_Options))]
     // [HarmonyPatch("DoWindowContents")]
@@ -69,7 +69,9 @@
     {
         static HarmonyPatches()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create("com.facialstuff.rimworld.mod");
+            HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.werewolf_patch");
+
+            // Still needed for the Settings Transpiler
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             harmony.Patch(
@@ -100,7 +102,7 @@
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(AddHediff_Postfix)));
 
             harmony.Patch(
-                AccessTools.Method(typeof(Pawn_HealthTracker), nameof(HediffSet.DirtyCache)),
+                AccessTools.Method(typeof(HediffSet), nameof(HediffSet.DirtyCache)),
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(DirtyCache_Postfix)));
 
@@ -148,7 +150,7 @@
             CheckAllInjected();
         }
 
-
+        //  [HarmonyAfter("net.pardeike.zombieland")]
         public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)
         {
             Pawn pawn = __instance.pawn;
@@ -163,37 +165,19 @@
             faceComp.OldEnough = pawn.ageTracker.AgeBiologicalYearsFloat >= 13;
 
             // Return if child
-            if (!faceComp.OldEnough)
+            if (!faceComp.OldEnough || faceComp.dontrender)
             {
                 return;
             }
 
             __instance.ClearCache();
 
-            // if (pawn.Faction == null)
-            // {
-            //     pawn.SetFactionDirect(Faction.OfPlayer);
-            // }
+            if (pawn.Faction == null)
+            {
+                pawn.SetFactionDirect(Faction.OfPlayer);
+            }
 
             GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
-
-            // Hair color is defined here. Can't use RandomHairColor as FS checks for existing relations
-            // todo: will be merged with IsOptimized in A18
-            if (!faceComp.IsDNAoptimized)
-            {
-                faceComp.DefineHairDNA();
-                __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(
-                    pawn.story.hairDef.texPath,
-                    ShaderDatabase.Cutout,
-                    Vector2.one,
-                    pawn.story.hairColor);
-            }
-
-            // Inital definition of a pawn's appearance. Run only once - ever.
-            if (!faceComp.IsOptimized)
-            {
-                faceComp.DefineFace();
-            }
 
             // Need: get the traditional habitat of a faction => not suitable, as factions are scattered around the globe
             // if (!faceComp.IsSkinDNAoptimized)
@@ -230,6 +214,11 @@
                         pawn.story.bodyType,
                         ShaderDatabase.CutoutSkin,
                         rotColor);
+                    __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(
+                        pawn.story.hairDef.texPath,
+                        ShaderDatabase.Cutout,
+                        Vector2.one,
+                        pawn.story.hairColor);
                     PortraitsCache.SetDirty(pawn);
                 }
             }
@@ -271,8 +260,12 @@
                     CompFace face = pawn.TryGetComp<CompFace>();
                     if (face != null)
                     {
+                        // Look for the werewolf
                         face.CheckForAddedOrMissingParts();
-                        pawn.Drawer.renderer.graphics.ResolveAllGraphics();
+                        if (!face.dontrender)
+                        {
+                            pawn.Drawer.renderer.graphics.ResolveAllGraphics();
+                        }
                     }
                 }
             }
@@ -290,21 +283,25 @@
                 return;
             }
 
-            if (!pawn.Spawned|| !pawn.RaceProps.Humanlike)
+            if (!pawn.Spawned || !pawn.RaceProps.Humanlike)
             {
                 return;
             }
+
+            CompFace face = pawn.TryGetComp<CompFace>();
+            if (face == null)
+            {
+                return;
+            }
+
             if (!Controller.settings.ShowExtraParts)
             {
                 return;
             }
+            face.CheckForAddedOrMissingParts();
+            if (!face.dontrender)
             {
-                CompFace face = pawn.TryGetComp<CompFace>();
-                if (face != null)
-                {
-                    face.CheckForAddedOrMissingParts();
-                    pawn.Drawer.renderer.graphics.ResolveAllGraphics();
-                }
+                pawn.Drawer.renderer.graphics.ResolveAllGraphics();
             }
         }
 

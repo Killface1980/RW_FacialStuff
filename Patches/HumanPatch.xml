@@ -33,25 +33,32 @@
       </li>
     </operations>
   </Operation>
-<!--
-  <Operation Class="PatchOperationAdd">
-    <xpath>/ThingDefs/ThingDef[defName = "Human"]/comps</xpath>
-    <value>
-      <li>
-        <compClass>FacialStuff.CompFace</compClass>
-      </li>
-    </value>
-  </Operation>
--->
   <!--
+  
   <Operation Class="PatchOperationSequence">
     <success>Always</success>
     <operations>
-      <li Class="FacialStuff.PatchOperationFindMod">
-        <modName>Zombieland</modName>
+      <li Class="PatchOperationTest">
+        <xpath>/ThingDefs/ThingDef[defName = "Zombie"]/comps</xpath>
+        <success>Invert</success>
       </li>
       <li Class="PatchOperationAdd">
-        <xpath>/ThingDefs/ThingDef[defName="BaseZombie"]/comps</xpath>
+        <xpath>/ThingDefs/ThingDef[defName = "Zombie"]</xpath>
+        <value>
+          <comps />
+        </value>
+      </li>
+    </operations>
+  </Operation>
+
+  <Operation Class="PatchOperationSequence">
+    <success>Always</success>
+    <operations>
+      <li Class="PatchOperationTest">
+        <xpath>/ThingDefs/ThingDef[defName = "Zombie"]/comps</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/ThingDefs/ThingDef[defName = "Zombie"]/comps</xpath>
         <value>
           <li>
             <compClass>FacialStuff.CompFace</compClass>
@@ -61,13 +68,4 @@
     </operations>
   </Operation>
 -->
-
-  <!--
-  <Operation Class="PatchOperationAdd">
-    <xpath>/ThingDefs/ThingDef[defName = "Human"]</xpath>
-    <value>
-      <comps></comps>
-    </value>
-  </Operation>
-  -->
 </Patch>

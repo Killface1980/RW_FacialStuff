@@ -1,6 +1,5 @@
 ﻿namespace FacialStuff
 {
-    using Harmony;
     using RimWorld;
     using System;
     using System.Collections.Generic;
@@ -63,7 +62,7 @@
             }
         }
 
-        [HarmonyAfter("rimworld.erdelf.alien_race.main")]
+     //   [HarmonyBefore("rimworld.erdelf.alien_race.main", "rimworld.jecrell.cthulhu.cults", "net.pardeike.zombieland")]
         public static bool RenderPawnInternal_Prefix(
             PawnRenderer __instance,
             Vector3 rootLoc,
@@ -89,6 +88,11 @@
 
             // Let vanilla do the job if no FacePawn or pawn not a teenager
             if (faceComp == null || !faceComp.OldEnough)
+            {
+                return true;
+            }
+
+            if (faceComp.dontrender)
             {
                 return true;
             }

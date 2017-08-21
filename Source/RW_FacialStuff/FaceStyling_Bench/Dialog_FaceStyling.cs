@@ -203,7 +203,7 @@
             faceComp = pawn.TryGetComp<CompFace>();
             hats = Prefs.HatsOnlyOnMap;
             Prefs.HatsOnlyOnMap = true;
-            hadSameBeardColor = faceComp.HasSameBeardColor;
+            hadSameBeardColor = faceComp.pawnFace.HasSameBeardColor;
             if (pawn.gender == Gender.Female)
             {
                 this.genderTab = GenderTab.Female;
@@ -214,17 +214,17 @@
                 this.genderTab = GenderTab.Male;
             }
 
-            if (faceComp.BeardDef == null)
+            if (faceComp.pawnFace.BeardDef == null)
             {
-                faceComp.BeardDef = BeardDefOf.Beard_Shaved;
+                faceComp.pawnFace.BeardDef = BeardDefOf.Beard_Shaved;
             }
 
             this.originalHairColor = pawn.story.hairColor;
-            newBeardColor = this.originalBeardColor = faceComp.BeardColor;
-            newBeard = this.originalBeard = faceComp.BeardDef;
-            newMoustache = this.originalMoustache = faceComp.MoustacheDef;
-            newEye = this.originalEye = faceComp.EyeDef;
-            newBrow = this.originalBrow = faceComp.BrowDef;
+            newBeardColor = this.originalBeardColor = faceComp.pawnFace.BeardColor;
+            newBeard = this.originalBeard = faceComp.pawnFace.BeardDef;
+            newMoustache = this.originalMoustache = faceComp.pawnFace.MoustacheDef;
+            newEye = this.originalEye = faceComp.pawnFace.EyeDef;
+            newBrow = this.originalBrow = faceComp.pawnFace.BrowDef;
 
             newHairColor = pawn.story.hairColor;
 
@@ -357,7 +357,7 @@
                 newHairColor = value;
                 this.UpdatePawn(this.NewHair, value);
 
-                if (faceComp != null && faceComp.HasSameBeardColor)
+                if (faceComp != null && faceComp.pawnFace.HasSameBeardColor)
                 {
                     var color = FacialGraphics.DarkerBeardColor(value);
                     this.UpdatePawn(this.NewBeard, color);
@@ -671,7 +671,7 @@
                         colourWrapper,
                         delegate
                             {
-                                if (faceComp.HasSameBeardColor)
+                                if (faceComp.pawnFace.HasSameBeardColor)
                                 {
                                     this.NewHairColor = colourWrapper.Color;
                                 }
@@ -797,13 +797,13 @@
             {
             }
             {
-                colourWrapper.Color = faceComp.HasSameBeardColor ? this.NewHairColor : this.NewBeardColor;
+                colourWrapper.Color = faceComp.pawnFace.HasSameBeardColor ? this.NewHairColor : this.NewBeardColor;
                 Find.WindowStack.Add(
                     new Dialog_ColorPicker(
                         colourWrapper,
                         delegate
                             {
-                                if (faceComp.HasSameBeardColor)
+                                if (faceComp.pawnFace.HasSameBeardColor)
                                 {
                                     this.NewHairColor = colourWrapper.Color;
                                 }
@@ -811,9 +811,10 @@
                                 this.NewBeardColor = colourWrapper.Color;
                             },
                         false,
-                        true) {
-                                 initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin) 
-                              });
+                        true)
+                    {
+                        initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
+                    });
             }
         }
 
@@ -1385,20 +1386,20 @@
             set.x = selectionRect.x;
             set.width = selectionRect.width - 5f;
 
-            bool faceCompDrawMouth = faceComp.DrawMouth;
+            bool faceCompDrawMouth = faceComp.pawnFace.DrawMouth;
             Widgets.CheckboxLabeled(set, "FacialStuffEditor.DrawMouth".Translate(), ref faceCompDrawMouth);
-            faceComp.DrawMouth = faceCompDrawMouth;
+            faceComp.pawnFace.DrawMouth = faceCompDrawMouth;
             if (pawn.gender == Gender.Male)
             {
                 set.y += 24f;
-                bool faceCompHasSameBeardColor = faceComp.HasSameBeardColor;
+                bool faceCompHasSameBeardColor = faceComp.pawnFace.HasSameBeardColor;
                 Widgets.CheckboxLabeled(set, "FacialStuffEditor.SameColor".Translate(), ref faceCompHasSameBeardColor);
-                faceComp.HasSameBeardColor = faceCompHasSameBeardColor;
+                faceComp.pawnFace.HasSameBeardColor = faceCompHasSameBeardColor;
             }
 
             if (GUI.changed)
             {
-                if (faceComp.HasSameBeardColor)
+                if (faceComp.pawnFace.HasSameBeardColor)
                 {
                     this.NewBeardColor = FacialGraphics.DarkerBeardColor(this.NewHairColor);
                 }
@@ -1571,7 +1572,7 @@
             this.NewBeard = originalBeard;
             this.NewMoustache = originalMoustache;
 
-            faceComp.HasSameBeardColor = hadSameBeardColor;
+            faceComp.pawnFace.HasSameBeardColor = hadSameBeardColor;
             this.NewBeardColor = originalBeardColor;
 
             this.NewEye = originalEye;
@@ -1617,22 +1618,22 @@
             {
                 if (newValue is BeardDef)
                 {
-                    faceComp.BeardDef = (BeardDef)newValue;
+                    faceComp.pawnFace.BeardDef = (BeardDef)newValue;
                 }
 
                 if (newValue is MoustacheDef)
                 {
-                    faceComp.MoustacheDef = (MoustacheDef)newValue;
+                    faceComp.pawnFace.MoustacheDef = (MoustacheDef)newValue;
                 }
 
                 if (newValue is EyeDef)
                 {
-                    faceComp.EyeDef = (EyeDef)newValue;
+                    faceComp.pawnFace.EyeDef = (EyeDef)newValue;
                 }
 
                 if (newValue is BrowDef)
                 {
-                    faceComp.BrowDef = (BrowDef)newValue;
+                    faceComp.pawnFace.BrowDef = (BrowDef)newValue;
                 }
 
                 if (newValue is HairDef)
@@ -1651,7 +1652,7 @@
             {
                 if (type is BeardDef)
                 {
-                    faceComp.SetBeardColor((Color)newValue);
+                    faceComp.pawnFace.BeardColor = (Color)newValue;
                 }
 
                 if (type is HairDef)

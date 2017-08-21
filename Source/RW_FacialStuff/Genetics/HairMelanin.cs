@@ -64,21 +64,21 @@
 
         public static void GenerateHairMelaninAndCuticula(
             Pawn pawn,
-            CompFace face,
             out float euMelanin,
             out float pheoMelanin,
-            out float cuticula)
+            out float cuticula,
+            out Color beardColor)
         {
             euMelanin = pheoMelanin = cuticula = 0f;
-            if (face == null)
-            {
-                return;
-            }
-
-            CompFace mother = null;
-            CompFace father = null;
+            beardColor = Color.gray;
+            CompFace face = pawn.TryGetComp<CompFace>();
+            CompFace motherComp = null;
+            CompFace fatherComp = null;
             bool motherNull = false;
             bool fatherNull = false;
+
+            PawnFace motherPawnFace = new PawnFace();
+            PawnFace fatherPawnFace = new PawnFace();
 
             if (pawn.GetMother() == null)
             {
@@ -86,7 +86,12 @@
             }
             else
             {
-                mother = pawn.GetMother().TryGetComp<CompFace>();
+                motherComp = pawn.GetMother().TryGetComp<CompFace>();
+                motherPawnFace = motherComp.pawnFace;
+                if (motherPawnFace.pawn == null)
+                {
+                    motherComp.SetHeadType();
+                }
             }
 
             if (pawn.GetFather() == null)
@@ -95,26 +100,42 @@
             }
             else
             {
-                father = pawn.GetFather().TryGetComp<CompFace>();
+                fatherComp = pawn.GetFather().TryGetComp<CompFace>();
+                fatherPawnFace = fatherComp.pawnFace;
+                if (fatherPawnFace.pawn == null)
+                {
+                    fatherComp.SetHeadType();
+                }
             }
 
-            if (!motherNull && mother.IsDNAoptimized && !fatherNull && father.IsDNAoptimized)
+
+
+            if (!motherNull && !fatherNull)
             {
-                euMelanin = GetRandomChildHairColor(mother.EuMelanin, father.EuMelanin);
-                pheoMelanin = GetRandomChildHairColor(mother.PheoMelanin, father.PheoMelanin);
-                cuticula = GetRandomChildHairColor(mother.Cuticula, father.Cuticula);
+                if (motherPawnFace.IsDNAoptimized && fatherPawnFace.IsDNAoptimized)
+                {
+                    euMelanin = GetRandomChildHairColor(motherPawnFace.EuMelanin, fatherPawnFace.EuMelanin);
+                    pheoMelanin = GetRandomChildHairColor(motherPawnFace.PheoMelanin, fatherPawnFace.PheoMelanin);
+                    cuticula = GetRandomChildHairColor(motherPawnFace.Cuticula, fatherPawnFace.Cuticula);
+                }
             }
-            else if (!motherNull && mother.IsDNAoptimized)
+            else if (!motherNull)
             {
-                euMelanin = GetRandomMelaninSimilarTo(mother.EuMelanin);
-                pheoMelanin = GetRandomMelaninSimilarTo(mother.PheoMelanin);
-                cuticula = GetRandomMelaninSimilarTo(mother.Cuticula);
+                if (motherPawnFace.IsDNAoptimized)
+                {
+                    euMelanin = GetRandomMelaninSimilarTo(motherPawnFace.EuMelanin);
+                    pheoMelanin = GetRandomMelaninSimilarTo(motherPawnFace.PheoMelanin);
+                    cuticula = GetRandomMelaninSimilarTo(motherPawnFace.Cuticula);
+                }
             }
-            else if (!fatherNull && father.IsDNAoptimized)
+            else if (!fatherNull)
             {
-                euMelanin = GetRandomMelaninSimilarTo(father.EuMelanin);
-                pheoMelanin = GetRandomMelaninSimilarTo(father.PheoMelanin);
-                cuticula = GetRandomMelaninSimilarTo(father.Cuticula);
+                if (fatherPawnFace.IsDNAoptimized)
+                {
+                    euMelanin = GetRandomMelaninSimilarTo(fatherPawnFace.EuMelanin);
+                    pheoMelanin = GetRandomMelaninSimilarTo(fatherPawnFace.PheoMelanin);
+                    cuticula = GetRandomMelaninSimilarTo(fatherPawnFace.Cuticula);
+                }
             }
             else
             {
@@ -123,14 +144,14 @@
                 if (pawn.relations.FamilyByBlood.Any())
                 {
                     Pawn relPawn =
-                        pawn.relations.FamilyByBlood.FirstOrDefault(x => x.TryGetComp<CompFace>().IsDNAoptimized);
+                        pawn.relations.FamilyByBlood.FirstOrDefault(x => x.TryGetComp<CompFace>().pawnFace.IsDNAoptimized);
                     if (relPawn != null)
                     {
                         CompFace relatedPawn = relPawn.TryGetComp<CompFace>();
 
-                        float melaninx1 = relatedPawn.EuMelanin;
-                        float melaninx2 = relatedPawn.PheoMelanin;
-                        float cuticulax = relatedPawn.Cuticula;
+                        float melaninx1 = relatedPawn.pawnFace.EuMelanin;
+                        float melaninx2 = relatedPawn.pawnFace.PheoMelanin;
+                        float cuticulax = relatedPawn.pawnFace.Cuticula;
                         euMelanin = GetRandomMelaninSimilarTo(melaninx1);
                         pheoMelanin = GetRandomMelaninSimilarTo(melaninx2);
                         cuticula = GetRandomMelaninSimilarTo(cuticulax);
@@ -144,14 +165,15 @@
                     pheoMelanin = Rand.Range(pawn.story.melanin / 2, 1f);
                     cuticula = Rand.Range(0.5f, 1.5f);
                 }
+
             }
+
 
             // Log.Message(
             // pawn + " - " + melanin + " - " + face.euMelanin + " - " + face.pheoMelanin + " - " + mother?.euMelanin
             // + mother?.pheoMelanin + father?.euMelanin + father?.pheoMelanin);
 
             // Check if the player has already set a custom color, else dna!
-            if (pawn.story.hairColor == face.HairColorOrg)
             {
                 // Build gradients
                 GradientAlphaKey[] gak = new GradientAlphaKey[2];
@@ -166,11 +188,11 @@
                 eu[0].color = HairPlatinum;
                 eu[0].time = 0.0f;
                 eu[1].color = new Color32(139, 108, 66, 255);
-                eu[1].time = 0.6f;
+                eu[1].time = 0.3f;
                 eu[2].color = new Color32(91, 60, 17, 255);
-                eu[2].time = 0.75f;
+                eu[2].time = 0.5f;
                 eu[3].color = new Color32(47, 30, 14, 255);
-                eu[3].time = 0.9f;
+                eu[3].time = 0.7f;
                 eu[4].color = new Color32(0, 0, 0, 255);
                 eu[4].time = 1f;
                 GradientEuMelanin.SetKeys(eu, gak);
@@ -188,120 +210,118 @@
 
                 GradientPheoMelanin.SetKeys(phyo, gak);
 
-                Color color = GradientEuMelanin.Evaluate(face.EuMelanin);
+                Color color = GradientEuMelanin.Evaluate(face.pawnFace.EuMelanin);
 
-                color *= GradientPheoMelanin.Evaluate(face.PheoMelanin);
+                color *= GradientPheoMelanin.Evaluate(face.pawnFace.PheoMelanin);
+                // Aging
+                // age to become gray as float
+                float ageFloat = pawn.ageTracker.AgeBiologicalYearsFloat / 100;
+                float agingBeginGreyFloat = Rand.Range(0.35f, 0.5f);
+
+                agingBeginGreyFloat += pawn.story.melanin * 0.1f + euMelanin * 0.05f + pheoMelanin * 0.05f;
+
+                float greySpan = Rand.Range(0.07f, 0.2f);
+
+                greySpan += euMelanin * 0.15f;
+                greySpan += pawn.story.melanin * 0.25f;
+                float greyness = 0f;
+
+                if (ageFloat > agingBeginGreyFloat)
                 {
-                    // Aging
-                    // age to become gray as float
-                    float ageFloat = pawn.ageTracker.AgeBiologicalYearsFloat / 100;
-                    float agingBeginGreyFloat = Rand.Range(0.35f, 0.5f);
+                    greyness = Mathf.InverseLerp(agingBeginGreyFloat, agingBeginGreyFloat + greySpan, ageFloat);
+                }
 
-                    agingBeginGreyFloat += pawn.story.melanin * 0.1f + euMelanin * 0.05f + pheoMelanin * 0.05f;
+                // Soften the greyness
+                // greyness *= 0.95f;
 
-                    float greySpan = Rand.Range(0.07f, 0.2f);
+                // Even more - melanin
+                // if (PawnSkinColors.IsDarkSkin(pawn.story.SkinColor))
+                // {
+                // greyness *= Rand.Range(0.5f, 0.9f);
+                // }
+                // Log.Message(pawn.ToString());
+                // Log.Message(ageFloat.ToString());
+                // Log.Message(agingBeginGreyFloat.ToString());
+                // Log.Message(greySpan.ToString());
+                // Log.Message(greyness.ToString());
 
-                    greySpan += euMelanin * 0.15f;
-                    greySpan += pawn.story.melanin * 0.25f;
-                    float greyness = 0f;
+                // Special hair colors
+                float factionColor = Rand.Value;
+                float limit = 0.98f;
+                if (pawn.Faction.def.techLevel > TechLevel.Industrial)
+                {
+                    limit *= pawn.gender == Gender.Female ? 0.7f : 0.9f;
 
-                    if (ageFloat > agingBeginGreyFloat)
+                    float techMod = (pawn.Faction.def.techLevel - TechLevel.Industrial) / 5f;
+                    SimpleCurve ageCure = new SimpleCurve { { 0.1f, 1f }, { 0.25f, 1f - techMod }, { 0.6f, 0.9f } };
+                    limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
+                }
+
+                if (factionColor > limit && pawn.ageTracker.AgeBiologicalYearsFloat > 16)
+                {
+                    Color color2;
+                    float rand = Rand.Value;
+                    if (rand < 0.15f)
                     {
-                        greyness = Mathf.InverseLerp(agingBeginGreyFloat, agingBeginGreyFloat + greySpan, ageFloat);
+                        color2 = HairBlueSteel;
                     }
-
-                    // Soften the greyness
-                    // greyness *= 0.95f;
-
-                    // Even more - melanin
-                    // if (PawnSkinColors.IsDarkSkin(pawn.story.SkinColor))
-                    // {
-                    // greyness *= Rand.Range(0.5f, 0.9f);
-                    // }
-                    // Log.Message(pawn.ToString());
-                    // Log.Message(ageFloat.ToString());
-                    // Log.Message(agingBeginGreyFloat.ToString());
-                    // Log.Message(greySpan.ToString());
-                    // Log.Message(greyness.ToString());
-
-                    // Special hair colors
-                    float factionColor = Rand.Value;
-                    float limit = 0.98f;
-                    if (pawn.Faction.def.techLevel > TechLevel.Industrial)
+                    else if (rand < 0.3f)
                     {
-                        limit *= pawn.gender == Gender.Female ? 0.7f : 0.9f;
-
-                        float techMod = (pawn.Faction.def.techLevel - TechLevel.Industrial) / 5f;
-                        SimpleCurve ageCure = new SimpleCurve { { 0.1f, 1f }, { 0.25f, 1f - techMod }, { 0.6f, 0.9f } };
-                        limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
+                        color2 = HairBurgundyBistro;
                     }
-
-                    if (factionColor > limit && pawn.ageTracker.AgeBiologicalYearsFloat > 16)
+                    else if (rand < 0.45f)
                     {
-                        Color color2;
-                        float rand = Rand.Value;
-                        if (rand < 0.15f)
-                        {
-                            color2 = HairBlueSteel;
-                        }
-                        else if (rand < 0.3f)
-                        {
-                            color2 = HairBurgundyBistro;
-                        }
-                        else if (rand < 0.45f)
-                        {
-                            color2 = HairGreenGrape;
-                        }
-                        else if (rand < 0.6f)
-                        {
-                            color2 = HairMysticTurquois;
-                        }
-                        else if (rand < 0.75f)
-                        {
-                            color2 = HairPurplePassion;
-                        }
-                        else if (rand < 0.9f)
-                        {
-                            color2 = HairRosaRosa;
-                        }
-                        else
-                        {
-                            color2 = HairUltraViolet;
-                        }
-
-                        Color.RGBToHSV(color2, out float h, out float s, out float v);
-                        s *= cuticula;
-
-                        color2 = Color.HSVToRGB(h, s, v);
-
-                        pawn.story.hairColor = Color.Lerp(color, color2, Rand.Range(0.66f, 1f));
+                        color2 = HairGreenGrape;
+                    }
+                    else if (rand < 0.6f)
+                    {
+                        color2 = HairMysticTurquois;
+                    }
+                    else if (rand < 0.75f)
+                    {
+                        color2 = HairPurplePassion;
+                    }
+                    else if (rand < 0.9f)
+                    {
+                        color2 = HairRosaRosa;
                     }
                     else
                     {
-                        Color.RGBToHSV(color, out float h, out float s, out float v);
-                        s *= cuticula;
-
-                        color = Color.HSVToRGB(h, s, v);
-
-                        pawn.story.hairColor = Color.Lerp(color, new Color(0.86f, 0.86f, 0.86f), greyness);
+                        color2 = HairUltraViolet;
                     }
 
-                    face.HasSameBeardColor = Rand.Value > 0.3f;
+                    Color.RGBToHSV(color2, out float h, out float s, out float v);
+                    s *= cuticula;
 
-                    face.HairColorOrg = color;
+                    color2 = Color.HSVToRGB(h, s, v);
 
-                    if (face.HasSameBeardColor)
-                    {
-                        face.SetBeardColor(FacialGraphics.DarkerBeardColor(pawn.story.hairColor));
-                    }
-                    else
-                    {
-                        Color color2 = GradientEuMelanin.Evaluate(face.EuMelanin + Rand.Range(-0.2f, 0.2f));
+                    pawn.story.hairColor = Color.Lerp(color, color2, Rand.Range(0.66f, 1f));
+                }
+                else
+                {
+                    Color.RGBToHSV(color, out float h, out float s, out float v);
+                    s *= cuticula;
 
-                        color2 *= GradientPheoMelanin.Evaluate(face.PheoMelanin + Rand.Range(-0.2f, 0.2f));
+                    color = Color.HSVToRGB(h, s, v);
 
-                        face.SetBeardColor(Color.Lerp(color2, new Color(0.91f, 0.91f, 0.91f), greyness * Rand.Value));
-                    }
+                    pawn.story.hairColor = Color.Lerp(color, new Color(0.86f, 0.86f, 0.86f), greyness);
+                }
+
+                face.HairColorOrg = color;
+
+                if (face.pawnFace.HasSameBeardColor)
+                {
+                    beardColor = FacialGraphics.DarkerBeardColor(pawn.story.hairColor);
+                }
+                else
+                {
+                    Color color2 =
+                        GradientEuMelanin.Evaluate(face.pawnFace.EuMelanin + Rand.Range(-0.2f, 0.2f));
+
+                    color2 *= GradientPheoMelanin.Evaluate(
+                        face.pawnFace.PheoMelanin + Rand.Range(-0.2f, 0.2f));
+
+                    beardColor = Color.Lerp(color2, new Color(0.91f, 0.91f, 0.91f), greyness * Rand.Value);
                 }
             }
         }
@@ -422,7 +442,7 @@
                 }
             }
 
-            face.IsDNAoptimized = false;
+            face.pawnFace.IsDNAoptimized = false;
 
             // Log.Message(
             // pawn + " - " + melanin + " - " + face.euMelanin + " - " + face.pheoMelanin + " - " + mother?.euMelanin

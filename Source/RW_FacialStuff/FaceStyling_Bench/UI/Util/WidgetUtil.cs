@@ -24,13 +24,9 @@
 
 namespace FacialStuff.FaceStyling_Bench.UI.Util
 {
-    using System.IO;
     using System.Text.RegularExpressions;
 
-    using FacialStuff.FaceStyling_Bench.UI.DTO;
     using FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs;
-
-    using RimWorld;
 
     using UnityEngine;
 
