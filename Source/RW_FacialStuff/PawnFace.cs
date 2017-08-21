@@ -46,14 +46,14 @@
 
         public Color HairColorOrg;
 
-      //  public float MelaninOrg;
+        //  public float MelaninOrg;
 
 
         #endregion Public Fields
 
         #region Public Constructors
 
-        public PawnFace(Pawn pawn)
+        public PawnFace(Pawn pawn, bool setColors = true)
         {
             FactionDef faction = pawn.Faction?.def;
 
@@ -76,10 +76,13 @@
             this.CrownType = pawn.story.crownType;
             this.PawnHeadType = HeadType.Undefined;
 
-            pawn.story.hairColor = this.HairColor;
+            if (setColors)
+            {
+                pawn.story.hairColor = this.HairColor;
+            }
 
             this.IsOptimized = true;
-        //    this.MelaninOrg = pawn.story.melanin;
+            //    this.MelaninOrg = pawn.story.melanin;
         }
 
         #endregion Public Constructors

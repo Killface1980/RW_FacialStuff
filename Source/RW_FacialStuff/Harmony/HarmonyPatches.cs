@@ -300,7 +300,7 @@
             face.CheckForAddedOrMissingParts();
             if (!face.dontrender)
             {
-                pawn.Drawer.renderer.graphics.ResolveAllGraphics();
+                pawn.Drawer.renderer.graphics.nakedGraphic = null;
             }
         }
 

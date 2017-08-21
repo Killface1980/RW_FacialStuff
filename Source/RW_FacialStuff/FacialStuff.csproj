@@ -99,7 +99,6 @@
     <None Include="Enums\DialoguePage.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="FaceGraphicParts.cs" />
-    <None Include="FaceStyling_Bench\Dialog_FaceStyling - Kopieren.cs" />
     <Compile Include="FaceStyling_Bench\Dialog_FaceStyling.cs" />
     <None Include="FaceStyling_Bench\DresserJobDriver\JobDriver_ChangeBody.cs" />
     <None Include="FaceStyling_Bench\UI\DresserUI.cs" />
@@ -113,7 +112,6 @@
     <Compile Include="FaceStyling_Bench\UI\Util\WidgetUtil.cs" />
     <Compile Include="Harmony\optional\Harmony_EdBPrepareCarefully.cs" />
     <Compile Include="Harmony\optional\Harmony_Werewolf.cs" />
-    <None Include="Harmony\optional\PrepC\Class2.cs" />
     <Compile Include="Harmony\optional\PrepC\PanelBackstoryPatch.cs" />
     <Compile Include="Harmony\optional\PrepC\PresetSaverPatch.cs" />
     <Compile Include="Harmony\optional\PrepC\PresetLoaderPatch.cs" />

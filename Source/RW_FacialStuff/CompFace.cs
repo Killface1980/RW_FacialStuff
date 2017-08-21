@@ -628,16 +628,14 @@
             Scribe_Values.Look(ref this.updated, "updated");
 
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
-                if (!updated)
+                if (!this.updated)
                 {
                     var pawn = this.parent as Pawn;
                     if (pawn != null)
                     {
 
-                        this.pawnFace = new PawnFace
-                        {
-                            IsOptimized = true,
-                        };
+                        this.pawnFace = new PawnFace(pawn, false);
+
                         Scribe_Values.Look(ref this.pawnFace.HairColorOrg, "HairColorOrg");
 
                         Scribe_Defs.Look(ref this.pawnFace.EyeDef, "EyeDef");
@@ -662,7 +660,7 @@
                         {
                             this.pawnFace.MoustacheDef = MoustacheDefOf.Shaved;
                         }
-                        updated = true;
+                        this.updated = true;
                     }
                 }
 
