@@ -20,12 +20,10 @@
 
         #region Private Fields
 
-        private static readonly GradientColorKey[] EuMelaninGradientColorKeys = new GradientColorKey[4];
-        private static readonly GradientColorKey[] PhyoMelaninGradientColorKeys = new GradientColorKey[5];
-        private static readonly GradientAlphaKey[] AlphaKeys = new GradientAlphaKey[2];
+        private static readonly GradientAlphaKey[] AlphaKeys ;
+        private static readonly GradientColorKey[] EuMelaninGradientColorKeys ;
         private static readonly Gradient GradientEuMelanin = new Gradient();
         private static readonly Gradient GradientPheoMelanin = new Gradient();
-
         private static readonly Color HairBlueSteel = new Color32(57, 115, 199, 255);
         private static readonly Color HairBurgundyBistro = new Color32(206, 38, 58, 255);
         private static readonly Color HairDarkBrown = new Color32(79, 47, 17, 255);
@@ -38,6 +36,7 @@
         private static readonly Color HairTerraCotta = new Color32(185, 49, 4, 255);
         private static readonly Color HairUltraViolet = new Color32(191, 53, 132, 255);
         private static readonly Color HairYellowBlonde = new Color32(255, 203, 89, 255);
+        private static readonly GradientColorKey[] PhyoMelaninGradientColorKeys;
 
         #endregion Private Fields
 
@@ -45,32 +44,36 @@
 
         static HairMelanin()
         {             // Build gradients
+            AlphaKeys = new GradientAlphaKey[2];
             AlphaKeys[0].alpha = 1f;
             AlphaKeys[0].time = 0.0f;
             AlphaKeys[1].alpha = 1f;
             AlphaKeys[1].time = 1f;
 
-
+            EuMelaninGradientColorKeys = new GradientColorKey[5];
             EuMelaninGradientColorKeys[0].color = HairPlatinum;
             EuMelaninGradientColorKeys[0].time = 0.0f;
             EuMelaninGradientColorKeys[1].color = new Color32(139, 108, 66, 255);
-            EuMelaninGradientColorKeys[1].time = 0.5f;
+            EuMelaninGradientColorKeys[1].time = 0.7f;
             EuMelaninGradientColorKeys[2].color = new Color32(91, 60, 17, 255);
-            EuMelaninGradientColorKeys[2].time = 0.75f;
+            EuMelaninGradientColorKeys[2].time = 0.8f;
             EuMelaninGradientColorKeys[3].color = new Color32(47, 30, 14, 255);
-            EuMelaninGradientColorKeys[3].time = 1f;
+            EuMelaninGradientColorKeys[3].time = 0.9f;
+            EuMelaninGradientColorKeys[4].color = new Color32(25, 16, 7, 255);
+            EuMelaninGradientColorKeys[4].time = 1f;
             // EuMelaninGradientColorKeys[4].color = new Color32(0, 0, 0, 255);
             // EuMelaninGradientColorKeys[4].time = 1f;
             GradientEuMelanin.SetKeys(EuMelaninGradientColorKeys, AlphaKeys);
 
+            PhyoMelaninGradientColorKeys = new GradientColorKey[5];
             PhyoMelaninGradientColorKeys[0].color = HairPlatinum;
             PhyoMelaninGradientColorKeys[0].time = 0.0f;
             PhyoMelaninGradientColorKeys[1].color = new Color32(226, 188, 116, 255);
-            PhyoMelaninGradientColorKeys[1].time = 0.25f;
+            PhyoMelaninGradientColorKeys[1].time = 0.3f;
             PhyoMelaninGradientColorKeys[2].color = new Color32(231, 168, 84, 255);
-            PhyoMelaninGradientColorKeys[2].time = 0.5f;
+            PhyoMelaninGradientColorKeys[2].time = 0.6f;
             PhyoMelaninGradientColorKeys[3].color = new Color32(173, 79, 9, 255);
-            PhyoMelaninGradientColorKeys[3].time = 0.75f;
+            PhyoMelaninGradientColorKeys[3].time = 0.8f;
             PhyoMelaninGradientColorKeys[4].color = new Color32(157, 54, 0, 255);
             PhyoMelaninGradientColorKeys[4].time = 1f;
 
@@ -102,15 +105,11 @@
 
         #region Public Methods
 
-        public static HairDNA GenerateHairMelaninAndCuticula(Pawn pawn)
+        public static HairDNA GenerateHairMelaninAndCuticula(Pawn pawn, bool sameBeardColor)
         {
             Color beardColor;
 
-            HairColorRequest hair = new HairColorRequest(0f, 0f, 0f, 0f);
-
-            CompFace compFace = pawn.TryGetComp<CompFace>();
-
-            SetInitialMelaninLevels(pawn, ref hair);
+            SetInitialMelaninLevels(pawn, out HairColorRequest hair);
 
             // Log.Message(
             // pawn + " - " + melanin + " - " + face.euMelanin + " - " + face.pheoMelanin + " - " + mother?.euMelanin
@@ -146,7 +145,6 @@
             // Log.Message(greyness.ToString());
 
             Color hairColor = GetHairColor(hair);
-            Color hairColorOrg = hairColor;
 
 
             // Special hair colors
@@ -198,7 +196,7 @@
             }
 
 
-            if (compFace.pawnFace.HasSameBeardColor)
+            if (sameBeardColor)
             {
                 beardColor = FacialGraphics.DarkerBeardColor(hairColor);
             }
@@ -213,106 +211,12 @@
 
             HairDNA dna = new HairDNA
             {
-                EuMelanin = hair.EuMelanin,
-                PheoMelanin = hair.PheoMelanin,
-                Cuticula = hair.Cuticula,
-                Greyness = hair.Greyness,
+                HairColorRequest = hair,
                 HairColor = hairColor,
-                HairColorOrg = hairColorOrg,
                 BeardColor = beardColor
             };
 
             return dna;
-        }
-
-        private static void SetInitialMelaninLevels(Pawn pawn, ref HairColorRequest hair)
-        {
-            bool motherNull = false;
-            bool fatherNull = false;
-
-            PawnFace motherPawnFace = new PawnFace();
-            PawnFace fatherPawnFace = new PawnFace();
-
-            CheckForMother(pawn, ref motherNull, ref motherPawnFace);
-
-            CheckForFather(pawn, ref fatherNull, ref fatherPawnFace);
-
-            if (motherNull && fatherNull)
-            {
-                // Check for relatives, else randomize
-                if (!MelaninSetRelationsByBlood(pawn, ref hair))
-                {
-                    hair.EuMelanin = Rand.Range(pawn.story.melanin * 0.75f, 1f);
-                    hair.PheoMelanin = Rand.Range(pawn.story.melanin / 2, 1f);
-                    hair.Cuticula = Rand.Range(0.75f, 1.25f);
-                }
-            }
-
-            if (!motherNull && !fatherNull && motherPawnFace.IsOptimized && fatherPawnFace.IsOptimized)
-            {
-                hair.EuMelanin = GetRandomChildHairColor(motherPawnFace.EuMelanin, fatherPawnFace.EuMelanin);
-                hair.PheoMelanin = GetRandomChildHairColor(motherPawnFace.PheoMelanin, fatherPawnFace.PheoMelanin);
-                hair.Cuticula = GetRandomChildHairColor(motherPawnFace.Cuticula, fatherPawnFace.Cuticula);
-            }
-            else if (!motherNull && motherPawnFace.IsOptimized)
-            {
-                hair.EuMelanin = GetRandomMelaninSimilarTo(motherPawnFace.EuMelanin);
-                hair.PheoMelanin = GetRandomMelaninSimilarTo(motherPawnFace.PheoMelanin);
-                hair.Cuticula = GetRandomMelaninSimilarTo(motherPawnFace.Cuticula);
-            }
-            else if (!fatherNull && fatherPawnFace.IsOptimized)
-            {
-                hair.EuMelanin = GetRandomMelaninSimilarTo(fatherPawnFace.EuMelanin);
-                hair.PheoMelanin = GetRandomMelaninSimilarTo(fatherPawnFace.PheoMelanin);
-                hair.Cuticula = GetRandomMelaninSimilarTo(fatherPawnFace.Cuticula);
-            }
-        }
-
-        private static bool MelaninSetRelationsByBlood(Pawn pawn, ref HairColorRequest hair)
-        {
-            if (pawn.relations.FamilyByBlood.Any())
-            {
-                Pawn relPawn = pawn.relations.FamilyByBlood.FirstOrDefault(x => x.TryGetComp<CompFace>().pawnFace.IsOptimized);
-                if (relPawn != null)
-                {
-                    CompFace relatedPawn = relPawn.TryGetComp<CompFace>();
-
-                    float melaninx1 = relatedPawn.pawnFace.EuMelanin;
-                    float melaninx2 = relatedPawn.pawnFace.PheoMelanin;
-                    float cuticulax = relatedPawn.pawnFace.Cuticula;
-                    hair.EuMelanin = GetRandomMelaninSimilarTo(melaninx1);
-                    hair.PheoMelanin = GetRandomMelaninSimilarTo(melaninx2);
-                    hair.Cuticula = GetRandomMelaninSimilarTo(cuticulax);
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private static void CheckForFather(Pawn pawn, ref bool fatherNull, ref PawnFace fatherPawnFace)
-        {
-            if (pawn.GetFather() == null)
-            {
-                fatherNull = true;
-            }
-            else
-            {
-                CompFace fatherComp = pawn.GetFather().TryGetComp<CompFace>();
-                fatherPawnFace = fatherComp.pawnFace;
-            }
-        }
-
-        private static void CheckForMother(Pawn pawn, ref bool motherNull, ref PawnFace motherPawnFace)
-        {
-            if (pawn.GetMother() == null)
-            {
-                motherNull = true;
-            }
-            else
-            {
-                CompFace motherComp = pawn.GetMother().TryGetComp<CompFace>();
-                motherPawnFace = motherComp.pawnFace;
-            }
         }
 
         public static Color GetHairColor(HairColorRequest hairColorRequest)
@@ -337,6 +241,40 @@
 
         #region Private Methods
 
+        private static void HasOptimizedFather(Pawn pawn, out bool hasFather, out PawnFace fatherPawnFace)
+        {
+            hasFather = false;
+            fatherPawnFace = null;
+
+            if (pawn.GetFather() != null)
+            {
+                CompFace fatherComp = pawn.GetFather().TryGetComp<CompFace>();
+
+                if (fatherComp.PawnFace != null && fatherComp.PawnFace.Cuticula > 0)
+                {
+                    hasFather = true;
+                    fatherPawnFace = fatherComp.PawnFace;
+                }
+
+            }
+        }
+
+        private static void HasOptimizedMother(Pawn pawn, out bool hasMother, out PawnFace motherPawnFace)
+        {
+            hasMother = false;
+            motherPawnFace = null;
+            if (pawn.GetMother() != null)
+            {
+                CompFace motherComp = pawn.GetMother().TryGetComp<CompFace>();
+                if (motherComp.PawnFace != null && motherComp.PawnFace.Cuticula > 0)
+                {
+                    hasMother = true;
+                    motherPawnFace = motherComp.PawnFace;
+                }
+            }
+
+        }
+
         private static float GetRandomChildHairColor(float fatherMelanin, float motherMelanin)
         {
             float clampMin = Mathf.Min(fatherMelanin, motherMelanin);
@@ -348,6 +286,72 @@
         private static float GetRandomMelaninSimilarTo(float value, float clampMin = 0f, float clampMax = 1f)
         {
             return Mathf.Clamp01(Mathf.Clamp(Rand.Gaussian(value, 0.05f), clampMin, clampMax));
+        }
+
+        private static bool GetMelaninSetRelationsByBlood(Pawn pawn, ref HairColorRequest hair)
+        {
+            if (pawn.relations.FamilyByBlood.Any())
+            {
+                Pawn relPawn = pawn.relations.FamilyByBlood.FirstOrDefault(x =>
+                    {
+                        // cuticula check to prevent old pawns with incomplete stats
+                        PawnFace pawnFace = x.TryGetComp<CompFace>().PawnFace;
+                        return pawnFace != null && pawnFace.Cuticula > 0.5f;
+                    });
+
+                if (relPawn != null)
+                {
+                    CompFace relatedPawn = relPawn.TryGetComp<CompFace>();
+
+                    float melaninx1 = relatedPawn.PawnFace.EuMelanin;
+                    float melaninx2 = relatedPawn.PawnFace.PheoMelanin;
+                    float cuticulax = relatedPawn.PawnFace.Cuticula;
+                    hair.EuMelanin = GetRandomMelaninSimilarTo(melaninx1);
+                    hair.PheoMelanin = GetRandomMelaninSimilarTo(melaninx2);
+                    hair.Cuticula = GetRandomMelaninSimilarTo(cuticulax);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static void SetInitialMelaninLevels(Pawn pawn, out HairColorRequest hair)
+        {
+            hair = new HairColorRequest(0f, 0f, 0f, 0f);
+
+            HasOptimizedMother(pawn, out bool hasMother, out PawnFace motherPawnFace);
+
+            HasOptimizedFather(pawn, out bool hasFather, out PawnFace fatherPawnFace);
+
+            if (hasMother && hasFather)
+            {
+                hair.EuMelanin = GetRandomChildHairColor(motherPawnFace.EuMelanin, fatherPawnFace.EuMelanin);
+                hair.PheoMelanin = GetRandomChildHairColor(motherPawnFace.PheoMelanin, fatherPawnFace.PheoMelanin);
+                hair.Cuticula = GetRandomChildHairColor(motherPawnFace.Cuticula, fatherPawnFace.Cuticula);
+            }
+            else if (hasMother)
+            {
+                hair.EuMelanin = GetRandomMelaninSimilarTo(motherPawnFace.EuMelanin);
+                hair.PheoMelanin = GetRandomMelaninSimilarTo(motherPawnFace.PheoMelanin);
+                hair.Cuticula = GetRandomMelaninSimilarTo(motherPawnFace.Cuticula);
+            }
+            else if (hasFather)
+            {
+                hair.EuMelanin = GetRandomMelaninSimilarTo(fatherPawnFace.EuMelanin);
+                hair.PheoMelanin = GetRandomMelaninSimilarTo(fatherPawnFace.PheoMelanin);
+                hair.Cuticula = GetRandomMelaninSimilarTo(fatherPawnFace.Cuticula);
+            }
+            else
+            {
+                // Check for relatives, else randomize
+                if (!GetMelaninSetRelationsByBlood(pawn, ref hair))
+                {
+                    hair.EuMelanin = Rand.Range(pawn.story.melanin * 0.5f, 1f);
+                    hair.PheoMelanin = Rand.Range(pawn.story.melanin * 0.25f, 1f);
+                    hair.Cuticula = Rand.Range(0.75f, 1.25f);
+                }
+            }
+
         }
 
         #endregion Private Methods
@@ -368,12 +372,12 @@
             face.MelaninOrg = pawn.story.melanin;
             CompFace mother = null;
             CompFace father = null;
-            bool motherNull = false;
-            bool fatherNull = false;
+            bool hasMother = false;
+            bool hasFather = false;
 
             if (pawn.GetMother() == null)
             {
-                motherNull = true;
+                hasMother = true;
             }
             else
             {
@@ -382,7 +386,7 @@
 
             if (pawn.GetFather() == null)
             {
-                fatherNull = true;
+                hasFather = true;
             }
             else
             {
@@ -391,21 +395,21 @@
 
             bool flag = true;
 
-            if (!motherNull && mother.IsSkinDNAoptimized && !fatherNull && father.IsSkinDNAoptimized)
+            if (!hasMother && mother.IsSkinDNAoptimized && !hasFather && father.IsSkinDNAoptimized)
             {
                 factionMelanin = GetRandomChildHairColor(mother.FactionMelanin, father.FactionMelanin);
             }
-            else if (!motherNull && mother.IsSkinDNAoptimized)
+            else if (!hasMother && mother.IsSkinDNAoptimized)
             {
                 factionMelanin = GetRandomMelaninSimilarTo(mother.FactionMelanin);
             }
-            else if (!fatherNull && father.IsSkinDNAoptimized)
+            else if (!hasFather && father.IsSkinDNAoptimized)
             {
                 factionMelanin = GetRandomMelaninSimilarTo(father.FactionMelanin);
             }
             else
             {
-                // if (motherNull && fatherNull)
+                // if (hasMother && hasFather)
                 if (pawn.relations.FamilyByBlood.Any())
                 {
                     Pawn relPawn =

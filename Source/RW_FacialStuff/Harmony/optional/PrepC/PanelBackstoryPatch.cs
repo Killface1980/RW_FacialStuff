@@ -24,7 +24,7 @@
             CompFace face = pawn.TryGetComp<CompFace>();
             if (face != null)
             {
-                if (!face.pawnFace.IsOptimized )
+                if (face.PawnFace == null)
                 {
                     face.SetHeadType();
                 }

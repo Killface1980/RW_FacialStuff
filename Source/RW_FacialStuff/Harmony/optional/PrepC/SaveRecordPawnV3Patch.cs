@@ -29,7 +29,7 @@
             {
                 CompFace face = customPawn.Pawn.TryGetComp<CompFace>();
                 face.ExposeFaceData();
-                savedPawns.Add(__instance, face.pawnFace);
+                savedPawns.Add(__instance, face.PawnFace);
             }
         }
 

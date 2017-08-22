@@ -10,7 +10,7 @@
 
     using Verse;
 
-    public struct PawnFace : IExposable
+    public class PawnFace : IExposable
     {
         #region Public Fields
 
@@ -26,8 +26,6 @@
 
         public bool HasSameBeardColor;
 
-        public bool IsOptimized;
-
         public float Cuticula;
 
         public float Greyness;
@@ -36,7 +34,7 @@
 
         public float PheoMelanin;
 
-        public EyeDef EyeDef;
+        public EyeDef EyeDef ;
 
         public MoustacheDef MoustacheDef;
 
@@ -46,8 +44,6 @@
 
         public Color HairColor;
 
-        public Color HairColorOrg;
-
         // public float MelaninOrg;
 
         #endregion Public Fields
@@ -56,23 +52,23 @@
 
         public PawnFace(Pawn pawn, bool setColors = true)
         {
+            this.DrawMouth = true;
             FactionDef faction = pawn.Faction?.def;
 
             this.EyeDef = PawnFaceChooser.RandomEyeDefFor(pawn, faction);
-
-            this.DrawMouth = true;
-
             this.BrowDef = PawnFaceChooser.RandomBrowDefFor(pawn, faction);
+
+
             this.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(pawn);
             PawnFaceChooser.RandomBeardDefFor(pawn, faction, out this.BeardDef, out this.MoustacheDef);
             this.HasSameBeardColor = Rand.Value > 0.3f;
-            HairDNA hairDNA = HairMelanin.GenerateHairMelaninAndCuticula(pawn);
-            this.EuMelanin = hairDNA.EuMelanin;
-            this.PheoMelanin = hairDNA.PheoMelanin;
-            this.Cuticula = hairDNA.Cuticula;
-            this.Greyness = hairDNA.Greyness;
+            HairDNA hairDNA = HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor);
+            this.EuMelanin = hairDNA.HairColorRequest.EuMelanin;
+            this.PheoMelanin = hairDNA.HairColorRequest.PheoMelanin;
+            this.Cuticula = hairDNA.HairColorRequest.Cuticula;
+            this.Greyness = hairDNA.HairColorRequest.Greyness;
+
             this.HairColor = hairDNA.HairColor;
-            this.HairColorOrg = hairDNA.HairColorOrg;
             this.BeardColor = hairDNA.BeardColor;
 
             this.CrownType = pawn.story.crownType;
@@ -83,9 +79,12 @@
                 pawn.story.hairColor = this.HairColor;
             }
 
-            this.IsOptimized = true;
-
             // this.MelaninOrg = pawn.story.melanin;
+        }
+
+        public PawnFace()
+        {
+            
         }
 
         #endregion Public Constructors
@@ -99,7 +98,6 @@
             Scribe_Defs.Look(ref this.BeardDef, "BeardDef");
             Scribe_Defs.Look(ref this.MoustacheDef, "MoustacheDef");
 
-            Scribe_Values.Look(ref this.IsOptimized, "optimized");
             Scribe_Values.Look(ref this.DrawMouth, "drawMouth");
 
             Scribe_Values.Look(ref this.CrownType, "crownType");
@@ -111,7 +109,6 @@
             Scribe_Values.Look(ref this.Cuticula, "cuticula");
 
             Scribe_Values.Look(ref this.HairColor, "hairColor");
-            Scribe_Values.Look(ref this.HairColorOrg, "hairColorOrg");
 
             // Scribe_Values.Look(ref this.MelaninOrg, "melaninOrg");
 

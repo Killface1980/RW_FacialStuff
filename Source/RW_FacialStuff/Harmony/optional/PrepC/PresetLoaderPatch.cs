@@ -22,9 +22,9 @@
                 {
                     PawnFace pawnFace = SaveRecordPawnV3Patch.savedPawns[record];
                     CompFace compFace = pawn.TryGetComp<CompFace>();
-                    compFace.pawnFace = pawnFace;
+                    compFace.SetPawnFace(pawnFace);
 
-                    pawn.story.hairColor = compFace.pawnFace.HairColor;
+                    pawn.story.hairColor = compFace.PawnFace.HairColor;
                     
                 }
             }

@@ -1,6 +1,6 @@
 namespace FacialStuff.Genetics
 {
-    public class HairColorRequest
+    public struct HairColorRequest
     {
         public HairColorRequest(float euMelanin, float pheoMelanin, float cuticula, float greyness)
         {

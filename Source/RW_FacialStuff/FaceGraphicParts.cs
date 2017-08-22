@@ -4,7 +4,7 @@
 
     using Verse;
 
-    struct FaceGraphicParts
+    class FaceGraphicParts
     {
         #region Public Fields
 

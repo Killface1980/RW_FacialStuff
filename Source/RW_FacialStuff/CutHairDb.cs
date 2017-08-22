@@ -10,63 +10,25 @@
     using Verse;
 
     [StaticConstructorOnStartup]
+    // ReSharper disable once InconsistentNaming
     public static class CutHairDB
     {
-        #region Fields
 
-        private static readonly List<HairCutPawn> pawnHairCache = new List<HairCutPawn>();
+        #region Private Fields
 
-        private static readonly Dictionary<GraphicRequest, Graphic> allGraphics =
+        private static readonly Dictionary<GraphicRequest, Graphic> AllGraphics =
             new Dictionary<GraphicRequest, Graphic>();
 
+        private static readonly List<HairCutPawn> PawnHairCache = new List<HairCutPawn>();
         private static Texture2D maskTexFrontBack;
 
         private static Texture2D maskTexSide;
 
-        #endregion Fields
+        private static string modPath = null;
 
-        #region Methods
+        #endregion Private Fields
 
-        public static Graphic Get<T>(string path, Shader shader, Vector2 drawSize, Color color)
-            where T : Graphic, new()
-        {
-            // Added second 'color' to get a separate graphic
-            GraphicRequest req = new GraphicRequest(typeof(T), path, shader, drawSize, color, color, null, 0);
-            return GetInner<T>(req);
-        }
-
-        public static HairCutPawn GetHairCache(Pawn pawn)
-        {
-            foreach (HairCutPawn c in pawnHairCache)
-            {
-                if (c.Pawn == pawn)
-                {
-                    return c;
-                }
-            }
-
-            HairCutPawn n = new HairCutPawn { Pawn = pawn };
-            pawnHairCache.Add(n);
-            return n;
-        }
-
-        private static void CutOutHair(ref Texture2D hairTex, Texture2D maskTex)
-        {
-            for (int x = 0; x < hairTex.width; x++)
-            {
-                for (int y = 0; y < hairTex.height; y++)
-                {
-                    Color maskColor = maskTex.GetPixel(x, y);
-                    Color hairColor = hairTex.GetPixel(x, y);
-
-                    Color final_color1 = hairColor * maskColor;
-
-                    hairTex.SetPixel(x, y, final_color1);
-                }
-            }
-
-            hairTex.Apply();
-        }
+        #region Private Properties
 
         private static string ModPath
         {
@@ -82,7 +44,55 @@
             }
         }
 
-        private static string modPath = null;
+        #endregion Private Properties
+
+        #region Public Methods
+
+        // ReSharper disable once MissingXmlDoc
+        public static Graphic Get<T>(string path, Shader shader, Vector2 drawSize, Color color)
+            where T : Graphic, new()
+        {
+            // Added second 'color' to get a separate graphic
+            GraphicRequest req = new GraphicRequest(typeof(T), path, shader, drawSize, color, color, null, 0);
+            return GetInner<T>(req);
+        }
+
+        public static HairCutPawn GetHairCache(Pawn pawn)
+        {
+            foreach (HairCutPawn c in PawnHairCache)
+            {
+                if (c.Pawn == pawn)
+                {
+                    return c;
+                }
+            }
+
+            HairCutPawn n = new HairCutPawn { Pawn = pawn };
+            PawnHairCache.Add(n);
+            return n;
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private static void CutOutHair(ref Texture2D hairTex, Texture2D maskTex)
+        {
+            for (int x = 0; x < hairTex.width; x++)
+            {
+                for (int y = 0; y < hairTex.height; y++)
+                {
+                    Color maskColor = maskTex.GetPixel(x, y);
+                    Color hairColor = hairTex.GetPixel(x, y);
+
+                    Color finalColor1 = hairColor * maskColor;
+
+                    hairTex.SetPixel(x, y, finalColor1);
+                }
+            }
+
+            hairTex.Apply();
+        }
 
         private static T GetInner<T>(GraphicRequest req)
             where T : Graphic, new()
@@ -94,7 +104,7 @@
                 string name = Path.GetFileNameWithoutExtension(oldPath);
 
                 req.path = ModPath + name;
-                if (!allGraphics.TryGetValue(req, out Graphic graphic))
+                if (!AllGraphics.TryGetValue(req, out Graphic graphic))
                 {
                     graphic = Activator.CreateInstance<T>();
 
@@ -163,21 +173,20 @@
                         // Object.Destroy(temptextureback);
                     }
 
-                    allGraphics.Add(req, graphic);
+                    AllGraphics.Add(req, graphic);
 
                     // }
                 }
 
                 return (T)graphic;
 
-                #endregion Methods
             }
             else
             {
                 string oldPath = req.path;
                 string name = Path.GetFileNameWithoutExtension(oldPath);
 
-                if (!allGraphics.TryGetValue(req, out Graphic graphic))
+                if (!AllGraphics.TryGetValue(req, out Graphic graphic))
                 {
                     graphic = Activator.CreateInstance<T>();
 
@@ -230,7 +239,7 @@
                         // Object.Destroy(temptextureback);
                     }
 
-                    allGraphics.Add(req, graphic);
+                    AllGraphics.Add(req, graphic);
 
                     // }
                 }
@@ -239,5 +248,7 @@
 
             }
         }
+
+        #endregion Private Methods
     }
 }
