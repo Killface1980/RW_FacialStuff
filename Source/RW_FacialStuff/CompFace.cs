@@ -604,18 +604,23 @@
             {
                 return;
             }
-
-            if (this.HasNaturalMouth)
+            if (Controller.settings.UseMouth)
             {
-                if (Find.TickManager.TicksGame > this.EyeWiggler.NextBlinkEnd)
+                if (this.HasNaturalMouth)
                 {
-                    this.SetMouthAccordingToMoodLevel();
+                    if (Find.TickManager.TicksGame > this.EyeWiggler.NextBlinkEnd)
+                    {
+                        this.SetMouthAccordingToMoodLevel();
+                    }
                 }
             }
 
             // todo: head wiggler? move eyes to eyewiggler
             // this.headWiggler.WigglerTick();
-            this.EyeWiggler.WigglerTick();
+            if (Controller.settings.MakeThemBlink)
+            {
+                this.EyeWiggler.WigglerTick();
+            }
         }
 
         public override void PostExposeData()

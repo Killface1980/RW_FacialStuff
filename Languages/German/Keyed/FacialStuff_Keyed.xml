@@ -62,5 +62,7 @@
   <FacialStuffEditor.DrawMouth>Zeige Mund an wenn möglich</FacialStuffEditor.DrawMouth>
   <FacialStuffEditor.SameColor>Gleiche Farbe für Haar und Bart</FacialStuffEditor.SameColor>
 
+  <FacialStuffEditor.FullBeards>Vollbärte</FacialStuffEditor.FullBeards>
+  <FacialStuffEditor.Combinable>kombinierbar</FacialStuffEditor.Combinable>
 
 </LanguageData>

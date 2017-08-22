@@ -60,4 +60,7 @@
   <FacialStuffEditor.TypeSelector>Type Selector</FacialStuffEditor.TypeSelector>
   <FacialStuffEditor.DrawMouth>Draw colonist mouth if suitable</FacialStuffEditor.DrawMouth>
   <FacialStuffEditor.SameColor>Use same color for hair + beard</FacialStuffEditor.SameColor>
+
+  <FacialStuffEditor.FullBeards>full beards</FacialStuffEditor.FullBeards>
+  <FacialStuffEditor.Combinable>combinable</FacialStuffEditor.Combinable>
 </LanguageData>

@@ -110,6 +110,8 @@
     <Compile Include="FaceStyling_Bench\UI\DTO\SelectionWidgetDTOs\HeadTypeSelectionDTO.cs" />
     <Compile Include="FaceStyling_Bench\UI\DTO\SelectionWidgetDTOs\SliderWidgetDTO.cs" />
     <Compile Include="FaceStyling_Bench\UI\Util\WidgetUtil.cs" />
+    <Compile Include="Genetics\HairColorRequest.cs" />
+    <Compile Include="Genetics\HairDNA.cs" />
     <Compile Include="Harmony\optional\Harmony_EdBPrepareCarefully.cs" />
     <Compile Include="Harmony\optional\Harmony_Werewolf.cs" />
     <Compile Include="Harmony\optional\PrepC\PanelBackstoryPatch.cs" />

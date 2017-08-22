@@ -3,7 +3,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_FL</defName>
-    <label>Female_FL</label>
+    <label>Flat</label>
     <hairGender>Female</hairGender>
     <raceList>
       <li>Human</li>
@@ -19,7 +19,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_RD</defName>
-    <label>Female_RD</label>
+    <label>Round</label>
     <hairGender>Female</hairGender>
     <raceList>
       <li>Human</li>
@@ -35,7 +35,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_OV</defName>
-    <label>Female_OV</label>
+    <label>Oval</label>
     <hairGender>Female</hairGender>
     <raceList>
       <li>Human</li>
@@ -51,7 +51,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_SM</defName>
-    <label>Female_SM</label>
+    <label>Small</label>
     <hairGender>Female</hairGender>
     <raceList>
       <li>Human</li>

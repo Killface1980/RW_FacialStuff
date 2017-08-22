@@ -3,7 +3,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_FL</defName>
-    <label>Male_FL</label>
+    <label>Flat</label>
     <hairGender>Male</hairGender>
     <raceList>
       <li>Human</li>
@@ -19,7 +19,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_RD</defName>
-    <label>Male_RD</label>
+    <label>Round</label>
     <hairGender>Male</hairGender>
     <raceList>
       <li>Human</li>
@@ -35,7 +35,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_OV</defName>
-    <label>Male_OV</label>
+    <label>Oval</label>
     <hairGender>Male</hairGender>
     <raceList>
       <li>Human</li>
@@ -51,7 +51,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_SM</defName>
-    <label>Male_SM</label>
+    <label>Small</label>
     <hairGender>Male</hairGender>
     <raceList>
       <li>Human</li>

@@ -30,6 +30,8 @@
 
         public float Cuticula;
 
+        public float Greyness;
+
         public float EuMelanin;
 
         public float PheoMelanin;
@@ -64,14 +66,15 @@
             this.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(pawn);
             PawnFaceChooser.RandomBeardDefFor(pawn, faction, out this.BeardDef, out this.MoustacheDef);
             this.HasSameBeardColor = Rand.Value > 0.3f;
-            HairMelanin.GenerateHairMelaninAndCuticula(
-                pawn,
-                out this.EuMelanin,
-                out this.PheoMelanin,
-                out this.Cuticula,
-                out this.HairColor,
-                out this.HairColorOrg,
-                out this.BeardColor);
+            HairDNA hairDNA = HairMelanin.GenerateHairMelaninAndCuticula(pawn);
+            this.EuMelanin = hairDNA.EuMelanin;
+            this.PheoMelanin = hairDNA.PheoMelanin;
+            this.Cuticula = hairDNA.Cuticula;
+            this.Greyness = hairDNA.Greyness;
+            this.HairColor = hairDNA.HairColor;
+            this.HairColorOrg = hairDNA.HairColorOrg;
+            this.BeardColor = hairDNA.BeardColor;
+
             this.CrownType = pawn.story.crownType;
             this.PawnHeadType = HeadType.Undefined;
 

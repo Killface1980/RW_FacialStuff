@@ -86,7 +86,7 @@
 
   <FacialStuff.Defs.MoustacheDef>
     <defName>Shaved</defName>
-    <label>Shaved</label>
+    <label>0Shaved</label>
     <raceList>
       <li>Human</li>
     </raceList>
