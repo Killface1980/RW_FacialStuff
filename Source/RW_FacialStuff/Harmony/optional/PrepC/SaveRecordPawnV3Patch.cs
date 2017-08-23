@@ -16,25 +16,25 @@
         [HarmonyPostfix]
         public static void ExposeFaceData(SaveRecordPawnV3 __instance)
         {
-            CustomPawn customPawn = customPawns[__instance.id] as EdB.PrepareCarefully.CustomPawn;
-            if (customPawns.Keys.Contains(__instance.id) && Scribe.mode == LoadSaveMode.Saving)
+            if (SavedPawns.Keys.Contains(__instance.id) && Scribe.mode == LoadSaveMode.Saving)
             {
+                CustomPawn customPawn = SavedPawns[__instance.id];
                 if (customPawn?.Pawn.TryGetComp<CompFace>() != null)
                 {
-                    CompFace face = customPawn.Pawn.TryGetComp<CompFace>();
-                    face.ExposeFaceData();
+                    SaveRecordFaceV3 face = new SaveRecordFaceV3(customPawn.Pawn);
+                    face.ExposeData();
                 }
             }
             else if (Scribe.mode == LoadSaveMode.LoadingVars)
             {
-                CompFace face = customPawn.Pawn.TryGetComp<CompFace>();
-                face.ExposeFaceData();
-                savedPawns.Add(__instance, face.PawnFace);
+                SaveRecordFaceV3 face = new SaveRecordFaceV3();
+                face.ExposeData();
+                LoadedPawns.Add(__instance, face);
             }
         }
 
-        public static Dictionary<object, PawnFace> savedPawns = new Dictionary<object, PawnFace>();
+        public static Dictionary<SaveRecordPawnV3, SaveRecordFaceV3> LoadedPawns = new Dictionary<SaveRecordPawnV3, SaveRecordFaceV3>();
 
-        public static Dictionary<string, object> customPawns = new Dictionary<string, object>();
+        public static Dictionary<string, CustomPawn> SavedPawns = new Dictionary<string, CustomPawn>();
     }
 }

@@ -1,4 +1,5 @@
-﻿namespace FacialStuff.Detouring
+﻿// ReSharper disable All
+namespace FacialStuff.Detouring
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -6,6 +7,8 @@
     using System.Reflection.Emit;
 
     using global::Harmony;
+
+    using JetBrains.Annotations;
 
     using RimWorld;
 
@@ -136,9 +139,6 @@
                     nameof(PawnSkinColors_FS.GetMelaninCommonalityFactor_Prefix)),
                 null);
 
-
-            FacialGraphics.InitializeMouthGraphics();
-
             Log.Message(
                 "Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count()
                 + " patches with harmony.");
@@ -147,7 +147,7 @@
         }
 
         // [HarmonyAfter("net.pardeike.zombieland")]
-        public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)
+        public static void ResolveAllGraphics_Postfix( PawnGraphicSet __instance)
         {
             Pawn pawn = __instance.pawn;
 
@@ -162,7 +162,7 @@
             faceComp.OldEnough = pawn.ageTracker.AgeBiologicalYearsFloat >= 13;
 
             // Return if child
-            if (!faceComp.OldEnough || faceComp.dontrender)
+            if (!faceComp.OldEnough || faceComp.Dontrender)
             {
                 return;
             }
@@ -258,7 +258,7 @@
                     {
                         // Look for the werewolf
                         face.CheckForAddedOrMissingParts();
-                        if (!face.dontrender)
+                        if (!face.Dontrender)
                         {
                             pawn.Drawer.renderer.graphics.ResolveAllGraphics();
                         }
@@ -297,7 +297,7 @@
             }
 
             face.CheckForAddedOrMissingParts();
-            if (!face.dontrender)
+            if (!face.Dontrender)
             {
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
             }

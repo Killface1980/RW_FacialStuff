@@ -28,12 +28,22 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
     using System.Collections.Generic;
     using System.Linq;
 
+    using JetBrains.Annotations;
+
     using Verse;
 
     public class HeadTypeSelectionDTO : ASelectionWidgetDTO
     {
+        [NotNull]
+        
         private List<string> headTypes;
+
+        [NotNull]
+        
         private List<string> maleHeadTypes = new List<string>();
+
+        [NotNull]
+        
         private List<string> femaleHeadTypes = new List<string>();
         private int savedFemaleIndex = 0;
         private int savedMaleIndex = 0;
@@ -42,9 +52,10 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
 
         public readonly CrownType OriginalCrownType;
 
+        [NotNull]
         private object selectedItem2;
 
-        public HeadTypeSelectionDTO(string headType, Gender gender) : base()
+        public HeadTypeSelectionDTO([NotNull] string headType, Gender gender) : base()
         {
             this.OriginalHeadType = headType;
 
@@ -64,7 +75,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             this.FindIndex(headType);
         }
 
-        public void FindIndex(string headType)
+        public void FindIndex([NotNull] string headType)
         {
             for (int i = 0; i < this.headTypes.Count; ++i)
             {
@@ -135,7 +146,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             }
         }
 
-        private void AddHeadTypesToList(string source, List<string> list)
+        private void AddHeadTypesToList([NotNull] string source, [NotNull] List<string> list)
         {
             foreach (string current in GraphicDatabaseUtility.GraphicNamesInFolder(source))
             {

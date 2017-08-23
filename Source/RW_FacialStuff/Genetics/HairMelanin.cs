@@ -1,8 +1,10 @@
 ﻿namespace FacialStuff.Genetics
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using JetBrains.Annotations;
+
     using RimWorld;
     using UnityEngine;
     using Verse;
@@ -20,10 +22,11 @@
 
         #region Private Fields
 
-        private static readonly GradientAlphaKey[] AlphaKeys ;
-        private static readonly GradientColorKey[] EuMelaninGradientColorKeys ;
-        private static readonly Gradient GradientEuMelanin = new Gradient();
-        private static readonly Gradient GradientPheoMelanin = new Gradient();
+        [NotNull]
+        private static readonly Gradient GradientEuMelanin;
+
+        [NotNull]
+        private static readonly Gradient GradientPheoMelanin;
         private static readonly Color HairBlueSteel = new Color32(57, 115, 199, 255);
         private static readonly Color HairBurgundyBistro = new Color32(206, 38, 58, 255);
         private static readonly Color HairDarkBrown = new Color32(79, 47, 17, 255);
@@ -36,48 +39,51 @@
         private static readonly Color HairTerraCotta = new Color32(185, 49, 4, 255);
         private static readonly Color HairUltraViolet = new Color32(191, 53, 132, 255);
         private static readonly Color HairYellowBlonde = new Color32(255, 203, 89, 255);
-        private static readonly GradientColorKey[] PhyoMelaninGradientColorKeys;
 
         #endregion Private Fields
 
         #region Public Constructors
 
         static HairMelanin()
-        {             // Build gradients
-            AlphaKeys = new GradientAlphaKey[2];
-            AlphaKeys[0].alpha = 1f;
-            AlphaKeys[0].time = 0.0f;
-            AlphaKeys[1].alpha = 1f;
-            AlphaKeys[1].time = 1f;
+        {
+            // Build gradients
+            GradientAlphaKey[] alphaKeys = new GradientAlphaKey[2];
+            alphaKeys[0].alpha = 1f;
+            alphaKeys[0].time = 0.0f;
+            alphaKeys[1].alpha = 1f;
+            alphaKeys[1].time = 1f;
 
-            EuMelaninGradientColorKeys = new GradientColorKey[5];
-            EuMelaninGradientColorKeys[0].color = HairPlatinum;
-            EuMelaninGradientColorKeys[0].time = 0.0f;
-            EuMelaninGradientColorKeys[1].color = new Color32(139, 108, 66, 255);
-            EuMelaninGradientColorKeys[1].time = 0.7f;
-            EuMelaninGradientColorKeys[2].color = new Color32(91, 60, 17, 255);
-            EuMelaninGradientColorKeys[2].time = 0.8f;
-            EuMelaninGradientColorKeys[3].color = new Color32(47, 30, 14, 255);
-            EuMelaninGradientColorKeys[3].time = 0.9f;
-            EuMelaninGradientColorKeys[4].color = new Color32(25, 16, 7, 255);
-            EuMelaninGradientColorKeys[4].time = 1f;
+            GradientColorKey[] euMelaninGradientColorKeys = new GradientColorKey[5];
+            euMelaninGradientColorKeys[0].color = HairPlatinum;
+            euMelaninGradientColorKeys[0].time = 0.0f;
+            euMelaninGradientColorKeys[1].color = new Color32(139, 108, 66, 255);
+            euMelaninGradientColorKeys[1].time = 0.7f;
+            euMelaninGradientColorKeys[2].color = new Color32(91, 60, 17, 255);
+            euMelaninGradientColorKeys[2].time = 0.8f;
+            euMelaninGradientColorKeys[3].color = new Color32(47, 30, 14, 255);
+            euMelaninGradientColorKeys[3].time = 0.9f;
+            euMelaninGradientColorKeys[4].color = new Color32(25, 16, 7, 255);
+            euMelaninGradientColorKeys[4].time = 1f;
+
             // EuMelaninGradientColorKeys[4].color = new Color32(0, 0, 0, 255);
             // EuMelaninGradientColorKeys[4].time = 1f;
-            GradientEuMelanin.SetKeys(EuMelaninGradientColorKeys, AlphaKeys);
+            GradientEuMelanin = new Gradient();
+            GradientEuMelanin.SetKeys(euMelaninGradientColorKeys, alphaKeys);
 
-            PhyoMelaninGradientColorKeys = new GradientColorKey[5];
-            PhyoMelaninGradientColorKeys[0].color = HairPlatinum;
-            PhyoMelaninGradientColorKeys[0].time = 0.0f;
-            PhyoMelaninGradientColorKeys[1].color = new Color32(226, 188, 116, 255);
-            PhyoMelaninGradientColorKeys[1].time = 0.3f;
-            PhyoMelaninGradientColorKeys[2].color = new Color32(231, 168, 84, 255);
-            PhyoMelaninGradientColorKeys[2].time = 0.6f;
-            PhyoMelaninGradientColorKeys[3].color = new Color32(173, 79, 9, 255);
-            PhyoMelaninGradientColorKeys[3].time = 0.8f;
-            PhyoMelaninGradientColorKeys[4].color = new Color32(157, 54, 0, 255);
-            PhyoMelaninGradientColorKeys[4].time = 1f;
+            GradientColorKey[] phyoMelaninGradientColorKeys = new GradientColorKey[5];
+            phyoMelaninGradientColorKeys[0].color = HairPlatinum;
+            phyoMelaninGradientColorKeys[0].time = 0.0f;
+            phyoMelaninGradientColorKeys[1].color = new Color32(226, 188, 116, 255);
+            phyoMelaninGradientColorKeys[1].time = 0.3f;
+            phyoMelaninGradientColorKeys[2].color = new Color32(231, 168, 84, 255);
+            phyoMelaninGradientColorKeys[2].time = 0.6f;
+            phyoMelaninGradientColorKeys[3].color = new Color32(173, 79, 9, 255);
+            phyoMelaninGradientColorKeys[3].time = 0.8f;
+            phyoMelaninGradientColorKeys[4].color = new Color32(157, 54, 0, 255);
+            phyoMelaninGradientColorKeys[4].time = 1f;
 
-            GradientPheoMelanin.SetKeys(PhyoMelaninGradientColorKeys, AlphaKeys);
+            GradientPheoMelanin = new Gradient();
+            GradientPheoMelanin.SetKeys(phyoMelaninGradientColorKeys, alphaKeys);
 
             NaturalHairColors = new List<Color>
                                     {
@@ -98,14 +104,13 @@
                                            HairUltraViolet,
                                            HairBurgundyBistro
                                        };
-
         }
 
         #endregion Public Constructors
 
         #region Public Methods
 
-        public static HairDNA GenerateHairMelaninAndCuticula(Pawn pawn, bool sameBeardColor)
+        public static HairDNA GenerateHairMelaninAndCuticula( Pawn pawn, bool sameBeardColor)
         {
             Color beardColor;
 
@@ -143,7 +148,6 @@
             // Log.Message(agingBeginGreyFloat.ToString());
             // Log.Message(greySpan.ToString());
             // Log.Message(greyness.ToString());
-
             Color hairColor = GetHairColor(hair);
 
 
@@ -241,7 +245,7 @@
 
         #region Private Methods
 
-        private static void HasOptimizedFather(Pawn pawn, out bool hasFather, out PawnFace fatherPawnFace)
+        private static void HasOptimizedFather( Pawn pawn, out bool hasFather,  out PawnFace fatherPawnFace)
         {
             hasFather = false;
             fatherPawnFace = null;
@@ -259,7 +263,7 @@
             }
         }
 
-        private static void HasOptimizedMother(Pawn pawn, out bool hasMother, out PawnFace motherPawnFace)
+        private static void HasOptimizedMother( Pawn pawn, out bool hasMother, out PawnFace motherPawnFace)
         {
             hasMother = false;
             motherPawnFace = null;
@@ -288,7 +292,7 @@
             return Mathf.Clamp01(Mathf.Clamp(Rand.Gaussian(value, 0.05f), clampMin, clampMax));
         }
 
-        private static bool GetMelaninSetRelationsByBlood(Pawn pawn, ref HairColorRequest hair)
+        private static bool GetMelaninSetRelationsByBlood( Pawn pawn, ref HairColorRequest hair)
         {
             if (pawn.relations.FamilyByBlood.Any())
             {
@@ -312,10 +316,11 @@
                     return true;
                 }
             }
+
             return false;
         }
 
-        private static void SetInitialMelaninLevels(Pawn pawn, out HairColorRequest hair)
+        private static void SetInitialMelaninLevels( Pawn pawn, out HairColorRequest hair)
         {
             hair = new HairColorRequest(0f, 0f, 0f, 0f);
 
@@ -465,6 +470,5 @@
             // + mother?.pheoMelanin + father?.euMelanin + father?.pheoMelanin);
         }
         */
-
     }
 }

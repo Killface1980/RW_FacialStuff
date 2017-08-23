@@ -24,12 +24,14 @@
 
 namespace FacialStuff.FaceStyling_Bench.UI.DTO
 {
+    using JetBrains.Annotations;
+
     using Verse;
     using Verse.AI;
 
     static class DresserDtoFactory
     {
-        public static DresserDTO Create(Pawn pawn, Job job)
+        public static DresserDTO Create([NotNull] Pawn pawn, [NotNull] Job job)
         {
             return new DresserDTO(pawn);
         }

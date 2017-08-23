@@ -15,17 +15,17 @@
         [HarmonyPostfix]
         public static void LoadFace(ref CustomPawn __result, SaveRecordPawnV3 record)
         {
-            if (SaveRecordPawnV3Patch.savedPawns.Keys.Contains(record))
+            if (SaveRecordPawnV3Patch.LoadedPawns.Keys.Contains(record))
             {
                 Pawn pawn = __result.Pawn;
                 if (pawn?.TryGetComp<CompFace>() != null)
                 {
-                    PawnFace pawnFace = SaveRecordPawnV3Patch.savedPawns[record];
+                    PawnFace pawnFace = SaveRecordPawnV3Patch.LoadedPawns[record].Face;
                     CompFace compFace = pawn.TryGetComp<CompFace>();
                     compFace.SetPawnFace(pawnFace);
 
-                    pawn.story.hairColor = compFace.PawnFace.HairColor;
-                    
+                     pawn.story.hairColor = compFace.PawnFace.HairColor;
+
                 }
             }
         }

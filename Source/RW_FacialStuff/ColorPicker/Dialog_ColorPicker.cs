@@ -5,6 +5,8 @@ namespace FacialStuff.ColorPicker
 
     using FaceStyling;
 
+    using JetBrains.Annotations;
+
     using UnityEngine;
 
     using Verse;
@@ -42,7 +44,7 @@ namespace FacialStuff.ColorPicker
         #region Private Fields
 
         private readonly bool _autoApply;
-
+        
         private readonly Action _callback;
 
         private readonly float _fieldHeight = 30f;
@@ -52,6 +54,7 @@ namespace FacialStuff.ColorPicker
         private readonly bool _preview = true;
 
         // reference headType containing the in/out parameter
+        
         private readonly ColorWrapper _wrapper;
 
         private float _A = 1f;
@@ -59,25 +62,25 @@ namespace FacialStuff.ColorPicker
         private Controls _activeControl = Controls.none;
 
         private float _alphaPosition;
-
+        
         private Texture2D _colorPickerBG;
 
         private float _H;
-
+        
         private string _hexIn;
-
+        
         private string _hexOut;
-
+        
         private Texture2D _huePickerBG;
 
         private float _huePosition;
 
         private Vector2 _pickerPosition = Vector2.zero;
-
+        
         private Texture2D _previewBG;
 
         private float _S = 1f;
-
+        
         private Texture2D _tempPreviewBG;
 
         private float _unitsPerPixel;
@@ -96,8 +99,8 @@ namespace FacialStuff.ColorPicker
         /// <param name="color"></param>
         /// <param name="callback"></param>
         public Dialog_ColorPicker(
-            ColorWrapper color,
-            Action callback = null,
+             ColorWrapper color,
+             Action callback = null,
             bool preview = true,
             bool autoApply = false)
         {
@@ -144,6 +147,7 @@ namespace FacialStuff.ColorPicker
             }
         }
 
+        
         public Texture2D ColorPickerBG
         {
             get
@@ -169,6 +173,7 @@ namespace FacialStuff.ColorPicker
             }
         }
 
+        
         public Texture2D HuePickerBG
         {
             get
@@ -182,6 +187,7 @@ namespace FacialStuff.ColorPicker
             }
         }
 
+        
         public Texture2D PreviewBG
         {
             get
@@ -206,6 +212,7 @@ namespace FacialStuff.ColorPicker
             }
         }
 
+        
         public Texture2D TempPreviewBG
         {
             get
@@ -271,6 +278,7 @@ namespace FacialStuff.ColorPicker
             this._callback?.Invoke();
         }
 
+        
         public Texture2D CreatePreviewBG(Color col)
         {
             return SolidColorMaterials.NewSolidColorTexture(col);

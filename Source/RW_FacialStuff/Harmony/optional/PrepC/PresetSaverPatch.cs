@@ -1,6 +1,6 @@
-﻿namespace FacialStuff.Harmony.optional.PrepC
+﻿// ReSharper disable All
+namespace FacialStuff.Harmony.optional.PrepC
 {
-    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -17,15 +17,15 @@
             foreach (CodeInstruction itr in instrs)
             {
                 if (last != null && itr.opcode == OpCodes.Newobj && itr.operand == AccessTools.Constructor(
-                        typeof(EdB.PrepareCarefully.SaveRecordPawnV3),
-                        new[] { typeof(EdB.PrepareCarefully.CustomPawn) }))
+                        typeof(SaveRecordPawnV3),
+                        new[] { typeof(CustomPawn) }))
                 {
                     yield return new CodeInstruction(
                         OpCodes.Call,
                         AccessTools.Method(
                             typeof(PresetSaverPatch),
-                            "AddFaceToDictionary",
-                            new[] { typeof(EdB.PrepareCarefully.CustomPawn) }));
+                           nameof(AddFaceToDictionary),
+                            new[] { typeof(CustomPawn) }));
                     yield return last;
                 }
 
@@ -36,12 +36,12 @@
 
         public static void AddFaceToDictionary(CustomPawn pawn)
         {
-            if (SaveRecordPawnV3Patch.customPawns.ContainsKey(pawn.Id))
+            if (SaveRecordPawnV3Patch.SavedPawns.ContainsKey(pawn.Id))
             {
-                SaveRecordPawnV3Patch.customPawns.Remove(pawn.Id);
+                SaveRecordPawnV3Patch.SavedPawns.Remove(pawn.Id);
             }
 
-            SaveRecordPawnV3Patch.customPawns.Add(pawn.Id, pawn);
+            SaveRecordPawnV3Patch.SavedPawns.Add(pawn.Id, pawn);
         }
     }
 }

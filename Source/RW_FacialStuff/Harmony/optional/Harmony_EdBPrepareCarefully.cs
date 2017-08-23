@@ -25,7 +25,7 @@
                             harmony.Patch(
                                 AccessTools.Method(typeof(EdB.PrepareCarefully.PanelBackstory), "DrawPanelContent"),
                                 null,
-                                new HarmonyMethod(typeof(PanelBackstoryPatch), "AddFaceEditButton"));
+                                new HarmonyMethod(typeof(PanelBackstoryPatch), nameof(PanelBackstoryPatch.AddFaceEditButton)));
 
                             harmony.Patch(
                                 AccessTools.Method(
@@ -33,8 +33,8 @@
                                     "LoadPawn",
                                     new[] { typeof(EdB.PrepareCarefully.SaveRecordPawnV3) }),
                                 null,
-                                new HarmonyMethod(typeof(PresetLoaderPatch), "LoadFace"));
-
+                                new HarmonyMethod(typeof(PresetLoaderPatch), nameof(PresetLoaderPatch.LoadFace)));
+                           
                             harmony.Patch(
                                 AccessTools.Method(
                                     typeof(EdB.PrepareCarefully.PresetSaver),
@@ -42,8 +42,8 @@
                                     new[] { typeof(EdB.PrepareCarefully.PrepareCarefully), typeof(string) }),
                                 null,
                                 null,
-                                new HarmonyMethod(typeof(PresetSaverPatch), "SavePawnRef"));
-
+                                new HarmonyMethod(typeof(PresetSaverPatch), nameof(PresetSaverPatch.SavePawnRef)));
+                           
                             harmony.Patch(
                                 AccessTools.Method(
                                     typeof(EdB.PrepareCarefully.ColonistSaver),
@@ -51,7 +51,7 @@
                                     new[] { typeof(EdB.PrepareCarefully.CustomPawn), typeof(string) }),
                                 null,
                                 null,
-                                new HarmonyMethod(typeof(PresetSaverPatch), "SavePawnRef"));
+                                new HarmonyMethod(typeof(PresetSaverPatch), nameof(PresetSaverPatch.SavePawnRef)));
 
                             harmony.Patch(
                                 AccessTools.Method(typeof(EdB.PrepareCarefully.SaveRecordPawnV3), "ExposeData"),

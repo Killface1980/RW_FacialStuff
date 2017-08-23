@@ -27,17 +27,34 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
     using System;
     using System.Collections.Generic;
 
+    using JetBrains.Annotations;
+
     using RimWorld;
 
     using Verse;
 
     public class BodyTypeSelectionDTO : ASelectionWidgetDTO
     {
+        #region Public Fields
+
         public readonly BodyType OriginalBodyType;
 
+        #endregion Public Fields
+
+        #region Private Fields
+
+       
         private List<BodyType> bodyTypes;
-        private List<BodyType> maleBodyTypes;
+
+       
         private List<BodyType> femaleBodyTypes;
+
+       
+        private List<BodyType> maleBodyTypes;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public BodyTypeSelectionDTO(BodyType bodyType, Gender gender) : base()
         {
@@ -62,15 +79,15 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             this.FindIndex(bodyType);
         }
 
-        private void FindIndex(BodyType bodyType)
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        public override int Count
         {
-            for (int i = 0; i < this.bodyTypes.Count; ++i)
+            get
             {
-                if (this.bodyTypes[i] == bodyType)
-                {
-                    this.index = i;
-                    break;
-                }
+                return this.bodyTypes.Count;
             }
         }
 
@@ -102,11 +119,11 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             }
         }
 
-        public override int Count
+        public override object SelectedItem
         {
             get
             {
-                return this.bodyTypes.Count;
+                return this.bodyTypes[this.index];
             }
         }
 
@@ -126,18 +143,32 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             }
         }
 
-        public override object SelectedItem
-        {
-            get
-            {
-                return this.bodyTypes[this.index];
-            }
-        }
+        #endregion Public Properties
+
+        #region Public Methods
 
         public override void ResetToDefault()
         {
             this.FindIndex(this.OriginalBodyType);
             this.IndexChanged();
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private void FindIndex(BodyType bodyType)
+        {
+            for (int i = 0; i < this.bodyTypes.Count; ++i)
+            {
+                if (this.bodyTypes[i] == bodyType)
+                {
+                    this.index = i;
+                    break;
+                }
+            }
+        }
+
+        #endregion Private Methods
     }
 }

@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using JetBrains.Annotations;
+
     using Verse;
     using Verse.AI;
 
@@ -12,6 +14,8 @@
 
         private const TargetIndex CellInd = TargetIndex.B;
         private const TargetIndex ColorChanger = TargetIndex.A;
+
+        [NotNull]
         private static readonly string ErrorMessage = "FaceStyling job called on building that is not Cabinet";
 
         #endregion Private Fields

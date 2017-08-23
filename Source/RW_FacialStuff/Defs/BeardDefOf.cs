@@ -7,13 +7,17 @@
 // ReSharper disable StyleCop.SA1310
 namespace FacialStuff.Defs
 {
+    using JetBrains.Annotations;
+
     using RimWorld;
 
     [DefOf]
     public static class BeardDefOf
     {
+        [NotNull]
         public static BeardDef Beard_Shaved;
 
+        [NotNull]
         public static BeardDef Beard_Stubble;
     }
 }

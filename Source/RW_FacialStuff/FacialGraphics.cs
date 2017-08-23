@@ -3,6 +3,8 @@
     using FacialStuff.Defs;
     using FacialStuff.Graphics_FS;
 
+    using JetBrains.Annotations;
+
     using UnityEngine;
 
     using Verse;
@@ -10,56 +12,70 @@
     [StaticConstructorOnStartup]
     public static class FacialGraphics
     {
+
         #region Public Fields
 
+        [JetBrains.Annotations.NotNull]
+        public static readonly Texture2D BlankTexture;
         public static readonly Color SkinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
-        public static Graphic_Multi_NaturalHeadParts MouthGraphic01;
+        [CanBeNull]
+        public static Texture2D MaskTex_Average_FrontBack;
 
-        public static Graphic_Multi_NaturalHeadParts MouthGraphic02;
-
-        public static Graphic_Multi_NaturalHeadParts MouthGraphic03;
-
-        public static Graphic_Multi_NaturalHeadParts MouthGraphic04;
-
-        public static Graphic_Multi_NaturalHeadParts MouthGraphic05;
-
-        public static Graphic_Multi_NaturalHeadParts MouthGraphic06;
+        [NotNull]
+        public static Texture2D MaskTex_Narrow_Side;
 
         #endregion Public Fields
 
         #region Private Fields
 
-        private static bool blankExists;
-
-        private static Texture2D blankTexture;
-
+        [CanBeNull]
         private static Texture2D maskTexAverageFrontBack;
 
+        [CanBeNull]
         private static Texture2D maskTexAverageSide;
 
+        [CanBeNull]
         private static Texture2D maskTexNarrowFrontBack;
 
+        [CanBeNull]
         private static Texture2D maskTexNarrowSide;
 
         #endregion Private Fields
 
-        #region Public Properties
+        #region Public Constructors
 
-        public static Texture2D MaskTex_Average_FrontBack
+        static FacialGraphics()
         {
-            get
-            {
-                if (maskTexAverageFrontBack == null)
-                {
-                    maskTexAverageFrontBack = MakeReadable(
-                        ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"));
-                }
+            BlankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
 
-                return maskTexAverageFrontBack;
+            for (int x = 0; x < BlankTexture.width; x++)
+            {
+                for (int y = 0; y < BlankTexture.height; y++)
+                {
+                    BlankTexture.SetPixel(x, y, Color.clear);
+                }
             }
+
+            BlankTexture.name = "Blank";
+
+            BlankTexture.Compress(false);
+            BlankTexture.Apply(false, true);
+
+
+            MaskTex_Average_FrontBack = MakeReadable(
+                ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"));
+
+            MaskTex_Narrow_Side = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_side"));
+
+
         }
 
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        [NotNull]
         public static Texture2D MaskTex_Average_Side
         {
             get
@@ -73,6 +89,7 @@
             }
         }
 
+        [NotNull]
         public static Texture2D MaskTex_Narrow_FrontBack
         {
             get
@@ -87,47 +104,9 @@
             }
         }
 
-        public static Texture2D MaskTex_Narrow_Side
-        {
-            get
-            {
-                if (maskTexNarrowSide == null)
-                {
-                    maskTexNarrowSide = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_side"));
-                }
-
-                return maskTexNarrowSide;
-            }
-        }
-
         #endregion Public Properties
 
         #region Public Methods
-
-        public static Texture2D BlankTexture()
-        {
-            if (blankExists)
-            {
-                return blankTexture;
-            }
-
-            blankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
-
-            for (int x = 0; x < blankTexture.width; x++)
-            {
-                for (int y = 0; y < blankTexture.height; y++)
-                {
-                    blankTexture.SetPixel(x, y, Color.clear);
-                }
-            }
-
-            blankTexture.name = "Blank";
-
-            blankTexture.Compress(false);
-            blankTexture.Apply(false, true);
-            blankExists = true;
-            return blankTexture;
-        }
 
         public static Color DarkerBeardColor(Color value)
         {
@@ -136,45 +115,7 @@
             return value * darken;
         }
 
-        public static void InitializeMouthGraphics()
-        {
-            MouthGraphic01 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                 MouthDefOf.Mouth_Mood01.texPath,
-                                 ShaderDatabase.Transparent,
-                                 Vector2.one,
-                                 Color.black) as Graphic_Multi_NaturalHeadParts;
-
-            MouthGraphic02 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                 MouthDefOf.Mouth_Mood02.texPath,
-                                 ShaderDatabase.Transparent,
-                                 Vector2.one,
-                                 Color.black) as Graphic_Multi_NaturalHeadParts;
-
-            MouthGraphic03 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                 MouthDefOf.Mouth_Mood03.texPath,
-                                 ShaderDatabase.Transparent,
-                                 Vector2.one,
-                                 Color.black) as Graphic_Multi_NaturalHeadParts;
-
-            MouthGraphic04 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                 MouthDefOf.Mouth_Mood04.texPath,
-                                 ShaderDatabase.Transparent,
-                                 Vector2.one,
-                                 Color.black) as Graphic_Multi_NaturalHeadParts;
-
-            MouthGraphic05 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                 MouthDefOf.Mouth_Mood05.texPath,
-                                 ShaderDatabase.Transparent,
-                                 Vector2.one,
-                                 Color.black) as Graphic_Multi_NaturalHeadParts;
-
-            MouthGraphic06 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                 MouthDefOf.Mouth_Mood06.texPath,
-                                 ShaderDatabase.Transparent,
-                                 Vector2.one,
-                                 Color.black) as Graphic_Multi_NaturalHeadParts;
-        }
-
+        [JetBrains.Annotations.NotNull]
         public static Texture2D MakeReadable(Texture2D texture)
         {
             RenderTexture previous = RenderTexture.active;
@@ -211,5 +152,6 @@
         }
 
         #endregion Public Methods
+
     }
 }

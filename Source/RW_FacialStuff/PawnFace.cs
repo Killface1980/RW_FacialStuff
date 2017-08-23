@@ -1,8 +1,11 @@
 ﻿namespace FacialStuff
 {
+    using System;
     using FacialStuff.Defs;
     using FacialStuff.Enums;
     using FacialStuff.Genetics;
+
+    using JetBrains.Annotations;
 
     using RimWorld;
 
@@ -16,8 +19,10 @@
 
         public Color BeardColor;
 
+        [CanBeNull]
         public BeardDef BeardDef;
 
+        [CanBeNull]
         public BrowDef BrowDef;
 
         public CrownType CrownType;
@@ -34,26 +39,30 @@
 
         public float PheoMelanin;
 
+        [CanBeNull]
         public EyeDef EyeDef ;
 
+        [CanBeNull]
         public MoustacheDef MoustacheDef;
 
-        public HeadType PawnHeadType;
 
+        [CanBeNull]
         public WrinkleDef WrinkleDef;
 
         public Color HairColor;
 
-        // public float MelaninOrg;
 
+
+
+        // public float MelaninOrg;
         #endregion Public Fields
 
         #region Public Constructors
 
-        public PawnFace(Pawn pawn, bool setColors = true)
+        public PawnFace([JetBrains.Annotations.NotNull] Pawn pawn, bool setColors = true)
         {
             this.DrawMouth = true;
-            FactionDef faction = pawn.Faction?.def;
+            FactionDef faction = pawn.Faction.def;
 
             this.EyeDef = PawnFaceChooser.RandomEyeDefFor(pawn, faction);
             this.BrowDef = PawnFaceChooser.RandomBrowDefFor(pawn, faction);
@@ -72,7 +81,6 @@
             this.BeardColor = hairDNA.BeardColor;
 
             this.CrownType = pawn.story.crownType;
-            this.PawnHeadType = HeadType.Undefined;
 
             if (setColors)
             {
@@ -118,7 +126,6 @@
             // Scribe_Values.Look(ref this.isSkinDNAoptimized, "IsSkinDNAoptimized");
             // Scribe_Values.Look(ref this.melaninOrg, "MelaninOrg");
         }
-
 
     }
 }

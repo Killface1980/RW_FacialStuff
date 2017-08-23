@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Reflection;
 
+    using JetBrains.Annotations;
+
     using RimWorld;
 
     using UnityEngine;
@@ -33,13 +35,17 @@
 
         private const float YOffsetOnFace = 0.0001f;
 
+        [CanBeNull]
         private static Type PawnRendererType;
 
         // private static FieldInfo PawnFieldInfo;
+        [CanBeNull]
         private static FieldInfo WoundOverlayFieldInfo;
 
+        [CanBeNull]
         private static MethodInfo DrawEquipmentMethodInfo;
 
+        [CanBeNull]
         private static FieldInfo PawnHeadOverlaysFieldInfo;
 
         // Verse.PawnRenderer
@@ -67,7 +73,8 @@
 
      // [HarmonyBefore("rimworld.erdelf.alien_race.main", "rimworld.jecrell.cthulhu.cults", "net.pardeike.zombieland")]
         public static bool RenderPawnInternal_Prefix(
-            PawnRenderer __instance,
+            // ReSharper disable once StyleCop.SA1309
+            [JetBrains.Annotations.NotNull] PawnRenderer __instance,
             Vector3 rootLoc,
             Quaternion quat,
             bool renderBody,
@@ -95,7 +102,7 @@
                 return true;
             }
 
-            if (faceComp.dontrender)
+            if (faceComp.Dontrender)
             {
                 return true;
             }

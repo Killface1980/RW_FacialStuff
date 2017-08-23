@@ -3,6 +3,8 @@
     using System;
     using System.IO;
 
+    using JetBrains.Annotations;
+
     using UnityEngine;
 
     using Verse;
@@ -23,7 +25,8 @@
 
         public override bool ShouldDrawRotated => this.MatRight == this.MatBack;
 
-        public override Material MatAt(Rot4 rot, Thing thing = null)
+        [NotNull]
+        public override Material MatAt(Rot4 rot, [CanBeNull] Thing thing = null)
         {
             switch (rot.AsInt)
             {
@@ -82,7 +85,7 @@
             {
                 if (side.Equals("Right"))
                 {
-                    array[3] = FacialGraphics.BlankTexture();
+                    array[3] = FacialGraphics.BlankTexture;
                 }
                 else
                 {
@@ -91,7 +94,7 @@
 
                 if (side.Equals("Left"))
                 {
-                    array[1] = FacialGraphics.BlankTexture();
+                    array[1] = FacialGraphics.BlankTexture;
                 }
                 else
                 {
@@ -101,7 +104,7 @@
             else
             {
                 Log.Message("Facial Stuff: No texture found at " + sidePath + " - Graphic_Multi_NaturalEyes");
-                array[3] = FacialGraphics.BlankTexture();
+                array[3] = FacialGraphics.BlankTexture;
             }
 
             if (ContentFinder<Texture2D>.Get(req.path + "_back", false))
@@ -110,7 +113,7 @@
             }
             else
             {
-                array[0] = FacialGraphics.BlankTexture();
+                array[0] = FacialGraphics.BlankTexture;
             }
 
             for (int i = 0; i < 4; i++)
@@ -131,6 +134,7 @@
             }
         }
 
+        [NotNull]
         public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
         {
             return GraphicDatabase.Get<Graphic_Multi>(

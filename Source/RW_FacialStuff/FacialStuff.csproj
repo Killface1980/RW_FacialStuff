@@ -92,6 +92,7 @@
     <Compile Include="Defs\MouthDef.cs" />
     <Compile Include="Defs\WrinkleDef.cs" />
     <Compile Include="Enums\BeardType.cs" />
+    <None Include="packages.config" />
     <None Include="_translate\Class2.cs" />
     <None Include="_translate\Class3.cs" />
     <None Include="_translate\Class4.cs" />
@@ -114,9 +115,11 @@
     <Compile Include="Genetics\HairDNA.cs" />
     <Compile Include="Harmony\optional\Harmony_EdBPrepareCarefully.cs" />
     <Compile Include="Harmony\optional\Harmony_Werewolf.cs" />
+    <None Include="Harmony\optional\PrepC\ColonistSaverPatch.cs" />
     <Compile Include="Harmony\optional\PrepC\PanelBackstoryPatch.cs" />
     <Compile Include="Harmony\optional\PrepC\PresetSaverPatch.cs" />
     <Compile Include="Harmony\optional\PrepC\PresetLoaderPatch.cs" />
+    <Compile Include="Harmony\optional\PrepC\SaveRecordFaceV3.cs" />
     <Compile Include="Harmony\optional\PrepC\SaveRecordPawnV3Patch.cs" />
     <Compile Include="Harmony\optional\Werewolf_Patches.cs" />
     <Compile Include="HumanMouthGraphics.cs" />
@@ -213,7 +216,10 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\packages\ResharperCodeContractNullability.1.0.8\analyzers\dotnet\cs\CodeContractNullability.dll" />
+    <Analyzer Include="..\packages\ResharperCodeContractNullability.1.0.8\analyzers\dotnet\cs\MsgPack.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

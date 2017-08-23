@@ -5,38 +5,48 @@
     using System.IO;
     using System.Linq;
 
+    using JetBrains.Annotations;
+
     using UnityEngine;
 
     using Verse;
 
     [StaticConstructorOnStartup]
+
     // ReSharper disable once InconsistentNaming
     public static class CutHairDB
     {
-
         #region Private Fields
 
+        [NotNull]
         private static readonly Dictionary<GraphicRequest, Graphic> AllGraphics =
             new Dictionary<GraphicRequest, Graphic>();
 
+        [NotNull]
         private static readonly List<HairCutPawn> PawnHairCache = new List<HairCutPawn>();
+
+        [CanBeNull]
         private static Texture2D maskTexFrontBack;
 
+        [CanBeNull]
         private static Texture2D maskTexSide;
 
+        [CanBeNull]
         private static string modPath = null;
 
         #endregion Private Fields
 
         #region Private Properties
 
+        [CanBeNull]
         private static string ModPath
         {
             get
             {
                 if (modPath == null)
                 {
-                    ModMetaData mod = ModLister.AllInstalledMods.FirstOrDefault(x => x.Active && x.Name.StartsWith("Facial Stuff"));
+                    ModMetaData mod =
+                        ModLister.AllInstalledMods.FirstOrDefault(x => x.Active && x.Name.StartsWith("Facial Stuff"));
                     modPath = mod.RootDir + "/Textures/MergedHair/";
                 }
 
@@ -57,7 +67,8 @@
             return GetInner<T>(req);
         }
 
-        public static HairCutPawn GetHairCache(Pawn pawn)
+        [NotNull]
+        public static HairCutPawn GetHairCache([NotNull] Pawn pawn)
         {
             foreach (HairCutPawn c in PawnHairCache)
             {
@@ -76,7 +87,7 @@
 
         #region Private Methods
 
-        private static void CutOutHair(ref Texture2D hairTex, Texture2D maskTex)
+        private static void CutOutHair([NotNull] ref Texture2D hairTex, [NotNull] Texture2D maskTex)
         {
             for (int x = 0; x < hairTex.width; x++)
             {
@@ -94,12 +105,12 @@
             hairTex.Apply();
         }
 
+        [NotNull]
         private static T GetInner<T>(GraphicRequest req)
             where T : Graphic, new()
         {
             if (Controller.settings.UseCaching)
             {
-
                 string oldPath = req.path;
                 string name = Path.GetFileNameWithoutExtension(oldPath);
 
@@ -179,7 +190,6 @@
                 }
 
                 return (T)graphic;
-
             }
             else
             {
@@ -245,7 +255,6 @@
                 }
 
                 return (T)graphic;
-
             }
         }
 

@@ -1,7 +1,6 @@
 ﻿namespace FacialStuff.Harmony.optional
 {
     using System;
-    using System.Linq;
 
     using global::Harmony;
 

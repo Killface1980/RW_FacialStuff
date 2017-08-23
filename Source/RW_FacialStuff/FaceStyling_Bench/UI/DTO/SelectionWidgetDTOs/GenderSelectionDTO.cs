@@ -26,12 +26,15 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
 {
     using System.Collections.Generic;
 
+    using JetBrains.Annotations;
+
     using Verse;
 
     public class GenderSelectionDTO : ASelectionWidgetDTO
     {
         public readonly Gender OriginalGender;
 
+       
         private List<Gender> genders = new List<Gender>(2);
         public GenderSelectionDTO(Gender currentGender)
         {

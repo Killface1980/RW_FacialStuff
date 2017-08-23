@@ -75,7 +75,7 @@
             }
             else
             {
-                array[0] = FacialGraphics.BlankTexture();
+                array[0] = FacialGraphics.BlankTexture;
             }
 
             // Texture2D[] array2 = new Texture2D[3];

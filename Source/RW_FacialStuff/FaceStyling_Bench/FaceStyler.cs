@@ -1,7 +1,10 @@
-﻿namespace FacialStuff.FaceStyling_Bench
+﻿// ReSharper disable All
+namespace FacialStuff.FaceStyling_Bench
 {
     using System;
     using System.Collections.Generic;
+
+    using JetBrains.Annotations;
 
     using Verse;
     using Verse.AI;
@@ -11,12 +14,14 @@
 
         #region Public Methods
 
-        public void FaceStyling(Pawn pawn)
+        public void FaceStyling( Pawn pawn)
         {
             Find.WindowStack.Add(new DialogFaceStyling(pawn));
         }
 
-        public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn pawn)
+        
+        [NotNull]
+        public override IEnumerable<FloatMenuOption> GetFloatMenuOptions([NotNull] Pawn pawn)
         {
             List<FloatMenuOption> list = new List<FloatMenuOption>();
             {

@@ -9,11 +9,24 @@
     {
         #region Public Fields
 
+        
+        [JetBrains.Annotations.NotNull]
         public static readonly GraphicMeshSet[] HumanEyeSet = new GraphicMeshSet[12];
+
+        
+        [JetBrains.Annotations.NotNull]
         public static readonly GraphicMeshSet[] HumanlikeMouthSet = new GraphicMeshSet[12];
+
+        [JetBrains.Annotations.NotNull]
         public static readonly GraphicMeshSet HumanlikeMouthSetAverageFemale;
+
+        [JetBrains.Annotations.NotNull]
         public static readonly GraphicMeshSet HumanlikeMouthSetAverageMale;
+
+        [JetBrains.Annotations.NotNull]
         public static readonly GraphicMeshSet HumanlikeMouthSetNarrowFemale;
+
+        [JetBrains.Annotations.NotNull]
         public static readonly GraphicMeshSet HumanlikeMouthSetNarrowMale;
 
         #endregion Public Fields
