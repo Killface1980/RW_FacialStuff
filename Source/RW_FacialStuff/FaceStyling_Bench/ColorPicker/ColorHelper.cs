@@ -31,8 +31,8 @@
             int sel = Mathf.FloorToInt(Hval);
             float mod = Hval - sel;
             float v1 = V * (1f - S);
-            float v2 = V * (1f - S * mod);
-            float v3 = V * (1f - S * (1f - mod));
+            float v2 = V * (1f - (S * mod));
+            float v3 = V * (1f - (S * (1f - mod)));
             switch (sel + 1)
             {
                 case 0:
@@ -143,7 +143,7 @@
                 if (num2 != 0f)
                 {
                     S = num2 / V;
-                    H = offset + (colorone - colortwo) / num2;
+                    H = offset + ((colorone - colortwo) / num2);
                 }
                 else
                 {

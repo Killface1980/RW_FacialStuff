@@ -1,11 +1,7 @@
 ﻿namespace FacialStuff
 {
-    using System;
     using FacialStuff.Defs;
-    using FacialStuff.Enums;
     using FacialStuff.Genetics;
-
-    using JetBrains.Annotations;
 
     using RimWorld;
 
@@ -15,58 +11,43 @@
 
     public class PawnFace : IExposable
     {
-        #region Public Fields
-
         public Color BeardColor;
 
-        [CanBeNull]
         public BeardDef BeardDef;
 
-        [CanBeNull]
         public BrowDef BrowDef;
 
         public CrownType CrownType;
 
-        public bool DrawMouth;
-
-        public bool HasSameBeardColor;
-
         public float Cuticula;
 
-        public float Greyness;
+        public bool DrawMouth;
 
         public float EuMelanin;
 
-        public float PheoMelanin;
+        public EyeDef EyeDef;
 
-        [CanBeNull]
-        public EyeDef EyeDef ;
-
-        [CanBeNull]
-        public MoustacheDef MoustacheDef;
-
-
-        [CanBeNull]
-        public WrinkleDef WrinkleDef;
+        public float Greyness;
 
         public Color HairColor;
 
+        public bool HasSameBeardColor;
 
 
+        public MoustacheDef MoustacheDef;
 
-        // public float MelaninOrg;
-        #endregion Public Fields
+        public float PheoMelanin;
 
-        #region Public Constructors
 
-        public PawnFace([JetBrains.Annotations.NotNull] Pawn pawn, bool setColors = true)
+        public WrinkleDef WrinkleDef;
+
+        public PawnFace(Pawn pawn, bool setColors = true)
         {
             this.DrawMouth = true;
             FactionDef faction = pawn.Faction.def;
 
             this.EyeDef = PawnFaceChooser.RandomEyeDefFor(pawn, faction);
             this.BrowDef = PawnFaceChooser.RandomBrowDefFor(pawn, faction);
-
 
             this.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(pawn);
             PawnFaceChooser.RandomBeardDefFor(pawn, faction, out this.BeardDef, out this.MoustacheDef);
@@ -92,10 +73,7 @@
 
         public PawnFace()
         {
-            
         }
-
-        #endregion Public Constructors
 
         public void ExposeData()
         {
@@ -127,5 +105,6 @@
             // Scribe_Values.Look(ref this.melaninOrg, "MelaninOrg");
         }
 
+        // public float MelaninOrg;
     }
 }

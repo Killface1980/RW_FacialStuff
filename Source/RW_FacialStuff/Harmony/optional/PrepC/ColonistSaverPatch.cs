@@ -14,11 +14,12 @@
             CodeInstruction last = null;
             foreach (CodeInstruction itr in instrs)
             {
-                if (last != null && itr.opcode == OpCodes.Newobj && itr.operand == AccessTools.Constructor(typeof(EdB.PrepareCarefully.SaveRecordPawnV3), new Type[] { typeof(EdB.PrepareCarefully.CustomPawn) }))
+                if (last != null && itr.opcode == OpCodes.Newobj && itr.operand == AccessTools.Constructor(typeof(EdB.PrepareCarefully.SaveRecordPawnV3), new[] { typeof(EdB.PrepareCarefully.CustomPawn) }))
                 {
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PresetSaverPatch), nameof(PresetSaverPatch.AddFaceToDictionary), new Type[] { typeof(EdB.PrepareCarefully.CustomPawn) }));
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PresetSaverPatch), nameof(PresetSaverPatch.AddFaceToDictionary), new[] { typeof(EdB.PrepareCarefully.CustomPawn) }));
                     yield return last;
                 }
+
                 yield return itr;
                 last = itr;
             }

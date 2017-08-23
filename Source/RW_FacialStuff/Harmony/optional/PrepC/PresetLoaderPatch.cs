@@ -13,7 +13,7 @@
     public static class PresetLoaderPatch
     {
         [HarmonyPostfix]
-        public static void LoadFace(ref CustomPawn __result, SaveRecordPawnV3 record)
+        public static void LoadFace( ref CustomPawn __result, SaveRecordPawnV3 record)
         {
             if (SaveRecordPawnV3Patch.LoadedPawns.Keys.Contains(record))
             {
@@ -24,8 +24,7 @@
                     CompFace compFace = pawn.TryGetComp<CompFace>();
                     compFace.SetPawnFace(pawnFace);
 
-                     pawn.story.hairColor = compFace.PawnFace.HairColor;
-
+                    pawn.story.hairColor = compFace.PawnFace.HairColor;
                 }
             }
         }

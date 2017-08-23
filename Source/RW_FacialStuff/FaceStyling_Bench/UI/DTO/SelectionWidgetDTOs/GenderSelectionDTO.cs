@@ -26,22 +26,19 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
 {
     using System.Collections.Generic;
 
-    using JetBrains.Annotations;
-
     using Verse;
 
     public class GenderSelectionDTO : ASelectionWidgetDTO
     {
         public readonly Gender OriginalGender;
 
-       
         private List<Gender> genders = new List<Gender>(2);
         public GenderSelectionDTO(Gender currentGender)
         {
             this.OriginalGender = currentGender;
             this.genders.Add(Gender.Male);
             this.genders.Add(Gender.Female);
-            this.index = (currentGender == Gender.Male) ? 0 : 1;
+            base.index = (currentGender == Gender.Male) ? 0 : 1;
         }
 
         public override int Count
@@ -64,7 +61,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.genders[this.index].ToString().Translate().CapitalizeFirst();
+                return this.genders[base.index].ToString().Translate().CapitalizeFirst();
             }
         }
 
@@ -72,16 +69,16 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.genders[this.index];
+                return this.genders[base.index];
             }
         }
 
         public override void ResetToDefault()
         {
-            if (this.OriginalGender != this.genders[this.index])
+            if (this.OriginalGender != this.genders[base.index])
             {
-                this.index = (this.OriginalGender == Gender.Male) ? 0 : 1;
-                this.IndexChanged();
+                base.index = (this.OriginalGender == Gender.Male) ? 0 : 1;
+                base.IndexChanged();
             }
         }
     }

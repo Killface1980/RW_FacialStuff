@@ -3,9 +3,6 @@ namespace FacialStuff.FaceStyling_Bench
 {
     using System;
     using System.Collections.Generic;
-
-    using JetBrains.Annotations;
-
     using Verse;
     using Verse.AI;
 
@@ -19,9 +16,9 @@ namespace FacialStuff.FaceStyling_Bench
             Find.WindowStack.Add(new DialogFaceStyling(pawn));
         }
 
-        
-        [NotNull]
-        public override IEnumerable<FloatMenuOption> GetFloatMenuOptions([NotNull] Pawn pawn)
+
+      
+        public override IEnumerable<FloatMenuOption> GetFloatMenuOptions( Pawn pawn)
         {
             List<FloatMenuOption> list = new List<FloatMenuOption>();
             {
@@ -50,6 +47,7 @@ namespace FacialStuff.FaceStyling_Bench
                             DefDatabase<JobDef>.GetNamed("FaceStyleChanger"),
                             this,
                             this.InteractionCell);
+                        FaceStyleChanger.locomotionUrgency = LocomotionUrgency.Walk;
                         if (!pawn.jobs.TryTakeOrderedJob(FaceStyleChanger))
                         {
                             // This is used to force go job, it will work even when drafted
@@ -59,7 +57,6 @@ namespace FacialStuff.FaceStyling_Bench
                     };
 
                 list.Add(new FloatMenuOption("FacialStuffEditor.EditFace".Translate(), action2));
-
             }
 
             return list;

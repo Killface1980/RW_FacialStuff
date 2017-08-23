@@ -323,11 +323,11 @@
             {
                 this.newBeard = value;
 
-                this.UpdatePawnDefs(value);
+                this.UpdatePawn(value);
                 if (value.beardType == BeardType.FullBeard && !this.reInit)
                 {
                     this.newMoustache = MoustacheDefOf.Shaved;
-                    this.UpdatePawnDefs(MoustacheDefOf.Shaved);
+                    this.UpdatePawn(MoustacheDefOf.Shaved);
                 }
             }
         }
@@ -339,7 +339,7 @@
             set
             {
                 this.newBeardColor = value;
-                this.UpdatePawnColors(this.NewBeard, value);
+                this.UpdatePawn(this.NewBeard, value);
             }
         }
 
@@ -350,7 +350,7 @@
             set
             {
                 this.newBrow = value;
-                this.UpdatePawnDefs(value);
+                this.UpdatePawn(value);
             }
         }
 
@@ -362,7 +362,7 @@
             {
                 this.newEye = value;
 
-                this.UpdatePawnDefs(value);
+                this.UpdatePawn(value);
             }
         }
 
@@ -373,7 +373,7 @@
             set
             {
                 this.newHair = value;
-                this.UpdatePawnDefs(value);
+                this.UpdatePawn(value);
             }
         }
 
@@ -384,12 +384,12 @@
             set
             {
                 this.newHairColor = value;
-                this.UpdatePawnColors(this.NewHair, value);
+                this.UpdatePawn(this.NewHair, value);
 
                 if (this.faceComp != null && this.faceComp.PawnFace.HasSameBeardColor && !this.reInit)
                 {
                     Color color = FacialGraphics.DarkerBeardColor(value);
-                    this.UpdatePawnColors(this.NewBeard, color);
+                    this.UpdatePawn(this.NewBeard, color);
                 }
             }
         }
@@ -401,7 +401,7 @@
             set
             {
                 this.newMelanin = value;
-                this.UpdatePawnColors(Color.green, value);
+                this.UpdatePawn(value, PawnSkinColors.GetSkinColor(value));
             }
         }
 
@@ -412,12 +412,12 @@
             set
             {
                 this.newMoustache = value;
-                this.UpdatePawnDefs(value);
+                this.UpdatePawn(value);
 
                 if (this.newBeard.beardType == BeardType.FullBeard && !this.reInit)
                 {
                     this.newBeard = PawnFaceChooser.RandomBeardDefFor(pawn, BeardType.LowerBeard);
-                    this.UpdatePawnDefs(this.newBeard);
+                    this.UpdatePawn(this.newBeard);
                 }
             }
         }
@@ -589,6 +589,61 @@
 
         #region Private Methods
 
+        private bool AddLongInput(
+            float labelLeft,
+            float top,
+            float inputLeft,
+            float inputWidth,
+            string label,
+            ref long value,
+            long maxValue,
+            long factor = 1)
+        {
+            string stringValue;
+            if (value == -1)
+            {
+                stringValue = string.Empty;
+            }
+            else
+            {
+                stringValue = (value / factor).ToString();
+            }
+
+            string result = WidgetUtil.AddNumberTextInput(labelLeft, top, inputLeft, inputWidth, label, stringValue);
+            try
+            {
+                if (result.Length == 0)
+                {
+                    value = -1;
+                    return true;
+                }
+
+                if (result.Length > 0 && !result.Equals(stringValue))
+                {
+                    value = long.Parse(result);
+                    if (value < 0)
+                    {
+                        value = 0;
+                    }
+                    else
+                    {
+                        value *= factor;
+                        if (value > maxValue || value < 0)
+                        {
+                            value = maxValue;
+                        }
+                    }
+
+                    return true;
+                }
+            }
+            catch
+            {
+            }
+
+            return false;
+        }
+
         private Graphic_Multi_NaturalHeadParts BeardGraphic(BeardDef def)
         {
             Graphic_Multi_NaturalHeadParts result;
@@ -658,10 +713,9 @@
                                 this.NewBeardColor = this.colourWrapper.Color;
                             },
                         false,
-                        true)
-                        {
-                            initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
-                        });
+                        true) {
+                                 initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin) 
+                              });
             }
         }
 
@@ -697,10 +751,9 @@
                                 this.NewBeardColor = this.colourWrapper.Color;
                             },
                         false,
-                        true)
-                        {
-                            initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
-                        });
+                        true) {
+                                 initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin) 
+                              });
             }
         }
 
@@ -1059,10 +1112,9 @@
                         this.colourWrapper,
                         delegate { this.NewHairColor = this.colourWrapper.Color; },
                         false,
-                        true)
-                        {
-                            initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
-                        });
+                        true) {
+                                 initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin) 
+                              });
             }
         }
 
@@ -1287,7 +1339,7 @@
                 }
             }
 
-            // Draw the mini slider
+            // Draw the slider
             WidgetUtil.AddSliderWidget(
                 melaninRect.x,
                 swatchRect.yMax,
@@ -1459,40 +1511,40 @@
                     "FacialStuffEditor.Gender".Translate() + ":",
                     this.dresserDto.GenderSelectionDto);
 
-               // top += WidgetUtil.SelectionRowHeight + 5;
-               // long ageBio = pawn.ageTracker.AgeBiologicalTicks;
-               // if (this.AddLongInput(
-               //     editorLeft,
-               //     top,
-               //     120,
-               //     80,
-               //     "FacialStuffEditor.AgeBiological".Translate() + ":",
-               //     ref ageBio,
-               //     MaxAge,
-               //     TicksPerYear))
-               // {
-               //     pawn.ageTracker.AgeBiologicalTicks = ageBio;
-               //     this.rerenderPawn = true;
-               //     if (ageBio > pawn.ageTracker.AgeChronologicalTicks)
-               //     {
-               //         pawn.ageTracker.AgeChronologicalTicks = ageBio;
-               //     }
-               // }
-               //
-               // top += WidgetUtil.SelectionRowHeight + 5;
-               // long ageChron = pawn.ageTracker.AgeChronologicalTicks;
-               // if (this.AddLongInput(
-               //     editorLeft,
-               //     top,
-               //     120,
-               //     80,
-               //     "FacialStuffEditor.AgeChronological".Translate() + ":",
-               //     ref ageChron,
-               //     MaxAge,
-               //     TicksPerYear))
-               // {
-               //     pawn.ageTracker.AgeChronologicalTicks = ageChron;
-               // }
+                top += WidgetUtil.SelectionRowHeight + 5;
+                long ageBio = pawn.ageTracker.AgeBiologicalTicks;
+                if (this.AddLongInput(
+                    editorLeft,
+                    top,
+                    120,
+                    80,
+                    "FacialStuffEditor.AgeBiological".Translate() + ":",
+                    ref ageBio,
+                    MaxAge,
+                    TicksPerYear))
+                {
+                    pawn.ageTracker.AgeBiologicalTicks = ageBio;
+                    this.rerenderPawn = true;
+                    if (ageBio > pawn.ageTracker.AgeChronologicalTicks)
+                    {
+                        pawn.ageTracker.AgeChronologicalTicks = ageBio;
+                    }
+                }
+
+                top += WidgetUtil.SelectionRowHeight + 5;
+                long ageChron = pawn.ageTracker.AgeChronologicalTicks;
+                if (this.AddLongInput(
+                    editorLeft,
+                    top,
+                    120,
+                    80,
+                    "FacialStuffEditor.AgeChronological".Translate() + ":",
+                    ref ageChron,
+                    MaxAge,
+                    TicksPerYear))
+                {
+                    pawn.ageTracker.AgeChronologicalTicks = ageChron;
+                }
             }
 
             GUI.color = Color.white;
@@ -1806,7 +1858,8 @@
             return result;
         }
 
-        private void UpdatePawnDefs(Def newValue)
+        [SuppressMessage("ReSharper", "CanBeReplacedWithTryCastAndCheckForNull")]
+        private void UpdatePawn(object newValue)
         {
             if (newValue != null)
             {
@@ -1839,7 +1892,7 @@
             this.rerenderPawn = true;
         }
 
-        private void UpdatePawnColors(object type, object newValue)
+        private void UpdatePawn(object type, object newValue)
         {
             if (type != null)
             {
@@ -1855,9 +1908,9 @@
                 }
 
                 // skin color
-                if (type is Color)
+                if (type is float && newValue is Color)
                 {
-                    pawn.story.melanin = (float)newValue;
+                    pawn.story.melanin = (float)type;
                 }
             }
 
@@ -1886,6 +1939,7 @@
                 else if (sender is SliderWidgetDTO)
                 {
                     pawn.story.melanin = (float)value;
+                    this.NewMelanin = (float)value;
                 }
             }
 

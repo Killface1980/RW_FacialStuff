@@ -34,7 +34,7 @@
                                     new[] { typeof(EdB.PrepareCarefully.SaveRecordPawnV3) }),
                                 null,
                                 new HarmonyMethod(typeof(PresetLoaderPatch), nameof(PresetLoaderPatch.LoadFace)));
-                           
+
                             harmony.Patch(
                                 AccessTools.Method(
                                     typeof(EdB.PrepareCarefully.PresetSaver),
@@ -43,7 +43,7 @@
                                 null,
                                 null,
                                 new HarmonyMethod(typeof(PresetSaverPatch), nameof(PresetSaverPatch.SavePawnRef)));
-                           
+
                             harmony.Patch(
                                 AccessTools.Method(
                                     typeof(EdB.PrepareCarefully.ColonistSaver),
@@ -63,7 +63,6 @@
             catch (TypeLoadException)
             {
             }
-
         }
     }
 }

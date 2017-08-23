@@ -184,7 +184,6 @@ namespace FacialStuffEditor.UI
                 {
                     this.ResetToDefault();
                 }
-
                 if (Widgets.ButtonText(
                     new Rect(90, 0, 60, WidgetUtil.SelectionRowHeight),
                     "FacialStuffEditor.Save".Translate()))
@@ -192,14 +191,13 @@ namespace FacialStuffEditor.UI
                     this.saveChangedOnExit = true;
                     this.Close();
                 }
-
                 GUI.EndGroup();
             }
             catch (Exception e)
             {
                 Log.Error(this.GetType().Name + " closed due to: " + e.GetType().Name + " " + e.Message);
                 Messages.Message(this.GetType().Name + " closed due to: " + e.GetType().Name + " " + e.Message, MessageSound.Negative);
-                this.Close();
+                base.Close();
             }
             finally
             {
@@ -213,13 +211,12 @@ namespace FacialStuffEditor.UI
             string stringValue;
             if (value == -1)
             {
-                stringValue = string.Empty;
+                stringValue = "";
             }
             else
             {
                 stringValue = (value / factor).ToString();
             }
-
             string result = WidgetUtil.AddNumberTextInput(labelLeft, top, inputLeft, inputWidth, label, stringValue);
             try
             {
@@ -241,7 +238,6 @@ namespace FacialStuffEditor.UI
                         if (value > maxValue || value < 0)
                             value = maxValue;
                     }
-
                     return true;
                 }
             }
@@ -296,7 +292,6 @@ namespace FacialStuffEditor.UI
                     pawn.story.melanin = (float)value;
                 }
             }
-
             this.rerenderPawn = true;
         }
     }

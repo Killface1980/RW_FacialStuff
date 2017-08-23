@@ -47,7 +47,7 @@
   <FacialStuffEditor.GenderChangeWarning>Changing these values may have adverse effects.\nUse at own risk.</FacialStuffEditor.GenderChangeWarning>
   <!-- Mod Settings -->
   <FacialStuffEditor.ShowBodyChange>Allow Body Change</FacialStuffEditor.ShowBodyChange>
-  <FacialStuffEditor.ShowGenderAgeChange>Allow Gender and Age Change</FacialStuffEditor.ShowGenderAgeChange>
+  <FacialStuffEditor.ShowGenderChange>Allow Gender Change</FacialStuffEditor.ShowGenderChange>
  
   
   

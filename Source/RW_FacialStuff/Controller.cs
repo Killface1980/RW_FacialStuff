@@ -2,7 +2,7 @@
 {
     using System.Diagnostics.CodeAnalysis;
 
-    using JetBrains.Annotations;
+
 
     using RimWorld;
 
@@ -16,7 +16,7 @@
 
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once StyleCop.SA1307
-        [NotNull]
+      
         [SuppressMessage(
             "StyleCop.CSharp.MaintainabilityRules",
             "SA1401:FieldsMustBePrivate",

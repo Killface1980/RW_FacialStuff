@@ -48,7 +48,7 @@
   <FacialStuffEditor.GenderChangeWarning>Diese Werte zu ändern, könnte negative Auswirkungen auf das Spiel haben.\nBenutzung auf eigene Gefahr.</FacialStuffEditor.GenderChangeWarning>
   <!-- Mod Settings -->
   <FacialStuffEditor.ShowBodyChange>Erlaube die Änderung des Körpertyps</FacialStuffEditor.ShowBodyChange>
-  <FacialStuffEditor.ShowGenderAgeChange>Erlaube die Änderung von Alter und Geschlecht</FacialStuffEditor.ShowGenderAgeChange>
+  <FacialStuffEditor.ShowGenderChange>Erlaube die Änderung des Geschlechts</FacialStuffEditor.ShowGenderChange>
 
 
 

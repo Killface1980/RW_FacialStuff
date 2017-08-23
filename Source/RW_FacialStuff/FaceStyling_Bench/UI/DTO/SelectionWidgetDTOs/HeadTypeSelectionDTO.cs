@@ -28,22 +28,12 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
     using System.Collections.Generic;
     using System.Linq;
 
-    using JetBrains.Annotations;
-
     using Verse;
 
     public class HeadTypeSelectionDTO : ASelectionWidgetDTO
     {
-        [NotNull]
-        
         private List<string> headTypes;
-
-        [NotNull]
-        
         private List<string> maleHeadTypes = new List<string>();
-
-        [NotNull]
-        
         private List<string> femaleHeadTypes = new List<string>();
         private int savedFemaleIndex = 0;
         private int savedMaleIndex = 0;
@@ -52,10 +42,9 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
 
         public readonly CrownType OriginalCrownType;
 
-        [NotNull]
         private object selectedItem2;
 
-        public HeadTypeSelectionDTO([NotNull] string headType, Gender gender) : base()
+        public HeadTypeSelectionDTO(string headType, Gender gender) : base()
         {
             this.OriginalHeadType = headType;
 
@@ -75,13 +64,13 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             this.FindIndex(headType);
         }
 
-        public void FindIndex([NotNull] string headType)
+        public void FindIndex(string headType)
         {
             for (int i = 0; i < this.headTypes.Count; ++i)
             {
                 if (this.headTypes[i].Equals(headType))
                 {
-                    this.index = i;
+                    base.index = i;
                     break;
                 }
             }
@@ -93,19 +82,17 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             {
                 if (value == Gender.Female)
                 {
-                    this.savedMaleIndex = this.index;
+                    this.savedMaleIndex = base.index;
                     this.headTypes = this.femaleHeadTypes;
-                    this.index = this.savedFemaleIndex;
+                    base.index = this.savedFemaleIndex;
                 }
-                else
+                else // Male
                 {
-                    // Male
-                    this.savedFemaleIndex = this.index;
+                    this.savedFemaleIndex = base.index;
                     this.headTypes = this.maleHeadTypes;
-                    this.index = this.savedMaleIndex;
+                    base.index = this.savedMaleIndex;
                 }
-
-                this.IndexChanged();
+                base.IndexChanged();
             }
         }
 
@@ -121,7 +108,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                string[] array = this.headTypes[this.index].Split(new[] { '_' }, StringSplitOptions.None);
+                string[] array = this.headTypes[base.index].Split(new char[] { '_' }, StringSplitOptions.None);
                 return array[array.Count<string>() - 2] + ", " + array[array.Count<string>() - 1];
             }
         }
@@ -130,11 +117,11 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                this.selectedItem2 = this.headTypes[this.index].Contains("Narrow")
+                this.selectedItem2 = this.headTypes[base.index].Contains("Narrow")
                                          ? CrownType.Narrow
                                          : CrownType.Average;
 
-                return this.headTypes[this.index];
+                return this.headTypes[base.index];
             }
         }
 
@@ -146,7 +133,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             }
         }
 
-        private void AddHeadTypesToList([NotNull] string source, [NotNull] List<string> list)
+        private void AddHeadTypesToList(string source, List<string> list)
         {
             foreach (string current in GraphicDatabaseUtility.GraphicNamesInFolder(source))
             {
@@ -158,7 +145,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         public override void ResetToDefault()
         {
             this.FindIndex(this.OriginalHeadType);
-            this.IndexChanged();
+            base.IndexChanged();
         }
     }
 }

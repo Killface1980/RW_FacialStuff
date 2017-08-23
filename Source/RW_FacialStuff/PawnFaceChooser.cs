@@ -7,9 +7,7 @@
     using FacialStuff.Defs;
     using FacialStuff.Enums;
 
-    using JetBrains.Annotations;
-
-    using RimWorld;
+     using RimWorld;
 
     using Verse;
 
@@ -18,8 +16,8 @@
 
         #region Public Methods
 
-        [JetBrains.Annotations.NotNull]
-        public static WrinkleDef AssignWrinkleDefFor([NotNull] Pawn pawn)
+      
+        public static WrinkleDef AssignWrinkleDefFor( Pawn pawn)
         {
             IEnumerable<WrinkleDef> source = from wrinkle in DefDatabase<WrinkleDef>.AllDefs
                                              where wrinkle.raceList.Contains(pawn.def)
@@ -33,7 +31,7 @@
         }
 
         // RimWorld.PawnHairChooser
-        public static float HairChoiceLikelihoodFor([NotNull] HairDef hair, [NotNull] Pawn pawn)
+        public static float HairChoiceLikelihoodFor( HairDef hair,  Pawn pawn)
         {
             if (pawn.gender == Gender.None)
             {
@@ -286,16 +284,16 @@
         }
 
         public static void RandomBeardDefFor(
-                            [NotNull] Pawn pawn,
-            [NotNull] FactionDef factionType,
-            [NotNull] out BeardDef mainBeard,
-            [NotNull] out MoustacheDef moustache)
+                           Pawn pawn,
+           FactionDef factionType,
+           out BeardDef mainBeard,
+           out MoustacheDef moustache)
         {
             BeardRoulette(pawn, factionType, out mainBeard, out moustache);
         }
 
-        [JetBrains.Annotations.NotNull]
-        public static BeardDef RandomBeardDefFor([NotNull] Pawn pawn, BeardType type)
+      
+        public static BeardDef RandomBeardDefFor( Pawn pawn, BeardType type)
         {
             if (pawn.gender != Gender.Male)
             {
@@ -334,9 +332,9 @@
             return chosenBeard;
         }
 
-        [JetBrains.Annotations.NotNull]
-        public static BrowDef RandomBrowDefFor([JetBrains.Annotations.NotNull] Pawn pawn,
-                                               [JetBrains.Annotations.NotNull] FactionDef factionType)
+      
+        public static BrowDef RandomBrowDefFor( Pawn pawn,
+                                              FactionDef factionType)
         {
             IEnumerable<BrowDef> source = from brow in DefDatabase<BrowDef>.AllDefs
                                           where brow.raceList.Contains(pawn.def)
@@ -394,9 +392,9 @@
             return chosenBrows;
         }
 
-        [JetBrains.Annotations.NotNull]
-        public static EyeDef RandomEyeDefFor([JetBrains.Annotations.NotNull] Pawn pawn,
-                                             [JetBrains.Annotations.NotNull] FactionDef factionType)
+      
+        public static EyeDef RandomEyeDefFor( Pawn pawn,
+                                            FactionDef factionType)
         {
             // Log.Message("Selecting eyes.");
             IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
@@ -422,7 +420,7 @@
 
         #region Private Methods
 
-        private static float BeardChoiceLikelihoodFor([NotNull] BeardDef beard, [NotNull] Pawn pawn)
+        private static float BeardChoiceLikelihoodFor( BeardDef beard,  Pawn pawn)
         {
             if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 37)
             {
@@ -443,10 +441,10 @@
         }
 
         private static void BeardRoulette(
-            [JetBrains.Annotations.NotNull] Pawn pawn,
-            [JetBrains.Annotations.NotNull] FactionDef factionType,
-                                    [JetBrains.Annotations.NotNull] out BeardDef mainBeard,
-                                    [JetBrains.Annotations.NotNull] out MoustacheDef moustache)
+           Pawn pawn,
+           FactionDef factionType,
+                                   out BeardDef mainBeard,
+                                   out MoustacheDef moustache)
         {
             moustache = MoustacheDefOf.Shaved;
             IEnumerable<BeardDef> source;
@@ -491,7 +489,7 @@
             }
         }
 
-        private static float BrowChoiceLikelihoodFor([NotNull] BrowDef brow, [NotNull] Pawn pawn)
+        private static float BrowChoiceLikelihoodFor( BrowDef brow,  Pawn pawn)
         {
             if (pawn.gender == Gender.None)
             {
@@ -526,7 +524,7 @@
             return 0f;
         }
 
-        private static float EyeChoiceLikelihoodFor([NotNull] EyeDef eye, [NotNull] Pawn pawn)
+        private static float EyeChoiceLikelihoodFor( EyeDef eye,  Pawn pawn)
         {
             if (pawn.gender == Gender.None)
             {
@@ -561,8 +559,8 @@
             return 0f;
         }
 
-        [JetBrains.Annotations.NotNull]
-        private static MoustacheDef MoustacheRoulette([NotNull] Pawn pawn, [NotNull] FactionDef factionType)
+      
+        private static MoustacheDef MoustacheRoulette( Pawn pawn,  FactionDef factionType)
         {
             IEnumerable<MoustacheDef> source = from moustache in DefDatabase<MoustacheDef>.AllDefs
                                                where moustache.raceList.Contains(pawn.def)
@@ -586,7 +584,7 @@
             return moustacheDef;
         }
 
-        private static float TacheChoiceLikelihoodFor([NotNull] MoustacheDef beard, [NotNull] Pawn pawn)
+        private static float TacheChoiceLikelihoodFor( MoustacheDef beard,  Pawn pawn)
         {
             if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 37)
             {

@@ -2,7 +2,7 @@
 {
     using UnityEngine;
 
-    public struct HairDNA 
+    public struct HairDNA
     {
         public HairColorRequest HairColorRequest { get; set; }
 

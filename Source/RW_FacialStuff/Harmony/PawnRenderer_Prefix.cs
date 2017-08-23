@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Reflection;
 
-    using JetBrains.Annotations;
-
     using RimWorld;
 
     using UnityEngine;
@@ -35,17 +33,17 @@
 
         private const float YOffsetOnFace = 0.0001f;
 
-        [CanBeNull]
+        
         private static Type PawnRendererType;
 
         // private static FieldInfo PawnFieldInfo;
-        [CanBeNull]
+        
         private static FieldInfo WoundOverlayFieldInfo;
 
-        [CanBeNull]
+        
         private static MethodInfo DrawEquipmentMethodInfo;
 
-        [CanBeNull]
+        
         private static FieldInfo PawnHeadOverlaysFieldInfo;
 
         // Verse.PawnRenderer
@@ -71,10 +69,9 @@
             }
         }
 
-     // [HarmonyBefore("rimworld.erdelf.alien_race.main", "rimworld.jecrell.cthulhu.cults", "net.pardeike.zombieland")]
+        // [HarmonyBefore("rimworld.erdelf.alien_race.main", "rimworld.jecrell.cthulhu.cults", "net.pardeike.zombieland")]
         public static bool RenderPawnInternal_Prefix(
-            // ReSharper disable once StyleCop.SA1309
-            [JetBrains.Annotations.NotNull] PawnRenderer __instance,
+            PawnRenderer __instance,
             Vector3 rootLoc,
             Quaternion quat,
             bool renderBody,
@@ -257,7 +254,7 @@
                             // Mesh meshMouth = __instance.graphics.HairMeshSet.MeshAt(headFacing);
                             Mesh meshMouth = faceComp.MouthMeshSet.MeshAt(headFacing);
 
-                            Vector3 drawLoc = locFacialY + headQuat * faceComp.BaseMouthOffsetAt(bodyFacing);
+                            Vector3 drawLoc = locFacialY + (headQuat * faceComp.BaseMouthOffsetAt(bodyFacing));
                             GenDraw.DrawMeshNowOrLater(meshMouth, drawLoc, headQuat, mouthMat, portrait);
                             locFacialY.y += YOffsetOnFace;
                         }

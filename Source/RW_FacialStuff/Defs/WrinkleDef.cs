@@ -9,7 +9,7 @@ namespace FacialStuff.Defs
 {
     using System.Collections.Generic;
 
-    using JetBrains.Annotations;
+
 
     using RimWorld;
 
@@ -19,10 +19,10 @@ namespace FacialStuff.Defs
     {
         public HairGender hairGender = HairGender.Any;
 
-        [NotNull]
+      
         public List<ThingDef> raceList = new List<ThingDef>();
 
-        [NotNull]
+      
         public string texPath;
     }
 }

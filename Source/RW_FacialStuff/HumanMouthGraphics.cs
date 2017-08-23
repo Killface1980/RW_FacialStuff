@@ -7,16 +7,14 @@
 
     using Verse;
 
-    using Debug = System.Diagnostics.Debug;
-
     [StaticConstructorOnStartup]
     public static class HumanMouthGraphics
     {
 
-        [JetBrains.Annotations.NotNull]
+      
         public static readonly Graphic_Multi_NaturalHeadParts MouthGraphic03;
 
-        [JetBrains.Annotations.NotNull]
+      
         public static readonly MouthGraphicData[] HumanMouthGraphic;
 
         static HumanMouthGraphics()
@@ -90,7 +88,7 @@
         {
             #region Fields
 
-            [JetBrains.Annotations.NotNull]
+          
             public readonly Graphic_Multi_NaturalHeadParts Graphic;
 
             public readonly float Mood;
@@ -99,7 +97,7 @@
 
             #region Constructors
 
-            public MouthGraphicData(float mood, [JetBrains.Annotations.NotNull] Graphic_Multi_NaturalHeadParts graphic)
+            public MouthGraphicData(float mood,  Graphic_Multi_NaturalHeadParts graphic)
             {
                 this.Mood = mood;
                 this.Graphic = graphic;

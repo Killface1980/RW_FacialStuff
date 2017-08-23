@@ -33,8 +33,8 @@
             }
         }
 
-        public static Dictionary<SaveRecordPawnV3, SaveRecordFaceV3> LoadedPawns = new Dictionary<SaveRecordPawnV3, SaveRecordFaceV3>();
+        public static readonly Dictionary<SaveRecordPawnV3, SaveRecordFaceV3> LoadedPawns = new Dictionary<SaveRecordPawnV3, SaveRecordFaceV3>();
 
-        public static Dictionary<string, CustomPawn> SavedPawns = new Dictionary<string, CustomPawn>();
+        public static readonly Dictionary<string, CustomPawn> SavedPawns = new Dictionary<string, CustomPawn>();
     }
 }

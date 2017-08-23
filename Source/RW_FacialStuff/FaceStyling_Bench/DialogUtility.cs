@@ -38,7 +38,7 @@ namespace FacialStuff.Utilities
         public static bool DoMiddleButton(Rect innerRect, string label)
         {
             float top = innerRect.height - 38f;
-            Rect rect = new Rect(innerRect.width / 2f - BottomButSize.x / 2f, top, BottomButSize.x, BottomButSize.y);
+            Rect rect = new Rect((innerRect.width / 2f) - (BottomButSize.x / 2f), top, BottomButSize.x, BottomButSize.y);
             return Widgets.ButtonText(rect, label);
         }
     }

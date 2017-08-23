@@ -24,9 +24,13 @@
 
 namespace FacialStuff.FaceStyling_Bench.UI.Util
 {
+    using System.IO;
     using System.Text.RegularExpressions;
 
+    using FacialStuff.FaceStyling_Bench.UI.DTO;
     using FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs;
+
+    using RimWorld;
 
     using UnityEngine;
 
@@ -41,22 +45,33 @@ namespace FacialStuff.FaceStyling_Bench.UI.Util
     {
         public static Texture2D nextTexture;
         public static Texture2D previousTexture;
+        public static Texture2D cantTexture;
+        public static Texture2D colorPickerTexture;
+        public static Texture2D copyIconTexture;
+        public static Texture2D pasteIconTexture;
+        public static Texture2D dropTexture;
+        public static Texture2D colorFinder;
 
         public static void Initialize()
         {
             nextTexture = ContentFinder<Texture2D>.Get("UI/next", true);
             previousTexture = ContentFinder<Texture2D>.Get("UI/previous", true);
+            cantTexture = ContentFinder<Texture2D>.Get("UI/x", true);
+            colorPickerTexture = ContentFinder<Texture2D>.Get("UI/colorpicker", true);
+            copyIconTexture = ContentFinder<Texture2D>.Get("UI/copy", true);
+            pasteIconTexture = ContentFinder<Texture2D>.Get("UI/paste", true);
+            dropTexture = ContentFinder<Texture2D>.Get("UI/drop", true);
 
-           // foreach (ModContentPack current in LoadedModManager.RunningMods)
-           // {
-           // if (current.GetContentHolder<Texture2D>().Get("UI/colorpicker"))
-           // {
-           // byte[] data = File.ReadAllBytes(current.RootDir + "/Textures/UI/colorpicker.png");
-           // colorFinder = new Texture2D(2, 2, TextureFormat.Alpha8, true);
-           // colorFinder.LoadImage(data, false);
-           // break;
-           // }
-           // }
+            foreach (ModContentPack current in LoadedModManager.RunningMods)
+            {
+                if (current.GetContentHolder<Texture2D>().Get("UI/colorpicker"))
+                {
+                    byte[] data = File.ReadAllBytes(current.RootDir + "/Textures/UI/colorpicker.png");
+                    colorFinder = new Texture2D(2, 2, TextureFormat.Alpha8, true);
+                    colorFinder.LoadImage(data, false);
+                    break;
+                }
+            }
         }
 
         public static readonly Vector2 NavButtonSize = new Vector2(30f, 30f);
@@ -78,7 +93,6 @@ namespace FacialStuff.FaceStyling_Bench.UI.Util
                     middleCenterGuiStyle = GUI.skin.label;
                     middleCenterGuiStyle.alignment = TextAnchor.MiddleCenter;
                 }
-
                 return middleCenterGuiStyle;
             }
         }
@@ -98,7 +112,6 @@ namespace FacialStuff.FaceStyling_Bench.UI.Util
             {
                 result = value;
             }
-
             return result;
         }
 
@@ -127,11 +140,10 @@ namespace FacialStuff.FaceStyling_Bench.UI.Util
             left = 0;
             if (label != null)
             {
-                // Text.Anchor = TextAnchor.MiddleLeft;
+                //Text.Anchor = TextAnchor.MiddleLeft;
                 GUI.Label(new Rect(0, 0, 75, SelectionRowHeight), label);
                 left = 80;
             }
-
             Text.Anchor = TextAnchor.MiddleCenter;
 
             Rect previousButtonRect = new Rect(left, 0, NavButtonSize.x, NavButtonSize.y);
@@ -151,10 +163,62 @@ namespace FacialStuff.FaceStyling_Bench.UI.Util
             {
                 selectionWidgetDto.IncreaseIndex();
             }
-
             GUI.EndGroup();
             Text.Anchor = TextAnchor.UpperLeft;
             GUI.color = Color.white;
+        }
+
+        private static Color GetColorFromTexture(Vector2 mousePosition, Rect rect, Texture2D texture)
+        {
+            float localMouseX = mousePosition.x - rect.x;
+            float localMouseY = mousePosition.y - rect.y;
+            int imageX = (int)(localMouseX * ((float)colorPickerTexture.width / (rect.width + 0f)));
+            int imageY = (int)((rect.height - localMouseY) * ((float)colorPickerTexture.height / (rect.height + 0f)));
+            Color pixel = texture.GetPixel(imageX, imageY);
+            return pixel;
+        }
+
+        private static string ColorConvert(float f)
+        {
+            try
+            {
+                int i = (int)(f * 255);
+                if (i > 255)
+                {
+                    i = 255;
+                }
+                else if (i < 0)
+                {
+                    i = 0;
+                }
+                return i.ToString();
+            }
+            catch
+            {
+                return "0";
+            }
+        }
+
+        private static float ColorConvert(string intText)
+        {
+            try
+            {
+                float f = int.Parse(intText) / 255f;
+                if (f > 1)
+                {
+                    f = 1;
+                }
+                else if (f < 0)
+                {
+                    f = 0;
+                }
+                return f;
+            }
+            catch
+            {
+                return 0;
+            }
+
         }
     }
 }

@@ -24,11 +24,7 @@
 
 namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
 {
-    using System;
-
     using FacialStuff.FaceStyling_Bench.UI.Util;
-
-    using JetBrains.Annotations;
 
     public abstract class ASelectionWidgetDTO
     {
@@ -74,7 +70,6 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
                 this.index = 0;
             this.IndexChanged();
         }
-
         public abstract void ResetToDefault();
 
         #endregion Public Methods
@@ -87,7 +82,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             this.UpdatePawn(this.SelectedItem, this.SelectedItem2);
         }
 
-        protected void UpdatePawn(object item,  object item2 = null)
+        protected void UpdatePawn(object item, object item2 = null)
         {
             this.UpdatePawnListener?.Invoke(this, item, item2);
         }

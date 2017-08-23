@@ -5,8 +5,6 @@
     using System.IO;
     using System.Linq;
 
-    using JetBrains.Annotations;
-
     using UnityEngine;
 
     using Verse;
@@ -21,7 +19,7 @@
         {
             #region Private Fields
 
-            [NotNull]
+          
             private readonly List<KeyValuePair<Color, Graphic_Multi>> graphics =
                 new List<KeyValuePair<Color, Graphic_Multi>>();
 
@@ -29,7 +27,7 @@
 
             #region Public Constructors
 
-            public HeadGraphicRecordVanillaCustom(string graphicPath)
+            public HeadGraphicRecordVanillaCustom( string graphicPath)
             {
                 this.graphicPathVanillaCustom = graphicPath;
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
@@ -81,7 +79,7 @@
 
             public Gender gender;
 
-            [NotNull]
+          
             public string graphicPathVanillaCustom;
 
             #endregion Public Fields
@@ -95,7 +93,7 @@
 
         public static int headIndex = 0;
 
-        [CanBeNull]
+        
         public static List<HeadGraphicRecordVanillaCustom> headsVanillaCustom =
             new List<HeadGraphicRecordVanillaCustom>();
 
@@ -103,16 +101,16 @@
 
         #region Private Fields
 
-        [NotNull]
+      
         private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
 
-        [NotNull]
+      
         private static readonly string StumpPath = "Things/Pawn/Humanlike/Heads/None_Average_Stump";
 
-        [CanBeNull]
+        
         private static HeadGraphicRecordVanillaCustom skull;
 
-        [CanBeNull]
+        
         private static HeadGraphicRecordVanillaCustom stump;
 
         #endregion Private Fields
@@ -147,7 +145,7 @@
             stump = new HeadGraphicRecordVanillaCustom(StumpPath);
         }
 
-        public static Graphic_Multi GetModdedHeadNamed([NotNull] Pawn pawn, Color color)
+        public static Graphic_Multi GetModdedHeadNamed( Pawn pawn, Color color)
         {
             BuildDatabaseIfNecessary();
             foreach (HeadGraphicRecordVanillaCustom headGraphicRecordVanillaCustom in headsVanillaCustom)

@@ -3,8 +3,6 @@
     using System;
     using System.IO;
 
-    using JetBrains.Annotations;
-
     using UnityEngine;
 
     using Verse;
@@ -25,8 +23,7 @@
 
         public override bool ShouldDrawRotated => this.MatRight == this.MatBack;
 
-        [NotNull]
-        public override Material MatAt(Rot4 rot, [CanBeNull] Thing thing = null)
+        public override Material MatAt(Rot4 rot,  Thing thing = null)
         {
             switch (rot.AsInt)
             {
@@ -134,7 +131,7 @@
             }
         }
 
-        [NotNull]
+      
         public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
         {
             return GraphicDatabase.Get<Graphic_Multi>(

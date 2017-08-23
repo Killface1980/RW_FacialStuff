@@ -151,7 +151,7 @@ namespace FacialStuff
                 "FacialStuffEditor.ShowBodyChange".Translate(),
                 ref this.showBodyChange);
             list.CheckboxLabeled(
-                "FacialStuffEditor.ShowGenderAgeChange".Translate(),
+                "FacialStuffEditor.ShowGenderChange".Translate(),
                 ref this.showGenderAgeChange);
 
             list.CheckboxLabeled(
@@ -201,8 +201,7 @@ namespace FacialStuff
             Scribe_Values.Look(ref this.showBodyChange, "showBodyChange", false, true);
             Scribe_Values.Look(ref this.showGenderAgeChange, "showGenderAgeChange", false, true);
 
-#if develop 
-            // Scribe_Values.Look(ref MaleAverageNormalOffsetX, "MaleAverageNormalOffsetX");
+#if develop // Scribe_Values.Look(ref MaleAverageNormalOffsetX, "MaleAverageNormalOffsetX");
 
 // Scribe_Values.Look(ref MaleAveragePointyOffsetX, "MaleAveragePointyOffsetX");
 

@@ -1,10 +1,5 @@
 ﻿namespace FacialStuff
 {
-    using FacialStuff.Defs;
-    using FacialStuff.Graphics_FS;
-
-    using JetBrains.Annotations;
-
     using UnityEngine;
 
     using Verse;
@@ -12,34 +7,24 @@
     [StaticConstructorOnStartup]
     public static class FacialGraphics
     {
-
         #region Public Fields
 
-        [JetBrains.Annotations.NotNull]
+      
         public static readonly Texture2D BlankTexture;
         public static readonly Color SkinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
-        [CanBeNull]
         public static Texture2D MaskTex_Average_FrontBack;
 
-        [NotNull]
-        public static Texture2D MaskTex_Narrow_Side;
+      
+        public static readonly Texture2D MaskTex_Narrow_Side;
 
         #endregion Public Fields
 
         #region Private Fields
 
-        [CanBeNull]
-        private static Texture2D maskTexAverageFrontBack;
-
-        [CanBeNull]
         private static Texture2D maskTexAverageSide;
 
-        [CanBeNull]
         private static Texture2D maskTexNarrowFrontBack;
-
-        [CanBeNull]
-        private static Texture2D maskTexNarrowSide;
 
         #endregion Private Fields
 
@@ -47,6 +32,11 @@
 
         static FacialGraphics()
         {
+            MaskTex_Average_FrontBack = MakeReadable(
+                ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"));
+
+            MaskTex_Narrow_Side = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_side"));
+
             BlankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
 
             for (int x = 0; x < BlankTexture.width; x++)
@@ -61,21 +51,13 @@
 
             BlankTexture.Compress(false);
             BlankTexture.Apply(false, true);
-
-
-            MaskTex_Average_FrontBack = MakeReadable(
-                ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"));
-
-            MaskTex_Narrow_Side = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_side"));
-
-
         }
 
         #endregion Public Constructors
 
         #region Public Properties
 
-        [NotNull]
+      
         public static Texture2D MaskTex_Average_Side
         {
             get
@@ -89,7 +71,7 @@
             }
         }
 
-        [NotNull]
+      
         public static Texture2D MaskTex_Narrow_FrontBack
         {
             get
@@ -115,7 +97,7 @@
             return value * darken;
         }
 
-        [JetBrains.Annotations.NotNull]
+      
         public static Texture2D MakeReadable(Texture2D texture)
         {
             RenderTexture previous = RenderTexture.active;

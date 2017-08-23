@@ -8,8 +8,6 @@ namespace FacialStuff.Detouring
 
     using global::Harmony;
 
-    using JetBrains.Annotations;
-
     using RimWorld;
 
     using UnityEngine;
@@ -82,14 +80,18 @@ namespace FacialStuff.Detouring
                 AccessTools.Method(
                     typeof(PawnRenderer),
                     "RenderPawnInternal",
+#pragma warning disable SA1118 // Parameter must not span multiple lines
                     new[]
                         {
                             typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4),
                             typeof(RotDrawMode), typeof(bool), typeof(bool)
                         }),
+#pragma warning restore SA1118 // Parameter must not span multiple lines
+#pragma warning disable SA1118 // Parameter must not span multiple lines
                 new HarmonyMethod(
                     typeof(HarmonyPatch_PawnRenderer),
                     nameof(HarmonyPatch_PawnRenderer.RenderPawnInternal_Prefix)),
+#pragma warning restore SA1118 // Parameter must not span multiple lines
                 null);
 
             harmony.Patch(
@@ -122,10 +124,6 @@ namespace FacialStuff.Detouring
                 new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.GetSkinColor_Prefix)),
                 null);
 
-            harmony.Patch(
-                AccessTools.Method(typeof(PawnSkinColors), nameof(PawnSkinColors.GetSkinColor)),
-                new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.GetSkinColor_Prefix)),
-                null);
 
             harmony.Patch(
                 AccessTools.Method(typeof(PawnSkinColors), nameof(PawnSkinColors.RandomMelanin)),
@@ -373,7 +371,6 @@ namespace FacialStuff.Detouring
 
             BackstoryDatabase.AddBackstory(adultMale);
         }
-
     }
 
     [HarmonyPatch(typeof(Dialog_Options))]
@@ -413,10 +410,10 @@ namespace FacialStuff.Detouring
 
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            var m_set_HatsOnlyOnMap = AccessTools.Method(typeof(Prefs), "set_HatsOnlyOnMap");
-            var m_MoreStuff = AccessTools.Method(typeof(Dialog_Options_DoWindowContents_Patch), "MoreStuff");
+            MethodInfo m_set_HatsOnlyOnMap = AccessTools.Method(typeof(Prefs), "set_HatsOnlyOnMap");
+            MethodInfo m_MoreStuff = AccessTools.Method(typeof(Dialog_Options_DoWindowContents_Patch), "MoreStuff");
 
-            foreach (var instruction in instructions)
+            foreach (CodeInstruction instruction in instructions)
             {
                 yield return instruction;
                 if (instruction.opcode == OpCodes.Call && instruction.operand == m_set_HatsOnlyOnMap)
@@ -425,7 +422,6 @@ namespace FacialStuff.Detouring
                     yield return new CodeInstruction(OpCodes.Call, m_MoreStuff);
                 }
             }
-
         }
     }
 }

@@ -1,5 +1,7 @@
 namespace FacialStuff.Detouring
 {
+    using global::Harmony;
+
     using UnityEngine;
 
     using Verse;
@@ -128,7 +130,6 @@ namespace FacialStuff.Detouring
         #endregion Nested type: SkinColorData
 
         #region Methods
-
         public static bool GetMelaninCommonalityFactor_Prefix(ref float __result, float melanin)
         {
             int skinDataLeftIndexByWhiteness = GetSkinDataIndexOfMelanin(melanin);

@@ -27,34 +27,17 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
     using System;
     using System.Collections.Generic;
 
-    using JetBrains.Annotations;
-
     using RimWorld;
 
     using Verse;
 
     public class BodyTypeSelectionDTO : ASelectionWidgetDTO
     {
-        #region Public Fields
-
         public readonly BodyType OriginalBodyType;
 
-        #endregion Public Fields
-
-        #region Private Fields
-
-       
         private List<BodyType> bodyTypes;
-
-       
-        private List<BodyType> femaleBodyTypes;
-
-       
         private List<BodyType> maleBodyTypes;
-
-        #endregion Private Fields
-
-        #region Public Constructors
+        private List<BodyType> femaleBodyTypes;
 
         public BodyTypeSelectionDTO(BodyType bodyType, Gender gender) : base()
         {
@@ -79,15 +62,15 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             this.FindIndex(bodyType);
         }
 
-        #endregion Public Constructors
-
-        #region Public Properties
-
-        public override int Count
+        private void FindIndex(BodyType bodyType)
         {
-            get
+            for (int i = 0; i < this.bodyTypes.Count; ++i)
             {
-                return this.bodyTypes.Count;
+                if (this.bodyTypes[i] == bodyType)
+                {
+                    base.index = i;
+                    break;
+                }
             }
         }
 
@@ -104,9 +87,8 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
                         bodyType = BodyType.Female;
                     }
                 }
-                else
+                else // Male
                 {
-                    // Male
                     this.bodyTypes = this.maleBodyTypes;
                     if (bodyType == BodyType.Female)
                     {
@@ -115,15 +97,15 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
                 }
 
                 this.FindIndex(bodyType);
-                this.IndexChanged();
+                base.IndexChanged();
             }
         }
 
-        public override object SelectedItem
+        public override int Count
         {
             get
             {
-                return this.bodyTypes[this.index];
+                return this.bodyTypes.Count;
             }
         }
 
@@ -139,36 +121,22 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.bodyTypes[this.index].ToString();
+                return this.bodyTypes[base.index].ToString();
             }
         }
 
-        #endregion Public Properties
-
-        #region Public Methods
+        public override object SelectedItem
+        {
+            get
+            {
+                return this.bodyTypes[base.index];
+            }
+        }
 
         public override void ResetToDefault()
         {
             this.FindIndex(this.OriginalBodyType);
-            this.IndexChanged();
+            base.IndexChanged();
         }
-
-        #endregion Public Methods
-
-        #region Private Methods
-
-        private void FindIndex(BodyType bodyType)
-        {
-            for (int i = 0; i < this.bodyTypes.Count; ++i)
-            {
-                if (this.bodyTypes[i] == bodyType)
-                {
-                    this.index = i;
-                    break;
-                }
-            }
-        }
-
-        #endregion Private Methods
     }
 }

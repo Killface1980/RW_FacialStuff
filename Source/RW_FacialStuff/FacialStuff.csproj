@@ -82,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="CutHairDB.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />
     <Compile Include="Defs\MoustacheDefOf.cs" />
@@ -92,7 +93,6 @@
     <Compile Include="Defs\MouthDef.cs" />
     <Compile Include="Defs\WrinkleDef.cs" />
     <Compile Include="Enums\BeardType.cs" />
-    <None Include="packages.config" />
     <None Include="_translate\Class2.cs" />
     <None Include="_translate\Class3.cs" />
     <None Include="_translate\Class4.cs" />
@@ -100,6 +100,7 @@
     <None Include="Enums\DialoguePage.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="FaceGraphicParts.cs" />
+    <None Include="FaceStyling_Bench\Dialog_FaceStyling - Kopieren.cs" />
     <Compile Include="FaceStyling_Bench\Dialog_FaceStyling.cs" />
     <None Include="FaceStyling_Bench\DresserJobDriver\JobDriver_ChangeBody.cs" />
     <None Include="FaceStyling_Bench\UI\DresserUI.cs" />
@@ -142,9 +143,9 @@
     <Compile Include="MeshPoolFs.cs" />
     <Compile Include="Harmony\PawnRenderer_Prefix.cs" />
     <Compile Include="CompFace.cs" />
-    <Compile Include="ColorPicker\ColorWrapper.cs" />
-    <Compile Include="ColorPicker\Dialog_ColorPicker.cs" />
-    <Compile Include="ColorPicker\ColorHelper.cs" />
+    <Compile Include="FaceStyling_Bench\ColorPicker\ColorWrapper.cs" />
+    <Compile Include="FaceStyling_Bench\ColorPicker\Dialog_ColorPicker.cs" />
+    <Compile Include="FaceStyling_Bench\ColorPicker\ColorHelper.cs" />
     <Compile Include="FaceStyling_Bench\Job_FaceStyling.cs" />
     <Compile Include="FaceStyling_Bench\FaceStyler.cs" />
     <None Include="FaceStyling_Bench\Preset.cs" />
@@ -215,10 +216,6 @@
       <Link>Patches\HumanPatch.xml</Link>
       <SubType>Designer</SubType>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\ResharperCodeContractNullability.1.0.8\analyzers\dotnet\cs\CodeContractNullability.dll" />
-    <Analyzer Include="..\packages\ResharperCodeContractNullability.1.0.8\analyzers\dotnet\cs\MsgPack.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

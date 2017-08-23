@@ -1,6 +1,6 @@
 ﻿namespace FacialStuff.Enums
 {
-    
+
 
         #region Public Enums
 
@@ -13,5 +13,4 @@
 
         #endregion Public Enums
 
-    
 }

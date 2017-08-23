@@ -50,7 +50,7 @@ namespace FacialStuff._translate
             {
                 int count = this.Count;
                 if (count == 0)
-                    return string.Empty;
+                    return null;
                 StringBuilder sb = new StringBuilder();
                 string[] keys = this.AllKeys;
                 for (int i = 0; i < count; i++)
@@ -248,7 +248,7 @@ namespace FacialStuff._translate
             if (bytes == null)
                 return null;
             if (count == 0)
-                return string.Empty;
+                return null;
 
             if (bytes == null)
                 throw new ArgumentNullException("bytes");
@@ -390,8 +390,8 @@ namespace FacialStuff._translate
             if (s == null)
                 return null;
 
-            if (s == string.Empty)
-                return string.Empty;
+            if (s == null)
+                return null;
 
             bool needEncode = false;
             int len = s.Length;
@@ -423,7 +423,7 @@ namespace FacialStuff._translate
                 return null;
 
             if (bytes.Length == 0)
-                return string.Empty;
+                return null;
 
             return Encoding.ASCII.GetString(UrlEncodeToBytes(bytes, 0, bytes.Length));
         }
@@ -434,7 +434,7 @@ namespace FacialStuff._translate
                 return null;
 
             if (bytes.Length == 0)
-                return string.Empty;
+                return null;
 
             return Encoding.ASCII.GetString(UrlEncodeToBytes(bytes, offset, count));
         }
@@ -611,7 +611,7 @@ namespace FacialStuff._translate
 		public static string JavaScriptStringEncode (string value, bool addDoubleQuotes)
 		{
 			if (String.IsNullOrEmpty (value))
-				return addDoubleQuotes ? "\"\"" : String.Empty;
+				return addDoubleQuotes ? "\"\"" : null;
 
 			int len = value.Length;
 			bool needEncode = false;

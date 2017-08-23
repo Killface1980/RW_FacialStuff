@@ -1,6 +1,6 @@
 ﻿namespace FacialStuff
 {
-    using JetBrains.Annotations;
+
     using UnityEngine;
 
     using Verse;
@@ -11,13 +11,14 @@
 
         public Graphic HairCutGraphic;
 
+        
         public Pawn Pawn;
 
         #endregion Public Fields
 
         #region Public Methods
 
-        [CanBeNull]
+        
         public Material HairCutMatAt(Rot4 facing)
         {
             Material material = this.HairCutGraphic.MatAt(facing);

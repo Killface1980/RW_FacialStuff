@@ -3,29 +3,31 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using JetBrains.Annotations;
+
 
     using RimWorld;
+
     using UnityEngine;
+
     using Verse;
 
     public static class HairMelanin
     {
-
         #region Public Fields
 
-        public static List<Color> ArtificialHairColors;
-
-        public static List<Color> NaturalHairColors;
+      
+        public static readonly List<Color> ArtificialHairColors;
+      
+        public static readonly List<Color> NaturalHairColors;
 
         #endregion Public Fields
 
         #region Private Fields
 
-        [NotNull]
+      
         private static readonly Gradient GradientEuMelanin;
 
-        [NotNull]
+      
         private static readonly Gradient GradientPheoMelanin;
         private static readonly Color HairBlueSteel = new Color32(57, 115, 199, 255);
         private static readonly Color HairBurgundyBistro = new Color32(206, 38, 58, 255);
@@ -94,7 +96,7 @@
                                         HairMidnightBlack
                                     };
 
-            ArtificialHairColors = new List<Color>()
+            ArtificialHairColors = new List<Color>
                                        {
                                            HairGreenGrape,
                                            HairMysticTurquois,
@@ -124,7 +126,7 @@
             float ageFloat = pawn.ageTracker.AgeBiologicalYearsFloat / 100;
             float agingBeginGreyFloat = Rand.Range(0.35f, 0.5f);
 
-            agingBeginGreyFloat += pawn.story.melanin * 0.1f + hair.EuMelanin * 0.05f + hair.PheoMelanin * 0.05f;
+            agingBeginGreyFloat += (pawn.story.melanin * 0.1f) + (hair.EuMelanin * 0.05f) + (hair.PheoMelanin * 0.05f);
 
             float greySpan = Rand.Range(0.07f, 0.2f);
 
@@ -245,7 +247,7 @@
 
         #region Private Methods
 
-        private static void HasOptimizedFather( Pawn pawn, out bool hasFather,  out PawnFace fatherPawnFace)
+        private static void HasOptimizedFather( Pawn pawn, out bool hasFather, out PawnFace fatherPawnFace)
         {
             hasFather = false;
             fatherPawnFace = null;
@@ -259,11 +261,10 @@
                     hasFather = true;
                     fatherPawnFace = fatherComp.PawnFace;
                 }
-
             }
         }
 
-        private static void HasOptimizedMother( Pawn pawn, out bool hasMother, out PawnFace motherPawnFace)
+        private static void HasOptimizedMother( Pawn pawn, out bool hasMother,  out PawnFace motherPawnFace)
         {
             hasMother = false;
             motherPawnFace = null;
@@ -276,7 +277,6 @@
                     motherPawnFace = motherComp.PawnFace;
                 }
             }
-
         }
 
         private static float GetRandomChildHairColor(float fatherMelanin, float motherMelanin)
@@ -356,7 +356,6 @@
                     hair.Cuticula = Rand.Range(0.75f, 1.25f);
                 }
             }
-
         }
 
         #endregion Private Methods
