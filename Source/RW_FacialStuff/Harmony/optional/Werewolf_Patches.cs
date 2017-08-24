@@ -8,7 +8,7 @@
 
     public class Werewolf_Patches
     {
-        public static void TransformInto_Prefix( CompWerewolf __instance)
+        public static void TransformInto_Prefix(CompWerewolf __instance)
         {
             CompFace face = __instance.Pawn.TryGetComp<CompFace>();
             if (face != null)
@@ -17,14 +17,15 @@
             }
         }
 
-        public static void TransformBack_Postfix( CompWerewolf __instance)
+        public static void TransformBack_Postfix(CompWerewolf __instance)
         {
             CompFace face = __instance.Pawn.TryGetComp<CompFace>();
-            if (face != null)
+            if (face == null)
             {
-                face.Dontrender = false;
-                __instance.Pawn.Drawer.renderer.graphics.ResolveAllGraphics();
+                return;
             }
+            face.Dontrender = false;
+            __instance.Pawn.Drawer.renderer.graphics.ResolveAllGraphics();
         }
     }
 }

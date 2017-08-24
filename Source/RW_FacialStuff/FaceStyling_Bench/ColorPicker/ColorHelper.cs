@@ -1,4 +1,4 @@
-﻿namespace FacialStuff.ColorPicker
+namespace FacialStuff.ColorPicker
 {
     using System.Globalization;
 
@@ -185,33 +185,32 @@
         public static bool TryHexToRGB(string hex, ref Color col)
         {
             Color clr = new Color(0, 0, 0);
-            if (hex != null && (hex.Length == 9 || hex.Length == 7))
+            if (hex == null || (hex.Length != 9 && hex.Length != 7))
             {
-                try
+                return false;
+            }
+            try
+            {
+                string str = hex.Substring(1, hex.Length - 1);
+                clr.r = int.Parse(str.Substring(0, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
+                clr.g = int.Parse(str.Substring(2, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
+                clr.b = int.Parse(str.Substring(4, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
+                if (str.Length == 8)
                 {
-                    string str = hex.Substring(1, hex.Length - 1);
-                    clr.r = int.Parse(str.Substring(0, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
-                    clr.g = int.Parse(str.Substring(2, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
-                    clr.b = int.Parse(str.Substring(4, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
-                    if (str.Length == 8)
-                    {
-                        clr.a = int.Parse(str.Substring(6, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
-                    }
-                    else
-                    {
-                        clr.a = 1.0f;
-                    }
+                    clr.a = int.Parse(str.Substring(6, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
                 }
-                catch
+                else
                 {
-                    return false;
+                    clr.a = 1.0f;
                 }
-
-                col = clr;
-                return true;
+            }
+            catch
+            {
+                return false;
             }
 
-            return false;
+            col = clr;
+            return true;
         }
     }
 }

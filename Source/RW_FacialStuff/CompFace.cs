@@ -1,6 +1,9 @@
 ﻿namespace FacialStuff
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+
     using FacialStuff.Defs;
     using FacialStuff.Enums;
     using FacialStuff.Graphics_FS;
@@ -12,52 +15,65 @@
     public class CompFace : ThingComp
     {
         // public int rotationInt;
-        #region Private Fields
 
-        [NotNull]
-        private readonly FaceGraphicParts faceGraphicPart = new FaceGraphicParts();
+        #region Private Fields
 
         private bool dontrender;
 
+        [NotNull]
+        private PawnEyeWiggler eyeWiggler = new PawnEyeWiggler(null);
+
+        [NotNull]
+        private FaceGraphicParts faceGraphicPart = new FaceGraphicParts();
         private float factionMelanin;
 
         [NotNull]
         private DamageFlasher flasher = new DamageFlasher(null);
 
+        private bool hasNaturalMouth = true;
         private float headTypeX;
 
         private float headTypeY;
 
         // private float blinkRate;
         // public PawnHeadWiggler headWiggler;
-        // todo: make proper dead eyes
-
         private bool isOld;
 
         private float mood = 0.5f;
 
         private bool nullsChecked;
+        private bool oldEnough;
+
         [CanBeNull]
         private Pawn pawn;
 
         // must be null, always initialize with pawn
-        private PawnFace pawnFace = null;
+        [CanBeNull]
+        private PawnFace pawnFace;
 
         // public bool IgnoreRenderer;
+        [CanBeNull]
         private string texPathBrow;
 
+        [CanBeNull]
         private string texPathEyeLeft;
 
+        [CanBeNull]
         private string texPathEyeLeftClosed;
 
+        [CanBeNull]
         private string texPathEyeLeftPatch;
 
+        [CanBeNull]
         private string texPathEyeRight;
 
+        [CanBeNull]
         private string texPathEyeRightClosed;
 
+        [CanBeNull]
         private string texPathEyeRightPatch;
 
+        [CanBeNull]
         private string texPathMouth;
 
         private bool updated = true;
@@ -66,14 +82,14 @@
 
         #region Public Properties
 
-        public bool Dontrender { get => this.dontrender; set => this.dontrender = value; }
+        public bool Dontrender
+        {
+            get => this.dontrender;
+            set => this.dontrender = value;
+        }
 
-        // {
-        // get => this.eyeDef;
-        // set => this.eyeDef = value;
-        // }
         [NotNull]
-        public PawnEyeWiggler EyeWiggler = new PawnEyeWiggler(null);
+        public PawnEyeWiggler EyeWiggler => this.eyeWiggler;
 
         public float FactionMelanin
         {
@@ -87,22 +103,18 @@
 
         public bool HasEyePatchRight { get; private set; }
 
-        public bool HasNaturalMouth { get; private set; } = true;
-
         [NotNull]
         public GraphicMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
 
-        public bool OldEnough { get; set; }
-
-        public CrownType PawnCrownType
+        public bool OldEnough
         {
-            get
-            {
-                return this.pawn?.story.crownType ?? CrownType.Average;
-            }
+            get => this.oldEnough;
+            set => this.oldEnough = value;
         }
 
-        [NotNull]
+        public CrownType PawnCrownType => this.pawn?.story.crownType ?? CrownType.Average;
+
+        [CanBeNull]
         public PawnFace PawnFace => this.pawnFace;
 
         public HeadType PawnHeadType
@@ -136,7 +148,7 @@
         {
             get
             {
-                bool blinkNow = Find.TickManager.TicksGame >= this.EyeWiggler.NextBlink + this.EyeWiggler.JitterLeft;
+                bool blinkNow = Find.TickManager.TicksGame >= this.eyeWiggler.NextBlink + this.eyeWiggler.JitterLeft;
                 return blinkNow;
             }
         }
@@ -145,7 +157,7 @@
         {
             get
             {
-                bool blinkNow = Find.TickManager.TicksGame >= this.EyeWiggler.NextBlink + this.EyeWiggler.JitterRight;
+                bool blinkNow = Find.TickManager.TicksGame >= this.eyeWiggler.NextBlink + this.eyeWiggler.JitterRight;
                 return blinkNow;
             }
         }
@@ -263,7 +275,7 @@
         [CanBeNull]
         public Material BeardMatAt(Rot4 facing)
         {
-            if (!this.HasNaturalMouth || this.pawn?.gender == Gender.Female)
+            if (!this.hasNaturalMouth || this.pawn?.gender == Gender.Female)
             {
                 return null;
             }
@@ -272,7 +284,7 @@
 
             if (material != null)
             {
-                material = this.flasher?.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -286,7 +298,7 @@
 
             if (material != null)
             {
-                material = this.flasher?.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -313,17 +325,14 @@
 
             List<BodyPartRecord> body = this.pawn.RaceProps?.body?.AllParts;
             List<Hediff> hediffSetHediffs = this.pawn.health?.hediffSet?.hediffs;
-            if (hediffSetHediffs != null && body != null)
+            if (hediffSetHediffs == null || body == null)
             {
-                foreach (Hediff hediff in hediffSetHediffs)
-                {
-                    if (hediff == null || hediff.def == null || hediff.def.defName == null)
-                    {
-                        continue;
-                    }
-
-                    this.CheckPart(body, hediff);
-                }
+                return;
+            }
+            foreach (Hediff hediff in hediffSetHediffs.Where(
+                hediff => hediff?.def?.defName != null))
+            {
+                this.CheckPart(body, hediff);
             }
         }
 
@@ -344,18 +353,10 @@
 
             if (material != null)
             {
-                material = this.flasher?.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
-        }
-
-        public void ExposeFaceData()
-        {
-            if (Scribe.mode == LoadSaveMode.Saving || Scribe.loader.curXmlParent["PawnFace"] != null)
-            {
-                Scribe_Deep.Look(ref this.pawnFace, "PawnFace");
-            }
         }
 
         // TODO: Remove or make usable
@@ -376,9 +377,9 @@
 
             if (!portrait)
             {
-                if (Controller.settings.MakeThemBlink && this.EyeWiggler.EyeLeftCanBlink)
+                if (Controller.settings.MakeThemBlink && this.eyeWiggler.EyeLeftCanBlink)
                 {
-                    if (this.EyeWiggler.IsAsleep || this.EyeLeftBlinkNow)
+                    if (this.eyeWiggler.IsAsleep || this.EyeLeftBlinkNow)
                     {
                         material = this.faceGraphicPart.EyeLeftClosedGraphic.MatAt(facing);
                     }
@@ -387,7 +388,7 @@
 
             if (material != null)
             {
-                material = this.flasher?.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -400,7 +401,7 @@
 
             if (material != null)
             {
-                material = this.flasher?.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -418,9 +419,9 @@
 
             if (!portrait)
             {
-                if (Controller.settings.MakeThemBlink && this.EyeWiggler.EyeRightCanBlink)
+                if (Controller.settings.MakeThemBlink && this.eyeWiggler.EyeRightCanBlink)
                 {
-                    if (this.EyeWiggler.IsAsleep || this.EyeRightBlinkNow)
+                    if (this.eyeWiggler.IsAsleep || this.EyeRightBlinkNow)
                     {
                         material = this.faceGraphicPart.EyeRightClosedGraphic?.MatAt(facing);
                     }
@@ -429,7 +430,7 @@
 
             if (material != null)
             {
-                material = this.flasher?.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -442,7 +443,7 @@
 
             if (material != null)
             {
-                material = this.flasher?.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -451,14 +452,13 @@
         [NotNull]
         public string EyeTexPath([NotNull] string eyeDefPath, Side side)
         {
-            if (this.pawn != null)
+            if (this.pawn == null)
             {
-                string path = "Eyes/Eye_" + eyeDefPath + "_" + this.pawn.gender + "_" + side;
-
-                return path;
+                return string.Empty;
             }
+            string path = "Eyes/Eye_" + eyeDefPath + "_" + this.pawn.gender + "_" + side;
 
-            return string.Empty;
+            return path;
         }
 
         /// <summary>
@@ -497,7 +497,7 @@
                 return null;
             }
 
-            if (!this.HasNaturalMouth || this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved
+            if (!this.hasNaturalMouth || this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved
                                       || this.PawnFace.MoustacheDef == null || this.pawn.gender == Gender.Female)
             {
                 return null;
@@ -508,20 +508,20 @@
 
             if (material != null)
             {
-                material = this.flasher?.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
         }
 
         [CanBeNull]
-        public Material MouthMatAt(Rot4 facing, bool portrait, RotDrawMode bodyCondition = RotDrawMode.Fresh)
+        public Material MouthMatAt(Rot4 facing, bool portrait)
         {
             Material material = null;
 
-            if (!this.HasNaturalMouth && Controller.settings.ShowExtraParts)
+            if (!this.hasNaturalMouth && Controller.settings.ShowExtraParts)
             {
-                material = this.faceGraphicPart.JawGraphic.MatAt(facing);
+                material = this.faceGraphicPart.JawGraphic?.MatAt(facing);
             }
             else
             {
@@ -545,9 +545,10 @@
                 else
                 {
                     material = this.faceGraphicPart.MouthGraphic?.MatAt(facing);
+
                     // if (bodyCondition == RotDrawMode.Fresh)
                     // {
-                    //     material = this.faceGraphicPart.JawGraphic?.MatAt(facing);
+                    // material = this.faceGraphicPart.JawGraphic?.MatAt(facing);
                     // }
                     // else if (bodyCondition == RotDrawMode.Rotting)
                     // {
@@ -557,7 +558,7 @@
 
             if (material != null)
             {
-                material = this.flasher?.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -568,16 +569,16 @@
             base.PostDraw();
 
             if (this.pawn == null || !this.pawn.Spawned || this.pawn.Dead
-                || !this.OldEnough || this.Dontrender)
+                || !this.oldEnough || this.Dontrender)
             {
                 return;
             }
 
             if (Controller.settings.UseMouth)
             {
-                if (this.HasNaturalMouth)
+                if (this.hasNaturalMouth)
                 {
-                    if (Find.TickManager.TicksGame > this.EyeWiggler.NextBlinkEnd)
+                    if (Find.TickManager.TicksGame > this.eyeWiggler.NextBlinkEnd)
                     {
                         this.SetMouthAccordingToMoodLevel();
                     }
@@ -588,7 +589,7 @@
             // this.headWiggler.WigglerTick();
             if (Controller.settings.MakeThemBlink)
             {
-                this.EyeWiggler.WigglerTick();
+                this.eyeWiggler.WigglerTick();
             }
         }
 
@@ -649,39 +650,38 @@
         public bool SetHeadType()
         {
             this.pawn = this.parent as Pawn;
-            if (this.pawn != null)
+            if (this.pawn == null)
             {
-                if (this.pawnFace == null)
-                {
-                    this.pawnFace = new PawnFace(this.pawn);
-                }
-                else if (!this.nullsChecked)
-                {
-                    this.DoNullChecksForLegacyPawns(this.pawn);
-                }
-
-                this.nullsChecked = true;
-
-                this.flasher = this.pawn.Drawer.renderer.graphics.flasher;
-                this.EyeWiggler = new PawnEyeWiggler(this.pawn);
-
-                // this.headWiggler = new PawnHeadWiggler(this.pawn);
-
-                // ReSharper disable once PossibleNullReferenceException
-                this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 42f;
-
-                this.ResetBoolsAndPaths();
-
-                if (Controller.settings.ShowExtraParts)
-                {
-                    this.CheckForAddedOrMissingParts();
-                }
-
-                this.SetHeadOffsets();
-                return true;
+                return false;
+            }
+            if (this.pawnFace == null)
+            {
+                this.pawnFace = new PawnFace(this.pawn);
+            }
+            else if (!this.nullsChecked)
+            {
+                this.DoNullChecksForLegacyPawns(this.pawn);
             }
 
-            return false;
+            this.nullsChecked = true;
+
+            this.flasher = this.pawn.Drawer.renderer.graphics.flasher;
+            this.eyeWiggler = new PawnEyeWiggler(this.pawn);
+
+            // this.headWiggler = new PawnHeadWiggler(this.pawn);
+
+            // ReSharper disable once PossibleNullReferenceException
+            this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 42f;
+
+            this.ResetBoolsAndPaths();
+
+            if (Controller.settings.ShowExtraParts)
+            {
+                this.CheckForAddedOrMissingParts();
+            }
+
+            this.SetHeadOffsets();
+            return true;
         }
 
         public void SetPawnFace([NotNull] PawnFace inportedFace)
@@ -707,7 +707,7 @@
 
             if (material != null)
             {
-                material = this.flasher?.GetDamagedMat(material);
+                material = this.flasher.GetDamagedMat(material);
             }
 
             return material;
@@ -871,19 +871,22 @@
                 }
             }
 
-            if (hediff.def == HediffDefOf.MissingBodyPart)
+            if (hediff.def != HediffDefOf.MissingBodyPart)
             {
-                if (hediff.Part == leftEye)
-                {
-                    this.texPathEyeLeft = this.EyeTexPath("Missing", Side.Left);
-                    this.EyeWiggler.EyeLeftCanBlink = false;
-                }
+                return;
+            }
 
-                if (hediff.Part == rightEye)
-                {
-                    this.texPathEyeRight = this.EyeTexPath("Missing", Side.Right);
-                    this.EyeWiggler.EyeRightCanBlink = false;
-                }
+            if (hediff.Part == leftEye)
+            {
+                this.texPathEyeLeft = this.EyeTexPath("Missing", Side.Left);
+                this.eyeWiggler.EyeLeftCanBlink = false;
+            }
+
+            // ReSharper disable once InvertIf
+            if (hediff.Part == rightEye)
+            {
+                this.texPathEyeRight = this.EyeTexPath("Missing", Side.Right);
+                this.eyeWiggler.EyeRightCanBlink = false;
             }
         }
 
@@ -957,6 +960,59 @@
                 this.PawnFace.BeardColor);
         }
 
+        private void InitializeGraphicsEyePatches()
+        {
+            if (this.texPathEyeLeftPatch != null)
+            {
+                bool flag = ContentFinder<Texture2D>.Get(this.texPathEyeLeftPatch + "_front", false) != null;
+                if (flag)
+                {
+                    this.faceGraphicPart.EyeLeftPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
+                                                                   this.texPathEyeLeftPatch,
+                                                                   ShaderDatabase.Transparent,
+                                                                   Vector2.one,
+                                                                   Color.white) as Graphic_Multi_AddedHeadParts;
+                    this.HasEyePatchLeft = true;
+                }
+                else
+                {
+                    this.HasEyePatchLeft = false;
+                    Log.Message(
+                        "Facial Stuff: No texture for added part: " + this.texPathEyeLeftPatch
+                        + " - Graphic_Multi_AddedHeadParts");
+                }
+            }
+            else
+            {
+                this.HasEyePatchLeft = false;
+            }
+
+            if (this.texPathEyeRightPatch != null)
+            {
+                bool flag2 = ContentFinder<Texture2D>.Get(this.texPathEyeRightPatch + "_front", false) != null;
+                if (flag2)
+                {
+                    this.faceGraphicPart.EyeRightPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
+                                                                    this.texPathEyeRightPatch,
+                                                                    ShaderDatabase.Transparent,
+                                                                    Vector2.one,
+                                                                    Color.white) as Graphic_Multi_AddedHeadParts;
+                    this.HasEyePatchRight = true;
+                }
+                else
+                {
+                    Log.Message(
+                        "Facial Stuff: No texture for added part: " + this.texPathEyeRightPatch
+                        + " - Graphic_Multi_AddedHeadParts");
+                    this.HasEyePatchRight = false;
+                }
+            }
+            else
+            {
+                this.HasEyePatchRight = false;
+            }
+        }
+
         private void InitializeGraphicsEyes()
         {
             this.InitializeGraphicsEyePatches();
@@ -967,17 +1023,17 @@
                                                       Vector2.one,
                                                       this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
 
-            this.faceGraphicPart.EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-                                                            this.texPathEyeLeftClosed,
-                                                            ShaderDatabase.Transparent,
-                                                            Vector2.one,
-                                                            Color.black) as Graphic_Multi_NaturalEyes;
-
             this.faceGraphicPart.EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                        this.texPathEyeRight,
                                                        ShaderDatabase.Transparent,
                                                        Vector2.one,
                                                        this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
+
+            this.faceGraphicPart.EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
+                                                            this.texPathEyeLeftClosed,
+                                                            ShaderDatabase.Transparent,
+                                                            Vector2.one,
+                                                            Color.black) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                              this.texPathEyeRightClosed,
@@ -1001,18 +1057,21 @@
                 if (flag)
                 {
                     this.faceGraphicPart.JawGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                            this.texPathMouth,
-                                                            ShaderDatabase.Transparent,
-                                                            Vector2.one,
-                                                            Color.white) as Graphic_Multi_NaturalHeadParts;
-                    this.HasNaturalMouth = false;
+                                                          this.texPathMouth,
+                                                          ShaderDatabase.Transparent,
+                                                          Vector2.one,
+                                                          Color.white) as Graphic_Multi_NaturalHeadParts;
+                    this.hasNaturalMouth = false;
+
                     // all done, return
                     return;
                 }
+
                 Log.Message(
-                    "Facial Stuff: No texture for added part: " + texPathMouth + " - Graphic_Multi_NaturalHeadParts");
+                    "Facial Stuff: No texture for added part: " + this.texPathMouth + " - Graphic_Multi_NaturalHeadParts");
             }
-            this.HasNaturalMouth = true;
+
+            this.hasNaturalMouth = true;
             this.faceGraphicPart.MouthGraphic = HumanMouthGraphics.MouthGraphic03;
         }
 
@@ -1024,20 +1083,18 @@
                 Mathf.InverseLerp(50f, 100f, this.pawn.ageTracker.AgeBiologicalYearsFloat));
 
             WrinkleDef pawnFaceWrinkleDef = this.PawnFace.WrinkleDef;
-            if (pawnFaceWrinkleDef != null)
-            {
-                this.faceGraphicPart.WrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                    pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
-                    ShaderDatabase.Transparent,
-                    Vector2.one,
-                    wrinkleColor);
 
-                this.faceGraphicPart.RottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                    pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
-                    ShaderDatabase.Transparent,
-                    Vector2.one,
-                    wrinkleColor * FacialGraphics.SkinRottingMultiplyColor);
-            }
+            this.faceGraphicPart.WrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
+                ShaderDatabase.Transparent,
+                Vector2.one,
+                wrinkleColor);
+
+            this.faceGraphicPart.RottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
+                ShaderDatabase.Transparent,
+                Vector2.one,
+                wrinkleColor * FacialGraphics.SkinRottingMultiplyColor);
         }
 
         private void ResetBoolsAndPaths()
@@ -1052,69 +1109,15 @@
                 this.texPathEyeRight = this.EyeTexPath(pawnFaceEyeDef.texPath, Side.Right);
                 this.texPathEyeLeft = this.EyeTexPath(pawnFaceEyeDef.texPath, Side.Left);
             }
+
             this.texPathEyeRightClosed = this.EyeClosedTexPath(Side.Right);
             this.texPathEyeLeftClosed = this.EyeClosedTexPath(Side.Left);
 
-            this.EyeWiggler.EyeLeftCanBlink = true;
-            this.EyeWiggler.EyeRightCanBlink = true;
+            this.eyeWiggler.EyeLeftCanBlink = true;
+            this.eyeWiggler.EyeRightCanBlink = true;
 
             this.texPathBrow = this.BrowTexPath(this.PawnFace.BrowDef);
         }
-
-        private void InitializeGraphicsEyePatches()
-        {
-            if (this.texPathEyeLeftPatch != null)
-            {
-                bool flag = ContentFinder<Texture2D>.Get(this.texPathEyeLeftPatch + "_front", false) != null;
-                if (flag)
-                {
-                    this.faceGraphicPart.EyeLeftPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
-                                                                   this.texPathEyeLeftPatch,
-                                                                   ShaderDatabase.Transparent,
-                                                                   Vector2.one,
-                                                                   Color.white) as Graphic_Multi_AddedHeadParts;
-                    this.HasEyePatchLeft = true;
-                }
-                else
-                {
-                    this.HasEyePatchLeft = false;
-                    Log.Message(
-                        "Facial Stuff: No texture for added part: " + texPathEyeLeftPatch
-                        + " - Graphic_Multi_AddedHeadParts");
-                }
-            }
-            else
-            {
-                this.HasEyePatchLeft = false;
-            }
-
-            if (this.texPathEyeRightPatch != null)
-            {
-                bool flag2 = ContentFinder<Texture2D>.Get(this.texPathEyeRightPatch + "_front", false) != null;
-                if (flag2)
-                {
-
-                    this.faceGraphicPart.EyeRightPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
-                                                                    this.texPathEyeRightPatch,
-                                                                    ShaderDatabase.Transparent,
-                                                                    Vector2.one,
-                                                                    Color.white) as Graphic_Multi_AddedHeadParts;
-                    this.HasEyePatchRight = true;
-                }
-                else
-                {
-                    Log.Message(
-                        "Facial Stuff: No texture for added part: " + texPathEyeRightPatch
-                        + " - Graphic_Multi_AddedHeadParts");
-                    this.HasEyePatchRight = false;
-                }
-            }
-            else
-            {
-                this.HasEyePatchRight = false;
-            }
-        }
-
         private void SetHeadOffsets()
         {
             switch (this.pawn.gender)

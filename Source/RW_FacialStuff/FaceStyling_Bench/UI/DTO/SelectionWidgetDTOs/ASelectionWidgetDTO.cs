@@ -30,7 +30,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
     {
         #region Protected Fields
 
-        protected int index = 0;
+        protected int index;
 
         #endregion Protected Fields
 
@@ -59,7 +59,10 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             --this.index;
             if (this.index < 0)
+            {
                 this.index = this.Count - 1;
+            }
+
             this.IndexChanged();
         }
 
@@ -67,9 +70,13 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             ++this.index;
             if (this.index >= this.Count)
+            {
                 this.index = 0;
+            }
+
             this.IndexChanged();
         }
+
         public abstract void ResetToDefault();
 
         #endregion Public Methods

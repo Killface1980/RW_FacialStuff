@@ -82,7 +82,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Class1.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="CutHairDB.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />
     <Compile Include="Defs\MoustacheDefOf.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Harmony\optional\Harmony_EdBPrepareCarefully.cs" />
     <Compile Include="Harmony\optional\Harmony_Werewolf.cs" />
     <None Include="Harmony\optional\PrepC\ColonistSaverPatch.cs" />
+    <None Include="Harmony\optional\PrepC\Class1.cs" />
     <Compile Include="Harmony\optional\PrepC\PanelBackstoryPatch.cs" />
     <Compile Include="Harmony\optional\PrepC\PresetSaverPatch.cs" />
     <Compile Include="Harmony\optional\PrepC\PresetLoaderPatch.cs" />

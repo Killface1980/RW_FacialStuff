@@ -38,17 +38,18 @@
         {
             get
             {
-                if (modPath == null)
+                if (modPath != null)
                 {
-                    ModMetaData mod =
-                        ModLister.AllInstalledMods.FirstOrDefault(x =>
-                            {
-                                return x?.Name != null && (x.Active && x.Name.StartsWith("Facial Stuff"));
-                            });
-                    if (mod != null)
-                    {
-                        modPath = mod.RootDir + "/Textures/MergedHair/";
-                    }
+                    return modPath;
+                }
+                ModMetaData mod =
+                    ModLister.AllInstalledMods.FirstOrDefault(x =>
+                        {
+                            return x?.Name != null && (x.Active && x.Name.StartsWith("Facial Stuff"));
+                        });
+                if (mod != null)
+                {
+                    modPath = mod.RootDir + "/Textures/MergedHair/";
                 }
 
                 return modPath;
@@ -115,79 +116,84 @@
                 string name = Path.GetFileNameWithoutExtension(oldPath);
 
                 req.path = ModPath + name;
-                if (!AllGraphics.TryGetValue(req, out Graphic graphic))
+
+                if (AllGraphics.TryGetValue(req, out Graphic graphic))
                 {
-                    graphic = Activator.CreateInstance<T>();
-
-                    // // Check if textures already present and readable, else create
-                    if (ContentFinder<Texture2D>.Get(req.path + "_back", false) != null)
-                    {
-                        graphic.Init(req);
-
-                        // graphic.MatFront.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_front");
-                        // graphic.MatSide.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_side");
-                        // graphic.MatBack.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_back");
-                    }
-                    else
-                    {
-                        req.path = oldPath;
-                        graphic.Init(req);
-
-                        Texture2D temptexturefront = graphic.MatFront.mainTexture as Texture2D;
-                        Texture2D temptextureside = graphic.MatSide.mainTexture as Texture2D;
-                        Texture2D temptextureback = graphic.MatBack.mainTexture as Texture2D;
-
-                        temptexturefront = FacialGraphics.MakeReadable(temptexturefront);
-                        temptextureside = FacialGraphics.MakeReadable(temptextureside);
-                        temptextureback = FacialGraphics.MakeReadable(temptextureback);
-
-                        // intentional, only 1 mask tex. todo: rename, cleanup
-                        maskTexFrontBack = FacialGraphics.MaskTex_Average_FrontBack;
-                        maskTexSide = FacialGraphics.MaskTex_Narrow_Side;
-
-                        CutOutHair(ref temptexturefront, maskTexFrontBack);
-
-                        CutOutHair(ref temptextureside, maskTexSide);
-
-                        CutOutHair(ref temptextureback, maskTexFrontBack);
-
-                        req.path = ModPath + name;
-
-                        if (!name.NullOrEmpty() && !File.Exists(req.path + "_front.png"))
-                        {
-                            byte[] bytes = temptexturefront.EncodeToPNG();
-                            File.WriteAllBytes(req.path + "_front.png", bytes);
-                            byte[] bytes2 = temptextureside.EncodeToPNG();
-                            File.WriteAllBytes(req.path + "_side.png", bytes2);
-                            byte[] bytes3 = temptextureback.EncodeToPNG();
-                            File.WriteAllBytes(req.path + "_back.png", bytes3);
-                        }
-
-                        temptexturefront.Compress(true);
-                        temptextureside.Compress(true);
-                        temptextureback.Compress(true);
-
-                        temptexturefront.mipMapBias = 0.5f;
-                        temptextureside.mipMapBias = 0.5f;
-                        temptextureback.mipMapBias = 0.5f;
-
-                        temptexturefront.Apply(false, true);
-                        temptextureside.Apply(false, true);
-                        temptextureback.Apply(false, true);
-
-                        graphic.MatFront.mainTexture = temptexturefront;
-                        graphic.MatSide.mainTexture = temptextureside;
-                        graphic.MatBack.mainTexture = temptextureback;
-
-                        // Object.Destroy(temptexturefront);
-                        // Object.Destroy(temptextureside);
-                        // Object.Destroy(temptextureback);
-                    }
-
-                    AllGraphics.Add(req, graphic);
-
-                    // }
+                    return (T)graphic;
                 }
+
+                // no graphics found, create =>
+
+                graphic = Activator.CreateInstance<T>();
+
+                // // Check if textures already present and readable, else create
+                if (ContentFinder<Texture2D>.Get(req.path + "_back", false) != null)
+                {
+                    graphic.Init(req);
+
+                    // graphic.MatFront.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_front");
+                    // graphic.MatSide.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_side");
+                    // graphic.MatBack.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_back");
+                }
+                else
+                {
+                    req.path = oldPath;
+                    graphic.Init(req);
+
+                    Texture2D temptexturefront = graphic.MatFront.mainTexture as Texture2D;
+                    Texture2D temptextureside = graphic.MatSide.mainTexture as Texture2D;
+                    Texture2D temptextureback = graphic.MatBack.mainTexture as Texture2D;
+
+                    temptexturefront = FacialGraphics.MakeReadable(temptexturefront);
+                    temptextureside = FacialGraphics.MakeReadable(temptextureside);
+                    temptextureback = FacialGraphics.MakeReadable(temptextureback);
+
+                    // intentional, only 1 mask tex. todo: rename, cleanup
+                    maskTexFrontBack = FacialGraphics.MaskTex_Average_FrontBack;
+                    maskTexSide = FacialGraphics.MaskTex_Narrow_Side;
+
+                    CutOutHair(ref temptexturefront, maskTexFrontBack);
+
+                    CutOutHair(ref temptextureside, maskTexSide);
+
+                    CutOutHair(ref temptextureback, maskTexFrontBack);
+
+                    req.path = ModPath + name;
+
+                    if (!name.NullOrEmpty() && !File.Exists(req.path + "_front.png"))
+                    {
+                        byte[] bytes = temptexturefront.EncodeToPNG();
+                        File.WriteAllBytes(req.path + "_front.png", bytes);
+                        byte[] bytes2 = temptextureside.EncodeToPNG();
+                        File.WriteAllBytes(req.path + "_side.png", bytes2);
+                        byte[] bytes3 = temptextureback.EncodeToPNG();
+                        File.WriteAllBytes(req.path + "_back.png", bytes3);
+                    }
+
+                    temptexturefront.Compress(true);
+                    temptextureside.Compress(true);
+                    temptextureback.Compress(true);
+
+                    temptexturefront.mipMapBias = 0.5f;
+                    temptextureside.mipMapBias = 0.5f;
+                    temptextureback.mipMapBias = 0.5f;
+
+                    temptexturefront.Apply(false, true);
+                    temptextureside.Apply(false, true);
+                    temptextureback.Apply(false, true);
+
+                    graphic.MatFront.mainTexture = temptexturefront;
+                    graphic.MatSide.mainTexture = temptextureside;
+                    graphic.MatBack.mainTexture = temptextureback;
+
+                    // Object.Destroy(temptexturefront);
+                    // Object.Destroy(temptextureside);
+                    // Object.Destroy(temptextureback);
+                }
+
+                AllGraphics.Add(req, graphic);
+
+                // }
 
                 return (T)graphic;
             }
@@ -196,63 +202,63 @@
                 string oldPath = req.path;
                 string name = Path.GetFileNameWithoutExtension(oldPath);
 
-                if (!AllGraphics.TryGetValue(req, out Graphic graphic))
+                if (AllGraphics.TryGetValue(req, out Graphic graphic))
                 {
-                    graphic = Activator.CreateInstance<T>();
-
-                    // Check if textures already present and readable, else create
-                    if (ContentFinder<Texture2D>.Get(ModPath + name + "_back", false) != null)
-                    {
-                        req.path = ModPath + name;
-                        graphic.Init(req);
-                    }
-                    else
-                    {
-                        graphic.Init(req);
-
-                        Texture2D temptexturefront = graphic.MatFront.mainTexture as Texture2D;
-                        Texture2D temptextureside = graphic.MatSide.mainTexture as Texture2D;
-                        Texture2D temptextureback = graphic.MatBack.mainTexture as Texture2D;
-
-                        temptexturefront = FacialGraphics.MakeReadable(temptexturefront);
-                        temptextureside = FacialGraphics.MakeReadable(temptextureside);
-                        temptextureback = FacialGraphics.MakeReadable(temptextureback);
-
-                        // intentional, only 1 mask tex. todo: rename, cleanup
-                        maskTexFrontBack = FacialGraphics.MaskTex_Average_FrontBack;
-                        maskTexSide = FacialGraphics.MaskTex_Narrow_Side;
-
-                        CutOutHair(ref temptexturefront, maskTexFrontBack);
-
-                        CutOutHair(ref temptextureside, maskTexSide);
-
-                        CutOutHair(ref temptextureback, maskTexFrontBack);
-
-                        temptexturefront.Compress(true);
-                        temptextureside.Compress(true);
-                        temptextureback.Compress(true);
-
-                        temptexturefront.mipMapBias = 0.5f;
-                        temptextureside.mipMapBias = 0.5f;
-                        temptextureback.mipMapBias = 0.5f;
-
-                        temptexturefront.Apply(false, true);
-                        temptextureside.Apply(false, true);
-                        temptextureback.Apply(false, true);
-
-                        graphic.MatFront.mainTexture = temptexturefront;
-                        graphic.MatSide.mainTexture = temptextureside;
-                        graphic.MatBack.mainTexture = temptextureback;
-
-                        // Object.Destroy(temptexturefront);
-                        // Object.Destroy(temptextureside);
-                        // Object.Destroy(temptextureback);
-                    }
-
-                    AllGraphics.Add(req, graphic);
-
-                    // }
+                    return (T)graphic;
                 }
+
+                graphic = Activator.CreateInstance<T>();
+
+                // Check if textures already present and readable, else create
+                if (ContentFinder<Texture2D>.Get(ModPath + name + "_back", false) != null)
+                {
+                    req.path = ModPath + name;
+                    graphic.Init(req);
+                }
+                else
+                {
+                    graphic.Init(req);
+
+                    Texture2D temptexturefront = graphic.MatFront.mainTexture as Texture2D;
+                    Texture2D temptextureside = graphic.MatSide.mainTexture as Texture2D;
+                    Texture2D temptextureback = graphic.MatBack.mainTexture as Texture2D;
+
+                    temptexturefront = FacialGraphics.MakeReadable(temptexturefront);
+                    temptextureside = FacialGraphics.MakeReadable(temptextureside);
+                    temptextureback = FacialGraphics.MakeReadable(temptextureback);
+
+                    // intentional, only 1 mask tex. todo: rename, cleanup
+                    maskTexFrontBack = FacialGraphics.MaskTex_Average_FrontBack;
+                    maskTexSide = FacialGraphics.MaskTex_Narrow_Side;
+
+                    CutOutHair(ref temptexturefront, maskTexFrontBack);
+
+                    CutOutHair(ref temptextureside, maskTexSide);
+
+                    CutOutHair(ref temptextureback, maskTexFrontBack);
+
+                    temptexturefront.Compress(true);
+                    temptextureside.Compress(true);
+                    temptextureback.Compress(true);
+
+                    temptexturefront.mipMapBias = 0.5f;
+                    temptextureside.mipMapBias = 0.5f;
+                    temptextureback.mipMapBias = 0.5f;
+
+                    temptexturefront.Apply(false, true);
+                    temptextureside.Apply(false, true);
+                    temptextureback.Apply(false, true);
+
+                    graphic.MatFront.mainTexture = temptexturefront;
+                    graphic.MatSide.mainTexture = temptextureside;
+                    graphic.MatBack.mainTexture = temptextureback;
+
+                    // Object.Destroy(temptexturefront);
+                    // Object.Destroy(temptextureside);
+                    // Object.Destroy(temptextureback);
+                }
+
+                AllGraphics.Add(req, graphic);
 
                 return (T)graphic;
             }

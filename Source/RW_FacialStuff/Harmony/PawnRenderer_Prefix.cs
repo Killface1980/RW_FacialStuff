@@ -52,21 +52,22 @@
         // private static readonly float[] VerMouthOffsetSex = new float[] { 0f, FS_Settings.MaleOffsetY, FS_Settings.FemaleOffsetY };
         private static void GetReflections()
         {
-            if (PawnRendererType == null)
+            if (PawnRendererType != null)
             {
-                PawnRendererType = typeof(PawnRenderer);
-
-                // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
-                WoundOverlayFieldInfo = PawnRendererType.GetField(
-                    "woundOverlays",
-                    BindingFlags.NonPublic | BindingFlags.Instance);
-                DrawEquipmentMethodInfo = PawnRendererType.GetMethod(
-                    "DrawEquipment",
-                    BindingFlags.NonPublic | BindingFlags.Instance);
-                PawnHeadOverlaysFieldInfo = PawnRendererType.GetField(
-                    "statusOverlays",
-                    BindingFlags.NonPublic | BindingFlags.Instance);
+                return;
             }
+            PawnRendererType = typeof(PawnRenderer);
+
+            // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
+            WoundOverlayFieldInfo = PawnRendererType.GetField(
+                "woundOverlays",
+                BindingFlags.NonPublic | BindingFlags.Instance);
+            DrawEquipmentMethodInfo = PawnRendererType.GetMethod(
+                "DrawEquipment",
+                BindingFlags.NonPublic | BindingFlags.Instance);
+            PawnHeadOverlaysFieldInfo = PawnRendererType.GetField(
+                "statusOverlays",
+                BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
         // [HarmonyBefore("rimworld.erdelf.alien_race.main", "rimworld.jecrell.cthulhu.cults", "net.pardeike.zombieland")]
@@ -189,7 +190,7 @@
                     if (!headStump)
                     {
                         Material browMat = faceComp.BrowMatAt(headFacing);
-                        Material mouthMat = faceComp.MouthMatAt(headFacing, portrait, bodyDrawType);
+                        Material mouthMat = faceComp.MouthMatAt(headFacing, portrait);
                         Material wrinkleMat = faceComp.WrinkleMatAt(headFacing, bodyDrawType);
 
                         if (wrinkleMat != null)
@@ -304,60 +305,60 @@
                     List<ApparelGraphicRecord> apparelGraphics = __instance.graphics.apparelGraphics;
                     for (int j = 0; j < apparelGraphics.Count; j++)
                     {
-                        if (apparelGraphics[j].sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
+                        if (apparelGraphics[j].sourceApparel.def.apparel.LastLayer != ApparelLayer.Overhead)
                         {
-                            bool showHat = true;
+                            continue;
+                        }
+                        bool showHat = true;
 
-                            // removes the hat if the body is not shown
-                            if (Controller.settings.HideHatInBed)
+                        // removes the hat if the body is not shown
+                        if (Controller.settings.HideHatInBed)
+                        {
+                            showHat = renderBody;
+                        }
+
+                        // Don't show hats indoors
+                        if (!portrait && Controller.settings.HideHatWhileRoofed && pawn.Map != null
+                            && pawn.Position.Roofed(pawn.Map))
+                        {
+                            showHat = false;
+                        }
+
+                        if (!showHat)
+                        {
+                            continue;
+                        }
+                        showFullHair = false;
+
+                        // Draw regular hair if appparel allows it
+                        if (apparelGraphics[j].sourceApparel.def.apparel.tags.Contains(DrawFullhair))
+                        {
+                            if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
                             {
-                                showHat = renderBody;
-                            }
-
-                            // Don't show hats indoors
-                            if (!portrait && Controller.settings.HideHatWhileRoofed && pawn.Map != null)
-                            {
-                                if (pawn.Position.Roofed(pawn.Map))
-                                {
-                                    showHat = false;
-                                }
-                            }
-
-                            if (showHat)
-                            {
-                                showFullHair = false;
-
-                                // Draw regular hair if appparel allows it
-                                if (apparelGraphics[j].sourceApparel.def.apparel.tags.Contains(DrawFullhair))
-                                {
-                                    if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
-                                    {
-                                        Mesh mesh4 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
-                                        Material mat = __instance.graphics.HairMatAt(headFacing);
-                                        GenDraw.DrawMeshNowOrLater(mesh4, loc2, quat, mat, portrait);
-                                        loc2.y += YOffsetOnFace;
-                                    }
-                                }
-                                else if (Controller.settings.MergeHair)
-                                {
-                                    // Display the hair cut
-                                    HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
-                                    Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
-                                    if (hairCutMat != null)
-                                    {
-                                        GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, hairCutMat, portrait);
-                                        loc2.y += YOffsetOnFace;
-
-                                        // loc2.y += 0.0328125022f;
-                                    }
-                                }
-
-                                // Now draw the actual hat
-                                Material material2 = apparelGraphics[j].graphic.MatAt(bodyFacing);
-                                material2 = __instance.graphics.flasher.GetDamagedMat(material2);
-                                GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, material2, portrait);
+                                Mesh mesh4 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
+                                Material mat = __instance.graphics.HairMatAt(headFacing);
+                                GenDraw.DrawMeshNowOrLater(mesh4, loc2, quat, mat, portrait);
+                                loc2.y += YOffsetOnFace;
                             }
                         }
+                        else if (Controller.settings.MergeHair)
+                        {
+                            // Display the hair cut
+                            HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
+                            Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
+                            if (hairCutMat != null)
+                            {
+                                GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, hairCutMat, portrait);
+                                loc2.y += YOffsetOnFace;
+
+                                // loc2.y += 0.0328125022f;
+                            }
+                        }
+
+                        // Now draw the actual hat
+                        Material material2 = apparelGraphics[j].graphic.MatAt(bodyFacing);
+                        material2 = __instance.graphics.flasher.GetDamagedMat(material2);
+                        GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, material2, portrait);
                     }
                 }
 
@@ -375,12 +376,13 @@
                 for (int k = 0; k < __instance.graphics.apparelGraphics.Count; k++)
                 {
                     ApparelGraphicRecord apparelGraphicRecord = __instance.graphics.apparelGraphics[k];
-                    if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer == ApparelLayer.Shell)
+                    if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer != ApparelLayer.Shell)
                     {
-                        Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing);
-                        material3 = __instance.graphics.flasher.GetDamagedMat(material3);
-                        GenDraw.DrawMeshNowOrLater(mesh, vector, quat, material3, portrait);
+                        continue;
                     }
+                    Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing);
+                    material3 = __instance.graphics.flasher.GetDamagedMat(material3);
+                    GenDraw.DrawMeshNowOrLater(mesh, vector, quat, material3, portrait);
                 }
             }
 
@@ -408,6 +410,7 @@
                 }
             }
 
+            // ReSharper disable once InvertIf
             if (!portrait)
             {
                 // Traverse.Create(__instance).Method("DrawEquipment", new object[] { rootLoc }).GetValue();

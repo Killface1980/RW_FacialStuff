@@ -695,7 +695,6 @@
             while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
             {
             }
-
             {
                 this.colourWrapper.Color = this.faceComp.PawnFace.HasSameBeardColor
                                                ? this.NewHairColor
@@ -898,9 +897,9 @@
 
             if (this.newMoustache != MoustacheDefOf.Shaved)
             {
-                // if (beard.beardType == BeardType.FullBeard)
-                // {
                 {
+                    // if (beard.beardType == BeardType.FullBeard)
+                    // {
                     // Widgets.DrawBoxSolid(rect, new Color(0.8f, 0f, 0f, 0.3f));
                     // }
                     // else
@@ -1431,10 +1430,9 @@
                     }
                 }
             }
-
-            // if (newBeard.beardType == BeardType.FullBeard)
-            // {
             {
+                // if (newBeard.beardType == BeardType.FullBeard)
+                // {
                 // Widgets.DrawBoxSolid(rect, new Color(0.8f, 0f, 0f, 0.3f));
                 // }
                 // else

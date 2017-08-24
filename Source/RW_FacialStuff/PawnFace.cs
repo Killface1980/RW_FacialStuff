@@ -13,8 +13,10 @@
     {
         public Color BeardColor;
 
+        [NotNull]
         public BeardDef BeardDef;
 
+        [NotNull]
         public BrowDef BrowDef;
 
         public CrownType CrownType;
@@ -25,6 +27,7 @@
 
         public float EuMelanin;
 
+        [NotNull]
         public EyeDef EyeDef;
 
         public float Greyness;
@@ -33,15 +36,15 @@
 
         public bool HasSameBeardColor;
 
-
+        [CanBeNull]
         public MoustacheDef MoustacheDef;
 
         public float PheoMelanin;
 
-
+        [NotNull]
         public WrinkleDef WrinkleDef;
 
-        public PawnFace(Pawn pawn, bool setColors = true)
+        public PawnFace([NotNull] Pawn pawn, bool setColors = true)
         {
             this.DrawMouth = true;
             FactionDef faction = pawn.Faction.def;

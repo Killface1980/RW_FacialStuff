@@ -22,29 +22,31 @@
             Rect panelRect = __instance.PanelRect;
             Pawn pawn = state.CurrentPawn.Pawn;
             CompFace face = pawn.TryGetComp<CompFace>();
-            if (face != null)
+            if (face == null)
             {
-                if (face.PawnFace == null)
-                {
-                    face.SetHeadType();
-                }
+                return;
+            }
+            if (face.PawnFace == null)
+            {
+                face.SetHeadType();
+            }
 
-                Rect rect = new Rect(panelRect.width - 90f, 9f, 22f, 22f);
-                if (rect.Contains(Event.current.mousePosition))
-                {
-                    GUI.color = new Color(0.97647f, 0.97647f, 0.97647f);
-                }
-                else
-                {
-                    GUI.color = new Color(0.623529f, 0.623529f, 0.623529f);
-                }
+            Rect rect = new Rect(panelRect.width - 90f, 9f, 22f, 22f);
+            if (rect.Contains(Event.current.mousePosition))
+            {
+                GUI.color = new Color(0.97647f, 0.97647f, 0.97647f);
+            }
+            else
+            {
+                GUI.color = new Color(0.623529f, 0.623529f, 0.623529f);
+            }
 
-                GUI.DrawTexture(rect, ContentFinder<Texture2D>.Get("Buttons/ButtonFace", true));
-                if (Widgets.ButtonInvisible(rect, false))
-                {
-                    SoundDefOf.TickLow.PlayOneShotOnCamera(null);
-                    Find.WindowStack.Add(new DialogFaceStyling(pawn));
-                }
+            GUI.DrawTexture(rect, ContentFinder<Texture2D>.Get("Buttons/ButtonFace", true));
+            // ReSharper disable once InvertIf
+            if (Widgets.ButtonInvisible(rect, false))
+            {
+                SoundDefOf.TickLow.PlayOneShotOnCamera(null);
+                Find.WindowStack.Add(new DialogFaceStyling(pawn));
             }
         }
     }

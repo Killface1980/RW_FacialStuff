@@ -60,15 +60,15 @@ namespace FacialStuff
 
         private bool showExtraParts = true;
 
-        private bool useCaching = false;
+        private bool useCaching;
         private bool useMouth = true;
 
         private bool useWeirdHairChoices = true;
         private bool useWrinkles = true;
 
-        private bool showBodyChange = false;
+        private bool showBodyChange;
 
-        private bool showGenderAgeChange = false;
+        private bool showGenderAgeChange;
 
         #endregion Private Fields
 

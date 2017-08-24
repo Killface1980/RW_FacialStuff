@@ -49,11 +49,12 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             get { return this.selectedValue; }
             set
             {
-                if (this.selectedValue != value)
+                if (this.selectedValue == value)
                 {
-                    this.selectedValue = value;
-                    this.UpdatePawnListener?.Invoke(this, value, null);
+                    return;
                 }
+                this.selectedValue = value;
+                this.UpdatePawnListener?.Invoke(this, value, null);
             }
         }
 

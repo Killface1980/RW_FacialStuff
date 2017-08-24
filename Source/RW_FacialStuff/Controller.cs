@@ -1,8 +1,7 @@
 ﻿namespace FacialStuff
 {
     using System.Diagnostics.CodeAnalysis;
-
-
+    using System.Linq;
 
     using RimWorld;
 
@@ -16,11 +15,10 @@
 
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once StyleCop.SA1307
-      
         [SuppressMessage(
-            "StyleCop.CSharp.MaintainabilityRules",
-            "SA1401:FieldsMustBePrivate",
-            Justification = "Reviewed. Suppression is OK here.")]
+      "StyleCop.CSharp.MaintainabilityRules",
+      "SA1401:FieldsMustBePrivate",
+      Justification = "Reviewed. Suppression is OK here.")]
         public static Settings settings;
 
         #endregion Public Fields
@@ -50,30 +48,25 @@
         // ReSharper disable once MissingXmlDoc
         public override void WriteSettings()
         {
-            if (settings != null)
+            settings?.Write();
+
+            if (Current.ProgramState != ProgramState.Playing)
             {
-                settings.Write();
+                return;
+            }
+            if (Find.ColonistBar != null)
+            {
+                Find.ColonistBar.MarkColonistsDirty();
             }
 
-            if (Current.ProgramState == ProgramState.Playing)
+            foreach (Pawn pawn in from pawn in PawnsFinder.AllMapsAndWorld_Alive
+                                  where pawn.RaceProps.Humanlike
+                                  let faceComp = pawn.TryGetComp<CompFace>()
+                                  where faceComp != null
+                                  select pawn)
             {
-                if (Find.ColonistBar != null)
-                {
-                    Find.ColonistBar.MarkColonistsDirty();
-                }
-
-                foreach (Pawn pawn in PawnsFinder.AllMapsAndWorld_Alive)
-                {
-                    if (pawn.RaceProps.Humanlike)
-                    {
-                        CompFace faceComp = pawn.TryGetComp<CompFace>();
-                        if (faceComp != null)
-                        {
-                            // This will force the renderer to make "AllResolved" return false, if pawn is drawn
-                            pawn.Drawer.renderer.graphics.nakedGraphic = null;
-                        }
-                    }
-                }
+                // This will force the renderer to make "AllResolved" return false, if pawn is drawn
+                pawn.Drawer.renderer.graphics.nakedGraphic = null;
             }
         }
 

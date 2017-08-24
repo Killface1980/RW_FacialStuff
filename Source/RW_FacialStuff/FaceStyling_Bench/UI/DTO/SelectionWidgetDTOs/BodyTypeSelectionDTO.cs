@@ -26,6 +26,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using RimWorld;
 
@@ -47,14 +48,16 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             this.bodyTypes = new List<BodyType>(a.Length);
             this.maleBodyTypes = new List<BodyType>(a.Length - 1);
             this.femaleBodyTypes = new List<BodyType>(a.Length - 1);
-            foreach (BodyType bt in a)
+            foreach (BodyType bt in a.Cast<BodyType>().Where(bt => bt != BodyType.Undefined))
             {
-                if (bt != BodyType.Undefined)
+                if (bt != BodyType.Female)
                 {
-                    if (bt != BodyType.Female)
-                        this.maleBodyTypes.Add(bt);
-                    if (bt != BodyType.Male)
-                        this.femaleBodyTypes.Add(bt);
+                    this.maleBodyTypes.Add(bt);
+                }
+
+                if (bt != BodyType.Male)
+                {
+                    this.femaleBodyTypes.Add(bt);
                 }
             }
 
@@ -66,11 +69,12 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             for (int i = 0; i < this.bodyTypes.Count; ++i)
             {
-                if (this.bodyTypes[i] == bodyType)
+                if (this.bodyTypes[i] != bodyType)
                 {
-                    base.index = i;
-                    break;
+                    continue;
                 }
+                this.index = i;
+                break;
             }
         }
 
@@ -87,8 +91,9 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
                         bodyType = BodyType.Female;
                     }
                 }
-                else // Male
+                else
                 {
+                    // Male
                     this.bodyTypes = this.maleBodyTypes;
                     if (bodyType == BodyType.Female)
                     {
@@ -97,7 +102,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
                 }
 
                 this.FindIndex(bodyType);
-                base.IndexChanged();
+                this.IndexChanged();
             }
         }
 
@@ -121,7 +126,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.bodyTypes[base.index].ToString();
+                return this.bodyTypes[this.index].ToString();
             }
         }
 
@@ -129,14 +134,14 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.bodyTypes[base.index];
+                return this.bodyTypes[this.index];
             }
         }
 
         public override void ResetToDefault()
         {
             this.FindIndex(this.OriginalBodyType);
-            base.IndexChanged();
+            this.IndexChanged();
         }
     }
 }

@@ -25,6 +25,7 @@
 namespace FacialStuff.FaceStyling_Bench.UI.Util
 {
     using System.IO;
+    using System.Linq;
     using System.Text.RegularExpressions;
 
     using FacialStuff.FaceStyling_Bench.UI.DTO;
@@ -62,15 +63,13 @@ namespace FacialStuff.FaceStyling_Bench.UI.Util
             pasteIconTexture = ContentFinder<Texture2D>.Get("UI/paste", true);
             dropTexture = ContentFinder<Texture2D>.Get("UI/drop", true);
 
-            foreach (ModContentPack current in LoadedModManager.RunningMods)
+            foreach (byte[] data in from current in LoadedModManager.RunningMods
+                                    where current.GetContentHolder<Texture2D>().Get("UI/colorpicker")
+                                    select File.ReadAllBytes(current.RootDir + "/Textures/UI/colorpicker.png"))
             {
-                if (current.GetContentHolder<Texture2D>().Get("UI/colorpicker"))
-                {
-                    byte[] data = File.ReadAllBytes(current.RootDir + "/Textures/UI/colorpicker.png");
-                    colorFinder = new Texture2D(2, 2, TextureFormat.Alpha8, true);
-                    colorFinder.LoadImage(data, false);
-                    break;
-                }
+                colorFinder = new Texture2D(2, 2, TextureFormat.Alpha8, true);
+                colorFinder.LoadImage(data, false);
+                break;
             }
         }
 
@@ -82,17 +81,19 @@ namespace FacialStuff.FaceStyling_Bench.UI.Util
 
         public static float SelectionRowHeight { get { return NavButtonSize.y; } }
 
-        private static GUIStyle middleCenterGuiStyle = null;
+        private static GUIStyle middleCenterGuiStyle;
 
         public static GUIStyle MiddleCenter
         {
             get
             {
-                if (middleCenterGuiStyle == null)
+                if (middleCenterGuiStyle != null)
                 {
-                    middleCenterGuiStyle = GUI.skin.label;
-                    middleCenterGuiStyle.alignment = TextAnchor.MiddleCenter;
+                    return middleCenterGuiStyle;
                 }
+                middleCenterGuiStyle = GUI.skin.label;
+                middleCenterGuiStyle.alignment = TextAnchor.MiddleCenter;
+
                 return middleCenterGuiStyle;
             }
         }
@@ -112,6 +113,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.Util
             {
                 result = value;
             }
+
             return result;
         }
 
@@ -140,10 +142,11 @@ namespace FacialStuff.FaceStyling_Bench.UI.Util
             left = 0;
             if (label != null)
             {
-                //Text.Anchor = TextAnchor.MiddleLeft;
+                // Text.Anchor = TextAnchor.MiddleLeft;
                 GUI.Label(new Rect(0, 0, 75, SelectionRowHeight), label);
                 left = 80;
             }
+
             Text.Anchor = TextAnchor.MiddleCenter;
 
             Rect previousButtonRect = new Rect(left, 0, NavButtonSize.x, NavButtonSize.y);
@@ -163,6 +166,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.Util
             {
                 selectionWidgetDto.IncreaseIndex();
             }
+
             GUI.EndGroup();
             Text.Anchor = TextAnchor.UpperLeft;
             GUI.color = Color.white;
@@ -191,6 +195,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.Util
                 {
                     i = 0;
                 }
+
                 return i.ToString();
             }
             catch
@@ -212,6 +217,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.Util
                 {
                     f = 0;
                 }
+
                 return f;
             }
             catch

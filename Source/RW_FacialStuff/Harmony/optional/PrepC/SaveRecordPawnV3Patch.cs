@@ -19,11 +19,12 @@
             if (SavedPawns.Keys.Contains(__instance.id) && Scribe.mode == LoadSaveMode.Saving)
             {
                 CustomPawn customPawn = SavedPawns[__instance.id];
-                if (customPawn?.Pawn.TryGetComp<CompFace>() != null)
+                if (customPawn?.Pawn.TryGetComp<CompFace>() == null)
                 {
-                    SaveRecordFaceV3 face = new SaveRecordFaceV3(customPawn.Pawn);
-                    face.ExposeData();
+                    return;
                 }
+                SaveRecordFaceV3 face = new SaveRecordFaceV3(customPawn.Pawn);
+                face.ExposeData();
             }
             else if (Scribe.mode == LoadSaveMode.LoadingVars)
             {

@@ -25,6 +25,7 @@ namespace FacialStuff.Utilities
                 }
             }
 
+            // ReSharper disable once InvertIf
             if (nextAct != null)
             {
                 Rect rect2 = new Rect(innerRect.width - BottomButSize.x, top, BottomButSize.x, BottomButSize.y);
