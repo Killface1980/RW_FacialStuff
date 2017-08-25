@@ -19,23 +19,21 @@
                     {
                         if (AccessTools.Method(
                                 typeof(Werewolf.WerewolfUtility),
-                                nameof(Werewolf.WerewolfUtility.IsClean)) == null)
+                                nameof(Werewolf.WerewolfUtility.IsClean)) != null)
                         {
-                            return;
+                            harmony.Patch(
+                                AccessTools.Method(typeof(Werewolf.CompWerewolf), "TransformInto"),
+                                new HarmonyMethod(
+                                    typeof(Werewolf_Patches),
+                                    nameof(Werewolf_Patches.TransformInto_Prefix)),
+                                null);
+                            harmony.Patch(
+                                AccessTools.Method(typeof(Werewolf.CompWerewolf), "TransformBack"),
+                                null,
+                                new HarmonyMethod(
+                                    typeof(Werewolf_Patches),
+                                    nameof(Werewolf_Patches.TransformBack_Postfix)));
                         }
-
-                        harmony.Patch(
-                            AccessTools.Method(typeof(Werewolf.CompWerewolf), "TransformInto"),
-                            new HarmonyMethod(
-                                typeof(Werewolf_Patches),
-                                nameof(Werewolf_Patches.TransformInto_Prefix)),
-                            null);
-                        harmony.Patch(
-                            AccessTools.Method(typeof(Werewolf.CompWerewolf), "TransformBack"),
-                            null,
-                            new HarmonyMethod(
-                                typeof(Werewolf_Patches),
-                                nameof(Werewolf_Patches.TransformBack_Postfix)));
                     }))();
             }
             catch (TypeLoadException)

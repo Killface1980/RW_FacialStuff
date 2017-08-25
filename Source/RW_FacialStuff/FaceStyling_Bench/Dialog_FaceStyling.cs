@@ -19,6 +19,8 @@
     using FacialStuff.Graphics_FS;
     using FacialStuff.Utilities;
 
+    using JetBrains.Annotations;
+
     using RimWorld;
 
     using UnityEngine;
@@ -244,14 +246,13 @@
                                 ? BeardTab.FullBeards
                                 : BeardTab.Combinable;
 
-            this.originalHairColor = pawn.story.hairColor;
+            this.newHairColor = this.originalHairColor = pawn.story.hairColor;
             this.newBeardColor = this.originalBeardColor = this.faceComp.PawnFace.BeardColor;
             this.newBeard = this.originalBeard = this.faceComp.PawnFace.BeardDef;
             this.newMoustache = this.originalMoustache = this.faceComp.PawnFace.MoustacheDef;
             this.newEye = this.originalEye = this.faceComp.PawnFace.EyeDef;
             this.newBrow = this.originalBrow = this.faceComp.PawnFace.BrowDef;
 
-            this.newHairColor = pawn.story.hairColor;
 
             this.colourWrapper = new ColorWrapper(Color.cyan);
 
@@ -275,6 +276,7 @@
             this.doCloseX = true;
             this.absorbInputAroundWindow = true;
             this.forcePause = true;
+            this.rerenderPawn = true;
         }
 
         #endregion Public Constructors

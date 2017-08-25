@@ -82,9 +82,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
     <Compile Include="CutHairDB.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />
     <Compile Include="Defs\MoustacheDefOf.cs" />
@@ -102,7 +99,6 @@
     <None Include="Enums\DialoguePage.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="FaceGraphicParts.cs" />
-    <None Include="FaceStyling_Bench\Dialog_FaceStyling - Kopieren.cs" />
     <Compile Include="FaceStyling_Bench\Dialog_FaceStyling.cs" />
     <None Include="FaceStyling_Bench\DresserJobDriver\JobDriver_ChangeBody.cs" />
     <None Include="FaceStyling_Bench\UI\DresserUI.cs" />
@@ -118,13 +114,12 @@
     <Compile Include="Genetics\HairDNA.cs" />
     <Compile Include="Harmony\optional\Harmony_EdBPrepareCarefully.cs" />
     <Compile Include="Harmony\optional\Harmony_Werewolf.cs" />
-    <None Include="Harmony\optional\PrepC\ColonistSaverPatch.cs" />
     <None Include="Harmony\optional\PrepC\Class1.cs" />
-    <Compile Include="Harmony\optional\PrepC\PanelBackstoryPatch.cs" />
-    <Compile Include="Harmony\optional\PrepC\PresetSaverPatch.cs" />
-    <Compile Include="Harmony\optional\PrepC\PresetLoaderPatch.cs" />
+    <Compile Include="Harmony\optional\PrepC\PanelBackstory_Postfix.cs" />
+    <Compile Include="Harmony\optional\PrepC\PresetSaver_Postfix.cs" />
+    <Compile Include="Harmony\optional\PrepC\PresetLoader_Postfix.cs" />
     <Compile Include="Harmony\optional\PrepC\SaveRecordFaceV3.cs" />
-    <Compile Include="Harmony\optional\PrepC\SaveRecordPawnV3Patch.cs" />
+    <Compile Include="Harmony\optional\PrepC\SaveRecordPawnV3_Postfix.cs" />
     <Compile Include="Harmony\optional\Werewolf_Patches.cs" />
     <Compile Include="HumanMouthGraphics.cs" />
     <None Include="MouthGraphicData.cs" />

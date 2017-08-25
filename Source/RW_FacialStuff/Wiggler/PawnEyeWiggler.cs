@@ -31,7 +31,7 @@ namespace FacialStuff.Wiggler
                 };
 
         private readonly SimpleCurve consciousnessCurve =
-            new SimpleCurve { new CurvePoint(0f, 10f), new CurvePoint(0.5f, 3f), new CurvePoint(1f, 1f) };
+            new SimpleCurve { new CurvePoint(0f, 5f), new CurvePoint(0.5f, 2f), new CurvePoint(1f, 1f) };
 
         private readonly float factorX = 0.02f;
 
@@ -67,9 +67,9 @@ namespace FacialStuff.Wiggler
 
         #region Public Constructors
 
-        public PawnEyeWiggler(Pawn pawn)
+        public PawnEyeWiggler(Pawn p)
         {
-            this.pawn = pawn;
+            this.pawn = p;
         }
 
         #endregion Public Constructors

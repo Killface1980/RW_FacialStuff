@@ -8,6 +8,9 @@
     using FacialStuff.Enums;
     using FacialStuff.Graphics_FS;
     using FacialStuff.Wiggler;
+
+    using JetBrains.Annotations;
+
     using RimWorld;
     using UnityEngine;
     using Verse;

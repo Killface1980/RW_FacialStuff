@@ -10,12 +10,12 @@
 
     using Verse;
 
-    public static class PresetLoaderPatch
+    public static class PresetLoader_Postfix
     {
         [HarmonyPostfix]
         public static void LoadFace( ref CustomPawn __result, SaveRecordPawnV3 record)
         {
-            if (!SaveRecordPawnV3Patch.LoadedPawns.Keys.Contains(record))
+            if (!SaveRecordPawnV3_Postfix.LoadedPawns.Keys.Contains(record))
             {
                 return;
             }
@@ -24,7 +24,7 @@
             {
                 return;
             }
-            PawnFace pawnFace = SaveRecordPawnV3Patch.LoadedPawns[record].Face;
+            PawnFace pawnFace = SaveRecordPawnV3_Postfix.LoadedPawns[record].Face;
             CompFace compFace = pawn.TryGetComp<CompFace>();
             compFace.SetPawnFace(pawnFace);
 

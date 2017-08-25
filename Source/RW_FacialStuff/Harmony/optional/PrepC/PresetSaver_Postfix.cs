@@ -8,7 +8,7 @@ namespace FacialStuff.Harmony.optional.PrepC
 
     using global::Harmony;
 
-    public static class PresetSaverPatch
+    public static class PresetSaver_Postfix
     {
         [HarmonyTranspiler]
         public static IEnumerable<CodeInstruction> SavePawnRef(IEnumerable<CodeInstruction> instrs, ILGenerator gen)
@@ -23,7 +23,7 @@ namespace FacialStuff.Harmony.optional.PrepC
                     yield return new CodeInstruction(
                         OpCodes.Call,
                         AccessTools.Method(
-                            typeof(PresetSaverPatch),
+                            typeof(PresetSaver_Postfix),
                            nameof(AddFaceToDictionary),
                             new[] { typeof(CustomPawn) }));
                     yield return last;
@@ -36,12 +36,12 @@ namespace FacialStuff.Harmony.optional.PrepC
 
         public static void AddFaceToDictionary(CustomPawn pawn)
         {
-            if (SaveRecordPawnV3Patch.SavedPawns.ContainsKey(pawn.Id))
+            if (SaveRecordPawnV3_Postfix.SavedPawns.ContainsKey(pawn.Id))
             {
-                SaveRecordPawnV3Patch.SavedPawns.Remove(pawn.Id);
+                SaveRecordPawnV3_Postfix.SavedPawns.Remove(pawn.Id);
             }
 
-            SaveRecordPawnV3Patch.SavedPawns.Add(pawn.Id, pawn);
+            SaveRecordPawnV3_Postfix.SavedPawns.Add(pawn.Id, pawn);
         }
     }
 }

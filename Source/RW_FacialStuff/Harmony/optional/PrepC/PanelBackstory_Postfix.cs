@@ -14,7 +14,7 @@
     using Verse;
     using Verse.Sound;
 
-    public static class PanelBackstoryPatch
+    public static class PanelBackstory_Postfix
     {
         [HarmonyPostfix]
         public static void AddFaceEditButton(PanelBackstory __instance, State state)
@@ -25,10 +25,6 @@
             if (face == null)
             {
                 return;
-            }
-            if (face.PawnFace == null)
-            {
-                face.SetHeadType();
             }
 
             Rect rect = new Rect(panelRect.width - 90f, 9f, 22f, 22f);
