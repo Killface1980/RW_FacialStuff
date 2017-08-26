@@ -76,23 +76,21 @@ namespace FacialStuff.Detouring
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(ResolveAllGraphics_Postfix)));
 
+#pragma warning disable SA1118 // Parameter must not span multiple lines
             harmony.Patch(
                 AccessTools.Method(
                     typeof(PawnRenderer),
                     "RenderPawnInternal",
-#pragma warning disable SA1118 // Parameter must not span multiple lines
                     new[]
                         {
                             typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4),
                             typeof(RotDrawMode), typeof(bool), typeof(bool)
                         }),
-#pragma warning restore SA1118 // Parameter must not span multiple lines
-#pragma warning disable SA1118 // Parameter must not span multiple lines
                 new HarmonyMethod(
                     typeof(HarmonyPatch_PawnRenderer),
                     nameof(HarmonyPatch_PawnRenderer.RenderPawnInternal_Prefix)),
-#pragma warning restore SA1118 // Parameter must not span multiple lines
                 null);
+#pragma warning restore SA1118 // Parameter must not span multiple lines
 
             harmony.Patch(
                 AccessTools.Method(
@@ -106,6 +104,11 @@ namespace FacialStuff.Detouring
                 AccessTools.Method(typeof(HediffSet), nameof(HediffSet.DirtyCache)),
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(DirtyCache_Postfix)));
+
+            harmony.Patch(
+                AccessTools.Method(typeof(GraphicDatabaseHeadRecords), nameof(GraphicDatabaseHeadRecords.Reset)),
+                null,
+                new HarmonyMethod(typeof(GraphicDatabaseHeadRecordsModded), nameof(GraphicDatabaseHeadRecordsModded.Reset)));
 
             harmony.Patch(
                 AccessTools.Method(typeof(PawnHairChooser), nameof(PawnHairChooser.RandomHairDefFor)),

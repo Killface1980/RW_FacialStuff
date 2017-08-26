@@ -136,8 +136,8 @@
     <Compile Include="FacialGraphics.cs" />
     <Compile Include="HairCutPawn.cs" />
     <None Include="Enums\GraphicSlotGroup.cs" />
-    <Compile Include="Graphics_FS\Graphic_Multi_NaturalEyes.cs" />
-    <Compile Include="Graphics_FS\Graphic_Multi_AddedHeadParts.cs" />
+    <Compile Include="Graphics\Graphic_Multi_NaturalEyes.cs" />
+    <Compile Include="Graphics\Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="MeshPoolFs.cs" />
     <Compile Include="Harmony\PawnRenderer_Prefix.cs" />
     <Compile Include="CompFace.cs" />
@@ -149,7 +149,7 @@
     <None Include="FaceStyling_Bench\Preset.cs" />
     <None Include="FaceStyling_Bench\PresetDatabase.cs" />
     <Compile Include="GraphicDatabaseHeadRecordsModded.cs" />
-    <Compile Include="Graphics_FS\Graphic_Multi_NaturalHeadParts.cs" />
+    <Compile Include="Graphics\Graphic_Multi_NaturalHeadParts.cs" />
     <Compile Include="FaceStyling_Bench\DialogUtility.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Genetics\PawnSkinColors_FS.cs" />

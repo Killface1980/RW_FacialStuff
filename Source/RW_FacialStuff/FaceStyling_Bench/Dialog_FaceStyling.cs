@@ -94,44 +94,44 @@
 
         private static Pawn pawn;
 
-        private readonly ColorWrapper colourWrapper;
+        private  ColorWrapper colourWrapper;
 
         [NotNull]
         private readonly CompFace faceComp;
 
         private readonly bool hadSameBeardColor;
 
-        private readonly bool hats;
+        private bool hats;
 
-        private readonly bool initialized = false;
+        private bool initialized = false;
 
-        private readonly long originalAgeBio;
+        private long originalAgeBio;
 
-        private readonly long originalAgeChrono;
+        private long originalAgeChrono;
 
-        private readonly BeardDef originalBeard;
+        private BeardDef originalBeard;
 
-        private readonly Color originalBeardColor;
+        private Color originalBeardColor;
 
-        private readonly BodyType originalBodyType;
+        private BodyType originalBodyType;
 
-        private readonly BrowDef originalBrow;
+        private BrowDef originalBrow;
 
-        private readonly CrownType originalCrownType;
+        private CrownType originalCrownType;
 
-        private readonly EyeDef originalEye;
+        private EyeDef originalEye;
 
-        private readonly Gender originalGender;
+        private Gender originalGender;
 
-        private readonly HairDef originalHair;
+        private HairDef originalHair;
 
-        private readonly Color originalHairColor;
+        private Color originalHairColor;
 
-        private readonly string originalHeadGraphicPath;
+        private  string originalHeadGraphicPath;
 
-        private readonly float originalMelanin;
+        private  float originalMelanin;
 
-        private readonly MoustacheDef originalMoustache;
+        private  MoustacheDef originalMoustache;
 
         private BeardTab beardTab;
 
@@ -419,12 +419,11 @@
                 this.newMoustache = value;
                 this.UpdatePawnDefs(value);
 
-                if (this.newBeard.beardType != BeardType.FullBeard || this.reInit)
+                if (this.newBeard.beardType == BeardType.FullBeard && !this.reInit)
                 {
-                    return;
+                    this.newBeard = PawnFaceChooser.RandomBeardDefFor(pawn, BeardType.LowerBeard);
+                    this.UpdatePawnDefs(this.newBeard);
                 }
-                this.newBeard = PawnFaceChooser.RandomBeardDefFor(pawn, BeardType.LowerBeard);
-                this.UpdatePawnDefs(this.newBeard);
             }
         }
 
@@ -530,22 +529,44 @@
             TabDrawer.DrawTabs(rect3, list);
             this.DrawUi(rect3);
 
+            Action nextAct = delegate
+                {
+                    this.saveChangedOnExit = true;
+                    this.Close();
+                };
+
+            Action backAct = delegate
+                {
+                    while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker), false))
+                    {
+                    }
+
+                    this.ResetPawnFace();
+                };
+
+            Action middleAct = delegate
+                {
+                   // HairDNA hair = HairMelanin.GenerateHairMelaninAndCuticula(pawn, Rand.Value > 0.5f);
+
+                    this.reInit = false;
+                    this.faceComp.PawnFace.HasSameBeardColor = Rand.Value > 0.3f;
+                    this.faceComp.PawnFace.GenerateHairDNA(pawn);
+                    this.NewHairColor = this.faceComp.PawnFace.HairColor;
+                    this.NewBeardColor = this.faceComp.PawnFace.BeardColor;
+                    this.NewHair = PawnHairChooser.RandomHairDefFor(pawn, Faction.OfPlayer.def);
+                    MoustacheDef tache;
+                    BeardDef beard;
+                     PawnFaceChooser.RandomBeardDefFor(pawn, Faction.OfPlayer.def, out beard, out tache);
+                    this.NewBeard = beard;
+                    this.reInit = false;
+                    this.NewMoustache = tache;
+                };
+
             DialogUtility.DoNextBackButtons(
                 inRect,
                 "FacialStuffEditor.Accept".Translate(),
-                delegate
-                    {
-                        this.saveChangedOnExit = true;
-                        this.Close();
-                    },
-                delegate
-                    {
-                        while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker), false))
-                        {
-                        }
-
-                        this.ResetPawnFace();
-                    });
+                nextAct,
+                backAct, "Randomize".Translate(), middleAct);
         }
 
         public override void PostOpen()

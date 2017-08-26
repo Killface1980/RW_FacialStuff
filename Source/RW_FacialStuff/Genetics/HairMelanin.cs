@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
-
+    using JetBrains.Annotations;
 
     using RimWorld;
 
@@ -17,19 +17,19 @@
     {
         #region Public Fields
 
-      
+
         public static readonly List<Color> ArtificialHairColors;
-      
+
         public static readonly List<Color> NaturalHairColors;
 
         #endregion Public Fields
 
         #region Private Fields
 
-      
+
         private static readonly Gradient GradientEuMelanin;
 
-      
+
         private static readonly Gradient GradientPheoMelanin;
         private static readonly Color HairBlueSteel = new Color32(57, 115, 199, 255);
         private static readonly Color HairBurgundyBistro = new Color32(206, 38, 58, 255);
@@ -114,7 +114,7 @@
 
         #region Public Methods
 
-        public static HairDNA GenerateHairMelaninAndCuticula( Pawn pawn, bool sameBeardColor)
+        public static HairDNA GenerateHairMelaninAndCuticula([NotNull] Pawn pawn, bool sameBeardColor)
         {
             Color beardColor;
 
@@ -249,7 +249,7 @@
 
         #region Private Methods
 
-        private static void HasOptimizedFather( Pawn pawn, out bool hasFather, out PawnFace fatherPawnFace)
+        private static void HasOptimizedFather(Pawn pawn, out bool hasFather, out PawnFace fatherPawnFace)
         {
             hasFather = false;
             fatherPawnFace = null;
@@ -269,7 +269,7 @@
             fatherPawnFace = fatherComp.PawnFace;
         }
 
-        private static void HasOptimizedMother( Pawn pawn, out bool hasMother,  out PawnFace motherPawnFace)
+        private static void HasOptimizedMother(Pawn pawn, out bool hasMother, out PawnFace motherPawnFace)
         {
             hasMother = false;
             motherPawnFace = null;
@@ -299,7 +299,7 @@
             return Mathf.Clamp01(Mathf.Clamp(Rand.Gaussian(value, 0.05f), clampMin, clampMax));
         }
 
-        private static bool GetMelaninSetRelationsByBlood( Pawn pawn, ref HairColorRequest hair)
+        private static bool GetMelaninSetRelationsByBlood(Pawn pawn, ref HairColorRequest hair)
         {
             if (!pawn.relations.FamilyByBlood.Any())
             {
@@ -327,7 +327,7 @@
             return true;
         }
 
-        private static void SetInitialMelaninLevels( Pawn pawn, out HairColorRequest hair)
+        private static void SetInitialMelaninLevels(Pawn pawn, out HairColorRequest hair)
         {
             hair = new HairColorRequest(0f, 0f, 0f, 0f);
 
@@ -360,10 +360,15 @@
                 {
                     return;
                 }
-                hair.EuMelanin = Rand.Range(pawn.story.melanin * 0.5f, 1f);
-                hair.PheoMelanin = Rand.Range(pawn.story.melanin * 0.25f, 1f);
-                hair.Cuticula = Rand.Range(0.75f, 1.25f);
+                GetRandomizedMelaninAndCuticula(pawn, ref hair);
             }
+        }
+
+        public static void GetRandomizedMelaninAndCuticula(Pawn pawn, ref HairColorRequest hair)
+        {
+            hair.EuMelanin = Rand.Range(pawn.story.melanin * 0.5f, 1f);
+            hair.PheoMelanin = Rand.Range(pawn.story.melanin * 0.25f, 1f);
+            hair.Cuticula = Rand.Range(0.75f, 1.25f);
         }
 
         #endregion Private Methods

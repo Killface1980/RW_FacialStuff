@@ -1,7 +1,6 @@
 ﻿namespace FacialStuff
 {
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using FacialStuff.Defs;
@@ -455,10 +454,7 @@
         [NotNull]
         public string EyeTexPath([NotNull] string eyeDefPath, Side side)
         {
-            if (this.pawn == null)
-            {
-                return string.Empty;
-            }
+            // ReSharper disable once PossibleNullReferenceException
             string path = "Eyes/Eye_" + eyeDefPath + "_" + this.pawn.gender + "_" + side;
 
             return path;

@@ -5,23 +5,118 @@
     using System.IO;
     using System.Linq;
 
+    using JetBrains.Annotations;
+
     using UnityEngine;
 
     using Verse;
 
     public static class GraphicDatabaseHeadRecordsModded
     {
-        #region Nested type: HeadGraphicRecordVanillaCustom
 
-        #region Public Classes
+        #region Public Fields
 
-        public class HeadGraphicRecordVanillaCustom
+        public static int headIndex = 0;
+
+        #endregion Public Fields
+
+        #region Private Fields
+
+        private static readonly List<HeadGraphicRecordVanillaCustom> HeadsVanillaCustom =
+            new List<HeadGraphicRecordVanillaCustom>();
+
+        private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
+
+        private static readonly string StumpPath = "Things/Pawn/Humanlike/Heads/None_Average_Stump";
+
+        private static HeadGraphicRecordVanillaCustom skull;
+
+        private static HeadGraphicRecordVanillaCustom stump;
+
+        #endregion Private Fields
+
+        #region Public Methods
+
+        public static void BuildDatabaseIfNecessary()
         {
+            if (HeadsVanillaCustom.Count > 0 && skull != null && stump != null)
+            {
+                return;
+            }
+
+            HeadsVanillaCustom.Clear();
+
+            HeadsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Average_Normal"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Average_Pointy"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Average_Wide"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Narrow_Normal"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Narrow_Pointy"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Narrow_Wide"));
+
+            HeadsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Average_Normal"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Average_Pointy"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Average_Wide"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Narrow_Normal"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Narrow_Pointy"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Narrow_Wide"));
+
+            skull = new HeadGraphicRecordVanillaCustom(SkullPath);
+            stump = new HeadGraphicRecordVanillaCustom(StumpPath);
+        }
+
+        public static Graphic_Multi GetModdedHeadNamed([NotNull] Pawn pawn, Color color)
+        {
+            BuildDatabaseIfNecessary();
+            foreach (HeadGraphicRecordVanillaCustom headGraphicRecordVanillaCustom in HeadsVanillaCustom)
+            {
+                if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story.HeadGraphicPath.Remove(0, 22))
+                {
+                    // Log.Message("Getting vanilla " + pawn.story.HeadGraphicPath.Remove(0, 22) + ".");
+                    return headGraphicRecordVanillaCustom.GetGraphic(color);
+                }
+            }
+
+            Log.Message(
+                "Tried to get pawn head at path " + pawn.story.HeadGraphicPath.Remove(0, 22)
+                + " that was not found. Defaulting...");
+
+            return HeadsVanillaCustom.First().GetGraphic(color);
+        }
+
+        public static Graphic_Multi GetStump(Color skinColor)
+        {
+            BuildDatabaseIfNecessary();
+            return stump.GetGraphic(skinColor);
+        }
+
+        public static void Reset()
+        {
+            HeadsVanillaCustom.Clear();
+            skull = null;
+            stump = null;
+        }
+
+        #endregion Public Methods
+
+        #region Private Classes
+
+        private class HeadGraphicRecordVanillaCustom
+        {
+
+            #region Public Fields
+
+            public CrownType crownType;
+
+            public Gender gender;
+
+            public string graphicPathVanillaCustom;
+
+            #endregion Public Fields
+
             #region Private Fields
 
-          
             private readonly List<KeyValuePair<Color, Graphic_Multi>> graphics =
-                new List<KeyValuePair<Color, Graphic_Multi>>();
+                                                    new List<KeyValuePair<Color, Graphic_Multi>>();
 
             #endregion Private Fields
 
@@ -73,103 +168,8 @@
 
             #endregion Public Methods
 
-            #region Public Fields
-
-            public CrownType crownType;
-
-            public Gender gender;
-
-          
-            public string graphicPathVanillaCustom;
-
-            #endregion Public Fields
         }
 
-        #endregion Public Classes
-
-        #endregion Nested type: HeadGraphicRecordVanillaCustom
-
-        #region Public Fields
-
-        public static int headIndex = 0;
-
-        
-        public static List<HeadGraphicRecordVanillaCustom> headsVanillaCustom =
-            new List<HeadGraphicRecordVanillaCustom>();
-
-        #endregion Public Fields
-
-        #region Private Fields
-
-      
-        private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
-
-      
-        private static readonly string StumpPath = "Things/Pawn/Humanlike/Heads/None_Average_Stump";
-
-        
-        private static HeadGraphicRecordVanillaCustom skull;
-
-        
-        private static HeadGraphicRecordVanillaCustom stump;
-
-        #endregion Private Fields
-
-        #region Public Methods
-
-        public static void BuildDatabaseIfNecessary()
-        {
-            // headsVanillaCustom.Clear();
-            if (headsVanillaCustom.Count > 0 && skull != null && stump != null)
-            {
-                return;
-            }
-
-            headsVanillaCustom.Clear();
-
-            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Average_Normal"));
-            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Average_Pointy"));
-            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Average_Wide"));
-            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Narrow_Normal"));
-            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Narrow_Pointy"));
-            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Female/Female_Narrow_Wide"));
-
-            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Average_Normal"));
-            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Average_Pointy"));
-            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Average_Wide"));
-            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Narrow_Normal"));
-            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Narrow_Pointy"));
-            headsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Narrow_Wide"));
-
-            skull = new HeadGraphicRecordVanillaCustom(SkullPath);
-            stump = new HeadGraphicRecordVanillaCustom(StumpPath);
-        }
-
-        public static Graphic_Multi GetModdedHeadNamed( Pawn pawn, Color color)
-        {
-            BuildDatabaseIfNecessary();
-            foreach (HeadGraphicRecordVanillaCustom headGraphicRecordVanillaCustom in headsVanillaCustom)
-            {
-                if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story.HeadGraphicPath.Remove(0, 22))
-                {
-                    // Log.Message("Getting vanilla " + pawn.story.HeadGraphicPath.Remove(0, 22) + ".");
-                    return headGraphicRecordVanillaCustom.GetGraphic(color);
-                }
-            }
-
-            Log.Message(
-                "Tried to get pawn head at path " + pawn.story.HeadGraphicPath.Remove(0, 22)
-                + " that was not found. Defaulting...");
-
-            return headsVanillaCustom.First().GetGraphic(color);
-        }
-
-        public static Graphic_Multi GetStump(Color skinColor)
-        {
-            BuildDatabaseIfNecessary();
-            return stump.GetGraphic(skinColor);
-        }
-
-        #endregion Public Methods
+        #endregion Private Classes
     }
 }

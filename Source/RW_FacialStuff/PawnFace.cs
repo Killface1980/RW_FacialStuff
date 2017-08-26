@@ -57,14 +57,8 @@
             this.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(pawn);
             PawnFaceChooser.RandomBeardDefFor(pawn, faction, out this.BeardDef, out this.MoustacheDef);
             this.HasSameBeardColor = Rand.Value > 0.3f;
-            HairDNA hairDNA = HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor);
-            this.EuMelanin = hairDNA.HairColorRequest.EuMelanin;
-            this.PheoMelanin = hairDNA.HairColorRequest.PheoMelanin;
-            this.Cuticula = hairDNA.HairColorRequest.Cuticula;
-            this.Greyness = hairDNA.HairColorRequest.Greyness;
 
-            this.HairColor = hairDNA.HairColor;
-            this.BeardColor = hairDNA.BeardColor;
+            this.GenerateHairDNA(pawn);
 
             this.CrownType = pawn.story.crownType;
 
@@ -74,6 +68,18 @@
             }
 
             // this.MelaninOrg = pawn.story.melanin;
+        }
+
+        public void GenerateHairDNA(Pawn pawn)
+        {
+            HairDNA hairDNA = HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor);
+            this.EuMelanin = hairDNA.HairColorRequest.EuMelanin;
+            this.PheoMelanin = hairDNA.HairColorRequest.PheoMelanin;
+            this.Cuticula = hairDNA.HairColorRequest.Cuticula;
+            this.Greyness = hairDNA.HairColorRequest.Greyness;
+
+            this.HairColor = hairDNA.HairColor;
+            this.BeardColor = hairDNA.BeardColor;
         }
 
         public PawnFace()

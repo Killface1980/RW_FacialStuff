@@ -12,7 +12,7 @@ namespace FacialStuff.Utilities
 
         private static readonly Vector2 BottomButSize = new Vector2(150f, 38f);
 
-        public static void DoNextBackButtons(Rect innerRect, string nextLabel, Action nextAct, Action backAct)
+        public static void DoNextBackButtons(Rect innerRect, string nextLabel, Action nextAct, Action backAct, string middleLabel = null, Action middleAct = null)
         {
             float top = innerRect.height - 38f;
             Text.Font = GameFont.Small;
@@ -25,6 +25,15 @@ namespace FacialStuff.Utilities
                 }
             }
 
+            if (middleAct != null)
+            {
+                Rect rect3 = new Rect((innerRect.width / 2f) - (BottomButSize.x / 2f), top, BottomButSize.x, BottomButSize.y);
+                if (Widgets.ButtonText(rect3, middleLabel))
+                {
+                    middleAct();
+                }
+            }
+
             // ReSharper disable once InvertIf
             if (nextAct != null)
             {
@@ -34,6 +43,7 @@ namespace FacialStuff.Utilities
                     nextAct();
                 }
             }
+
         }
 
         public static bool DoMiddleButton(Rect innerRect, string label)
