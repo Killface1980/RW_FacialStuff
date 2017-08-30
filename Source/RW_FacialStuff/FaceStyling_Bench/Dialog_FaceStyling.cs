@@ -53,12 +53,12 @@
 
         private static List<BeardDef> FullBeardDefs;
 
-        private static float ListWidth;
+        private static float ListWidth = 450f;
 
         private static List<BeardDef> LowerBeardDefs;
 
         // private static Texture2D _icon;
-        private static float MarginFS;
+        private static float MarginFS = 12f;
 
         private static long MaxAge = 1000000000 * TicksPerYear;
 
@@ -76,13 +76,13 @@
         // private FacePreset _selFacePresetInt;
         private static Texture2D NameBackground;
 
-        private static float PreviewSize;
+        private static float PreviewSize = 220f;
 
         private static long TicksPerYear = 3600000L;
 
-        private static string Title;
+        private static string Title = "FacialStuffEditor.FaceStylerTitle".Translate();
 
-        private static float TitleHeight;
+        private static float TitleHeight = 30f;
 
         private static List<string> VanillaHairTags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
 
@@ -168,7 +168,6 @@
 
         private Vector2 swatchSize = new Vector2(14, 14);
 
-        private Vector2 swatchSpacing = new Vector2(20, 20);
 
         private FaceStyleTab tab;
 
@@ -178,15 +177,9 @@
 
         static DialogFaceStyling()
         {
-            Title = "FacialStuffEditor.FaceStylerTitle".Translate();
-            TitleHeight = 30f;
-            PreviewSize = 250f;
-
             // _previewSize = 100f;
 
             // _icon = ContentFinder<Texture2D>.Get("ClothIcon");
-            MarginFS = 6f;
-            ListWidth = 450f;
 
             // _listWidth = 200f;
             Columns = 12;
@@ -307,9 +300,7 @@
 
         #region Public Properties
 
-        public override Vector2 InitialSize => new Vector2(
-            PreviewSize + MarginFS + ListWidth + 36f,
-            40f + PreviewSize * 2f + MarginFS * 3f + 38f + 36f + 80f);
+        public override Vector2 InitialSize => new Vector2(700f, 700f);
 
         public float NewMelanin
         {
@@ -458,6 +449,7 @@
             Text.Anchor = TextAnchor.UpperLeft;
             Text.Font = GameFont.Small;
 
+            // re-render pawn
             try
             {
                 if (this.rerenderPawn)
@@ -517,11 +509,12 @@
 
             Rect rect3 = new Rect(
                 0f,
-                TitleHeight + TabDrawer.TabHeight + MarginFS,
+                TitleHeight + TabDrawer.TabHeight + MarginFS / 2,
                 inRect.width,
-                inRect.height - TitleHeight - 25f - MarginFS * 2 - TabDrawer.TabHeight - MarginFS);
+                inRect.height - TitleHeight - MarginFS * 2 - TabDrawer.TabHeight);
 
             TabDrawer.DrawTabs(rect3, list);
+
             this.DrawUi(rect3);
 
             Action nextAct = delegate
@@ -1059,16 +1052,16 @@
             }
         }
 
-        private void DrawHairColorPickerCell(Color color, Rect rect, string colorName)
+        private void DrawHairColorPickerCell(Color color, Rect rect, string colorName, [CanBeNull] HairColorRequest request = null)
         {
-            Widgets.DrawBoxSolid(rect, color);
             string text = colorName;
             Widgets.DrawHighlightIfMouseover(rect);
-            if (color == this.NewHairColor)
+            if (this.NewHairColor.IndistinguishableFrom(color))
             {
-                Widgets.DrawHighlightSelected(rect);
+                this.DrawColorSelected(rect);
                 text += "\n(selected)";
             }
+            Widgets.DrawBoxSolid(rect, color);
 
             TooltipHandler.TipRegion(rect, text);
             // ReSharper disable once InvertIf
@@ -1076,6 +1069,12 @@
             {
                 while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
                 {
+                }
+
+                if (request != null)
+                {
+                    this.faceComp.PawnFace.PheoMelanin = request.PheoMelanin;
+                    this.faceComp.PawnFace.EuMelanin = request.EuMelanin;
                 }
 
                 this.colourWrapper.Color = color;
@@ -1362,10 +1361,13 @@
         {
             int currentSwatchIndex = PawnSkinColors_FS.GetSkinDataIndexOfMelanin(this.NewMelanin);
 
-            Rect swatchRect = new Rect(melaninRect.x, melaninRect.y, this.swatchSize.x, this.swatchSize.y);
+            int colorCount = PawnSkinColors_FS._SkinColors.Length;
+            var size = melaninRect.width / colorCount;
+            size -= MarginFS / 2;
+
+            Rect swatchRect = new Rect(melaninRect.x, melaninRect.y, size, size);
 
             // Draw the swatch selection boxes.
-            int colorCount = PawnSkinColors_FS._SkinColors.Length;
             int clickedIndex = -1;
             for (int i = 0; i < colorCount; i++)
             {
@@ -1378,69 +1380,60 @@
                                                 colorCount - 1, i + 1)].melanin;
                 if (isThisSwatchSelected)
                 {
-                    Rect selectionRect = new Rect(
-                        swatchRect.x - 2,
-                        swatchRect.y - 2,
-                        this.swatchSize.x + 4,
-                        this.swatchSize.y + 4);
-                    GUI.color = ColorSwatchSelection;
-                    GUI.DrawTexture(selectionRect, BaseContent.WhiteTex);
+                    this.DrawColorSelected(swatchRect);
                 }
 
                 // Draw the border around the swatch.
-                Rect borderRect = new Rect(
-                    swatchRect.x - 1,
-                    swatchRect.y - 1,
-                    this.swatchSize.x + 2,
-                    this.swatchSize.y + 2);
-                GUI.color = ColorSwatchBorder;
-                GUI.DrawTexture(borderRect, BaseContent.WhiteTex);
+                // Rect borderRect = new Rect(
+                //     swatchRect.x - 1,
+                //     swatchRect.y - 1,
+                //     this.swatchSize.x + 2,
+                //     this.swatchSize.y + 2);
+                // GUI.color = ColorSwatchBorder;
+                // GUI.DrawTexture(borderRect, BaseContent.WhiteTex);
 
                 // Draw the swatch itself.
-                GUI.color = color;
-                GUI.DrawTexture(swatchRect, BaseContent.WhiteTex);
+                Widgets.DrawBoxSolid(swatchRect, color);
 
                 if (!isThisSwatchSelected)
                 {
                     if (Widgets.ButtonInvisible(swatchRect))
                     {
                         clickedIndex = i;
-
-                        // currentSwatchColor = color;
                     }
                 }
 
                 // Advance the swatch rect cursor position and wrap it if necessary.
-                swatchRect.x += this.swatchSpacing.x;
+                swatchRect.x += swatchRect.width + MarginFS / 2;
                 // ReSharper disable once InvertIf
                 if (swatchRect.x >= melaninRect.width - this.swatchSize.x)
                 {
-                    swatchRect.y += this.swatchSpacing.y;
+                    swatchRect.y += size + MarginFS / 2;
                     swatchRect.x = melaninRect.x;
                 }
             }
+            Rect melaninSlider = new Rect(melaninRect.x, swatchRect.yMax + MarginFS, melaninRect.width, WidgetUtil.SelectionRowHeight);
+            var melly = this.NewMelanin;
+            melly = Widgets.HorizontalSlider(
+                melaninSlider,
+                melly,
+                0f,
+                0.99f,
+                false,
+                "FacialStuffEditor.MelaninLevel".Translate(),
+                "0",
+                "1");
 
-            // Draw the mini slider
-            WidgetUtil.AddSliderWidget(
-                melaninRect.x,
-                swatchRect.yMax,
-                melaninRect.width,
-                "FacialStuffEditor.SkinColor".Translate() + ":",
-                this.dresserDto.SkinColorSliderDto);
-
-            // Draw the current color box.
-            GUI.color = Color.white;
-            Rect currentColorRect = new Rect(melaninRect.x, swatchRect.y + 24f, 25, 25);
-            if (swatchRect.x != melaninRect.x)
+            if (GUI.changed && Math.Abs(melly - this.NewMelanin) > 0.001f)
             {
-                currentColorRect.y += this.swatchSpacing.y;
+                this.NewMelanin = melly;
             }
 
-            GUI.color = ColorSwatchBorder;
-            GUI.DrawTexture(currentColorRect, BaseContent.WhiteTex);
-            GUI.color = PawnSkinColors_FS.GetSkinColor(this.NewMelanin);
-            GUI.DrawTexture(currentColorRect.ContractedBy(1), BaseContent.WhiteTex);
-            GUI.color = Color.white;
+            // Draw the current color box.
+            Rect currentColorRect = new Rect(melaninRect.x, melaninSlider.yMax, 20, 20);
+
+            Widgets.DrawBoxSolid(currentColorRect, ColorSwatchBorder);
+            Widgets.DrawBoxSolid(currentColorRect.ContractedBy(1), PawnSkinColors_FS.GetSkinColor(this.NewMelanin));
 
             // Figure out the lerp value so that we can draw the slider.
             float minValue = 0.00f;
@@ -1461,8 +1454,12 @@
             }
 
             // Draw the slider.
-            float newValue = GUI.HorizontalSlider(
-                new Rect(currentColorRect.x + 35, currentColorRect.y + 18, 136, 16),
+            float newValue = Widgets.HorizontalSlider(
+                new Rect(
+                    currentColorRect.x + 35f,
+                    currentColorRect.y + MarginFS / 2,
+                    melaninRect.width - 35f,
+                    WidgetUtil.SelectionRowHeight),
                 t,
                 minValue,
                 1);
@@ -1474,8 +1471,6 @@
             {
                 newValue = maxValue;
             }
-
-            GUI.color = Color.white;
 
             // If the user selected a new swatch or changed the lerp value, set a new color value.
             // ReSharper disable once InvertIf
@@ -1489,6 +1484,11 @@
                 float melaninLevel = PawnSkinColors_FS.GetValueFromRelativeLerp(currentSwatchIndex, newValue);
                 this.NewMelanin = melaninLevel;
             }
+        }
+
+        private void DrawColorSelected(Rect swatchRect)
+        {
+            Widgets.DrawBoxSolid(swatchRect.ContractedBy(-1f), Color.white);
         }
 
         private void DrawMoustachePickerCell(MoustacheDef moustache, Rect rect)
@@ -1631,9 +1631,11 @@
             GUI.color = Color.white;
         }
 
-        private void DrawUi(Rect parentRect)
+        private bool skinPage = true;
+
+        private void DrawUi(Rect rect)
         {
-            GUI.BeginGroup(parentRect);
+            GUI.BeginGroup(rect);
             string nameStringShort = pawn.NameStringShort;
             Vector2 vector = Text.CalcSize(nameStringShort);
 
@@ -1641,21 +1643,73 @@
             Rect labelRect = new Rect(0f, pawnRect.yMax, vector.x, vector.y);
             labelRect = labelRect.CenteredOnXIn(pawnRect);
 
-            Rect melaninRect = new Rect(2f, labelRect.yMax + MarginFS, PreviewSize - 5f, 65f);
-            Rect selectionRect = new Rect(0f, melaninRect.yMax + MarginFS, PreviewSize, PreviewSize);
+            Rect button = new Rect(0f, labelRect.yMax + MarginFS / 2, (pawnRect.width * 1.25f - MarginFS) / 2, WidgetUtil.SelectionRowHeight);
+            Rect mainRect = new Rect(0f, button.yMax + MarginFS, pawnRect.width * 1.25f, 65f);
+            if (Widgets.ButtonText(button, "SkinColor"))
+            {
+                this.skinPage = true;
+            }
+            button.x = button.xMax + MarginFS;
+
+            if (this.tab == FaceStyleTab.Beard && !this.faceComp.PawnFace.HasSameBeardColor)
+            {
+
+            }
+            else
+            {
+                if (Widgets.ButtonText(button, "HairColor"))
+                {
+                    this.skinPage = false;
+                }
+            }
+
+
+            float height = rect.height - MarginFS * 3 - TitleHeight;
+
+
             Rect listRect = new Rect(
-                PreviewSize + MarginFS,
+                0f,
                 TitleHeight,
-                ListWidth,
-                parentRect.height - MarginFS * 2 - TitleHeight);
+                0f,
+                height);
+            listRect.xMin = mainRect.xMax + MarginFS;
+            listRect.xMax = rect.xMax;
+
+
+            mainRect.yMax = listRect.yMax;
 
             GUI.DrawTexture(
                 new Rect(labelRect.xMin - 3f, labelRect.yMin, labelRect.width + 6f, labelRect.height),
                 NameBackground);
             Widgets.Label(labelRect, nameStringShort);
 
-            // float spacing = 10f;
-            this.DrawHumanlikeColorSelector(melaninRect);
+            Rect set = new Rect(mainRect) { height = 30f, width = mainRect.width / 2 - 10f };
+            set.y = listRect.yMax - 2 * WidgetUtil.NavButtonSize.y;
+            set.width = mainRect.width - MarginFS / 3;
+
+            bool faceCompDrawMouth = this.faceComp.PawnFace.DrawMouth;
+
+            if (this.skinPage || this.tab == FaceStyleTab.Beard && !this.faceComp.PawnFace.HasSameBeardColor)
+            {
+                mainRect.yMax -= 2 * WidgetUtil.SelectionRowHeight - MarginFS;
+                this.DrawHumanlikeColorSelector(mainRect);
+                Widgets.CheckboxLabeled(set, "FacialStuffEditor.DrawMouth".Translate(), ref faceCompDrawMouth);
+
+                if (pawn.gender == Gender.Male)
+                {
+                    set.y += 24f;
+                    bool faceCompHasSameBeardColor = this.faceComp.PawnFace.HasSameBeardColor;
+                    Widgets.CheckboxLabeled(
+                        set,
+                        "FacialStuffEditor.SameColor".Translate(),
+                        ref faceCompHasSameBeardColor);
+                    this.faceComp.PawnFace.HasSameBeardColor = faceCompHasSameBeardColor;
+                }
+            }
+            else
+            {
+                this.DrawHairColorSelector(mainRect);
+            }
 
             if (this.tab == FaceStyleTab.Hair || this.tab == FaceStyleTab.Beard)
             {
@@ -1664,8 +1718,7 @@
 
             Widgets.DrawMenuSection(listRect);
 
-            Rect set = new Rect(selectionRect) { height = 30f, width = selectionRect.width / 2 - 10f };
-            set.y += 10f;
+
 
             // if (Widgets.ButtonText(set, "SelectFacePreset".Translate(), true, false))
             // {
@@ -1678,19 +1731,7 @@
             // }
             // Find.WindowStack.Add(new FloatMenu(list));
             // }
-            set.x = selectionRect.x;
-            set.width = selectionRect.width - 5f;
 
-            bool faceCompDrawMouth = this.faceComp.PawnFace.DrawMouth;
-            Widgets.CheckboxLabeled(set, "FacialStuffEditor.DrawMouth".Translate(), ref faceCompDrawMouth);
-            this.faceComp.PawnFace.DrawMouth = faceCompDrawMouth;
-            if (pawn.gender == Gender.Male)
-            {
-                set.y += 24f;
-                bool faceCompHasSameBeardColor = this.faceComp.PawnFace.HasSameBeardColor;
-                Widgets.CheckboxLabeled(set, "FacialStuffEditor.SameColor".Translate(), ref faceCompHasSameBeardColor);
-                this.faceComp.PawnFace.HasSameBeardColor = faceCompHasSameBeardColor;
-            }
 
             if (GUI.changed)
             {
@@ -1698,12 +1739,18 @@
                 {
                     this.NewBeardColor = FaceTextures.DarkerBeardColor(this.NewHairColor);
                 }
+                if (this.faceComp.PawnFace.DrawMouth != faceCompDrawMouth)
+                {
+                    this.faceComp.PawnFace.DrawMouth = faceCompDrawMouth;
+                    this.rerenderPawn = true;
+                }
+
             }
 
-            set.width = selectionRect.width / 2 - 10f;
+            set.width = mainRect.width / 2 - 10f;
 
             set.y += 36f;
-            set.x = selectionRect.x;
+            set.x = mainRect.x;
 
             if (this.tab == FaceStyleTab.Eye)
             {
@@ -1731,100 +1778,12 @@
 
             if (this.tab == FaceStyleTab.Hair)
             {
-                set.width = selectionRect.width / 7.5f - 10f;
-                set.x = selectionRect.x;
-
-                this.DrawHairColorPickerCell(
-                    this.originalHairColor,
-                    set,
-                    "FacialStuffEditor.Original".Translate());
-                set.x += set.width * 1.5f + 10f;
-
-                foreach (Color color in HairMelanin.NaturalHairColors)
-                {
-                    this.DrawHairColorPickerCell(color, set, color.ToString());
-                    set.x += set.width + 10f;
-                }
-
-                set.x = selectionRect.x;
-                set.y += 36f;
-                foreach (Color color in HairMelanin.ArtificialHairColors)
-                {
-                    this.DrawHairColorPickerCell(color, set, color.ToString());
-                    set.x += set.width + 10f;
-                }
-
-                set.x = selectionRect.x;
-                set.y += 36f;
-                for (int i = 0; i < 8; i++)
-                {
-                    this.DrawHairColorPickerCell(HairMelanin.GetHairColor(new HairColorRequest(i / 8, 0f, 0f, 0f)), set, i.ToString());
-                    set.x += set.width + 10f;
-                }
-                set.x = selectionRect.x;
-                set.y += 36f;
-
-                for (int i = 0; i < 8; i++)
-                {
-                    this.DrawHairColorPickerCell(HairMelanin.GetHairColor(new HairColorRequest(i / 8, 1 / 8, 0f, 0f)), set, i.ToString());
-                    set.x += set.width + 10f;
-                }
-                if (false)
-                {
-                    set.x = selectionRect.x;
-                    set.width = selectionRect.width;
-                    set.y += 30f;
-
-                    HairColorRequest hairColorRequest = new HairColorRequest(
-                        this.faceComp.PawnFace.PheoMelanin,
-                        this.faceComp.PawnFace.EuMelanin,
-                        this.faceComp.PawnFace.Cuticula,
-                        this.faceComp.PawnFace.Greyness);
-
-                    Color hairColor = HairMelanin.GetHairColor(hairColorRequest);
-
-                    this.faceComp.PawnFace.PheoMelanin =
-                        Widgets.HorizontalSlider(set, this.faceComp.PawnFace.PheoMelanin, 0f, 1f);
-                    set.y += 30f;
-                    this.faceComp.PawnFace.EuMelanin =
-                        Widgets.HorizontalSlider(set, this.faceComp.PawnFace.EuMelanin, 0f, 1f);
-                    set.y += 30f;
-                    this.faceComp.PawnFace.Cuticula =
-                        Widgets.HorizontalSlider(set, this.faceComp.PawnFace.Cuticula, 0.75f, 1.25f);
-                    set.y += 30f;
-                    this.faceComp.PawnFace.Greyness =
-                        Widgets.HorizontalSlider(set, this.faceComp.PawnFace.Greyness, 0f, 0.7f);
-
-                    if (GUI.changed)
-                    {
-                        this.NewHairColor = hairColor;
-                    }
-                }
 
                 this.DrawHairPicker(listRect);
             }
 
             if (this.tab == FaceStyleTab.Beard)
             {
-                set.width = selectionRect.width / 7.5f - 10f;
-                set.x = selectionRect.x;
-
-                this.DrawBeardColorPickerCell(this.originalBeardColor, set, "FacialStuffEditor.Original".Translate());
-                set.x += set.width * 1.5f + 10f;
-
-                foreach (Color color in HairMelanin.NaturalHairColors)
-                {
-                    this.DrawBeardColorPickerCell(color, set, color.ToString());
-                    set.x += set.width + 10f;
-                }
-
-                set.x = selectionRect.x;
-                set.y += 36f;
-                foreach (Color color in HairMelanin.ArtificialHairColors)
-                {
-                    this.DrawBeardColorPickerCell(color, set, color.ToString());
-                    set.x += set.width + 10f;
-                }
 
                 this.DrawBeardPicker(listRect);
             }
@@ -1835,6 +1794,98 @@
             }
 
             GUI.EndGroup();
+        }
+
+        private void DrawHairColorSelector(Rect rect)
+        {
+            Rect contractedBy = rect.ContractedBy(MarginFS / 2);
+
+            Rect set = new Rect(contractedBy);
+
+            set.width = contractedBy.width / 9;
+            set.height = Mathf.Min(set.width, contractedBy.height / 12);
+
+            Widgets.DrawBoxSolid(rect, new Color(0.2f, 0.2f, 0.2f));
+            for (int y = 0; y < 9; y++)
+            {
+                for (int x = 0; x < 9; x++)
+                {
+                    float pheoMelanin = (float)x / 8;
+                    float euMelanin = (float)y / 8;
+
+                    HairColorRequest request = new HairColorRequest(
+                        pheoMelanin,
+                        euMelanin,
+                        this.faceComp.PawnFace.Cuticula,
+                        this.faceComp.PawnFace.Greyness);
+
+                    this.DrawHairColorPickerCell(
+                        HairMelanin.GetHairColor(request),
+                        set.ContractedBy(3f),
+                        "Pheomelanin".Translate() + pheoMelanin.ToString("N2") + " - " + "Eumelanin".Translate()
+                        + euMelanin.ToString("N2"), request);
+                    set.x += set.width;
+                }
+
+                set.x = contractedBy.x;
+                set.y += set.height;
+            }
+
+            foreach (Color color in HairMelanin.ArtificialHairColors)
+            {
+                this.DrawHairColorPickerCell(color, set.ContractedBy(3f), color.ToString());
+                set.x += set.width;
+            }
+            set.x = contractedBy.x;
+            set.width = contractedBy.width / 2 - MarginFS;
+            set.y += 2 * MarginFS;
+            set.y += set.height;
+            // this.faceComp.PawnFace.PheoMelanin =
+            //     Widgets.HorizontalSlider(set, this.faceComp.PawnFace.PheoMelanin, 0f, 1f);
+            // set.y += 30f;
+            // this.faceComp.PawnFace.EuMelanin =
+            //     Widgets.HorizontalSlider(set, this.faceComp.PawnFace.EuMelanin, 0f, 1f);
+            // set.y += 30f;
+            var cuti = this.faceComp.PawnFace.Cuticula;
+            cuti = Widgets.HorizontalSlider(
+               set,
+               cuti,
+               HairMelanin.cuticulaRange.min,
+               HairMelanin.cuticulaRange.max,
+               false,
+               "Cuticula".Translate(),
+               "0",
+               "1");
+            set.x += set.width + 15f;
+            var grey = this.faceComp.PawnFace.Greyness;
+            grey = Widgets.HorizontalSlider(
+                set,
+                grey,
+                HairMelanin.greyRange.min,
+                HairMelanin.greyRange.max,
+                false,
+                "Greyness".Translate(),
+                "0",
+                "1");
+
+            if (GUI.changed)
+            {
+                bool update = false;
+                if (Math.Abs(this.faceComp.PawnFace.Cuticula - cuti) > 0.001f)
+                {
+                    this.faceComp.PawnFace.Cuticula = cuti;
+                    update = true;
+                }
+                if (Math.Abs(this.faceComp.PawnFace.Greyness - grey) > 0.001f)
+                {
+                    this.faceComp.PawnFace.Greyness = grey;
+                    update = true;
+                }
+                if (update)
+                {
+                    this.NewHairColor = this.faceComp.PawnFace.GetCurrentHairColor();
+                }
+            }
         }
 
         private Graphic HairGraphic(HairDef def)

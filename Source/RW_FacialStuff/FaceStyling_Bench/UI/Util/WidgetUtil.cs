@@ -64,19 +64,6 @@ namespace FacialStuff.FaceStyling_Bench.UI.Util
             }
         }
 
-        public static void AddSliderWidget(float left, float top, float width, string label, SliderWidgetDTO sliderWidgetDto)
-        {
-            Rect rect = new Rect(left, top + 5f, width, SelectionRowHeight);
-            GUI.BeginGroup(rect);
-
-            GUI.color = Color.white;
-            GUI.Label(new Rect(0, 0, 75, SelectionRowHeight), label);
-            sliderWidgetDto.SelectedValue = GUI.HorizontalSlider(
-                new Rect(80, 10f, width - 100, SelectionRowHeight),
-                sliderWidgetDto.SelectedValue, sliderWidgetDto.MinValue, sliderWidgetDto.MaxValue);
-
-            GUI.EndGroup();
-        }
 
         public static void AddSelectorWidget(float left, float top, float width, string label, ASelectionWidgetDTO selectionWidgetDto)
         {

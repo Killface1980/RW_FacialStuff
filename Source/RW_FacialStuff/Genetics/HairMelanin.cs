@@ -20,8 +20,6 @@
 
         public static readonly List<Color> ArtificialHairColors;
 
-        public static readonly List<Color> NaturalHairColors;
-
         #endregion Public Fields
 
         #region Private Fields
@@ -29,7 +27,8 @@
 
         private static readonly Gradient GradientEuMelanin;
 
-        private static readonly FloatRange cuticulaRange = new FloatRange(0.75f, 1.25f);
+        public static readonly FloatRange cuticulaRange = new FloatRange(0.5f, 1.0f);
+        public static readonly FloatRange greyRange = new FloatRange(0f, 0.8f);
 
         private static readonly Gradient GradientPheoMelanin;
         private static readonly Color HairBlueSteel = new Color32(57, 115, 199, 255);
@@ -67,7 +66,7 @@
             phyoMelaninGradientColorKeys[2].time = 0.6f;
             phyoMelaninGradientColorKeys[3].color = new Color32(210, 119, 44, 255);
             phyoMelaninGradientColorKeys[3].time = 0.8f;
-            phyoMelaninGradientColorKeys[4].color = new Color32(191, 50, 0, 255);
+            phyoMelaninGradientColorKeys[4].color = new Color32(216, 25, 1, 255);
             phyoMelaninGradientColorKeys[4].time = 1f;
 
             GradientPheoMelanin = new Gradient();
@@ -90,17 +89,6 @@
             // EuMelaninGradientColorKeys[4].time = 1f;
             GradientEuMelanin = new Gradient();
             GradientEuMelanin.SetKeys(euMelaninGradientColorKeys, alphaKeys);
-
-
-
-            NaturalHairColors = new List<Color>
-                                    {
-                                        HairPlatinum,
-                                        HairYellowBlonde,
-                                        HairTerraCotta,
-                                        HairDarkBrown,
-                                        HairMidnightBlack
-                                    };
 
             ArtificialHairColors = new List<Color>
                                        {
@@ -231,22 +219,34 @@
             return dna;
         }
 
+        public static Color GetCurrentHairColor(this PawnFace face)
+        {
+
+            var request = new HairColorRequest(face.PheoMelanin, face.EuMelanin, face.Cuticula, face.Greyness);
+
+            return GetHairColor(request);
+        }
+
+
         public static Color GetHairColor(HairColorRequest hairColorRequest)
         {
             Color color = GradientEuMelanin.Evaluate(hairColorRequest.EuMelanin);
 
             color *= GradientPheoMelanin.Evaluate(hairColorRequest.PheoMelanin);
 
-            Color.RGBToHSV(color, out float h, out float s, out float v);
 
             var cuticula = Mathf.Lerp(cuticulaRange.min, cuticulaRange.max, hairColorRequest.Cuticula);
+
+            var greyness = Mathf.Lerp(greyRange.min, greyRange.max, hairColorRequest.Greyness);
+
+            Color.RGBToHSV(color, out float h, out float s, out float v);
 
             s *= cuticula;
 
             color = Color.HSVToRGB(h, s, v);
 
             // limit the greyness to 70 %, else it's too much
-            color = Color.Lerp(color, new Color(0.86f, 0.86f, 0.86f), Mathf.Min(hairColorRequest.Greyness, 0.7f));
+            color = Color.Lerp(color, new Color(0.86f, 0.86f, 0.86f), greyness);
 
 
             return color;
