@@ -22,7 +22,7 @@
 
         #region Private Fields
 
-        private static readonly List<HeadGraphicRecordVanillaCustom> HeadsVanillaCustom =
+        public static readonly List<HeadGraphicRecordVanillaCustom> HeadsVanillaCustom =
             new List<HeadGraphicRecordVanillaCustom>();
 
         private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
@@ -100,7 +100,7 @@
 
         #region Private Classes
 
-        private class HeadGraphicRecordVanillaCustom
+        public class HeadGraphicRecordVanillaCustom
         {
 
             #region Public Fields

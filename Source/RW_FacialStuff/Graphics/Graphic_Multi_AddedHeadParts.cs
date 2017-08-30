@@ -84,7 +84,7 @@ namespace FacialStuff.Graphics_FS
                     }
                     else
                     {
-                        array[3] = FacialGraphics.BlankTexture;
+                        array[3] = FaceTextures.BlankTexture;
                     }
                 }
                 else
@@ -100,7 +100,7 @@ namespace FacialStuff.Graphics_FS
                     }
                     else
                     {
-                        array[1] = FacialGraphics.BlankTexture;
+                        array[1] = FaceTextures.BlankTexture;
                     }
                 }
                 else
@@ -113,7 +113,7 @@ namespace FacialStuff.Graphics_FS
                 Log.Message(
                     "Facial Stuff: No texture found at " + addedpartName + "_" + crowntype + "_side"
                     + " - Graphic_Multi_AddedHeadParts");
-                array[3] = FacialGraphics.BlankTexture;
+                array[3] = FaceTextures.BlankTexture;
             }
 
             if (ContentFinder<Texture2D>.Get(req.path + "_back", false))
@@ -122,7 +122,7 @@ namespace FacialStuff.Graphics_FS
             }
             else
             {
-                array[0] = FacialGraphics.BlankTexture;
+                array[0] = FaceTextures.BlankTexture;
             }
 
             for (int i = 0; i < 4; i++)

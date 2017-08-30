@@ -144,13 +144,13 @@
                     Texture2D temptextureside = graphic.MatSide.mainTexture as Texture2D;
                     Texture2D temptextureback = graphic.MatBack.mainTexture as Texture2D;
 
-                    temptexturefront = FacialGraphics.MakeReadable(temptexturefront);
-                    temptextureside = FacialGraphics.MakeReadable(temptextureside);
-                    temptextureback = FacialGraphics.MakeReadable(temptextureback);
+                    temptexturefront = FaceTextures.MakeReadable(temptexturefront);
+                    temptextureside = FaceTextures.MakeReadable(temptextureside);
+                    temptextureback = FaceTextures.MakeReadable(temptextureback);
 
                     // intentional, only 1 mask tex. todo: rename, cleanup
-                    maskTexFrontBack = FacialGraphics.MaskTex_Average_FrontBack;
-                    maskTexSide = FacialGraphics.MaskTex_Narrow_Side;
+                    maskTexFrontBack = FaceTextures.MaskTex_Average_FrontBack;
+                    maskTexSide = FaceTextures.MaskTex_Narrow_Side;
 
                     CutOutHair(ref temptexturefront, maskTexFrontBack);
 
@@ -223,13 +223,13 @@
                     Texture2D temptextureside = graphic.MatSide.mainTexture as Texture2D;
                     Texture2D temptextureback = graphic.MatBack.mainTexture as Texture2D;
 
-                    temptexturefront = FacialGraphics.MakeReadable(temptexturefront);
-                    temptextureside = FacialGraphics.MakeReadable(temptextureside);
-                    temptextureback = FacialGraphics.MakeReadable(temptextureback);
+                    temptexturefront = FaceTextures.MakeReadable(temptexturefront);
+                    temptextureside = FaceTextures.MakeReadable(temptextureside);
+                    temptextureback = FaceTextures.MakeReadable(temptextureback);
 
                     // intentional, only 1 mask tex. todo: rename, cleanup
-                    maskTexFrontBack = FacialGraphics.MaskTex_Average_FrontBack;
-                    maskTexSide = FacialGraphics.MaskTex_Narrow_Side;
+                    maskTexFrontBack = FaceTextures.MaskTex_Average_FrontBack;
+                    maskTexSide = FaceTextures.MaskTex_Narrow_Side;
 
                     CutOutHair(ref temptexturefront, maskTexFrontBack);
 

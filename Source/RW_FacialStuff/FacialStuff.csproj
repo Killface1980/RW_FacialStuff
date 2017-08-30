@@ -92,10 +92,8 @@
     <Compile Include="Defs\MouthDef.cs" />
     <Compile Include="Defs\WrinkleDef.cs" />
     <Compile Include="Enums\BeardType.cs" />
-    <None Include="_translate\Class2.cs" />
-    <None Include="_translate\Class3.cs" />
-    <None Include="_translate\Class4.cs" />
-    <None Include="_translate\GoogleTranslator.cs" />
+    <Compile Include="OLD_FaceStyler.cs" />
+    <Compile Include="Wiggler\PawnHeadRotator.cs" />
     <None Include="Enums\DialoguePage.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="FaceGraphicParts.cs" />
@@ -133,7 +131,7 @@
     <None Include="ITab_Pawn_Face.cs" />
     <Compile Include="Enums\HeadType.cs" />
     <Compile Include="Defs\MouthDefOf.cs" />
-    <Compile Include="FacialGraphics.cs" />
+    <Compile Include="Textures\FaceTextures.cs" />
     <Compile Include="HairCutPawn.cs" />
     <None Include="Enums\GraphicSlotGroup.cs" />
     <Compile Include="Graphics\Graphic_Multi_NaturalEyes.cs" />
@@ -153,7 +151,7 @@
     <Compile Include="FaceStyling_Bench\DialogUtility.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Genetics\PawnSkinColors_FS.cs" />
-    <Compile Include="PawnFaceChooser.cs" />
+    <Compile Include="PawnFaceMaker.cs" />
     <Compile Include="Harmony\HarmonyPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -21,7 +21,11 @@
             }
         }
 
-        public PawnFace Face { get => this.face; set => this.face = value; }
+        public PawnFace Face
+        {
+            get => this.face;
+            private set => this.face = value;
+        }
 
         public void ExposeData()
         {

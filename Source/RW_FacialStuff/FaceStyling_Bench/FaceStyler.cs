@@ -11,14 +11,12 @@ namespace FacialStuff.FaceStyling_Bench
 
         #region Public Methods
 
-        public void FaceStyling( Pawn pawn)
+        public void FaceStyling(Pawn pawn)
         {
             Find.WindowStack.Add(new DialogFaceStyling(pawn));
         }
 
-
-      
-        public override IEnumerable<FloatMenuOption> GetFloatMenuOptions( Pawn pawn)
+        public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn pawn)
         {
             List<FloatMenuOption> list = new List<FloatMenuOption>();
             {
@@ -44,10 +42,12 @@ namespace FacialStuff.FaceStyling_Bench
                     {
                         // IntVec3 InteractionSquare = (this.Position + new IntVec3(0, 0, 1)).RotatedBy(this.Rotation);
                         Job FaceStyleChanger = new Job(
-                            DefDatabase<JobDef>.GetNamed("FaceStyleChanger"),
-                            this,
-                            this.InteractionCell);
-                        FaceStyleChanger.locomotionUrgency = LocomotionUrgency.Walk;
+                                                   DefDatabase<JobDef>.GetNamed("FaceStyleChanger"),
+                                                   this,
+                                                   this.InteractionCell)
+                                                   {
+                                                       locomotionUrgency = LocomotionUrgency.Walk
+                                                   };
                         if (!pawn.jobs.TryTakeOrderedJob(FaceStyleChanger))
                         {
                             // This is used to force go job, it will work even when drafted

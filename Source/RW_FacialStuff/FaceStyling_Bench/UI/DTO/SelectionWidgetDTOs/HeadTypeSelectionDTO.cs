@@ -57,8 +57,8 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
                 this.OriginalCrownType=CrownType.Average;
             }
 
-            this.AddHeadTypesToList("Things/Pawn/Humanlike/Heads/Male", this.maleHeadTypes);
-            this.AddHeadTypesToList("Things/Pawn/Humanlike/Heads/Female", this.femaleHeadTypes);
+            AddHeadTypesToList("Things/Pawn/Humanlike/Heads/Male", this.maleHeadTypes);
+            AddHeadTypesToList("Things/Pawn/Humanlike/Heads/Female", this.femaleHeadTypes);
 
             this.Gender = gender;
             this.FindIndex(headType);
@@ -136,7 +136,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             }
         }
 
-        private void AddHeadTypesToList(string source, List<string> list)
+        private static void AddHeadTypesToList(string source, List<string> list)
         {
             foreach (string current in GraphicDatabaseUtility.GraphicNamesInFolder(source))
             {

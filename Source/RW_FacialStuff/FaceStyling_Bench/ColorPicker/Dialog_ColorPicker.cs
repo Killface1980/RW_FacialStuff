@@ -3,7 +3,7 @@ namespace FacialStuff.ColorPicker
 {
     using System;
 
-    using FaceStyling;
+    using global::FaceStyling;
 
     using UnityEngine;
 

@@ -13,14 +13,13 @@
         private const TargetIndex CellInd = TargetIndex.B;
         private const TargetIndex ColorChanger = TargetIndex.A;
 
-      
         private static readonly string ErrorMessage = "FaceStyling job called on building that is not Cabinet";
 
         #endregion Private Fields
 
         #region Protected Methods
 
-      
+
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDestroyedOrNull(ColorChanger);
@@ -40,8 +39,8 @@
             {
                 initAction = delegate
                     {
-                        FaceStyler faceStyler = this.TargetA.Thing as FaceStyler;
-                        if (faceStyler != null)
+                        FaceStyler faceStylerNew = this.TargetA.Thing as FaceStyler;
+                        if (faceStylerNew != null)
                         {
                             FaceStyler thing = (FaceStyler)this.TargetA.Thing;
                             Pawn actor = this.GetActor();
@@ -52,7 +51,7 @@
                         }
                         else
                         {
-                            Log.Error(ErrorMessage.Translate());
+                            Log.Error(ErrorMessage);
                         }
                     },
                 defaultCompleteMode = ToilCompleteMode.Instant

@@ -184,7 +184,7 @@ namespace FacialStuff.Detouring
             // }
 
             // Custom rotting color, mixed with skin tone
-            Color rotColor = pawn.story.SkinColor * FacialGraphics.SkinRottingMultiplyColor;
+            Color rotColor = pawn.story.SkinColor * FaceTextures.SkinRottingMultiplyColor;
             if (faceComp.SetHeadType())
             {
                 if (faceComp.InitializeGraphics())
@@ -315,7 +315,7 @@ namespace FacialStuff.Detouring
                                           where hair.hairTags.SharesElementWith(factionType.hairTags)
                                           select hair;
 
-            __result = source.RandomElementByWeight(hair => PawnFaceChooser.HairChoiceLikelihoodFor(hair, pawn));
+            __result = source.RandomElementByWeight(hair => PawnFaceMaker.HairChoiceLikelihoodFor(hair, pawn));
             return false;
         }
 

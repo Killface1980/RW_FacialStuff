@@ -31,7 +31,7 @@
 
         private const float YOffset_Status = 0.0421875f;
 
-        private const float YOffsetOnFace = 0.0001f;
+        private const float YOffsetOnFace = 0.001f;
 
         
         private static Type PawnRendererType;
@@ -83,6 +83,7 @@
             bool headStump)
         {
             GetReflections();
+
 
             // Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
             Pawn pawn = __instance.graphics.pawn;
@@ -319,7 +320,7 @@
 
                         // Don't show hats indoors
                         if (!portrait && Controller.settings.HideHatWhileRoofed && pawn.Map != null
-                            && pawn.Position.Roofed(pawn.Map))
+                            && faceComp.Roofed)
                         {
                             showHat = false;
                         }

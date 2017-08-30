@@ -80,6 +80,8 @@
 
         private bool updated = true;
 
+        public bool Roofed;
+
         #endregion Private Fields
 
         #region Public Properties
@@ -375,6 +377,11 @@
                 return null;
             }
 
+            if (facing == Rot4.East)
+            {
+                return null;
+            }
+
             Material material = this.faceGraphicPart.EyeLeftGraphic?.MatAt(facing);
 
             if (!portrait)
@@ -413,6 +420,11 @@
         public Material EyeRightMatAt(Rot4 facing, bool portrait)
         {
             if (this.HasEyePatchRight)
+            {
+                return null;
+            }
+
+            if (facing == Rot4.West)
             {
                 return null;
             }
@@ -567,11 +579,17 @@
         {
             base.PostDraw();
 
-            if (this.pawn == null || !this.pawn.Spawned || this.pawn.Dead
-                || !this.oldEnough || this.Dontrender)
+            if (this.pawn == null)
             {
                 return;
             }
+
+            if (!this.pawn.Spawned || this.pawn.Dead || !this.oldEnough || this.Dontrender)
+            {
+                return;
+            }
+
+            this.Roofed = this.pawn.Position.Roofed(this.pawn.Map);
 
             if (Controller.settings.UseMouth)
             {
@@ -893,22 +911,22 @@
         {
             if (this.PawnFace.EyeDef == null)
             {
-                this.PawnFace.EyeDef = PawnFaceChooser.RandomEyeDefFor(pawn, pawn.Faction.def);
+                this.PawnFace.EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, pawn.Faction.def);
             }
 
             if (this.PawnFace.BrowDef == null)
             {
-                this.PawnFace.BrowDef = PawnFaceChooser.RandomBrowDefFor(pawn, pawn.Faction.def);
+                this.PawnFace.BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, pawn.Faction.def);
             }
 
             if (this.PawnFace.WrinkleDef == null)
             {
-                this.PawnFace.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(pawn);
+                this.PawnFace.WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn);
             }
 
             if (this.PawnFace.BeardDef == null || this.PawnFace.MoustacheDef == null)
             {
-                PawnFaceChooser.RandomBeardDefFor(
+                PawnFaceMaker.RandomBeardDefFor(
                     pawn,
                     pawn.Faction.def,
                     out this.PawnFace.BeardDef,
@@ -1093,7 +1111,7 @@
                 pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
                 ShaderDatabase.Transparent,
                 Vector2.one,
-                wrinkleColor * FacialGraphics.SkinRottingMultiplyColor);
+                wrinkleColor * FaceTextures.SkinRottingMultiplyColor);
         }
 
         private void ResetBoolsAndPaths()

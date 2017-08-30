@@ -7,17 +7,18 @@
     using FacialStuff.Defs;
     using FacialStuff.Enums;
 
-     using RimWorld;
+    using JetBrains.Annotations;
+
+    using RimWorld;
 
     using Verse;
 
-    public static class PawnFaceChooser
+    public static class PawnFaceMaker
     {
 
         #region Public Methods
 
-      
-        public static WrinkleDef AssignWrinkleDefFor( Pawn pawn)
+        public static WrinkleDef AssignWrinkleDefFor(Pawn pawn)
         {
             IEnumerable<WrinkleDef> source = from wrinkle in DefDatabase<WrinkleDef>.AllDefs
                                              where wrinkle.raceList.Contains(pawn.def)
@@ -31,7 +32,7 @@
         }
 
         // RimWorld.PawnHairChooser
-        public static float HairChoiceLikelihoodFor( HairDef hair,  Pawn pawn)
+        public static float HairChoiceLikelihoodFor(HairDef hair, Pawn pawn)
         {
             if (pawn.gender == Gender.None)
             {
@@ -292,8 +293,8 @@
             BeardRoulette(pawn, factionType, out mainBeard, out moustache);
         }
 
-      
-        public static BeardDef RandomBeardDefFor( Pawn pawn, BeardType type)
+
+        public static BeardDef RandomBeardDefFor(Pawn pawn, BeardType type)
         {
             if (pawn.gender != Gender.Male)
             {
@@ -332,9 +333,8 @@
             return chosenBeard;
         }
 
-      
-        public static BrowDef RandomBrowDefFor( Pawn pawn,
-                                              FactionDef factionType)
+
+        public static BrowDef RandomBrowDefFor([NotNull] Pawn pawn, FactionDef factionType)
         {
             IEnumerable<BrowDef> source = from brow in DefDatabase<BrowDef>.AllDefs
                                           where brow.raceList.Contains(pawn.def)
@@ -392,8 +392,8 @@
             return chosenBrows;
         }
 
-      
-        public static EyeDef RandomEyeDefFor( Pawn pawn,
+
+        public static EyeDef RandomEyeDefFor(Pawn pawn,
                                             FactionDef factionType)
         {
             // Log.Message("Selecting eyes.");
@@ -420,7 +420,7 @@
 
         #region Private Methods
 
-        private static float BeardChoiceLikelihoodFor( BeardDef beard,  Pawn pawn)
+        private static float BeardChoiceLikelihoodFor(BeardDef beard, Pawn pawn)
         {
             if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 37)
             {
@@ -489,7 +489,7 @@
             }
         }
 
-        private static float BrowChoiceLikelihoodFor( BrowDef brow,  Pawn pawn)
+        private static float BrowChoiceLikelihoodFor(BrowDef brow, Pawn pawn)
         {
             if (pawn.gender == Gender.None)
             {
@@ -524,7 +524,7 @@
             return 0f;
         }
 
-        private static float EyeChoiceLikelihoodFor( EyeDef eye,  Pawn pawn)
+        private static float EyeChoiceLikelihoodFor(EyeDef eye, Pawn pawn)
         {
             if (pawn.gender == Gender.None)
             {
@@ -559,8 +559,8 @@
             return 0f;
         }
 
-      
-        private static MoustacheDef MoustacheRoulette( Pawn pawn,  FactionDef factionType)
+
+        private static MoustacheDef MoustacheRoulette(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<MoustacheDef> source = from moustache in DefDatabase<MoustacheDef>.AllDefs
                                                where moustache.raceList.Contains(pawn.def)
@@ -584,7 +584,7 @@
             return moustacheDef;
         }
 
-        private static float TacheChoiceLikelihoodFor( MoustacheDef beard,  Pawn pawn)
+        private static float TacheChoiceLikelihoodFor(MoustacheDef beard, Pawn pawn)
         {
             if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 37)
             {

@@ -2,7 +2,7 @@ namespace FacialStuff.Genetics
 {
     public struct HairColorRequest
     {
-        public HairColorRequest(float euMelanin, float pheoMelanin, float cuticula, float greyness)
+        public HairColorRequest(float pheoMelanin, float euMelanin, float cuticula, float greyness)
         {
             this.EuMelanin = euMelanin;
             this.PheoMelanin = pheoMelanin;

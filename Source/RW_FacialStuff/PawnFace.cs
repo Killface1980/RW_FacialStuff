@@ -25,7 +25,7 @@
 
         public float Cuticula;
 
-        public bool DrawMouth;
+        public bool DrawMouth = true;
 
         public float EuMelanin;
 
@@ -51,11 +51,11 @@
             this.DrawMouth = true;
             FactionDef faction = pawn.Faction.def;
 
-            this.EyeDef = PawnFaceChooser.RandomEyeDefFor(pawn, faction);
-            this.BrowDef = PawnFaceChooser.RandomBrowDefFor(pawn, faction);
+            this.EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, faction);
+            this.BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, faction);
 
-            this.WrinkleDef = PawnFaceChooser.AssignWrinkleDefFor(pawn);
-            PawnFaceChooser.RandomBeardDefFor(pawn, faction, out this.BeardDef, out this.MoustacheDef);
+            this.WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn);
+            PawnFaceMaker.RandomBeardDefFor(pawn, faction, out this.BeardDef, out this.MoustacheDef);
             this.HasSameBeardColor = Rand.Value > 0.3f;
 
             this.GenerateHairDNA(pawn);

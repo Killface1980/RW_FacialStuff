@@ -5,17 +5,17 @@
     using Verse;
 
     [StaticConstructorOnStartup]
-    public static class FacialGraphics
+    public static class FaceTextures
     {
         #region Public Fields
 
-      
+
         public static readonly Texture2D BlankTexture;
         public static readonly Color SkinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
         public static Texture2D MaskTex_Average_FrontBack;
 
-      
+
         public static readonly Texture2D MaskTex_Narrow_Side;
 
         #endregion Public Fields
@@ -30,7 +30,7 @@
 
         #region Public Constructors
 
-        static FacialGraphics()
+        static FaceTextures()
         {
             MaskTex_Average_FrontBack = MakeReadable(
                 ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"));
@@ -57,7 +57,7 @@
 
         #region Public Properties
 
-      
+
         public static Texture2D MaskTex_Average_Side
         {
             get
@@ -71,7 +71,7 @@
             }
         }
 
-      
+
         public static Texture2D MaskTex_Narrow_FrontBack
         {
             get
@@ -97,7 +97,7 @@
             return value * darken;
         }
 
-      
+
         public static Texture2D MakeReadable(Texture2D texture)
         {
             RenderTexture previous = RenderTexture.active;

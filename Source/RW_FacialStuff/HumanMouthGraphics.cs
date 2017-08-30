@@ -10,12 +10,14 @@
     [StaticConstructorOnStartup]
     public static class HumanMouthGraphics
     {
+        #region Public Fields
 
-      
+        public static readonly MouthGraphicData[] HumanMouthGraphic;
         public static readonly Graphic_Multi_NaturalHeadParts MouthGraphic03;
 
-      
-        public static readonly MouthGraphicData[] HumanMouthGraphic;
+        #endregion Public Fields
+
+        #region Public Constructors
 
         static HumanMouthGraphics()
         {
@@ -66,6 +68,10 @@
             };
         }
 
+        #endregion Public Constructors
+
+        #region Public Methods
+
         public static int GetMouthTextureIndexOfMood(float mood)
         {
             int result = 0;
@@ -82,30 +88,31 @@
             return result;
         }
 
-        #region Nested type: MouthGraphicData
+        #endregion Public Methods
+
+        #region Public Structs
 
         public struct MouthGraphicData
         {
-            #region Fields
+            #region Public Fields
 
-          
             public readonly Graphic_Multi_NaturalHeadParts Graphic;
 
             public readonly float Mood;
 
-            #endregion Fields
+            #endregion Public Fields
 
-            #region Constructors
+            #region Public Constructors
 
-            public MouthGraphicData(float mood,  Graphic_Multi_NaturalHeadParts graphic)
+            public MouthGraphicData(float mood, Graphic_Multi_NaturalHeadParts graphic)
             {
                 this.Mood = mood;
                 this.Graphic = graphic;
             }
 
-            #endregion Constructors
+            #endregion Public Constructors
         }
 
-        #endregion Nested type: MouthGraphicData
+        #endregion Public Structs
     }
 }

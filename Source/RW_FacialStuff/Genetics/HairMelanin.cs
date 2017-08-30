@@ -29,6 +29,7 @@
 
         private static readonly Gradient GradientEuMelanin;
 
+        private static readonly FloatRange cuticulaRange = new FloatRange(0.75f, 1.25f);
 
         private static readonly Gradient GradientPheoMelanin;
         private static readonly Color HairBlueSteel = new Color32(57, 115, 199, 255);
@@ -57,15 +58,31 @@
             alphaKeys[1].alpha = 1f;
             alphaKeys[1].time = 1f;
 
+            GradientColorKey[] phyoMelaninGradientColorKeys = new GradientColorKey[5];
+            phyoMelaninGradientColorKeys[0].color = HairPlatinum;
+            phyoMelaninGradientColorKeys[0].time = 0.0f;
+            phyoMelaninGradientColorKeys[1].color = new Color32(226, 188, 116, 255);
+            phyoMelaninGradientColorKeys[1].time = 0.3f;
+            phyoMelaninGradientColorKeys[2].color = new Color32(231, 168, 84, 255);
+            phyoMelaninGradientColorKeys[2].time = 0.6f;
+            phyoMelaninGradientColorKeys[3].color = new Color32(210, 119, 44, 255);
+            phyoMelaninGradientColorKeys[3].time = 0.8f;
+            phyoMelaninGradientColorKeys[4].color = new Color32(191, 50, 0, 255);
+            phyoMelaninGradientColorKeys[4].time = 1f;
+
+            GradientPheoMelanin = new Gradient();
+            GradientPheoMelanin.SetKeys(phyoMelaninGradientColorKeys, alphaKeys);
+
+
             GradientColorKey[] euMelaninGradientColorKeys = new GradientColorKey[5];
             euMelaninGradientColorKeys[0].color = HairPlatinum;
             euMelaninGradientColorKeys[0].time = 0.0f;
             euMelaninGradientColorKeys[1].color = new Color32(139, 108, 66, 255);
-            euMelaninGradientColorKeys[1].time = 0.7f;
+            euMelaninGradientColorKeys[1].time = 0.4f;
             euMelaninGradientColorKeys[2].color = new Color32(91, 60, 17, 255);
-            euMelaninGradientColorKeys[2].time = 0.8f;
-            euMelaninGradientColorKeys[3].color = new Color32(47, 30, 14, 255);
-            euMelaninGradientColorKeys[3].time = 0.9f;
+            euMelaninGradientColorKeys[2].time = 0.6f;
+            euMelaninGradientColorKeys[3].color = new Color32(71, 43, 15, 255);
+            euMelaninGradientColorKeys[3].time = 0.8f;
             euMelaninGradientColorKeys[4].color = new Color32(25, 16, 7, 255);
             euMelaninGradientColorKeys[4].time = 1f;
 
@@ -74,20 +91,7 @@
             GradientEuMelanin = new Gradient();
             GradientEuMelanin.SetKeys(euMelaninGradientColorKeys, alphaKeys);
 
-            GradientColorKey[] phyoMelaninGradientColorKeys = new GradientColorKey[5];
-            phyoMelaninGradientColorKeys[0].color = HairPlatinum;
-            phyoMelaninGradientColorKeys[0].time = 0.0f;
-            phyoMelaninGradientColorKeys[1].color = new Color32(226, 188, 116, 255);
-            phyoMelaninGradientColorKeys[1].time = 0.3f;
-            phyoMelaninGradientColorKeys[2].color = new Color32(231, 168, 84, 255);
-            phyoMelaninGradientColorKeys[2].time = 0.6f;
-            phyoMelaninGradientColorKeys[3].color = new Color32(173, 79, 9, 255);
-            phyoMelaninGradientColorKeys[3].time = 0.8f;
-            phyoMelaninGradientColorKeys[4].color = new Color32(157, 54, 0, 255);
-            phyoMelaninGradientColorKeys[4].time = 1f;
 
-            GradientPheoMelanin = new Gradient();
-            GradientPheoMelanin.SetKeys(phyoMelaninGradientColorKeys, alphaKeys);
 
             NaturalHairColors = new List<Color>
                                     {
@@ -206,7 +210,7 @@
 
             if (sameBeardColor)
             {
-                beardColor = FacialGraphics.DarkerBeardColor(hairColor);
+                beardColor = FaceTextures.DarkerBeardColor(hairColor);
             }
             else
             {
@@ -234,7 +238,10 @@
             color *= GradientPheoMelanin.Evaluate(hairColorRequest.PheoMelanin);
 
             Color.RGBToHSV(color, out float h, out float s, out float v);
-            s *= hairColorRequest.Cuticula;
+
+            var cuticula = Mathf.Lerp(cuticulaRange.min, cuticulaRange.max, hairColorRequest.Cuticula);
+
+            s *= cuticula;
 
             color = Color.HSVToRGB(h, s, v);
 
@@ -368,7 +375,7 @@
         {
             hair.EuMelanin = Rand.Range(pawn.story.melanin * 0.5f, 1f);
             hair.PheoMelanin = Rand.Range(pawn.story.melanin * 0.25f, 1f);
-            hair.Cuticula = Rand.Range(0.75f, 1.25f);
+            hair.Cuticula = Rand.Value;
         }
 
         #endregion Private Methods
