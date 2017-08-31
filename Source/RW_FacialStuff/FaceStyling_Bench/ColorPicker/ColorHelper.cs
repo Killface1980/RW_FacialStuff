@@ -189,6 +189,7 @@ namespace FacialStuff.ColorPicker
             {
                 return false;
             }
+
             try
             {
                 string str = hex.Substring(1, hex.Length - 1);

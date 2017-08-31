@@ -30,6 +30,12 @@
   <FacialStuffEditor.EditFace>Bearbeite Aussehen des Kolonisten</FacialStuffEditor.EditFace>
   <FacialStuffEditor.MelaninLevel>Melanin</FacialStuffEditor.MelaninLevel>
 
+  <FacialStuffEditor.Cuticula>Cuticula</FacialStuffEditor.Cuticula>
+  <FacialStuffEditor.Greyness>Grauheit</FacialStuffEditor.Greyness>
+  <FacialStuffEditor.Eumelanin>Eumelanin</FacialStuffEditor.Eumelanin>
+  <FacialStuffEditor.Pheomelanin>Pheomelanin</FacialStuffEditor.Pheomelanin>
+
+
   <!-- Dresser -->
 
   <!-- Common Strings -->

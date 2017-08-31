@@ -38,6 +38,7 @@
             }
 
             GUI.DrawTexture(rect, ContentFinder<Texture2D>.Get("Buttons/ButtonFace", true));
+
             // ReSharper disable once InvertIf
             if (Widgets.ButtonInvisible(rect, false))
             {

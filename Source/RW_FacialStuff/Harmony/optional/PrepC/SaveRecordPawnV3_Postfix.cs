@@ -23,6 +23,7 @@
                 {
                     return;
                 }
+
                 SaveRecordFaceV3 face = new SaveRecordFaceV3(customPawn.Pawn);
                 face.ExposeData();
             }

@@ -19,11 +19,13 @@
             {
                 return;
             }
+
             Pawn pawn = __result.Pawn;
             if (pawn?.TryGetComp<CompFace>() == null)
             {
                 return;
             }
+
             PawnFace pawnFace = SaveRecordPawnV3_Postfix.LoadedPawns[record].Face;
             CompFace compFace = pawn.TryGetComp<CompFace>();
             compFace.SetPawnFace(pawnFace);

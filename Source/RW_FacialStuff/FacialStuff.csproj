@@ -82,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IncidentWorker_FacialStuffUpdateNote.cs" />
     <Compile Include="CutHairDB.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />
     <Compile Include="Defs\MoustacheDefOf.cs" />
@@ -98,7 +99,6 @@
     <Compile Include="Enums\Side.cs" />
     <Compile Include="FaceGraphicParts.cs" />
     <Compile Include="FaceStyling_Bench\Dialog_FaceStyling.cs" />
-    <None Include="FaceStyling_Bench\DresserJobDriver\JobDriver_ChangeBody.cs" />
     <None Include="FaceStyling_Bench\UI\DresserUI.cs" />
     <Compile Include="FaceStyling_Bench\UI\DTO\DresserDTO.cs" />
     <Compile Include="FaceStyling_Bench\UI\DTO\DresserDtoFactory.cs" />
@@ -186,6 +186,9 @@
       <Link>Defs\SpoonshortagesRimworldHairstyles_HairDefs.xml</Link>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="..\..\Defs\IncidentDefs\Incidents_FS_Update.xml">
+      <Link>Incidents_FS_Update.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\JobDefs\Clutter_Jobs.xml">
       <Link>Defs\Clutter_Jobs.xml</Link>
     </Content>
@@ -204,6 +207,9 @@
     </Content>
     <Content Include="..\..\Languages\English\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\English\FacialStuff_Keyed.xml</Link>
+    </Content>
+    <Content Include="..\..\Languages\English\Keyed\FS_UpdatenInfo.xml">
+      <Link>FS_UpdatenInfo.xml</Link>
     </Content>
     <Content Include="..\..\Languages\German\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\German\FacialStuff_Keyed.xml</Link>

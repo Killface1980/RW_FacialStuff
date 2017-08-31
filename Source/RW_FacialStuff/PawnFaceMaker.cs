@@ -422,18 +422,15 @@
 
         private static float BeardChoiceLikelihoodFor(BeardDef beard, Pawn pawn)
         {
-            if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 37)
+            if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
             {
-                return 0f;
+                return 30f;
             }
 
             switch (beard.hairGender)
             {
                 case HairGender.Male: return 70f;
-                case HairGender.MaleUsually: return 30f;
-                case HairGender.Any: return 60f;
-                case HairGender.FemaleUsually: return 5f;
-                case HairGender.Female: return 1f;
+                case HairGender.MaleUsually: return 50f;
             }
 
             Log.Error(string.Concat("Unknown beard likelihood for ", beard, " with ", pawn));
@@ -441,7 +438,7 @@
         }
 
         private static void BeardRoulette(
-           Pawn pawn,
+            [NotNull] Pawn pawn,
            FactionDef factionType,
                                    out BeardDef mainBeard,
                                    out MoustacheDef moustache)
@@ -473,7 +470,7 @@
             {
                 chosenBeard = BeardDefOf.Beard_Shaved;
             }
-            else if (rand < 0.25f)
+            else if (rand < 0.2f)
             {
                 chosenBeard = BeardDefOf.Beard_Stubble;
             }
@@ -571,37 +568,30 @@
             {
                 source = from moustache in DefDatabase<MoustacheDef>.AllDefs select moustache;
             }
-            else
-            {
-                return MoustacheDefOf.Shaved;
-            }
 
             MoustacheDef moustacheDef;
             {
-                moustacheDef = source.RandomElementByWeight(beard => TacheChoiceLikelihoodFor(beard, pawn));
+                moustacheDef = source.RandomElementByWeight(tache => TacheChoiceLikelihoodFor(tache, pawn));
             }
 
             return moustacheDef;
         }
 
-        private static float TacheChoiceLikelihoodFor(MoustacheDef beard, Pawn pawn)
+        private static float TacheChoiceLikelihoodFor(MoustacheDef tache, Pawn pawn)
         {
-            if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 37)
+            if (tache.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 37)
             {
                 return 0f;
             }
 
 
-            switch (beard.hairGender)
+            switch (tache.hairGender)
             {
                 case HairGender.Male: return 70f;
                 case HairGender.MaleUsually: return 30f;
-                case HairGender.Any: return 60f;
-                case HairGender.FemaleUsually: return 5f;
-                case HairGender.Female: return 1f;
             }
 
-            Log.Error(string.Concat("Unknown tache likelihood for ", beard, " with ", pawn));
+            Log.Error(string.Concat("Unknown tache likelihood for ", tache, " with ", pawn));
             return 0f;
         }
 

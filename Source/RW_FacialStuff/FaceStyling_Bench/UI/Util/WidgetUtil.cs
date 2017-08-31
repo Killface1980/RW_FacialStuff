@@ -57,6 +57,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.Util
                 {
                     return middleCenterGuiStyle;
                 }
+
                 middleCenterGuiStyle = GUI.skin.label;
                 middleCenterGuiStyle.alignment = TextAnchor.MiddleCenter;
 

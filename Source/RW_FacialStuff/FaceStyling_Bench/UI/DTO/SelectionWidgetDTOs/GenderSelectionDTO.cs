@@ -79,6 +79,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             {
                 return;
             }
+
             this.index = (this.OriginalGender == Gender.Male) ? 0 : 1;
             this.IndexChanged();
         }

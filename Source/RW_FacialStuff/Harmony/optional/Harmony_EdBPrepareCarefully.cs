@@ -66,26 +66,23 @@
                         }
 
                         // harmony.Patch(
-                        //     AccessTools.Method(typeof(EdB.PrepareCarefully.DialogManageImplants), "InitializeWithPawn"),
-                        //     null,
-                        //     new HarmonyMethod(
-                        //         typeof(DialogManageImplantsPatch),
-                        //         nameof(DialogManageImplantsPatch.InitializeWithPawn)));
-                        //
+                        // AccessTools.Method(typeof(EdB.PrepareCarefully.DialogManageImplants), "InitializeWithPawn"),
+                        // null,
+                        // new HarmonyMethod(
+                        // typeof(DialogManageImplantsPatch),
+                        // nameof(DialogManageImplantsPatch.InitializeWithPawn)));
                         // harmony.Patch(
-                        //     AccessTools.Method(typeof(EdB.PrepareCarefully.DialogManageImplants), "AddImplant"),
-                        //     new HarmonyMethod(
-                        //         typeof(DialogManageImplantsPatch),
-                        //         nameof(DialogManageImplantsPatch.UpdatePawnForImpplants)),
-                        //     null);
-                        //
+                        // AccessTools.Method(typeof(EdB.PrepareCarefully.DialogManageImplants), "AddImplant"),
+                        // new HarmonyMethod(
+                        // typeof(DialogManageImplantsPatch),
+                        // nameof(DialogManageImplantsPatch.UpdatePawnForImpplants)),
+                        // null);
                         // harmony.Patch(
-                        //     AccessTools.Method(typeof(EdB.PrepareCarefully.DialogManageImplants), "RemoveImplant"),
-                        //     new HarmonyMethod(
-                        //         typeof(DialogManageImplantsPatch),
-                        //         nameof(DialogManageImplantsPatch.UpdatePawnForImpplants)),
-                        //     null);
-
+                        // AccessTools.Method(typeof(EdB.PrepareCarefully.DialogManageImplants), "RemoveImplant"),
+                        // new HarmonyMethod(
+                        // typeof(DialogManageImplantsPatch),
+                        // nameof(DialogManageImplantsPatch.UpdatePawnForImpplants)),
+                        // null);
                     }))();
             }
             catch (TypeLoadException)

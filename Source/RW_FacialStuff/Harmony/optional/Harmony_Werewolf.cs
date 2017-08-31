@@ -23,6 +23,7 @@
                         {
                             return;
                         }
+
                         harmony.Patch(
                             AccessTools.Method(typeof(Werewolf.CompWerewolf), "TransformInto"),
                             new HarmonyMethod(

@@ -17,7 +17,6 @@
     public class CompFace : ThingComp
     {
         // public int rotationInt;
-
         #region Private Fields
 
         private bool dontrender;
@@ -77,8 +76,6 @@
 
         [CanBeNull]
         private string texPathMouth;
-
-        private bool updated = true;
 
         public bool Roofed;
 
@@ -333,6 +330,7 @@
             {
                 return;
             }
+
             foreach (Hediff hediff in hediffSetHediffs.Where(
                 hediff => hediff?.def?.defName != null))
             {
@@ -487,17 +485,23 @@
 
             this.InitializeGraphicsBeard();
 
-            this.faceGraphicPart.BrowGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                this.texPathBrow,
-                ShaderDatabase.Transparent,
-                Vector2.one,
-                Color.black);
+            this.InitializeGraphicsBrows();
 
             this.InitializeGraphicsMouth();
 
             this.InitializeGraphicsEyes();
 
             return true;
+        }
+
+        private void InitializeGraphicsBrows()
+        {
+            var color = this.pawn.story.hairColor * this.pawn.story.hairColor * Color.gray;
+            this.faceGraphicPart.BrowGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                this.texPathBrow,
+                ShaderDatabase.CutoutSkin,
+                Vector2.one,
+                color);
         }
 
         [CanBeNull]
@@ -614,50 +618,50 @@
         {
             base.PostExposeData();
 
-            Scribe_Values.Look(ref this.updated, "updated");
 
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                if (!this.updated)
+                if (this.pawnFace == null)
                 {
+                    Pawn pawn1 = this.parent as Pawn;
+                    var face = new PawnFace(pawn1);
+
+                    Scribe_Defs.Look(ref face.EyeDef, "EyeDef");
+                    Scribe_Defs.Look(ref face.BrowDef, "BrowDef");
+                    Scribe_Defs.Look(ref face.WrinkleDef, "WrinkleDef");
+                    Scribe_Defs.Look(ref face.BeardDef, "BeardDef");
+                    Scribe_Defs.Look(ref face.MoustacheDef, "MoustacheDef");
+                    Scribe_Values.Look(ref face.CrownType, "crownType");
+
+                    Scribe_Values.Look(ref face.HasSameBeardColor, "sameBeardColor");
+
+                    Scribe_Values.Look(ref face.EuMelanin, "euMelanin");
+                    Scribe_Values.Look(ref face.BeardColor, "BeardColor");
+                    Scribe_Values.Look(ref face.PheoMelanin, "pheoMelanin");
+                    Scribe_Values.Look(ref face.EuMelanin, "melanin1");
+                    Scribe_Values.Look(ref face.PheoMelanin, "melanin2");
+
+                    Scribe_Values.Look(ref pawn1.story.hairColor, "HairColorOrg");
+                    // Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
+                    if (face.MoustacheDef == null)
                     {
-                        this.pawnFace = new PawnFace(this.parent as Pawn, false);
-
-                        PawnFace face = this.PawnFace;
-                        Scribe_Defs.Look(ref face.EyeDef, "EyeDef");
-                        Scribe_Defs.Look(ref face.BrowDef, "BrowDef");
-                        Scribe_Defs.Look(ref face.WrinkleDef, "WrinkleDef");
-                        Scribe_Defs.Look(ref face.BeardDef, "BeardDef");
-                        Scribe_Defs.Look(ref face.MoustacheDef, "MoustacheDef");
-                        Scribe_Values.Look(ref face.DrawMouth, "drawMouth");
-                        Scribe_Values.Look(ref face.CrownType, "crownType");
-
-                        Scribe_Values.Look(ref face.HasSameBeardColor, "sameBeardColor");
-
-                        Scribe_Values.Look(ref face.EuMelanin, "euMelanin");
-                        Scribe_Values.Look(ref face.BeardColor, "BeardColor");
-                        Scribe_Values.Look(ref face.PheoMelanin, "pheoMelanin");
-                        Scribe_Values.Look(ref face.EuMelanin, "melanin1");
-                        Scribe_Values.Look(ref face.PheoMelanin, "melanin2");
-
-                        // Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
-                        if (face.MoustacheDef == null)
-                        {
-                            face.MoustacheDef = MoustacheDefOf.Shaved;
-                        }
-
-                        this.updated = true;
+                        face.MoustacheDef = MoustacheDefOf.Shaved;
                     }
+                    this.pawnFace = face;
+                    //  Log.Message("Facial Stuff updated pawn " + this.parent.Label;
+
+                    // Force ResolveAllGraphics
+                    pawn1.Drawer.renderer.graphics.nakedGraphic = null;
                 }
             }
+            Scribe_Deep.Look(ref this.pawnFace, "pawnFace");
 
-            Scribe_References.Look(ref this.pawn, "pawn");
+           // Scribe_References.Look(ref this.pawn, "pawn");
 
             Scribe_Values.Look(ref this.nullsChecked, "nullsChecked");
             Scribe_Values.Look(ref this.dontrender, "dontrender");
             Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
 
-            Scribe_Deep.Look(ref this.pawnFace, "pawnFace");
         }
 
         /// <summary>
@@ -671,6 +675,7 @@
             {
                 return false;
             }
+
             if (this.pawnFace == null)
             {
                 this.pawnFace = new PawnFace(this.pawn);
@@ -960,7 +965,7 @@
 
                 this.faceGraphicPart.MoustacheGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     moustacheDefTexPath,
-                    ShaderDatabase.Transparent,
+                    ShaderDatabase.Cutout,
                     Vector2.one,
                     this.PawnFace.BeardColor);
             }
@@ -972,7 +977,7 @@
 
             this.faceGraphicPart.MainBeardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 mainBeardDefTexPath,
-                ShaderDatabase.Transparent,
+                ShaderDatabase.Cutout,
                 Vector2.one,
                 this.PawnFace.BeardColor);
         }
@@ -986,7 +991,7 @@
                 {
                     this.faceGraphicPart.EyeLeftPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
                                                                    this.texPathEyeLeftPatch,
-                                                                   ShaderDatabase.Transparent,
+                                                                   ShaderDatabase.CutoutSkin,
                                                                    Vector2.one,
                                                                    Color.white) as Graphic_Multi_AddedHeadParts;
                     this.HasEyePatchLeft = true;
@@ -1011,7 +1016,7 @@
                 {
                     this.faceGraphicPart.EyeRightPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
                                                                     this.texPathEyeRightPatch,
-                                                                    ShaderDatabase.Transparent,
+                                                                    ShaderDatabase.CutoutSkin,
                                                                     Vector2.one,
                                                                     Color.white) as Graphic_Multi_AddedHeadParts;
                     this.HasEyePatchRight = true;
@@ -1036,31 +1041,31 @@
 
             this.faceGraphicPart.EyeLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                       this.texPathEyeLeft,
-                                                      ShaderDatabase.Transparent,
+                                                      ShaderDatabase.CutoutSkin,
                                                       Vector2.one,
                                                       this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                        this.texPathEyeRight,
-                                                       ShaderDatabase.Transparent,
+                                                       ShaderDatabase.CutoutSkin,
                                                        Vector2.one,
                                                        this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                             this.texPathEyeLeftClosed,
-                                                            ShaderDatabase.Transparent,
+                                                            ShaderDatabase.CutoutSkin,
                                                             Vector2.one,
                                                             Color.black) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                              this.texPathEyeRightClosed,
-                                                             ShaderDatabase.Transparent,
+                                                             ShaderDatabase.CutoutSkin,
                                                              Vector2.one,
                                                              Color.black) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.DeadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 "Eyes/Eyes_Dead",
-                ShaderDatabase.Transparent,
+                ShaderDatabase.CutoutSkin,
                 Vector2.one,
                 Color.white);
 
@@ -1075,7 +1080,7 @@
                 {
                     this.faceGraphicPart.JawGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                           this.texPathMouth,
-                                                          ShaderDatabase.Transparent,
+                                                          ShaderDatabase.CutoutSkin,
                                                           Vector2.one,
                                                           Color.white) as Graphic_Multi_NaturalHeadParts;
                     this.hasNaturalMouth = false;
@@ -1096,8 +1101,8 @@
         {
             Color wrinkleColor = Color.Lerp(
                 this.pawn.story.SkinColor,
-                this.pawn.story.SkinColor * this.pawn.story.SkinColor,
-                Mathf.InverseLerp(50f, 100f, this.pawn.ageTracker.AgeBiologicalYearsFloat));
+                this.pawn.story.SkinColor * new Color(0.2f, 0.2f, 0.2f),
+                Mathf.InverseLerp(45f, 80f, this.pawn.ageTracker.AgeBiologicalYearsFloat));
 
             WrinkleDef pawnFaceWrinkleDef = this.PawnFace.WrinkleDef;
 
@@ -1109,7 +1114,7 @@
 
             this.faceGraphicPart.RottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
-                ShaderDatabase.Transparent,
+                ShaderDatabase.CutoutSkin,
                 Vector2.one,
                 wrinkleColor * FaceTextures.SkinRottingMultiplyColor);
         }
@@ -1135,6 +1140,7 @@
 
             this.texPathBrow = this.BrowTexPath(this.PawnFace.BrowDef);
         }
+
         private void SetHeadOffsets()
         {
             switch (this.pawn.gender)

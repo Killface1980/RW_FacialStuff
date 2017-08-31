@@ -56,6 +56,7 @@
             {
                 return;
             }
+
             if (Find.ColonistBar != null)
             {
                 Find.ColonistBar.MarkColonistsDirty();

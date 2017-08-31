@@ -46,7 +46,7 @@ namespace FacialStuff.FaceStyling_Bench
                                                    this,
                                                    this.InteractionCell)
                                                    {
-                                                       locomotionUrgency = LocomotionUrgency.Walk
+                                                       locomotionUrgency = LocomotionUrgency.Sprint
                                                    };
                         if (!pawn.jobs.TryTakeOrderedJob(FaceStyleChanger))
                         {

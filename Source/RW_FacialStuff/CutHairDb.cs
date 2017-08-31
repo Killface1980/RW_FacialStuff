@@ -42,6 +42,7 @@
                 {
                     return modPath;
                 }
+
                 ModMetaData mod =
                     ModLister.AllInstalledMods.FirstOrDefault(x =>
                         {
@@ -123,7 +124,6 @@
                 }
 
                 // no graphics found, create =>
-
                 graphic = Activator.CreateInstance<T>();
 
                 // // Check if textures already present and readable, else create
@@ -194,7 +194,6 @@
                 AllGraphics.Add(req, graphic);
 
                 // }
-
                 return (T)graphic;
             }
             else

@@ -73,6 +73,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
                 {
                     continue;
                 }
+
                 this.index = i;
                 break;
             }

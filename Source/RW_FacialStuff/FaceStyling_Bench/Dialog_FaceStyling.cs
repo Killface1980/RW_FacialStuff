@@ -12,7 +12,6 @@
     using FacialStuff.Enums;
     using FacialStuff.FaceStyling_Bench.UI.DTO;
     using FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs;
-    using FacialStuff.FaceStyling_Bench.UI.Util;
     using FacialStuff.Genetics;
     using FacialStuff.Graphics_FS;
     using FacialStuff.Utilities;
@@ -27,6 +26,8 @@
 
     using Verse;
 
+    using static FacialStuff.FaceStyling_Bench.UI.Util.WidgetUtil;
+
     [StaticConstructorOnStartup]
     public class DialogFaceStyling : Window
     {
@@ -38,7 +39,6 @@
         #endregion Public Fields
 
         // private void CheckSelectedFacePresetHasName()
-
         #region Private Fields
 
         private static readonly Color ColorSwatchBorder = new Color(0.77255f, 0.77255f, 0.77255f);
@@ -300,7 +300,7 @@
 
         #region Public Properties
 
-        public override Vector2 InitialSize => new Vector2(700f, 700f);
+        public override Vector2 InitialSize => new Vector2(750f, 700f);
 
         public float NewMelanin
         {
@@ -421,16 +421,17 @@
         {
             // Portrait
             Rect rect = new Rect(left, top, PortraitSize.x, PortraitSize.y);
+            GUI.DrawTexture(rect, FaceTextures.gradient);
 
             // Draw the pawn's portrait
             GUI.BeginGroup(rect);
-            Vector2 size = new Vector2(128f, 180f);
+            Vector2 size = new Vector2(rect.height * 0.711f, rect.height); // 128x180
             Rect position = new Rect(
                 rect.width * 0.5f - size.x * 0.5f,
                 10f + rect.height * 0.5f - size.y * 0.5f,
                 size.x,
                 size.y);
-            RenderTexture image = PortraitsCache.Get(pawn, size, new Vector3(0f, 0f, 0f), 1.3f);
+            RenderTexture image = PortraitsCache.Get(pawn, size, new Vector3(0f, 0f, 0f), 1f);
             GUI.DrawTexture(position, image);
             GUI.EndGroup();
 
@@ -442,7 +443,7 @@
 
         public override void DoWindowContents(Rect inRect)
         {
-            Rect rect = new Rect(MarginFS, 0f, inRect.width - MarginFS, TitleHeight);
+            Rect rect = new Rect(MarginFS, 0f, inRect.width, TitleHeight);
             Text.Font = GameFont.Medium;
             Text.Anchor = TextAnchor.MiddleLeft;
             Widgets.Label(rect, Title);
@@ -534,11 +535,13 @@
 
             Action middleAct = delegate
                 {
+                    while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
+                    {
+                    }
                     // HairDNA hair = HairMelanin.GenerateHairMelaninAndCuticula(pawn, Rand.Value > 0.5f);
-
                     this.reInit = false;
                     this.faceComp.PawnFace.HasSameBeardColor = Rand.Value > 0.3f;
-                    this.faceComp.PawnFace.GenerateHairDNA(pawn);
+                    this.faceComp.PawnFace.GenerateHairDNA(pawn, true);
                     this.NewHairColor = this.faceComp.PawnFace.HairColor;
                     this.NewBeardColor = this.faceComp.PawnFace.BeardColor;
                     this.NewHair = PawnHairChooser.RandomHairDefFor(pawn, Faction.OfPlayer.def);
@@ -621,7 +624,7 @@
 
             Graphic_Multi_NaturalHeadParts result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                         path,
-                                                        ShaderDatabase.Cutout,
+                                                        ShaderDatabase.CutoutSkin,
                                                         new Vector2(38f, 38f),
                                                         Color.white,
                                                         Color.white) as Graphic_Multi_NaturalHeadParts;
@@ -636,7 +639,7 @@
             {
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                              this.faceComp.BrowTexPath(def),
-                             ShaderDatabase.Cutout,
+                             ShaderDatabase.CutoutSkin,
                              new Vector2(38f, 38f),
                              Color.white,
                              Color.white) as Graphic_Multi_NaturalHeadParts;
@@ -690,6 +693,7 @@
             }
 
             TooltipHandler.TipRegion(rect, text);
+
             // ReSharper disable once InvertIf
             if (Widgets.ButtonInvisible(rect))
             {
@@ -893,6 +897,7 @@
             Text.Anchor = TextAnchor.UpperLeft;
 
             TooltipHandler.TipRegion(rect, text);
+
             // ReSharper disable once InvertIf
             if (Widgets.ButtonInvisible(rect))
             {
@@ -969,6 +974,7 @@
             Text.Anchor = TextAnchor.UpperLeft;
 
             TooltipHandler.TipRegion(rect, text);
+
             // ReSharper disable once InvertIf
             if (Widgets.ButtonInvisible(rect))
             {
@@ -1044,6 +1050,7 @@
             Text.Anchor = TextAnchor.UpperLeft;
 
             TooltipHandler.TipRegion(rect, text);
+
             // ReSharper disable once InvertIf
             if (Widgets.ButtonInvisible(rect))
             {
@@ -1061,9 +1068,11 @@
                 this.DrawColorSelected(rect);
                 text += "\n(selected)";
             }
+
             Widgets.DrawBoxSolid(rect, color);
 
             TooltipHandler.TipRegion(rect, text);
+
             // ReSharper disable once InvertIf
             if (Widgets.ButtonInvisible(rect))
             {
@@ -1092,15 +1101,15 @@
 
         private void DrawSpecialPicker(Rect rect)
         {
-
-            foreach (var source in GraphicDatabaseHeadRecordsModded.HeadsVanillaCustom)
+            foreach (GraphicDatabaseHeadRecordsModded.HeadGraphicRecordVanillaCustom source in
+                GraphicDatabaseHeadRecordsModded.HeadsVanillaCustom)
             {
                 source.GetGraphic(pawn.story.SkinColor);
             }
+
             // string str = "Naked_" + bodyType.ToString();
             // string path = "Things/Pawn/Humanlike/Bodies/" + str;
             // return GraphicDatabase.Get<Graphic_Multi>(path, shader, Vector2.one, skinColor);
-
             List<TabRecord> list = new List<TabRecord>();
             TabRecord item = new TabRecord(
                 "HeadType".Translate(),
@@ -1112,7 +1121,7 @@
                         hairDefs.SortBy(i => i.LabelCap);
                         this.specialTab = SpecialTab.Head;
                     },
-                    this.specialTab == SpecialTab.Head);
+                this.specialTab == SpecialTab.Head);
             list.Add(item);
 
             TabRecord item2 = new TabRecord(
@@ -1330,6 +1339,7 @@
             Text.Anchor = TextAnchor.UpperLeft;
 
             TooltipHandler.TipRegion(rect, text);
+
             // ReSharper disable once InvertIf
             if (Widgets.ButtonInvisible(rect))
             {
@@ -1362,22 +1372,22 @@
             int currentSwatchIndex = PawnSkinColors_FS.GetSkinDataIndexOfMelanin(this.NewMelanin);
 
             int colorCount = PawnSkinColors_FS._SkinColors.Length;
-            var size = melaninRect.width / colorCount;
+            float size = melaninRect.width / (colorCount - 1);
             size -= MarginFS / 2;
 
             Rect swatchRect = new Rect(melaninRect.x, melaninRect.y, size, size);
 
             // Draw the swatch selection boxes.
             int clickedIndex = -1;
-            for (int i = 0; i < colorCount; i++)
+            for (int i = 0; i < colorCount - 1; i++)
             {
                 Color color = PawnSkinColors_FS._SkinColors[i].color;
 
                 // If the swatch is selected, draw a heavier border around it.
-                //    bool isThisSwatchSelected = i == currentSwatchIndex;
+                // bool isThisSwatchSelected = i == currentSwatchIndex;
                 bool isThisSwatchSelected = this.NewMelanin >= PawnSkinColors_FS._SkinColors[i].melanin
-                                            && this.NewMelanin < PawnSkinColors_FS._SkinColors[Mathf.Min(
-                                                colorCount - 1, i + 1)].melanin;
+                                            && this.NewMelanin
+                                            < PawnSkinColors_FS._SkinColors[Mathf.Min(colorCount - 1, i + 1)].melanin;
                 if (isThisSwatchSelected)
                 {
                     this.DrawColorSelected(swatchRect);
@@ -1385,10 +1395,10 @@
 
                 // Draw the border around the swatch.
                 // Rect borderRect = new Rect(
-                //     swatchRect.x - 1,
-                //     swatchRect.y - 1,
-                //     this.swatchSize.x + 2,
-                //     this.swatchSize.y + 2);
+                // swatchRect.x - 1,
+                // swatchRect.y - 1,
+                // this.swatchSize.x + 2,
+                // this.swatchSize.y + 2);
                 // GUI.color = ColorSwatchBorder;
                 // GUI.DrawTexture(borderRect, BaseContent.WhiteTex);
 
@@ -1405,6 +1415,7 @@
 
                 // Advance the swatch rect cursor position and wrap it if necessary.
                 swatchRect.x += swatchRect.width + MarginFS / 2;
+
                 // ReSharper disable once InvertIf
                 if (swatchRect.x >= melaninRect.width - this.swatchSize.x)
                 {
@@ -1412,13 +1423,14 @@
                     swatchRect.x = melaninRect.x;
                 }
             }
-            Rect melaninSlider = new Rect(melaninRect.x, swatchRect.yMax + MarginFS, melaninRect.width, WidgetUtil.SelectionRowHeight);
-            var melly = this.NewMelanin;
+
+            Rect melaninSlider = new Rect(melaninRect.x, swatchRect.yMax, melaninRect.width, SelectionRowHeight);
+            float melly = this.NewMelanin;
             melly = Widgets.HorizontalSlider(
                 melaninSlider,
                 melly,
                 0f,
-                0.99f,
+                0.999f,
                 false,
                 "FacialStuffEditor.MelaninLevel".Translate(),
                 "0",
@@ -1430,65 +1442,70 @@
             }
 
             // Draw the current color box.
-            Rect currentColorRect = new Rect(melaninRect.x, melaninSlider.yMax, 20, 20);
+            Rect currentColorRect = new Rect(melaninRect.x, melaninSlider.yMax + MarginFS, 20, 20);
 
             Widgets.DrawBoxSolid(currentColorRect, ColorSwatchBorder);
             Widgets.DrawBoxSolid(currentColorRect.ContractedBy(1), PawnSkinColors_FS.GetSkinColor(this.NewMelanin));
 
             // Figure out the lerp value so that we can draw the slider.
-            float minValue = 0.00f;
-            float maxValue = 0.99f;
-            float t = PawnSkinColors_FS.GetRelativeLerpValue(this.NewMelanin);
-            if (t < minValue)
-            {
-                t = minValue;
-            }
-            else if (t > maxValue)
-            {
-                t = maxValue;
-            }
 
-            if (clickedIndex != -1)
             {
-                t = minValue;
-            }
 
-            // Draw the slider.
-            float newValue = Widgets.HorizontalSlider(
-                new Rect(
-                    currentColorRect.x + 35f,
-                    currentColorRect.y + MarginFS / 2,
-                    melaninRect.width - 35f,
-                    WidgetUtil.SelectionRowHeight),
-                t,
-                minValue,
-                1);
-            if (newValue < minValue)
-            {
-                newValue = minValue;
-            }
-            else if (newValue > maxValue)
-            {
-                newValue = maxValue;
-            }
-
-            // If the user selected a new swatch or changed the lerp value, set a new color value.
-            // ReSharper disable once InvertIf
-            if (t != newValue || clickedIndex != -1)
-            {
-                if (clickedIndex != -1)
+                float minValue = 0.00f;
+                float maxValue = 0.999f;
+                float t = PawnSkinColors_FS.GetRelativeLerpValue(this.NewMelanin);
+                if (t < minValue)
                 {
-                    currentSwatchIndex = clickedIndex;
+                    t = minValue;
+                }
+                else if (t > maxValue)
+                {
+                    t = maxValue;
                 }
 
-                float melaninLevel = PawnSkinColors_FS.GetValueFromRelativeLerp(currentSwatchIndex, newValue);
-                this.NewMelanin = melaninLevel;
+                if (clickedIndex != -1)
+                {
+                    t = minValue;
+                }
+
+                // Draw the slider.
+                float newValue = Widgets.HorizontalSlider(
+                    new Rect(
+                        currentColorRect.x + 35f,
+                        currentColorRect.y + MarginFS / 2,
+                        melaninRect.width - 35f,
+                        SelectionRowHeight),
+                    t,
+                    minValue,
+                    1);
+                if (newValue < minValue)
+                {
+                    newValue = minValue;
+                }
+                else if (newValue > maxValue)
+                {
+                    newValue = maxValue;
+                }
+
+                // If the user selected a new swatch or changed the lerp value, set a new color value.
+                // ReSharper disable once InvertIf
+                if (t != newValue || clickedIndex != -1)
+                {
+                    if (clickedIndex != -1)
+                    {
+                        currentSwatchIndex = clickedIndex;
+                    }
+
+                    float melaninLevel = PawnSkinColors_FS.GetValueFromRelativeLerp(currentSwatchIndex, newValue);
+                    this.NewMelanin = melaninLevel;
+                }
+
             }
         }
 
         private void DrawColorSelected(Rect swatchRect)
         {
-            Widgets.DrawBoxSolid(swatchRect.ContractedBy(-1f), Color.white);
+            Widgets.DrawBoxSolid(swatchRect.ContractedBy(-2f), Color.white);
         }
 
         private void DrawMoustachePickerCell(MoustacheDef moustache, Rect rect)
@@ -1545,6 +1562,7 @@
             Text.Anchor = TextAnchor.UpperLeft;
 
             TooltipHandler.TipRegion(rect, text);
+
             // ReSharper disable once InvertIf
             if (Widgets.ButtonInvisible(rect))
             {
@@ -1556,27 +1574,27 @@
         private void DrawTypeSelector(Rect rect)
         {
             float editorLeft = rect.x;
-            float editorTop = 30f + WidgetUtil.SelectionRowHeight;
+            float editorTop = 30f + SelectionRowHeight;
             float editorWidth = 325f;
 
             float top = editorTop + 64f;
 
-            WidgetUtil.AddSelectorWidget(
+            AddSelectorWidget(
                 editorLeft,
                 top,
                 editorWidth,
                 "FacialStuffEditor.BodyType".Translate() + ":",
                 this.dresserDto.BodyTypeSelectionDto);
 
-            top += WidgetUtil.SelectionRowHeight + 20f;
-            WidgetUtil.AddSelectorWidget(
+            top += SelectionRowHeight + 20f;
+            AddSelectorWidget(
                 editorLeft,
                 top,
                 editorWidth,
                 "FacialStuffEditor.HeadType".Translate() + ":",
                 this.dresserDto.HeadTypeSelectionDto);
 
-            top += WidgetUtil.SelectionRowHeight + 20f;
+            top += SelectionRowHeight + 20f;
 
             if (Controller.settings.ShowGenderAgeChange)
             {
@@ -1586,7 +1604,7 @@
 
                 top += 64f + 20f;
 
-                WidgetUtil.AddSelectorWidget(
+                AddSelectorWidget(
                     editorLeft,
                     top,
                     editorWidth,
@@ -1643,38 +1661,33 @@
             Rect labelRect = new Rect(0f, pawnRect.yMax, vector.x, vector.y);
             labelRect = labelRect.CenteredOnXIn(pawnRect);
 
-            Rect button = new Rect(0f, labelRect.yMax + MarginFS / 2, (pawnRect.width * 1.25f - MarginFS) / 2, WidgetUtil.SelectionRowHeight);
-            Rect mainRect = new Rect(0f, button.yMax + MarginFS, pawnRect.width * 1.25f, 65f);
+            float width = rect.width - ListWidth - MarginFS;
+
+            Rect button = new Rect(
+                0f,
+                labelRect.yMax + MarginFS / 2,
+                (width - MarginFS) / 2,
+                SelectionRowHeight);
+            Rect mainRect = new Rect(0f, button.yMax + MarginFS, width, 65f);
             if (Widgets.ButtonText(button, "SkinColor"))
             {
+                while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
+                {
+                }
                 this.skinPage = true;
             }
+
             button.x = button.xMax + MarginFS;
 
-            if (this.tab == FaceStyleTab.Beard && !this.faceComp.PawnFace.HasSameBeardColor)
+            if (Widgets.ButtonText(button, "HairColor"))
             {
-
+                this.skinPage = false;
             }
-            else
-            {
-                if (Widgets.ButtonText(button, "HairColor"))
-                {
-                    this.skinPage = false;
-                }
-            }
-
 
             float height = rect.height - MarginFS * 3 - TitleHeight;
 
-
-            Rect listRect = new Rect(
-                0f,
-                TitleHeight,
-                0f,
-                height);
-            listRect.xMin = mainRect.xMax + MarginFS;
-            listRect.xMax = rect.xMax;
-
+            Rect listRect = new Rect(0f, TitleHeight, ListWidth, height);
+            listRect.x = mainRect.xMax + MarginFS;
 
             mainRect.yMax = listRect.yMax;
 
@@ -1683,32 +1696,30 @@
                 NameBackground);
             Widgets.Label(labelRect, nameStringShort);
 
-            Rect set = new Rect(mainRect) { height = 30f, width = mainRect.width / 2 - 10f };
-            set.y = listRect.yMax - 2 * WidgetUtil.NavButtonSize.y;
+            Rect set = new Rect(mainRect) { height = SelectionRowHeight, width = mainRect.width / 2 - 10f };
+            set.y = listRect.yMax - SelectionRowHeight;
             set.width = mainRect.width - MarginFS / 3;
 
             bool faceCompDrawMouth = this.faceComp.PawnFace.DrawMouth;
+            bool faceCompHasSameBeardColor = this.faceComp.PawnFace.HasSameBeardColor;
 
-            if (this.skinPage || this.tab == FaceStyleTab.Beard && !this.faceComp.PawnFace.HasSameBeardColor)
+            mainRect.yMax -= SelectionRowHeight + MarginFS;
+            if (this.skinPage)
             {
-                mainRect.yMax -= 2 * WidgetUtil.SelectionRowHeight - MarginFS;
                 this.DrawHumanlikeColorSelector(mainRect);
                 Widgets.CheckboxLabeled(set, "FacialStuffEditor.DrawMouth".Translate(), ref faceCompDrawMouth);
-
-                if (pawn.gender == Gender.Male)
-                {
-                    set.y += 24f;
-                    bool faceCompHasSameBeardColor = this.faceComp.PawnFace.HasSameBeardColor;
-                    Widgets.CheckboxLabeled(
-                        set,
-                        "FacialStuffEditor.SameColor".Translate(),
-                        ref faceCompHasSameBeardColor);
-                    this.faceComp.PawnFace.HasSameBeardColor = faceCompHasSameBeardColor;
-                }
             }
             else
             {
                 this.DrawHairColorSelector(mainRect);
+
+                if (pawn.gender == Gender.Male)
+                {
+                    Widgets.CheckboxLabeled(
+                        set,
+                        "FacialStuffEditor.SameColor".Translate(),
+                        ref faceCompHasSameBeardColor);
+                }
             }
 
             if (this.tab == FaceStyleTab.Hair || this.tab == FaceStyleTab.Beard)
@@ -1717,8 +1728,6 @@
             }
 
             Widgets.DrawMenuSection(listRect);
-
-
 
             // if (Widgets.ButtonText(set, "SelectFacePreset".Translate(), true, false))
             // {
@@ -1731,20 +1740,19 @@
             // }
             // Find.WindowStack.Add(new FloatMenu(list));
             // }
-
-
             if (GUI.changed)
             {
-                if (this.faceComp.PawnFace.HasSameBeardColor)
+                if (this.faceComp.PawnFace.HasSameBeardColor != faceCompHasSameBeardColor)
                 {
+                    this.faceComp.PawnFace.HasSameBeardColor = faceCompHasSameBeardColor;
                     this.NewBeardColor = FaceTextures.DarkerBeardColor(this.NewHairColor);
                 }
+
                 if (this.faceComp.PawnFace.DrawMouth != faceCompDrawMouth)
                 {
                     this.faceComp.PawnFace.DrawMouth = faceCompDrawMouth;
                     this.rerenderPawn = true;
                 }
-
             }
 
             set.width = mainRect.width / 2 - 10f;
@@ -1778,13 +1786,11 @@
 
             if (this.tab == FaceStyleTab.Hair)
             {
-
                 this.DrawHairPicker(listRect);
             }
 
             if (this.tab == FaceStyleTab.Beard)
             {
-
                 this.DrawBeardPicker(listRect);
             }
 
@@ -1802,78 +1808,90 @@
 
             Rect set = new Rect(contractedBy);
 
-            set.width = contractedBy.width / 9;
-            set.height = Mathf.Min(set.width, contractedBy.height / 12);
+            int colorFields = 7;
+
+            set.width = contractedBy.width / colorFields;
+            set.height = Mathf.Min(set.width, contractedBy.height / 6);
+
+            float euMelanin = this.faceComp.PawnFace.EuMelanin;
 
             Widgets.DrawBoxSolid(rect, new Color(0.2f, 0.2f, 0.2f));
-            for (int y = 0; y < 9; y++)
+            int num = 0;
+            for (int y = 0; y < 3; y++)
             {
-                for (int x = 0; x < 9; x++)
+                for (int x = 0; x < colorFields; x++)
                 {
-                    float pheoMelanin = (float)x / 8;
-                    float euMelanin = (float)y / 8;
-
+                    float pheoMelanin = (float)num / 20;
                     HairColorRequest request = new HairColorRequest(
                         pheoMelanin,
                         euMelanin,
-                        this.faceComp.PawnFace.Cuticula,
                         this.faceComp.PawnFace.Greyness);
 
                     this.DrawHairColorPickerCell(
                         HairMelanin.GetHairColor(request),
                         set.ContractedBy(3f),
-                        "Pheomelanin".Translate() + pheoMelanin.ToString("N2") + " - " + "Eumelanin".Translate()
-                        + euMelanin.ToString("N2"), request);
+                        "FacialStuffEditor.Pheomelanin".Translate() + " - " + pheoMelanin.ToString("N2"),
+                        request);
                     set.x += set.width;
+                    num++;
                 }
 
                 set.x = contractedBy.x;
                 set.y += set.height;
             }
 
+            set.y += set.height / 4;
+            set.width = contractedBy.width / HairMelanin.ArtificialHairColors.Count;
+
             foreach (Color color in HairMelanin.ArtificialHairColors)
             {
                 this.DrawHairColorPickerCell(color, set.ContractedBy(3f), color.ToString());
                 set.x += set.width;
             }
+
             set.x = contractedBy.x;
             set.width = contractedBy.width / 2 - MarginFS;
-            set.y += 2 * MarginFS;
-            set.y += set.height;
+            set.y += 1.5f * set.height;
+
             // this.faceComp.PawnFace.PheoMelanin =
-            //     Widgets.HorizontalSlider(set, this.faceComp.PawnFace.PheoMelanin, 0f, 1f);
+            // Widgets.HorizontalSlider(set, this.faceComp.PawnFace.PheoMelanin, 0f, 1f);
             // set.y += 30f;
             // this.faceComp.PawnFace.EuMelanin =
-            //     Widgets.HorizontalSlider(set, this.faceComp.PawnFace.EuMelanin, 0f, 1f);
+            // Widgets.HorizontalSlider(set, this.faceComp.PawnFace.EuMelanin, 0f, 1f);
             // set.y += 30f;
-            var cuti = this.faceComp.PawnFace.Cuticula;
-            cuti = Widgets.HorizontalSlider(
-               set,
-               cuti,
-               HairMelanin.cuticulaRange.min,
-               HairMelanin.cuticulaRange.max,
-               false,
-               "Cuticula".Translate(),
-               "0",
-               "1");
-            set.x += set.width + 15f;
-            var grey = this.faceComp.PawnFace.Greyness;
+
+            euMelanin = Widgets.HorizontalSlider(
+                set,
+                euMelanin,
+                0,
+                1f,
+                false,
+                "FacialStuffEditor.Eumelanin".Translate(),
+                "0",
+                "1");
+
+            set.x += set.width + MarginFS;
+
+            float grey = this.faceComp.PawnFace.Greyness;
             grey = Widgets.HorizontalSlider(
                 set,
                 grey,
                 HairMelanin.greyRange.min,
                 HairMelanin.greyRange.max,
                 false,
-                "Greyness".Translate(),
+                "FacialStuffEditor.Greyness".Translate(),
                 "0",
                 "1");
+
+
 
             if (GUI.changed)
             {
                 bool update = false;
-                if (Math.Abs(this.faceComp.PawnFace.Cuticula - cuti) > 0.001f)
+
+                if (Math.Abs(this.faceComp.PawnFace.EuMelanin - euMelanin) > 0.001f)
                 {
-                    this.faceComp.PawnFace.Cuticula = cuti;
+                    this.faceComp.PawnFace.EuMelanin = euMelanin;
                     update = true;
                 }
                 if (Math.Abs(this.faceComp.PawnFace.Greyness - grey) > 0.001f)
@@ -1881,8 +1899,12 @@
                     this.faceComp.PawnFace.Greyness = grey;
                     update = true;
                 }
+
                 if (update)
                 {
+                    while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
+                    {
+                    }
                     this.NewHairColor = this.faceComp.PawnFace.GetCurrentHairColor();
                 }
             }
@@ -1895,7 +1917,7 @@
             {
                 result = GraphicDatabase.Get<Graphic_Multi>(
                     def.texPath,
-                    ShaderDatabase.Cutout,
+                    ShaderDatabase.CutoutSkin,
                     new Vector2(38f, 38f),
                     Color.white,
                     Color.white);
@@ -1917,7 +1939,7 @@
 
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                              path,
-                             ShaderDatabase.Cutout,
+                             ShaderDatabase.CutoutSkin,
                              new Vector2(38f, 38f),
                              Color.white,
                              Color.white) as Graphic_Multi_NaturalEyes;
@@ -1937,7 +1959,7 @@
 
             Graphic_Multi_NaturalHeadParts result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                         path,
-                                                        ShaderDatabase.Cutout,
+                                                        ShaderDatabase.CutoutSkin,
                                                         new Vector2(38f, 38f),
                                                         Color.white,
                                                         Color.white) as Graphic_Multi_NaturalHeadParts;
@@ -1984,7 +2006,7 @@
                 // "Eyes/Eye_" + pawn.gender + faceComp.crownType + "_" + def.texPath   + "_Right";
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                              path,
-                             ShaderDatabase.Cutout,
+                             ShaderDatabase.CutoutSkin,
                              new Vector2(38f, 38f),
                              Color.white,
                              Color.white) as Graphic_Multi_NaturalEyes;
@@ -2039,6 +2061,7 @@
             {
                 return;
             }
+
             if (type is BeardDef)
             {
                 this.faceComp.PawnFace.BeardColor = (Color)newValue;

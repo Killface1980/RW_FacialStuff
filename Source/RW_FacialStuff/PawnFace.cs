@@ -23,8 +23,7 @@
 
         public CrownType CrownType;
 
-        public float Cuticula;
-
+        // public float Cuticula;
         public bool DrawMouth = true;
 
         public float EuMelanin;
@@ -46,7 +45,7 @@
         [NotNull]
         public WrinkleDef WrinkleDef;
 
-        public PawnFace([NotNull] Pawn pawn, bool setColors = true)
+        public PawnFace([NotNull] Pawn pawn, bool newPawn = true)
         {
             this.DrawMouth = true;
             FactionDef faction = pawn.Faction.def;
@@ -55,27 +54,26 @@
             this.BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, faction);
 
             this.WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn);
-            PawnFaceMaker.RandomBeardDefFor(pawn, faction, out this.BeardDef, out this.MoustacheDef);
             this.HasSameBeardColor = Rand.Value > 0.3f;
 
             this.GenerateHairDNA(pawn);
 
             this.CrownType = pawn.story.crownType;
 
-            if (setColors)
+            if (newPawn)
             {
+                PawnFaceMaker.RandomBeardDefFor(pawn, faction, out this.BeardDef, out this.MoustacheDef);
                 pawn.story.hairColor = this.HairColor;
             }
 
             // this.MelaninOrg = pawn.story.melanin;
         }
 
-        public void GenerateHairDNA(Pawn pawn)
+        public void GenerateHairDNA([NotNull] Pawn pawn, bool ignoreRelative = false)
         {
-            HairDNA hairDNA = HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor);
+            HairDNA hairDNA = HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor, ignoreRelative);
             this.EuMelanin = hairDNA.HairColorRequest.EuMelanin;
             this.PheoMelanin = hairDNA.HairColorRequest.PheoMelanin;
-            this.Cuticula = hairDNA.HairColorRequest.Cuticula;
             this.Greyness = hairDNA.HairColorRequest.Greyness;
 
             this.HairColor = hairDNA.HairColor;
@@ -103,7 +101,7 @@
 
             Scribe_Values.Look(ref this.EuMelanin, "euMelanin");
             Scribe_Values.Look(ref this.PheoMelanin, "pheoMelanin");
-            Scribe_Values.Look(ref this.Cuticula, "cuticula");
+            Scribe_Values.Look(ref this.Greyness, "greyness");
 
             Scribe_Values.Look(ref this.HairColor, "hairColor");
 

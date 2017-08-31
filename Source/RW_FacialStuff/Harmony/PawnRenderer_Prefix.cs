@@ -56,6 +56,7 @@
             {
                 return;
             }
+
             PawnRendererType = typeof(PawnRenderer);
 
             // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -310,6 +311,7 @@
                         {
                             continue;
                         }
+
                         bool showHat = true;
 
                         // removes the hat if the body is not shown
@@ -329,6 +331,7 @@
                         {
                             continue;
                         }
+
                         showFullHair = false;
 
                         // Draw regular hair if appparel allows it
@@ -381,6 +384,7 @@
                     {
                         continue;
                     }
+
                     Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing);
                     material3 = __instance.graphics.flasher.GetDamagedMat(material3);
                     GenDraw.DrawMeshNowOrLater(mesh, vector, quat, material3, portrait);

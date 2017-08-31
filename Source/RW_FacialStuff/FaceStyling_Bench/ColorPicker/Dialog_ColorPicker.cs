@@ -57,8 +57,6 @@ namespace FacialStuff.ColorPicker
 
         private Controls _activeControl = Controls.none;
 
-        private float _alphaPosition;
-
       
         private Texture2D _colorPickerBG;
 
@@ -264,13 +262,6 @@ namespace FacialStuff.ColorPicker
         #endregion Public Properties
 
         #region Public Methods
-
-        public void AlphaAction(float pos)
-        {
-            // only changing one value, property should work fine
-            this.A = 1 - (this.UnitsPerPixel * pos);
-            this._alphaPosition = pos;
-        }
 
         public void Apply()
         {
@@ -488,10 +479,7 @@ namespace FacialStuff.ColorPicker
             this._huePosition = (1f - this._H) / this.UnitsPerPixel;
             this._pickerPosition.x = this._S / this.UnitsPerPixel;
             this._pickerPosition.y = (1f - this._V) / this.UnitsPerPixel;
-            if (this._preview)
-            {
-                this._alphaPosition = (1f - this._A) / this.UnitsPerPixel;
-            }
+
 
             // set the color block and update hex fields
             this._tempPreviewBG = this.CreatePreviewBG(this.tempColor);
@@ -538,7 +526,7 @@ namespace FacialStuff.ColorPicker
                 width = height = this.pickerSize + (StandardMargin * 2);
 
                 // width of two sliders (hue and alpha) + margins
-                width += (this.sliderWidth + this._margin) * 2;
+                width += (this.sliderWidth + this._margin);
 
                 if (this._preview)
                 {
@@ -566,7 +554,6 @@ namespace FacialStuff.ColorPicker
 
             // init sliders
             this.Notify_RGBUpdated();
-            this._alphaPosition = this.Color.a / this.UnitsPerPixel;
         }
 
         public void SetColor()

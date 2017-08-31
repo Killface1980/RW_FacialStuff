@@ -53,6 +53,7 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
                 {
                     return;
                 }
+
                 this.selectedValue = value;
                 this.UpdatePawnListener?.Invoke(this, value, null);
             }

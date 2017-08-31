@@ -8,6 +8,7 @@
     public static class FaceTextures
     {
         #region Public Fields
+        public static readonly Texture2D gradient = ContentFinder<Texture2D>.Get("UI/gradient");
 
 
         public static readonly Texture2D BlankTexture;

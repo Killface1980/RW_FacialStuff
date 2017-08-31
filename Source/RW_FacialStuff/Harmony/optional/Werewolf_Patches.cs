@@ -22,6 +22,7 @@
             {
                 return;
             }
+
             face.Dontrender = false;
             __instance.Pawn.Drawer.renderer.graphics.ResolveAllGraphics();
         }

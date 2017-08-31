@@ -2,11 +2,12 @@ namespace FacialStuff.Genetics
 {
     public class HairColorRequest
     {
-        public HairColorRequest(float pheoMelanin, float euMelanin, float cuticula, float greyness)
+        public HairColorRequest(float pheoMelanin, float euMelanin, float greyness)
         {
             this.EuMelanin = euMelanin;
             this.PheoMelanin = pheoMelanin;
-            this.Cuticula = cuticula;
+
+            // this.Cuticula = cuticula;
             this.Greyness = greyness;
         }
 
@@ -16,6 +17,6 @@ namespace FacialStuff.Genetics
 
         public float PheoMelanin { get; set; }
 
-        public float Cuticula { get; set; }
+      // public float Cuticula { get; set; }
     }
 }

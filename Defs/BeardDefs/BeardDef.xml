@@ -175,7 +175,6 @@
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
-    <drawMouth>true</drawMouth>
     <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
@@ -280,7 +279,6 @@
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
-    <drawMouth>true</drawMouth>
     <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
