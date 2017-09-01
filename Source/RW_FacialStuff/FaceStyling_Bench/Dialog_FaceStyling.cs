@@ -407,7 +407,7 @@
 
                 if (this.faceComp.PawnFace.HasSameBeardColor && !this.reInit)
                 {
-                    Color color = FaceTextures.DarkerBeardColor(value);
+                    Color color = HairMelanin.DarkerBeardColor(value);
                     this.UpdatePawnColors(this.NewBeard, color);
                 }
             }
@@ -1371,7 +1371,7 @@
         {
             int currentSwatchIndex = PawnSkinColors_FS.GetSkinDataIndexOfMelanin(this.NewMelanin);
 
-            int colorCount = PawnSkinColors_FS._SkinColors.Length;
+            int colorCount = PawnSkinColors_FS.SkinColors.Length;
             float size = melaninRect.width / (colorCount - 1);
             size -= MarginFS / 2;
 
@@ -1381,13 +1381,13 @@
             int clickedIndex = -1;
             for (int i = 0; i < colorCount - 1; i++)
             {
-                Color color = PawnSkinColors_FS._SkinColors[i].color;
+                Color color = PawnSkinColors_FS.SkinColors[i].color;
 
                 // If the swatch is selected, draw a heavier border around it.
                 // bool isThisSwatchSelected = i == currentSwatchIndex;
-                bool isThisSwatchSelected = this.NewMelanin >= PawnSkinColors_FS._SkinColors[i].melanin
+                bool isThisSwatchSelected = this.NewMelanin >= PawnSkinColors_FS.SkinColors[i].melanin
                                             && this.NewMelanin
-                                            < PawnSkinColors_FS._SkinColors[Mathf.Min(colorCount - 1, i + 1)].melanin;
+                                            < PawnSkinColors_FS.SkinColors[Mathf.Min(colorCount - 1, i + 1)].melanin;
                 if (isThisSwatchSelected)
                 {
                     this.DrawColorSelected(swatchRect);
@@ -1745,7 +1745,7 @@
                 if (this.faceComp.PawnFace.HasSameBeardColor != faceCompHasSameBeardColor)
                 {
                     this.faceComp.PawnFace.HasSameBeardColor = faceCompHasSameBeardColor;
-                    this.NewBeardColor = FaceTextures.DarkerBeardColor(this.NewHairColor);
+                    this.NewBeardColor = HairMelanin.DarkerBeardColor(this.NewHairColor);
                 }
 
                 if (this.faceComp.PawnFace.DrawMouth != faceCompDrawMouth)

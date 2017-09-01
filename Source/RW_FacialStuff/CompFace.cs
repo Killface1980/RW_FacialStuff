@@ -5,6 +5,7 @@
 
     using FacialStuff.Defs;
     using FacialStuff.Enums;
+    using FacialStuff.Genetics;
     using FacialStuff.Graphics_FS;
     using FacialStuff.Wiggler;
 
@@ -668,11 +669,16 @@
                     this.PawnFace.BrowDef = this.BrowDef;
                     this.PawnFace.HairColor = this.HairColor;
                 }
+                else
+                {
+                    pawn.story.hairColor = this.PawnFace.HairColor;
+                    this.PawnFace.BeardColor = HairMelanin.DarkerBeardColor(this.PawnFace.HairColor);
+                }
                 if (this.BeardDef != null)
                 {
                     this.PawnFace.BeardDef = this.BeardDef;
+                    this.PawnFace.MoustacheDef = MoustacheDefOf.Shaved;
                 }
-                this.PawnFace.MoustacheDef = MoustacheDefOf.Shaved;
 
                 this.EyeDef = null;
                 this.BrowDef = null;

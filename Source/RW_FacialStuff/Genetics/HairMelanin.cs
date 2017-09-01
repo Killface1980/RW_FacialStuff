@@ -11,8 +11,6 @@
 
     using Verse;
 
-    using Debug = System.Diagnostics.Debug;
-
     public static class HairMelanin
     {
         #region Public Fields
@@ -27,18 +25,11 @@
 
         private static readonly Gradient GradientEuMelanin;
 
-        public static readonly FloatRange cuticulaRange = new FloatRange(0.75f, 1.0f);
         public static readonly FloatRange greyRange = new FloatRange(0f, 0.8f);
 
         private static readonly Gradient GradientPheoMelanin;
-        private static readonly Color HairBlueSteel = new Color32(57, 115, 199, 255);
-        private static readonly Color HairBurgundyBistro = new Color32(206, 38, 58, 255);
-        private static readonly Color HairGreenGrape = new Color32(124, 189, 14, 255);
-        private static readonly Color HairMysticTurquois = new Color32(71, 191, 165, 255);
-        private static readonly Color HairPlatinum = new Color32(255, 245, 226, 255);
-        private static readonly Color HairPurplePassion = new Color32(145, 50, 191, 255);
-        private static readonly Color HairRosaRosa = new Color32(215, 168, 255, 255);
-        private static readonly Color HairUltraViolet = new Color32(191, 53, 132, 255);
+
+
 
         #endregion Private Fields
 
@@ -54,7 +45,7 @@
             alphaKeys[1].time = 1f;
 
             GradientColorKey[] phyoMelaninGradientColorKeys = new GradientColorKey[4];
-            phyoMelaninGradientColorKeys[0].color = HairPlatinum;
+            phyoMelaninGradientColorKeys[0].color = new Color32(255, 245, 226, 255);
             phyoMelaninGradientColorKeys[0].time = 0.0f;
             phyoMelaninGradientColorKeys[1].color = new Color32(226, 188, 116, 255);
             phyoMelaninGradientColorKeys[1].time = 0.3f;
@@ -74,11 +65,11 @@
             euMelaninGradientColorKeys[0].time = 0.0f;
             // euMelaninGradientColorKeys[1].color = new Color32(139, 108, 66, 255);
             // euMelaninGradientColorKeys[1].time = 0.5f;
-            euMelaninGradientColorKeys[1].color = new Color32(91, 60, 17, 255);
-            euMelaninGradientColorKeys[1].time = 0.7f;
-            euMelaninGradientColorKeys[2].color = new Color32(71, 43, 15, 255);
-            euMelaninGradientColorKeys[2].time = 0.9f;
-            euMelaninGradientColorKeys[3].color = new Color32(27, 17, 7, 255);
+            euMelaninGradientColorKeys[1].color = new Color(0.5176471f, 0.3254902f, 0.184313729f);
+            euMelaninGradientColorKeys[1].time = 0.5f;
+            euMelaninGradientColorKeys[2].color = new Color(0.3f, 0.2f, 0.1f);
+            euMelaninGradientColorKeys[2].time = 0.8f;
+            euMelaninGradientColorKeys[3].color = new Color(0.2f, 0.2f, 0.2f);
             euMelaninGradientColorKeys[3].time = 1f;
 
             // EuMelaninGradientColorKeys[4].color = new Color32(0, 0, 0, 255);
@@ -88,20 +79,28 @@
 
             ArtificialHairColors = new List<Color>
                                        {
-                                           HairGreenGrape,
-                                           HairMysticTurquois,
-                                           HairBlueSteel,
-                                           HairMysticTurquois,
-                                           HairPurplePassion,
-                                           HairRosaRosa,
-                                           HairUltraViolet,
-                                           HairBurgundyBistro
+                                           new Color32(37, 136, 0, 255),
+                                           new Color32(124, 189, 14, 255),
+                                           new Color32(71, 191, 165, 255),
+                                           new Color32(57, 144, 199, 255),
+                                           new Color32(25, 70, 136, 255),
+                                           new Color32(215, 168, 255, 255),
+                                           new Color32(145, 50, 191, 255),
+                                           new Color32(191, 35, 124, 255),
+                                           new Color32(206, 38, 58, 255),
                                        };
         }
 
         #endregion Public Constructors
 
         #region Public Methods
+
+        public static Color DarkerBeardColor(Color color)
+        {
+            Color darken = new Color(0.9f, 0.9f, 0.9f);
+
+            return color * darken;
+        }
 
         public static HairDNA GenerateHairMelaninAndCuticula([NotNull] Pawn pawn, bool sameBeardColor, bool ignoreRelative = false)
         {
@@ -166,7 +165,7 @@
 
             if (sameBeardColor)
             {
-                beardColor = FaceTextures.DarkerBeardColor(hairColor);
+                beardColor = DarkerBeardColor(hairColor);
             }
             else
             {
@@ -346,10 +345,10 @@
 
         }
 
-        public static void GetRandomizedMelaninAndCuticula([NotNull] Pawn pawn, ref HairColorRequest hair)
+        private static void GetRandomizedMelaninAndCuticula([NotNull] Pawn pawn, ref HairColorRequest hair)
         {
-            hair.PheoMelanin = Rand.Range(pawn.story.melanin * 0.25f, 1f);
-            hair.EuMelanin = Rand.Range(pawn.story.melanin * 0.4f, 1f);
+            hair.PheoMelanin = Rand.Range(pawn.story.melanin * 0.35f, 1f);
+            hair.EuMelanin = Rand.Range(pawn.story.melanin * 0.75f, 1f);
         }
 
         #endregion Private Methods

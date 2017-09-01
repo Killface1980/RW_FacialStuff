@@ -91,12 +91,7 @@
 
         #region Public Methods
 
-        public static Color DarkerBeardColor(Color value)
-        {
-            Color darken = new Color(0.9f, 0.9f, 0.9f);
 
-            return value * darken;
-        }
 
 
         public static Texture2D MakeReadable(Texture2D texture)
@@ -135,6 +130,5 @@
         }
 
         #endregion Public Methods
-
     }
 }

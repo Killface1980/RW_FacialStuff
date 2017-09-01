@@ -59,12 +59,7 @@
             this.GenerateHairDNA(pawn);
 
             this.CrownType = pawn.story.crownType;
-
-            if (newPawn)
-            {
-                PawnFaceMaker.RandomBeardDefFor(pawn, faction, out this.BeardDef, out this.MoustacheDef);
-                pawn.story.hairColor = this.HairColor;
-            }
+            PawnFaceMaker.RandomBeardDefFor(pawn, faction, out this.BeardDef, out this.MoustacheDef);
 
             // this.MelaninOrg = pawn.story.melanin;
         }
