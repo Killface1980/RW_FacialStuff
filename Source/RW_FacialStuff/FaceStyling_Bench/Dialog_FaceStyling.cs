@@ -34,7 +34,7 @@
 
         #region Public Fields
 
-        public static Vector2 PortraitSize = new Vector2(192f, 192f);
+        public static Vector2 PortraitSize = new Vector2(203f, 203f);
 
         #endregion Public Fields
 
@@ -425,14 +425,13 @@
 
             // Draw the pawn's portrait
             GUI.BeginGroup(rect);
-            Vector2 size = new Vector2(rect.height * 0.711f, rect.height); // 128x180
+            Vector2 size = new Vector2(rect.height / 1.4f, rect.height); // 128x180
             Rect position = new Rect(
                 rect.width * 0.5f - size.x * 0.5f,
                 10f + rect.height * 0.5f - size.y * 0.5f,
                 size.x,
                 size.y);
-            RenderTexture image = PortraitsCache.Get(pawn, size, new Vector3(0f, 0f, 0f), 1f);
-            GUI.DrawTexture(position, image);
+            GUI.DrawTexture(position, PortraitsCache.Get(pawn, size, default(Vector3)));
             GUI.EndGroup();
 
             GUI.color = Color.white;

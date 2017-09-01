@@ -1,6 +1,7 @@
 ﻿namespace FacialStuff.Harmony.optional.PrepC
 {
-    using EdB.PrepareCarefully;
+    using System;
+    using System.Reflection;
 
     using FacialStuff;
     using FacialStuff.FaceStyling_Bench;
@@ -14,20 +15,38 @@
     using Verse;
     using Verse.Sound;
 
-    public static class PanelBackstory_Postfix
+    public static class PageConfigureStartingPawns_Postfix
     {
-        [HarmonyPostfix]
-        public static void AddFaceEditButton(PanelBackstory __instance, State state)
+        private static FieldInfo PawnFieldInfo;
+        private static Type PageConfigureStartingPawnsType;
+
+        private static void GetReflections()
         {
-            Rect panelRect = __instance.PanelRect;
-            Pawn pawn = state.CurrentPawn.Pawn;
+            if (PageConfigureStartingPawnsType != null)
+            {
+                return;
+            }
+
+            PageConfigureStartingPawnsType = typeof(Page_ConfigureStartingPawns);
+
+            PawnFieldInfo = PageConfigureStartingPawnsType.GetField("curPawn", BindingFlags.NonPublic | BindingFlags.Instance);
+        }
+
+        [HarmonyPostfix]
+        public static void AddFaceEditButton(Page_ConfigureStartingPawns __instance)
+        {
+            GetReflections();
+
+            Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
+
             CompFace face = pawn.TryGetComp<CompFace>();
             if (face == null)
             {
                 return;
             }
 
-            Rect rect = new Rect(panelRect.width - 90f, 9f, 25f, 25f);
+            // Shitty Transpiler, doin' it on my own
+            Rect rect = new Rect(540f, 92f, 25f, 25f);
             if (rect.Contains(Event.current.mousePosition))
             {
                 GUI.color = new Color(0.97647f, 0.97647f, 0.97647f);
@@ -36,6 +55,7 @@
             {
                 GUI.color = new Color(0.623529f, 0.623529f, 0.623529f);
             }
+
 
             GUI.DrawTexture(rect, ContentFinder<Texture2D>.Get("Buttons/ButtonFace", true));
             string tip = "FacialStuffEditor.FaceStylerTitle".Translate();

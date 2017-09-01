@@ -82,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Harmony\PageConfigureStartingPawns_Postfix.cs" />
     <Compile Include="IncidentWorker_FacialStuffUpdateNote.cs" />
     <Compile Include="CutHairDB.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />
@@ -112,7 +113,6 @@
     <Compile Include="Genetics\HairDNA.cs" />
     <Compile Include="Harmony\optional\Harmony_EdBPrepareCarefully.cs" />
     <Compile Include="Harmony\optional\Harmony_Werewolf.cs" />
-    <None Include="Harmony\optional\PrepC\Class1.cs" />
     <Compile Include="Harmony\optional\PrepC\PanelBackstory_Postfix.cs" />
     <Compile Include="Harmony\optional\PrepC\PresetSaver_Postfix.cs" />
     <Compile Include="Harmony\optional\PrepC\PresetLoader_Postfix.cs" />

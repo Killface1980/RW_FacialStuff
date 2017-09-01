@@ -6,6 +6,8 @@ namespace FacialStuff.Detouring
     using System.Reflection;
     using System.Reflection.Emit;
 
+    using FacialStuff.Harmony.optional.PrepC;
+
     using global::Harmony;
 
     using RimWorld;
@@ -66,10 +68,18 @@ namespace FacialStuff.Detouring
     {
         static HarmonyPatches()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.werewolf_patch");
+            HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.mod");
 
             // Still needed for the Settings Transpiler
             harmony.PatchAll(Assembly.GetExecutingAssembly());
+
+            harmony.Patch(
+                AccessTools.Method(typeof(Page_ConfigureStartingPawns), nameof(Page_ConfigureStartingPawns.DoWindowContents)),
+                null,
+                new HarmonyMethod(
+                    typeof(PageConfigureStartingPawns_Postfix),
+                    nameof(PageConfigureStartingPawns_Postfix.AddFaceEditButton)));
+
 
             harmony.Patch(
                 AccessTools.Method(typeof(PawnGraphicSet), nameof(PawnGraphicSet.ResolveAllGraphics)),

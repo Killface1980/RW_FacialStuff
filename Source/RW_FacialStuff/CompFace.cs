@@ -499,7 +499,7 @@
             var color = this.pawn.story.hairColor * new Color(0.3f, 0.3f, 0.3f);
             this.faceGraphicPart.BrowGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 this.texPathBrow,
-                ShaderDatabase.Transparent,
+                ShaderDatabase.Cutout,
                 Vector2.one,
                 color);
         }
@@ -938,7 +938,7 @@
 
                 this.faceGraphicPart.MoustacheGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     moustacheDefTexPath,
-                    ShaderDatabase.Transparent,
+                    ShaderDatabase.Cutout,
                     Vector2.one,
                     this.PawnFace.BeardColor);
             }
@@ -950,7 +950,7 @@
 
             this.faceGraphicPart.MainBeardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 mainBeardDefTexPath,
-                ShaderDatabase.Transparent,
+                ShaderDatabase.Cutout,
                 Vector2.one,
                 this.PawnFace.BeardColor);
         }
@@ -964,7 +964,7 @@
                 {
                     this.faceGraphicPart.EyeLeftPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
                                                                    this.texPathEyeLeftPatch,
-                                                                   ShaderDatabase.Transparent,
+                                                                   ShaderDatabase.Cutout,
                                                                    Vector2.one,
                                                                    Color.white) as Graphic_Multi_AddedHeadParts;
                     this.HasEyePatchLeft = true;
@@ -989,7 +989,7 @@
                 {
                     this.faceGraphicPart.EyeRightPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
                                                                     this.texPathEyeRightPatch,
-                                                                    ShaderDatabase.Transparent,
+                                                                    ShaderDatabase.Cutout,
                                                                     Vector2.one,
                                                                     Color.white) as Graphic_Multi_AddedHeadParts;
                     this.HasEyePatchRight = true;
@@ -1014,25 +1014,25 @@
 
             this.faceGraphicPart.EyeLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                       this.texPathEyeLeft,
-                                                      ShaderDatabase.Transparent,
+                                                      ShaderDatabase.Cutout,
                                                       Vector2.one,
                                                       this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                        this.texPathEyeRight,
-                                                       ShaderDatabase.Transparent,
+                                                       ShaderDatabase.Cutout,
                                                        Vector2.one,
                                                        this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                             this.texPathEyeLeftClosed,
-                                                            ShaderDatabase.Transparent,
+                                                            ShaderDatabase.Cutout,
                                                             Vector2.one,
                                                             Color.black) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                              this.texPathEyeRightClosed,
-                                                             ShaderDatabase.Transparent,
+                                                             ShaderDatabase.Cutout,
                                                              Vector2.one,
                                                              Color.black) as Graphic_Multi_NaturalEyes;
 
@@ -1053,7 +1053,7 @@
                 {
                     this.faceGraphicPart.JawGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                           this.texPathMouth,
-                                                          ShaderDatabase.Transparent,
+                                                          ShaderDatabase.Cutout,
                                                           Vector2.one,
                                                           Color.white) as Graphic_Multi_NaturalHeadParts;
                     this.hasNaturalMouth = false;
@@ -1080,13 +1080,13 @@
 
             this.faceGraphicPart.WrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
-                ShaderDatabase.Transparent,
+                ShaderDatabase.Cutout,
                 Vector2.one,
                 wrinkleColor);
 
             this.faceGraphicPart.RottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
-                ShaderDatabase.Transparent,
+                ShaderDatabase.Cutout,
                 Vector2.one,
                 wrinkleColor * FaceTextures.SkinRottingMultiplyColor);
         }
