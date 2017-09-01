@@ -23,37 +23,37 @@
         {
             Graphic_Multi_NaturalHeadParts mouthGraphic01 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                                 MouthDefOf.Mouth_Mood01.texPath,
-                                                                ShaderDatabase.CutoutSkin,
+                                                                ShaderDatabase.Transparent,
                                                                 Vector2.one,
                                                                 Color.black) as Graphic_Multi_NaturalHeadParts;
 
             Graphic_Multi_NaturalHeadParts mouthGraphic02 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                                 MouthDefOf.Mouth_Mood02.texPath,
-                                                                ShaderDatabase.CutoutSkin,
+                                                                ShaderDatabase.Transparent,
                                                                 Vector2.one,
                                                                 Color.black) as Graphic_Multi_NaturalHeadParts;
 
             MouthGraphic03 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                     MouthDefOf.Mouth_Mood03.texPath,
-                                                    ShaderDatabase.CutoutSkin,
+                                                    ShaderDatabase.Transparent,
                                                     Vector2.one,
                                                     Color.black) as Graphic_Multi_NaturalHeadParts;
 
             Graphic_Multi_NaturalHeadParts mouthGraphic04 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                                 MouthDefOf.Mouth_Mood04.texPath,
-                                                                ShaderDatabase.CutoutSkin,
+                                                                ShaderDatabase.Transparent,
                                                                 Vector2.one,
                                                                 Color.black) as Graphic_Multi_NaturalHeadParts;
 
             Graphic_Multi_NaturalHeadParts mouthGraphic05 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                                 MouthDefOf.Mouth_Mood05.texPath,
-                                                                ShaderDatabase.CutoutSkin,
+                                                                ShaderDatabase.Transparent,
                                                                 Vector2.one,
                                                                 Color.black) as Graphic_Multi_NaturalHeadParts;
 
             Graphic_Multi_NaturalHeadParts mouthGraphic06 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                                 MouthDefOf.Mouth_Mood06.texPath,
-                                                                ShaderDatabase.CutoutSkin,
+                                                                ShaderDatabase.Transparent,
                                                                 Vector2.one,
                                                                 Color.black) as Graphic_Multi_NaturalHeadParts;
 

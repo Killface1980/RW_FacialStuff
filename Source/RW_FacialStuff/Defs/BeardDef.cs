@@ -7,7 +7,6 @@
 namespace FacialStuff.Defs
 {
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
 
     using FacialStuff.Enums;
 
@@ -21,11 +20,11 @@ namespace FacialStuff.Defs
     {
         #region Public Fields
 
-        public BeardType beardType = BeardType.FullBeard;
+        public BeardType beardType;
 
         public bool drawMouth;
 
-        public HairGender hairGender = HairGender.Male;
+        public HairGender hairGender;
 
         public List<string> hairTags = new List<string>();
 

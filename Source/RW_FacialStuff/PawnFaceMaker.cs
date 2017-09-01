@@ -285,16 +285,16 @@
         }
 
         public static void RandomBeardDefFor(
-                           Pawn pawn,
-           FactionDef factionType,
-           out BeardDef mainBeard,
-           out MoustacheDef moustache)
+            [NotNull] Pawn pawn,
+            FactionDef factionType,
+            out BeardDef mainBeard,
+            out MoustacheDef moustache)
         {
             BeardRoulette(pawn, factionType, out mainBeard, out moustache);
         }
 
 
-        public static BeardDef RandomBeardDefFor(Pawn pawn, BeardType type)
+        public static BeardDef RandomBeardDefFor([NotNull] Pawn pawn, BeardType type)
         {
             if (pawn.gender != Gender.Male)
             {
@@ -420,12 +420,13 @@
 
         #region Private Methods
 
-        private static float BeardChoiceLikelihoodFor(BeardDef beard, Pawn pawn)
+        private static float BeardChoiceLikelihoodFor([NotNull] BeardDef beard, Pawn pawn)
         {
             if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
             {
                 return 30f;
             }
+
 
             switch (beard.hairGender)
             {
@@ -439,9 +440,9 @@
 
         private static void BeardRoulette(
             [NotNull] Pawn pawn,
-           FactionDef factionType,
-                                   out BeardDef mainBeard,
-                                   out MoustacheDef moustache)
+            FactionDef factionType,
+            out BeardDef mainBeard,
+            out MoustacheDef moustache)
         {
             moustache = MoustacheDefOf.Shaved;
             IEnumerable<BeardDef> source;
@@ -577,7 +578,7 @@
             return moustacheDef;
         }
 
-        private static float TacheChoiceLikelihoodFor(MoustacheDef tache, Pawn pawn)
+        private static float TacheChoiceLikelihoodFor([NotNull] MoustacheDef tache, Pawn pawn)
         {
             if (tache.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 37)
             {

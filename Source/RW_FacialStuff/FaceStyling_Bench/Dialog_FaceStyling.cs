@@ -539,7 +539,7 @@
                     {
                     }
                     // HairDNA hair = HairMelanin.GenerateHairMelaninAndCuticula(pawn, Rand.Value > 0.5f);
-                    this.reInit = false;
+                    this.reInit = true;
                     this.faceComp.PawnFace.HasSameBeardColor = Rand.Value > 0.3f;
                     this.faceComp.PawnFace.GenerateHairDNA(pawn, true);
                     this.NewHairColor = this.faceComp.PawnFace.HairColor;
@@ -549,8 +549,8 @@
                     BeardDef beard;
                     PawnFaceMaker.RandomBeardDefFor(pawn, Faction.OfPlayer.def, out beard, out tache);
                     this.NewBeard = beard;
-                    this.reInit = false;
                     this.NewMoustache = tache;
+                    this.reInit = false;
                 };
 
             DialogUtility.DoNextBackButtons(
@@ -624,7 +624,7 @@
 
             Graphic_Multi_NaturalHeadParts result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                         path,
-                                                        ShaderDatabase.CutoutSkin,
+                                                        ShaderDatabase.Transparent,
                                                         new Vector2(38f, 38f),
                                                         Color.white,
                                                         Color.white) as Graphic_Multi_NaturalHeadParts;
@@ -639,7 +639,7 @@
             {
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                              this.faceComp.BrowTexPath(def),
-                             ShaderDatabase.CutoutSkin,
+                             ShaderDatabase.Transparent,
                              new Vector2(38f, 38f),
                              Color.white,
                              Color.white) as Graphic_Multi_NaturalHeadParts;
@@ -1917,7 +1917,7 @@
             {
                 result = GraphicDatabase.Get<Graphic_Multi>(
                     def.texPath,
-                    ShaderDatabase.CutoutSkin,
+                    ShaderDatabase.Transparent,
                     new Vector2(38f, 38f),
                     Color.white,
                     Color.white);
@@ -1939,7 +1939,7 @@
 
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                              path,
-                             ShaderDatabase.CutoutSkin,
+                             ShaderDatabase.Transparent,
                              new Vector2(38f, 38f),
                              Color.white,
                              Color.white) as Graphic_Multi_NaturalEyes;
@@ -1959,7 +1959,7 @@
 
             Graphic_Multi_NaturalHeadParts result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                         path,
-                                                        ShaderDatabase.CutoutSkin,
+                                                        ShaderDatabase.Transparent,
                                                         new Vector2(38f, 38f),
                                                         Color.white,
                                                         Color.white) as Graphic_Multi_NaturalHeadParts;
@@ -2006,7 +2006,7 @@
                 // "Eyes/Eye_" + pawn.gender + faceComp.crownType + "_" + def.texPath   + "_Right";
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                              path,
-                             ShaderDatabase.CutoutSkin,
+                             ShaderDatabase.Transparent,
                              new Vector2(38f, 38f),
                              Color.white,
                              Color.white) as Graphic_Multi_NaturalEyes;
