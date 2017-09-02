@@ -3,81 +3,110 @@
     using FacialStuff.Defs;
     using FacialStuff.Graphics_FS;
 
+    using JetBrains.Annotations;
+
     using UnityEngine;
 
     using Verse;
 
     [StaticConstructorOnStartup]
-    public static class HumanMouthGraphics
+    public class HumanMouthGraphics
     {
         #region Public Fields
 
-        public static readonly MouthGraphicData[] HumanMouthGraphic;
-        public static readonly Graphic_Multi_NaturalHeadParts MouthGraphic03;
+        public MouthGraphicData[] HumanMouthGraphic;
 
         #endregion Public Fields
 
         #region Public Constructors
 
-        static HumanMouthGraphics()
+        public HumanMouthGraphics([NotNull] Pawn pawn)
         {
-            Graphic_Multi_NaturalHeadParts mouthGraphic01 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                                MouthDefOf.Mouth_Mood01.texPath,
-                                                                ShaderDatabase.Cutout,
-                                                                Vector2.one,
-                                                                Color.black) as Graphic_Multi_NaturalHeadParts;
+            var color = Color.black;
+            Graphic_Multi_NaturalHeadParts mouthGraphic01 =
+                GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    MouthDefOf.Mouth_Mood01.texPath,
+                    ShaderDatabase.CutoutSkin,
+                    Vector2.one,
+                    color) as Graphic_Multi_NaturalHeadParts;
 
-            Graphic_Multi_NaturalHeadParts mouthGraphic02 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                                MouthDefOf.Mouth_Mood02.texPath,
-                                                                ShaderDatabase.Cutout,
-                                                                Vector2.one,
-                                                                Color.black) as Graphic_Multi_NaturalHeadParts;
+            Graphic_Multi_NaturalHeadParts mouthGraphic02 =
+                GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    MouthDefOf.Mouth_Mood02.texPath,
+                    ShaderDatabase.CutoutSkin,
+                    Vector2.one,
+                    color) as Graphic_Multi_NaturalHeadParts;
 
-            MouthGraphic03 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                    MouthDefOf.Mouth_Mood03.texPath,
-                                                    ShaderDatabase.Cutout,
-                                                    Vector2.one,
-                                                    Color.black) as Graphic_Multi_NaturalHeadParts;
+            Graphic_Multi_NaturalHeadParts MouthGraphic03 =
+                GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    MouthDefOf.Mouth_Mood03.texPath,
+                    ShaderDatabase.CutoutSkin,
+                    Vector2.one,
+                    color) as Graphic_Multi_NaturalHeadParts;
 
-            Graphic_Multi_NaturalHeadParts mouthGraphic04 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                                MouthDefOf.Mouth_Mood04.texPath,
-                                                                ShaderDatabase.Cutout,
-                                                                Vector2.one,
-                                                                Color.black) as Graphic_Multi_NaturalHeadParts;
+            Graphic_Multi_NaturalHeadParts mouthGraphic04 =
+                GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    MouthDefOf.Mouth_Mood04.texPath,
+                    ShaderDatabase.CutoutSkin,
+                    Vector2.one,
+                    color) as Graphic_Multi_NaturalHeadParts;
 
-            Graphic_Multi_NaturalHeadParts mouthGraphic05 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                                MouthDefOf.Mouth_Mood05.texPath,
-                                                                ShaderDatabase.Cutout,
-                                                                Vector2.one,
-                                                                Color.black) as Graphic_Multi_NaturalHeadParts;
+            Graphic_Multi_NaturalHeadParts mouthGraphic05 =
+                GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    MouthDefOf.Mouth_Mood05.texPath,
+                    ShaderDatabase.CutoutSkin,
+                    Vector2.one,
+                    color) as Graphic_Multi_NaturalHeadParts;
 
-            Graphic_Multi_NaturalHeadParts mouthGraphic06 = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                                MouthDefOf.Mouth_Mood06.texPath,
-                                                                ShaderDatabase.Cutout,
-                                                                Vector2.one,
-                                                                Color.black) as Graphic_Multi_NaturalHeadParts;
+            Graphic_Multi_NaturalHeadParts mouthGraphic06 =
+                GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    MouthDefOf.Mouth_Mood06.texPath,
+                    ShaderDatabase.CutoutSkin,
+                    Vector2.one,
+                    color) as Graphic_Multi_NaturalHeadParts;
 
-            HumanMouthGraphic = new[]
+            if (pawn.mindState?.mentalBreaker != null)
             {
-                new MouthGraphicData(0f, mouthGraphic06),
-                new MouthGraphicData(0.25f, mouthGraphic05),
-                new MouthGraphicData(0.4f, mouthGraphic04),
-                new MouthGraphicData(0.55f, MouthGraphic03),
-                new MouthGraphicData(0.7f, mouthGraphic02),
-                new MouthGraphicData(0.85f, mouthGraphic01)
-            };
+                float minor = pawn.mindState.mentalBreaker.BreakThresholdMinor;
+                float major = pawn.mindState.mentalBreaker.BreakThresholdMajor;
+                float extreme = pawn.mindState.mentalBreaker.BreakThresholdExtreme;
+
+                float none = (1f - minor) / 5;
+
+                this.HumanMouthGraphic = new[]
+                                             {
+                                                 new MouthGraphicData(0f, mouthGraphic06),
+                                                 new MouthGraphicData(extreme, mouthGraphic05),
+                                                 new MouthGraphicData(major, mouthGraphic04),
+                                                 new MouthGraphicData(minor, MouthGraphic03),
+                                                 new MouthGraphicData(minor + none, mouthGraphic02),
+                                                 new MouthGraphicData(minor + 2 * none, mouthGraphic01)
+                                             };
+            }
+            else
+            {
+                this.HumanMouthGraphic = new[]
+                                             {
+                                                 new MouthGraphicData(0f, mouthGraphic06),
+                                                 new MouthGraphicData(0.25f, mouthGraphic05),
+                                                 new MouthGraphicData(0.4f, mouthGraphic04),
+                                                 new MouthGraphicData(0.55f, MouthGraphic03),
+                                                 new MouthGraphicData(0.7f, mouthGraphic02),
+                                                 new MouthGraphicData(0.85f, mouthGraphic01)
+                };
+            }
         }
 
         #endregion Public Constructors
 
         #region Public Methods
 
-        public static int GetMouthTextureIndexOfMood(float mood)
+        public int GetMouthTextureIndexOfMood(float mood)
         {
             int result = 0;
-            for (int i = 0; i < HumanMouthGraphic.Length; i++)
+            for (int i = 0; i < this.HumanMouthGraphic.Length; i++)
             {
-                if (mood < HumanMouthGraphic[i].Mood)
+                if (mood < this.HumanMouthGraphic[i].Mood)
                 {
                     break;
                 }

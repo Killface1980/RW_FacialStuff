@@ -26,7 +26,7 @@ namespace FacialStuff.ColorPicker
 
         public int numPresets = 0;
 
-        public int pickerSize = 200;
+        public Vector2 pickerSize = new Vector2(200, 200);
 
         public int previewSize = 90;
 
@@ -230,7 +230,7 @@ namespace FacialStuff.ColorPicker
             {
                 if (this._unitsPerPixel == 0.0f)
                 {
-                    this._unitsPerPixel = 1f / this.pickerSize;
+                    this._unitsPerPixel = 1f / this.pickerSize.x;
                 }
 
                 return this._unitsPerPixel;
@@ -279,8 +279,8 @@ namespace FacialStuff.ColorPicker
         {
             // set up rects
             // pickers & sliders
-            Rect pickerRect = new Rect(inRect.xMin, inRect.yMin, this.pickerSize, this.pickerSize);
-            Rect hueRect = new Rect(pickerRect.xMax + this._margin, inRect.yMin, this.sliderWidth, this.pickerSize);
+            Rect pickerRect = new Rect(inRect.xMin, inRect.yMin, this.pickerSize.x, this.pickerSize.y);
+            Rect hueRect = new Rect(pickerRect.xMax + this._margin, inRect.yMin, this.sliderWidth, this.pickerSize.y);
 
             // previews
             Rect previewRect = new Rect(hueRect.xMax + this._margin, inRect.yMin, this.previewSize, this.previewSize);
@@ -314,10 +314,10 @@ namespace FacialStuff.ColorPicker
                 cancelRect = new Rect(
                     inRect.xMin,
                     pickerRect.yMax + this._margin,
-                    (this.pickerSize - this._margin) / 2,
+                    (this.pickerSize.x - this._margin) / 2,
                     this._fieldHeight);
                 okRect = cancelRect;
-                okRect.x += (this.pickerSize + this._margin) / 2;
+                okRect.x += (this.pickerSize.x + this._margin) / 2;
             }
 
             // draw picker foregrounds
@@ -384,7 +384,7 @@ namespace FacialStuff.ColorPicker
                 if (Event.current.type == EventType.ScrollWheel)
                 {
                     this.H -= Event.current.delta.y * this.UnitsPerPixel;
-                    this._huePosition = Mathf.Clamp(this._huePosition + Event.current.delta.y, 0f, this.pickerSize);
+                    this._huePosition = Mathf.Clamp(this._huePosition + Event.current.delta.y, 0f, this.pickerSize.y);
                     Event.current.Use();
                 }
 
@@ -523,7 +523,7 @@ namespace FacialStuff.ColorPicker
                 float width, height;
 
                 // size of main picker + the standard window margins.
-                width = height = this.pickerSize + (StandardMargin * 2);
+                width = height = this.pickerSize.x + (StandardMargin * 2);
 
                 // width of two sliders (hue and alpha) + margins
                 width += (this.sliderWidth + this._margin);
@@ -587,12 +587,12 @@ namespace FacialStuff.ColorPicker
         {
             if (this._colorPickerBG == null)
             {
-                this._colorPickerBG = new Texture2D(this.pickerSize, this.pickerSize);
+                this._colorPickerBG = new Texture2D((int)this.pickerSize.x, (int)this.pickerSize.y);
             }
 
             float s, v;
-            int w = this.pickerSize;
-            int h = this.pickerSize;
+            int w = (int)this.pickerSize.x;
+            int h = (int)this.pickerSize.y;
             float wu = this.UnitsPerPixel;
             float hu = this.UnitsPerPixel;
 
@@ -614,10 +614,10 @@ namespace FacialStuff.ColorPicker
         {
             if (this._huePickerBG == null)
             {
-                this._huePickerBG = new Texture2D(1, this.pickerSize);
+                this._huePickerBG = new Texture2D(1, (int)this.pickerSize.y);
             }
 
-            int h = this.pickerSize;
+            int h = (int)this.pickerSize.y;
             float hu = this.UnitsPerPixel;
 
             // HSV colors, S = V = 1

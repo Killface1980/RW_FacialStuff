@@ -2,6 +2,8 @@ namespace FacialStuff.Utilities
 {
     using System;
 
+    using JetBrains.Annotations;
+
     using UnityEngine;
 
     using Verse;
@@ -12,38 +14,32 @@ namespace FacialStuff.Utilities
 
         private static readonly Vector2 BottomButSize = new Vector2(150f, 38f);
 
-        public static void DoNextBackButtons(Rect innerRect, string nextLabel, Action nextAct, Action backAct, string middleLabel = null, Action middleAct = null)
+        public static void DoNextBackButtons(Rect innerRect, string middleLabel, string nextLabel, [NotNull] Action backAct,
+                                             [NotNull] Action middleAct,
+                                             [NotNull] Action nextAct)
         {
             float top = innerRect.height - 38f;
             Text.Font = GameFont.Small;
-            if (backAct != null)
+            Rect backRect = new Rect(0f, top, BottomButSize.x, BottomButSize.y);
+            if (Widgets.ButtonText(backRect, "Back".Translate()))
             {
-                Rect rect = new Rect(0f, top, BottomButSize.x, BottomButSize.y);
-                if (Widgets.ButtonText(rect, "Back".Translate()))
-                {
-                    backAct();
-                }
+                backAct();
+            }
+            Rect randomRect = new Rect(
+                (innerRect.width / 2f) - (BottomButSize.x / 2f),
+                top,
+                BottomButSize.x,
+                BottomButSize.y);
+            if (Widgets.ButtonText(randomRect, middleLabel))
+            {
+                middleAct();
             }
 
-            if (middleAct != null)
+            Rect nextRect = new Rect(innerRect.width - BottomButSize.x, top, BottomButSize.x, BottomButSize.y);
+            if (Widgets.ButtonText(nextRect, nextLabel))
             {
-                Rect rect3 = new Rect((innerRect.width / 2f) - (BottomButSize.x / 2f), top, BottomButSize.x, BottomButSize.y);
-                if (Widgets.ButtonText(rect3, middleLabel))
-                {
-                    middleAct();
-                }
+                nextAct();
             }
-
-            // ReSharper disable once InvertIf
-            if (nextAct != null)
-            {
-                Rect rect2 = new Rect(innerRect.width - BottomButSize.x, top, BottomButSize.x, BottomButSize.y);
-                if (Widgets.ButtonText(rect2, nextLabel))
-                {
-                    nextAct();
-                }
-            }
-
         }
 
         public static bool DoMiddleButton(Rect innerRect, string label)

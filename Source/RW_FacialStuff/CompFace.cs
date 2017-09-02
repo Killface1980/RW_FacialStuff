@@ -39,8 +39,6 @@
 
         // private float blinkRate;
         // public PawnHeadWiggler headWiggler;
-        private bool isOld;
-
         private float mood = 0.5f;
 
         private bool oldEnough;
@@ -496,10 +494,10 @@
 
         private void InitializeGraphicsBrows()
         {
-            var color = this.pawn.story.hairColor * new Color(0.3f, 0.3f, 0.3f);
+            var color = this.pawn.story.hairColor * new Color(0.2f, 0.2f, 0.2f);
             this.faceGraphicPart.BrowGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 this.texPathBrow,
-                ShaderDatabase.Cutout,
+                ShaderDatabase.CutoutSkin,
                 Vector2.one,
                 color);
         }
@@ -507,10 +505,6 @@
         [CanBeNull]
         public Material MoustacheMatAt(Rot4 facing)
         {
-            if (this.pawn == null)
-            {
-                return null;
-            }
 
             if (!this.hasNaturalMouth || this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved
                                       || this.PawnFace.MoustacheDef == null || this.pawn.gender == Gender.Female)
@@ -555,7 +549,7 @@
 
                 if (portrait)
                 {
-                    material = HumanMouthGraphics.MouthGraphic03.MatAt(facing);
+                    material = this.mouthgraphic.HumanMouthGraphic[3].Graphic.MatAt(facing);
                 }
                 else
                 {
@@ -588,6 +582,7 @@
                 return;
             }
 
+                // Children & Pregnancy || Werewolves transformed
             if (!this.pawn.Spawned || this.pawn.Dead || !this.oldEnough || this.Dontrender)
             {
                 return;
@@ -648,6 +643,8 @@
 
         public EyeDef EyeDef;
 
+        public HumanMouthGraphics mouthgraphic;
+
         /// <summary>
         ///     Basic pawn initialization.
         /// </summary>
@@ -663,6 +660,7 @@
             if (this.pawnFace == null)
             {
                 this.SetPawnFace(new PawnFace(this.pawn));
+                // check for pre-0.17.3 pawns
                 if (this.EyeDef != null)
                 {
                     this.PawnFace.EyeDef = this.EyeDef;
@@ -683,16 +681,15 @@
                 this.EyeDef = null;
                 this.BrowDef = null;
                 this.BeardDef = null;
-
             }
 
+            this.mouthgraphic= new HumanMouthGraphics(pawn);
             this.flasher = this.pawn.Drawer.renderer.graphics.flasher;
             this.eyeWiggler = new PawnEyeWiggler(this.pawn);
 
             // this.headWiggler = new PawnHeadWiggler(this.pawn);
 
             // ReSharper disable once PossibleNullReferenceException
-            this.isOld = this.pawn.ageTracker.AgeBiologicalYearsFloat >= 42f;
 
             this.ResetBoolsAndPaths();
 
@@ -714,7 +711,7 @@
         public Material WrinkleMatAt(Rot4 facing, RotDrawMode bodyCondition)
         {
             Material material = null;
-            if (this.isOld && Controller.settings.UseWrinkles)
+            if (Controller.settings.UseWrinkles)
             {
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
@@ -757,19 +754,19 @@
             switch (this.PawnHeadType)
             {
                 case HeadType.Normal:
-                    this.FullHeadType = FullHead.FemaleAverageNormal;
+                    this.FullHeadType = FullHead.AverageNormal;
                     this.headTypeX = Controller.settings.FemaleAverageNormalOffsetX;
                     this.headTypeY = Controller.settings.FemaleAverageNormalOffsetY;
                     break;
 
                 case HeadType.Pointy:
-                    this.FullHeadType = FullHead.FemaleAveragePointy;
+                    this.FullHeadType = FullHead.AveragePointy;
                     this.headTypeX = Controller.settings.FemaleAveragePointyOffsetX;
                     this.headTypeY = Controller.settings.FemaleAveragePointyOffsetY;
                     break;
 
                 case HeadType.Wide:
-                    this.FullHeadType = FullHead.FemaleAverageWide;
+                    this.FullHeadType = FullHead.AverageWide;
                     this.headTypeX = Controller.settings.FemaleAverageWideOffsetX;
                     this.headTypeY = Controller.settings.FemaleAverageWideOffsetY;
                     break;
@@ -781,19 +778,19 @@
             switch (this.PawnHeadType)
             {
                 case HeadType.Normal:
-                    this.FullHeadType = FullHead.FemaleNarrowNormal;
+                    this.FullHeadType = FullHead.NarrowNormal;
                     this.headTypeX = Controller.settings.FemaleNarrowNormalOffsetX;
                     this.headTypeY = Controller.settings.FemaleNarrowNormalOffsetY;
                     break;
 
                 case HeadType.Pointy:
-                    this.FullHeadType = FullHead.FemaleNarrowPointy;
+                    this.FullHeadType = FullHead.NarrowPointy;
                     this.headTypeX = Controller.settings.FemaleNarrowPointyOffsetX;
                     this.headTypeY = Controller.settings.FemaleNarrowPointyOffsetY;
                     break;
 
                 case HeadType.Wide:
-                    this.FullHeadType = FullHead.FemaleNarrowWide;
+                    this.FullHeadType = FullHead.NarrowWide;
                     this.headTypeX = Controller.settings.FemaleNarrowWideOffsetX;
                     this.headTypeY = Controller.settings.FemaleNarrowWideOffsetY;
                     break;
@@ -819,19 +816,19 @@
             switch (this.PawnHeadType)
             {
                 case HeadType.Normal:
-                    this.FullHeadType = FullHead.MaleAverageNormal;
+                    this.FullHeadType = FullHead.AverageNormal;
                     this.headTypeX = Controller.settings.MaleAverageNormalOffsetX;
                     this.headTypeY = Controller.settings.MaleAverageNormalOffsetY;
                     break;
 
                 case HeadType.Pointy:
-                    this.FullHeadType = FullHead.MaleAveragePointy;
+                    this.FullHeadType = FullHead.AveragePointy;
                     this.headTypeX = Controller.settings.MaleAveragePointyOffsetX;
                     this.headTypeY = Controller.settings.MaleAveragePointyOffsetY;
                     break;
 
                 case HeadType.Wide:
-                    this.FullHeadType = FullHead.MaleAverageWide;
+                    this.FullHeadType = FullHead.AverageWide;
                     this.headTypeX = Controller.settings.MaleAverageWideOffsetX;
                     this.headTypeY = Controller.settings.MaleAverageWideOffsetY;
                     break;
@@ -843,19 +840,19 @@
             switch (this.PawnHeadType)
             {
                 case HeadType.Normal:
-                    this.FullHeadType = FullHead.MaleNarrowNormal;
+                    this.FullHeadType = FullHead.NarrowNormal;
                     this.headTypeX = Controller.settings.MaleNarrowNormalOffsetX;
                     this.headTypeY = Controller.settings.MaleNarrowNormalOffsetY;
                     break;
 
                 case HeadType.Pointy:
-                    this.FullHeadType = FullHead.MaleNarrowPointy;
+                    this.FullHeadType = FullHead.NarrowPointy;
                     this.headTypeX = Controller.settings.MaleNarrowPointyOffsetX;
                     this.headTypeY = Controller.settings.MaleNarrowPointyOffsetY;
                     break;
 
                 case HeadType.Wide:
-                    this.FullHeadType = FullHead.MaleNarrowWide;
+                    this.FullHeadType = FullHead.NarrowWide;
                     this.headTypeX = Controller.settings.MaleNarrowWideOffsetX;
                     this.headTypeY = Controller.settings.MaleNarrowWideOffsetY;
                     break;
@@ -1014,31 +1011,31 @@
 
             this.faceGraphicPart.EyeLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                       this.texPathEyeLeft,
-                                                      ShaderDatabase.Cutout,
+                                                      ShaderDatabase.CutoutSkin,
                                                       Vector2.one,
                                                       this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                        this.texPathEyeRight,
-                                                       ShaderDatabase.Cutout,
+                                                       ShaderDatabase.CutoutSkin,
                                                        Vector2.one,
                                                        this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                             this.texPathEyeLeftClosed,
-                                                            ShaderDatabase.Cutout,
+                                                            ShaderDatabase.CutoutSkin,
                                                             Vector2.one,
                                                             Color.black) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                              this.texPathEyeRightClosed,
-                                                             ShaderDatabase.Cutout,
+                                                             ShaderDatabase.CutoutSkin,
                                                              Vector2.one,
                                                              Color.black) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.DeadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 "Eyes/Eyes_Dead",
-                ShaderDatabase.Transparent,
+                ShaderDatabase.CutoutSkin,
                 Vector2.one,
                 Color.white);
 
@@ -1053,7 +1050,7 @@
                 {
                     this.faceGraphicPart.JawGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                           this.texPathMouth,
-                                                          ShaderDatabase.Cutout,
+                                                          ShaderDatabase.CutoutSkin,
                                                           Vector2.one,
                                                           Color.white) as Graphic_Multi_NaturalHeadParts;
                     this.hasNaturalMouth = false;
@@ -1067,26 +1064,26 @@
             }
 
             this.hasNaturalMouth = true;
-            this.faceGraphicPart.MouthGraphic = HumanMouthGraphics.MouthGraphic03;
+            this.faceGraphicPart.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[3].Graphic;
         }
 
         private void InitializeGraphicsWrinkles()
         {
-            Color wrinkleColor = this.pawn.story.SkinColor * new Color(0.2f, 0.2f, 0.2f);
+            Color wrinkleColor = this.pawn.story.SkinColor * new Color(0.1f, 0.1f, 0.1f);
 
-            wrinkleColor.a = Mathf.InverseLerp(45f, 80f, this.pawn.ageTracker.AgeBiologicalYearsFloat);
+            wrinkleColor.a = this.PawnFace.wrinkles;
 
             WrinkleDef pawnFaceWrinkleDef = this.PawnFace.WrinkleDef;
 
             this.faceGraphicPart.WrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
-                ShaderDatabase.Cutout,
+                ShaderDatabase.TransparentPostLight,
                 Vector2.one,
                 wrinkleColor);
 
             this.faceGraphicPart.RottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
-                ShaderDatabase.Cutout,
+                ShaderDatabase.TransparentPostLight,
                 Vector2.one,
                 wrinkleColor * FaceTextures.SkinRottingMultiplyColor);
         }
@@ -1126,7 +1123,7 @@
                     break;
 
                 default:
-                    this.FullHeadType = FullHead.MaleAverageNormal;
+                    this.FullHeadType = FullHead.AverageNormal;
                     break;
             }
         }
@@ -1135,9 +1132,9 @@
         {
             this.mood = this.pawn.needs?.mood?.CurInstantLevel ?? 0.5f;
 
-            int mouthTextureIndexOfMood = HumanMouthGraphics.GetMouthTextureIndexOfMood(this.mood);
+            int mouthTextureIndexOfMood = this.mouthgraphic.GetMouthTextureIndexOfMood(this.mood);
 
-            this.faceGraphicPart.MouthGraphic = HumanMouthGraphics.HumanMouthGraphic[mouthTextureIndexOfMood].Graphic;
+            this.faceGraphicPart.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[mouthTextureIndexOfMood].Graphic;
         }
 
         #endregion Private Methods

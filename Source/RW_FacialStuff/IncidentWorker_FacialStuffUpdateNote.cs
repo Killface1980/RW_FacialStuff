@@ -2,10 +2,16 @@
 using System.Collections.Generic;
 using Verse;
 
-namespace RimWorld
+namespace FacialStuff
 {
+    using System.Linq;
+
+    using RimWorld;
+
     public class IncidentWorker_FacialStuffUpdateNote : IncidentWorker
     {
+        // RimWorld.IncidentWorker
+
         public override bool TryExecute(IncidentParms parms)
         {
             Map map = (Map)parms.target;

@@ -82,7 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Harmony\PageConfigureStartingPawns_Postfix.cs" />
+    <None Include="Harmony\PageConfigureStartingPawns_Postfix.cs" />
     <Compile Include="IncidentWorker_FacialStuffUpdateNote.cs" />
     <Compile Include="CutHairDB.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />

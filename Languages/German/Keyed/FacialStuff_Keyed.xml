@@ -34,6 +34,10 @@
   <FacialStuffEditor.Greyness>Grauheit</FacialStuffEditor.Greyness>
   <FacialStuffEditor.Eumelanin>Eumelanin</FacialStuffEditor.Eumelanin>
   <FacialStuffEditor.Pheomelanin>Pheomelanin</FacialStuffEditor.Pheomelanin>
+  <FacialStuffEditor.Wrinkles>Falten</FacialStuffEditor.Wrinkles>
+  
+  <FacialStuffEditor.SkinSettings>Hautoptionen</FacialStuffEditor.SkinSettings>
+  <FacialStuffEditor.HairSettings>Hairoptionen</FacialStuffEditor.HairSettings>
 
 
   <!-- Dresser -->
@@ -68,6 +72,7 @@
   <FacialStuffEditor.TypeSelector>Typ Selector</FacialStuffEditor.TypeSelector>
   <FacialStuffEditor.DrawMouth>Zeige Mund an wenn möglich</FacialStuffEditor.DrawMouth>
   <FacialStuffEditor.SameColor>Gleiche Farbe für Haar und Bart</FacialStuffEditor.SameColor>
+  <FacialStuffEditor.SameColorTip>Falls deaktiviert kann die Bartfarbe nur mit der Farbauswahl nach Klick auf einen beliebigen Bart geändert werden.</FacialStuffEditor.SameColorTip>
 
   <FacialStuffEditor.FullBeards>Vollbärte</FacialStuffEditor.FullBeards>
   <FacialStuffEditor.Combinable>kombinierbar</FacialStuffEditor.Combinable>

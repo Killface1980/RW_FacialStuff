@@ -87,7 +87,6 @@
                                            new Color32(215, 168, 255, 255),
                                            new Color32(145, 50, 191, 255),
                                            new Color32(191, 35, 124, 255),
-                                           new Color32(206, 38, 58, 255),
                                        };
         }
 
@@ -97,7 +96,7 @@
 
         public static Color DarkerBeardColor(Color color)
         {
-            Color darken = new Color(0.9f, 0.9f, 0.9f);
+            Color darken = new Color(0.95f, 0.95f, 0.95f);
 
             return color * darken;
         }
@@ -347,7 +346,7 @@
 
         private static void GetRandomizedMelaninAndCuticula([NotNull] Pawn pawn, ref HairColorRequest hair)
         {
-            hair.PheoMelanin = Rand.Range(pawn.story.melanin * 0.35f, 1f);
+            hair.PheoMelanin = Rand.Range(pawn.story.melanin * 0f, 1f);
             hair.EuMelanin = Rand.Range(pawn.story.melanin * 0.75f, 1f);
         }
 

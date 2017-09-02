@@ -30,7 +30,8 @@
             Rect rect = new Rect(panelRect.width - 90f, 9f, 25f, 25f);
             if (rect.Contains(Event.current.mousePosition))
             {
-                GUI.color = new Color(0.97647f, 0.97647f, 0.97647f);
+                GUI.color = Color.cyan;
+                // GUI.color = new Color(0.97647f, 0.97647f, 0.97647f);
             }
             else
             {

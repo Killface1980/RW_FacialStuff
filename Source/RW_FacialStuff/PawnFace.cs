@@ -45,6 +45,8 @@
         [NotNull]
         public WrinkleDef WrinkleDef;
 
+        public float wrinkles = 0f;
+
         public PawnFace([NotNull] Pawn pawn, bool newPawn = true)
         {
             this.DrawMouth = true;
@@ -61,6 +63,7 @@
             this.CrownType = pawn.story.crownType;
             PawnFaceMaker.RandomBeardDefFor(pawn, faction, out this.BeardDef, out this.MoustacheDef);
 
+            this.wrinkles = Mathf.InverseLerp(45f, 80f, pawn.ageTracker.AgeBiologicalYearsFloat);
             // this.MelaninOrg = pawn.story.melanin;
         }
 
@@ -99,6 +102,7 @@
             Scribe_Values.Look(ref this.Greyness, "greyness");
 
             Scribe_Values.Look(ref this.HairColor, "hairColor");
+            Scribe_Values.Look(ref this.wrinkles, "wrinkles");
 
             // Scribe_Values.Look(ref this.MelaninOrg, "melaninOrg");
 

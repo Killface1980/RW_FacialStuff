@@ -2,29 +2,17 @@
 {
     public enum FullHead : byte
     {
-        MaleAverageNormal = 0,
+        AverageNormal = 0,
 
-        MaleAveragePointy = 1,
+        AveragePointy = 1,
 
-        MaleAverageWide = 2,
+        AverageWide = 2,
 
-        MaleNarrowNormal = 3,
+        NarrowNormal = 3,
 
-        MaleNarrowPointy = 4,
+        NarrowPointy = 4,
 
-        MaleNarrowWide = 5,
-
-        FemaleAverageNormal = 6,
-
-        FemaleAveragePointy = 7,
-
-        FemaleAverageWide = 8,
-
-        FemaleNarrowNormal = 9,
-
-        FemaleNarrowPointy = 10,
-
-        FemaleNarrowWide = 11,
+        NarrowWide = 5,
 
         Undefined
     }

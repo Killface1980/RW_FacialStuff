@@ -3,7 +3,7 @@
     <defName>FacialStuffUpdateNote</defName>
     <label>facial stuff mod 0.17.3 update note</label>
     <targetType>MapPlayerHome</targetType>
-    <workerClass>IncidentWorker_FacialStuffUpdateNote</workerClass>
+    <workerClass>FacialStuff.IncidentWorker_FacialStuffUpdateNote</workerClass>
     <baseChance>9999.0</baseChance>
     <category>Misc</category>
     <minRefireDays>10000</minRefireDays>

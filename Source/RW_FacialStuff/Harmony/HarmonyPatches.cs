@@ -6,6 +6,7 @@ namespace FacialStuff.Detouring
     using System.Reflection;
     using System.Reflection.Emit;
 
+    using FacialStuff.FaceStyling_Bench;
     using FacialStuff.Harmony.optional.PrepC;
 
     using global::Harmony;
@@ -15,6 +16,7 @@ namespace FacialStuff.Detouring
     using UnityEngine;
 
     using Verse;
+    using Verse.Sound;
 
     // [HarmonyPatch(typeof(RimWorld.Dialog_Options))]
     // [HarmonyPatch("DoWindowContents")]
@@ -77,8 +79,8 @@ namespace FacialStuff.Detouring
                 AccessTools.Method(typeof(Page_ConfigureStartingPawns), nameof(Page_ConfigureStartingPawns.DoWindowContents)),
                 null,
                 new HarmonyMethod(
-                    typeof(PageConfigureStartingPawns_Postfix),
-                    nameof(PageConfigureStartingPawns_Postfix.AddFaceEditButton)));
+                    typeof(HarmonyPatches),
+                    nameof(HarmonyPatches.AddFaceEditButton)));
 
 
             harmony.Patch(
@@ -157,8 +159,47 @@ namespace FacialStuff.Detouring
             CheckAllInjected();
         }
 
+        public static void AddFaceEditButton(Page_ConfigureStartingPawns __instance)
+        {
+            FieldInfo PawnFieldInfo = typeof(Page_ConfigureStartingPawns).GetField("curPawn", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
+
+            CompFace face = pawn.TryGetComp<CompFace>();
+            if (face == null)
+            {
+                return;
+            }
+
+            // Shitty Transpiler, doin' it on my own
+            Rect rect = new Rect(540f, 92f, 25f, 25f);
+            if (rect.Contains(Event.current.mousePosition))
+            {
+                GUI.color = Color.cyan;
+             //   GUI.color = new Color(0.97647f, 0.97647f, 0.97647f);
+            }
+            else
+            {
+                GUI.color = new Color(0.623529f, 0.623529f, 0.623529f);
+            }
+
+
+            GUI.DrawTexture(rect, ContentFinder<Texture2D>.Get("Buttons/ButtonFace", true));
+            GUI.color = Color.white;
+            string tip = "FacialStuffEditor.FaceStylerTitle".Translate();
+            TooltipHandler.TipRegion(rect, tip);
+
+            // ReSharper disable once InvertIf
+            if (Widgets.ButtonInvisible(rect, false))
+            {
+                SoundDefOf.TickLow.PlayOneShotOnCamera(null);
+                Find.WindowStack.Add(new DialogFaceStyling(pawn));
+            }
+        }
+
+
         // [HarmonyAfter("net.pardeike.zombieland")]
-        public static void ResolveAllGraphics_Postfix( PawnGraphicSet __instance)
+        public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)
         {
             Pawn pawn = __instance.pawn;
 

@@ -33,6 +33,10 @@
   <FacialStuffEditor.Greyness>Greyness</FacialStuffEditor.Greyness>
   <FacialStuffEditor.Eumelanin>Eumelanin</FacialStuffEditor.Eumelanin>
   <FacialStuffEditor.Pheomelanin>Pheomelanin</FacialStuffEditor.Pheomelanin>
+  <FacialStuffEditor.Wrinkles>Wrinkles</FacialStuffEditor.Wrinkles>
+
+  <FacialStuffEditor.SkinSettings>Skin settings</FacialStuffEditor.SkinSettings>
+  <FacialStuffEditor.HairSettings>Hair settings</FacialStuffEditor.HairSettings>
 
 
   <!-- Dresser -->
@@ -67,6 +71,7 @@
   <FacialStuffEditor.TypeSelector>Type Selector</FacialStuffEditor.TypeSelector>
   <FacialStuffEditor.DrawMouth>Draw colonist mouth if suitable</FacialStuffEditor.DrawMouth>
   <FacialStuffEditor.SameColor>Use same color for hair + beard</FacialStuffEditor.SameColor>
+  <FacialStuffEditor.SameColorTip>If deactivated, the beard color can only be selected with the color picker after clicking on any beard.</FacialStuffEditor.SameColorTip>
 
   <FacialStuffEditor.FullBeards>full beards</FacialStuffEditor.FullBeards>
   <FacialStuffEditor.Combinable>combinable</FacialStuffEditor.Combinable>
