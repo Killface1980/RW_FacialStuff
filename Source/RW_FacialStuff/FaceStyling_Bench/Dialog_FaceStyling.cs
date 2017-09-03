@@ -216,6 +216,7 @@
             {
                 this.genderTab = GenderTab.Male;
             }
+
             IIncidentTarget target = pawn.Map;
             if (target != null)
             {
@@ -447,7 +448,8 @@
                 size.x,
                 size.y);
             GUI.DrawTexture(position, PortraitsCache.Get(pawn, size, new Vector3(0f, 0f, 0.1f), 1.25f));
-            //  GUI.DrawTexture(position, PortraitsCache.Get(pawn, size, default(Vector3)));
+
+            // GUI.DrawTexture(position, PortraitsCache.Get(pawn, size, default(Vector3)));
             GUI.EndGroup();
 
             GUI.color = Color.white;
@@ -1453,8 +1455,8 @@
                 // no wrapping, only one row
                 // if (swatchRect.x >= contractedBy.width - this.swatchSize.x)
                 // {
-                //     swatchRect.y += size + MarginFS / 2;
-                //     swatchRect.x = 0;
+                // swatchRect.y += size + MarginFS / 2;
+                // swatchRect.x = 0;
                 // }
             }
 
@@ -1559,6 +1561,7 @@
                     }
                 }
             }
+
             GUI.EndGroup();
 
         }
@@ -1750,6 +1753,7 @@
                 {
                     this.DoColorWindowBeard();
                 }
+
                 this.skinPage = false;
             }
 

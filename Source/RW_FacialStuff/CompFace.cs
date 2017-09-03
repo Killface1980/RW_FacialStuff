@@ -613,24 +613,24 @@
         public override void PostExposeData()
         {
             base.PostExposeData();
-            // Legacy, remove in A18
             {
+                // Legacy, remove in A18
                 Scribe_References.Look(ref this.pawn, "Pawn");
                 Scribe_Defs.Look(ref this.EyeDef, "EyeDef");
                 Scribe_Defs.Look(ref this.BrowDef, "BrowDef");
                 Scribe_Defs.Look(ref this.BeardDef, "BeardDef");
                 Scribe_Values.Look(ref this.HairColor, "HairColorOrg");
             }
+
             // Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
 
             // Log.Message(
-            //     "Facial Stuff updated pawn " + this.parent.Label + "-" + face.BeardDef + "-" + face.EyeDef);
+            // "Facial Stuff updated pawn " + this.parent.Label + "-" + face.BeardDef + "-" + face.EyeDef);
 
             // Force ResolveAllGraphics
             Scribe_Deep.Look(ref this.pawnFace, "pawnFace");
 
             // Scribe_References.Look(ref this.pawn, "pawn");
-
             Scribe_Values.Look(ref this.dontrender, "dontrender");
             Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
         }
@@ -660,18 +660,21 @@
             if (this.pawnFace == null)
             {
                 this.SetPawnFace(new PawnFace(this.pawn));
+
                 // check for pre-0.17.3 pawns
                 if (this.EyeDef != null)
                 {
                     this.PawnFace.EyeDef = this.EyeDef;
                     this.PawnFace.BrowDef = this.BrowDef;
                     this.PawnFace.HairColor = this.HairColor;
+                    this.pawn.story.melanin = Mathf.Abs(1f - this.pawn.story.melanin);
                 }
                 else
                 {
-                    pawn.story.hairColor = this.PawnFace.HairColor;
+                    this.pawn.story.hairColor = this.PawnFace.HairColor;
                     this.PawnFace.BeardColor = HairMelanin.DarkerBeardColor(this.PawnFace.HairColor);
                 }
+
                 if (this.BeardDef != null)
                 {
                     this.PawnFace.BeardDef = this.BeardDef;
@@ -683,14 +686,13 @@
                 this.BeardDef = null;
             }
 
-            this.mouthgraphic= new HumanMouthGraphics(pawn);
+            this.mouthgraphic= new HumanMouthGraphics(this.pawn);
             this.flasher = this.pawn.Drawer.renderer.graphics.flasher;
             this.eyeWiggler = new PawnEyeWiggler(this.pawn);
 
             // this.headWiggler = new PawnHeadWiggler(this.pawn);
 
             // ReSharper disable once PossibleNullReferenceException
-
             this.ResetBoolsAndPaths();
 
             if (Controller.settings.ShowExtraParts)

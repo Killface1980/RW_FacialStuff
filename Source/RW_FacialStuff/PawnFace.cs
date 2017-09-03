@@ -64,6 +64,7 @@
             PawnFaceMaker.RandomBeardDefFor(pawn, faction, out this.BeardDef, out this.MoustacheDef);
 
             this.wrinkles = Mathf.InverseLerp(45f, 80f, pawn.ageTracker.AgeBiologicalYearsFloat);
+
             // this.MelaninOrg = pawn.story.melanin;
         }
 

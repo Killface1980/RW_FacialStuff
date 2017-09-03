@@ -11,7 +11,6 @@ namespace FacialStuff
     public class IncidentWorker_FacialStuffUpdateNote : IncidentWorker
     {
         // RimWorld.IncidentWorker
-
         public override bool TryExecute(IncidentParms parms)
         {
             Map map = (Map)parms.target;

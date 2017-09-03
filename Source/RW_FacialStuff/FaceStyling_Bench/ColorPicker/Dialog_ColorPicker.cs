@@ -526,7 +526,7 @@ namespace FacialStuff.ColorPicker
                 width = height = this.pickerSize.x + (StandardMargin * 2);
 
                 // width of two sliders (hue and alpha) + margins
-                width += (this.sliderWidth + this._margin);
+                width += this.sliderWidth + this._margin;
 
                 if (this._preview)
                 {

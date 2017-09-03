@@ -50,8 +50,10 @@
             phyoMelaninGradientColorKeys[1].color = new Color32(226, 188, 116, 255);
             phyoMelaninGradientColorKeys[1].time = 0.3f;
             phyoMelaninGradientColorKeys[2].color = new Color32(210, 119, 44, 255);
+
             // phyoMelaninGradientColorKeys[2].color = new Color32(231, 168, 84, 255);
             phyoMelaninGradientColorKeys[2].time = 0.8f;
+
             // phyoMelaninGradientColorKeys[3].time = 0.8f;
             phyoMelaninGradientColorKeys[3].color = new Color32(216, 25, 1, 255);
             phyoMelaninGradientColorKeys[3].time = 1f;
@@ -59,10 +61,10 @@
             GradientPheoMelanin = new Gradient();
             GradientPheoMelanin.SetKeys(phyoMelaninGradientColorKeys, alphaKeys);
 
-
             GradientColorKey[] euMelaninGradientColorKeys = new GradientColorKey[4];
             euMelaninGradientColorKeys[0].color = Color.white;
             euMelaninGradientColorKeys[0].time = 0.0f;
+
             // euMelaninGradientColorKeys[1].color = new Color32(139, 108, 66, 255);
             // euMelaninGradientColorKeys[1].time = 0.5f;
             euMelaninGradientColorKeys[1].color = new Color(0.5176471f, 0.3254902f, 0.184313729f);
@@ -321,25 +323,28 @@
                     hair.PheoMelanin = GetRandomChildHairColor(motherPawnFace.PheoMelanin, fatherPawnFace.PheoMelanin);
                     return;
                 }
+
                 if (hasMother)
                 {
                     hair.EuMelanin = GetRandomMelaninSimilarTo(motherPawnFace.EuMelanin);
                     hair.PheoMelanin = GetRandomMelaninSimilarTo(motherPawnFace.PheoMelanin);
                     return;
                 }
+
                 if (hasFather)
                 {
                     hair.EuMelanin = GetRandomMelaninSimilarTo(fatherPawnFace.EuMelanin);
                     hair.PheoMelanin = GetRandomMelaninSimilarTo(fatherPawnFace.PheoMelanin);
                     return;
                 }
-                // Check for relatives, else randomize
 
+                // Check for relatives, else randomize
                 if (GetMelaninSetRelationsByBlood(pawn, ref hair))
                 {
                     return;
                 }
             }
+
             GetRandomizedMelaninAndCuticula(pawn, ref hair);
 
         }

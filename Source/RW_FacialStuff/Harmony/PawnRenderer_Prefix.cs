@@ -37,7 +37,6 @@
         private static Type PawnRendererType;
 
         // private static FieldInfo PawnFieldInfo;
-
         private static FieldInfo WoundOverlayFieldInfo;
 
 

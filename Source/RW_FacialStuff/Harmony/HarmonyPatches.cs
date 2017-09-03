@@ -133,7 +133,8 @@ namespace FacialStuff.Detouring
             if (rect.Contains(Event.current.mousePosition))
             {
                 GUI.color = Color.cyan;
-                //   GUI.color = new Color(0.97647f, 0.97647f, 0.97647f);
+
+                // GUI.color = new Color(0.97647f, 0.97647f, 0.97647f);
             }
             else
             {
@@ -197,10 +198,12 @@ namespace FacialStuff.Detouring
             {
                 return;
             }
+
             if (!faceComp.InitializeGraphics())
             {
                 return;
             }
+
             // Set up the hair cut graphic
             if (Controller.settings.MergeHair)
             {
@@ -217,8 +220,7 @@ namespace FacialStuff.Detouring
                 ShaderDatabase.CutoutSkin,
                 pawn.story.SkinColor);
             __instance.headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.SkinColor);
-            __instance.desiccatedHeadGraphic =
-                GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
+            __instance.desiccatedHeadGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
             __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
             __instance.rottingGraphic =
                 GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
@@ -411,6 +413,7 @@ namespace FacialStuff.Detouring
                     Controller.settings.HideHatWhileRoofed = hatsOnlyOnMap;
                     Controller.settings.Write();
                 }
+
                 if (noHatsInBed != Controller.settings.HideHatInBed)
                 {
                     Controller.settings.HideHatInBed = noHatsInBed;
