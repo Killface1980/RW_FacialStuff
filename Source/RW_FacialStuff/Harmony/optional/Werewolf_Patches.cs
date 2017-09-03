@@ -24,7 +24,7 @@
             }
 
             face.Dontrender = false;
-            __instance.Pawn.Drawer.renderer.graphics.ResolveAllGraphics();
+            __instance.Pawn.Drawer.renderer.graphics.nakedGraphic = null;
         }
     }
 }

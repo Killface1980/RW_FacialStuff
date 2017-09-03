@@ -33,17 +33,17 @@
       </li>
     </operations>
   </Operation>
+
   <!--
-  
   <Operation Class="PatchOperationSequence">
     <success>Always</success>
     <operations>
       <li Class="PatchOperationTest">
-        <xpath>/ThingDefs/ThingDef[defName = "Zombie"]/comps</xpath>
+        <xpath>/ThingDefs/ThingDef[defName = "BaseTwiPawn"]/comps</xpath>
         <success>Invert</success>
       </li>
       <li Class="PatchOperationAdd">
-        <xpath>/ThingDefs/ThingDef[defName = "Zombie"]</xpath>
+        <xpath>/ThingDefs/ThingDef[defName = "BaseTwiPawn"]</xpath>
         <value>
           <comps />
         </value>
@@ -55,10 +55,10 @@
     <success>Always</success>
     <operations>
       <li Class="PatchOperationTest">
-        <xpath>/ThingDefs/ThingDef[defName = "Zombie"]/comps</xpath>
+        <xpath>/ThingDefs/ThingDef[defName = "BaseTwiPawn"]/comps</xpath>
       </li>
       <li Class="PatchOperationAdd">
-        <xpath>/ThingDefs/ThingDef[defName = "Zombie"]/comps</xpath>
+        <xpath>/ThingDefs/ThingDef[defName = "BaseTwiPawn"]/comps</xpath>
         <value>
           <li>
             <compClass>FacialStuff.CompFace</compClass>
@@ -68,4 +68,5 @@
     </operations>
   </Operation>
 -->
+  
 </Patch>

@@ -754,19 +754,19 @@
             switch (this.PawnHeadType)
             {
                 case HeadType.Normal:
-                    this.FullHeadType = FullHead.AverageNormal;
+                    this.FullHeadType = FullHead.FemaleAverageNormal;
                     this.headTypeX = Controller.settings.FemaleAverageNormalOffsetX;
                     this.headTypeY = Controller.settings.FemaleAverageNormalOffsetY;
                     break;
 
                 case HeadType.Pointy:
-                    this.FullHeadType = FullHead.AveragePointy;
+                    this.FullHeadType = FullHead.FemaleAveragePointy;
                     this.headTypeX = Controller.settings.FemaleAveragePointyOffsetX;
                     this.headTypeY = Controller.settings.FemaleAveragePointyOffsetY;
                     break;
 
                 case HeadType.Wide:
-                    this.FullHeadType = FullHead.AverageWide;
+                    this.FullHeadType = FullHead.FemaleAverageWide;
                     this.headTypeX = Controller.settings.FemaleAverageWideOffsetX;
                     this.headTypeY = Controller.settings.FemaleAverageWideOffsetY;
                     break;
@@ -778,19 +778,19 @@
             switch (this.PawnHeadType)
             {
                 case HeadType.Normal:
-                    this.FullHeadType = FullHead.NarrowNormal;
+                    this.FullHeadType = FullHead.FemaleNarrowNormal;
                     this.headTypeX = Controller.settings.FemaleNarrowNormalOffsetX;
                     this.headTypeY = Controller.settings.FemaleNarrowNormalOffsetY;
                     break;
 
                 case HeadType.Pointy:
-                    this.FullHeadType = FullHead.NarrowPointy;
+                    this.FullHeadType = FullHead.FemaleNarrowPointy;
                     this.headTypeX = Controller.settings.FemaleNarrowPointyOffsetX;
                     this.headTypeY = Controller.settings.FemaleNarrowPointyOffsetY;
                     break;
 
                 case HeadType.Wide:
-                    this.FullHeadType = FullHead.NarrowWide;
+                    this.FullHeadType = FullHead.FemaleNarrowWide;
                     this.headTypeX = Controller.settings.FemaleNarrowWideOffsetX;
                     this.headTypeY = Controller.settings.FemaleNarrowWideOffsetY;
                     break;
@@ -816,19 +816,19 @@
             switch (this.PawnHeadType)
             {
                 case HeadType.Normal:
-                    this.FullHeadType = FullHead.AverageNormal;
+                    this.FullHeadType = FullHead.MaleAverageNormal;
                     this.headTypeX = Controller.settings.MaleAverageNormalOffsetX;
                     this.headTypeY = Controller.settings.MaleAverageNormalOffsetY;
                     break;
 
                 case HeadType.Pointy:
-                    this.FullHeadType = FullHead.AveragePointy;
+                    this.FullHeadType = FullHead.MaleAveragePointy;
                     this.headTypeX = Controller.settings.MaleAveragePointyOffsetX;
                     this.headTypeY = Controller.settings.MaleAveragePointyOffsetY;
                     break;
 
                 case HeadType.Wide:
-                    this.FullHeadType = FullHead.AverageWide;
+                    this.FullHeadType = FullHead.MaleAverageWide;
                     this.headTypeX = Controller.settings.MaleAverageWideOffsetX;
                     this.headTypeY = Controller.settings.MaleAverageWideOffsetY;
                     break;
@@ -840,19 +840,19 @@
             switch (this.PawnHeadType)
             {
                 case HeadType.Normal:
-                    this.FullHeadType = FullHead.NarrowNormal;
+                    this.FullHeadType = FullHead.MaleNarrowNormal;
                     this.headTypeX = Controller.settings.MaleNarrowNormalOffsetX;
                     this.headTypeY = Controller.settings.MaleNarrowNormalOffsetY;
                     break;
 
                 case HeadType.Pointy:
-                    this.FullHeadType = FullHead.NarrowPointy;
+                    this.FullHeadType = FullHead.MaleNarrowPointy;
                     this.headTypeX = Controller.settings.MaleNarrowPointyOffsetX;
                     this.headTypeY = Controller.settings.MaleNarrowPointyOffsetY;
                     break;
 
                 case HeadType.Wide:
-                    this.FullHeadType = FullHead.NarrowWide;
+                    this.FullHeadType = FullHead.MaleNarrowWide;
                     this.headTypeX = Controller.settings.MaleNarrowWideOffsetX;
                     this.headTypeY = Controller.settings.MaleNarrowWideOffsetY;
                     break;
@@ -1123,7 +1123,7 @@
                     break;
 
                 default:
-                    this.FullHeadType = FullHead.AverageNormal;
+                    this.FullHeadType = FullHead.MaleAverageNormal;
                     break;
             }
         }

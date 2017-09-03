@@ -216,6 +216,20 @@
             {
                 this.genderTab = GenderTab.Male;
             }
+            IIncidentTarget target = pawn.Map;
+            if (target != null)
+            {
+                IncidentDef def = IncidentDef.Named("FacialStuffUpdateNote");
+                StorytellerComp source = Find.Storyteller.storytellerComps.First((StorytellerComp x) => x is StorytellerComp_ThreatCycle || x is StorytellerComp_RandomMain);
+                IncidentParms parms = source.GenerateParms(def.category, target);
+                FiringIncident fi = new FiringIncident(def, source, parms);
+                if (fi.def.Worker.CanFireNow(pawn.Map))
+                {
+                    fi.def.Worker.TryExecute(parms);
+                    fi.parms.target.StoryState.Notify_IncidentFired(fi);
+                }
+            }
+
 
             this.beardTab = this.faceComp.PawnFace.BeardDef.beardType == BeardType.FullBeard
                                 ? BeardTab.FullBeards

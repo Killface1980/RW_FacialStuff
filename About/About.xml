@@ -1,16 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Facial Stuff 0.17.3.0 RC2</name>
+  <name>Facial Stuff 0.17.3.0</name>
   <author>Killface</author>
   <url></url>
   <targetVersion>0.17.1557</targetVersion>
-  <description>
- <![CDATA[Release Candidate 2
- Open Beta of Facial Stuff http://steamcommunity.com/sharedfiles/filedetails/?id=818322128&tscn=1497627388
- Adds new features on top of the current version, please don't subscribe to this mod if you're completely new to Facial Stuff, check out the current version instead.
- Please report bugs at https://github.com/Killface1980/RW_FacialStuff/issues/new (direct link for reporting)
- This version will be removed after the official 0.17.3.0 release.
+  <description>This mod aims to provide more visual individuality for your colonists
+- new eyes and brows for both sexes
+- animated eye &amp; mouth textures
+- alternate eye and jaw textures for pawns with implants or removed parts
+- 10 newly defined skin colors instead of the vanilla 6
+- hair genetics according to real life (including the effects of eumelanin &amp; pheomelanin)
+- adds the ability to change the head and body type for all Humans (needs activation in the mod options)
+- fully compatible with Chidren &amp; Pregnancy, Werewolves and Prepare Carfully
+- 30+ different beards, some of them combinable
+- possibility to show hair under hats
+- multiple visibility options for hats on map
+- added vanilla hair styles with 10 steps of hair loss
+- includes selected trending hair colors of 5501
+- all features can be disabled in the mod options menu
 
- Save game friendly and compatible to the current version.]]>
++ includes a modified version of &apos;Spoonshortage&apos;s Rimworld Hairstyles 1.2&apos; by spoonshortage
++ includes a modified version of &apos;Nackblad Inc Rimhair 1.1&apos; by nackblad
+
+Patches the PawnRenderer via Harmony and returns &apos;false&apos; thus being incompatible to mods doing the same.
+
+Special thanks to Fluffy for the FaceStyling bench (adapted from &apos;Clutter&apos;)
   </description>
 </ModMetaData>
