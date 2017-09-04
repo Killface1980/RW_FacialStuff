@@ -75,7 +75,7 @@
         [CanBeNull]
         private string texPathMouth;
 
-        public bool Roofed;
+        public bool Roofed { get; private set; }
 
         #endregion Private Fields
 
