@@ -81,7 +81,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Harmony\PageConfigureStartingPawns_Postfix.cs" />
     <Compile Include="IncidentWorker_FacialStuffUpdateNote.cs" />
     <Compile Include="CutHairDB.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />
@@ -122,7 +121,7 @@
     <None Include="MouthGraphicData.cs" />
     <Compile Include="PawnFace.cs" />
     <Compile Include="Settings.cs" />
-    <None Include="PatchOperationFindMod.cs" />
+    <Compile Include="PatchOperationFindMod.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
     <None Include="Wiggler\PawnHeadWiggler.cs" />
     <Compile Include="Wiggler\PawnEyeWiggler.cs" />

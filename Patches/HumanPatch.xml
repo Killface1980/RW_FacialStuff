@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
 
+  <!--This part adds the comps if they're not already there-->
   <Operation Class="PatchOperationSequence">
     <success>Always</success>
     <operations>
@@ -17,6 +18,7 @@
     </operations>
   </Operation>
 
+  <!--Adds the actual CompFace - needed for everything-->
   <Operation Class="PatchOperationSequence">
     <success>Always</success>
     <operations>
@@ -33,40 +35,5 @@
       </li>
     </operations>
   </Operation>
-
-  <!--
-  <Operation Class="PatchOperationSequence">
-    <success>Always</success>
-    <operations>
-      <li Class="PatchOperationTest">
-        <xpath>/ThingDefs/ThingDef[defName = "BaseTwiPawn"]/comps</xpath>
-        <success>Invert</success>
-      </li>
-      <li Class="PatchOperationAdd">
-        <xpath>/ThingDefs/ThingDef[defName = "BaseTwiPawn"]</xpath>
-        <value>
-          <comps />
-        </value>
-      </li>
-    </operations>
-  </Operation>
-
-  <Operation Class="PatchOperationSequence">
-    <success>Always</success>
-    <operations>
-      <li Class="PatchOperationTest">
-        <xpath>/ThingDefs/ThingDef[defName = "BaseTwiPawn"]/comps</xpath>
-      </li>
-      <li Class="PatchOperationAdd">
-        <xpath>/ThingDefs/ThingDef[defName = "BaseTwiPawn"]/comps</xpath>
-        <value>
-          <li>
-            <compClass>FacialStuff.CompFace</compClass>
-          </li>
-        </value>
-      </li>
-    </operations>
-  </Operation>
--->
   
 </Patch>

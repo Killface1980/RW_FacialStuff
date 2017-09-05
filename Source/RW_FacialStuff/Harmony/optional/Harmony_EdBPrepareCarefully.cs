@@ -8,6 +8,7 @@
 
     using Verse;
 
+    // Blatantly stolen from "Psychology"
     [StaticConstructorOnStartup]
     class Harmony_EdBPrepareCarefully
     {

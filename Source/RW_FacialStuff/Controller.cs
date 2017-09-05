@@ -13,7 +13,7 @@
     {
         #region Public Fields
 
-        public const string modName = "Facial Stuff 0.17.3.1";
+        public const string modName = "Facial Stuff 0.17.3.2";
 
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once StyleCop.SA1307

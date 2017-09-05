@@ -22,6 +22,9 @@
  * SOFTWARE.
  */
 
+// Blatantly stolen from "Change Dresser"
+
+
 namespace FacialStuff.FaceStyling_Bench.UI.DTO
 {
     using FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs;

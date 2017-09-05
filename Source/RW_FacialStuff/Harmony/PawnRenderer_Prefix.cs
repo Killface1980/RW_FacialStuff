@@ -4,13 +4,17 @@
     using System.Collections.Generic;
     using System.Reflection;
 
+    using global::Harmony;
+
     using RimWorld;
 
     using UnityEngine;
 
     using Verse;
 
-    // [HarmonyPatch(typeof(PawnRenderer), "RenderPawnInternal", new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) })]
+    // ReSharper disable once InconsistentNaming
+    [HarmonyPatch(typeof(PawnRenderer), "RenderPawnInternal", new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) })]
+    [HarmonyBefore("com.showhair.rimworld.mod")]
     public static class HarmonyPatch_PawnRenderer
     {
         private const string DrawFullhair = "DrawFullHair";
@@ -70,8 +74,7 @@
                 BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
-        // [HarmonyBefore("rimworld.erdelf.alien_race.main", "rimworld.jecrell.cthulhu.cults", "net.pardeike.zombieland")]
-        public static bool RenderPawnInternal_Prefix(
+        public static bool Prefix(
             PawnRenderer __instance,
             Vector3 rootLoc,
             Quaternion quat,
@@ -83,7 +86,6 @@
             bool headStump)
         {
             GetReflections();
-
 
             // Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
             Pawn pawn = __instance.graphics.pawn;
@@ -312,6 +314,7 @@
                             continue;
                         }
 
+                        // Bool - only ONE hair drawn. Checks if it needs the hair cut texture.
                         if (!hairDrawn)
                         {
                             bool showHat = true;
@@ -360,6 +363,7 @@
                                     // loc2.y += 0.0328125022f;
                                 }
                             }
+
                             hairDrawn = true;
                         }
 

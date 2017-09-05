@@ -12,12 +12,12 @@ namespace FacialStuff
 
         protected override bool ApplyWorker(XmlDocument xml)
         {
-            if (modName.NullOrEmpty())
+            if (this.modName.NullOrEmpty())
             {
                 return false;
             }
 
-            return ModsConfig.ActiveModsInLoadOrder.Any(m => m.Name == modName);
+            return ModsConfig.ActiveModsInLoadOrder.Any(m => m.Name == this.modName);
         }
     }
 }

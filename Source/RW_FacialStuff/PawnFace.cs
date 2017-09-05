@@ -37,7 +37,7 @@
 
         public bool HasSameBeardColor;
 
-        [CanBeNull]
+        [NotNull]
         public MoustacheDef MoustacheDef;
 
         public float PheoMelanin;

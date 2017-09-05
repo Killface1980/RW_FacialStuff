@@ -43,7 +43,7 @@
 
         private bool oldEnough;
 
-        [CanBeNull]
+        [NotNull]
         private Pawn pawn;
 
         // must be null, always initialize with pawn
@@ -113,14 +113,14 @@
 
         public CrownType PawnCrownType => this.pawn?.story.crownType ?? CrownType.Average;
 
-        [CanBeNull]
+        [NotNull]
         public PawnFace PawnFace => this.pawnFace;
 
         public HeadType PawnHeadType
         {
             get
             {
-                if (this.pawn?.story?.HeadGraphicPath == null)
+                if (this.pawn.story?.HeadGraphicPath == null)
                 {
                     return HeadType.Normal;
                 }
@@ -274,7 +274,7 @@
         [CanBeNull]
         public Material BeardMatAt(Rot4 facing)
         {
-            if (!this.hasNaturalMouth || this.pawn?.gender == Gender.Female)
+            if (!this.hasNaturalMouth || this.pawn.gender == Gender.Female)
             {
                 return null;
             }
@@ -306,14 +306,10 @@
         [NotNull]
         public string BrowTexPath([NotNull] BrowDef browDef)
         {
-            if (this.pawn != null)
-            {
-                return "Brows/" + this.pawn.gender + "/Brow_" + this.pawn.gender + "_" + browDef.texPath;
-            }
-
-            return string.Empty;
+            return "Brows/" + this.pawn.gender + "/Brow_" + this.pawn.gender + "_" + browDef.texPath;
         }
 
+        // Can be called external
         public void CheckForAddedOrMissingParts()
         {
             this.pawn = this.parent as Pawn;
@@ -474,11 +470,6 @@
         /// <returns>True if all went well.</returns>
         public bool InitializeGraphics()
         {
-            if (this.pawn == null)
-            {
-                return false;
-            }
-
             this.InitializeGraphicsWrinkles();
 
             this.InitializeGraphicsBeard();
@@ -494,7 +485,7 @@
 
         private void InitializeGraphicsBrows()
         {
-            var color = this.pawn.story.hairColor * new Color(0.2f, 0.2f, 0.2f);
+            Color color = this.pawn.story.hairColor * new Color(0.2f, 0.2f, 0.2f);
             this.faceGraphicPart.BrowGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 this.texPathBrow,
                 ShaderDatabase.CutoutSkin,
@@ -505,7 +496,6 @@
         [CanBeNull]
         public Material MoustacheMatAt(Rot4 facing)
         {
-
             if (!this.hasNaturalMouth || this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved
                                       || this.PawnFace.MoustacheDef == null || this.pawn.gender == Gender.Female)
             {
@@ -582,7 +572,7 @@
                 return;
             }
 
-                // Children & Pregnancy || Werewolves transformed
+            // Children & Pregnancy || Werewolves transformed
             if (!this.pawn.Spawned || this.pawn.Dead || !this.oldEnough || this.Dontrender)
             {
                 return;
@@ -649,13 +639,14 @@
         ///     Basic pawn initialization.
         /// </summary>
         /// <returns>Success if all initialized.</returns>
-        public bool SetHeadType()
+        public bool SetHeadType([CanBeNull] Pawn p)
         {
-            this.pawn = this.parent as Pawn;
-            if (this.pawn == null)
+            if (p == null)
             {
                 return false;
             }
+
+            this.pawn = p;
 
             if (this.pawnFace == null)
             {
@@ -686,7 +677,7 @@
                 this.BeardDef = null;
             }
 
-            this.mouthgraphic= new HumanMouthGraphics(this.pawn);
+            this.mouthgraphic = new HumanMouthGraphics(this.pawn);
             this.flasher = this.pawn.Drawer.renderer.graphics.flasher;
             this.eyeWiggler = new PawnEyeWiggler(this.pawn);
 
@@ -921,37 +912,34 @@
         {
             string mainBeardDefTexPath = this.PawnFace.BeardDef.texPath + "_" + this.PawnCrownType + "_"
                                          + this.PawnHeadType;
+            string moustacheDefTexPath = this.PawnFace.MoustacheDef.texPath + "_" + this.PawnCrownType;
+            Color beardColor = this.PawnFace.BeardColor;
+            Color tacheColor = this.PawnFace.BeardColor;
 
-            if (this.PawnFace.MoustacheDef != null)
+            if (this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved)
             {
-                string moustacheDefTexPath;
-
-                if (this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved)
-                {
-                    moustacheDefTexPath = this.PawnFace.MoustacheDef.texPath;
-                }
-                else
-                {
-                    moustacheDefTexPath = this.PawnFace.MoustacheDef.texPath + "_" + this.PawnCrownType;
-                }
-
-                this.faceGraphicPart.MoustacheGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                    moustacheDefTexPath,
-                    ShaderDatabase.Cutout,
-                    Vector2.one,
-                    this.PawnFace.BeardColor);
+                // no error, only use the beard def shaved as texture
+                moustacheDefTexPath = BeardDefOf.Beard_Shaved.texPath;
+                tacheColor = Color.white;
             }
-
             if (this.PawnFace.BeardDef == BeardDefOf.Beard_Shaved)
             {
-                mainBeardDefTexPath = this.PawnFace.BeardDef.texPath;
+                mainBeardDefTexPath = BeardDefOf.Beard_Shaved.texPath;
+                beardColor = Color.white;
             }
+
+            this.faceGraphicPart.MoustacheGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                moustacheDefTexPath,
+                ShaderDatabase.Cutout,
+                Vector2.one,
+                tacheColor);
+
 
             this.faceGraphicPart.MainBeardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 mainBeardDefTexPath,
                 ShaderDatabase.Cutout,
                 Vector2.one,
-                this.PawnFace.BeardColor);
+                beardColor);
         }
 
         private void InitializeGraphicsEyePatches()
@@ -1132,14 +1120,17 @@
 
         private void SetMouthAccordingToMoodLevel()
         {
-            this.mood = this.pawn.needs?.mood?.CurInstantLevel ?? 0.5f;
+            if (this.pawn.needs?.mood?.thoughts != null)
+            {
+                this.mood = this.pawn.needs.mood.CurInstantLevel;
 
-            int mouthTextureIndexOfMood = this.mouthgraphic.GetMouthTextureIndexOfMood(this.mood);
+                int mouthTextureIndexOfMood = this.mouthgraphic.GetMouthTextureIndexOfMood(this.mood);
 
-            this.faceGraphicPart.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[mouthTextureIndexOfMood].Graphic;
+                this.faceGraphicPart.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[mouthTextureIndexOfMood].Graphic;
+            }
+
+            #endregion Private Methods
+
         }
-
-        #endregion Private Methods
-
     }
 }

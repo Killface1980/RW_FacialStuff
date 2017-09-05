@@ -24,6 +24,7 @@ namespace FacialStuff.Detouring
         static HarmonyPatches()
         {
             HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.mod");
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             harmony.Patch(
                 AccessTools.Method(typeof(Dialog_Options), nameof(Dialog_Options.DoWindowContents)),
@@ -45,21 +46,19 @@ namespace FacialStuff.Detouring
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(ResolveAllGraphics_Postfix)));
 
-#pragma warning disable SA1118 // Parameter must not span multiple lines
-            harmony.Patch(
-                AccessTools.Method(
-                    typeof(PawnRenderer),
-                    "RenderPawnInternal",
-                    new[]
-                        {
-                            typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4),
-                            typeof(RotDrawMode), typeof(bool), typeof(bool)
-                        }),
-                new HarmonyMethod(
-                    typeof(HarmonyPatch_PawnRenderer),
-                    nameof(HarmonyPatch_PawnRenderer.RenderPawnInternal_Prefix)),
-                null);
-#pragma warning restore SA1118 // Parameter must not span multiple lines
+           // harmony.Patch(
+           //     AccessTools.Method(
+           //         typeof(PawnRenderer),
+           //         "RenderPawnInternal",
+           //         new[]
+           //           {
+           //               typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4),
+           //               typeof(RotDrawMode), typeof(bool), typeof(bool)
+           //           }),
+           //     new HarmonyMethod(
+           //         typeof(HarmonyPatch_PawnRenderer),
+           //         nameof(HarmonyPatch_PawnRenderer.RenderPawnInternal_Prefix)),
+           //     null);
 
             harmony.Patch(
                 AccessTools.Method(
@@ -179,6 +178,7 @@ namespace FacialStuff.Detouring
 
             __instance.ClearCache();
 
+            // PrepC removes the faction - still?
             if (pawn.Faction == null)
             {
                 pawn.SetFactionDirect(Faction.OfPlayer);
@@ -194,7 +194,7 @@ namespace FacialStuff.Detouring
 
             // Custom rotting color, mixed with skin tone
             Color rotColor = pawn.story.SkinColor * FaceTextures.SkinRottingMultiplyColor;
-            if (!faceComp.SetHeadType())
+            if (!faceComp.SetHeadType(pawn))
             {
                 return;
             }

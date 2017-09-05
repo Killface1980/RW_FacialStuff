@@ -22,7 +22,7 @@
 
         public HumanMouthGraphics([NotNull] Pawn pawn)
         {
-            var color = Color.black;
+            Color color = Color.black;
             Graphic_Multi_NaturalHeadParts mouthGraphic01 =
                 GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     MouthDefOf.Mouth_Mood01.texPath,

@@ -2,6 +2,7 @@
   <IncidentDef>
     <defName>FacialStuffUpdateNote</defName>
     <label>facial stuff mod 0.17.3 update note</label>
+    <category>Misc</category>
     <targetType>MapPlayerHome</targetType>
     <workerClass>FacialStuff.IncidentWorker_FacialStuffUpdateNote</workerClass>
     <baseChance>9999.0</baseChance>

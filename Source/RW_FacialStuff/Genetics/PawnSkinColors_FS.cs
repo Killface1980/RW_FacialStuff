@@ -11,37 +11,40 @@ namespace FacialStuff.Detouring
 
         public static readonly SkinColorData[] SkinColors =
             {
+            // Preference of lighter skin colors in favor of more hair color variety
                 new SkinColorData(
                     0f,
                     0f,
                     new Color32(255, 233, 217, 255)),
                 new SkinColorData(
                     0.05f,
-                    0.05f,
+                    0.1f,
                     new Color32(242, 196, 193, 255)),
                 new SkinColorData(
                     0.15f,
-                    0.15f,
+                    0.25f,
                     new Color32(243, 210, 181, 255)),
                 new SkinColorData(
                     0.35f,
-                    0.2f,
-                    new Color32(242, 190, 145, 255)),
+                    0.45f,
+                    new Color32(235, 184, 141, 255)),
+                   // new Color32(242, 190, 145, 255)),
                 new SkinColorData(
                     0.5f,
-                    0.25f,
-                    new Color32(255, 231, 179, 255)),
+                    0.6f,
+                    new Color32(255, 235, 170, 255)),
+                   // new Color32(255, 231, 179, 255)),
                 new SkinColorData(
                     0.65f,
-                    0.35f,
+                    0.8f,
                     new Color32(218, 136, 87, 255)),
                 new SkinColorData(
                     0.7f,
-                    0.7f,
+                    0.85f,
                     new Color32(165, 93, 41, 255)),
                 new SkinColorData(
                     0.8f,
-                    0.8f,
+                    0.9f,
                     new Color32(127, 71, 51, 255)),
                 new SkinColorData(
                     0.95f,

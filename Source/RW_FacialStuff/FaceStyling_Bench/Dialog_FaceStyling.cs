@@ -26,7 +26,6 @@
     using UnityEngine;
 
     using Verse;
-    using Verse.Sound;
 
     [StaticConstructorOnStartup]
     public class DialogFaceStyling : Window
@@ -1936,7 +1935,7 @@
             }
 
             set.x = contractedBy.x;
-            var col = contractedBy.width / 9;
+            float col = contractedBy.width / 9;
 
             set.width = col * 4;
             set.y += 1.5f * set.height;
