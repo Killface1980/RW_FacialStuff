@@ -64,4 +64,21 @@
       <li>Tribal</li>
     </hairTags>
   </FacialStuff.Defs.EyeDef>
+<!--  
+  <FacialStuff.Defs.EyeDef>
+    <defName>Eye_Male_Average_Toon</defName>
+    <label>Toon</label>
+    <hairGender>Male</hairGender>
+    <raceList>
+      <li>Human</li>
+    </raceList>
+    <texPath>Toon</texPath>
+    <hairTags>
+      <li>Urban</li>
+      <li>Rural</li>
+      <li>Punk</li>
+      <li>Tribal</li>
+    </hairTags>
+  </FacialStuff.Defs.EyeDef>
+  -->
 </DefPackage-EyeDef>

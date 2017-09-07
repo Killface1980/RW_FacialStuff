@@ -17,6 +17,7 @@ namespace FacialStuff.Detouring
 
     using Verse;
     using Verse.Sound;
+    using System;
 
     [StaticConstructorOnStartup]
     public class HarmonyPatches
@@ -46,19 +47,19 @@ namespace FacialStuff.Detouring
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(ResolveAllGraphics_Postfix)));
 
-           // harmony.Patch(
-           //     AccessTools.Method(
-           //         typeof(PawnRenderer),
-           //         "RenderPawnInternal",
-           //         new[]
-           //           {
-           //               typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4),
-           //               typeof(RotDrawMode), typeof(bool), typeof(bool)
-           //           }),
-           //     new HarmonyMethod(
-           //         typeof(HarmonyPatch_PawnRenderer),
-           //         nameof(HarmonyPatch_PawnRenderer.RenderPawnInternal_Prefix)),
-           //     null);
+            // harmony.Patch(
+            //     AccessTools.Method(
+            //         typeof(PawnRenderer),
+            //         "RenderPawnInternal",
+            //         new[]
+            //           {
+            //               typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4),
+            //               typeof(RotDrawMode), typeof(bool), typeof(bool)
+            //           }),
+            //     new HarmonyMethod(
+            //         typeof(HarmonyPatch_PawnRenderer),
+            //         nameof(HarmonyPatch_PawnRenderer.RenderPawnInternal_Prefix)),
+            //     null);
 
             harmony.Patch(
                 AccessTools.Method(
@@ -111,6 +112,26 @@ namespace FacialStuff.Detouring
             Log.Message(
                 "Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count()
                 + " patches with harmony.");
+
+#if develop
+            foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading.Where(
+    td => td.category == ThingCategory.Pawn && td.race.Humanlike))
+            {
+                if (def.inspectorTabs == null || def.inspectorTabs.Count == 0)
+                {
+                    def.inspectorTabs = new List<Type>();
+                    def.inspectorTabsResolved = new List<InspectTabBase>();
+                }
+
+                if (def.inspectorTabs.Contains(typeof(ITab_Pawn_Face)))
+                {
+                    return;
+                }
+
+                def.inspectorTabs.Add(typeof(ITab_Pawn_Face));
+                def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Face)));
+            }
+#endif
 
             CheckAllInjected();
         }

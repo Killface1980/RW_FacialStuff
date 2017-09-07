@@ -33,9 +33,9 @@
         private DamageFlasher flasher = new DamageFlasher(null);
 
         private bool hasNaturalMouth = true;
-        private float headTypeX;
 
-        private float headTypeY;
+        private Vector2 mouthOffset = Vector2.zero;
+        private Vector2 eyeOffset = Vector2.zero;
 
         // private float blinkRate;
         // public PawnHeadWiggler headWiggler;
@@ -103,7 +103,9 @@
         public bool HasEyePatchRight { get; private set; }
 
         [NotNull]
-        public GraphicMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
+        public GraphicVectorMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
+
+        public GraphicVectorMeshSet EyeMeshSet => MeshPoolFS.HumanEyeSet[(int)this.FullHeadType];
 
         public bool OldEnough
         {
@@ -164,112 +166,187 @@
         #endregion Private Properties
 
         #region Public Methods
-
         public Vector3 BaseMouthOffsetAt(Rot4 rotation)
         {
-#if develop
 
             var male = pawn.gender == Gender.Male;
 
-            if (crownType == CrownType.Average)
+            if (PawnCrownType == CrownType.Average)
             {
-                switch (headType)
+                switch (PawnHeadType)
                 {
                     case HeadType.Normal:
                         if (male)
                         {
-                            headTypeX = Controller.settings.MaleAverageNormalOffsetX;
-                            headTypeY = Controller.settings.MaleAverageNormalOffsetY;
+                            mouthOffset = Controller.settings.MaleAverageNormalOffset;
                         }
                         else
                         {
-                            headTypeX = Controller.settings.FemaleAverageNormalOffsetX;
-                            headTypeY = Controller.settings.FemaleAverageNormalOffsetY;
+                            mouthOffset = Controller.settings.FemaleAverageNormalOffset;
                         }
                         break;
 
                     case HeadType.Pointy:
                         if (male)
                         {
-                            headTypeX = Controller.settings.MaleAveragePointyOffsetX;
-                            headTypeY = Controller.settings.MaleAveragePointyOffsetY;
+                            mouthOffset = Controller.settings.MaleAveragePointyOffset;
                         }
                         else
                         {
-                            headTypeX = Controller.settings.FemaleAveragePointyOffsetX;
-                            headTypeY = Controller.settings.FemaleAveragePointyOffsetY;
+                            mouthOffset = Controller.settings.FemaleAveragePointyOffset;
                         }
                         break;
 
                     case HeadType.Wide:
                         if (male)
                         {
-                            headTypeX = Controller.settings.MaleAverageWideOffsetX;
-                            headTypeY = Controller.settings.MaleAverageWideOffsetY;
+                            mouthOffset = Controller.settings.MaleAverageWideOffset;
                         }
                         else
                         {
-                            headTypeX = Controller.settings.FemaleAverageWideOffsetX;
-                            headTypeY = Controller.settings.FemaleAverageWideOffsetY;
+                            mouthOffset = Controller.settings.FemaleAverageWideOffset;
                         }
                         break;
                 }
             }
             else
             {
-                switch (headType)
+                switch (PawnHeadType)
                 {
                     case HeadType.Normal:
                         if (male)
                         {
-                            headTypeX = Controller.settings.MaleNarrowNormalOffsetX;
-                            headTypeY = Controller.settings.MaleNarrowNormalOffsetY;
+                            mouthOffset = Controller.settings.MaleNarrowNormalOffset;
                         }
                         else
                         {
-                            headTypeX = Controller.settings.FemaleNarrowNormalOffsetX;
-                            headTypeY = Controller.settings.FemaleNarrowNormalOffsetY;
+                            mouthOffset = Controller.settings.FemaleNarrowNormalOffset;
                         }
                         break;
 
                     case HeadType.Pointy:
                         if (male)
                         {
-                            headTypeX = Controller.settings.MaleNarrowPointyOffsetX;
-                            headTypeY = Controller.settings.MaleNarrowPointyOffsetY;
+                            mouthOffset = Controller.settings.MaleNarrowPointyOffset;
                         }
                         else
                         {
-                            headTypeX = Controller.settings.FemaleNarrowPointyOffsetX;
-                            headTypeY = Controller.settings.FemaleNarrowPointyOffsetY;
+                            mouthOffset = Controller.settings.FemaleNarrowPointyOffset;
                         }
                         break;
 
                     case HeadType.Wide:
                         if (male)
                         {
-                            headTypeX = Controller.settings.MaleNarrowWideOffsetX;
-                            headTypeY = Controller.settings.MaleNarrowWideOffsetY;
+                            mouthOffset = Controller.settings.MaleNarrowWideOffset;
                         }
                         else
                         {
-                            headTypeX = Controller.settings.FemaleNarrowWideOffsetX;
-                            headTypeY = Controller.settings.FemaleNarrowWideOffsetY;
+                            mouthOffset = Controller.settings.FemaleNarrowWideOffset;
                         }
                         break;
                 }
             }
 
-#else
-#endif
             switch (rotation.AsInt)
             {
-                case 1: return new Vector3(this.headTypeX, 0f, -this.headTypeY);
-                case 2: return new Vector3(0, 0f, -this.headTypeY);
-                case 3: return new Vector3(-this.headTypeX, 0f, -this.headTypeY);
+                case 1: return new Vector3(this.mouthOffset.x, 0f, -this.mouthOffset.y);
+                case 2: return new Vector3(0, 0f, -this.mouthOffset.y);
+                case 3: return new Vector3(-this.mouthOffset.x, 0f, -this.mouthOffset.y);
                 default: return Vector3.zero;
             }
         }
+
+        public Vector3 BaseEyeOffsetAt(Rot4 rotation)
+        {
+            var male = pawn.gender == Gender.Male;
+
+            if (PawnCrownType == CrownType.Average)
+            {
+                switch (PawnHeadType)
+                {
+                    case HeadType.Normal:
+                        if (male)
+                        {
+                            eyeOffset = Controller.settings.EyeMaleAverageNormalOffset;
+                        }
+                        else
+                        {
+                            eyeOffset = Controller.settings.EyeFemaleAverageNormalOffset;
+                        }
+                        break;
+
+                    case HeadType.Pointy:
+                        if (male)
+                        {
+                            eyeOffset = Controller.settings.EyeMaleAveragePointyOffset;
+                        }
+                        else
+                        {
+                            eyeOffset = Controller.settings.EyeFemaleAveragePointyOffset;
+                        }
+                        break;
+
+                    case HeadType.Wide:
+                        if (male)
+                        {
+                            eyeOffset = Controller.settings.EyeMaleAverageWideOffset;
+                        }
+                        else
+                        {
+                            eyeOffset = Controller.settings.EyeFemaleAverageWideOffset;
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                switch (PawnHeadType)
+                {
+                    case HeadType.Normal:
+                        if (male)
+                        {
+                            eyeOffset = Controller.settings.EyeMaleNarrowNormalOffset;
+                        }
+                        else
+                        {
+                            eyeOffset = Controller.settings.EyeFemaleNarrowNormalOffset;
+                        }
+                        break;
+
+                    case HeadType.Pointy:
+                        if (male)
+                        {
+                            eyeOffset = Controller.settings.EyeMaleNarrowPointyOffset;
+                        }
+                        else
+                        {
+                            eyeOffset = Controller.settings.EyeFemaleNarrowPointyOffset;
+                        }
+                        break;
+
+                    case HeadType.Wide:
+                        if (male)
+                        {
+                            eyeOffset = Controller.settings.EyeMaleNarrowWideOffset;
+                        }
+                        else
+                        {
+                            eyeOffset = Controller.settings.EyeFemaleNarrowWideOffset;
+                        }
+                        break;
+                }
+            }
+
+            switch (rotation.AsInt)
+            {
+                case 1: return new Vector3(this.eyeOffset.x, 0f, -this.eyeOffset.y);
+                case 2: return new Vector3(0, 0f, -this.eyeOffset.y);
+                case 3: return new Vector3(-this.eyeOffset.x, 0f, -this.eyeOffset.y);
+                default: return Vector3.zero;
+            }
+        }
+
 
         [CanBeNull]
         public Material BeardMatAt(Rot4 facing)
@@ -485,10 +562,10 @@
 
         private void InitializeGraphicsBrows()
         {
-            Color color = this.pawn.story.hairColor * new Color(0.2f, 0.2f, 0.2f);
+            Color color = this.pawn.story.hairColor * Color.gray;
             this.faceGraphicPart.BrowGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 this.texPathBrow,
-                ShaderDatabase.CutoutSkin,
+                ShaderDatabase.Cutout,
                 Vector2.one,
                 color);
         }
@@ -635,6 +712,10 @@
 
         public HumanMouthGraphics mouthgraphic;
 
+        public bool IgnoreRenderer;
+
+        public int rotationInt;
+
         /// <summary>
         ///     Basic pawn initialization.
         /// </summary>
@@ -748,20 +829,14 @@
             {
                 case HeadType.Normal:
                     this.FullHeadType = FullHead.FemaleAverageNormal;
-                    this.headTypeX = Controller.settings.FemaleAverageNormalOffsetX;
-                    this.headTypeY = Controller.settings.FemaleAverageNormalOffsetY;
                     break;
 
                 case HeadType.Pointy:
                     this.FullHeadType = FullHead.FemaleAveragePointy;
-                    this.headTypeX = Controller.settings.FemaleAveragePointyOffsetX;
-                    this.headTypeY = Controller.settings.FemaleAveragePointyOffsetY;
                     break;
 
                 case HeadType.Wide:
                     this.FullHeadType = FullHead.FemaleAverageWide;
-                    this.headTypeX = Controller.settings.FemaleAverageWideOffsetX;
-                    this.headTypeY = Controller.settings.FemaleAverageWideOffsetY;
                     break;
             }
         }
@@ -772,20 +847,14 @@
             {
                 case HeadType.Normal:
                     this.FullHeadType = FullHead.FemaleNarrowNormal;
-                    this.headTypeX = Controller.settings.FemaleNarrowNormalOffsetX;
-                    this.headTypeY = Controller.settings.FemaleNarrowNormalOffsetY;
                     break;
 
                 case HeadType.Pointy:
                     this.FullHeadType = FullHead.FemaleNarrowPointy;
-                    this.headTypeX = Controller.settings.FemaleNarrowPointyOffsetX;
-                    this.headTypeY = Controller.settings.FemaleNarrowPointyOffsetY;
                     break;
 
                 case HeadType.Wide:
                     this.FullHeadType = FullHead.FemaleNarrowWide;
-                    this.headTypeX = Controller.settings.FemaleNarrowWideOffsetX;
-                    this.headTypeY = Controller.settings.FemaleNarrowWideOffsetY;
                     break;
             }
         }
@@ -810,20 +879,14 @@
             {
                 case HeadType.Normal:
                     this.FullHeadType = FullHead.MaleAverageNormal;
-                    this.headTypeX = Controller.settings.MaleAverageNormalOffsetX;
-                    this.headTypeY = Controller.settings.MaleAverageNormalOffsetY;
                     break;
 
                 case HeadType.Pointy:
                     this.FullHeadType = FullHead.MaleAveragePointy;
-                    this.headTypeX = Controller.settings.MaleAveragePointyOffsetX;
-                    this.headTypeY = Controller.settings.MaleAveragePointyOffsetY;
                     break;
 
                 case HeadType.Wide:
                     this.FullHeadType = FullHead.MaleAverageWide;
-                    this.headTypeX = Controller.settings.MaleAverageWideOffsetX;
-                    this.headTypeY = Controller.settings.MaleAverageWideOffsetY;
                     break;
             }
         }
@@ -834,20 +897,14 @@
             {
                 case HeadType.Normal:
                     this.FullHeadType = FullHead.MaleNarrowNormal;
-                    this.headTypeX = Controller.settings.MaleNarrowNormalOffsetX;
-                    this.headTypeY = Controller.settings.MaleNarrowNormalOffsetY;
                     break;
 
                 case HeadType.Pointy:
                     this.FullHeadType = FullHead.MaleNarrowPointy;
-                    this.headTypeX = Controller.settings.MaleNarrowPointyOffsetX;
-                    this.headTypeY = Controller.settings.MaleNarrowPointyOffsetY;
                     break;
 
                 case HeadType.Wide:
                     this.FullHeadType = FullHead.MaleNarrowWide;
-                    this.headTypeX = Controller.settings.MaleNarrowWideOffsetX;
-                    this.headTypeY = Controller.settings.MaleNarrowWideOffsetY;
                     break;
             }
         }
@@ -1001,33 +1058,33 @@
 
             this.faceGraphicPart.EyeLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                       this.texPathEyeLeft,
-                                                      ShaderDatabase.CutoutSkin,
+                                                      ShaderDatabase.Cutout,
                                                       Vector2.one,
                                                       this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                        this.texPathEyeRight,
-                                                       ShaderDatabase.CutoutSkin,
+                                                       ShaderDatabase.Cutout,
                                                        Vector2.one,
                                                        this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                             this.texPathEyeLeftClosed,
-                                                            ShaderDatabase.CutoutSkin,
+                                                            ShaderDatabase.Cutout,
                                                             Vector2.one,
-                                                            Color.black) as Graphic_Multi_NaturalEyes;
+                                                            this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                              this.texPathEyeRightClosed,
-                                                             ShaderDatabase.CutoutSkin,
+                                                             ShaderDatabase.Cutout,
                                                              Vector2.one,
-                                                             Color.black) as Graphic_Multi_NaturalEyes;
+                                                             this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
 
             this.faceGraphicPart.DeadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 "Eyes/Eyes_Dead",
-                ShaderDatabase.CutoutSkin,
+                ShaderDatabase.Cutout,
                 Vector2.one,
-                Color.white);
+                this.pawn.story.SkinColor);
 
         }
 
@@ -1049,12 +1106,13 @@
                     return;
                 }
 
+                // texture for added/extra part not found, log and default
                 Log.Message(
                     "Facial Stuff: No texture for added part: " + this.texPathMouth + " - Graphic_Multi_NaturalHeadParts");
             }
 
             this.hasNaturalMouth = true;
-            this.faceGraphicPart.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[3].Graphic;
+            this.faceGraphicPart.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[this.pawn.Dead || this.pawn.Downed ? 2 : 3].Graphic;
         }
 
         private void InitializeGraphicsWrinkles()
@@ -1120,14 +1178,18 @@
 
         private void SetMouthAccordingToMoodLevel()
         {
-            if (this.pawn.needs?.mood?.thoughts != null)
+            if (this.pawn.Downed)
+            {
+                this.mood = 0.3f;
+
+            }
+            else if (this.pawn.needs?.mood?.thoughts != null)
             {
                 this.mood = this.pawn.needs.mood.CurInstantLevel;
-
-                int mouthTextureIndexOfMood = this.mouthgraphic.GetMouthTextureIndexOfMood(this.mood);
-
-                this.faceGraphicPart.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[mouthTextureIndexOfMood].Graphic;
             }
+            int mouthTextureIndexOfMood = this.mouthgraphic.GetMouthTextureIndexOfMood(this.mood);
+
+            this.faceGraphicPart.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[mouthTextureIndexOfMood].Graphic;
 
             #endregion Private Methods
 

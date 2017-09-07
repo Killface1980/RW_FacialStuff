@@ -1,6 +1,8 @@
 ﻿// ReSharper disable StyleCop.SA1401
 namespace FacialStuff
 {
+    using System.Collections.Generic;
+
     using UnityEngine;
 
     using Verse;
@@ -10,42 +12,34 @@ namespace FacialStuff
 
         #region Public Fields
 
-        public float FemaleAverageNormalOffsetX = 0.1761006f;
+        public Vector2 FemaleAverageNormalOffset = new Vector2(0.1761006f, 0.18113f);
+        public Vector2 FemaleAveragePointyOffset = new Vector2(0.1937107f, 0.163522f);
+        public Vector2 FemaleAverageWideOffset = new Vector2(0.17610f, 0.1861635f);
+        public Vector2 FemaleNarrowNormalOffset = new Vector2(0.11824f, 0.2012579f);
+        public Vector2 FemaleNarrowPointyOffset = new Vector2(0.13585f, 0.21635f);
+        public Vector2 FemaleNarrowWideOffset = new Vector2(0.14088f, 0.191195f);
 
-        public float FemaleAverageNormalOffsetY = 0.18113f;
+        public Vector2 MaleAverageNormalOffset = new Vector2(0.2314465f, 0.17862f);
+        public Vector2 MaleAveragePointyOffset = new Vector2(0.2339623f, 0.17107f);
+        public Vector2 MaleAverageWideOffset = new Vector2(0.23145f, 0.1735849f);
+        public Vector2 MaleNarrowNormalOffset = new Vector2(0.13816f, 0.20337f);
+        public Vector2 MaleNarrowPointyOffset = new Vector2(0.1534591f, 0.19874f);
+        public Vector2 MaleNarrowWideOffset = new Vector2(0.1559749f, 0.2064151f);
 
-        public float FemaleAveragePointyOffsetX = 0.1937107f;
+        public Vector2 EyeFemaleAverageNormalOffset = new Vector2(-0.01761f, 0f);
+        public Vector2 EyeFemaleAveragePointyOffset = new Vector2(-0.00755f, -0.01006f);
+        public Vector2 EyeFemaleAverageWideOffset = new Vector2(0.00755f, 0f);
+        public Vector2 EyeFemaleNarrowNormalOffset = new Vector2(-0.02264f, 0f);
+        public Vector2 EyeFemaleNarrowPointyOffset = new Vector2(-0.02516f, 0f);
+        public Vector2 EyeFemaleNarrowWideOffset = new Vector2(-0.01509f, 0f);
 
-        public float FemaleAveragePointyOffsetY = 0.163522f;
+        public Vector2 EyeMaleAverageNormalOffset = new Vector2(0f, 0f);
+        public Vector2 EyeMaleAveragePointyOffset = new Vector2(-0.01256f, 0f);
+        public Vector2 EyeMaleAverageWideOffset = new Vector2(0f, 0f);
+        public Vector2 EyeMaleNarrowNormalOffset = new Vector2(-0.02516f, 0f);
+        public Vector2 EyeMaleNarrowPointyOffset = new Vector2(-0.02516f, 0f);
+        public Vector2 EyeMaleNarrowWideOffset = new Vector2(-0.02516f, 0f);
 
-        public float FemaleAverageWideOffsetX = 0.2062893f;
-
-        public float FemaleAverageWideOffsetY = 0.1861635f;
-
-        public float FemaleNarrowNormalOffsetX = 0.1383648f;
-
-        public float FemaleNarrowNormalOffsetY = 0.2012579f;
-
-        public float FemaleNarrowPointyOffsetX = 0.1534591f;
-
-        public float FemaleNarrowPointyOffsetY = 0.21635f;
-
-        public float FemaleNarrowWideOffsetX = 0.1610063f;
-
-        public float FemaleNarrowWideOffsetY = 0.191195f;
-
-        public float MaleAverageNormalOffsetX = 0.2314465f;
-        public float MaleAverageNormalOffsetY = 0.17862f;
-        public float MaleAveragePointyOffsetX = 0.2339623f;
-        public float MaleAveragePointyOffsetY = 0.17107f;
-        public float MaleAverageWideOffsetX = 0.2616352f;
-        public float MaleAverageWideOffsetY = 0.1735849f;
-        public float MaleNarrowNormalOffsetX = 0.163522f;
-        public float MaleNarrowNormalOffsetY = 0.20337f;
-        public float MaleNarrowPointyOffsetX = 0.1534591f;
-        public float MaleNarrowPointyOffsetY = 0.19874f;
-        public float MaleNarrowWideOffsetX = 0.1559749f;
-        public float MaleNarrowWideOffsetY = 0.2064151f;
 
         #endregion Public Fields
 
@@ -69,6 +63,7 @@ namespace FacialStuff
         private bool showBodyChange;
 
         private bool showGenderAgeChange;
+
 
         #endregion Private Fields
 
@@ -200,55 +195,6 @@ namespace FacialStuff
             Scribe_Values.Look(ref this.useCaching, "useCaching", false, true);
             Scribe_Values.Look(ref this.showBodyChange, "showBodyChange", false, true);
             Scribe_Values.Look(ref this.showGenderAgeChange, "showGenderAgeChange", false, true);
-
-#if develop // Scribe_Values.Look(ref MaleAverageNormalOffsetX, "MaleAverageNormalOffsetX");
-
-// Scribe_Values.Look(ref MaleAveragePointyOffsetX, "MaleAveragePointyOffsetX");
-
-// Scribe_Values.Look(ref MaleAverageWideOffsetX, "MaleAverageWideOffsetX");
-
-// Scribe_Values.Look(ref FemaleAverageNormalOffsetX, "FemaleAverageNormalOffsetX");
-
-// Scribe_Values.Look(ref FemaleAveragePointyOffsetX, "FemaleAveragePointyOffsetX");
-
-// Scribe_Values.Look(ref FemaleAverageWideOffsetX, "FemaleAverageWideOffsetX");
-
-// Scribe_Values.Look(ref MaleNarrowNormalOffsetX, "MaleNarrowNormalOffsetX");
-
-// Scribe_Values.Look(ref MaleNarrowPointyOffsetX, "MaleNarrowPointyOffsetX");
-
-// Scribe_Values.Look(ref MaleNarrowWideOffsetX, "MaleNarrowWideOffsetX");
-
-// Scribe_Values.Look(ref FemaleNarrowNormalOffsetX, "FemaleNarrowNormalOffsetX");
-
-// Scribe_Values.Look(ref FemaleNarrowPointyOffsetX, "FemaleNarrowPointyOffsetX");
-
-// Scribe_Values.Look(ref FemaleNarrowWideOffsetX, "FemaleNarrowWideOffsetX");
-
-// Scribe_Values.Look(ref MaleAverageNormalOffsetY, "MaleAverageNormalOffsetY");
-
-// Scribe_Values.Look(ref MaleAveragePointyOffsetY, "MaleAveragePointyOffsetY");
-
-// Scribe_Values.Look(ref MaleAverageWideOffsetY, "MaleAverageWideOffsetY");
-
-// Scribe_Values.Look(ref FemaleAverageNormalOffsetY, "FemaleAverageNormalOffsetY");
-
-// Scribe_Values.Look(ref FemaleAveragePointyOffsetY, "FemaleAveragePointyOffsetY");
-
-// Scribe_Values.Look(ref FemaleAverageWideOffsetY, "FemaleAverageWideOffsetY");
-
-// Scribe_Values.Look(ref MaleNarrowNormalOffsetY, "MaleNarrowNormalOffsetY");
-
-// Scribe_Values.Look(ref MaleNarrowPointyOffsetY, "MaleNarrowPointyOffsetY");
-
-// Scribe_Values.Look(ref MaleNarrowWideOffsetY, "MaleNarrowWideOffsetY");
-
-// Scribe_Values.Look(ref FemaleNarrowNormalOffsetY, "FemaleNarrowNormalOffsetY");
-
-// Scribe_Values.Look(ref FemaleNarrowPointyOffsetY, "FemaleNarrowPointyOffsetY");
-
-// Scribe_Values.Look(ref FemaleNarrowWideOffsetY, "FemaleNarrowWideOffsetY");
-#endif
         }
 
         #endregion Public Methods

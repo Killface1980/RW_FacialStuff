@@ -13,7 +13,7 @@
     {
         #region Public Fields
 
-        public const string modName = "Facial Stuff 0.17.3.2";
+        public const string modName = "Facial Stuff 0.17.3.3";
 
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once StyleCop.SA1307
@@ -85,10 +85,10 @@
     // <FemaleAverageOffsetY>0.04150943</FemaleAverageOffsetY>
     // <FemaleNarrowOffsetX>0.009433965</FemaleNarrowOffsetX>
     // <FemaleNarrowOffsetY>0.06981131</FemaleNarrowOffsetY>
-    // <MaleAverageNormalOffsetX>0.02641509</MaleAverageNormalOffsetX>
-    // <MaleAveragePointyOffsetX>0.02264151</MaleAveragePointyOffsetX>
-    // <MaleAverageWideOffsetX>0.00754717</MaleAverageWideOffsetX>
-    // <FemaleAverageNormalOffsetX>0.02452831</FemaleAverageNormalOffsetX>
-    // <FemaleAveragePointyOffsetX>0.02452831</FemaleAveragePointyOffsetX>
-    // <FemaleAverageWideOffsetX>0.04150943</FemaleAverageWideOffsetX>
+    // <MaleAverageNormalOffset>0.02641509</MaleAverageNormalOffset>
+    // <MaleAveragePointyOffset>0.02264151</MaleAveragePointyOffset>
+    // <MaleAverageWideOffset>0.00754717</MaleAverageWideOffset>
+    // <FemaleAverageNormalOffset>0.02452831</FemaleAverageNormalOffset>
+    // <FemaleAveragePointyOffset>0.02452831</FemaleAveragePointyOffset>
+    // <FemaleAverageWideOffset>0.04150943</FemaleAverageWideOffset>
 }

@@ -5,6 +5,8 @@
     using System.IO;
     using System.Linq;
 
+    using JetBrains.Annotations;
+
     using UnityEngine;
 
     using Verse;
@@ -89,7 +91,7 @@
 
         #region Private Methods
 
-        private static void CutOutHair(ref Texture2D hairTex, Texture2D maskTex)
+        private static void CutOutHair([NotNull] ref Texture2D hairTex, Texture2D maskTex)
         {
             for (int x = 0; x < hairTex.width; x++)
             {

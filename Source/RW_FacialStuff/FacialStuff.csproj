@@ -81,6 +81,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GraphicVectorMeshSet.cs" />
     <Compile Include="IncidentWorker_FacialStuffUpdateNote.cs" />
     <Compile Include="CutHairDB.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />
@@ -126,7 +127,7 @@
     <None Include="Wiggler\PawnHeadWiggler.cs" />
     <Compile Include="Wiggler\PawnEyeWiggler.cs" />
     <Compile Include="Enums\FullHead.cs" />
-    <None Include="ITab_Pawn_Face.cs" />
+    <Compile Include="ITab_Pawn_Face.cs" />
     <Compile Include="Enums\HeadType.cs" />
     <Compile Include="Defs\MouthDefOf.cs" />
     <Compile Include="Textures\FaceTextures.cs" />

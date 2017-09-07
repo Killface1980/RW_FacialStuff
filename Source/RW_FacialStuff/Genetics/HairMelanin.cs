@@ -155,6 +155,11 @@
                 SimpleCurve ageCure = new SimpleCurve { { 0.1f, 1f }, { 0.25f, 1f - techMod }, { 0.6f, 0.9f } };
                 limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
             }
+           // if (pawn.story.hairDef.hairTags.Contains("Punk"))
+           // {
+           //     limit *= 0.2f;
+           // }
+
 
             if (factionColor > limit && pawn.ageTracker.AgeBiologicalYearsFloat > 16)
             {
