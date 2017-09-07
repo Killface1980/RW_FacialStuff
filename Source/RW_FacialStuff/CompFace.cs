@@ -23,7 +23,7 @@
         private bool dontrender;
 
         [NotNull]
-        private PawnEyeWiggler eyeWiggler = new PawnEyeWiggler(null);
+        private PawnEyeWiggler eyeWiggler;
 
         [NotNull]
         private FaceGraphicParts faceGraphicPart = new FaceGraphicParts();
@@ -669,11 +669,12 @@
             }
 
             // todo: head wiggler? move eyes to eyewiggler
-            // this.headWiggler.WigglerTick();
+            // this.headWiggler.RotatorTick();
             if (Controller.settings.MakeThemBlink)
             {
                 this.eyeWiggler.WigglerTick();
             }
+            this.headRotator.RotatorTick();
         }
 
 
@@ -715,6 +716,9 @@
         public bool IgnoreRenderer;
 
         public int rotationInt;
+
+        private PawnHeadRotator headRotator;
+        public PawnHeadRotator HeadRotator => headRotator;
 
         /// <summary>
         ///     Basic pawn initialization.
@@ -761,6 +765,7 @@
             this.mouthgraphic = new HumanMouthGraphics(this.pawn);
             this.flasher = this.pawn.Drawer.renderer.graphics.flasher;
             this.eyeWiggler = new PawnEyeWiggler(this.pawn);
+            this.headRotator = new PawnHeadRotator(this.pawn);
 
             // this.headWiggler = new PawnHeadWiggler(this.pawn);
 

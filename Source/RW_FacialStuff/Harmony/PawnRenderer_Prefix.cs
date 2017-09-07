@@ -160,6 +160,9 @@
                 }
             }
 
+            // new, todo: make options etc?
+           // headFacing = faceComp.HeadRotator.Rotation(headFacing);
+
             Vector3 vector = rootLoc;
             Vector3 a = rootLoc;
             if (bodyFacing != Rot4.North)
@@ -189,8 +192,6 @@
 #else
                     Vector3 offsetEyes = faceComp.EyeMeshSet.OffsetAt(headFacing);
 #endif
-                    // Experiments with head motion
-                    // locFacialY += faceComp.eyemove;
                     Quaternion headQuat = quat; // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
                     GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, material, portrait);
                     locFacialY.y += YOffsetOnFace;
@@ -368,7 +369,7 @@
                         }
 
                         // Now draw the actual hat
-                        Material material2 = apparelGraphics[j].graphic.MatAt(bodyFacing);
+                        Material material2 = apparelGraphics[j].graphic.MatAt(headFacing);
                         material2 = __instance.graphics.flasher.GetDamagedMat(material2);
                         GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, material2, portrait);
                         loc2.y += YOffsetOnFace;
