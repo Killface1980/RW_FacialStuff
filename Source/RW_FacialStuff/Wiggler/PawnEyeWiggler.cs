@@ -1,5 +1,5 @@
 ﻿// ReSharper disable MissingXmlDoc
-namespace FacialStuff.Wiggler
+namespace FacialStuff
 {
     using RimWorld;
 

@@ -160,9 +160,10 @@
                 }
             }
 
+#if develop
             // new, todo: make options etc?
-           // headFacing = faceComp.HeadRotator.Rotation(headFacing);
-
+    headFacing = faceComp.HeadRotator.Rotation(headFacing);
+#endif
             Vector3 vector = rootLoc;
             Vector3 a = rootLoc;
             if (bodyFacing != Rot4.North)

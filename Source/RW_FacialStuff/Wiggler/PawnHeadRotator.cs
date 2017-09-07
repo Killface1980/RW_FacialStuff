@@ -1,4 +1,4 @@
-﻿namespace FacialStuff.Wiggler
+﻿namespace FacialStuff
 {
     using RimWorld;
 

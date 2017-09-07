@@ -7,7 +7,6 @@
     using FacialStuff.Enums;
     using FacialStuff.Genetics;
     using FacialStuff.Graphics_FS;
-    using FacialStuff.Wiggler;
 
     using JetBrains.Annotations;
 
@@ -383,7 +382,7 @@
         [NotNull]
         public string BrowTexPath([NotNull] BrowDef browDef)
         {
-            return "Brows/" + this.pawn.gender + "/Brow_" + this.pawn.gender + "_" + browDef.texPath;
+            return "Brows/Brow_" + this.pawn.gender + "_" + browDef.texPath;
         }
 
         // Can be called external
