@@ -153,83 +153,91 @@
         #endregion Private Properties
 
         #region Public Methods
+
+        // only for development
         public Vector3 BaseMouthOffsetAt(Rot4 rotation)
         {
-            var male = pawn.gender == Gender.Male;
+            var male = this.pawn.gender == Gender.Male;
 
-            if (PawnCrownType == CrownType.Average)
+            if (this.PawnCrownType == CrownType.Average)
             {
-                switch (PawnHeadType)
+                switch (this.PawnHeadType)
                 {
                     case HeadType.Normal:
                         if (male)
                         {
-                            mouthOffset = Settings.MouthMaleAverageNormalOffset;
+                            this.mouthOffset = Settings.MouthMaleAverageNormalOffset;
                         }
                         else
                         {
-                            mouthOffset = Settings.MouthFemaleAverageNormalOffset;
+                            this.mouthOffset = Settings.MouthFemaleAverageNormalOffset;
                         }
+
                         break;
 
                     case HeadType.Pointy:
                         if (male)
                         {
-                            mouthOffset = Settings.MouthMaleAveragePointyOffset;
+                            this.mouthOffset = Settings.MouthMaleAveragePointyOffset;
                         }
                         else
                         {
-                            mouthOffset = Settings.MouthFemaleAveragePointyOffset;
+                            this.mouthOffset = Settings.MouthFemaleAveragePointyOffset;
                         }
+
                         break;
 
                     case HeadType.Wide:
                         if (male)
                         {
-                            mouthOffset = Settings.MouthMaleAverageWideOffset;
+                            this.mouthOffset = Settings.MouthMaleAverageWideOffset;
                         }
                         else
                         {
-                            mouthOffset = Settings.MouthFemaleAverageWideOffset;
+                            this.mouthOffset = Settings.MouthFemaleAverageWideOffset;
                         }
+
                         break;
                 }
             }
             else
             {
-                switch (PawnHeadType)
+                switch (this.PawnHeadType)
                 {
                     case HeadType.Normal:
                         if (male)
                         {
-                            mouthOffset = Settings.MouthMaleNarrowNormalOffset;
+                            this.mouthOffset = Settings.MouthMaleNarrowNormalOffset;
                         }
                         else
                         {
-                            mouthOffset = Settings.MouthFemaleNarrowNormalOffset;
+                            this.mouthOffset = Settings.MouthFemaleNarrowNormalOffset;
                         }
+
                         break;
 
                     case HeadType.Pointy:
                         if (male)
                         {
-                            mouthOffset = Settings.MouthMaleNarrowPointyOffset;
+                            this.mouthOffset = Settings.MouthMaleNarrowPointyOffset;
                         }
                         else
                         {
-                            mouthOffset = Settings.MouthFemaleNarrowPointyOffset;
+                            this.mouthOffset = Settings.MouthFemaleNarrowPointyOffset;
                         }
+
                         break;
 
                     case HeadType.Wide:
                         if (male)
                         {
-                            mouthOffset = Settings.MouthMaleNarrowWideOffset;
+                            this.mouthOffset = Settings.MouthMaleNarrowWideOffset;
                         }
                         else
                         {
-                            mouthOffset = Settings.MouthFemaleNarrowWideOffset;
+                            this.mouthOffset = Settings.MouthFemaleNarrowWideOffset;
                         }
+
                         break;
                 }
             }
@@ -244,83 +252,90 @@
             }
         }
 
+        // only for development
         public Vector3 BaseEyeOffsetAt(Rot4 rotation)
         {
-            var male = pawn.gender == Gender.Male;
+            var male = this.pawn.gender == Gender.Male;
 
-            if (PawnCrownType == CrownType.Average)
+            if (this.PawnCrownType == CrownType.Average)
             {
-                switch (PawnHeadType)
+                switch (this.PawnHeadType)
                 {
                     case HeadType.Normal:
                         if (male)
                         {
-                            eyeOffset = Settings.EyeMaleAverageNormalOffset;
+                            this.eyeOffset = Settings.EyeMaleAverageNormalOffset;
                         }
                         else
                         {
-                            eyeOffset = Settings.EyeFemaleAverageNormalOffset;
+                            this.eyeOffset = Settings.EyeFemaleAverageNormalOffset;
                         }
+
                         break;
 
                     case HeadType.Pointy:
                         if (male)
                         {
-                            eyeOffset = Settings.EyeMaleAveragePointyOffset;
+                            this.eyeOffset = Settings.EyeMaleAveragePointyOffset;
                         }
                         else
                         {
-                            eyeOffset = Settings.EyeFemaleAveragePointyOffset;
+                            this.eyeOffset = Settings.EyeFemaleAveragePointyOffset;
                         }
+
                         break;
 
                     case HeadType.Wide:
                         if (male)
                         {
-                            eyeOffset = Settings.EyeMaleAverageWideOffset;
+                            this.eyeOffset = Settings.EyeMaleAverageWideOffset;
                         }
                         else
                         {
-                            eyeOffset = Settings.EyeFemaleAverageWideOffset;
+                            this.eyeOffset = Settings.EyeFemaleAverageWideOffset;
                         }
+
                         break;
                 }
             }
             else
             {
-                switch (PawnHeadType)
+                switch (this.PawnHeadType)
                 {
                     case HeadType.Normal:
                         if (male)
                         {
-                            eyeOffset = Settings.EyeMaleNarrowNormalOffset;
+                            this.eyeOffset = Settings.EyeMaleNarrowNormalOffset;
                         }
                         else
                         {
-                            eyeOffset = Settings.EyeFemaleNarrowNormalOffset;
+                            this.eyeOffset = Settings.EyeFemaleNarrowNormalOffset;
                         }
+
                         break;
 
                     case HeadType.Pointy:
                         if (male)
                         {
-                            eyeOffset = Settings.EyeMaleNarrowPointyOffset;
+                            this.eyeOffset = Settings.EyeMaleNarrowPointyOffset;
                         }
                         else
                         {
-                            eyeOffset = Settings.EyeFemaleNarrowPointyOffset;
+                            this.eyeOffset = Settings.EyeFemaleNarrowPointyOffset;
                         }
+
                         break;
 
                     case HeadType.Wide:
                         if (male)
                         {
-                            eyeOffset = Settings.EyeMaleNarrowWideOffset;
+                            this.eyeOffset = Settings.EyeMaleNarrowWideOffset;
                         }
                         else
                         {
-                            eyeOffset = Settings.EyeFemaleNarrowWideOffset;
+                            this.eyeOffset = Settings.EyeFemaleNarrowWideOffset;
                         }
+
                         break;
                 }
             }
@@ -335,6 +350,15 @@
             }
         }
 
+        public Quaternion HeadQuat(Rot4 rotation)
+        {
+           float num = 1f;
+            Quaternion asQuat = rotation.AsQuat;
+            float x = 1f * Mathf.Sin(num * (this.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
+            float z = 1f * Mathf.Cos(num * (this.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
+            asQuat.SetLookRotation(new Vector3(x, 0f, z), Vector3.up);
+            return asQuat;
+        }
 
         [CanBeNull]
         public Material BeardMatAt(Rot4 facing)
@@ -643,6 +667,11 @@
                 return;
             }
 
+            if (Find.TickManager.Paused)
+            {
+                return;
+            }
+
             this.Roofed = this.pawn.Position.Roofed(this.pawn.Map);
 
             if (Controller.settings.UseMouth)
@@ -662,8 +691,10 @@
             {
                 this.eyeWiggler.WigglerTick();
             }
-
-            this.headRotator.RotatorTick();
+            if (!this.eyeWiggler.IsAsleep)
+            {
+                this.headRotator.RotatorTick();
+            }
         }
 
 
@@ -708,6 +739,8 @@
         public int rotationInt;
 
         private PawnHeadRotator headRotator;
+
+
         public PawnHeadRotator HeadRotator => this.headRotator;
 
         /// <summary>
@@ -1173,19 +1206,15 @@
 
         private void SetMouthAccordingToMoodLevel()
         {
-            if (this.pawn.Downed)
-            {
-                this.mood = 0.3f;
-
-            }
-            else if (this.pawn.needs?.mood?.thoughts != null)
+            // if (this.pawn.Downed)
+            // {
+            //     this.mood = 0.3f;
+            // }
+            // else 
+            if (this.pawn.needs?.mood?.thoughts != null)
             {
                 this.mood = this.pawn.needs.mood.CurInstantLevel;
             }
-
-#if develop
-            this.mood *= 2f;
-#endif
 
             int mouthTextureIndexOfMood = this.mouthgraphic.GetMouthTextureIndexOfMood(this.mood);
 

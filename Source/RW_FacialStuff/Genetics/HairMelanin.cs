@@ -143,7 +143,6 @@
             // Log.Message(greyness.ToString());
             Color hairColor = GetHairColor(hair);
 
-
             // Special hair colors
             float factionColor = Rand.Value;
             float limit = 0.98f;
@@ -155,19 +154,17 @@
                 SimpleCurve ageCure = new SimpleCurve { { 0.1f, 1f }, { 0.25f, 1f - techMod }, { 0.6f, 0.9f } };
                 limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
             }
-           // if (pawn.story.hairDef.hairTags.Contains("Punk"))
-           // {
-           //     limit *= 0.2f;
-           // }
 
-
+            // if (pawn.story.hairDef.hairTags.Contains("Punk"))
+            // {
+            // limit *= 0.2f;
+            // }
             if (factionColor > limit && pawn.ageTracker.AgeBiologicalYearsFloat > 16)
             {
                 Color color2 = ArtificialHairColors.RandomElement();
 
                 hairColor = Color.Lerp(hairColor, color2, Rand.Range(0.66f, 1f));
             }
-
 
             if (sameBeardColor)
             {
@@ -182,12 +179,7 @@
                 beardColor = Color.Lerp(color2, GrayHair, hair.Greyness * Rand.Value);
             }
 
-            HairDNA dna = new HairDNA
-            {
-                HairColorRequest = hair,
-                HairColor = hairColor,
-                BeardColor = beardColor
-            };
+            HairDNA dna = new HairDNA { HairColorRequest = hair, HairColor = hairColor, BeardColor = beardColor };
 
             return dna;
         }

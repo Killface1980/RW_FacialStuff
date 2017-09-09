@@ -1972,6 +1972,7 @@
             {
                 this.DrawTypeSelector(listRect);
             }
+
             if (this.tab == FaceStyleTab.Develop)
             {
                 this.DrawDeveloper(listRect);

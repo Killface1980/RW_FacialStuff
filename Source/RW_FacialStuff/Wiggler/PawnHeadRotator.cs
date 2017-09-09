@@ -13,6 +13,15 @@
             this.pawn = p;
         }
 
+        public readonly SimpleCurve MotionCurve =
+            new SimpleCurve
+                {
+                    new CurvePoint(0f, 0f),
+                    new CurvePoint(90f, 1.25f),
+                    new CurvePoint(270f, -1.25f),
+                    new CurvePoint(360f, 0f)
+                };
+
         private Pawn pawn;
 
         private int nextRotation = -5000;
@@ -20,9 +29,27 @@
 
         private RotationDirection rotationMod;
 
+        public int wheelRotation = 0;
+
+        public float CurrentMovement
+        {
+            get
+            {
+                return this.MotionCurve.Evaluate(this.wheelRotation);
+            }
+
+        }
+
         public void RotatorTick()
         {
+
             int tickManagerTicksGame = Find.TickManager.TicksGame;
+
+            this.wheelRotation++;
+            if (this.wheelRotation > 360)
+            {
+                this.wheelRotation = 0;
+            }
 
             if (tickManagerTicksGame > this.nextRotationEnd)
             {
@@ -36,12 +63,12 @@
                     return;
                 }
 
-                var rand = Rand.Value;
-                if (rand < 0.25f)
+                float rand = Rand.Value;
+                if (rand < 0.15f)
                 {
                     this.rotationMod = RotationDirection.Clockwise;
                 }
-                else if (rand < 0.5f)
+                else if (rand < 0.3f)
                 {
                     this.rotationMod = RotationDirection.Counterclockwise;
                 }
@@ -55,7 +82,7 @@
 
         private void SetNextRotation(int tickManagerTicksGame)
         {
-            float blinkDuration = Rand.Range(60f, 120f);
+            float blinkDuration = Rand.Range(120f, 180f);
 
             this.nextRotationEnd = (int)(tickManagerTicksGame + blinkDuration);
         }

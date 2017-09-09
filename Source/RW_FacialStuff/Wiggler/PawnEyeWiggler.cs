@@ -182,13 +182,9 @@ namespace FacialStuff
             this.nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
             this.nextBlinkEnd = (int)(this.NextBlink + blinkDuration);
 
-            if (this.pawn.CurJob != null && this.pawn.jobs.curDriver.asleep)
-            {
-                this.isAsleep = true;
-                return;
-            }
+            this.isAsleep = !this.pawn.Awake();
 
-            this.isAsleep = false;
+
 
             // this.JitterLeft = 1f;
             // this.JitterRight = 1f;

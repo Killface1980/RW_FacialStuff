@@ -132,7 +132,9 @@
                 }
                 headFacing = bodyFacing;
             }
+
 #endif
+
             // Regular FacePawn rendering 14+ years
             if (renderBody)
             {
@@ -159,13 +161,16 @@
                 }
             }
 
-#if develop
-            // new, todo: make options etc?
+            Quaternion headQuat = quat;
+
             if (!portrait && Controller.settings.TurnYourHead)
             {
                 headFacing = faceComp.HeadRotator.Rotation(headFacing);
+                headQuat *= faceComp.HeadQuat(headFacing);
+
+                // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
             }
-#endif
+
             Vector3 vector = rootLoc;
             Vector3 a = rootLoc;
             if (bodyFacing != Rot4.North)
@@ -182,7 +187,7 @@
             if (__instance.graphics.headGraphic != null)
             {
                 // Rendererd pawn faces
-                Vector3 b = quat * __instance.BaseHeadOffsetAt(headFacing);
+                Vector3 b = headQuat * __instance.BaseHeadOffsetAt(headFacing);
                 Material material = __instance.graphics.HeadMatAt(headFacing, bodyDrawType, headStump);
                 Vector3 locFacialY = a + b;
                 if (material != null)
@@ -195,7 +200,6 @@
 #else
                     Vector3 offsetEyes = faceComp.EyeMeshSet.OffsetAt(headFacing);
 #endif
-                    Quaternion headQuat = quat; // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
                     GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, material, portrait);
                     locFacialY.y += YOffsetOnFace;
                     if (!headStump)
@@ -350,7 +354,7 @@
                                 {
                                     Mesh mesh4 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
                                     Material mat = __instance.graphics.HairMatAt(headFacing);
-                                    GenDraw.DrawMeshNowOrLater(mesh4, loc2, quat, mat, portrait);
+                                    GenDraw.DrawMeshNowOrLater(mesh4, loc2, headQuat, mat, portrait);
                                     loc2.y += YOffsetOnFace;
                                 }
                             }
@@ -361,7 +365,7 @@
                                 Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
                                 if (hairCutMat != null)
                                 {
-                                    GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, hairCutMat, portrait);
+                                    GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, hairCutMat, portrait);
                                     loc2.y += YOffsetOnFace;
 
                                     // loc2.y += 0.0328125022f;
@@ -374,7 +378,7 @@
                         // Now draw the actual hat
                         Material material2 = apparelGraphics[j].graphic.MatAt(headFacing);
                         material2 = __instance.graphics.flasher.GetDamagedMat(material2);
-                        GenDraw.DrawMeshNowOrLater(mesh3, loc2, quat, material2, portrait);
+                        GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, material2, portrait);
                         loc2.y += YOffsetOnFace;
                     }
                 }
@@ -384,7 +388,7 @@
                 {
                     Mesh mesh4 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
                     Material mat = __instance.graphics.HairMatAt(headFacing);
-                    GenDraw.DrawMeshNowOrLater(mesh4, loc2, quat, mat, portrait);
+                    GenDraw.DrawMeshNowOrLater(mesh4, loc2, headQuat, mat, portrait);
                 }
             }
 
@@ -410,9 +414,10 @@
             // Draw the beard, for the RenderPortrait
             if (portrait && !headStump)
             {
-                Vector3 b = quat * __instance.BaseHeadOffsetAt(headFacing);
+                Vector3 b = headQuat * __instance.BaseHeadOffsetAt(headFacing);
                 Vector3 locFacialY = a + b;
-                Quaternion headQuat = quat; // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
+
+                // no rotation wanted
                 Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
 
                 DrawBeardAndTache(headFacing, portrait, faceComp, mesh2, locFacialY, headQuat);
@@ -438,7 +443,7 @@
 
                 ((PawnHeadOverlays)PawnHeadOverlaysFieldInfo?.GetValue(__instance))?.RenderStatusOverlays(
                     bodyLoc,
-                    quat,
+                    headQuat,
                     MeshPool.humanlikeHeadSet.MeshAt(headFacing));
 
                 // Traverse.Create(__instance).Field("statusOverlays").GetValue<PawnHeadOverlays>().RenderStatusOverlays(bodyLoc, quat, portrait ? alienProps.alienRace.generalSettings.alienPartGenerator.headPortraitSet.MeshAt(headFacing) : alienProps.alienRace.generalSettings.alienPartGenerator.headSet.MeshAt(headFacing));

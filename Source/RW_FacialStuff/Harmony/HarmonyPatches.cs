@@ -1,6 +1,7 @@
 ﻿// ReSharper disable All
 namespace FacialStuff.Detouring
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -17,7 +18,6 @@ namespace FacialStuff.Detouring
 
     using Verse;
     using Verse.Sound;
-    using System;
 
     [StaticConstructorOnStartup]
     public class HarmonyPatches
@@ -48,19 +48,18 @@ namespace FacialStuff.Detouring
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(ResolveAllGraphics_Postfix)));
 
             // harmony.Patch(
-            //     AccessTools.Method(
-            //         typeof(PawnRenderer),
-            //         "RenderPawnInternal",
-            //         new[]
-            //           {
-            //               typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4),
-            //               typeof(RotDrawMode), typeof(bool), typeof(bool)
-            //           }),
-            //     new HarmonyMethod(
-            //         typeof(HarmonyPatch_PawnRenderer),
-            //         nameof(HarmonyPatch_PawnRenderer.RenderPawnInternal_Prefix)),
-            //     null);
-
+            // AccessTools.Method(
+            // typeof(PawnRenderer),
+            // "RenderPawnInternal",
+            // new[]
+            // {
+            // typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4),
+            // typeof(RotDrawMode), typeof(bool), typeof(bool)
+            // }),
+            // new HarmonyMethod(
+            // typeof(HarmonyPatch_PawnRenderer),
+            // nameof(HarmonyPatch_PawnRenderer.RenderPawnInternal_Prefix)),
+            // null);
             harmony.Patch(
                 AccessTools.Method(
                     typeof(Pawn_HealthTracker),
@@ -131,6 +130,7 @@ namespace FacialStuff.Detouring
                 def.inspectorTabs.Add(typeof(ITab_Pawn_Face));
                 def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Face)));
             }
+
 #endif
 
             CheckAllInjected();

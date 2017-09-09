@@ -11,7 +11,7 @@ namespace FacialStuff.Detouring
 
         public static readonly SkinColorData[] SkinColors =
             {
-            // Preference of lighter skin colors in favor of more hair color variety
+                // Preference of lighter skin colors in favor of more hair color variety
                 new SkinColorData(
                     0f,
                     0f,
@@ -28,12 +28,14 @@ namespace FacialStuff.Detouring
                     0.35f,
                     0.45f,
                     new Color32(235, 184, 141, 255)),
-                   // new Color32(242, 190, 145, 255)),
+
+                // new Color32(242, 190, 145, 255)),
                 new SkinColorData(
                     0.5f,
                     0.6f,
                     new Color32(255, 235, 170, 255)),
-                   // new Color32(255, 231, 179, 255)),
+
+                // new Color32(255, 231, 179, 255)),
                 new SkinColorData(
                     0.65f,
                     0.8f,
@@ -57,12 +59,12 @@ namespace FacialStuff.Detouring
 
                 // Vanilla
 
-               // new SkinColorData(0f, 0f, new Color(0.9490196f, 0.929411769f, 0.8784314f)),
-               // new SkinColorData(0.25f, 0.215f, new Color(1f, 0.9372549f, 0.8352941f)),
-               // new SkinColorData(0.5f, 0.715f, new Color(1f, 0.9372549f, 0.7411765f)),
-               // new SkinColorData(0.75f, 0.8f, new Color(0.894117653f, 0.619607866f, 0.3529412f)),
-               // new SkinColorData(0.9f, 0.95f, new Color(0.509803951f, 0.356862754f, 0.1882353f)),
-               // new SkinColorData(1f, 1f, new Color(0.3882353f, 0.274509817f, 0.141176477f))
+                // new SkinColorData(0f, 0f, new Color(0.9490196f, 0.929411769f, 0.8784314f)),
+                // new SkinColorData(0.25f, 0.215f, new Color(1f, 0.9372549f, 0.8352941f)),
+                // new SkinColorData(0.5f, 0.715f, new Color(1f, 0.9372549f, 0.7411765f)),
+                // new SkinColorData(0.75f, 0.8f, new Color(0.894117653f, 0.619607866f, 0.3529412f)),
+                // new SkinColorData(0.9f, 0.95f, new Color(0.509803951f, 0.356862754f, 0.1882353f)),
+                // new SkinColorData(1f, 1f, new Color(0.3882353f, 0.274509817f, 0.141176477f))
             };
 
         #endregion Public Fields
