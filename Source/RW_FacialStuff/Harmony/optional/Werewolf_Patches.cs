@@ -11,7 +11,7 @@
             CompFace face = __instance.Pawn.TryGetComp<CompFace>();
             if (face != null)
             {
-                face.Dontrender = true;
+                face.DontRender = true;
             }
         }
 
@@ -23,7 +23,7 @@
                 return;
             }
 
-            face.Dontrender = false;
+            face.DontRender = false;
             __instance.Pawn.Drawer.renderer.graphics.nakedGraphic = null;
         }
     }

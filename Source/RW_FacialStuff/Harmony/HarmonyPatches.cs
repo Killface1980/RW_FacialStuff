@@ -189,10 +189,10 @@ namespace FacialStuff.Detouring
                 return;
             }
 
-            faceComp.OldEnough = pawn.ageTracker.AgeBiologicalYearsFloat >= 13;
+            faceComp.IsChild = pawn.ageTracker.AgeBiologicalYearsFloat < 14;
 
             // Return if child
-            if (!faceComp.OldEnough || faceComp.Dontrender)
+            if (faceComp.IsChild || faceComp.DontRender)
             {
                 return;
             }
@@ -294,7 +294,7 @@ namespace FacialStuff.Detouring
                     {
                         // Look for the werewolf
                         face.CheckForAddedOrMissingParts();
-                        if (!face.Dontrender)
+                        if (!face.DontRender)
                         {
                             pawn.Drawer.renderer.graphics.ResolveAllGraphics();
                         }
@@ -333,7 +333,7 @@ namespace FacialStuff.Detouring
             }
 
             face.CheckForAddedOrMissingParts();
-            if (!face.Dontrender)
+            if (!face.DontRender)
             {
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
             }

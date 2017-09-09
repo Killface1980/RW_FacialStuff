@@ -85,48 +85,48 @@ namespace FacialStuff
                         if (male)
                         {
                             GUILayout.Label(
-                                "MaleAverageNormalOffset: " + Controller.settings.MaleAverageNormalOffset.ToString("N5"));
-                            Controller.settings.MaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.MaleAverageNormalOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.MaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.MaleAverageNormalOffset.y,
-                                -0.4f,
-                                0.4f);
-                            GUILayout.Label(
-                                "MaleAverageNormalOffset: " + Controller.settings.EyeMaleAverageNormalOffset.ToString("N5"));
-                            Controller.settings.EyeMaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeMaleAverageNormalOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.EyeMaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeMaleAverageNormalOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "MaleAverageNormalOffset: " + Settings.EyeMaleAverageNormalOffset.ToString("N5"));
+                            Settings.EyeMaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
+                                Settings.EyeMaleAverageNormalOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.EyeMaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
+                                Settings.EyeMaleAverageNormalOffset.y,
+                                -0.2f,
+                                0.2f); GUILayout.Label(
+                                "MouthMaleAverageNormalOffset: " + Settings.MouthMaleAverageNormalOffset.ToString("N5"));
+                            Settings.MouthMaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
+                                Settings.MouthMaleAverageNormalOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.MouthMaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
+                                Settings.MouthMaleAverageNormalOffset.y,
+                                -0.2f,
+                                0.2f);
                         }
                         else
                         {
                             GUILayout.Label(
-                                "FemaleAverageNormalOffset: " + Controller.settings.FemaleAverageNormalOffset.ToString("N5"));
-                            Controller.settings.FemaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.FemaleAverageNormalOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.FemaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.FemaleAverageNormalOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "FemaleAverageNormalOffset: " + Settings.EyeFemaleAverageNormalOffset.ToString("N5"));
+                            Settings.EyeFemaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
+                                Settings.EyeFemaleAverageNormalOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.EyeFemaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
+                                Settings.EyeFemaleAverageNormalOffset.y,
+                                -0.2f,
+                                0.2f);
                             GUILayout.Label(
-                                "FemaleAverageNormalOffset: " + Controller.settings.EyeFemaleAverageNormalOffset.ToString("N5"));
-                            Controller.settings.EyeFemaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeFemaleAverageNormalOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.EyeFemaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeFemaleAverageNormalOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "MouthFemaleAverageNormalOffset: " + Settings.MouthFemaleAverageNormalOffset.ToString("N5"));
+                            Settings.MouthFemaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
+                                Settings.MouthFemaleAverageNormalOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.MouthFemaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
+                                Settings.MouthFemaleAverageNormalOffset.y,
+                                -0.2f,
+                                0.2f);
+
                         }
 
                         break;
@@ -135,48 +135,49 @@ namespace FacialStuff
                         if (male)
                         {
                             GUILayout.Label(
-                                "MaleAveragePointyOffset: " + Controller.settings.MaleAveragePointyOffset.ToString("N5"));
-                            Controller.settings.MaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.MaleAveragePointyOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.MaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.MaleAveragePointyOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "MaleAveragePointyOffset: " + Settings.EyeMaleAveragePointyOffset.ToString("N5"));
+                            Settings.EyeMaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
+                                Settings.EyeMaleAveragePointyOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.EyeMaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
+                                Settings.EyeMaleAveragePointyOffset.y,
+                                -0.2f,
+                                0.2f);
                             GUILayout.Label(
-                                "MaleAveragePointyOffset: " + Controller.settings.EyeMaleAveragePointyOffset.ToString("N5"));
-                            Controller.settings.EyeMaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeMaleAveragePointyOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.EyeMaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeMaleAveragePointyOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "MouthMaleAveragePointyOffset: " + Settings.MouthMaleAveragePointyOffset.ToString("N5"));
+                            Settings.MouthMaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
+                                Settings.MouthMaleAveragePointyOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.MouthMaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
+                                Settings.MouthMaleAveragePointyOffset.y,
+                                -0.2f,
+                                0.2f);
+
                         }
                         else
                         {
                             GUILayout.Label(
-                                "FemaleAveragePointyOffset: " + Controller.settings.FemaleAveragePointyOffset.ToString("N5"));
-                            Controller.settings.FemaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.FemaleAveragePointyOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.FemaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.FemaleAveragePointyOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "FemaleAveragePointyOffset: " + Settings.EyeFemaleAveragePointyOffset.ToString("N5"));
+                            Settings.EyeFemaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
+                                Settings.EyeFemaleAveragePointyOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.EyeFemaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
+                                Settings.EyeFemaleAveragePointyOffset.y,
+                                -0.2f,
+                                0.2f);
                             GUILayout.Label(
-                                "FemaleAveragePointyOffset: " + Controller.settings.EyeFemaleAveragePointyOffset.ToString("N5"));
-                            Controller.settings.EyeFemaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeFemaleAveragePointyOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.EyeFemaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeFemaleAveragePointyOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "MouthFemaleAveragePointyOffset: " + Settings.MouthFemaleAveragePointyOffset.ToString("N5"));
+                            Settings.MouthFemaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
+                                Settings.MouthFemaleAveragePointyOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.MouthFemaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
+                                Settings.MouthFemaleAveragePointyOffset.y,
+                                -0.2f,
+                                0.2f);
                         }
 
                         break;
@@ -185,40 +186,40 @@ namespace FacialStuff
                         if (male)
                         {
                             GUILayout.Label(
-                                "MaleAverageWideOffset.x: " + Controller.settings.MaleAverageWideOffset.ToString("N5"));
-                            Controller.settings.MaleAverageWideOffset.x =
-                                GUILayout.HorizontalSlider(Controller.settings.MaleAverageWideOffset.x, -0.4f, 0.4f);
-                            Controller.settings.MaleAverageWideOffset.y =
-                                GUILayout.HorizontalSlider(Controller.settings.MaleAverageWideOffset.y, -0.4f, 0.4f);
+                                "MaleAverageWideOffset.x: " + Settings.EyeMaleAverageWideOffset.ToString("N5"));
+                            Settings.EyeMaleAverageWideOffset.x =
+                                GUILayout.HorizontalSlider(Settings.EyeMaleAverageWideOffset.x, -0.2f, 0.2f);
+                            Settings.EyeMaleAverageWideOffset.y =
+                                GUILayout.HorizontalSlider(Settings.EyeMaleAverageWideOffset.y, -0.2f, 0.2f);
                             GUILayout.Label(
-                                "MaleAverageWideOffset.x: " + Controller.settings.EyeMaleAverageWideOffset.ToString("N5"));
-                            Controller.settings.EyeMaleAverageWideOffset.x =
-                                GUILayout.HorizontalSlider(Controller.settings.EyeMaleAverageWideOffset.x, -0.4f, 0.4f);
-                            Controller.settings.EyeMaleAverageWideOffset.y =
-                                GUILayout.HorizontalSlider(Controller.settings.EyeMaleAverageWideOffset.y, -0.4f, 0.4f);
+                                "MouthMaleAverageWideOffset.x: " + Settings.MouthMaleAverageWideOffset.ToString("N5"));
+                            Settings.MouthMaleAverageWideOffset.x =
+                                GUILayout.HorizontalSlider(Settings.MouthMaleAverageWideOffset.x, -0.2f, 0.2f);
+                            Settings.MouthMaleAverageWideOffset.y =
+                                GUILayout.HorizontalSlider(Settings.MouthMaleAverageWideOffset.y, -0.2f, 0.2f);
                         }
                         else
                         {
                             GUILayout.Label(
-                                "FemaleAverageWideOffset: " + Controller.settings.FemaleAverageWideOffset.ToString("N5"));
-                            Controller.settings.FemaleAverageWideOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.FemaleAverageWideOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.FemaleAverageWideOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.FemaleAverageWideOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "FemaleAverageWideOffset: " + Settings.EyeFemaleAverageWideOffset.ToString("N5"));
+                            Settings.EyeFemaleAverageWideOffset.x = GUILayout.HorizontalSlider(
+                                Settings.EyeFemaleAverageWideOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.EyeFemaleAverageWideOffset.y = GUILayout.HorizontalSlider(
+                                Settings.EyeFemaleAverageWideOffset.y,
+                                -0.2f,
+                                0.2f);
                             GUILayout.Label(
-                                "FemaleAverageWideOffset: " + Controller.settings.EyeFemaleAverageWideOffset.ToString("N5"));
-                            Controller.settings.EyeFemaleAverageWideOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeFemaleAverageWideOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.EyeFemaleAverageWideOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeFemaleAverageWideOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "MouthFemaleAverageWideOffset: " + Settings.MouthFemaleAverageWideOffset.ToString("N5"));
+                            Settings.MouthFemaleAverageWideOffset.x = GUILayout.HorizontalSlider(
+                                Settings.MouthFemaleAverageWideOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.MouthFemaleAverageWideOffset.y = GUILayout.HorizontalSlider(
+                                Settings.MouthFemaleAverageWideOffset.y,
+                                -0.2f,
+                                0.2f);
                         }
 
                         break;
@@ -232,48 +233,48 @@ namespace FacialStuff
                         if (male)
                         {
                             GUILayout.Label(
-                                "MaleNarrowNormalOffset.x: " + Controller.settings.MaleNarrowNormalOffset.ToString("N5"));
-                            Controller.settings.MaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.MaleNarrowNormalOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.MaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.MaleNarrowNormalOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "MaleNarrowNormalOffset.x: " + Settings.EyeMaleNarrowNormalOffset.ToString("N5"));
+                            Settings.EyeMaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
+                                Settings.EyeMaleNarrowNormalOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.EyeMaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
+                                Settings.EyeMaleNarrowNormalOffset.y,
+                                -0.2f,
+                                0.2f);
                             GUILayout.Label(
-                                "MaleNarrowNormalOffset.x: " + Controller.settings.EyeMaleNarrowNormalOffset.ToString("N5"));
-                            Controller.settings.EyeMaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeMaleNarrowNormalOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.EyeMaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeMaleNarrowNormalOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "MouthMaleNarrowNormalOffset.x: " + Settings.MouthMaleNarrowNormalOffset.ToString("N5"));
+                            Settings.MouthMaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
+                                Settings.MouthMaleNarrowNormalOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.MouthMaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
+                                Settings.MouthMaleNarrowNormalOffset.y,
+                                -0.2f,
+                                0.2f);
                         }
                         else
                         {
                             GUILayout.Label(
-                                "FemaleNarrowNormalOffset: " + Controller.settings.FemaleNarrowNormalOffset.ToString("N5"));
-                            Controller.settings.FemaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.FemaleNarrowNormalOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.FemaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.FemaleNarrowNormalOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "FemaleNarrowNormalOffset: " + Settings.EyeFemaleNarrowNormalOffset.ToString("N5"));
+                            Settings.EyeFemaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
+                                Settings.EyeFemaleNarrowNormalOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.EyeFemaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
+                                Settings.EyeFemaleNarrowNormalOffset.y,
+                                -0.2f,
+                                0.2f);
                             GUILayout.Label(
-                                "FemaleNarrowNormalOffset: " + Controller.settings.EyeFemaleNarrowNormalOffset.ToString("N5"));
-                            Controller.settings.EyeFemaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeFemaleNarrowNormalOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.EyeFemaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeFemaleNarrowNormalOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "MouthFemaleNarrowNormalOffset: " + Settings.MouthFemaleNarrowNormalOffset.ToString("N5"));
+                            Settings.MouthFemaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
+                                Settings.MouthFemaleNarrowNormalOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.MouthFemaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
+                                Settings.MouthFemaleNarrowNormalOffset.y,
+                                -0.2f,
+                                0.2f);
                         }
 
                         break;
@@ -282,48 +283,48 @@ namespace FacialStuff
                         if (male)
                         {
                             GUILayout.Label(
-                                "MaleNarrowPointyOffset.x: " + Controller.settings.MaleNarrowPointyOffset.ToString("N5"));
-                            Controller.settings.MaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.MaleNarrowPointyOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.MaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.MaleNarrowPointyOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "MaleNarrowPointyOffset.x: " + Settings.EyeMaleNarrowPointyOffset.ToString("N5"));
+                            Settings.EyeMaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
+                                Settings.EyeMaleNarrowPointyOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.EyeMaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
+                                Settings.EyeMaleNarrowPointyOffset.y,
+                                -0.2f,
+                                0.2f);
                             GUILayout.Label(
-                                "MaleNarrowPointyOffset.x: " + Controller.settings.EyeMaleNarrowPointyOffset.ToString("N5"));
-                            Controller.settings.EyeMaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeMaleNarrowPointyOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.EyeMaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeMaleNarrowPointyOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "MouthMaleNarrowPointyOffset.x: " + Settings.MouthMaleNarrowPointyOffset.ToString("N5"));
+                            Settings.MouthMaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
+                                Settings.MouthMaleNarrowPointyOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.MouthMaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
+                                Settings.MouthMaleNarrowPointyOffset.y,
+                                -0.2f,
+                                0.2f);
                         }
                         else
                         {
                             GUILayout.Label(
-                                "FemaleNarrowPointyOffset: " + Controller.settings.FemaleNarrowPointyOffset.ToString("N5"));
-                            Controller.settings.FemaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.FemaleNarrowPointyOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.FemaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.FemaleNarrowPointyOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "FemaleNarrowPointyOffset: " + Settings.EyeFemaleNarrowPointyOffset.ToString("N5"));
+                            Settings.EyeFemaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
+                                Settings.EyeFemaleNarrowPointyOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.EyeFemaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
+                                Settings.EyeFemaleNarrowPointyOffset.y,
+                                -0.2f,
+                                0.2f);
                             GUILayout.Label(
-                                "FemaleNarrowPointyOffset: " + Controller.settings.EyeFemaleNarrowPointyOffset.ToString("N5"));
-                            Controller.settings.EyeFemaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeFemaleNarrowPointyOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.EyeFemaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeFemaleNarrowPointyOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "MouthFemaleNarrowPointyOffset: " + Settings.MouthFemaleNarrowPointyOffset.ToString("N5"));
+                            Settings.MouthFemaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
+                                Settings.MouthFemaleNarrowPointyOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.MouthFemaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
+                                Settings.MouthFemaleNarrowPointyOffset.y,
+                                -0.2f,
+                                0.2f);
                         }
 
                         break;
@@ -332,40 +333,40 @@ namespace FacialStuff
                         if (male)
                         {
                             GUILayout.Label(
-                                "MaleNarrowWideOffset.x: " + Controller.settings.MaleNarrowWideOffset.ToString("N5"));
-                            Controller.settings.MaleNarrowWideOffset.x =
-                                GUILayout.HorizontalSlider(Controller.settings.MaleNarrowWideOffset.x, -0.4f, 0.4f);
-                            Controller.settings.MaleNarrowWideOffset.y =
-                                GUILayout.HorizontalSlider(Controller.settings.MaleNarrowWideOffset.y, -0.4f, 0.4f);
+                                "MaleNarrowWideOffset.x: " + Settings.EyeMaleNarrowWideOffset.ToString("N5"));
+                            Settings.EyeMaleNarrowWideOffset.x =
+                                GUILayout.HorizontalSlider(Settings.EyeMaleNarrowWideOffset.x, -0.2f, 0.2f);
+                            Settings.EyeMaleNarrowWideOffset.y =
+                                GUILayout.HorizontalSlider(Settings.EyeMaleNarrowWideOffset.y, -0.2f, 0.2f);
                             GUILayout.Label(
-                                "MaleNarrowWideOffset.x: " + Controller.settings.EyeMaleNarrowWideOffset.ToString("N5"));
-                            Controller.settings.EyeMaleNarrowWideOffset.x =
-                                GUILayout.HorizontalSlider(Controller.settings.EyeMaleNarrowWideOffset.x, -0.4f, 0.4f);
-                            Controller.settings.EyeMaleNarrowWideOffset.y =
-                                GUILayout.HorizontalSlider(Controller.settings.EyeMaleNarrowWideOffset.y, -0.4f, 0.4f);
+                                "MouthMaleNarrowWideOffset.x: " + Settings.MouthMaleNarrowWideOffset.ToString("N5"));
+                            Settings.MouthMaleNarrowWideOffset.x =
+                                GUILayout.HorizontalSlider(Settings.MouthMaleNarrowWideOffset.x, -0.2f, 0.2f);
+                            Settings.MouthMaleNarrowWideOffset.y =
+                                GUILayout.HorizontalSlider(Settings.MouthMaleNarrowWideOffset.y, -0.2f, 0.2f);
                         }
                         else
                         {
                             GUILayout.Label(
-                                "FemaleNarrowWideOffset: " + Controller.settings.FemaleNarrowWideOffset.ToString("N5"));
-                            Controller.settings.FemaleNarrowWideOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.FemaleNarrowWideOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.FemaleNarrowWideOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.FemaleNarrowWideOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "FemaleNarrowWideOffset: " + Settings.EyeFemaleNarrowWideOffset.ToString("N5"));
+                            Settings.EyeFemaleNarrowWideOffset.x = GUILayout.HorizontalSlider(
+                                Settings.EyeFemaleNarrowWideOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.EyeFemaleNarrowWideOffset.y = GUILayout.HorizontalSlider(
+                                Settings.EyeFemaleNarrowWideOffset.y,
+                                -0.2f,
+                                0.2f);
                             GUILayout.Label(
-                                "FemaleNarrowWideOffset: " + Controller.settings.EyeFemaleNarrowWideOffset.ToString("N5"));
-                            Controller.settings.EyeFemaleNarrowWideOffset.x = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeFemaleNarrowWideOffset.x,
-                                -0.4f,
-                                0.4f);
-                            Controller.settings.EyeFemaleNarrowWideOffset.y = GUILayout.HorizontalSlider(
-                                Controller.settings.EyeFemaleNarrowWideOffset.y,
-                                -0.4f,
-                                0.4f);
+                                "MouthFemaleNarrowWideOffset: " + Settings.MouthFemaleNarrowWideOffset.ToString("N5"));
+                            Settings.MouthFemaleNarrowWideOffset.x = GUILayout.HorizontalSlider(
+                                Settings.MouthFemaleNarrowWideOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.MouthFemaleNarrowWideOffset.y = GUILayout.HorizontalSlider(
+                                Settings.MouthFemaleNarrowWideOffset.y,
+                                -0.2f,
+                                0.2f);
                         }
 
                         break;
@@ -375,8 +376,8 @@ namespace FacialStuff
             // else
             // {
             // GUILayout.Label("FemaleOffset.y");
-            // Controller.settings.FemaleOffset.y =
-            // GUILayout.HorizontalSlider(Controller.settings.FemaleOffset.y, -0.4f, 0.4f);
+            // Settings.FemaleOffset.y =
+            // GUILayout.HorizontalSlider(Settings.FemaleOffset.y, -0.2f, 0.2f);
             // }
             GUILayout.EndVertical();
             GUILayout.EndArea();

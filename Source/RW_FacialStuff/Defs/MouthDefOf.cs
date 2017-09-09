@@ -13,6 +13,8 @@ namespace FacialStuff.Defs
     public static class MouthDefOf
     {
 
+        public static MouthDef Mouth_Grin;
+
         public static MouthDef Mouth_Mood01;
 
 

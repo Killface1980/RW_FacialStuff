@@ -22,7 +22,7 @@
 
         public HumanMouthGraphics([NotNull] Pawn pawn)
         {
-            Color color = Color.black;
+            Color color = Color.white;
             Graphic_Multi_NaturalHeadParts mouthGraphic01 =
                 GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     MouthDefOf.Mouth_Mood01.texPath,
@@ -65,6 +65,14 @@
                     Vector2.one,
                     color) as Graphic_Multi_NaturalHeadParts;
 
+            color = Color.Lerp(Color.white, new Color(0.96f, 0.89f, 0.75f), Rand.Value);
+            Graphic_Multi_NaturalHeadParts mouthGraphicGrin =
+                GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    MouthDefOf.Mouth_Grin.texPath,
+                    ShaderDatabase.CutoutSkin,
+                    Vector2.one,
+                    color) as Graphic_Multi_NaturalHeadParts;
+
             if (pawn.mindState?.mentalBreaker != null)
             {
                 float minor = pawn.mindState.mentalBreaker.BreakThresholdMinor;
@@ -80,7 +88,8 @@
                                                  new MouthGraphicData(major, mouthGraphic04),
                                                  new MouthGraphicData(minor, MouthGraphic03),
                                                  new MouthGraphicData(minor + none, mouthGraphic02),
-                                                 new MouthGraphicData(minor + 2 * none, mouthGraphic01)
+                                                 new MouthGraphicData(minor + 2 * none, mouthGraphic01),
+                                                 new MouthGraphicData(minor + 3 * none, mouthGraphicGrin),
                                              };
             }
             else
@@ -92,7 +101,8 @@
                                                  new MouthGraphicData(0.4f, mouthGraphic04),
                                                  new MouthGraphicData(0.55f, MouthGraphic03),
                                                  new MouthGraphicData(0.7f, mouthGraphic02),
-                                                 new MouthGraphicData(0.85f, mouthGraphic01)
+                                                 new MouthGraphicData(0.85f, mouthGraphic01),
+                                                 new MouthGraphicData(0.9f, mouthGraphicGrin)
                 };
             }
         }

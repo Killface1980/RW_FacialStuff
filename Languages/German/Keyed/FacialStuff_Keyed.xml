@@ -6,10 +6,10 @@
   <Settings.UseMouthTooltip>Animierte Münder.</Settings.UseMouthTooltip>
 	<Settings.MergeHair>Zeige Haare unter Kopfbedeckung.</Settings.MergeHair>
   <Settings.MergeHairTooltip>Macht Haar sichtbar.</Settings.MergeHairTooltip>
-  <Settings.HideHatWhileRoofed>Zeige Hüte nur draußen</Settings.HideHatWhileRoofed>
-  <Settings.HideHatWhileRoofedTooltip>Facial Stuff:\nHüte sind in Räumen nicht sichtbar.</Settings.HideHatWhileRoofedTooltip>
-	<Settings.HideHatInBed>Blende Hüte im Bett aus</Settings.HideHatInBed>
-  <Settings.HideHatInBedTooltip>Facial Stuff:\nHüte sind nur sichtbar wenn der Körper dargestellt wird.</Settings.HideHatInBedTooltip>
+  <Settings.HideHatWhileRoofed>Mod: Zeige Hüte nur draußen</Settings.HideHatWhileRoofed>
+  <Settings.HideHatWhileRoofedTooltip>Facial Stuff\nHüte sind in Räumen nicht sichtbar.</Settings.HideHatWhileRoofedTooltip>
+	<Settings.HideHatInBed>Mod: Blende Hüte im Bett aus</Settings.HideHatInBed>
+  <Settings.HideHatInBedTooltip>Facial Stuff\nHüte sind nur sichtbar wenn der Körper dargestellt wird.</Settings.HideHatInBedTooltip>
   <Settings.Apply>Einstellungen speichern und übernehmen.</Settings.Apply>
 
   <Settings.ShowExtraParts>Zeige Extra-Teile an</Settings.ShowExtraParts>
@@ -20,8 +20,10 @@
   <Settings.UseHairDNATooltip>Ermöglicht gleich bleibende Haarfarben innerhalb der Familie.</Settings.UseHairDNATooltip>
   <Settings.MakeThemBlink>Animiere Augen</Settings.MakeThemBlink>
   <Settings.MakeThemBlinkTooltip>Jetzt wird geblinzelt.</Settings.MakeThemBlinkTooltip>
-  <Settings.UseCaching>EXPERIMENTAL: Exportiere HairCache</Settings.UseCaching>
+  <Settings.UseCaching>EXPERIMENTELL: Exportiere HairCache</Settings.UseCaching>
   <Settings.UseCachingTooltip>Exportiert erstellte HairCut-Texturen als png in das Mod-Verzeichnis. Bitte deaktivieren falls irgendetwas nicht funktioniert.</Settings.UseCachingTooltip>
+  <Settings.RotateHead>EXPERIMENTELL: Ermögliche Kopfdrehungen</Settings.RotateHead>
+  <Settings.RotateHeadTooltip>Momentan im Alpha-Stadium. Ein Zufallsgenerator, der NICHT auf die Umgebung reagiert. Die Kopfdrehung ist nur visuell.</Settings.RotateHeadTooltip>
 
   <FacialStuffEditor.CannotUseNoFacePawn>{0} kann das nicht nutzen. Nur für Menschen.</FacialStuffEditor.CannotUseNoFacePawn>
 
@@ -56,7 +58,7 @@
   <FacialStuffEditor.AgeChronological>Chronologisches Alter</FacialStuffEditor.AgeChronological>
 
   <!-- Help Text -->
-  <FacialStuffEditor.GenderChangeWarning>Diese Werte zu ändern, könnte negative Auswirkungen auf das Spiel haben.\nBenutzung auf eigene Gefahr.</FacialStuffEditor.GenderChangeWarning>
+  <FacialStuffEditor.GenderChangeWarning>Diese Werte zu ändern könnte negative Auswirkungen auf das Spiel haben.\nBenutzung auf eigene Gefahr.</FacialStuffEditor.GenderChangeWarning>
   <!-- Mod Settings -->
   <FacialStuffEditor.ShowBodyChange>Erlaube die Änderung des Körpertyps</FacialStuffEditor.ShowBodyChange>
   <FacialStuffEditor.ShowGenderChange>Erlaube die Änderung des Geschlechts</FacialStuffEditor.ShowGenderChange>

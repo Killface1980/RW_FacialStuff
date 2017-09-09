@@ -14,11 +14,9 @@
         }
 
         private Pawn pawn;
-        private int lastBlinkended;
-        public int NextBlink => this.nextBlink;
-        public int NextBlinkEnd => this.nextBlinkEnd;
-        private int nextBlink = -5000;
-        private int nextBlinkEnd = -5000;
+
+        private int nextRotation = -5000;
+        private int nextRotationEnd = -5000;
 
         private RotationDirection rotationMod;
 
@@ -26,10 +24,10 @@
         {
             int tickManagerTicksGame = Find.TickManager.TicksGame;
 
-            if (tickManagerTicksGame > this.NextBlinkEnd)
+            if (tickManagerTicksGame > this.nextRotationEnd)
             {
                 // Set upnext blinking cycle
-                this.SetNextBlink(tickManagerTicksGame);
+                this.SetNextRotation(tickManagerTicksGame);
 
                 // Make them smile.
                 if (this.pawn.pather.Moving)
@@ -52,38 +50,14 @@
                     this.rotationMod = RotationDirection.None;
                 }
             }
+
         }
 
-        private void SetNextBlink(int tickManagerTicksGame)
+        private void SetNextRotation(int tickManagerTicksGame)
         {
-            // Eye blinking controller
-            float ticksTillNextBlink = Rand.Range(120f, 240f);
-            float blinkDuration = Rand.Range(10f, 40f);
+            float blinkDuration = Rand.Range(60f, 120f);
 
-            // Log.Message(
-            // "FS Blinker: " + this.pawn + " - ticksTillNextBlinkORG: " + ticksTillNextBlink.ToString("N0")
-            // + " - blinkDurationORG: " + blinkDuration.ToString("N0"));
-
-
-
-            // float factor = Mathf.Lerp(0.1f, 1f, dynamic);
-            // ticksTillNextBlink *= factor;
-            // blinkDuration /= Mathf.Pow(factor, 3f);
-
-            // Log.Message(
-            // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
-            // + " - blinkDuration: " + blinkDuration.ToString("N0"));
-            this.nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
-            this.nextBlinkEnd = (int)(this.NextBlink + blinkDuration);
-
-
-            // this.JitterLeft = 1f;
-            // this.JitterRight = 1f;
-
-            // blinkRate = Mathf.Lerp(2f, 0.25f, this.pawn.needs.rest.CurLevel);
-
-
-            this.lastBlinkended = tickManagerTicksGame;
+            this.nextRotationEnd = (int)(tickManagerTicksGame + blinkDuration);
         }
 
         public Rot4 Rotation(Rot4 headFacing)

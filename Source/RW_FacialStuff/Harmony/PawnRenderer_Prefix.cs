@@ -98,12 +98,12 @@
             CompFace faceComp = pawn.TryGetComp<CompFace>();
 
             // Let vanilla do the job if no FacePawn or pawn not a teenager
-            if (faceComp == null || !faceComp.OldEnough)
+            if (faceComp == null || faceComp.IsChild)
             {
                 return true;
             }
 
-            if (faceComp.Dontrender)
+            if (faceComp.DontRender)
             {
                 return true;
             }
@@ -133,7 +133,6 @@
                 headFacing = bodyFacing;
             }
 #endif
-
             // Regular FacePawn rendering 14+ years
             if (renderBody)
             {
@@ -162,7 +161,10 @@
 
 #if develop
             // new, todo: make options etc?
-    headFacing = faceComp.HeadRotator.Rotation(headFacing);
+            if (!portrait && Controller.settings.TurnYourHead)
+            {
+                headFacing = faceComp.HeadRotator.Rotation(headFacing);
+            }
 #endif
             Vector3 vector = rootLoc;
             Vector3 a = rootLoc;

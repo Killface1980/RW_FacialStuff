@@ -6,10 +6,10 @@
   <Settings.UseMouthTooltip>Animated mouths to make pawns show their feelings.</Settings.UseMouthTooltip>
 	<Settings.MergeHair>Show hair under hat</Settings.MergeHair>
   <Settings.MergeHairTooltip>Displays a modified hair texture below worn hats.</Settings.MergeHairTooltip>
-  <Settings.HideHatWhileRoofed>Hats shown only while outdoors</Settings.HideHatWhileRoofed>
-  <Settings.HideHatWhileRoofedTooltip>Facial Stuff:\nHats are not visible on pawns while indoors.</Settings.HideHatWhileRoofedTooltip>
-	<Settings.HideHatInBed>Don't show hats in bed</Settings.HideHatInBed>
-  <Settings.HideHatInBedTooltip>Facial Stuff:\nHats are not visible if the body is not drawn.</Settings.HideHatInBedTooltip>
+  <Settings.HideHatWhileRoofed>Mod: Hats shown only while outdoors</Settings.HideHatWhileRoofed>
+  <Settings.HideHatWhileRoofedTooltip>Facial Stuff\nHats are not visible on pawns while indoors.</Settings.HideHatWhileRoofedTooltip>
+	<Settings.HideHatInBed>Mod: Don't show hats in bed</Settings.HideHatInBed>
+  <Settings.HideHatInBedTooltip>Facial Stuff\nHats are not visible if the body is not drawn.</Settings.HideHatInBedTooltip>
   <Settings.Apply>Save and apply settings.</Settings.Apply>
 
   <Settings.ShowExtraParts>Show extra parts</Settings.ShowExtraParts>
@@ -22,6 +22,8 @@
   <Settings.MakeThemBlinkTooltip>Colonists stop staring at you.</Settings.MakeThemBlinkTooltip>
   <Settings.UseCaching>EXPERIMENTAL: Export cached hair cuts</Settings.UseCaching>
   <Settings.UseCachingTooltip>Export hair cut textures to the mod folder as png. Please deactivate in case something goes wrong.</Settings.UseCachingTooltip>
+  <Settings.RotateHead>EXPERIMENTAL: Activate head rotator</Settings.RotateHead>
+  <Settings.RotateHeadTooltip>Currently in alpha stage. It's just a basic randomizer NOT reacting to the environment. The head rotation is only visual.</Settings.RotateHeadTooltip>
 
   <FacialStuffEditor.CannotUseNoFacePawn>{0} can't use this. Humans only.</FacialStuffEditor.CannotUseNoFacePawn>
   <FacialStuffEditor.FaceStylerTitle>Face Styler</FacialStuffEditor.FaceStylerTitle>
