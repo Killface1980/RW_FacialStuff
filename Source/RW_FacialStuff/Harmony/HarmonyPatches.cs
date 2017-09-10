@@ -407,29 +407,25 @@ namespace FacialStuff.Detouring
     // [HarmonyPatch("DoWindowContents")]
     static class Dialog_Options_DoWindowContents_Patch
     {
-        private static bool hatsOnlyOnMap;
-        private static bool noHatsInBed;
-
         static void MoreStuff(Listing_Standard listing_Standard)
         {
-            hatsOnlyOnMap = Controller.settings.HideHatWhileRoofed;
-            listing_Standard.CheckboxLabeled("Settings.HideHatWhileRoofed".Translate(), ref hatsOnlyOnMap, "Settings.HideHatWhileRoofedTooltip".Translate());
+            bool hideHatWhileRoofed = Controller.settings.HideHatWhileRoofed;
+            listing_Standard.CheckboxLabeled("Settings.HideHatWhileRoofed".Translate(), ref hideHatWhileRoofed, "Settings.HideHatWhileRoofedTooltip".Translate());
 
-            noHatsInBed = Controller.settings.HideHatInBed;
-            listing_Standard.CheckboxLabeled("Settings.HideHatInBed".Translate(), ref noHatsInBed, "Settings.HideHatInBedTooltip".Translate());
+            bool hideHatsInBed = Controller.settings.HideHatInBed;
+            listing_Standard.CheckboxLabeled("Settings.HideHatInBed".Translate(), ref hideHatsInBed, "Settings.HideHatInBedTooltip".Translate());
 
             if (GUI.changed)
             {
-
-                if (hatsOnlyOnMap != Controller.settings.HideHatWhileRoofed)
+                if (hideHatWhileRoofed != Controller.settings.HideHatWhileRoofed)
                 {
-                    Controller.settings.HideHatWhileRoofed = hatsOnlyOnMap;
+                    Controller.settings.HideHatWhileRoofed = hideHatWhileRoofed;
                     Controller.settings.Write();
                 }
 
-                if (noHatsInBed != Controller.settings.HideHatInBed)
+                if (hideHatsInBed != Controller.settings.HideHatInBed)
                 {
-                    Controller.settings.HideHatInBed = noHatsInBed;
+                    Controller.settings.HideHatInBed = hideHatsInBed;
                     Controller.settings.Write();
                 }
             }
