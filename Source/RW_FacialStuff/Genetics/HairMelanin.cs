@@ -146,11 +146,12 @@
             // Special hair colors
             float factionColor = Rand.Value;
             float limit = 0.98f;
-            if (pawn.Faction.def.techLevel > TechLevel.Industrial)
+            Faction faction = pawn.GetComp<CompFace>().pawnFaction;
+            if (faction.def.techLevel > TechLevel.Industrial)
             {
                 limit *= pawn.gender == Gender.Female ? 0.7f : 0.9f;
 
-                float techMod = (pawn.Faction.def.techLevel - TechLevel.Industrial) / 5f;
+                float techMod = (faction.def.techLevel - TechLevel.Industrial) / 5f;
                 SimpleCurve ageCure = new SimpleCurve { { 0.1f, 1f }, { 0.25f, 1f - techMod }, { 0.6f, 0.9f } };
                 limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
             }

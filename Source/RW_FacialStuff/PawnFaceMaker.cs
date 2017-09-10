@@ -39,12 +39,15 @@
                 return 100f;
             }
 
+            // No CompFace here yet, and PrePc kills the faction!
+           Faction faction = pawn.Faction ?? Faction.OfPlayer;
+
             if (Controller.settings.UseWeirdHairChoices)
             {
                 // The more advanced, the weirder they get
-                if (pawn.Faction.def.techLevel >= TechLevel.Neolithic)
+                if (faction.def.techLevel >= TechLevel.Neolithic)
                 {
-                    switch (pawn.Faction.def.techLevel)
+                    switch (faction.def.techLevel)
                     {
                         case TechLevel.Undefined: break;
                         case TechLevel.Animal: break;
@@ -206,7 +209,7 @@
                         default: throw new ArgumentOutOfRangeException();
                     }
 
-                    if (pawn.Faction.def.techLevel >= TechLevel.Spacer)
+                    if (faction.def.techLevel >= TechLevel.Spacer)
                     {
                         if (pawn.gender == Gender.Male)
                         {

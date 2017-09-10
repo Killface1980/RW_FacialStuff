@@ -8,7 +8,6 @@ namespace FacialStuff.Detouring
     using System.Reflection.Emit;
 
     using FacialStuff.FaceStyling_Bench;
-    using FacialStuff.Harmony.optional.PrepC;
 
     using global::Harmony;
 
@@ -198,12 +197,6 @@ namespace FacialStuff.Detouring
             }
 
             __instance.ClearCache();
-
-            // PrepC removes the faction - still?
-            if (pawn.Faction == null)
-            {
-                pawn.SetFactionDirect(Faction.OfPlayer);
-            }
 
             GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
 

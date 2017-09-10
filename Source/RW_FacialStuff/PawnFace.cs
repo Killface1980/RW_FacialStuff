@@ -47,13 +47,12 @@
 
         public float wrinkles = 0f;
 
-        public PawnFace([NotNull] Pawn pawn, bool newPawn = true)
+        public PawnFace([NotNull] Pawn pawn, FactionDef pawnFactionDef, bool newPawn = true)
         {
             this.DrawMouth = true;
-            FactionDef faction = pawn.Faction.def;
 
-            this.EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, faction);
-            this.BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, faction);
+            this.EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, pawnFactionDef);
+            this.BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, pawnFactionDef);
 
             this.WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn);
             this.HasSameBeardColor = Rand.Value > 0.3f;
@@ -61,7 +60,7 @@
             this.GenerateHairDNA(pawn);
 
             this.CrownType = pawn.story.crownType;
-            PawnFaceMaker.RandomBeardDefFor(pawn, faction, out this.BeardDef, out this.MoustacheDef);
+            PawnFaceMaker.RandomBeardDefFor(pawn, pawnFactionDef, out this.BeardDef, out this.MoustacheDef);
 
             this.wrinkles = Mathf.InverseLerp(45f, 80f, pawn.ageTracker.AgeBiologicalYearsFloat);
 

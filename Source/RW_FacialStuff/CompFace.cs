@@ -76,6 +76,8 @@
 
         #region Public Properties
 
+        public Faction pawnFaction;
+
         public bool DontRender;
 
         [NotNull]
@@ -352,7 +354,7 @@
 
         public Quaternion HeadQuat(Rot4 rotation)
         {
-           float num = 1f;
+            float num = 1f;
             Quaternion asQuat = rotation.AsQuat;
             float x = 1f * Mathf.Sin(num * (this.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
             float z = 1f * Mathf.Cos(num * (this.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
@@ -708,6 +710,7 @@
                 Scribe_Defs.Look(ref this.BrowDef, "BrowDef");
                 Scribe_Defs.Look(ref this.BeardDef, "BeardDef");
                 Scribe_Values.Look(ref this.HairColor, "HairColorOrg");
+                Scribe_Values.Look(ref this.pawnFaction, "pawnFaction");
             }
 
             // Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
@@ -756,9 +759,12 @@
 
             this.pawn = p;
 
+            // PrepC removes the faction - fix
+            this.pawnFaction = this.pawn.Faction ?? Faction.OfPlayer;
+
             if (this.pawnFace == null)
             {
-                this.SetPawnFace(new PawnFace(this.pawn));
+                this.SetPawnFace(new PawnFace(this.pawn, this.pawnFaction.def));
 
                 // check for pre-0.17.3 pawns
                 if (this.EyeDef != null)
@@ -770,8 +776,8 @@
                 }
                 else
                 {
+                    // set the hair color here, the only suitable place
                     this.pawn.story.hairColor = this.PawnFace.HairColor;
-                    this.PawnFace.BeardColor = HairMelanin.DarkerBeardColor(this.PawnFace.HairColor);
                 }
 
                 if (this.BeardDef != null)
