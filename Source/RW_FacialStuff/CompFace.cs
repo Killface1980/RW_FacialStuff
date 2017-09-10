@@ -702,7 +702,7 @@
                 Scribe_Defs.Look(ref this.BrowDef, "BrowDef");
                 Scribe_Defs.Look(ref this.BeardDef, "BeardDef");
                 Scribe_Values.Look(ref this.HairColor, "HairColorOrg");
-                Scribe_Values.Look(ref this.pawnFaction, "pawnFaction");
+                Scribe_References.Look(ref this.pawnFaction, "pawnFaction");
                 Scribe_Values.Look(ref this.Roofed, "Roofed");
             }
 
@@ -946,23 +946,23 @@
 
             if (addedPartProps != null)
             {
-                if (hediff.def.LabelCap != null && hediff.Part != null)
+                if (hediff.def.defName != null && hediff.Part != null)
                 {
                     if (hediff.Part == leftEye)
                     {
-                        this.texPathEyeLeftPatch = "AddedParts/" + hediff.def.LabelCap + "_Left" + "_"
+                        this.texPathEyeLeftPatch = "AddedParts/" + hediff.def.defName + "_Left" + "_"
                                                    + this.PawnCrownType;
                     }
 
                     if (hediff.Part == rightEye)
                     {
-                        this.texPathEyeRightPatch = "AddedParts/" + hediff.def.LabelCap + "_Right" + "_"
+                        this.texPathEyeRightPatch = "AddedParts/" + hediff.def.defName + "_Right" + "_"
                                                     + this.PawnCrownType;
                     }
 
                     if (hediff.Part == jaw)
                     {
-                        this.texPathMouth = "Mouth/Mouth_" + hediff.def.LabelCap;
+                        this.texPathMouth = "Mouth/Mouth_" + hediff.def.defName;
                     }
                 }
             }
