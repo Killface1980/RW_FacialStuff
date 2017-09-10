@@ -15,6 +15,8 @@ namespace FacialStuff.Defs
 
         public static MouthDef Mouth_Grin;
 
+        public static MouthDef Mouth_Crying;
+
         public static MouthDef Mouth_Mood01;
 
 

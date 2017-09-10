@@ -16,6 +16,8 @@
 
         public MouthGraphicData[] HumanMouthGraphic;
 
+        public Graphic_Multi_NaturalHeadParts mouthGraphicCrying;
+
         #endregion Public Fields
 
         #region Public Constructors
@@ -37,7 +39,7 @@
                     Vector2.one,
                     color) as Graphic_Multi_NaturalHeadParts;
 
-            Graphic_Multi_NaturalHeadParts MouthGraphic03 =
+            Graphic_Multi_NaturalHeadParts mouthGraphic03 =
                 GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     MouthDefOf.Mouth_Mood03.texPath,
                     ShaderDatabase.CutoutSkin,
@@ -74,23 +76,29 @@
                     Vector2.one,
                     color) as Graphic_Multi_NaturalHeadParts;
 
+            this.mouthGraphicCrying =
+               GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                   MouthDefOf.Mouth_Crying.texPath,
+                   ShaderDatabase.CutoutSkin,
+                   Vector2.one,
+                   color) as Graphic_Multi_NaturalHeadParts;
+
             if (pawn.mindState?.mentalBreaker != null)
             {
                 float minor = pawn.mindState.mentalBreaker.BreakThresholdMinor;
                 float major = pawn.mindState.mentalBreaker.BreakThresholdMajor;
                 float extreme = pawn.mindState.mentalBreaker.BreakThresholdExtreme;
-
-                float forth = (1f - minor) / 4;
+                float fourth = (1f - minor) / 4;
 
                 this.HumanMouthGraphic = new[]
                                              {
                                                  new MouthGraphicData(0f, mouthGraphic06),
                                                  new MouthGraphicData(extreme, mouthGraphic05),
                                                  new MouthGraphicData(major, mouthGraphic04),
-                                                 new MouthGraphicData(minor, MouthGraphic03),
-                                                 new MouthGraphicData(minor + forth, mouthGraphic02),
-                                                 new MouthGraphicData(minor + 2 * forth, mouthGraphic01),
-                                                 new MouthGraphicData(minor + 3 * forth, mouthGraphicGrin),
+                                                 new MouthGraphicData(minor, mouthGraphic03),
+                                                 new MouthGraphicData(minor + fourth, mouthGraphic02),
+                                                 new MouthGraphicData(minor + (2 * fourth), mouthGraphic01),
+                                                 new MouthGraphicData(minor + (3 * fourth), mouthGraphicGrin),
                                              };
             }
             else
@@ -100,7 +108,7 @@
                                                  new MouthGraphicData(0f, mouthGraphic06),
                                                  new MouthGraphicData(0.25f, mouthGraphic05),
                                                  new MouthGraphicData(0.4f, mouthGraphic04),
-                                                 new MouthGraphicData(0.55f, MouthGraphic03),
+                                                 new MouthGraphicData(0.55f, mouthGraphic03),
                                                  new MouthGraphicData(0.7f, mouthGraphic02),
                                                  new MouthGraphicData(0.8f, mouthGraphic01),
                                                  new MouthGraphicData(0.9f, mouthGraphicGrin)

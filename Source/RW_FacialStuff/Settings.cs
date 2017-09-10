@@ -43,9 +43,9 @@ namespace FacialStuff
                                                     };
 
         public static Vector2 MouthFemaleAverageNormalOffset = new Vector2(0.14331f, 0.13585f); //
-        public static Vector2 MouthFemaleAveragePointyOffset = new Vector2(0.15094f, 0.13333f); //
-        public static Vector2 MouthFemaleAverageWideOffset = new Vector2(0.16604f, 0.12830f); //
-        public static Vector2 MouthFemaleNarrowNormalOffset = new Vector2(0.12075f, 0.15346f); //
+        public static Vector2 MouthFemaleAveragePointyOffset = new Vector2(0.16100f, 0.13333f); //
+        public static Vector2 MouthFemaleAverageWideOffset = new Vector2(0.16604f, 0.13962f); //
+        public static Vector2 MouthFemaleNarrowNormalOffset = new Vector2(0.12956f, 0.15346f); //
         public static Vector2 MouthFemaleNarrowPointyOffset = new Vector2(0.12328f, 0.16604f); //
         public static Vector2 MouthFemaleNarrowWideOffset = new Vector2(0.12075f, 0.16101f); //
 
@@ -87,7 +87,7 @@ namespace FacialStuff
         private bool showExtraParts = true;
 
         private bool useCaching;
-        private bool turnYourHead = false;
+        private bool useHeadRotator = false;
         private bool useMouth = true;
 
         private bool useWeirdHairChoices = true;
@@ -114,7 +114,7 @@ namespace FacialStuff
             set => this.hideHatWhileRoofed = value;
         }
 
-        public bool TurnYourHead => this.turnYourHead;
+        public bool UseHeadRotator => this.useHeadRotator;
         public bool MakeThemBlink => this.makeThemBlink;
 
         public bool MergeHair => this.mergeHair;
@@ -189,9 +189,9 @@ namespace FacialStuff
                 "Settings.UseCachingTooltip".Translate());
 
             list.CheckboxLabeled(
-                "Settings.RotateHead".Translate(),
-                ref this.turnYourHead,
-                "Settings.RotateHeadTooltip".Translate());
+                "Settings.UseHeadRotator".Translate(),
+                ref this.useHeadRotator,
+                "Settings.UseHeadRotatorTooltip".Translate());
 
             // this.useDNAByFaction = Toggle(this.useDNAByFaction, "Settings.UseDNAByFaction".Translate());
             list.End();
@@ -232,7 +232,7 @@ namespace FacialStuff
             // Scribe_Values.Look(ref this.useDNAByFaction, "useDNAByFaction", false, true);
             Scribe_Values.Look(ref this.makeThemBlink, "makeThemBlink", false, true);
             Scribe_Values.Look(ref this.useCaching, "useCaching", false, true);
-            Scribe_Values.Look(ref this.turnYourHead, "turnYourHead", false, true);
+            Scribe_Values.Look(ref this.useHeadRotator, "useHeadRotator", false, true);
             Scribe_Values.Look(ref this.showBodyChange, "showBodyChange", false, true);
             Scribe_Values.Look(ref this.showGenderAgeChange, "showGenderAgeChange", false, true);
         }

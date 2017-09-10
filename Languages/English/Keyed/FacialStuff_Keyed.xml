@@ -22,8 +22,8 @@
   <Settings.MakeThemBlinkTooltip>Colonists stop staring at you.</Settings.MakeThemBlinkTooltip>
   <Settings.UseCaching>EXPERIMENTAL: Export cached hair cuts</Settings.UseCaching>
   <Settings.UseCachingTooltip>Export hair cut textures to the mod folder as png. Please deactivate in case something goes wrong.</Settings.UseCachingTooltip>
-  <Settings.RotateHead>EXPERIMENTAL: Activate head rotator</Settings.RotateHead>
-  <Settings.RotateHeadTooltip>Currently in alpha stage. It's just a basic randomizer NOT reacting to the environment. The head rotation is only visual.</Settings.RotateHeadTooltip>
+  <Settings.UseHeadRotator>EXPERIMENTAL: Activate head rotator</Settings.UseHeadRotator>
+  <Settings.UseHeadRotatorTooltip>Currently in alpha stage. It's just a basic randomizer NOT reacting to the environment. The head rotation is only visual.</Settings.UseHeadRotatorTooltip>
 
   <FacialStuffEditor.CannotUseNoFacePawn>{0} can't use this. Humans only.</FacialStuffEditor.CannotUseNoFacePawn>
   <FacialStuffEditor.FaceStylerTitle>Face Styler</FacialStuffEditor.FaceStylerTitle>

@@ -291,8 +291,6 @@
             Brow,
 
             TypeSelector,
-
-            Develop
         }
 
         private enum GenderTab : byte
@@ -524,15 +522,6 @@
                     this.SetTabFaceStyle(FaceStyleTab.TypeSelector),
                     this.tab == FaceStyleTab.TypeSelector);
                 list.Add(item5);
-            }
-
-            if (false)
-            {
-                TabRecord item6 = new TabRecord(
-                    "FacialStuffEditor.Develop".Translate(),
-                    this.SetTabFaceStyle(FaceStyleTab.Develop),
-                    this.tab == FaceStyleTab.Develop);
-                list.Add(item6);
             }
 
             Rect rect3 = new Rect(
@@ -1722,84 +1711,6 @@
             GUI.color = Color.white;
         }
 
-        private void DrawDeveloper(Rect rect)
-        {
-            float editorLeft = rect.x;
-            float editorTop = 30f + SelectionRowHeight;
-            float editorWidth = 325f;
-
-            float top = editorTop + 64f;
-
-            AddSelectorWidget(
-                editorLeft,
-                top,
-                editorWidth,
-                "FacialStuffEditor.BodyType".Translate() + ":",
-                this.dresserDto.BodyTypeSelectionDto);
-
-            top += SelectionRowHeight + 20f;
-            AddSelectorWidget(
-                editorLeft,
-                top,
-                editorWidth,
-                "FacialStuffEditor.HeadType".Translate() + ":",
-                this.dresserDto.HeadTypeSelectionDto);
-
-            top += SelectionRowHeight + 20f;
-
-            if (Controller.settings.ShowGenderAgeChange)
-            {
-                GUI.Label(
-                    new Rect(editorLeft, top, editorWidth, 64f),
-                    "FacialStuffEditor.GenderChangeWarning".Translate());
-
-                top += 64f + 20f;
-
-                AddSelectorWidget(
-                    editorLeft,
-                    top,
-                    editorWidth,
-                    "FacialStuffEditor.Gender".Translate() + ":",
-                    this.dresserDto.GenderSelectionDto);
-
-                // top += WidgetUtil.SelectionRowHeight + 5;
-                // long ageBio = pawn.ageTracker.AgeBiologicalTicks;
-                // if (this.AddLongInput(
-                // editorLeft,
-                // top,
-                // 120,
-                // 80,
-                // "FacialStuffEditor.AgeBiological".Translate() + ":",
-                // ref ageBio,
-                // MaxAge,
-                // TicksPerYear))
-                // {
-                // pawn.ageTracker.AgeBiologicalTicks = ageBio;
-                // this.rerenderPawn = true;
-                // if (ageBio > pawn.ageTracker.AgeChronologicalTicks)
-                // {
-                // pawn.ageTracker.AgeChronologicalTicks = ageBio;
-                // }
-                // }
-                // top += WidgetUtil.SelectionRowHeight + 5;
-                // long ageChron = pawn.ageTracker.AgeChronologicalTicks;
-                // if (this.AddLongInput(
-                // editorLeft,
-                // top,
-                // 120,
-                // 80,
-                // "FacialStuffEditor.AgeChronological".Translate() + ":",
-                // ref ageChron,
-                // MaxAge,
-                // TicksPerYear))
-                // {
-                // pawn.ageTracker.AgeChronologicalTicks = ageChron;
-                // }
-            }
-
-            GUI.color = Color.white;
-        }
-
         private bool skinPage = true;
 
         private float wrinkles;
@@ -1971,11 +1882,6 @@
             if (this.tab == FaceStyleTab.TypeSelector)
             {
                 this.DrawTypeSelector(listRect);
-            }
-
-            if (this.tab == FaceStyleTab.Develop)
-            {
-                this.DrawDeveloper(listRect);
             }
 
             GUI.EndGroup();

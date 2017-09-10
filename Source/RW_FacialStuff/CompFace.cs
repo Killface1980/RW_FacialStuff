@@ -70,7 +70,7 @@
         [CanBeNull]
         private string texPathMouth;
 
-        public bool Roofed { get; private set; }
+        public bool Roofed;
 
         #endregion Private Fields
 
@@ -134,23 +134,7 @@
 
         #region Private Properties
 
-        private bool EyeLeftBlinkNow
-        {
-            get
-            {
-                bool blinkNow = Find.TickManager.TicksGame >= this.eyeWiggler.NextBlink + this.eyeWiggler.JitterLeft;
-                return blinkNow;
-            }
-        }
 
-        private bool EyeRightBlinkNow
-        {
-            get
-            {
-                bool blinkNow = Find.TickManager.TicksGame >= this.eyeWiggler.NextBlink + this.eyeWiggler.JitterRight;
-                return blinkNow;
-            }
-        }
 
         #endregion Private Properties
 
@@ -471,7 +455,7 @@
             {
                 if (Controller.settings.MakeThemBlink && this.eyeWiggler.EyeLeftCanBlink)
                 {
-                    if (this.eyeWiggler.IsAsleep || this.EyeLeftBlinkNow)
+                    if (this.eyeWiggler.IsAsleep || this.eyeWiggler.EyeLeftBlinkNow)
                     {
                         material = this.faceGraphicPart.EyeLeftClosedGraphic.MatAt(facing);
                     }
@@ -518,7 +502,7 @@
             {
                 if (Controller.settings.MakeThemBlink && this.eyeWiggler.EyeRightCanBlink)
                 {
-                    if (this.eyeWiggler.IsAsleep || this.EyeRightBlinkNow)
+                    if (this.eyeWiggler.IsAsleep || this.eyeWiggler.EyeRightBlinkNow)
                     {
                         material = this.faceGraphicPart.EyeRightClosedGraphic?.MatAt(facing);
                     }
@@ -674,29 +658,37 @@
                 return;
             }
 
+
+            // todo: head wiggler? move eyes to eyewiggler
+            if (Controller.settings.MakeThemBlink)
+            {
+                this.eyeWiggler.WigglerTick();
+            }
+            if (Controller.settings.UseHeadRotator)
+            {
+                if (!this.eyeWiggler.IsAsleep)
+                {
+                    this.headRotator.RotatorTick();
+                }
+            }
+            // Low-prio stats
+            if (Find.TickManager.TicksGame % 30 != 0)
+            {
+                return;
+            }
+
             this.Roofed = this.pawn.Position.Roofed(this.pawn.Map);
+
 
             if (Controller.settings.UseMouth)
             {
                 if (this.hasNaturalMouth)
                 {
-                    if (Find.TickManager.TicksGame > this.eyeWiggler.NextBlinkEnd)
-                    {
-                        this.SetMouthAccordingToMoodLevel();
-                    }
+                    this.SetMouthAccordingToMoodLevel();
                 }
             }
 
-            // todo: head wiggler? move eyes to eyewiggler
-            // this.headWiggler.RotatorTick();
-            if (Controller.settings.MakeThemBlink)
-            {
-                this.eyeWiggler.WigglerTick();
-            }
-            if (!this.eyeWiggler.IsAsleep)
-            {
-                this.headRotator.RotatorTick();
-            }
+
         }
 
 
@@ -711,6 +703,7 @@
                 Scribe_Defs.Look(ref this.BeardDef, "BeardDef");
                 Scribe_Values.Look(ref this.HairColor, "HairColorOrg");
                 Scribe_Values.Look(ref this.pawnFaction, "pawnFaction");
+                Scribe_Values.Look(ref this.Roofed, "Roofed");
             }
 
             // Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
@@ -791,6 +784,7 @@
                 this.BeardDef = null;
             }
 
+            this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
             this.mouthgraphic = new HumanMouthGraphics(this.pawn);
             this.flasher = this.pawn.Drawer.renderer.graphics.flasher;
             this.eyeWiggler = new PawnEyeWiggler(this.pawn);
@@ -952,7 +946,7 @@
 
             if (addedPartProps != null)
             {
-                if (hediff.def.LabelCap != null)
+                if (hediff.def.LabelCap != null && hediff.Part != null)
                 {
                     if (hediff.Part == leftEye)
                     {
@@ -1000,22 +994,26 @@
 
         private void InitializeGraphicsBeard()
         {
-            string mainBeardDefTexPath = this.PawnFace.BeardDef.texPath + "_" + this.PawnCrownType + "_"
-                                         + this.PawnHeadType;
+            string mainBeardDefTexPath = "Beards/Beard_" + this.PawnHeadType + "_" +  this.PawnFace.BeardDef.texPath + "_"
+                                         + this.PawnCrownType;
+
             string moustacheDefTexPath = this.PawnFace.MoustacheDef.texPath + "_" + this.PawnCrownType;
+
+            string shavedPath = "Beards/Beard_" + BeardDefOf.Beard_Shaved.texPath;
+
             Color beardColor = this.PawnFace.BeardColor;
             Color tacheColor = this.PawnFace.BeardColor;
 
             if (this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved)
             {
                 // no error, only use the beard def shaved as texture
-                moustacheDefTexPath = BeardDefOf.Beard_Shaved.texPath;
+                moustacheDefTexPath = shavedPath;
                 tacheColor = Color.white;
             }
 
             if (this.PawnFace.BeardDef == BeardDefOf.Beard_Shaved)
             {
-                mainBeardDefTexPath = BeardDefOf.Beard_Shaved.texPath;
+                mainBeardDefTexPath = shavedPath;
                 beardColor = Color.white;
             }
 
@@ -1210,13 +1208,20 @@
             }
         }
 
+        private bool isMasochist;
+
         private void SetMouthAccordingToMoodLevel()
         {
-            // if (this.pawn.Downed)
-            // {
-            //     this.mood = 0.3f;
-            // }
-            // else 
+
+            if (this.pawn.health.InPainShock && !this.eyeWiggler.IsAsleep)
+            {
+                if (this.eyeWiggler.EyeRightBlinkNow && this.eyeWiggler.EyeLeftBlinkNow)
+                {
+                    this.faceGraphicPart.MouthGraphic = this.mouthgraphic.mouthGraphicCrying;
+                    return;
+                }
+            }
+
             if (this.pawn.needs?.mood?.thoughts != null)
             {
                 this.mood = this.pawn.needs.mood.CurInstantLevel;

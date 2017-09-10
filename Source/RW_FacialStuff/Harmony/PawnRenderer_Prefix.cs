@@ -163,7 +163,7 @@
 
             Quaternion headQuat = quat;
 
-            if (!portrait && Controller.settings.TurnYourHead)
+            if (!portrait && Controller.settings.UseHeadRotator)
             {
                 headFacing = faceComp.HeadRotator.Rotation(headFacing);
                 headQuat *= faceComp.HeadQuat(headFacing);
@@ -194,7 +194,7 @@
                 {
                     Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
 
-                    Mesh mesh2eyes = faceComp.EyeMeshSet.mesh.MeshAt(headFacing);
+                    Mesh meshEyes = faceComp.EyeMeshSet.mesh.MeshAt(headFacing);
 #if develop
                     Vector3 offsetEyes = faceComp.BaseEyeOffsetAt(headFacing);
 #else
@@ -229,7 +229,7 @@
                             if (leftEyeMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(
-                                    mesh2eyes,
+                                    meshEyes,
                                     locFacialY + offsetEyes + faceComp.EyeWiggler.EyeMoveL,
                                     headQuat,
                                     leftEyeMat,
@@ -254,7 +254,7 @@
                             if (rightEyeMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(
-                                    mesh2eyes,
+                                    meshEyes,
                                     locFacialY + offsetEyes + faceComp.EyeWiggler.EyeMoveR,
                                     headQuat,
                                     rightEyeMat,
@@ -265,7 +265,7 @@
 
                         if (browMat != null)
                         {
-                            GenDraw.DrawMeshNowOrLater(mesh2eyes, locFacialY + offsetEyes, headQuat, browMat, portrait);
+                            GenDraw.DrawMeshNowOrLater(meshEyes, locFacialY + offsetEyes, headQuat, browMat, portrait);
                             locFacialY.y += YOffsetOnFace;
                         }
 
@@ -309,10 +309,10 @@
                 loc2.y += YOffset_OnHead;
 
                 bool showFullHair = true;
+                Mesh mesh3 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
 
                 if (!portrait || !Prefs.HatsOnlyOnMap)
                 {
-                    Mesh mesh3 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
                     List<ApparelGraphicRecord> apparelGraphics = __instance.graphics.apparelGraphics;
                     bool hairDrawn = false;
                     for (int j = 0; j < apparelGraphics.Count; j++)
@@ -325,42 +325,41 @@
                         // Bool - only ONE hair drawn. Checks if it needs the hair cut texture.
                         if (!hairDrawn)
                         {
-                            bool showHat = true;
+                            bool showApparel = true;
 
                             // removes the hat if the body is not shown
                             if (Controller.settings.HideHatInBed)
                             {
-                                showHat = renderBody;
+                                showApparel = renderBody;
                             }
 
                             // Don't show hats indoors
                             if (!portrait && Controller.settings.HideHatWhileRoofed && pawn.Map != null
                                 && faceComp.Roofed)
                             {
-                                showHat = false;
+                                showApparel = false;
                             }
 
-                            if (!showHat)
+                            if (!showApparel)
                             {
                                 continue;
                             }
 
                             showFullHair = false;
 
-                            // Draw regular hair if appparel allows it
+                            // Draw regular hair if appparel allows it (FS feature)
                             if (apparelGraphics[j].sourceApparel.def.apparel.tags.Contains(DrawFullhair))
                             {
                                 if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
                                 {
-                                    Mesh mesh4 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
                                     Material mat = __instance.graphics.HairMatAt(headFacing);
-                                    GenDraw.DrawMeshNowOrLater(mesh4, loc2, headQuat, mat, portrait);
+                                    GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, mat, portrait);
                                     loc2.y += YOffsetOnFace;
                                 }
                             }
                             else if (Controller.settings.MergeHair)
                             {
-                                // Display the hair cut
+                                // If not, display the hair cut
                                 HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
                                 Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
                                 if (hairCutMat != null)
@@ -386,9 +385,8 @@
                 // Draw regular hair if no hat worn
                 if (showFullHair && bodyDrawType != RotDrawMode.Dessicated && !headStump)
                 {
-                    Mesh mesh4 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
                     Material mat = __instance.graphics.HairMatAt(headFacing);
-                    GenDraw.DrawMeshNowOrLater(mesh4, loc2, headQuat, mat, portrait);
+                    GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, mat, portrait);
                 }
             }
 

@@ -113,7 +113,7 @@ namespace FacialStuff.Detouring
 
 #if develop
             foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading.Where(
-    td => td.category == ThingCategory.Pawn && td.race.Humanlike))
+                td => td.category == ThingCategory.Pawn && td.race.Humanlike))
             {
                 if (def.inspectorTabs == null || def.inspectorTabs.Count == 0)
                 {
@@ -131,7 +131,6 @@ namespace FacialStuff.Detouring
             }
 
 #endif
-
             CheckAllInjected();
         }
 

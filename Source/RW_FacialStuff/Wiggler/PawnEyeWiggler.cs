@@ -33,6 +33,9 @@ namespace FacialStuff
         private readonly SimpleCurve consciousnessCurve =
             new SimpleCurve { new CurvePoint(0f, 5f), new CurvePoint(0.5f, 2f), new CurvePoint(1f, 1f) };
 
+        private readonly SimpleCurve painCurve =
+            new SimpleCurve { new CurvePoint(0f, 1f), new CurvePoint(0.65f, 1f), new CurvePoint(1f, 2f) };
+
         private readonly float factorX = 0.02f;
 
         private readonly float factorY = 0.01f;
@@ -65,6 +68,24 @@ namespace FacialStuff
 
         #endregion Private Fields
 
+        public bool EyeLeftBlinkNow
+        {
+            get
+            {
+                bool blinkNow = Find.TickManager.TicksGame >= this.nextBlink + this.jitterLeft;
+                return blinkNow;
+            }
+        }
+
+        public bool EyeRightBlinkNow
+        {
+            get
+            {
+                bool blinkNow = Find.TickManager.TicksGame >= this.nextBlink + this.jitterRight;
+                return blinkNow;
+            }
+        }
+
         #region Public Constructors
 
         public PawnEyeWiggler(Pawn p)
@@ -85,11 +106,6 @@ namespace FacialStuff
         public bool EyeRightCanBlink { get; set; }
 
         public bool IsAsleep => this.isAsleep;
-        public int JitterLeft => this.jitterLeft;
-
-
-        public int JitterRight => this.jitterRight;
-        public int NextBlink => this.nextBlink;
 
         public int NextBlinkEnd => this.nextBlinkEnd;
 
@@ -101,7 +117,7 @@ namespace FacialStuff
         {
             int tickManagerTicksGame = Find.TickManager.TicksGame;
 
-            float x = Mathf.InverseLerp(this.lastBlinkended, this.NextBlink, tickManagerTicksGame);
+            float x = Mathf.InverseLerp(this.lastBlinkended, this.nextBlink, tickManagerTicksGame);
             float movePixel = 0f;
             float movePixelY = 0f;
 
@@ -166,11 +182,16 @@ namespace FacialStuff
             // + " - blinkDurationORG: " + blinkDuration.ToString("N0"));
 
             // TODO: use a curve for evaluation => more control, precise setting of blinking
-            float consciousness = this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
-            float rest = this.pawn.needs.rest.CurLevel;
+            float consciousness =
+                this.consciousnessCurve.Evaluate(this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness));
 
-            ticksTillNextBlink /= this.consciousnessCurve.Evaluate(consciousness);
-            blinkDuration *= this.consciousnessCurve.Evaluate(consciousness);
+            ticksTillNextBlink /= consciousness;
+            blinkDuration *= consciousness;
+
+            float pain = this.painCurve.Evaluate(this.pawn.health.hediffSet.PainTotal);
+
+            ticksTillNextBlink /= pain;
+            blinkDuration *= pain;
 
             // float factor = Mathf.Lerp(0.1f, 1f, dynamic);
             // ticksTillNextBlink *= factor;
@@ -180,7 +201,7 @@ namespace FacialStuff
             // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
             // + " - blinkDuration: " + blinkDuration.ToString("N0"));
             this.nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
-            this.nextBlinkEnd = (int)(this.NextBlink + blinkDuration);
+            this.nextBlinkEnd = (int)(this.nextBlink + blinkDuration);
 
             this.isAsleep = !this.pawn.Awake();
 

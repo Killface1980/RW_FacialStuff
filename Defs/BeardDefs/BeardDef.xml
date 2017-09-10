@@ -9,7 +9,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_Anchor</texPath>
+    <texPath>Anchor</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -24,7 +24,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_Balbo</texPath>
+    <texPath>Balbo</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -39,7 +39,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_ChinCurtain</texPath>
+    <texPath>ChinCurtain</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -56,7 +56,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_ChinPuff</texPath>
+    <texPath>ChinPuff</texPath>
     <hairTags>
       <li>Punk</li>
       <li>Tribal</li>
@@ -72,7 +72,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_DuckTail</texPath>
+    <texPath>DuckTail</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -88,7 +88,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_ElInsecto</texPath>
+    <texPath>ElInsecto</texPath>
     <hairTags>
       <li>Punk</li>
       <li>Tribal</li>
@@ -104,7 +104,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_FranzJoseph</texPath>
+    <texPath>FranzJoseph</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -119,7 +119,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_FrenchFork</texPath>
+    <texPath>FrenchFork</texPath>
     <hairTags>
       <li>Rural</li>
       <li>Punk</li>
@@ -135,7 +135,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_FriendlyMuttonChops</texPath>
+    <texPath>FriendlyMuttonChops</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -152,7 +152,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_FullBeard</texPath>
+    <texPath>FullBeard</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -169,7 +169,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_Garibaldi</texPath>
+    <texPath>Garibaldi</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -187,7 +187,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_Goatee</texPath>
+    <texPath>Goatee</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -202,7 +202,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_Hollywoodian</texPath>
+    <texPath>Hollywoodian</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -217,7 +217,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_Hulihee</texPath>
+    <texPath>Hulihee</texPath>
     <hairTags>
       <li>Rural</li>
       <li>Punk</li>
@@ -233,7 +233,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_Imperial</texPath>
+    <texPath>Imperial</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -249,7 +249,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_MuttonChops</texPath>
+    <texPath>MuttonChops</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -266,7 +266,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_NapoleonIIIImperial</texPath>
+    <texPath>NapoleonIIIImperial</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -282,7 +282,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_OldDutch</texPath>
+    <texPath>OldDutch</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -299,7 +299,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_PetiteGoatee</texPath>
+    <texPath>PetiteGoatee</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -314,7 +314,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_SoulPatch</texPath>
+    <texPath>SoulPatch</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -330,7 +330,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_Souvarov</texPath>
+    <texPath>Souvarov</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -345,7 +345,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_Stubble</texPath>
+    <texPath>Stubble</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -363,7 +363,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_TheKlingon</texPath>
+    <texPath>TheKlingon</texPath>
     <hairTags>
       <li>Punk</li>
       <li>Tribal</li>
@@ -378,7 +378,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_TheSparrow</texPath>
+    <texPath>TheSparrow</texPath>
     <hairTags>
       <li>Tribal</li>
     </hairTags>
@@ -392,7 +392,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_TheWinnfield</texPath>
+    <texPath>TheWinnfield</texPath>
     <hairTags>
       <li>Rural</li>
       <li>Punk</li>
@@ -407,7 +407,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_TheZappa</texPath>
+    <texPath>TheZappa</texPath>
     <hairTags>
       <li>Rural</li>
       <li>Punk</li>
@@ -422,7 +422,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_VanDyke</texPath>
+    <texPath>VanDyke</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -437,7 +437,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_Shaved</texPath>
+    <texPath>Shaved</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -455,7 +455,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_CoolSteiner</texPath>
+    <texPath>CoolSteiner</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -473,7 +473,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_CaptainTiebeard</texPath>
+    <texPath>CaptainTiebeard</texPath>
     <hairTags>
       <li>Tribal</li>
     </hairTags>
@@ -487,7 +487,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_Santa</texPath>
+    <texPath>Santa</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -505,7 +505,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Beards/Beard_TwinPeaks</texPath>
+    <texPath>TwinPeaks</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
