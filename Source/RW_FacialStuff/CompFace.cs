@@ -658,8 +658,6 @@
                 return;
             }
 
-
-            // todo: head wiggler? move eyes to eyewiggler
             if (Controller.settings.MakeThemBlink)
             {
                 this.eyeWiggler.WigglerTick();
@@ -671,6 +669,7 @@
                     this.headRotator.RotatorTick();
                 }
             }
+
             // Low-prio stats
             if (Find.TickManager.TicksGame % 30 != 0)
             {
@@ -678,7 +677,6 @@
             }
 
             this.Roofed = this.pawn.Position.Roofed(this.pawn.Map);
-
 
             if (Controller.settings.UseMouth)
             {
@@ -703,7 +701,6 @@
                 Scribe_Defs.Look(ref this.BeardDef, "BeardDef");
                 Scribe_Values.Look(ref this.HairColor, "HairColorOrg");
                 Scribe_References.Look(ref this.pawnFaction, "pawnFaction");
-                Scribe_Values.Look(ref this.Roofed, "Roofed");
             }
 
             // Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");

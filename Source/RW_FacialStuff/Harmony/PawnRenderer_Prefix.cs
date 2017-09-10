@@ -334,7 +334,7 @@
                             }
 
                             // Don't show hats indoors
-                            if (!portrait && Controller.settings.HideHatWhileRoofed && pawn.Map != null
+                            if (!portrait && Controller.settings.HideHatWhileRoofed 
                                 && faceComp.Roofed)
                             {
                                 showApparel = false;
