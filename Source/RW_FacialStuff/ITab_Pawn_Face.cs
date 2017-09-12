@@ -2,8 +2,13 @@
 
 namespace FacialStuff
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using FacialStuff.Defs;
     using FacialStuff.Enums;
     using FacialStuff.Genetics;
+    using FacialStuff.Graphics;
 
     using RimWorld;
 
@@ -47,7 +52,7 @@ namespace FacialStuff
 
             Rect rect = new Rect(10f, 10f, 330f, 330f);
 
-            Rect checkbox = new Rect(rect.x, rect.y , rect.width, 24f);
+            Rect checkbox = new Rect(rect.x, rect.y, rect.width, 24f);
 
             Widgets.CheckboxLabeled(checkbox, "Ignore renderer", ref faceComp.IgnoreRenderer);
 
@@ -380,6 +385,34 @@ namespace FacialStuff
             // GUILayout.HorizontalSlider(Settings.FemaleOffset.y, -0.2f, 0.2f);
             // }
             GUILayout.EndVertical();
+
+            if (GUILayout.Button("Mouth"))
+            {
+                var list = new List<FloatMenuOption>();
+                foreach (MouthDef current in DefDatabase<MouthDef>.AllDefs)
+                {
+                    var localOut = current;
+                    list.Add(new FloatMenuOption(localOut.label,
+                        delegate
+                            {
+                                foreach (Pawn pawn in Find.VisibleMap.mapPawns.AllPawnsSpawned.Where(x => x.GetComp<CompFace>() != null))
+                                {
+                                        Color color = Color.white;
+                                    CompFace face = pawn.GetComp<CompFace>();
+                                    face.faceGraphicPart.MouthGraphic =
+                                        GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                                            current.texPath,
+                                            ShaderDatabase.CutoutSkin,
+                                            Vector2.one,
+                                            color) as Graphic_Multi_NaturalHeadParts;
+                                }
+                                ;
+                            }));
+                }
+                Find.WindowStack.Add(new FloatMenu(list));
+
+            }
+
             GUILayout.EndArea();
 
             // NeedsCardUtility.DoNeedsMoodAndThoughts(new Rect(0f, 0f, this.size.x, this.size.y), base.SelPawn, ref this.thoughtScrollPosition);

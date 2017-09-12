@@ -1,4 +1,4 @@
-﻿namespace FacialStuff.Graphics_FS
+﻿namespace FacialStuff.Graphics
 {
     using System;
     using System.IO;

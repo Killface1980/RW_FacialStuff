@@ -57,11 +57,11 @@
                 this.SetNextRotation(tickManagerTicksGame);
 
                 // Make them smile.
-                if (this.pawn.pather.Moving)
-                {
-                    this.rotationMod = RotationDirection.None;
-                    return;
-                }
+               // if (this.pawn.pather.Moving)
+               // {
+               //     this.rotationMod = RotationDirection.None;
+               //     return;
+               // }
 
                 float rand = Rand.Value;
                 if (rand < 0.15f)

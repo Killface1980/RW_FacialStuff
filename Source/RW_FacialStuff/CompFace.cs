@@ -6,7 +6,7 @@
     using FacialStuff.Defs;
     using FacialStuff.Enums;
     using FacialStuff.Genetics;
-    using FacialStuff.Graphics_FS;
+    using FacialStuff.Graphics;
 
     using JetBrains.Annotations;
 
@@ -17,26 +17,51 @@
     public class CompFace : ThingComp
     {
         // public int rotationInt;
+
+        #region Public Fields
+
+        public bool DontRender;
+
+        [NotNull]
+        public FaceGraphicParts faceGraphicPart = new FaceGraphicParts();
+
+        public bool IgnoreRenderer;
+        public bool IsChild;
+        public Faction pawnFaction;
+        public bool Roofed;
+        public int rotationInt;
+
+        #endregion Public Fields
+
         #region Private Fields
+
+        // old, remove 0.18
+        private BeardDef BeardDef;
+
+        // old, remove 0.18
+        private BrowDef BrowDef;
+
+        // old, remove 0.18
+        private EyeDef EyeDef;
+
+        private Vector2 eyeOffset = Vector2.zero;
 
         [NotNull]
         private PawnEyeWiggler eyeWiggler;
 
-        [NotNull]
-        private FaceGraphicParts faceGraphicPart = new FaceGraphicParts();
         private float factionMelanin;
-
         [NotNull]
         private DamageFlasher flasher = new DamageFlasher(null);
 
-        private bool hasNaturalMouth = true;
-
-        private Vector2 mouthOffset = Vector2.zero;
-        private Vector2 eyeOffset = Vector2.zero;
-
+        private Color hairColor;
+        private bool hasNaturalJaw = true;
+        private PawnHeadRotator headRotator;
         // private float blinkRate;
         // public PawnHeadWiggler headWiggler;
         private float mood = 0.5f;
+
+        private HumanMouthGraphics mouthgraphic;
+        private Vector2 mouthOffset = Vector2.zero;
 
         [NotNull]
         private Pawn pawn;
@@ -68,17 +93,13 @@
         private string texPathEyeRightPatch;
 
         [CanBeNull]
-        private string texPathMouth;
-
-        public bool Roofed;
+        private string texPathJawAddedPart;
 
         #endregion Private Fields
 
         #region Public Properties
 
-        public Faction pawnFaction;
-
-        public bool DontRender;
+        public GraphicVectorMeshSet EyeMeshSet => MeshPoolFS.HumanEyeSet[(int)this.FullHeadType];
 
         [NotNull]
         public PawnEyeWiggler EyeWiggler => this.eyeWiggler;
@@ -95,13 +116,10 @@
 
         public bool HasEyePatchRight { get; private set; }
 
+        public PawnHeadRotator HeadRotator => this.headRotator;
+
         [NotNull]
         public GraphicVectorMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
-
-        public GraphicVectorMeshSet EyeMeshSet => MeshPoolFS.HumanEyeSet[(int)this.FullHeadType];
-
-        public bool IsChild;
-
         public CrownType PawnCrownType => this.pawn?.story.crownType ?? CrownType.Average;
 
         [NotNull]
@@ -132,111 +150,7 @@
 
         #endregion Public Properties
 
-        #region Private Properties
-
-
-
-        #endregion Private Properties
-
         #region Public Methods
-
-        // only for development
-        public Vector3 BaseMouthOffsetAt(Rot4 rotation)
-        {
-            var male = this.pawn.gender == Gender.Male;
-
-            if (this.PawnCrownType == CrownType.Average)
-            {
-                switch (this.PawnHeadType)
-                {
-                    case HeadType.Normal:
-                        if (male)
-                        {
-                            this.mouthOffset = Settings.MouthMaleAverageNormalOffset;
-                        }
-                        else
-                        {
-                            this.mouthOffset = Settings.MouthFemaleAverageNormalOffset;
-                        }
-
-                        break;
-
-                    case HeadType.Pointy:
-                        if (male)
-                        {
-                            this.mouthOffset = Settings.MouthMaleAveragePointyOffset;
-                        }
-                        else
-                        {
-                            this.mouthOffset = Settings.MouthFemaleAveragePointyOffset;
-                        }
-
-                        break;
-
-                    case HeadType.Wide:
-                        if (male)
-                        {
-                            this.mouthOffset = Settings.MouthMaleAverageWideOffset;
-                        }
-                        else
-                        {
-                            this.mouthOffset = Settings.MouthFemaleAverageWideOffset;
-                        }
-
-                        break;
-                }
-            }
-            else
-            {
-                switch (this.PawnHeadType)
-                {
-                    case HeadType.Normal:
-                        if (male)
-                        {
-                            this.mouthOffset = Settings.MouthMaleNarrowNormalOffset;
-                        }
-                        else
-                        {
-                            this.mouthOffset = Settings.MouthFemaleNarrowNormalOffset;
-                        }
-
-                        break;
-
-                    case HeadType.Pointy:
-                        if (male)
-                        {
-                            this.mouthOffset = Settings.MouthMaleNarrowPointyOffset;
-                        }
-                        else
-                        {
-                            this.mouthOffset = Settings.MouthFemaleNarrowPointyOffset;
-                        }
-
-                        break;
-
-                    case HeadType.Wide:
-                        if (male)
-                        {
-                            this.mouthOffset = Settings.MouthMaleNarrowWideOffset;
-                        }
-                        else
-                        {
-                            this.mouthOffset = Settings.MouthFemaleNarrowWideOffset;
-                        }
-
-                        break;
-                }
-            }
-
-
-            switch (rotation.AsInt)
-            {
-                case 1: return new Vector3(this.mouthOffset.x, 0f, -this.mouthOffset.y);
-                case 2: return new Vector3(0, 0f, -this.mouthOffset.y);
-                case 3: return new Vector3(-this.mouthOffset.x, 0f, -this.mouthOffset.y);
-                default: return Vector3.zero;
-            }
-        }
 
         // only for development
         public Vector3 BaseEyeOffsetAt(Rot4 rotation)
@@ -336,20 +250,107 @@
             }
         }
 
-        public Quaternion HeadQuat(Rot4 rotation)
+        // only for development
+        public Vector3 BaseMouthOffsetAt(Rot4 rotation)
         {
-            float num = 1f;
-            Quaternion asQuat = rotation.AsQuat;
-            float x = 1f * Mathf.Sin(num * (this.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
-            float z = 1f * Mathf.Cos(num * (this.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
-            asQuat.SetLookRotation(new Vector3(x, 0f, z), Vector3.up);
-            return asQuat;
-        }
+            var male = this.pawn.gender == Gender.Male;
 
+            if (this.PawnCrownType == CrownType.Average)
+            {
+                switch (this.PawnHeadType)
+                {
+                    case HeadType.Normal:
+                        if (male)
+                        {
+                            this.mouthOffset = Settings.MouthMaleAverageNormalOffset;
+                        }
+                        else
+                        {
+                            this.mouthOffset = Settings.MouthFemaleAverageNormalOffset;
+                        }
+
+                        break;
+
+                    case HeadType.Pointy:
+                        if (male)
+                        {
+                            this.mouthOffset = Settings.MouthMaleAveragePointyOffset;
+                        }
+                        else
+                        {
+                            this.mouthOffset = Settings.MouthFemaleAveragePointyOffset;
+                        }
+
+                        break;
+
+                    case HeadType.Wide:
+                        if (male)
+                        {
+                            this.mouthOffset = Settings.MouthMaleAverageWideOffset;
+                        }
+                        else
+                        {
+                            this.mouthOffset = Settings.MouthFemaleAverageWideOffset;
+                        }
+
+                        break;
+                }
+            }
+            else
+            {
+                switch (this.PawnHeadType)
+                {
+                    case HeadType.Normal:
+                        if (male)
+                        {
+                            this.mouthOffset = Settings.MouthMaleNarrowNormalOffset;
+                        }
+                        else
+                        {
+                            this.mouthOffset = Settings.MouthFemaleNarrowNormalOffset;
+                        }
+
+                        break;
+
+                    case HeadType.Pointy:
+                        if (male)
+                        {
+                            this.mouthOffset = Settings.MouthMaleNarrowPointyOffset;
+                        }
+                        else
+                        {
+                            this.mouthOffset = Settings.MouthFemaleNarrowPointyOffset;
+                        }
+
+                        break;
+
+                    case HeadType.Wide:
+                        if (male)
+                        {
+                            this.mouthOffset = Settings.MouthMaleNarrowWideOffset;
+                        }
+                        else
+                        {
+                            this.mouthOffset = Settings.MouthFemaleNarrowWideOffset;
+                        }
+
+                        break;
+                }
+            }
+
+
+            switch (rotation.AsInt)
+            {
+                case 1: return new Vector3(this.mouthOffset.x, 0f, -this.mouthOffset.y);
+                case 2: return new Vector3(0, 0f, -this.mouthOffset.y);
+                case 3: return new Vector3(-this.mouthOffset.x, 0f, -this.mouthOffset.y);
+                default: return Vector3.zero;
+            }
+        }
         [CanBeNull]
         public Material BeardMatAt(Rot4 facing)
         {
-            if (!this.hasNaturalMouth || this.pawn.gender == Gender.Female)
+            if (!this.hasNaturalJaw || this.pawn.gender == Gender.Female)
             {
                 return null;
             }
@@ -539,6 +540,34 @@
             return path;
         }
 
+        public string GetBeardPath(BeardDef def)
+        {
+            if (def == BeardDefOf.Beard_Shaved)
+            {
+                return "Beards/Beard_Shaved";
+            }
+            return "Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;
+        }
+
+        public string GetMoustachePath(MoustacheDef def)
+        {
+            if (def == MoustacheDefOf.Shaved)
+            {
+                return this.GetBeardPath(BeardDefOf.Beard_Shaved);
+            }
+
+            return def.texPath + "_" + this.PawnCrownType;
+        }
+
+        public Quaternion HeadQuat(Rot4 rotation)
+        {
+            float num = 1f;
+            Quaternion asQuat = rotation.AsQuat;
+            float x = 1f * Mathf.Sin(num * (this.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
+            float z = 1f * Mathf.Cos(num * (this.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
+            asQuat.SetLookRotation(new Vector3(x, 0f, z), Vector3.up);
+            return asQuat;
+        }
         /// <summary>
         ///     Initializes Facial stuff graphics.
         /// </summary>
@@ -558,20 +587,10 @@
             return true;
         }
 
-        private void InitializeGraphicsBrows()
-        {
-            Color color = this.pawn.story.hairColor * Color.gray;
-            this.faceGraphicPart.BrowGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                this.texPathBrow,
-                ShaderDatabase.Cutout,
-                Vector2.one,
-                color);
-        }
-
         [CanBeNull]
         public Material MoustacheMatAt(Rot4 facing)
         {
-            if (!this.hasNaturalMouth || this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved
+            if (!this.hasNaturalJaw || this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved
                                       || this.PawnFace.MoustacheDef == null || this.pawn.gender == Gender.Female)
             {
                 return null;
@@ -593,7 +612,7 @@
         {
             Material material = null;
 
-            if (!this.hasNaturalMouth && Controller.settings.ShowExtraParts)
+            if (!this.hasNaturalJaw && Controller.settings.ShowExtraParts)
             {
                 material = this.faceGraphicPart.JawGraphic?.MatAt(facing);
             }
@@ -680,7 +699,7 @@
 
             if (Controller.settings.UseMouth)
             {
-                if (this.hasNaturalMouth)
+                if (this.hasNaturalJaw)
                 {
                     this.SetMouthAccordingToMoodLevel();
                 }
@@ -688,7 +707,6 @@
 
 
         }
-
 
         public override void PostExposeData()
         {
@@ -699,7 +717,7 @@
                 Scribe_Defs.Look(ref this.EyeDef, "EyeDef");
                 Scribe_Defs.Look(ref this.BrowDef, "BrowDef");
                 Scribe_Defs.Look(ref this.BeardDef, "BeardDef");
-                Scribe_Values.Look(ref this.HairColor, "HairColorOrg");
+                Scribe_Values.Look(ref this.hairColor, "HairColorOrg");
                 Scribe_References.Look(ref this.pawnFaction, "pawnFaction");
             }
 
@@ -716,25 +734,6 @@
             Scribe_Values.Look(ref this.DontRender, "dontrender");
             Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
         }
-
-        public Color HairColor;
-
-        public BeardDef BeardDef;
-
-        public BrowDef BrowDef;
-
-        public EyeDef EyeDef;
-
-        public HumanMouthGraphics mouthgraphic;
-
-        public bool IgnoreRenderer;
-
-        public int rotationInt;
-
-        private PawnHeadRotator headRotator;
-
-
-        public PawnHeadRotator HeadRotator => this.headRotator;
 
         /// <summary>
         ///     Basic pawn initialization.
@@ -761,7 +760,7 @@
                 {
                     this.PawnFace.EyeDef = this.EyeDef;
                     this.PawnFace.BrowDef = this.BrowDef;
-                    this.PawnFace.HairColor = this.HairColor;
+                    this.PawnFace.HairColor = this.hairColor;
                     this.pawn.story.melanin = Mathf.Abs(1f - this.pawn.story.melanin);
                 }
                 else
@@ -781,7 +780,7 @@
                 this.BeardDef = null;
             }
 
-            this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
+            // this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
             this.mouthgraphic = new HumanMouthGraphics(this.pawn);
             this.flasher = this.pawn.Drawer.renderer.graphics.flasher;
             this.eyeWiggler = new PawnEyeWiggler(this.pawn);
@@ -959,7 +958,7 @@
 
                     if (hediff.Part == jaw)
                     {
-                        this.texPathMouth = "Mouth/Mouth_" + hediff.def.defName;
+                        this.texPathJawAddedPart = "Mouth/Mouth_" + hediff.def.defName;
                     }
                 }
             }
@@ -991,12 +990,9 @@
 
         private void InitializeGraphicsBeard()
         {
-            string mainBeardDefTexPath = "Beards/Beard_" + this.PawnHeadType + "_" +  this.PawnFace.BeardDef.texPath + "_"
-                                         + this.PawnCrownType;
+            string mainBeardDefTexPath = this.GetBeardPath(this.PawnFace.BeardDef);
 
-            string moustacheDefTexPath = this.PawnFace.MoustacheDef.texPath + "_" + this.PawnCrownType;
-
-            string shavedPath = "Beards/Beard_" + BeardDefOf.Beard_Shaved.texPath;
+            string moustacheDefTexPath = this.GetMoustachePath(this.PawnFace.MoustacheDef);
 
             Color beardColor = this.PawnFace.BeardColor;
             Color tacheColor = this.PawnFace.BeardColor;
@@ -1004,13 +1000,11 @@
             if (this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved)
             {
                 // no error, only use the beard def shaved as texture
-                moustacheDefTexPath = shavedPath;
                 tacheColor = Color.white;
             }
 
             if (this.PawnFace.BeardDef == BeardDefOf.Beard_Shaved)
             {
-                mainBeardDefTexPath = shavedPath;
                 beardColor = Color.white;
             }
 
@@ -1028,16 +1022,26 @@
                 beardColor);
         }
 
+        private void InitializeGraphicsBrows()
+        {
+            Color color = this.pawn.story.hairColor * Color.gray;
+            this.faceGraphicPart.BrowGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                this.texPathBrow,
+                ShaderDatabase.Cutout,
+                Vector2.one,
+                color);
+        }
+
         private void InitializeGraphicsEyePatches()
         {
             if (this.texPathEyeLeftPatch != null)
             {
-                bool flag = ContentFinder<Texture2D>.Get(this.texPathEyeLeftPatch + "_front", false) != null;
+                bool flag = !ContentFinder<Texture2D>.Get(this.texPathEyeLeftPatch + "_front", false).NullOrBad();
                 if (flag)
                 {
                     this.faceGraphicPart.EyeLeftPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
                                                                    this.texPathEyeLeftPatch,
-                                                                   ShaderDatabase.Cutout,
+                                                                   ShaderDatabase.Transparent,
                                                                    Vector2.one,
                                                                    Color.white) as Graphic_Multi_AddedHeadParts;
                     this.HasEyePatchLeft = true;
@@ -1057,12 +1061,12 @@
 
             if (this.texPathEyeRightPatch != null)
             {
-                bool flag2 = ContentFinder<Texture2D>.Get(this.texPathEyeRightPatch + "_front", false) != null;
+                bool flag2 = !ContentFinder<Texture2D>.Get(this.texPathEyeRightPatch + "_front", false).NullOrBad();
                 if (flag2)
                 {
                     this.faceGraphicPart.EyeRightPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
                                                                     this.texPathEyeRightPatch,
-                                                                    ShaderDatabase.Cutout,
+                                                                    ShaderDatabase.Transparent,
                                                                     Vector2.one,
                                                                     Color.white) as Graphic_Multi_AddedHeadParts;
                     this.HasEyePatchRight = true;
@@ -1114,22 +1118,21 @@
                 ShaderDatabase.Cutout,
                 Vector2.one,
                 this.pawn.story.SkinColor);
-
         }
 
         private void InitializeGraphicsMouth()
         {
-            if (this.texPathMouth != null)
+            if (this.texPathJawAddedPart != null)
             {
-                bool flag = ContentFinder<Texture2D>.Get(this.texPathMouth + "_front", false) != null;
+                bool flag = ContentFinder<Texture2D>.Get(this.texPathJawAddedPart + "_front", false) != null;
                 if (flag)
                 {
                     this.faceGraphicPart.JawGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                          this.texPathMouth,
+                                                          this.texPathJawAddedPart,
                                                           ShaderDatabase.CutoutSkin,
                                                           Vector2.one,
                                                           Color.white) as Graphic_Multi_NaturalHeadParts;
-                    this.hasNaturalMouth = false;
+                    this.hasNaturalJaw = false;
 
                     // all done, return
                     return;
@@ -1137,10 +1140,10 @@
 
                 // texture for added/extra part not found, log and default
                 Log.Message(
-                    "Facial Stuff: No texture for added part: " + this.texPathMouth + " - Graphic_Multi_NaturalHeadParts");
+                    "Facial Stuff: No texture for added part: " + this.texPathJawAddedPart + " - Graphic_Multi_NaturalHeadParts");
             }
 
-            this.hasNaturalMouth = true;
+            this.hasNaturalJaw = true;
             this.faceGraphicPart.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[this.pawn.Dead || this.pawn.Downed ? 2 : 3].Graphic;
         }
 
@@ -1169,14 +1172,11 @@
         {
             this.texPathEyeLeftPatch = null;
             this.texPathEyeRightPatch = null;
-            this.texPathMouth = null;
+            this.texPathJawAddedPart = null;
 
             EyeDef pawnFaceEyeDef = this.PawnFace.EyeDef;
-            if (pawnFaceEyeDef != null)
-            {
-                this.texPathEyeRight = this.EyeTexPath(pawnFaceEyeDef.texPath, Side.Right);
-                this.texPathEyeLeft = this.EyeTexPath(pawnFaceEyeDef.texPath, Side.Left);
-            }
+            this.texPathEyeRight = this.EyeTexPath(pawnFaceEyeDef.texPath, Side.Right);
+            this.texPathEyeLeft = this.EyeTexPath(pawnFaceEyeDef.texPath, Side.Left);
 
             this.texPathEyeRightClosed = this.EyeClosedTexPath(Side.Right);
             this.texPathEyeLeftClosed = this.EyeClosedTexPath(Side.Left);
@@ -1205,8 +1205,6 @@
             }
         }
 
-        private bool isMasochist;
-
         private void SetMouthAccordingToMoodLevel()
         {
 
@@ -1228,8 +1226,9 @@
 
             this.faceGraphicPart.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[mouthTextureIndexOfMood].Graphic;
 
-            #endregion Private Methods
-
         }
+
+        #endregion Private Methods
+
     }
 }

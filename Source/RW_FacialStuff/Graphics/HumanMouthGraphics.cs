@@ -1,7 +1,6 @@
-﻿namespace FacialStuff
+﻿namespace FacialStuff.Graphics
 {
     using FacialStuff.Defs;
-    using FacialStuff.Graphics_FS;
 
     using JetBrains.Annotations;
 

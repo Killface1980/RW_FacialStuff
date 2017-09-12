@@ -39,6 +39,11 @@
                 return 100f;
             }
 
+            if (pawn.gender != Gender.Male && hair.hairTags.Contains("MaleOnly"))
+            {
+                return 0f;
+            }
+
             // No CompFace here yet, and PrePc kills the faction!
            Faction faction = pawn.Faction ?? Faction.OfPlayer;
 
@@ -56,7 +61,7 @@
                         case TechLevel.Neolithic:
                             if (pawn.gender == Gender.Male)
                             {
-                                if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 21)
+                                if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
                                 {
                                     return 0f;
                                 }
@@ -73,11 +78,6 @@
 
                             if (pawn.gender == Gender.Female)
                             {
-                                if (hair.hairTags.Contains("MaleOnly"))
-                                {
-                                    return 0f;
-                                }
-
                                 switch (hair.hairGender)
                                 {
                                     case HairGender.Male: return 1f;
@@ -94,7 +94,7 @@
                         case TechLevel.Medieval:
                             if (pawn.gender == Gender.Male)
                             {
-                                if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 21)
+                                if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
                                 {
                                     return 0f;
                                 }
@@ -111,11 +111,6 @@
 
                             if (pawn.gender == Gender.Female)
                             {
-                                if (hair.hairTags.Contains("MaleOnly"))
-                                {
-                                    return 0f;
-                                }
-
                                 switch (hair.hairGender)
                                 {
                                     case HairGender.Male: return 1f;
@@ -132,7 +127,7 @@
                         case TechLevel.Industrial:
                             if (pawn.gender == Gender.Male)
                             {
-                                if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 21)
+                                if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
                                 {
                                     return 0f;
                                 }
@@ -149,11 +144,6 @@
 
                             if (pawn.gender == Gender.Female)
                             {
-                                if (hair.hairTags.Contains("MaleOnly"))
-                                {
-                                    return 0f;
-                                }
-
                                 switch (hair.hairGender)
                                 {
                                     case HairGender.Male: return 1f;
@@ -189,11 +179,6 @@
 
                             if (pawn.gender == Gender.Female)
                             {
-                                if (hair.hairTags.Contains("MaleOnly"))
-                                {
-                                    return 0f;
-                                }
-
                                 switch (hair.hairGender)
                                 {
                                     case HairGender.Male: return 15f;
@@ -230,11 +215,6 @@
 
                         if (pawn.gender == Gender.Female)
                         {
-                            if (hair.hairTags.Contains("MaleOnly"))
-                            {
-                                return 0f;
-                            }
-
                             switch (hair.hairGender)
                             {
                                 case HairGender.Male: return 15f;
@@ -268,11 +248,6 @@
 
             if (pawn.gender == Gender.Female)
             {
-                if (hair.hairTags.Contains("MaleOnly"))
-                {
-                    return 0f;
-                }
-
                 switch (hair.hairGender)
                 {
                     case HairGender.Male: return 0f;
@@ -295,7 +270,6 @@
         {
             BeardRoulette(pawn, factionType, out mainBeard, out moustache);
         }
-
 
         public static BeardDef RandomBeardDefFor([NotNull] Pawn pawn, BeardType type)
         {
@@ -320,11 +294,11 @@
             BeardDef chosenBeard;
             float rand = Rand.Value;
 
-            if (pawn.ageTracker.AgeBiologicalYearsFloat < 19 || rand < 0.1f)
+            if (pawn.ageTracker.AgeBiologicalYearsFloat < 19 || rand < 0.075f)
             {
                 chosenBeard = BeardDefOf.Beard_Shaved;
             }
-            else if (rand < 0.15f)
+            else if (rand < 0.125f)
             {
                 chosenBeard = BeardDefOf.Beard_Stubble;
             }

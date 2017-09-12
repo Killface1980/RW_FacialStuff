@@ -1,4 +1,4 @@
-namespace FacialStuff.Graphics_FS
+namespace FacialStuff.Graphics
 {
     using System;
 
@@ -74,13 +74,18 @@ namespace FacialStuff.Graphics_FS
                 // array[2] = MaskTextures.BlankTexture();
             }
 
-            if (ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side"))
+            Texture2D sideTex = ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side", false);
+            Texture2D side2Tex = ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side2", false);
+            Texture2D backTex = ContentFinder<Texture2D>.Get(req.path + "_back", false);
+
+            if (!sideTex.NullOrBad())
             {
+
                 if (side.Equals("Right"))
                 {
-                    if (ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side2", false))
+                    if (!side2Tex.NullOrBad())
                     {
-                        array[3] = ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side2");
+                        array[3] = side2Tex;
                     }
                     else
                     {
@@ -89,14 +94,14 @@ namespace FacialStuff.Graphics_FS
                 }
                 else
                 {
-                    array[3] = ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side");
+                    array[3] = sideTex;
                 }
 
                 if (side.Equals("Left"))
                 {
-                    if (ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side2", false))
+                    if (!side2Tex.NullOrBad())
                     {
-                        array[1] = ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side2");
+                        array[1] = side2Tex;
                     }
                     else
                     {
@@ -105,7 +110,7 @@ namespace FacialStuff.Graphics_FS
                 }
                 else
                 {
-                    array[1] = ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side");
+                    array[1] = sideTex;
                 }
             }
             else
@@ -116,9 +121,9 @@ namespace FacialStuff.Graphics_FS
                 array[3] = FaceTextures.BlankTexture;
             }
 
-            if (ContentFinder<Texture2D>.Get(req.path + "_back", false))
+            if (backTex)
             {
-                array[0] = ContentFinder<Texture2D>.Get(req.path + "_back");
+                array[0] = backTex;
             }
             else
             {

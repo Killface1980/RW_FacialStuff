@@ -1,12 +1,10 @@
-﻿namespace FacialStuff
+﻿namespace FacialStuff.Graphics
 {
-    using FacialStuff.Graphics_FS;
-
     using JetBrains.Annotations;
 
     using Verse;
 
-    internal class FaceGraphicParts
+    public class FaceGraphicParts
     {
         #region Public Fields
 
@@ -43,5 +41,7 @@
         public Graphic WrinkleGraphic;
 
         #endregion Public Fields
+
+
     }
 }

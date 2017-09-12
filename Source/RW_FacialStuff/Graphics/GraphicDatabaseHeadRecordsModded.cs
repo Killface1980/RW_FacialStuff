@@ -1,4 +1,4 @@
-﻿namespace FacialStuff
+﻿namespace FacialStuff.Graphics
 {
     using System;
     using System.Collections.Generic;

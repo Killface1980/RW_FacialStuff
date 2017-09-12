@@ -11,8 +11,6 @@ namespace FacialStuff.Defs
     [SuppressMessage("ReSharper", "StyleCop.SA1307")]
     public class MouthDef : Def
     {
-        public HairGender hairGender = HairGender.Any;
-
       
         public List<string> hairTags = new List<string>();
 

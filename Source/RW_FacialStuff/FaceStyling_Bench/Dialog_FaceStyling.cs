@@ -14,7 +14,7 @@
     using FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs;
     using static FacialStuff.FaceStyling_Bench.UI.Util.WidgetUtil;
     using FacialStuff.Genetics;
-    using FacialStuff.Graphics_FS;
+    using FacialStuff.Graphics;
     using FacialStuff.Utilities;
 
     using global::FaceStyling;
@@ -652,11 +652,7 @@
         [NotNull]
         private Graphic_Multi_NaturalHeadParts BeardGraphic([NotNull] BeardDef def)
         {
-            string path = def.texPath + "_" + this.faceComp.PawnCrownType + "_" + this.faceComp.PawnHeadType;
-            if (def == BeardDefOf.Beard_Shaved)
-            {
-                path = def.texPath;
-            }
+            string path = this.faceComp.GetBeardPath(def);
 
             Graphic_Multi_NaturalHeadParts result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                         path,
@@ -691,29 +687,25 @@
         private void DoColorWindowBeard()
         {
             this.RemoveColorPicker();
-            {
-                this.colourWrapper.Color = this.faceComp.PawnFace.HasSameBeardColor
-                                               ? this.NewHairColor
-                                               : this.NewBeardColor;
-                Find.WindowStack.Add(
-                    new Dialog_ColorPicker(
-                        this.colourWrapper,
-                        delegate
+
+            this.colourWrapper.Color = this.faceComp.PawnFace.HasSameBeardColor
+                                           ? this.NewHairColor
+                                           : this.NewBeardColor;
+            Find.WindowStack.Add(
+                new Dialog_ColorPicker(
+                    this.colourWrapper,
+                    delegate
+                        {
+                            if (this.faceComp.PawnFace.HasSameBeardColor)
                             {
-                                if (this.faceComp.PawnFace.HasSameBeardColor)
-                                {
-                                    this.NewHairColor = this.colourWrapper.Color;
-                                }
+                                this.NewHairColor = this.colourWrapper.Color;
+                            }
 
-                                this.NewBeardColor = this.colourWrapper.Color;
-                            },
-                        false,
-                        true)
-                    {
-
-                        initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin),
-                    });
-            }
+                            this.NewBeardColor = this.colourWrapper.Color;
+                        },
+                    false,
+                    true)
+                { initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin), });
         }
 
         private void DrawBeardColorPickerCell(Color color, Rect rect, string colorName)
@@ -1829,6 +1821,7 @@
             {
                 if (this.faceComp.PawnFace.HasSameBeardColor != faceCompHasSameBeardColor)
                 {
+                    this.RemoveColorPicker();
                     this.faceComp.PawnFace.HasSameBeardColor = faceCompHasSameBeardColor;
                     this.NewBeardColor = HairMelanin.DarkerBeardColor(this.NewHairColor);
                 }
@@ -2047,7 +2040,7 @@
         [NotNull]
         private Graphic_Multi_NaturalHeadParts MoustacheGraphic([NotNull] MoustacheDef def)
         {
-            string path = def == MoustacheDefOf.Shaved ? def.texPath : def.texPath + "_" + this.faceComp.PawnCrownType;
+            string path = this.faceComp.GetMoustachePath(def);
 
             Graphic_Multi_NaturalHeadParts result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                         path,

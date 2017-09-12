@@ -4,7 +4,6 @@
   <FacialStuff.Defs.MouthDef>
     <defName>Mouth_Grin</defName>
     <label>Grin</label>
-    <hairGender>Male</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -20,7 +19,6 @@
   <FacialStuff.Defs.MouthDef>
     <defName>Mouth_Crying</defName>
     <label>Crying</label>
-    <hairGender>Male</hairGender>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -35,8 +33,7 @@
   
   <FacialStuff.Defs.MouthDef>
     <defName>Mouth_Mood01</defName>
-    <label>EFA-Big</label>
-    <hairGender>Female</hairGender>
+    <label>Mouth_Mood01</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -51,8 +48,7 @@
 
   <FacialStuff.Defs.MouthDef>
     <defName>Mouth_Mood02</defName>
-    <label>EFA-Default</label>
-    <hairGender>Female</hairGender>
+    <label>Mouth_Mood02</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -67,8 +63,7 @@
 
   <FacialStuff.Defs.MouthDef>
     <defName>Mouth_Mood03</defName>
-    <label>EFA-Sad</label>
-    <hairGender>Female</hairGender>
+    <label>Mouth_Mood03</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -83,8 +78,7 @@
 
   <FacialStuff.Defs.MouthDef>
     <defName>Mouth_Mood04</defName>
-    <label>EFA-Large</label>
-    <hairGender>Female</hairGender>
+    <label>Mouth_Mood04</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -99,8 +93,7 @@
 
   <FacialStuff.Defs.MouthDef>
     <defName>Mouth_Mood05</defName>
-    <label>EFA-Medium</label>
-    <hairGender>Female</hairGender>
+    <label>Mouth_Mood05</label>
     <raceList>
       <li>Human</li>
     </raceList>
@@ -115,8 +108,7 @@
 
   <FacialStuff.Defs.MouthDef>
     <defName>Mouth_Mood06</defName>
-    <label>EFA-Smile</label>
-    <hairGender>Female</hairGender>
+    <label>Mouth_Mood06</label>
     <raceList>
       <li>Human</li>
     </raceList>

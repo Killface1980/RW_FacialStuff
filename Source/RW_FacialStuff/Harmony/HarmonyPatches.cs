@@ -8,6 +8,7 @@ namespace FacialStuff.Detouring
     using System.Reflection.Emit;
 
     using FacialStuff.FaceStyling_Bench;
+    using FacialStuff.Graphics;
 
     using global::Harmony;
 

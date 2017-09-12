@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Facial Stuff 0.17.3.3c</name>
+  <name>Facial Stuff 0.17.3.3d</name>
   <author>Killface</author>
   <url></url>
   <targetVersion>0.17.1557</targetVersion>
@@ -24,6 +24,9 @@
 
 Patches the PawnRenderer via Harmony and returns &apos;false&apos; thus being incompatible to mods doing the same.
 
-Special thanks to Fluffy for the FaceStyling bench (adapted from &apos;Clutter&apos;)
+Initial Face Styling bench code adapted from Clutter by mrofa (textures by Fluffy, available at the Ludeon forums)
+Body, gender and head changer code adapted from Change Dresser by Kiame Vivacity
+Prepare Carefully saving / loading code adapted from Psychology by {WOBBLY} The Word-Mule
+Special thanks to pardeike for Harmony and help with transpilers
   </description>
 </ModMetaData>

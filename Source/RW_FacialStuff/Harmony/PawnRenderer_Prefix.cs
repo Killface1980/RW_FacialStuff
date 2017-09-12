@@ -2,7 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
+
+    using FacialStuff.Graphics;
 
     using global::Harmony;
 
@@ -108,7 +111,7 @@
                 return true;
             }
 
-            Mesh mesh = null;
+            Mesh bodyMesh = null;
 #if develop
             if (faceComp.IgnoreRenderer)
             {
@@ -141,13 +144,13 @@
                 Vector3 loc = rootLoc;
                 loc.y += YOffset_Body;
 
-                mesh = MeshPool.humanlikeBodySet.MeshAt(bodyFacing);
+                bodyMesh = MeshPool.humanlikeBodySet.MeshAt(bodyFacing);
 
                 List<Material> bodyBaseAt = __instance.graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
                 for (int i = 0; i < bodyBaseAt.Count; i++)
                 {
                     Material damagedMat = __instance.graphics.flasher.GetDamagedMat(bodyBaseAt[i]);
-                    GenDraw.DrawMeshNowOrLater(mesh, loc, quat, damagedMat, portrait);
+                    GenDraw.DrawMeshNowOrLater(bodyMesh, loc, quat, damagedMat, portrait);
                     loc.y += YOffsetInterval_Clothes;
                 }
 
@@ -157,7 +160,7 @@
                     drawLoc.y += YOffset_Wounds;
 
                     PawnWoundDrawer woundDrawer = (PawnWoundDrawer)WoundOverlayFieldInfo?.GetValue(__instance);
-                    woundDrawer?.RenderOverBody(drawLoc, mesh, quat, portrait);
+                    woundDrawer?.RenderOverBody(drawLoc, bodyMesh, quat, portrait);
                 }
             }
 
@@ -188,21 +191,21 @@
             {
                 // Rendererd pawn faces
                 Vector3 b = headQuat * __instance.BaseHeadOffsetAt(headFacing);
-                Material material = __instance.graphics.HeadMatAt(headFacing, bodyDrawType, headStump);
+                Material headMaterial = __instance.graphics.HeadMatAt(headFacing, bodyDrawType, headStump);
                 Vector3 locFacialY = a + b;
-                if (material != null)
+                if (headMaterial != null)
                 {
-                    Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
+                    Mesh headMesh = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
 
-                    Mesh meshEyes = faceComp.EyeMeshSet.mesh.MeshAt(headFacing);
+                    Mesh eyeMesh = faceComp.EyeMeshSet.mesh.MeshAt(headFacing);
 #if develop
                     Vector3 offsetEyes = faceComp.BaseEyeOffsetAt(headFacing);
 #else
                     Vector3 offsetEyes = faceComp.EyeMeshSet.OffsetAt(headFacing);
 #endif
-                    GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, material, portrait);
+                    GenDraw.DrawMeshNowOrLater(headMesh, locFacialY, headQuat, headMaterial, portrait);
                     locFacialY.y += YOffsetOnFace;
-                    if (!headStump)
+                    if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
                     {
                         Material browMat = faceComp.BrowMatAt(headFacing);
                         Material mouthMat = faceComp.MouthMatAt(headFacing, portrait);
@@ -210,29 +213,59 @@
 
                         if (wrinkleMat != null)
                         {
-                            GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, wrinkleMat, portrait);
+                            GenDraw.DrawMeshNowOrLater(headMesh, locFacialY, headQuat, wrinkleMat, portrait);
                             locFacialY.y += YOffsetOnFace;
                         }
 
-                        if (faceComp.HasEyePatchLeft)
-                        {
-                            Material leftBionicMat = faceComp.EyeLeftPatchMatAt(headFacing);
-                            if (leftBionicMat != null)
-                            {
-                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, leftBionicMat, portrait);
-                                locFacialY.y += YOffsetOnFace;
-                            }
-                        }
-                        else
+                        // natural eyes
+                        if (!faceComp.HasEyePatchLeft)
                         {
                             Material leftEyeMat = faceComp.EyeLeftMatAt(headFacing, portrait);
                             if (leftEyeMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(
-                                    meshEyes,
+                                    eyeMesh,
                                     locFacialY + offsetEyes + faceComp.EyeWiggler.EyeMoveL,
                                     headQuat,
                                     leftEyeMat,
+                                    portrait);
+                                locFacialY.y += YOffsetOnFace;
+                            }
+                        }
+
+                        if (!faceComp.HasEyePatchRight)
+                        {
+                            Material rightEyeMat = faceComp.EyeRightMatAt(headFacing, portrait);
+                            if (rightEyeMat != null)
+                            {
+                                GenDraw.DrawMeshNowOrLater(
+                                    eyeMesh,
+                                    locFacialY + offsetEyes + faceComp.EyeWiggler.EyeMoveR,
+                                    headQuat,
+                                    rightEyeMat,
+                                    portrait);
+                                locFacialY.y += YOffsetOnFace;
+                            }
+                        }
+
+                        // the brow above
+                        if (browMat != null)
+                        {
+                            GenDraw.DrawMeshNowOrLater(eyeMesh, locFacialY + offsetEyes, headQuat, browMat, portrait);
+                            locFacialY.y += YOffsetOnFace;
+                        }
+
+                        // and now the added eye parts
+                        if (faceComp.HasEyePatchLeft)
+                        {
+                            Material leftBionicMat = faceComp.EyeLeftPatchMatAt(headFacing);
+                            if (leftBionicMat != null)
+                            {
+                                GenDraw.DrawMeshNowOrLater(
+                                    headMesh,
+                                    locFacialY + offsetEyes,
+                                    headQuat,
+                                    leftBionicMat,
                                     portrait);
                                 locFacialY.y += YOffsetOnFace;
                             }
@@ -244,29 +277,14 @@
 
                             if (rightBionicMat != null)
                             {
-                                GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, rightBionicMat, portrait);
-                                locFacialY.y += YOffsetOnFace;
-                            }
-                        }
-                        else
-                        {
-                            Material rightEyeMat = faceComp.EyeRightMatAt(headFacing, portrait);
-                            if (rightEyeMat != null)
-                            {
                                 GenDraw.DrawMeshNowOrLater(
-                                    meshEyes,
-                                    locFacialY + offsetEyes + faceComp.EyeWiggler.EyeMoveR,
+                                    headMesh,
+                                    locFacialY + offsetEyes,
                                     headQuat,
-                                    rightEyeMat,
+                                    rightBionicMat,
                                     portrait);
                                 locFacialY.y += YOffsetOnFace;
                             }
-                        }
-
-                        if (browMat != null)
-                        {
-                            GenDraw.DrawMeshNowOrLater(meshEyes, locFacialY + offsetEyes, headQuat, browMat, portrait);
-                            locFacialY.y += YOffsetOnFace;
                         }
 
                         if (mouthMat != null)
@@ -287,7 +305,7 @@
                         // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
                         if (!portrait)
                         {
-                            DrawBeardAndTache(headFacing, portrait, faceComp, mesh2, locFacialY, headQuat);
+                            DrawBeardAndTache(headFacing, portrait, faceComp, headMesh, locFacialY, headQuat);
                         }
 
                         // Deactivated, looks kinda crappy ATM
@@ -308,104 +326,86 @@
                 Vector3 loc2 = rootLoc + b;
                 loc2.y += YOffset_OnHead;
 
-                bool showFullHair = true;
+                bool showRegularHair = true;
                 Mesh mesh3 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
 
-                if (!portrait || !Prefs.HatsOnlyOnMap)
+                if (!headStump)
                 {
-                    List<ApparelGraphicRecord> apparelGraphics = __instance.graphics.apparelGraphics;
-                    bool hairDrawn = false;
-                    for (int j = 0; j < apparelGraphics.Count; j++)
+                    if (!portrait || !Prefs.HatsOnlyOnMap)
                     {
-                        if (apparelGraphics[j].sourceApparel.def.apparel.LastLayer != ApparelLayer.Overhead)
-                        {
-                            continue;
-                        }
+                        List<ApparelGraphicRecord> apparelGraphics = __instance.graphics.apparelGraphics;
+                        List<ApparelGraphicRecord> headgearGraphics =
+                            apparelGraphics.Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead).ToList();
+
+                        bool noRenderRoofed = Controller.settings.HideHatWhileRoofed && faceComp.Roofed;
+                        bool noRenderBed = Controller.settings.HideHatInBed && !renderBody;
 
                         // Bool - only ONE hair drawn. Checks if it needs the hair cut texture.
-                        if (!hairDrawn)
+                        if (!headgearGraphics.NullOrEmpty())
                         {
-                            bool showApparel = true;
+                            showRegularHair = false;
 
-                            // removes the hat if the body is not shown
-                            if (Controller.settings.HideHatInBed)
+                            // Draw regular hair if appparel or environment allows it (FS feature)
+                            if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
                             {
-                                showApparel = renderBody;
-                            }
-
-                            // Don't show hats indoors
-                            if (!portrait && Controller.settings.HideHatWhileRoofed 
-                                && faceComp.Roofed)
-                            {
-                                showApparel = false;
-                            }
-
-                            if (!showApparel)
-                            {
-                                continue;
-                            }
-
-                            showFullHair = false;
-
-                            // Draw regular hair if appparel allows it (FS feature)
-                            if (apparelGraphics[j].sourceApparel.def.apparel.tags.Contains(DrawFullhair))
-                            {
-                                if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
+                                if (headgearGraphics.Any(x => x.sourceApparel.def.apparel.tags.Contains(DrawFullhair)) || noRenderRoofed || noRenderBed)
                                 {
                                     Material mat = __instance.graphics.HairMatAt(headFacing);
                                     GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, mat, portrait);
                                     loc2.y += YOffsetOnFace;
                                 }
-                            }
-                            else if (Controller.settings.MergeHair)
-                            {
-                                // If not, display the hair cut
-                                HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
-                                Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
-                                if (hairCutMat != null)
+                                else if (Controller.settings.MergeHair)
                                 {
-                                    GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, hairCutMat, portrait);
-                                    loc2.y += YOffsetOnFace;
-
-                                    // loc2.y += 0.0328125022f;
+                                    // If not, display the hair cut
+                                    HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
+                                    Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
+                                    if (hairCutMat != null)
+                                    {
+                                        GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, hairCutMat, portrait);
+                                        loc2.y += YOffsetOnFace;
+                                    }
                                 }
                             }
 
-                            hairDrawn = true;
+                            if (!noRenderRoofed && !noRenderBed)
+                            {
+                                for (int j = 0; j < headgearGraphics.Count; j++)
+                                {
+                                    // Now draw the actual head gear
+                                    Material material2 = headgearGraphics[j].graphic.MatAt(headFacing);
+                                    material2 = __instance.graphics.flasher.GetDamagedMat(material2);
+                                    GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, material2, portrait);
+                                    loc2.y += YOffsetOnFace;
+                                }
+                            }
+                        }
+                    }
+
+                    // Draw regular hair if no hat worn
+                    if (showRegularHair && bodyDrawType != RotDrawMode.Dessicated)
+                    {
+                        Material mat = __instance.graphics.HairMatAt(headFacing);
+                        GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, mat, portrait);
+                    }
+                }
+
+                if (renderBody)
+                {
+                    for (int k = 0; k < __instance.graphics.apparelGraphics.Count; k++)
+                    {
+                        ApparelGraphicRecord apparelGraphicRecord = __instance.graphics.apparelGraphics[k];
+                        if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer != ApparelLayer.Shell)
+                        {
+                            continue;
                         }
 
-                        // Now draw the actual hat
-                        Material material2 = apparelGraphics[j].graphic.MatAt(headFacing);
-                        material2 = __instance.graphics.flasher.GetDamagedMat(material2);
-                        GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, material2, portrait);
-                        loc2.y += YOffsetOnFace;
+                        Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing);
+                        material3 = __instance.graphics.flasher.GetDamagedMat(material3);
+                        GenDraw.DrawMeshNowOrLater(bodyMesh, vector, quat, material3, portrait);
+
+                        // possible fix for phasing apparel
+                        vector.y += YOffsetOnFace;
                     }
-                }
-
-                // Draw regular hair if no hat worn
-                if (showFullHair && bodyDrawType != RotDrawMode.Dessicated && !headStump)
-                {
-                    Material mat = __instance.graphics.HairMatAt(headFacing);
-                    GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, mat, portrait);
-                }
-            }
-
-            if (renderBody)
-            {
-                for (int k = 0; k < __instance.graphics.apparelGraphics.Count; k++)
-                {
-                    ApparelGraphicRecord apparelGraphicRecord = __instance.graphics.apparelGraphics[k];
-                    if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer != ApparelLayer.Shell)
-                    {
-                        continue;
-                    }
-
-                    Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing);
-                    material3 = __instance.graphics.flasher.GetDamagedMat(material3);
-                    GenDraw.DrawMeshNowOrLater(mesh, vector, quat, material3, portrait);
-
-                    // possible fix for phasing apparel
-                    vector.y += YOffsetOnFace;
                 }
             }
 
