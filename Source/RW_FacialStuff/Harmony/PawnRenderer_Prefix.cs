@@ -340,7 +340,6 @@
                         bool noRenderRoofed = Controller.settings.HideHatWhileRoofed && faceComp.Roofed;
                         bool noRenderBed = Controller.settings.HideHatInBed && !renderBody;
 
-                        // Bool - only ONE hair drawn. Checks if it needs the hair cut texture.
                         if (!headgearGraphics.NullOrEmpty())
                         {
                             showRegularHair = false;
@@ -367,7 +366,8 @@
                                 }
                             }
 
-                            if (!noRenderRoofed && !noRenderBed)
+                            bool canRender = !noRenderRoofed && !noRenderBed && !portrait;
+                            if (canRender || portrait && !Prefs.HatsOnlyOnMap)
                             {
                                 for (int j = 0; j < headgearGraphics.Count; j++)
                                 {
