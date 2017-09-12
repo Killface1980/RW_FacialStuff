@@ -1,10 +1,15 @@
 ﻿namespace FacialStuff
 {
+    using System.Collections.Generic;
+
+    using JetBrains.Annotations;
+
     using RimWorld;
 
     using UnityEngine;
 
     using Verse;
+    using Verse.AI;
 
     public class PawnHeadRotator
     {
@@ -39,6 +44,98 @@
             }
 
         }
+        // Verse.AI.GenAI
+        public static bool EnemyIsNear([NotNull] Pawn p, float radius, out IntVec3 attacker)
+        {
+            attacker = IntVec3.Zero;
+            bool enemy = false;
+            if (!p.Spawned)
+            {
+                return false;
+            }
+
+            List<IAttackTarget> potentialTargetsFor = p.Map.attackTargetsCache.GetPotentialTargetsFor(p);
+            for (int i = 0; i < potentialTargetsFor.Count; i++)
+            {
+                IAttackTarget attackTarget = potentialTargetsFor[i];
+                if (!attackTarget.ThreatDisabled())
+                {
+                    if (p.Position.InHorDistOf(((Thing)attackTarget).Position, radius))
+                    {
+                        enemy = true;
+                        break;
+                    }
+                }
+            }
+            if (enemy)
+            {
+                Thing thing = (Thing)AttackTargetFinder.BestAttackTarget(
+                    p,
+                    TargetScanFlags.NeedReachable | TargetScanFlags.NeedThreat,
+                    (Thing x) => x is Pawn,
+                    0f,
+                    radius,
+                    default(IntVec3),
+                    3.40282347E+38f,
+                    true);
+
+                if (thing != null)
+                {
+                    attacker = thing.Position;
+                }
+                else
+                {
+                    enemy = false;
+                }
+            }
+            return enemy;
+        }
+
+        // RimWorld.JobDriver_StandAndBeSociallyActive
+        private IntVec3 FindClosestTarget()
+        {
+            IntVec3 position = this.pawn.Position;
+
+            // Watch out for enemies
+            if (EnemyIsNear(this.pawn, 40f, out IntVec3 vec))
+            {
+                return vec;
+            }
+            float rand = Rand.Value;
+
+            // Look at each other
+            if (rand > 0.5f)
+            {
+                for (int i = 0; i < 24; i++)
+                {
+                    IntVec3 intVec = position + GenRadial.RadialPattern[i];
+                    if (intVec.InBounds(this.pawn.Map))
+                    {
+                        Thing thing = intVec.GetThingList(this.pawn.Map).Find((Thing x) => x is Pawn);
+
+                        if (thing != null && thing != this.pawn)
+                        {
+                            if (GenSight.LineOfSight(position, intVec, this.pawn.Map, false, null, 0, 0))
+                            {
+                                return thing.Position;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Look at current target ...
+            if (rand > 0.25f)
+            {
+                if (this.pawn.CurJob.targetA != null)
+                {
+                    return this.pawn.CurJob.targetA.Cell;
+                }
+            }
+
+            return IntVec3.Zero;
+        }
+
 
         public void RotatorTick()
         {
@@ -56,33 +153,51 @@
                 // Set upnext blinking cycle
                 this.SetNextRotation(tickManagerTicksGame);
 
-                // Make them smile.
-               // if (this.pawn.pather.Moving)
-               // {
-               //     this.rotationMod = RotationDirection.None;
-               //     return;
-               // }
+                // if (GenAI.InDangerousCombat(this.pawn))
+                // {
+                //     this.rotationMod = RotationDirection.None;
+                //     return;
+                // }
 
-                float rand = Rand.Value;
-                if (rand < 0.15f)
+                IntVec3 target = this.FindClosestTarget();
+
+                // Make them smile.
+                // if (this.pawn.pather.Moving)
+                // {
+                //     this.rotationMod = RotationDirection.None;
+                //     return;
+                // }
+                if (target != IntVec3.Zero)
                 {
-                    this.rotationMod = RotationDirection.Clockwise;
+                    float angle = (target - this.pawn.Position).ToVector3().AngleFlat();
+                    Rot4 rot = PawnRotator.RotFromAngleBiased(angle);
+                    if (rot != this.pawn.Rotation.Opposite)
+                    {
+                        int rotty = this.pawn.Rotation.AsInt - rot.AsInt;
+                        switch (rotty)
+                        {
+                            case 0:
+                                this.rotationMod = RotationDirection.None;
+                                break;
+                            case -1:
+                                this.rotationMod = RotationDirection.Clockwise;
+                                break;
+                            case 1:
+                                this.rotationMod = RotationDirection.Counterclockwise;
+                                break;
+                        }
+                        //  Log.Message(this.pawn + " now watching " + target.GetThingList(this.pawn.Map));
+                        return;
+                    }
                 }
-                else if (rand < 0.3f)
-                {
-                    this.rotationMod = RotationDirection.Counterclockwise;
-                }
-                else
-                {
-                    this.rotationMod = RotationDirection.None;
-                }
+                this.rotationMod = RotationDirection.None;
             }
 
         }
 
         private void SetNextRotation(int tickManagerTicksGame)
         {
-            float blinkDuration = Rand.Range(120f, 180f);
+            float blinkDuration = Rand.Range(60f, 120f);
 
             this.nextRotationEnd = (int)(tickManagerTicksGame + blinkDuration);
         }
