@@ -20,8 +20,6 @@
     [HarmonyBefore("com.showhair.rimworld.mod")]
     public static class HarmonyPatch_PawnRenderer
     {
-        private const string DrawFullhair = "DrawFullHair";
-
         private const float YOffset_PrimaryEquipmentUnder = 0f;
 
         private const float YOffset_Body = 0.0046875f;
@@ -168,7 +166,7 @@
 
             if (!portrait && Controller.settings.UseHeadRotator)
             {
-                headFacing = faceComp.HeadRotator.Rotation(headFacing);
+                headFacing = faceComp.HeadRotator.Rotation(headFacing, renderBody);
                 headQuat *= faceComp.HeadQuat(headFacing);
 
                 // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
@@ -331,61 +329,93 @@
 
                 if (!headStump)
                 {
-                    if (!portrait || !Prefs.HatsOnlyOnMap)
+                    List<ApparelGraphicRecord> apparelGraphics = __instance.graphics.apparelGraphics;
+                    List<ApparelGraphicRecord> headgearGraphics =
+                        apparelGraphics.Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
+                            .ToList();
+
+                    bool noRenderRoofed = Controller.settings.HideHatWhileRoofed && faceComp.Roofed;
+                    bool noRenderBed = Controller.settings.HideHatInBed && !renderBody;
+
+                    if (!headgearGraphics.NullOrEmpty())
                     {
-                        List<ApparelGraphicRecord> apparelGraphics = __instance.graphics.apparelGraphics;
-                        List<ApparelGraphicRecord> headgearGraphics =
-                            apparelGraphics.Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead).ToList();
+                        bool filterHeadgear = portrait && Prefs.HatsOnlyOnMap
+                                        || !portrait && noRenderRoofed;
 
-                        bool noRenderRoofed = Controller.settings.HideHatWhileRoofed && faceComp.Roofed;
-                        bool noRenderBed = Controller.settings.HideHatInBed && !renderBody;
-
-                        if (!headgearGraphics.NullOrEmpty())
+                        // Draw regular hair if appparel or environment allows it (FS feature)
+                        if (bodyDrawType != RotDrawMode.Dessicated)
                         {
-                            showRegularHair = false;
+                            // draw full or partial hair
+                            bool apCoversHead =
+                                headgearGraphics.Any(
+                                    x => x.sourceApparel.def.apparel.bodyPartGroups.Contains(
+                                             BodyPartGroupDefOf.FullHead)
+                                         || x.sourceApparel.def.apparel.bodyPartGroups.Contains(
+                                             BodyPartGroupDefOf.UpperHead));
 
-                            // Draw regular hair if appparel or environment allows it (FS feature)
-                            if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
+                            if (noRenderBed || filterHeadgear || !apCoversHead)
                             {
-                                if (headgearGraphics.Any(x => x.sourceApparel.def.apparel.tags.Contains(DrawFullhair)) || noRenderRoofed || noRenderBed)
-                                {
-                                    Material mat = __instance.graphics.HairMatAt(headFacing);
-                                    GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, mat, portrait);
-                                    loc2.y += YOffsetOnFace;
-                                }
-                                else if (Controller.settings.MergeHair)
-                                {
-                                    // If not, display the hair cut
-                                    HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
-                                    Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
-                                    if (hairCutMat != null)
-                                    {
-                                        GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, hairCutMat, portrait);
-                                        loc2.y += YOffsetOnFace;
-                                    }
-                                }
+                                Material mat = __instance.graphics.HairMatAt(headFacing);
+                                GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, mat, portrait);
+                                loc2.y += YOffsetOnFace;
                             }
-
-                            bool canRender = !noRenderRoofed && !noRenderBed && !portrait;
-                            if (canRender || portrait && !Prefs.HatsOnlyOnMap)
+                            else if (Controller.settings.MergeHair)
                             {
-                                for (int j = 0; j < headgearGraphics.Count; j++)
+                                // If not, display the hair cut
+                                HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
+                                Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
+                                if (hairCutMat != null)
                                 {
-                                    // Now draw the actual head gear
-                                    Material material2 = headgearGraphics[j].graphic.MatAt(headFacing);
-                                    material2 = __instance.graphics.flasher.GetDamagedMat(material2);
-                                    GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, material2, portrait);
+                                    GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, hairCutMat, portrait);
                                     loc2.y += YOffsetOnFace;
                                 }
                             }
                         }
-                    }
+                        else
+                        {
+                            filterHeadgear = false;
+                        }
 
-                    // Draw regular hair if no hat worn
-                    if (showRegularHair && bodyDrawType != RotDrawMode.Dessicated)
+                        if (filterHeadgear)
+                        {
+                            // Filter the head gear to only show non-hats, show nothing while in bed
+                            if (Controller.settings.FilterHats)
+                            {
+                                headgearGraphics = headgearGraphics
+                                    .Where(
+                                        x => !x.sourceApparel.def.apparel.bodyPartGroups.Contains(
+                                                 BodyPartGroupDefOf.FullHead)
+                                             && !x.sourceApparel.def.apparel.bodyPartGroups.Contains(
+                                                 BodyPartGroupDefOf.UpperHead)).ToList();
+                            }
+                            else
+                            {
+                                // Clear if nothing to show
+                                headgearGraphics.Clear();
+                            }
+                        }
+                        if (noRenderBed)
+                        {
+                            headgearGraphics.Clear();
+                        }
+
+                        for (int j = 0; j < headgearGraphics.Count; j++)
+                        {
+                            // Now draw the actual head gear
+                            Material material2 = headgearGraphics[j].graphic.MatAt(headFacing);
+                            material2 = __instance.graphics.flasher.GetDamagedMat(material2);
+                            GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, material2, portrait);
+                            loc2.y += YOffsetOnFace;
+                        }
+                    }
+                    else
                     {
-                        Material mat = __instance.graphics.HairMatAt(headFacing);
-                        GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, mat, portrait);
+                        // Draw regular hair if no hat worn
+                        if (bodyDrawType != RotDrawMode.Dessicated)
+                        {
+                            Material mat = __instance.graphics.HairMatAt(headFacing);
+                            GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, mat, portrait);
+                        }
                     }
                 }
 

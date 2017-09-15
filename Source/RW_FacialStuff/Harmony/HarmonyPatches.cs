@@ -411,13 +411,32 @@ namespace FacialStuff.Detouring
         static void MoreStuff(Listing_Standard listing_Standard)
         {
             bool hideHatWhileRoofed = Controller.settings.HideHatWhileRoofed;
-            listing_Standard.CheckboxLabeled("Settings.HideHatWhileRoofed".Translate(), ref hideHatWhileRoofed, "Settings.HideHatWhileRoofedTooltip".Translate());
+            listing_Standard.CheckboxLabeled(
+                "Settings.HideHatWhileRoofed".Translate(),
+                ref hideHatWhileRoofed,
+                "Settings.HideHatWhileRoofedTooltip".Translate());
+
+            bool showHeadWear = Controller.settings.FilterHats;
+            listing_Standard.CheckboxLabeled(
+                "Settings.FilterHats".Translate(),
+                ref showHeadWear,
+                "Settings.HeadgearOnlyOnMapTooltip".Translate());
 
             bool hideHatsInBed = Controller.settings.HideHatInBed;
-            listing_Standard.CheckboxLabeled("Settings.HideHatInBed".Translate(), ref hideHatsInBed, "Settings.HideHatInBedTooltip".Translate());
+            listing_Standard.CheckboxLabeled(
+                "Settings.HideHatInBed".Translate(),
+                ref hideHatsInBed,
+                "Settings.HideHatInBedTooltip".Translate());
+
 
             if (GUI.changed)
             {
+                if (showHeadWear != Controller.settings.FilterHats)
+                {
+                    Controller.settings.FilterHats = showHeadWear;
+                    Controller.settings.Write();
+                }
+
                 if (hideHatWhileRoofed != Controller.settings.HideHatWhileRoofed)
                 {
                     Controller.settings.HideHatWhileRoofed = hideHatWhileRoofed;

@@ -3,6 +3,8 @@ namespace FacialStuff
 {
     using System.Collections.Generic;
 
+    using RimWorld;
+
     using UnityEngine;
 
     using Verse;
@@ -13,7 +15,7 @@ namespace FacialStuff
         #region Public Fields
         public static Vector2 EyeFemaleAverageNormalOffset = new Vector2(-0.01006f, 0f);
         public static Vector2 EyeFemaleAveragePointyOffset = new Vector2(-0.01258f, -0.02138f);
-        public static Vector2 EyeFemaleAverageWideOffset = new Vector2(0.00555f, 0f);
+        public static Vector2 EyeFemaleAverageWideOffset = new Vector2(-0.01835f, 0f);
         public static Vector2 EyeFemaleNarrowNormalOffset = new Vector2(-0.02264f, 0f);
         public static Vector2 EyeFemaleNarrowPointyOffset = new Vector2(-0.01256f, 0f);
         public static Vector2 EyeFemaleNarrowWideOffset = new Vector2(-0.01509f, 0f);
@@ -43,7 +45,7 @@ namespace FacialStuff
                                                     };
 
         public static Vector2 MouthFemaleAverageNormalOffset = new Vector2(0.14331f, 0.13585f); //
-        public static Vector2 MouthFemaleAveragePointyOffset = new Vector2(0.16100f, 0.14842f); //
+        public static Vector2 MouthFemaleAveragePointyOffset = new Vector2(0.16100f, 0.13836f); //
         public static Vector2 MouthFemaleAverageWideOffset = new Vector2(0.16604f, 0.13962f); //
         public static Vector2 MouthFemaleNarrowNormalOffset = new Vector2(0.12956f, 0.15346f); //
         public static Vector2 MouthFemaleNarrowPointyOffset = new Vector2(0.12328f, 0.16604f); //
@@ -97,6 +99,17 @@ namespace FacialStuff
 
         private bool showGenderAgeChange;
 
+        public bool FilterHats
+        {
+            get => this.filterHats;
+            set
+            {
+                this.filterHats = value;
+                PortraitsCache.Clear();
+            }
+        }
+
+        private bool filterHats = true;
 
         #endregion Private Fields
 
@@ -228,6 +241,7 @@ namespace FacialStuff
             Scribe_Values.Look(ref this.hideHatInBed, "hideHatInBed", false, true);
             Scribe_Values.Look(ref this.showExtraParts, "showExtraParts", false, true);
             Scribe_Values.Look(ref this.useWeirdHairChoices, "useWeirdHairChoices", false, true);
+            Scribe_Values.Look(ref this.filterHats, "filterHats", false, true);
 
             // Scribe_Values.Look(ref this.useDNAByFaction, "useDNAByFaction", false, true);
             Scribe_Values.Look(ref this.makeThemBlink, "makeThemBlink", false, true);

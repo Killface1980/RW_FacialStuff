@@ -87,7 +87,7 @@
                 float minor = pawn.mindState.mentalBreaker.BreakThresholdMinor;
                 float major = pawn.mindState.mentalBreaker.BreakThresholdMajor;
                 float extreme = pawn.mindState.mentalBreaker.BreakThresholdExtreme;
-                float fourth = (1f - minor) / 4;
+                float fifth = (1f - minor) / 5;
 
                 this.HumanMouthGraphic = new[]
                                              {
@@ -95,9 +95,9 @@
                                                  new MouthGraphicData(extreme, mouthGraphic05),
                                                  new MouthGraphicData(major, mouthGraphic04),
                                                  new MouthGraphicData(minor, mouthGraphic03),
-                                                 new MouthGraphicData(minor + fourth, mouthGraphic02),
-                                                 new MouthGraphicData(minor + (2 * fourth), mouthGraphic01),
-                                                 new MouthGraphicData(minor + (3 * fourth), mouthGraphicGrin),
+                                                 new MouthGraphicData(minor + fifth, mouthGraphic02),
+                                                 new MouthGraphicData(minor + (2 * fifth), mouthGraphic01),
+                                                 new MouthGraphicData(minor + (4 * fifth), mouthGraphicGrin),
                                              };
             }
             else
@@ -110,7 +110,7 @@
                                                  new MouthGraphicData(0.55f, mouthGraphic03),
                                                  new MouthGraphicData(0.7f, mouthGraphic02),
                                                  new MouthGraphicData(0.8f, mouthGraphic01),
-                                                 new MouthGraphicData(0.9f, mouthGraphicGrin)
+                                                 new MouthGraphicData(0.95f, mouthGraphicGrin)
                 };
             }
         }

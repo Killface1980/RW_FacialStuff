@@ -6,6 +6,11 @@
   <Settings.UseMouthTooltip>Animierte Münder.</Settings.UseMouthTooltip>
 	<Settings.MergeHair>Zeige Haare unter Kopfbedeckung.</Settings.MergeHair>
   <Settings.MergeHairTooltip>Macht Haar sichtbar.</Settings.MergeHairTooltip>
+
+  <Settings.FilterHats>Mod: Extra head gear shown only while outdoors</Settings.FilterHats>
+  <Settings.FilterHatsTooltip>Facial Stuff\nExtra head gear is not visible on pawns while indoors.</Settings.FilterHatsTooltip>
+
+
   <Settings.HideHatWhileRoofed>Mod: Zeige Hüte nur draußen</Settings.HideHatWhileRoofed>
   <Settings.HideHatWhileRoofedTooltip>Facial Stuff\nHüte sind in Räumen nicht sichtbar.</Settings.HideHatWhileRoofedTooltip>
 	<Settings.HideHatInBed>Mod: Blende Hüte im Bett aus</Settings.HideHatInBed>

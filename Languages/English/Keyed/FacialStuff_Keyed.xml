@@ -6,6 +6,10 @@
   <Settings.UseMouthTooltip>Animated mouths to make pawns show their feelings.</Settings.UseMouthTooltip>
 	<Settings.MergeHair>Show hair under hat</Settings.MergeHair>
   <Settings.MergeHairTooltip>Displays a modified hair texture below worn hats.</Settings.MergeHairTooltip>
+  
+  <Settings.FilterHats>Mod: Ignore goggles</Settings.FilterHats>
+  <Settings.FilterHatsTooltip>Facial Stuff\nExtra head gear like goggles is not visible on pawns while indoors.</Settings.FilterHatsTooltip>
+  
   <Settings.HideHatWhileRoofed>Mod: Hats shown only while outdoors</Settings.HideHatWhileRoofed>
   <Settings.HideHatWhileRoofedTooltip>Facial Stuff\nHats are not visible on pawns while indoors.</Settings.HideHatWhileRoofedTooltip>
 	<Settings.HideHatInBed>Mod: Don't show hats in bed</Settings.HideHatInBed>

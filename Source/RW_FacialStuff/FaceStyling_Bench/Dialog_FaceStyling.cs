@@ -205,7 +205,10 @@
             pawn = p;
             this.faceComp = pawn.TryGetComp<CompFace>();
             this.hats = Prefs.HatsOnlyOnMap;
+            this.gear = Controller.settings.FilterHats;
             Prefs.HatsOnlyOnMap = true;
+            Controller.settings.FilterHats = true;
+
             this.hadSameBeardColor = this.faceComp.PawnFace.HasSameBeardColor;
             if (pawn.gender == Gender.Female)
             {
@@ -608,7 +611,7 @@
         public override void PreClose()
         {
             Prefs.HatsOnlyOnMap = this.hats;
-
+            Controller.settings.FilterHats = this.gear;
             if (!this.saveChangedOnExit)
             {
                 this.ResetPawnFace();
@@ -1710,6 +1713,8 @@
         private Vector2 pickerPosition = Vector2.zero;
 
         private Vector2 pickerSize = new Vector2(200, 200);
+
+        private bool gear;
 
         private void DrawUi(Rect rect)
         {

@@ -5,19 +5,19 @@
 
     using FacialStuff.Defs;
     using FacialStuff.Enums;
-    using FacialStuff.Genetics;
     using FacialStuff.Graphics;
 
     using JetBrains.Annotations;
 
     using RimWorld;
+    using RimWorld.Planet;
+
     using UnityEngine;
     using Verse;
 
     public class CompFace : ThingComp
     {
         // public int rotationInt;
-
         #region Public Fields
 
         public bool DontRender;
@@ -26,9 +26,13 @@
         public FaceGraphicParts faceGraphicPart = new FaceGraphicParts();
 
         public bool IgnoreRenderer;
+
         public bool IsChild;
+
         public Faction pawnFaction;
+
         public bool Roofed;
+
         public int rotationInt;
 
         #endregion Public Fields
@@ -50,20 +54,25 @@
         private PawnEyeWiggler eyeWiggler;
 
         private float factionMelanin;
+
         [NotNull]
         private DamageFlasher flasher = new DamageFlasher(null);
 
         private Color hairColor;
+
         private bool hasNaturalJaw = true;
+
         private PawnHeadRotator headRotator;
+
         // private float blinkRate;
         // public PawnHeadWiggler headWiggler;
         private float mood = 0.5f;
 
         private HumanMouthGraphics mouthgraphic;
+
         private Vector2 mouthOffset = Vector2.zero;
 
-        [NotNull]
+        [CanBeNull]
         private Pawn pawn;
 
         // must be null, always initialize with pawn
@@ -95,6 +104,7 @@
         [CanBeNull]
         private string texPathJawAddedPart;
 
+
         #endregion Private Fields
 
         #region Public Properties
@@ -120,6 +130,7 @@
 
         [NotNull]
         public GraphicVectorMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
+
         public CrownType PawnCrownType => this.pawn?.story.crownType ?? CrownType.Average;
 
         [NotNull]
@@ -240,7 +251,6 @@
                 }
             }
 
-
             switch (rotation.AsInt)
             {
                 case 1: return new Vector3(this.eyeOffset.x, 0f, -this.eyeOffset.y);
@@ -338,7 +348,6 @@
                 }
             }
 
-
             switch (rotation.AsInt)
             {
                 case 1: return new Vector3(this.mouthOffset.x, 0f, -this.mouthOffset.y);
@@ -347,6 +356,7 @@
                 default: return Vector3.zero;
             }
         }
+
         [CanBeNull]
         public Material BeardMatAt(Rot4 facing)
         {
@@ -401,8 +411,7 @@
                 return;
             }
 
-            foreach (Hediff hediff in hediffSetHediffs.Where(
-                hediff => hediff?.def?.defName != null))
+            foreach (Hediff hediff in hediffSetHediffs.Where(hediff => hediff?.def?.defName != null))
             {
                 this.CheckPart(body, hediff);
             }
@@ -546,6 +555,7 @@
             {
                 return "Beards/Beard_Shaved";
             }
+
             return "Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;
         }
 
@@ -568,6 +578,7 @@
             asQuat.SetLookRotation(new Vector3(x, 0f, z), Vector3.up);
             return asQuat;
         }
+
         /// <summary>
         ///     Initializes Facial stuff graphics.
         /// </summary>
@@ -591,7 +602,7 @@
         public Material MoustacheMatAt(Rot4 facing)
         {
             if (!this.hasNaturalJaw || this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved
-                                      || this.PawnFace.MoustacheDef == null || this.pawn.gender == Gender.Female)
+                || this.PawnFace.MoustacheDef == null || this.pawn.gender == Gender.Female)
             {
                 return null;
             }
@@ -661,18 +672,20 @@
         {
             base.PostDraw();
 
-            if (this.pawn == null)
+            if (Find.TickManager.Paused)
             {
                 return;
             }
+
 
             // Children & Pregnancy || Werewolves transformed
-            if (!this.pawn.Spawned || this.pawn.Dead || this.IsChild || this.DontRender)
+            if (this.pawn?.Map == null || !this.pawn.Spawned || this.pawn.Dead || this.IsChild || this.DontRender)
             {
                 return;
             }
-
-            if (Find.TickManager.Paused)
+            CellRect viewRect = Find.CameraDriver.CurrentViewRect;
+            viewRect = viewRect.ExpandedBy(5);
+            if (!viewRect.Contains(this.pawn.Position))
             {
                 return;
             }
@@ -681,6 +694,7 @@
             {
                 this.eyeWiggler.WigglerTick();
             }
+
             if (Controller.settings.UseHeadRotator)
             {
                 if (!this.eyeWiggler.IsAsleep)
@@ -690,22 +704,17 @@
             }
 
             // Low-prio stats
-            if (Find.TickManager.TicksGame % 30 != 0)
+            if (Find.TickManager.TicksGame % 30 == 0)
             {
-                return;
-            }
-
-            this.Roofed = this.pawn.Position.Roofed(this.pawn.Map);
-
-            if (Controller.settings.UseMouth)
-            {
-                if (this.hasNaturalJaw)
+                this.Roofed = this.pawn.Position.Roofed(this.pawn.Map);
+                if (Controller.settings.UseMouth)
                 {
-                    this.SetMouthAccordingToMoodLevel();
+                    if (this.hasNaturalJaw)
+                    {
+                        this.SetMouthAccordingToMoodLevel();
+                    }
                 }
             }
-
-
         }
 
         public override void PostExposeData()
@@ -732,6 +741,7 @@
             // Scribe_References.Look(ref this.pawn, "pawn");
             Scribe_Values.Look(ref this.IsChild, "isChild");
             Scribe_Values.Look(ref this.DontRender, "dontrender");
+            Scribe_Values.Look(ref this.Roofed, "roofed");
             Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
         }
 
@@ -1014,7 +1024,6 @@
                 Vector2.one,
                 tacheColor);
 
-
             this.faceGraphicPart.MainBeardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 mainBeardDefTexPath,
                 ShaderDatabase.Cutout,
@@ -1064,11 +1073,12 @@
                 bool flag2 = !ContentFinder<Texture2D>.Get(this.texPathEyeRightPatch + "_front", false).NullOrBad();
                 if (flag2)
                 {
-                    this.faceGraphicPart.EyeRightPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
-                                                                    this.texPathEyeRightPatch,
-                                                                    ShaderDatabase.Transparent,
-                                                                    Vector2.one,
-                                                                    Color.white) as Graphic_Multi_AddedHeadParts;
+                    this.faceGraphicPart.EyeRightPatchGraphic =
+                        GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
+                            this.texPathEyeRightPatch,
+                            ShaderDatabase.Transparent,
+                            Vector2.one,
+                            Color.white) as Graphic_Multi_AddedHeadParts;
                     this.HasEyePatchRight = true;
                 }
                 else
@@ -1140,11 +1150,13 @@
 
                 // texture for added/extra part not found, log and default
                 Log.Message(
-                    "Facial Stuff: No texture for added part: " + this.texPathJawAddedPart + " - Graphic_Multi_NaturalHeadParts");
+                    "Facial Stuff: No texture for added part: " + this.texPathJawAddedPart
+                    + " - Graphic_Multi_NaturalHeadParts");
             }
 
             this.hasNaturalJaw = true;
-            this.faceGraphicPart.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[this.pawn.Dead || this.pawn.Downed ? 2 : 3].Graphic;
+            this.faceGraphicPart.MouthGraphic = this.mouthgraphic
+                .HumanMouthGraphic[this.pawn.Dead || this.pawn.Downed ? 2 : 3].Graphic;
         }
 
         private void InitializeGraphicsWrinkles()
@@ -1207,7 +1219,6 @@
 
         private void SetMouthAccordingToMoodLevel()
         {
-
             if (this.pawn.health.InPainShock && !this.eyeWiggler.IsAsleep)
             {
                 if (this.eyeWiggler.EyeRightBlinkNow && this.eyeWiggler.EyeLeftBlinkNow)
@@ -1225,10 +1236,8 @@
             int mouthTextureIndexOfMood = this.mouthgraphic.GetMouthTextureIndexOfMood(this.mood);
 
             this.faceGraphicPart.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[mouthTextureIndexOfMood].Graphic;
-
         }
 
         #endregion Private Methods
-
     }
 }

@@ -57,11 +57,6 @@
                 return;
             }
 
-            if (Find.ColonistBar != null)
-            {
-                Find.ColonistBar.MarkColonistsDirty();
-            }
-
             foreach (Pawn pawn in from pawn in PawnsFinder.AllMapsAndWorld_Alive
                                   where pawn.RaceProps.Humanlike
                                   let faceComp = pawn.TryGetComp<CompFace>()
@@ -71,6 +66,12 @@
                 // This will force the renderer to make "AllResolved" return false, if pawn is drawn
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
             }
+
+            if (Find.ColonistBar != null)
+            {
+                Find.ColonistBar.MarkColonistsDirty();
+            }
+
         }
 
         #endregion Public Methods

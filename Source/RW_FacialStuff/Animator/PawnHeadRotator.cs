@@ -45,19 +45,19 @@
 
         }
         // Verse.AI.GenAI
-        public static bool EnemyIsNear([NotNull] Pawn p, float radius, out IntVec3 attacker)
+        private static bool EnemyIsNear([NotNull] Pawn p, float radius, out IntVec3 attacker)
         {
-            attacker = IntVec3.Zero;
             bool enemy = false;
+            attacker = IntVec3.Zero;
+
             if (!p.Spawned)
             {
                 return false;
             }
 
             List<IAttackTarget> potentialTargetsFor = p.Map.attackTargetsCache.GetPotentialTargetsFor(p);
-            for (int i = 0; i < potentialTargetsFor.Count; i++)
+            foreach (IAttackTarget attackTarget in potentialTargetsFor)
             {
-                IAttackTarget attackTarget = potentialTargetsFor[i];
                 if (!attackTarget.ThreatDisabled())
                 {
                     if (p.Position.InHorDistOf(((Thing)attackTarget).Position, radius))
@@ -82,36 +82,39 @@
                 if (thing != null)
                 {
                     attacker = thing.Position;
+                    return true;
                 }
                 else
                 {
-                    enemy = false;
+                    return false;
                 }
             }
-            return enemy;
+            return false;
         }
 
         // RimWorld.JobDriver_StandAndBeSociallyActive
         private IntVec3 FindClosestTarget()
         {
-            IntVec3 position = this.pawn.Position;
-
             // Watch out for enemies
             if (EnemyIsNear(this.pawn, 40f, out IntVec3 vec))
             {
                 return vec;
             }
+
             float rand = Rand.Value;
 
             // Look at each other
             if (rand > 0.5f)
             {
-                for (int i = 0; i < 24; i++)
+                IntVec3 position = this.pawn.Position;
+
+                // 8=1field; 24 =2 fields;
+                for (int i = 0; i < 8; i++)
                 {
                     IntVec3 intVec = position + GenRadial.RadialPattern[i];
                     if (intVec.InBounds(this.pawn.Map))
                     {
-                        Thing thing = intVec.GetThingList(this.pawn.Map).Find((Thing x) => x is Pawn);
+                        Thing thing = intVec.GetThingList(this.pawn.Map).Find(x => x is Pawn);
 
                         if (thing != null && thing != this.pawn)
                         {
@@ -125,17 +128,18 @@
             }
 
             // Look at current target ...
-            if (rand > 0.25f)
+            Job job = this.pawn.CurJob;
+            if (job != null && job.targetA.IsValid)
             {
-                if (this.pawn.CurJob.targetA != null)
+                IntVec3 findClosestTarget = this.pawn.CurJob.targetA.Cell;
+                if (this.pawn.Position.InHorDistOf(findClosestTarget, 5f))
                 {
-                    return this.pawn.CurJob.targetA.Cell;
+                    return findClosestTarget;
                 }
             }
 
             return IntVec3.Zero;
         }
-
 
         public void RotatorTick()
         {
@@ -197,15 +201,28 @@
 
         private void SetNextRotation(int tickManagerTicksGame)
         {
-            float blinkDuration = Rand.Range(60f, 120f);
+            float blinkDuration = Rand.Range(30f, 90f);
 
             this.nextRotationEnd = (int)(tickManagerTicksGame + blinkDuration);
         }
 
-        public Rot4 Rotation(Rot4 headFacing)
+        public Rot4 Rotation(Rot4 headFacing, bool renderBody)
         {
             Rot4 rot = headFacing;
-            rot.Rotate(this.rotationMod);
+            bool flag = false;
+            if (renderBody)
+            {
+                flag = true;
+            }
+            else if (!rot.IsHorizontal)
+            {
+                flag = true;
+            }
+
+            if (flag)
+            {
+                rot.Rotate(this.rotationMod);
+            }
             return rot;
         }
     }
