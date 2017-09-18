@@ -7,7 +7,6 @@ namespace FacialStuff
 
     using FacialStuff.Defs;
     using FacialStuff.Enums;
-    using FacialStuff.Genetics;
     using FacialStuff.Graphics;
 
     using RimWorld;
@@ -388,10 +387,10 @@ namespace FacialStuff
 
             if (GUILayout.Button("Mouth"))
             {
-                var list = new List<FloatMenuOption>();
+                List<FloatMenuOption> list = new List<FloatMenuOption>();
                 foreach (MouthDef current in DefDatabase<MouthDef>.AllDefs)
                 {
-                    var localOut = current;
+                    MouthDef localOut = current;
                     list.Add(new FloatMenuOption(localOut.label,
                         delegate
                             {
@@ -406,9 +405,11 @@ namespace FacialStuff
                                             Vector2.one,
                                             color) as Graphic_Multi_NaturalHeadParts;
                                 }
+
                                 ;
                             }));
                 }
+
                 Find.WindowStack.Add(new FloatMenu(list));
 
             }

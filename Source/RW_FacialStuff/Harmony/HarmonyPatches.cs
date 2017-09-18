@@ -60,13 +60,13 @@ namespace FacialStuff.Detouring
             // typeof(HarmonyPatch_PawnRenderer),
             // nameof(HarmonyPatch_PawnRenderer.RenderPawnInternal_Prefix)),
             // null);
-            harmony.Patch(
-                AccessTools.Method(
-                    typeof(Pawn_HealthTracker),
-                    nameof(Pawn_HealthTracker.AddHediff),
-                    new[] { typeof(Hediff), typeof(BodyPartRecord), typeof(DamageInfo) }),
-                null,
-                new HarmonyMethod(typeof(HarmonyPatches), nameof(AddHediff_Postfix)));
+            //harmony.Patch(
+            //    AccessTools.Method(
+            //        typeof(Pawn_HealthTracker),
+            //        nameof(Pawn_HealthTracker.AddHediff),
+            //        new[] { typeof(Hediff), typeof(BodyPartRecord), typeof(DamageInfo) }),
+            //    null,
+            //    new HarmonyMethod(typeof(HarmonyPatches), nameof(AddHediff_Postfix)));
 
             harmony.Patch(
                 AccessTools.Method(typeof(HediffSet), nameof(HediffSet.DirtyCache)),
@@ -249,53 +249,6 @@ namespace FacialStuff.Detouring
             PortraitsCache.SetDirty(pawn);
         }
 
-        public static void AddHediff_Postfix(
-            Pawn_HealthTracker __instance,
-            Hediff hediff,
-            BodyPartRecord part = null,
-            DamageInfo? dinfo = null)
-        {
-            if (Current.ProgramState != ProgramState.Playing)
-            {
-                return;
-            }
-
-            if (!Controller.settings.ShowExtraParts)
-            {
-                return;
-            }
-
-            Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
-            if (!pawn.Spawned)
-            {
-                return;
-            }
-
-            if (part == null)
-            {
-                return;
-            }
-
-            AddedBodyPartProps addedPartProps = hediff.def.addedPartProps;
-            if (addedPartProps != null)
-            {
-                if (part.def == BodyPartDefOf.LeftEye || part.def == BodyPartDefOf.RightEye
-                    || part.def == BodyPartDefOf.Jaw)
-                {
-                    CompFace face = pawn.TryGetComp<CompFace>();
-                    if (face != null)
-                    {
-                        // Look for the werewolf
-                        face.CheckForAddedOrMissingParts();
-                        if (!face.DontRender)
-                        {
-                            pawn.Drawer.renderer.graphics.ResolveAllGraphics();
-                        }
-                    }
-                }
-            }
-        }
-
         public static void DirtyCache_Postfix(HediffSet __instance)
         {
             if (Current.ProgramState != ProgramState.Playing)
@@ -303,29 +256,20 @@ namespace FacialStuff.Detouring
                 return;
             }
 
-            Pawn pawn = __instance.pawn;
-            if (pawn == null)
+            Pawn pawn = __instance.pawn;// Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
+
+            if (pawn == null || !pawn.Spawned || pawn.Map == null)
             {
                 return;
             }
 
-            if (!pawn.Spawned || !pawn.RaceProps.Humanlike)
-            {
-                return;
-            }
-
-            CompFace face = pawn.TryGetComp<CompFace>();
+            CompFace face = pawn.GetComp<CompFace>();
             if (face == null)
             {
                 return;
             }
 
-            if (!Controller.settings.ShowExtraParts)
-            {
-                return;
-            }
-
-            face.CheckForAddedOrMissingParts();
+            face.CheckForAddedOrMissingParts(pawn);
             if (!face.DontRender)
             {
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
@@ -420,7 +364,7 @@ namespace FacialStuff.Detouring
             listing_Standard.CheckboxLabeled(
                 "Settings.FilterHats".Translate(),
                 ref showHeadWear,
-                "Settings.HeadgearOnlyOnMapTooltip".Translate());
+                "Settings.FilterHatsTooltip".Translate());
 
             bool hideHatsInBed = Controller.settings.HideHatInBed;
             listing_Standard.CheckboxLabeled(

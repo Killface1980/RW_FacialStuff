@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Class1.cs" />
+    <Compile Include="CrownTypeChecker.cs" />
     <Compile Include="GraphicVectorMeshSet.cs" />
     <Compile Include="IncidentWorker_FacialStuffUpdateNote.cs" />
     <Compile Include="Graphics\CutHairDB.cs" />
@@ -80,7 +81,6 @@
     <Compile Include="Enums\BeardType.cs" />
     <Compile Include="OLD_FaceStyler.cs" />
     <Compile Include="Animator\PawnHeadRotator.cs" />
-    <None Include="Enums\DialoguePage.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="Graphics\FaceGraphicParts.cs" />
     <Compile Include="FaceStyling_Bench\Dialog_FaceStyling.cs" />
@@ -116,7 +116,6 @@
     <Compile Include="Defs\MouthDefOf.cs" />
     <Compile Include="Graphics\FaceTextures.cs" />
     <Compile Include="Graphics\HairCutPawn.cs" />
-    <None Include="Enums\GraphicSlotGroup.cs" />
     <Compile Include="Graphics\Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="Graphics\Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="MeshPoolFs.cs" />

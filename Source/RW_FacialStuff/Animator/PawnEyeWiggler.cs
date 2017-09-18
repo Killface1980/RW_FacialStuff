@@ -1,5 +1,5 @@
 ﻿// ReSharper disable MissingXmlDoc
-namespace FacialStuff
+namespace FacialStuff.Animator
 {
     using RimWorld;
 

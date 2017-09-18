@@ -1,12 +1,8 @@
-﻿namespace FacialStuff
+﻿namespace FacialStuff.Animator
 {
     using System.Collections.Generic;
 
     using JetBrains.Annotations;
-
-    using RimWorld;
-
-    using UnityEngine;
 
     using Verse;
     using Verse.AI;
@@ -34,13 +30,13 @@
 
         private RotationDirection rotationMod;
 
-        public int wheelRotation = 0;
+        private int headRotation = 0;
 
         public float CurrentMovement
         {
             get
             {
-                return this.MotionCurve.Evaluate(this.wheelRotation);
+                return this.MotionCurve.Evaluate(this.headRotation);
             }
 
         }
@@ -146,10 +142,10 @@
 
             int tickManagerTicksGame = Find.TickManager.TicksGame;
 
-            this.wheelRotation++;
-            if (this.wheelRotation > 360)
+            this.headRotation++;
+            if (this.headRotation > 360)
             {
-                this.wheelRotation = 0;
+                this.headRotation = 0;
             }
 
             if (tickManagerTicksGame > this.nextRotationEnd)

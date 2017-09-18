@@ -4,8 +4,6 @@ namespace FacialStuff.Defs
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
-    using RimWorld;
-
     using Verse;
 
     [SuppressMessage("ReSharper", "StyleCop.SA1307")]

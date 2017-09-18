@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Verse;
+﻿using Verse;
 
 namespace FacialStuff
 {
-    using System.Linq;
-
     using RimWorld;
 
     public class IncidentWorker_FacialStuffUpdateNote : IncidentWorker

@@ -24,10 +24,7 @@
 
 namespace FacialStuff.FaceStyling_Bench.UI.Util
 {
-    using FacialStuff.FaceStyling_Bench.UI.DTO;
     using FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs;
-
-    using RimWorld;
 
     using UnityEngine;
 

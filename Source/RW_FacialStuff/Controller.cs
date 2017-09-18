@@ -13,8 +13,6 @@
     {
         #region Public Fields
 
-        public const string modName = "Facial Stuff";
-
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once StyleCop.SA1307
         [SuppressMessage(
@@ -76,20 +74,4 @@
 
         #endregion Public Methods
     }
-
-    // Backup:
-    // <MaleAverageOffsetX>0.04716981</MaleAverageOffsetX>
-    // <MaleAverageOffsetY>0.01320755</MaleAverageOffsetY>
-    // <MaleNarrowOffsetX>-0.0245283</MaleNarrowOffsetX>
-    // <MaleNarrowOffsetY>0.03773585</MaleNarrowOffsetY>
-    // <FemaleAverageOffsetX>0.03584905</FemaleAverageOffsetX>
-    // <FemaleAverageOffsetY>0.04150943</FemaleAverageOffsetY>
-    // <FemaleNarrowOffsetX>0.009433965</FemaleNarrowOffsetX>
-    // <FemaleNarrowOffsetY>0.06981131</FemaleNarrowOffsetY>
-    // <MouthMaleAverageNormalOffset>0.02641509</MouthMaleAverageNormalOffset>
-    // <MouthMaleAveragePointyOffset>0.02264151</MouthMaleAveragePointyOffset>
-    // <MouthMaleAverageWideOffset>0.00754717</MouthMaleAverageWideOffset>
-    // <MouthFemaleAverageNormalOffset>0.02452831</MouthFemaleAverageNormalOffset>
-    // <MouthFemaleAveragePointyOffset>0.02452831</MouthFemaleAveragePointyOffset>
-    // <MouthFemaleAverageWideOffset>0.04150943</MouthFemaleAverageWideOffset>
 }

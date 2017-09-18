@@ -1,8 +1,10 @@
 ﻿namespace FacialStuff
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using FacialStuff.Animator;
     using FacialStuff.Defs;
     using FacialStuff.Enums;
     using FacialStuff.Graphics;
@@ -10,14 +12,12 @@
     using JetBrains.Annotations;
 
     using RimWorld;
-    using RimWorld.Planet;
 
     using UnityEngine;
     using Verse;
 
     public class CompFace : ThingComp
     {
-        // public int rotationInt;
         #region Public Fields
 
         public bool DontRender;
@@ -28,6 +28,9 @@
         public bool IgnoreRenderer;
 
         public bool IsChild;
+
+        [CanBeNull]
+        public Pawn pawn;
 
         public Faction pawnFaction;
 
@@ -45,6 +48,8 @@
         // old, remove 0.18
         private BrowDef BrowDef;
 
+        private CrownTypeChecker crownTypeChecker;
+
         // old, remove 0.18
         private EyeDef EyeDef;
 
@@ -56,7 +61,7 @@
         private float factionMelanin;
 
         [NotNull]
-        private DamageFlasher flasher = new DamageFlasher(null);
+        private DamageFlasher flasher;
 
         private Color hairColor;
 
@@ -71,10 +76,6 @@
         private HumanMouthGraphics mouthgraphic;
 
         private Vector2 mouthOffset = Vector2.zero;
-
-        [CanBeNull]
-        private Pawn pawn;
-
         // must be null, always initialize with pawn
         [CanBeNull]
         private PawnFace pawnFace;
@@ -103,7 +104,6 @@
 
         [CanBeNull]
         private string texPathJawAddedPart;
-
 
         #endregion Private Fields
 
@@ -166,7 +166,7 @@
         // only for development
         public Vector3 BaseEyeOffsetAt(Rot4 rotation)
         {
-            var male = this.pawn.gender == Gender.Male;
+            bool male = this.pawn.gender == Gender.Male;
 
             if (this.PawnCrownType == CrownType.Average)
             {
@@ -360,7 +360,7 @@
         [CanBeNull]
         public Material BeardMatAt(Rot4 facing)
         {
-            if (!this.hasNaturalJaw || this.pawn.gender == Gender.Female)
+            if (this.pawn.gender != Gender.Male || this.PawnFace.BeardDef == BeardDefOf.Beard_Shaved || !this.hasNaturalJaw)
             {
                 return null;
             }
@@ -378,8 +378,7 @@
         [CanBeNull]
         public Material BrowMatAt(Rot4 facing)
         {
-            Material material;
-            material = this.faceGraphicPart.BrowGraphic?.MatAt(facing);
+            Material material = this.faceGraphicPart.BrowGraphic?.MatAt(facing);
 
             if (material != null)
             {
@@ -395,25 +394,41 @@
             return "Brows/Brow_" + this.pawn.gender + "_" + browDef.texPath;
         }
 
-        // Can be called external
-        public void CheckForAddedOrMissingParts()
+        private void CheckForAddedOrMissingParts()
         {
-            this.pawn = this.parent as Pawn;
+            this.CheckForAddedOrMissingParts(this.parent as Pawn);
+        }
+
+        // Can be called externally
+        public void CheckForAddedOrMissingParts(Pawn p)
+        {
+            if (!Controller.settings.ShowExtraParts)
+            {
+                return;
+            }
+
+            this.pawn = p;
             if (this.pawn == null)
             {
                 return;
             }
 
-            List<BodyPartRecord> body = this.pawn.RaceProps?.body?.AllParts;
-            List<Hediff> hediffSetHediffs = this.pawn.health?.hediffSet?.hediffs;
-            if (hediffSetHediffs == null || body == null)
+            List<BodyPartRecord> body = this.pawn?.RaceProps?.body?.AllParts;
+            List<Hediff> hediffs = this.pawn?.health?.hediffSet?.hediffs;
+
+            if (hediffs.NullOrEmpty() || body.NullOrEmpty()
+                || hediffs.Any(x => x.def == HediffDefOf.MissingBodyPart && x.Part.def == BodyPartDefOf.Head))
             {
                 return;
             }
 
-            foreach (Hediff hediff in hediffSetHediffs.Where(hediff => hediff?.def?.defName != null))
+            foreach (Hediff diff in hediffs)
             {
-                this.CheckPart(body, hediff);
+                if (diff?.def?.defName == null)
+                {
+                    continue;
+                }
+                this.CheckPart(body, diff);
             }
         }
 
@@ -446,6 +461,7 @@
         // HairMelanin.SkinGenetics(this.pawn, this, out this.factionMelanin);
         // this.IsSkinDNAoptimized = true;
         // }
+
         [CanBeNull]
         public Material EyeLeftMatAt(Rot4 facing, bool portrait)
         {
@@ -549,6 +565,7 @@
             return path;
         }
 
+        [NotNull]
         public string GetBeardPath(BeardDef def)
         {
             if (def == BeardDefOf.Beard_Shaved)
@@ -559,6 +576,7 @@
             return "Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;
         }
 
+        [NotNull]
         public string GetMoustachePath(MoustacheDef def)
         {
             if (def == MoustacheDefOf.Shaved)
@@ -601,8 +619,7 @@
         [CanBeNull]
         public Material MoustacheMatAt(Rot4 facing)
         {
-            if (!this.hasNaturalJaw || this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved
-                || this.PawnFace.MoustacheDef == null || this.pawn.gender == Gender.Female)
+            if (this.pawn.gender != Gender.Male || this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved || !this.hasNaturalJaw)
             {
                 return null;
             }
@@ -672,23 +689,26 @@
         {
             base.PostDraw();
 
-            if (Find.TickManager.Paused)
-            {
-                return;
-            }
-
 
             // Children & Pregnancy || Werewolves transformed
             if (this.pawn?.Map == null || !this.pawn.Spawned || this.pawn.Dead || this.IsChild || this.DontRender)
             {
                 return;
             }
-            CellRect viewRect = Find.CameraDriver.CurrentViewRect;
-            viewRect = viewRect.ExpandedBy(5);
-            if (!viewRect.Contains(this.pawn.Position))
+
+            this.Roofed = this.pawn.Position.Roofed(this.pawn.Map);
+
+            if (Find.TickManager.Paused)
             {
                 return;
             }
+
+            // CellRect viewRect = Find.CameraDriver.CurrentViewRect;
+            // viewRect = viewRect.ExpandedBy(5);
+            // if (!viewRect.Contains(this.pawn.Position))
+            // {
+            //     return;
+            // }
 
             if (Controller.settings.MakeThemBlink)
             {
@@ -706,7 +726,6 @@
             // Low-prio stats
             if (Find.TickManager.TicksGame % 30 == 0)
             {
-                this.Roofed = this.pawn.Position.Roofed(this.pawn.Map);
                 if (Controller.settings.UseMouth)
                 {
                     if (this.hasNaturalJaw)
@@ -801,12 +820,13 @@
             // ReSharper disable once PossibleNullReferenceException
             this.ResetBoolsAndPaths();
 
-            if (Controller.settings.ShowExtraParts)
             {
                 this.CheckForAddedOrMissingParts();
             }
 
-            this.SetHeadOffsets();
+            // Only for the crowntype ...
+            this.crownTypeChecker = new CrownTypeChecker(this);
+
             return true;
         }
 
@@ -843,116 +863,22 @@
 
         #region Private Methods
 
-        private void CheckFemaleCrownType()
-        {
-            switch (this.PawnCrownType)
-            {
-                case CrownType.Average:
-                    this.CheckFemaleCrownTypeAverage();
-                    break;
-
-                case CrownType.Narrow:
-                    this.CheckFemaleCrownTypeNarrow();
-                    break;
-            }
-        }
-
-        private void CheckFemaleCrownTypeAverage()
-        {
-            switch (this.PawnHeadType)
-            {
-                case HeadType.Normal:
-                    this.FullHeadType = FullHead.FemaleAverageNormal;
-                    break;
-
-                case HeadType.Pointy:
-                    this.FullHeadType = FullHead.FemaleAveragePointy;
-                    break;
-
-                case HeadType.Wide:
-                    this.FullHeadType = FullHead.FemaleAverageWide;
-                    break;
-            }
-        }
-
-        private void CheckFemaleCrownTypeNarrow()
-        {
-            switch (this.PawnHeadType)
-            {
-                case HeadType.Normal:
-                    this.FullHeadType = FullHead.FemaleNarrowNormal;
-                    break;
-
-                case HeadType.Pointy:
-                    this.FullHeadType = FullHead.FemaleNarrowPointy;
-                    break;
-
-                case HeadType.Wide:
-                    this.FullHeadType = FullHead.FemaleNarrowWide;
-                    break;
-            }
-        }
-
-        private void CheckMaleCrownType()
-        {
-            switch (this.PawnCrownType)
-            {
-                case CrownType.Average:
-                    this.CheckMaleCrownTypeAverage();
-                    break;
-
-                case CrownType.Narrow:
-                    this.CheckMaleCrownTypeNarrow();
-                    break;
-            }
-        }
-
-        private void CheckMaleCrownTypeAverage()
-        {
-            switch (this.PawnHeadType)
-            {
-                case HeadType.Normal:
-                    this.FullHeadType = FullHead.MaleAverageNormal;
-                    break;
-
-                case HeadType.Pointy:
-                    this.FullHeadType = FullHead.MaleAveragePointy;
-                    break;
-
-                case HeadType.Wide:
-                    this.FullHeadType = FullHead.MaleAverageWide;
-                    break;
-            }
-        }
-
-        private void CheckMaleCrownTypeNarrow()
-        {
-            switch (this.PawnHeadType)
-            {
-                case HeadType.Normal:
-                    this.FullHeadType = FullHead.MaleNarrowNormal;
-                    break;
-
-                case HeadType.Pointy:
-                    this.FullHeadType = FullHead.MaleNarrowPointy;
-                    break;
-
-                case HeadType.Wide:
-                    this.FullHeadType = FullHead.MaleNarrowWide;
-                    break;
-            }
-        }
-
         private void CheckPart([NotNull] List<BodyPartRecord> body, [NotNull] Hediff hediff)
         {
-            BodyPartRecord leftEye = body.Find(x => x?.def == BodyPartDefOf.LeftEye);
-            BodyPartRecord rightEye = body.Find(x => x?.def == BodyPartDefOf.RightEye);
-            BodyPartRecord jaw = body.Find(x => x?.def == BodyPartDefOf.Jaw);
+            if (body.NullOrEmpty() || hediff.def == null)
+            {
+                return;
+            }
+
+
+            BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
+            BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
+            BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
             AddedBodyPartProps addedPartProps = hediff.def?.addedPartProps;
 
             if (addedPartProps != null)
             {
-                if (hediff.def.defName != null && hediff.Part != null)
+                if (hediff.def?.defName != null && hediff.Part != null)
                 {
                     if (hediff.Part == leftEye)
                     {
@@ -978,14 +904,14 @@
                 return;
             }
 
-            if (hediff.Part == leftEye)
+            if (leftEye != null && hediff.Part == leftEye)
             {
                 this.texPathEyeLeft = this.EyeTexPath("Missing", Side.Left);
                 this.eyeWiggler.EyeLeftCanBlink = false;
             }
 
             // ReSharper disable once InvertIf
-            if (hediff.Part == rightEye)
+            if (rightEye != null && hediff.Part == rightEye)
             {
                 this.texPathEyeRight = this.EyeTexPath("Missing", Side.Right);
                 this.eyeWiggler.EyeRightCanBlink = false;
@@ -1043,7 +969,7 @@
 
         private void InitializeGraphicsEyePatches()
         {
-            if (this.texPathEyeLeftPatch != null)
+            if (!this.texPathEyeLeftPatch.NullOrEmpty())
             {
                 bool flag = !ContentFinder<Texture2D>.Get(this.texPathEyeLeftPatch + "_front", false).NullOrBad();
                 if (flag)
@@ -1068,7 +994,7 @@
                 this.HasEyePatchLeft = false;
             }
 
-            if (this.texPathEyeRightPatch != null)
+            if (!this.texPathEyeRightPatch.NullOrEmpty())
             {
                 bool flag2 = !ContentFinder<Texture2D>.Get(this.texPathEyeRightPatch + "_front", false).NullOrBad();
                 if (flag2)
@@ -1132,7 +1058,7 @@
 
         private void InitializeGraphicsMouth()
         {
-            if (this.texPathJawAddedPart != null)
+            if (!this.texPathJawAddedPart.NullOrEmpty())
             {
                 bool flag = ContentFinder<Texture2D>.Get(this.texPathJawAddedPart + "_front", false) != null;
                 if (flag)
@@ -1199,23 +1125,7 @@
             this.texPathBrow = this.BrowTexPath(this.PawnFace.BrowDef);
         }
 
-        private void SetHeadOffsets()
-        {
-            switch (this.pawn.gender)
-            {
-                case Gender.Male:
-                    this.CheckMaleCrownType();
-                    break;
 
-                case Gender.Female:
-                    this.CheckFemaleCrownType();
-                    break;
-
-                default:
-                    this.FullHeadType = FullHead.MaleAverageNormal;
-                    break;
-            }
-        }
 
         private void SetMouthAccordingToMoodLevel()
         {
@@ -1239,5 +1149,6 @@
         }
 
         #endregion Private Methods
+
     }
 }
