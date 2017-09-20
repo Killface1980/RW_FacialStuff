@@ -135,7 +135,6 @@
             }
 
 #endif
-
             // Regular FacePawn rendering 14+ years
             if (renderBody)
             {
@@ -336,11 +335,11 @@
 
                     bool noRenderRoofed = Controller.settings.HideHatWhileRoofed && faceComp.Roofed;
                     bool noRenderBed = Controller.settings.HideHatInBed && !renderBody;
+                    bool noRenderGoggles = Controller.settings.FilterHats;
 
                     if (!headgearGraphics.NullOrEmpty())
                     {
-                        bool filterHeadgear = portrait && Prefs.HatsOnlyOnMap
-                                        || !portrait && noRenderRoofed;
+                        bool filterHeadgear = portrait && Prefs.HatsOnlyOnMap || !portrait && noRenderRoofed;
 
                         // Draw regular hair if appparel or environment allows it (FS feature)
                         if (bodyDrawType != RotDrawMode.Dessicated)
@@ -353,7 +352,7 @@
                                          || x.sourceApparel.def.apparel.bodyPartGroups.Contains(
                                              BodyPartGroupDefOf.UpperHead));
 
-                            if (noRenderBed || filterHeadgear || !apCoversHead)
+                            if (noRenderBed || filterHeadgear || !apCoversHead && noRenderGoggles)
                             {
                                 Material mat = __instance.graphics.HairMatAt(headFacing);
                                 GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, mat, portrait);
@@ -379,7 +378,7 @@
                         if (filterHeadgear)
                         {
                             // Filter the head gear to only show non-hats, show nothing while in bed
-                            if (Controller.settings.FilterHats)
+                            if (noRenderGoggles)
                             {
                                 headgearGraphics = headgearGraphics
                                     .Where(

@@ -32,7 +32,7 @@
         [CanBeNull]
         public Pawn pawn;
 
-        public Faction pawnFaction;
+        public Faction originFaction;
 
         public bool Roofed;
 
@@ -408,7 +408,9 @@
             }
 
             this.pawn = p;
-            if (this.pawn == null)
+
+            // no head => no face
+            if (this.pawn == null || !this.pawn.health.hediffSet.HasHead)
             {
                 return;
             }
@@ -416,8 +418,8 @@
             List<BodyPartRecord> body = this.pawn?.RaceProps?.body?.AllParts;
             List<Hediff> hediffs = this.pawn?.health?.hediffSet?.hediffs;
 
-            if (hediffs.NullOrEmpty() || body.NullOrEmpty()
-                || hediffs.Any(x => x.def == HediffDefOf.MissingBodyPart && x.Part.def == BodyPartDefOf.Head))
+            if (hediffs.NullOrEmpty() || body.NullOrEmpty())
+            //   || hediffs.Any(x => x.def == HediffDefOf.MissingBodyPart && x.Part.def == BodyPartDefOf.Head))
             {
                 return;
             }
@@ -746,7 +748,7 @@
                 Scribe_Defs.Look(ref this.BrowDef, "BrowDef");
                 Scribe_Defs.Look(ref this.BeardDef, "BeardDef");
                 Scribe_Values.Look(ref this.hairColor, "HairColorOrg");
-                Scribe_References.Look(ref this.pawnFaction, "pawnFaction");
+                Scribe_References.Look(ref this.originFaction, "pawnFaction");
             }
 
             // Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
@@ -777,12 +779,15 @@
 
             this.pawn = p;
 
-            // PrepC removes the faction - fix
-            this.pawnFaction = this.pawn.Faction ?? Faction.OfPlayer;
+            if (this.originFaction == null)
+            {
+                this.originFaction = this.pawn.Faction ?? Faction.OfPlayer;
+            }
+
 
             if (this.pawnFace == null)
             {
-                this.SetPawnFace(new PawnFace(this.pawn, this.pawnFaction.def));
+                this.SetPawnFace(new PawnFace(this.pawn, this.originFaction.def));
 
                 // check for pre-0.17.3 pawns
                 if (this.EyeDef != null)

@@ -90,6 +90,7 @@
         private static List<EyeDef> eyeDefs;
 
         private static List<HairDef> hairDefs;
+        private static List<HairDef> filteredHairDefs;
 
         private static Pawn pawn;
 
@@ -101,6 +102,7 @@
         private ColorWrapper colourWrapper;
         private DresserDTO dresserDto;
         private GenderTab genderTab;
+        private FilterTab filterTab;
         private SpecialTab specialTab;
         private bool hats;
 
@@ -161,6 +163,8 @@
 
         private Vector2 scrollPositionHairAny = Vector2.zero;
 
+        private Vector2 scrollPositionHairAll = Vector2.zero;
+
         private Vector2 scrollPositionHairFemale = Vector2.zero;
 
         private Vector2 scrollPositionHairMale = Vector2.zero;
@@ -184,9 +188,12 @@
             Columns = 12;
             EntrySize = ListWidth / Columns;
             NameBackground = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0.3f));
-
-            hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+            currentFilter = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
+            HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                 x => x.hairTags.SharesElementWith(VanillaHairTags));
+
+
+
             eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
             FullBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType == BeardType.FullBeard)
                 .ToList();
@@ -207,9 +214,10 @@
             this.hats = Prefs.HatsOnlyOnMap;
             this.gear = Controller.settings.FilterHats;
             Prefs.HatsOnlyOnMap = true;
-            Controller.settings.FilterHats = true;
+            Controller.settings.FilterHats = false;
 
             this.hadSameBeardColor = this.faceComp.PawnFace.HasSameBeardColor;
+
             if (pawn.gender == Gender.Female)
             {
                 this.genderTab = GenderTab.Female;
@@ -217,6 +225,24 @@
             else
             {
                 this.genderTab = GenderTab.Male;
+            }
+
+            CurrentFilter = pawn.story.hairDef.hairTags;
+            if (pawn.story.hairDef.hairTags.Contains("Urban"))
+            {
+                this.filterTab = FilterTab.Urban;
+            }
+            else if (pawn.story.hairDef.hairTags.Contains("Rural"))
+            {
+                this.filterTab = FilterTab.Rural;
+            }
+            else if (pawn.story.hairDef.hairTags.Contains("Punk"))
+            {
+                this.filterTab = FilterTab.Punk;
+            }
+            else
+            {
+                this.filterTab = FilterTab.Tribal;
             }
 
             IIncidentTarget target = pawn.Map;
@@ -298,11 +324,24 @@
 
         private enum GenderTab : byte
         {
-            Male,
-
             Female,
 
-            Any
+            Male,
+
+            Any,
+
+            All
+        }
+
+        private enum FilterTab : byte
+        {
+            Urban,
+
+            Rural,
+
+            Punk,
+
+            Tribal
         }
 
         private enum SpecialTab : byte
@@ -431,6 +470,32 @@
             }
         }
 
+        public static List<HairDef> HairDefs
+        {
+            get
+            {
+                return hairDefs;
+            }
+            set
+            {
+                hairDefs = value;
+                filteredHairDefs = hairDefs.FindAll(x => x.hairTags.SharesElementWith(CurrentFilter));
+            }
+        }
+
+        public static List<string> CurrentFilter
+        {
+            get
+            {
+                return currentFilter;
+            }
+            set
+            {
+                currentFilter = value;
+                filteredHairDefs = hairDefs.FindAll(x => x.hairTags.SharesElementWith(currentFilter));
+            }
+        }
+
         #endregion Private Properties
 
         #region Public Methods
@@ -527,15 +592,15 @@
                 list.Add(item5);
             }
 
-            Rect rect3 = new Rect(
+            Rect contentRect = new Rect(
                 0f,
                 TitleHeight + TabDrawer.TabHeight + MarginFS / 2,
                 inRect.width,
                 inRect.height - TitleHeight - MarginFS * 2 - TabDrawer.TabHeight);
 
-            TabDrawer.DrawTabs(rect3, list);
+            TabDrawer.DrawTabs(contentRect, list);
 
-            this.DrawUi(rect3);
+            this.DrawUI(contentRect);
 
             Action nextAct = delegate
                 {
@@ -603,7 +668,7 @@
         public override void PostOpen()
         {
             FillDefs();
-            hairDefs.SortBy(i => i.LabelCap);
+            HairDefs.SortBy(i => i.LabelCap);
             eyeDefs.SortBy(i => i.LabelCap);
             browDefs.SortBy(i => i.LabelCap);
         }
@@ -631,7 +696,7 @@
             switch (pawn.gender)
             {
                 case Gender.Male:
-                    hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                    HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                         x => x.hairTags.SharesElementWith(VanillaHairTags)
                              && (x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually));
                     eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
@@ -641,7 +706,7 @@
                     break;
 
                 case Gender.Female:
-                    hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                    HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                         x => x.hairTags.SharesElementWith(VanillaHairTags)
                              && (x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually));
                     eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
@@ -759,10 +824,10 @@
                 "FacialStuffEditor.FullBeards".Translate(),
                 delegate
                     {
-                        hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                             x => x.hairTags.SharesElementWith(VanillaHairTags)
                                  && (x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually));
-                        hairDefs.SortBy(i => i.LabelCap);
+                        HairDefs.SortBy(i => i.LabelCap);
                         this.beardTab = BeardTab.FullBeards;
                     },
                 this.beardTab == BeardTab.FullBeards);
@@ -772,10 +837,10 @@
                 "FacialStuffEditor.Combinable".Translate(),
                 delegate
                     {
-                        hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                             x => x.hairTags.SharesElementWith(VanillaHairTags)
                                  && (x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually));
-                        hairDefs.SortBy(i => i.LabelCap);
+                        HairDefs.SortBy(i => i.LabelCap);
                         this.beardTab = BeardTab.Combinable;
                     },
                 this.beardTab == BeardTab.Combinable);
@@ -1143,10 +1208,10 @@
                 "HeadType".Translate(),
                 delegate
                     {
-                        hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                             x => x.hairTags.SharesElementWith(VanillaHairTags)
                                  && (x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually));
-                        hairDefs.SortBy(i => i.LabelCap);
+                        HairDefs.SortBy(i => i.LabelCap);
                         this.specialTab = SpecialTab.Head;
                     },
                 this.specialTab == SpecialTab.Head);
@@ -1156,10 +1221,10 @@
                 "BodyType".Translate(),
                 delegate
                     {
-                        hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                             x => x.hairTags.SharesElementWith(VanillaHairTags)
                                  && (x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually));
-                        hairDefs.SortBy(i => i.LabelCap);
+                        HairDefs.SortBy(i => i.LabelCap);
                         this.specialTab = SpecialTab.Body;
                     },
                 this.specialTab == SpecialTab.Body);
@@ -1169,9 +1234,9 @@
                 "FacialStuffEditor.Any".Translate(),
                 delegate
                     {
-                        hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                             x => x.hairTags.SharesElementWith(VanillaHairTags) && x.hairGender == HairGender.Any);
-                        hairDefs.SortBy(i => i.LabelCap);
+                        HairDefs.SortBy(i => i.LabelCap);
                         this.genderTab = GenderTab.Any;
                     },
                 this.specialTab == SpecialTab.Head);
@@ -1189,7 +1254,7 @@
             int thisColumns = Columns / divider / iconSides;
             float thisEntrySize = EntrySize * divider;
 
-            int rowsCount = Mathf.CeilToInt(hairDefs.Count / (float)thisColumns);
+            int rowsCount = Mathf.CeilToInt(HairDefs.Count / (float)thisColumns);
 
             rect3.height = rowsCount * thisEntrySize;
             Vector2 vector = new Vector2(thisEntrySize * iconSides, thisEntrySize);
@@ -1217,12 +1282,12 @@
             }
             GUI.BeginGroup(rect3);
 
-            for (int i = 0; i < hairDefs.Count; i++)
+            for (int i = 0; i < HairDefs.Count; i++)
             {
                 int yPos = i / thisColumns;
                 int xPos = i % thisColumns;
                 Rect rect4 = new Rect(xPos * vector.x, yPos * vector.y, vector.x, vector.y);
-                this.DrawHairPickerCell(hairDefs[i], rect4.ContractedBy(3f));
+                this.DrawHairPickerCell(HairDefs[i], rect4.ContractedBy(3f));
             }
 
             GUI.EndGroup();
@@ -1237,10 +1302,10 @@
                 "Female".Translate(),
                 delegate
                     {
-                        hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                             x => x.hairTags.SharesElementWith(VanillaHairTags)
                                  && (x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually));
-                        hairDefs.SortBy(i => i.LabelCap);
+                        HairDefs.SortBy(i => i.LabelCap);
                         this.genderTab = GenderTab.Female;
                     },
                 this.genderTab == GenderTab.Female);
@@ -1250,10 +1315,10 @@
                 "Male".Translate(),
                 delegate
                     {
-                        hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                             x => x.hairTags.SharesElementWith(VanillaHairTags)
                                  && (x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually));
-                        hairDefs.SortBy(i => i.LabelCap);
+                        HairDefs.SortBy(i => i.LabelCap);
                         this.genderTab = GenderTab.Male;
                     },
                 this.genderTab == GenderTab.Male);
@@ -1263,18 +1328,79 @@
                 "FacialStuffEditor.Any".Translate(),
                 delegate
                     {
-                        hairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                             x => x.hairTags.SharesElementWith(VanillaHairTags) && x.hairGender == HairGender.Any);
-                        hairDefs.SortBy(i => i.LabelCap);
+                        HairDefs.SortBy(i => i.LabelCap);
                         this.genderTab = GenderTab.Any;
                     },
                 this.genderTab == GenderTab.Any);
-
             list.Add(item3);
+
+            TabRecord item4 = new TabRecord(
+                "FacialStuffEditor.All".Translate(),
+                delegate
+                    {
+                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                            x => x.hairTags.SharesElementWith(VanillaHairTags));
+                        HairDefs.SortBy(i => i.LabelCap);
+                        this.genderTab = GenderTab.All;
+                    },
+                this.genderTab == GenderTab.All);
+
+            list.Add(item4);
 
             TabDrawer.DrawTabs(rect, list);
 
-            Rect rect2 = rect.ContractedBy(1f);
+            List<TabRecord> list2 = new List<TabRecord>();
+
+            TabRecord urban = new TabRecord(
+                "FacialStuffEditor.Urban".Translate(),
+                delegate
+                    {
+                        CurrentFilter = new List<string> { "Urban" };
+                        this.filterTab = FilterTab.Urban;
+                    },
+                this.filterTab == FilterTab.Urban);
+            list2.Add(urban);
+
+            TabRecord rural = new TabRecord(
+                "FacialStuffEditor.Rural".Translate(),
+                delegate
+                    {
+                        CurrentFilter = new List<string> { "Rural" };
+                        this.filterTab = FilterTab.Rural;
+                    },
+                this.filterTab == FilterTab.Rural);
+            list2.Add(rural);
+
+            TabRecord punk = new TabRecord(
+                "FacialStuffEditor.Punk".Translate(),
+                delegate
+                    {
+                        CurrentFilter = new List<string> { "Punk" };
+                        this.filterTab = FilterTab.Punk;
+                    },
+                this.filterTab == FilterTab.Punk);
+            list2.Add(punk);
+
+            TabRecord tribal = new TabRecord(
+                "FacialStuffEditor.Tribal".Translate(),
+                delegate
+                    {
+                        CurrentFilter = new List<string> { "Tribal" };
+                        this.filterTab = FilterTab.Tribal;
+                    },
+                this.filterTab == FilterTab.Tribal);
+            list2.Add(tribal);
+
+            Rect rect2a = new Rect(rect);
+
+            rect2a.yMin += 32f;
+
+            TabDrawer.DrawTabs(rect2a, list2);
+
+
+            Rect rect2 = rect2a.ContractedBy(1f);
             Rect rect3 = rect2;
 
             // 12 columns as base
@@ -1283,7 +1409,7 @@
             int thisColumns = Columns / divider / iconSides;
             float thisEntrySize = EntrySize * divider;
 
-            int rowsCount = Mathf.CeilToInt(hairDefs.Count / (float)thisColumns);
+            int rowsCount = Mathf.CeilToInt(filteredHairDefs.Count / (float)thisColumns);
 
             rect3.height = rowsCount * thisEntrySize;
 
@@ -1307,15 +1433,18 @@
                 case GenderTab.Any:
                     Widgets.BeginScrollView(rect2, ref this.scrollPositionHairAny, rect3);
                     break;
+                case GenderTab.All:
+                    Widgets.BeginScrollView(rect2, ref this.scrollPositionHairAll, rect3);
+                    break;
             }
             GUI.BeginGroup(rect3);
 
-            for (int i = 0; i < hairDefs.Count; i++)
+            for (int i = 0; i < filteredHairDefs.Count; i++)
             {
                 int yPos = i / thisColumns;
                 int xPos = i % thisColumns;
                 Rect rect4 = new Rect(xPos * vector.x, yPos * vector.y, vector.x, vector.y);
-                this.DrawHairPickerCell(hairDefs[i], rect4.ContractedBy(3f));
+                this.DrawHairPickerCell(filteredHairDefs[i], rect4.ContractedBy(3f));
             }
 
             GUI.EndGroup();
@@ -1716,11 +1845,13 @@
 
         private bool gear;
 
-        private void DrawUi(Rect rect)
+        private static List<string> currentFilter;
+
+        private void DrawUI(Rect rect)
         {
             GUI.BeginGroup(rect);
-            string nameStringShort = pawn.NameStringShort;
-            Vector2 vector = Text.CalcSize(nameStringShort);
+            string pawnName = pawn.NameStringShort;
+            Vector2 vector = Text.CalcSize(pawnName);
 
             Rect pawnRect = AddPortraitWidget(0f, TitleHeight);
             Rect labelRect = new Rect(0f, pawnRect.yMax, vector.x, vector.y);
@@ -1766,7 +1897,7 @@
             GUI.DrawTexture(
                 new Rect(labelRect.xMin - 3f, labelRect.yMin, labelRect.width + 6f, labelRect.height),
                 NameBackground);
-            Widgets.Label(labelRect, nameStringShort);
+            Widgets.Label(labelRect, pawnName);
 
             Rect set = new Rect(mainRect) { height = SelectionRowHeight, width = mainRect.width / 2 - 10f };
             set.y = listRect.yMax - SelectionRowHeight;

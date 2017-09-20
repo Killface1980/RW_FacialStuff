@@ -25,7 +25,7 @@
 
         private static readonly Gradient GradientEuMelanin;
 
-        public static readonly FloatRange greyRange = new FloatRange(0f, 0.8f);
+        public static readonly FloatRange greyRange = new FloatRange(0f, 0.95f);
 
         private static readonly Gradient GradientPheoMelanin;
 
@@ -146,7 +146,7 @@
             // Special hair colors
             float factionColor = Rand.Value;
             float limit = 0.98f;
-            Faction faction = pawn.GetComp<CompFace>().pawnFaction;
+            Faction faction = pawn.GetComp<CompFace>().originFaction;
             if (faction.def.techLevel > TechLevel.Industrial)
             {
                 limit *= pawn.gender == Gender.Female ? 0.7f : 0.9f;

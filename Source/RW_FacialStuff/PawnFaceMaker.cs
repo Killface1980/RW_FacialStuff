@@ -44,8 +44,8 @@
                 return 0f;
             }
 
-            // No CompFace here yet, and PrePc kills the faction!
-           Faction faction = pawn.Faction ?? Faction.OfPlayer;
+            // No CompFace here yet, and PrepC kills the faction!
+            Faction faction = pawn.Faction ?? Faction.OfPlayer;
 
             if (Controller.settings.UseWeirdHairChoices)
             {
@@ -191,7 +191,7 @@
 
                             break;
 
-                        default: throw new ArgumentOutOfRangeException();
+                        default: break;
                     }
 
                     if (faction.def.techLevel >= TechLevel.Spacer)

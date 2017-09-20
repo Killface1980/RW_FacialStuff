@@ -59,6 +59,10 @@
   <FacialStuffEditor.HairStyle>Hair Style</FacialStuffEditor.HairStyle>
   <FacialStuffEditor.AgeBiological>Biological Age</FacialStuffEditor.AgeBiological>
   <FacialStuffEditor.AgeChronological>Chronological Age</FacialStuffEditor.AgeChronological>
+  <FacialStuffEditor.Urban>Urban</FacialStuffEditor.Urban>
+  <FacialStuffEditor.Rural>Rural</FacialStuffEditor.Rural>
+  <FacialStuffEditor.Punk>Punk</FacialStuffEditor.Punk>
+  <FacialStuffEditor.Tribal>Tribal</FacialStuffEditor.Tribal>
 
   <!-- Help Text -->
   <FacialStuffEditor.GenderChangeWarning>Changing these values may have adverse effects.\nUse at own risk.</FacialStuffEditor.GenderChangeWarning>
@@ -69,6 +73,7 @@
   
   
   <FacialStuffEditor.Any>any</FacialStuffEditor.Any>
+  <FacialStuffEditor.All>all</FacialStuffEditor.All>
   <FacialStuffEditor.Original>Original</FacialStuffEditor.Original>
   <FacialStuffEditor.Hair>Hair</FacialStuffEditor.Hair>
   <FacialStuffEditor.Beard>Beard</FacialStuffEditor.Beard>

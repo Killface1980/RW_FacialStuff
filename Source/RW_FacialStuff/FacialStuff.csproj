@@ -161,6 +161,9 @@
     <Content Include="..\..\Defs\HairDefs\HairsBeGone.xml">
       <Link>Defs\FacialDefs\HairsBeGone.xml</Link>
     </Content>
+    <Content Include="..\..\Defs\HairDefs\Killface.xml">
+      <Link>Defs\FacialDefs\Killface.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\HairDefs\NackbladIncRimhair_HairDef.xml">
       <Link>Defs\NackbladIncRimhair_HairDef.xml</Link>
     </Content>

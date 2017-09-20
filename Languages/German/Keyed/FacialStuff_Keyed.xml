@@ -61,6 +61,10 @@
   <FacialStuffEditor.HairStyle>Haarstil</FacialStuffEditor.HairStyle>
   <FacialStuffEditor.AgeBiological>Biologisches Alter</FacialStuffEditor.AgeBiological>
   <FacialStuffEditor.AgeChronological>Chronologisches Alter</FacialStuffEditor.AgeChronological>
+  <FacialStuffEditor.Urban>Stadt</FacialStuffEditor.Urban>
+  <FacialStuffEditor.Rural>Land</FacialStuffEditor.Rural>
+  <FacialStuffEditor.Punk>Punk</FacialStuffEditor.Punk>
+  <FacialStuffEditor.Tribal>Stamm</FacialStuffEditor.Tribal>
 
   <!-- Help Text -->
   <FacialStuffEditor.GenderChangeWarning>Diese Werte zu ändern könnte negative Auswirkungen auf das Spiel haben.\nBenutzung auf eigene Gefahr.</FacialStuffEditor.GenderChangeWarning>
@@ -70,7 +74,8 @@
 
 
 
-  <FacialStuffEditor.Any>Beliebig</FacialStuffEditor.Any>
+  <FacialStuffEditor.Any>beliebig</FacialStuffEditor.Any>
+  <FacialStuffEditor.All>alle</FacialStuffEditor.All>
   <FacialStuffEditor.Original>Original</FacialStuffEditor.Original>
   <FacialStuffEditor.Hair>Haar</FacialStuffEditor.Hair>
   <FacialStuffEditor.Beard>Bärte</FacialStuffEditor.Beard>

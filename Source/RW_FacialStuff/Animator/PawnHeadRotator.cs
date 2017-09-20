@@ -100,7 +100,7 @@
             float rand = Rand.Value;
 
             // Look at each other
-            if (rand > 0.5f)
+            if (rand > 0.9f)
             {
                 IntVec3 position = this.pawn.Position;
 
