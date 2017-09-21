@@ -153,6 +153,8 @@
 
         private bool saveChangedOnExit;
 
+        private List<Vector2>scrollPosition=new List<Vector2>{};
+
         private Vector2 scrollPositionBeard1 = Vector2.zero;
 
         private Vector2 scrollPositionBeard2 = Vector2.zero;
@@ -191,7 +193,7 @@
             currentFilter = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
             HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                 x => x.hairTags.SharesElementWith(VanillaHairTags));
-
+           
 
 
             eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
@@ -668,7 +670,7 @@
         public override void PostOpen()
         {
             FillDefs();
-            HairDefs.SortBy(i => i.LabelCap);
+            hairDefs.SortBy(i => i.LabelCap);
             eyeDefs.SortBy(i => i.LabelCap);
             browDefs.SortBy(i => i.LabelCap);
         }

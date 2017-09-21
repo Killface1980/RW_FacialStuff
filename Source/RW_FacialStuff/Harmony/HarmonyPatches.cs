@@ -108,6 +108,12 @@ namespace FacialStuff.Detouring
                     nameof(PawnSkinColors_FS.GetMelaninCommonalityFactor_Prefix)),
                 null);
 
+            harmony.Patch(
+                AccessTools.Method(typeof(Pawn_InteractionsTracker), nameof(Pawn_InteractionsTracker.TryInteractWith)),
+                null,
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.TryInteractWith_Postfix)));
+
+
             Log.Message(
                 "Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count()
                 + " patches with harmony.");
@@ -249,6 +255,27 @@ namespace FacialStuff.Detouring
             PortraitsCache.SetDirty(pawn);
         }
 
+        public static void TryInteractWith_Postfix(
+            Pawn_InteractionsTracker __instance,
+            bool __result,
+            Pawn recipient)
+        {
+            FieldInfo PawnFieldInfo = typeof(Pawn_InteractionsTracker).GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
+            Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
+
+            if (__result)
+            {
+                if (pawn.GetComp<CompFace>() != null && recipient != null)
+                {
+                    pawn.GetComp<CompFace>().HeadRotator.LookAtPawn(recipient);
+                }
+                if (recipient.GetComp<CompFace>() != null && pawn != null)
+                {
+                    recipient.GetComp<CompFace>().HeadRotator.LookAtPawn(pawn);
+                }
+            }
+        }
+
         public static void DirtyCache_Postfix(HediffSet __instance)
         {
             if (Current.ProgramState != ProgramState.Playing)
@@ -318,8 +345,7 @@ namespace FacialStuff.Detouring
                 bodyTypeMale = BodyType.Male,
                 bodyTypeFemale = BodyType.Female,
                 slot = BackstorySlot.Adulthood,
-                baseDesc =
-                                              "HECAP left the military early on and acquired his skills on his own. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
+                baseDesc = "HECAP left the military early on and acquired his skills on his own. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
                 shuffleable = false,
                 spawnCategories = new List<string>()
             };
@@ -338,7 +364,7 @@ namespace FacialStuff.Detouring
                 childhood = childMe,
                 adulthood = adultMale,
                 gender = GenderPossibility.Male,
-                name = NameTriple.FromString("Teegee 'Killface' Stinkwater")
+                name = NameTriple.FromString("Gator 'Killface' Stinkwater")
             };
             me.PostLoad();
             SolidBioDatabase.allBios.Add(me);

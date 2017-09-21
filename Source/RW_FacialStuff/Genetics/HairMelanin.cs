@@ -31,6 +31,8 @@
 
 
 
+
+
         #endregion Private Fields
 
         #region Public Constructors
@@ -48,18 +50,16 @@
             phyoMelaninGradientColorKeys[0].color = new Color32(255, 245, 226, 255);
             phyoMelaninGradientColorKeys[0].time = 0.0f;
             phyoMelaninGradientColorKeys[1].color = new Color32(226, 188, 116, 255);
-            phyoMelaninGradientColorKeys[1].time = 0.3f;
+            phyoMelaninGradientColorKeys[1].time = 0.5f;
             phyoMelaninGradientColorKeys[2].color = new Color32(210, 119, 44, 255);
-
-            // phyoMelaninGradientColorKeys[2].color = new Color32(231, 168, 84, 255);
-            phyoMelaninGradientColorKeys[2].time = 0.8f;
-
-            // phyoMelaninGradientColorKeys[3].time = 0.8f;
+            phyoMelaninGradientColorKeys[2].time = 0.9f;
             phyoMelaninGradientColorKeys[3].color = new Color32(216, 25, 1, 255);
             phyoMelaninGradientColorKeys[3].time = 1f;
 
             GradientPheoMelanin = new Gradient();
             GradientPheoMelanin.SetKeys(phyoMelaninGradientColorKeys, alphaKeys);
+
+
 
             GradientColorKey[] euMelaninGradientColorKeys = new GradientColorKey[4];
             euMelaninGradientColorKeys[0].color = Color.white;
@@ -98,7 +98,7 @@
 
         public static Color DarkerBeardColor(Color color)
         {
-            Color darken = new Color(0.95f, 0.95f, 0.95f);
+            Color darken = new Color(0.9f, 0.9f, 0.9f);
 
             return color * darken;
         }
@@ -313,6 +313,7 @@
             HasOptimizedMother(pawn, out bool hasMother, out PawnFace motherPawnFace);
 
             HasOptimizedFather(pawn, out bool hasFather, out PawnFace fatherPawnFace);
+
             if (!ignoreRelative)
             {
                 if (hasMother && hasFather)
@@ -349,7 +350,7 @@
 
         private static void GetRandomizedMelaninAndCuticula([NotNull] Pawn pawn, ref HairColorRequest hair)
         {
-            hair.PheoMelanin = Rand.Range(pawn.story.melanin * 0f, 1f);
+            hair.PheoMelanin = Rand.Range(0f, 1f);
             hair.EuMelanin = Rand.Range(pawn.story.melanin * 0.75f, 1f);
         }
 

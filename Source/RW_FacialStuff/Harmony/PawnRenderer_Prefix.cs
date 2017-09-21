@@ -320,11 +320,10 @@
                     }
                 }
 
-                Vector3 loc2 = rootLoc + b;
-                loc2.y += YOffset_OnHead;
+                Vector3 currentLoc = rootLoc + b;
+                currentLoc.y += YOffset_OnHead;
 
-                bool showRegularHair = true;
-                Mesh mesh3 = __instance.graphics.HairMeshSet.MeshAt(headFacing);
+                Mesh hairMesh = __instance.graphics.HairMeshSet.MeshAt(headFacing);
 
                 if (!headStump)
                 {
@@ -355,8 +354,8 @@
                             if (noRenderBed || filterHeadgear || !apCoversHead && noRenderGoggles)
                             {
                                 Material mat = __instance.graphics.HairMatAt(headFacing);
-                                GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, mat, portrait);
-                                loc2.y += YOffsetOnFace;
+                                GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, mat, portrait);
+                                currentLoc.y += YOffsetOnFace;
                             }
                             else if (Controller.settings.MergeHair)
                             {
@@ -365,8 +364,8 @@
                                 Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
                                 if (hairCutMat != null)
                                 {
-                                    GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, hairCutMat, portrait);
-                                    loc2.y += YOffsetOnFace;
+                                    GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, hairCutMat, portrait);
+                                    currentLoc.y += YOffsetOnFace;
                                 }
                             }
                         }
@@ -401,10 +400,10 @@
                         for (int j = 0; j < headgearGraphics.Count; j++)
                         {
                             // Now draw the actual head gear
-                            Material material2 = headgearGraphics[j].graphic.MatAt(headFacing);
-                            material2 = __instance.graphics.flasher.GetDamagedMat(material2);
-                            GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, material2, portrait);
-                            loc2.y += YOffsetOnFace;
+                            Material headGearMat = headgearGraphics[j].graphic.MatAt(headFacing);
+                            headGearMat = __instance.graphics.flasher.GetDamagedMat(headGearMat);
+                            GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, headGearMat, portrait);
+                            currentLoc.y += YOffsetOnFace;
                         }
                     }
                     else
@@ -412,17 +411,16 @@
                         // Draw regular hair if no hat worn
                         if (bodyDrawType != RotDrawMode.Dessicated)
                         {
-                            Material mat = __instance.graphics.HairMatAt(headFacing);
-                            GenDraw.DrawMeshNowOrLater(mesh3, loc2, headQuat, mat, portrait);
+                            Material hairMat = __instance.graphics.HairMatAt(headFacing);
+                            GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, hairMat, portrait);
                         }
                     }
                 }
 
                 if (renderBody)
                 {
-                    for (int k = 0; k < __instance.graphics.apparelGraphics.Count; k++)
+                    foreach (ApparelGraphicRecord apparelGraphicRecord in __instance.graphics.apparelGraphics)
                     {
-                        ApparelGraphicRecord apparelGraphicRecord = __instance.graphics.apparelGraphics[k];
                         if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer != ApparelLayer.Shell)
                         {
                             continue;
@@ -459,9 +457,9 @@
                 if (pawn.apparel != null)
                 {
                     List<Apparel> wornApparel = pawn.apparel.WornApparel;
-                    for (int l = 0; l < wornApparel.Count; l++)
+                    foreach (Apparel ap in wornApparel)
                     {
-                        wornApparel[l].DrawWornExtras();
+                        ap.DrawWornExtras();
                     }
                 }
 
@@ -472,8 +470,6 @@
                     bodyLoc,
                     headQuat,
                     MeshPool.humanlikeHeadSet.MeshAt(headFacing));
-
-                // Traverse.Create(__instance).Field("statusOverlays").GetValue<PawnHeadOverlays>().RenderStatusOverlays(bodyLoc, quat, portrait ? alienProps.alienRace.generalSettings.alienPartGenerator.headPortraitSet.MeshAt(headFacing) : alienProps.alienRace.generalSettings.alienPartGenerator.headSet.MeshAt(headFacing));
             }
 
             return false;

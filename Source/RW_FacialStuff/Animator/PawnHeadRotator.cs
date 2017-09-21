@@ -32,6 +32,8 @@
 
         private int headRotation = 0;
 
+        private Thing target;
+
         public float CurrentMovement
         {
             get
@@ -41,10 +43,10 @@
 
         }
         // Verse.AI.GenAI
-        private static bool EnemyIsNear([NotNull] Pawn p, float radius, out IntVec3 attacker)
+        private bool EnemyIsNear([NotNull] Pawn p, float radius)
         {
             bool enemy = false;
-            attacker = IntVec3.Zero;
+            target = null;
 
             if (!p.Spawned)
             {
@@ -77,7 +79,7 @@
 
                 if (thing != null)
                 {
-                    attacker = thing.Position;
+                    target = thing;
                     return true;
                 }
                 else
@@ -89,22 +91,22 @@
         }
 
         // RimWorld.JobDriver_StandAndBeSociallyActive
-        private IntVec3 FindClosestTarget()
+        private void FindClosestTarget()
         {
             // Watch out for enemies
-            if (EnemyIsNear(this.pawn, 40f, out IntVec3 vec))
+            if (EnemyIsNear(this.pawn, 40f))
             {
-                return vec;
+                return;
             }
 
             float rand = Rand.Value;
 
             // Look at each other
-            if (rand > 0.9f)
+            if (rand > 0.7f)
             {
                 IntVec3 position = this.pawn.Position;
 
-                // 8=1field; 24 =2 fields;
+                // 8 = 1 field; 24 = 2 fields;
                 for (int i = 0; i < 8; i++)
                 {
                     IntVec3 intVec = position + GenRadial.RadialPattern[i];
@@ -114,28 +116,34 @@
 
                         if (thing != null && thing != this.pawn)
                         {
-                            if (GenSight.LineOfSight(position, intVec, this.pawn.Map, false, null, 0, 0))
+                            if (GenSight.LineOfSight(position, intVec, this.pawn.Map))
                             {
-                                return thing.Position;
+                                //  Log.Message(this.pawn + " will look at random pawn " + thing);
+                                target = thing;
                             }
                         }
                     }
                 }
             }
 
-            // Look at current target ...
             Job job = this.pawn.CurJob;
             if (job != null && job.targetA.IsValid)
             {
-                IntVec3 findClosestTarget = this.pawn.CurJob.targetA.Cell;
-                if (this.pawn.Position.InHorDistOf(findClosestTarget, 5f))
+                LocalTargetInfo targetA = this.pawn.CurJob.targetA;
+                if (!targetA.HasThing)
                 {
-                    return findClosestTarget;
+                    return;
+                }
+                Thing thing = targetA.Thing;
+                if (this.pawn.Position.InHorDistOf(thing.Position, 5f))
+                {
+                    //  Log.Message(this.pawn + " will look at job thing " + thing);
+                    this.target = thing;
+                    return;
                 }
             }
-
-            return IntVec3.Zero;
         }
+
 
         public void RotatorTick()
         {
@@ -150,6 +158,9 @@
 
             if (tickManagerTicksGame > this.nextRotationEnd)
             {
+                // Stop tracking after a while
+                this.target = null;
+
                 // Set upnext blinking cycle
                 this.SetNextRotation(tickManagerTicksGame);
 
@@ -158,46 +169,87 @@
                 //     this.rotationMod = RotationDirection.None;
                 //     return;
                 // }
-
-                IntVec3 target = this.FindClosestTarget();
-
-                // Make them smile.
-                // if (this.pawn.pather.Moving)
-                // {
-                //     this.rotationMod = RotationDirection.None;
-                //     return;
-                // }
-                if (target != IntVec3.Zero)
+                this.FaceHead();
+            }
+            else
+            {
+                if (tickManagerTicksGame % 10 == 0)
                 {
-                    float angle = (target - this.pawn.Position).ToVector3().AngleFlat();
-                    Rot4 rot = PawnRotator.RotFromAngleBiased(angle);
-                    if (rot != this.pawn.Rotation.Opposite)
-                    {
-                        int rotty = this.pawn.Rotation.AsInt - rot.AsInt;
-                        switch (rotty)
-                        {
-                            case 0:
-                                this.rotationMod = RotationDirection.None;
-                                break;
-                            case -1:
-                                this.rotationMod = RotationDirection.Clockwise;
-                                break;
-                            case 1:
-                                this.rotationMod = RotationDirection.Counterclockwise;
-                                break;
-                        }
-                        //  Log.Message(this.pawn + " now watching " + target.GetThingList(this.pawn.Map));
-                        return;
-                    }
+                    this.TrackHead();
                 }
-                this.rotationMod = RotationDirection.None;
             }
 
         }
 
+        private void TrackHead()
+        {
+            if (this.target != null)
+            {
+                this.FaceHead();
+            }
+        }
+
+        public void FaceHead()
+        {
+            bool random = false;
+            if (this.target == null)
+            {
+                random = true;
+                this.FindClosestTarget();
+            }
+
+            if (this.target != null)
+            {
+               // if (random)
+               // {
+               //     if (target is Pawn p && p.GetComp<CompFace>() != null)
+               //     {
+               //         // Log.Message(p + " look back at " + this.pawn);
+               //         p.GetComp<CompFace>().HeadRotator.LookAtPawn(this.pawn);
+               //     }
+               // }
+                float angle = (this.target.Position - this.pawn.Position).ToVector3().AngleFlat();
+                Rot4 rot = PawnRotator.RotFromAngleBiased(angle);
+                if (rot != this.pawn.Rotation.Opposite)
+                {
+                    int rotty = this.pawn.Rotation.AsInt - rot.AsInt;
+                    switch (rotty)
+                    {
+                        case 0:
+                            this.rotationMod = RotationDirection.None;
+                            break;
+                        case -1:
+                            this.rotationMod = RotationDirection.Clockwise;
+                            break;
+                        case 1:
+                            this.rotationMod = RotationDirection.Counterclockwise;
+                            break;
+                    }
+                    //  Log.Message(this.pawn + " now watching " + target.GetThingList(this.pawn.Map));
+                    return;
+                }
+            }
+
+            // Make them smile.
+            // if (this.pawn.pather.Moving)
+            // {
+            //     this.rotationMod = RotationDirection.None;
+            //     return;
+            // }
+            this.rotationMod = RotationDirection.None;
+        }
+
+        public void LookAtPawn(Pawn p)
+        {
+            this.target = p;
+            this.FaceHead();
+            this.SetNextRotation(Find.TickManager.TicksGame + 720);
+            // Log.Message(this.pawn + " look at " + p);
+        }
+
         private void SetNextRotation(int tickManagerTicksGame)
         {
-            float blinkDuration = Rand.Range(30f, 90f);
+            float blinkDuration = Rand.Range(120f, 240f);
 
             this.nextRotationEnd = (int)(tickManagerTicksGame + blinkDuration);
         }
