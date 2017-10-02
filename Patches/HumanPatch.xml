@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
 
-  <!--This part adds the comps if they're not already there-->
+  <!-- This part adds the comps if they're not already there -->
   <Operation Class="PatchOperationSequence">
     <success>Always</success>
     <operations>
@@ -18,7 +18,7 @@
     </operations>
   </Operation>
 
-  <!--Adds the actual CompFace - needed for everything-->
+  <!-- Adds the actual CompFace - needed for everything -->
   <Operation Class="PatchOperationSequence">
     <success>Always</success>
     <operations>
@@ -35,5 +35,104 @@
       </li>
     </operations>
   </Operation>
+
+  <!-- Nackblad Hair texture patches -->
+  <Operation Class="PatchOperationSequence">
+    <operations>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/DefPackage-HairDef/HairDef[defName = "bushy"]/texPath</xpath>
+        <value>
+          <texPath>Hair/Nackblad/bushy</texPath>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/DefPackage-HairDef/HairDef[defName = "crisis"]/texPath</xpath>
+        <value>
+          <texPath>Hair/Nackblad/crisis</texPath>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/DefPackage-HairDef/HairDef[defName = "erik"]/texPath</xpath>
+        <value>
+          <texPath>Hair/Nackblad/erik</texPath>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/DefPackage-HairDef/HairDef[defName = "jr"]/texPath</xpath>
+        <value>
+          <texPath>Hair/Nackblad/jr</texPath>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/DefPackage-HairDef/HairDef[defName = "guard"]/texPath</xpath>
+        <value>
+          <texPath>Hair/Nackblad/guard</texPath>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/DefPackage-HairDef/HairDef[defName = "karl"]/texPath</xpath>
+        <value>
+          <texPath>Hair/Nackblad/karl</texPath>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/DefPackage-HairDef/HairDef[defName = "olof"]/texPath</xpath>
+        <value>
+          <texPath>Hair/Nackblad/olof</texPath>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/DefPackage-HairDef/HairDef[defName = "ruff"]/texPath</xpath>
+        <value>
+          <texPath>Hair/Nackblad/ruff</texPath>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/DefPackage-HairDef/HairDef[defName = "trimmed"]/texPath</xpath>
+        <value>
+          <texPath>Hair/Nackblad/trimmed</texPath>
+        </value>
+      </li>
+
+    </operations>
+  </Operation>
   
+  <!-- Spoon Hair texture patches -->
+  <Operation Class="PatchOperationSequence">
+    <operations>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/DefPackage-HairDef/HairDef[defName = "SPSBeard"]/texPath</xpath>
+        <value>
+          <texPath>Hair/Spoon/SPSBeard</texPath>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/DefPackage-HairDef/HairDef[defName = "SPSScot"]/texPath</xpath>
+        <value>
+          <texPath>Hair/Spoon/SPSScot</texPath>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/DefPackage-HairDef/HairDef[defName = "SPSViking"]/texPath</xpath>
+        <value>
+          <texPath>Hair/Spoon/SPSViking</texPath>
+        </value>
+      </li>
+
+
+    </operations>
+  </Operation>
+
 </Patch>

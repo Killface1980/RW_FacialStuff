@@ -153,7 +153,7 @@
 
         private bool saveChangedOnExit;
 
-        private List<Vector2>scrollPosition=new List<Vector2>{};
+        private List<Vector2> scrollPosition = new List<Vector2> { };
 
         private Vector2 scrollPositionBeard1 = Vector2.zero;
 
@@ -193,7 +193,7 @@
             currentFilter = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
             HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                 x => x.hairTags.SharesElementWith(VanillaHairTags));
-           
+
 
 
             eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
@@ -207,6 +207,7 @@
             FullBeardDefs.SortBy(i => i.LabelCap);
             LowerBeardDefs.SortBy(i => i.LabelCap);
             MoustacheDefs.SortBy(i => i.LabelCap);
+            HairDefs.SortBy(i => i.LabelCap);
         }
 
         public DialogFaceStyling(Pawn p)
@@ -482,6 +483,7 @@
             {
                 hairDefs = value;
                 filteredHairDefs = hairDefs.FindAll(x => x.hairTags.SharesElementWith(CurrentFilter));
+                filteredHairDefs.SortBy(i => i.LabelCap);
             }
         }
 
@@ -495,6 +497,7 @@
             {
                 currentFilter = value;
                 filteredHairDefs = hairDefs.FindAll(x => x.hairTags.SharesElementWith(currentFilter));
+                filteredHairDefs.SortBy(i => i.LabelCap);
             }
         }
 
@@ -1457,7 +1460,7 @@
         {
             Widgets.DrawBoxSolid(rect, DarkBackground);
 
-            string text = hair.LabelCap;
+            string label = hair.LabelCap;
 
             // Get the offset, cause width != 2 * height
             float offset = (rect.width / 2 - rect.height) / 3;
@@ -1470,16 +1473,26 @@
                 if (hair == this.NewHair)
                 {
                     Widgets.DrawHighlightSelected(rect);
-                    text += "\n(selected)";
+                    label += "\n(selected)";
                 }
                 else
                 {
                     if (hair == this.originalHair)
                     {
                         Widgets.DrawAltRect(rect);
-                        text += "\n(original)";
+                        label += "\n(original)";
                     }
                 }
+            }
+
+            string highlightText = "";
+            foreach (string hairTag in hair.hairTags)
+            {
+                if (!highlightText.NullOrEmpty())
+                {
+                    highlightText += "\n";
+                }
+                highlightText += hairTag;
             }
 
             // Rect rect3 = new Rect(rect2.xMax, rect.y, rect.height, rect.height);
@@ -1494,10 +1507,10 @@
             GUI.color = Color.white;
 
             Text.Anchor = TextAnchor.UpperCenter;
-            Widgets.Label(rect, text);
+            Widgets.Label(rect, label);
             Text.Anchor = TextAnchor.UpperLeft;
 
-            TooltipHandler.TipRegion(rect, text);
+            TooltipHandler.TipRegion(rect, highlightText);
 
             // ReSharper disable once InvertIf
             if (Widgets.ButtonInvisible(rect))

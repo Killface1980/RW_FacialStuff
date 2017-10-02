@@ -14,7 +14,7 @@
         public static readonly Texture2D BlankTexture;
         public static readonly Color SkinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
-        public static Texture2D MaskTex_Average_FrontBack;
+        public static readonly Texture2D MaskTex_Average_FrontBack;
 
 
         public static readonly Texture2D MaskTex_Narrow_Side;
@@ -34,9 +34,9 @@
         static FaceTextures()
         {
             MaskTex_Average_FrontBack = MakeReadable(
-                ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_front+back"));
+                ContentFinder<Texture2D>.Get("MaskTex/MaskTex_front"));
 
-            MaskTex_Narrow_Side = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_side"));
+            MaskTex_Narrow_Side = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_side"));
 
             BlankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
 
@@ -56,43 +56,7 @@
 
         #endregion Public Constructors
 
-        #region Public Properties
-
-
-        public static Texture2D MaskTex_Average_Side
-        {
-            get
-            {
-                if (maskTexAverageSide == null)
-                {
-                    maskTexAverageSide = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Average_side"));
-                }
-
-                return maskTexAverageSide;
-            }
-        }
-
-
-        public static Texture2D MaskTex_Narrow_FrontBack
-        {
-            get
-            {
-                if (maskTexNarrowFrontBack == null)
-                {
-                    maskTexNarrowFrontBack = MakeReadable(
-                        ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Narrow_front+back"));
-                }
-
-                return maskTexNarrowFrontBack;
-            }
-        }
-
-        #endregion Public Properties
-
         #region Public Methods
-
-
-
 
         public static Texture2D MakeReadable(Texture2D texture)
         {
