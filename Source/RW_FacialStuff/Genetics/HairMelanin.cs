@@ -1,5 +1,6 @@
 ﻿namespace FacialStuff.Genetics
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -282,13 +283,14 @@
                 return false;
             }
 
-            Pawn relPawn = pawn.relations.FamilyByBlood.FirstOrDefault(
-                x =>
-                    {
-                        // cuticula check to prevent old pawns with incomplete stats
-                        PawnFace pawnFace = x.TryGetComp<CompFace>().PawnFace;
-                        return pawnFace != null;
-                    });
+            Pawn relPawn = pawn.relations.FamilyByBlood.Where(
+                    x =>
+                        {
+                            // cuticula check to prevent old pawns with incomplete stats
+                            CompFace pawnFace = x.TryGetComp<CompFace>();
+                            return pawnFace != null && !pawnFace.PawnFaceIsNull();
+                        })
+                .FirstOrDefault();
 
             if (relPawn == null)
             {
@@ -296,6 +298,10 @@
             }
 
             CompFace relatedPawn = relPawn.TryGetComp<CompFace>();
+            if (relatedPawn == null)
+            {
+                throw new ArgumentNullException(nameof(relatedPawn));
+            }
 
             float melaninx1 = relatedPawn.PawnFace.EuMelanin;
             float melaninx2 = relatedPawn.PawnFace.PheoMelanin;

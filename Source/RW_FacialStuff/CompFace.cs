@@ -20,6 +20,10 @@
     {
         #region Public Fields
 
+        public bool PawnFaceIsNull()
+        {
+            return this.pawnFace == null;
+        }
         public bool DontRender;
 
         [NotNull]
