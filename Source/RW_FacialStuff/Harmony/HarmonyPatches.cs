@@ -263,13 +263,18 @@ namespace FacialStuff.Detouring
             FieldInfo PawnFieldInfo = typeof(Pawn_InteractionsTracker).GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
             Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
 
+            if (pawn == null || recipient == null)
+            {
+                return;
+            }
+
             if (__result)
             {
-                if (pawn.GetComp<CompFace>() != null && recipient != null)
+                if (pawn.GetComp<CompFace>() != null)
                 {
                     pawn.GetComp<CompFace>().HeadRotator.LookAtPawn(recipient);
                 }
-                if (recipient.GetComp<CompFace>() != null && pawn != null)
+                if (recipient.GetComp<CompFace>() != null)
                 {
                     recipient.GetComp<CompFace>().HeadRotator.LookAtPawn(pawn);
                 }
