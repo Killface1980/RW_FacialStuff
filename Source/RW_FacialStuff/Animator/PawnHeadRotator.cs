@@ -239,9 +239,9 @@
             this.rotationMod = RotationDirection.None;
         }
 
-        public void LookAtPawn(Pawn p)
+        public void LookAtPawn(Thing t)
         {
-            this.target = p;
+            this.target = t;
             this.FaceHead();
             this.SetNextRotation(Find.TickManager.TicksGame + 720);
             // Log.Message(this.pawn + " look at " + p);

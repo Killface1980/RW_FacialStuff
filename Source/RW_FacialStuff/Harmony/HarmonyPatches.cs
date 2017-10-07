@@ -260,6 +260,10 @@ namespace FacialStuff.Detouring
             bool __result,
             Pawn recipient)
         {
+            if (__instance == null)
+            {
+                return;
+            }
             FieldInfo PawnFieldInfo = typeof(Pawn_InteractionsTracker).GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
             Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
 
@@ -270,13 +274,15 @@ namespace FacialStuff.Detouring
 
             if (__result)
             {
-                if (pawn.GetComp<CompFace>() != null)
+                CompFace pawnFace = pawn.GetComp<CompFace>();
+                if (pawnFace != null && pawnFace.HeadRotator != null && !pawnFace.IsChild)
                 {
-                    pawn.GetComp<CompFace>().HeadRotator.LookAtPawn(recipient);
+                    pawnFace.HeadRotator.LookAtPawn(recipient);
                 }
-                if (recipient.GetComp<CompFace>() != null)
+                CompFace recipientFace = recipient.GetComp<CompFace>();
+                if (recipientFace != null && recipientFace.HeadRotator != null && !recipientFace.IsChild)
                 {
-                    recipient.GetComp<CompFace>().HeadRotator.LookAtPawn(pawn);
+                    recipientFace.HeadRotator.LookAtPawn(pawn);
                 }
             }
         }
