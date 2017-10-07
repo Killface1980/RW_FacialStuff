@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Facial Stuff 0.17.3.4e</name>
+  <name>Facial Stuff 0.17.3.4f</name>
   <author>Killface</author>
   <url></url>
   <targetVersion>0.17.1557</targetVersion>
@@ -11,7 +11,7 @@
 - 10 newly defined skin colors instead of the vanilla 6
 - hair genetics according to real life (including the effects of eumelanin &amp; pheomelanin)
 - adds the ability to change the head and body type for all Humans (needs activation in the mod options)
-- fully compatible with Chidren &amp; Pregnancy, Werewolves and Prepare Carfully
+- fully compatible with Chidren &amp; Pregnancy, Werewolves and Prepare Carefully
 - 30+ different beards, some of them combinable
 - possibility to show hair under hats
 - multiple visibility options for hats on map
