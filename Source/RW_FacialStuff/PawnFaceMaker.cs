@@ -318,9 +318,10 @@
                                           where brow.hairTags.SharesElementWith(factionType.hairTags)
                                           select brow;
 
-            if (!source.Any())
+            IEnumerable<BrowDef> browDefs = source as IList<BrowDef> ?? source.ToList();
+            if (!browDefs.Any())
             {
-                source = from brow in DefDatabase<BrowDef>.AllDefs select brow;
+                browDefs = from brow in DefDatabase<BrowDef>.AllDefs select brow;
             }
 
             BrowDef chosenBrows;
@@ -329,14 +330,14 @@
             {
                 case 2:
                     {
-                        IEnumerable<BrowDef> filtered = source.Where(x => x.label.Contains("Nice"));
+                        IEnumerable<BrowDef> filtered = browDefs.Where(x => x.label.Contains("Nice"));
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
 
                 case 1:
                     {
-                        IEnumerable<BrowDef> filtered = source.Where(x => x.label.Contains("Aware"));
+                        IEnumerable<BrowDef> filtered = browDefs.Where(x => x.label.Contains("Aware"));
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
@@ -344,27 +345,27 @@
                 case 0:
                     {
                         IEnumerable<BrowDef> filtered =
-                            source.Where(x => !x.label.Contains("Depressed") && !x.label.Contains("Tired"));
+                            browDefs.Where(x => !x.label.Contains("Depressed") && !x.label.Contains("Tired"));
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
 
                 case -1:
                     {
-                        IEnumerable<BrowDef> filtered = source.Where(x => x.label.Contains("Tired"));
+                        IEnumerable<BrowDef> filtered = browDefs.Where(x => x.label.Contains("Tired"));
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
 
                 case -2:
                     {
-                        IEnumerable<BrowDef> filtered = source.Where(x => x.label.Contains("Depressed"));
+                        IEnumerable<BrowDef> filtered = browDefs.Where(x => x.label.Contains("Depressed"));
                         chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
                         return chosenBrows;
                     }
             }
 
-            chosenBrows = source.RandomElementByWeight(brow => BrowChoiceLikelihoodFor(brow, pawn));
+            chosenBrows = browDefs.RandomElementByWeight(brow => BrowChoiceLikelihoodFor(brow, pawn));
 
             return chosenBrows;
         }

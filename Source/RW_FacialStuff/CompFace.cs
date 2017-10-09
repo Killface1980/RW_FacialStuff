@@ -137,7 +137,7 @@
 
         public CrownType PawnCrownType => this.pawn?.story.crownType ?? CrownType.Average;
 
-        [NotNull]
+        [CanBeNull]
         public PawnFace PawnFace => this.pawnFace;
 
         public HeadType PawnHeadType
@@ -1117,6 +1117,10 @@
 
         private void ResetBoolsAndPaths()
         {
+            if (this.PawnFace.EyeDef == null)
+            {
+                SetPawnFace(new PawnFace(this.pawn, Faction.OfPlayer.def));
+            }
             this.texPathEyeLeftPatch = null;
             this.texPathEyeRightPatch = null;
             this.texPathJawAddedPart = null;
@@ -1130,6 +1134,7 @@
 
             this.eyeWiggler.EyeLeftCanBlink = true;
             this.eyeWiggler.EyeRightCanBlink = true;
+
 
             this.texPathBrow = this.BrowTexPath(this.PawnFace.BrowDef);
         }

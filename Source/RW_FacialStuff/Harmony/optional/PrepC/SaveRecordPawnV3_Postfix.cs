@@ -9,6 +9,8 @@
 
     using global::Harmony;
 
+    using RimWorld;
+
     using Verse;
 
     public static class SaveRecordPawnV3_Postfix
@@ -32,6 +34,7 @@
                 SaveRecordFaceV3 face = new SaveRecordFaceV3();
                 face.ExposeData();
                 LoadedPawns.Add(__instance, face);
+               
             }
         }
 

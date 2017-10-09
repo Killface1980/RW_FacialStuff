@@ -18,7 +18,7 @@
         [NotNull]
         public BeardDef BeardDef;
 
-        [NotNull]
+        [CanBeNull]
         public BrowDef BrowDef;
 
         public CrownType CrownType;
@@ -28,7 +28,7 @@
 
         public float EuMelanin;
 
-        [NotNull]
+        [CanBeNull]
         public EyeDef EyeDef;
 
         public float Greyness;
@@ -57,7 +57,7 @@
             this.WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn);
             this.HasSameBeardColor = Rand.Value > 0.3f;
 
-            this.GenerateHairDNA(pawn);
+            this.GenerateHairDNA(pawn, false, newPawn);
 
             this.CrownType = pawn.story.crownType;
             PawnFaceMaker.RandomBeardDefFor(pawn, pawnFactionDef, out this.BeardDef, out this.MoustacheDef);
@@ -67,15 +67,22 @@
             // this.MelaninOrg = pawn.story.melanin;
         }
 
-        public void GenerateHairDNA([NotNull] Pawn pawn, bool ignoreRelative = false)
+        public void GenerateHairDNA([NotNull] Pawn pawn, bool ignoreRelative = false, bool newPawn = true)
         {
             HairDNA hairDNA = HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor, ignoreRelative);
             this.EuMelanin = hairDNA.HairColorRequest.EuMelanin;
             this.PheoMelanin = hairDNA.HairColorRequest.PheoMelanin;
             this.Greyness = hairDNA.HairColorRequest.Greyness;
-
-            this.HairColor = hairDNA.HairColor;
-            this.BeardColor = hairDNA.BeardColor;
+            if (newPawn)
+            {
+                this.HairColor = hairDNA.HairColor;
+                this.BeardColor = hairDNA.BeardColor;
+            }
+            else
+            {
+                this.HairColor = pawn.story.hairColor;
+                this.BeardColor = HairMelanin.DarkerBeardColor(this.HairColor);
+            }
         }
 
         public PawnFace()

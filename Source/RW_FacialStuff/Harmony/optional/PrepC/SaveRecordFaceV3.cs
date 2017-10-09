@@ -34,5 +34,10 @@
                 Scribe_Deep.Look(ref this.face, "PawnFace");
             }
         }
+
+        public void SetFace(PawnFace pawnFace)
+        {
+            this.face = pawnFace;
+        }
     }
 }
