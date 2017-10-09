@@ -117,7 +117,7 @@ namespace FacialStuff.Graphics
             {
                 Log.Message(
                     "Facial Stuff: No texture found at " + addedpartName + "_" + crowntype + "_side"
-                    + " - Graphic_Multi_AddedHeadParts");
+                    + " - Graphic_Multi_AddedHeadParts. This message is just a note, no error.");
                 array[3] = FaceTextures.BlankTexture;
             }
 

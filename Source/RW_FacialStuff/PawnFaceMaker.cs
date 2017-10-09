@@ -314,24 +314,23 @@
         public static BrowDef RandomBrowDefFor([NotNull] Pawn pawn, FactionDef factionType)
         {
             IEnumerable<BrowDef> source = from brow in DefDatabase<BrowDef>.AllDefs
-                                          where brow.raceList.Contains(pawn.def)
+                                         // where brow.raceList.Contains(pawn.def)
                                           where brow.hairTags.SharesElementWith(factionType.hairTags)
                                           select brow;
 
-            IEnumerable<BrowDef> browDefs = source as IList<BrowDef> ?? source.ToList();
-            if (!browDefs.Any())
+            if (!source.Any())
             {
-                browDefs = from brow in DefDatabase<BrowDef>.AllDefs select brow;
+                source = from brow in DefDatabase<BrowDef>.AllDefs select brow;
             }
 
             BrowDef chosenBrows;
-
+            /*
             switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")))
             {
                 case 2:
                     {
                         IEnumerable<BrowDef> filtered = browDefs.Where(x => x.label.Contains("Nice"));
-                        chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
+                        chosenBrows = filtered.RandomElementByWeight(brow => BrowChoiceLikelihoodFor(brow, pawn));
                         return chosenBrows;
                     }
 
@@ -364,10 +363,9 @@
                         return chosenBrows;
                     }
             }
+            */
 
-            chosenBrows = browDefs.RandomElementByWeight(brow => BrowChoiceLikelihoodFor(brow, pawn));
-
-            return chosenBrows;
+            return source.RandomElementByWeight(brow => BrowChoiceLikelihoodFor(brow, pawn));
         }
 
 
@@ -376,7 +374,7 @@
         {
             // Log.Message("Selecting eyes.");
             IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
-                                         where eye.raceList.Contains(pawn.def)
+                                       //  where eye.raceList.Contains(pawn.def)
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
 
@@ -386,12 +384,9 @@
                 source = from eye in DefDatabase<EyeDef>.AllDefs select eye;
             }
 
-            EyeDef chosenEyes;
-
-            chosenEyes = source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+            return source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
 
             // Log.Message("Chosen eyes: " + chosenEyes);
-            return chosenEyes;
         }
 
         #endregion Public Methods
@@ -479,8 +474,8 @@
                     case HairGender.Male: return 70f;
                     case HairGender.MaleUsually: return 30f;
                     case HairGender.Any: return 60f;
-                    case HairGender.FemaleUsually: return 0f;
-                    case HairGender.Female: return 0f;
+                    case HairGender.FemaleUsually: return 5f;
+                    case HairGender.Female: return 1f;
                 }
             }
 
@@ -491,8 +486,8 @@
                     case HairGender.Female: return 70f;
                     case HairGender.FemaleUsually: return 30f;
                     case HairGender.Any: return 60f;
-                    case HairGender.MaleUsually: return 0f;
-                    case HairGender.Male: return 0f;
+                    case HairGender.MaleUsually: return 5f;
+                    case HairGender.Male: return 1f;
                 }
             }
 

@@ -428,12 +428,8 @@
                 return;
             }
 
-            foreach (Hediff diff in hediffs)
+            foreach (Hediff diff in hediffs.Where(diff => diff?.def?.defName != null))
             {
-                if (diff?.def?.defName == null)
-                {
-                    continue;
-                }
                 this.CheckPart(body, diff);
             }
         }
@@ -879,7 +875,6 @@
                 return;
             }
 
-
             BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
             BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
             BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
@@ -1121,6 +1116,12 @@
             {
                 SetPawnFace(new PawnFace(this.pawn, Faction.OfPlayer.def));
             }
+
+            if (this.PawnFace.BrowDef == null)
+            {
+                this.PawnFace.BrowDef = PawnFaceMaker.RandomBrowDefFor(this.pawn, Faction.OfPlayer.def);
+            }
+
             this.texPathEyeLeftPatch = null;
             this.texPathEyeRightPatch = null;
             this.texPathJawAddedPart = null;
