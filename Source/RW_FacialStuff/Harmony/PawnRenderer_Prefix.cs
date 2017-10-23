@@ -38,15 +38,12 @@
 
         private const float YOffsetOnFace = 0.0001f;
 
-
         private static Type PawnRendererType;
 
         // private static FieldInfo PawnFieldInfo;
         private static FieldInfo WoundOverlayFieldInfo;
 
-
         private static MethodInfo DrawEquipmentMethodInfo;
-
 
         private static FieldInfo PawnHeadOverlaysFieldInfo;
 

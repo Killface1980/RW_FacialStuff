@@ -125,6 +125,8 @@
                 req2.color = this.color;
                 req2.colorTwo = this.colorTwo;
 
+                req2.mainTex.filterMode = FilterMode.Trilinear;
+
                 // req2.maskTex = array2[i];
                 this.mats[i] = MaterialPool.MatFrom(req2);
             }

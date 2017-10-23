@@ -185,6 +185,10 @@ namespace FacialStuff.Detouring
         public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)
         {
             Pawn pawn = __instance.pawn;
+            if (pawn == null)
+            {
+                return;
+            }
 
             // Check if race has face, else return
             CompFace faceComp = pawn.TryGetComp<CompFace>();

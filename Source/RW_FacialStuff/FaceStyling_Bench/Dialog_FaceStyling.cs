@@ -6,18 +6,17 @@
     using System.Linq;
     using System.Reflection;
 
+    using FaceStyling;
+
     using FacialStuff.ColorPicker;
     using FacialStuff.Defs;
     using FacialStuff.Detouring;
     using FacialStuff.Enums;
     using FacialStuff.FaceStyling_Bench.UI.DTO;
     using FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs;
-    using static FacialStuff.FaceStyling_Bench.UI.Util.WidgetUtil;
     using FacialStuff.Genetics;
     using FacialStuff.Graphics;
     using FacialStuff.Utilities;
-
-    using global::FaceStyling;
 
     using JetBrains.Annotations;
 
@@ -27,39 +26,27 @@
 
     using Verse;
 
+    using static FacialStuff.FaceStyling_Bench.UI.Util.WidgetUtil;
+
     [StaticConstructorOnStartup]
     public class DialogFaceStyling : Window
     {
 
-        #region Public Fields
-
-        public static Vector2 PortraitSize = new Vector2(203f, 203f);
-
-        #endregion Public Fields
-
-        // private void CheckSelectedFacePresetHasName()
         #region Private Fields
+        private static Vector2 portraitSize = new Vector2(203f, 203f);
 
         private static readonly Color ColorSwatchBorder = new Color(0.77255f, 0.77255f, 0.77255f);
 
         private static readonly Color ColorSwatchSelection = new Color(0.9098f, 0.9098f, 0.9098f);
 
-        private static int Columns;
-
-        private static Color DarkBackground = new Color(0.12f, 0.12f, 0.12f);
-
-        private static float EntrySize;
-
-        private static List<BeardDef> FullBeardDefs;
-
-        private static float ListWidth = 450f;
-
-        private static List<BeardDef> LowerBeardDefs;
-
+        private static readonly int Columns;
+        private static readonly Color DarkBackground = new Color(0.12f, 0.12f, 0.12f);
+        private static readonly float EntrySize;
+        private static readonly List<BeardDef> FullBeardDefs;
+        private static readonly float ListWidth = 450f;
+        private static readonly List<BeardDef> LowerBeardDefs;
         // private static Texture2D _icon;
-        private static float MarginFS = 14f;
-
-        private static long MaxAge = 1000000000 * TicksPerYear;
+        private static readonly float MarginFS = 14f;
 
         // private FacePreset SelectedFacePreset
         // {
@@ -70,79 +57,71 @@
         // _selFacePresetInt = value;
         // }
         // }
-        private static List<MoustacheDef> MoustacheDefs;
+        private static readonly List<MoustacheDef> MoustacheDefs;
 
         // private FacePreset _selFacePresetInt;
-        private static Texture2D NameBackground;
+        private static readonly Texture2D NameBackground;
 
-        private static float PreviewSize = 220f;
-
-        private static long TicksPerYear = 3600000L;
-
-        private static string Title = "FacialStuffEditor.FaceStylerTitle".Translate();
-
-        private static float TitleHeight = 30f;
-
-        private static List<string> VanillaHairTags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
-
+        private static readonly long TicksPerYear = 3600000L;
+        private static readonly string Title = "FacialStuffEditor.FaceStylerTitle".Translate();
+        private static readonly float TitleHeight = 30f;
+        private static readonly List<string> VanillaHairTags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
         private static List<BrowDef> browDefs;
-
+        private static List<string> currentFilter;
         private static List<EyeDef> eyeDefs;
 
-        private static List<HairDef> hairDefs;
         private static List<HairDef> filteredHairDefs;
-
+        private static List<HairDef> hairDefs;
+        private static long MaxAge = 1000000000 * TicksPerYear;
         private static Pawn pawn;
 
+        private static float PreviewSize = 220f;
+        private readonly ColorWrapper colourWrapper;
         [NotNull]
-        private CompFace faceComp;
+        private readonly CompFace faceComp;
 
-        private bool hadSameBeardColor;
+        private readonly bool gear;
+        private readonly bool hadSameBeardColor;
+        private readonly bool hats;
+        private readonly bool initialized = false;
+        private readonly long originalAgeBio;
+        private readonly long originalAgeChrono;
+        private readonly BeardDef originalBeard;
+        private readonly Color originalBeardColor;
+        private readonly BodyType originalBodyType;
+        private readonly BrowDef originalBrow;
+        private readonly CrownType originalCrownType;
+        private readonly EyeDef originalEye;
+        private readonly Gender originalGender;
+        private readonly HairDef originalHair;
+        private readonly Color originalHairColor;
+        private readonly string originalHeadGraphicPath;
+        private readonly float originalMelanin;
+        private readonly MoustacheDef originalMoustache;
+        private readonly float wrinkles;
         private BeardTab beardTab;
-        private ColorWrapper colourWrapper;
         private DresserDTO dresserDto;
-        private GenderTab genderTab;
         private FilterTab filterTab;
-        private SpecialTab specialTab;
-        private bool hats;
-
-        private bool initialized = false;
-
+        private GenderTab genderTab;
         private BeardDef newBeard;
+
         private Color newBeardColor;
+
         private BrowDef newBrow;
+
         private EyeDef newEye;
+
         private HairDef newHair;
+
         private Color newHairColor;
+
         private float newMelanin;
+
         private MoustacheDef newMoustache;
-        private long originalAgeBio;
+        private Vector2 pickerPosition = Vector2.zero;
 
-        private long originalAgeChrono;
+        private Vector2 pickerSize = new Vector2(200, 200);
 
-        private BeardDef originalBeard;
-
-        private Color originalBeardColor;
-
-        private BodyType originalBodyType;
-
-        private BrowDef originalBrow;
-
-        private CrownType originalCrownType;
-
-        private EyeDef originalEye;
-
-        private Gender originalGender;
-
-        private HairDef originalHair;
-
-        private Color originalHairColor;
-
-        private string originalHeadGraphicPath;
-
-        private float originalMelanin;
-
-        private MoustacheDef originalMoustache;
         [SuppressMessage(
             "StyleCop.CSharp.NamingRules",
             "SA1305:FieldNamesMustNotUseHungarianNotation",
@@ -153,7 +132,7 @@
 
         private bool saveChangedOnExit;
 
-        private List<Vector2> scrollPosition = new List<Vector2> { };
+        private List<Vector2> scrollPosition = new List<Vector2>();
 
         private Vector2 scrollPositionBeard1 = Vector2.zero;
 
@@ -163,16 +142,19 @@
 
         private Vector2 scrollPositionEye = Vector2.zero;
 
-        private Vector2 scrollPositionHairAny = Vector2.zero;
-
         private Vector2 scrollPositionHairAll = Vector2.zero;
+
+        private Vector2 scrollPositionHairAny = Vector2.zero;
 
         private Vector2 scrollPositionHairFemale = Vector2.zero;
 
         private Vector2 scrollPositionHairMale = Vector2.zero;
 
-        private Vector2 swatchSize = new Vector2(14, 14);
+        private bool skinPage = true;
 
+        private SpecialTab specialTab;
+
+        private Vector2 swatchSize = new Vector2(14, 14);
 
         private FaceStyleTab tab;
 
@@ -193,8 +175,6 @@
             currentFilter = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
             HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                 x => x.hairTags.SharesElementWith(VanillaHairTags));
-
-
 
             eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
             FullBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType == BeardType.FullBeard)
@@ -248,21 +228,19 @@
                 this.filterTab = FilterTab.Tribal;
             }
 
-           // IIncidentTarget target = pawn.Map;
-           // if (target != null)
-           // {
-           //     IncidentDef def = IncidentDef.Named("FacialStuffUpdateNote");
-           //     StorytellerComp source = Find.Storyteller.storytellerComps.First((StorytellerComp x) => x is StorytellerComp_ThreatCycle || x is StorytellerComp_RandomMain);
-           //     IncidentParms parms = source.GenerateParms(def.category, target);
-           //     FiringIncident fi = new FiringIncident(def, source, parms);
-           //     if (fi.def.Worker.CanFireNow(pawn.Map))
-           //     {
-           //         fi.def.Worker.TryExecute(parms);
-           //         fi.parms.target.StoryState.Notify_IncidentFired(fi);
-           //     }
-           // }
-
-
+            // IIncidentTarget target = pawn.Map;
+            // if (target != null)
+            // {
+            // IncidentDef def = IncidentDef.Named("FacialStuffUpdateNote");
+            // StorytellerComp source = Find.Storyteller.storytellerComps.First((StorytellerComp x) => x is StorytellerComp_ThreatCycle || x is StorytellerComp_RandomMain);
+            // IncidentParms parms = source.GenerateParms(def.category, target);
+            // FiringIncident fi = new FiringIncident(def, source, parms);
+            // if (fi.def.Worker.CanFireNow(pawn.Map))
+            // {
+            // fi.def.Worker.TryExecute(parms);
+            // fi.parms.target.StoryState.Notify_IncidentFired(fi);
+            // }
+            // }
             this.beardTab = this.faceComp.PawnFace.BeardDef.beardType == BeardType.FullBeard
                                 ? BeardTab.FullBeards
                                 : BeardTab.Combinable;
@@ -273,7 +251,6 @@
             this.newMoustache = this.originalMoustache = this.faceComp.PawnFace.MoustacheDef;
             this.newEye = this.originalEye = this.faceComp.PawnFace.EyeDef;
             this.newBrow = this.originalBrow = this.faceComp.PawnFace.BrowDef;
-
 
             this.colourWrapper = new ColorWrapper(Color.cyan);
 
@@ -289,7 +266,7 @@
             this.originalAgeBio = pawn.ageTracker.AgeBiologicalTicks;
             this.originalAgeChrono = pawn.ageTracker.AgeChronologicalTicks;
 
-            this.wrinkles = this.faceComp.PawnFace.wrinkles;
+            this.wrinkles = this.faceComp.PawnFace.wrinkleIntensity;
 
             // this.absorbInputAroundWindow = false;
             this.closeOnClickedOutside = false;
@@ -322,18 +299,7 @@
 
             Brow,
 
-            TypeSelector,
-        }
-
-        private enum GenderTab : byte
-        {
-            Female,
-
-            Male,
-
-            Any,
-
-            All
+            TypeSelector
         }
 
         private enum FilterTab : byte
@@ -345,6 +311,17 @@
             Punk,
 
             Tribal
+        }
+
+        private enum GenderTab : byte
+        {
+            Female,
+
+            Male,
+
+            Any,
+
+            All
         }
 
         private enum SpecialTab : byte
@@ -359,6 +336,36 @@
         #endregion Private Enums
 
         #region Public Properties
+
+        public static List<string> CurrentFilter
+        {
+            get
+            {
+                return currentFilter;
+            }
+
+            set
+            {
+                currentFilter = value;
+                filteredHairDefs = hairDefs.FindAll(x => x.hairTags.SharesElementWith(currentFilter));
+                filteredHairDefs.SortBy(i => i.LabelCap);
+            }
+        }
+
+        public static List<HairDef> HairDefs
+        {
+            get
+            {
+                return hairDefs;
+            }
+
+            set
+            {
+                hairDefs = value;
+                filteredHairDefs = hairDefs.FindAll(x => x.hairTags.SharesElementWith(CurrentFilter));
+                filteredHairDefs.SortBy(i => i.LabelCap);
+            }
+        }
 
         public override Vector2 InitialSize => new Vector2(750f, 700f);
 
@@ -473,34 +480,6 @@
             }
         }
 
-        public static List<HairDef> HairDefs
-        {
-            get
-            {
-                return hairDefs;
-            }
-            set
-            {
-                hairDefs = value;
-                filteredHairDefs = hairDefs.FindAll(x => x.hairTags.SharesElementWith(CurrentFilter));
-                filteredHairDefs.SortBy(i => i.LabelCap);
-            }
-        }
-
-        public static List<string> CurrentFilter
-        {
-            get
-            {
-                return currentFilter;
-            }
-            set
-            {
-                currentFilter = value;
-                filteredHairDefs = hairDefs.FindAll(x => x.hairTags.SharesElementWith(currentFilter));
-                filteredHairDefs.SortBy(i => i.LabelCap);
-            }
-        }
-
         #endregion Private Properties
 
         #region Public Methods
@@ -508,8 +487,8 @@
         public static Rect AddPortraitWidget(float left, float top)
         {
             // Portrait
-            Rect rect = new Rect(left, top, PortraitSize.x, PortraitSize.y);
-            GUI.DrawTexture(rect, FaceTextures.gradient);
+            Rect rect = new Rect(left, top, portraitSize.x, portraitSize.y);
+            GUI.DrawTexture(rect, FaceTextures.backgroundTex);
 
             // Draw the pawn's portrait
             GUI.BeginGroup(rect);
@@ -663,11 +642,10 @@
                 nextAct);
         }
 
-        private void RemoveColorPicker()
+        public override void PostClose()
         {
-            while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker), false))
-            {
-            }
+            base.PostClose();
+            pawn.Drawer.renderer.graphics.ResolveAllGraphics();
         }
 
         public override void PostOpen()
@@ -688,7 +666,6 @@
             }
 
             this.RemoveColorPicker();
-
         }
 
         #endregion Public Methods
@@ -727,12 +704,13 @@
         {
             string path = this.faceComp.GetBeardPath(def);
 
-            Graphic_Multi_NaturalHeadParts result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                        path,
-                                                        ShaderDatabase.Cutout,
-                                                        new Vector2(38f, 38f),
-                                                        Color.white,
-                                                        Color.white) as Graphic_Multi_NaturalHeadParts;
+            Graphic_Multi_NaturalHeadParts result =
+                GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    path,
+                    ShaderDatabase.Cutout,
+                    new Vector2(38f, 38f),
+                    Color.white,
+                    Color.white) as Graphic_Multi_NaturalHeadParts;
 
             return result;
         }
@@ -778,7 +756,9 @@
                         },
                     false,
                     true)
-                { initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin), });
+                {
+                    initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
+                });
         }
 
         private void DrawBeardColorPickerCell(Color color, Rect rect, string colorName)
@@ -798,7 +778,6 @@
             if (Widgets.ButtonInvisible(rect))
             {
                 this.RemoveColorPicker();
-
 
                 this.colourWrapper.Color = color;
                 Find.WindowStack.Add(
@@ -892,6 +871,7 @@
                 case BeardTab.Combinable:
                     Widgets.BeginScrollView(rect2, ref this.scrollPositionBeard1, rect3);
                     break;
+
                 case BeardTab.FullBeards:
                     Widgets.BeginScrollView(rect2, ref this.scrollPositionBeard2, rect3);
                     break;
@@ -1082,6 +1062,11 @@
             }
         }
 
+        private void DrawColorSelected(Rect swatchRect)
+        {
+            Widgets.DrawBoxSolid(swatchRect, Color.white);
+        }
+
         private void DrawEyePicker(Rect rect)
         {
             // 12 columns as base
@@ -1158,7 +1143,11 @@
             }
         }
 
-        private void DrawHairColorPickerCell(Color color, Rect rect, string colorName, [CanBeNull] HairColorRequest request = null)
+        private void DrawHairColorPickerCell(
+            Color color,
+            Rect rect,
+            string colorName,
+            [CanBeNull] HairColorRequest request = null)
         {
             string text = colorName;
             Widgets.DrawHighlightIfMouseover(rect);
@@ -1176,7 +1165,6 @@
             if (Widgets.ButtonInvisible(rect))
             {
                 this.RemoveColorPicker();
-
 
                 if (request != null)
                 {
@@ -1197,106 +1185,109 @@
             }
         }
 
-        private void DrawSpecialPicker(Rect rect)
+        private void DrawHairColorSelector(Rect rect)
         {
-            foreach (GraphicDatabaseHeadRecordsModded.HeadGraphicRecordVanillaCustom source in
-                GraphicDatabaseHeadRecordsModded.HeadsVanillaCustom)
+            Widgets.DrawBoxSolid(rect, new Color(0.3f, 0.3f, 0.3f));
+            Rect contractedBy = rect.ContractedBy(MarginFS / 2);
+
+            Rect set = new Rect(contractedBy);
+            int colorFields = 7;
+            int colorRows = 4;
+
+            set.width = contractedBy.width / colorFields;
+            set.height = Mathf.Min(set.width, contractedBy.height / (colorRows + 3));
+
+            float euMelanin = this.faceComp.PawnFace.EuMelanin;
+
+            int num = 0;
+            for (int y = 0; y < colorRows; y++)
             {
-                source.GetGraphic(pawn.story.SkinColor);
+                for (int x = 0; x < colorFields; x++)
+                {
+                    float pheoMelanin = (float)num / (colorFields * colorRows - 1);
+                    HairColorRequest request =
+                        new HairColorRequest(pheoMelanin, euMelanin, this.faceComp.PawnFace.Greyness);
+
+                    this.DrawHairColorPickerCell(
+                        HairMelanin.GetHairColor(request),
+                        set.ContractedBy(2f),
+                        "FacialStuffEditor.Pheomelanin".Translate() + " - " + pheoMelanin.ToString("N2"),
+                        request);
+                    set.x += set.width;
+                    num++;
+                }
+
+                set.x = contractedBy.x;
+                set.y += set.height;
             }
 
-            // string str = "Naked_" + bodyType.ToString();
-            // string path = "Things/Pawn/Humanlike/Bodies/" + str;
-            // return GraphicDatabase.Get<Graphic_Multi>(path, shader, Vector2.one, skinColor);
-            List<TabRecord> list = new List<TabRecord>();
-            TabRecord item = new TabRecord(
-                "HeadType".Translate(),
-                delegate
-                    {
-                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
-                            x => x.hairTags.SharesElementWith(VanillaHairTags)
-                                 && (x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually));
-                        HairDefs.SortBy(i => i.LabelCap);
-                        this.specialTab = SpecialTab.Head;
-                    },
-                this.specialTab == SpecialTab.Head);
-            list.Add(item);
+            set.y += set.height / 4;
+            set.width = contractedBy.width / HairMelanin.ArtificialHairColors.Count;
 
-            TabRecord item2 = new TabRecord(
-                "BodyType".Translate(),
-                delegate
-                    {
-                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
-                            x => x.hairTags.SharesElementWith(VanillaHairTags)
-                                 && (x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually));
-                        HairDefs.SortBy(i => i.LabelCap);
-                        this.specialTab = SpecialTab.Body;
-                    },
-                this.specialTab == SpecialTab.Body);
-            list.Add(item2);
-
-            TabRecord item3 = new TabRecord(
-                "FacialStuffEditor.Any".Translate(),
-                delegate
-                    {
-                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
-                            x => x.hairTags.SharesElementWith(VanillaHairTags) && x.hairGender == HairGender.Any);
-                        HairDefs.SortBy(i => i.LabelCap);
-                        this.genderTab = GenderTab.Any;
-                    },
-                this.specialTab == SpecialTab.Head);
-
-            list.Add(item3);
-
-            TabDrawer.DrawTabs(rect, list);
-
-            Rect rect2 = rect.ContractedBy(1f);
-            Rect rect3 = rect2;
-
-            // 12 columns as base
-            int divider = 3;
-            int iconSides = 2;
-            int thisColumns = Columns / divider / iconSides;
-            float thisEntrySize = EntrySize * divider;
-
-            int rowsCount = Mathf.CeilToInt(HairDefs.Count / (float)thisColumns);
-
-            rect3.height = rowsCount * thisEntrySize;
-            Vector2 vector = new Vector2(thisEntrySize * iconSides, thisEntrySize);
-            if (rect3.height > rect.height)
+            foreach (Color color in HairMelanin.ArtificialHairColors)
             {
-                vector.x -= 16f / thisColumns;
-                vector.y -= 16f / thisColumns;
-                rect3.width -= 16f;
-                rect3.height = vector.y * rowsCount;
+                this.DrawHairColorPickerCell(color, set.ContractedBy(3f), color.ToString());
+                set.x += set.width;
             }
 
-            Rect selectHair = rect;
-            selectHair.height = 30f;
-            switch (this.genderTab)
-            {
-                case GenderTab.Male:
-                    Widgets.BeginScrollView(rect, ref this.scrollPositionHairMale, rect3);
-                    break;
-                case GenderTab.Female:
-                    Widgets.BeginScrollView(rect, ref this.scrollPositionHairFemale, rect3);
-                    break;
-                case GenderTab.Any:
-                    Widgets.BeginScrollView(rect, ref this.scrollPositionHairAny, rect3);
-                    break;
-            }
-            GUI.BeginGroup(rect3);
+            set.x = contractedBy.x;
+            float col = contractedBy.width / 9;
 
-            for (int i = 0; i < HairDefs.Count; i++)
-            {
-                int yPos = i / thisColumns;
-                int xPos = i % thisColumns;
-                Rect rect4 = new Rect(xPos * vector.x, yPos * vector.y, vector.x, vector.y);
-                this.DrawHairPickerCell(HairDefs[i], rect4.ContractedBy(3f));
-            }
+            set.width = col * 4;
+            set.y += 1.5f * set.height;
 
-            GUI.EndGroup();
-            Widgets.EndScrollView();
+            // this.faceComp.PawnFace.PheoMelanin =
+            // Widgets.HorizontalSlider(set, this.faceComp.PawnFace.PheoMelanin, 0f, 1f);
+            // set.y += 30f;
+            // this.faceComp.PawnFace.EuMelanin =
+            // Widgets.HorizontalSlider(set, this.faceComp.PawnFace.EuMelanin, 0f, 1f);
+            // set.y += 30f;
+            euMelanin = Widgets.HorizontalSlider(
+                set,
+                euMelanin,
+                0,
+                1f,
+                false,
+                "FacialStuffEditor.Eumelanin".Translate(),
+                "0",
+                "1");
+
+            set.x += set.width + col;
+
+            float grey = this.faceComp.PawnFace.Greyness;
+            grey = Widgets.HorizontalSlider(
+                set,
+                grey,
+                HairMelanin.greyRange.min,
+                HairMelanin.greyRange.max,
+                false,
+                "FacialStuffEditor.Greyness".Translate(),
+                "0",
+                "1");
+
+            if (GUI.changed)
+            {
+                bool update = false;
+
+                if (Math.Abs(this.faceComp.PawnFace.EuMelanin - euMelanin) > 0.001f)
+                {
+                    this.faceComp.PawnFace.EuMelanin = euMelanin;
+                    update = true;
+                }
+
+                if (Math.Abs(this.faceComp.PawnFace.Greyness - grey) > 0.001f)
+                {
+                    this.faceComp.PawnFace.Greyness = grey;
+                    update = true;
+                }
+
+                if (update)
+                {
+                    this.RemoveColorPicker();
+
+                    this.NewHairColor = this.faceComp.PawnFace.GetCurrentHairColor();
+                }
+            }
         }
 
         private void DrawHairPicker(Rect rect)
@@ -1404,7 +1395,6 @@
 
             TabDrawer.DrawTabs(rect2a, list2);
 
-
             Rect rect2 = rect2a.ContractedBy(1f);
             Rect rect3 = rect2;
 
@@ -1432,12 +1422,15 @@
                 case GenderTab.Male:
                     Widgets.BeginScrollView(rect2, ref this.scrollPositionHairMale, rect3);
                     break;
+
                 case GenderTab.Female:
                     Widgets.BeginScrollView(rect2, ref this.scrollPositionHairFemale, rect3);
                     break;
+
                 case GenderTab.Any:
                     Widgets.BeginScrollView(rect2, ref this.scrollPositionHairAny, rect3);
                     break;
+
                 case GenderTab.All:
                     Widgets.BeginScrollView(rect2, ref this.scrollPositionHairAll, rect3);
                     break;
@@ -1485,13 +1478,14 @@
                 }
             }
 
-            string highlightText = "";
+            string highlightText = string.Empty;
             foreach (string hairTag in hair.hairTags)
             {
                 if (!highlightText.NullOrEmpty())
                 {
                     highlightText += "\n";
                 }
+
                 highlightText += hairTag;
             }
 
@@ -1610,8 +1604,6 @@
                 "0",
                 "1");
 
-
-
             // Draw the current color box.
             Rect currentColorRect = new Rect(0, melaninSlider.yMax + MarginFS, 20, 20);
 
@@ -1678,7 +1670,7 @@
             {
                 Rect wrinkleRect = new Rect(contractedBy.x, detailRect.yMax, contractedBy.width, SelectionRowHeight);
 
-                float wrinkle = this.faceComp.PawnFace.wrinkles;
+                float wrinkle = this.faceComp.PawnFace.wrinkleIntensity;
 
                 wrinkle = Widgets.HorizontalSlider(
                     wrinkleRect,
@@ -1692,21 +1684,15 @@
 
                 if (GUI.changed)
                 {
-                    if (Math.Abs(wrinkle - this.faceComp.PawnFace.wrinkles) > 0.001f)
+                    if (Math.Abs(wrinkle - this.faceComp.PawnFace.wrinkleIntensity) > 0.001f)
                     {
-                        this.faceComp.PawnFace.wrinkles = wrinkle;
+                        this.faceComp.PawnFace.wrinkleIntensity = wrinkle;
                         this.rerenderPawn = true;
                     }
                 }
             }
 
             GUI.EndGroup();
-
-        }
-
-        private void DrawColorSelected(Rect swatchRect)
-        {
-            Widgets.DrawBoxSolid(swatchRect, Color.white);
         }
 
         private void DrawMoustachePickerCell(MoustacheDef moustache, Rect rect)
@@ -1770,6 +1756,110 @@
                 this.NewMoustache = moustache;
                 this.DoColorWindowBeard();
             }
+        }
+
+        private void DrawSpecialPicker(Rect rect)
+        {
+            foreach (GraphicDatabaseHeadRecordsModded.HeadGraphicRecordVanillaCustom source in
+                GraphicDatabaseHeadRecordsModded.HeadsVanillaCustom)
+            {
+                source.GetGraphic(pawn.story.SkinColor);
+            }
+
+            // string str = "Naked_" + bodyType.ToString();
+            // string path = "Things/Pawn/Humanlike/Bodies/" + str;
+            // return GraphicDatabase.Get<Graphic_Multi>(path, shader, Vector2.one, skinColor);
+            List<TabRecord> list = new List<TabRecord>();
+            TabRecord item = new TabRecord(
+                "HeadType".Translate(),
+                delegate
+                    {
+                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                            x => x.hairTags.SharesElementWith(VanillaHairTags)
+                                 && (x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually));
+                        HairDefs.SortBy(i => i.LabelCap);
+                        this.specialTab = SpecialTab.Head;
+                    },
+                this.specialTab == SpecialTab.Head);
+            list.Add(item);
+
+            TabRecord item2 = new TabRecord(
+                "BodyType".Translate(),
+                delegate
+                    {
+                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                            x => x.hairTags.SharesElementWith(VanillaHairTags)
+                                 && (x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually));
+                        HairDefs.SortBy(i => i.LabelCap);
+                        this.specialTab = SpecialTab.Body;
+                    },
+                this.specialTab == SpecialTab.Body);
+            list.Add(item2);
+
+            TabRecord item3 = new TabRecord(
+                "FacialStuffEditor.Any".Translate(),
+                delegate
+                    {
+                        HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                            x => x.hairTags.SharesElementWith(VanillaHairTags) && x.hairGender == HairGender.Any);
+                        HairDefs.SortBy(i => i.LabelCap);
+                        this.genderTab = GenderTab.Any;
+                    },
+                this.specialTab == SpecialTab.Head);
+
+            list.Add(item3);
+
+            TabDrawer.DrawTabs(rect, list);
+
+            Rect rect2 = rect.ContractedBy(1f);
+            Rect rect3 = rect2;
+
+            // 12 columns as base
+            int divider = 3;
+            int iconSides = 2;
+            int thisColumns = Columns / divider / iconSides;
+            float thisEntrySize = EntrySize * divider;
+
+            int rowsCount = Mathf.CeilToInt(HairDefs.Count / (float)thisColumns);
+
+            rect3.height = rowsCount * thisEntrySize;
+            Vector2 vector = new Vector2(thisEntrySize * iconSides, thisEntrySize);
+            if (rect3.height > rect.height)
+            {
+                vector.x -= 16f / thisColumns;
+                vector.y -= 16f / thisColumns;
+                rect3.width -= 16f;
+                rect3.height = vector.y * rowsCount;
+            }
+
+            Rect selectHair = rect;
+            selectHair.height = 30f;
+            switch (this.genderTab)
+            {
+                case GenderTab.Male:
+                    Widgets.BeginScrollView(rect, ref this.scrollPositionHairMale, rect3);
+                    break;
+
+                case GenderTab.Female:
+                    Widgets.BeginScrollView(rect, ref this.scrollPositionHairFemale, rect3);
+                    break;
+
+                case GenderTab.Any:
+                    Widgets.BeginScrollView(rect, ref this.scrollPositionHairAny, rect3);
+                    break;
+            }
+            GUI.BeginGroup(rect3);
+
+            for (int i = 0; i < HairDefs.Count; i++)
+            {
+                int yPos = i / thisColumns;
+                int xPos = i % thisColumns;
+                Rect rect4 = new Rect(xPos * vector.x, yPos * vector.y, vector.x, vector.y);
+                this.DrawHairPickerCell(HairDefs[i], rect4.ContractedBy(3f));
+            }
+
+            GUI.EndGroup();
+            Widgets.EndScrollView();
         }
 
         private void DrawTypeSelector(Rect rect)
@@ -1850,18 +1940,6 @@
             GUI.color = Color.white;
         }
 
-        private bool skinPage = true;
-
-        private float wrinkles;
-
-        private Vector2 pickerPosition = Vector2.zero;
-
-        private Vector2 pickerSize = new Vector2(200, 200);
-
-        private bool gear;
-
-        private static List<string> currentFilter;
-
         private void DrawUI(Rect rect)
         {
             GUI.BeginGroup(rect);
@@ -1874,11 +1952,7 @@
 
             float width = rect.width - ListWidth - MarginFS;
 
-            Rect button = new Rect(
-                0f,
-                labelRect.yMax + MarginFS / 2,
-                (width - MarginFS) / 2,
-                SelectionRowHeight);
+            Rect button = new Rect(0f, labelRect.yMax + MarginFS / 2, (width - MarginFS) / 2, SelectionRowHeight);
             Rect mainRect = new Rect(0f, button.yMax + MarginFS, width, 65f);
             if (Widgets.ButtonText(button, "FacialStuffEditor.SkinSettings".Translate()))
             {
@@ -1901,8 +1975,7 @@
 
             float height = rect.height - MarginFS * 3 - TitleHeight;
 
-            Rect listRect = new Rect(0f, TitleHeight, ListWidth, height);
-            listRect.x = mainRect.xMax + MarginFS;
+            Rect listRect = new Rect(0f, TitleHeight, ListWidth, height) { x = mainRect.xMax + MarginFS };
 
             mainRect.yMax = listRect.yMax;
 
@@ -2031,121 +2104,6 @@
             GUI.EndGroup();
         }
 
-        public override void PostClose()
-        {
-            base.PostClose();
-            pawn.Drawer.renderer.graphics.ResolveAllGraphics();
-        }
-
-        private void DrawHairColorSelector(Rect rect)
-        {
-            Widgets.DrawBoxSolid(rect, new Color(0.3f, 0.3f, 0.3f));
-            Rect contractedBy = rect.ContractedBy(MarginFS / 2);
-
-            Rect set = new Rect(contractedBy);
-            int colorFields = 7;
-            int colorRows = 4;
-
-            set.width = contractedBy.width / colorFields;
-            set.height = Mathf.Min(set.width, contractedBy.height / (colorRows + 3));
-
-            float euMelanin = this.faceComp.PawnFace.EuMelanin;
-
-            int num = 0;
-            for (int y = 0; y < colorRows; y++)
-            {
-                for (int x = 0; x < colorFields; x++)
-                {
-                    float pheoMelanin = (float)num / ((colorFields * colorRows) - 1);
-                    HairColorRequest request = new HairColorRequest(
-                        pheoMelanin,
-                        euMelanin,
-                        this.faceComp.PawnFace.Greyness);
-
-                    this.DrawHairColorPickerCell(
-                        HairMelanin.GetHairColor(request),
-                        set.ContractedBy(2f),
-                        "FacialStuffEditor.Pheomelanin".Translate() + " - " + pheoMelanin.ToString("N2"),
-                        request);
-                    set.x += set.width;
-                    num++;
-                }
-
-                set.x = contractedBy.x;
-                set.y += set.height;
-            }
-
-            set.y += set.height / 4;
-            set.width = contractedBy.width / HairMelanin.ArtificialHairColors.Count;
-
-            foreach (Color color in HairMelanin.ArtificialHairColors)
-            {
-                this.DrawHairColorPickerCell(color, set.ContractedBy(3f), color.ToString());
-                set.x += set.width;
-            }
-
-            set.x = contractedBy.x;
-            float col = contractedBy.width / 9;
-
-            set.width = col * 4;
-            set.y += 1.5f * set.height;
-
-            // this.faceComp.PawnFace.PheoMelanin =
-            // Widgets.HorizontalSlider(set, this.faceComp.PawnFace.PheoMelanin, 0f, 1f);
-            // set.y += 30f;
-            // this.faceComp.PawnFace.EuMelanin =
-            // Widgets.HorizontalSlider(set, this.faceComp.PawnFace.EuMelanin, 0f, 1f);
-            // set.y += 30f;
-            euMelanin = Widgets.HorizontalSlider(
-                set,
-                euMelanin,
-                0,
-                1f,
-                false,
-                "FacialStuffEditor.Eumelanin".Translate(),
-                "0",
-                "1");
-
-            set.x += set.width + col;
-
-            float grey = this.faceComp.PawnFace.Greyness;
-            grey = Widgets.HorizontalSlider(
-                set,
-                grey,
-                HairMelanin.greyRange.min,
-                HairMelanin.greyRange.max,
-                false,
-                "FacialStuffEditor.Greyness".Translate(),
-                "0",
-                "1");
-
-
-
-            if (GUI.changed)
-            {
-                bool update = false;
-
-                if (Math.Abs(this.faceComp.PawnFace.EuMelanin - euMelanin) > 0.001f)
-                {
-                    this.faceComp.PawnFace.EuMelanin = euMelanin;
-                    update = true;
-                }
-
-                if (Math.Abs(this.faceComp.PawnFace.Greyness - grey) > 0.001f)
-                {
-                    this.faceComp.PawnFace.Greyness = grey;
-                    update = true;
-                }
-
-                if (update)
-                {
-                    this.RemoveColorPicker();
-
-                    this.NewHairColor = this.faceComp.PawnFace.GetCurrentHairColor();
-                }
-            }
-        }
-
         private Graphic HairGraphic(HairDef def)
         {
             Graphic result;
@@ -2193,14 +2151,22 @@
         {
             string path = this.faceComp.GetMoustachePath(def);
 
-            Graphic_Multi_NaturalHeadParts result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                        path,
-                                                        ShaderDatabase.Cutout,
-                                                        new Vector2(38f, 38f),
-                                                        Color.white,
-                                                        Color.white) as Graphic_Multi_NaturalHeadParts;
+            Graphic_Multi_NaturalHeadParts result =
+                GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    path,
+                    ShaderDatabase.Cutout,
+                    new Vector2(38f, 38f),
+                    Color.white,
+                    Color.white) as Graphic_Multi_NaturalHeadParts;
 
             return result;
+        }
+
+        private void RemoveColorPicker()
+        {
+            while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker), false))
+            {
+            }
         }
 
         // ReSharper disable once MethodTooLong
@@ -2227,7 +2193,7 @@
             pawn.story.crownType = this.originalCrownType;
             pawn.ageTracker.AgeBiologicalTicks = this.originalAgeBio;
             pawn.ageTracker.AgeChronologicalTicks = this.originalAgeChrono;
-            this.faceComp.PawnFace.wrinkles = this.wrinkles;
+            this.faceComp.PawnFace.wrinkleIntensity = this.wrinkles;
 
             this.reInit = false;
             this.rerenderPawn = true;
@@ -2279,9 +2245,8 @@
             }
             else if (sender is HeadTypeSelectionDTO)
             {
-                typeof(Pawn_StoryTracker).GetField(
-                    "headGraphicPath",
-                    BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pawn.story, value);
+                typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .SetValue(pawn.story, value);
                 pawn.story.crownType = (CrownType)value2;
             }
             else if (sender is SliderWidgetDTO)
@@ -2351,11 +2316,13 @@
 
         #endregion Private Methods
 
+        // private void CheckSelectedFacePresetHasName()
+        // }
+        // }
+        // SelectedFacePreset.label = "Unnamed";
         // {
         // if (SelectedFacePreset != null && SelectedFacePreset.label.NullOrEmpty())
+
         // {
-        // SelectedFacePreset.label = "Unnamed";
-        // }
-        // }
     }
 }

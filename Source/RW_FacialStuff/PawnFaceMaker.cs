@@ -368,7 +368,6 @@
             return source.RandomElementByWeight(brow => BrowChoiceLikelihoodFor(brow, pawn));
         }
 
-
         public static EyeDef RandomEyeDefFor(Pawn pawn,
                                             FactionDef factionType)
         {
@@ -399,7 +398,6 @@
             {
                 return 30f;
             }
-
 
             switch (beard.hairGender)
             {
@@ -460,7 +458,7 @@
             }
         }
 
-        private static float BrowChoiceLikelihoodFor(BrowDef brow, Pawn pawn)
+        private static float BrowChoiceLikelihoodFor(BrowDef brow, [NotNull] Pawn pawn)
         {
             if (pawn.gender == Gender.None)
             {
@@ -495,7 +493,7 @@
             return 0f;
         }
 
-        private static float EyeChoiceLikelihoodFor(EyeDef eye, Pawn pawn)
+        private static float EyeChoiceLikelihoodFor(EyeDef eye, [NotNull] Pawn pawn)
         {
             if (pawn.gender == Gender.None)
             {
@@ -530,7 +528,6 @@
             return 0f;
         }
 
-
         private static MoustacheDef MoustacheRoulette(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<MoustacheDef> source = from moustache in DefDatabase<MoustacheDef>.AllDefs
@@ -558,7 +555,6 @@
                 return 0f;
             }
 
-
             switch (tache.hairGender)
             {
                 case HairGender.Male: return 70f;
@@ -570,6 +566,5 @@
         }
 
         #endregion Private Methods
-
     }
 }

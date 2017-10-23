@@ -1,18 +1,13 @@
 ﻿namespace FacialStuff.Animator
 {
-    using System.Collections.Generic;
-
     using JetBrains.Annotations;
-
+    using System.Collections.Generic;
     using Verse;
     using Verse.AI;
 
     public class PawnHeadRotator
     {
-        public PawnHeadRotator(Pawn p)
-        {
-            this.pawn = p;
-        }
+        #region Public Fields
 
         public readonly SimpleCurve MotionCurve =
             new SimpleCurve
@@ -23,16 +18,34 @@
                     new CurvePoint(360f, 0f)
                 };
 
-        private Pawn pawn;
+        #endregion Public Fields
 
-        private int nextRotation = -5000;
-        private int nextRotationEnd = -5000;
-
-        private RotationDirection rotationMod;
+        #region Private Fields
 
         private int headRotation = 0;
 
+        private int nextRotation = -5000;
+
+        private int nextRotationEnd = -5000;
+
+        private Pawn pawn;
+
+        private RotationDirection rotationMod;
+
         private Thing target;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
+        public PawnHeadRotator(Pawn p)
+        {
+            this.pawn = p;
+        }
+
+        #endregion Public Constructors
+
+        #region Public Properties
 
         public float CurrentMovement
         {
@@ -40,8 +53,133 @@
             {
                 return this.MotionCurve.Evaluate(this.headRotation);
             }
-
         }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public void FaceHead()
+        {
+            if (this.target == null)
+            {
+                this.FindClosestTarget();
+            }
+
+            if (this.target != null)
+            {
+                // if (random)
+                // {
+                //     if (target is Pawn p && p.GetComp<CompFace>() != null)
+                //     {
+                //         // Log.Message(p + " look back at " + this.pawn);
+                //         p.GetComp<CompFace>().HeadRotator.LookAtPawn(this.pawn);
+                //     }
+                // }
+                float angle = (this.target.Position - this.pawn.Position).ToVector3().AngleFlat();
+                Rot4 rot = PawnRotator.RotFromAngleBiased(angle);
+                if (rot != this.pawn.Rotation.Opposite)
+                {
+                    int rotty = this.pawn.Rotation.AsInt - rot.AsInt;
+                    switch (rotty)
+                    {
+                        case 0:
+                            this.rotationMod = RotationDirection.None;
+                            break;
+
+                        case -1:
+                            this.rotationMod = RotationDirection.Clockwise;
+                            break;
+
+                        case 1:
+                            this.rotationMod = RotationDirection.Counterclockwise;
+                            break;
+                    }
+                    //  Log.Message(this.pawn + " now watching " + target.GetThingList(this.pawn.Map));
+                    return;
+                }
+            }
+
+            // Make them smile.
+            // if (this.pawn.pather.Moving)
+            // {
+            //     this.rotationMod = RotationDirection.None;
+            //     return;
+            // }
+            this.rotationMod = RotationDirection.None;
+        }
+
+        public void LookAtPawn(Thing t)
+        {
+            this.target = t;
+            this.FaceHead();
+            this.SetNextRotation(Find.TickManager.TicksGame + 720);
+            // Log.Message(this.pawn + " look at " + p);
+        }
+
+        public Rot4 Rotation(Rot4 headFacing, bool renderBody)
+        {
+            Rot4 rot = headFacing;
+            bool flag = false;
+            if (renderBody)
+            {
+                flag = true;
+            }
+            else if (!rot.IsHorizontal)
+            {
+                flag = true;
+            }
+
+            if (flag)
+            {
+                rot.Rotate(this.rotationMod);
+            }
+            return rot;
+        }
+
+        public void RotatorTick()
+        {
+            if (!Controller.settings.UseHeadRotator)
+            {
+                return;
+            }
+
+            int tickManagerTicksGame = Find.TickManager.TicksGame;
+
+            this.headRotation++;
+            if (this.headRotation > 360)
+            {
+                this.headRotation = 0;
+            }
+
+            if (tickManagerTicksGame > this.nextRotationEnd)
+            {
+                // Stop tracking after a while
+                this.target = null;
+
+                // Set upnext blinking cycle
+                this.SetNextRotation(tickManagerTicksGame);
+
+                // if (GenAI.InDangerousCombat(this.pawn))
+                // {
+                //     this.rotationMod = RotationDirection.None;
+                //     return;
+                // }
+                this.FaceHead();
+            }
+            else
+            {
+                if (tickManagerTicksGame % 10 == 0)
+                {
+                    this.TrackHead();
+                }
+            }
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
         // Verse.AI.GenAI
         private bool EnemyIsNear([NotNull] Pawn p, float radius)
         {
@@ -143,42 +281,11 @@
                 }
             }
         }
-
-
-        public void RotatorTick()
+        private void SetNextRotation(int tickManagerTicksGame)
         {
+            float blinkDuration = Rand.Range(120f, 240f);
 
-            int tickManagerTicksGame = Find.TickManager.TicksGame;
-
-            this.headRotation++;
-            if (this.headRotation > 360)
-            {
-                this.headRotation = 0;
-            }
-
-            if (tickManagerTicksGame > this.nextRotationEnd)
-            {
-                // Stop tracking after a while
-                this.target = null;
-
-                // Set upnext blinking cycle
-                this.SetNextRotation(tickManagerTicksGame);
-
-                // if (GenAI.InDangerousCombat(this.pawn))
-                // {
-                //     this.rotationMod = RotationDirection.None;
-                //     return;
-                // }
-                this.FaceHead();
-            }
-            else
-            {
-                if (tickManagerTicksGame % 10 == 0)
-                {
-                    this.TrackHead();
-                }
-            }
-
+            this.nextRotationEnd = (int)(tickManagerTicksGame + blinkDuration);
         }
 
         private void TrackHead()
@@ -189,89 +296,6 @@
             }
         }
 
-        public void FaceHead()
-        {
-            bool random = false;
-            if (this.target == null)
-            {
-                random = true;
-                this.FindClosestTarget();
-            }
-
-            if (this.target != null)
-            {
-               // if (random)
-               // {
-               //     if (target is Pawn p && p.GetComp<CompFace>() != null)
-               //     {
-               //         // Log.Message(p + " look back at " + this.pawn);
-               //         p.GetComp<CompFace>().HeadRotator.LookAtPawn(this.pawn);
-               //     }
-               // }
-                float angle = (this.target.Position - this.pawn.Position).ToVector3().AngleFlat();
-                Rot4 rot = PawnRotator.RotFromAngleBiased(angle);
-                if (rot != this.pawn.Rotation.Opposite)
-                {
-                    int rotty = this.pawn.Rotation.AsInt - rot.AsInt;
-                    switch (rotty)
-                    {
-                        case 0:
-                            this.rotationMod = RotationDirection.None;
-                            break;
-                        case -1:
-                            this.rotationMod = RotationDirection.Clockwise;
-                            break;
-                        case 1:
-                            this.rotationMod = RotationDirection.Counterclockwise;
-                            break;
-                    }
-                    //  Log.Message(this.pawn + " now watching " + target.GetThingList(this.pawn.Map));
-                    return;
-                }
-            }
-
-            // Make them smile.
-            // if (this.pawn.pather.Moving)
-            // {
-            //     this.rotationMod = RotationDirection.None;
-            //     return;
-            // }
-            this.rotationMod = RotationDirection.None;
-        }
-
-        public void LookAtPawn(Thing t)
-        {
-            this.target = t;
-            this.FaceHead();
-            this.SetNextRotation(Find.TickManager.TicksGame + 720);
-            // Log.Message(this.pawn + " look at " + p);
-        }
-
-        private void SetNextRotation(int tickManagerTicksGame)
-        {
-            float blinkDuration = Rand.Range(120f, 240f);
-
-            this.nextRotationEnd = (int)(tickManagerTicksGame + blinkDuration);
-        }
-
-        public Rot4 Rotation(Rot4 headFacing, bool renderBody)
-        {
-            Rot4 rot = headFacing;
-            bool flag = false;
-            if (renderBody)
-            {
-                flag = true;
-            }
-            else if (!rot.IsHorizontal)
-            {
-                flag = true;
-            }
-
-            if (flag)
-            {
-                rot.Rotate(this.rotationMod);
-            }
-            return rot;
-        }
+        #endregion Private Methods
     }
 }

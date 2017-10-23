@@ -1,5 +1,7 @@
 ﻿namespace FacialStuff.Graphics
 {
+    using System.Collections.Generic;
+
     using UnityEngine;
 
     using Verse;
@@ -8,14 +10,13 @@
     public static class FaceTextures
     {
         #region Public Fields
-        public static readonly Texture2D gradient = ContentFinder<Texture2D>.Get("UI/gradient");
+        public static readonly Texture2D backgroundTex = ContentFinder<Texture2D>.Get("UI/gradient");
 
 
         public static readonly Texture2D BlankTexture;
         public static readonly Color SkinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
         public static readonly Texture2D MaskTex_Average_FrontBack;
-
 
         public static readonly Texture2D MaskTex_Narrow_Side;
 
@@ -88,6 +89,7 @@
 
             // Release the temporary RenderTexture
             RenderTexture.ReleaseTemporary(tmp);
+
             return myTexture2D;
 
             // "myTexture2D" now has the same pixels from "texture" and it's readable.

@@ -1,6 +1,5 @@
 ﻿namespace FacialStuff
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -14,16 +13,14 @@
     using RimWorld;
 
     using UnityEngine;
+
     using Verse;
 
     public class CompFace : ThingComp
     {
+
         #region Public Fields
 
-        public bool PawnFaceIsNull()
-        {
-            return this.pawnFace == null;
-        }
         public bool DontRender;
 
         [NotNull]
@@ -33,10 +30,10 @@
 
         public bool IsChild;
 
-        [CanBeNull]
-        public Pawn pawn;
-
         public Faction originFaction;
+
+        [NotNull]
+        public Pawn pawn;
 
         public bool Roofed;
 
@@ -52,8 +49,6 @@
         // old, remove 0.18
         private BrowDef BrowDef;
 
-        private CrownTypeChecker crownTypeChecker;
-
         // old, remove 0.18
         private EyeDef EyeDef;
 
@@ -65,6 +60,7 @@
         private float factionMelanin;
 
         [NotNull]
+        // ReSharper disable once NotNullMemberIsNotInitialized
         private DamageFlasher flasher;
 
         private Color hairColor;
@@ -80,6 +76,7 @@
         private HumanMouthGraphics mouthgraphic;
 
         private Vector2 mouthOffset = Vector2.zero;
+
         // must be null, always initialize with pawn
         [CanBeNull]
         private PawnFace pawnFace;
@@ -364,7 +361,7 @@
         [CanBeNull]
         public Material BeardMatAt(Rot4 facing)
         {
-            if (this.pawn.gender != Gender.Male || this.PawnFace.BeardDef == BeardDefOf.Beard_Shaved || !this.hasNaturalJaw)
+            if (this.pawn.gender != Gender.Male || this.PawnFace?.BeardDef == BeardDefOf.Beard_Shaved || !this.hasNaturalJaw)
             {
                 return null;
             }
@@ -398,11 +395,6 @@
             return "Brows/Brow_" + this.pawn.gender + "_" + browDef.texPath;
         }
 
-        private void CheckForAddedOrMissingParts()
-        {
-            this.CheckForAddedOrMissingParts(this.parent as Pawn);
-        }
-
         // Can be called externally
         public void CheckForAddedOrMissingParts(Pawn p)
         {
@@ -414,7 +406,7 @@
             this.pawn = p;
 
             // no head => no face
-            if (this.pawn == null || !this.pawn.health.hediffSet.HasHead)
+            if (!this.pawn?.health.hediffSet.HasHead != true)
             {
                 return;
             }
@@ -428,8 +420,10 @@
                 return;
             }
 
+            // ReSharper disable once AssignNullToNotNullAttribute
             foreach (Hediff diff in hediffs.Where(diff => diff?.def?.defName != null))
             {
+                // ReSharper disable once AssignNullToNotNullAttribute
                 this.CheckPart(body, diff);
             }
         }
@@ -456,13 +450,6 @@
 
             return material;
         }
-
-        // TODO: Remove or make usable
-        // public void DefineSkinDNA()
-        // {
-        // HairMelanin.SkinGenetics(this.pawn, this, out this.factionMelanin);
-        // this.IsSkinDNAoptimized = true;
-        // }
 
         [CanBeNull]
         public Material EyeLeftMatAt(Rot4 facing, bool portrait)
@@ -498,6 +485,12 @@
             return material;
         }
 
+        // TODO: Remove or make usable
+        // public void DefineSkinDNA()
+        // {
+        // HairMelanin.SkinGenetics(this.pawn, this, out this.factionMelanin);
+        // this.IsSkinDNAoptimized = true;
+        // }
         [CanBeNull]
         public Material EyeLeftPatchMatAt(Rot4 facing)
         {
@@ -626,8 +619,7 @@
                 return null;
             }
 
-            Material material = null;
-            material = this.faceGraphicPart.MoustacheGraphic?.MatAt(facing);
+            Material material = this.faceGraphicPart.MoustacheGraphic?.MatAt(facing);
 
             if (material != null)
             {
@@ -687,10 +679,13 @@
             return material;
         }
 
+        public bool PawnFaceIsNull()
+        {
+            return this.pawnFace == null;
+        }
         public override void PostDraw()
         {
             base.PostDraw();
-
 
             // Children & Pregnancy || Werewolves transformed
             if (this.pawn?.Map == null || !this.pawn.Spawned || this.pawn.Dead || this.IsChild || this.DontRender)
@@ -712,29 +707,17 @@
             //     return;
             // }
 
-            if (Controller.settings.MakeThemBlink)
-            {
-                this.eyeWiggler.WigglerTick();
-            }
+            this.eyeWiggler.WigglerTick();
 
-            if (Controller.settings.UseHeadRotator)
+            if (!this.eyeWiggler.IsAsleep)
             {
-                if (!this.eyeWiggler.IsAsleep)
-                {
-                    this.headRotator.RotatorTick();
-                }
+                this.headRotator.RotatorTick();
             }
 
             // Low-prio stats
             if (Find.TickManager.TicksGame % 30 == 0)
             {
-                if (Controller.settings.UseMouth)
-                {
-                    if (this.hasNaturalJaw)
-                    {
-                        this.SetMouthAccordingToMoodLevel();
-                    }
-                }
+                this.SetMouthAccordingToMoodLevel();
             }
         }
 
@@ -767,16 +750,16 @@
         }
 
         /// <summary>
-        ///     Basic pawn initialization.
+        /// Basic pawn initialization.
         /// </summary>
-        /// <returns>Success if all initialized.</returns>
-        public bool SetHeadType([CanBeNull] Pawn p)
+        /// <param name="p">
+        /// The pawn.
+        /// </param>
+        /// <returns>
+        /// Success if all initialized.
+        /// </returns>
+        public bool SetHeadType([NotNull] Pawn p)
         {
-            if (p == null)
-            {
-                return false;
-            }
-
             this.pawn = p;
 
             if (this.originFaction == null)
@@ -784,8 +767,7 @@
                 this.originFaction = this.pawn.Faction ?? Faction.OfPlayer;
             }
 
-
-            if (this.pawnFace == null)
+            if (this.PawnFace == null)
             {
                 this.SetPawnFace(new PawnFace(this.pawn, this.originFaction.def));
 
@@ -824,13 +806,10 @@
 
             // ReSharper disable once PossibleNullReferenceException
             this.ResetBoolsAndPaths();
-
-            {
-                this.CheckForAddedOrMissingParts();
-            }
+            this.CheckForAddedOrMissingParts();
 
             // Only for the crowntype ...
-            this.crownTypeChecker = new CrownTypeChecker(this);
+           CrownTypeChecker.SetHeadOffsets(this.pawn, this);
 
             return true;
         }
@@ -868,6 +847,10 @@
 
         #region Private Methods
 
+        private void CheckForAddedOrMissingParts()
+        {
+            this.CheckForAddedOrMissingParts(this.parent as Pawn);
+        }
         private void CheckPart([NotNull] List<BodyPartRecord> body, [NotNull] Hediff hediff)
         {
             if (body.NullOrEmpty() || hediff.def == null)
@@ -1081,7 +1064,7 @@
                 // texture for added/extra part not found, log and default
                 Log.Message(
                     "Facial Stuff: No texture for added part: " + this.texPathJawAddedPart
-                    + " - Graphic_Multi_NaturalHeadParts");
+                    + " - Graphic_Multi_NaturalHeadParts. This is not an error, just an info.");
             }
 
             this.hasNaturalJaw = true;
@@ -1093,7 +1076,7 @@
         {
             Color wrinkleColor = this.pawn.story.SkinColor * new Color(0.1f, 0.1f, 0.1f);
 
-            wrinkleColor.a = this.PawnFace.wrinkles;
+            wrinkleColor.a = this.PawnFace.wrinkleIntensity;
 
             WrinkleDef pawnFaceWrinkleDef = this.PawnFace.WrinkleDef;
 
@@ -1112,14 +1095,17 @@
 
         private void ResetBoolsAndPaths()
         {
-            if (this.PawnFace.EyeDef == null)
+            // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
             {
-                SetPawnFace(new PawnFace(this.pawn, Faction.OfPlayer.def));
-            }
+                if (this.PawnFace?.EyeDef == null)
+                {
+                    SetPawnFace(new PawnFace(this.pawn, Faction.OfPlayer.def));
+                }
 
-            if (this.PawnFace.BrowDef == null)
-            {
-                this.PawnFace.BrowDef = PawnFaceMaker.RandomBrowDefFor(this.pawn, Faction.OfPlayer.def);
+                if (this.PawnFace.BrowDef == null)
+                {
+                    this.PawnFace.BrowDef = PawnFaceMaker.RandomBrowDefFor(this.pawn, Faction.OfPlayer.def);
+                }
             }
 
             this.texPathEyeLeftPatch = null;
@@ -1136,14 +1122,20 @@
             this.eyeWiggler.EyeLeftCanBlink = true;
             this.eyeWiggler.EyeRightCanBlink = true;
 
-
             this.texPathBrow = this.BrowTexPath(this.PawnFace.BrowDef);
         }
 
-
-
         private void SetMouthAccordingToMoodLevel()
         {
+            if (this.pawn == null)
+            {
+                return;
+            }
+            if (!Controller.settings.UseMouth || !this.hasNaturalJaw)
+            {
+                return;
+            }
+
             if (this.pawn.health.InPainShock && !this.eyeWiggler.IsAsleep)
             {
                 if (this.eyeWiggler.EyeRightBlinkNow && this.eyeWiggler.EyeLeftBlinkNow)

@@ -115,7 +115,11 @@ namespace FacialStuff.Animator
 
         public void WigglerTick()
         {
-            int tickManagerTicksGame = Find.TickManager.TicksGame;
+            if (!Controller.settings.MakeThemBlink)
+            {
+                return;
+            }
+                int tickManagerTicksGame = Find.TickManager.TicksGame;
 
             float x = Mathf.InverseLerp(this.lastBlinkended, this.nextBlink, tickManagerTicksGame);
             float movePixel = 0f;

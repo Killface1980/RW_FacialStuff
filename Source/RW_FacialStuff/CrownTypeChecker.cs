@@ -2,132 +2,126 @@ namespace FacialStuff
 {
     using FacialStuff.Enums;
 
+    using JetBrains.Annotations;
+
     using Verse;
 
-    public class CrownTypeChecker
+    public static class CrownTypeChecker
     {
-        private CompFace compFace;
-
-        public CrownTypeChecker(CompFace compFace)
+        public static void SetHeadOffsets([NotNull] Pawn p, CompFace compFace)
         {
-            this.compFace = compFace;
-            this.SetHeadOffsets();
-        }
-
-        private void SetHeadOffsets()
-        {
-            switch (this.compFace.pawn.gender)
+            switch (p.gender)
             {
                 case Gender.Male:
-                    this.CheckMaleCrownType();
+                    CheckMaleCrownType(compFace);
                     break;
 
                 case Gender.Female:
-                    this.CheckFemaleCrownType();
+                    CheckFemaleCrownType(compFace);
                     break;
 
                 default:
-                    this.compFace.FullHeadType = FullHead.MaleAverageNormal;
+                    compFace.FullHeadType = FullHead.MaleAverageNormal;
                     break;
             }
         }
 
-        private void CheckFemaleCrownType()
+        private static void CheckFemaleCrownType(CompFace compFace)
         {
-            switch (this.compFace.PawnCrownType)
+            switch (compFace.PawnCrownType)
             {
                 case CrownType.Average:
-                    this.CheckFemaleCrownTypeAverage();
+                    CheckFemaleCrownTypeAverage(compFace);
                     break;
 
                 case CrownType.Narrow:
-                    this.CheckFemaleCrownTypeNarrow();
+                    CheckFemaleCrownTypeNarrow(compFace);
                     break;
             }
         }
 
-        private void CheckFemaleCrownTypeAverage()
+        private static void CheckFemaleCrownTypeAverage(CompFace compFace)
         {
-            switch (this.compFace.PawnHeadType)
+            switch (compFace.PawnHeadType)
             {
                 case HeadType.Normal:
-                    this.compFace.FullHeadType = FullHead.FemaleAverageNormal;
+                    compFace.FullHeadType = FullHead.FemaleAverageNormal;
                     break;
 
                 case HeadType.Pointy:
-                    this.compFace.FullHeadType = FullHead.FemaleAveragePointy;
+                    compFace.FullHeadType = FullHead.FemaleAveragePointy;
                     break;
 
                 case HeadType.Wide:
-                    this.compFace.FullHeadType = FullHead.FemaleAverageWide;
+                    compFace.FullHeadType = FullHead.FemaleAverageWide;
                     break;
             }
         }
 
-        private void CheckFemaleCrownTypeNarrow()
+        private static void CheckFemaleCrownTypeNarrow(CompFace compFace)
         {
-            switch (this.compFace.PawnHeadType)
+            switch (compFace.PawnHeadType)
             {
                 case HeadType.Normal:
-                    this.compFace.FullHeadType = FullHead.FemaleNarrowNormal;
+                    compFace.FullHeadType = FullHead.FemaleNarrowNormal;
                     break;
 
                 case HeadType.Pointy:
-                    this.compFace.FullHeadType = FullHead.FemaleNarrowPointy;
+                    compFace.FullHeadType = FullHead.FemaleNarrowPointy;
                     break;
 
                 case HeadType.Wide:
-                    this.compFace.FullHeadType = FullHead.FemaleNarrowWide;
+                    compFace.FullHeadType = FullHead.FemaleNarrowWide;
                     break;
             }
         }
 
-        private void CheckMaleCrownType()
+        private static void CheckMaleCrownType(CompFace compFace)
         {
-            switch (this.compFace.PawnCrownType)
+            switch (compFace.PawnCrownType)
             {
                 case CrownType.Average:
-                    this.CheckMaleCrownTypeAverage();
+                    CheckMaleCrownTypeAverage(compFace);
                     break;
 
                 case CrownType.Narrow:
-                    this.CheckMaleCrownTypeNarrow();
+                    CheckMaleCrownTypeNarrow(compFace);
                     break;
             }
         }
 
-        private void CheckMaleCrownTypeAverage()
+        private static void CheckMaleCrownTypeAverage(CompFace compFace)
         {
-            switch (this.compFace.PawnHeadType)
+            switch (compFace.PawnHeadType)
             {
                 case HeadType.Normal:
-                    this.compFace.FullHeadType = FullHead.MaleAverageNormal;
+                    compFace.FullHeadType = FullHead.MaleAverageNormal;
                     break;
 
                 case HeadType.Pointy:
-                    this.compFace.FullHeadType = FullHead.MaleAveragePointy;
+                    compFace.FullHeadType = FullHead.MaleAveragePointy;
                     break;
 
                 case HeadType.Wide:
-                    this.compFace.FullHeadType = FullHead.MaleAverageWide;
+                    compFace.FullHeadType = FullHead.MaleAverageWide;
                     break;
             }
         }
 
-        private void CheckMaleCrownTypeNarrow()
+        private static void CheckMaleCrownTypeNarrow(CompFace compFace)
         {
-            switch (this.compFace.PawnHeadType)
+            switch (compFace.PawnHeadType)
             {
                 case HeadType.Normal:
-                    this.compFace.FullHeadType = FullHead.MaleNarrowNormal;
+                    compFace.FullHeadType = FullHead.MaleNarrowNormal;
                     break;
 
                 case HeadType.Pointy:
-                    this.compFace.FullHeadType = FullHead.MaleNarrowPointy;
+                    compFace.FullHeadType = FullHead.MaleNarrowPointy;
                     break;
 
                 case HeadType.Wide:
-                    this.compFace.FullHeadType = FullHead.MaleNarrowWide;
+                    compFace.FullHeadType = FullHead.MaleNarrowWide;
                     break;
             }
         }
