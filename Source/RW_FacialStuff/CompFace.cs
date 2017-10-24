@@ -809,7 +809,7 @@
             this.CheckForAddedOrMissingParts();
 
             // Only for the crowntype ...
-           CrownTypeChecker.SetHeadOffsets(this.pawn, this);
+            CrownTypeChecker.SetHeadOffsets(this.pawn, this);
 
             return true;
         }
