@@ -1,27 +1,25 @@
-﻿using UnityEngine;
-
-namespace FacialStuff
+﻿namespace FacialStuff
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     using FacialStuff.Defs;
     using FacialStuff.Enums;
     using FacialStuff.Graphics;
-
     using RimWorld;
-
+    using System.Collections.Generic;
+    using System.Linq;
+    using UnityEngine;
     using Verse;
 
     public class ITab_Pawn_Face : ITab
     {
-        private readonly string[] psiToolbarStrings =
-            {
-                "North",
-                "East",
-                "South",
-                "West"
-            };
+        private readonly string[] psiToolbarStrings = { "North", "East", "South", "West" };
+
+        private int rotationInt = 2;
+
+        public ITab_Pawn_Face()
+        {
+            this.labelKey = "TabFace";
+            this.tutorTag = "Face";
+        }
 
         public override bool IsVisible
         {
@@ -32,18 +30,10 @@ namespace FacialStuff
             }
         }
 
-        public ITab_Pawn_Face()
-        {
-            this.labelKey = "TabFace";
-            this.tutorTag = "Face";
-        }
-
         public override void OnOpen()
         {
             // this.thoughtScrollPosition = default(Vector2);
         }
-
-        private int rotationInt = 2;
 
         protected override void FillTab()
         {
@@ -59,7 +49,7 @@ namespace FacialStuff
 
             foreach (Pawn relatedPawn in this.SelPawn.relations.FamilyByBlood)
             {
-                Widgets.Label(pawnRect, relatedPawn.ToString() + " - " + this.SelPawn.GetRelations(relatedPawn).GetEnumerator());
+                Widgets.Label(pawnRect, relatedPawn + " - " + this.SelPawn.GetRelations(relatedPawn).GetEnumerator());
                 pawnRect.y += 24f;
             }
 
@@ -97,8 +87,10 @@ namespace FacialStuff
                             Settings.EyeMaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
                                 Settings.EyeMaleAverageNormalOffset.y,
                                 -0.2f,
-                                0.2f); GUILayout.Label(
-                                "MouthMaleAverageNormalOffset: " + Settings.MouthMaleAverageNormalOffset.ToString("N5"));
+                                0.2f);
+                            GUILayout.Label(
+                                "MouthMaleAverageNormalOffset: "
+                                + Settings.MouthMaleAverageNormalOffset.ToString("N5"));
                             Settings.MouthMaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
                                 Settings.MouthMaleAverageNormalOffset.x,
                                 -0.2f,
@@ -121,7 +113,8 @@ namespace FacialStuff
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
-                                "MouthFemaleAverageNormalOffset: " + Settings.MouthFemaleAverageNormalOffset.ToString("N5"));
+                                "MouthFemaleAverageNormalOffset: "
+                                + Settings.MouthFemaleAverageNormalOffset.ToString("N5"));
                             Settings.MouthFemaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
                                 Settings.MouthFemaleAverageNormalOffset.x,
                                 -0.2f,
@@ -130,7 +123,6 @@ namespace FacialStuff
                                 Settings.MouthFemaleAverageNormalOffset.y,
                                 -0.2f,
                                 0.2f);
-
                         }
 
                         break;
@@ -149,7 +141,8 @@ namespace FacialStuff
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
-                                "MouthMaleAveragePointyOffset: " + Settings.MouthMaleAveragePointyOffset.ToString("N5"));
+                                "MouthMaleAveragePointyOffset: "
+                                + Settings.MouthMaleAveragePointyOffset.ToString("N5"));
                             Settings.MouthMaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
                                 Settings.MouthMaleAveragePointyOffset.x,
                                 -0.2f,
@@ -158,7 +151,6 @@ namespace FacialStuff
                                 Settings.MouthMaleAveragePointyOffset.y,
                                 -0.2f,
                                 0.2f);
-
                         }
                         else
                         {
@@ -173,7 +165,8 @@ namespace FacialStuff
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
-                                "MouthFemaleAveragePointyOffset: " + Settings.MouthFemaleAveragePointyOffset.ToString("N5"));
+                                "MouthFemaleAveragePointyOffset: "
+                                + Settings.MouthFemaleAveragePointyOffset.ToString("N5"));
                             Settings.MouthFemaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
                                 Settings.MouthFemaleAveragePointyOffset.x,
                                 -0.2f,
@@ -191,16 +184,24 @@ namespace FacialStuff
                         {
                             GUILayout.Label(
                                 "MaleAverageWideOffset.x: " + Settings.EyeMaleAverageWideOffset.ToString("N5"));
-                            Settings.EyeMaleAverageWideOffset.x =
-                                GUILayout.HorizontalSlider(Settings.EyeMaleAverageWideOffset.x, -0.2f, 0.2f);
-                            Settings.EyeMaleAverageWideOffset.y =
-                                GUILayout.HorizontalSlider(Settings.EyeMaleAverageWideOffset.y, -0.2f, 0.2f);
+                            Settings.EyeMaleAverageWideOffset.x = GUILayout.HorizontalSlider(
+                                Settings.EyeMaleAverageWideOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.EyeMaleAverageWideOffset.y = GUILayout.HorizontalSlider(
+                                Settings.EyeMaleAverageWideOffset.y,
+                                -0.2f,
+                                0.2f);
                             GUILayout.Label(
                                 "MouthMaleAverageWideOffset.x: " + Settings.MouthMaleAverageWideOffset.ToString("N5"));
-                            Settings.MouthMaleAverageWideOffset.x =
-                                GUILayout.HorizontalSlider(Settings.MouthMaleAverageWideOffset.x, -0.2f, 0.2f);
-                            Settings.MouthMaleAverageWideOffset.y =
-                                GUILayout.HorizontalSlider(Settings.MouthMaleAverageWideOffset.y, -0.2f, 0.2f);
+                            Settings.MouthMaleAverageWideOffset.x = GUILayout.HorizontalSlider(
+                                Settings.MouthMaleAverageWideOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.MouthMaleAverageWideOffset.y = GUILayout.HorizontalSlider(
+                                Settings.MouthMaleAverageWideOffset.y,
+                                -0.2f,
+                                0.2f);
                         }
                         else
                         {
@@ -215,7 +216,8 @@ namespace FacialStuff
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
-                                "MouthFemaleAverageWideOffset: " + Settings.MouthFemaleAverageWideOffset.ToString("N5"));
+                                "MouthFemaleAverageWideOffset: "
+                                + Settings.MouthFemaleAverageWideOffset.ToString("N5"));
                             Settings.MouthFemaleAverageWideOffset.x = GUILayout.HorizontalSlider(
                                 Settings.MouthFemaleAverageWideOffset.x,
                                 -0.2f,
@@ -247,7 +249,8 @@ namespace FacialStuff
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
-                                "MouthMaleNarrowNormalOffset.x: " + Settings.MouthMaleNarrowNormalOffset.ToString("N5"));
+                                "MouthMaleNarrowNormalOffset.x: "
+                                + Settings.MouthMaleNarrowNormalOffset.ToString("N5"));
                             Settings.MouthMaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
                                 Settings.MouthMaleNarrowNormalOffset.x,
                                 -0.2f,
@@ -270,7 +273,8 @@ namespace FacialStuff
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
-                                "MouthFemaleNarrowNormalOffset: " + Settings.MouthFemaleNarrowNormalOffset.ToString("N5"));
+                                "MouthFemaleNarrowNormalOffset: "
+                                + Settings.MouthFemaleNarrowNormalOffset.ToString("N5"));
                             Settings.MouthFemaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
                                 Settings.MouthFemaleNarrowNormalOffset.x,
                                 -0.2f,
@@ -297,7 +301,8 @@ namespace FacialStuff
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
-                                "MouthMaleNarrowPointyOffset.x: " + Settings.MouthMaleNarrowPointyOffset.ToString("N5"));
+                                "MouthMaleNarrowPointyOffset.x: "
+                                + Settings.MouthMaleNarrowPointyOffset.ToString("N5"));
                             Settings.MouthMaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
                                 Settings.MouthMaleNarrowPointyOffset.x,
                                 -0.2f,
@@ -320,7 +325,8 @@ namespace FacialStuff
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
-                                "MouthFemaleNarrowPointyOffset: " + Settings.MouthFemaleNarrowPointyOffset.ToString("N5"));
+                                "MouthFemaleNarrowPointyOffset: "
+                                + Settings.MouthFemaleNarrowPointyOffset.ToString("N5"));
                             Settings.MouthFemaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
                                 Settings.MouthFemaleNarrowPointyOffset.x,
                                 -0.2f,
@@ -344,10 +350,14 @@ namespace FacialStuff
                                 GUILayout.HorizontalSlider(Settings.EyeMaleNarrowWideOffset.y, -0.2f, 0.2f);
                             GUILayout.Label(
                                 "MouthMaleNarrowWideOffset.x: " + Settings.MouthMaleNarrowWideOffset.ToString("N5"));
-                            Settings.MouthMaleNarrowWideOffset.x =
-                                GUILayout.HorizontalSlider(Settings.MouthMaleNarrowWideOffset.x, -0.2f, 0.2f);
-                            Settings.MouthMaleNarrowWideOffset.y =
-                                GUILayout.HorizontalSlider(Settings.MouthMaleNarrowWideOffset.y, -0.2f, 0.2f);
+                            Settings.MouthMaleNarrowWideOffset.x = GUILayout.HorizontalSlider(
+                                Settings.MouthMaleNarrowWideOffset.x,
+                                -0.2f,
+                                0.2f);
+                            Settings.MouthMaleNarrowWideOffset.y = GUILayout.HorizontalSlider(
+                                Settings.MouthMaleNarrowWideOffset.y,
+                                -0.2f,
+                                0.2f);
                         }
                         else
                         {
@@ -391,27 +401,29 @@ namespace FacialStuff
                 foreach (MouthDef current in DefDatabase<MouthDef>.AllDefs)
                 {
                     MouthDef localOut = current;
-                    list.Add(new FloatMenuOption(localOut.label,
-                        delegate
-                            {
-                                foreach (Pawn pawn in Find.VisibleMap.mapPawns.AllPawnsSpawned.Where(x => x.GetComp<CompFace>() != null))
+                    list.Add(
+                        new FloatMenuOption(
+                            localOut.label,
+                            delegate
                                 {
+                                    foreach (Pawn pawn in Find.VisibleMap.mapPawns.AllPawnsSpawned.Where(
+                                        x => x.GetComp<CompFace>() != null))
+                                    {
                                         Color color = Color.white;
-                                    CompFace face = pawn.GetComp<CompFace>();
-                                    face.faceGraphicPart.MouthGraphic =
-                                        GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                            current.texPath,
-                                            ShaderDatabase.CutoutSkin,
-                                            Vector2.one,
-                                            color) as Graphic_Multi_NaturalHeadParts;
-                                }
+                                        CompFace face = pawn.GetComp<CompFace>();
+                                        face.faceGraphicPart.MouthGraphic =
+                                            GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                                                current.texPath,
+                                                ShaderDatabase.CutoutSkin,
+                                                Vector2.one,
+                                                color) as Graphic_Multi_NaturalHeadParts;
+                                    }
 
-                                ;
-                            }));
+                                    ;
+                                }));
                 }
 
                 Find.WindowStack.Add(new FloatMenu(list));
-
             }
 
             GUILayout.EndArea();

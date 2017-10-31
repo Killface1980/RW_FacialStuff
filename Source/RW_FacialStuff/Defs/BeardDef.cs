@@ -4,22 +4,17 @@
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 // ReSharper disable InconsistentNaming
 // ReSharper disable CollectionNeverUpdated.Global
+
 namespace FacialStuff.Defs
 {
-    using System.Collections.Generic;
-
     using FacialStuff.Enums;
-
     using JetBrains.Annotations;
-
     using RimWorld;
-
+    using System.Collections.Generic;
     using Verse;
 
     public class BeardDef : Def
     {
-        #region Public Fields
-
         public BeardType beardType;
 
         public bool drawMouth;
@@ -32,7 +27,5 @@ namespace FacialStuff.Defs
 
         [NotNull]
         public string texPath;
-
-        #endregion Public Fields
     }
 }

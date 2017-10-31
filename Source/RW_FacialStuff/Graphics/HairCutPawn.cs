@@ -8,15 +8,9 @@
 
     public class HairCutPawn
     {
-        #region Public Fields
-
         public Graphic HairCutGraphic;
 
         public Pawn Pawn;
-
-        #endregion Public Fields
-
-        #region Public Methods
 
         [CanBeNull]
         public Material HairCutMatAt(Rot4 facing)
@@ -30,7 +24,5 @@
 
             return material;
         }
-
-        #endregion Public Methods
     }
 }

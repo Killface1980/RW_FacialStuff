@@ -1,19 +1,14 @@
 ﻿// ReSharper disable All
+
 namespace FacialStuff.ColorPicker
 {
-    using System;
-
     using global::FaceStyling;
-
+    using System;
     using UnityEngine;
-
     using Verse;
 
     public class Dialog_ColorPicker : Window
     {
-
-        #region Public Fields
-
         public int alphaBGBlockSize = 10;
 
         // the color we're going to pass out if requested
@@ -37,10 +32,6 @@ namespace FacialStuff.ColorPicker
 
         public Vector2 windowSize = Vector2.zero;
 
-        #endregion Public Fields
-
-        #region Private Fields
-
         private readonly bool _autoApply;
 
         private readonly Action _callback;
@@ -57,39 +48,29 @@ namespace FacialStuff.ColorPicker
 
         private Controls _activeControl = Controls.none;
 
-      
         private Texture2D _colorPickerBG;
 
         private float _H;
 
-      
         private string _hexIn;
 
-      
         private string _hexOut;
 
-      
         private Texture2D _huePickerBG;
 
         private float _huePosition;
 
         private Vector2 _pickerPosition = Vector2.zero;
 
-      
         private Texture2D _previewBG;
 
         private float _S = 1f;
 
-      
         private Texture2D _tempPreviewBG;
 
         private float _unitsPerPixel;
 
         private float _V = 1f;
-
-        #endregion Private Fields
-
-        #region Public Constructors
 
         /// <summary>
         ///     Call with a ColorWrapper object containing the color to be changed, with an optional callback which is called when
@@ -99,8 +80,8 @@ namespace FacialStuff.ColorPicker
         /// <param name="color"></param>
         /// <param name="callback"></param>
         public Dialog_ColorPicker(
-             ColorWrapper color,
-             Action callback = null,
+            ColorWrapper color,
+            Action callback = null,
             bool preview = true,
             bool autoApply = false)
         {
@@ -116,10 +97,6 @@ namespace FacialStuff.ColorPicker
             this.Notify_RGBUpdated();
         }
 
-        #endregion Public Constructors
-
-        #region Private Enums
-
         private enum Controls
         {
             colorPicker,
@@ -130,10 +107,6 @@ namespace FacialStuff.ColorPicker
 
             none
         }
-
-        #endregion Private Enums
-
-        #region Public Properties
 
         public float A
         {
@@ -185,7 +158,6 @@ namespace FacialStuff.ColorPicker
             }
         }
 
-
         public Texture2D PreviewBG
         {
             get
@@ -209,7 +181,6 @@ namespace FacialStuff.ColorPicker
                 this.Notify_HSVUpdated();
             }
         }
-
 
         public Texture2D TempPreviewBG
         {
@@ -259,16 +230,11 @@ namespace FacialStuff.ColorPicker
             }
         }
 
-        #endregion Public Properties
-
-        #region Public Methods
-
         public void Apply()
         {
             this._wrapper.Color = this.tempColor;
             this._callback?.Invoke();
         }
-
 
         public Texture2D CreatePreviewBG(Color col)
         {
@@ -480,7 +446,6 @@ namespace FacialStuff.ColorPicker
             this._pickerPosition.x = this._S / this.UnitsPerPixel;
             this._pickerPosition.y = (1f - this._V) / this.UnitsPerPixel;
 
-
             // set the color block and update hex fields
             this._tempPreviewBG = this.CreatePreviewBG(this.tempColor);
             if (this._preview)
@@ -579,10 +544,6 @@ namespace FacialStuff.ColorPicker
             this.windowRect.height = size.y;
         }
 
-        #endregion Public Methods
-
-        #region Private Methods
-
         private void CreateColorPickerBG()
         {
             if (this._colorPickerBG == null)
@@ -628,8 +589,5 @@ namespace FacialStuff.ColorPicker
 
             this._huePickerBG.Apply();
         }
-
-        #endregion Private Methods
-
     }
 }

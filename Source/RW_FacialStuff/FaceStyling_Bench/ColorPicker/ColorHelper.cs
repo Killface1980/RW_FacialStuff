@@ -31,8 +31,8 @@ namespace FacialStuff.ColorPicker
             int sel = Mathf.FloorToInt(Hval);
             float mod = Hval - sel;
             float v1 = V * (1f - S);
-            float v2 = V * (1f - (S * mod));
-            float v3 = V * (1f - (S * (1f - mod)));
+            float v2 = V * (1f - S * mod);
+            float v3 = V * (1f - S * (1f - mod));
             switch (sel + 1)
             {
                 case 0:
@@ -90,6 +90,18 @@ namespace FacialStuff.ColorPicker
             return col;
         }
 
+        public static string RGBtoHex(Color col)
+        {
+            // this is RGBA, which seems to be common in some parts.
+            // ARGB is also common, but oh well.
+            int r = (int)Mathf.Clamp(col.r * 256f, 0, 255);
+            int g = (int)Mathf.Clamp(col.g * 256f, 0, 255);
+            int b = (int)Mathf.Clamp(col.b * 256f, 0, 255);
+            int a = (int)Mathf.Clamp(col.a * 256f, 0, 255);
+
+            return "#" + r.ToString("X2") + g.ToString("X2") + b.ToString("X2") + a.ToString("X2");
+        }
+
         /// <summary>
         ///     From http://answers.unity3d.com/comments/865281/view.html
         /// </summary>
@@ -114,6 +126,44 @@ namespace FacialStuff.ColorPicker
                     RGBtoHSV_Helper(0f, rgbColor.r, rgbColor.g, rgbColor.b, out H, out S, out V);
                 }
             }
+        }
+
+        /// <summary>
+        ///     Attempt to get a numerical representation of an RGB(A) hexademical color string.
+        /// </summary>
+        /// <param name="hex">7 or 9 long string (including hashtag)</param>
+        /// <param name="col">updated with the parsed color on succes</param>
+        /// <returns>bool success</returns>
+        public static bool TryHexToRGB(string hex, ref Color col)
+        {
+            Color clr = new Color(0, 0, 0);
+            if (hex == null || hex.Length != 9 && hex.Length != 7)
+            {
+                return false;
+            }
+
+            try
+            {
+                string str = hex.Substring(1, hex.Length - 1);
+                clr.r = int.Parse(str.Substring(0, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
+                clr.g = int.Parse(str.Substring(2, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
+                clr.b = int.Parse(str.Substring(4, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
+                if (str.Length == 8)
+                {
+                    clr.a = int.Parse(str.Substring(6, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
+                }
+                else
+                {
+                    clr.a = 1.0f;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            col = clr;
+            return true;
         }
 
         // From http://answers.unity3d.com/comments/865281/view.html
@@ -143,7 +193,7 @@ namespace FacialStuff.ColorPicker
                 if (num2 != 0f)
                 {
                     S = num2 / V;
-                    H = offset + ((colorone - colortwo) / num2);
+                    H = offset + (colorone - colortwo) / num2;
                 }
                 else
                 {
@@ -162,56 +212,6 @@ namespace FacialStuff.ColorPicker
                 S = 0f;
                 H = 0f;
             }
-        }
-
-        public static string RGBtoHex(Color col)
-        {
-            // this is RGBA, which seems to be common in some parts.
-            // ARGB is also common, but oh well.
-            int r = (int)Mathf.Clamp(col.r * 256f, 0, 255);
-            int g = (int)Mathf.Clamp(col.g * 256f, 0, 255);
-            int b = (int)Mathf.Clamp(col.b * 256f, 0, 255);
-            int a = (int)Mathf.Clamp(col.a * 256f, 0, 255);
-
-            return "#" + r.ToString("X2") + g.ToString("X2") + b.ToString("X2") + a.ToString("X2");
-        }
-
-        /// <summary>
-        ///     Attempt to get a numerical representation of an RGB(A) hexademical color string.
-        /// </summary>
-        /// <param name="hex">7 or 9 long string (including hashtag)</param>
-        /// <param name="col">updated with the parsed color on succes</param>
-        /// <returns>bool success</returns>
-        public static bool TryHexToRGB(string hex, ref Color col)
-        {
-            Color clr = new Color(0, 0, 0);
-            if (hex == null || (hex.Length != 9 && hex.Length != 7))
-            {
-                return false;
-            }
-
-            try
-            {
-                string str = hex.Substring(1, hex.Length - 1);
-                clr.r = int.Parse(str.Substring(0, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
-                clr.g = int.Parse(str.Substring(2, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
-                clr.b = int.Parse(str.Substring(4, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
-                if (str.Length == 8)
-                {
-                    clr.a = int.Parse(str.Substring(6, 2), NumberStyles.AllowHexSpecifier) / 255.0f;
-                }
-                else
-                {
-                    clr.a = 1.0f;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-
-            col = clr;
-            return true;
         }
     }
 }

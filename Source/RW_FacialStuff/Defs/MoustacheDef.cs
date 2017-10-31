@@ -4,14 +4,12 @@
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 // ReSharper disable InconsistentNaming
 // ReSharper disable CollectionNeverUpdated.Global
+
 namespace FacialStuff.Defs
 {
-    using System.Collections.Generic;
-
     using JetBrains.Annotations;
-
     using RimWorld;
-
+    using System.Collections.Generic;
     using Verse;
 
     public class MoustacheDef : Def

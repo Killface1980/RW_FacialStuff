@@ -5,18 +5,16 @@
 // ReSharper disable InconsistentNaming
 // ReSharper disable CollectionNeverUpdated.Global
 // ReSharper disable StyleCop.SA1310
+
 namespace FacialStuff.Defs
 {
-
     using RimWorld;
 
     [DefOf]
     public static class BeardDefOf
     {
-      
         public static BeardDef Beard_Shaved;
 
-      
         public static BeardDef Beard_Stubble;
     }
 }

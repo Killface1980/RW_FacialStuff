@@ -1,76 +1,55 @@
 ﻿namespace FacialStuff
 {
+    using FacialStuff.Graphics;
+    using global::Harmony;
+    using RimWorld;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-    using FacialStuff.Graphics;
-
-    using global::Harmony;
-
-    using RimWorld;
-
     using UnityEngine;
-
     using Verse;
 
     // ReSharper disable once InconsistentNaming
-    [HarmonyPatch(typeof(PawnRenderer), "RenderPawnInternal", new[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) })]
+    [HarmonyPatch(
+        typeof(PawnRenderer),
+        "RenderPawnInternal",
+        new[]
+            {
+                typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode),
+                typeof(bool), typeof(bool)
+            })]
     [HarmonyBefore("com.showhair.rimworld.mod")]
     public static class HarmonyPatch_PawnRenderer
     {
-        private const float YOffset_PrimaryEquipmentUnder = 0f;
+        private const float YOffset_Behind = 0.00390625f;
 
-        private const float YOffset_Body = 0.0046875f;
+        private const float YOffset_Body = 0.0078125f;
 
-        private const float YOffsetInterval_Clothes = 0.0046875f;
+        private const float YOffset_Head = 0.02734375f;
 
-        private const float YOffset_Wounds = 0.01875f;
+        private const float YOffset_OnHead = 0.03125f;
+
+        private const float YOffset_PostHead = 0.03515625f;
 
         private const float YOffset_Shell = 0.0234375f;
 
-        private const float YOffset_Head = 0.0281250011f;
+        private const float YOffset_Status = 0.04296875f;
 
-        private const float YOffset_OnHead = 0.0328125022f;
+        private const float YOffset_Wounds = 0.01953125f;
 
-        private const float YOffset_Status = 0.0421875f;
+        private const float YOffsetInterval_Clothes = 0.00390625f;
 
         private const float YOffsetOnFace = 0.0001f;
-
-        private static Type PawnRendererType;
-
-        // private static FieldInfo PawnFieldInfo;
-        private static FieldInfo WoundOverlayFieldInfo;
 
         private static MethodInfo DrawEquipmentMethodInfo;
 
         private static FieldInfo PawnHeadOverlaysFieldInfo;
 
-        // Verse.PawnRenderer
+        private static Type PawnRendererType;
 
-        // private static readonly float[] HorMouthOffsetSex = new float[] { 0f, FS_Settings.MaleOffsetX, FS_Settings.FemaleOffsetX };
-        // private static readonly float[] VerMouthOffsetSex = new float[] { 0f, FS_Settings.MaleOffsetY, FS_Settings.FemaleOffsetY };
-        private static void GetReflections()
-        {
-            if (PawnRendererType != null)
-            {
-                return;
-            }
-
-            PawnRendererType = typeof(PawnRenderer);
-
-            // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
-            WoundOverlayFieldInfo = PawnRendererType.GetField(
-                "woundOverlays",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-            DrawEquipmentMethodInfo = PawnRendererType.GetMethod(
-                "DrawEquipment",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-            PawnHeadOverlaysFieldInfo = PawnRendererType.GetField(
-                "statusOverlays",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-        }
+        // private static FieldInfo PawnFieldInfo;
+        private static FieldInfo WoundOverlayFieldInfo;
 
         public static bool Prefix(
             PawnRenderer __instance,
@@ -132,6 +111,7 @@
             }
 
 #endif
+
             // Regular FacePawn rendering 14+ years
             if (renderBody)
             {
@@ -291,7 +271,7 @@
                             Vector3 mouthOffset = faceComp.MouthMeshSet.OffsetAt(headFacing);
 #endif
 
-                            Vector3 drawLoc = locFacialY + (headQuat * mouthOffset);
+                            Vector3 drawLoc = locFacialY + headQuat * mouthOffset;
                             GenDraw.DrawMeshNowOrLater(meshMouth, drawLoc, headQuat, mouthMat, portrait);
                             locFacialY.y += YOffsetOnFace;
                         }
@@ -325,9 +305,12 @@
                 if (!headStump)
                 {
                     List<ApparelGraphicRecord> apparelGraphics = __instance.graphics.apparelGraphics;
-                    List<ApparelGraphicRecord> headgearGraphics =
-                        apparelGraphics.Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
+                    List<ApparelGraphicRecord> headgearGraphics = null;
+                    if (!apparelGraphics.NullOrEmpty())
+                    {
+                        headgearGraphics = apparelGraphics.Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
                             .ToList();
+                    }
 
                     bool noRenderRoofed = Controller.settings.HideHatWhileRoofed && faceComp.Roofed;
                     bool noRenderBed = Controller.settings.HideHatInBed && !renderBody;
@@ -341,12 +324,12 @@
                         if (bodyDrawType != RotDrawMode.Dessicated)
                         {
                             // draw full or partial hair
-                            bool apCoversHead =
-                                headgearGraphics.Any(
-                                    x => x.sourceApparel.def.apparel.bodyPartGroups.Contains(
-                                             BodyPartGroupDefOf.FullHead)
-                                         || x.sourceApparel.def.apparel.bodyPartGroups.Contains(
-                                             BodyPartGroupDefOf.UpperHead));
+                            bool apCoversHead = headgearGraphics.Any(
+                                x => x.sourceApparel.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)
+                                     && !x.sourceApparel.def.apparel.hatRenderedFrontOfFace
+                                     || x.sourceApparel.def.apparel.bodyPartGroups.Contains(
+                                         BodyPartGroupDefOf.UpperHead)
+                                     && !x.sourceApparel.def.apparel.hatRenderedFrontOfFace);
 
                             if (noRenderBed || filterHeadgear || !apCoversHead && noRenderGoggles)
                             {
@@ -389,18 +372,30 @@
                                 headgearGraphics.Clear();
                             }
                         }
+
                         if (noRenderBed)
                         {
                             headgearGraphics.Clear();
                         }
 
-                        for (int j = 0; j < headgearGraphics.Count; j++)
+                        if (!headgearGraphics.NullOrEmpty())
                         {
-                            // Now draw the actual head gear
-                            Material headGearMat = headgearGraphics[j].graphic.MatAt(headFacing);
-                            headGearMat = __instance.graphics.flasher.GetDamagedMat(headGearMat);
-                            GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, headGearMat, portrait);
-                            currentLoc.y += YOffsetOnFace;
+                            for (int index = 0; index < headgearGraphics.Count; index++)
+                            {
+                                ApparelGraphicRecord headgearGraphic = headgearGraphics[index];
+                                Material headGearMat = headgearGraphic.graphic.MatAt(headFacing);
+                                headGearMat = __instance.graphics.flasher.GetDamagedMat(headGearMat);
+
+                                Vector3 thisLoc = currentLoc;
+                                if (headgearGraphic.sourceApparel.def.apparel.hatRenderedFrontOfFace)
+                                {
+                                    thisLoc = rootLoc + b;
+                                    thisLoc.y += !(bodyFacing == Rot4.North) ? YOffset_PostHead : YOffset_Behind;
+                                }
+
+                                GenDraw.DrawMeshNowOrLater(hairMesh, thisLoc, headQuat, headGearMat, portrait);
+                                currentLoc.y += YOffset_Head;
+                            }
                         }
                     }
                     else
@@ -416,8 +411,9 @@
 
                 if (renderBody)
                 {
-                    foreach (ApparelGraphicRecord apparelGraphicRecord in __instance.graphics.apparelGraphics)
+                    for (int index = 0; index < __instance.graphics.apparelGraphics.Count; index++)
                     {
+                        ApparelGraphicRecord apparelGraphicRecord = __instance.graphics.apparelGraphics[index];
                         if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer != ApparelLayer.Shell)
                         {
                             continue;
@@ -494,6 +490,31 @@
                 GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, moustacheMatAt, portrait);
                 locFacialY.y += YOffsetOnFace;
             }
+        }
+
+        // Verse.PawnRenderer
+
+        // private static readonly float[] HorMouthOffsetSex = new float[] { 0f, FS_Settings.MaleOffsetX, FS_Settings.FemaleOffsetX };
+        // private static readonly float[] VerMouthOffsetSex = new float[] { 0f, FS_Settings.MaleOffsetY, FS_Settings.FemaleOffsetY };
+        private static void GetReflections()
+        {
+            if (PawnRendererType != null)
+            {
+                return;
+            }
+
+            PawnRendererType = typeof(PawnRenderer);
+
+            // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
+            WoundOverlayFieldInfo = PawnRendererType.GetField(
+                "woundOverlays",
+                BindingFlags.NonPublic | BindingFlags.Instance);
+            DrawEquipmentMethodInfo = PawnRendererType.GetMethod(
+                "DrawEquipment",
+                BindingFlags.NonPublic | BindingFlags.Instance);
+            PawnHeadOverlaysFieldInfo = PawnRendererType.GetField(
+                "statusOverlays",
+                BindingFlags.NonPublic | BindingFlags.Instance);
         }
     }
 }

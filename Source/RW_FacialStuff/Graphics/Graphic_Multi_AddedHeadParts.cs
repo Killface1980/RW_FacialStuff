@@ -12,26 +12,33 @@ namespace FacialStuff.Graphics
 
         public string GraphicPath => this.path;
 
-        public Material MatLeft => this.mats[3];
+        public override Material MatBack => this.mats[0];
 
         public override Material MatFront => this.mats[2];
 
-        public Material MatRight => this.mats[1];
+        public Material MatLeft => this.mats[3];
 
-        public override Material MatBack => this.mats[0];
+        public Material MatRight => this.mats[1];
 
         public override bool ShouldDrawRotated => this.MatRight == this.MatBack;
 
-        public override Material MatAt(Rot4 rot, Thing thing = null)
+        public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
         {
-            switch (rot.AsInt)
-            {
-                case 0: return this.MatBack;
-                case 1: return this.MatRight;
-                case 2: return this.MatFront;
-                case 3: return this.MatLeft;
-                default: return BaseContent.BadMat;
-            }
+            return GraphicDatabase.Get<Graphic_Multi>(
+                this.path,
+                newShader,
+                this.drawSize,
+                newColor,
+                newColorTwo,
+                this.data);
+        }
+
+        public override int GetHashCode()
+        {
+            int seed = 0;
+            seed = Gen.HashCombine(seed, this.path);
+            seed = Gen.HashCombineStruct(seed, this.color);
+            return Gen.HashCombineStruct(seed, this.colorTwo);
         }
 
         public override void Init(GraphicRequest req)
@@ -80,7 +87,6 @@ namespace FacialStuff.Graphics
 
             if (!sideTex.NullOrBad())
             {
-
                 if (side.Equals("Right"))
                 {
                     if (!side2Tex.NullOrBad())
@@ -144,21 +150,22 @@ namespace FacialStuff.Graphics
                 req2.colorTwo = this.colorTwo;
 
                 req2.mainTex.filterMode = FilterMode.Trilinear;
-            
+
                 // req2.maskTex = array2[i];
                 this.mats[i] = MaterialPool.MatFrom(req2);
             }
         }
 
-        public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
+        public override Material MatAt(Rot4 rot, Thing thing = null)
         {
-            return GraphicDatabase.Get<Graphic_Multi>(
-                this.path,
-                newShader,
-                this.drawSize,
-                newColor,
-                newColorTwo,
-                this.data);
+            switch (rot.AsInt)
+            {
+                case 0: return this.MatBack;
+                case 1: return this.MatRight;
+                case 2: return this.MatFront;
+                case 3: return this.MatLeft;
+                default: return BaseContent.BadMat;
+            }
         }
 
         public override string ToString()
@@ -171,14 +178,6 @@ namespace FacialStuff.Graphics
                 ", colorTwo=",
                 this.colorTwo,
                 ")");
-        }
-
-        public override int GetHashCode()
-        {
-            int seed = 0;
-            seed = Gen.HashCombine(seed, this.path);
-            seed = Gen.HashCombineStruct(seed, this.color);
-            return Gen.HashCombineStruct(seed, this.colorTwo);
         }
     }
 }

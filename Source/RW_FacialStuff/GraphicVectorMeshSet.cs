@@ -33,11 +33,11 @@
             }
         }
 
-        // public Quaternion RotationAt(Rot4 rotation)
-        // {
-        // Quaternion asQuat = rotation.AsQuat;
-        // float x = 1f * Mathf.Sin(num * (this.wheelRotation * 0.1f) % (2 * Mathf.PI));
         // float z = 1f * Mathf.Cos(num * (this.wheelRotation * 0.1f) % (2 * Mathf.PI));
+        // float x = 1f * Mathf.Sin(num * (this.wheelRotation * 0.1f) % (2 * Mathf.PI));
+        // Quaternion asQuat = rotation.AsQuat;
+        // {
+        // public Quaternion RotationAt(Rot4 rotation)
         // asQuat.SetLookRotation(new Vector3(x, 0f, z), Vector3.up);
         // return asQuat;
         // }

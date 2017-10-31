@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<DefPackage-HairDef>
-  
+<Defs>
+
 <HairDef>
     <label>Scientist</label>
     <hairGender>MaleUsually</hairGender>
@@ -13,5 +13,4 @@
 		  <li>MaleOnly</li>
 		</hairTags>
   </HairDef>
-
-</DefPackage-HairDef>
+</Defs>

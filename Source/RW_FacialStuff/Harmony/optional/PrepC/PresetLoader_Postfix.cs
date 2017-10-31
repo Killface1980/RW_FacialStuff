@@ -1,19 +1,14 @@
 ﻿namespace FacialStuff.Harmony.optional.PrepC
 {
-    using System.Linq;
-
     using EdB.PrepareCarefully;
-
-    using FacialStuff;
-
     using global::Harmony;
-
+    using System.Linq;
     using Verse;
 
     public static class PresetLoader_Postfix
     {
         [HarmonyPostfix]
-        public static void LoadFace( ref CustomPawn __result, SaveRecordPawnV3 record)
+        public static void LoadFace(ref CustomPawn __result, SaveRecordPawnV3 record)
         {
             if (!SaveRecordPawnV3_Postfix.LoadedPawns.Keys.Contains(record))
             {

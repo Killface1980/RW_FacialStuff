@@ -1,12 +1,11 @@
 ﻿namespace FacialStuff.Harmony.optional.PrepC
 {
-    using FacialStuff;
-
     using Verse;
 
     public class SaveRecordFaceV3 : IExposable
     {
-        private PawnFace face = new PawnFace();
+        // private PawnFace face = new PawnFace();
+        private PawnFace face;
 
         public SaveRecordFaceV3()
         {

@@ -15,7 +15,7 @@
     {
         public Color BeardColor;
 
-        [NotNull]
+        [CanBeNull]
         public BeardDef BeardDef;
 
         [CanBeNull]
@@ -37,7 +37,7 @@
 
         public bool HasSameBeardColor;
 
-        [NotNull]
+        [CanBeNull]
         public MoustacheDef MoustacheDef;
 
         public float PheoMelanin;
@@ -45,7 +45,7 @@
         [NotNull]
         public WrinkleDef WrinkleDef;
 
-        public float wrinkleIntensity = 0f;
+        public float wrinkleIntensity;
 
         public PawnFace([NotNull] Pawn pawn, FactionDef pawnFactionDef, bool newPawn = true)
         {
@@ -64,29 +64,14 @@
 
             this.wrinkleIntensity = Mathf.InverseLerp(45f, 80f, pawn.ageTracker.AgeBiologicalYearsFloat);
             this.wrinkleIntensity -= pawn.story.melanin / 2;
+
             // this.MelaninOrg = pawn.story.melanin;
         }
 
-        public void GenerateHairDNA([NotNull] Pawn pawn, bool ignoreRelative = false, bool newPawn = true)
-        {
-            HairDNA hairDNA = HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor, ignoreRelative);
-            this.EuMelanin = hairDNA.HairColorRequest.EuMelanin;
-            this.PheoMelanin = hairDNA.HairColorRequest.PheoMelanin;
-            this.Greyness = hairDNA.HairColorRequest.Greyness;
-            if (newPawn)
-            {
-                this.HairColor = hairDNA.HairColor;
-                this.BeardColor = hairDNA.BeardColor;
-            }
-            else
-            {
-                this.HairColor = pawn.story.hairColor;
-                this.BeardColor = HairMelanin.DarkerBeardColor(this.HairColor);
-            }
-        }
-
+        // public Baldness Baldness;
         public PawnFace()
         {
+            // for RW to not bug out
         }
 
         public void ExposeData()
@@ -118,6 +103,26 @@
             // Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
             // Scribe_Values.Look(ref this.isSkinDNAoptimized, "IsSkinDNAoptimized");
             // Scribe_Values.Look(ref this.melaninOrg, "MelaninOrg");
+        }
+
+        public void GenerateHairDNA([NotNull] Pawn pawn, bool ignoreRelative = false, bool newPawn = true)
+        {
+            HairDNA hairDNA = HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor, ignoreRelative);
+            this.EuMelanin = hairDNA.HairColorRequest.EuMelanin;
+            this.PheoMelanin = hairDNA.HairColorRequest.PheoMelanin;
+            this.Greyness = hairDNA.HairColorRequest.Greyness;
+
+            // this.Baldness = hairDNA.HairColorRequest.Baldness;
+            if (newPawn)
+            {
+                this.HairColor = hairDNA.HairColor;
+                this.BeardColor = hairDNA.BeardColor;
+            }
+            else
+            {
+                this.HairColor = pawn.story.hairColor;
+                this.BeardColor = HairMelanin.DarkerBeardColor(this.HairColor);
+            }
         }
 
         // public float MelaninOrg;

@@ -1,21 +1,16 @@
 ﻿// ReSharper disable All
+
 namespace FacialStuff.Detouring
 {
-    using System;
+    using FacialStuff.FaceStyling_Bench;
+    using FacialStuff.Graphics;
+    using global::Harmony;
+    using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
-
-    using FacialStuff.FaceStyling_Bench;
-    using FacialStuff.Graphics;
-
-    using global::Harmony;
-
-    using RimWorld;
-
     using UnityEngine;
-
     using Verse;
     using Verse.Sound;
 
@@ -27,20 +22,17 @@ namespace FacialStuff.Detouring
             HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.mod");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
+            // harmony.Patch(
+            // AccessTools.Method(typeof(Dialog_Options), nameof(Dialog_Options.DoWindowContents)),
+            // null,
+            // null,
+            // new HarmonyMethod(
+            // typeof(Dialog_Options_DoWindowContents_Patch),
+            // nameof(Dialog_Options_DoWindowContents_Patch.Transpiler)));
             harmony.Patch(
-                AccessTools.Method(typeof(Dialog_Options), nameof(Dialog_Options.DoWindowContents)),
+                AccessTools.Method(typeof(Page_ConfigureStartingPawns), "DrawPortraitArea"),
                 null,
-                null,
-                new HarmonyMethod(
-                    typeof(Dialog_Options_DoWindowContents_Patch),
-                    nameof(Dialog_Options_DoWindowContents_Patch.Transpiler)));
-
-            harmony.Patch(
-                AccessTools.Method(typeof(Page_ConfigureStartingPawns), nameof(Page_ConfigureStartingPawns.DoWindowContents)),
-                null,
-                new HarmonyMethod(
-                    typeof(HarmonyPatches),
-                    nameof(HarmonyPatches.AddFaceEditButton)));
+                new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.AddFaceEditButton)));
 
             harmony.Patch(
                 AccessTools.Method(typeof(PawnGraphicSet), nameof(PawnGraphicSet.ResolveAllGraphics)),
@@ -60,14 +52,13 @@ namespace FacialStuff.Detouring
             // typeof(HarmonyPatch_PawnRenderer),
             // nameof(HarmonyPatch_PawnRenderer.RenderPawnInternal_Prefix)),
             // null);
-            //harmony.Patch(
-            //    AccessTools.Method(
-            //        typeof(Pawn_HealthTracker),
-            //        nameof(Pawn_HealthTracker.AddHediff),
-            //        new[] { typeof(Hediff), typeof(BodyPartRecord), typeof(DamageInfo) }),
-            //    null,
-            //    new HarmonyMethod(typeof(HarmonyPatches), nameof(AddHediff_Postfix)));
-
+            // harmony.Patch(
+            // AccessTools.Method(
+            // typeof(Pawn_HealthTracker),
+            // nameof(Pawn_HealthTracker.AddHediff),
+            // new[] { typeof(Hediff), typeof(BodyPartRecord), typeof(DamageInfo) }),
+            // null,
+            // new HarmonyMethod(typeof(HarmonyPatches), nameof(AddHediff_Postfix)));
             harmony.Patch(
                 AccessTools.Method(typeof(HediffSet), nameof(HediffSet.DirtyCache)),
                 null,
@@ -76,7 +67,9 @@ namespace FacialStuff.Detouring
             harmony.Patch(
                 AccessTools.Method(typeof(GraphicDatabaseHeadRecords), nameof(GraphicDatabaseHeadRecords.Reset)),
                 null,
-                new HarmonyMethod(typeof(GraphicDatabaseHeadRecordsModded), nameof(GraphicDatabaseHeadRecordsModded.Reset)));
+                new HarmonyMethod(
+                    typeof(GraphicDatabaseHeadRecordsModded),
+                    nameof(GraphicDatabaseHeadRecordsModded.Reset)));
 
             harmony.Patch(
                 AccessTools.Method(typeof(PawnHairChooser), nameof(PawnHairChooser.RandomHairDefFor)),
@@ -95,7 +88,6 @@ namespace FacialStuff.Detouring
                 new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.GetSkinColor_Prefix)),
                 null);
 
-
             harmony.Patch(
                 AccessTools.Method(typeof(PawnSkinColors), nameof(PawnSkinColors.RandomMelanin)),
                 new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.RandomMelanin_Prefix)),
@@ -112,7 +104,6 @@ namespace FacialStuff.Detouring
                 AccessTools.Method(typeof(Pawn_InteractionsTracker), nameof(Pawn_InteractionsTracker.TryInteractWith)),
                 null,
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.TryInteractWith_Postfix)));
-
 
             Log.Message(
                 "Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count()
@@ -141,9 +132,10 @@ namespace FacialStuff.Detouring
             CheckAllInjected();
         }
 
-        public static void AddFaceEditButton(Page_ConfigureStartingPawns __instance)
+        public static void AddFaceEditButton(Page_ConfigureStartingPawns __instance, Rect rect)
         {
-            FieldInfo PawnFieldInfo = typeof(Page_ConfigureStartingPawns).GetField("curPawn", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo PawnFieldInfo =
+                typeof(Page_ConfigureStartingPawns).GetField("curPawn", BindingFlags.NonPublic | BindingFlags.Instance);
 
             Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
 
@@ -154,8 +146,8 @@ namespace FacialStuff.Detouring
             }
 
             // Shitty Transpiler, doin' it on my own
-            Rect rect = new Rect(540f, 92f, 25f, 25f);
-            if (rect.Contains(Event.current.mousePosition))
+            Rect rect2 = new Rect(rect.x + 500f, rect.y, 25f, 25f);
+            if (rect2.Contains(Event.current.mousePosition))
             {
                 GUI.color = Color.cyan;
 
@@ -166,20 +158,60 @@ namespace FacialStuff.Detouring
                 GUI.color = new Color(0.623529f, 0.623529f, 0.623529f);
             }
 
-
-            GUI.DrawTexture(rect, ContentFinder<Texture2D>.Get("Buttons/ButtonFace", true));
+            GUI.DrawTexture(rect2, ContentFinder<Texture2D>.Get("Buttons/ButtonFace", true));
             GUI.color = Color.white;
             string tip = "FacialStuffEditor.FaceStylerTitle".Translate();
-            TooltipHandler.TipRegion(rect, tip);
+            TooltipHandler.TipRegion(rect2, tip);
 
             // ReSharper disable once InvertIf
-            if (Widgets.ButtonInvisible(rect, false))
+            if (Widgets.ButtonInvisible(rect2, false))
             {
                 SoundDefOf.TickLow.PlayOneShotOnCamera(null);
                 Find.WindowStack.Add(new DialogFaceStyling(pawn));
             }
         }
 
+        public static void DirtyCache_Postfix(HediffSet __instance)
+        {
+            if (Current.ProgramState != ProgramState.Playing)
+            {
+                return;
+            }
+
+            Pawn pawn = __instance.pawn; // Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
+
+            if (pawn == null || !pawn.Spawned || pawn.Map == null)
+            {
+                return;
+            }
+
+            CompFace face = pawn.GetComp<CompFace>();
+            if (face == null)
+            {
+                return;
+            }
+
+            face.CheckForAddedOrMissingParts(pawn);
+            if (!face.DontRender)
+            {
+                pawn.Drawer.renderer.graphics.nakedGraphic = null;
+            }
+        }
+
+        public static bool RandomHairDefFor_PreFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
+        {
+            if (pawn.TryGetComp<CompFace>() == null)
+            {
+                return true;
+            }
+
+            IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
+                                          where hair.hairTags.SharesElementWith(factionType.hairTags)
+                                          select hair;
+
+            __result = source.RandomElementByWeight(hair => PawnFaceMaker.HairChoiceLikelihoodFor(hair, pawn));
+            return false;
+        }
 
         // [HarmonyAfter("net.pardeike.zombieland")]
         public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)
@@ -259,16 +291,15 @@ namespace FacialStuff.Detouring
             PortraitsCache.SetDirty(pawn);
         }
 
-        public static void TryInteractWith_Postfix(
-            Pawn_InteractionsTracker __instance,
-            bool __result,
-            Pawn recipient)
+        public static void TryInteractWith_Postfix(Pawn_InteractionsTracker __instance, bool __result, Pawn recipient)
         {
             if (__instance == null)
             {
                 return;
             }
-            FieldInfo PawnFieldInfo = typeof(Pawn_InteractionsTracker).GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            FieldInfo PawnFieldInfo =
+                typeof(Pawn_InteractionsTracker).GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
             Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
 
             if (pawn == null || recipient == null)
@@ -283,6 +314,7 @@ namespace FacialStuff.Detouring
                 {
                     pawnFace.HeadRotator.LookAtPawn(recipient);
                 }
+
                 CompFace recipientFace = recipient.GetComp<CompFace>();
                 if (recipientFace != null && recipientFace.HeadRotator != null && !recipientFace.IsChild)
                 {
@@ -291,62 +323,20 @@ namespace FacialStuff.Detouring
             }
         }
 
-        public static void DirtyCache_Postfix(HediffSet __instance)
-        {
-            if (Current.ProgramState != ProgramState.Playing)
-            {
-                return;
-            }
-
-            Pawn pawn = __instance.pawn;// Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
-
-            if (pawn == null || !pawn.Spawned || pawn.Map == null)
-            {
-                return;
-            }
-
-            CompFace face = pawn.GetComp<CompFace>();
-            if (face == null)
-            {
-                return;
-            }
-
-            face.CheckForAddedOrMissingParts(pawn);
-            if (!face.DontRender)
-            {
-                pawn.Drawer.renderer.graphics.nakedGraphic = null;
-            }
-        }
-
-        public static bool RandomHairDefFor_PreFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
-        {
-            if (pawn.TryGetComp<CompFace>() == null)
-            {
-                return true;
-            }
-
-            IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
-                                          where hair.hairTags.SharesElementWith(factionType.hairTags)
-                                          select hair;
-
-            __result = source.RandomElementByWeight(hair => PawnFaceMaker.HairChoiceLikelihoodFor(hair, pawn));
-            return false;
-        }
-
         private static void CheckAllInjected()
         {
             // Now to enjoy the benefits of having made a popular mod!
             // This will be our little secret.
             Backstory childMe = new Backstory
-            {
-                bodyTypeMale = BodyType.Male,
-                bodyTypeFemale = BodyType.Female,
-                slot = BackstorySlot.Childhood,
-                baseDesc =
+                                    {
+                                        bodyTypeMale = BodyType.Male,
+                                        bodyTypeFemale = BodyType.Female,
+                                        slot = BackstorySlot.Childhood,
+                                        baseDesc =
                                             "NAME never believed what was common sense and always doubted other people. HECAP later went on inflating toads with HIS sushi stick. It was there HE earned HIS nickname.",
-                requiredWorkTags = WorkTags.Violent,
-                shuffleable = false
-            };
+                                        requiredWorkTags = WorkTags.Violent,
+                                        shuffleable = false
+                                    };
             childMe.SetTitle("Lost child");
             childMe.SetTitleShort("Seeker");
             childMe.skillGains.Add("Shooting", 4);
@@ -356,14 +346,15 @@ namespace FacialStuff.Detouring
             childMe.ResolveReferences();
 
             Backstory adultMale = new Backstory
-            {
-                bodyTypeMale = BodyType.Male,
-                bodyTypeFemale = BodyType.Female,
-                slot = BackstorySlot.Adulthood,
-                baseDesc = "HECAP left the military early on and acquired his skills on his own. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
-                shuffleable = false,
-                spawnCategories = new List<string>()
-            };
+                                      {
+                                          bodyTypeMale = BodyType.Male,
+                                          bodyTypeFemale = BodyType.Female,
+                                          slot = BackstorySlot.Adulthood,
+                                          baseDesc =
+                                              "HECAP left the military early on and acquired his skills on his own. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
+                                          shuffleable = false,
+                                          spawnCategories = new List<string>()
+                                      };
             adultMale.spawnCategories.AddRange(new[] { "Civil", "Raider", "Slave", "Trader", "Traveler" });
             adultMale.SetTitle("Lone gunman");
             adultMale.SetTitleShort("Gunman");
@@ -375,12 +366,12 @@ namespace FacialStuff.Detouring
             adultMale.ResolveReferences();
 
             PawnBio me = new PawnBio
-            {
-                childhood = childMe,
-                adulthood = adultMale,
-                gender = GenderPossibility.Male,
-                name = NameTriple.FromString("Gator 'Killface' Stinkwater")
-            };
+                             {
+                                 childhood = childMe,
+                                 adulthood = adultMale,
+                                 gender = GenderPossibility.Male,
+                                 name = NameTriple.FromString("Gator 'Killface' Stinkwater")
+                             };
             me.PostLoad();
             SolidBioDatabase.allBios.Add(me);
             BackstoryDatabase.AddBackstory(childMe);
@@ -391,9 +382,25 @@ namespace FacialStuff.Detouring
 
     // [HarmonyPatch(typeof(Dialog_Options))]
     // [HarmonyPatch("DoWindowContents")]
-    static class Dialog_Options_DoWindowContents_Patch
+    internal static class Dialog_Options_DoWindowContents_Patch
     {
-        static void MoreStuff(Listing_Standard listing_Standard)
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            MethodInfo m_set_HatsOnlyOnMap = AccessTools.Method(typeof(Prefs), "set_HatsOnlyOnMap");
+            MethodInfo m_MoreStuff = AccessTools.Method(typeof(Dialog_Options_DoWindowContents_Patch), "MoreStuff");
+
+            foreach (CodeInstruction instruction in instructions)
+            {
+                yield return instruction;
+                if (instruction.opcode == OpCodes.Call && instruction.operand == m_set_HatsOnlyOnMap)
+                {
+                    yield return new CodeInstruction(OpCodes.Ldloc_1);
+                    yield return new CodeInstruction(OpCodes.Call, m_MoreStuff);
+                }
+            }
+        }
+
+        private static void MoreStuff(Listing_Standard listing_Standard)
         {
             bool hideHatWhileRoofed = Controller.settings.HideHatWhileRoofed;
             listing_Standard.CheckboxLabeled(
@@ -413,7 +420,6 @@ namespace FacialStuff.Detouring
                 ref hideHatsInBed,
                 "Settings.HideHatInBedTooltip".Translate());
 
-
             if (GUI.changed)
             {
                 if (showHeadWear != Controller.settings.FilterHats)
@@ -432,22 +438,6 @@ namespace FacialStuff.Detouring
                 {
                     Controller.settings.HideHatInBed = hideHatsInBed;
                     Controller.settings.Write();
-                }
-            }
-        }
-
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        {
-            MethodInfo m_set_HatsOnlyOnMap = AccessTools.Method(typeof(Prefs), "set_HatsOnlyOnMap");
-            MethodInfo m_MoreStuff = AccessTools.Method(typeof(Dialog_Options_DoWindowContents_Patch), "MoreStuff");
-
-            foreach (CodeInstruction instruction in instructions)
-            {
-                yield return instruction;
-                if (instruction.opcode == OpCodes.Call && instruction.operand == m_set_HatsOnlyOnMap)
-                {
-                    yield return new CodeInstruction(OpCodes.Ldloc_1);
-                    yield return new CodeInstruction(OpCodes.Call, m_MoreStuff);
                 }
             }
         }

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<DefPackage-EyeDef>
+<Defs>
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_FL</defName>
@@ -81,4 +81,4 @@
     </hairTags>
   </FacialStuff.Defs.EyeDef>
   -->
-</DefPackage-EyeDef>
+</Defs>

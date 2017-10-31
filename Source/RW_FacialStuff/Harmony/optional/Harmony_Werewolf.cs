@@ -1,13 +1,11 @@
 ﻿namespace FacialStuff.Harmony.optional
 {
-    using System;
-
     using global::Harmony;
-
+    using System;
     using Verse;
 
     [StaticConstructorOnStartup]
-    class Harmony_Werewolf
+    internal class Harmony_Werewolf
     {
         static Harmony_Werewolf()
         {
@@ -26,9 +24,7 @@
 
                         harmony.Patch(
                             AccessTools.Method(typeof(Werewolf.CompWerewolf), "TransformInto"),
-                            new HarmonyMethod(
-                                typeof(Werewolf_Patches),
-                                nameof(Werewolf_Patches.TransformInto_Prefix)),
+                            new HarmonyMethod(typeof(Werewolf_Patches), nameof(Werewolf_Patches.TransformInto_Prefix)),
                             null);
                         harmony.Patch(
                             AccessTools.Method(typeof(Werewolf.CompWerewolf), "TransformBack"),

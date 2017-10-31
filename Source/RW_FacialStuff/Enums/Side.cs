@@ -2,12 +2,12 @@
 {
     #region Public Enums
 
-        public enum Side
-        {
-            Left = 0,
+    public enum Side
+    {
+        Left = 0,
 
-            Right = 1
-        }
+        Right = 1
+    }
 
-        #endregion Public Enums
+    #endregion Public Enums
 }

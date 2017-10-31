@@ -1,20 +1,20 @@
 ﻿namespace FacialStuff.Harmony.optional.PrepC
 {
+    using EdB.PrepareCarefully;
+    using global::Harmony;
     using System.Collections.Generic;
     using System.Linq;
-
-    using EdB.PrepareCarefully;
-
-    using FacialStuff;
-
-    using global::Harmony;
-
-    using RimWorld;
-
     using Verse;
 
     public static class SaveRecordPawnV3_Postfix
     {
+        // Don't use CustomPawn here, must be object!!!
+        public static readonly Dictionary<object, SaveRecordFaceV3> LoadedPawns =
+            new Dictionary<object, SaveRecordFaceV3>();
+
+        // Don't use CustomPawn here, must be object!!!
+        public static readonly Dictionary<string, object> SavedPawns = new Dictionary<string, object>();
+
         [HarmonyPostfix]
         public static void ExposeFaceData(SaveRecordPawnV3 __instance)
         {
@@ -34,14 +34,7 @@
                 SaveRecordFaceV3 face = new SaveRecordFaceV3();
                 face.ExposeData();
                 LoadedPawns.Add(__instance, face);
-               
             }
         }
-
-        // Don't use CustomPawn here, must be object!!!
-        public static readonly Dictionary<object, SaveRecordFaceV3> LoadedPawns = new Dictionary<object, SaveRecordFaceV3>();
-
-        // Don't use CustomPawn here, must be object!!!
-        public static readonly Dictionary<string, object> SavedPawns = new Dictionary<string, object>();
     }
 }

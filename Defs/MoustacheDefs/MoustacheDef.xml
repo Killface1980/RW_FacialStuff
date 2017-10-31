@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<DefPackage-MoustacheDef>
+<Defs>
 
   <FacialStuff.Defs.MoustacheDef>
     <defName>Moustache_Chaplin</defName>
@@ -131,4 +131,4 @@
       <li>Tribal</li>
     </hairTags>
   </FacialStuff.Defs.MoustacheDef>
-</DefPackage-MoustacheDef>
+</Defs>

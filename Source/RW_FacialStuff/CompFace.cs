@@ -1,26 +1,18 @@
 ﻿namespace FacialStuff
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     using FacialStuff.Animator;
     using FacialStuff.Defs;
     using FacialStuff.Enums;
     using FacialStuff.Graphics;
-
     using JetBrains.Annotations;
-
     using RimWorld;
-
+    using System.Collections.Generic;
+    using System.Linq;
     using UnityEngine;
-
     using Verse;
 
     public class CompFace : ThingComp
     {
-
-        #region Public Fields
-
         public bool DontRender;
 
         [NotNull]
@@ -39,18 +31,6 @@
 
         public int rotationInt;
 
-        #endregion Public Fields
-
-        #region Private Fields
-
-        // old, remove 0.18
-        private BeardDef BeardDef;
-
-        // old, remove 0.18
-        private BrowDef BrowDef;
-
-        // old, remove 0.18
-        private EyeDef EyeDef;
 
         private Vector2 eyeOffset = Vector2.zero;
 
@@ -60,10 +40,9 @@
         private float factionMelanin;
 
         [NotNull]
+
         // ReSharper disable once NotNullMemberIsNotInitialized
         private DamageFlasher flasher;
-
-        private Color hairColor;
 
         private bool hasNaturalJaw = true;
 
@@ -105,10 +84,6 @@
 
         [CanBeNull]
         private string texPathJawAddedPart;
-
-        #endregion Private Fields
-
-        #region Public Properties
 
         public GraphicVectorMeshSet EyeMeshSet => MeshPoolFS.HumanEyeSet[(int)this.FullHeadType];
 
@@ -159,10 +134,6 @@
                 return HeadType.Normal;
             }
         }
-
-        #endregion Public Properties
-
-        #region Public Methods
 
         // only for development
         public Vector3 BaseEyeOffsetAt(Rot4 rotation)
@@ -264,7 +235,7 @@
         // only for development
         public Vector3 BaseMouthOffsetAt(Rot4 rotation)
         {
-            var male = this.pawn.gender == Gender.Male;
+            bool male = this.pawn.gender == Gender.Male;
 
             if (this.PawnCrownType == CrownType.Average)
             {
@@ -361,7 +332,8 @@
         [CanBeNull]
         public Material BeardMatAt(Rot4 facing)
         {
-            if (this.pawn.gender != Gender.Male || this.PawnFace?.BeardDef == BeardDefOf.Beard_Shaved || !this.hasNaturalJaw)
+            if (this.pawn.gender != Gender.Male || this.PawnFace?.BeardDef == BeardDefOf.Beard_Shaved
+                || !this.hasNaturalJaw)
             {
                 return null;
             }
@@ -415,8 +387,8 @@
             List<Hediff> hediffs = this.pawn?.health?.hediffSet?.hediffs;
 
             if (hediffs.NullOrEmpty() || body.NullOrEmpty())
-            //   || hediffs.Any(x => x.def == HediffDefOf.MissingBodyPart && x.Part.def == BodyPartDefOf.Head))
             {
+                // || hediffs.Any(x => x.def == HediffDefOf.MissingBodyPart && x.Part.def == BodyPartDefOf.Head))
                 return;
             }
 
@@ -614,7 +586,8 @@
         [CanBeNull]
         public Material MoustacheMatAt(Rot4 facing)
         {
-            if (this.pawn.gender != Gender.Male || this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved || !this.hasNaturalJaw)
+            if (this.pawn.gender != Gender.Male || this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved
+                || !this.hasNaturalJaw)
             {
                 return null;
             }
@@ -683,6 +656,7 @@
         {
             return this.pawnFace == null;
         }
+
         public override void PostDraw()
         {
             base.PostDraw();
@@ -704,9 +678,8 @@
             // viewRect = viewRect.ExpandedBy(5);
             // if (!viewRect.Contains(this.pawn.Position))
             // {
-            //     return;
+            // return;
             // }
-
             this.eyeWiggler.WigglerTick();
 
             if (!this.eyeWiggler.IsAsleep)
@@ -724,15 +697,9 @@
         public override void PostExposeData()
         {
             base.PostExposeData();
-            {
-                // Legacy, remove in A18
-                Scribe_References.Look(ref this.pawn, "Pawn");
-                Scribe_Defs.Look(ref this.EyeDef, "EyeDef");
-                Scribe_Defs.Look(ref this.BrowDef, "BrowDef");
-                Scribe_Defs.Look(ref this.BeardDef, "BeardDef");
-                Scribe_Values.Look(ref this.hairColor, "HairColorOrg");
-                Scribe_References.Look(ref this.originFaction, "pawnFaction");
-            }
+
+            Scribe_References.Look(ref this.pawn, "Pawn");
+            Scribe_References.Look(ref this.originFaction, "pawnFaction");
 
             // Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
 
@@ -770,30 +737,6 @@
             if (this.PawnFace == null)
             {
                 this.SetPawnFace(new PawnFace(this.pawn, this.originFaction.def));
-
-                // check for pre-0.17.3 pawns
-                if (this.EyeDef != null)
-                {
-                    this.PawnFace.EyeDef = this.EyeDef;
-                    this.PawnFace.BrowDef = this.BrowDef;
-                    this.PawnFace.HairColor = this.hairColor;
-                    this.pawn.story.melanin = Mathf.Abs(1f - this.pawn.story.melanin);
-                }
-                else
-                {
-                    // set the hair color here, the only suitable place
-                    this.pawn.story.hairColor = this.PawnFace.HairColor;
-                }
-
-                if (this.BeardDef != null)
-                {
-                    this.PawnFace.BeardDef = this.BeardDef;
-                    this.PawnFace.MoustacheDef = MoustacheDefOf.Shaved;
-                }
-
-                this.EyeDef = null;
-                this.BrowDef = null;
-                this.BeardDef = null;
             }
 
             // this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
@@ -843,14 +786,11 @@
             return material;
         }
 
-        #endregion Public Methods
-
-        #region Private Methods
-
         private void CheckForAddedOrMissingParts()
         {
             this.CheckForAddedOrMissingParts(this.parent as Pawn);
         }
+
         private void CheckPart([NotNull] List<BodyPartRecord> body, [NotNull] Hediff hediff)
         {
             if (body.NullOrEmpty() || hediff.def == null)
@@ -946,7 +886,7 @@
 
         private void InitializeGraphicsBrows()
         {
-            Color color = this.pawn.story.hairColor * Color.gray;
+            Color color = this.pawn.story.hairColor * this.pawn.story.SkinColor * Color.gray;
             this.faceGraphicPart.BrowGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 this.texPathBrow,
                 ShaderDatabase.Cutout,
@@ -1095,16 +1035,11 @@
 
         private void ResetBoolsAndPaths()
         {
-            // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
             {
-                if (this.PawnFace?.EyeDef == null)
+                // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
+                if (this.PawnFace.EyeDef == null || this.PawnFace.BrowDef == null || this.PawnFace.BeardDef == null)
                 {
-                    SetPawnFace(new PawnFace(this.pawn, Faction.OfPlayer.def));
-                }
-
-                if (this.PawnFace.BrowDef == null)
-                {
-                    this.PawnFace.BrowDef = PawnFaceMaker.RandomBrowDefFor(this.pawn, Faction.OfPlayer.def);
+                    this.SetPawnFace(new PawnFace(this.pawn, Faction.OfPlayer.def));
                 }
             }
 
@@ -1131,6 +1066,7 @@
             {
                 return;
             }
+
             if (!Controller.settings.UseMouth || !this.hasNaturalJaw)
             {
                 return;
@@ -1154,8 +1090,5 @@
 
             this.faceGraphicPart.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[mouthTextureIndexOfMood].Graphic;
         }
-
-        #endregion Private Methods
-
     }
 }

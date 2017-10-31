@@ -1,41 +1,27 @@
 ﻿namespace FacialStuff
 {
+    using JetBrains.Annotations;
+    using RimWorld;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-
-    using JetBrains.Annotations;
-
-    using RimWorld;
-
     using UnityEngine;
-
     using Verse;
 
     public class Controller : Mod
     {
-        #region Public Fields
-
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once StyleCop.SA1307
         [SuppressMessage(
-      "StyleCop.CSharp.MaintainabilityRules",
-      "SA1401:FieldsMustBePrivate",
-      Justification = "Reviewed. Suppression is OK here.")]
+            "StyleCop.CSharp.MaintainabilityRules",
+            "SA1401:FieldsMustBePrivate",
+            Justification = "Reviewed. Suppression is OK here.")]
         public static Settings settings;
-
-        #endregion Public Fields
-
-        #region Public Constructors
 
         public Controller(ModContentPack content)
             : base(content)
         {
             settings = this.GetSettings<Settings>();
         }
-
-        #endregion Public Constructors
-
-        #region Public Methods
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
@@ -73,7 +59,5 @@
                 Find.ColonistBar.MarkColonistsDirty();
             }
         }
-
-        #endregion Public Methods
     }
 }

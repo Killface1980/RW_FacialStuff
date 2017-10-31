@@ -1,48 +1,37 @@
 ﻿// ReSharper disable StyleCop.SA1401
+
 namespace FacialStuff
 {
-    using System.Collections.Generic;
-
     using RimWorld;
-
+    using System.Collections.Generic;
     using UnityEngine;
-
     using Verse;
 
     public class Settings : ModSettings
     {
-
-        #region Public Fields
         public static Vector2 EyeFemaleAverageNormalOffset = new Vector2(-0.01006f, 0f);
+
         public static Vector2 EyeFemaleAveragePointyOffset = new Vector2(-0.01258f, -0.02138f);
+
         public static Vector2 EyeFemaleAverageWideOffset = new Vector2(-0.01835f, 0f);
+
         public static Vector2 EyeFemaleNarrowNormalOffset = new Vector2(-0.02264f, 0f);
+
         public static Vector2 EyeFemaleNarrowPointyOffset = new Vector2(-0.01256f, 0f);
+
         public static Vector2 EyeFemaleNarrowWideOffset = new Vector2(-0.01509f, 0f);
 
         public static Vector2 EyeMaleAverageNormalOffset = new Vector2(0f, 0f);
+
         public static Vector2 EyeMaleAveragePointyOffset = new Vector2(-0.01256f, -0.01258f);
+
         public static Vector2 EyeMaleAverageWideOffset = new Vector2(0f, 0f);
+
         public static Vector2 EyeMaleNarrowNormalOffset = new Vector2(-0.02516f, 0f);
+
         public static Vector2 EyeMaleNarrowPointyOffset = new Vector2(-0.02516f, 0f);
+
         public static Vector2 EyeMaleNarrowWideOffset = new Vector2(-0.02516f, 0f);
-
-        public static List<Vector2> EyeVector = new List<Vector2>
-                                                    {
-                                                        EyeMaleAverageNormalOffset,
-                                                        EyeMaleAveragePointyOffset,
-                                                        EyeMaleAverageWideOffset,
-                                                        EyeMaleNarrowNormalOffset,
-                                                        EyeMaleNarrowPointyOffset,
-                                                        EyeMaleNarrowWideOffset,
-
-                                                        EyeFemaleAverageNormalOffset,
-                                                        EyeFemaleAveragePointyOffset,
-                                                        EyeFemaleAverageWideOffset,
-                                                        EyeFemaleNarrowNormalOffset,
-                                                        EyeFemaleNarrowPointyOffset,
-                                                        EyeFemaleNarrowWideOffset
-                                                    };
 
         public static Vector2 MouthFemaleAverageNormalOffset = new Vector2(0.14331f, 0.13585f); //
         public static Vector2 MouthFemaleAveragePointyOffset = new Vector2(0.16100f, 0.13836f); //
@@ -58,46 +47,66 @@ namespace FacialStuff
         public static Vector2 MouthMaleNarrowPointyOffset = new Vector2(0.11824f, 0.17358f); //
         public static Vector2 MouthMaleNarrowWideOffset = new Vector2(0.11825f, 0.17623f); //
 
-        public static List<Vector2> MouthVector = new List<Vector2>
-                                                    {
-                                                        MouthMaleAverageNormalOffset,
-                                                        MouthMaleAveragePointyOffset,
-                                                        MouthMaleAverageWideOffset,
-                                                        MouthMaleNarrowNormalOffset,
-                                                        MouthMaleNarrowPointyOffset,
-                                                        MouthMaleNarrowWideOffset,
 
-                                                        MouthFemaleAverageNormalOffset,
-                                                        MouthFemaleAveragePointyOffset,
-                                                        MouthFemaleAverageWideOffset,
-                                                        MouthFemaleNarrowNormalOffset,
-                                                        MouthFemaleNarrowPointyOffset,
-                                                        MouthFemaleNarrowWideOffset
-                                                    };
+        public static List<Vector2> EyeVector =
+            new List<Vector2>
+                {
+                    EyeMaleAverageNormalOffset,
+                    EyeMaleAveragePointyOffset,
+                    EyeMaleAverageWideOffset,
+                    EyeMaleNarrowNormalOffset,
+                    EyeMaleNarrowPointyOffset,
+                    EyeMaleNarrowWideOffset,
+                    EyeFemaleAverageNormalOffset,
+                    EyeFemaleAveragePointyOffset,
+                    EyeFemaleAverageWideOffset,
+                    EyeFemaleNarrowNormalOffset,
+                    EyeFemaleNarrowPointyOffset,
+                    EyeFemaleNarrowWideOffset
+                };
 
-        #endregion Public Fields
+        public static List<Vector2> MouthVector =
+            new List<Vector2>
+                {
+                    MouthMaleAverageNormalOffset,
+                    MouthMaleAveragePointyOffset,
+                    MouthMaleAverageWideOffset,
+                    MouthMaleNarrowNormalOffset,
+                    MouthMaleNarrowPointyOffset,
+                    MouthMaleNarrowWideOffset,
+                    MouthFemaleAverageNormalOffset,
+                    MouthFemaleAveragePointyOffset,
+                    MouthFemaleAverageWideOffset,
+                    MouthFemaleNarrowNormalOffset,
+                    MouthFemaleNarrowPointyOffset,
+                    MouthFemaleNarrowWideOffset
+                };
 
-        #region Private Fields
+        private bool filterHats = true;
 
         private bool hideHatInBed = true;
 
         private bool hideHatWhileRoofed = true;
 
         private bool makeThemBlink = true;
+
         private bool mergeHair = true;
-
-        private bool showExtraParts = true;
-
-        private bool useCaching;
-        private bool useHeadRotator = false;
-        private bool useMouth = true;
-
-        private bool useWeirdHairChoices = true;
-        private bool useWrinkles = true;
 
         private bool showBodyChange;
 
+        private bool showExtraParts = true;
+
         private bool showGenderAgeChange;
+
+        private bool useCaching;
+
+        private bool useHeadRotator;
+
+        private bool useMouth = true;
+
+        private bool useWeirdHairChoices = true;
+
+        private bool useWrinkles = true;
 
         public bool FilterHats
         {
@@ -108,12 +117,6 @@ namespace FacialStuff
                 PortraitsCache.Clear();
             }
         }
-
-        private bool filterHats = true;
-
-        #endregion Private Fields
-
-        #region Public Properties
 
         public bool HideHatInBed
         {
@@ -127,16 +130,21 @@ namespace FacialStuff
             set => this.hideHatWhileRoofed = value;
         }
 
-        public bool UseHeadRotator => this.useHeadRotator;
         public bool MakeThemBlink => this.makeThemBlink;
 
         public bool MergeHair => this.mergeHair;
 
+        public bool ShowBodyChange => this.showBodyChange;
+
         public bool ShowExtraParts => this.showExtraParts;
+
+        public bool ShowGenderAgeChange => this.showGenderAgeChange;
 
         public bool UseCaching => this.useCaching;
 
         public bool UseDNAByFaction { get; } = false;
+
+        public bool UseHeadRotator => this.useHeadRotator;
 
         public bool UseMouth => this.useMouth;
 
@@ -144,18 +152,28 @@ namespace FacialStuff
 
         public bool UseWrinkles => this.useWrinkles;
 
-        public bool ShowBodyChange => this.showBodyChange;
-
-        public bool ShowGenderAgeChange => this.showGenderAgeChange;
-
-        #endregion Public Properties
-
-        #region Public Methods
-
         public void DoWindowContents(Rect inRect)
         {
             Listing_Standard list = new Listing_Standard(GameFont.Small) { ColumnWidth = inRect.width / 2 };
             list.Begin(inRect);
+
+            list.CheckboxLabeled(
+                "Settings.HideHatWhileRoofed".Translate(),
+                ref this.hideHatWhileRoofed,
+                "Settings.HideHatWhileRoofedTooltip".Translate());
+
+            list.CheckboxLabeled(
+                "Settings.FilterHats".Translate(),
+                ref this.filterHats,
+                "Settings.FilterHatsTooltip".Translate());
+
+            list.CheckboxLabeled(
+                "Settings.HideHatInBed".Translate(),
+                ref this.hideHatInBed,
+                "Settings.HideHatInBedTooltip".Translate());
+
+            list.Gap(12f);
+
             list.CheckboxLabeled(
                 "Settings.MakeThemBlink".Translate(),
                 ref this.makeThemBlink,
@@ -189,12 +207,8 @@ namespace FacialStuff
                 "Settings.UseWeirdHairChoices".Translate(),
                 ref this.useWeirdHairChoices,
                 "Settings.UseWeirdHairChoicesTooltip".Translate());
-            list.CheckboxLabeled(
-                "FacialStuffEditor.ShowBodyChange".Translate(),
-                ref this.showBodyChange);
-            list.CheckboxLabeled(
-                "FacialStuffEditor.ShowGenderChange".Translate(),
-                ref this.showGenderAgeChange);
+            list.CheckboxLabeled("FacialStuffEditor.ShowBodyChange".Translate(), ref this.showBodyChange);
+            list.CheckboxLabeled("FacialStuffEditor.ShowGenderChange".Translate(), ref this.showGenderAgeChange);
 
             list.CheckboxLabeled(
                 "Settings.UseCaching".Translate(),
@@ -250,8 +264,5 @@ namespace FacialStuff
             Scribe_Values.Look(ref this.showBodyChange, "showBodyChange", false, true);
             Scribe_Values.Look(ref this.showGenderAgeChange, "showGenderAgeChange", false, true);
         }
-
-        #endregion Public Methods
-
     }
 }

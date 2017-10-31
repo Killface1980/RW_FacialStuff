@@ -2,7 +2,6 @@
 {
     using EdB.PrepareCarefully;
 
-    using FacialStuff;
     using FacialStuff.FaceStyling_Bench;
 
     using global::Harmony;

@@ -1,4 +1,5 @@
 ﻿// ReSharper disable MissingXmlDoc
+
 namespace FacialStuff.Animator
 {
     using RimWorld;
@@ -9,9 +10,6 @@ namespace FacialStuff.Animator
 
     public class PawnEyeWiggler
     {
-
-        #region Private Fields
-
         private static readonly SimpleCurve EyeMotionFullCurve =
             new SimpleCurve
                 {
@@ -33,16 +31,17 @@ namespace FacialStuff.Animator
         private readonly SimpleCurve consciousnessCurve =
             new SimpleCurve { new CurvePoint(0f, 5f), new CurvePoint(0.5f, 2f), new CurvePoint(1f, 1f) };
 
-        private readonly SimpleCurve painCurve =
-            new SimpleCurve { new CurvePoint(0f, 1f), new CurvePoint(0.65f, 1f), new CurvePoint(1f, 2f) };
-
         private readonly float factorX = 0.02f;
 
         private readonly float factorY = 0.01f;
 
+        private readonly SimpleCurve painCurve =
+            new SimpleCurve { new CurvePoint(0f, 1f), new CurvePoint(0.65f, 1f), new CurvePoint(1f, 2f) };
+
         private readonly Pawn pawn;
 
         private Vector3 eyeMoveL = new Vector3(0, 0, 0);
+
         private Vector3 eyeMoveR = new Vector3(0, 0, 0);
 
         private float flippedX;
@@ -54,8 +53,11 @@ namespace FacialStuff.Animator
         private bool halfAnimY;
 
         private bool isAsleep;
+
         private int jitterLeft;
+
         private int jitterRight;
+
         private int lastBlinkended;
 
         private bool moveX;
@@ -66,7 +68,10 @@ namespace FacialStuff.Animator
 
         private int nextBlinkEnd = -5000;
 
-        #endregion Private Fields
+        public PawnEyeWiggler(Pawn p)
+        {
+            this.pawn = p;
+        }
 
         public bool EyeLeftBlinkNow
         {
@@ -77,6 +82,12 @@ namespace FacialStuff.Animator
             }
         }
 
+        public bool EyeLeftCanBlink { get; set; }
+
+        public Vector3 EyeMoveL => this.eyeMoveL;
+
+        public Vector3 EyeMoveR => this.eyeMoveR;
+
         public bool EyeRightBlinkNow
         {
             get
@@ -86,32 +97,11 @@ namespace FacialStuff.Animator
             }
         }
 
-        #region Public Constructors
-
-        public PawnEyeWiggler(Pawn p)
-        {
-            this.pawn = p;
-        }
-
-        #endregion Public Constructors
-
-        #region Public Properties
-
-        public bool EyeLeftCanBlink { get; set; }
-
-        public Vector3 EyeMoveL => this.eyeMoveL;
-
-        public Vector3 EyeMoveR => this.eyeMoveR;
-
         public bool EyeRightCanBlink { get; set; }
 
         public bool IsAsleep => this.isAsleep;
 
         public int NextBlinkEnd => this.nextBlinkEnd;
-
-        #endregion Public Properties
-
-        #region Public Methods
 
         public void WigglerTick()
         {
@@ -119,7 +109,8 @@ namespace FacialStuff.Animator
             {
                 return;
             }
-                int tickManagerTicksGame = Find.TickManager.TicksGame;
+
+            int tickManagerTicksGame = Find.TickManager.TicksGame;
 
             float x = Mathf.InverseLerp(this.lastBlinkended, this.nextBlink, tickManagerTicksGame);
             float movePixel = 0f;
@@ -171,10 +162,6 @@ namespace FacialStuff.Animator
             }
         }
 
-        #endregion Public Methods
-
-        #region Private Methods
-
         private void SetNextBlink(int tickManagerTicksGame)
         {
             // Eye blinking controller
@@ -208,8 +195,6 @@ namespace FacialStuff.Animator
             this.nextBlinkEnd = (int)(this.nextBlink + blinkDuration);
 
             this.isAsleep = !this.pawn.Awake();
-
-
 
             // this.JitterLeft = 1f;
             // this.JitterRight = 1f;
@@ -247,8 +232,5 @@ namespace FacialStuff.Animator
 
             this.lastBlinkended = tickManagerTicksGame;
         }
-
-        #endregion Private Methods
-
     }
 }

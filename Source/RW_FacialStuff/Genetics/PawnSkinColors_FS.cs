@@ -6,9 +6,6 @@ namespace FacialStuff.Detouring
 
     public static class PawnSkinColors_FS
     {
-
-        #region Public Fields
-
         public static readonly SkinColorData[] SkinColors =
             {
                 // Preference of lighter skin colors in favor of more hair color variety
@@ -66,10 +63,6 @@ namespace FacialStuff.Detouring
                 // new SkinColorData(0.9f, 0.95f, new Color(0.509803951f, 0.356862754f, 0.1882353f)),
                 // new SkinColorData(1f, 1f, new Color(0.3882353f, 0.274509817f, 0.141176477f))
             };
-
-        #endregion Public Fields
-
-        #region Public Methods
 
         public static bool GetMelaninCommonalityFactor_Prefix(ref float __result, float melanin)
         {
@@ -198,10 +191,6 @@ namespace FacialStuff.Detouring
             return false;
         }
 
-        #endregion Public Methods
-
-        #region Private Methods
-
         private static float GetSkinCommonalityFactor(int skinDataIndex)
         {
             float num = 0f;
@@ -237,13 +226,8 @@ namespace FacialStuff.Detouring
             return num;
         }
 
-        #endregion Private Methods
-
-        #region Public Structs
-
         public struct SkinColorData
         {
-
             #region Public Fields
 
             public Color color;
@@ -264,9 +248,6 @@ namespace FacialStuff.Detouring
             }
 
             #endregion Public Constructors
-
         }
-
-        #endregion Public Structs
     }
 }

@@ -14,7 +14,7 @@ namespace FacialStuff
             Find.LetterStack.ReceiveLetter(
                 "LetterLabelFacialStuffUpdate".Translate(),
                 "FacialStuffUpdate".Translate(new object[] { }),
-                LetterDefOf.Good,
+                LetterDefOf.PositiveEvent,
                 null);
             Find.TickManager.slower.SignalForceNormalSpeedShort();
             return true;

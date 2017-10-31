@@ -1,23 +1,15 @@
 ﻿namespace FacialStuff
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     using FacialStuff.Defs;
     using FacialStuff.Enums;
-
     using JetBrains.Annotations;
-
     using RimWorld;
-
+    using System.Collections.Generic;
+    using System.Linq;
     using Verse;
 
     public static class PawnFaceMaker
     {
-
-        #region Public Methods
-
         public static WrinkleDef AssignWrinkleDefFor(Pawn pawn)
         {
             IEnumerable<WrinkleDef> source = from wrinkle in DefDatabase<WrinkleDef>.AllDefs
@@ -310,11 +302,11 @@
             return chosenBeard;
         }
 
-
         public static BrowDef RandomBrowDefFor([NotNull] Pawn pawn, FactionDef factionType)
         {
             IEnumerable<BrowDef> source = from brow in DefDatabase<BrowDef>.AllDefs
-                                         // where brow.raceList.Contains(pawn.def)
+
+                                          // where brow.raceList.Contains(pawn.def)
                                           where brow.hairTags.SharesElementWith(factionType.hairTags)
                                           select brow;
 
@@ -324,56 +316,56 @@
             }
 
             BrowDef chosenBrows;
+
             /*
-            switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")))
-            {
-                case 2:
-                    {
-                        IEnumerable<BrowDef> filtered = browDefs.Where(x => x.label.Contains("Nice"));
-                        chosenBrows = filtered.RandomElementByWeight(brow => BrowChoiceLikelihoodFor(brow, pawn));
-                        return chosenBrows;
-                    }
+                        switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")))
+                        {
+                            case 2:
+                                {
+                                    IEnumerable<BrowDef> filtered = browDefs.Where(x => x.label.Contains("Nice"));
+                                    chosenBrows = filtered.RandomElementByWeight(brow => BrowChoiceLikelihoodFor(brow, pawn));
+                                    return chosenBrows;
+                                }
 
-                case 1:
-                    {
-                        IEnumerable<BrowDef> filtered = browDefs.Where(x => x.label.Contains("Aware"));
-                        chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
-                        return chosenBrows;
-                    }
+                            case 1:
+                                {
+                                    IEnumerable<BrowDef> filtered = browDefs.Where(x => x.label.Contains("Aware"));
+                                    chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
+                                    return chosenBrows;
+                                }
 
-                case 0:
-                    {
-                        IEnumerable<BrowDef> filtered =
-                            browDefs.Where(x => !x.label.Contains("Depressed") && !x.label.Contains("Tired"));
-                        chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
-                        return chosenBrows;
-                    }
+                            case 0:
+                                {
+                                    IEnumerable<BrowDef> filtered =
+                                        browDefs.Where(x => !x.label.Contains("Depressed") && !x.label.Contains("Tired"));
+                                    chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
+                                    return chosenBrows;
+                                }
 
-                case -1:
-                    {
-                        IEnumerable<BrowDef> filtered = browDefs.Where(x => x.label.Contains("Tired"));
-                        chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
-                        return chosenBrows;
-                    }
+                            case -1:
+                                {
+                                    IEnumerable<BrowDef> filtered = browDefs.Where(x => x.label.Contains("Tired"));
+                                    chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
+                                    return chosenBrows;
+                                }
 
-                case -2:
-                    {
-                        IEnumerable<BrowDef> filtered = browDefs.Where(x => x.label.Contains("Depressed"));
-                        chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
-                        return chosenBrows;
-                    }
-            }
-            */
-
+                            case -2:
+                                {
+                                    IEnumerable<BrowDef> filtered = browDefs.Where(x => x.label.Contains("Depressed"));
+                                    chosenBrows = filtered.RandomElementByWeight(eye => BrowChoiceLikelihoodFor(eye, pawn));
+                                    return chosenBrows;
+                                }
+                        }
+                        */
             return source.RandomElementByWeight(brow => BrowChoiceLikelihoodFor(brow, pawn));
         }
 
-        public static EyeDef RandomEyeDefFor(Pawn pawn,
-                                            FactionDef factionType)
+        public static EyeDef RandomEyeDefFor(Pawn pawn, FactionDef factionType)
         {
             // Log.Message("Selecting eyes.");
             IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
-                                       //  where eye.raceList.Contains(pawn.def)
+
+                                         // where eye.raceList.Contains(pawn.def)
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
 
@@ -387,10 +379,6 @@
 
             // Log.Message("Chosen eyes: " + chosenEyes);
         }
-
-        #endregion Public Methods
-
-        #region Private Methods
 
         private static float BeardChoiceLikelihoodFor([NotNull] BeardDef beard, Pawn pawn)
         {
@@ -564,7 +552,5 @@
             Log.Error(string.Concat("Unknown tache likelihood for ", tache, " with ", pawn));
             return 0f;
         }
-
-        #endregion Private Methods
     }
 }

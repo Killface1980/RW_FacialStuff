@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<DefPackage-BrowDef>
+<Defs>
 
-  <FacialStuff.Defs.BrowDef>
+    <FacialStuff.Defs.BrowDef>
     <defName>Brow_Male_Aggro</defName>
     <label>Aggro</label>
     <hairGender>Male</hairGender>
@@ -112,4 +112,4 @@
       <li>Tribal</li>
     </hairTags>
   </FacialStuff.Defs.BrowDef>
-</DefPackage-BrowDef>
+</Defs>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<Buildings>
+<Defs>
 
 <!--Parents-->
   <ThingDef Name="FSWorkTableBuildingBase" Abstract="True">
@@ -24,10 +24,10 @@
 <!--Children-->
 
   <ThingDef ParentName="FSWorkTableBuildingBase">
-    <DefName>FSStylist</DefName>
+    <defName>FSStylist</defName>
     <label>Face styling bench</label>
-    <ThingClass>FacialStuff.FaceStyling_Bench.Facestyler</ThingClass>
-    <Description>Place where faces go wild!</Description>
+    <thingClass>FacialStuff.FaceStyling_Bench.Facestyler</thingClass>
+    <description>Place where faces go wild!</description>
     <graphicData>
       <texPath>Clutter/Tables/StylingBench</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
@@ -39,12 +39,12 @@
         <cornerBR>Damage/Corner</cornerBR>
       </damageData>
     </graphicData>
-    <CostList>
-      <WoodLog>100</WoodLog>
-      <Steel>50</Steel>
+    <costList>
+      <WoodLog>50</WoodLog>
+      <Steel>20</Steel>
 	  <Component>1</Component>
-    </CostList>
-    <AltitudeLayer>Building</AltitudeLayer>
+    </costList>
+    <altitudeLayer>Building</altitudeLayer>
     <fillPercent>0.5</fillPercent>
     <useHitPoints>True</useHitPoints>
     <minifiedDef>MinifiedFurniture</minifiedDef>
@@ -54,12 +54,12 @@
       <Flammability>1.0</Flammability>
       <Cleanliness>-15</Cleanliness>
     </statBases>
-    <Size>(2,1)</Size>
-    <DesignationCategory>Misc</DesignationCategory>
-    <Passability>PassThroughOnly</Passability>
+    <size>(2,1)</size>
+    <designationCategory>Misc</designationCategory>
+    <passability>PassThroughOnly</passability>
     <pathCost>60</pathCost>
     <hasInteractionCell>True</hasInteractionCell>
     <interactionCellOffset>(0,0,1)</interactionCellOffset>
     <surfaceType>Item</surfaceType>
   </ThingDef>
-</Buildings>
+</Defs>

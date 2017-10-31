@@ -1,11 +1,8 @@
 namespace FacialStuff.Utilities
 {
-    using System;
-
     using JetBrains.Annotations;
-
+    using System;
     using UnityEngine;
-
     using Verse;
 
     public static class DialogUtility
@@ -14,9 +11,20 @@ namespace FacialStuff.Utilities
 
         private static readonly Vector2 BottomButSize = new Vector2(150f, 38f);
 
-        public static void DoNextBackButtons(Rect innerRect, string middleLabel, string nextLabel, [NotNull] Action backAct,
-                                             [NotNull] Action middleAct,
-                                             [NotNull] Action nextAct)
+        public static bool DoMiddleButton(Rect innerRect, string label)
+        {
+            float top = innerRect.height - 38f;
+            Rect rect = new Rect(innerRect.width / 2f - BottomButSize.x / 2f, top, BottomButSize.x, BottomButSize.y);
+            return Widgets.ButtonText(rect, label);
+        }
+
+        public static void DoNextBackButtons(
+            Rect innerRect,
+            string middleLabel,
+            string nextLabel,
+            [NotNull] Action backAct,
+            [NotNull] Action middleAct,
+            [NotNull] Action nextAct)
         {
             float top = innerRect.height - 38f;
             Text.Font = GameFont.Small;
@@ -27,7 +35,7 @@ namespace FacialStuff.Utilities
             }
 
             Rect randomRect = new Rect(
-                (innerRect.width / 2f) - (BottomButSize.x / 2f),
+                innerRect.width / 2f - BottomButSize.x / 2f,
                 top,
                 BottomButSize.x,
                 BottomButSize.y);
@@ -41,13 +49,6 @@ namespace FacialStuff.Utilities
             {
                 nextAct();
             }
-        }
-
-        public static bool DoMiddleButton(Rect innerRect, string label)
-        {
-            float top = innerRect.height - 38f;
-            Rect rect = new Rect((innerRect.width / 2f) - (BottomButSize.x / 2f), top, BottomButSize.x, BottomButSize.y);
-            return Widgets.ButtonText(rect, label);
         }
     }
 }

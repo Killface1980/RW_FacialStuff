@@ -1,16 +1,15 @@
 ﻿// ReSharper disable All
+
 namespace FacialStuff.FaceStyling_Bench
 {
     using System;
     using System.Collections.Generic;
+
     using Verse;
     using Verse.AI;
 
     public class FaceStyler : Building
     {
-
-        #region Public Methods
-
         public void FaceStyling(Pawn pawn)
         {
             Find.WindowStack.Add(new DialogFaceStyling(pawn));
@@ -34,7 +33,8 @@ namespace FacialStuff.FaceStyling_Bench
 
                 if (pawn.TryGetComp<CompFace>() == null)
                 {
-                    FloatMenuOption item3 = new FloatMenuOption("FacialStuffEditor.CannotUseNoFacePawn".Translate(pawn), null);
+                    FloatMenuOption item3 =
+                        new FloatMenuOption("FacialStuffEditor.CannotUseNoFacePawn".Translate(pawn), null);
                     return new List<FloatMenuOption> { item3 };
                 }
 
@@ -46,7 +46,8 @@ namespace FacialStuff.FaceStyling_Bench
                                                    this,
                                                    this.InteractionCell)
                                                    {
-                                                       locomotionUrgency = LocomotionUrgency.Sprint
+                                                       locomotionUrgency = LocomotionUrgency
+                                                           .Sprint
                                                    };
                         if (!pawn.jobs.TryTakeOrderedJob(FaceStyleChanger))
                         {
@@ -61,7 +62,5 @@ namespace FacialStuff.FaceStyling_Bench
 
             return list;
         }
-
-        #endregion Public Methods
     }
 }

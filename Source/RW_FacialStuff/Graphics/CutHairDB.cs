@@ -1,14 +1,11 @@
 ﻿namespace FacialStuff.Graphics
 {
+    using JetBrains.Annotations;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-
-    using JetBrains.Annotations;
-
     using UnityEngine;
-
     using Verse;
 
     [StaticConstructorOnStartup]
@@ -16,13 +13,8 @@
     // ReSharper disable once InconsistentNaming
     public static class CutHairDB
     {
-        #region Private Fields
-
-
         private static readonly Dictionary<GraphicRequest, Graphic> AllGraphics =
             new Dictionary<GraphicRequest, Graphic>();
-
-
 
         private static readonly List<HairCutPawn> PawnHairCache = new List<HairCutPawn>();
 
@@ -31,10 +23,6 @@
         private static Texture2D maskTexSide;
 
         private static string modPath;
-
-        #endregion Private Fields
-
-        #region Private Properties
 
         private static string ModPath
         {
@@ -45,11 +33,8 @@
                     return modPath;
                 }
 
-                ModMetaData mod =
-                    ModLister.AllInstalledMods.FirstOrDefault(x =>
-                        {
-                            return x?.Name != null && (x.Active && x.Name.StartsWith("Facial Stuff"));
-                        });
+                ModMetaData mod = ModLister.AllInstalledMods.FirstOrDefault(
+                    x => { return x?.Name != null && x.Active && x.Name.StartsWith("Facial Stuff"); });
                 if (mod != null)
                 {
                     modPath = mod.RootDir + "/Textures/MergedHair/";
@@ -58,10 +43,6 @@
                 return modPath;
             }
         }
-
-        #endregion Private Properties
-
-        #region Public Methods
 
         // ReSharper disable once MissingXmlDoc
         public static Graphic Get<T>(string path, Shader shader, Vector2 drawSize, Color color)
@@ -87,10 +68,6 @@
             return n;
         }
 
-        #endregion Public Methods
-
-        #region Private Methods
-
         private static void CutOutHair([NotNull] ref Texture2D hairTex, Texture2D maskTex)
         {
             for (int x = 0; x < hairTex.width; x++)
@@ -108,7 +85,6 @@
 
             hairTex.Apply();
         }
-
 
         private static T GetInner<T>(GraphicRequest req)
             where T : Graphic, new()
@@ -264,7 +240,5 @@
                 return (T)graphic;
             }
         }
-
-        #endregion Private Methods
     }
 }

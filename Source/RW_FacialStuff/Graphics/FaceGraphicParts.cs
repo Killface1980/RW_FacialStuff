@@ -6,8 +6,6 @@
 
     public class FaceGraphicParts
     {
-        #region Public Fields
-
         public Graphic BrowGraphic;
 
         public Graphic DeadEyeGraphic;
@@ -39,9 +37,5 @@
         public Graphic RottingWrinkleGraphic;
 
         public Graphic WrinkleGraphic;
-
-        #endregion Public Fields
-
-
     }
 }

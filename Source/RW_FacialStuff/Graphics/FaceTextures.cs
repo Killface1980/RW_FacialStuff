@@ -1,7 +1,5 @@
 ﻿namespace FacialStuff.Graphics
 {
-    using System.Collections.Generic;
-
     using UnityEngine;
 
     using Verse;
@@ -9,33 +7,23 @@
     [StaticConstructorOnStartup]
     public static class FaceTextures
     {
-        #region Public Fields
         public static readonly Texture2D backgroundTex = ContentFinder<Texture2D>.Get("UI/gradient");
 
-
         public static readonly Texture2D BlankTexture;
-        public static readonly Color SkinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
         public static readonly Texture2D MaskTex_Average_FrontBack;
 
         public static readonly Texture2D MaskTex_Narrow_Side;
 
-        #endregion Public Fields
-
-        #region Private Fields
+        public static readonly Color SkinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
         private static Texture2D maskTexAverageSide;
 
         private static Texture2D maskTexNarrowFrontBack;
 
-        #endregion Private Fields
-
-        #region Public Constructors
-
         static FaceTextures()
         {
-            MaskTex_Average_FrontBack = MakeReadable(
-                ContentFinder<Texture2D>.Get("MaskTex/MaskTex_front"));
+            MaskTex_Average_FrontBack = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_front"));
 
             MaskTex_Narrow_Side = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_side"));
 
@@ -54,10 +42,6 @@
             BlankTexture.Compress(false);
             BlankTexture.Apply(false, true);
         }
-
-        #endregion Public Constructors
-
-        #region Public Methods
 
         public static Texture2D MakeReadable(Texture2D texture)
         {
@@ -94,7 +78,5 @@
 
             // "myTexture2D" now has the same pixels from "texture" and it's readable.
         }
-
-        #endregion Public Methods
     }
 }

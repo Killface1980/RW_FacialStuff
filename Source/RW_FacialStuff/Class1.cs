@@ -59,6 +59,5 @@ namespace Verse
             MeshPool.humanlikeHairSetAverage = new GraphicMeshSet(1.5f);
             MeshPool.humanlikeHairSetNarrow = new GraphicMeshSet(1.3f, 1.5f);
         }
-
     }
 }

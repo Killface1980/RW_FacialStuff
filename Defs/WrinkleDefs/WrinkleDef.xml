@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<DefPackage-WrinkleDef>
+<Defs>
 
   <FacialStuff.Defs.WrinkleDef>
     <defName>Wrinkles_Default_Female</defName>
@@ -20,4 +20,4 @@
     </raceList>
     <texPath>Wrinkles/Wrinkles_Male</texPath>
   </FacialStuff.Defs.WrinkleDef>
-</DefPackage-WrinkleDef>
+</Defs>

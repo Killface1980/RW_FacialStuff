@@ -1,29 +1,19 @@
 ﻿namespace FacialStuff.Graphics
 {
+    using JetBrains.Annotations;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-
-    using JetBrains.Annotations;
-
     using UnityEngine;
-
     using Verse;
 
     public static class GraphicDatabaseHeadRecordsModded
     {
-
-        #region Public Fields
-
-        public static int headIndex = 0;
-
-        #endregion Public Fields
-
-        #region Private Fields
-
         public static readonly List<HeadGraphicRecordVanillaCustom> HeadsVanillaCustom =
             new List<HeadGraphicRecordVanillaCustom>();
+
+        public static int headIndex = 0;
 
         private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
 
@@ -32,10 +22,6 @@
         private static HeadGraphicRecordVanillaCustom skull;
 
         private static HeadGraphicRecordVanillaCustom stump;
-
-        #endregion Private Fields
-
-        #region Public Methods
 
         public static void BuildDatabaseIfNecessary()
         {
@@ -96,33 +82,18 @@
             stump = null;
         }
 
-        #endregion Public Methods
-
-        #region Private Classes
-
         public class HeadGraphicRecordVanillaCustom
         {
-
-            #region Public Fields
-
             public CrownType crownType;
 
             public Gender gender;
 
             public string graphicPathVanillaCustom;
 
-            #endregion Public Fields
-
-            #region Private Fields
-
             private readonly List<KeyValuePair<Color, Graphic_Multi>> graphics =
-                                                    new List<KeyValuePair<Color, Graphic_Multi>>();
+                new List<KeyValuePair<Color, Graphic_Multi>>();
 
-            #endregion Private Fields
-
-            #region Public Constructors
-
-            public HeadGraphicRecordVanillaCustom( string graphicPath)
+            public HeadGraphicRecordVanillaCustom(string graphicPath)
             {
                 this.graphicPathVanillaCustom = graphicPath;
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
@@ -143,10 +114,6 @@
                 }
             }
 
-            #endregion Public Constructors
-
-            #region Public Methods
-
             public Graphic_Multi GetGraphic(Color color)
             {
                 for (int i = 0; i < this.graphics.Count; i++)
@@ -165,11 +132,6 @@
                 this.graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphicMultiHead));
                 return graphicMultiHead;
             }
-
-            #endregion Public Methods
-
         }
-
-        #endregion Private Classes
     }
 }

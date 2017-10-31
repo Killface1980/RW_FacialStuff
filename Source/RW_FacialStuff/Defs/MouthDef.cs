@@ -1,4 +1,5 @@
 // ReSharper disable InconsistentNaming
+
 namespace FacialStuff.Defs
 {
     using System.Collections.Generic;
@@ -9,13 +10,10 @@ namespace FacialStuff.Defs
     [SuppressMessage("ReSharper", "StyleCop.SA1307")]
     public class MouthDef : Def
     {
-      
         public List<string> hairTags = new List<string>();
 
-      
         public List<ThingDef> raceList = new List<ThingDef>();
 
-      
         public string texPath = string.Empty;
     }
 }

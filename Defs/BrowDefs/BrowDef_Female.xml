@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<DefPackage-BrowDef>
+<Defs>
 
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Female_Aggro</defName>
@@ -110,4 +110,4 @@
       <li>Tribal</li>
     </hairTags>
   </FacialStuff.Defs.BrowDef>
-</DefPackage-BrowDef>
+</Defs>

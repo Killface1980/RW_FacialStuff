@@ -1,18 +1,18 @@
 ﻿/*
  * MIT License
- * 
+ *
  * Copyright (c) [2017] [Travis Offtermatt]
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -28,13 +28,13 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
 
     public class SliderWidgetDTO
     {
-        public readonly float OriginalValue;
-        public readonly float MinValue;
         public readonly float MaxValue;
 
-        private float selectedValue;
+        public readonly float MinValue;
 
-        public event UpdatePawnListener UpdatePawnListener;
+        public readonly float OriginalValue;
+
+        private float selectedValue;
 
         public SliderWidgetDTO(float value, float minValue, float maxValue)
         {
@@ -44,9 +44,15 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
             this.MaxValue = maxValue;
         }
 
+        public event UpdatePawnListener UpdatePawnListener;
+
         public float SelectedValue
         {
-            get { return this.selectedValue; }
+            get
+            {
+                return this.selectedValue;
+            }
+
             set
             {
                 if (this.selectedValue == value)

@@ -11,15 +11,9 @@
     [StaticConstructorOnStartup]
     public class HumanMouthGraphics
     {
-        #region Public Fields
-
         public MouthGraphicData[] HumanMouthGraphic;
 
         public Graphic_Multi_NaturalHeadParts mouthGraphicCrying;
-
-        #endregion Public Fields
-
-        #region Public Constructors
 
         public HumanMouthGraphics([NotNull] Pawn pawn)
         {
@@ -75,12 +69,11 @@
                     Vector2.one,
                     color) as Graphic_Multi_NaturalHeadParts;
 
-            this.mouthGraphicCrying =
-               GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                   MouthDefOf.Mouth_Crying.texPath,
-                   ShaderDatabase.CutoutSkin,
-                   Vector2.one,
-                   color) as Graphic_Multi_NaturalHeadParts;
+            this.mouthGraphicCrying = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                                          MouthDefOf.Mouth_Crying.texPath,
+                                          ShaderDatabase.CutoutSkin,
+                                          Vector2.one,
+                                          color) as Graphic_Multi_NaturalHeadParts;
 
             if (pawn.mindState?.mentalBreaker != null)
             {
@@ -96,8 +89,8 @@
                                                  new MouthGraphicData(major, mouthGraphic04),
                                                  new MouthGraphicData(minor, mouthGraphic03),
                                                  new MouthGraphicData(minor + fifth, mouthGraphic02),
-                                                 new MouthGraphicData(minor + (2 * fifth), mouthGraphic01),
-                                                 new MouthGraphicData(minor + (4 * fifth), mouthGraphicGrin),
+                                                 new MouthGraphicData(minor + 2 * fifth, mouthGraphic01),
+                                                 new MouthGraphicData(minor + 4 * fifth, mouthGraphicGrin)
                                              };
             }
             else
@@ -111,13 +104,9 @@
                                                  new MouthGraphicData(0.7f, mouthGraphic02),
                                                  new MouthGraphicData(0.8f, mouthGraphic01),
                                                  new MouthGraphicData(0.95f, mouthGraphicGrin)
-                };
+                                             };
             }
         }
-
-        #endregion Public Constructors
-
-        #region Public Methods
 
         public int GetMouthTextureIndexOfMood(float mood)
         {
@@ -134,10 +123,6 @@
 
             return result;
         }
-
-        #endregion Public Methods
-
-        #region Public Structs
 
         public struct MouthGraphicData
         {
@@ -159,7 +144,5 @@
 
             #endregion Public Constructors
         }
-
-        #endregion Public Structs
     }
 }

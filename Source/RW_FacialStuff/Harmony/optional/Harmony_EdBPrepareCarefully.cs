@@ -1,16 +1,13 @@
 ﻿namespace FacialStuff.Harmony.optional
 {
-    using System;
-
     using FacialStuff.Harmony.optional.PrepC;
-
     using global::Harmony;
-
+    using System;
     using Verse;
 
     // Blatantly stolen from "Psychology"
     [StaticConstructorOnStartup]
-    class Harmony_EdBPrepareCarefully
+    internal class Harmony_EdBPrepareCarefully
     {
         static Harmony_EdBPrepareCarefully()
         {
@@ -45,7 +42,9 @@
                                     new[] { typeof(EdB.PrepareCarefully.PrepareCarefully), typeof(string) }),
                                 null,
                                 null,
-                                new HarmonyMethod(typeof(PresetSaver_Postfix), nameof(PresetSaver_Postfix.SavePawnRef)));
+                                new HarmonyMethod(
+                                    typeof(PresetSaver_Postfix),
+                                    nameof(PresetSaver_Postfix.SavePawnRef)));
 
                             harmony.Patch(
                                 AccessTools.Method(
@@ -54,7 +53,9 @@
                                     new[] { typeof(EdB.PrepareCarefully.CustomPawn), typeof(string) }),
                                 null,
                                 null,
-                                new HarmonyMethod(typeof(PresetSaver_Postfix), nameof(PresetSaver_Postfix.SavePawnRef)));
+                                new HarmonyMethod(
+                                    typeof(PresetSaver_Postfix),
+                                    nameof(PresetSaver_Postfix.SavePawnRef)));
 
                             harmony.Patch(
                                 AccessTools.Method(

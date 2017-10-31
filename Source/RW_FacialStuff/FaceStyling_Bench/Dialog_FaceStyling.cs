@@ -1147,7 +1147,7 @@
             Color color,
             Rect rect,
             string colorName,
-            [CanBeNull] HairColorRequest request = null)
+            [CanBeNull] HairColorRequest colorRequest = null)
         {
             string text = colorName;
             Widgets.DrawHighlightIfMouseover(rect);
@@ -1166,10 +1166,10 @@
             {
                 this.RemoveColorPicker();
 
-                if (request != null)
+                if (colorRequest != null)
                 {
-                    this.faceComp.PawnFace.PheoMelanin = request.PheoMelanin;
-                    this.faceComp.PawnFace.EuMelanin = request.EuMelanin;
+                    this.faceComp.PawnFace.PheoMelanin = colorRequest.PheoMelanin;
+                    this.faceComp.PawnFace.EuMelanin = colorRequest.EuMelanin;
                 }
 
                 this.colourWrapper.Color = color;
@@ -1205,14 +1205,14 @@
                 for (int x = 0; x < colorFields; x++)
                 {
                     float pheoMelanin = (float)num / (colorFields * colorRows - 1);
-                    HairColorRequest request =
+                    HairColorRequest colorRequest =
                         new HairColorRequest(pheoMelanin, euMelanin, this.faceComp.PawnFace.Greyness);
 
                     this.DrawHairColorPickerCell(
-                        HairMelanin.GetHairColor(request),
+                        HairMelanin.GetHairColor(colorRequest),
                         set.ContractedBy(2f),
                         "FacialStuffEditor.Pheomelanin".Translate() + " - " + pheoMelanin.ToString("N2"),
-                        request);
+                        colorRequest);
                     set.x += set.width;
                     num++;
                 }
@@ -1265,6 +1265,19 @@
                 "0",
                 "1");
 
+            /*
+            Baldness bald = this.faceComp.PawnFace.Baldness;
+            bald = HorizontalDoubleSlider(
+                set,
+                bald,
+                0,
+                10,
+                false,
+                "FacialStuffEditor.Baldness".Translate(),
+                "0",
+                "10");
+                */
+
             if (GUI.changed)
             {
                 bool update = false;
@@ -1280,6 +1293,16 @@
                     this.faceComp.PawnFace.Greyness = grey;
                     update = true;
                 }
+                /*
+                if (Math.Abs(this.faceComp.PawnFace.Baldness.currentBaldness - bald.currentBaldness) > 0.01f
+                    || Math.Abs(this.faceComp.PawnFace.Baldness.maxBaldness - bald.maxBaldness) > 0.01f)
+                {
+                    bald.maxBaldness = Mathf.Max(bald.currentBaldness, bald.maxBaldness);
+
+                    this.faceComp.PawnFace.Baldness = bald;
+                    update = true;
+                }
+                */
 
                 if (update)
                 {
@@ -1289,7 +1312,56 @@
                 }
             }
         }
+        /*
+        // Verse.Widgets
+        public static Baldness HorizontalDoubleSlider(Rect rect, Baldness baldness, float leftValue, float rightValue, bool middleAlignment = false, string label = null, string leftAlignedLabel = null, string rightAlignedLabel = null, float roundTo = 1f)
+        {
 
+            if (middleAlignment || !label.NullOrEmpty())
+            {
+                rect.y += Mathf.Round((rect.height - 16f) / 2f);
+            }
+            if (!label.NullOrEmpty())
+            {
+                rect.y += 5f;
+            }
+
+            float current = GUI.HorizontalSlider(rect, baldness.currentBaldness, leftValue, rightValue);
+            float max = GUI.HorizontalSlider(rect, baldness.maxBaldness, leftValue, rightValue);
+
+            if (!label.NullOrEmpty() || !leftAlignedLabel.NullOrEmpty() || !rightAlignedLabel.NullOrEmpty())
+            {
+                TextAnchor anchor = Text.Anchor;
+                GameFont font = Text.Font;
+                Text.Font = GameFont.Tiny;
+                float num2 = (!label.NullOrEmpty()) ? Text.CalcSize(label).y : 18f;
+                rect.y = rect.y - num2 + 3f;
+                if (!leftAlignedLabel.NullOrEmpty())
+                {
+                    Text.Anchor = TextAnchor.UpperLeft;
+                    Widgets.Label(rect, leftAlignedLabel);
+                }
+                if (!rightAlignedLabel.NullOrEmpty())
+                {
+                    Text.Anchor = TextAnchor.UpperRight;
+                    Widgets.Label(rect, rightAlignedLabel);
+                }
+                if (!label.NullOrEmpty())
+                {
+                    Text.Anchor = TextAnchor.UpperCenter;
+                    Widgets.Label(rect, label);
+                }
+                Text.Anchor = anchor;
+                Text.Font = font;
+            }
+          //  if (roundTo > 0f)
+            {
+                baldness.currentBaldness = (int)(Mathf.RoundToInt(current / roundTo) * roundTo);
+                baldness.maxBaldness = (int)(Mathf.RoundToInt(max / roundTo) * roundTo);
+            }
+            return baldness;
+        }
+        */
         private void DrawHairPicker(Rect rect)
         {
             List<TabRecord> list = new List<TabRecord>();
@@ -2325,4 +2397,11 @@
 
         // {
     }
+
+   // public struct Baldness
+   // {
+   //     public int currentBaldness;
+   //
+   //     public int maxBaldness;
+   // }
 }

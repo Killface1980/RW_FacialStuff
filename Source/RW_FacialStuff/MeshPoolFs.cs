@@ -1,140 +1,127 @@
 ﻿namespace FacialStuff
 {
-    using Verse;
+    using FacialStuff.Enums;
 
-    using static FacialStuff.Enums.FullHead;
+    using Verse;
 
     [StaticConstructorOnStartup]
     public static class MeshPoolFS
     {
-        #region Public Fields
+        private const float HumanlikeHeadAverageWidth = 0.75f;
+
+        private const float HumanlikeHeadNarrowWidth = 0.65f;
 
         public static readonly GraphicVectorMeshSet[] HumanEyeSet = new GraphicVectorMeshSet[12];
 
         public static readonly GraphicVectorMeshSet[] HumanlikeMouthSet = new GraphicVectorMeshSet[12];
 
-        #endregion Public Fields
-
-        #region Private Fields
-
-        private const float HumanlikeHeadAverageWidth = 0.75f;
-
-        private const float HumanlikeHeadNarrowWidth = 0.65f;
-
-        #endregion Private Fields
-
-        #region Public Constructors
-
         static MeshPoolFS()
         {
-
-            HumanlikeMouthSet[(int)MaleAverageNormal] = new GraphicVectorMeshSet(
+            HumanlikeMouthSet[(int)FullHead.MaleAverageNormal] = new GraphicVectorMeshSet(
                 HumanlikeHeadAverageWidth,
-                Settings.MouthVector[(int)MaleAverageNormal]);
+                Settings.MouthVector[(int)FullHead.MaleAverageNormal]);
 
-            HumanlikeMouthSet[(int)MaleAveragePointy] = new GraphicVectorMeshSet(
+            HumanlikeMouthSet[(int)FullHead.MaleAveragePointy] = new GraphicVectorMeshSet(
                 0.7f,
                 HumanlikeHeadAverageWidth,
-                Settings.MouthVector[(int)MaleAveragePointy]);
+                Settings.MouthVector[(int)FullHead.MaleAveragePointy]);
 
-            HumanlikeMouthSet[(int)MaleAverageWide] =
-                new GraphicVectorMeshSet(HumanlikeHeadAverageWidth,
-                    Settings.MouthVector[(int)MaleAverageWide]);
+            HumanlikeMouthSet[(int)FullHead.MaleAverageWide] = new GraphicVectorMeshSet(
+                HumanlikeHeadAverageWidth,
+                Settings.MouthVector[(int)FullHead.MaleAverageWide]);
 
-            HumanlikeMouthSet[(int)MaleNarrowNormal] = new GraphicVectorMeshSet(
+            HumanlikeMouthSet[(int)FullHead.MaleNarrowNormal] = new GraphicVectorMeshSet(
                 0.6f,
                 HumanlikeHeadAverageWidth,
-                Settings.MouthVector[(int)MaleNarrowNormal]);
+                Settings.MouthVector[(int)FullHead.MaleNarrowNormal]);
 
-            HumanlikeMouthSet[(int)MaleNarrowPointy] = new GraphicVectorMeshSet(
+            HumanlikeMouthSet[(int)FullHead.MaleNarrowPointy] = new GraphicVectorMeshSet(
                 0.55f,
                 HumanlikeHeadAverageWidth,
-                Settings.MouthVector[(int)MaleNarrowPointy]);
+                Settings.MouthVector[(int)FullHead.MaleNarrowPointy]);
 
-            HumanlikeMouthSet[(int)MaleNarrowWide] = new GraphicVectorMeshSet(
+            HumanlikeMouthSet[(int)FullHead.MaleNarrowWide] = new GraphicVectorMeshSet(
                 HumanlikeHeadNarrowWidth,
                 HumanlikeHeadAverageWidth,
-                Settings.MouthVector[(int)MaleNarrowWide]);
+                Settings.MouthVector[(int)FullHead.MaleNarrowWide]);
 
-            HumanlikeMouthSet[(int)FemaleAverageNormal] = new GraphicVectorMeshSet(
+            HumanlikeMouthSet[(int)FullHead.FemaleAverageNormal] = new GraphicVectorMeshSet(
                 0.7f,
                 HumanlikeHeadAverageWidth,
-                Settings.MouthVector[(int)FemaleAverageNormal]);
+                Settings.MouthVector[(int)FullHead.FemaleAverageNormal]);
 
-            HumanlikeMouthSet[(int)FemaleAveragePointy] = new GraphicVectorMeshSet(
+            HumanlikeMouthSet[(int)FullHead.FemaleAveragePointy] = new GraphicVectorMeshSet(
                 HumanlikeHeadNarrowWidth,
                 HumanlikeHeadAverageWidth,
-                Settings.MouthVector[(int)FemaleAveragePointy]);
+                Settings.MouthVector[(int)FullHead.FemaleAveragePointy]);
 
-            HumanlikeMouthSet[(int)FemaleAverageWide] = new GraphicVectorMeshSet(
+            HumanlikeMouthSet[(int)FullHead.FemaleAverageWide] = new GraphicVectorMeshSet(
                 0.7f,
                 HumanlikeHeadAverageWidth,
-                Settings.MouthVector[(int)FemaleAverageWide]);
+                Settings.MouthVector[(int)FullHead.FemaleAverageWide]);
 
-            HumanlikeMouthSet[(int)FemaleNarrowNormal] = new GraphicVectorMeshSet(
+            HumanlikeMouthSet[(int)FullHead.FemaleNarrowNormal] = new GraphicVectorMeshSet(
                 0.5f,
                 HumanlikeHeadAverageWidth,
-                Settings.MouthVector[(int)FemaleNarrowNormal]);
+                Settings.MouthVector[(int)FullHead.FemaleNarrowNormal]);
 
-            HumanlikeMouthSet[(int)FemaleNarrowPointy] = new GraphicVectorMeshSet(
+            HumanlikeMouthSet[(int)FullHead.FemaleNarrowPointy] = new GraphicVectorMeshSet(
                 0.5f,
                 HumanlikeHeadAverageWidth,
-                Settings.MouthVector[(int)FemaleNarrowPointy]);
+                Settings.MouthVector[(int)FullHead.FemaleNarrowPointy]);
 
-            HumanlikeMouthSet[(int)FemaleNarrowWide] = new GraphicVectorMeshSet(
+            HumanlikeMouthSet[(int)FullHead.FemaleNarrowWide] = new GraphicVectorMeshSet(
                 0.6f,
                 HumanlikeHeadAverageWidth,
-                Settings.MouthVector[(int)FemaleNarrowWide]);
+                Settings.MouthVector[(int)FullHead.FemaleNarrowWide]);
 
-            HumanEyeSet[(int)MaleAverageNormal] = new GraphicVectorMeshSet(
+            HumanEyeSet[(int)FullHead.MaleAverageNormal] = new GraphicVectorMeshSet(
                 HumanlikeHeadAverageWidth,
-                Settings.EyeVector[(int)MaleAverageNormal]);
+                Settings.EyeVector[(int)FullHead.MaleAverageNormal]);
 
-            HumanEyeSet[(int)MaleAveragePointy] = new GraphicVectorMeshSet(
+            HumanEyeSet[(int)FullHead.MaleAveragePointy] = new GraphicVectorMeshSet(
                 HumanlikeHeadAverageWidth,
-                Settings.EyeVector[(int)MaleAveragePointy]);
+                Settings.EyeVector[(int)FullHead.MaleAveragePointy]);
 
-            HumanEyeSet[(int)MaleAverageWide] =
-                new GraphicVectorMeshSet(HumanlikeHeadAverageWidth,
-                    Settings.EyeVector[(int)MaleAverageWide]);
+            HumanEyeSet[(int)FullHead.MaleAverageWide] = new GraphicVectorMeshSet(
+                HumanlikeHeadAverageWidth,
+                Settings.EyeVector[(int)FullHead.MaleAverageWide]);
 
-            HumanEyeSet[(int)MaleNarrowNormal] = new GraphicVectorMeshSet(
+            HumanEyeSet[(int)FullHead.MaleNarrowNormal] = new GraphicVectorMeshSet(
                 HumanlikeHeadNarrowWidth,
                 HumanlikeHeadAverageWidth,
-                Settings.EyeVector[(int)MaleNarrowNormal]);
-            HumanEyeSet[(int)MaleNarrowPointy] = new GraphicVectorMeshSet(
+                Settings.EyeVector[(int)FullHead.MaleNarrowNormal]);
+            HumanEyeSet[(int)FullHead.MaleNarrowPointy] = new GraphicVectorMeshSet(
                 HumanlikeHeadNarrowWidth,
                 HumanlikeHeadAverageWidth,
-                Settings.EyeVector[(int)MaleNarrowPointy]);
-            HumanEyeSet[(int)MaleNarrowWide] = new GraphicVectorMeshSet(
+                Settings.EyeVector[(int)FullHead.MaleNarrowPointy]);
+            HumanEyeSet[(int)FullHead.MaleNarrowWide] = new GraphicVectorMeshSet(
                 HumanlikeHeadNarrowWidth,
                 HumanlikeHeadAverageWidth,
-                Settings.EyeVector[(int)MaleNarrowWide]);
+                Settings.EyeVector[(int)FullHead.MaleNarrowWide]);
 
-            HumanEyeSet[(int)FemaleAverageNormal] = new GraphicVectorMeshSet(
+            HumanEyeSet[(int)FullHead.FemaleAverageNormal] = new GraphicVectorMeshSet(
                 HumanlikeHeadAverageWidth,
-                Settings.EyeVector[(int)FemaleAverageNormal]);
-            HumanEyeSet[(int)FemaleAveragePointy] = new GraphicVectorMeshSet(
+                Settings.EyeVector[(int)FullHead.FemaleAverageNormal]);
+            HumanEyeSet[(int)FullHead.FemaleAveragePointy] = new GraphicVectorMeshSet(
                 HumanlikeHeadAverageWidth,
-                Settings.EyeVector[(int)FemaleAveragePointy]);
-            HumanEyeSet[(int)FemaleAverageWide] = new GraphicVectorMeshSet(
+                Settings.EyeVector[(int)FullHead.FemaleAveragePointy]);
+            HumanEyeSet[(int)FullHead.FemaleAverageWide] = new GraphicVectorMeshSet(
                 HumanlikeHeadAverageWidth,
-                Settings.EyeVector[(int)FemaleAverageWide]);
+                Settings.EyeVector[(int)FullHead.FemaleAverageWide]);
 
-            HumanEyeSet[(int)FemaleNarrowNormal] = new GraphicVectorMeshSet(
+            HumanEyeSet[(int)FullHead.FemaleNarrowNormal] = new GraphicVectorMeshSet(
                 HumanlikeHeadNarrowWidth,
                 HumanlikeHeadAverageWidth,
-                Settings.EyeVector[(int)FemaleNarrowNormal]);
-            HumanEyeSet[(int)FemaleNarrowPointy] = new GraphicVectorMeshSet(
+                Settings.EyeVector[(int)FullHead.FemaleNarrowNormal]);
+            HumanEyeSet[(int)FullHead.FemaleNarrowPointy] = new GraphicVectorMeshSet(
                 HumanlikeHeadNarrowWidth,
                 HumanlikeHeadAverageWidth,
-                Settings.EyeVector[(int)FemaleNarrowPointy]);
-            HumanEyeSet[(int)FemaleNarrowWide] = new GraphicVectorMeshSet(
+                Settings.EyeVector[(int)FullHead.FemaleNarrowPointy]);
+            HumanEyeSet[(int)FullHead.FemaleNarrowWide] = new GraphicVectorMeshSet(
                 HumanlikeHeadNarrowWidth,
                 HumanlikeHeadAverageWidth,
-                Settings.EyeVector[(int)FemaleNarrowWide]);
+                Settings.EyeVector[(int)FullHead.FemaleNarrowWide]);
         }
-
-        #endregion Public Constructors
     }
 }

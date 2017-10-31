@@ -68,7 +68,7 @@
     <None Include="Class1.cs" />
     <Compile Include="CrownTypeChecker.cs" />
     <Compile Include="GraphicVectorMeshSet.cs" />
-    <Compile Include="IncidentWorker_FacialStuffUpdateNote.cs" />
+    <None Include="IncidentWorker_FacialStuffUpdateNote.cs" />
     <Compile Include="Graphics\CutHairDB.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />
     <Compile Include="Defs\MoustacheDefOf.cs" />
@@ -171,9 +171,6 @@
       <Link>Defs\SpoonshortagesRimworldHairstyles_HairDefs.xml</Link>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="..\..\Defs\IncidentDefs\Incidents_FS_Update.xml">
-      <Link>Incidents_FS_Update.xml</Link>
-    </Content>
     <Content Include="..\..\Defs\JobDefs\Clutter_Jobs.xml">
       <Link>Defs\Clutter_Jobs.xml</Link>
     </Content>
@@ -182,6 +179,7 @@
     </Content>
     <Content Include="..\..\Defs\MouthDefs\MouthDef.xml">
       <Link>Defs\FacialDefs\MouthDef.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\ThingDefs\Worktable.xml">
       <Link>Defs\Worktable.xml</Link>

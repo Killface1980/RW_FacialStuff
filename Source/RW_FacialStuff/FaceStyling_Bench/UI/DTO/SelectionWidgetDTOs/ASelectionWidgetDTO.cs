@@ -1,18 +1,18 @@
 ﻿/*
  * MIT License
- * 
+ *
  * Copyright (c) [2017] [Travis Offtermatt]
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -28,20 +28,11 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
 
     public abstract class ASelectionWidgetDTO
     {
-        #region Protected Fields
-
         protected int index;
 
-        #endregion Protected Fields
-
-        #region Public Events
-
         public event SelectionChangeListener SelectionChangeListener;
+
         public event UpdatePawnListener UpdatePawnListener;
-
-        #endregion Public Events
-
-        #region Public Properties
 
         public abstract int Count { get; }
 
@@ -50,10 +41,6 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         public abstract object SelectedItem2 { get; }
 
         public abstract string SelectedItemLabel { get; }
-
-        #endregion Public Properties
-
-        #region Public Methods
 
         public void DecreaseIndex()
         {
@@ -79,10 +66,6 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
 
         public abstract void ResetToDefault();
 
-        #endregion Public Methods
-
-        #region Protected Methods
-
         protected void IndexChanged()
         {
             this.SelectionChangeListener?.Invoke(this);
@@ -93,7 +76,5 @@ namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
         {
             this.UpdatePawnListener?.Invoke(this, item, item2);
         }
-
-        #endregion Protected Methods
     }
 }

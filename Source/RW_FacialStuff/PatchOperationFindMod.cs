@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Xml;
-
-using Verse;
-
-namespace FacialStuff
+﻿namespace FacialStuff
 {
+    using System.Linq;
+    using System.Xml;
+
+    using Verse;
+
     // ReSharper disable once UnusedMember.Global
     public class PatchOperationFindMod : PatchOperation
     {

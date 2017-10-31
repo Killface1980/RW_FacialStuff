@@ -17,15 +17,34 @@
 
         public string GraphicPath => this.path;
 
-        public override Material MatSingle => this.mats[2];
+        public override Material MatBack => this.mats[0];
 
         public override Material MatFront => this.mats[2];
 
         public override Material MatSide => this.mats[1];
 
-        public override Material MatBack => this.mats[0];
+        public override Material MatSingle => this.mats[2];
 
         public override bool ShouldDrawRotated => this.MatSide == this.MatBack;
+
+        public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
+        {
+            return GraphicDatabase.Get<Graphic_Multi>(
+                this.path,
+                newShader,
+                this.drawSize,
+                newColor,
+                newColorTwo,
+                this.data);
+        }
+
+        public override int GetHashCode()
+        {
+            int seed = 0;
+            seed = Gen.HashCombine(seed, this.path);
+            seed = Gen.HashCombineStruct(seed, this.color);
+            return Gen.HashCombineStruct(seed, this.colorTwo);
+        }
 
         public override void Init(GraphicRequest req)
         {
@@ -132,17 +151,6 @@
             }
         }
 
-        public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
-        {
-            return GraphicDatabase.Get<Graphic_Multi>(
-                this.path,
-                newShader,
-                this.drawSize,
-                newColor,
-                newColorTwo,
-                this.data);
-        }
-
         public override string ToString()
         {
             return string.Concat(
@@ -153,14 +161,6 @@
                 ", colorTwo=",
                 this.colorTwo,
                 ")");
-        }
-
-        public override int GetHashCode()
-        {
-            int seed = 0;
-            seed = Gen.HashCombine(seed, this.path);
-            seed = Gen.HashCombineStruct(seed, this.color);
-            return Gen.HashCombineStruct(seed, this.colorTwo);
         }
     }
 }

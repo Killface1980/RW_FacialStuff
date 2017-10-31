@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<DefPackage-BeardDef>
+<Defs>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Anchor</defName>
@@ -515,4 +515,4 @@
     </hairTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
-</DefPackage-BeardDef>
+</Defs>
