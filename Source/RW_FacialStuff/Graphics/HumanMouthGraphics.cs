@@ -2,6 +2,8 @@
 {
     using FacialStuff.Defs;
 
+    using global::Harmony;
+
     using JetBrains.Annotations;
 
     using UnityEngine;
@@ -75,12 +77,14 @@
                                           Vector2.one,
                                           color) as Graphic_Multi_NaturalHeadParts;
 
+            var flag = (Controller.settings.UseUglyGrin);
+
             if (pawn.mindState?.mentalBreaker != null)
             {
                 float minor = pawn.mindState.mentalBreaker.BreakThresholdMinor;
                 float major = pawn.mindState.mentalBreaker.BreakThresholdMajor;
                 float extreme = pawn.mindState.mentalBreaker.BreakThresholdExtreme;
-                float fifth = (1f - minor) / 5;
+                float part = (1f - minor) / (flag ? 5 : 4);
 
                 this.HumanMouthGraphic = new[]
                                              {
@@ -88,10 +92,13 @@
                                                  new MouthGraphicData(extreme, mouthGraphic05),
                                                  new MouthGraphicData(major, mouthGraphic04),
                                                  new MouthGraphicData(minor, mouthGraphic03),
-                                                 new MouthGraphicData(minor + fifth, mouthGraphic02),
-                                                 new MouthGraphicData(minor + 2 * fifth, mouthGraphic01),
-                                                 new MouthGraphicData(minor + 4 * fifth, mouthGraphicGrin)
+                                                 new MouthGraphicData(minor + part, mouthGraphic02),
+                                                 new MouthGraphicData(minor + 2 * part, mouthGraphic01)
                                              };
+                if (flag)
+                {
+                    this.HumanMouthGraphic.Add(new MouthGraphicData(minor + 4 * part, mouthGraphicGrin));
+                }
             }
             else
             {
@@ -102,9 +109,12 @@
                                                  new MouthGraphicData(0.4f, mouthGraphic04),
                                                  new MouthGraphicData(0.55f, mouthGraphic03),
                                                  new MouthGraphicData(0.7f, mouthGraphic02),
-                                                 new MouthGraphicData(0.8f, mouthGraphic01),
-                                                 new MouthGraphicData(0.95f, mouthGraphicGrin)
+                                                 new MouthGraphicData(flag ? 0.8f : 0.85f, mouthGraphic01),
                                              };
+                if (flag)
+                {
+                    this.HumanMouthGraphic.Add(new MouthGraphicData(0.95f, mouthGraphicGrin));
+                }
             }
         }
 

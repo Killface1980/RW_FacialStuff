@@ -85,7 +85,26 @@
         [CanBeNull]
         private string texPathJawAddedPart;
 
+        public bool NeedsStyling = true;
+
         public GraphicVectorMeshSet EyeMeshSet => MeshPoolFS.HumanEyeSet[(int)this.FullHeadType];
+
+        public void FaceRandomizer()
+        {
+
+            // HairDNA hair = HairMelanin.GenerateHairMelaninAndCuticula(pawn, Rand.Value > 0.5f);
+            this.PawnFace.HasSameBeardColor = Rand.Value > 0.3f;
+            this.pawn.story.hairDef = PawnHairChooser.RandomHairDefFor(pawn, Faction.OfPlayer.def);
+            this.PawnFace.GenerateHairDNA(pawn, true);
+            this.pawn.story.hairColor  = this.PawnFace.HairColor;
+
+            PawnFaceMaker.RandomBeardDefFor(pawn, Faction.OfPlayer.def, out BeardDef beard, out MoustacheDef tache);
+            this.PawnFace.BeardDef = beard;
+            this.PawnFace.MoustacheDef = tache;
+
+            // SoundDef.Named("ShotPistol").PlayOneShot();
+        }
+
 
         [NotNull]
         public PawnEyeWiggler EyeWiggler => this.eyeWiggler;
@@ -853,35 +872,39 @@
 
         private void InitializeGraphicsBeard()
         {
-            string mainBeardDefTexPath = this.GetBeardPath(this.PawnFace.BeardDef);
-
-            string moustacheDefTexPath = this.GetMoustachePath(this.PawnFace.MoustacheDef);
-
-            Color beardColor = this.PawnFace.BeardColor;
-            Color tacheColor = this.PawnFace.BeardColor;
-
-            if (this.PawnFace.MoustacheDef == MoustacheDefOf.Shaved)
+            PawnFace face = this.PawnFace;
+            if (face != null)
             {
-                // no error, only use the beard def shaved as texture
-                tacheColor = Color.white;
+                string mainBeardDefTexPath = this.GetBeardPath(face.BeardDef);
+
+                string moustacheDefTexPath = this.GetMoustachePath(face.MoustacheDef);
+
+                Color beardColor = face.BeardColor;
+                Color tacheColor = face.BeardColor;
+
+                if (face.MoustacheDef == MoustacheDefOf.Shaved)
+                {
+                    // no error, only use the beard def shaved as texture
+                    tacheColor = Color.white;
+                }
+
+                if (face.BeardDef == BeardDefOf.Beard_Shaved)
+                {
+                    beardColor = Color.white;
+                }
+
+                this.faceGraphicPart.MoustacheGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    moustacheDefTexPath,
+                    ShaderDatabase.Cutout,
+                    Vector2.one,
+                    tacheColor);
+
+                this.faceGraphicPart.MainBeardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    mainBeardDefTexPath,
+                    ShaderDatabase.Cutout,
+                    Vector2.one,
+                    beardColor);
             }
-
-            if (this.PawnFace.BeardDef == BeardDefOf.Beard_Shaved)
-            {
-                beardColor = Color.white;
-            }
-
-            this.faceGraphicPart.MoustacheGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                moustacheDefTexPath,
-                ShaderDatabase.Cutout,
-                Vector2.one,
-                tacheColor);
-
-            this.faceGraphicPart.MainBeardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                mainBeardDefTexPath,
-                ShaderDatabase.Cutout,
-                Vector2.one,
-                beardColor);
         }
 
         private void InitializeGraphicsBrows()
@@ -1016,31 +1039,33 @@
         {
             Color wrinkleColor = this.pawn.story.SkinColor * new Color(0.1f, 0.1f, 0.1f);
 
-            wrinkleColor.a = this.PawnFace.wrinkleIntensity;
+            PawnFace face = this.PawnFace;
+            if (face != null)
+            {
+                wrinkleColor.a = face.wrinkleIntensity;
 
-            WrinkleDef pawnFaceWrinkleDef = this.PawnFace.WrinkleDef;
+                WrinkleDef pawnFaceWrinkleDef = face.WrinkleDef;
 
-            this.faceGraphicPart.WrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
-                ShaderDatabase.TransparentPostLight,
-                Vector2.one,
-                wrinkleColor);
+                this.faceGraphicPart.WrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
+                    ShaderDatabase.TransparentPostLight,
+                    Vector2.one,
+                    wrinkleColor);
 
-            this.faceGraphicPart.RottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
-                ShaderDatabase.TransparentPostLight,
-                Vector2.one,
-                wrinkleColor * FaceTextures.SkinRottingMultiplyColor);
+                this.faceGraphicPart.RottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
+                    ShaderDatabase.TransparentPostLight,
+                    Vector2.one,
+                    wrinkleColor * FaceTextures.SkinRottingMultiplyColor);
+            }
         }
 
         private void ResetBoolsAndPaths()
         {
+            // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
+            if (this.PawnFace?.EyeDef == null || this.PawnFace.BrowDef == null || this.PawnFace.BeardDef == null)
             {
-                // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
-                if (this.PawnFace.EyeDef == null || this.PawnFace.BrowDef == null || this.PawnFace.BeardDef == null)
-                {
-                    this.SetPawnFace(new PawnFace(this.pawn, Faction.OfPlayer.def));
-                }
+                this.SetPawnFace(new PawnFace(this.pawn, Faction.OfPlayer.def));
             }
 
             this.texPathEyeLeftPatch = null;

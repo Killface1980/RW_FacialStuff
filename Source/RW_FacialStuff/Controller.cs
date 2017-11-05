@@ -44,7 +44,7 @@
                 return;
             }
 
-            foreach (Pawn pawn in from pawn in PawnsFinder.AllMapsAndWorld_Alive
+            foreach (Pawn pawn in from pawn in PawnsFinder.AllMapsWorldAndTemporary_AliveOrDead
                                   where pawn.RaceProps.Humanlike
                                   let faceComp = pawn.TryGetComp<CompFace>()
                                   where faceComp != null

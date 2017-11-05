@@ -11,7 +11,7 @@
     {
         public static readonly List<Color> ArtificialHairColors;
 
-        public static readonly FloatRange greyRange = new FloatRange(0f, 0.95f);
+        public static readonly FloatRange GreyRange = new FloatRange(0f, 0.95f);
 
         private static readonly Gradient GradientEuMelanin;
 
@@ -178,7 +178,7 @@
             color *= GradientPheoMelanin.Evaluate(hairColorRequest.PheoMelanin);
 
             // var cuticula = Mathf.Lerp(cuticulaRange.min, cuticulaRange.max, hairRequest.Cuticula);
-            float greyness = Mathf.Lerp(greyRange.min, greyRange.max, hairColorRequest.Greyness);
+            float greyness = Mathf.Lerp(GreyRange.min, GreyRange.max, hairColorRequest.Greyness);
 
             // Color.RGBToHSV(color, out float h, out float s, out float v);
 
@@ -203,18 +203,18 @@
                 x =>
                     {
                         // cuticula check to prevent old pawns with incomplete stats
-                        CompFace pawnFace = x.TryGetComp<CompFace>();
-                        return pawnFace != null && !pawnFace.PawnFaceIsNull();
+                        CompFace compFace = x.TryGetComp<CompFace>();
+                        return compFace != null && !compFace.PawnFaceIsNull();
                     }).FirstOrDefault();
 
-            CompFace relatedPawn = relPawn?.TryGetComp<CompFace>();
-            if (relatedPawn == null)
+            PawnFace pawnFace = relPawn?.TryGetComp<CompFace>()?.PawnFace;
+            if (pawnFace == null)
             {
                 return false;
             }
 
-            float melaninx1 = relatedPawn.PawnFace.EuMelanin;
-            float melaninx2 = relatedPawn.PawnFace.PheoMelanin;
+            float melaninx1 = pawnFace.EuMelanin;
+            float melaninx2 = pawnFace.PheoMelanin;
 
             // float maxbaldness = relatedPawn.PawnFace.Baldness.maxBaldness;
             hairColor.EuMelanin = GetRandomFloatSimilarTo(melaninx1);

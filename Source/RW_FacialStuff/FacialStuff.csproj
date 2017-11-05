@@ -67,6 +67,7 @@
   <ItemGroup>
     <None Include="Class1.cs" />
     <Compile Include="CrownTypeChecker.cs" />
+    <None Include="FaceStyling_Bench\Job_FaceStylingJoy.cs" />
     <Compile Include="GraphicVectorMeshSet.cs" />
     <None Include="IncidentWorker_FacialStuffUpdateNote.cs" />
     <Compile Include="Graphics\CutHairDB.cs" />
@@ -79,6 +80,8 @@
     <Compile Include="Defs\MouthDef.cs" />
     <Compile Include="Defs\WrinkleDef.cs" />
     <Compile Include="Enums\BeardType.cs" />
+    <Compile Include="newStuff\Class2.cs" />
+    <Compile Include="newStuff\JoyGiver_ChangeAppearance.cs" />
     <Compile Include="OLD_FaceStyler.cs" />
     <Compile Include="Animator\PawnHeadRotator.cs" />
     <Compile Include="Enums\Side.cs" />
@@ -125,7 +128,7 @@
     <Compile Include="FaceStyling_Bench\ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="FaceStyling_Bench\ColorPicker\ColorHelper.cs" />
     <Compile Include="FaceStyling_Bench\Job_FaceStyling.cs" />
-    <Compile Include="FaceStyling_Bench\FaceStyler.cs" />
+    <Compile Include="FaceStyling_Bench\Building_FaceStyler.cs" />
     <None Include="FaceStyling_Bench\Preset.cs" />
     <None Include="FaceStyling_Bench\PresetDatabase.cs" />
     <Compile Include="Graphics\GraphicDatabaseHeadRecordsModded.cs" />
@@ -173,6 +176,11 @@
     </Content>
     <Content Include="..\..\Defs\JobDefs\Clutter_Jobs.xml">
       <Link>Defs\Clutter_Jobs.xml</Link>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Defs\JoyGivers\JoyGivers.xml">
+      <Link>Defs\JoyGivers.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\MoustacheDefs\MoustacheDef.xml">
       <Link>Defs\FacialDefs\MoustacheDef.xml</Link>
@@ -196,6 +204,10 @@
     </Content>
     <Content Include="..\..\Languages\German\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\German\FacialStuff_Keyed.xml</Link>
+    </Content>
+    <Content Include="..\..\Patches\HairPatches.xml">
+      <Link>Patches\HairPatches.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Patches\HumanPatch.xml">
       <Link>Patches\HumanPatch.xml</Link>

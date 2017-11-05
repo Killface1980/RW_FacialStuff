@@ -194,6 +194,7 @@
         {
             pawn = p;
             this.faceComp = pawn.TryGetComp<CompFace>();
+
             this.hats = Prefs.HatsOnlyOnMap;
             this.gear = Controller.settings.FilterHats;
             Prefs.HatsOnlyOnMap = true;
@@ -586,14 +587,6 @@
 
             this.DrawUI(contentRect);
 
-            Action nextAct = delegate
-                {
-                    this.saveChangedOnExit = true;
-
-                    // SoundDef.Named("ShotShotgun").PlayOneShotOnCamera();
-                    this.Close();
-                };
-
             Action backAct = delegate
                 {
                     this.RemoveColorPicker();
@@ -607,39 +600,43 @@
                     this.ResetPawnFace();
                 };
 
-            Action middleAct = delegate
-                {
-                    while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
-                    {
-                    }
-
-                    // HairDNA hair = HairMelanin.GenerateHairMelaninAndCuticula(pawn, Rand.Value > 0.5f);
-                    this.reInit = true;
-                    this.faceComp.PawnFace.HasSameBeardColor = Rand.Value > 0.3f;
-                    this.NewHair = PawnHairChooser.RandomHairDefFor(pawn, Faction.OfPlayer.def);
-                    this.faceComp.PawnFace.GenerateHairDNA(pawn, true);
-                    this.NewHairColor = this.faceComp.PawnFace.HairColor;
-                    this.NewBeardColor = this.faceComp.PawnFace.BeardColor;
-                    PawnFaceMaker.RandomBeardDefFor(
-                        pawn,
-                        Faction.OfPlayer.def,
-                        out BeardDef beard,
-                        out MoustacheDef tache);
-                    this.NewBeard = beard;
-                    this.NewMoustache = tache;
-
-                    this.reInit = false;
-
-                    // SoundDef.Named("ShotPistol").PlayOneShot();
-                };
-
             DialogUtility.DoNextBackButtons(
                 inRect,
                 "Randomize".Translate(),
                 "FacialStuffEditor.Accept".Translate(),
                 backAct,
-                middleAct,
-                nextAct);
+                this.FaceRandomizer,
+                this.SaveAndClose);
+        }
+
+        public void SaveAndClose()
+        {
+            this.saveChangedOnExit = true;
+
+            // SoundDef.Named("ShotShotgun").PlayOneShotOnCamera();
+            this.Close();
+        }
+
+        public void FaceRandomizer()
+        {
+            while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
+            {
+            }
+
+            // HairDNA hair = HairMelanin.GenerateHairMelaninAndCuticula(pawn, Rand.Value > 0.5f);
+            this.reInit = true;
+            this.faceComp.PawnFace.HasSameBeardColor = Rand.Value > 0.3f;
+            this.NewHair = PawnHairChooser.RandomHairDefFor(pawn, Faction.OfPlayer.def);
+            this.faceComp.PawnFace.GenerateHairDNA(pawn, true);
+            this.NewHairColor = this.faceComp.PawnFace.HairColor;
+            this.NewBeardColor = this.faceComp.PawnFace.BeardColor;
+            PawnFaceMaker.RandomBeardDefFor(pawn, Faction.OfPlayer.def, out BeardDef beard, out MoustacheDef tache);
+            this.NewBeard = beard;
+            this.NewMoustache = tache;
+
+            this.reInit = false;
+
+            // SoundDef.Named("ShotPistol").PlayOneShot();
         }
 
         public override void PostClose()
@@ -1258,8 +1255,8 @@
             grey = Widgets.HorizontalSlider(
                 set,
                 grey,
-                HairMelanin.greyRange.min,
-                HairMelanin.greyRange.max,
+                HairMelanin.GreyRange.min,
+                HairMelanin.GreyRange.max,
                 false,
                 "FacialStuffEditor.Greyness".Translate(),
                 "0",

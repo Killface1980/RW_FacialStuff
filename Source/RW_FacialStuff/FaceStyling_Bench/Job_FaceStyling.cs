@@ -10,7 +10,7 @@
     {
         private const TargetIndex CellInd = TargetIndex.B;
 
-        private const TargetIndex ColorChanger = TargetIndex.A;
+        private const TargetIndex FSBench = TargetIndex.A;
 
         private static readonly string ErrorMessage = "FaceStyling job called on building that is not Cabinet";
 
@@ -21,36 +21,35 @@
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            this.FailOnDestroyedOrNull(ColorChanger);
-            this.FailOnDespawnedNullOrForbidden(ColorChanger);
-            yield return Toils_Reserve.Reserve(ColorChanger);
+            this.FailOnDestroyedOrNull(FSBench);
+            this.FailOnDespawnedNullOrForbidden(FSBench);
+            yield return Toils_Reserve.Reserve(FSBench);
             yield return Toils_Goto.GotoCell(CellInd, PathEndMode.OnCell);
             yield return this.Toils_WaitWithSoundAndEffect();
         }
 
         private Toil Toils_WaitWithSoundAndEffect()
         {
-            return new Toil
-                       {
-                           initAction = delegate
-                               {
-                                   FaceStyler faceStylerNew = this.TargetA.Thing as FaceStyler;
-                                   if (faceStylerNew != null)
-                                   {
-                                       FaceStyler thing = (FaceStyler)this.TargetA.Thing;
-                                       Pawn actor = this.GetActor();
-                                       if (actor != null && actor.Position == this.TargetA.Thing.InteractionCell)
-                                       {
-                                           thing.FaceStyling(actor);
-                                       }
-                                   }
-                                   else
-                                   {
-                                       Log.Error(ErrorMessage);
-                                   }
-                               },
-                           defaultCompleteMode = ToilCompleteMode.Instant
-                       };
+            Toil toil = new Toil();
+            toil.initAction = delegate
+                {
+                    Building_FaceStyler faceStylerNew = this.TargetA.Thing as Building_FaceStyler;
+                    if (faceStylerNew != null)
+                    {
+                        Building_FaceStyler thing = (Building_FaceStyler)this.TargetA.Thing;
+                        Pawn actor = this.GetActor();
+                        if (actor != null && actor.Position == this.TargetA.Thing.InteractionCell)
+                        {
+                            thing.OpenFSDialog(actor);
+                        }
+                    }
+                    else
+                    {
+                        Log.Error(ErrorMessage);
+                    }
+                };
+            toil.defaultCompleteMode = ToilCompleteMode.Instant;
+            return toil;
         }
     }
 }

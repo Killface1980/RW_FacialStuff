@@ -1,32 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-<!--Parents-->
-  <ThingDef Name="FSWorkTableBuildingBase" Abstract="True">
-    <category>Building</category>
-    <thingClass>Building</thingClass>
-    <soundImpactDefault>BulletImpactMetal</soundImpactDefault>
-    <selectable>true</selectable>
-    <drawerType>MapMeshAndRealTime</drawerType>
-    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
-    <repairEffect>Repair</repairEffect>
-    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
-    <filthLeaving>BuildingRubble</filthLeaving>
-    <statBases>
-      <SellPriceFactor>0.70</SellPriceFactor>
-    </statBases>
-
-    <castEdgeShadows>true</castEdgeShadows>
-    <staticSunShadowHeight>0.20</staticSunShadowHeight>
-    <canOverlapZones>false</canOverlapZones>
-  </ThingDef>
-
-<!--Children-->
-
-  <ThingDef ParentName="FSWorkTableBuildingBase">
-    <defName>FSStylist</defName>
+  <ThingDef ParentName="BuildingBase">
+    <defName>Building_FaceStyler</defName>
     <label>Face styling bench</label>
-    <thingClass>FacialStuff.FaceStyling_Bench.Facestyler</thingClass>
+    <thingClass>FacialStuff.FaceStyling_Bench.Building_FaceStyler</thingClass>
     <description>Place where faces go wild!</description>
     <graphicData>
       <texPath>Clutter/Tables/StylingBench</texPath>

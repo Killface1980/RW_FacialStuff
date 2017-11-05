@@ -8,7 +8,7 @@ namespace FacialStuff
 
     public static class CrownTypeChecker
     {
-        public static void SetHeadOffsets([NotNull] Pawn p, CompFace compFace)
+        public static void SetHeadOffsets([NotNull] Pawn p, [NotNull] CompFace compFace)
         {
             switch (p.gender)
             {
@@ -26,7 +26,7 @@ namespace FacialStuff
             }
         }
 
-        private static void CheckFemaleCrownType(CompFace compFace)
+        private static void CheckFemaleCrownType([NotNull] CompFace compFace)
         {
             switch (compFace.PawnCrownType)
             {
@@ -40,7 +40,7 @@ namespace FacialStuff
             }
         }
 
-        private static void CheckFemaleCrownTypeAverage(CompFace compFace)
+        private static void CheckFemaleCrownTypeAverage([NotNull] CompFace compFace)
         {
             switch (compFace.PawnHeadType)
             {
@@ -58,7 +58,7 @@ namespace FacialStuff
             }
         }
 
-        private static void CheckFemaleCrownTypeNarrow(CompFace compFace)
+        private static void CheckFemaleCrownTypeNarrow([NotNull] CompFace compFace)
         {
             switch (compFace.PawnHeadType)
             {
@@ -76,7 +76,7 @@ namespace FacialStuff
             }
         }
 
-        private static void CheckMaleCrownType(CompFace compFace)
+        private static void CheckMaleCrownType([NotNull] CompFace compFace)
         {
             switch (compFace.PawnCrownType)
             {
@@ -90,7 +90,7 @@ namespace FacialStuff
             }
         }
 
-        private static void CheckMaleCrownTypeAverage(CompFace compFace)
+        private static void CheckMaleCrownTypeAverage([NotNull] CompFace compFace)
         {
             switch (compFace.PawnHeadType)
             {
@@ -108,7 +108,7 @@ namespace FacialStuff
             }
         }
 
-        private static void CheckMaleCrownTypeNarrow(CompFace compFace)
+        private static void CheckMaleCrownTypeNarrow([NotNull] CompFace compFace)
         {
             switch (compFace.PawnHeadType)
             {

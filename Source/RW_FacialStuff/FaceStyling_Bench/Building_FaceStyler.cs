@@ -5,12 +5,14 @@ namespace FacialStuff.FaceStyling_Bench
     using System;
     using System.Collections.Generic;
 
+    using FacialStuff.newStuff;
+
     using Verse;
     using Verse.AI;
 
-    public class FaceStyler : Building
+    public class Building_FaceStyler : Building
     {
-        public void FaceStyling(Pawn pawn)
+        public void OpenFSDialog(Pawn pawn)
         {
             Find.WindowStack.Add(new DialogFaceStyling(pawn));
         }

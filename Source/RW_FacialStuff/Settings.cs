@@ -86,7 +86,7 @@ namespace FacialStuff
 
         private bool hideHatInBed = true;
 
-        private bool hideHatWhileRoofed = true;
+        private bool hideHatWhileRoofed = false;
 
         private bool makeThemBlink = true;
 
@@ -99,6 +99,10 @@ namespace FacialStuff
         private bool showGenderAgeChange;
 
         private bool useCaching;
+
+        private bool useFreeWill;
+
+        private bool useUglyGrin = false;
 
         private bool useHeadRotator;
 
@@ -142,9 +146,13 @@ namespace FacialStuff
 
         public bool UseCaching => this.useCaching;
 
+        public bool UseUglyGrin => this.useUglyGrin;
+
         public bool UseDNAByFaction { get; } = false;
 
         public bool UseHeadRotator => this.useHeadRotator;
+
+        public bool UseFreeWill => this.useFreeWill;
 
         public bool UseMouth => this.useMouth;
 
@@ -220,6 +228,16 @@ namespace FacialStuff
                 ref this.useHeadRotator,
                 "Settings.UseHeadRotatorTooltip".Translate());
 
+            list.CheckboxLabeled(
+                "Settings.UseUglyGrin".Translate(),
+                ref this.useUglyGrin,
+                "Settings.UseUglyGrinTooltip".Translate());
+
+            list.CheckboxLabeled(
+                "Settings.UseFreeWill".Translate(),
+                ref this.useFreeWill,
+                "Settings.UseFreeWillTooltip".Translate());
+
             // this.useDNAByFaction = Toggle(this.useDNAByFaction, "Settings.UseDNAByFaction".Translate());
             list.End();
 
@@ -260,6 +278,7 @@ namespace FacialStuff
             // Scribe_Values.Look(ref this.useDNAByFaction, "useDNAByFaction", false, true);
             Scribe_Values.Look(ref this.makeThemBlink, "makeThemBlink", false, true);
             Scribe_Values.Look(ref this.useCaching, "useCaching", false, true);
+            Scribe_Values.Look(ref this.useUglyGrin, "useUglyGrin", false, true);
             Scribe_Values.Look(ref this.useHeadRotator, "useHeadRotator", false, true);
             Scribe_Values.Look(ref this.showBodyChange, "showBodyChange", false, true);
             Scribe_Values.Look(ref this.showGenderAgeChange, "showGenderAgeChange", false, true);

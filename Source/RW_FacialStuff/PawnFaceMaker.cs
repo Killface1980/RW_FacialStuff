@@ -24,7 +24,7 @@
         }
 
         // RimWorld.PawnHairChooser
-        public static float HairChoiceLikelihoodFor(HairDef hair, Pawn pawn)
+        public static float HairChoiceLikelihoodFor(HairDef hair, [NotNull] Pawn pawn)
         {
             if (pawn.gender == Gender.None)
             {
@@ -270,13 +270,10 @@
                 return BeardDefOf.Beard_Shaved;
             }
 
-            IEnumerable<BeardDef> source;
-            {
-                source = from beard in DefDatabase<BeardDef>.AllDefs
-                         where beard.raceList.Contains(pawn.def)
-                         where beard.beardType == type
-                         select beard;
-            }
+            IEnumerable<BeardDef> source = from beard in DefDatabase<BeardDef>.AllDefs
+                     where beard.raceList.Contains(pawn.def)
+                     where beard.beardType == type
+                     select beard;
 
             if (!source.Any())
             {
