@@ -6,7 +6,7 @@
     <driverClass>FacialStuff.FaceStyling_Bench.Job_FaceStyling</driverClass>
     <reportString>Going to the styling station.</reportString>
   </JobDef>
-  
+ <!-- 
   <JobDef>
     <defName>ChangeAppearance</defName>
     <driverClass>FacialStuff.FaceStyling_Bench.Job_FaceStylingJoy</driverClass>
@@ -17,5 +17,5 @@
     <joyGainRate>1.2</joyGainRate>
     <joyKind>Passive</joyKind>
   </JobDef>
-  
+  -->
 </Defs>

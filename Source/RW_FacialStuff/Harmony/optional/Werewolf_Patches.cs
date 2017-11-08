@@ -1,5 +1,7 @@
 ﻿namespace FacialStuff.Harmony.optional
 {
+    using FacialStuff.newStuff;
+
     using Verse;
 
     using Werewolf;
@@ -8,8 +10,7 @@
     {
         public static void TransformBack_Postfix(CompWerewolf __instance)
         {
-            CompFace face = __instance.Pawn.TryGetComp<CompFace>();
-            if (face == null)
+            if (!__instance.Pawn.GetFace(out CompFace face))
             {
                 return;
             }
@@ -20,8 +21,7 @@
 
         public static void TransformInto_Prefix(CompWerewolf __instance)
         {
-            CompFace face = __instance.Pawn.TryGetComp<CompFace>();
-            if (face != null)
+            if (__instance.Pawn.GetFace(out CompFace face))
             {
                 face.DontRender = true;
             }

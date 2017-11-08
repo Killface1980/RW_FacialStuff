@@ -16,6 +16,7 @@
     using FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs;
     using FacialStuff.Genetics;
     using FacialStuff.Graphics;
+    using FacialStuff.newStuff;
     using FacialStuff.Utilities;
 
     using JetBrains.Annotations;
@@ -193,7 +194,7 @@
         public DialogFaceStyling(Pawn p)
         {
             pawn = p;
-            this.faceComp = pawn.TryGetComp<CompFace>();
+            pawn.GetFace(out this.faceComp);
 
             this.hats = Prefs.HatsOnlyOnMap;
             this.gear = Controller.settings.FilterHats;

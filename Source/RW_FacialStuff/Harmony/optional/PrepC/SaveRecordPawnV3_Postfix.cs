@@ -4,6 +4,9 @@
     using global::Harmony;
     using System.Collections.Generic;
     using System.Linq;
+
+    using FacialStuff.newStuff;
+
     using Verse;
 
     public static class SaveRecordPawnV3_Postfix
@@ -21,7 +24,7 @@
             if (SavedPawns.Keys.Contains(__instance.id) && Scribe.mode == LoadSaveMode.Saving)
             {
                 CustomPawn customPawn = SavedPawns[__instance.id] as CustomPawn;
-                if (customPawn?.Pawn.TryGetComp<CompFace>() == null)
+                if (!customPawn?.Pawn.HasFace() == true)
                 {
                     return;
                 }

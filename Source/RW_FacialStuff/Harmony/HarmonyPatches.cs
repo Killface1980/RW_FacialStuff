@@ -10,6 +10,9 @@ namespace FacialStuff.Detouring
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
+
+    using FacialStuff.newStuff;
+
     using UnityEngine;
     using Verse;
     using Verse.Sound;
@@ -139,8 +142,7 @@ namespace FacialStuff.Detouring
 
             Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
 
-            CompFace face = pawn.TryGetComp<CompFace>();
-            if (face == null)
+            if (!pawn.GetFace(out CompFace face))
             {
                 return;
             }
@@ -184,9 +186,7 @@ namespace FacialStuff.Detouring
             {
                 return;
             }
-
-            CompFace face = pawn.GetComp<CompFace>();
-            if (face == null)
+            if (!pawn.GetFace(out CompFace face))
             {
                 return;
             }
@@ -309,16 +309,19 @@ namespace FacialStuff.Detouring
 
             if (__result)
             {
-                CompFace pawnFace = pawn.GetComp<CompFace>();
-                if (pawnFace != null && pawnFace.HeadRotator != null && !pawnFace.IsChild)
+                if (pawn.GetFace(out CompFace face))
                 {
-                    pawnFace.HeadRotator.LookAtPawn(recipient);
+                    if (face.HeadRotator != null && !face.IsChild)
+                    {
+                        face.HeadRotator.LookAtPawn(recipient);
+                    }
                 }
-
-                CompFace recipientFace = recipient.GetComp<CompFace>();
-                if (recipientFace != null && recipientFace.HeadRotator != null && !recipientFace.IsChild)
+                if (recipient.GetFace(out CompFace recipientFace))
                 {
-                    recipientFace.HeadRotator.LookAtPawn(pawn);
+                    if ( recipientFace.HeadRotator != null && !recipientFace.IsChild)
+                    {
+                        recipientFace.HeadRotator.LookAtPawn(pawn);
+                    }
                 }
             }
         }
@@ -328,15 +331,15 @@ namespace FacialStuff.Detouring
             // Now to enjoy the benefits of having made a popular mod!
             // This will be our little secret.
             Backstory childMe = new Backstory
-                                    {
-                                        bodyTypeMale = BodyType.Male,
-                                        bodyTypeFemale = BodyType.Female,
-                                        slot = BackstorySlot.Childhood,
-                                        baseDesc =
+            {
+                bodyTypeMale = BodyType.Male,
+                bodyTypeFemale = BodyType.Female,
+                slot = BackstorySlot.Childhood,
+                baseDesc =
                                             "NAME never believed what was common sense and always doubted other people. HECAP later went on inflating toads with HIS sushi stick. It was there HE earned HIS nickname.",
-                                        requiredWorkTags = WorkTags.Violent,
-                                        shuffleable = false
-                                    };
+                requiredWorkTags = WorkTags.Violent,
+                shuffleable = false
+            };
             childMe.SetTitle("Lost child");
             childMe.SetTitleShort("Seeker");
             childMe.skillGains.Add("Shooting", 4);
@@ -346,15 +349,15 @@ namespace FacialStuff.Detouring
             childMe.ResolveReferences();
 
             Backstory adultMale = new Backstory
-                                      {
-                                          bodyTypeMale = BodyType.Male,
-                                          bodyTypeFemale = BodyType.Female,
-                                          slot = BackstorySlot.Adulthood,
-                                          baseDesc =
+            {
+                bodyTypeMale = BodyType.Male,
+                bodyTypeFemale = BodyType.Female,
+                slot = BackstorySlot.Adulthood,
+                baseDesc =
                                               "HECAP left the military early on and acquired his skills on his own. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
-                                          shuffleable = false,
-                                          spawnCategories = new List<string>()
-                                      };
+                shuffleable = false,
+                spawnCategories = new List<string>()
+            };
             adultMale.spawnCategories.AddRange(new[] { "Civil", "Raider", "Slave", "Trader", "Traveler" });
             adultMale.SetTitle("Lone gunman");
             adultMale.SetTitleShort("Gunman");
@@ -366,12 +369,12 @@ namespace FacialStuff.Detouring
             adultMale.ResolveReferences();
 
             PawnBio me = new PawnBio
-                             {
-                                 childhood = childMe,
-                                 adulthood = adultMale,
-                                 gender = GenderPossibility.Male,
-                                 name = NameTriple.FromString("Gator 'Killface' Stinkwater")
-                             };
+            {
+                childhood = childMe,
+                adulthood = adultMale,
+                gender = GenderPossibility.Male,
+                name = NameTriple.FromString("Gator 'Killface' Stinkwater")
+            };
             me.PostLoad();
             SolidBioDatabase.allBios.Add(me);
             BackstoryDatabase.AddBackstory(childMe);

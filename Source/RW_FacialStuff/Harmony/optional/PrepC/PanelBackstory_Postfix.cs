@@ -3,6 +3,7 @@
     using EdB.PrepareCarefully;
 
     using FacialStuff.FaceStyling_Bench;
+    using FacialStuff.newStuff;
 
     using global::Harmony;
 
@@ -20,8 +21,8 @@
         {
             Rect panelRect = __instance.PanelRect;
             Pawn pawn = state.CurrentPawn.Pawn;
-            CompFace face = pawn.TryGetComp<CompFace>();
-            if (face == null)
+
+            if (!pawn.HasFace())
             {
                 return;
             }

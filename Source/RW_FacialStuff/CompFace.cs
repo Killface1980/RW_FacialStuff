@@ -387,7 +387,7 @@
         }
 
         // Can be called externally
-        public void CheckForAddedOrMissingParts(Pawn p)
+        public void CheckForAddedOrMissingParts([NotNull] Pawn p)
         {
             if (!Controller.settings.ShowExtraParts)
             {
@@ -671,9 +671,9 @@
             return material;
         }
 
-        public bool PawnFaceIsNull()
+        public bool HasPawnFace()
         {
-            return this.pawnFace == null;
+            return this.pawnFace != null;
         }
 
         public override void PostDraw()
@@ -909,10 +909,10 @@
 
         private void InitializeGraphicsBrows()
         {
-            Color color = this.pawn.story.hairColor * this.pawn.story.SkinColor * Color.gray;
+            Color color = this.pawn.story.hairColor  * Color.gray;
             this.faceGraphicPart.BrowGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 this.texPathBrow,
-                ShaderDatabase.Cutout,
+                ShaderDatabase.CutoutSkin,
                 Vector2.one,
                 color);
         }
@@ -1048,13 +1048,13 @@
 
                 this.faceGraphicPart.WrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
-                    ShaderDatabase.TransparentPostLight,
+                    ShaderDatabase.CutoutSkin,
                     Vector2.one,
                     wrinkleColor);
 
                 this.faceGraphicPart.RottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     pawnFaceWrinkleDef.texPath + "_" + this.PawnCrownType + "_" + this.PawnHeadType,
-                    ShaderDatabase.TransparentPostLight,
+                    ShaderDatabase.CutoutSkin,
                     Vector2.one,
                     wrinkleColor * FaceTextures.SkinRottingMultiplyColor);
             }

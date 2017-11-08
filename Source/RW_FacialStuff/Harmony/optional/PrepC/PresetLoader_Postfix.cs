@@ -3,6 +3,9 @@
     using EdB.PrepareCarefully;
     using global::Harmony;
     using System.Linq;
+
+    using FacialStuff.newStuff;
+
     using Verse;
 
     public static class PresetLoader_Postfix
@@ -16,7 +19,7 @@
             }
 
             Pawn pawn = __result.Pawn;
-            if (pawn?.TryGetComp<CompFace>() == null)
+            if (!pawn.HasFace())
             {
                 return;
             }

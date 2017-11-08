@@ -33,7 +33,7 @@ namespace FacialStuff.FaceStyling_Bench
                     return new List<FloatMenuOption> { item2 };
                 }
 
-                if (pawn.TryGetComp<CompFace>() == null)
+                if (!pawn.HasFace())
                 {
                     FloatMenuOption item3 =
                         new FloatMenuOption("FacialStuffEditor.CannotUseNoFacePawn".Translate(pawn), null);

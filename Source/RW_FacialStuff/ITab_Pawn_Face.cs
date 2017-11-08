@@ -6,6 +6,9 @@
     using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
+
+    using FacialStuff.newStuff;
+
     using UnityEngine;
     using Verse;
 
@@ -407,7 +410,7 @@
                             delegate
                                 {
                                     foreach (Pawn pawn in Find.VisibleMap.mapPawns.AllPawnsSpawned.Where(
-                                        x => x.GetComp<CompFace>() != null))
+                                        x => x.HasFace()))
                                     {
                                         Color color = Color.white;
                                         CompFace face = pawn.GetComp<CompFace>();

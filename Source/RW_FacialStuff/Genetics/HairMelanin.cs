@@ -4,6 +4,9 @@
     using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
+
+    using FacialStuff.newStuff;
+
     using UnityEngine;
     using Verse;
 
@@ -125,14 +128,17 @@
             // Special hair colors
             float factionColor = Rand.Value;
             float limit = 0.98f;
-            Faction faction = pawn.GetComp<CompFace>().originFaction;
-            if (faction.def.techLevel > TechLevel.Industrial)
+            if (pawn.GetFace(out CompFace face))
             {
-                limit *= pawn.gender == Gender.Female ? 0.7f : 0.9f;
+                Faction faction = face.originFaction;
+                if (faction.def.techLevel > TechLevel.Industrial)
+                {
+                    limit *= pawn.gender == Gender.Female ? 0.7f : 0.9f;
 
-                float techMod = (faction.def.techLevel - TechLevel.Industrial) / 5f;
-                SimpleCurve ageCure = new SimpleCurve { { 0.1f, 1f }, { 0.25f, 1f - techMod }, { 0.6f, 0.9f } };
-                limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
+                    float techMod = (faction.def.techLevel - TechLevel.Industrial) / 5f;
+                    SimpleCurve ageCure = new SimpleCurve { { 0.1f, 1f }, { 0.25f, 1f - techMod }, { 0.6f, 0.9f } };
+                    limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
+                }
             }
 
             // if (pawn.story.hairDef.hairTags.Contains("Punk"))
@@ -199,13 +205,9 @@
                 return false;
             }
 
-            Pawn relPawn = pawn.relations.FamilyByBlood.Where(
-                x =>
-                    {
-                        // cuticula check to prevent old pawns with incomplete stats
-                        CompFace compFace = x.TryGetComp<CompFace>();
-                        return compFace != null && !compFace.PawnFaceIsNull();
-                    }).FirstOrDefault();
+            Pawn relPawn =
+                pawn.relations.FamilyByBlood.FirstOrDefault(
+                    x => pawn.GetFace(out CompFace face) && face.HasPawnFace());
 
             PawnFace pawnFace = relPawn?.TryGetComp<CompFace>()?.PawnFace;
             if (pawnFace == null)
