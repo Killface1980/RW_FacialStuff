@@ -1,13 +1,20 @@
 ﻿namespace FacialStuff
 {
-    using FacialStuff.Graphics;
-    using global::Harmony;
-    using RimWorld;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
+    using FacialStuff.Graphics;
+
+    using global::Harmony;
+
+    using JetBrains.Annotations;
+
+    using RimWorld;
+
     using UnityEngine;
+
     using Verse;
 
     // ReSharper disable once InconsistentNaming
@@ -181,9 +188,9 @@
                     locFacialY.y += YOffsetOnFace;
                     if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
                     {
-                        Material browMat = faceComp.BrowMatAt(headFacing);
-                        Material mouthMat = faceComp.MouthMatAt(headFacing, portrait);
-                        Material wrinkleMat = faceComp.WrinkleMatAt(headFacing, bodyDrawType);
+                        Material browMat = faceComp.FaceMaterial.BrowMatAt(headFacing);
+                        Material mouthMat = faceComp.FaceMaterial.MouthMatAt(headFacing, portrait);
+                        Material wrinkleMat = faceComp.FaceMaterial.WrinkleMatAt(headFacing, bodyDrawType);
 
                         if (wrinkleMat != null)
                         {
@@ -194,7 +201,7 @@
                         // natural eyes
                         if (!faceComp.HasEyePatchLeft)
                         {
-                            Material leftEyeMat = faceComp.EyeLeftMatAt(headFacing, portrait);
+                            Material leftEyeMat = faceComp.FaceMaterial.EyeLeftMatAt(headFacing, portrait);
                             if (leftEyeMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(
@@ -209,7 +216,7 @@
 
                         if (!faceComp.HasEyePatchRight)
                         {
-                            Material rightEyeMat = faceComp.EyeRightMatAt(headFacing, portrait);
+                            Material rightEyeMat = faceComp.FaceMaterial.EyeRightMatAt(headFacing, portrait);
                             if (rightEyeMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(
@@ -232,7 +239,7 @@
                         // and now the added eye parts
                         if (faceComp.HasEyePatchLeft)
                         {
-                            Material leftBionicMat = faceComp.EyeLeftPatchMatAt(headFacing);
+                            Material leftBionicMat = faceComp.FaceMaterial.EyeLeftPatchMatAt(headFacing);
                             if (leftBionicMat != null)
                             {
                                 GenDraw.DrawMeshNowOrLater(
@@ -247,7 +254,7 @@
 
                         if (faceComp.HasEyePatchRight)
                         {
-                            Material rightBionicMat = faceComp.EyeRightPatchMatAt(headFacing);
+                            Material rightBionicMat = faceComp.FaceMaterial.EyeRightPatchMatAt(headFacing);
 
                             if (rightBionicMat != null)
                             {
@@ -277,7 +284,7 @@
                         }
 
                         // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
-                        if (!portrait)
+                      //  if (!portrait)
                         {
                             DrawBeardAndTache(headFacing, portrait, faceComp, headMesh, locFacialY, headQuat);
                         }
@@ -430,16 +437,16 @@
             }
 
             // Draw the beard, for the RenderPortrait
-            if (portrait && !headStump)
-            {
-                Vector3 b = headQuat * __instance.BaseHeadOffsetAt(headFacing);
-                Vector3 locFacialY = a + b;
-
-                // no rotation wanted
-                Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
-
-                DrawBeardAndTache(headFacing, portrait, faceComp, mesh2, locFacialY, headQuat);
-            }
+           // if (portrait && !headStump)
+           // {
+           //     Vector3 b = headQuat * __instance.BaseHeadOffsetAt(headFacing);
+           //     Vector3 locFacialY = a + b;
+           //
+           //     // no rotation wanted
+           //     Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
+           //
+           //     DrawBeardAndTache(headFacing, portrait, faceComp, mesh2, locFacialY, headQuat);
+           // }
 
             // ReSharper disable once InvertIf
             if (!portrait)
@@ -471,13 +478,13 @@
         private static void DrawBeardAndTache(
             Rot4 headFacing,
             bool portrait,
-            CompFace faceComp,
-            Mesh mesh2,
+            [NotNull] CompFace faceComp,
+            [NotNull] Mesh mesh2,
             Vector3 locFacialY,
             Quaternion headQuat)
         {
-            Material beardMat = faceComp.BeardMatAt(headFacing);
-            Material moustacheMatAt = faceComp.MoustacheMatAt(headFacing);
+            Material beardMat = faceComp.FaceMaterial.BeardMatAt(headFacing);
+            Material moustacheMatAt = faceComp.FaceMaterial.MoustacheMatAt(headFacing);
 
             if (beardMat != null)
             {

@@ -53,9 +53,9 @@
             Toil toil = new Toil();
 
             toil.defaultCompleteMode = ToilCompleteMode.Instant;
-            toil.initAction = (delegate
+            toil.initAction = delegate
                 {
-                    Building_FaceStyler faceStylerNew = this.ArtThing as Building_FaceStyler;
+                    FaceStyler faceStylerNew = this.ArtThing as FaceStyler;
                     if (faceStylerNew != null)
                     {
                         Pawn actor = this.GetActor();
@@ -65,10 +65,11 @@
                             {
                                 face.FaceRandomizer();
                             }
+
                             ;
                         }
                     }
-                });
+                };
             return toil;
         }
 
@@ -82,6 +83,7 @@
                     // num *= ((num2 <= 0f) ? 0f : num2);
                     this.pawn.rotationTracker.FaceCell(base.TargetA.Cell);
                     this.pawn.GainComfortFromCellIfPossible();
+
                     // float extraJoyGainFactor = num;
                     float extraJoyGainFactor = 0.5f;
                     JoyUtility.JoyTickCheckEnd(pawn, JoyTickFullJoyAction.GoToNextToil, extraJoyGainFactor);

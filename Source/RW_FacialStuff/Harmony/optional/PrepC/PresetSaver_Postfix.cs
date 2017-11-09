@@ -2,10 +2,12 @@
 
 namespace FacialStuff.Harmony.optional.PrepC
 {
-    using EdB.PrepareCarefully;
-    using global::Harmony;
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
+    using EdB.PrepareCarefully;
+
+    using global::Harmony;
 
     public static class PresetSaver_Postfix
     {

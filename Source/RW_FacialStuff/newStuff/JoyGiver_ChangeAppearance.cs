@@ -29,13 +29,14 @@ namespace RimWorld
                 result = null;
             }
 
-            if (pawn.GetFace(out CompFace face))
+            if (pawn.GetCompFace(out CompFace face))
             {
                 if (!face.NeedsStyling)
                 {
                     result = null;
                 }
             }
+
             return result;
         }
 

@@ -1,11 +1,14 @@
 ﻿namespace FacialStuff.Graphics
 {
-    using JetBrains.Annotations;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+
+    using JetBrains.Annotations;
+
     using UnityEngine;
+
     using Verse;
 
     [StaticConstructorOnStartup]

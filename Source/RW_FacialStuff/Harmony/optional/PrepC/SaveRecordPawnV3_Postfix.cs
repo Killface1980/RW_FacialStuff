@@ -1,11 +1,13 @@
 ﻿namespace FacialStuff.Harmony.optional.PrepC
 {
-    using EdB.PrepareCarefully;
-    using global::Harmony;
     using System.Collections.Generic;
     using System.Linq;
 
+    using EdB.PrepareCarefully;
+
     using FacialStuff.newStuff;
+
+    using global::Harmony;
 
     using Verse;
 
@@ -24,7 +26,7 @@
             if (SavedPawns.Keys.Contains(__instance.id) && Scribe.mode == LoadSaveMode.Saving)
             {
                 CustomPawn customPawn = SavedPawns[__instance.id] as CustomPawn;
-                if (!customPawn?.Pawn.HasFace() == true)
+                if (!customPawn?.Pawn.HasCompFace() == true)
                 {
                     return;
                 }

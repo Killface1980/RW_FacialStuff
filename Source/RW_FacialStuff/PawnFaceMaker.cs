@@ -1,11 +1,15 @@
 ﻿namespace FacialStuff
 {
-    using FacialStuff.Defs;
-    using FacialStuff.Enums;
-    using JetBrains.Annotations;
-    using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
+
+    using FacialStuff.Defs;
+    using FacialStuff.Enums;
+
+    using JetBrains.Annotations;
+
+    using RimWorld;
+
     using Verse;
 
     public static class PawnFaceMaker
@@ -84,36 +88,38 @@
 
                         // Fashion victims
                         case TechLevel.Medieval:
-                            if (pawn.gender == Gender.Male)
                             {
-                                if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
+                                if (pawn.gender == Gender.Male)
                                 {
-                                    return 0f;
+                                    if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
+                                    {
+                                        return 0f;
+                                    }
+
+                                    switch (hair.hairGender)
+                                    {
+                                        case HairGender.Male: return 70f;
+                                        case HairGender.MaleUsually: return 30f;
+                                        case HairGender.Any: return 40f;
+                                        case HairGender.FemaleUsually: return 5f;
+                                        case HairGender.Female: return 1f;
+                                    }
                                 }
 
-                                switch (hair.hairGender)
+                                if (pawn.gender == Gender.Female)
                                 {
-                                    case HairGender.Male: return 70f;
-                                    case HairGender.MaleUsually: return 30f;
-                                    case HairGender.Any: return 40f;
-                                    case HairGender.FemaleUsually: return 5f;
-                                    case HairGender.Female: return 1f;
+                                    switch (hair.hairGender)
+                                    {
+                                        case HairGender.Male: return 1f;
+                                        case HairGender.MaleUsually: return 5f;
+                                        case HairGender.Any: return 40f;
+                                        case HairGender.FemaleUsually: return 30f;
+                                        case HairGender.Female: return 70f;
+                                    }
                                 }
+
+                                break;
                             }
-
-                            if (pawn.gender == Gender.Female)
-                            {
-                                switch (hair.hairGender)
-                                {
-                                    case HairGender.Male: return 1f;
-                                    case HairGender.MaleUsually: return 5f;
-                                    case HairGender.Any: return 40f;
-                                    case HairGender.FemaleUsually: return 30f;
-                                    case HairGender.Female: return 70f;
-                                }
-                            }
-
-                            break;
 
                         // High affection to unisex
                         case TechLevel.Industrial:
@@ -185,38 +191,6 @@
 
                         default: break;
                     }
-
-                    if (faction.def.techLevel >= TechLevel.Spacer)
-                    {
-                        if (pawn.gender == Gender.Male)
-                        {
-                            if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 45)
-                            {
-                                return 0f;
-                            }
-
-                            switch (hair.hairGender)
-                            {
-                                case HairGender.Male: return 15f;
-                                case HairGender.MaleUsually: return 30f;
-                                case HairGender.Any: return 35f;
-                                case HairGender.FemaleUsually: return 30f;
-                                case HairGender.Female: return 15f;
-                            }
-                        }
-
-                        if (pawn.gender == Gender.Female)
-                        {
-                            switch (hair.hairGender)
-                            {
-                                case HairGender.Male: return 15f;
-                                case HairGender.MaleUsually: return 30f;
-                                case HairGender.Any: return 35f;
-                                case HairGender.FemaleUsually: return 30f;
-                                case HairGender.Female: return 15f;
-                            }
-                        }
-                    }
                 }
             }
 
@@ -256,9 +230,9 @@
 
         public static void RandomBeardDefFor(
             [NotNull] Pawn pawn,
-            FactionDef factionType,
-            out BeardDef mainBeard,
-            out MoustacheDef moustache)
+            [NotNull] FactionDef factionType,
+            [NotNull] out BeardDef mainBeard,
+            [NotNull] out MoustacheDef moustache)
         {
             BeardRoulette(pawn, factionType, out mainBeard, out moustache);
         }
@@ -271,9 +245,9 @@
             }
 
             IEnumerable<BeardDef> source = from beard in DefDatabase<BeardDef>.AllDefs
-                     where beard.raceList.Contains(pawn.def)
-                     where beard.beardType == type
-                     select beard;
+                                           where beard.raceList.Contains(pawn.def)
+                                           where beard.beardType == type
+                                           select beard;
 
             if (!source.Any())
             {
@@ -303,7 +277,7 @@
         {
             IEnumerable<BrowDef> source = from brow in DefDatabase<BrowDef>.AllDefs
 
-                                          // where brow.raceList.Contains(pawn.def)
+                                              // where brow.raceList.Contains(pawn.def)
                                           where brow.hairTags.SharesElementWith(factionType.hairTags)
                                           select brow;
 
@@ -362,7 +336,7 @@
             // Log.Message("Selecting eyes.");
             IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
 
-                                         // where eye.raceList.Contains(pawn.def)
+                                             // where eye.raceList.Contains(pawn.def)
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
 

@@ -24,10 +24,12 @@
 
 namespace FacialStuff.FaceStyling_Bench.UI.DTO.SelectionWidgetDTOs
 {
-    using RimWorld;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using RimWorld;
+
     using Verse;
 
     public class BodyTypeSelectionDTO : ASelectionWidgetDTO

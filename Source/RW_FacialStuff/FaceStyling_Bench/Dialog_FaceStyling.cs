@@ -26,14 +26,13 @@
     using UnityEngine;
 
     using Verse;
-
     using static FacialStuff.FaceStyling_Bench.UI.Util.WidgetUtil;
 
     [StaticConstructorOnStartup]
     public class DialogFaceStyling : Window
     {
-
         #region Private Fields
+
         private static Vector2 portraitSize = new Vector2(203f, 203f);
 
         private static readonly Color ColorSwatchBorder = new Color(0.77255f, 0.77255f, 0.77255f);
@@ -41,11 +40,17 @@
         private static readonly Color ColorSwatchSelection = new Color(0.9098f, 0.9098f, 0.9098f);
 
         private static readonly int Columns;
+
         private static readonly Color DarkBackground = new Color(0.12f, 0.12f, 0.12f);
+
         private static readonly float EntrySize;
+
         private static readonly List<BeardDef> FullBeardDefs;
+
         private static readonly float ListWidth = 450f;
+
         private static readonly List<BeardDef> LowerBeardDefs;
+
         // private static Texture2D _icon;
         private static readonly float MarginFS = 14f;
 
@@ -64,46 +69,80 @@
         private static readonly Texture2D NameBackground;
 
         private static readonly long TicksPerYear = 3600000L;
+
         private static readonly string Title = "FacialStuffEditor.FaceStylerTitle".Translate();
+
         private static readonly float TitleHeight = 30f;
+
         private static readonly List<string> VanillaHairTags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
+
         private static List<BrowDef> browDefs;
+
         private static List<string> currentFilter;
+
         private static List<EyeDef> eyeDefs;
 
         private static List<HairDef> filteredHairDefs;
+
         private static List<HairDef> hairDefs;
+
         private static long MaxAge = 1000000000 * TicksPerYear;
+
         private static Pawn pawn;
 
         private static float PreviewSize = 220f;
+
         private readonly ColorWrapper colourWrapper;
+
         [NotNull]
         private readonly CompFace faceComp;
 
         private readonly bool gear;
+
         private readonly bool hadSameBeardColor;
+
         private readonly bool hats;
-        private readonly bool initialized = false;
+
+        private readonly bool initialized;
+
         private readonly long originalAgeBio;
+
         private readonly long originalAgeChrono;
+
         private readonly BeardDef originalBeard;
+
         private readonly Color originalBeardColor;
+
         private readonly BodyType originalBodyType;
+
         private readonly BrowDef originalBrow;
+
         private readonly CrownType originalCrownType;
+
         private readonly EyeDef originalEye;
+
         private readonly Gender originalGender;
+
         private readonly HairDef originalHair;
+
         private readonly Color originalHairColor;
+
         private readonly string originalHeadGraphicPath;
+
         private readonly float originalMelanin;
+
         private readonly MoustacheDef originalMoustache;
+
         private readonly float wrinkles;
+
         private BeardTab beardTab;
+
         private DresserDTO dresserDto;
+
         private FilterTab filterTab;
+
         private GenderTab genderTab;
+
         private BeardDef newBeard;
 
         private Color newBeardColor;
@@ -119,6 +158,7 @@
         private float newMelanin;
 
         private MoustacheDef newMoustache;
+
         private Vector2 pickerPosition = Vector2.zero;
 
         private Vector2 pickerSize = new Vector2(200, 200);
@@ -194,7 +234,7 @@
         public DialogFaceStyling(Pawn p)
         {
             pawn = p;
-            pawn.GetFace(out this.faceComp);
+            pawn.GetCompFace(out this.faceComp);
 
             this.hats = Prefs.HatsOnlyOnMap;
             this.gear = Controller.settings.FilterHats;
@@ -753,10 +793,9 @@
                             this.NewBeardColor = this.colourWrapper.Color;
                         },
                     false,
-                    true)
-                {
-                    initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
-                });
+                    true) {
+                             initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin) 
+                          });
         }
 
         private void DrawBeardColorPickerCell(Color color, Rect rect, string colorName)
@@ -791,10 +830,9 @@
                                 this.NewBeardColor = this.colourWrapper.Color;
                             },
                         false,
-                        true)
-                    {
-                        initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
-                    });
+                        true) {
+                                 initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin) 
+                              });
             }
         }
 
@@ -1176,10 +1214,9 @@
                         this.colourWrapper,
                         delegate { this.NewHairColor = this.colourWrapper.Color; },
                         false,
-                        true)
-                    {
-                        initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
-                    });
+                        true) {
+                                 initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin) 
+                              });
             }
         }
 
@@ -1275,7 +1312,6 @@
                 "0",
                 "10");
                 */
-
             if (GUI.changed)
             {
                 bool update = false;
@@ -1291,17 +1327,17 @@
                     this.faceComp.PawnFace.Greyness = grey;
                     update = true;
                 }
+
                 /*
-                if (Math.Abs(this.faceComp.PawnFace.Baldness.currentBaldness - bald.currentBaldness) > 0.01f
-                    || Math.Abs(this.faceComp.PawnFace.Baldness.maxBaldness - bald.maxBaldness) > 0.01f)
-                {
-                    bald.maxBaldness = Mathf.Max(bald.currentBaldness, bald.maxBaldness);
-
-                    this.faceComp.PawnFace.Baldness = bald;
-                    update = true;
-                }
-                */
-
+                                if (Math.Abs(this.faceComp.PawnFace.Baldness.currentBaldness - bald.currentBaldness) > 0.01f
+                                    || Math.Abs(this.faceComp.PawnFace.Baldness.maxBaldness - bald.maxBaldness) > 0.01f)
+                                {
+                                    bald.maxBaldness = Mathf.Max(bald.currentBaldness, bald.maxBaldness);
+                
+                                    this.faceComp.PawnFace.Baldness = bald;
+                                    update = true;
+                                }
+                                */
                 if (update)
                 {
                     this.RemoveColorPicker();
@@ -1310,6 +1346,7 @@
                 }
             }
         }
+
         /*
         // Verse.Widgets
         public static Baldness HorizontalDoubleSlider(Rect rect, Baldness baldness, float leftValue, float rightValue, bool middleAlignment = false, string label = null, string leftAlignedLabel = null, string rightAlignedLabel = null, float roundTo = 1f)
@@ -1591,11 +1628,11 @@
                             delegate { this.NewHairColor = this.colourWrapper.Color; },
                             false,
                             true)
-                        {
-                            initialPosition = new Vector2(
+                            {
+                                initialPosition = new Vector2(
                                     this.windowRect.xMax + MarginFS,
                                     this.windowRect.yMin)
-                        });
+                            });
                 }
             }
         }
@@ -2354,6 +2391,7 @@
             this.rerenderPawn = true;
         }
 
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private void UpdatePawnDefs([NotNull] Def newValue)
         {
             if (newValue is BeardDef)
@@ -2396,10 +2434,9 @@
         // {
     }
 
-   // public struct Baldness
+    // public struct Baldness
    // {
-   //     public int currentBaldness;
-   //
-   //     public int maxBaldness;
+   // public int currentBaldness;
+   // public int maxBaldness;
    // }
 }

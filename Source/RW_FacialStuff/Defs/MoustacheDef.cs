@@ -7,14 +7,17 @@
 
 namespace FacialStuff.Defs
 {
-    using JetBrains.Annotations;
-    using RimWorld;
     using System.Collections.Generic;
+
+    using JetBrains.Annotations;
+
+    using RimWorld;
+
     using Verse;
 
     public class MoustacheDef : Def
     {
-        public bool drawMouth = false;
+        public bool drawMouth;
 
         public HairGender hairGender = HairGender.Male;
 

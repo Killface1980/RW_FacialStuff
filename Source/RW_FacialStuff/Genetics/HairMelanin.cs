@@ -1,13 +1,16 @@
 ﻿namespace FacialStuff.Genetics
 {
-    using JetBrains.Annotations;
-    using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
 
     using FacialStuff.newStuff;
 
+    using JetBrains.Annotations;
+
+    using RimWorld;
+
     using UnityEngine;
+
     using Verse;
 
     public static class HairMelanin
@@ -128,7 +131,7 @@
             // Special hair colors
             float factionColor = Rand.Value;
             float limit = 0.98f;
-            if (pawn.GetFace(out CompFace face))
+            if (pawn.GetCompFace(out CompFace face))
             {
                 Faction faction = face.originFaction;
                 if (faction.def.techLevel > TechLevel.Industrial)
@@ -207,10 +210,9 @@
 
             Pawn relPawn =
                 pawn.relations.FamilyByBlood.FirstOrDefault(
-                    x => pawn.GetFace(out CompFace face) && face.HasPawnFace());
+                    x => x.HasPawnFace());
 
-            PawnFace pawnFace = relPawn?.TryGetComp<CompFace>()?.PawnFace;
-            if (pawnFace == null)
+            if (relPawn == null || !relPawn.GetPawnFace(out PawnFace pawnFace))
             {
                 return false;
             }

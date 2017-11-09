@@ -1,7 +1,9 @@
 ﻿namespace FacialStuff.Animator
 {
-    using JetBrains.Annotations;
     using System.Collections.Generic;
+
+    using JetBrains.Annotations;
+
     using Verse;
     using Verse.AI;
 
@@ -16,13 +18,13 @@
                     new CurvePoint(360f, 0f)
                 };
 
+        private readonly Pawn pawn;
+
         private int headRotation;
 
         private int nextRotation = -5000;
 
         private int nextRotationEnd = -5000;
-
-        private readonly Pawn pawn;
 
         private RotationDirection rotationMod;
 

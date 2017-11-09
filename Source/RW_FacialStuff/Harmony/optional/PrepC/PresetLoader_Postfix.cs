@@ -1,10 +1,12 @@
 ﻿namespace FacialStuff.Harmony.optional.PrepC
 {
-    using EdB.PrepareCarefully;
-    using global::Harmony;
     using System.Linq;
 
+    using EdB.PrepareCarefully;
+
     using FacialStuff.newStuff;
+
+    using global::Harmony;
 
     using Verse;
 
@@ -19,7 +21,7 @@
             }
 
             Pawn pawn = __result.Pawn;
-            if (!pawn.HasFace())
+            if (!pawn.HasCompFace())
             {
                 return;
             }

@@ -2,23 +2,26 @@
 
 namespace FacialStuff.Detouring
 {
-    using FacialStuff.FaceStyling_Bench;
-    using FacialStuff.Graphics;
-    using global::Harmony;
-    using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
 
+    using FacialStuff.FaceStyling_Bench;
+    using FacialStuff.Graphics;
     using FacialStuff.newStuff;
 
+    using global::Harmony;
+
+    using RimWorld;
+
     using UnityEngine;
+
     using Verse;
     using Verse.Sound;
 
     [StaticConstructorOnStartup]
-    public class HarmonyPatches
+    public static class HarmonyPatches
     {
         static HarmonyPatches()
         {
@@ -142,7 +145,7 @@ namespace FacialStuff.Detouring
 
             Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
 
-            if (!pawn.GetFace(out CompFace face))
+            if (!pawn.GetCompFace(out CompFace face))
             {
                 return;
             }
@@ -186,7 +189,8 @@ namespace FacialStuff.Detouring
             {
                 return;
             }
-            if (!pawn.GetFace(out CompFace face))
+
+            if (!pawn.GetCompFace(out CompFace face))
             {
                 return;
             }
@@ -223,17 +227,17 @@ namespace FacialStuff.Detouring
             }
 
             // Check if race has face, else return
-            CompFace faceComp = pawn.TryGetComp<CompFace>();
+            CompFace compFace = pawn.TryGetComp<CompFace>();
 
-            if (faceComp == null)
+            if (compFace == null)
             {
                 return;
             }
 
-            faceComp.IsChild = pawn.ageTracker.AgeBiologicalYearsFloat < 14;
+            compFace.IsChild = pawn.ageTracker.AgeBiologicalYearsFloat < 14;
 
             // Return if child
-            if (faceComp.IsChild || faceComp.DontRender)
+            if (compFace.IsChild || compFace.DontRender)
             {
                 return;
             }
@@ -250,15 +254,17 @@ namespace FacialStuff.Detouring
 
             // Custom rotting color, mixed with skin tone
             Color rotColor = pawn.story.SkinColor * FaceTextures.SkinRottingMultiplyColor;
-            if (!faceComp.SetHeadType(pawn))
+            if (!compFace.SetHeadType(pawn))
             {
                 return;
             }
 
-            if (!faceComp.InitializeGraphics())
+            if (!compFace.FaceGraphic.InitializeGraphics(compFace))
             {
                 return;
             }
+
+            compFace.SetFaceMaterial();
 
             // Set up the hair cut graphic
             if (Controller.settings.MergeHair)
@@ -309,14 +315,15 @@ namespace FacialStuff.Detouring
 
             if (__result)
             {
-                if (pawn.GetFace(out CompFace face))
+                if (pawn.GetCompFace(out CompFace face))
                 {
                     if (face.HeadRotator != null && !face.IsChild)
                     {
                         face.HeadRotator.LookAtPawn(recipient);
                     }
                 }
-                if (recipient.GetFace(out CompFace recipientFace))
+
+                if (recipient.GetCompFace(out CompFace recipientFace))
                 {
                     if ( recipientFace.HeadRotator != null && !recipientFace.IsChild)
                     {

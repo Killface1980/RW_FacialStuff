@@ -1,42 +1,41 @@
 ﻿// ReSharper disable All
 
-namespace FacialStuff.FaceStyling_Bench
+namespace FacialStuff
 {
     using System;
     using System.Collections.Generic;
 
+    using FacialStuff.FaceStyling_Bench;
     using FacialStuff.newStuff;
 
     using Verse;
     using Verse.AI;
 
-    public class Building_FaceStyler : Building
+    public class CompFaceEditor : ThingComp
     {
-        public void OpenFSDialog(Pawn pawn)
+        public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn)
         {
-            Find.WindowStack.Add(new DialogFaceStyling(pawn));
-        }
+            Building styler = this.parent as Building;
 
-        public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn pawn)
-        {
             List<FloatMenuOption> list = new List<FloatMenuOption>();
             {
-                if (!pawn.CanReserve(this))
+                if (!selPawn.CanReserve(styler))
                 {
                     FloatMenuOption item = new FloatMenuOption("CannotUseReserved".Translate(), null);
                     return new List<FloatMenuOption> { item };
                 }
 
-                if (!pawn.CanReach(this, PathEndMode.Touch, Danger.Some))
+                if (!selPawn.CanReach(styler, PathEndMode.Touch, Danger.Some))
                 {
                     FloatMenuOption item2 = new FloatMenuOption("CannotUseNoPath".Translate(), null);
                     return new List<FloatMenuOption> { item2 };
                 }
 
-                if (!pawn.HasFace())
+                if (!selPawn.HasCompFace())
                 {
-                    FloatMenuOption item3 =
-                        new FloatMenuOption("FacialStuffEditor.CannotUseNoFacePawn".Translate(pawn), null);
+                    FloatMenuOption item3 = new FloatMenuOption(
+                        "FacialStuffEditor.CannotUseNoFacePawn".Translate(selPawn),
+                        null);
                     return new List<FloatMenuOption> { item3 };
                 }
 
@@ -45,17 +44,17 @@ namespace FacialStuff.FaceStyling_Bench
                         // IntVec3 InteractionSquare = (this.Position + new IntVec3(0, 0, 1)).RotatedBy(this.Rotation);
                         Job FaceStyleChanger = new Job(
                                                    DefDatabase<JobDef>.GetNamed("FaceStyleChanger"),
-                                                   this,
-                                                   this.InteractionCell)
+                                                   styler,
+                                                   styler.InteractionCell)
                                                    {
                                                        locomotionUrgency = LocomotionUrgency
                                                            .Sprint
                                                    };
-                        if (!pawn.jobs.TryTakeOrderedJob(FaceStyleChanger))
+                        if (!selPawn.jobs.TryTakeOrderedJob(FaceStyleChanger))
                         {
                             // This is used to force go job, it will work even when drafted
-                            pawn.jobs.jobQueue.EnqueueFirst(FaceStyleChanger);
-                            pawn.jobs.StopAll();
+                            selPawn.jobs.jobQueue.EnqueueFirst(FaceStyleChanger);
+                            selPawn.jobs.StopAll();
                         }
                     };
 
@@ -63,6 +62,11 @@ namespace FacialStuff.FaceStyling_Bench
             }
 
             return list;
+        }
+
+        public void OpenFSDialog(Pawn pawn)
+        {
+            Find.WindowStack.Add(new DialogFaceStyling(pawn));
         }
     }
 }

@@ -1,29 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-
-  <!-- This part adds the comps if they're not already there yet -->
   <Operation Class="PatchOperationSequence">
     <success>Always</success>
     <operations>
-      <li Class="PatchOperationTest">
+      <li Class="PatchOperationConditional">
         <xpath>/Defs/ThingDef[defName = "Human"]/comps</xpath>
-        <success>Invert</success>
-      </li>
-      <li Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName = "Human"]</xpath>
-        <value>
-          <comps />
-        </value>
-      </li>
-    </operations>
-  </Operation>
-
-  <!-- Adds the actual CompFace - needed for everything -->
-  <Operation Class="PatchOperationSequence">
-    <success>Always</success>
-    <operations>
-      <li Class="PatchOperationTest">
-        <xpath>/Defs/ThingDef[defName = "Human"]/comps</xpath>
+        <success>Always</success>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName = "Human"]</xpath>
+          <value>
+            <comps />
+          </value>
+        </nomatch>
       </li>
       <li Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName = "Human"]/comps</xpath>
@@ -35,41 +23,4 @@
       </li>
     </operations>
   </Operation>
-
-  <!-- Adds the CompFace for HardCore SK -->
-  <Operation Class="PatchOperationSequence">
-    <success>Always</success>
-    <operations>
-      <li Class="PatchOperationTest">
-        <xpath>/Defs/Verse.ThingDef[defName = "Human"]/comps</xpath>
-      </li>
-      <li Class="PatchOperationAdd">
-        <xpath>/Defs/Verse.ThingDef[defName = "Human"]/comps</xpath>
-        <value>
-          <li>
-            <compClass>FacialStuff.CompFace</compClass>
-          </li>
-        </value>
-      </li>
-    </operations>
-  </Operation>
- 
-  <!-- Also the Norbals - HardCore SK -->
-  <Operation Class="PatchOperationSequence">
-    <success>Always</success>
-    <operations>
-      <li Class="PatchOperationTest">
-        <xpath>/Defs/Verse.ThingDef[defName = "Norbal"]/comps</xpath>
-      </li>
-      <li Class="PatchOperationAdd">
-        <xpath>/Defs/Verse.ThingDef[defName = "Norbal"]/comps</xpath>
-        <value>
-          <li>
-            <compClass>FacialStuff.CompFace</compClass>
-          </li>
-        </value>
-      </li>
-    </operations>
-  </Operation>
-  
 </Patch>

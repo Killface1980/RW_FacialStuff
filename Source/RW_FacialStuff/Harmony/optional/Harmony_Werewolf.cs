@@ -1,11 +1,13 @@
 ﻿namespace FacialStuff.Harmony.optional
 {
-    using global::Harmony;
     using System;
+
+    using global::Harmony;
+
     using Verse;
 
     [StaticConstructorOnStartup]
-    internal class Harmony_Werewolf
+    internal static class Harmony_Werewolf
     {
         static Harmony_Werewolf()
         {

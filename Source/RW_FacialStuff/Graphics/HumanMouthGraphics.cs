@@ -17,7 +17,7 @@
 
         public Graphic_Multi_NaturalHeadParts mouthGraphicCrying;
 
-        public HumanMouthGraphics([NotNull] Pawn pawn)
+        public HumanMouthGraphics([NotNull] Pawn p)
         {
             Color color = Color.white;
             Graphic_Multi_NaturalHeadParts mouthGraphic01 =
@@ -77,13 +77,13 @@
                                           Vector2.one,
                                           color) as Graphic_Multi_NaturalHeadParts;
 
-            var flag = (Controller.settings.UseUglyGrin);
+            bool flag = Controller.settings.UseUglyGrin;
 
-            if (pawn.mindState?.mentalBreaker != null)
+            if (p.mindState?.mentalBreaker != null)
             {
-                float minor = pawn.mindState.mentalBreaker.BreakThresholdMinor;
-                float major = pawn.mindState.mentalBreaker.BreakThresholdMajor;
-                float extreme = pawn.mindState.mentalBreaker.BreakThresholdExtreme;
+                float minor = p.mindState.mentalBreaker.BreakThresholdMinor;
+                float major = p.mindState.mentalBreaker.BreakThresholdMajor;
+                float extreme = p.mindState.mentalBreaker.BreakThresholdExtreme;
                 float part = (1f - minor) / (flag ? 5 : 4);
 
                 this.HumanMouthGraphic = new[]

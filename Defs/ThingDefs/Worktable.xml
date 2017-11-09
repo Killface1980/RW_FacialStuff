@@ -2,9 +2,10 @@
 <Defs>
 
   <ThingDef ParentName="BuildingBase">
-    <defName>Building_FaceStyler</defName>
+    <defName>FSStylist</defName>
     <label>Face styling bench</label>
-    <thingClass>FacialStuff.FaceStyling_Bench.Building_FaceStyler</thingClass>
+    <thingClass>FacialStuff.FaceStyling_Bench.FaceStyler</thingClass>
+    <tradeability>Sellable</tradeability>
     <description>Place where faces go wild!</description>
     <graphicData>
       <texPath>Clutter/Tables/StylingBench</texPath>
@@ -33,11 +34,16 @@
       <Cleanliness>-15</Cleanliness>
     </statBases>
     <size>(2,1)</size>
-    <designationCategory>Misc</designationCategory>
+  <!--  <designationCategory>Misc</designationCategory>-->
     <passability>PassThroughOnly</passability>
     <pathCost>60</pathCost>
     <hasInteractionCell>True</hasInteractionCell>
     <interactionCellOffset>(0,0,1)</interactionCellOffset>
     <surfaceType>Item</surfaceType>
+    <comps>
+      <li>
+        <compClass>FacialStuff.CompFaceEditor</compClass>
+      </li>
+    </comps>
   </ThingDef>
 </Defs>

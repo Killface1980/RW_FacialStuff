@@ -1,11 +1,14 @@
 ﻿namespace FacialStuff.Graphics
 {
-    using JetBrains.Annotations;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+
+    using JetBrains.Annotations;
+
     using UnityEngine;
+
     using Verse;
 
     public static class GraphicDatabaseHeadRecordsModded
@@ -13,7 +16,7 @@
         public static readonly List<HeadGraphicRecordVanillaCustom> HeadsVanillaCustom =
             new List<HeadGraphicRecordVanillaCustom>();
 
-        public static int headIndex = 0;
+        public static int headIndex;
 
         private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
 

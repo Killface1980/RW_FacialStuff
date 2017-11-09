@@ -2,9 +2,12 @@
 
 namespace FacialStuff.ColorPicker
 {
-    using global::FaceStyling;
     using System;
+
+    using global::FaceStyling;
+
     using UnityEngine;
+
     using Verse;
 
     public class Dialog_ColorPicker : Window
@@ -19,7 +22,7 @@ namespace FacialStuff.ColorPicker
 
         public Vector2 initialPosition = Vector2.zero;
 
-        public int numPresets = 0;
+        public int numPresets;
 
         public Vector2 pickerSize = new Vector2(200, 200);
 

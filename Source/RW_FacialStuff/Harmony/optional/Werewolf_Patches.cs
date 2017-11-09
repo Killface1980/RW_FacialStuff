@@ -6,11 +6,11 @@
 
     using Werewolf;
 
-    public class Werewolf_Patches
+    public static class Werewolf_Patches
     {
         public static void TransformBack_Postfix(CompWerewolf __instance)
         {
-            if (!__instance.Pawn.GetFace(out CompFace face))
+            if (!__instance.Pawn.GetCompFace(out CompFace face))
             {
                 return;
             }
@@ -21,7 +21,7 @@
 
         public static void TransformInto_Prefix(CompWerewolf __instance)
         {
-            if (__instance.Pawn.GetFace(out CompFace face))
+            if (__instance.Pawn.GetCompFace(out CompFace face))
             {
                 face.DontRender = true;
             }

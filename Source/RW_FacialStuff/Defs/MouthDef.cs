@@ -7,7 +7,6 @@ namespace FacialStuff.Defs
 
     using Verse;
 
-    [SuppressMessage("ReSharper", "StyleCop.SA1307")]
     public class MouthDef : Def
     {
         public List<string> hairTags = new List<string>();

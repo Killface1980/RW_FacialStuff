@@ -22,7 +22,7 @@
             Rect panelRect = __instance.PanelRect;
             Pawn pawn = state.CurrentPawn.Pawn;
 
-            if (!pawn.HasFace())
+            if (!pawn.HasCompFace())
             {
                 return;
             }

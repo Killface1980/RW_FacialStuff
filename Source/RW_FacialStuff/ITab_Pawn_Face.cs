@@ -1,15 +1,17 @@
 ﻿namespace FacialStuff
 {
-    using FacialStuff.Defs;
-    using FacialStuff.Enums;
-    using FacialStuff.Graphics;
-    using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
 
+    using FacialStuff.Defs;
+    using FacialStuff.Enums;
+    using FacialStuff.Graphics;
     using FacialStuff.newStuff;
 
+    using RimWorld;
+
     using UnityEngine;
+
     using Verse;
 
     public class ITab_Pawn_Face : ITab
@@ -82,48 +84,48 @@
                         if (male)
                         {
                             GUILayout.Label(
-                                "MaleAverageNormalOffset: " + Settings.EyeMaleAverageNormalOffset.ToString("N5"));
-                            Settings.EyeMaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
-                                Settings.EyeMaleAverageNormalOffset.x,
+                                "MaleAverageNormalOffset: " + MeshPoolFS.EyeMaleAverageNormalOffset.ToString("N5"));
+                            MeshPoolFS.EyeMaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeMaleAverageNormalOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.EyeMaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
-                                Settings.EyeMaleAverageNormalOffset.y,
+                            MeshPoolFS.EyeMaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeMaleAverageNormalOffset.y,
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
                                 "MouthMaleAverageNormalOffset: "
-                                + Settings.MouthMaleAverageNormalOffset.ToString("N5"));
-                            Settings.MouthMaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
-                                Settings.MouthMaleAverageNormalOffset.x,
+                                + MeshPoolFS.MouthMaleAverageNormalOffset.ToString("N5"));
+                            MeshPoolFS.MouthMaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthMaleAverageNormalOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.MouthMaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
-                                Settings.MouthMaleAverageNormalOffset.y,
+                            MeshPoolFS.MouthMaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthMaleAverageNormalOffset.y,
                                 -0.2f,
                                 0.2f);
                         }
                         else
                         {
                             GUILayout.Label(
-                                "FemaleAverageNormalOffset: " + Settings.EyeFemaleAverageNormalOffset.ToString("N5"));
-                            Settings.EyeFemaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
-                                Settings.EyeFemaleAverageNormalOffset.x,
+                                "FemaleAverageNormalOffset: " + MeshPoolFS.EyeFemaleAverageNormalOffset.ToString("N5"));
+                            MeshPoolFS.EyeFemaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeFemaleAverageNormalOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.EyeFemaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
-                                Settings.EyeFemaleAverageNormalOffset.y,
+                            MeshPoolFS.EyeFemaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeFemaleAverageNormalOffset.y,
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
                                 "MouthFemaleAverageNormalOffset: "
-                                + Settings.MouthFemaleAverageNormalOffset.ToString("N5"));
-                            Settings.MouthFemaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
-                                Settings.MouthFemaleAverageNormalOffset.x,
+                                + MeshPoolFS.MouthFemaleAverageNormalOffset.ToString("N5"));
+                            MeshPoolFS.MouthFemaleAverageNormalOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthFemaleAverageNormalOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.MouthFemaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
-                                Settings.MouthFemaleAverageNormalOffset.y,
+                            MeshPoolFS.MouthFemaleAverageNormalOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthFemaleAverageNormalOffset.y,
                                 -0.2f,
                                 0.2f);
                         }
@@ -134,48 +136,48 @@
                         if (male)
                         {
                             GUILayout.Label(
-                                "MaleAveragePointyOffset: " + Settings.EyeMaleAveragePointyOffset.ToString("N5"));
-                            Settings.EyeMaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
-                                Settings.EyeMaleAveragePointyOffset.x,
+                                "MaleAveragePointyOffset: " + MeshPoolFS.EyeMaleAveragePointyOffset.ToString("N5"));
+                            MeshPoolFS.EyeMaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeMaleAveragePointyOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.EyeMaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
-                                Settings.EyeMaleAveragePointyOffset.y,
+                            MeshPoolFS.EyeMaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeMaleAveragePointyOffset.y,
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
                                 "MouthMaleAveragePointyOffset: "
-                                + Settings.MouthMaleAveragePointyOffset.ToString("N5"));
-                            Settings.MouthMaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
-                                Settings.MouthMaleAveragePointyOffset.x,
+                                + MeshPoolFS.MouthMaleAveragePointyOffset.ToString("N5"));
+                            MeshPoolFS.MouthMaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthMaleAveragePointyOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.MouthMaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
-                                Settings.MouthMaleAveragePointyOffset.y,
+                            MeshPoolFS.MouthMaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthMaleAveragePointyOffset.y,
                                 -0.2f,
                                 0.2f);
                         }
                         else
                         {
                             GUILayout.Label(
-                                "FemaleAveragePointyOffset: " + Settings.EyeFemaleAveragePointyOffset.ToString("N5"));
-                            Settings.EyeFemaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
-                                Settings.EyeFemaleAveragePointyOffset.x,
+                                "FemaleAveragePointyOffset: " + MeshPoolFS.EyeFemaleAveragePointyOffset.ToString("N5"));
+                            MeshPoolFS.EyeFemaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeFemaleAveragePointyOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.EyeFemaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
-                                Settings.EyeFemaleAveragePointyOffset.y,
+                            MeshPoolFS.EyeFemaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeFemaleAveragePointyOffset.y,
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
                                 "MouthFemaleAveragePointyOffset: "
-                                + Settings.MouthFemaleAveragePointyOffset.ToString("N5"));
-                            Settings.MouthFemaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
-                                Settings.MouthFemaleAveragePointyOffset.x,
+                                + MeshPoolFS.MouthFemaleAveragePointyOffset.ToString("N5"));
+                            MeshPoolFS.MouthFemaleAveragePointyOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthFemaleAveragePointyOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.MouthFemaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
-                                Settings.MouthFemaleAveragePointyOffset.y,
+                            MeshPoolFS.MouthFemaleAveragePointyOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthFemaleAveragePointyOffset.y,
                                 -0.2f,
                                 0.2f);
                         }
@@ -186,47 +188,47 @@
                         if (male)
                         {
                             GUILayout.Label(
-                                "MaleAverageWideOffset.x: " + Settings.EyeMaleAverageWideOffset.ToString("N5"));
-                            Settings.EyeMaleAverageWideOffset.x = GUILayout.HorizontalSlider(
-                                Settings.EyeMaleAverageWideOffset.x,
+                                "MaleAverageWideOffset.x: " + MeshPoolFS.EyeMaleAverageWideOffset.ToString("N5"));
+                            MeshPoolFS.EyeMaleAverageWideOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeMaleAverageWideOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.EyeMaleAverageWideOffset.y = GUILayout.HorizontalSlider(
-                                Settings.EyeMaleAverageWideOffset.y,
+                            MeshPoolFS.EyeMaleAverageWideOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeMaleAverageWideOffset.y,
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
-                                "MouthMaleAverageWideOffset.x: " + Settings.MouthMaleAverageWideOffset.ToString("N5"));
-                            Settings.MouthMaleAverageWideOffset.x = GUILayout.HorizontalSlider(
-                                Settings.MouthMaleAverageWideOffset.x,
+                                "MouthMaleAverageWideOffset.x: " + MeshPoolFS.MouthMaleAverageWideOffset.ToString("N5"));
+                            MeshPoolFS.MouthMaleAverageWideOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthMaleAverageWideOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.MouthMaleAverageWideOffset.y = GUILayout.HorizontalSlider(
-                                Settings.MouthMaleAverageWideOffset.y,
+                            MeshPoolFS.MouthMaleAverageWideOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthMaleAverageWideOffset.y,
                                 -0.2f,
                                 0.2f);
                         }
                         else
                         {
                             GUILayout.Label(
-                                "FemaleAverageWideOffset: " + Settings.EyeFemaleAverageWideOffset.ToString("N5"));
-                            Settings.EyeFemaleAverageWideOffset.x = GUILayout.HorizontalSlider(
-                                Settings.EyeFemaleAverageWideOffset.x,
+                                "FemaleAverageWideOffset: " + MeshPoolFS.EyeFemaleAverageWideOffset.ToString("N5"));
+                            MeshPoolFS.EyeFemaleAverageWideOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeFemaleAverageWideOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.EyeFemaleAverageWideOffset.y = GUILayout.HorizontalSlider(
-                                Settings.EyeFemaleAverageWideOffset.y,
+                            MeshPoolFS.EyeFemaleAverageWideOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeFemaleAverageWideOffset.y,
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
                                 "MouthFemaleAverageWideOffset: "
-                                + Settings.MouthFemaleAverageWideOffset.ToString("N5"));
-                            Settings.MouthFemaleAverageWideOffset.x = GUILayout.HorizontalSlider(
-                                Settings.MouthFemaleAverageWideOffset.x,
+                                + MeshPoolFS.MouthFemaleAverageWideOffset.ToString("N5"));
+                            MeshPoolFS.MouthFemaleAverageWideOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthFemaleAverageWideOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.MouthFemaleAverageWideOffset.y = GUILayout.HorizontalSlider(
-                                Settings.MouthFemaleAverageWideOffset.y,
+                            MeshPoolFS.MouthFemaleAverageWideOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthFemaleAverageWideOffset.y,
                                 -0.2f,
                                 0.2f);
                         }
@@ -242,48 +244,48 @@
                         if (male)
                         {
                             GUILayout.Label(
-                                "MaleNarrowNormalOffset.x: " + Settings.EyeMaleNarrowNormalOffset.ToString("N5"));
-                            Settings.EyeMaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
-                                Settings.EyeMaleNarrowNormalOffset.x,
+                                "MaleNarrowNormalOffset.x: " + MeshPoolFS.EyeMaleNarrowNormalOffset.ToString("N5"));
+                            MeshPoolFS.EyeMaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeMaleNarrowNormalOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.EyeMaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
-                                Settings.EyeMaleNarrowNormalOffset.y,
+                            MeshPoolFS.EyeMaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeMaleNarrowNormalOffset.y,
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
                                 "MouthMaleNarrowNormalOffset.x: "
-                                + Settings.MouthMaleNarrowNormalOffset.ToString("N5"));
-                            Settings.MouthMaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
-                                Settings.MouthMaleNarrowNormalOffset.x,
+                                + MeshPoolFS.MouthMaleNarrowNormalOffset.ToString("N5"));
+                            MeshPoolFS.MouthMaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthMaleNarrowNormalOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.MouthMaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
-                                Settings.MouthMaleNarrowNormalOffset.y,
+                            MeshPoolFS.MouthMaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthMaleNarrowNormalOffset.y,
                                 -0.2f,
                                 0.2f);
                         }
                         else
                         {
                             GUILayout.Label(
-                                "FemaleNarrowNormalOffset: " + Settings.EyeFemaleNarrowNormalOffset.ToString("N5"));
-                            Settings.EyeFemaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
-                                Settings.EyeFemaleNarrowNormalOffset.x,
+                                "FemaleNarrowNormalOffset: " + MeshPoolFS.EyeFemaleNarrowNormalOffset.ToString("N5"));
+                            MeshPoolFS.EyeFemaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeFemaleNarrowNormalOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.EyeFemaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
-                                Settings.EyeFemaleNarrowNormalOffset.y,
+                            MeshPoolFS.EyeFemaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeFemaleNarrowNormalOffset.y,
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
                                 "MouthFemaleNarrowNormalOffset: "
-                                + Settings.MouthFemaleNarrowNormalOffset.ToString("N5"));
-                            Settings.MouthFemaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
-                                Settings.MouthFemaleNarrowNormalOffset.x,
+                                + MeshPoolFS.MouthFemaleNarrowNormalOffset.ToString("N5"));
+                            MeshPoolFS.MouthFemaleNarrowNormalOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthFemaleNarrowNormalOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.MouthFemaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
-                                Settings.MouthFemaleNarrowNormalOffset.y,
+                            MeshPoolFS.MouthFemaleNarrowNormalOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthFemaleNarrowNormalOffset.y,
                                 -0.2f,
                                 0.2f);
                         }
@@ -294,48 +296,48 @@
                         if (male)
                         {
                             GUILayout.Label(
-                                "MaleNarrowPointyOffset.x: " + Settings.EyeMaleNarrowPointyOffset.ToString("N5"));
-                            Settings.EyeMaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
-                                Settings.EyeMaleNarrowPointyOffset.x,
+                                "MaleNarrowPointyOffset.x: " + MeshPoolFS.EyeMaleNarrowPointyOffset.ToString("N5"));
+                            MeshPoolFS.EyeMaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeMaleNarrowPointyOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.EyeMaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
-                                Settings.EyeMaleNarrowPointyOffset.y,
+                            MeshPoolFS.EyeMaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeMaleNarrowPointyOffset.y,
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
                                 "MouthMaleNarrowPointyOffset.x: "
-                                + Settings.MouthMaleNarrowPointyOffset.ToString("N5"));
-                            Settings.MouthMaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
-                                Settings.MouthMaleNarrowPointyOffset.x,
+                                + MeshPoolFS.MouthMaleNarrowPointyOffset.ToString("N5"));
+                            MeshPoolFS.MouthMaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthMaleNarrowPointyOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.MouthMaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
-                                Settings.MouthMaleNarrowPointyOffset.y,
+                            MeshPoolFS.MouthMaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthMaleNarrowPointyOffset.y,
                                 -0.2f,
                                 0.2f);
                         }
                         else
                         {
                             GUILayout.Label(
-                                "FemaleNarrowPointyOffset: " + Settings.EyeFemaleNarrowPointyOffset.ToString("N5"));
-                            Settings.EyeFemaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
-                                Settings.EyeFemaleNarrowPointyOffset.x,
+                                "FemaleNarrowPointyOffset: " + MeshPoolFS.EyeFemaleNarrowPointyOffset.ToString("N5"));
+                            MeshPoolFS.EyeFemaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeFemaleNarrowPointyOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.EyeFemaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
-                                Settings.EyeFemaleNarrowPointyOffset.y,
+                            MeshPoolFS.EyeFemaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeFemaleNarrowPointyOffset.y,
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
                                 "MouthFemaleNarrowPointyOffset: "
-                                + Settings.MouthFemaleNarrowPointyOffset.ToString("N5"));
-                            Settings.MouthFemaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
-                                Settings.MouthFemaleNarrowPointyOffset.x,
+                                + MeshPoolFS.MouthFemaleNarrowPointyOffset.ToString("N5"));
+                            MeshPoolFS.MouthFemaleNarrowPointyOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthFemaleNarrowPointyOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.MouthFemaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
-                                Settings.MouthFemaleNarrowPointyOffset.y,
+                            MeshPoolFS.MouthFemaleNarrowPointyOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthFemaleNarrowPointyOffset.y,
                                 -0.2f,
                                 0.2f);
                         }
@@ -346,42 +348,42 @@
                         if (male)
                         {
                             GUILayout.Label(
-                                "MaleNarrowWideOffset.x: " + Settings.EyeMaleNarrowWideOffset.ToString("N5"));
-                            Settings.EyeMaleNarrowWideOffset.x =
-                                GUILayout.HorizontalSlider(Settings.EyeMaleNarrowWideOffset.x, -0.2f, 0.2f);
-                            Settings.EyeMaleNarrowWideOffset.y =
-                                GUILayout.HorizontalSlider(Settings.EyeMaleNarrowWideOffset.y, -0.2f, 0.2f);
+                                "MaleNarrowWideOffset.x: " + MeshPoolFS.EyeMaleNarrowWideOffset.ToString("N5"));
+                            MeshPoolFS.EyeMaleNarrowWideOffset.x =
+                                GUILayout.HorizontalSlider(MeshPoolFS.EyeMaleNarrowWideOffset.x, -0.2f, 0.2f);
+                            MeshPoolFS.EyeMaleNarrowWideOffset.y =
+                                GUILayout.HorizontalSlider(MeshPoolFS.EyeMaleNarrowWideOffset.y, -0.2f, 0.2f);
                             GUILayout.Label(
-                                "MouthMaleNarrowWideOffset.x: " + Settings.MouthMaleNarrowWideOffset.ToString("N5"));
-                            Settings.MouthMaleNarrowWideOffset.x = GUILayout.HorizontalSlider(
-                                Settings.MouthMaleNarrowWideOffset.x,
+                                "MouthMaleNarrowWideOffset.x: " + MeshPoolFS.MouthMaleNarrowWideOffset.ToString("N5"));
+                            MeshPoolFS.MouthMaleNarrowWideOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthMaleNarrowWideOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.MouthMaleNarrowWideOffset.y = GUILayout.HorizontalSlider(
-                                Settings.MouthMaleNarrowWideOffset.y,
+                            MeshPoolFS.MouthMaleNarrowWideOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthMaleNarrowWideOffset.y,
                                 -0.2f,
                                 0.2f);
                         }
                         else
                         {
                             GUILayout.Label(
-                                "FemaleNarrowWideOffset: " + Settings.EyeFemaleNarrowWideOffset.ToString("N5"));
-                            Settings.EyeFemaleNarrowWideOffset.x = GUILayout.HorizontalSlider(
-                                Settings.EyeFemaleNarrowWideOffset.x,
+                                "FemaleNarrowWideOffset: " + MeshPoolFS.EyeFemaleNarrowWideOffset.ToString("N5"));
+                            MeshPoolFS.EyeFemaleNarrowWideOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeFemaleNarrowWideOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.EyeFemaleNarrowWideOffset.y = GUILayout.HorizontalSlider(
-                                Settings.EyeFemaleNarrowWideOffset.y,
+                            MeshPoolFS.EyeFemaleNarrowWideOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.EyeFemaleNarrowWideOffset.y,
                                 -0.2f,
                                 0.2f);
                             GUILayout.Label(
-                                "MouthFemaleNarrowWideOffset: " + Settings.MouthFemaleNarrowWideOffset.ToString("N5"));
-                            Settings.MouthFemaleNarrowWideOffset.x = GUILayout.HorizontalSlider(
-                                Settings.MouthFemaleNarrowWideOffset.x,
+                                "MouthFemaleNarrowWideOffset: " + MeshPoolFS.MouthFemaleNarrowWideOffset.ToString("N5"));
+                            MeshPoolFS.MouthFemaleNarrowWideOffset.x = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthFemaleNarrowWideOffset.x,
                                 -0.2f,
                                 0.2f);
-                            Settings.MouthFemaleNarrowWideOffset.y = GUILayout.HorizontalSlider(
-                                Settings.MouthFemaleNarrowWideOffset.y,
+                            MeshPoolFS.MouthFemaleNarrowWideOffset.y = GUILayout.HorizontalSlider(
+                                MeshPoolFS.MouthFemaleNarrowWideOffset.y,
                                 -0.2f,
                                 0.2f);
                         }
@@ -410,19 +412,17 @@
                             delegate
                                 {
                                     foreach (Pawn pawn in Find.VisibleMap.mapPawns.AllPawnsSpawned.Where(
-                                        x => x.HasFace()))
+                                        x => x.HasCompFace()))
                                     {
                                         Color color = Color.white;
-                                        CompFace face = pawn.GetComp<CompFace>();
-                                        face.faceGraphicPart.MouthGraphic =
+                                        pawn.GetCompFace(out CompFace faceComp2);
+                                        faceComp2.FaceGraphic.MouthGraphic =
                                             GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                 current.texPath,
                                                 ShaderDatabase.CutoutSkin,
                                                 Vector2.one,
                                                 color) as Graphic_Multi_NaturalHeadParts;
                                     }
-
-                                    ;
                                 }));
                 }
 

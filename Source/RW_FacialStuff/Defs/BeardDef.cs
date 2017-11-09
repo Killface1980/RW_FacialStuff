@@ -7,10 +7,14 @@
 
 namespace FacialStuff.Defs
 {
-    using FacialStuff.Enums;
-    using JetBrains.Annotations;
-    using RimWorld;
     using System.Collections.Generic;
+
+    using FacialStuff.Enums;
+
+    using JetBrains.Annotations;
+
+    using RimWorld;
+
     using Verse;
 
     public class BeardDef : Def

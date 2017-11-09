@@ -12,7 +12,7 @@
 
         private const TargetIndex FSBench = TargetIndex.A;
 
-        private static readonly string ErrorMessage = "FaceStyling job called on building that is not Cabinet";
+        private static readonly string ErrorMessage = "FaceStyling job called on building with a troubled youth and serious issues.";
 
         public override bool TryMakePreToilReservations()
         {
@@ -30,25 +30,28 @@
 
         private Toil Toils_WaitWithSoundAndEffect()
         {
-            Toil toil = new Toil();
-            toil.initAction = delegate
-                {
-                    Building_FaceStyler faceStylerNew = this.TargetA.Thing as Building_FaceStyler;
-                    if (faceStylerNew != null)
-                    {
-                        Building_FaceStyler thing = (Building_FaceStyler)this.TargetA.Thing;
-                        Pawn actor = this.GetActor();
-                        if (actor != null && actor.Position == this.TargetA.Thing.InteractionCell)
-                        {
-                            thing.OpenFSDialog(actor);
-                        }
-                    }
-                    else
-                    {
-                        Log.Error(ErrorMessage);
-                    }
-                };
-            toil.defaultCompleteMode = ToilCompleteMode.Instant;
+            Toil toil = new Toil
+                            {
+                                initAction = delegate
+                                    {
+                                        CompFaceEditor faceStylerNew =
+                                            this.TargetA.Thing.TryGetComp<CompFaceEditor>();
+                                        if (faceStylerNew != null)
+                                        {
+                                            Pawn actor = this.GetActor();
+                                            if (actor != null
+                                                && actor.Position == this.TargetA.Thing.InteractionCell)
+                                            {
+                                                faceStylerNew.OpenFSDialog(actor);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Log.Error(ErrorMessage);
+                                        }
+                                    },
+                                defaultCompleteMode = ToilCompleteMode.Instant
+                            };
             return toil;
         }
     }

@@ -1,13 +1,16 @@
 ﻿namespace FacialStuff.Harmony.optional
 {
-    using FacialStuff.Harmony.optional.PrepC;
-    using global::Harmony;
     using System;
+
+    using FacialStuff.Harmony.optional.PrepC;
+
+    using global::Harmony;
+
     using Verse;
 
     // Blatantly stolen from "Psychology"
     [StaticConstructorOnStartup]
-    internal class Harmony_EdBPrepareCarefully
+    internal static class Harmony_EdBPrepareCarefully
     {
         static Harmony_EdBPrepareCarefully()
         {

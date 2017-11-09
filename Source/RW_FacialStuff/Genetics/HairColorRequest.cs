@@ -13,7 +13,6 @@ namespace FacialStuff.Genetics
             this.Baldness = baldness;
         }
         */
-
         public HairColorRequest(float pheoMelanin, float euMelanin, float greyness)
         {
             this.EuMelanin = euMelanin;

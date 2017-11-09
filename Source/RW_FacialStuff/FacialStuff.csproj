@@ -25,6 +25,7 @@
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CodeAnalysisRuleSet>FacialStuff.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -35,6 +36,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>FacialStuff.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -50,7 +52,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="EdBPrepareCarefully">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\735106432\Assemblies\EdBPrepareCarefully.dll</HintPath>
+      <HintPath>..\..\..\unofficial-EdBPrepareCarefully\Assemblies\EdBPrepareCarefully.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Core" />
@@ -68,7 +70,10 @@
     <None Include="Class1.cs" />
     <Compile Include="CrownTypeChecker.cs" />
     <None Include="FaceStyling_Bench\Job_FaceStylingJoy.cs" />
+    <Compile Include="CompFaceEditor.cs" />
+    <Compile Include="FaceMaterial.cs" />
     <Compile Include="GraphicVectorMeshSet.cs" />
+    <None Include="FacialStuff.ruleset" />
     <None Include="IncidentWorker_FacialStuffUpdateNote.cs" />
     <Compile Include="Graphics\CutHairDB.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />
@@ -80,12 +85,11 @@
     <Compile Include="Defs\MouthDef.cs" />
     <Compile Include="Defs\WrinkleDef.cs" />
     <Compile Include="Enums\BeardType.cs" />
-    <Compile Include="newStuff\Class2.cs" />
-    <Compile Include="newStuff\JoyGiver_ChangeAppearance.cs" />
-    <Compile Include="OLD_FaceStyler.cs" />
+    <Compile Include="newStuff\PawnExtensions.cs" />
+    <None Include="newStuff\JoyGiver_ChangeAppearance.cs" />
     <Compile Include="Animator\PawnHeadRotator.cs" />
     <Compile Include="Enums\Side.cs" />
-    <Compile Include="Graphics\FaceGraphicParts.cs" />
+    <Compile Include="Graphics\FaceGraphic.cs" />
     <Compile Include="FaceStyling_Bench\Dialog_FaceStyling.cs" />
     <None Include="FaceStyling_Bench\UI\DresserUI.cs" />
     <Compile Include="FaceStyling_Bench\UI\DTO\DresserDTO.cs" />
@@ -109,7 +113,6 @@
     <Compile Include="Graphics\HumanMouthGraphics.cs" />
     <Compile Include="PawnFace.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="PatchOperationFindMod.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
     <None Include="Animator\PawnHeadWiggler.cs" />
     <Compile Include="Animator\PawnEyeWiggler.cs" />
@@ -128,7 +131,6 @@
     <Compile Include="FaceStyling_Bench\ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="FaceStyling_Bench\ColorPicker\ColorHelper.cs" />
     <Compile Include="FaceStyling_Bench\Job_FaceStyling.cs" />
-    <Compile Include="FaceStyling_Bench\Building_FaceStyler.cs" />
     <None Include="FaceStyling_Bench\Preset.cs" />
     <None Include="FaceStyling_Bench\PresetDatabase.cs" />
     <Compile Include="Graphics\GraphicDatabaseHeadRecordsModded.cs" />
@@ -178,19 +180,11 @@
       <Link>Defs\Clutter_Jobs.xml</Link>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="..\..\Defs\JoyGivers\JoyGivers.xml">
-      <Link>Defs\JoyGivers.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="..\..\Defs\MoustacheDefs\MoustacheDef.xml">
       <Link>Defs\FacialDefs\MoustacheDef.xml</Link>
     </Content>
     <Content Include="..\..\Defs\MouthDefs\MouthDef.xml">
       <Link>Defs\FacialDefs\MouthDef.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="..\..\Defs\ThingDefs\Worktable.xml">
-      <Link>Defs\Worktable.xml</Link>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\WrinkleDefs\WrinkleDef.xml">
@@ -205,6 +199,9 @@
     <Content Include="..\..\Languages\German\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\German\FacialStuff_Keyed.xml</Link>
     </Content>
+    <Content Include="..\..\Patches\EditorPatches.xml">
+      <Link>Patches\EditorPatches.xml</Link>
+    </Content>
     <Content Include="..\..\Patches\HairPatches.xml">
       <Link>Patches\HairPatches.xml</Link>
       <SubType>Designer</SubType>
@@ -213,6 +210,12 @@
       <Link>Patches\HumanPatch.xml</Link>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="..\..\Patches\HumanPatchHSK.xml">
+      <Link>Patches\HumanPatchHSK.xml</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="OldStuff\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

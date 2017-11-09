@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-
-  <!-- Nackblad Hair texture patches -->
   <Operation Class="PatchOperationSequence">
-      <success>Always</success>
+    <!-- Nackblad Hair texture patches -->
+    <success>Always</success>
     <operations>
 
       <li Class="PatchOperationReplace">
@@ -68,13 +67,8 @@
           <texPath>Hair/Nackblad/trimmed</texPath>
         </value>
       </li>
-    </operations>
-  </Operation>
 
-  <!-- Spoon Hair texture patches -->
-  <Operation Class="PatchOperationSequence">
-      <success>Always</success>
-    <operations>
+      <!-- Spoon Hair texture patches -->
 
       <li Class="PatchOperationReplace">
         <xpath>/Defs/HairDef[defName = "SPSBeard"]/texPath</xpath>
@@ -96,13 +90,8 @@
           <texPath>Hair/Spoon/SPSViking</texPath>
         </value>
       </li>
-    </operations>
-  </Operation>
-  
-  <!-- Roppoi category patches - male -->
-  <Operation Class="PatchOperationSequence">
-      <success>Always</success>
-    <operations>
+
+      <!-- Roppoi category patches - male -->
 
       <li Class="PatchOperationReplace">
         <xpath>/Defs/HairDef[defName = "ro_m01"]/hairTags</xpath>
@@ -373,7 +362,7 @@
           </hairTags>
         </value>
       </li>
-      
+
       <li Class="PatchOperationReplace">
         <xpath>/Defs/HairDef[defName = "ro_m29"]/hairTags</xpath>
         <value>
@@ -384,13 +373,7 @@
         </value>
       </li>
 
-    </operations>
-  </Operation>
-  
   <!-- Roppoi category patches - female -->
-  <Operation Class="PatchOperationSequence">
-      <success>Always</success>
-    <operations>
 
       <li Class="PatchOperationReplace">
         <xpath>/Defs/HairDef[defName = "ro_f01"]/hairTags</xpath>
@@ -669,7 +652,7 @@
           </hairTags>
         </value>
       </li>
-      
+
       <li Class="PatchOperationReplace">
         <xpath>/Defs/HairDef[defName = "ro_f29"]/hairTags</xpath>
         <value>
@@ -682,5 +665,5 @@
 
     </operations>
   </Operation>
-   
+
 </Patch>
