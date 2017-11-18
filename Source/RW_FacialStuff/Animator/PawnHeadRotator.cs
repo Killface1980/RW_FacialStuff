@@ -30,6 +30,31 @@
 
         private Thing target;
 
+        private int rotCount = 0;
+
+        private bool clockwise;
+
+        public void RotateRandomly()
+        {
+            this.possessed = true;
+            if (this.rotCount < 1)
+            {
+                this.rotCount = Rand.Range(12, 28);
+                this.clockwise = !this.clockwise;
+            }
+            this.currentRot.Rotate(this.clockwise ? RotationDirection.Clockwise : RotationDirection.Counterclockwise);
+            this.rotCount--;
+        }
+
+        public void SetUnPossessed()
+        {
+            this.possessed = false;
+        }
+
+        private Rot4 currentRot = Rot4.Random;
+
+        private bool possessed;
+
         public PawnHeadRotator(Pawn p)
         {
             this.pawn = p;
@@ -54,6 +79,10 @@
 
         public Rot4 Rotation(Rot4 headFacing, bool renderBody)
         {
+            if (this.possessed)
+            {
+                return this.currentRot;
+            }
             Rot4 rot = headFacing;
             bool flag = false;
             if (renderBody)
@@ -69,8 +98,8 @@
             {
                 rot.Rotate(this.rotationMod);
             }
-
-            return rot;
+            this.currentRot = rot;
+            return this.currentRot;
         }
 
         public void RotatorTick()

@@ -1,7 +1,11 @@
 ﻿namespace FacialStuff
 {
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+
+    using FacialStuff.Harmony;
+    using FacialStuff.newStuff;
 
     using JetBrains.Annotations;
 
@@ -48,20 +52,23 @@
                 return;
             }
 
-            foreach (Pawn pawn in from pawn in PawnsFinder.AllMapsWorldAndTemporary_AliveOrDead
-                                  where pawn.RaceProps.Humanlike
-                                  let faceComp = pawn.TryGetComp<CompFace>()
-                                  where faceComp != null
-                                  select pawn)
+            var allPawns = PawnsFinder.AllMapsWorldAndTemporary_AliveOrDead.ToList();
+            for (int i = 0; i < allPawns.Count; i++)
             {
-                // This will force the renderer to make "AllResolved" return false, if pawn is drawn
+                var pawn = allPawns[i];
+                if (!pawn.HasCompFace())
+                {
+                    continue;
+                }
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
+                PortraitsCache.SetDirty(pawn);
             }
 
-            if (Find.ColonistBar != null)
-            {
-                Find.ColonistBar.MarkColonistsDirty();
-            }
+            // Bug: Not working when called or retrieved inside a mod
+            // if (Find.ColonistBar != null)
+            // {
+            //     Find.ColonistBar.MarkColonistsDirty();
+            // }
         }
     }
 }

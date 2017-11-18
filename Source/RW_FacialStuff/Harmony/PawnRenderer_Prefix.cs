@@ -421,17 +421,15 @@
                     for (int index = 0; index < __instance.graphics.apparelGraphics.Count; index++)
                     {
                         ApparelGraphicRecord apparelGraphicRecord = __instance.graphics.apparelGraphics[index];
-                        if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer != ApparelLayer.Shell)
+                        if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer == ApparelLayer.Shell)
                         {
-                            continue;
+                            Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing);
+                            material3 = __instance.graphics.flasher.GetDamagedMat(material3);
+                            GenDraw.DrawMeshNowOrLater(bodyMesh, vector, quat, material3, portrait);
+
+                            // possible fix for phasing apparel
+                            vector.y += YOffsetOnFace;
                         }
-
-                        Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing);
-                        material3 = __instance.graphics.flasher.GetDamagedMat(material3);
-                        GenDraw.DrawMeshNowOrLater(bodyMesh, vector, quat, material3, portrait);
-
-                        // possible fix for phasing apparel
-                        vector.y += YOffsetOnFace;
                     }
                 }
             }

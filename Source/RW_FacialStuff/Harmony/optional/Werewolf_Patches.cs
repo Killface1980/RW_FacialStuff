@@ -1,4 +1,4 @@
-﻿namespace FacialStuff.Harmony.optional
+﻿namespace FacialStuff.Harmony.Optional
 {
     using FacialStuff.newStuff;
 

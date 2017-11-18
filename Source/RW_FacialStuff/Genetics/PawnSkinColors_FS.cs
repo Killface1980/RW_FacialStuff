@@ -1,4 +1,4 @@
-namespace FacialStuff.Detouring
+namespace FacialStuff.Genetics
 {
     using UnityEngine;
 

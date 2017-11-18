@@ -11,7 +11,7 @@ namespace FacialStuff.newStuff
 
     public static class PawnExtensions
     {
-        public static bool GetCompFace([NotNull] this Pawn pawn, [NotNull] out CompFace compFace)
+        public static bool GetCompFace([NotNull] this Pawn pawn, [CanBeNull] out CompFace compFace)
         {
             compFace = pawn.GetComp<CompFace>();
             return compFace != null;

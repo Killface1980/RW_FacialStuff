@@ -1,15 +1,17 @@
 ﻿// ReSharper disable All
 
-namespace FacialStuff.Detouring
+namespace FacialStuff.Harmony
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using FacialStuff.FaceStyling_Bench;
+    using FacialStuff.FaceEditor;
+    using FacialStuff.Genetics;
     using FacialStuff.Graphics;
     using FacialStuff.newStuff;
+    using FacialStuff.Utilities;
 
     using global::Harmony;
 
@@ -195,10 +197,11 @@ namespace FacialStuff.Detouring
                 return;
             }
 
-            face.CheckForAddedOrMissingParts(pawn);
+            face.CheckForAddedOrMissingParts();
             if (!face.DontRender)
             {
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
+                PortraitsCache.SetDirty(pawn);
             }
         }
 
@@ -325,7 +328,7 @@ namespace FacialStuff.Detouring
 
                 if (recipient.GetCompFace(out CompFace recipientFace))
                 {
-                    if ( recipientFace.HeadRotator != null && !recipientFace.IsChild)
+                    if (recipientFace.HeadRotator != null && !recipientFace.IsChild)
                     {
                         recipientFace.HeadRotator.LookAtPawn(pawn);
                     }
@@ -392,64 +395,64 @@ namespace FacialStuff.Detouring
 
     // [HarmonyPatch(typeof(Dialog_Options))]
     // [HarmonyPatch("DoWindowContents")]
-    internal static class Dialog_Options_DoWindowContents_Patch
-    {
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        {
-            MethodInfo m_set_HatsOnlyOnMap = AccessTools.Method(typeof(Prefs), "set_HatsOnlyOnMap");
-            MethodInfo m_MoreStuff = AccessTools.Method(typeof(Dialog_Options_DoWindowContents_Patch), "MoreStuff");
-
-            foreach (CodeInstruction instruction in instructions)
-            {
-                yield return instruction;
-                if (instruction.opcode == OpCodes.Call && instruction.operand == m_set_HatsOnlyOnMap)
-                {
-                    yield return new CodeInstruction(OpCodes.Ldloc_1);
-                    yield return new CodeInstruction(OpCodes.Call, m_MoreStuff);
-                }
-            }
-        }
-
-        private static void MoreStuff(Listing_Standard listing_Standard)
-        {
-            bool hideHatWhileRoofed = Controller.settings.HideHatWhileRoofed;
-            listing_Standard.CheckboxLabeled(
-                "Settings.HideHatWhileRoofed".Translate(),
-                ref hideHatWhileRoofed,
-                "Settings.HideHatWhileRoofedTooltip".Translate());
-
-            bool showHeadWear = Controller.settings.FilterHats;
-            listing_Standard.CheckboxLabeled(
-                "Settings.FilterHats".Translate(),
-                ref showHeadWear,
-                "Settings.FilterHatsTooltip".Translate());
-
-            bool hideHatsInBed = Controller.settings.HideHatInBed;
-            listing_Standard.CheckboxLabeled(
-                "Settings.HideHatInBed".Translate(),
-                ref hideHatsInBed,
-                "Settings.HideHatInBedTooltip".Translate());
-
-            if (GUI.changed)
-            {
-                if (showHeadWear != Controller.settings.FilterHats)
-                {
-                    Controller.settings.FilterHats = showHeadWear;
-                    Controller.settings.Write();
-                }
-
-                if (hideHatWhileRoofed != Controller.settings.HideHatWhileRoofed)
-                {
-                    Controller.settings.HideHatWhileRoofed = hideHatWhileRoofed;
-                    Controller.settings.Write();
-                }
-
-                if (hideHatsInBed != Controller.settings.HideHatInBed)
-                {
-                    Controller.settings.HideHatInBed = hideHatsInBed;
-                    Controller.settings.Write();
-                }
-            }
-        }
-    }
+    // internal static class Dialog_Options_DoWindowContents_Patch
+    // {
+    //     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    //     {
+    //         MethodInfo m_set_HatsOnlyOnMap = AccessTools.Method(typeof(Prefs), "set_HatsOnlyOnMap");
+    //         MethodInfo m_MoreStuff = AccessTools.Method(typeof(Dialog_Options_DoWindowContents_Patch), "MoreStuff");
+    //
+    //         foreach (CodeInstruction instruction in instructions)
+    //         {
+    //             yield return instruction;
+    //             if (instruction.opcode == OpCodes.Call && instruction.operand == m_set_HatsOnlyOnMap)
+    //             {
+    //                 yield return new CodeInstruction(OpCodes.Ldloc_1);
+    //                 yield return new CodeInstruction(OpCodes.Call, m_MoreStuff);
+    //             }
+    //         }
+    //     }
+    //
+    //     private static void MoreStuff(Listing_Standard listing_Standard)
+    //     {
+    //         bool hideHatWhileRoofed = Controller.settings.HideHatWhileRoofed;
+    //         listing_Standard.CheckboxLabeled(
+    //             "Settings.HideHatWhileRoofed".Translate(),
+    //             ref hideHatWhileRoofed,
+    //             "Settings.HideHatWhileRoofedTooltip".Translate());
+    //
+    //         bool showHeadWear = Controller.settings.FilterHats;
+    //         listing_Standard.CheckboxLabeled(
+    //             "Settings.FilterHats".Translate(),
+    //             ref showHeadWear,
+    //             "Settings.FilterHatsTooltip".Translate());
+    //
+    //         bool hideHatsInBed = Controller.settings.HideHatInBed;
+    //         listing_Standard.CheckboxLabeled(
+    //             "Settings.HideHatInBed".Translate(),
+    //             ref hideHatsInBed,
+    //             "Settings.HideHatInBedTooltip".Translate());
+    //
+    //         if (GUI.changed)
+    //         {
+    //             if (showHeadWear != Controller.settings.FilterHats)
+    //             {
+    //                 Controller.settings.FilterHats = showHeadWear;
+    //                 Controller.settings.Write();
+    //             }
+    //
+    //             if (hideHatWhileRoofed != Controller.settings.HideHatWhileRoofed)
+    //             {
+    //                 Controller.settings.HideHatWhileRoofed = hideHatWhileRoofed;
+    //                 Controller.settings.Write();
+    //             }
+    //
+    //             if (hideHatsInBed != Controller.settings.HideHatInBed)
+    //             {
+    //                 Controller.settings.HideHatInBed = hideHatsInBed;
+    //                 Controller.settings.Write();
+    //             }
+    //         }
+    //     }
+    // }
 }

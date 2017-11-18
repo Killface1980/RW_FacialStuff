@@ -67,15 +67,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Class1.cs" />
-    <Compile Include="CrownTypeChecker.cs" />
-    <None Include="FaceStyling_Bench\Job_FaceStylingJoy.cs" />
+    <Compile Include="AI\JobDriver_Possess.cs" />
+    <Compile Include="AI\JobGiver_Possess.cs" />
+    <Compile Include="AI\MentalStateWorker_Possessed.cs" />
+    <Compile Include="AI\MentalState_Possessed.cs" />
+    <Compile Include="Utilities\CrownTypeChecker.cs" />
+    <None Include="FaceEditor\Job_FaceStylingJoy.cs" />
     <Compile Include="CompFaceEditor.cs" />
-    <Compile Include="FaceMaterial.cs" />
-    <Compile Include="GraphicVectorMeshSet.cs" />
+    <Compile Include="Graphics\FaceMaterial.cs" />
+    <Compile Include="Graphics\GraphicVectorMeshSet.cs" />
     <None Include="FacialStuff.ruleset" />
-    <None Include="IncidentWorker_FacialStuffUpdateNote.cs" />
-    <Compile Include="Graphics\CutHairDB.cs" />
+    <None Include="OldStuff\IncidentWorker_FacialStuffUpdateNote.cs" />
+    <Compile Include="Graphics\HairCut\CutHairDB.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />
     <Compile Include="Defs\MoustacheDefOf.cs" />
     <Compile Include="Defs\MoustacheDef.cs" />
@@ -90,26 +93,26 @@
     <Compile Include="Animator\PawnHeadRotator.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="Graphics\FaceGraphic.cs" />
-    <Compile Include="FaceStyling_Bench\Dialog_FaceStyling.cs" />
-    <None Include="FaceStyling_Bench\UI\DresserUI.cs" />
-    <Compile Include="FaceStyling_Bench\UI\DTO\DresserDTO.cs" />
-    <Compile Include="FaceStyling_Bench\UI\DTO\DresserDtoFactory.cs" />
-    <Compile Include="FaceStyling_Bench\UI\DTO\SelectionWidgetDTOs\ASelectionWidgetDTO.cs" />
-    <Compile Include="FaceStyling_Bench\UI\DTO\SelectionWidgetDTOs\BodyTypeSelectionDTO.cs" />
-    <Compile Include="FaceStyling_Bench\UI\DTO\SelectionWidgetDTOs\GenderSelectionDTO.cs" />
-    <Compile Include="FaceStyling_Bench\UI\DTO\SelectionWidgetDTOs\HeadTypeSelectionDTO.cs" />
-    <Compile Include="FaceStyling_Bench\UI\DTO\SelectionWidgetDTOs\SliderWidgetDTO.cs" />
-    <Compile Include="FaceStyling_Bench\UI\Util\WidgetUtil.cs" />
+    <Compile Include="FaceEditor\Dialog_FaceStyling.cs" />
+    <None Include="FaceEditor\UI\DresserUI.cs" />
+    <Compile Include="FaceEditor\UI\DTO\DresserDTO.cs" />
+    <Compile Include="FaceEditor\UI\DTO\DresserDtoFactory.cs" />
+    <Compile Include="FaceEditor\UI\DTO\SelectionWidgetDTOs\ASelectionWidgetDTO.cs" />
+    <Compile Include="FaceEditor\UI\DTO\SelectionWidgetDTOs\BodyTypeSelectionDTO.cs" />
+    <Compile Include="FaceEditor\UI\DTO\SelectionWidgetDTOs\GenderSelectionDTO.cs" />
+    <Compile Include="FaceEditor\UI\DTO\SelectionWidgetDTOs\HeadTypeSelectionDTO.cs" />
+    <Compile Include="FaceEditor\UI\DTO\SelectionWidgetDTOs\SliderWidgetDTO.cs" />
+    <Compile Include="FaceEditor\UI\Util\WidgetUtil.cs" />
     <Compile Include="Genetics\HairColorRequest.cs" />
     <Compile Include="Genetics\HairDNA.cs" />
-    <Compile Include="Harmony\optional\Harmony_EdBPrepareCarefully.cs" />
-    <Compile Include="Harmony\optional\Harmony_Werewolf.cs" />
-    <Compile Include="Harmony\optional\PrepC\PanelBackstory_Postfix.cs" />
-    <Compile Include="Harmony\optional\PrepC\PresetSaver_Postfix.cs" />
-    <Compile Include="Harmony\optional\PrepC\PresetLoader_Postfix.cs" />
-    <Compile Include="Harmony\optional\PrepC\SaveRecordFaceV3.cs" />
-    <Compile Include="Harmony\optional\PrepC\SaveRecordPawnV3_Postfix.cs" />
-    <Compile Include="Harmony\optional\Werewolf_Patches.cs" />
+    <Compile Include="Harmony\Optional\Harmony_EdBPrepareCarefully.cs" />
+    <Compile Include="Harmony\Optional\Harmony_Werewolf.cs" />
+    <Compile Include="Harmony\Optional\PrepC\PanelBackstory_Postfix.cs" />
+    <Compile Include="Harmony\Optional\PrepC\PresetSaver_Postfix.cs" />
+    <Compile Include="Harmony\Optional\PrepC\PresetLoader_Postfix.cs" />
+    <Compile Include="Harmony\Optional\PrepC\SaveRecordFaceV3.cs" />
+    <Compile Include="Harmony\Optional\PrepC\SaveRecordPawnV3_Postfix.cs" />
+    <Compile Include="Harmony\Optional\Werewolf_Patches.cs" />
     <Compile Include="Graphics\HumanMouthGraphics.cs" />
     <Compile Include="PawnFace.cs" />
     <Compile Include="Settings.cs" />
@@ -121,24 +124,24 @@
     <Compile Include="Enums\HeadType.cs" />
     <Compile Include="Defs\MouthDefOf.cs" />
     <Compile Include="Graphics\FaceTextures.cs" />
-    <Compile Include="Graphics\HairCutPawn.cs" />
+    <Compile Include="Graphics\HairCut\HairCutPawn.cs" />
     <Compile Include="Graphics\Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="Graphics\Graphic_Multi_AddedHeadParts.cs" />
-    <Compile Include="MeshPoolFs.cs" />
+    <Compile Include="Graphics\MeshPoolFs.cs" />
     <Compile Include="Harmony\PawnRenderer_Prefix.cs" />
     <Compile Include="CompFace.cs" />
-    <Compile Include="FaceStyling_Bench\ColorPicker\ColorWrapper.cs" />
-    <Compile Include="FaceStyling_Bench\ColorPicker\Dialog_ColorPicker.cs" />
-    <Compile Include="FaceStyling_Bench\ColorPicker\ColorHelper.cs" />
-    <Compile Include="FaceStyling_Bench\Job_FaceStyling.cs" />
-    <None Include="FaceStyling_Bench\Preset.cs" />
-    <None Include="FaceStyling_Bench\PresetDatabase.cs" />
+    <Compile Include="FaceEditor\ColorPicker\ColorWrapper.cs" />
+    <Compile Include="FaceEditor\ColorPicker\Dialog_ColorPicker.cs" />
+    <Compile Include="FaceEditor\ColorPicker\ColorHelper.cs" />
+    <Compile Include="FaceEditor\Job_FaceStyling.cs" />
+    <None Include="FaceEditor\Preset.cs" />
+    <None Include="FaceEditor\PresetDatabase.cs" />
     <Compile Include="Graphics\GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="Graphics\Graphic_Multi_NaturalHeadParts.cs" />
-    <Compile Include="FaceStyling_Bench\DialogUtility.cs" />
+    <Compile Include="Utilities\DialogUtility.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Genetics\PawnSkinColors_FS.cs" />
-    <Compile Include="PawnFaceMaker.cs" />
+    <Compile Include="Utilities\PawnFaceMaker.cs" />
     <Compile Include="Harmony\HarmonyPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -180,12 +183,18 @@
       <Link>Defs\Clutter_Jobs.xml</Link>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="..\..\Defs\MentalStateDefs\MentalStates_Mood_FS.xml">
+      <Link>Defs\MentalStates_Mood_FS.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\MoustacheDefs\MoustacheDef.xml">
       <Link>Defs\FacialDefs\MoustacheDef.xml</Link>
     </Content>
     <Content Include="..\..\Defs\MouthDefs\MouthDef.xml">
       <Link>Defs\FacialDefs\MouthDef.xml</Link>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Defs\ThinkTreeDefs\SubTrees_MiscFS.xml">
+      <Link>Defs\SubTrees_MiscFS.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WrinkleDefs\WrinkleDef.xml">
       <Link>Defs\FacialDefs\WrinkleDef.xml</Link>
@@ -194,7 +203,7 @@
       <Link>Languages\English\FacialStuff_Keyed.xml</Link>
     </Content>
     <Content Include="..\..\Languages\English\Keyed\FS_UpdatenInfo.xml">
-      <Link>FS_UpdatenInfo.xml</Link>
+      <Link>OldStuff\FS_UpdatenInfo.xml</Link>
     </Content>
     <Content Include="..\..\Languages\German\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\German\FacialStuff_Keyed.xml</Link>
@@ -213,10 +222,11 @@
     <Content Include="..\..\Patches\HumanPatchHSK.xml">
       <Link>Patches\HumanPatchHSK.xml</Link>
     </Content>
+    <Content Include="..\..\Patches\MentalStatePatches.xml">
+      <Link>Patches\MentalStatePatches.xml</Link>
+    </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="OldStuff\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

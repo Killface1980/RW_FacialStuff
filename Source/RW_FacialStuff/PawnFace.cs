@@ -2,6 +2,7 @@
 {
     using FacialStuff.Defs;
     using FacialStuff.Genetics;
+    using FacialStuff.Utilities;
 
     using JetBrains.Annotations;
 

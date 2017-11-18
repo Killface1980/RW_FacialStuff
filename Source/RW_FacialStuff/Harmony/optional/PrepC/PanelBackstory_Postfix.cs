@@ -1,8 +1,8 @@
-﻿namespace FacialStuff.Harmony.optional.PrepC
+﻿namespace FacialStuff.Harmony.Optional.PrepC
 {
     using EdB.PrepareCarefully;
 
-    using FacialStuff.FaceStyling_Bench;
+    using FacialStuff.FaceEditor;
     using FacialStuff.newStuff;
 
     using global::Harmony;

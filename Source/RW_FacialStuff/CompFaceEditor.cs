@@ -5,7 +5,7 @@ namespace FacialStuff
     using System;
     using System.Collections.Generic;
 
-    using FacialStuff.FaceStyling_Bench;
+    using FacialStuff.FaceEditor;
     using FacialStuff.newStuff;
 
     using Verse;

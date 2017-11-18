@@ -1,4 +1,4 @@
-﻿namespace FacialStuff.Harmony.optional.PrepC
+﻿namespace FacialStuff.Harmony.Optional.PrepC
 {
     using Verse;
 

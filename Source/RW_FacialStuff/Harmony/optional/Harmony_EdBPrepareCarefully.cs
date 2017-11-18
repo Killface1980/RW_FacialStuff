@@ -1,8 +1,8 @@
-﻿namespace FacialStuff.Harmony.optional
+﻿namespace FacialStuff.Harmony.Optional
 {
     using System;
 
-    using FacialStuff.Harmony.optional.PrepC;
+    using FacialStuff.Harmony.Optional.PrepC;
 
     using global::Harmony;
 

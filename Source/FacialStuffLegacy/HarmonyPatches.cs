@@ -1,6 +1,6 @@
 ﻿// ReSharper disable All
 
-namespace FacialStuff.Detouring
+namespace FacialStuff.Harmony
 {
     using System.Collections.Generic;
     using System.Linq;

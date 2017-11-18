@@ -171,6 +171,11 @@ namespace FacialStuff
             // this.useDNAByFaction = Toggle(this.useDNAByFaction, "Settings.UseDNAByFaction".Translate());
             list.End();
 
+            if (GUI.changed)
+            {
+                this.Mod.WriteSettings();
+            }
+
             // FlexibleSpace();
             // BeginVertical();
             // if (Button("Settings.Apply".Translate()))

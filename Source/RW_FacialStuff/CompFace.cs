@@ -7,6 +7,7 @@
     using FacialStuff.Defs;
     using FacialStuff.Enums;
     using FacialStuff.Graphics;
+    using FacialStuff.Utilities;
 
     using JetBrains.Annotations;
 
@@ -32,7 +33,7 @@
         public Faction originFaction;
 
         [NotNull]
-        public Pawn pawn;
+        public Pawn pawn => this.parent as Pawn;
 
         public bool Roofed;
 
@@ -287,17 +288,15 @@
         }
 
         // Can be called externally
-        public void CheckForAddedOrMissingParts([NotNull] Pawn p)
+        public void CheckForAddedOrMissingParts()
         {
             if (!Controller.settings.ShowExtraParts)
             {
                 return;
             }
 
-            this.pawn = p;
-
             // no head => no face
-            if (!this.pawn?.health.hediffSet.HasHead != true)
+            if (!this.pawn.health.hediffSet.HasHead)
             {
                 return;
             }
@@ -411,7 +410,6 @@
         {
             base.PostExposeData();
 
-            Scribe_References.Look(ref this.pawn, "Pawn");
             Scribe_References.Look(ref this.originFaction, "pawnFaction");
 
             // Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
@@ -440,7 +438,6 @@
         /// </returns>
         public bool SetHeadType([NotNull] Pawn p)
         {
-            this.pawn = p;
 
             if (this.originFaction == null)
             {
@@ -474,10 +471,6 @@
         }
         public bool hasNaturalJaw = true;
 
-        private void CheckForAddedOrMissingParts()
-        {
-            this.CheckForAddedOrMissingParts(this.parent as Pawn);
-        }
 
         private void CheckPart([NotNull] List<BodyPartRecord> body, [NotNull] Hediff hediff)
         {
