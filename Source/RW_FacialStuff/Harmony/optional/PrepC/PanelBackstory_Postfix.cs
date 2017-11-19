@@ -3,7 +3,6 @@
     using EdB.PrepareCarefully;
 
     using FacialStuff.FaceEditor;
-    using FacialStuff.newStuff;
 
     using global::Harmony;
 

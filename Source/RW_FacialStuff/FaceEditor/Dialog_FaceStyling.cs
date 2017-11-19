@@ -14,7 +14,6 @@
     using FacialStuff.FaceEditor.UI.Util;
     using FacialStuff.Genetics;
     using FacialStuff.Graphics;
-    using FacialStuff.newStuff;
     using FacialStuff.Utilities;
 
     using JetBrains.Annotations;

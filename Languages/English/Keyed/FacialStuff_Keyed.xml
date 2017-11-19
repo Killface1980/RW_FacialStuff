@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
+  <Settings.VisibilityHeadgearLabel>Visibility Of Headgear</Settings.VisibilityHeadgearLabel>
+  <Settings.PawnFeaturesLabel>Facial Features</Settings.PawnFeaturesLabel>
+  <Settings.EditorLabel>Editor Settings</Settings.EditorLabel>
+  <Settings.ExperimentalLabel>Experimental</Settings.ExperimentalLabel>
+  
   <Settings.UseWrinkles>Add wrinkles to colonists</Settings.UseWrinkles>
   <Settings.UseWrinklesTooltip>Wrinkles for older pawns</Settings.UseWrinklesTooltip>
   <Settings.UseMouth>Add mouths to colonists</Settings.UseMouth>
@@ -7,13 +12,13 @@
 	<Settings.MergeHair>Show hair under hat</Settings.MergeHair>
   <Settings.MergeHairTooltip>Displays a modified hair texture below worn hats.</Settings.MergeHairTooltip>
 
-  <Settings.FilterHats>Mod: Ignore goggles</Settings.FilterHats>
-  <Settings.FilterHatsTooltip>Facial Stuff\nExtra head gear like goggles is not visible on pawns while indoors.</Settings.FilterHatsTooltip>
+  <Settings.FilterHats>Ignore goggles</Settings.FilterHats>
+  <Settings.FilterHatsTooltip>Extra head gear like goggles is not visible on pawns while indoors.</Settings.FilterHatsTooltip>
 
-  <Settings.HideHatWhileRoofed>Mod: Hats shown only while outdoors</Settings.HideHatWhileRoofed>
-  <Settings.HideHatWhileRoofedTooltip>Facial Stuff\nHats are not visible on pawns while indoors.</Settings.HideHatWhileRoofedTooltip>
-	<Settings.HideHatInBed>Mod: Don't show hats in bed</Settings.HideHatInBed>
-  <Settings.HideHatInBedTooltip>Facial Stuff\nHats are not visible if the body is not drawn.</Settings.HideHatInBedTooltip>
+  <Settings.HideHatWhileRoofed>Hats shown only while outdoors</Settings.HideHatWhileRoofed>
+  <Settings.HideHatWhileRoofedTooltip>Hats are not visible on pawns while indoors.</Settings.HideHatWhileRoofedTooltip>
+	<Settings.HideHatInBed>Don't show hats in bed</Settings.HideHatInBed>
+  <Settings.HideHatInBedTooltip>Hats are not visible if the body is not drawn.</Settings.HideHatInBedTooltip>
   <Settings.Apply>Save and apply settings.</Settings.Apply>
 
   <Settings.ShowExtraParts>Show extra parts</Settings.ShowExtraParts>
@@ -24,10 +29,12 @@
   <Settings.UseHairDNATooltip>Enables this mod to keep hair colors consistent across family ties.</Settings.UseHairDNATooltip>
   <Settings.MakeThemBlink>Enable eye animation</Settings.MakeThemBlink>
   <Settings.MakeThemBlinkTooltip>Colonists stop staring at you.</Settings.MakeThemBlinkTooltip>
-  <Settings.UseCaching>EXPERIMENTAL: Export cached hair cuts</Settings.UseCaching>
+  <Settings.UseCaching>Export cached hair cuts</Settings.UseCaching>
   <Settings.UseCachingTooltip>Export hair cut textures to the mod folder as png. Please deactivate in case something goes wrong.</Settings.UseCachingTooltip>
-  <Settings.UseHeadRotator>EXPERIMENTAL: Activate head rotator</Settings.UseHeadRotator>
+  <Settings.UseHeadRotator>Activate head rotator</Settings.UseHeadRotator>
   <Settings.UseHeadRotatorTooltip>Currently in alpha stage. It's just a basic randomizer NOT reacting to the environment. The head rotation is only visual.</Settings.UseHeadRotatorTooltip>
+  <Settings.UseNastyGrin>Use nasty grin</Settings.UseNastyGrin>
+  <Settings.UseNastyGrinTooltip>Adds a nasty grin to the pawn when extremely happy.</Settings.UseNastyGrinTooltip>
 
   <FacialStuffEditor.CannotUseNoFacePawn>{0} can't use this. Humans only.</FacialStuffEditor.CannotUseNoFacePawn>
   <FacialStuffEditor.FaceStylerTitle>Face Styler</FacialStuffEditor.FaceStylerTitle>

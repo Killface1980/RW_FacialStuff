@@ -4,8 +4,6 @@
 
     using EdB.PrepareCarefully;
 
-    using FacialStuff.newStuff;
-
     using global::Harmony;
 
     using Verse;

@@ -1,7 +1,5 @@
 ﻿namespace FacialStuff.Harmony.Optional
 {
-    using FacialStuff.newStuff;
-
     using Verse;
 
     using Werewolf;

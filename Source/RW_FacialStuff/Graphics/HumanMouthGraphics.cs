@@ -77,7 +77,7 @@
                                           Vector2.one,
                                           color) as Graphic_Multi_NaturalHeadParts;
 
-            bool flag = Controller.settings.UseUglyGrin;
+            bool flag = Controller.settings.UseNastyGrin;
 
             if (p.mindState?.mentalBreaker != null)
             {

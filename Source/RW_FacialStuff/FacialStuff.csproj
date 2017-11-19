@@ -88,7 +88,7 @@
     <Compile Include="Defs\MouthDef.cs" />
     <Compile Include="Defs\WrinkleDef.cs" />
     <Compile Include="Enums\BeardType.cs" />
-    <Compile Include="newStuff\PawnExtensions.cs" />
+    <Compile Include="PawnExtensions.cs" />
     <None Include="newStuff\JoyGiver_ChangeAppearance.cs" />
     <Compile Include="Animator\PawnHeadRotator.cs" />
     <Compile Include="Enums\Side.cs" />

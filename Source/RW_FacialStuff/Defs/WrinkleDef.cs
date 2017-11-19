@@ -18,7 +18,7 @@ namespace FacialStuff.Defs
     {
         public HairGender hairGender = HairGender.Any;
 
-        public List<ThingDef> raceList = new List<ThingDef>();
+        public List<ThingDef> forbiddenOnRace = new List<ThingDef>();
 
         public string texPath;
     }

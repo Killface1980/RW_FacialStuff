@@ -5,9 +5,7 @@
     <defName>Brow_Female_Aggro</defName>
     <label>Aggro</label>
     <hairGender>Female</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Aggro</texPath>
     <hairTags>
       <li>Urban</li>
@@ -21,9 +19,7 @@
     <defName>Brow_Female_Aware</defName>
     <label>Aware</label>
     <hairGender>Female</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Aware</texPath>
     <hairTags>
       <li>Urban</li>
@@ -37,9 +33,7 @@
     <defName>Brow_Female_Depressed</defName>
     <label>Depressed</label>
     <hairGender>Female</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Depressed</texPath>
     <hairTags>
       <li>Urban</li>
@@ -53,9 +47,7 @@
     <defName>Brow_Female_Furious</defName>
     <label>Furious</label>
     <hairGender>Female</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Furious</texPath>
     <hairTags>
       <li>Urban</li>
@@ -69,9 +61,7 @@
     <defName>Brow_Female_Nice</defName>
     <label>Nice</label>
     <hairGender>Female</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Nice</texPath>
     <hairTags>
       <li>Urban</li>
@@ -85,9 +75,7 @@
     <defName>Brow_Female_Tired</defName>
     <label>Tired</label>
     <hairGender>Female</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Tired</texPath>
     <hairTags>
       <li>Urban</li>
@@ -101,9 +89,7 @@
     <defName>Brow_Female_Mono</defName>
     <label>Mono</label>
     <hairGender>Female</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Mono</texPath>
     <hairTags>
       <li>Punk</li>

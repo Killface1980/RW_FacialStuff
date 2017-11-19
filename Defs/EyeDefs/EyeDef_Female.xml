@@ -5,9 +5,7 @@
     <defName>Eye_Female_Average_FL</defName>
     <label>Flat</label>
     <hairGender>Female</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>FL</texPath>
     <hairTags>
       <li>Urban</li>
@@ -21,9 +19,7 @@
     <defName>Eye_Female_Average_RD</defName>
     <label>Round</label>
     <hairGender>Female</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>RD</texPath>
     <hairTags>
       <li>Urban</li>
@@ -37,9 +33,7 @@
     <defName>Eye_Female_Average_OV</defName>
     <label>Oval</label>
     <hairGender>Female</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>OV</texPath>
     <hairTags>
       <li>Urban</li>
@@ -53,9 +47,7 @@
     <defName>Eye_Female_Average_SM</defName>
     <label>Small</label>
     <hairGender>Female</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>SM</texPath>
     <hairTags>
       <li>Urban</li>

@@ -5,9 +5,7 @@
     <defName>Wrinkles_Default_Female</defName>
     <label>Wrinkles_Default_Female</label>
     <hairGender>Female</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>    
     <texPath>Wrinkles/Wrinkles_Female</texPath>
   </FacialStuff.Defs.WrinkleDef>
 
@@ -15,9 +13,7 @@
     <defName>Wrinkles_Default_Male</defName>
     <label>Wrinkles_Default_Male</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Wrinkles/Wrinkles_Male</texPath>
   </FacialStuff.Defs.WrinkleDef>
 </Defs>

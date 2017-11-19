@@ -6,7 +6,6 @@
     using FacialStuff.Defs;
     using FacialStuff.Enums;
     using FacialStuff.Graphics;
-    using FacialStuff.newStuff;
 
     using RimWorld;
 

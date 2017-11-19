@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
+  <Settings.VisibilityHeadgearLabel>Sichtbarkeit von Kopfbekleidung</Settings.VisibilityHeadgearLabel>
+  <Settings.PawnFeaturesLabel>Facial Features</Settings.PawnFeaturesLabel>
+  <Settings.EditorLabel>Editor Einstellungen</Settings.EditorLabel>
+  <Settings.ExperimentalLabel>Experimentell</Settings.ExperimentalLabel>
+  
   <Settings.UseWrinkles>Benutze Falten</Settings.UseWrinkles>
   <Settings.UseWrinklesTooltip>Falten für ältere Charaktere</Settings.UseWrinklesTooltip>
   <Settings.UseMouth>Kolonist hat Mund</Settings.UseMouth>
@@ -7,16 +12,16 @@
 	<Settings.MergeHair>Zeige Haare unter Kopfbedeckung.</Settings.MergeHair>
   <Settings.MergeHairTooltip>Macht Haar sichtbar.</Settings.MergeHairTooltip>
 
-  <Settings.FilterHats>Mod: Extra head gear shown only while outdoors</Settings.FilterHats>
-  <Settings.FilterHatsTooltip>Facial Stuff\nExtra head gear is not visible on pawns while indoors.</Settings.FilterHatsTooltip>
+  <Settings.FilterHats>Ignoriere Brillen</Settings.FilterHats>
+  <Settings.FilterHatsTooltip>Sachen für die Augen sind in Räumen nicht sichtbar.</Settings.FilterHatsTooltip>
 
-  <Settings.HideHatWhileRoofed>Mod: Zeige Hüte nur draußen</Settings.HideHatWhileRoofed>
-  <Settings.HideHatWhileRoofedTooltip>Facial Stuff\nHüte sind in Räumen nicht sichtbar.</Settings.HideHatWhileRoofedTooltip>
-	<Settings.HideHatInBed>Mod: Blende Hüte im Bett aus</Settings.HideHatInBed>
-  <Settings.HideHatInBedTooltip>Facial Stuff\nHüte sind nur sichtbar wenn der Körper dargestellt wird.</Settings.HideHatInBedTooltip>
+  <Settings.HideHatWhileRoofed>Zeige Hüte nur draußen</Settings.HideHatWhileRoofed>
+  <Settings.HideHatWhileRoofedTooltip>Hüte sind in Räumen nicht sichtbar.</Settings.HideHatWhileRoofedTooltip>
+	<Settings.HideHatInBed>Blende Hüte im Bett aus</Settings.HideHatInBed>
+  <Settings.HideHatInBedTooltip>Hüte sind nur sichtbar wenn der Körper dargestellt wird.</Settings.HideHatInBedTooltip>
   <Settings.Apply>Einstellungen speichern und übernehmen.</Settings.Apply>
 
-  <Settings.ShowExtraParts>Zeige Extra-Teile an</Settings.ShowExtraParts>
+  <Settings.ShowExtraParts>Zeige Extra-Körpereile an</Settings.ShowExtraParts>
   <Settings.ShowExtraPartsTooltip>Zeige entfernte oder hinzugefügte Körperteile</Settings.ShowExtraPartsTooltip>
   <Settings.UseWeirdHairChoices>Fluffige Haare</Settings.UseWeirdHairChoices>
   <Settings.UseWeirdHairChoicesTooltip>'Besondere' Haarauswahl, ähnlich wie Vanilla. Je forgeschrittener eine Fraktion, desto eher wird die Haarfarbe künstlicher Natur sein. Auch die Auswahl der Frisur ist geschlechtsneutraler.</Settings.UseWeirdHairChoicesTooltip>
@@ -24,10 +29,12 @@
   <Settings.UseHairDNATooltip>Ermöglicht gleich bleibende Haarfarben innerhalb der Familie.</Settings.UseHairDNATooltip>
   <Settings.MakeThemBlink>Animiere Augen</Settings.MakeThemBlink>
   <Settings.MakeThemBlinkTooltip>Jetzt wird geblinzelt.</Settings.MakeThemBlinkTooltip>
-  <Settings.UseCaching>EXPERIMENTELL: Exportiere HairCache</Settings.UseCaching>
+  <Settings.UseCaching>Exportiere HairCache</Settings.UseCaching>
   <Settings.UseCachingTooltip>Exportiert erstellte HairCut-Texturen als png in das Mod-Verzeichnis. Bitte deaktivieren falls irgendetwas nicht funktioniert.</Settings.UseCachingTooltip>
-  <Settings.UseHeadRotator>EXPERIMENTELL: Ermögliche Kopfdrehungen</Settings.UseHeadRotator>
-  <Settings.UseHeadRotatorTooltip>Momentan im Alpha-Stadium. Ein Zufallsgenerator, der NICHT auf die Umgebung reagiert. Die Kopfdrehung ist nur visuell.</Settings.UseHeadRotatorTooltip>
+  <Settings.UseHeadRotator>Ermögliche Kopfdrehungen</Settings.UseHeadRotator>
+  <Settings.UseHeadRotatorTooltip>Momentan im Alpha-Stadium. Ein Zufallsgenerator, der auf die Umgebung reagiert. Die Kopfdrehung ist nur visuell.</Settings.UseHeadRotatorTooltip>
+  <Settings.UseNastyGrin>Benutze fieses Grinsen</Settings.UseNastyGrin>
+  <Settings.UseNastyGrinTooltip>Fieses Grinsen für Humanoiden mit extrem guter Laune.</Settings.UseNastyGrinTooltip>
 
   <FacialStuffEditor.CannotUseNoFacePawn>{0} kann das nicht nutzen. Nur für Menschen.</FacialStuffEditor.CannotUseNoFacePawn>
 

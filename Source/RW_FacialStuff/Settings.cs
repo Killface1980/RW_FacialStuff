@@ -32,9 +32,9 @@ namespace FacialStuff
 
         private bool useFreeWill;
 
-        private bool useUglyGrin = false;
+        private bool useNastyGrin = false;
 
-        private bool useHeadRotator;
+        private bool useHeadRotator = true;
 
         private bool useMouth = true;
 
@@ -76,7 +76,7 @@ namespace FacialStuff
 
         public bool UseCaching => this.useCaching;
 
-        public bool UseUglyGrin => this.useUglyGrin;
+        public bool UseNastyGrin => this.useNastyGrin;
 
         public bool UseDNAByFaction { get; } = false;
 
@@ -95,6 +95,9 @@ namespace FacialStuff
             Listing_Standard list = new Listing_Standard(GameFont.Small) { ColumnWidth = inRect.width / 2 };
             list.Begin(inRect);
 
+            list.Label("Settings.VisibilityHeadgearLabel".Translate());
+            list.GapLine();
+
             list.CheckboxLabeled(
                 "Settings.HideHatWhileRoofed".Translate(),
                 ref this.hideHatWhileRoofed,
@@ -110,8 +113,15 @@ namespace FacialStuff
                 ref this.hideHatInBed,
                 "Settings.HideHatInBedTooltip".Translate());
 
-            list.Gap(12f);
+            list.Gap();
 
+            list.Label("Settings.PawnFeaturesLabel".Translate());
+            list.GapLine();
+
+            list.CheckboxLabeled(
+                "Settings.UseHeadRotator".Translate(),
+                ref this.useHeadRotator,
+                "Settings.UseHeadRotatorTooltip".Translate());
             list.CheckboxLabeled(
                 "Settings.MakeThemBlink".Translate(),
                 ref this.makeThemBlink,
@@ -145,28 +155,33 @@ namespace FacialStuff
                 "Settings.UseWeirdHairChoices".Translate(),
                 ref this.useWeirdHairChoices,
                 "Settings.UseWeirdHairChoicesTooltip".Translate());
+            list.CheckboxLabeled(
+                "Settings.UseNastyGrin".Translate(),
+                ref this.useNastyGrin,
+                "Settings.UseNastyGrinTooltip".Translate());
+
+            list.Gap();
+            list.Label("Settings.EditorLabel".Translate());
+            list.GapLine();
             list.CheckboxLabeled("FacialStuffEditor.ShowBodyChange".Translate(), ref this.showBodyChange);
             list.CheckboxLabeled("FacialStuffEditor.ShowGenderChange".Translate(), ref this.showGenderAgeChange);
 
+            list.Gap();
+            list.Label("Settings.ExperimentalLabel".Translate());
+            list.GapLine();
             list.CheckboxLabeled(
                 "Settings.UseCaching".Translate(),
                 ref this.useCaching,
                 "Settings.UseCachingTooltip".Translate());
 
-            list.CheckboxLabeled(
-                "Settings.UseHeadRotator".Translate(),
-                ref this.useHeadRotator,
-                "Settings.UseHeadRotatorTooltip".Translate());
 
-            list.CheckboxLabeled(
-                "Settings.UseUglyGrin".Translate(),
-                ref this.useUglyGrin,
-                "Settings.UseUglyGrinTooltip".Translate());
 
-            list.CheckboxLabeled(
-                "Settings.UseFreeWill".Translate(),
-                ref this.useFreeWill,
-                "Settings.UseFreeWillTooltip".Translate());
+
+
+           // list.CheckboxLabeled(
+           //     "Settings.UseFreeWill".Translate(),
+           //     ref this.useFreeWill,
+           //     "Settings.UseFreeWillTooltip".Translate());
 
             // this.useDNAByFaction = Toggle(this.useDNAByFaction, "Settings.UseDNAByFaction".Translate());
             list.End();
@@ -213,7 +228,7 @@ namespace FacialStuff
             // Scribe_Values.Look(ref this.useDNAByFaction, "useDNAByFaction", false, true);
             Scribe_Values.Look(ref this.makeThemBlink, "makeThemBlink", false, true);
             Scribe_Values.Look(ref this.useCaching, "useCaching", false, true);
-            Scribe_Values.Look(ref this.useUglyGrin, "useUglyGrin", false, true);
+            Scribe_Values.Look(ref this.useNastyGrin, "useNastyGrin", false, true);
             Scribe_Values.Look(ref this.useHeadRotator, "useHeadRotator", false, true);
             Scribe_Values.Look(ref this.showBodyChange, "showBodyChange", false, true);
             Scribe_Values.Look(ref this.showGenderAgeChange, "showGenderAgeChange", false, true);

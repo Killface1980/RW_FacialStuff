@@ -11,7 +11,7 @@ namespace FacialStuff.Defs
     {
         public List<string> hairTags = new List<string>();
 
-        public List<ThingDef> raceList = new List<ThingDef>();
+        public List<ThingDef> forbiddenOnRace = new List<ThingDef>();
 
         public string texPath = string.Empty;
     }

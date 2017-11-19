@@ -5,8 +5,6 @@ using System.Text;
 
 namespace FacialStuff.AI
 {
-    using FacialStuff.newStuff;
-
     using RimWorld;
 
     using Verse;

@@ -17,6 +17,10 @@ namespace FacialStuff.AI
             {
                 return false;
             }
+            if (!Controller.settings.UseHeadRotator)
+            {
+                return false;
+            }
 
             InsultingSpreeMentalStateUtility.GetInsultCandidatesFor(pawn, candidates, true);
             bool result = candidates.Count >= 2;

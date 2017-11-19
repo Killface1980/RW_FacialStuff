@@ -1,13 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-    <FacialStuff.Defs.BrowDef>
+  <FacialStuff.Defs.BrowDef>
     <defName>Brow_Male_Aggro</defName>
     <label>Aggro</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Aggro</texPath>
     <hairTags>
       <li>Urban</li>
@@ -21,9 +19,7 @@
     <defName>Brow_Male_Aware</defName>
     <label>Aware</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Aware</texPath>
     <hairTags>
       <li>Urban</li>
@@ -37,9 +33,7 @@
     <defName>Brow_Male_Depressed</defName>
     <label>Depressed</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Depressed</texPath>
     <hairTags>
       <li>Urban</li>
@@ -53,9 +47,7 @@
     <defName>Brow_Male_Furious</defName>
     <label>Furious</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Furious</texPath>
     <hairTags>
       <li>Urban</li>
@@ -69,9 +61,7 @@
     <defName>Brow_Male_Nice</defName>
     <label>Nice</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Nice</texPath>
     <hairTags>
       <li>Urban</li>
@@ -85,9 +75,7 @@
     <defName>Brow_Male_Tired</defName>
     <label>Tired</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Tired</texPath>
     <hairTags>
       <li>Urban</li>
@@ -97,13 +85,11 @@
     </hairTags>
   </FacialStuff.Defs.BrowDef>
 
-	<FacialStuff.Defs.BrowDef>
+  <FacialStuff.Defs.BrowDef>
     <defName>Brow_Male_Mono</defName>
     <label>Mono</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Mono</texPath>
     <hairTags>
       <li>Urban</li>

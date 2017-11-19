@@ -6,9 +6,7 @@
     <defName>Beard_Anchor</defName>
     <label>Anchor</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Anchor</texPath>
     <hairTags>
       <li>Urban</li>
@@ -21,9 +19,7 @@
     <defName>Beard_Balbo</defName>
     <label>Balbo</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Balbo</texPath>
     <hairTags>
       <li>Urban</li>
@@ -36,9 +32,7 @@
     <defName>Beard_ChinCurtain</defName>
     <label>Chin Curtain</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>ChinCurtain</texPath>
     <hairTags>
       <li>Urban</li>
@@ -53,9 +47,7 @@
     <defName>Beard_ChinPuff</defName>
     <label>Chin Puff</label>
     <hairGender>MaleUsually</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>ChinPuff</texPath>
     <hairTags>
       <li>Punk</li>
@@ -69,9 +61,7 @@
     <defName>Beard_DuckTail</defName>
     <label>Duck Tail</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>DuckTail</texPath>
     <hairTags>
       <li>Urban</li>
@@ -85,9 +75,7 @@
     <defName>Beard_ElInsecto</defName>
     <label>El Insecto</label>
     <hairGender>MaleUsually</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>ElInsecto</texPath>
     <hairTags>
       <li>Punk</li>
@@ -101,9 +89,7 @@
     <defName>Beard_FranzJoseph</defName>
     <label>Franz Joseph</label>
     <hairGender>MaleUsually</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>FranzJoseph</texPath>
     <hairTags>
       <li>Urban</li>
@@ -116,9 +102,7 @@
     <defName>Beard_FrenchFork</defName>
     <label>French Fork</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>FrenchFork</texPath>
     <hairTags>
       <li>Rural</li>
@@ -132,9 +116,7 @@
     <defName>Beard_FriendlyMuttonChops</defName>
     <label>Friendly Mutton Chops</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>FriendlyMuttonChops</texPath>
     <hairTags>
       <li>Urban</li>
@@ -149,9 +131,7 @@
     <defName>Beard_FullBeard</defName>
     <label>Full Beard</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>FullBeard</texPath>
     <hairTags>
       <li>Urban</li>
@@ -166,9 +146,7 @@
     <defName>Beard_Garibaldi</defName>
     <label>Garibaldi</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Garibaldi</texPath>
     <hairTags>
       <li>Urban</li>
@@ -184,9 +162,7 @@
     <defName>Beard_Goatee</defName>
     <label>Goatee</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Goatee</texPath>
     <hairTags>
       <li>Urban</li>
@@ -199,9 +175,7 @@
     <defName>Beard_Hollywoodian</defName>
     <label>Hollywoodian</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Hollywoodian</texPath>
     <hairTags>
       <li>Urban</li>
@@ -214,9 +188,7 @@
     <defName>Beard_Hulihee</defName>
     <label>Hulihee</label>
     <hairGender>MaleUsually</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Hulihee</texPath>
     <hairTags>
       <li>Rural</li>
@@ -230,9 +202,7 @@
     <defName>Beard_Imperial</defName>
     <label>Imperial</label>
     <hairGender>MaleUsually</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Imperial</texPath>
     <hairTags>
       <li>Urban</li>
@@ -246,9 +216,7 @@
     <defName>Beard_MuttonChops</defName>
     <label>Mutton Chops</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>MuttonChops</texPath>
     <hairTags>
       <li>Urban</li>
@@ -263,9 +231,7 @@
     <defName>Beard_NapoleonIIIImperial</defName>
     <label>Napoleon III Imperial</label>
     <hairGender>MaleUsually</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>NapoleonIIIImperial</texPath>
     <hairTags>
       <li>Urban</li>
@@ -279,9 +245,7 @@
     <defName>Beard_OldDutch</defName>
     <label>Old Dutch</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>OldDutch</texPath>
     <hairTags>
       <li>Urban</li>
@@ -296,9 +260,7 @@
     <defName>Beard_PetiteGoatee</defName>
     <label>Petite Goatee</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>PetiteGoatee</texPath>
     <hairTags>
       <li>Urban</li>
@@ -311,9 +273,7 @@
     <defName>Beard_SoulPatch</defName>
     <label>Soul Patch</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>SoulPatch</texPath>
     <hairTags>
       <li>Urban</li>
@@ -327,9 +287,7 @@
     <defName>Beard_Souvarov</defName>
     <label>Souvarov</label>
     <hairGender>MaleUsually</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Souvarov</texPath>
     <hairTags>
       <li>Urban</li>
@@ -342,9 +300,7 @@
     <defName>Beard_Stubble</defName>
     <label>Stubble</label>
     <hairGender>MaleUsually</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Stubble</texPath>
     <hairTags>
       <li>Urban</li>
@@ -360,9 +316,7 @@
     <defName>Beard_TheKlingon</defName>
     <label>The Klingon</label>
     <hairGender>MaleUsually</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>TheKlingon</texPath>
     <hairTags>
       <li>Punk</li>
@@ -375,9 +329,7 @@
     <defName>Beard_TheSparrow</defName>
     <label>The Sparrow</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>TheSparrow</texPath>
     <hairTags>
       <li>Tribal</li>
@@ -389,9 +341,7 @@
     <defName>Beard_TheWinnfield</defName>
     <label>The Winnfield</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>TheWinnfield</texPath>
     <hairTags>
       <li>Rural</li>
@@ -404,9 +354,7 @@
     <defName>Beard_TheZappa</defName>
     <label>The Zappa</label>
     <hairGender>MaleUsually</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>TheZappa</texPath>
     <hairTags>
       <li>Rural</li>
@@ -419,9 +367,7 @@
     <defName>Beard_VanDyke</defName>
     <label>Van Dyke</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>VanDyke</texPath>
     <hairTags>
       <li>Urban</li>
@@ -434,9 +380,7 @@
     <defName>Beard_Shaved</defName>
     <label>0Shaved</label>
     <hairGender>MaleUsually</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Shaved</texPath>
     <hairTags>
       <li>Urban</li>
@@ -452,9 +396,7 @@
     <defName>Beard_CoolSteiner</defName>
     <label>Cool Steiner</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>CoolSteiner</texPath>
     <hairTags>
       <li>Urban</li>
@@ -470,9 +412,7 @@
     <defName>Beard_CaptainTiebeard</defName>
     <label>Captain Tiebeard</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>CaptainTiebeard</texPath>
     <hairTags>
       <li>Tribal</li>
@@ -484,9 +424,7 @@
     <defName>Beard_Santa</defName>
     <label>Santa</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>Santa</texPath>
     <hairTags>
       <li>Urban</li>
@@ -502,9 +440,7 @@
     <defName>Beard_TwinPeaks</defName>
     <label>Twin Peaks</label>
     <hairGender>Male</hairGender>
-    <raceList>
-      <li>Human</li>
-    </raceList>
+    <forbiddenOnRace/>
     <texPath>TwinPeaks</texPath>
     <hairTags>
       <li>Urban</li>

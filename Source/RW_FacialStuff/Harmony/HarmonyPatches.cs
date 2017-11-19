@@ -10,7 +10,6 @@ namespace FacialStuff.Harmony
     using FacialStuff.FaceEditor;
     using FacialStuff.Genetics;
     using FacialStuff.Graphics;
-    using FacialStuff.newStuff;
     using FacialStuff.Utilities;
 
     using global::Harmony;
@@ -363,8 +362,7 @@ namespace FacialStuff.Harmony
                 bodyTypeMale = BodyType.Male,
                 bodyTypeFemale = BodyType.Female,
                 slot = BackstorySlot.Adulthood,
-                baseDesc =
-                                              "HECAP left the military early on and acquired his skills on his own. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
+                baseDesc = "HECAP left the military early on and acquired his skills on his own. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
                 shuffleable = false,
                 spawnCategories = new List<string>()
             };

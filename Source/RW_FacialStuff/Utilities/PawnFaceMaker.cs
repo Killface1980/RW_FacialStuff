@@ -17,7 +17,7 @@
         public static WrinkleDef AssignWrinkleDefFor(Pawn pawn)
         {
             IEnumerable<WrinkleDef> source = from wrinkle in DefDatabase<WrinkleDef>.AllDefs
-                                             where wrinkle.raceList.Contains(pawn.def)
+                                           //  where !wrinkle.forbiddenOnRace.Contains(pawn.def)
                                              where wrinkle.hairGender.ToString()
                                                    == pawn.gender.ToString() // .SharesElementWith(factionType.hairTags)
                                              select wrinkle;
@@ -245,7 +245,7 @@
             }
 
             IEnumerable<BeardDef> source = from beard in DefDatabase<BeardDef>.AllDefs
-                                           where beard.raceList.Contains(pawn.def)
+                                        //   where !beard.forbiddenOnRace.Contains(pawn.def)
                                            where beard.beardType == type
                                            select beard;
 
@@ -277,7 +277,7 @@
         {
             IEnumerable<BrowDef> source = from brow in DefDatabase<BrowDef>.AllDefs
 
-                                              // where brow.raceList.Contains(pawn.def)
+                                              // where brow.forbiddenOnRace.Contains(pawn.def)
                                           where brow.hairTags.SharesElementWith(factionType.hairTags)
                                           select brow;
 
@@ -336,7 +336,7 @@
             // Log.Message("Selecting eyes.");
             IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
 
-                                             // where eye.raceList.Contains(pawn.def)
+                                             // where eye.forbiddenOnRace.Contains(pawn.def)
                                          where eye.hairTags.SharesElementWith(factionType.hairTags)
                                          select eye;
 
@@ -378,7 +378,7 @@
             IEnumerable<BeardDef> source;
             {
                 source = from beard in DefDatabase<BeardDef>.AllDefs
-                         where beard.raceList.Contains(pawn.def)
+                       //  where !beard.forbiddenOnRace.Contains(pawn.def)
                          where beard.hairTags.SharesElementWith(factionType.hairTags)
                          select beard;
             }
@@ -490,7 +490,7 @@
         private static MoustacheDef MoustacheRoulette(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<MoustacheDef> source = from moustache in DefDatabase<MoustacheDef>.AllDefs
-                                               where moustache.raceList.Contains(pawn.def)
+                                           //    where !moustache.forbiddenOnRace.Contains(pawn.def)
                                                where moustache.hairTags.SharesElementWith(factionType.hairTags)
                                                select moustache;
 

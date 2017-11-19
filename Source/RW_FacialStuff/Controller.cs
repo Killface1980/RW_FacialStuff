@@ -5,7 +5,6 @@
     using System.Linq;
 
     using FacialStuff.Harmony;
-    using FacialStuff.newStuff;
 
     using JetBrains.Annotations;
 
