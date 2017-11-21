@@ -39,7 +39,7 @@
             }
 
             GUI.DrawTexture(rect, ContentFinder<Texture2D>.Get("Buttons/ButtonFace", true));
-            string tip = "FacialStuffEditor.FaceStylerTitle".Translate();
+            string tip = "FacialStuffEditor.EditFace".Translate();
             TooltipHandler.TipRegion(rect, tip);
 
             // ReSharper disable once InvertIf

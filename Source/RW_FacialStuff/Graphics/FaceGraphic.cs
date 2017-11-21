@@ -230,13 +230,13 @@
 
                 this.WrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     pawnFaceWrinkleDef.texPath + "_" + this.compFace.PawnCrownType + "_" + this.compFace.PawnHeadType,
-                    ShaderDatabase.CutoutSkin,
+                    ShaderDatabase.Transparent,
                     Vector2.one,
                     wrinkleColor);
 
                 this.RottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     pawnFaceWrinkleDef.texPath + "_" + this.compFace.PawnCrownType + "_" + this.compFace.PawnHeadType,
-                    ShaderDatabase.CutoutSkin,
+                    ShaderDatabase.Transparent,
                     Vector2.one,
                     wrinkleColor * FaceTextures.SkinRottingMultiplyColor);
             }

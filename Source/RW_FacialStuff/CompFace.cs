@@ -374,7 +374,7 @@
             base.PostDraw();
 
             // Children & Pregnancy || Werewolves transformed
-            if (this.pawn?.Map == null || !this.pawn.Spawned || this.pawn.Dead || this.IsChild || this.DontRender)
+            if (this.pawn.Map == null || !this.pawn.Spawned || this.pawn.Dead || this.IsChild || this.DontRender)
             {
                 return;
             }

@@ -166,7 +166,7 @@ namespace FacialStuff.Harmony
 
             GUI.DrawTexture(rect2, ContentFinder<Texture2D>.Get("Buttons/ButtonFace", true));
             GUI.color = Color.white;
-            string tip = "FacialStuffEditor.FaceStylerTitle".Translate();
+            string tip = "FacialStuffEditor.EditFace".Translate();
             TooltipHandler.TipRegion(rect2, tip);
 
             // ReSharper disable once InvertIf

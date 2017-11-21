@@ -52,7 +52,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="EdBPrepareCarefully">
-      <HintPath>..\..\..\unofficial-EdBPrepareCarefully\Assemblies\EdBPrepareCarefully.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\735106432\Assemblies\EdBPrepareCarefully.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Core" />
