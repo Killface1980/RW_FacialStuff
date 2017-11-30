@@ -95,6 +95,7 @@ namespace FacialStuff
             Listing_Standard list = new Listing_Standard(GameFont.Small) { ColumnWidth = inRect.width / 2 };
             list.Begin(inRect);
 
+            list.Gap();
             list.Label("Settings.VisibilityHeadgearLabel".Translate());
             list.GapLine();
 
@@ -178,10 +179,10 @@ namespace FacialStuff
 
 
 
-           // list.CheckboxLabeled(
-           //     "Settings.UseFreeWill".Translate(),
-           //     ref this.useFreeWill,
-           //     "Settings.UseFreeWillTooltip".Translate());
+            // list.CheckboxLabeled(
+            //     "Settings.UseFreeWill".Translate(),
+            //     ref this.useFreeWill,
+            //     "Settings.UseFreeWillTooltip".Translate());
 
             // this.useDNAByFaction = Toggle(this.useDNAByFaction, "Settings.UseDNAByFaction".Translate());
             list.End();

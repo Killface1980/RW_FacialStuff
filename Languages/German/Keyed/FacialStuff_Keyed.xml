@@ -32,7 +32,7 @@
   <Settings.UseCaching>Exportiere HairCache</Settings.UseCaching>
   <Settings.UseCachingTooltip>Exportiert erstellte HairCut-Texturen als png in das Mod-Verzeichnis. Bitte deaktivieren falls irgendetwas nicht funktioniert.</Settings.UseCachingTooltip>
   <Settings.UseHeadRotator>Ermögliche Kopfdrehungen</Settings.UseHeadRotator>
-  <Settings.UseHeadRotatorTooltip>Momentan im Alpha-Stadium. Ein Zufallsgenerator, der auf die Umgebung reagiert. Die Kopfdrehung ist nur visuell.</Settings.UseHeadRotatorTooltip>
+  <Settings.UseHeadRotatorTooltip>Ermöglicht den Charakteren, sich gegenseitig anzuschauen wenn sie sozial aktiv order einfach nur neugierig sind.</Settings.UseHeadRotatorTooltip>
   <Settings.UseNastyGrin>Benutze fieses Grinsen</Settings.UseNastyGrin>
   <Settings.UseNastyGrinTooltip>Fieses Grinsen für Humanoiden mit extrem guter Laune.</Settings.UseNastyGrinTooltip>
 

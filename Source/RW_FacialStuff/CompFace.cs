@@ -30,8 +30,13 @@
 
         public bool NeedsStyling = true;
 
-        public Faction originFaction;
-
+        public Faction originFaction
+        {
+            get
+            {
+                return this.factionInt;
+            }
+        }
         [NotNull]
         public Pawn pawn => this.parent as Pawn;
 
@@ -406,11 +411,15 @@
             }
         }
 
+        private Faction factionInt;
+
         public override void PostExposeData()
         {
             base.PostExposeData();
 
-            Scribe_References.Look(ref this.originFaction, "pawnFaction");
+
+
+             Scribe_References.Look(ref this.factionInt, "pawnFaction");
 
             // Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
 
@@ -425,6 +434,21 @@
             Scribe_Values.Look(ref this.DontRender, "dontrender");
             Scribe_Values.Look(ref this.Roofed, "roofed");
             Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
+
+           
+            // Faction needs to be saved like in Thing.ExposeData 
+           // string facID = (this.factionInt == null) ? "null" : this.factionInt.GetUniqueLoadID();
+           // Scribe_Values.Look(ref facID, "pawnFaction", "null", false);
+           // if (Scribe.mode != LoadSaveMode.LoadingVars && Scribe.mode != LoadSaveMode.ResolvingCrossRefs && Scribe.mode != LoadSaveMode.PostLoadInit)
+           //     return;
+           // if (facID == "null")
+           // {
+           //     this.factionInt = null;
+           // }
+           // else if (Find.World != null && Find.FactionManager != null)
+           // {
+           //     this.factionInt = Find.FactionManager.AllFactions.FirstOrDefault((Faction fa) => fa.GetUniqueLoadID() == facID);
+           // }
         }
 
         /// <summary>
@@ -441,7 +465,7 @@
 
             if (this.originFaction == null)
             {
-                this.originFaction = this.pawn.Faction ?? Faction.OfPlayer;
+                this.factionInt = this.pawn.Faction ?? Faction.OfPlayer;
             }
 
             if (this.PawnFace == null)

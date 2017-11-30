@@ -1,4 +1,4 @@
-﻿namespace FacialStuff
+﻿namespace FacialStuff.Harmony
 {
     using System;
     using System.Collections.Generic;

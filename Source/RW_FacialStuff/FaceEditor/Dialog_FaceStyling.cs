@@ -392,10 +392,7 @@
 
         public static List<HairDef> HairDefs
         {
-            get
-            {
-                return hairDefs;
-            }
+            get => hairDefs;
 
             set
             {
@@ -522,7 +519,7 @@
 
         #region Public Methods
 
-        public static Rect AddPortraitWidget(float left, float top)
+        private static Rect AddPortraitWidget(float left, float top)
         {
             // Portrait
             Rect rect = new Rect(left, top, portraitSize.x, portraitSize.y);
@@ -789,9 +786,10 @@
                             this.NewBeardColor = this.colourWrapper.Color;
                         },
                     false,
-                    true) {
-                             initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin) 
-                          });
+                    true)
+                {
+                    initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
+                });
         }
 
         private void DrawBeardColorPickerCell(Color color, Rect rect, string colorName)
@@ -826,9 +824,10 @@
                                 this.NewBeardColor = this.colourWrapper.Color;
                             },
                         false,
-                        true) {
-                                 initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin) 
-                              });
+                        true)
+                    {
+                        initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
+                    });
             }
         }
 
@@ -992,15 +991,26 @@
             }
 
             // Get the offset, cause width != 2 * height
-            Rect rect1 = new Rect(rect.x + offset, rect.y, rect.height, rect.height);
-            Rect rect2 = new Rect(rect1.xMax + offset, rect.y, rect.height, rect.height);
+            Rect leftRect = new Rect(rect.x + offset, rect.y, rect.height, rect.height);
+            Rect rightRect = new Rect(leftRect.xMax + offset, rect.y, rect.height, rect.height);
 
             GUI.color = pawn.story.SkinColor;
-            GUI.DrawTexture(rect1, pawn.Drawer.renderer.graphics.headGraphic.MatFront.mainTexture);
-            GUI.DrawTexture(rect2, pawn.Drawer.renderer.graphics.headGraphic.MatSide.mainTexture);
+            GUI.DrawTexture(leftRect, pawn.Drawer.renderer.graphics.headGraphic.MatFront.mainTexture);
+            GUI.DrawTexture(rightRect, pawn.Drawer.renderer.graphics.headGraphic.MatSide.mainTexture);
+
+            // Draw hair if mouse is over
+            GUI.color = pawn.story.hairColor;
+            if (Mouse.IsOver(leftRect) || Mouse.IsOver(rightRect))
+            {
+                GUI.DrawTexture(leftRect, pawn.Drawer.renderer.graphics.hairGraphic.MatFront.mainTexture);
+                GUI.DrawTexture(rightRect, pawn.Drawer.renderer.graphics.hairGraphic.MatSide.mainTexture);
+            }
+
+
+            // Draw selected beard
             GUI.color = this.faceComp.PawnFace.HasSameBeardColor ? pawn.story.hairColor : this.NewBeardColor;
-            GUI.DrawTexture(rect1, this.BeardGraphic(beard).MatFront.mainTexture);
-            GUI.DrawTexture(rect2, this.BeardGraphic(beard).MatSide.mainTexture);
+            GUI.DrawTexture(leftRect, this.BeardGraphic(beard).MatFront.mainTexture);
+            GUI.DrawTexture(rightRect, this.BeardGraphic(beard).MatSide.mainTexture);
             GUI.color = Color.white;
 
             Text.Anchor = TextAnchor.UpperCenter;
@@ -1210,9 +1220,10 @@
                         this.colourWrapper,
                         delegate { this.NewHairColor = this.colourWrapper.Color; },
                         false,
-                        true) {
-                                 initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin) 
-                              });
+                        true)
+                    {
+                        initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
+                    });
             }
         }
 
@@ -1624,11 +1635,11 @@
                             delegate { this.NewHairColor = this.colourWrapper.Color; },
                             false,
                             true)
-                            {
-                                initialPosition = new Vector2(
+                        {
+                            initialPosition = new Vector2(
                                     this.windowRect.xMax + MarginFS,
                                     this.windowRect.yMin)
-                            });
+                        });
                 }
             }
         }
@@ -2431,8 +2442,8 @@
     }
 
     // public struct Baldness
-   // {
-   // public int currentBaldness;
-   // public int maxBaldness;
-   // }
+    // {
+    // public int currentBaldness;
+    // public int maxBaldness;
+    // }
 }
