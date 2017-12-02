@@ -6,7 +6,7 @@
 
     public static class PawnExtensions
     {
-        public static bool GetCompFace([NotNull] this Pawn pawn, [CanBeNull] out CompFace compFace)
+        public static bool GetCompFace([NotNull] this Pawn pawn, [NotNull] out CompFace compFace)
         {
             compFace = pawn.GetComp<CompFace>();
             return compFace != null;
@@ -14,15 +14,18 @@
 
         public static bool GetPawnFace([NotNull] this Pawn pawn, [NotNull] out PawnFace pawnFace)
         {
-            PawnFace face = pawn.GetComp<CompFace>().PawnFace;
+            pawnFace = null;
+
+            if (!pawn.GetCompFace(out CompFace compFace))
+            {
+                return false;
+            }
+            PawnFace face = compFace.PawnFace;
             if (face != null)
             {
                 pawnFace = face;
                 return true;
             }
-
-            // ReSharper disable once AssignNullToNotNullAttribute
-            pawnFace = null;
 
             return false;
         }
@@ -33,16 +36,12 @@
             return compFace != null;
         }
 
-        public static bool HasPawnFace([CanBeNull] this Pawn pawn)
+        public static bool HasPawnFace([NotNull] this Pawn pawn)
         {
-            CompFace compFace = pawn?.GetComp<CompFace>();
-            if (compFace != null)
+            if (pawn.GetCompFace(out CompFace compFace))
             {
                 PawnFace face = compFace.PawnFace;
-                if (face != null)
-                {
-                    return true;
-                }
+                return face != null;
             }
 
             return false;

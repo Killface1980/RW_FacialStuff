@@ -37,6 +37,7 @@
   <Settings.UseNastyGrinTooltip>Adds a nasty grin to the pawn when extremely happy.</Settings.UseNastyGrinTooltip>
 
   <FacialStuffEditor.CannotUseNoFacePawn>{0} can't use this. Humans only.</FacialStuffEditor.CannotUseNoFacePawn>
+  <FacialStuffEditor.CannotUseShouldNotRender>{0} can't use this. Too cute.</FacialStuffEditor.CannotUseShouldNotRender>
   <FacialStuffEditor.FaceStylerTitle>Face Styler</FacialStuffEditor.FaceStylerTitle>
   <FacialStuffEditor.Accept>Accept and save</FacialStuffEditor.Accept>
   <FacialStuffEditor.EditFace>Edit colonists's appearance</FacialStuffEditor.EditFace>

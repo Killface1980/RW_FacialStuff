@@ -13,8 +13,7 @@
 
         public SaveRecordFaceV3(Pawn pawn)
         {
-            PawnFace pawnFace = pawn.TryGetComp<CompFace>().PawnFace;
-            if (pawnFace != null)
+            if (pawn.GetPawnFace(out PawnFace pawnFace))
             {
                 this.Face = pawnFace;
             }

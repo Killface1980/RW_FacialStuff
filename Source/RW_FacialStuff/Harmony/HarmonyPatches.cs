@@ -146,7 +146,7 @@ namespace FacialStuff.Harmony
 
             Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
 
-            if (!pawn.GetCompFace(out CompFace face))
+            if (!pawn.GetCompFace(out CompFace compFace))
             {
                 return;
             }
@@ -191,13 +191,13 @@ namespace FacialStuff.Harmony
                 return;
             }
 
-            if (!pawn.GetCompFace(out CompFace face))
+            if (!pawn.GetCompFace(out CompFace compFace))
             {
                 return;
             }
 
-            face.CheckForAddedOrMissingParts();
-            if (!face.DontRender)
+            compFace.CheckForAddedOrMissingParts();
+            if (!compFace.DontRender)
             {
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
                 PortraitsCache.SetDirty(pawn);
@@ -206,7 +206,7 @@ namespace FacialStuff.Harmony
 
         public static bool RandomHairDefFor_PreFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
         {
-            if (pawn.TryGetComp<CompFace>() == null)
+            if (!pawn.HasCompFace())
             {
                 return true;
             }
@@ -229,9 +229,8 @@ namespace FacialStuff.Harmony
             }
 
             // Check if race has face, else return
-            CompFace compFace = pawn.TryGetComp<CompFace>();
 
-            if (compFace == null)
+            if (!pawn.GetCompFace(out CompFace compFace))
             {
                 return;
             }
@@ -317,11 +316,11 @@ namespace FacialStuff.Harmony
 
             if (__result)
             {
-                if (pawn.GetCompFace(out CompFace face))
+                if (pawn.GetCompFace(out CompFace compFace))
                 {
-                    if (face.HeadRotator != null && !face.IsChild)
+                    if (compFace.HeadRotator != null && !compFace.IsChild)
                     {
-                        face.HeadRotator.LookAtPawn(recipient);
+                        compFace.HeadRotator.LookAtPawn(recipient);
                     }
                 }
 

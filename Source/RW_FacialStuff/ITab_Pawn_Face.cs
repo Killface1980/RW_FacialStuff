@@ -29,8 +29,7 @@
         {
             get
             {
-                CompFace faceComp = this.SelPawn.TryGetComp<CompFace>();
-                return faceComp != null;
+                return this.SelPawn.HasCompFace();
             }
         }
 
@@ -41,13 +40,16 @@
 
         protected override void FillTab()
         {
-            CompFace faceComp = this.SelPawn.TryGetComp<CompFace>();
+            if (!this.SelPawn.GetCompFace(out CompFace compFace))
+            {
+                return;
+            }
 
             Rect rect = new Rect(10f, 10f, 330f, 330f);
 
             Rect checkbox = new Rect(rect.x, rect.y, rect.width, 24f);
 
-            Widgets.CheckboxLabeled(checkbox, "Ignore renderer", ref faceComp.IgnoreRenderer);
+            Widgets.CheckboxLabeled(checkbox, "Ignore renderer", ref compFace.IgnoreRenderer);
 
             Rect pawnRect = new Rect(rect.x, checkbox.yMax, rect.width, 24f);
 
@@ -62,7 +64,7 @@
             GUILayout.BeginArea(rect2);
             GUILayout.BeginVertical();
 
-            if (faceComp.IgnoreRenderer)
+            if (compFace.IgnoreRenderer)
             {
                 this.rotationInt = GUILayout.SelectionGrid(this.rotationInt, this.psiToolbarStrings, 4);
             }
@@ -71,13 +73,13 @@
                 this.rotationInt = this.SelPawn.Rotation.AsInt;
             }
 
-            faceComp.rotationInt = this.rotationInt;
+            compFace.rotationInt = this.rotationInt;
 
             bool male = this.SelPawn.gender == Gender.Male;
 
-            if (faceComp.PawnCrownType == CrownType.Average)
+            if (compFace.PawnCrownType == CrownType.Average)
             {
-                switch (faceComp.PawnHeadType)
+                switch (compFace.PawnHeadType)
                 {
                     case HeadType.Normal:
                         if (male)
@@ -237,7 +239,7 @@
             }
             else
             {
-                switch (faceComp.PawnHeadType)
+                switch (compFace.PawnHeadType)
                 {
                     case HeadType.Normal:
                         if (male)
@@ -414,8 +416,8 @@
                                         x => x.HasCompFace()))
                                     {
                                         Color color = Color.white;
-                                        pawn.GetCompFace(out CompFace faceComp2);
-                                        faceComp2.FaceGraphic.MouthGraphic =
+                                        pawn.GetCompFace(out CompFace comp2);
+                                        comp2.FaceGraphic.MouthGraphic =
                                             GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                 current.texPath,
                                                 ShaderDatabase.CutoutSkin,

@@ -25,11 +25,12 @@
                         }
 
                         harmony.Patch(
-                            AccessTools.Method(typeof(Werewolf.CompWerewolf), "TransformInto"),
+                            AccessTools.Method(typeof(Werewolf.CompWerewolf), nameof(Werewolf.CompWerewolf.TransformInto)),
                             new HarmonyMethod(typeof(Werewolf_Patches), nameof(Werewolf_Patches.TransformInto_Prefix)),
                             null);
+
                         harmony.Patch(
-                            AccessTools.Method(typeof(Werewolf.CompWerewolf), "TransformBack"),
+                            AccessTools.Method(typeof(Werewolf.CompWerewolf), nameof(Werewolf.CompWerewolf.TransformBack)),
                             null,
                             new HarmonyMethod(
                                 typeof(Werewolf_Patches),

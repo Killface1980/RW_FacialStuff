@@ -129,9 +129,9 @@
             // Special hair colors
             float factionColor = Rand.Value;
             float limit = 0.98f;
-            if (pawn.GetCompFace(out CompFace face))
+            if (pawn.GetCompFace(out CompFace compFace))
             {
-                Faction faction = face.originFaction;
+                Faction faction = compFace.originFaction;
                 if (faction.def.techLevel > TechLevel.Industrial)
                 {
                     limit *= pawn.gender == Gender.Female ? 0.7f : 0.9f;
@@ -258,16 +258,11 @@
             {
                 return;
             }
-
-            CompFace fatherComp = pawn.GetFather().TryGetComp<CompFace>();
-
-            if (fatherComp.PawnFace == null)
+            if (pawn.GetFather().GetPawnFace(out fatherPawnFace))
             {
-                return;
+                hasFather = true;
             }
 
-            hasFather = true;
-            fatherPawnFace = fatherComp.PawnFace;
         }
 
         private static void HasOptimizedMother(Pawn pawn, out bool hasMother, [CanBeNull] out PawnFace motherPawnFace)
@@ -279,14 +274,10 @@
                 return;
             }
 
-            CompFace motherComp = pawn.GetMother().TryGetComp<CompFace>();
-            if (motherComp.PawnFace == null)
+            if (pawn.GetMother().GetPawnFace(out motherPawnFace))
             {
-                return;
+                hasMother = true;
             }
-
-            hasMother = true;
-            motherPawnFace = motherComp.PawnFace;
         }
 
         private static void SetInitialHairMelaninLevels(

@@ -91,7 +91,7 @@
         private readonly ColorWrapper colourWrapper;
 
         [NotNull]
-        private readonly CompFace faceComp;
+        private readonly CompFace compFace;
 
         private readonly bool gear;
 
@@ -230,14 +230,14 @@
         public DialogFaceStyling(Pawn p)
         {
             pawn = p;
-            pawn.GetCompFace(out this.faceComp);
+            pawn.GetCompFace(out this.compFace);
 
             this.hats = Prefs.HatsOnlyOnMap;
             this.gear = Controller.settings.FilterHats;
             Prefs.HatsOnlyOnMap = true;
             Controller.settings.FilterHats = false;
 
-            this.hadSameBeardColor = this.faceComp.PawnFace.HasSameBeardColor;
+            this.hadSameBeardColor = this.compFace.PawnFace.HasSameBeardColor;
 
             if (pawn.gender == Gender.Female)
             {
@@ -279,16 +279,16 @@
             // fi.parms.target.StoryState.Notify_IncidentFired(fi);
             // }
             // }
-            this.beardTab = this.faceComp.PawnFace.BeardDef.beardType == BeardType.FullBeard
+            this.beardTab = this.compFace.PawnFace.BeardDef.beardType == BeardType.FullBeard
                                 ? BeardTab.FullBeards
                                 : BeardTab.Combinable;
 
             this.newHairColor = this.originalHairColor = pawn.story.hairColor;
-            this.newBeardColor = this.originalBeardColor = this.faceComp.PawnFace.BeardColor;
-            this.newBeard = this.originalBeard = this.faceComp.PawnFace.BeardDef;
-            this.newMoustache = this.originalMoustache = this.faceComp.PawnFace.MoustacheDef;
-            this.newEye = this.originalEye = this.faceComp.PawnFace.EyeDef;
-            this.newBrow = this.originalBrow = this.faceComp.PawnFace.BrowDef;
+            this.newBeardColor = this.originalBeardColor = this.compFace.PawnFace.BeardColor;
+            this.newBeard = this.originalBeard = this.compFace.PawnFace.BeardDef;
+            this.newMoustache = this.originalMoustache = this.compFace.PawnFace.MoustacheDef;
+            this.newEye = this.originalEye = this.compFace.PawnFace.EyeDef;
+            this.newBrow = this.originalBrow = this.compFace.PawnFace.BrowDef;
 
             this.colourWrapper = new ColorWrapper(Color.cyan);
 
@@ -304,7 +304,7 @@
             this.originalAgeBio = pawn.ageTracker.AgeBiologicalTicks;
             this.originalAgeChrono = pawn.ageTracker.AgeChronologicalTicks;
 
-            this.wrinkles = this.faceComp.PawnFace.wrinkleIntensity;
+            this.wrinkles = this.compFace.PawnFace.wrinkleIntensity;
 
             // this.absorbInputAroundWindow = false;
             this.closeOnClickedOutside = false;
@@ -507,7 +507,7 @@
                 this.newHairColor = value;
                 this.UpdatePawnColors(this.NewHair, value);
 
-                if (this.faceComp.PawnFace.HasSameBeardColor && !this.reInit)
+                if (this.compFace.PawnFace.HasSameBeardColor && !this.reInit)
                 {
                     Color color = HairMelanin.DarkerBeardColor(value);
                     this.UpdatePawnColors(this.NewBeard, color);
@@ -659,11 +659,11 @@
 
             // HairDNA hair = HairMelanin.GenerateHairMelaninAndCuticula(pawn, Rand.Value > 0.5f);
             this.reInit = true;
-            this.faceComp.PawnFace.HasSameBeardColor = Rand.Value > 0.3f;
+            this.compFace.PawnFace.HasSameBeardColor = Rand.Value > 0.3f;
             this.NewHair = PawnHairChooser.RandomHairDefFor(pawn, Faction.OfPlayer.def);
-            this.faceComp.PawnFace.GenerateHairDNA(pawn, true);
-            this.NewHairColor = this.faceComp.PawnFace.HairColor;
-            this.NewBeardColor = this.faceComp.PawnFace.BeardColor;
+            this.compFace.PawnFace.GenerateHairDNA(pawn, true);
+            this.NewHairColor = this.compFace.PawnFace.HairColor;
+            this.NewBeardColor = this.compFace.PawnFace.BeardColor;
             PawnFaceMaker.RandomBeardDefFor(pawn, Faction.OfPlayer.def, out BeardDef beard, out MoustacheDef tache);
             this.NewBeard = beard;
             this.NewMoustache = tache;
@@ -733,7 +733,7 @@
         [NotNull]
         private Graphic_Multi_NaturalHeadParts BeardGraphic([NotNull] BeardDef def)
         {
-            string path = this.faceComp.GetBeardPath(def);
+            string path = this.compFace.GetBeardPath(def);
 
             Graphic_Multi_NaturalHeadParts result =
                 GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
@@ -752,7 +752,7 @@
             if (def.texPath != null)
             {
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                             this.faceComp.BrowTexPath(def),
+                             this.compFace.BrowTexPath(def),
                              ShaderDatabase.CutoutSkin,
                              new Vector2(38f, 38f),
                              Color.white,
@@ -770,7 +770,7 @@
         {
             this.RemoveColorPicker();
 
-            this.colourWrapper.Color = this.faceComp.PawnFace.HasSameBeardColor
+            this.colourWrapper.Color = this.compFace.PawnFace.HasSameBeardColor
                                            ? this.NewHairColor
                                            : this.NewBeardColor;
             Find.WindowStack.Add(
@@ -778,7 +778,7 @@
                     this.colourWrapper,
                     delegate
                         {
-                            if (this.faceComp.PawnFace.HasSameBeardColor)
+                            if (this.compFace.PawnFace.HasSameBeardColor)
                             {
                                 this.NewHairColor = this.colourWrapper.Color;
                             }
@@ -816,7 +816,7 @@
                         this.colourWrapper,
                         delegate
                             {
-                                if (this.faceComp.PawnFace.HasSameBeardColor)
+                                if (this.compFace.PawnFace.HasSameBeardColor)
                                 {
                                     this.NewHairColor = this.colourWrapper.Color;
                                 }
@@ -1008,7 +1008,7 @@
 
 
             // Draw selected beard
-            GUI.color = this.faceComp.PawnFace.HasSameBeardColor ? pawn.story.hairColor : this.NewBeardColor;
+            GUI.color = this.compFace.PawnFace.HasSameBeardColor ? pawn.story.hairColor : this.NewBeardColor;
             GUI.DrawTexture(leftRect, this.BeardGraphic(beard).MatFront.mainTexture);
             GUI.DrawTexture(rightRect, this.BeardGraphic(beard).MatSide.mainTexture);
             GUI.color = Color.white;
@@ -1210,8 +1210,8 @@
 
                 if (colorRequest != null)
                 {
-                    this.faceComp.PawnFace.PheoMelanin = colorRequest.PheoMelanin;
-                    this.faceComp.PawnFace.EuMelanin = colorRequest.EuMelanin;
+                    this.compFace.PawnFace.PheoMelanin = colorRequest.PheoMelanin;
+                    this.compFace.PawnFace.EuMelanin = colorRequest.EuMelanin;
                 }
 
                 this.colourWrapper.Color = color;
@@ -1239,7 +1239,7 @@
             set.width = contractedBy.width / colorFields;
             set.height = Mathf.Min(set.width, contractedBy.height / (colorRows + 3));
 
-            float euMelanin = this.faceComp.PawnFace.EuMelanin;
+            float euMelanin = this.compFace.PawnFace.EuMelanin;
 
             int num = 0;
             for (int y = 0; y < colorRows; y++)
@@ -1248,7 +1248,7 @@
                 {
                     float pheoMelanin = (float)num / (colorFields * colorRows - 1);
                     HairColorRequest colorRequest =
-                        new HairColorRequest(pheoMelanin, euMelanin, this.faceComp.PawnFace.Greyness);
+                        new HairColorRequest(pheoMelanin, euMelanin, this.compFace.PawnFace.Greyness);
 
                     this.DrawHairColorPickerCell(
                         HairMelanin.GetHairColor(colorRequest),
@@ -1278,11 +1278,11 @@
             set.width = col * 4;
             set.y += 1.5f * set.height;
 
-            // this.faceComp.PawnFace.PheoMelanin =
-            // Widgets.HorizontalSlider(set, this.faceComp.PawnFace.PheoMelanin, 0f, 1f);
+            // this.compFace.PawnFace.PheoMelanin =
+            // Widgets.HorizontalSlider(set, this.compFace.PawnFace.PheoMelanin, 0f, 1f);
             // set.y += 30f;
-            // this.faceComp.PawnFace.EuMelanin =
-            // Widgets.HorizontalSlider(set, this.faceComp.PawnFace.EuMelanin, 0f, 1f);
+            // this.compFace.PawnFace.EuMelanin =
+            // Widgets.HorizontalSlider(set, this.compFace.PawnFace.EuMelanin, 0f, 1f);
             // set.y += 30f;
             euMelanin = Widgets.HorizontalSlider(
                 set,
@@ -1296,7 +1296,7 @@
 
             set.x += set.width + col;
 
-            float grey = this.faceComp.PawnFace.Greyness;
+            float grey = this.compFace.PawnFace.Greyness;
             grey = Widgets.HorizontalSlider(
                 set,
                 grey,
@@ -1308,7 +1308,7 @@
                 "1");
 
             /*
-            Baldness bald = this.faceComp.PawnFace.Baldness;
+            Baldness bald = this.compFace.PawnFace.Baldness;
             bald = HorizontalDoubleSlider(
                 set,
                 bald,
@@ -1323,25 +1323,25 @@
             {
                 bool update = false;
 
-                if (Math.Abs(this.faceComp.PawnFace.EuMelanin - euMelanin) > 0.001f)
+                if (Math.Abs(this.compFace.PawnFace.EuMelanin - euMelanin) > 0.001f)
                 {
-                    this.faceComp.PawnFace.EuMelanin = euMelanin;
+                    this.compFace.PawnFace.EuMelanin = euMelanin;
                     update = true;
                 }
 
-                if (Math.Abs(this.faceComp.PawnFace.Greyness - grey) > 0.001f)
+                if (Math.Abs(this.compFace.PawnFace.Greyness - grey) > 0.001f)
                 {
-                    this.faceComp.PawnFace.Greyness = grey;
+                    this.compFace.PawnFace.Greyness = grey;
                     update = true;
                 }
 
                 /*
-                                if (Math.Abs(this.faceComp.PawnFace.Baldness.currentBaldness - bald.currentBaldness) > 0.01f
-                                    || Math.Abs(this.faceComp.PawnFace.Baldness.maxBaldness - bald.maxBaldness) > 0.01f)
+                                if (Math.Abs(this.compFace.PawnFace.Baldness.currentBaldness - bald.currentBaldness) > 0.01f
+                                    || Math.Abs(this.compFace.PawnFace.Baldness.maxBaldness - bald.maxBaldness) > 0.01f)
                                 {
                                     bald.maxBaldness = Mathf.Max(bald.currentBaldness, bald.maxBaldness);
                 
-                                    this.faceComp.PawnFace.Baldness = bald;
+                                    this.compFace.PawnFace.Baldness = bald;
                                     update = true;
                                 }
                                 */
@@ -1349,7 +1349,7 @@
                 {
                     this.RemoveColorPicker();
 
-                    this.NewHairColor = this.faceComp.PawnFace.GetCurrentHairColor();
+                    this.NewHairColor = this.compFace.PawnFace.GetCurrentHairColor();
                 }
             }
         }
@@ -1784,7 +1784,7 @@
             {
                 Rect wrinkleRect = new Rect(contractedBy.x, detailRect.yMax, contractedBy.width, WidgetUtil.SelectionRowHeight);
 
-                float wrinkle = this.faceComp.PawnFace.wrinkleIntensity;
+                float wrinkle = this.compFace.PawnFace.wrinkleIntensity;
 
                 wrinkle = Widgets.HorizontalSlider(
                     wrinkleRect,
@@ -1798,9 +1798,9 @@
 
                 if (GUI.changed)
                 {
-                    if (Math.Abs(wrinkle - this.faceComp.PawnFace.wrinkleIntensity) > 0.001f)
+                    if (Math.Abs(wrinkle - this.compFace.PawnFace.wrinkleIntensity) > 0.001f)
                     {
-                        this.faceComp.PawnFace.wrinkleIntensity = wrinkle;
+                        this.compFace.PawnFace.wrinkleIntensity = wrinkle;
                         this.rerenderPawn = true;
                     }
                 }
@@ -1853,7 +1853,7 @@
             GUI.color = pawn.story.SkinColor;
             GUI.DrawTexture(rect1, pawn.Drawer.renderer.graphics.headGraphic.MatFront.mainTexture);
             GUI.DrawTexture(rect2, pawn.Drawer.renderer.graphics.headGraphic.MatSide.mainTexture);
-            GUI.color = this.faceComp.PawnFace.HasSameBeardColor ? pawn.story.hairColor : this.NewBeardColor;
+            GUI.color = this.compFace.PawnFace.HasSameBeardColor ? pawn.story.hairColor : this.NewBeardColor;
             GUI.DrawTexture(rect1, this.MoustacheGraphic(moustache).MatFront.mainTexture);
             GUI.DrawTexture(rect2, this.MoustacheGraphic(moustache).MatSide.mainTexture);
             GUI.color = Color.white;
@@ -2105,8 +2105,8 @@
             set.y = listRect.yMax - WidgetUtil.SelectionRowHeight;
             set.width = mainRect.width - MarginFS / 3;
 
-            bool faceCompDrawMouth = this.faceComp.PawnFace.DrawMouth;
-            bool faceCompHasSameBeardColor = this.faceComp.PawnFace.HasSameBeardColor;
+            bool faceCompDrawMouth = this.compFace.PawnFace.DrawMouth;
+            bool faceCompHasSameBeardColor = this.compFace.PawnFace.HasSameBeardColor;
 
             mainRect.yMax -= WidgetUtil.SelectionRowHeight + MarginFS;
             if (this.skinPage)
@@ -2157,16 +2157,16 @@
             // }
             if (GUI.changed)
             {
-                if (this.faceComp.PawnFace.HasSameBeardColor != faceCompHasSameBeardColor)
+                if (this.compFace.PawnFace.HasSameBeardColor != faceCompHasSameBeardColor)
                 {
                     this.RemoveColorPicker();
-                    this.faceComp.PawnFace.HasSameBeardColor = faceCompHasSameBeardColor;
+                    this.compFace.PawnFace.HasSameBeardColor = faceCompHasSameBeardColor;
                     this.NewBeardColor = HairMelanin.DarkerBeardColor(this.NewHairColor);
                 }
 
-                if (this.faceComp.PawnFace.DrawMouth != faceCompDrawMouth)
+                if (this.compFace.PawnFace.DrawMouth != faceCompDrawMouth)
                 {
-                    this.faceComp.PawnFace.DrawMouth = faceCompDrawMouth;
+                    this.compFace.PawnFace.DrawMouth = faceCompDrawMouth;
                     this.rerenderPawn = true;
                 }
             }
@@ -2243,7 +2243,7 @@
             Graphic_Multi_NaturalEyes result;
             if (def.texPath != null)
             {
-                string path = this.faceComp.EyeTexPath(def.texPath, Side.Left);
+                string path = this.compFace.EyeTexPath(def.texPath, Side.Left);
 
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                              path,
@@ -2263,7 +2263,7 @@
         [NotNull]
         private Graphic_Multi_NaturalHeadParts MoustacheGraphic([NotNull] MoustacheDef def)
         {
-            string path = this.faceComp.GetMoustachePath(def);
+            string path = this.compFace.GetMoustachePath(def);
 
             Graphic_Multi_NaturalHeadParts result =
                 GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
@@ -2294,7 +2294,7 @@
             this.NewBeard = this.originalBeard;
             this.NewMoustache = this.originalMoustache;
 
-            this.faceComp.PawnFace.HasSameBeardColor = this.hadSameBeardColor;
+            this.compFace.PawnFace.HasSameBeardColor = this.hadSameBeardColor;
             this.NewBeardColor = this.originalBeardColor;
 
             this.NewEye = this.originalEye;
@@ -2307,7 +2307,7 @@
             pawn.story.crownType = this.originalCrownType;
             pawn.ageTracker.AgeBiologicalTicks = this.originalAgeBio;
             pawn.ageTracker.AgeChronologicalTicks = this.originalAgeChrono;
-            this.faceComp.PawnFace.wrinkleIntensity = this.wrinkles;
+            this.compFace.PawnFace.wrinkleIntensity = this.wrinkles;
 
             this.reInit = false;
             this.rerenderPawn = true;
@@ -2318,9 +2318,9 @@
             Graphic_Multi_NaturalEyes result;
             if (def.texPath != null)
             {
-                string path = this.faceComp.EyeTexPath(def.texPath, Side.Right);
+                string path = this.compFace.EyeTexPath(def.texPath, Side.Right);
 
-                // "Eyes/Eye_" + pawn.gender + faceComp.crownType + "_" + def.texPath   + "_Right";
+                // "Eyes/Eye_" + pawn.gender + compFace.crownType + "_" + def.texPath   + "_Right";
                 result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                              path,
                              ShaderDatabase.CutoutSkin,
@@ -2380,13 +2380,13 @@
 
             if (type is BeardDef)
             {
-                this.faceComp.PawnFace.BeardColor = (Color)newValue;
+                this.compFace.PawnFace.BeardColor = (Color)newValue;
             }
 
             if (type is HairDef)
             {
                 pawn.story.hairColor = (Color)newValue;
-                this.faceComp.PawnFace.HairColor = (Color)newValue;
+                this.compFace.PawnFace.HairColor = (Color)newValue;
             }
 
             // skin color
@@ -2403,22 +2403,22 @@
         {
             if (newValue is BeardDef)
             {
-                this.faceComp.PawnFace.BeardDef = (BeardDef)newValue;
+                this.compFace.PawnFace.BeardDef = (BeardDef)newValue;
             }
 
             if (newValue is MoustacheDef)
             {
-                this.faceComp.PawnFace.MoustacheDef = (MoustacheDef)newValue;
+                this.compFace.PawnFace.MoustacheDef = (MoustacheDef)newValue;
             }
 
             if (newValue is EyeDef)
             {
-                this.faceComp.PawnFace.EyeDef = (EyeDef)newValue;
+                this.compFace.PawnFace.EyeDef = (EyeDef)newValue;
             }
 
             if (newValue is BrowDef)
             {
-                this.faceComp.PawnFace.BrowDef = (BrowDef)newValue;
+                this.compFace.PawnFace.BrowDef = (BrowDef)newValue;
             }
 
             if (newValue is HairDef)

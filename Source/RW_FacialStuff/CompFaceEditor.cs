@@ -38,6 +38,14 @@ namespace FacialStuff
                     return new List<FloatMenuOption> { item3 };
                 }
 
+                if (selPawn.GetCompFace(out CompFace compFace) && compFace.DontRender)
+                {
+                    FloatMenuOption item4 = new FloatMenuOption(
+                        "FacialStuffEditor.CannotUseShouldNotRender".Translate(selPawn),
+                        null);
+                    return new List<FloatMenuOption> { item4 };
+                }
+
                 Action action2 = delegate
                     {
                         // IntVec3 InteractionSquare = (this.Position + new IntVec3(0, 0, 1)).RotatedBy(this.Rotation);

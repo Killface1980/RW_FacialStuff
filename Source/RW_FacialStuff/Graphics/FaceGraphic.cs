@@ -222,11 +222,11 @@
         {
             Color wrinkleColor = this.pawn.story.SkinColor * new Color(0.1f, 0.1f, 0.1f);
 
-            if (this.pawn.GetPawnFace(out PawnFace face))
+            if (this.pawn.GetPawnFace(out PawnFace pawnFace))
             {
-                wrinkleColor.a = face.wrinkleIntensity;
+                wrinkleColor.a = pawnFace.wrinkleIntensity;
 
-                WrinkleDef pawnFaceWrinkleDef = face.WrinkleDef;
+                WrinkleDef pawnFaceWrinkleDef = pawnFace.WrinkleDef;
 
                 this.WrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                     pawnFaceWrinkleDef.texPath + "_" + this.compFace.PawnCrownType + "_" + this.compFace.PawnHeadType,

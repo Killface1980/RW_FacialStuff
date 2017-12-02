@@ -25,11 +25,13 @@
             }
 
             PawnFace pawnFace = SaveRecordPawnV3_Postfix.LoadedPawns[record].Face;
-            CompFace compFace = pawn.TryGetComp<CompFace>();
-            compFace.SetPawnFace(pawnFace);
+            if (pawn.GetCompFace(out CompFace compFace))
+            {
+                compFace.SetPawnFace(pawnFace);
+                pawn.story.hairColor = compFace.PawnFace.HairColor;
+            }
 
             // ReSharper disable once PossibleNullReferenceException
-            pawn.story.hairColor = compFace.PawnFace.HairColor;
         }
     }
 }
