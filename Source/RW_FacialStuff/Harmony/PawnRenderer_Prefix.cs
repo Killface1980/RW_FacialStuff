@@ -6,6 +6,7 @@
     using System.Reflection;
 
     using FacialStuff.Graphics;
+    using FacialStuff.Harmony.Optional;
 
     using global::Harmony;
 
@@ -117,7 +118,8 @@
                 Vector3 loc = rootLoc;
                 loc.y += YOffset_Body;
 
-                bodyMesh = MeshPool.humanlikeBodySet.MeshAt(bodyFacing);
+
+                bodyMesh = GetPawnMesh(portrait, pawn, bodyFacing, true);
 
                 List<Material> bodyBaseAt = __instance.graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
                 for (int i = 0; i < bodyBaseAt.Count; i++)
@@ -168,7 +170,7 @@
                 Vector3 locFacialY = a + b;
                 if (headMaterial != null)
                 {
-                    Mesh headMesh = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
+                    Mesh headMesh = GetPawnMesh(portrait, pawn, headFacing, false);
 
                     Mesh eyeMesh = compFace.EyeMeshSet.mesh.MeshAt(headFacing);
 #if develop
@@ -276,7 +278,7 @@
                         }
 
                         // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
-                      //  if (!portrait)
+                        //  if (!portrait)
                         {
                             DrawBeardAndTache(headFacing, portrait, compFace, headMesh, locFacialY, headQuat);
                         }
@@ -299,7 +301,7 @@
                 Vector3 currentLoc = rootLoc + b;
                 currentLoc.y += YOffset_OnHead;
 
-                Mesh hairMesh = __instance.graphics.HairMeshSet.MeshAt(headFacing);
+                Mesh hairMesh = GetPawnHairMesh(portrait, pawn, headFacing, __instance.graphics);
 
                 if (!headStump)
                 {
@@ -307,11 +309,11 @@
                     List<ApparelGraphicRecord> headgearGraphics = null;
                     if (!apparelGraphics.NullOrEmpty())
                     {
-                        headgearGraphics = apparelGraphics.Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead)
-                            .ToList();
+                        headgearGraphics = apparelGraphics
+                            .Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead).ToList();
                     }
 
-                    bool noRenderRoofed = Controller.settings.HideHatWhileRoofed && compFace.Roofed;
+                    bool noRenderRoofed = compFace.HideHats;
                     bool noRenderBed = Controller.settings.HideHatInBed && !renderBody;
                     bool noRenderGoggles = Controller.settings.FilterHats;
 
@@ -372,10 +374,13 @@
                             }
                         }
 
+
                         if (noRenderBed)
                         {
                             headgearGraphics.Clear();
                         }
+                        // headgearGraphics = headgearGraphics
+                        //     .OrderBy(x => x.sourceApparel.def.apparel.bodyPartGroups.Max(y => y.listOrder)).ToList();
 
                         if (!headgearGraphics.NullOrEmpty())
                         {
@@ -408,35 +413,37 @@
                     }
                 }
 
-                if (renderBody)
-                {
-                    for (int index = 0; index < __instance.graphics.apparelGraphics.Count; index++)
-                    {
-                        ApparelGraphicRecord apparelGraphicRecord = __instance.graphics.apparelGraphics[index];
-                        if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer == ApparelLayer.Shell)
-                        {
-                            Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing);
-                            material3 = __instance.graphics.flasher.GetDamagedMat(material3);
-                            GenDraw.DrawMeshNowOrLater(bodyMesh, vector, quat, material3, portrait);
+            DrawAddons(portrait, pawn, currentLoc);
+            }
 
-                            // possible fix for phasing apparel
-                            vector.y += YOffsetOnFace;
-                        }
+            if (portrait || renderBody && !compFace.HideShellLayer)
+            {
+                for (int index = 0; index < __instance.graphics.apparelGraphics.Count; index++)
+                {
+                    ApparelGraphicRecord apparelGraphicRecord = __instance.graphics.apparelGraphics[index];
+                    if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer == ApparelLayer.Shell)
+                    {
+                        Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing);
+                        material3 = __instance.graphics.flasher.GetDamagedMat(material3);
+                        GenDraw.DrawMeshNowOrLater(bodyMesh, vector, quat, material3, portrait);
+
+                        // possible fix for phasing apparel
+                        vector.y += YOffsetOnFace;
                     }
                 }
             }
 
             // Draw the beard, for the RenderPortrait
-           // if (portrait && !headStump)
-           // {
-           //     Vector3 b = headQuat * __instance.BaseHeadOffsetAt(headFacing);
-           //     Vector3 locFacialY = a + b;
-           //
-           //     // no rotation wanted
-           //     Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
-           //
-           //     DrawBeardAndTache(headFacing, portrait, faceComp, mesh2, locFacialY, headQuat);
-           // }
+            // if (portrait && !headStump)
+            // {
+            //     Vector3 b = headQuat * __instance.BaseHeadOffsetAt(headFacing);
+            //     Vector3 locFacialY = a + b;
+            //
+            //     // no rotation wanted
+            //     Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
+            //
+            //     DrawBeardAndTache(headFacing, portrait, faceComp, mesh2, locFacialY, headQuat);
+            // }
 
             // ReSharper disable once InvertIf
             if (!portrait)
@@ -461,8 +468,22 @@
                     headQuat,
                     MeshPool.humanlikeHeadSet.MeshAt(headFacing));
             }
-
             return false;
+        }
+
+        public static void DrawAddons(bool portrait, Pawn pawn, Vector3 vector)
+        {
+            // Just for the Aliens
+        }
+
+        public static Mesh GetPawnHairMesh(bool portrait, Pawn pawn, Rot4 headFacing, PawnGraphicSet graphics)
+        {
+            return graphics.HairMeshSet.MeshAt(headFacing);
+        }
+
+        public static Mesh GetPawnMesh(bool portrait, Pawn pawn, Rot4 facing, bool wantsBody)
+        {
+            return wantsBody ? MeshPool.humanlikeBodySet.MeshAt(facing) : MeshPool.humanlikeHeadSet.MeshAt(facing);
         }
 
         private static void DrawBeardAndTache(

@@ -17,6 +17,10 @@
 
   <Settings.HideHatWhileRoofed>Zeige Hüte nur draußen</Settings.HideHatWhileRoofed>
   <Settings.HideHatWhileRoofedTooltip>Hüte sind in Räumen nicht sichtbar.</Settings.HideHatWhileRoofedTooltip>
+  <Settings.HideShellWhileRoofed>Zeige äußerste Klamottenschicht nur draußen</Settings.HideShellWhileRoofed>
+  <Settings.HideShellWhileRoofedTooltip>Mäntel sind in Räumen nicht sichtbar.</Settings.HideShellWhileRoofedTooltip>
+  <Settings.SameBeardColor>Gleiche Farbe für Haar und Bart</Settings.SameBeardColor>
+  <Settings.SameBeardColorTooltip>Ist diese Option aktiviert, wird die Haar- und Bartfarbe immer identisch sein. (Standard: aus)</Settings.SameBeardColorTooltip>
 	<Settings.HideHatInBed>Blende Hüte im Bett aus</Settings.HideHatInBed>
   <Settings.HideHatInBedTooltip>Hüte sind nur sichtbar wenn der Körper dargestellt wird.</Settings.HideHatInBedTooltip>
   <Settings.Apply>Einstellungen speichern und übernehmen.</Settings.Apply>

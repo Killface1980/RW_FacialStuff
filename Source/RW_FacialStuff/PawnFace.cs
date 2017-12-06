@@ -56,7 +56,14 @@
             this.BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, pawnFactionDef);
 
             this.WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn);
-            this.HasSameBeardColor = Rand.Value > 0.3f;
+            if (Controller.settings.SameBeardColor)
+            {
+                this.HasSameBeardColor = true;
+            }
+            else
+            {
+                this.HasSameBeardColor = Rand.Value > 0.3f;
+            }
 
             this.GenerateHairDNA(pawn, false, newPawn);
 

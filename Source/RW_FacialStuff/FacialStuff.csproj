@@ -47,6 +47,10 @@
       <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\AbilityUser.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="AlienRace">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\839005762\Assemblies\AlienRace.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
@@ -75,6 +79,8 @@
     <Compile Include="AI\JobGiver_Possess.cs" />
     <Compile Include="AI\MentalStateWorker_Possessed.cs" />
     <Compile Include="AI\MentalState_Possessed.cs" />
+    <None Include="Harmony\Class1.cs" />
+    <None Include="Harmony\Optional\Harmony_Alien.cs" />
     <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
     <Compile Include="Harmony\Optional\Vampire_Patches.cs" />
     <Compile Include="Utilities\CrownTypeChecker.cs" />
@@ -207,12 +213,14 @@
     </Content>
     <Content Include="..\..\Languages\English\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\English\FacialStuff_Keyed.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Languages\English\Keyed\FS_UpdatenInfo.xml">
       <Link>OldStuff\FS_UpdatenInfo.xml</Link>
     </Content>
     <Content Include="..\..\Languages\German\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\German\FacialStuff_Keyed.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Patches\EditorPatches.xml">
       <Link>Patches\EditorPatches.xml</Link>

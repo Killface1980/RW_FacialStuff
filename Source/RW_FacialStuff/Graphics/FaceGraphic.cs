@@ -146,7 +146,7 @@
 
         private void InitializeGraphicsBrows()
         {
-            Color color = this.pawn.story.hairColor * Color.gray;
+            Color color = this.pawn.story.hairColor;
             this.BrowGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 this.texPathBrow,
                 ShaderDatabase.CutoutSkin,

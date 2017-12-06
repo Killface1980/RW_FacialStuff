@@ -42,6 +42,20 @@ namespace FacialStuff
 
         private bool useWrinkles = true;
 
+        public bool HideShellWhileRoofed
+        {
+            get
+            {
+                return hideShellWhileRoofed;
+            }
+        }
+
+        private bool hideShellWhileRoofed = true;
+
+        private bool sameBeardColor;
+
+        public bool SameBeardColor => sameBeardColor;
+
         public bool FilterHats
         {
             get => this.filterHats;
@@ -114,6 +128,11 @@ namespace FacialStuff
                 ref this.hideHatInBed,
                 "Settings.HideHatInBedTooltip".Translate());
 
+            list.CheckboxLabeled(
+                "Settings.HideShellWhileRoofed".Translate(),
+                ref this.hideShellWhileRoofed,
+                "Settings.HideShellWhileRoofedTooltip".Translate());
+
             list.Gap();
 
             list.Label("Settings.PawnFeaturesLabel".Translate());
@@ -139,6 +158,10 @@ namespace FacialStuff
                 "Settings.MergeHair".Translate(),
                 ref this.mergeHair,
                 "Settings.MergeHairTooltip".Translate());
+            list.CheckboxLabeled(
+                "Settings.SameBeardColor".Translate(),
+                ref this.sameBeardColor,
+                "Settings.SameBeardColorTooltip".Translate());
 
             // list.CheckboxLabeled(
             // "Settings.HideHatWhileRoofed".Translate(),
@@ -217,6 +240,7 @@ namespace FacialStuff
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref this.hideShellWhileRoofed, "hideShellWhileRoofed", false, true);
             Scribe_Values.Look(ref this.useWrinkles, "useWrinkles", false, true);
             Scribe_Values.Look(ref this.useMouth, "useMouth", false, true);
             Scribe_Values.Look(ref this.mergeHair, "mergeHair", false, true);
@@ -225,6 +249,7 @@ namespace FacialStuff
             Scribe_Values.Look(ref this.showExtraParts, "showExtraParts", false, true);
             Scribe_Values.Look(ref this.useWeirdHairChoices, "useWeirdHairChoices", false, true);
             Scribe_Values.Look(ref this.filterHats, "filterHats", false, true);
+            Scribe_Values.Look(ref this.sameBeardColor, "sameBeardColor", false, true);
 
             // Scribe_Values.Look(ref this.useDNAByFaction, "useDNAByFaction", false, true);
             Scribe_Values.Look(ref this.makeThemBlink, "makeThemBlink", false, true);

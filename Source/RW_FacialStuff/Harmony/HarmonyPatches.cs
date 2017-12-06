@@ -2,6 +2,7 @@
 
 namespace FacialStuff.Harmony
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -24,10 +25,14 @@ namespace FacialStuff.Harmony
     [StaticConstructorOnStartup]
     public static class HarmonyPatches
     {
+
         static HarmonyPatches()
         {
             HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.mod");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
+
+            //  harmony.Patch(AccessTools.Method(typeof(PawnRenderer), "RenderPawnInternal", new Type[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) }), null, null, new HarmonyMethod(typeof(Alien), nameof(Alien.RenderPawnInternalTranspiler)));
+
 
             // harmony.Patch(
             // AccessTools.Method(typeof(Dialog_Options), nameof(Dialog_Options.DoWindowContents)),
@@ -36,6 +41,8 @@ namespace FacialStuff.Harmony
             // new HarmonyMethod(
             // typeof(Dialog_Options_DoWindowContents_Patch),
             // nameof(Dialog_Options_DoWindowContents_Patch.Transpiler)));
+
+
             harmony.Patch(
                 AccessTools.Method(typeof(Page_ConfigureStartingPawns), "DrawPortraitArea"),
                 null,

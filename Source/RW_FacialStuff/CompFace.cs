@@ -40,7 +40,7 @@
         [NotNull]
         public Pawn pawn => this.parent as Pawn;
 
-        public bool Roofed;
+        private bool roofed;
 
         public int rotationInt;
 
@@ -384,7 +384,7 @@
                 return;
             }
 
-            this.Roofed = this.pawn.Position.Roofed(this.pawn.Map);
+            this.roofed = this.pawn.Position.Roofed(this.pawn.Map);
 
             if (Find.TickManager.Paused)
             {
@@ -432,7 +432,7 @@
             // Scribe_References.Look(ref this.pawn, "pawn");
             Scribe_Values.Look(ref this.IsChild, "isChild");
             Scribe_Values.Look(ref this.DontRender, "dontrender");
-            Scribe_Values.Look(ref this.Roofed, "roofed");
+            Scribe_Values.Look(ref this.roofed, "roofed");
             Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
 
            
@@ -495,6 +495,21 @@
         }
         public bool hasNaturalJaw = true;
 
+        public bool HideHats
+        {
+            get
+            {
+                return this.roofed && Controller.settings.HideHatWhileRoofed;
+            }
+        }
+
+        public bool HideShellLayer
+        {
+            get
+            {
+                return this.roofed && Controller.settings.HideShellWhileRoofed;
+            }
+        }
 
         private void CheckPart([NotNull] List<BodyPartRecord> body, [NotNull] Hediff hediff)
         {

@@ -17,6 +17,10 @@
 
   <Settings.HideHatWhileRoofed>Hats shown only while outdoors</Settings.HideHatWhileRoofed>
   <Settings.HideHatWhileRoofedTooltip>Hats are not visible on pawns while indoors.</Settings.HideHatWhileRoofedTooltip>
+  <Settings.HideShellWhileRoofed>Outer apparel layer shown only while outdoors</Settings.HideShellWhileRoofed>
+  <Settings.HideShellWhileRoofedTooltip>Gear with the shell layer is not visible on pawns while indoors.</Settings.HideShellWhileRoofedTooltip>
+  <Settings.SameBeardColor>Always use the same color for hair and beard</Settings.SameBeardColor>
+  <Settings.SameBeardColorTooltip>With this option activated, new pawns will always share the same color for the hair and beard. (Standard: off)</Settings.SameBeardColorTooltip>
 	<Settings.HideHatInBed>Don't show hats in bed</Settings.HideHatInBed>
   <Settings.HideHatInBedTooltip>Hats are not visible if the body is not drawn.</Settings.HideHatInBedTooltip>
   <Settings.Apply>Save and apply settings.</Settings.Apply>
