@@ -258,6 +258,7 @@
             {
                 return;
             }
+
             if (pawn.GetFather().GetPawnFace(out fatherPawnFace))
             {
                 hasFather = true;

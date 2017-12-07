@@ -4,8 +4,6 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
-    using FacialStuff.Harmony;
-
     using JetBrains.Annotations;
 
     using RimWorld;
@@ -51,11 +49,11 @@
                 return;
             }
 
-            var allPawns = PawnsFinder.AllMapsWorldAndTemporary_AliveOrDead.ToList();
+            List<Pawn> allPawns = PawnsFinder.AllMapsWorldAndTemporary_AliveOrDead.ToList();
             for (int i = 0; i < allPawns.Count; i++)
             {
-                var pawn = allPawns[i];
-                if (!pawn.HasCompFace())
+                Pawn pawn = allPawns[i];
+                if (!pawn.GetCompFace(out CompFace compFace))
                 {
                     continue;
                 }
@@ -66,7 +64,7 @@
             // Bug: Not working when called or retrieved inside a mod
             // if (Find.ColonistBar != null)
             // {
-            //     Find.ColonistBar.MarkColonistsDirty();
+            // Find.ColonistBar.MarkColonistsDirty();
             // }
         }
     }

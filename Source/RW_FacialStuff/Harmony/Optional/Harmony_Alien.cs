@@ -27,7 +27,7 @@
 
                         aliensSighted = true;
 
-                      //  Type patchType = "AlienRace.HarmoyPatches".GetType();
+                      // Type patchType = "AlienRace.HarmoyPatches".GetType();
                         Type patchType = typeof(AlienFaces);
                         harmony.Patch(
                             AccessTools.Method(typeof(HarmonyPatch_PawnRenderer), nameof(HarmonyPatch_PawnRenderer.GetPawnMesh)),
@@ -48,7 +48,6 @@
                             null);
                     }))();
             }
-
             catch (Exception e)
             {
 

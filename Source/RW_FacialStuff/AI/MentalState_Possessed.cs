@@ -33,7 +33,8 @@
             Scribe_Values.Look(ref this.insultedTargetAtLeastOnce, "insultedTargetAtLeastOnce", false, false);
             Scribe_Values.Look(ref this.lastInsultTicks, "lastInsultTicks", 0, false);
             Scribe_Values.Look(ref this.targetFoundTicks, "targetFoundTicks", 0, false);
-           // Scribe_References.Look<Corpse>(ref this.corpse, "corpse", false);
+
+            // Scribe_References.Look<Corpse>(ref this.corpse, "corpse", false);
         }
 
         public override void MentalStateTick()
@@ -56,7 +57,8 @@
         {
             base.PostStart(reason);
             this.ChooseNextTarget();
-           // this.corpse = CorpseObsessionMentalStateUtility.GetClosestCorpseToDigUp(base.pawn);
+
+            // this.corpse = CorpseObsessionMentalStateUtility.GetClosestCorpseToDigUp(base.pawn);
         }
 
         public override RandomSocialMode SocialModeMax()

@@ -20,6 +20,7 @@
             {
                 return false;
             }
+
             PawnFace face = compFace.PawnFace;
             if (face != null)
             {

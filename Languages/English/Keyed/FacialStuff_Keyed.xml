@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-  <Settings.VisibilityHeadgearLabel>Visibility Of Headgear</Settings.VisibilityHeadgearLabel>
+  <Settings.VisibilityHeadgearLabel>Visibility Of Apparel</Settings.VisibilityHeadgearLabel>
   <Settings.PawnFeaturesLabel>Facial Features</Settings.PawnFeaturesLabel>
   <Settings.EditorLabel>Editor Settings</Settings.EditorLabel>
   <Settings.ExperimentalLabel>Experimental</Settings.ExperimentalLabel>
@@ -12,12 +12,18 @@
 	<Settings.MergeHair>Show hair under hat</Settings.MergeHair>
   <Settings.MergeHairTooltip>Displays a modified hair texture below worn hats.</Settings.MergeHairTooltip>
 
+  <Settings.IgnoreRenderBody>Ignore body rendering</Settings.IgnoreRenderBody>
+  <Settings.IgnoreRenderBodyTooltip>Usually bodies are not rendered in bed. With this option enabled, the whole body of a pawn is drawn. Further options available.</Settings.IgnoreRenderBodyTooltip>
+
+  <Settings.IgnoreWhileDrafted>Ignore the above settings for drafted pawns.</Settings.IgnoreWhileDrafted>
+  <Settings.IgnoreWhileDraftedTooltip></Settings.IgnoreWhileDraftedTooltip>
+  
   <Settings.FilterHats>Ignore goggles</Settings.FilterHats>
   <Settings.FilterHatsTooltip>Extra head gear like goggles is not visible on pawns while indoors.</Settings.FilterHatsTooltip>
 
   <Settings.HideHatWhileRoofed>Hats shown only while outdoors</Settings.HideHatWhileRoofed>
   <Settings.HideHatWhileRoofedTooltip>Hats are not visible on pawns while indoors.</Settings.HideHatWhileRoofedTooltip>
-  <Settings.HideShellWhileRoofed>Outer apparel layer shown only while outdoors</Settings.HideShellWhileRoofed>
+  <Settings.HideShellWhileRoofed>Apparel layer Shell shown only while outdoors</Settings.HideShellWhileRoofed>
   <Settings.HideShellWhileRoofedTooltip>Gear with the shell layer is not visible on pawns while indoors.</Settings.HideShellWhileRoofedTooltip>
   <Settings.SameBeardColor>Always use the same color for hair and beard</Settings.SameBeardColor>
   <Settings.SameBeardColorTooltip>With this option activated, new pawns will always share the same color for the hair and beard. (Standard: off)</Settings.SameBeardColorTooltip>
@@ -95,4 +101,5 @@
 
   <FacialStuffEditor.FullBeards>full beards</FacialStuffEditor.FullBeards>
   <FacialStuffEditor.Combinable>combinable</FacialStuffEditor.Combinable>
+  
 </LanguageData>

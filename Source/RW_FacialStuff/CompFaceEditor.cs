@@ -38,7 +38,7 @@ namespace FacialStuff
                     return new List<FloatMenuOption> { item3 };
                 }
 
-                if (selPawn.GetCompFace(out CompFace compFace) && compFace.DontRender)
+                if (selPawn.GetCompFace(out CompFace compFace) && compFace.Deactivated)
                 {
                     FloatMenuOption item4 = new FloatMenuOption(
                         "FacialStuffEditor.CannotUseShouldNotRender".Translate(selPawn),

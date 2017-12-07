@@ -81,6 +81,7 @@
     <Compile Include="AI\MentalState_Possessed.cs" />
     <None Include="Harmony\Class1.cs" />
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
+    <Compile Include="Enums\Class1.cs" />
     <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
     <Compile Include="Harmony\Optional\Vampire_Patches.cs" />
     <Compile Include="Utilities\CrownTypeChecker.cs" />

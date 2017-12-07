@@ -25,6 +25,7 @@ namespace FacialStuff.AI
         {
             return true;
         }
+
         private int ticksLeft;
 
         private TargetIndex TargetInd = TargetIndex.A;
@@ -57,7 +58,7 @@ namespace FacialStuff.AI
 
             toil.initAction = delegate
                 {
-                    //    this.ticksLeft = Rand.Range(300, 900);
+                    // this.ticksLeft = Rand.Range(300, 900);
                     this.ticksLeft = Rand.Range(450, 1200);
                     int num2 = 0;
                     IntVec3 c;
@@ -70,46 +71,50 @@ namespace FacialStuff.AI
                             c = this.pawn.Position;
                             break;
                         }
+
                         if (c.InBounds(this.pawn.Map) && c.Standable(this.pawn.Map)) break;
                     }
+
                     this.job.targetB = c;
                     this.pawn.pather.StopDead();
 
-                    DefDatabase<SoundDef>.GetNamed("Pawn_Cat_Angry").PlayOneShot(new TargetInfo(this.pawn.Position, this.pawn.Map));                  //  GenExplosion.DoExplosion(
-                  //      this.pawn.Position,
-                  //      this.pawn.Map,
-                  //      2,
-                  //      DamageDefOf.Smoke,
-                  //      null,
-                  //      0,
-                  //      DefDatabase<SoundDef>.GetNamed("Explosion_Smoke"));
-                  // for (int i = 0; i < 2; i++)
-                  // {
-                  //     var loc = this.pawn.Position.ToVector3Shifted();
-                  //     var map = this.pawn.Map;
-                  //     MoteMaker.ThrowSmoke(loc, map, 1f);
-                  //     MoteMaker.ThrowMicroSparks(loc, map);
-                  //     MoteMaker.ThrowLightningGlow(loc, map, 1f);
-                  // }
+                    DefDatabase<SoundDef>.GetNamed("Pawn_Cat_Angry")
+                        .PlayOneShot(new TargetInfo(this.pawn.Position, this.pawn.Map)); // GenExplosion.DoExplosion(
+
+                    // this.pawn.Position,
+                    // this.pawn.Map,
+                    // 2,
+                    // DamageDefOf.Smoke,
+                    // null,
+                    // 0,
+                    // DefDatabase<SoundDef>.GetNamed("Explosion_Smoke"));
+                    // for (int i = 0; i < 2; i++)
+                    // {
+                    // var loc = this.pawn.Position.ToVector3Shifted();
+                    // var map = this.pawn.Map;
+                    // MoteMaker.ThrowSmoke(loc, map, 1f);
+                    // MoteMaker.ThrowMicroSparks(loc, map);
+                    // MoteMaker.ThrowLightningGlow(loc, map, 1f);
+                    // }
                 };
 
             int accellerator = 25;
             toil.tickAction = delegate
                 {
-
                     if (this.ticksLeft % 60 == 0)
                     {
-
-                        //     MoteMaker.ThrowFireGlow(this.pawn.Position, this.pawn.Map, 0.1f);
+                        // MoteMaker.ThrowFireGlow(this.pawn.Position, this.pawn.Map, 0.1f);
                     }
-                   // if (this.ticksLeft % 45 == 0)
-                   // {
-                   //     MoteMaker.ThrowHeatGlow(this.pawn.Position, this.pawn.Map, 0.3f);
-                   // }
+
+                    // if (this.ticksLeft % 45 == 0)
+                    // {
+                    // MoteMaker.ThrowHeatGlow(this.pawn.Position, this.pawn.Map, 0.3f);
+                    // }
                     if (this.ticksLeft % accellerator == 0)
                     {
                         compFace?.HeadRotator.RotateRandomly();
-                      //  MoteMaker.ThrowSmoke(this.pawn.Position.ToVector3(), this.pawn.Map, 0.2f);
+
+                        // MoteMaker.ThrowSmoke(this.pawn.Position.ToVector3(), this.pawn.Map, 0.2f);
                         if (accellerator > 20)
                         {
                             accellerator--;
@@ -132,10 +137,10 @@ namespace FacialStuff.AI
                             1);
                         if (this.pawn.needs.food.CurLevelPercentage > 0.10000000149011612)
                         {
-                            this.pawn.needs.food.CurLevel -=
-                                (float)(this.pawn.needs.food.MaxLevel * 0.02);
+                            this.pawn.needs.food.CurLevel -= (float)(this.pawn.needs.food.MaxLevel * 0.02);
                         }
                     }
+
                     if (this.ticksLeft % 50 == 0)
                     {
                         FilthMaker.MakeFilth(
@@ -145,6 +150,7 @@ namespace FacialStuff.AI
                             this.pawn.LabelIndefinite(),
                             1);
                     }
+
                     this.ticksLeft--;
                     if (this.ticksLeft <= 0)
                     {

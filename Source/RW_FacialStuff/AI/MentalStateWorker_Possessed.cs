@@ -17,6 +17,7 @@ namespace FacialStuff.AI
             {
                 return false;
             }
+
             if (!Controller.settings.UseHeadRotator)
             {
                 return false;

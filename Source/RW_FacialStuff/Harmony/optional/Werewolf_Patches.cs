@@ -13,7 +13,7 @@
                 return;
             }
 
-            compFace.DontRender = false;
+            compFace.Deactivated = false;
             __instance.Pawn.Drawer.renderer.graphics.nakedGraphic = null;
         }
 
@@ -21,7 +21,7 @@
         {
             if (__instance.Pawn.GetCompFace(out CompFace compFace))
             {
-                compFace.DontRender = true;
+                compFace.Deactivated = true;
             }
         }
     }

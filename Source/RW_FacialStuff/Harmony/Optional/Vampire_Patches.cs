@@ -15,12 +15,14 @@
                 {
                     return;
                 }
-                if (__instance.Transformed || __instance.Bloodline?.headGraphicsPath != "")
+
+                if (__instance.Transformed || __instance.Bloodline?.headGraphicsPath != string.Empty)
                 {
-                    compFace.DontRender = true;
+                    compFace.Deactivated = true;
                     return;
                 }
-                compFace.DontRender = false;
+
+                compFace.Deactivated = false;
             }
         }
     }

@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Reflection;
 
+    using FacialStuff.Enums;
     using FacialStuff.Graphics;
     using FacialStuff.Harmony.Optional;
 
@@ -79,8 +80,9 @@
             {
                 __instance.graphics.ResolveAllGraphics();
             }
+
             // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
-            if (!pawn.GetCompFace(out CompFace compFace) || compFace.IsChild || compFace.DontRender)
+            if (!pawn.GetCompFace(out CompFace compFace) || compFace.IsChild || compFace.Deactivated)
             {
                 return true;
             }
@@ -113,15 +115,41 @@
 #endif
 
             // Regular FacePawn rendering 14+ years
-            if (renderBody)
+            if (Controller.settings.IgnoreRenderBody && !renderBody || renderBody)
             {
                 Vector3 loc = rootLoc;
                 loc.y += YOffset_Body;
 
-
                 bodyMesh = GetPawnMesh(portrait, pawn, bodyFacing, true);
 
-                List<Material> bodyBaseAt = __instance.graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
+                List<Material> bodyBaseAt = null;
+                bool flag = true;
+                if (!portrait && Controller.settings.HideShellWhileRoofed)
+                {
+                    if (compFace.InRoom)
+                    {
+                        MaxLayerToShow layer;
+                        if (compFace.InPrivateRoom)
+                        {
+                            layer = renderBody
+                                        ? Controller.settings.LayerInPrivateRoom
+                                        : Controller.settings.LayerInOwnedBed;
+                        }
+                        else
+                        {
+                            layer = renderBody ? Controller.settings.LayerInRoom : Controller.settings.LayerInBed;
+                        }
+
+                        bodyBaseAt = BodyBaseAt(__instance, bodyFacing, bodyDrawType, compFace, layer);
+                        flag = false;
+                    }
+                }
+
+                if (flag)
+                {
+                    bodyBaseAt = __instance.graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
+                }
+
                 for (int i = 0; i < bodyBaseAt.Count; i++)
                 {
                     Material damagedMat = __instance.graphics.flasher.GetDamagedMat(bodyBaseAt[i]);
@@ -278,8 +306,8 @@
                         }
 
                         // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
-                        //  if (!portrait)
                         {
+                            // if (!portrait)
                             DrawBeardAndTache(headFacing, portrait, compFace, headMesh, locFacialY, headQuat);
                         }
 
@@ -313,13 +341,13 @@
                             .Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead).ToList();
                     }
 
-                    bool noRenderRoofed = compFace.HideHats;
-                    bool noRenderBed = Controller.settings.HideHatInBed && !renderBody;
+                    bool noRenderRoofed = compFace.HideHat;
+                    bool noRenderBed = Controller.settings.HideHatInBed && (!renderBody);
                     bool noRenderGoggles = Controller.settings.FilterHats;
 
                     if (!headgearGraphics.NullOrEmpty())
                     {
-                        bool filterHeadgear = portrait && Prefs.HatsOnlyOnMap || !portrait && noRenderRoofed;
+                        bool filterHeadgear = (portrait && Prefs.HatsOnlyOnMap) || (!portrait && noRenderRoofed);
 
                         // Draw regular hair if appparel or environment allows it (FS feature)
                         if (bodyDrawType != RotDrawMode.Dessicated)
@@ -374,14 +402,13 @@
                             }
                         }
 
-
                         if (noRenderBed)
                         {
                             headgearGraphics.Clear();
                         }
-                        // headgearGraphics = headgearGraphics
-                        //     .OrderBy(x => x.sourceApparel.def.apparel.bodyPartGroups.Max(y => y.listOrder)).ToList();
 
+                        // headgearGraphics = headgearGraphics
+                        // .OrderBy(x => x.sourceApparel.def.apparel.bodyPartGroups.Max(y => y.listOrder)).ToList();
                         if (!headgearGraphics.NullOrEmpty())
                         {
                             for (int index = 0; index < headgearGraphics.Count; index++)
@@ -413,10 +440,11 @@
                     }
                 }
 
-            DrawAddons(portrait, pawn, currentLoc);
+                DrawAddons(portrait, pawn, currentLoc);
             }
 
-            if (portrait || renderBody && !compFace.HideShellLayer)
+            if (portrait || renderBody && !compFace.HideShellLayer || !renderBody
+                && !Controller.settings.HideShellWhileRoofed && Controller.settings.IgnoreRenderBody)
             {
                 for (int index = 0; index < __instance.graphics.apparelGraphics.Count; index++)
                 {
@@ -436,13 +464,11 @@
             // Draw the beard, for the RenderPortrait
             // if (portrait && !headStump)
             // {
-            //     Vector3 b = headQuat * __instance.BaseHeadOffsetAt(headFacing);
-            //     Vector3 locFacialY = a + b;
-            //
-            //     // no rotation wanted
-            //     Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
-            //
-            //     DrawBeardAndTache(headFacing, portrait, faceComp, mesh2, locFacialY, headQuat);
+            // Vector3 b = headQuat * __instance.BaseHeadOffsetAt(headFacing);
+            // Vector3 locFacialY = a + b;
+            // // no rotation wanted
+            // Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
+            // DrawBeardAndTache(headFacing, portrait, faceComp, mesh2, locFacialY, headQuat);
             // }
 
             // ReSharper disable once InvertIf
@@ -468,7 +494,26 @@
                     headQuat,
                     MeshPool.humanlikeHeadSet.MeshAt(headFacing));
             }
+
             return false;
+        }
+
+        private static List<Material> BodyBaseAt(
+            PawnRenderer __instance,
+            Rot4 bodyFacing,
+            RotDrawMode bodyDrawType,
+            CompFace compFace,
+            MaxLayerToShow layer)
+        {
+            switch (layer)
+            {
+                case MaxLayerToShow.Naked:
+                    return compFace.NakedMatsBodyBaseAt(bodyFacing, bodyDrawType);
+                case MaxLayerToShow.OnSkin:
+                    return compFace.UnderwearMatsBodyBaseAt(bodyFacing, bodyDrawType);
+                default:
+                    return __instance.graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
+            }
         }
 
         public static void DrawAddons(bool portrait, Pawn pawn, Vector3 vector)

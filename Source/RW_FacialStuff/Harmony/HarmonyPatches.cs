@@ -31,7 +31,7 @@ namespace FacialStuff.Harmony
             HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.mod");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            //  harmony.Patch(AccessTools.Method(typeof(PawnRenderer), "RenderPawnInternal", new Type[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) }), null, null, new HarmonyMethod(typeof(Alien), nameof(Alien.RenderPawnInternalTranspiler)));
+            // harmony.Patch(AccessTools.Method(typeof(PawnRenderer), "RenderPawnInternal", new Type[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) }), null, null, new HarmonyMethod(typeof(Alien), nameof(Alien.RenderPawnInternalTranspiler)));
 
 
             // harmony.Patch(
@@ -41,7 +41,6 @@ namespace FacialStuff.Harmony
             // new HarmonyMethod(
             // typeof(Dialog_Options_DoWindowContents_Patch),
             // nameof(Dialog_Options_DoWindowContents_Patch.Transpiler)));
-
 
             harmony.Patch(
                 AccessTools.Method(typeof(Page_ConfigureStartingPawns), "DrawPortraitArea"),
@@ -204,7 +203,7 @@ namespace FacialStuff.Harmony
             }
 
             compFace.CheckForAddedOrMissingParts();
-            if (!compFace.DontRender)
+            if (!compFace.Deactivated)
             {
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
                 PortraitsCache.SetDirty(pawn);
@@ -236,7 +235,6 @@ namespace FacialStuff.Harmony
             }
 
             // Check if race has face, else return
-
             if (!pawn.GetCompFace(out CompFace compFace))
             {
                 return;
@@ -245,12 +243,13 @@ namespace FacialStuff.Harmony
             compFace.IsChild = pawn.ageTracker.AgeBiologicalYearsFloat < 14;
 
             // Return if child
-            if (compFace.IsChild || compFace.DontRender)
+            if (compFace.IsChild || compFace.Deactivated)
             {
                 return;
             }
 
             __instance.ClearCache();
+            compFace.ClearCache();
 
             GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
 
@@ -346,15 +345,15 @@ namespace FacialStuff.Harmony
             // Now to enjoy the benefits of having made a popular mod!
             // This will be our little secret.
             Backstory childMe = new Backstory
-            {
-                bodyTypeMale = BodyType.Male,
-                bodyTypeFemale = BodyType.Female,
-                slot = BackstorySlot.Childhood,
-                baseDesc =
+                                    {
+                                        bodyTypeMale = BodyType.Male,
+                                        bodyTypeFemale = BodyType.Female,
+                                        slot = BackstorySlot.Childhood,
+                                        baseDesc =
                                             "NAME never believed what was common sense and always doubted other people. HECAP later went on inflating toads with HIS sushi stick. It was there HE earned HIS nickname.",
-                requiredWorkTags = WorkTags.Violent,
-                shuffleable = false
-            };
+                                        requiredWorkTags = WorkTags.Violent,
+                                        shuffleable = false
+                                    };
             childMe.SetTitle("Lost child");
             childMe.SetTitleShort("Seeker");
             childMe.skillGains.Add("Shooting", 4);
@@ -364,14 +363,14 @@ namespace FacialStuff.Harmony
             childMe.ResolveReferences();
 
             Backstory adultMale = new Backstory
-            {
-                bodyTypeMale = BodyType.Male,
-                bodyTypeFemale = BodyType.Female,
-                slot = BackstorySlot.Adulthood,
-                baseDesc = "HECAP left the military early on and acquired his skills on his own. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
-                shuffleable = false,
-                spawnCategories = new List<string>()
-            };
+                                      {
+                                          bodyTypeMale = BodyType.Male,
+                                          bodyTypeFemale = BodyType.Female,
+                                          slot = BackstorySlot.Adulthood,
+                                          baseDesc = "HECAP left the military early on and acquired his skills on his own. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
+                                          shuffleable = false,
+                                          spawnCategories = new List<string>()
+                                      };
             adultMale.spawnCategories.AddRange(new[] { "Civil", "Raider", "Slave", "Trader", "Traveler" });
             adultMale.SetTitle("Lone gunman");
             adultMale.SetTitleShort("Gunman");
@@ -383,12 +382,12 @@ namespace FacialStuff.Harmony
             adultMale.ResolveReferences();
 
             PawnBio me = new PawnBio
-            {
-                childhood = childMe,
-                adulthood = adultMale,
-                gender = GenderPossibility.Male,
-                name = NameTriple.FromString("Gator 'Killface' Stinkwater")
-            };
+                             {
+                                 childhood = childMe,
+                                 adulthood = adultMale,
+                                 gender = GenderPossibility.Male,
+                                 name = NameTriple.FromString("Gator 'Killface' Stinkwater")
+                             };
             me.PostLoad();
             SolidBioDatabase.allBios.Add(me);
             BackstoryDatabase.AddBackstory(childMe);
@@ -401,62 +400,55 @@ namespace FacialStuff.Harmony
     // [HarmonyPatch("DoWindowContents")]
     // internal static class Dialog_Options_DoWindowContents_Patch
     // {
-    //     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-    //     {
-    //         MethodInfo m_set_HatsOnlyOnMap = AccessTools.Method(typeof(Prefs), "set_HatsOnlyOnMap");
-    //         MethodInfo m_MoreStuff = AccessTools.Method(typeof(Dialog_Options_DoWindowContents_Patch), "MoreStuff");
-    //
-    //         foreach (CodeInstruction instruction in instructions)
-    //         {
-    //             yield return instruction;
-    //             if (instruction.opcode == OpCodes.Call && instruction.operand == m_set_HatsOnlyOnMap)
-    //             {
-    //                 yield return new CodeInstruction(OpCodes.Ldloc_1);
-    //                 yield return new CodeInstruction(OpCodes.Call, m_MoreStuff);
-    //             }
-    //         }
-    //     }
-    //
-    //     private static void MoreStuff(Listing_Standard listing_Standard)
-    //     {
-    //         bool hideHatWhileRoofed = Controller.settings.HideHatWhileRoofed;
-    //         listing_Standard.CheckboxLabeled(
-    //             "Settings.HideHatWhileRoofed".Translate(),
-    //             ref hideHatWhileRoofed,
-    //             "Settings.HideHatWhileRoofedTooltip".Translate());
-    //
-    //         bool showHeadWear = Controller.settings.FilterHats;
-    //         listing_Standard.CheckboxLabeled(
-    //             "Settings.FilterHats".Translate(),
-    //             ref showHeadWear,
-    //             "Settings.FilterHatsTooltip".Translate());
-    //
-    //         bool hideHatsInBed = Controller.settings.HideHatInBed;
-    //         listing_Standard.CheckboxLabeled(
-    //             "Settings.HideHatInBed".Translate(),
-    //             ref hideHatsInBed,
-    //             "Settings.HideHatInBedTooltip".Translate());
-    //
-    //         if (GUI.changed)
-    //         {
-    //             if (showHeadWear != Controller.settings.FilterHats)
-    //             {
-    //                 Controller.settings.FilterHats = showHeadWear;
-    //                 Controller.settings.Write();
-    //             }
-    //
-    //             if (hideHatWhileRoofed != Controller.settings.HideHatWhileRoofed)
-    //             {
-    //                 Controller.settings.HideHatWhileRoofed = hideHatWhileRoofed;
-    //                 Controller.settings.Write();
-    //             }
-    //
-    //             if (hideHatsInBed != Controller.settings.HideHatInBed)
-    //             {
-    //                 Controller.settings.HideHatInBed = hideHatsInBed;
-    //                 Controller.settings.Write();
-    //             }
-    //         }
-    //     }
+    // public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    // {
+    // MethodInfo m_set_HatsOnlyOnMap = AccessTools.Method(typeof(Prefs), "set_HatsOnlyOnMap");
+    // MethodInfo m_MoreStuff = AccessTools.Method(typeof(Dialog_Options_DoWindowContents_Patch), "MoreStuff");
+    // foreach (CodeInstruction instruction in instructions)
+    // {
+    // yield return instruction;
+    // if (instruction.opcode == OpCodes.Call && instruction.operand == m_set_HatsOnlyOnMap)
+    // {
+    // yield return new CodeInstruction(OpCodes.Ldloc_1);
+    // yield return new CodeInstruction(OpCodes.Call, m_MoreStuff);
+    // }
+    // }
+    // }
+    // private static void MoreStuff(Listing_Standard listing_Standard)
+    // {
+    // bool hideHatWhileRoofed = Controller.settings.HideHatWhileRoofed;
+    // listing_Standard.CheckboxLabeled(
+    // "Settings.HideHatWhileRoofed".Translate(),
+    // ref hideHatWhileRoofed,
+    // "Settings.HideHatWhileRoofedTooltip".Translate());
+    // bool showHeadWear = Controller.settings.FilterHats;
+    // listing_Standard.CheckboxLabeled(
+    // "Settings.FilterHats".Translate(),
+    // ref showHeadWear,
+    // "Settings.FilterHatsTooltip".Translate());
+    // bool hideHatsInBed = Controller.settings.HideHatInBed;
+    // listing_Standard.CheckboxLabeled(
+    // "Settings.HideHatInBed".Translate(),
+    // ref hideHatsInBed,
+    // "Settings.HideHatInBedTooltip".Translate());
+    // if (GUI.changed)
+    // {
+    // if (showHeadWear != Controller.settings.FilterHats)
+    // {
+    // Controller.settings.FilterHats = showHeadWear;
+    // Controller.settings.Write();
+    // }
+    // if (hideHatWhileRoofed != Controller.settings.HideHatWhileRoofed)
+    // {
+    // Controller.settings.HideHatWhileRoofed = hideHatWhileRoofed;
+    // Controller.settings.Write();
+    // }
+    // if (hideHatsInBed != Controller.settings.HideHatInBed)
+    // {
+    // Controller.settings.HideHatInBed = hideHatsInBed;
+    // Controller.settings.Write();
+    // }
+    // }
+    // }
     // }
 }

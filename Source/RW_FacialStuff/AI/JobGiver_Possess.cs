@@ -16,6 +16,7 @@ namespace FacialStuff.AI
             {
                 return new Job(DefDatabase<JobDef>.GetNamed("Possess"), mentalStatePossessed.target);
             }
+
             return null;
         }
     }

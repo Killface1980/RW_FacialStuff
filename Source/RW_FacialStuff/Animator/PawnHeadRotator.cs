@@ -42,6 +42,7 @@
                 this.rotCount = Rand.Range(12, 28);
                 this.clockwise = !this.clockwise;
             }
+
             this.currentRot.Rotate(this.clockwise ? RotationDirection.Clockwise : RotationDirection.Counterclockwise);
             this.rotCount--;
         }
@@ -83,6 +84,7 @@
             {
                 return this.currentRot;
             }
+
             Rot4 rot = headFacing;
             bool flag = false;
             if (renderBody)
@@ -98,6 +100,7 @@
             {
                 rot.Rotate(this.rotationMod);
             }
+
             this.currentRot = rot;
             return this.currentRot;
         }

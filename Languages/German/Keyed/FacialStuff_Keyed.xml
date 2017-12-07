@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-  <Settings.VisibilityHeadgearLabel>Sichtbarkeit von Kopfbekleidung</Settings.VisibilityHeadgearLabel>
+  <Settings.VisibilityHeadgearLabel>Sichtbarkeit von Bekleidung</Settings.VisibilityHeadgearLabel>
   <Settings.PawnFeaturesLabel>Facial Features</Settings.PawnFeaturesLabel>
   <Settings.EditorLabel>Editor Einstellungen</Settings.EditorLabel>
   <Settings.ExperimentalLabel>Experimentell</Settings.ExperimentalLabel>
@@ -11,6 +11,12 @@
   <Settings.UseMouthTooltip>Animierte Münder.</Settings.UseMouthTooltip>
 	<Settings.MergeHair>Zeige Haare unter Kopfbedeckung.</Settings.MergeHair>
   <Settings.MergeHairTooltip>Macht Haar sichtbar.</Settings.MergeHairTooltip>
+
+  <Settings.IgnoreRenderBody>Ignoriere Körperdarstellung</Settings.IgnoreRenderBody>
+  <Settings.IgnoreRenderBodyTooltip>Normalerweise werden Körper in Betten incht dargestellt. Wenn die Option aktiviert ist, wird der gesamte Körper angezeigt. Weitere Optionen verfügbar.</Settings.IgnoreRenderBodyTooltip>
+ 
+  <Settings.IgnoreWhileDrafted>Ignoriere die obigen Einstellungen für Krieger mit gezückter Waffe.</Settings.IgnoreWhileDrafted>
+  <Settings.IgnoreWhileDraftedTooltip></Settings.IgnoreWhileDraftedTooltip>
 
   <Settings.FilterHats>Ignoriere Brillen</Settings.FilterHats>
   <Settings.FilterHatsTooltip>Sachen für die Augen sind in Räumen nicht sichtbar.</Settings.FilterHatsTooltip>

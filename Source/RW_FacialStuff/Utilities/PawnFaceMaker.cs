@@ -17,7 +17,8 @@
         public static WrinkleDef AssignWrinkleDefFor(Pawn pawn)
         {
             IEnumerable<WrinkleDef> source = from wrinkle in DefDatabase<WrinkleDef>.AllDefs
-                                           //  where !wrinkle.forbiddenOnRace.Contains(pawn.def)
+
+                                             // where !wrinkle.forbiddenOnRace.Contains(pawn.def)
                                              where wrinkle.hairGender.ToString()
                                                    == pawn.gender.ToString() // .SharesElementWith(factionType.hairTags)
                                              select wrinkle;
@@ -245,7 +246,8 @@
             }
 
             IEnumerable<BeardDef> source = from beard in DefDatabase<BeardDef>.AllDefs
-                                        //   where !beard.forbiddenOnRace.Contains(pawn.def)
+
+                                           // where !beard.forbiddenOnRace.Contains(pawn.def)
                                            where beard.beardType == type
                                            select beard;
 
@@ -378,7 +380,8 @@
             IEnumerable<BeardDef> source;
             {
                 source = from beard in DefDatabase<BeardDef>.AllDefs
-                       //  where !beard.forbiddenOnRace.Contains(pawn.def)
+
+                         // where !beard.forbiddenOnRace.Contains(pawn.def)
                          where beard.hairTags.SharesElementWith(factionType.hairTags)
                          select beard;
             }
@@ -490,7 +493,8 @@
         private static MoustacheDef MoustacheRoulette(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<MoustacheDef> source = from moustache in DefDatabase<MoustacheDef>.AllDefs
-                                           //    where !moustache.forbiddenOnRace.Contains(pawn.def)
+
+                                               // where !moustache.forbiddenOnRace.Contains(pawn.def)
                                                where moustache.hairTags.SharesElementWith(factionType.hairTags)
                                                select moustache;
 

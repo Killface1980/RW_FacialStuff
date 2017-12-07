@@ -19,7 +19,7 @@
 
     public class CompFace : ThingComp
     {
-        public bool DontRender;
+        public bool Deactivated;
 
         [NotNull]
         public FaceGraphic FaceGraphic = new FaceGraphic();
@@ -37,10 +37,32 @@
                 return this.factionInt;
             }
         }
+
         [NotNull]
         public Pawn pawn => this.parent as Pawn;
 
-        private bool roofed;
+
+        public bool InRoom
+        {
+            get
+            {
+                Room room = this.TheRoom;
+                if (room != null && !room.Group.UsesOutdoorTemperature)
+                {
+                    // Pawn is indoors
+                    if (this.pawn.Drafted && Controller.settings.IgnoreWhileDrafted)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                return false;
+
+                // return !room?.Group.UsesOutdoorTemperature == true && Controller.settings.IgnoreWhileDrafted || !this.pawn.Drafted;
+            }
+        }
 
         public int rotationInt;
 
@@ -55,7 +77,6 @@
 
         // private float blinkRate;
         // public PawnHeadWiggler headWiggler;
-
         private Vector2 mouthOffset = Vector2.zero;
 
         // must be null, always initialize with pawn
@@ -349,6 +370,86 @@
             return "Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;
         }
 
+        private List<Material> cachedSkinMatsBodyBase = new List<Material>();
+        private int cachedSkinMatsBodyBaseHash = -1;
+        private List<Material> cachedNakedMatsBodyBase = new List<Material>();
+        private int cachedNakedMatsBodyBaseHash = -1;
+
+        // Verse.PawnGraphicSet
+        public List<Material> UnderwearMatsBodyBaseAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
+        {
+            int num = facing.AsInt + 1000 * (int)bodyCondition;
+            if (num != this.cachedSkinMatsBodyBaseHash)
+            {
+                this.cachedSkinMatsBodyBase.Clear();
+                this.cachedSkinMatsBodyBaseHash = num;
+                PawnGraphicSet graphics = this.pawn.Drawer.renderer.graphics;
+                if (bodyCondition == RotDrawMode.Fresh)
+                {
+                    this.cachedSkinMatsBodyBase.Add(graphics.nakedGraphic.MatAt(facing, null));
+                }
+                else if (bodyCondition == RotDrawMode.Rotting || graphics.dessicatedGraphic == null)
+                {
+                    this.cachedSkinMatsBodyBase.Add(graphics.rottingGraphic.MatAt(facing, null));
+                }
+                else if (bodyCondition == RotDrawMode.Dessicated)
+                {
+                    this.cachedSkinMatsBodyBase.Add(graphics.dessicatedGraphic.MatAt(facing, null));
+                }
+
+                for (int i = 0; i < graphics.apparelGraphics.Count; i++)
+                {
+                    ApparelLayer lastLayer = graphics.apparelGraphics[i].sourceApparel.def.apparel.LastLayer;
+
+                    // if (lastLayer != ApparelLayer.Shell && lastLayer != ApparelLayer.Overhead)
+                    if (lastLayer == ApparelLayer.OnSkin)
+                    {
+                        this.cachedSkinMatsBodyBase.Add(graphics.apparelGraphics[i].graphic.MatAt(facing, null));
+                    }
+                }
+            }
+
+            return this.cachedSkinMatsBodyBase;
+        }
+
+        public List<Material> NakedMatsBodyBaseAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
+        {
+            int num = facing.AsInt + 1000 * (int)bodyCondition;
+            if (num != this.cachedNakedMatsBodyBaseHash)
+            {
+                this.cachedNakedMatsBodyBase.Clear();
+                this.cachedNakedMatsBodyBaseHash = num;
+                PawnGraphicSet graphics = this.pawn.Drawer.renderer.graphics;
+                if (bodyCondition == RotDrawMode.Fresh)
+                {
+                    this.cachedNakedMatsBodyBase.Add(graphics.nakedGraphic.MatAt(facing, null));
+                }
+                else if (bodyCondition == RotDrawMode.Rotting || graphics.dessicatedGraphic == null)
+                {
+                    this.cachedNakedMatsBodyBase.Add(graphics.rottingGraphic.MatAt(facing, null));
+                }
+                else if (bodyCondition == RotDrawMode.Dessicated)
+                {
+                    this.cachedNakedMatsBodyBase.Add(graphics.dessicatedGraphic.MatAt(facing, null));
+                }
+
+                for (int i = 0; i < graphics.apparelGraphics.Count; i++)
+                {
+                    ApparelLayer lastLayer = graphics.apparelGraphics[i].sourceApparel.def.apparel.LastLayer;
+
+                    if (this.pawn.Dead)
+                    {
+                        if (lastLayer != ApparelLayer.Shell && lastLayer != ApparelLayer.Overhead)
+                        {
+                            this.cachedNakedMatsBodyBase.Add(graphics.apparelGraphics[i].graphic.MatAt(facing, null));
+                        }
+                    }
+                }
+            }
+
+            return this.cachedNakedMatsBodyBase;
+        }
+
         [NotNull]
         public string GetMoustachePath(MoustacheDef def)
         {
@@ -379,12 +480,10 @@
             base.PostDraw();
 
             // Children & Pregnancy || Werewolves transformed
-            if (this.pawn.Map == null || !this.pawn.Spawned || this.pawn.Dead || this.IsChild || this.DontRender)
+            if (this.pawn.Map == null || !this.pawn.Spawned || this.pawn.Dead || this.IsChild || this.Deactivated)
             {
                 return;
             }
-
-            this.roofed = this.pawn.Position.Roofed(this.pawn.Map);
 
             if (Find.TickManager.Paused)
             {
@@ -404,7 +503,6 @@
                 this.headRotator.RotatorTick();
             }
 
-            // Low-prio stats
             if (Find.TickManager.TicksGame % 30 == 0)
             {
                 this.FaceGraphic.SetMouthAccordingToMoodLevel();
@@ -417,9 +515,7 @@
         {
             base.PostExposeData();
 
-
-
-             Scribe_References.Look(ref this.factionInt, "pawnFaction");
+            Scribe_References.Look(ref this.factionInt, "pawnFaction");
 
             // Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
 
@@ -431,24 +527,26 @@
 
             // Scribe_References.Look(ref this.pawn, "pawn");
             Scribe_Values.Look(ref this.IsChild, "isChild");
-            Scribe_Values.Look(ref this.DontRender, "dontrender");
-            Scribe_Values.Look(ref this.roofed, "roofed");
+            Scribe_Values.Look(ref this.theRoom, "theRoom");
+            Scribe_Values.Look(ref this.lastRoomCheck, "lastRoomCheck");
+            Scribe_Values.Look(ref this.Deactivated, "dontrender");
+
+            // Scribe_Values.Look(ref this.roofed, "roofed");
             Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
 
-           
-            // Faction needs to be saved like in Thing.ExposeData 
-           // string facID = (this.factionInt == null) ? "null" : this.factionInt.GetUniqueLoadID();
-           // Scribe_Values.Look(ref facID, "pawnFaction", "null", false);
-           // if (Scribe.mode != LoadSaveMode.LoadingVars && Scribe.mode != LoadSaveMode.ResolvingCrossRefs && Scribe.mode != LoadSaveMode.PostLoadInit)
-           //     return;
-           // if (facID == "null")
-           // {
-           //     this.factionInt = null;
-           // }
-           // else if (Find.World != null && Find.FactionManager != null)
-           // {
-           //     this.factionInt = Find.FactionManager.AllFactions.FirstOrDefault((Faction fa) => fa.GetUniqueLoadID() == facID);
-           // }
+            // Faction needs to be saved like in Thing.ExposeData
+            // string facID = (this.factionInt == null) ? "null" : this.factionInt.GetUniqueLoadID();
+            // Scribe_Values.Look(ref facID, "pawnFaction", "null", false);
+            // if (Scribe.mode != LoadSaveMode.LoadingVars && Scribe.mode != LoadSaveMode.ResolvingCrossRefs && Scribe.mode != LoadSaveMode.PostLoadInit)
+            // return;
+            // if (facID == "null")
+            // {
+            // this.factionInt = null;
+            // }
+            // else if (Find.World != null && Find.FactionManager != null)
+            // {
+            // this.factionInt = Find.FactionManager.AllFactions.FirstOrDefault((Faction fa) => fa.GetUniqueLoadID() == facID);
+            // }
         }
 
         /// <summary>
@@ -462,7 +560,6 @@
         /// </returns>
         public bool SetHeadType([NotNull] Pawn p)
         {
-
             if (this.originFaction == null)
             {
                 this.factionInt = this.pawn.Faction ?? Faction.OfPlayer;
@@ -493,23 +590,56 @@
         {
             this.pawnFace = inportedFace;
         }
+
         public bool hasNaturalJaw = true;
 
-        public bool HideHats
+        public int lastRoomCheck;
+
+        [CanBeNull]
+        private Room TheRoom
         {
             get
             {
-                return this.roofed && Controller.settings.HideHatWhileRoofed;
+                if (Find.TickManager.TicksGame > this.lastRoomCheck + 60f)
+                {
+                    this.theRoom = this.pawn.GetRoom();
+                    this.lastRoomCheck = Find.TickManager.TicksGame;
+                }
+
+                return this.theRoom;
             }
         }
 
-        public bool HideShellLayer
+
+        private Room theRoom;
+
+        // Verse.PawnGraphicSet
+        public void ClearCache()
+        {
+            this.cachedSkinMatsBodyBaseHash = -1;
+            this.cachedNakedMatsBodyBaseHash = -1;
+        }
+
+        public bool InPrivateRoom
         {
             get
             {
-                return this.roofed && Controller.settings.HideShellWhileRoofed;
+                if (this.InRoom && !this.pawn.IsPrisoner)
+                {
+                    Room ownedRoom = this.pawn.ownership?.OwnedRoom;
+                    if (ownedRoom != null)
+                    {
+                        return ownedRoom == this.TheRoom;
+                    }
+                }
+
+                return false;
             }
         }
+
+        public bool HideHat => this.InRoom && Controller.settings.HideHatWhileRoofed;
+
+        public bool HideShellLayer => this.InRoom && Controller.settings.HideShellWhileRoofed;
 
         private void CheckPart([NotNull] List<BodyPartRecord> body, [NotNull] Hediff hediff)
         {
@@ -570,8 +700,6 @@
         {
             return this.EyeTexPath("Closed", side);
         }
-
-
 
         private void ResetBoolsAndPaths()
         {
