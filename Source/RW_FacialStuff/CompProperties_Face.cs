@@ -21,7 +21,7 @@ namespace FacialStuff
 
         public bool canRotateHead = true;
 
-        public List<FaceDrawer> comps = new List<FaceDrawer>();
+        public List<PawnDrawer> comps = new List<PawnDrawer>();
 
         public CompProperties_Face()
         {

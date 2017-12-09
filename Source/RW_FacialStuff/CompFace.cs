@@ -624,7 +624,7 @@
 
         private Room theRoom;
 
-        private List<FaceDrawer> faceDrawers;
+        private List<PawnDrawer> faceDrawers;
 
 
 
@@ -647,10 +647,10 @@
         {
             if (this.Props.comps.Any())
             {
-                this.faceDrawers = new List<FaceDrawer>();
+                this.faceDrawers = new List<PawnDrawer>();
                 for (int i = 0; i < this.Props.comps.Count; i++)
                 {
-                    FaceDrawer thingComp = (FaceDrawer)Activator.CreateInstance(this.Props.comps[i].GetType());
+                    PawnDrawer thingComp = (PawnDrawer)Activator.CreateInstance(this.Props.comps[i].GetType());
                     thingComp.CompFace = this;
                     this.faceDrawers.Add(thingComp);
                     thingComp.Initialize();
@@ -921,7 +921,7 @@
             }
         }
 
-        public void DrawBody(PawnRenderer pawnRenderer, Vector3 rootLoc, Quaternion quat, Rot4 bodyFacing, RotDrawMode bodyDrawType, PawnWoundDrawer woundDrawer, bool renderBody, bool portrait)
+        public void DrawBody(PawnGraphicSet graphics, Vector3 rootLoc, Quaternion quat, Rot4 bodyFacing, RotDrawMode bodyDrawType, PawnWoundDrawer woundDrawer, bool renderBody, bool portrait)
         {
             if (this.faceDrawers != null)
             {
@@ -929,7 +929,7 @@
                 int count = this.faceDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawBody(pawnRenderer, woundDrawer, rootLoc, quat, bodyFacing, bodyDrawType, renderBody, portrait);
+                    this.faceDrawers[i].DrawBody(graphics, woundDrawer, rootLoc, quat, bodyFacing, bodyDrawType, renderBody, portrait);
                     i++;
                 }
             }

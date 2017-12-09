@@ -85,7 +85,7 @@
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
     <Compile Include="CompProperties_Face.cs" />
     <Compile Include="Enums\Class1.cs" />
-    <Compile Include="FaceDrawer.cs" />
+    <Compile Include="PawnDrawer.cs" />
     <Compile Include="GameComponent_FacialStuff.cs" />
     <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
     <Compile Include="Harmony\Optional\Vampire_Patches.cs" />

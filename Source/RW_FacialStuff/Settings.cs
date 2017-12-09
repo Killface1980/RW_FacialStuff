@@ -284,7 +284,7 @@ namespace FacialStuff
             // {
             // this.WriteSettings();
             // faceComp.sessionOptimized = false;
-            // pawn.FaceDrawer.renderer.graphics.ResolveAllGraphics();
+            // pawn.PawnDrawer.renderer.graphics.ResolveAllGraphics();
             // }
             // }
             // }

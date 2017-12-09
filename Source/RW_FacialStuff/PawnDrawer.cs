@@ -15,7 +15,7 @@ namespace FacialStuff
 
     using RimWorld;
 
-    public abstract class FaceDrawer
+    public abstract class PawnDrawer
     {
         #region Public Fields
 
@@ -26,7 +26,7 @@ namespace FacialStuff
 
         #region Protected Constructors
 
-        protected FaceDrawer()
+        protected PawnDrawer()
         {
         }
 
@@ -66,12 +66,12 @@ namespace FacialStuff
 
                 if (flag)
                 {
-                    bodyBaseAt = __instance.graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
+                    bodyBaseAt = graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
                 }
 
                 for (int i = 0; i < bodyBaseAt.Count; i++)
                 {
-                    Material damagedMat = __instance.graphics.flasher.GetDamagedMat(bodyBaseAt[i]);
+                    Material damagedMat = graphics.flasher.GetDamagedMat(bodyBaseAt[i]);
                     GenDraw.DrawMeshNowOrLater(bodyMesh, loc, quat, damagedMat, portrait);
                     loc.y += HarmonyPatch_PawnRenderer.YOffsetInterval_Clothes;
                 }

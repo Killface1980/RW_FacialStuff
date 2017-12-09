@@ -115,7 +115,7 @@
 
             // Regular FacePawn rendering 14+ years
                     PawnWoundDrawer woundDrawer = (PawnWoundDrawer)WoundOverlayFieldInfo?.GetValue(__instance);
-            compFace.DrawBody(__instance, rootLoc, quat, bodyFacing, bodyDrawType, woundDrawer, renderBody, portrait);
+            compFace.DrawBody(__instance.graphics, rootLoc, quat, bodyFacing, bodyDrawType, woundDrawer, renderBody, portrait);
 
             Quaternion headQuat = quat;
 

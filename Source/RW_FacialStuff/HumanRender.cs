@@ -10,11 +10,10 @@ namespace FacialStuff
     using UnityEngine;
     using Verse;
 
-    public class HumanRender : FaceDrawer
+    public class HumanRender : PawnDrawer
     {
         public HumanRender()
         {
         }
-
     }
 }
