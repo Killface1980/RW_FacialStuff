@@ -53,7 +53,7 @@
             for (int i = 0; i < allPawns.Count; i++)
             {
                 Pawn pawn = allPawns[i];
-                if (!pawn.GetCompFace(out CompFace compFace))
+                if (!pawn.HasCompFace())
                 {
                     continue;
                 }

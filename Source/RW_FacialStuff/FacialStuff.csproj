@@ -79,11 +79,17 @@
     <Compile Include="AI\JobGiver_Possess.cs" />
     <Compile Include="AI\MentalStateWorker_Possessed.cs" />
     <Compile Include="AI\MentalState_Possessed.cs" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Harmony\Class1.cs" />
+    <None Include="Harmony\Optional\AlienPatches.cs" />
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
+    <Compile Include="CompProperties_Face.cs" />
     <Compile Include="Enums\Class1.cs" />
+    <Compile Include="FaceDrawer.cs" />
+    <Compile Include="GameComponent_FacialStuff.cs" />
     <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
     <Compile Include="Harmony\Optional\Vampire_Patches.cs" />
+    <Compile Include="HumanRender.cs" />
     <Compile Include="Utilities\CrownTypeChecker.cs" />
     <None Include="FaceEditor\Job_FaceStylingJoy.cs" />
     <Compile Include="CompFaceEditor.cs" />
@@ -91,7 +97,7 @@
     <Compile Include="Graphics\GraphicVectorMeshSet.cs" />
     <None Include="FacialStuff.ruleset" />
     <None Include="OldStuff\IncidentWorker_FacialStuffUpdateNote.cs" />
-    <Compile Include="Graphics\HairCut\CutHairDB.cs" />
+    <Compile Include="HairCut\CutHairDB.cs" />
     <Compile Include="Defs\BeardDefOf.cs" />
     <Compile Include="Defs\MoustacheDefOf.cs" />
     <Compile Include="Defs\MoustacheDef.cs" />
@@ -137,7 +143,7 @@
     <Compile Include="Enums\HeadType.cs" />
     <Compile Include="Defs\MouthDefOf.cs" />
     <Compile Include="Graphics\FaceTextures.cs" />
-    <Compile Include="Graphics\HairCut\HairCutPawn.cs" />
+    <Compile Include="HairCut\HairCutPawn.cs" />
     <Compile Include="Graphics\Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="Graphics\Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="Graphics\MeshPoolFs.cs" />

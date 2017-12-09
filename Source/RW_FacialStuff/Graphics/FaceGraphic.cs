@@ -41,8 +41,6 @@
         public HumanMouthGraphics mouthgraphic;
         public Graphic_Multi_NaturalHeadParts MouthGraphic;
 
-        public Graphic RottingWrinkleGraphic;
-
         [CanBeNull]
         public string texPathBrow;
 
@@ -79,6 +77,8 @@
         private float mood = 0.5f;
 
         private Pawn pawn;
+
+        public Graphic RottingWrinkleGraphic;
 
         #endregion Private Fields
 

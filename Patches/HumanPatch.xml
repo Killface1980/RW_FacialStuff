@@ -16,8 +16,10 @@
       <li Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName = "Human"]/comps</xpath>
         <value>
-          <li>
-            <compClass>FacialStuff.CompFace</compClass>
+          <li Class = "FacialStuff.CompProperties_Face">
+            <comps>
+              <li Class ="FacialStuff.HumanRender"/>
+            </comps>
           </li>
         </value>
       </li>

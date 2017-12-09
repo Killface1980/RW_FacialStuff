@@ -581,26 +581,32 @@
                 this.tab == FaceStyleTab.Hair);
             list.Add(item);
 
-            if (pawn.gender == Gender.Male)
+            if (this.compFace.Props.hasBeard)
             {
-                TabRecord item2 = new TabRecord(
-                    "FacialStuffEditor.Beard".Translate(),
-                    this.SetTabFaceStyle(FaceStyleTab.Beard),
-                    this.tab == FaceStyleTab.Beard);
-                list.Add(item2);
+                if (pawn.gender == Gender.Male)
+                {
+                    TabRecord item2 = new TabRecord(
+                        "FacialStuffEditor.Beard".Translate(),
+                        this.SetTabFaceStyle(FaceStyleTab.Beard),
+                        this.tab == FaceStyleTab.Beard);
+                    list.Add(item2);
+                }
             }
 
-            TabRecord item3 = new TabRecord(
+            if (this.compFace.Props.hasEyes)
+            {
+                TabRecord item3 = new TabRecord(
                 "FacialStuffEditor.Eye".Translate(),
                 this.SetTabFaceStyle(FaceStyleTab.Eye),
                 this.tab == FaceStyleTab.Eye);
-            list.Add(item3);
+                list.Add(item3);
 
-            TabRecord item4 = new TabRecord(
-                "FacialStuffEditor.Brow".Translate(),
-                this.SetTabFaceStyle(FaceStyleTab.Brow),
-                this.tab == FaceStyleTab.Brow);
-            list.Add(item4);
+                TabRecord item4 = new TabRecord(
+                    "FacialStuffEditor.Brow".Translate(),
+                    this.SetTabFaceStyle(FaceStyleTab.Brow),
+                    this.tab == FaceStyleTab.Brow);
+                list.Add(item4);
+            }
 
             if (Controller.settings.ShowBodyChange)
             {
@@ -1779,29 +1785,31 @@
                     this.NewMelanin = melly;
                 }
             }
-
-            if (Controller.settings.UseWrinkles)
+            if (this.compFace.Props.hasWrinkles)
             {
-                Rect wrinkleRect = new Rect(contractedBy.x, detailRect.yMax, contractedBy.width, WidgetUtil.SelectionRowHeight);
-
-                float wrinkle = this.compFace.PawnFace.wrinkleIntensity;
-
-                wrinkle = Widgets.HorizontalSlider(
-                    wrinkleRect,
-                    wrinkle,
-                    0f,
-                    1f,
-                    false,
-                    "FacialStuffEditor.Wrinkles".Translate(),
-                    "0",
-                    "1");
-
-                if (GUI.changed)
+                if (Controller.settings.UseWrinkles)
                 {
-                    if (Math.Abs(wrinkle - this.compFace.PawnFace.wrinkleIntensity) > 0.001f)
+                    Rect wrinkleRect = new Rect(contractedBy.x, detailRect.yMax, contractedBy.width, WidgetUtil.SelectionRowHeight);
+
+                    float wrinkle = this.compFace.PawnFace.wrinkleIntensity;
+
+                    wrinkle = Widgets.HorizontalSlider(
+                        wrinkleRect,
+                        wrinkle,
+                        0f,
+                        1f,
+                        false,
+                        "FacialStuffEditor.Wrinkles".Translate(),
+                        "0",
+                        "1");
+
+                    if (GUI.changed)
                     {
-                        this.compFace.PawnFace.wrinkleIntensity = wrinkle;
-                        this.rerenderPawn = true;
+                        if (Math.Abs(wrinkle - this.compFace.PawnFace.wrinkleIntensity) > 0.001f)
+                        {
+                            this.compFace.PawnFace.wrinkleIntensity = wrinkle;
+                            this.rerenderPawn = true;
+                        }
                     }
                 }
             }
