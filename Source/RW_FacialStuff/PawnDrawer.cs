@@ -51,15 +51,14 @@ namespace FacialStuff
             PawnGraphicSet graphics,
             Rot4 bodyFacing,
             RotDrawMode bodyDrawType,
-            CompFace compFace,
             MaxLayerToShow layer)
         {
             switch (layer)
             {
                 case MaxLayerToShow.Naked:
-                    return compFace.NakedMatsBodyBaseAt(bodyFacing, bodyDrawType);
+                    return CompFace.NakedMatsBodyBaseAt(bodyFacing, bodyDrawType);
                 case MaxLayerToShow.OnSkin:
-                    return compFace.UnderwearMatsBodyBaseAt(bodyFacing, bodyDrawType);
+                    return CompFace.UnderwearMatsBodyBaseAt(bodyFacing, bodyDrawType);
                 default:
                     return graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
             }
@@ -96,17 +95,9 @@ namespace FacialStuff
             }
         }
 
-        public virtual void DrawBasicHead(
-                    out bool headDrawn,
-            PawnGraphicSet graphics,
-            Rot4 headFacing,
-            RotDrawMode bodyDrawType,
-            bool portrait,
-            bool headStump,
-            ref Vector3 locFacialY,
-            Quaternion headQuat)
+        public virtual void DrawBasicHead(PawnGraphicSet graphics, Quaternion headQuat, Rot4 headFacing, RotDrawMode bodyDrawType, bool headStump, bool portrait, ref Vector3 locFacialY, out bool headDrawn)
         {
-            var headMaterial = graphics.HeadMatAt(headFacing, bodyDrawType, headStump);
+            Material headMaterial = graphics.HeadMatAt(headFacing, bodyDrawType, headStump);
             if (headMaterial != null)
             {
                 GenDraw.DrawMeshNowOrLater(
@@ -189,7 +180,7 @@ namespace FacialStuff
                             layer = renderBody ? Controller.settings.LayerInRoom : Controller.settings.LayerInBed;
                         }
 
-                        bodyBaseAt = this.BodyBaseAt(graphics, bodyFacing, bodyDrawType, this.CompFace, layer);
+                        bodyBaseAt = this.BodyBaseAt(graphics, bodyFacing, bodyDrawType, layer);
                         flag = false;
                     }
                 }

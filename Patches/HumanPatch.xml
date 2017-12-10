@@ -19,6 +19,7 @@
           <li Class = "FacialStuff.CompProperties_Face">
             <comps>
               <li Class ="FacialStuff.HumanDrawer"/>
+            <!--  <li Class ="FacialStuff.SecondHeadDrawer"/>-->
             </comps>
           </li>
         </value>

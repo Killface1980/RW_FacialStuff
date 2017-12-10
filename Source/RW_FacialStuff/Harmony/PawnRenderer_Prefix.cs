@@ -112,11 +112,15 @@
 #endif
 
             // Regular FacePawn rendering 14+ years
+
+            // Render body
             PawnWoundDrawer woundDrawer = (PawnWoundDrawer)WoundOverlayFieldInfo?.GetValue(__instance);
             compFace.DrawBody(graphics, rootLoc, quat, bodyFacing, bodyDrawType, woundDrawer, renderBody, portrait);
 
+            // Use the basic quat
             Quaternion headQuat = quat;
 
+            // Rotate head if possble
             if (!portrait)
             {
                 compFace.ApplyHeadRotation(renderBody, ref headFacing, ref headQuat);
@@ -151,7 +155,6 @@
 
                 if (headDrawn)
                 {
-
                     if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
                     {
 
@@ -168,7 +171,6 @@
                             compFace.DrawBrows(ref locFacialY, headFacing, headQuat, portrait);
 
                             // and now the added eye parts
-
                             compFace.DrawUnnaturalEyeParts(ref locFacialY, headQuat, headFacing, portrait);
                         }
 

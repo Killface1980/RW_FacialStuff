@@ -79,10 +79,10 @@
     <Compile Include="AI\JobGiver_Possess.cs" />
     <Compile Include="AI\MentalStateWorker_Possessed.cs" />
     <Compile Include="AI\MentalState_Possessed.cs" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="Harmony\Class1.cs" />
     <None Include="Harmony\Optional\AlienPatches.cs" />
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="CompProperties_Face.cs" />
     <Compile Include="Enums\Class1.cs" />
     <Compile Include="PawnDrawer.cs" />

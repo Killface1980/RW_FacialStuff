@@ -21,17 +21,17 @@ namespace FacialStuff
         public GameComponent_FacialStuff(Game game)
         {
             // Kill the damn beards - xml patching not reliable enough.
-            foreach (HairDef hairDef in DefDatabase<HairDef>.AllDefsListForReading)
+            for (int i = 0; i < DefDatabase<HairDef>.AllDefsListForReading.Count; i++)
             {
+                HairDef hairDef = DefDatabase<HairDef>.AllDefsListForReading[i];
                 CheckReplaceHairTexPath(hairDef);
 
                 if (Controller.settings.UseCaching)
                 {
-            string name = Path.GetFileNameWithoutExtension(hairDef.texPath);
+                    string name = Path.GetFileNameWithoutExtension(hairDef.texPath);
                     CutHairDB.ExportHairCut(hairDef, name);
                 }
             }
-
         }
 
         private static List<string> spoonTex = new List<string> { "SPSBeard", "SPSScot", "SPSViking" };
@@ -54,8 +54,9 @@ namespace FacialStuff
                 folder = "Nackblad/";
             }
 
-            foreach (string hairname in collection)
+            for (int index = 0; index < collection.Count; index++)
             {
+                string hairname = collection[index];
                 if (!hairDef.defName.Equals(hairname))
                 {
                     continue;
