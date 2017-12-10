@@ -5,15 +5,15 @@ using System.Text;
 
 namespace FacialStuff
 {
+    using FacialStuff.Enums;
     using FacialStuff.Harmony;
     using JetBrains.Annotations;
+    using RimWorld;
     using UnityEngine;
     using Verse;
 
-    public class HumanRender : PawnDrawer
+    public class HumanDrawer : PawnDrawer
     {
-        public HumanRender()
-        {
-        }
+
     }
 }

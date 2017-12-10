@@ -17,49 +17,179 @@ namespace FacialStuff
 
     public abstract class PawnDrawer
     {
+
         #region Public Fields
 
+        public const float YOffset_Behind = 0.00390625f;
+        public const float YOffset_Body = 0.0078125f;
+        public const float YOffset_PostHead = 0.03515625f;
         public CompFace CompFace;
 
+        public const float YOffsetOnFace = 0.0001f;
 
         #endregion Public Fields
 
         #region Protected Constructors
 
-        protected PawnDrawer()
-        {
-        }
-
         #endregion Protected Constructors
 
         #region Public Methods
 
-        public virtual void DrawBody(PawnGraphicSet graphics, PawnWoundDrawer woundDrawer, Vector3 rootLoc, Quaternion quat, Rot4 bodyFacing, RotDrawMode bodyDrawType, bool renderBody, bool portrait)
+        public virtual void ApplyHeadRotation(bool renderBody, ref Rot4 headFacing, ref Quaternion headQuat)
+        {
+            if (this.CompFace.Props.canRotateHead && Controller.settings.UseHeadRotator)
+            {
+                headFacing = this.CompFace.HeadRotator.Rotation(headFacing, renderBody);
+                headQuat *= this.HeadQuat(headFacing);
+
+                // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
+            }
+
+        }
+
+        public virtual List<Material> BodyBaseAt(
+            PawnGraphicSet graphics,
+            Rot4 bodyFacing,
+            RotDrawMode bodyDrawType,
+            CompFace compFace,
+            MaxLayerToShow layer)
+        {
+            switch (layer)
+            {
+                case MaxLayerToShow.Naked:
+                    return compFace.NakedMatsBodyBaseAt(bodyFacing, bodyDrawType);
+                case MaxLayerToShow.OnSkin:
+                    return compFace.UnderwearMatsBodyBaseAt(bodyFacing, bodyDrawType);
+                default:
+                    return graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
+            }
+        }
+
+        public virtual void DrawAlienBodyAddons(Quaternion quat, Rot4 bodyFacing, Vector3 rootLoc, bool portrait, bool renderBody, PawnGraphicSet graphics)
+        {
+            // Just for the Aliens
+        }
+
+        public virtual void DrawAlienHeadAddons(bool portrait, Quaternion headQuat, Rot4 headFacing, Vector3 currentLoc)
+        {
+            // Just for the Aliens
+        }
+        public virtual void DrawApparel(PawnGraphicSet graphics, Quaternion quat, Rot4 bodyFacing, Vector3 vector, bool renderBody, bool portrait)
+        {
+            if (portrait || renderBody && !this.CompFace.HideShellLayer || !renderBody && !Controller.settings.HideShellWhileRoofed
+                && Controller.settings.IgnoreRenderBody)
+            {
+                for (int index = 0; index < graphics.apparelGraphics.Count; index++)
+                {
+                    ApparelGraphicRecord apparelGraphicRecord = graphics.apparelGraphics[index];
+                    if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer == ApparelLayer.Shell)
+                    {
+                        var bodyMesh = this.GetPawnMesh(bodyFacing, true);
+                        Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing);
+                        material3 = graphics.flasher.GetDamagedMat(material3);
+                        GenDraw.DrawMeshNowOrLater(bodyMesh, vector, quat, material3, portrait);
+
+                        // possible fix for phasing apparel
+                        vector.y += YOffsetOnFace;
+                    }
+                }
+            }
+        }
+
+        public virtual void DrawBasicHead(
+                    out bool headDrawn,
+            PawnGraphicSet graphics,
+            Rot4 headFacing,
+            RotDrawMode bodyDrawType,
+            bool portrait,
+            bool headStump,
+            ref Vector3 locFacialY,
+            Quaternion headQuat)
+        {
+            var headMaterial = graphics.HeadMatAt(headFacing, bodyDrawType, headStump);
+            if (headMaterial != null)
+            {
+                GenDraw.DrawMeshNowOrLater(
+                    this.GetPawnMesh(headFacing, false),
+                    locFacialY,
+                    headQuat,
+                    headMaterial,
+                    portrait);
+                    locFacialY.y += YOffsetOnFace;
+                headDrawn = true;
+            }
+            else
+            {
+                headDrawn = false;
+            }
+        }
+
+        public virtual void DrawBeardAndTache(Quaternion headQuat, Rot4 headFacing, bool portrait, ref Vector3 locFacialY)
+        {
+            Mesh headMesh = this.GetPawnMesh(headFacing, false);
+
+            Material beardMat = this.CompFace.FaceMaterial.BeardMatAt(headFacing);
+            Material moustacheMatAt = this.CompFace.FaceMaterial.MoustacheMatAt(headFacing);
+
+            if (beardMat != null)
+            {
+                GenDraw.DrawMeshNowOrLater(
+                    headMesh,
+                    locFacialY,
+                    headQuat,
+                    beardMat,
+                    portrait);
+                locFacialY.y += YOffsetOnFace;
+            }
+
+            if (moustacheMatAt != null)
+            {
+                GenDraw.DrawMeshNowOrLater(
+                    headMesh,
+                    locFacialY,
+                   headQuat,
+                    moustacheMatAt,
+                 portrait);
+                locFacialY.y += YOffsetOnFace;
+            }
+        }
+
+        public virtual void DrawBody(
+                    PawnGraphicSet graphics,
+            [CanBeNull] PawnWoundDrawer woundDrawer,
+            Vector3 rootLoc,
+            Quaternion quat,
+            Rot4 bodyFacing,
+            RotDrawMode bodyDrawType,
+            bool renderBody,
+            bool portrait)
         {
             if (renderBody || Controller.settings.IgnoreRenderBody)
             {
                 Vector3 loc = rootLoc;
-                loc.y += HarmonyPatch_PawnRenderer.YOffset_Body;
+                loc.y += YOffset_Body;
 
-                var bodyMesh = GetPawnMesh(bodyFacing, true);
+                var bodyMesh = this.GetPawnMesh(bodyFacing, true);
 
                 List<Material> bodyBaseAt = null;
                 bool flag = true;
                 if (!portrait && Controller.settings.HideShellWhileRoofed)
                 {
-                    if (CompFace.InRoom)
+                    if (this.CompFace.InRoom)
                     {
                         MaxLayerToShow layer;
-                        if (CompFace.InPrivateRoom)
+                        if (this.CompFace.InPrivateRoom)
                         {
-                            layer = renderBody ? Controller.settings.LayerInPrivateRoom : Controller.settings.LayerInOwnedBed;
+                            layer = renderBody
+                                        ? Controller.settings.LayerInPrivateRoom
+                                        : Controller.settings.LayerInOwnedBed;
                         }
                         else
                         {
                             layer = renderBody ? Controller.settings.LayerInRoom : Controller.settings.LayerInBed;
                         }
 
-                        bodyBaseAt = BodyBaseAt(graphics, bodyFacing, bodyDrawType, CompFace, layer);
+                        bodyBaseAt = this.BodyBaseAt(graphics, bodyFacing, bodyDrawType, this.CompFace, layer);
                         flag = false;
                     }
                 }
@@ -85,85 +215,6 @@ namespace FacialStuff
                 }
             }
         }
-        public virtual List<Material> BodyBaseAt(
-            PawnGraphicSet graphics,
-            Rot4 bodyFacing,
-            RotDrawMode bodyDrawType,
-            CompFace compFace,
-            MaxLayerToShow layer)
-        {
-            switch (layer)
-            {
-                case MaxLayerToShow.Naked:
-                    return compFace.NakedMatsBodyBaseAt(bodyFacing, bodyDrawType);
-                case MaxLayerToShow.OnSkin:
-                    return compFace.UnderwearMatsBodyBaseAt(bodyFacing, bodyDrawType);
-                default:
-                    return graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
-            }
-        }
-
-        public virtual Quaternion HeadQuat(Rot4 rotation)
-        {
-            float num = 1f;
-            Quaternion asQuat = rotation.AsQuat;
-            float x = 1f * Mathf.Sin(num * (this.CompFace.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
-            float z = 1f * Mathf.Cos(num * (this.CompFace.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
-            asQuat.SetLookRotation(new Vector3(x, 0f, z), Vector3.up);
-            return asQuat;
-        }
-
-        public virtual void ApplyHeadRotation(bool renderBody, ref Rot4 headFacing, ref Quaternion headQuat)
-        {
-            if (this.CompFace.Props.canRotateHead && Controller.settings.UseHeadRotator)
-            {
-                headFacing = this.CompFace.HeadRotator.Rotation(headFacing, renderBody);
-                headQuat *= HeadQuat(headFacing);
-
-                // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
-            }
-        }
-
-        public virtual void DrawBeardAndTache(Quaternion headQuat, Rot4 headFacing, bool portrait, ref Vector3 locFacialY)
-        {
-            Mesh headMesh = this.GetPawnMesh(headFacing, false);
-
-            Material beardMat = this.CompFace.FaceMaterial.BeardMatAt(headFacing);
-            Material moustacheMatAt = this.CompFace.FaceMaterial.MoustacheMatAt(headFacing);
-
-            if (beardMat != null)
-            {
-                GenDraw.DrawMeshNowOrLater(
-                    headMesh,
-                    locFacialY,
-                    headQuat,
-                    beardMat,
-                    portrait);
-                locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
-            }
-
-            if (moustacheMatAt != null)
-            {
-                GenDraw.DrawMeshNowOrLater(
-                    headMesh,
-                    locFacialY,
-                   headQuat,
-                    moustacheMatAt,
-                 portrait);
-                locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
-            }
-        }
-
-        public virtual Vector3 EyeOffset(Rot4 headFacing)
-        {
-
-#if develop
-                    faceComp.BaseEyeOffsetAt(headFacing);
-#else
-            return this.CompFace.EyeMeshSet.OffsetAt(headFacing);
-#endif 
-        }
-
         public virtual void DrawBrows(Quaternion headQuat, Rot4 headFacing, bool portrait, ref Vector3 locFacialY)
         {
             Material browMat = this.CompFace.FaceMaterial.BrowMatAt(headFacing);
@@ -176,29 +227,7 @@ namespace FacialStuff
                     headQuat,
                     browMat,
                     portrait);
-                locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
-            }
-        }
-
-        public virtual void DrawApparel(PawnGraphicSet graphics, Quaternion quat, Rot4 bodyFacing, Vector3 vector, bool renderBody, bool portrait)
-        {
-            if (portrait || renderBody && !this.CompFace.HideShellLayer || !renderBody && !Controller.settings.HideShellWhileRoofed
-                && Controller.settings.IgnoreRenderBody)
-            {
-                for (int index = 0; index < graphics.apparelGraphics.Count; index++)
-                {
-                    ApparelGraphicRecord apparelGraphicRecord = graphics.apparelGraphics[index];
-                    if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer == ApparelLayer.Shell)
-                    {
-                        var bodyMesh = GetPawnMesh(bodyFacing, true);
-                        Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing);
-                        material3 = graphics.flasher.GetDamagedMat(material3);
-                        GenDraw.DrawMeshNowOrLater(bodyMesh, vector, quat, material3, portrait);
-
-                        // possible fix for phasing apparel
-                        vector.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
-                    }
-                }
+                locFacialY.y += YOffsetOnFace;
             }
         }
 
@@ -239,7 +268,7 @@ namespace FacialStuff
                     {
                         Material mat = graphics.HairMatAt(headFacing);
                         GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, mat, portrait);
-                        currentLoc.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
+                        currentLoc.y += YOffsetOnFace;
                     }
                     else if (Controller.settings.MergeHair && !apCoversFullHead)
                     {
@@ -249,7 +278,7 @@ namespace FacialStuff
                         if (hairCutMat != null)
                         {
                             GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, hairCutMat, portrait);
-                            currentLoc.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
+                            currentLoc.y += YOffsetOnFace;
                         }
                     }
                 }
@@ -296,8 +325,8 @@ namespace FacialStuff
                         {
                             thisLoc = rootLoc + b;
                             thisLoc.y += !(bodyFacing == Rot4.North)
-                                             ? HarmonyPatch_PawnRenderer.YOffset_PostHead
-                                             : HarmonyPatch_PawnRenderer.YOffset_Behind;
+                                             ? YOffset_PostHead
+                                             : YOffset_Behind;
                         }
 
                         GenDraw.DrawMeshNowOrLater(hairMesh, thisLoc, headQuat, headGearMat, portrait);
@@ -314,6 +343,11 @@ namespace FacialStuff
                     GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, hairMat, portrait);
                 }
             }
+        }
+
+        public virtual void DrawHeadOverlays(Rot4 headFacing, PawnHeadOverlays headOverlays, Vector3 bodyLoc, Quaternion headQuat)
+        {
+            headOverlays?.RenderStatusOverlays(bodyLoc, headQuat, this.GetPawnMesh(headFacing, false));
         }
 
         public virtual void DrawNaturalEyes(Quaternion headQuat, Rot4 headFacing, bool portrait, ref Vector3 locFacialY)
@@ -333,7 +367,7 @@ namespace FacialStuff
                        headQuat,
                         leftEyeMat,
                         portrait);
-                    locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
+                    locFacialY.y += YOffsetOnFace;
                 }
             }
 
@@ -349,7 +383,7 @@ namespace FacialStuff
                        headQuat,
                         rightEyeMat,
                         portrait);
-                    locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
+                    locFacialY.y += YOffsetOnFace;
                 }
             }
         }
@@ -369,7 +403,7 @@ namespace FacialStuff
 
                 Vector3 drawLoc = locFacialY + headQuat * mouthOffset;
                 GenDraw.DrawMeshNowOrLater(meshMouth, drawLoc, headQuat, mouthMat, portrait);
-                locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
+                locFacialY.y += YOffsetOnFace;
             }
         }
 
@@ -387,7 +421,7 @@ namespace FacialStuff
                        headQuat,
                         leftBionicMat,
                         portrait);
-                    locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
+                    locFacialY.y += YOffsetOnFace;
                 }
             }
 
@@ -398,7 +432,7 @@ namespace FacialStuff
                 if (rightBionicMat != null)
                 {
                     GenDraw.DrawMeshNowOrLater(headMesh, locFacialY + this.EyeOffset(headFacing), headQuat, rightBionicMat, portrait);
-                    locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
+                    locFacialY.y += YOffsetOnFace;
                 }
             }
         }
@@ -410,12 +444,18 @@ namespace FacialStuff
             {
                 Mesh headMesh = this.GetPawnMesh(headFacing, false);
                 GenDraw.DrawMeshNowOrLater(headMesh, locFacialY, headQuat, wrinkleMat, portrait);
-                locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
+                locFacialY.y += YOffsetOnFace;
             }
         }
 
-        public virtual void Initialize()
+        public virtual Vector3 EyeOffset(Rot4 headFacing)
         {
+
+#if develop
+                    faceComp.BaseEyeOffsetAt(headFacing);
+#else
+            return this.CompFace.EyeMeshSet.OffsetAt(headFacing);
+#endif 
         }
 
         public virtual Mesh GetPawnHairMesh(Rot4 headFacing, PawnGraphicSet graphics)
@@ -426,6 +466,19 @@ namespace FacialStuff
         public virtual Mesh GetPawnMesh(Rot4 facing, bool wantsBody)
         {
             return wantsBody ? MeshPool.humanlikeBodySet.MeshAt(facing) : MeshPool.humanlikeHeadSet.MeshAt(facing);
+        }
+
+        public virtual Quaternion HeadQuat(Rot4 rotation)
+        {
+            float num = 1f;
+            Quaternion asQuat = rotation.AsQuat;
+            float x = 1f * Mathf.Sin(num * (this.CompFace.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
+            float z = 1f * Mathf.Cos(num * (this.CompFace.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
+            asQuat.SetLookRotation(new Vector3(x, 0f, z), Vector3.up);
+            return asQuat;
+        }
+        public virtual void Initialize()
+        {
         }
 
         #endregion Public Methods

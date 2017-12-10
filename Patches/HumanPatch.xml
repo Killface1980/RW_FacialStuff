@@ -18,7 +18,7 @@
         <value>
           <li Class = "FacialStuff.CompProperties_Face">
             <comps>
-              <li Class ="FacialStuff.HumanRender"/>
+              <li Class ="FacialStuff.HumanDrawer"/>
             </comps>
           </li>
         </value>
