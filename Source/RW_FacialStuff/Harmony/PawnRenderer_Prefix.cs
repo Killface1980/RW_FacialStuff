@@ -201,8 +201,6 @@
                     }
                 }
 
-
-
                 if (!headStump)
                 {
                     compFace.DrawHairAndHeadGear(rootLoc, bodyFacing, bodyDrawType, ref currentLoc, b, headFacing, graphics, portrait, renderBody, headQuat);
@@ -229,7 +227,10 @@
             if (!portrait)
             {
                 // Traverse.Create(__instance).Method("DrawEquipment", new object[] { rootLoc }).GetValue();
-                DrawEquipmentMethodInfo?.Invoke(__instance, new object[] { rootLoc });
+
+                // DrawEquipmentMethodInfo?.Invoke(__instance, new object[] { rootLoc });
+
+                compFace.DrawEquipment(rootLoc);
 
                 if (pawn.apparel != null)
                 {
@@ -239,6 +240,7 @@
                         ap.DrawWornExtras();
                     }
                 }
+
 
                 Vector3 bodyLoc = rootLoc;
                 bodyLoc.y += YOffset_Status;
@@ -253,19 +255,6 @@
             return false;
         }
 
-
-
-        public static Mesh GetPawnMesh(Rot4 facing, bool wantsBody)
-        {
-            return wantsBody ? MeshPool.humanlikeBodySet.MeshAt(facing) : MeshPool.humanlikeHeadSet.MeshAt(facing);
-        }
-
-
-
-        // Verse.PawnRenderer
-
-        // private static readonly float[] HorMouthOffsetSex = new float[] { 0f, FS_Settings.MaleOffsetX, FS_Settings.FemaleOffsetX };
-        // private static readonly float[] VerMouthOffsetSex = new float[] { 0f, FS_Settings.MaleOffsetY, FS_Settings.FemaleOffsetY };
         private static void GetReflections()
         {
             if (PawnRendererType != null)

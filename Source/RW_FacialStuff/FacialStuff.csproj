@@ -85,6 +85,9 @@
     <Compile Include="Class1.cs" />
     <Compile Include="CompProperties_Face.cs" />
     <Compile Include="Enums\Class1.cs" />
+    <Compile Include="Hands\ClutterHandsTDef.cs" />
+    <Compile Include="Components\CompWeaponExtensions.cs" />
+    <Compile Include="Components\CompProperties_WeaponExtensions.cs" />
     <Compile Include="PawnDrawer.cs" />
     <Compile Include="GameComponent_FacialStuff.cs" />
     <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
@@ -211,6 +214,9 @@
     <Content Include="..\..\Defs\MouthDefs\MouthDef.xml">
       <Link>Defs\FacialDefs\MouthDef.xml</Link>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Defs\ThingDefs\Dummy.xml">
+      <Link>Defs\Dummy.xml</Link>
     </Content>
     <Content Include="..\..\Defs\ThinkTreeDefs\SubTrees_MiscFS.xml">
       <Link>Defs\SubTrees_MiscFS.xml</Link>

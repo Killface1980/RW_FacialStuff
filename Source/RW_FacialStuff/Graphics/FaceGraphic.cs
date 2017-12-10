@@ -80,6 +80,8 @@
 
         public Graphic RottingWrinkleGraphic;
 
+        public Graphic HandGraphic;
+
         #endregion Private Fields
 
         #region Public Methods
@@ -104,7 +106,25 @@
 
             this.InitializeGraphicsEyes();
 
+            this.InitializeGraphicsHand();
+
             return true;
+        }
+
+        private void InitializeGraphicsHand()
+        {
+            if (!this.compFace.Props.hasHands)
+            {
+                return;
+            }
+            string texNameHand = "Hands/" + this.pawn.def.defName + "_Hand";
+
+            this.HandGraphic = GraphicDatabase.Get<Graphic_Single>(
+                texNameHand,
+                ShaderDatabase.CutoutSkin,
+                new Vector2(1f, 1f),
+                this.pawn.story.SkinColor,
+                this.pawn.story.SkinColor);
         }
 
         private void InitializeGraphicsBeard()

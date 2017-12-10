@@ -23,6 +23,8 @@ namespace FacialStuff
 
         public List<PawnDrawer> comps = new List<PawnDrawer>();
 
+        public bool hasHands;
+
         public CompProperties_Face()
         {
             this.compClass = typeof(CompFace);

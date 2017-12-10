@@ -14,6 +14,8 @@ namespace FacialStuff
 
     public class HumanDrawer : PawnDrawer
     {
-
+        public HumanDrawer()
+        {
+        }
     }
 }

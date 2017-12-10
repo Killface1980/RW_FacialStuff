@@ -74,7 +74,7 @@
         [CanBeNull]
         private PawnFace pawnFace;
 
-        private int theRoom;
+        private Room theRoom;
 
         #endregion Private Fields
 
@@ -113,7 +113,7 @@
                     Room ownedRoom = this.pawn.ownership?.OwnedRoom;
                     if (ownedRoom != null)
                     {
-                        return ownedRoom.ID == this.TheRoom;
+                        return ownedRoom == this.TheRoom;
                     }
                 }
 
@@ -125,16 +125,11 @@
         {
             get
             {
-                bool room = this.TheRoom > 0;
-                if (room  && !this.pawn.GetRoom().Group.UsesOutdoorTemperature)
+
+                if (this.TheRoom != null && (!this.TheRoom.Group.UsesOutdoorTemperature))
                 {
                     // Pawn is indoors
-                    if (this.pawn.Drafted && Controller.settings.IgnoreWhileDrafted)
-                    {
-                        return false;
-                    }
-
-                    return true;
+                    return !this.pawn.Drafted || !Controller.settings.IgnoreWhileDrafted;
                 }
 
                 return false;
@@ -199,15 +194,22 @@
         #region Private Properties
 
         [CanBeNull]
-        private int TheRoom
+        private Room TheRoom
         {
             get
             {
-                if (Find.TickManager.TicksGame > this.lastRoomCheck + 60f)
+                if (this.pawn.Dead)
                 {
-                    this.theRoom = this.pawn.GetRoom().ID;
-                    this.lastRoomCheck = Find.TickManager.TicksGame;
+                    return null;
                 }
+
+                if ((Find.TickManager.TicksGame < this.lastRoomCheck + 60f))
+                {
+                    return this.theRoom;
+                }
+
+                this.theRoom = this.pawn.GetRoom();
+                this.lastRoomCheck = Find.TickManager.TicksGame;
 
                 return this.theRoom;
             }
@@ -837,7 +839,7 @@
             // Scribe_References.Look(ref this.pawn, "pawn");
             Scribe_Values.Look(ref this.IsChild, "isChild");
 
-            Scribe_Values.Look(ref this.theRoom, "theRoom");
+           // Scribe_References.Look(ref this.theRoom, "theRoom");
 
             Scribe_Values.Look(ref this.lastRoomCheck, "lastRoomCheck");
             Scribe_Values.Look(ref this.Deactivated, "dontrender");
@@ -1037,5 +1039,24 @@
         }
 
         #endregion Private Methods
+
+        public Vector3 FirstHandPosition;
+
+        public Vector3 SecondHandPosition;
+
+
+        public void DrawEquipment(Vector3 rootLoc)
+        {
+            if (this.faceDrawers != null)
+            {
+                int i = 0;
+                int count = this.faceDrawers.Count;
+                while (i < count)
+                {
+                    this.faceDrawers[i].DrawEquipment(rootLoc);
+                    i++;
+                }
+            }
+        }
     }
 }

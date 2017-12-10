@@ -21,6 +21,7 @@
               <li Class ="FacialStuff.HumanDrawer"/>
             <!--  <li Class ="FacialStuff.SecondHeadDrawer"/>-->
             </comps>
+            <hasHands>true</hasHands>
           </li>
         </value>
       </li>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <WHands.ClutterHandsTDef>
+
+    <defName>ClutterHandsSettings</defName>
+    <label>Weapon comp loader</label>
+    <thingClass>Thing</thingClass>
+    <WeaponCompLoader>
+      <li>
+        <firstHandPosition>(-0.3, 0.3, -0.05)</firstHandPosition>
+        <secondHandPosition>(0.2, 0, -0.05)</secondHandPosition>
+        <thingTargets>
+          <li>Gun_BoltActionRifle</li>
+          <li>Gun_SniperRifle</li>
+          <li>Gun_IncendiaryLauncher</li>
+          <li>Gun_ChainShotgun</li>
+          <li>Gun_PumpShotgun</li>
+        </thingTargets>
+      </li>
+
+      <li>
+        <firstHandPosition>(-0.2,0.3,-0.1)</firstHandPosition>
+        <thingTargets>
+          <li>Gun_Autopistol</li>
+          <li>Gun_Revolver</li>
+          <li>Gun_HeavySMG</li>
+        </thingTargets>
+      </li>
+
+      <li>
+        <firstHandPosition>(-0.2,0.3,0)</firstHandPosition>
+        <thingTargets>
+          <li>MeleeWeapon_Knife</li>
+          <li>MeleeWeapon_Shiv</li>
+          <li>MeleeWeapon_Gladius</li>
+          <li>MeleeWeapon_Mace</li>
+        </thingTargets>
+      </li>
+
+      <li>
+        <firstHandPosition>(-0.3,0.3,0)</firstHandPosition>
+        <thingTargets>
+          <li>MeleeWeapon_Club</li>
+          <li>MeleeWeapon_LongSword</li>
+        </thingTargets>
+      </li>
+
+      <li>
+        <firstHandPosition>(-0.25,0.3,0)</firstHandPosition>
+        <thingTargets>
+          <li>Pila</li>
+        </thingTargets>
+      </li>
+
+      <li>
+        <firstHandPosition>(-0.4,0.3,0)</firstHandPosition>
+        <secondHandPosition>(0.2,0,0.1)</secondHandPosition>
+        <thingTargets>
+          <li>Gun_Minigun</li>
+        </thingTargets>
+      </li>
+
+      <li>
+        <firstHandPosition>(0,0.3,-0.2)</firstHandPosition>
+        <thingTargets>
+          <li>Gun_MachinePistol</li>
+        </thingTargets>
+      </li>
+
+      <li>
+        <firstHandPosition>(-0.2,0.3,0)</firstHandPosition>
+        <secondHandPosition>(0.2,0,0)</secondHandPosition>
+        <thingTargets>
+          <li>MeleeWeapon_Spear</li>
+        </thingTargets>
+      </li>
+
+      <li>
+        <firstHandPosition>(-0.3,0.3,-0.05)</firstHandPosition>
+        <secondHandPosition>(0.25,0,-0.05)</secondHandPosition>
+        <thingTargets>
+          <li>Gun_AssaultRifle</li>
+          <li>Gun_LMG</li>
+        </thingTargets>
+      </li>
+
+      <li>
+        <firstHandPosition>(-0.2,0.3,-0.05)</firstHandPosition>
+        <secondHandPosition>(0.25,0,-0.05)</secondHandPosition>
+        <thingTargets>
+          <li>Gun_ChargeRifle</li>
+        </thingTargets>
+      </li>
+
+      <li>
+        <firstHandPosition>(-0.1,0.3,0)</firstHandPosition>
+        <secondHandPosition>(0.1,0,0.02)</secondHandPosition>
+        <thingTargets>
+          <li>Bow_Short</li>
+          <li>Bow_Great</li>
+        </thingTargets>
+      </li>
+
+      <li>
+        <firstHandPosition>(-0.1,0.3,0)</firstHandPosition>
+        <thingTargets>
+          <li>Weapon_GrenadeFrag</li>
+          <li>Weapon_GrenadeEMP</li>
+        </thingTargets>
+      </li>
+
+      <li>
+        <firstHandPosition>(-0.1,0.3,-0.2)</firstHandPosition>
+        <thingTargets>
+          <li>Weapon_GrenadeMolotov</li>
+        </thingTargets>
+      </li>
+
+    </WeaponCompLoader>
+
+  </WHands.ClutterHandsTDef>
+  
+  <!--  <WHands.DefLoader_Extension>
+    <defName>ClutterHandsCompLoader_Extension</defName>
+  </WHands.DefLoader_Extension>
+  -->
+
+</Defs>
