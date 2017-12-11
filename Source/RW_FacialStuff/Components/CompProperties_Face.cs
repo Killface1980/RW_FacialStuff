@@ -11,19 +11,24 @@ namespace FacialStuff
 
     public class CompProperties_Face : CompProperties
     {
-        public bool hasMouth = true;
+        public bool needsBlankHumanHead;
 
-        public bool hasBeard = true;
+        public bool hasMouth;
 
-        public bool hasWrinkles = true;
+        public bool hasBeard;
 
-        public bool hasEyes = true;
+        public bool hasWrinkles;
 
-        public bool canRotateHead = true;
+        public bool hasEyes;
 
-        public List<PawnDrawer> comps = new List<PawnDrawer>();
+        public bool canRotateHead;
 
         public bool hasHands;
+
+        public string handType = "Human";
+
+        public List<PawnDrawer> drawers = new List<PawnDrawer>();
+
 
         public CompProperties_Face()
         {

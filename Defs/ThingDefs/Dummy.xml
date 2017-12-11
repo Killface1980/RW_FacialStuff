@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-  <WHands.ClutterHandsTDef>
+  <FacialStuff.Defs.HandDef>
 
-    <defName>ClutterHandsSettings</defName>
+    <defName>PawnHandSettingsVanilla</defName>
     <label>Weapon comp loader</label>
     <thingClass>Thing</thingClass>
     <WeaponCompLoader>
@@ -118,8 +118,8 @@
 
     </WeaponCompLoader>
 
-  </WHands.ClutterHandsTDef>
-  
+  </FacialStuff.Defs.HandDef>
+
   <!--  <WHands.DefLoader_Extension>
     <defName>ClutterHandsCompLoader_Extension</defName>
   </WHands.DefLoader_Extension>

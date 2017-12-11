@@ -17,11 +17,18 @@
         <xpath>/Defs/ThingDef[defName = "Human"]/comps</xpath>
         <value>
           <li Class = "FacialStuff.CompProperties_Face">
-            <comps>
+            <needsBlankHumanHead>true</needsBlankHumanHead> 
+            <hasMouth>true</hasMouth>
+            <hasBeard>true</hasBeard>
+            <hasWrinkles>true</hasWrinkles>
+            <hasEyes>true</hasEyes>
+            <canRotateHead>true</canRotateHead>
+            <hasHands>true</hasHands>
+            <handType>Human</handType>
+            <drawers>
               <li Class ="FacialStuff.HumanDrawer"/>
             <!--  <li Class ="FacialStuff.SecondHeadDrawer"/>-->
-            </comps>
-            <hasHands>true</hasHands>
+            </drawers>
           </li>
         </value>
       </li>

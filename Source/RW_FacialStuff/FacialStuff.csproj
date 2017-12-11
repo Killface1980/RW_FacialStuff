@@ -83,9 +83,9 @@
     <None Include="Harmony\Optional\AlienPatches.cs" />
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
     <Compile Include="Class1.cs" />
-    <Compile Include="CompProperties_Face.cs" />
+    <Compile Include="Components\CompProperties_Face.cs" />
     <Compile Include="Enums\Class1.cs" />
-    <Compile Include="Hands\ClutterHandsTDef.cs" />
+    <Compile Include="Defs\HandDef.cs" />
     <Compile Include="Components\CompWeaponExtensions.cs" />
     <Compile Include="Components\CompProperties_WeaponExtensions.cs" />
     <Compile Include="PawnDrawer.cs" />
@@ -95,7 +95,7 @@
     <Compile Include="HumanDrawer.cs" />
     <Compile Include="Utilities\CrownTypeChecker.cs" />
     <None Include="FaceEditor\Job_FaceStylingJoy.cs" />
-    <Compile Include="CompFaceEditor.cs" />
+    <Compile Include="Components\CompFaceEditor.cs" />
     <Compile Include="Graphics\FaceMaterial.cs" />
     <Compile Include="Graphics\GraphicVectorMeshSet.cs" />
     <None Include="FacialStuff.ruleset" />
@@ -114,7 +114,7 @@
     <None Include="newStuff\JoyGiver_ChangeAppearance.cs" />
     <Compile Include="Animator\PawnHeadRotator.cs" />
     <Compile Include="Enums\Side.cs" />
-    <Compile Include="Graphics\FaceGraphic.cs" />
+    <Compile Include="Graphics\PawnGraphic.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.cs" />
     <None Include="FaceEditor\UI\DresserUI.cs" />
     <Compile Include="FaceEditor\UI\DTO\DresserDTO.cs" />
@@ -151,7 +151,7 @@
     <Compile Include="Graphics\Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="Graphics\MeshPoolFs.cs" />
     <Compile Include="Harmony\PawnRenderer_Prefix.cs" />
-    <Compile Include="CompFace.cs" />
+    <Compile Include="Components\CompFace.cs" />
     <Compile Include="FaceEditor\ColorPicker\ColorWrapper.cs" />
     <Compile Include="FaceEditor\ColorPicker\Dialog_ColorPicker.cs" />
     <Compile Include="FaceEditor\ColorPicker\ColorHelper.cs" />
@@ -248,9 +248,6 @@
     </Content>
     <Content Include="..\..\Patches\HumanPatchHSK.xml">
       <Link>Patches\HumanPatchHSK.xml</Link>
-    </Content>
-    <Content Include="..\..\Patches\MentalStatePatches.xml">
-      <Link>Patches\MentalStatePatches.xml</Link>
     </Content>
   </ItemGroup>
   <ItemGroup />

@@ -18,6 +18,9 @@
   <Settings.IgnoreWhileDrafted>Ignore the above settings for drafted pawns.</Settings.IgnoreWhileDrafted>
   <Settings.IgnoreWhileDraftedTooltip></Settings.IgnoreWhileDraftedTooltip>
   
+  <Settings.UseHands>Show Hands</Settings.UseHands>
+  <Settings.UseHandsTooltip>Shows hands while pawn is drafted. Vanilla weapons only ATM.</Settings.UseHandsTooltip>
+  
   <Settings.FilterHats>Ignore goggles</Settings.FilterHats>
   <Settings.FilterHatsTooltip>Extra head gear like goggles is not visible on pawns while indoors.</Settings.FilterHatsTooltip>
 

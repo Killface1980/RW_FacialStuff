@@ -13,10 +13,14 @@
 
     public static class GraphicDatabaseHeadRecordsModded
     {
+        #region Public Fields
+
         public static readonly List<HeadGraphicRecordVanillaCustom> HeadsVanillaCustom =
             new List<HeadGraphicRecordVanillaCustom>();
 
-        public static int headIndex;
+        #endregion Public Fields
+
+        #region Private Fields
 
         private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
 
@@ -25,6 +29,10 @@
         private static HeadGraphicRecordVanillaCustom skull;
 
         private static HeadGraphicRecordVanillaCustom stump;
+
+        #endregion Private Fields
+
+        #region Public Methods
 
         public static void BuildDatabaseIfNecessary()
         {
@@ -85,16 +93,30 @@
             stump = null;
         }
 
+        #endregion Public Methods
+
+        #region Public Classes
+
         public class HeadGraphicRecordVanillaCustom
         {
+            #region Public Fields
+
             public CrownType crownType;
 
             public Gender gender;
 
             public string graphicPathVanillaCustom;
 
+            #endregion Public Fields
+
+            #region Private Fields
+
             private readonly List<KeyValuePair<Color, Graphic_Multi>> graphics =
                 new List<KeyValuePair<Color, Graphic_Multi>>();
+
+            #endregion Private Fields
+
+            #region Public Constructors
 
             public HeadGraphicRecordVanillaCustom(string graphicPath)
             {
@@ -117,6 +139,10 @@
                 }
             }
 
+            #endregion Public Constructors
+
+            #region Public Methods
+
             public Graphic_Multi GetGraphic(Color color)
             {
                 for (int i = 0; i < this.graphics.Count; i++)
@@ -135,6 +161,10 @@
                 this.graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphicMultiHead));
                 return graphicMultiHead;
             }
+
+            #endregion Public Methods
         }
+
+        #endregion Public Classes
     }
 }

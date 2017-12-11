@@ -25,13 +25,7 @@
             this.tutorTag = "Face";
         }
 
-        public override bool IsVisible
-        {
-            get
-            {
-                return this.SelPawn.HasCompFace();
-            }
-        }
+        public override bool IsVisible => this.SelPawn.HasCompFace();
 
         public override void OnOpen()
         {
@@ -417,7 +411,7 @@
                                     {
                                         Color color = Color.white;
                                         pawn.GetCompFace(out CompFace comp2);
-                                        comp2.FaceGraphic.MouthGraphic =
+                                        comp2.PawnGraphic.MouthGraphic =
                                             GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                 current.texPath,
                                                 ShaderDatabase.CutoutSkin,

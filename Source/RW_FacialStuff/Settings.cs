@@ -51,6 +51,10 @@ namespace FacialStuff
 
         private bool useWrinkles = true;
 
+        public bool UseHands => this.useHands;
+
+        private bool useHands = true;
+
         #endregion Private Fields
 
         #region Public Properties
@@ -140,7 +144,10 @@ namespace FacialStuff
                 "Settings.SameBeardColor".Translate(),
                 ref this.sameBeardColor,
                 "Settings.SameBeardColorTooltip".Translate());
-
+            list.CheckboxLabeled(
+                "Settings.UseHands".Translate(),
+                ref this.useHands,
+                "Settings.UseHandsTooltip".Translate());
             // list.CheckboxLabeled(
             // "Settings.HideHatWhileRoofed".Translate(),
             // ref this.hideHatWhileRoofed,
@@ -299,6 +306,7 @@ namespace FacialStuff
             Scribe_Values.Look(ref this.hideShellWhileRoofed, "hideShellWhileRoofed", false, true);
             Scribe_Values.Look(ref this.useWrinkles, "useWrinkles", false, true);
             Scribe_Values.Look(ref this.useMouth, "useMouth", false, true);
+            Scribe_Values.Look(ref this.useHands, "useHands");
             Scribe_Values.Look(ref this.mergeHair, "mergeHair", false, true);
             Scribe_Values.Look(ref this.hideHatWhileRoofed, "hideHatWhileRoofed", false, true);
             Scribe_Values.Look(ref this.hideHatInBed, "hideHatInBed", false, true);

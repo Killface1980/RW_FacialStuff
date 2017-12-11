@@ -18,6 +18,9 @@
   <Settings.IgnoreWhileDrafted>Ignoriere die obigen Einstellungen für Krieger mit gezückter Waffe.</Settings.IgnoreWhileDrafted>
   <Settings.IgnoreWhileDraftedTooltip></Settings.IgnoreWhileDraftedTooltip>
 
+  <Settings.UseHands>Zeige Gände</Settings.UseHands>
+  <Settings.UseHandsTooltip>Zeige Hände wenn Waffen gezückt sind. Momentan nur für Vanilla-Waffen.</Settings.UseHandsTooltip>
+  
   <Settings.FilterHats>Ignoriere Brillen</Settings.FilterHats>
   <Settings.FilterHatsTooltip>Sachen für die Augen sind in Räumen nicht sichtbar.</Settings.FilterHatsTooltip>
 

@@ -71,6 +71,8 @@ namespace FacialStuff.Animator
         public PawnEyeWiggler(Pawn p)
         {
             this.pawn = p;
+            this.EyeLeftCanBlink = true;
+            this.EyeRightCanBlink = true;
         }
 
         public bool EyeLeftBlinkNow

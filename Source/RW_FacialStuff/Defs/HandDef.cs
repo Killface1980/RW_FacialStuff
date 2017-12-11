@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Verse;
-using RimWorld;
-using UnityEngine;
-using System.Reflection;
-
-namespace WHands
+﻿namespace FacialStuff.Defs
 {
-    public class ClutterHandsTDef : ThingDef
+    using System.Collections.Generic;
+
+    using UnityEngine;
+
+    using Verse;
+
+    public class HandDef : ThingDef
     {
         #region Public Fields
 

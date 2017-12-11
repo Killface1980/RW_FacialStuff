@@ -16,8 +16,6 @@ namespace FacialStuff
 
     using RimWorld;
 
-    using WHands;
-
     public abstract class PawnDrawer
     {
 
@@ -29,8 +27,6 @@ namespace FacialStuff
         public const float YOffsetOnFace = 0.0001f;
         public CompFace CompFace;
 
-
-
         #endregion Public Fields
 
         #region Protected Constructors
@@ -40,8 +36,6 @@ namespace FacialStuff
         #endregion Protected Constructors
 
         #region Public Methods
-
-
 
         public virtual void ApplyHeadRotation(bool renderBody, ref Rot4 headFacing, ref Quaternion headQuat)
         {
@@ -73,6 +67,13 @@ namespace FacialStuff
         }
 
 
+        public virtual bool CarryWeaponOpenly()
+        {
+            Pawn pawn = this.CompFace.Pawn;
+            return (pawn.carryTracker == null || pawn.carryTracker.CarriedThing == null)
+                   && (pawn.Drafted || (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon)
+                       || (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
+        }
 
         public virtual void DrawAlienBodyAddons(Quaternion quat, Rot4 bodyFacing, Vector3 rootLoc, bool portrait, bool renderBody, PawnGraphicSet graphics)
         {
@@ -134,23 +135,13 @@ namespace FacialStuff
 
             if (beardMat != null)
             {
-                GenDraw.DrawMeshNowOrLater(
-                    headMesh,
-                    locFacialY,
-                    headQuat,
-                    beardMat,
-                    portrait);
+                GenDraw.DrawMeshNowOrLater(headMesh, locFacialY, headQuat, beardMat, portrait);
                 locFacialY.y += YOffsetOnFace;
             }
 
             if (moustacheMatAt != null)
             {
-                GenDraw.DrawMeshNowOrLater(
-                    headMesh,
-                    locFacialY,
-                   headQuat,
-                    moustacheMatAt,
-                 portrait);
+                GenDraw.DrawMeshNowOrLater(headMesh, locFacialY, headQuat, moustacheMatAt, portrait);
                 locFacialY.y += YOffsetOnFace;
             }
         }
@@ -165,6 +156,7 @@ namespace FacialStuff
             bool renderBody,
             bool portrait)
         {
+            // renderBody is AFAIK only used for beds, so ignore it and undress
             if (renderBody || Controller.settings.IgnoreRenderBody)
             {
                 Vector3 loc = rootLoc;
@@ -233,123 +225,10 @@ namespace FacialStuff
             }
         }
 
-        public virtual void DrawHairAndHeadGear(PawnGraphicSet graphics, Vector3 rootLoc, Quaternion headQuat, Rot4 bodyFacing, RotDrawMode bodyDrawType, Rot4 headFacing, bool renderBody, bool portrait, Vector3 b, ref Vector3 currentLoc)
-        {
-            Mesh hairMesh = this.GetPawnHairMesh(headFacing, graphics);
-            List<ApparelGraphicRecord> apparelGraphics = graphics.apparelGraphics;
-            List<ApparelGraphicRecord> headgearGraphics = null;
-            if (!apparelGraphics.NullOrEmpty())
-            {
-                headgearGraphics = apparelGraphics
-                    .Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead).ToList();
-            }
-
-            bool noRenderRoofed = this.CompFace.HideHat;
-            bool noRenderBed = Controller.settings.HideHatInBed && (!renderBody);
-            bool noRenderGoggles = Controller.settings.FilterHats;
-
-            if (!headgearGraphics.NullOrEmpty())
-            {
-                bool filterHeadgear = (portrait && Prefs.HatsOnlyOnMap) || (!portrait && noRenderRoofed);
-
-                // Draw regular hair if appparel or environment allows it (FS feature)
-                if (bodyDrawType != RotDrawMode.Dessicated)
-                {
-                    // draw full or partial hair
-                    bool apCoversFullHead =
-                        headgearGraphics.Any(
-                            x => x.sourceApparel.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)
-                                 && !x.sourceApparel.def.apparel.hatRenderedFrontOfFace);
-
-                    bool apCoversUpperHead =
-                        headgearGraphics.Any(
-                            x => x.sourceApparel.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)
-                                 && !x.sourceApparel.def.apparel.hatRenderedFrontOfFace);
-
-                    if (noRenderBed || filterHeadgear || !apCoversFullHead && !apCoversUpperHead && noRenderGoggles)
-                    {
-                        Material mat = graphics.HairMatAt(headFacing);
-                        GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, mat, portrait);
-                        currentLoc.y += YOffsetOnFace;
-                    }
-                    else if (Controller.settings.MergeHair && !apCoversFullHead)
-                    {
-                        // If not, display the hair cut
-                        HairCutPawn hairPawn = CutHairDB.GetHairCache(this.CompFace.pawn);
-                        Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
-                        if (hairCutMat != null)
-                        {
-                            GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, hairCutMat, portrait);
-                            currentLoc.y += YOffsetOnFace;
-                        }
-                    }
-                }
-                else
-                {
-                    filterHeadgear = false;
-                }
-
-                if (filterHeadgear)
-                {
-                    // Filter the head gear to only show non-hats, show nothing while in bed
-                    if (noRenderGoggles)
-                    {
-                        headgearGraphics = headgearGraphics
-                            .Where(
-                                x => !x.sourceApparel.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)
-                                     && !x.sourceApparel.def.apparel.bodyPartGroups.Contains(
-                                         BodyPartGroupDefOf.UpperHead)).ToList();
-                    }
-                    else
-                    {
-                        // Clear if nothing to show
-                        headgearGraphics.Clear();
-                    }
-                }
-
-                if (noRenderBed)
-                {
-                    headgearGraphics.Clear();
-                }
-
-                // headgearGraphics = headgearGraphics
-                // .OrderBy(x => x.sourceApparel.def.apparel.bodyPartGroups.Max(y => y.listOrder)).ToList();
-                if (!headgearGraphics.NullOrEmpty())
-                {
-                    for (int index = 0; index < headgearGraphics.Count; index++)
-                    {
-                        ApparelGraphicRecord headgearGraphic = headgearGraphics[index];
-                        Material headGearMat = headgearGraphic.graphic.MatAt(headFacing);
-                        headGearMat = graphics.flasher.GetDamagedMat(headGearMat);
-
-                        Vector3 thisLoc = currentLoc;
-                        if (headgearGraphic.sourceApparel.def.apparel.hatRenderedFrontOfFace)
-                        {
-                            thisLoc = rootLoc + b;
-                            thisLoc.y += !(bodyFacing == Rot4.North)
-                                             ? YOffset_PostHead
-                                             : YOffset_Behind;
-                        }
-
-                        GenDraw.DrawMeshNowOrLater(hairMesh, thisLoc, headQuat, headGearMat, portrait);
-                        currentLoc.y += HarmonyPatch_PawnRenderer.YOffset_Head;
-                    }
-                }
-            }
-            else
-            {
-                // Draw regular hair if no hat worn
-                if (bodyDrawType != RotDrawMode.Dessicated)
-                {
-                    Material hairMat = graphics.HairMatAt(headFacing);
-                    GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, hairMat, portrait);
-                }
-            }
-        }
-        // Verse.PawnRenderer
+        // Verse.PawnRenderer - Vanilla with flava
         public virtual void DrawEquipment(Vector3 rootLoc)
         {
-            var pawn = this.CompFace.pawn;
+            var pawn = this.CompFace.Pawn;
 
             if (pawn.Dead || !pawn.Spawned)
             {
@@ -364,6 +243,7 @@ namespace FacialStuff
                 return;
             }
 
+            // New
             CompProperties_WeaponExtensions properties = pawn.equipment.Primary.def.GetCompProperties<CompProperties_WeaponExtensions>();
             if (properties != null)
             {
@@ -375,6 +255,7 @@ namespace FacialStuff
                 this.CompFace.FirstHandPosition = Vector3.zero;
                 this.CompFace.SecondHandPosition = Vector3.zero;
             }
+            // Continue vanilla
 
             Stance_Busy stance_Busy = pawn.stances.curStance as Stance_Busy;
             if (stance_Busy != null && !stance_Busy.neverAimWeapon && stance_Busy.focusTarg.IsValid)
@@ -427,7 +308,8 @@ namespace FacialStuff
 
             }
         }
-        // Verse.PawnRenderer
+
+        // Verse.PawnRenderer - Vanilla code with flava at the end
         public virtual void DrawEquipmentAiming(Thing eq, Vector3 drawLoc, float aimAngle)
         {
             float num = aimAngle - 90f;
@@ -463,23 +345,145 @@ namespace FacialStuff
             }
             UnityEngine.Graphics.DrawMesh(mesh, drawLoc, Quaternion.AngleAxis(num, Vector3.up), matSingle, 0);
 
-            // Now the hands if possible
 
-            if (this.CompFace.Props.hasHands)
+            // Now the hands if possible
+            if (this.CompFace.Props.hasHands && Controller.settings.UseHands)
             {
                 this.DrawHandsAiming(drawLoc, flag, num);
             }
         }
 
+        public virtual void DrawHairAndHeadGear(
+                            PawnGraphicSet graphics,
+            Vector3 rootLoc,
+            Quaternion headQuat,
+            Rot4 bodyFacing,
+            RotDrawMode bodyDrawType,
+            Rot4 headFacing,
+            bool renderBody,
+            bool portrait,
+            Vector3 b,
+            ref Vector3 currentLoc)
+        {
+            Mesh hairMesh = this.GetPawnHairMesh(headFacing, graphics);
+            List<ApparelGraphicRecord> apparelGraphics = graphics.apparelGraphics;
+            List<ApparelGraphicRecord> headgearGraphics = null;
+            if (!apparelGraphics.NullOrEmpty())
+            {
+                headgearGraphics = apparelGraphics
+                    .Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead).ToList();
+            }
+
+            bool noRenderRoofed = this.CompFace.HideHat;
+            bool noRenderBed = Controller.settings.HideHatInBed && (!renderBody);
+            bool noRenderGoggles = Controller.settings.FilterHats;
+
+            if (!headgearGraphics.NullOrEmpty())
+            {
+                bool filterHeadgear = (portrait && Prefs.HatsOnlyOnMap) || (!portrait && noRenderRoofed);
+
+                // Draw regular hair if appparel or environment allows it (FS feature)
+                if (bodyDrawType != RotDrawMode.Dessicated)
+                {
+                    // draw full or partial hair
+                    bool apCoversFullHead =
+                        headgearGraphics.Any(
+                            x => x.sourceApparel.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)
+                                 && !x.sourceApparel.def.apparel.hatRenderedFrontOfFace);
+
+                    bool apCoversUpperHead =
+                        headgearGraphics.Any(
+                            x => x.sourceApparel.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)
+                                 && !x.sourceApparel.def.apparel.hatRenderedFrontOfFace);
+
+                    if (noRenderBed || filterHeadgear || !apCoversFullHead && !apCoversUpperHead && noRenderGoggles)
+                    {
+                        Material mat = graphics.HairMatAt(headFacing);
+                        GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, mat, portrait);
+                        currentLoc.y += YOffsetOnFace;
+                    }
+                    else if (Controller.settings.MergeHair && !apCoversFullHead)
+                    {
+                        // If not, display the hair cut
+                        HairCutPawn hairPawn = CutHairDB.GetHairCache(this.CompFace.Pawn);
+                        Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
+                        if (hairCutMat != null)
+                        {
+                            GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, hairCutMat, portrait);
+                            currentLoc.y += YOffsetOnFace;
+                        }
+                    }
+                }
+                else
+                {
+                    filterHeadgear = false;
+                }
+
+                if (filterHeadgear)
+                {
+                    // Filter the head gear to only show non-hats, show nothing while in bed
+                    if (noRenderGoggles)
+                    {
+                        headgearGraphics = headgearGraphics
+                            .Where(
+                                x => !x.sourceApparel.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)
+                                     && !x.sourceApparel.def.apparel.bodyPartGroups.Contains(
+                                         BodyPartGroupDefOf.UpperHead)).ToList();
+                    }
+                    else
+                    {
+                        // Clear if nothing to show
+                        headgearGraphics.Clear();
+                    }
+                }
+
+                if (noRenderBed)
+                {
+                    headgearGraphics?.Clear();
+                }
+
+                // headgearGraphics = headgearGraphics
+                // .OrderBy(x => x.sourceApparel.def.apparel.bodyPartGroups.Max(y => y.listOrder)).ToList();
+                if (!headgearGraphics.NullOrEmpty())
+                {
+                    for (int index = 0; index < headgearGraphics?.Count; index++)
+                    {
+                        ApparelGraphicRecord headgearGraphic = headgearGraphics[index];
+                        Material headGearMat = headgearGraphic.graphic.MatAt(headFacing);
+                        headGearMat = graphics.flasher.GetDamagedMat(headGearMat);
+
+                        Vector3 thisLoc = currentLoc;
+                        if (headgearGraphic.sourceApparel.def.apparel.hatRenderedFrontOfFace)
+                        {
+                            thisLoc = rootLoc + b;
+                            thisLoc.y += !(bodyFacing == Rot4.North) ? YOffset_PostHead : YOffset_Behind;
+                        }
+
+                        GenDraw.DrawMeshNowOrLater(hairMesh, thisLoc, headQuat, headGearMat, portrait);
+                        currentLoc.y += HarmonyPatch_PawnRenderer.YOffset_Head;
+                    }
+                }
+            }
+            else
+            {
+                // Draw regular hair if no hat worn
+                if (bodyDrawType != RotDrawMode.Dessicated)
+                {
+                    Material hairMat = graphics.HairMatAt(headFacing);
+                    GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, hairMat, portrait);
+                }
+            }
+        }
+
         public virtual void DrawHandsAiming(Vector3 drawLoc, bool flag, float num)
         {
-            if (this.CompFace.FaceGraphic.HandGraphic != null)
+            if (this.CompFace.PawnGraphic.HandGraphic != null)
             {
-                Material handGraphicMatSingle = this.CompFace.FaceGraphic.HandGraphic.MatSingle;
+                Material handGraphicMatSingle = this.CompFace.PawnGraphic.HandGraphic.MatSingle;
 
                 if (handGraphicMatSingle != null)
                 {
-                    handGraphicMatSingle.color = this.CompFace.pawn.story.SkinColor;
+                    handGraphicMatSingle.color = this.CompFace.Pawn.story.SkinColor;
                     if (this.CompFace.FirstHandPosition != Vector3.zero)
                     {
                         float num2 = this.CompFace.FirstHandPosition.x;
@@ -515,84 +519,6 @@ namespace FacialStuff
                             handGraphicMatSingle,
                             0);
                     }
-                }
-            }
-        }
-
-        public virtual bool CarryWeaponOpenly()
-        {
-            var pawn = this.CompFace.pawn;
-            return (pawn.carryTracker == null || pawn.carryTracker.CarriedThing == null)
-                   && (pawn.Drafted || (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon)
-                       || (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
-        }
-
-
-        public virtual void DrawHandsAiming(Thing eq, Vector3 drawLoc, float aimAngle)
-        {
-            if (this.CompFace.FaceGraphic.HandGraphic == null)
-            {
-                return;
-            }
-            bool flag = false;
-            Pawn pawn = this.CompFace.pawn;
-            float num = aimAngle - 90f;
-            if (aimAngle > 20f && aimAngle < 160f)
-            {
-                num += eq.def.equippedAngleOffset;
-            }
-            else if (aimAngle > 200f && aimAngle < 340f)
-            {
-                num -= 180f;
-                num -= eq.def.equippedAngleOffset;
-                flag = true;
-            }
-            else
-            {
-                num += eq.def.equippedAngleOffset;
-            }
-
-            num %= 360f;
-
-            Material matSingle = this.CompFace.FaceGraphic.HandGraphic.MatSingle;
-
-            if (matSingle != null)
-            {
-                matSingle.color = pawn.story.SkinColor;
-                if (this.CompFace.FirstHandPosition != Vector3.zero)
-                {
-                    float num2 = this.CompFace.FirstHandPosition.x;
-                    float z = this.CompFace.FirstHandPosition.z;
-                    float y = this.CompFace.FirstHandPosition.y;
-                    if (flag)
-                    {
-                        num2 = -num2;
-                    }
-
-                    UnityEngine.Graphics.DrawMesh(
-                        MeshPool.plane10,
-                        drawLoc + new Vector3(num2, y, z).RotatedBy(num),
-                        Quaternion.AngleAxis(num, Vector3.up),
-                        matSingle,
-                        0);
-                }
-
-                if (this.CompFace.SecondHandPosition != Vector3.zero)
-                {
-                    float num3 = this.CompFace.SecondHandPosition.x;
-                    float z2 = this.CompFace.SecondHandPosition.z;
-                    float y2 = this.CompFace.SecondHandPosition.y;
-                    if (flag)
-                    {
-                        num3 = -num3;
-                    }
-
-                    UnityEngine.Graphics.DrawMesh(
-                        MeshPool.plane10,
-                        drawLoc + new Vector3(num3, y2, z2).RotatedBy(num),
-                        Quaternion.AngleAxis(num, Vector3.up),
-                        matSingle,
-                        0);
                 }
             }
         }
@@ -690,13 +616,21 @@ namespace FacialStuff
 
         public virtual void DrawWrinkles(Quaternion headQuat, Rot4 headFacing, RotDrawMode bodyDrawType, bool portrait, ref Vector3 locFacialY)
         {
-            Material wrinkleMat = this.CompFace.FaceMaterial.WrinkleMatAt(headFacing, bodyDrawType);
-            if (wrinkleMat != null)
+            if (!Controller.settings.UseWrinkles)
             {
-                Mesh headMesh = this.GetPawnMesh(headFacing, false);
-                GenDraw.DrawMeshNowOrLater(headMesh, locFacialY, headQuat, wrinkleMat, portrait);
-                locFacialY.y += YOffsetOnFace;
+                return;
             }
+
+            Material wrinkleMat = this.CompFace.FaceMaterial.WrinkleMatAt(headFacing, bodyDrawType);
+
+            if (wrinkleMat == null)
+            {
+                return;
+            }
+
+            Mesh headMesh = this.GetPawnMesh(headFacing, false);
+            GenDraw.DrawMeshNowOrLater(headMesh, locFacialY, headQuat, wrinkleMat, portrait);
+            locFacialY.y += YOffsetOnFace;
         }
 
         public virtual Vector3 EyeOffset(Rot4 headFacing)

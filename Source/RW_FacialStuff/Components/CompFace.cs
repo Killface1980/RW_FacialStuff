@@ -25,8 +25,8 @@
 
         public bool Deactivated;
 
-        [NotNull]
-        public FaceGraphic FaceGraphic = new FaceGraphic();
+        [CanBeNull]
+        public PawnGraphic PawnGraphic;
 
         public bool hasNaturalJaw = true;
         public bool IgnoreRenderer;
@@ -56,7 +56,7 @@
         [NotNull]
         private PawnEyeWiggler eyeWiggler;
 
-        private List<PawnDrawer> faceDrawers;
+        private List<PawnDrawer> pawnDrawers;
 
         private FaceMaterial faceMaterial;
 
@@ -108,9 +108,9 @@
         {
             get
             {
-                if (this.InRoom && !this.pawn.IsPrisoner)
+                if (this.InRoom && !this.Pawn.IsPrisoner)
                 {
-                    Room ownedRoom = this.pawn.ownership?.OwnedRoom;
+                    Room ownedRoom = this.Pawn.ownership?.OwnedRoom;
                     if (ownedRoom != null)
                     {
                         return ownedRoom == this.TheRoom;
@@ -129,7 +129,7 @@
                 if (this.TheRoom != null && (!this.TheRoom.Group.UsesOutdoorTemperature))
                 {
                     // Pawn is indoors
-                    return !this.pawn.Drafted || !Controller.settings.IgnoreWhileDrafted;
+                    return !this.Pawn.Drafted || !Controller.settings.IgnoreWhileDrafted;
                 }
 
                 return false;
@@ -150,9 +150,9 @@
         }
 
         [NotNull]
-        public Pawn pawn => this.parent as Pawn;
+        public Pawn Pawn => this.parent as Pawn;
 
-        public CrownType PawnCrownType => this.pawn?.story.crownType ?? CrownType.Average;
+        public CrownType PawnCrownType => this.Pawn?.story.crownType ?? CrownType.Average;
 
         [CanBeNull]
         public PawnFace PawnFace => this.pawnFace;
@@ -161,17 +161,17 @@
         {
             get
             {
-                if (this.pawn.story?.HeadGraphicPath == null)
+                if (this.Pawn.story?.HeadGraphicPath == null)
                 {
                     return HeadType.Normal;
                 }
 
-                if (this.pawn.story.HeadGraphicPath.Contains("Pointy"))
+                if (this.Pawn.story.HeadGraphicPath.Contains("Pointy"))
                 {
                     return HeadType.Pointy;
                 }
 
-                if (this.pawn.story.HeadGraphicPath.Contains("Wide"))
+                if (this.Pawn.story.HeadGraphicPath.Contains("Wide"))
                 {
                     return HeadType.Wide;
                 }
@@ -198,7 +198,7 @@
         {
             get
             {
-                if (this.pawn.Dead)
+                if (this.Pawn.Dead)
                 {
                     return null;
                 }
@@ -208,7 +208,7 @@
                     return this.theRoom;
                 }
 
-                this.theRoom = this.pawn.GetRoom();
+                this.theRoom = this.Pawn.GetRoom();
                 this.lastRoomCheck = Find.TickManager.TicksGame;
 
                 return this.theRoom;
@@ -221,13 +221,13 @@
 
         public void ApplyHeadRotation(bool renderBody, ref Rot4 headFacing, ref Quaternion headQuat)
         {
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].ApplyHeadRotation(renderBody, ref headFacing, ref headQuat);
+                    this.pawnDrawers[i].ApplyHeadRotation(renderBody, ref headFacing, ref headQuat);
                     i++;
                 }
             }
@@ -236,7 +236,7 @@
         // only for development
         public Vector3 BaseEyeOffsetAt(Rot4 rotation)
         {
-            bool male = this.pawn.gender == Gender.Male;
+            bool male = this.Pawn.gender == Gender.Male;
 
             if (this.PawnCrownType == CrownType.Average)
             {
@@ -333,7 +333,7 @@
         // only for development
         public Vector3 BaseMouthOffsetAt(Rot4 rotation)
         {
-            bool male = this.pawn.gender == Gender.Male;
+            bool male = this.Pawn.gender == Gender.Male;
 
             if (this.PawnCrownType == CrownType.Average)
             {
@@ -409,7 +409,7 @@
         [NotNull]
         public string BrowTexPath([NotNull] BrowDef browDef)
         {
-            return "Brows/Brow_" + this.pawn.gender + "_" + browDef.texPath;
+            return "Brows/Brow_" + this.Pawn.gender + "_" + browDef.texPath;
         }
 
         // Can be called externally
@@ -421,25 +421,29 @@
             }
 
             // no head => no face
-            if (!this.pawn.health.hediffSet.HasHead)
+            if (!this.Pawn.health.hediffSet.HasHead)
             {
                 return;
             }
 
-            List<BodyPartRecord> body = this.pawn?.RaceProps?.body?.AllParts;
-            List<Hediff> hediffs = this.pawn?.health?.hediffSet?.hediffs;
-
-            if (hediffs.NullOrEmpty() || body.NullOrEmpty())
+            List<BodyPartRecord> allParts = this.Pawn?.RaceProps?.body?.AllParts;
+            if (allParts != null)
             {
-                // || hediffs.Any(x => x.def == HediffDefOf.MissingBodyPart && x.Part.def == BodyPartDefOf.Head))
-                return;
-            }
+                List<BodyPartRecord> body = allParts;
+                List<Hediff> hediffs = this.Pawn?.health?.hediffSet?.hediffs;
 
-            // ReSharper disable once AssignNullToNotNullAttribute
-            foreach (Hediff diff in hediffs.Where(diff => diff?.def?.defName != null))
-            {
+                if (hediffs.NullOrEmpty() || body.NullOrEmpty())
+                {
+                    // || hediffs.Any(x => x.def == HediffDefOf.MissingBodyPart && x.Part.def == BodyPartDefOf.Head))
+                    return;
+                }
+
                 // ReSharper disable once AssignNullToNotNullAttribute
-                this.CheckPart(body, diff);
+                foreach (Hediff diff in hediffs.Where(diff => diff?.def?.defName != null))
+                {
+                    // ReSharper disable once AssignNullToNotNullAttribute
+                    this.CheckPart(body, diff);
+                }
             }
         }
 
@@ -452,13 +456,13 @@
 
         public void DrawAlienBodyAddons(Quaternion quat, Rot4 bodyFacing, Vector3 vector, bool portrait, bool renderBody, PawnGraphicSet graphics)
         {
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawAlienBodyAddons(quat, bodyFacing, vector, portrait, renderBody, graphics);
+                    this.pawnDrawers[i].DrawAlienBodyAddons(quat, bodyFacing, vector, portrait, renderBody, graphics);
                     i++;
                 }
             }
@@ -466,13 +470,13 @@
 
         public void DrawAlienHeadAddons(bool portrait, Quaternion headQuat, Rot4 headFacing, Vector3 currentLoc)
         {
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawAlienHeadAddons(portrait, headQuat, headFacing, currentLoc);
+                    this.pawnDrawers[i].DrawAlienHeadAddons(portrait, headQuat, headFacing, currentLoc);
                     i++;
                 }
             }
@@ -480,13 +484,13 @@
 
         public void DrawApparel(Quaternion quat, Rot4 bodyFacing, Vector3 vector, bool portrait, bool renderBody, PawnGraphicSet graphics)
         {
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawApparel(graphics, quat, bodyFacing, vector, renderBody, portrait);
+                    this.pawnDrawers[i].DrawApparel(graphics, quat, bodyFacing, vector, renderBody, portrait);
                     i++;
                 }
             }
@@ -503,13 +507,13 @@
                     Quaternion headQuat)
         {
             headDrawn = false;
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawBasicHead(
+                    this.pawnDrawers[i].DrawBasicHead(
                         graphics,
                         headQuat,
                         headFacing,
@@ -525,13 +529,13 @@
 
         public void DrawBeardAndTache(ref Vector3 locFacialY, bool portrait, Rot4 headFacing, Quaternion headQuat)
         {
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawBeardAndTache(headQuat, headFacing, portrait, ref locFacialY);
+                    this.pawnDrawers[i].DrawBeardAndTache(headQuat, headFacing, portrait, ref locFacialY);
                     i++;
                 }
             }
@@ -547,13 +551,13 @@
                     bool renderBody,
                     bool portrait)
         {
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawBody(
+                    this.pawnDrawers[i].DrawBody(
                         graphics,
                         woundDrawer,
                         rootLoc,
@@ -569,13 +573,13 @@
 
         public void DrawBrows(ref Vector3 locFacialY, Rot4 headFacing, Quaternion headQuat, bool portrait)
         {
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawBrows(headQuat, headFacing, portrait, ref locFacialY);
+                    this.pawnDrawers[i].DrawBrows(headQuat, headFacing, portrait, ref locFacialY);
                     i++;
                 }
             }
@@ -593,13 +597,13 @@
                     bool renderBody,
                     Quaternion headQuat)
         {
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawHairAndHeadGear(
+                    this.pawnDrawers[i].DrawHairAndHeadGear(
                         graphics,
                         rootLoc,
                         headQuat,
@@ -625,13 +629,13 @@
         // }
         public void DrawHeadOverlays(Rot4 headFacing, PawnHeadOverlays headOverlays, Vector3 bodyLoc, Quaternion headQuat)
         {
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawHeadOverlays(headFacing, headOverlays, bodyLoc, headQuat);
+                    this.pawnDrawers[i].DrawHeadOverlays(headFacing, headOverlays, bodyLoc, headQuat);
                     i++;
                 }
             }
@@ -639,13 +643,13 @@
 
         public void DrawNaturalEyes(ref Vector3 locFacialY, bool portrait, Rot4 headFacing, Quaternion headQuat)
         {
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawNaturalEyes(headQuat, headFacing, portrait, ref locFacialY);
+                    this.pawnDrawers[i].DrawNaturalEyes(headQuat, headFacing, portrait, ref locFacialY);
                     i++;
                 }
             }
@@ -653,13 +657,13 @@
 
         public void DrawNaturalMouth(ref Vector3 locFacialY, bool portrait, Rot4 headFacing, Quaternion headQuat)
         {
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawNaturalMouth(headQuat, headFacing, portrait, ref locFacialY);
+                    this.pawnDrawers[i].DrawNaturalMouth(headQuat, headFacing, portrait, ref locFacialY);
                     i++;
                 }
             }
@@ -667,13 +671,13 @@
 
         public void DrawUnnaturalEyeParts(ref Vector3 locFacialY, Quaternion headQuat, Rot4 headFacing, bool portrait)
         {
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawUnnaturalEyeParts(headQuat, headFacing, portrait, ref locFacialY);
+                    this.pawnDrawers[i].DrawUnnaturalEyeParts(headQuat, headFacing, portrait, ref locFacialY);
                     i++;
                 }
             }
@@ -681,13 +685,13 @@
 
         public void DrawWrinkles(RotDrawMode bodyDrawType, ref Vector3 locFacialY, Rot4 headFacing, Quaternion headQuat, bool portrait)
         {
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawWrinkles(headQuat, headFacing, bodyDrawType, portrait, ref locFacialY);
+                    this.pawnDrawers[i].DrawWrinkles(headQuat, headFacing, bodyDrawType, portrait, ref locFacialY);
                     i++;
                 }
             }
@@ -703,7 +707,7 @@
         public string EyeTexPath([NotNull] string eyeDefPath, Side side)
         {
             // ReSharper disable once PossibleNullReferenceException
-            string path = "Eyes/Eye_" + eyeDefPath + "_" + this.pawn.gender + "_" + side;
+            string path = "Eyes/Eye_" + eyeDefPath + "_" + this.Pawn.gender + "_" + side;
 
             return path;
         }
@@ -731,14 +735,14 @@
 
         public void InitializePawnDrawer()
         {
-            if (this.Props.comps.Any())
+            if (this.Props.drawers.Any())
             {
-                this.faceDrawers = new List<PawnDrawer>();
-                for (int i = 0; i < this.Props.comps.Count; i++)
+                this.pawnDrawers = new List<PawnDrawer>();
+                for (int i = 0; i < this.Props.drawers.Count; i++)
                 {
-                    PawnDrawer thingComp = (PawnDrawer)Activator.CreateInstance(this.Props.comps[i].GetType());
+                    PawnDrawer thingComp = (PawnDrawer)Activator.CreateInstance(this.Props.drawers[i].GetType());
                     thingComp.CompFace = this;
-                    this.faceDrawers.Add(thingComp);
+                    this.pawnDrawers.Add(thingComp);
                     thingComp.Initialize();
                 }
             }
@@ -751,7 +755,7 @@
             {
                 this.cachedNakedMatsBodyBase.Clear();
                 this.cachedNakedMatsBodyBaseHash = num;
-                PawnGraphicSet graphics = this.pawn.Drawer.renderer.graphics;
+                PawnGraphicSet graphics = this.Pawn.Drawer.renderer.graphics;
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
                     this.cachedNakedMatsBodyBase.Add(graphics.nakedGraphic.MatAt(facing, null));
@@ -769,7 +773,7 @@
                 {
                     ApparelLayer lastLayer = graphics.apparelGraphics[i].sourceApparel.def.apparel.LastLayer;
 
-                    if (this.pawn.Dead)
+                    if (this.Pawn.Dead)
                     {
                         if (lastLayer != ApparelLayer.Shell && lastLayer != ApparelLayer.Overhead)
                         {
@@ -787,7 +791,7 @@
             base.PostDraw();
 
             // Children & Pregnancy || Werewolves transformed
-            if (this.pawn.Map == null || !this.pawn.Spawned || this.pawn.Dead || this.IsChild || this.Deactivated)
+            if (this.Pawn.Map == null || !this.Pawn.Spawned || this.Pawn.Dead || this.IsChild || this.Deactivated)
             {
                 return;
             }
@@ -817,7 +821,7 @@
             {
                 if (Find.TickManager.TicksGame % 30 == 0)
                 {
-                    this.FaceGraphic.SetMouthAccordingToMoodLevel();
+                    this.PawnGraphic.SetMouthAccordingToMoodLevel();
                 }
             }
         }
@@ -839,7 +843,7 @@
             // Scribe_References.Look(ref this.pawn, "pawn");
             Scribe_Values.Look(ref this.IsChild, "isChild");
 
-           // Scribe_References.Look(ref this.theRoom, "theRoom");
+            // Scribe_References.Look(ref this.theRoom, "theRoom");
 
             Scribe_Values.Look(ref this.lastRoomCheck, "lastRoomCheck");
             Scribe_Values.Look(ref this.Deactivated, "dontrender");
@@ -862,12 +866,6 @@
             // }
         }
 
-        // Only call this AFTER the FaceGraphic is set!!!
-        public void SetFaceMaterial()
-        {
-            this.faceMaterial = new FaceMaterial(this, this.FaceGraphic);
-        }
-
         /// <summary>
         /// Basic pawn initialization.
         /// </summary>
@@ -877,30 +875,42 @@
         /// <returns>
         /// Success if all initialized.
         /// </returns>
-        public bool SetHeadType([NotNull] Pawn p)
+        public bool InitializeCompFace()
         {
+
             if (this.originFaction == null)
             {
-                this.factionInt = this.pawn.Faction ?? Faction.OfPlayer;
+                this.factionInt = this.Pawn.Faction ?? Faction.OfPlayer;
             }
-
             if (this.PawnFace == null)
             {
-                this.SetPawnFace(new PawnFace(this.pawn, this.originFaction.def));
+                this.SetPawnFace(new PawnFace(this.Pawn, this.originFaction.def));
+            }
+
+            // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
+            if (this.PawnFace?.EyeDef == null || this.PawnFace.BrowDef == null || this.PawnFace.BeardDef == null)
+            {
+                this.SetPawnFace(new PawnFace(this.Pawn, Faction.OfPlayer.def));
+            }
+
+            // Only for the crowntype ...
+            CrownTypeChecker.SetHeadOffsets(this.Pawn, this);
+
+            this.PawnGraphic = new PawnGraphic(this);
+
+            this.faceMaterial = new FaceMaterial(this, this.PawnGraphic);
+            if (this.Props.hasEyes)
+            {
+                this.eyeWiggler = new PawnEyeWiggler(this.Pawn);
             }
 
             // this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
-            this.eyeWiggler = new PawnEyeWiggler(this.pawn);
-            this.headRotator = new PawnHeadRotator(this.pawn);
+            this.headRotator = new PawnHeadRotator(this.Pawn);
 
             // this.headWiggler = new PawnHeadWiggler(this.pawn);
 
             // ReSharper disable once PossibleNullReferenceException
-            this.ResetBoolsAndPaths();
             this.CheckForAddedOrMissingParts();
-
-            // Only for the crowntype ...
-            CrownTypeChecker.SetHeadOffsets(this.pawn, this);
 
             this.InitializePawnDrawer();
 
@@ -920,7 +930,7 @@
             {
                 this.cachedSkinMatsBodyBase.Clear();
                 this.cachedSkinMatsBodyBaseHash = num;
-                PawnGraphicSet graphics = this.pawn.Drawer.renderer.graphics;
+                PawnGraphicSet graphics = this.Pawn.Drawer.renderer.graphics;
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
                     this.cachedSkinMatsBodyBase.Add(graphics.nakedGraphic.MatAt(facing, null));
@@ -969,21 +979,27 @@
             {
                 if (hediff.def?.defName != null && hediff.Part != null)
                 {
-                    if (hediff.Part == leftEye)
+                    if (this.Props.hasEyes)
                     {
-                        this.FaceGraphic.texPathEyeLeftPatch = "AddedParts/" + hediff.def.defName + "_Left" + "_"
-                                                   + this.PawnCrownType;
+                        if (hediff.Part == leftEye)
+                        {
+                            this.PawnGraphic.texPathEyeLeftPatch = "AddedParts/" + hediff.def.defName + "_Left" + "_"
+                                                       + this.PawnCrownType;
+                        }
+
+                        if (hediff.Part == rightEye)
+                        {
+                            this.PawnGraphic.texPathEyeRightPatch = "AddedParts/" + hediff.def.defName + "_Right" + "_"
+                                                        + this.PawnCrownType;
+                        }
                     }
 
-                    if (hediff.Part == rightEye)
+                    if (this.Props.hasMouth)
                     {
-                        this.FaceGraphic.texPathEyeRightPatch = "AddedParts/" + hediff.def.defName + "_Right" + "_"
-                                                    + this.PawnCrownType;
-                    }
-
-                    if (hediff.Part == jaw)
-                    {
-                        this.FaceGraphic.texPathJawAddedPart = "Mouth/Mouth_" + hediff.def.defName;
+                        if (hediff.Part == jaw)
+                        {
+                            this.PawnGraphic.texPathJawAddedPart = "Mouth/Mouth_" + hediff.def.defName;
+                        }
                     }
                 }
             }
@@ -992,50 +1008,27 @@
             {
                 return;
             }
-
-            if (leftEye != null && hediff.Part == leftEye)
+            if (this.Props.hasEyes)
             {
-                this.FaceGraphic.texPathEyeLeft = this.EyeTexPath("Missing", Side.Left);
-                this.EyeWiggler.EyeLeftCanBlink = false;
-            }
+                if (leftEye != null && hediff.Part == leftEye)
+                {
+                    this.PawnGraphic.texPathEyeLeft = this.EyeTexPath("Missing", Side.Left);
+                    this.EyeWiggler.EyeLeftCanBlink = false;
+                }
 
-            // ReSharper disable once InvertIf
-            if (rightEye != null && hediff.Part == rightEye)
-            {
-                this.FaceGraphic.texPathEyeRight = this.EyeTexPath("Missing", Side.Right);
-                this.EyeWiggler.EyeRightCanBlink = false;
+                // ReSharper disable once InvertIf
+                if (rightEye != null && hediff.Part == rightEye)
+                {
+                    this.PawnGraphic.texPathEyeRight = this.EyeTexPath("Missing", Side.Right);
+                    this.EyeWiggler.EyeRightCanBlink = false;
+                }
             }
         }
 
         [NotNull]
-        private string EyeClosedTexPath(Side side)
+        public string EyeClosedTexPath(Side side)
         {
             return this.EyeTexPath("Closed", side);
-        }
-
-        private void ResetBoolsAndPaths()
-        {
-            // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
-            if (this.PawnFace?.EyeDef == null || this.PawnFace.BrowDef == null || this.PawnFace.BeardDef == null)
-            {
-                this.SetPawnFace(new PawnFace(this.pawn, Faction.OfPlayer.def));
-            }
-
-            this.FaceGraphic.texPathEyeLeftPatch = null;
-            this.FaceGraphic.texPathEyeRightPatch = null;
-            this.FaceGraphic.texPathJawAddedPart = null;
-
-            EyeDef pawnFaceEyeDef = this.PawnFace.EyeDef;
-            this.FaceGraphic.texPathEyeRight = this.EyeTexPath(pawnFaceEyeDef.texPath, Side.Right);
-            this.FaceGraphic.texPathEyeLeft = this.EyeTexPath(pawnFaceEyeDef.texPath, Side.Left);
-
-            this.FaceGraphic.texPathEyeRightClosed = this.EyeClosedTexPath(Side.Right);
-            this.FaceGraphic.texPathEyeLeftClosed = this.EyeClosedTexPath(Side.Left);
-
-            this.EyeWiggler.EyeLeftCanBlink = true;
-            this.EyeWiggler.EyeRightCanBlink = true;
-
-            this.FaceGraphic.texPathBrow = this.BrowTexPath(this.PawnFace.BrowDef);
         }
 
         #endregion Private Methods
@@ -1047,13 +1040,13 @@
 
         public void DrawEquipment(Vector3 rootLoc)
         {
-            if (this.faceDrawers != null)
+            if (this.pawnDrawers != null)
             {
                 int i = 0;
-                int count = this.faceDrawers.Count;
+                int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.faceDrawers[i].DrawEquipment(rootLoc);
+                    this.pawnDrawers[i].DrawEquipment(rootLoc);
                     i++;
                 }
             }

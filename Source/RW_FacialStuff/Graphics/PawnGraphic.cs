@@ -1,6 +1,7 @@
 ﻿namespace FacialStuff.Graphics
 {
     using FacialStuff.Defs;
+    using FacialStuff.Enums;
 
     using JetBrains.Annotations;
 
@@ -8,8 +9,9 @@
 
     using Verse;
 
-    public class FaceGraphic
+    public class PawnGraphic
     {
+
         #region Public Fields
 
         public Graphic BrowGraphic;
@@ -31,6 +33,9 @@
         public Graphic_Multi_AddedHeadParts EyeRightPatchGraphic;
 
         [CanBeNull]
+        public Graphic HandGraphic;
+
+        [CanBeNull]
         public Graphic_Multi_NaturalHeadParts JawGraphic;
 
         public Graphic MainBeardGraphic;
@@ -40,6 +45,8 @@
 
         public HumanMouthGraphics mouthgraphic;
         public Graphic_Multi_NaturalHeadParts MouthGraphic;
+
+        public Graphic RottingWrinkleGraphic;
 
         [CanBeNull]
         public string texPathBrow;
@@ -72,60 +79,93 @@
         #region Private Fields
 
         [NotNull]
-        private CompFace compFace;
+        private readonly CompFace compFace;
 
         private float mood = 0.5f;
 
-        private Pawn pawn;
+        private readonly Pawn pawn;
 
-        public Graphic RottingWrinkleGraphic;
+        public PawnGraphic(CompFace compFace)
+        {
+            this.compFace = compFace;
+            this.pawn = compFace.Pawn;
 
-        public Graphic HandGraphic;
+
+            if (this.compFace.Props.hasWrinkles)
+            {
+                this.InitializeGraphicsWrinkles();
+            }
+
+            if (this.compFace.Props.hasBeard)
+            {
+                this.InitializeGraphicsBeard();
+            }
+
+            if (this.compFace.Props.hasEyes)
+            {
+
+                EyeDef pawnFaceEyeDef = this.compFace.PawnFace.EyeDef;
+                this.texPathEyeRight = this.compFace.EyeTexPath(pawnFaceEyeDef.texPath, Side.Right);
+                this.texPathEyeLeft = this.compFace.EyeTexPath(pawnFaceEyeDef.texPath, Side.Left);
+                this.texPathEyeLeftClosed = this.compFace.EyeClosedTexPath(Side.Left);
+                this.texPathEyeRightClosed = this.compFace.EyeClosedTexPath(Side.Right);
+
+                this.InitializeGraphicsEyes();
+
+                this.texPathBrow = this.compFace.BrowTexPath(this.compFace.PawnFace.BrowDef);
+                this.InitializeGraphicsBrows();
+            }
+            if (this.compFace.Props.hasMouth)
+            {
+                this.mouthgraphic = new HumanMouthGraphics(this.pawn);
+                this.InitializeGraphicsMouth();
+            }
+
+            if (this.compFace.Props.hasHands)
+            {
+                this.InitializeGraphicsHand();
+            }
+        }
 
         #endregion Private Fields
 
         #region Public Methods
 
-        /// <summary>
-        ///     Initializes Facial stuff graphics.
-        /// </summary>
-        /// <returns>True if all went well.</returns>
-        public bool InitializeGraphics(CompFace compFace)
+
+        public void SetMouthAccordingToMoodLevel()
         {
-            this.compFace = compFace;
-            this.pawn = compFace.pawn;
-            this.mouthgraphic = new HumanMouthGraphics(this.pawn);
-
-            this.InitializeGraphicsWrinkles();
-
-            this.InitializeGraphicsBeard();
-
-            this.InitializeGraphicsBrows();
-
-            this.InitializeGraphicsMouth();
-
-            this.InitializeGraphicsEyes();
-
-            this.InitializeGraphicsHand();
-
-            return true;
-        }
-
-        private void InitializeGraphicsHand()
-        {
-            if (!this.compFace.Props.hasHands)
+            if (this.pawn == null)
             {
                 return;
             }
-            string texNameHand = "Hands/" + this.pawn.def.defName + "_Hand";
 
-            this.HandGraphic = GraphicDatabase.Get<Graphic_Single>(
-                texNameHand,
-                ShaderDatabase.CutoutSkin,
-                new Vector2(1f, 1f),
-                this.pawn.story.SkinColor,
-                this.pawn.story.SkinColor);
+            if (!Controller.settings.UseMouth || !this.compFace.hasNaturalJaw)
+            {
+                return;
+            }
+
+            if (this.pawn.health.InPainShock && !this.compFace.EyeWiggler.IsAsleep)
+            {
+                if (this.compFace.EyeWiggler.EyeRightBlinkNow && this.compFace.EyeWiggler.EyeLeftBlinkNow)
+                {
+                    this.MouthGraphic = this.mouthgraphic.mouthGraphicCrying;
+                    return;
+                }
+            }
+
+            if (this.pawn.needs?.mood?.thoughts != null)
+            {
+                this.mood = this.pawn.needs.mood.CurInstantLevel;
+            }
+
+            int mouthTextureIndexOfMood = this.mouthgraphic.GetMouthTextureIndexOfMood(this.mood);
+
+            this.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[mouthTextureIndexOfMood].Graphic;
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         private void InitializeGraphicsBeard()
         {
@@ -173,129 +213,6 @@
                 Vector2.one,
                 color);
         }
-
-        private void InitializeGraphicsEyes()
-        {
-            this.InitializeGraphicsEyePatches();
-
-            this.EyeLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-                                      this.texPathEyeLeft,
-                                      ShaderDatabase.Cutout,
-                                      Vector2.one,
-                                      this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
-
-            this.EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-                                       this.texPathEyeRight,
-                                       ShaderDatabase.Cutout,
-                                       Vector2.one,
-                                       this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
-
-            this.EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-                                            this.texPathEyeLeftClosed,
-                                            ShaderDatabase.Cutout,
-                                            Vector2.one,
-                                            this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
-
-            this.EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-                                             this.texPathEyeRightClosed,
-                                             ShaderDatabase.Cutout,
-                                             Vector2.one,
-                                             this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
-
-            this.DeadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                "Eyes/Eyes_Dead",
-                ShaderDatabase.Cutout,
-                Vector2.one,
-                this.pawn.story.SkinColor);
-        }
-
-        private void InitializeGraphicsMouth()
-        {
-            if (!this.texPathJawAddedPart.NullOrEmpty())
-            {
-                bool flag = ContentFinder<Texture2D>.Get(this.texPathJawAddedPart + "_front", false) != null;
-                if (flag)
-                {
-                    this.JawGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                          this.texPathJawAddedPart,
-                                                          ShaderDatabase.CutoutSkin,
-                                                          Vector2.one,
-                                                          Color.white) as Graphic_Multi_NaturalHeadParts;
-                    this.compFace.hasNaturalJaw = false;
-
-                    // all done, return
-                    return;
-                }
-
-                // texture for added/extra part not found, log and default
-                Log.Message(
-                    "Facial Stuff: No texture for added part: " + this.texPathJawAddedPart
-                    + " - Graphic_Multi_NaturalHeadParts. This is not an error, just an info.");
-            }
-
-            this.compFace.hasNaturalJaw = true;
-            this.MouthGraphic = this.mouthgraphic
-                .HumanMouthGraphic[this.pawn.Dead || this.pawn.Downed ? 2 : 3].Graphic;
-        }
-
-        private void InitializeGraphicsWrinkles()
-        {
-            Color wrinkleColor = this.pawn.story.SkinColor * new Color(0.1f, 0.1f, 0.1f);
-
-            if (this.pawn.GetPawnFace(out PawnFace pawnFace))
-            {
-                wrinkleColor.a = pawnFace.wrinkleIntensity;
-
-                WrinkleDef pawnFaceWrinkleDef = pawnFace.WrinkleDef;
-
-                this.WrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                    pawnFaceWrinkleDef.texPath + "_" + this.compFace.PawnCrownType + "_" + this.compFace.PawnHeadType,
-                    ShaderDatabase.Transparent,
-                    Vector2.one,
-                    wrinkleColor);
-
-                this.RottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                    pawnFaceWrinkleDef.texPath + "_" + this.compFace.PawnCrownType + "_" + this.compFace.PawnHeadType,
-                    ShaderDatabase.Transparent,
-                    Vector2.one,
-                    wrinkleColor * FaceTextures.SkinRottingMultiplyColor);
-            }
-        }
-
-        public void SetMouthAccordingToMoodLevel()
-        {
-            if (this.pawn == null)
-            {
-                return;
-            }
-
-            if (!Controller.settings.UseMouth || !this.compFace.hasNaturalJaw)
-            {
-                return;
-            }
-
-            if (this.pawn.health.InPainShock && !this.compFace.EyeWiggler.IsAsleep)
-            {
-                if (this.compFace.EyeWiggler.EyeRightBlinkNow && this.compFace.EyeWiggler.EyeLeftBlinkNow)
-                {
-                    this.MouthGraphic = this.mouthgraphic.mouthGraphicCrying;
-                    return;
-                }
-            }
-
-            if (this.pawn.needs?.mood?.thoughts != null)
-            {
-                this.mood = this.pawn.needs.mood.CurInstantLevel;
-            }
-
-            int mouthTextureIndexOfMood = this.mouthgraphic.GetMouthTextureIndexOfMood(this.mood);
-
-            this.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[mouthTextureIndexOfMood].Graphic;
-        }
-
-        #endregion Public Methods
-
-        #region Private Methods
 
         private void InitializeGraphicsEyePatches()
         {
@@ -348,6 +265,109 @@
             else
             {
                 this.compFace.HasEyePatchRight = false;
+            }
+        }
+
+        private void InitializeGraphicsEyes()
+        {
+            this.InitializeGraphicsEyePatches();
+
+            this.EyeLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
+                                      this.texPathEyeLeft,
+                                      ShaderDatabase.Cutout,
+                                      Vector2.one,
+                                      this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
+
+            this.EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
+                                       this.texPathEyeRight,
+                                       ShaderDatabase.Cutout,
+                                       Vector2.one,
+                                       this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
+
+            this.EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
+                                            this.texPathEyeLeftClosed,
+                                            ShaderDatabase.Cutout,
+                                            Vector2.one,
+                                            this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
+
+            this.EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
+                                             this.texPathEyeRightClosed,
+                                             ShaderDatabase.Cutout,
+                                             Vector2.one,
+                                             this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
+
+            this.DeadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                "Eyes/Eyes_Dead",
+                ShaderDatabase.Cutout,
+                Vector2.one,
+                this.pawn.story.SkinColor);
+        }
+
+        private void InitializeGraphicsHand()
+        {
+            if (!this.compFace.Props.hasHands)
+            {
+                return;
+            }
+            string texNameHand = "Hands/" + this.compFace.Props.handType + "_Hand";
+
+            this.HandGraphic = GraphicDatabase.Get<Graphic_Single>(
+                texNameHand,
+                ShaderDatabase.CutoutSkin,
+                new Vector2(1f, 1f),
+                this.pawn.story.SkinColor,
+                this.pawn.story.SkinColor);
+        }
+        private void InitializeGraphicsMouth()
+        {
+            if (!this.texPathJawAddedPart.NullOrEmpty())
+            {
+                bool flag = ContentFinder<Texture2D>.Get(this.texPathJawAddedPart + "_front", false) != null;
+                if (flag)
+                {
+                    this.JawGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                                                          this.texPathJawAddedPart,
+                                                          ShaderDatabase.CutoutSkin,
+                                                          Vector2.one,
+                                                          Color.white) as Graphic_Multi_NaturalHeadParts;
+                    this.compFace.hasNaturalJaw = false;
+
+                    // all done, return
+                    return;
+                }
+
+                // texture for added/extra part not found, log and default
+                Log.Message(
+                    "Facial Stuff: No texture for added part: " + this.texPathJawAddedPart
+                    + " - Graphic_Multi_NaturalHeadParts. This is not an error, just an info.");
+            }
+
+            this.compFace.hasNaturalJaw = true;
+            this.MouthGraphic = this.mouthgraphic
+                .HumanMouthGraphic[this.pawn.Dead || this.pawn.Downed ? 2 : 3].Graphic;
+        }
+
+        private void InitializeGraphicsWrinkles()
+        {
+            Color wrinkleColor = this.pawn.story.SkinColor * new Color(0.1f, 0.1f, 0.1f);
+
+            PawnFace pawnFace = this.compFace.PawnFace;
+            {
+                wrinkleColor.a = pawnFace.wrinkleIntensity;
+
+                WrinkleDef pawnFaceWrinkleDef = pawnFace.WrinkleDef;
+
+                this.WrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    pawnFaceWrinkleDef.texPath + "_" + this.compFace.PawnCrownType + "_" + this.compFace.PawnHeadType,
+                    ShaderDatabase.Transparent,
+                    Vector2.one,
+                    wrinkleColor);
+
+                this.RottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                    pawnFaceWrinkleDef.texPath + "_" + this.compFace.PawnCrownType + "_" + this.compFace.PawnHeadType,
+                    ShaderDatabase.Transparent,
+                    Vector2.one,
+                    wrinkleColor * FaceTextures.SkinRottingMultiplyColor);
             }
         }
 

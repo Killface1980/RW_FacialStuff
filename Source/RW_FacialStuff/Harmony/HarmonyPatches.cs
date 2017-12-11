@@ -261,17 +261,10 @@ namespace FacialStuff.Harmony
 
             // Custom rotting color, mixed with skin tone
             Color rotColor = pawn.story.SkinColor * FaceTextures.SkinRottingMultiplyColor;
-            if (!compFace.SetHeadType(pawn))
+            if (!compFace.InitializeCompFace())
             {
                 return;
             }
-
-            if (!compFace.FaceGraphic.InitializeGraphics(compFace))
-            {
-                return;
-            }
-
-            compFace.SetFaceMaterial();
 
             // Set up the hair cut graphic
             if (Controller.settings.MergeHair)
@@ -288,9 +281,13 @@ namespace FacialStuff.Harmony
                 pawn.story.bodyType,
                 ShaderDatabase.CutoutSkin,
                 pawn.story.SkinColor);
-            __instance.headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.SkinColor);
-            __instance.desiccatedHeadGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
-            __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
+
+            if (compFace.Props.needsBlankHumanHead)
+            {
+                __instance.headGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, pawn.story.SkinColor);
+                __instance.desiccatedHeadGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
+                __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
+            }
             __instance.rottingGraphic =
                 GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
                     pawn.story.bodyType,
@@ -345,15 +342,15 @@ namespace FacialStuff.Harmony
             // Now to enjoy the benefits of having made a popular mod!
             // This will be our little secret.
             Backstory childMe = new Backstory
-                                    {
-                                        bodyTypeMale = BodyType.Male,
-                                        bodyTypeFemale = BodyType.Female,
-                                        slot = BackstorySlot.Childhood,
-                                        baseDesc =
+            {
+                bodyTypeMale = BodyType.Male,
+                bodyTypeFemale = BodyType.Female,
+                slot = BackstorySlot.Childhood,
+                baseDesc =
                                             "NAME never believed what was common sense and always doubted other people. HECAP later went on inflating toads with HIS sushi stick. It was there HE earned HIS nickname.",
-                                        requiredWorkTags = WorkTags.Violent,
-                                        shuffleable = false
-                                    };
+                requiredWorkTags = WorkTags.Violent,
+                shuffleable = false
+            };
             childMe.SetTitle("Lost child");
             childMe.SetTitleShort("Seeker");
             childMe.skillGains.Add("Shooting", 4);
@@ -363,14 +360,14 @@ namespace FacialStuff.Harmony
             childMe.ResolveReferences();
 
             Backstory adultMale = new Backstory
-                                      {
-                                          bodyTypeMale = BodyType.Male,
-                                          bodyTypeFemale = BodyType.Female,
-                                          slot = BackstorySlot.Adulthood,
-                                          baseDesc = "HECAP left the military early on and acquired his skills on his own. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
-                                          shuffleable = false,
-                                          spawnCategories = new List<string>()
-                                      };
+            {
+                bodyTypeMale = BodyType.Male,
+                bodyTypeFemale = BodyType.Female,
+                slot = BackstorySlot.Adulthood,
+                baseDesc = "HECAP left the military early on and acquired his skills on his own. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
+                shuffleable = false,
+                spawnCategories = new List<string>()
+            };
             adultMale.spawnCategories.AddRange(new[] { "Civil", "Raider", "Slave", "Trader", "Traveler" });
             adultMale.SetTitle("Lone gunman");
             adultMale.SetTitleShort("Gunman");
@@ -382,12 +379,12 @@ namespace FacialStuff.Harmony
             adultMale.ResolveReferences();
 
             PawnBio me = new PawnBio
-                             {
-                                 childhood = childMe,
-                                 adulthood = adultMale,
-                                 gender = GenderPossibility.Male,
-                                 name = NameTriple.FromString("Gator 'Killface' Stinkwater")
-                             };
+            {
+                childhood = childMe,
+                adulthood = adultMale,
+                gender = GenderPossibility.Male,
+                name = NameTriple.FromString("Gator 'Killface' Stinkwater")
+            };
             me.PostLoad();
             SolidBioDatabase.allBios.Add(me);
             BackstoryDatabase.AddBackstory(childMe);

@@ -1006,11 +1006,11 @@
 
             // Draw hair if mouse is over
             GUI.color = pawn.story.hairColor;
-            if (Mouse.IsOver(leftRect) || Mouse.IsOver(rightRect))
-            {
-                GUI.DrawTexture(leftRect, pawn.Drawer.renderer.graphics.hairGraphic.MatFront.mainTexture);
-                GUI.DrawTexture(rightRect, pawn.Drawer.renderer.graphics.hairGraphic.MatSide.mainTexture);
-            }
+          //  if (Mouse.IsOver(leftRect) || Mouse.IsOver(rightRect))
+          //  {
+          //      GUI.DrawTexture(leftRect, pawn.Drawer.renderer.graphics.hairGraphic.MatFront.mainTexture);
+          //      GUI.DrawTexture(rightRect, pawn.Drawer.renderer.graphics.hairGraphic.MatSide.mainTexture);
+          //  }
 
 
             // Draw selected beard
