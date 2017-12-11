@@ -310,29 +310,29 @@ namespace FacialStuff
         }
 
         // Verse.PawnRenderer - Vanilla code with flava at the end
-        public virtual void DrawEquipmentAiming(Thing eq, Vector3 drawLoc, float aimAngle)
+        public virtual void DrawEquipmentAiming(Thing eq, Vector3 weaponPosition, float aimAngle)
         {
-            float num = aimAngle - 90f;
+            float weaponAngle = aimAngle - 90f;
             Mesh mesh;
-            bool flag = false;
+            bool flipped = false;
             if (aimAngle > 20f && aimAngle < 160f)
             {
                 mesh = MeshPool.plane10;
-                num += eq.def.equippedAngleOffset;
+                weaponAngle += eq.def.equippedAngleOffset;
             }
             else if (aimAngle > 200f && aimAngle < 340f)
             {
                 mesh = MeshPool.plane10Flip;
-                num -= 180f;
-                num -= eq.def.equippedAngleOffset;
-                flag = true;
+                weaponAngle -= 180f;
+                weaponAngle -= eq.def.equippedAngleOffset;
+                flipped = true;
             }
             else
             {
                 mesh = MeshPool.plane10;
-                num += eq.def.equippedAngleOffset;
+                weaponAngle += eq.def.equippedAngleOffset;
             }
-            num %= 360f;
+            weaponAngle %= 360f;
             Graphic_StackCount graphic_StackCount = eq.Graphic as Graphic_StackCount;
             Material matSingle;
             if (graphic_StackCount != null)
@@ -343,13 +343,13 @@ namespace FacialStuff
             {
                 matSingle = eq.Graphic.MatSingle;
             }
-            UnityEngine.Graphics.DrawMesh(mesh, drawLoc, Quaternion.AngleAxis(num, Vector3.up), matSingle, 0);
+            UnityEngine.Graphics.DrawMesh(mesh, weaponPosition, Quaternion.AngleAxis(weaponAngle, Vector3.up), matSingle, 0);
 
 
             // Now the hands if possible
             if (this.CompFace.Props.hasHands && Controller.settings.UseHands)
             {
-                this.DrawHandsAiming(drawLoc, flag, num);
+                this.DrawHandsAiming(weaponPosition, flipped, weaponAngle);
             }
         }
 
@@ -475,7 +475,7 @@ namespace FacialStuff
             }
         }
 
-        public virtual void DrawHandsAiming(Vector3 drawLoc, bool flag, float num)
+        public virtual void DrawHandsAiming(Vector3 weaponPosition, bool flipped, float weaponAngle)
         {
             if (this.CompFace.PawnGraphic.HandGraphic != null)
             {
@@ -486,36 +486,36 @@ namespace FacialStuff
                     handGraphicMatSingle.color = this.CompFace.Pawn.story.SkinColor;
                     if (this.CompFace.FirstHandPosition != Vector3.zero)
                     {
-                        float num2 = this.CompFace.FirstHandPosition.x;
+                        float x = this.CompFace.FirstHandPosition.x;
                         float z = this.CompFace.FirstHandPosition.z;
                         float y = this.CompFace.FirstHandPosition.y;
-                        if (flag)
+                        if (flipped)
                         {
-                            num2 = -num2;
+                            x = -x;
                         }
 
                         UnityEngine.Graphics.DrawMesh(
                             MeshPool.plane10,
-                            drawLoc + new Vector3(num2, y, z).RotatedBy(num),
-                            Quaternion.AngleAxis(num, Vector3.up),
+                            weaponPosition + new Vector3(x, y, z).RotatedBy(weaponAngle),
+                            Quaternion.AngleAxis(weaponAngle, Vector3.up),
                             handGraphicMatSingle,
                             0);
                     }
 
                     if (this.CompFace.SecondHandPosition != Vector3.zero)
                     {
-                        float num3 = this.CompFace.SecondHandPosition.x;
-                        float z2 = this.CompFace.SecondHandPosition.z;
+                        float x2 = this.CompFace.SecondHandPosition.x;
                         float y2 = this.CompFace.SecondHandPosition.y;
-                        if (flag)
+                        float z2 = this.CompFace.SecondHandPosition.z;
+                        if (flipped)
                         {
-                            num3 = -num3;
+                            x2 = -x2;
                         }
 
                         UnityEngine.Graphics.DrawMesh(
                             MeshPool.plane10,
-                            drawLoc + new Vector3(num3, y2, z2).RotatedBy(num),
-                            Quaternion.AngleAxis(num, Vector3.up),
+                            weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle),
+                            Quaternion.AngleAxis(weaponAngle, Vector3.up),
                             handGraphicMatSingle,
                             0);
                     }
