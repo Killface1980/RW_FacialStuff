@@ -114,7 +114,7 @@
     <Compile Include="Animator\PawnHeadRotator.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="Graphics\PawnGraphic.cs" />
-    <Compile Include="FaceEditor\Dialog_FaceStyling.cs" />
+    <Compile Include="FaceEditor\Dialog_HumanFaceStyling.cs" />
     <None Include="FaceEditor\UI\DresserUI.cs" />
     <Compile Include="FaceEditor\UI\DTO\DresserDTO.cs" />
     <Compile Include="FaceEditor\UI\DTO\DresserDtoFactory.cs" />
@@ -163,7 +163,7 @@
     <Compile Include="Controller.cs" />
     <Compile Include="Genetics\PawnSkinColors_FS.cs" />
     <Compile Include="Utilities\PawnFaceMaker.cs" />
-    <Compile Include="Harmony\HarmonyPatches.cs" />
+    <Compile Include="Harmony\HarmonyPatchesFS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

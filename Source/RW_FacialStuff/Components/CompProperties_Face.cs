@@ -29,6 +29,8 @@ namespace FacialStuff
 
         public string handType = "Human";
 
+        public List<string> hairTags;
+
         public List<PawnDrawer> drawers = new List<PawnDrawer>();
 
 

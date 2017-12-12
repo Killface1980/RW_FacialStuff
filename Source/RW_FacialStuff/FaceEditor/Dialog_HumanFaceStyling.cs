@@ -25,30 +25,30 @@
     using Verse;
 
     [StaticConstructorOnStartup]
-    public class DialogFaceStyling : Window
+    public class Dialog_FaceStyling : Window
     {
         #region Private Fields
 
         private static Vector2 portraitSize = new Vector2(203f, 203f);
 
-        private static readonly Color ColorSwatchBorder = new Color(0.77255f, 0.77255f, 0.77255f);
+        public static readonly Color ColorSwatchBorder = new Color(0.77255f, 0.77255f, 0.77255f);
 
-        private static readonly Color ColorSwatchSelection = new Color(0.9098f, 0.9098f, 0.9098f);
+        public static readonly Color ColorSwatchSelection = new Color(0.9098f, 0.9098f, 0.9098f);
 
-        private static readonly int Columns;
+        public static readonly int Columns;
 
         private static readonly Color DarkBackground = new Color(0.12f, 0.12f, 0.12f);
 
-        private static readonly float EntrySize;
+        public static readonly float EntrySize;
 
         private static readonly List<BeardDef> FullBeardDefs;
 
-        private static readonly float ListWidth = 450f;
+        public static readonly float ListWidth = 450f;
 
         private static readonly List<BeardDef> LowerBeardDefs;
 
         // private static Texture2D _icon;
-        private static readonly float MarginFS = 14f;
+        public static readonly float MarginFS = 14f;
 
         // private FacePreset SelectedFacePreset
         // {
@@ -62,36 +62,36 @@
         private static readonly List<MoustacheDef> MoustacheDefs;
 
         // private FacePreset _selFacePresetInt;
-        private static readonly Texture2D NameBackground;
+        public static readonly Texture2D NameBackground;
 
         private static readonly long TicksPerYear = 3600000L;
 
-        private static readonly string Title = "FacialStuffEditor.FaceStylerTitle".Translate();
+        public static readonly string Title = "FacialStuffEditor.FaceStylerTitle".Translate();
 
-        private static readonly float TitleHeight = 30f;
+        public static readonly float TitleHeight = 30f;
 
         private static readonly List<string> VanillaHairTags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
 
-        private static List<BrowDef> browDefs;
+        public static List<BrowDef> browDefs;
 
         private static List<string> currentFilter;
 
         private static List<EyeDef> eyeDefs;
 
-        private static List<HairDef> filteredHairDefs;
+        public static List<HairDef> filteredHairDefs;
 
         private static List<HairDef> hairDefs;
 
         private static long MaxAge = 1000000000 * TicksPerYear;
 
-        private static Pawn pawn;
+        public static Pawn pawn;
 
         private static float PreviewSize = 220f;
 
         private readonly ColorWrapper colourWrapper;
 
         [NotNull]
-        private readonly CompFace compFace;
+        public readonly CompFace compFace;
 
         private readonly bool gear;
 
@@ -99,7 +99,7 @@
 
         private readonly bool hats;
 
-        private readonly bool initialized;
+        public readonly bool initialized;
 
         private readonly long originalAgeBio;
 
@@ -117,7 +117,7 @@
 
         private readonly EyeDef originalEye;
 
-        private readonly Gender originalGender;
+        public readonly Gender originalGender;
 
         private readonly HairDef originalHair;
 
@@ -133,11 +133,11 @@
 
         private BeardTab beardTab;
 
-        private DresserDTO dresserDto;
+        public DresserDTO dresserDto;
 
-        private FilterTab filterTab;
+        public FilterTab filterTab;
 
-        private GenderTab genderTab;
+        public GenderTab genderTab;
 
         private BeardDef newBeard;
 
@@ -155,9 +155,9 @@
 
         private MoustacheDef newMoustache;
 
-        private Vector2 pickerPosition = Vector2.zero;
+        public Vector2 pickerPosition = Vector2.zero;
 
-        private Vector2 pickerSize = new Vector2(200, 200);
+        public Vector2 pickerSize = new Vector2(200, 200);
 
         [SuppressMessage(
             "StyleCop.CSharp.NamingRules",
@@ -165,7 +165,7 @@
             Justification = "Reviewed. Suppression is OK here.")]
         private bool reInit;
 
-        private bool rerenderPawn;
+        public bool rerenderPawn;
 
         private bool saveChangedOnExit;
 
@@ -179,27 +179,27 @@
 
         private Vector2 scrollPositionEye = Vector2.zero;
 
-        private Vector2 scrollPositionHairAll = Vector2.zero;
+        public Vector2 scrollPositionHairAll = Vector2.zero;
 
-        private Vector2 scrollPositionHairAny = Vector2.zero;
+        public Vector2 scrollPositionHairAny = Vector2.zero;
 
-        private Vector2 scrollPositionHairFemale = Vector2.zero;
+        public Vector2 scrollPositionHairFemale = Vector2.zero;
 
-        private Vector2 scrollPositionHairMale = Vector2.zero;
+        public Vector2 scrollPositionHairMale = Vector2.zero;
 
-        private bool skinPage = true;
+        public bool skinPage = true;
 
         private SpecialTab specialTab;
 
         private Vector2 swatchSize = new Vector2(14, 14);
 
-        private FaceStyleTab tab;
+        public FaceStyleTab tab;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        static DialogFaceStyling()
+        static Dialog_FaceStyling()
         {
             // _previewSize = 100f;
 
@@ -227,7 +227,7 @@
             HairDefs.SortBy(i => i.LabelCap);
         }
 
-        public DialogFaceStyling(Pawn p)
+        public Dialog_FaceStyling(Pawn p)
         {
             pawn = p;
             pawn.GetCompFace(out this.compFace);
@@ -327,7 +327,7 @@
             FullBeards
         }
 
-        private enum FaceStyleTab : byte
+        public enum FaceStyleTab : byte
         {
             Hair,
 
@@ -340,7 +340,7 @@
             TypeSelector
         }
 
-        private enum FilterTab : byte
+        public enum FilterTab : byte
         {
             Urban,
 
@@ -351,7 +351,7 @@
             Tribal
         }
 
-        private enum GenderTab : byte
+        public enum GenderTab : byte
         {
             Female,
 
@@ -453,7 +453,7 @@
             }
         }
 
-        private Color NewBeardColor
+        public Color NewBeardColor
         {
             get => this.newBeardColor;
 
@@ -498,7 +498,7 @@
             }
         }
 
-        private Color NewHairColor
+        public Color NewHairColor
         {
             get => this.newHairColor;
 
@@ -519,7 +519,7 @@
 
         #region Public Methods
 
-        private static Rect AddPortraitWidget(float left, float top)
+        public static Rect AddPortraitWidget(float left, float top)
         {
             // Portrait
             Rect rect = new Rect(left, top, portraitSize.x, portraitSize.y);
@@ -596,9 +596,9 @@
             if (this.compFace.Props.hasEyes)
             {
                 TabRecord item3 = new TabRecord(
-                "FacialStuffEditor.Eye".Translate(),
-                this.SetTabFaceStyle(FaceStyleTab.Eye),
-                this.tab == FaceStyleTab.Eye);
+                    "FacialStuffEditor.Eye".Translate(),
+                    this.SetTabFaceStyle(FaceStyleTab.Eye),
+                    this.tab == FaceStyleTab.Eye);
                 list.Add(item3);
 
                 TabRecord item4 = new TabRecord(
@@ -772,7 +772,7 @@
             return result;
         }
 
-        private void DoColorWindowBeard()
+        public void DoColorWindowBeard()
         {
             this.RemoveColorPicker();
 
@@ -793,9 +793,9 @@
                         },
                     false,
                     true)
-                {
-                    initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
-                });
+                    {
+                        initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
+                    });
         }
 
         private void DrawBeardColorPickerCell(Color color, Rect rect, string colorName)
@@ -831,13 +831,13 @@
                             },
                         false,
                         true)
-                    {
-                        initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
-                    });
+                        {
+                            initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
+                        });
             }
         }
 
-        private void DrawBeardPicker(Rect rect)
+        public void DrawBeardPicker(Rect rect)
         {
             List<TabRecord> list = new List<TabRecord>();
 
@@ -1006,11 +1006,11 @@
 
             // Draw hair if mouse is over
             GUI.color = pawn.story.hairColor;
-          //  if (Mouse.IsOver(leftRect) || Mouse.IsOver(rightRect))
-          //  {
-          //      GUI.DrawTexture(leftRect, pawn.Drawer.renderer.graphics.hairGraphic.MatFront.mainTexture);
-          //      GUI.DrawTexture(rightRect, pawn.Drawer.renderer.graphics.hairGraphic.MatSide.mainTexture);
-          //  }
+            //  if (Mouse.IsOver(leftRect) || Mouse.IsOver(rightRect))
+            //  {
+            //      GUI.DrawTexture(leftRect, pawn.Drawer.renderer.graphics.hairGraphic.MatFront.mainTexture);
+            //      GUI.DrawTexture(rightRect, pawn.Drawer.renderer.graphics.hairGraphic.MatSide.mainTexture);
+            //  }
 
 
             // Draw selected beard
@@ -1033,7 +1033,7 @@
             }
         }
 
-        private void DrawBrowPicker(Rect rect)
+        public void DrawBrowPicker(Rect rect)
         {
             // 12 columns as base
             int divider = 3;
@@ -1110,12 +1110,12 @@
             }
         }
 
-        private void DrawColorSelected(Rect swatchRect)
+        public void DrawColorSelected(Rect swatchRect)
         {
             Widgets.DrawBoxSolid(swatchRect, Color.white);
         }
 
-        private void DrawEyePicker(Rect rect)
+        public void DrawEyePicker(Rect rect)
         {
             // 12 columns as base
             int divider = 3;
@@ -1191,7 +1191,7 @@
             }
         }
 
-        private void DrawHairColorPickerCell(
+        public void DrawHairColorPickerCell(
             Color color,
             Rect rect,
             string colorName,
@@ -1227,9 +1227,9 @@
                         delegate { this.NewHairColor = this.colourWrapper.Color; },
                         false,
                         true)
-                    {
-                        initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
-                    });
+                        {
+                            initialPosition = new Vector2(this.windowRect.xMax + MarginFS, this.windowRect.yMin)
+                        });
             }
         }
 
@@ -1569,7 +1569,7 @@
             Widgets.EndScrollView();
         }
 
-        private void DrawHairPickerCell(HairDef hair, Rect rect)
+        public void DrawHairPickerCell(HairDef hair, Rect rect)
         {
             Widgets.DrawBoxSolid(rect, DarkBackground);
 
@@ -1641,17 +1641,17 @@
                             delegate { this.NewHairColor = this.colourWrapper.Color; },
                             false,
                             true)
-                        {
-                            initialPosition = new Vector2(
+                            {
+                                initialPosition = new Vector2(
                                     this.windowRect.xMax + MarginFS,
                                     this.windowRect.yMin)
-                        });
+                            });
                 }
             }
         }
 
         // Blatantly stolen from Prepare Carefully
-        private void DrawHumanlikeColorSelector(Rect rect)
+        private void DrawSkinColorSelector(Rect rect)
         {
             Widgets.DrawBoxSolid(rect, new Color(0.3f, 0.3f, 0.3f));
             Rect contractedBy = rect.ContractedBy(MarginFS / 2);
@@ -1984,7 +1984,7 @@
             Widgets.EndScrollView();
         }
 
-        private void DrawTypeSelector(Rect rect)
+        public void DrawTypeSelector(Rect rect)
         {
             float editorLeft = rect.x;
             float editorTop = 30f + WidgetUtil.SelectionRowHeight;
@@ -2062,7 +2062,7 @@
             GUI.color = Color.white;
         }
 
-        private void DrawUI(Rect rect)
+        public void DrawUI(Rect rect)
         {
             GUI.BeginGroup(rect);
             string pawnName = pawn.NameStringShort;
@@ -2119,7 +2119,7 @@
             mainRect.yMax -= WidgetUtil.SelectionRowHeight + MarginFS;
             if (this.skinPage)
             {
-                this.DrawHumanlikeColorSelector(mainRect);
+                this.DrawSkinColorSelector(mainRect);
                 if (Controller.settings.UseMouth)
                 {
                     Widgets.CheckboxLabeled(set, "FacialStuffEditor.DrawMouth".Translate(), ref faceCompDrawMouth);
@@ -2284,7 +2284,7 @@
             return result;
         }
 
-        private void RemoveColorPicker()
+        public void RemoveColorPicker()
         {
             while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker), false))
             {
@@ -2292,7 +2292,7 @@
         }
 
         // ReSharper disable once MethodTooLong
-        private void ResetPawnFace()
+        public void ResetPawnFace()
         {
             this.reInit = true;
             this.NewHairColor = this.originalHairColor;
@@ -2344,13 +2344,13 @@
             return result;
         }
 
-        private Action SetTabFaceStyle(FaceStyleTab tab)
+        public Action SetTabFaceStyle(FaceStyleTab tab)
         {
             return delegate { this.tab = tab; };
         }
 
         // ReSharper disable once MethodTooLong
-        private void UpdatePawn(object sender, object value, object value2 = null)
+        public void UpdatePawn(object sender, object value, object value2 = null)
         {
             if (sender == null)
             {

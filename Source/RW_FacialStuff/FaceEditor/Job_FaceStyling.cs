@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using FacialStuff.Harmony;
+
     using Verse;
     using Verse.AI;
 
@@ -10,7 +12,7 @@
     {
         private const TargetIndex CellInd = TargetIndex.B;
 
-        private const TargetIndex FSBench = TargetIndex.A;
+        private const TargetIndex Dresser = TargetIndex.A;
 
         private static readonly string ErrorMessage = "FaceStyling job called on building with a troubled youth and serious issues.";
 
@@ -21,9 +23,9 @@
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            this.FailOnDestroyedOrNull(FSBench);
-            this.FailOnDespawnedNullOrForbidden(FSBench);
-            yield return Toils_Reserve.Reserve(FSBench);
+            this.FailOnDestroyedOrNull(Dresser);
+            this.FailOnDespawnedNullOrForbidden(Dresser);
+            yield return Toils_Reserve.Reserve(Dresser);
             yield return Toils_Goto.GotoCell(CellInd, PathEndMode.OnCell);
             yield return this.Toils_WaitWithSoundAndEffect();
         }
@@ -42,7 +44,7 @@
                                             if (actor != null
                                                 && actor.Position == this.TargetA.Thing.InteractionCell)
                                             {
-                                                faceStylerNew.OpenFSDialog(actor);
+                                                HarmonyPatchesFS.OpenStylingWindow(actor);
                                             }
                                         }
                                         else

@@ -46,7 +46,7 @@ namespace FacialStuff
                     return new List<FloatMenuOption> { item4 };
                 }
 
-                Action action2 = delegate
+                Action action = delegate
                     {
                         // IntVec3 InteractionSquare = (this.Position + new IntVec3(0, 0, 1)).RotatedBy(this.Rotation);
                         Job FaceStyleChanger = new Job(
@@ -65,15 +65,11 @@ namespace FacialStuff
                         }
                     };
 
-                list.Add(new FloatMenuOption("FacialStuffEditor.EditFace".Translate(), action2));
+                list.Add(new FloatMenuOption("FacialStuffEditor.EditFace".Translate(), action));
             }
 
             return list;
         }
 
-        public void OpenFSDialog(Pawn pawn)
-        {
-            Find.WindowStack.Add(new DialogFaceStyling(pawn));
-        }
     }
 }

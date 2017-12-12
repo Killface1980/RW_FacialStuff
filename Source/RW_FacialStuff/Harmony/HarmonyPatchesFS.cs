@@ -21,10 +21,10 @@ namespace FacialStuff.Harmony
     using Verse.Sound;
 
     [StaticConstructorOnStartup]
-    public static class HarmonyPatches
+    public static class HarmonyPatchesFS
     {
 
-        static HarmonyPatches()
+        static HarmonyPatchesFS()
         {
             HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.mod");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
@@ -43,12 +43,12 @@ namespace FacialStuff.Harmony
             harmony.Patch(
                 AccessTools.Method(typeof(Page_ConfigureStartingPawns), "DrawPortraitArea"),
                 null,
-                new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.AddFaceEditButton)));
+                new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(HarmonyPatchesFS.AddFaceEditButton)));
 
             harmony.Patch(
                 AccessTools.Method(typeof(PawnGraphicSet), nameof(PawnGraphicSet.ResolveAllGraphics)),
                 null,
-                new HarmonyMethod(typeof(HarmonyPatches), nameof(ResolveAllGraphics_Postfix)));
+                new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(ResolveAllGraphics_Postfix)));
 
             // harmony.Patch(
             // AccessTools.Method(
@@ -69,11 +69,11 @@ namespace FacialStuff.Harmony
             // nameof(Pawn_HealthTracker.AddHediff),
             // new[] { typeof(Hediff), typeof(BodyPartRecord), typeof(DamageInfo) }),
             // null,
-            // new HarmonyMethod(typeof(HarmonyPatches), nameof(AddHediff_Postfix)));
+            // new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(AddHediff_Postfix)));
             harmony.Patch(
                 AccessTools.Method(typeof(HediffSet), nameof(HediffSet.DirtyCache)),
                 null,
-                new HarmonyMethod(typeof(HarmonyPatches), nameof(DirtyCache_Postfix)));
+                new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DirtyCache_Postfix)));
 
             harmony.Patch(
                 AccessTools.Method(typeof(GraphicDatabaseHeadRecords), nameof(GraphicDatabaseHeadRecords.Reset)),
@@ -84,7 +84,7 @@ namespace FacialStuff.Harmony
 
             harmony.Patch(
                 AccessTools.Method(typeof(PawnHairChooser), nameof(PawnHairChooser.RandomHairDefFor)),
-                new HarmonyMethod(typeof(HarmonyPatches), nameof(RandomHairDefFor_PreFix)),
+                new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(RandomHairDefFor_PreFix)),
                 null);
 
             // if (!skinPatched)
@@ -122,7 +122,7 @@ namespace FacialStuff.Harmony
             harmony.Patch(
                 AccessTools.Method(typeof(Pawn_InteractionsTracker), nameof(Pawn_InteractionsTracker.TryInteractWith)),
                 null,
-                new HarmonyMethod(typeof(HarmonyPatches), nameof(HarmonyPatches.TryInteractWith_Postfix)));
+                new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(HarmonyPatchesFS.TryInteractWith_Postfix)));
 
             Log.Message(
                 "Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count()
@@ -185,8 +185,13 @@ namespace FacialStuff.Harmony
             if (Widgets.ButtonInvisible(rect2, false))
             {
                 SoundDefOf.TickLow.PlayOneShotOnCamera(null);
-                Find.WindowStack.Add(new DialogFaceStyling(pawn));
+                OpenStylingWindow(pawn);
             }
+        }
+
+        public static void OpenStylingWindow(Pawn pawn)
+        {
+            Find.WindowStack.Add(new Dialog_FaceStyling(pawn));
         }
 
         public static void DirtyCache_Postfix(HediffSet __instance)

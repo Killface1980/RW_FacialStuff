@@ -9,6 +9,7 @@ namespace FacialStuff
 
     using FacialStuff.Components;
     using FacialStuff.Enums;
+    using FacialStuff.FaceEditor;
     using FacialStuff.Graphics;
     using FacialStuff.Harmony;
 
@@ -292,6 +293,7 @@ namespace FacialStuff
             }
         }
 
+
         // Verse.PawnRenderer - Vanilla with flava
         public virtual void DrawEquipment(Vector3 rootLoc)
         {
@@ -299,6 +301,11 @@ namespace FacialStuff
 
             if (pawn.Dead || !pawn.Spawned)
             {
+                return;
+            }
+            if (this.CompFace.Props.hasHands && Controller.settings.UseHands && this.CarryStuff(out Vector3 drawPos))
+            {
+                this.DrawHands(drawPos);
                 return;
             }
             if (pawn.equipment == null || pawn.equipment.Primary == null)
@@ -310,11 +317,6 @@ namespace FacialStuff
                 return;
             }
 
-            if (this.CompFace.Props.hasHands && Controller.settings.UseHands && this.CarryStuff(out Vector3 drawPos))
-            {
-                this.DrawHands(drawPos);
-                return;
-            }
 
             Stance_Busy stance_Busy = pawn.stances.curStance as Stance_Busy;
             if (stance_Busy != null && !stance_Busy.neverAimWeapon && stance_Busy.focusTarg.IsValid)

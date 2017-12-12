@@ -46,7 +46,7 @@
             if (Widgets.ButtonInvisible(rect, false))
             {
                 SoundDefOf.TickLow.PlayOneShotOnCamera(null);
-                Find.WindowStack.Add(new DialogFaceStyling(pawn));
+                HarmonyPatchesFS.OpenStylingWindow(pawn);
             }
         }
     }
