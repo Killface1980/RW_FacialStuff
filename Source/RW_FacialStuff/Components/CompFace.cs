@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using FacialStuff.Animator;
     using FacialStuff.Defs;
@@ -76,6 +77,24 @@
 
         private Room theRoom;
 
+        public static FieldInfo infoJitterer;
+
+        public float JitterMax = 0.35f;
+
+        public JitterHandler Jitterer
+            => GetHiddenValue(typeof(Pawn_DrawTracker), Pawn.Drawer, "jitterer", infoJitterer) as
+                   JitterHandler;
+
+        public static object GetHiddenValue(Type type, object instance, string fieldName, [CanBeNull] FieldInfo info)
+        {
+            if (info == null)
+            {
+                info = type.GetField(fieldName, GenGeneric.BindingFlagsAll);
+                ;
+            }
+
+            return info?.GetValue(instance);
+        }
         #endregion Private Fields
 
         #region Public Properties
@@ -1033,9 +1052,9 @@
 
         #endregion Private Methods
 
-        public Vector3 FirstHandPosition;
-
-        public Vector3 SecondHandPosition;
+        // public Vector3 FirstHandPosition;
+        //
+        // public Vector3 SecondHandPosition;
 
 
         public void DrawEquipment(Vector3 rootLoc)

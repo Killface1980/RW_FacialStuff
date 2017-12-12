@@ -24,6 +24,10 @@
             public Vector3 secondHandPosition = Vector3.zero;
             public List<string> thingTargets = new List<string>();
 
+            public float attackAngleOffset;
+
+            public Vector3 weaponPositionOffset= Vector3.zero;
+
             #endregion Public Fields
         }
 

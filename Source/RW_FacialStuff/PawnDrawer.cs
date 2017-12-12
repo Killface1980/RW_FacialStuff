@@ -21,7 +21,7 @@ namespace FacialStuff
 
         #region Public Fields
 
-        public const float YOffset_Behind = 0.00390625f;
+        public const float YOffset_Behind = 0.004f;
         public const float YOffset_Body = 0.0078125f;
         public const float YOffset_PostHead = 0.03515625f;
         public const float YOffsetOnFace = 0.0001f;
@@ -243,40 +243,27 @@ namespace FacialStuff
                 return;
             }
 
-            // New
-            CompProperties_WeaponExtensions properties = pawn.equipment.Primary.def.GetCompProperties<CompProperties_WeaponExtensions>();
-            if (properties != null)
-            {
-                this.CompFace.FirstHandPosition = properties.FirstHandPosition;
-                this.CompFace.SecondHandPosition = properties.SecondHandPosition;
-            }
-            else
-            {
-                this.CompFace.FirstHandPosition = Vector3.zero;
-                this.CompFace.SecondHandPosition = Vector3.zero;
-            }
+
             // Continue vanilla
 
             Stance_Busy stance_Busy = pawn.stances.curStance as Stance_Busy;
             if (stance_Busy != null && !stance_Busy.neverAimWeapon && stance_Busy.focusTarg.IsValid)
             {
-                Vector3 a;
-                if (stance_Busy.focusTarg.HasThing)
-                {
-                    a = stance_Busy.focusTarg.Thing.DrawPos;
-                }
-                else
-                {
-                    a = stance_Busy.focusTarg.Cell.ToVector3Shifted();
-                }
+                Vector3 aimVector;
+                aimVector = stance_Busy.focusTarg.HasThing
+                                ? stance_Busy.focusTarg.Thing.DrawPos
+                                : stance_Busy.focusTarg.Cell.ToVector3Shifted();
                 float num = 0f;
-                if ((a - pawn.DrawPos).MagnitudeHorizontalSquared() > 0.001f)
+                if ((aimVector - pawn.DrawPos).MagnitudeHorizontalSquared() > 0.001f)
                 {
-                    num = (a - pawn.DrawPos).AngleFlat();
+                    num = (aimVector - pawn.DrawPos).AngleFlat();
                 }
                 Vector3 b = new Vector3(0f, 0f, 0.4f).RotatedBy(num);
                 Vector3 drawLoc = rootLoc + b;
-                drawLoc.y += 0.0390625f;
+                drawLoc.y += 0.04f;
+
+                // default weapon angle axis is upward, but all weapons are facing right, so we turn base weapon angle by 90°
+                num -= 90f;
                 this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc, num);
 
             }
@@ -287,7 +274,7 @@ namespace FacialStuff
                 if (pawn.Rotation == Rot4.South)
                 {
                     drawLoc2 += new Vector3(0f, 0f, -0.22f);
-                    drawLoc2.y += 0.0390625f;
+                    drawLoc2.y += 0.04f;
                 }
                 else if (pawn.Rotation == Rot4.North)
                 {
@@ -296,60 +283,145 @@ namespace FacialStuff
                 else if (pawn.Rotation == Rot4.East)
                 {
                     drawLoc2 += new Vector3(0.2f, 0f, -0.22f);
-                    drawLoc2.y += 0.0390625f;
+                    drawLoc2.y += 0.04f;
                 }
                 else if (pawn.Rotation == Rot4.West)
                 {
                     drawLoc2 = rootLoc + new Vector3(-0.2f, 0f, -0.22f);
-                    drawLoc2.y += 0.0390625f;
+                    drawLoc2.y += 0.04f;
                     aimAngle = 217f;
                 }
+
                 this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc2, aimAngle);
 
             }
         }
+        public bool Aiming()
+        {
+            var stance_Busy = this.CompFace.Pawn.stances.curStance as Stance_Busy;
+            return stance_Busy != null && !stance_Busy.neverAimWeapon && stance_Busy.focusTarg.IsValid;
+        }
+
+        public virtual void DoAttackAnimationOffsets(ref float weaponAngle, ref Vector3 weaponPosition, bool flipped)
+        {
+            CompEquippable primaryEq = this.CompFace.Pawn.equipment?.PrimaryEq;
+
+            //   DamageDef damageDef = primaryEq?.PrimaryVerb?.verbProps?.meleeDamageDef;
+            if (primaryEq == null)
+            {
+                return;
+            }
+            DamageDef damageDef = ThingUtility.PrimaryMeleeWeaponDamageType(primaryEq.parent.def);
+            if (damageDef == null)
+            {
+                return;
+            }
+            // total weapon angle change during animation sequence
+            int totalSwingAngle = 0;
+            float animationPhasePercent = this.CompFace.Jitterer.CurrentOffset.magnitude / this.CompFace.JitterMax;
+            if (damageDef == DamageDefOf.Stab)
+            {
+                weaponPosition += this.CompFace.Jitterer.CurrentOffset;
+               //  + new Vector3(0, 0, Mathf.Pow(this.CompFace.Jitterer.CurrentOffset.magnitude, 0.25f))/2;
+            }
+            else if (damageDef == DamageDefOf.Blunt || damageDef == DamageDefOf.Cut)
+            {
+                totalSwingAngle = 120;
+                weaponPosition += this.CompFace.Jitterer.CurrentOffset +
+                                  new Vector3(0, 0,
+                                      Mathf.Sin(this.CompFace.Jitterer.CurrentOffset.magnitude * Mathf.PI / this.CompFace.JitterMax) /
+                                      10);
+            }
+            weaponAngle += flipped
+                               ? -animationPhasePercent * totalSwingAngle
+                               : animationPhasePercent * totalSwingAngle;
+        }
 
         // Verse.PawnRenderer - Vanilla code with flava at the end
-        public virtual void DrawEquipmentAiming(Thing eq, Vector3 weaponPosition, float aimAngle)
+        public virtual void DrawEquipmentAiming(Thing equipment, Vector3 weaponDrawLoc, float aimAngle)
         {
-            float weaponAngle = aimAngle - 90f;
-            Mesh mesh;
-            bool flipped = false;
-            if (aimAngle > 20f && aimAngle < 160f)
-            {
-                mesh = MeshPool.plane10;
-                weaponAngle += eq.def.equippedAngleOffset;
-            }
-            else if (aimAngle > 200f && aimAngle < 340f)
-            {
-                mesh = MeshPool.plane10Flip;
-                weaponAngle -= 180f;
-                weaponAngle -= eq.def.equippedAngleOffset;
-                flipped = true;
-            }
-            else
-            {
-                mesh = MeshPool.plane10;
-                weaponAngle += eq.def.equippedAngleOffset;
-            }
-            weaponAngle %= 360f;
-            Graphic_StackCount graphic_StackCount = eq.Graphic as Graphic_StackCount;
-            Material matSingle;
-            if (graphic_StackCount != null)
-            {
-                matSingle = graphic_StackCount.SubGraphicForStackCount(1, eq.def).MatSingle;
-            }
-            else
-            {
-                matSingle = eq.Graphic.MatSingle;
-            }
-            UnityEngine.Graphics.DrawMesh(mesh, weaponPosition, Quaternion.AngleAxis(weaponAngle, Vector3.up), matSingle, 0);
+            // New
+            float weaponAngle = aimAngle;
 
+            Mesh weaponMesh;
+            bool flipped;
+            var weaponPositionOffset = Vector3.zero;
+            var aiming = Aiming();
+
+            CompProperties_WeaponExtensions compWeaponExtensions = this.CompFace.Pawn.equipment.Primary.def
+                .GetCompProperties<CompProperties_WeaponExtensions>();
+
+
+            if (this.CompFace.Pawn.Rotation == Rot4.West || this.CompFace.Pawn.Rotation == Rot4.North)
+            {
+                // draw weapon beneath the pawn
+                weaponPositionOffset += new Vector3(0, -0.5f, 0);
+            }
+
+            //   if (aimAngle > 110 && aimAngle < 340)
+             if (aimAngle > 110f && aimAngle < 250f)
+            {
+                weaponMesh = MeshPool.plane10Flip;
+                weaponAngle -= 180f;
+                    weaponAngle -= equipment.def.equippedAngleOffset;
+                if (aiming)
+                {
+                    weaponAngle -= compWeaponExtensions?.AttackAngleOffset ?? 0;
+                }
+ 
+
+                flipped = true;
+
+                if (!aiming && compWeaponExtensions != null)
+                {
+                    weaponPositionOffset += compWeaponExtensions.WeaponPositionOffset;
+                    // flip x position offset
+                    weaponPositionOffset.x *= -1;
+                }
+
+            }
+            else
+            {
+                weaponMesh = MeshPool.plane10;
+                    weaponAngle += equipment.def.equippedAngleOffset;
+                if (aiming)
+                {
+                    weaponAngle += compWeaponExtensions?.AttackAngleOffset ?? 0;
+                }
+  
+                flipped = false;
+
+                if (!aiming && compWeaponExtensions != null)
+                {
+                    weaponPositionOffset += compWeaponExtensions.WeaponPositionOffset;
+                }
+
+            }
+
+            weaponAngle %= 360f;
+
+            // weapon angle and position offsets based on current attack animation sequence
+            DoAttackAnimationOffsets(ref weaponAngle, ref weaponPositionOffset, flipped);
+
+
+            Graphic_StackCount graphic_StackCount = equipment.Graphic as Graphic_StackCount;
+            Material matSingle;
+            matSingle = graphic_StackCount != null
+                            ? graphic_StackCount.SubGraphicForStackCount(1, equipment.def).MatSingle
+                            : equipment.Graphic.MatSingle;
+
+            UnityEngine.Graphics.DrawMesh(
+                weaponMesh,
+                weaponDrawLoc + weaponPositionOffset,
+                Quaternion.AngleAxis(weaponAngle, Vector3.up),
+                matSingle,
+                0);
+            
 
             // Now the hands if possible
             if (this.CompFace.Props.hasHands && Controller.settings.UseHands)
             {
-                this.DrawHandsAiming(weaponPosition, flipped, weaponAngle);
+                this.DrawHands(weaponDrawLoc + weaponPositionOffset, flipped, weaponAngle, compWeaponExtensions);
             }
         }
 
@@ -475,50 +547,61 @@ namespace FacialStuff
             }
         }
 
-        public virtual void DrawHandsAiming(Vector3 weaponPosition, bool flipped, float weaponAngle)
+        public virtual void DrawHands(Vector3 weaponPosition, bool flipped, float weaponAngle, CompProperties_WeaponExtensions compWeaponExtensions)
         {
-            if (this.CompFace.PawnGraphic.HandGraphic != null)
+            if (compWeaponExtensions != null)
             {
+
                 Material handGraphicMatSingle = this.CompFace.PawnGraphic.HandGraphic.MatSingle;
 
                 if (handGraphicMatSingle != null)
                 {
                     handGraphicMatSingle.color = this.CompFace.Pawn.story.SkinColor;
-                    if (this.CompFace.FirstHandPosition != Vector3.zero)
+                    Vector3 firstHandPosition = compWeaponExtensions.FirstHandPosition;
+                    Mesh handsMesh = MeshPool.plane10;
+                    if (firstHandPosition != Vector3.zero)
                     {
-                        float x = this.CompFace.FirstHandPosition.x;
-                        float z = this.CompFace.FirstHandPosition.z;
-                        float y = this.CompFace.FirstHandPosition.y;
+                        float x = firstHandPosition.x;
+                        float y = firstHandPosition.y;
+                        float z = firstHandPosition.z;
                         if (flipped)
                         {
                             x = -x;
                         }
 
                         UnityEngine.Graphics.DrawMesh(
-                            MeshPool.plane10,
+                            handsMesh,
                             weaponPosition + new Vector3(x, y, z).RotatedBy(weaponAngle),
                             Quaternion.AngleAxis(weaponAngle, Vector3.up),
                             handGraphicMatSingle,
                             0);
                     }
 
-                    if (this.CompFace.SecondHandPosition != Vector3.zero)
+                    Vector3 secondHandPosition = compWeaponExtensions.SecondHandPosition;
+                    if (secondHandPosition != Vector3.zero)
                     {
-                        float x2 = this.CompFace.SecondHandPosition.x;
-                        float y2 = this.CompFace.SecondHandPosition.y;
-                        float z2 = this.CompFace.SecondHandPosition.z;
+                        float x2 = secondHandPosition.x;
+                        float y2 = secondHandPosition.y;
+                        float z2 = secondHandPosition.z;
                         if (flipped)
                         {
                             x2 = -x2;
                         }
 
                         UnityEngine.Graphics.DrawMesh(
-                            MeshPool.plane10,
+                            handsMesh,
                             weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle),
                             Quaternion.AngleAxis(weaponAngle, Vector3.up),
                             handGraphicMatSingle,
                             0);
                     }
+                    //// for debug
+                   // var centerMat =
+                   //     GraphicDatabase.Get<Graphic_Single>("Hands/Human_Hand", ShaderDatabase.CutoutSkin, Vector2.one,
+                   //         Color.red).MatSingle;
+                   //
+                   // UnityEngine.Graphics.DrawMesh(handsMesh, weaponPosition + new Vector3(0, 0.001f, 0),
+                   //     Quaternion.AngleAxis(weaponAngle, Vector3.up), centerMat, 0);
                 }
             }
         }

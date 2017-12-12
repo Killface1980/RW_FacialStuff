@@ -8,9 +8,13 @@
     {
         #region Public Fields
 
-        public Vector3 FirstHandPosition = Vector3.zero;
+        public Vector3 FirstHandPosition ;
 
-        public Vector3 SecondHandPosition = Vector3.zero;
+        public Vector3 SecondHandPosition ;
+
+        public Vector3 WeaponPositionOffset ;
+
+        public float AttackAngleOffset;
 
         #endregion Public Fields
 
