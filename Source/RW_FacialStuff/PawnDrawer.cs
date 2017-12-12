@@ -23,7 +23,7 @@ namespace FacialStuff
 
         public const float YOffset_Behind = 0.004f;
         public const float YOffset_Body = 0.0078125f;
-        public const float YOffset_PostHead = 0.03515625f;
+        public const float YOffset_PostHead = 0.035f;
         public const float YOffsetOnFace = 0.0001f;
         public CompFace CompFace;
 
@@ -58,9 +58,9 @@ namespace FacialStuff
             switch (layer)
             {
                 case MaxLayerToShow.Naked:
-                    return CompFace.NakedMatsBodyBaseAt(bodyFacing, bodyDrawType);
+                    return this.CompFace.NakedMatsBodyBaseAt(bodyFacing, bodyDrawType);
                 case MaxLayerToShow.OnSkin:
-                    return CompFace.UnderwearMatsBodyBaseAt(bodyFacing, bodyDrawType);
+                    return this.CompFace.UnderwearMatsBodyBaseAt(bodyFacing, bodyDrawType);
                 default:
                     return graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
             }
@@ -73,6 +73,48 @@ namespace FacialStuff
             return (pawn.carryTracker == null || pawn.carryTracker.CarriedThing == null)
                    && (pawn.Drafted || (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon)
                        || (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
+        }
+
+        public virtual bool CarryStuff(out Vector3 drawPos)
+        {
+            drawPos = Vector3.zero;
+            Pawn pawn = this.CompFace.Pawn;
+            if (pawn.Rotation == Rot4.North)
+            {
+                return false;
+            }
+
+            Thing carriedThing = pawn.carryTracker?.CarriedThing;
+            if (carriedThing != null)
+            {
+                drawPos = this.CompFace.Pawn.DrawPos;
+                bool flag = false;
+                bool flip = false;
+                if (this.CompFace.Pawn.CurJob == null
+                    || !this.CompFace.Pawn.jobs.curDriver.ModifyCarriedThingDrawPos(ref drawPos, ref flag, ref flip))
+                {
+                    if (carriedThing is Pawn || carriedThing is Corpse)
+                    {
+                        drawPos += new Vector3(0.44f, 0f, 0f);
+                    }
+                    else
+                    {
+                        drawPos += new Vector3(0.18f, 0f, 0.05f);
+                    }
+                }
+                if (flag)
+                {
+                    drawPos.y -= 0.04f;
+                }
+                else
+                {
+                    drawPos.y += 0.04f;
+                }
+                return true;
+
+            }
+
+            return false;
         }
 
         public virtual void DrawAlienBodyAddons(Quaternion quat, Rot4 bodyFacing, Vector3 rootLoc, bool portrait, bool renderBody, PawnGraphicSet graphics)
@@ -295,7 +337,13 @@ namespace FacialStuff
                 this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc2, aimAngle);
 
             }
+            else if (this.CompFace.Props.hasHands && Controller.settings.UseHands && this.CarryStuff(out Vector3 drawPos))
+            {
+                this.DrawHands(drawPos);
+            }
+
         }
+
         public bool Aiming()
         {
             var stance_Busy = this.CompFace.Pawn.stances.curStance as Stance_Busy;
@@ -322,7 +370,7 @@ namespace FacialStuff
             if (damageDef == DamageDefOf.Stab)
             {
                 weaponPosition += this.CompFace.Jitterer.CurrentOffset;
-               //  + new Vector3(0, 0, Mathf.Pow(this.CompFace.Jitterer.CurrentOffset.magnitude, 0.25f))/2;
+                //  + new Vector3(0, 0, Mathf.Pow(this.CompFace.Jitterer.CurrentOffset.magnitude, 0.25f))/2;
             }
             else if (damageDef == DamageDefOf.Blunt || damageDef == DamageDefOf.Cut)
             {
@@ -359,16 +407,16 @@ namespace FacialStuff
             }
 
             //   if (aimAngle > 110 && aimAngle < 340)
-             if (aimAngle > 110f && aimAngle < 250f)
+            if (aimAngle > 110f && aimAngle < 250f)
             {
                 weaponMesh = MeshPool.plane10Flip;
                 weaponAngle -= 180f;
-                    weaponAngle -= equipment.def.equippedAngleOffset;
+                weaponAngle -= equipment.def.equippedAngleOffset;
                 if (aiming)
                 {
                     weaponAngle -= compWeaponExtensions?.AttackAngleOffset ?? 0;
                 }
- 
+
 
                 flipped = true;
 
@@ -383,12 +431,12 @@ namespace FacialStuff
             else
             {
                 weaponMesh = MeshPool.plane10;
-                    weaponAngle += equipment.def.equippedAngleOffset;
+                weaponAngle += equipment.def.equippedAngleOffset;
                 if (aiming)
                 {
                     weaponAngle += compWeaponExtensions?.AttackAngleOffset ?? 0;
                 }
-  
+
                 flipped = false;
 
                 if (!aiming && compWeaponExtensions != null)
@@ -416,7 +464,7 @@ namespace FacialStuff
                 Quaternion.AngleAxis(weaponAngle, Vector3.up),
                 matSingle,
                 0);
-            
+
 
             // Now the hands if possible
             if (this.CompFace.Props.hasHands && Controller.settings.UseHands)
@@ -596,15 +644,57 @@ namespace FacialStuff
                             0);
                     }
                     //// for debug
-                   // var centerMat =
-                   //     GraphicDatabase.Get<Graphic_Single>("Hands/Human_Hand", ShaderDatabase.CutoutSkin, Vector2.one,
-                   //         Color.red).MatSingle;
-                   //
-                   // UnityEngine.Graphics.DrawMesh(handsMesh, weaponPosition + new Vector3(0, 0.001f, 0),
-                   //     Quaternion.AngleAxis(weaponAngle, Vector3.up), centerMat, 0);
+                    // var centerMat =
+                    //     GraphicDatabase.Get<Graphic_Single>("Hands/Human_Hand", ShaderDatabase.CutoutSkin, Vector2.one,
+                    //         Color.red).MatSingle;
+                    //
+                    // UnityEngine.Graphics.DrawMesh(handsMesh, weaponPosition + new Vector3(0, 0.001f, 0),
+                    //     Quaternion.AngleAxis(weaponAngle, Vector3.up), centerMat, 0);
                 }
             }
         }
+
+        public virtual void DrawHands(Vector3 drawPos)
+        {
+            Material handGraphicMatSingle = this.CompFace.PawnGraphic.HandGraphic.MatSingle;
+
+            if (handGraphicMatSingle != null)
+            {
+                handGraphicMatSingle.color = this.CompFace.Pawn.story.SkinColor;
+
+
+                Mesh handsMesh = MeshPool.plane10;
+                float x = -0.2f;
+                float y = 0.2f;
+                float z = -0.025f;
+
+                UnityEngine.Graphics.DrawMesh(
+                    handsMesh,
+                    drawPos + new Vector3(x, y, z),
+                    Quaternion.AngleAxis(0, Vector3.up),
+                    handGraphicMatSingle,
+                    0);
+
+                x *= -1;
+                z *= -1;
+
+
+                UnityEngine.Graphics.DrawMesh(
+                    handsMesh,
+                    drawPos + new Vector3(x, y, z),
+                    Quaternion.AngleAxis(0, Vector3.up),
+                    handGraphicMatSingle,
+                    0);
+                //// for debug
+                // var centerMat =
+                //     GraphicDatabase.Get<Graphic_Single>("Hands/Human_Hand", ShaderDatabase.CutoutSkin, Vector2.one,
+                //         Color.red).MatSingle;
+                //
+                // UnityEngine.Graphics.DrawMesh(handsMesh, weaponPosition + new Vector3(0, 0.001f, 0),
+                //     Quaternion.AngleAxis(weaponAngle, Vector3.up), centerMat, 0);
+            }
+        }
+
         public virtual void DrawHeadOverlays(Rot4 headFacing, PawnHeadOverlays headOverlays, Vector3 bodyLoc, Quaternion headQuat)
         {
             headOverlays?.RenderStatusOverlays(bodyLoc, headQuat, this.GetPawnMesh(headFacing, false));
