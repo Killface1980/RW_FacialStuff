@@ -2,11 +2,9 @@
 
 namespace FacialStuff.Harmony
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Reflection.Emit;
 
     using FacialStuff.FaceEditor;
     using FacialStuff.Genetics;
@@ -88,6 +86,14 @@ namespace FacialStuff.Harmony
                 AccessTools.Method(typeof(PawnHairChooser), nameof(PawnHairChooser.RandomHairDefFor)),
                 new HarmonyMethod(typeof(HarmonyPatches), nameof(RandomHairDefFor_PreFix)),
                 null);
+
+            // if (!skinPatched)
+            // {
+            //     AccessTools.Field(typeof(PawnSkinColors), "SkinColors").SetValue(
+            //         typeof(PawnSkinColors_FS.SkinColorData),
+            //         PawnSkinColors_FS.SkinColors);
+            //     skinPatched = true;
+            // }
 
             harmony.Patch(
                 AccessTools.Method(typeof(PawnSkinColors), "GetSkinDataIndexOfMelanin"),
@@ -321,14 +327,16 @@ namespace FacialStuff.Harmony
             {
                 if (pawn.GetCompFace(out CompFace compFace))
                 {
-                    if (compFace.HeadRotator != null && !compFace.IsChild)
-                    {
-                        compFace.HeadRotator.LookAtPawn(recipient);
-                    }
+                    if (compFace.Props.canRotateHead)
+                        if (compFace.HeadRotator != null && !compFace.IsChild)
+                        {
+                            compFace.HeadRotator.LookAtPawn(recipient);
+                        }
                 }
 
                 if (recipient.GetCompFace(out CompFace recipientFace))
                 {
+                    if (recipientFace.Props.canRotateHead)
                     if (recipientFace.HeadRotator != null && !recipientFace.IsChild)
                     {
                         recipientFace.HeadRotator.LookAtPawn(pawn);

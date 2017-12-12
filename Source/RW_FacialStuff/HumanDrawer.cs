@@ -16,6 +16,7 @@ namespace FacialStuff
     {
         public HumanDrawer()
         {
+            // Needs a constructor
         }
 
     }

@@ -23,6 +23,8 @@ namespace FacialStuff
 
         public bool canRotateHead;
 
+        public bool hasOrganicHair;
+
         public bool hasHands;
 
         public string handType = "Human";

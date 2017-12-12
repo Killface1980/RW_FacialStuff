@@ -120,7 +120,7 @@ namespace FacialStuff
             {
                 if (Controller.settings.MakeThemBlink && this.compFace.EyeWiggler.EyeLeftCanBlink)
                 {
-                    if (this.compFace.EyeWiggler.IsAsleep || this.compFace.EyeWiggler.EyeLeftBlinkNow)
+                    if (this.compFace.IsAsleep || this.compFace.EyeWiggler.EyeLeftBlinkNow)
                     {
                         material = this.pawnGraphic.EyeLeftClosedGraphic.MatAt(facing);
                     }
@@ -167,7 +167,7 @@ namespace FacialStuff
             {
                 if (Controller.settings.MakeThemBlink && this.compFace.EyeWiggler.EyeRightCanBlink)
                 {
-                    if (this.compFace.EyeWiggler.IsAsleep || this.compFace.EyeWiggler.EyeRightBlinkNow)
+                    if (this.compFace.IsAsleep || this.compFace.EyeWiggler.EyeRightBlinkNow)
                     {
                         material = this.pawnGraphic.EyeRightClosedGraphic?.MatAt(facing);
                     }

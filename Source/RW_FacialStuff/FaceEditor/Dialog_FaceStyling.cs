@@ -670,7 +670,7 @@
             this.compFace.PawnFace.GenerateHairDNA(pawn, true);
             this.NewHairColor = this.compFace.PawnFace.HairColor;
             this.NewBeardColor = this.compFace.PawnFace.BeardColor;
-            PawnFaceMaker.RandomBeardDefFor(pawn, Faction.OfPlayer.def, out BeardDef beard, out MoustacheDef tache);
+            PawnFaceMaker.RandomBeardDefFor(this.compFace, Faction.OfPlayer.def, out BeardDef beard, out MoustacheDef tache);
             this.NewBeard = beard;
             this.NewMoustache = tache;
 

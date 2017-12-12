@@ -127,17 +127,17 @@
             }
 
 
-            Vector3 vector = rootLoc;
+            Vector3 drawPos = rootLoc;
             Vector3 a = rootLoc;
             if (bodyFacing != Rot4.North)
             {
                 a.y += YOffset_Head;
-                vector.y += YOffset_Shell;
+                drawPos.y += YOffset_Shell;
             }
             else
             {
                 a.y += YOffset_Shell;
-                vector.y += YOffset_Head;
+                drawPos.y += YOffset_Head;
             }
 
 
@@ -145,7 +145,8 @@
             if (graphics.headGraphic != null)
             {
                 // Rendererd pawn faces
-                Vector3 b = headQuat * __instance.BaseHeadOffsetAt(headFacing);
+
+                Vector3 b = headQuat * compFace.BaseHeadOffsetAt(headFacing);
 
                 Vector3 locFacialY = a + b;
                 Vector3 currentLoc = rootLoc + b;
@@ -209,9 +210,9 @@
                 compFace.DrawAlienHeadAddons(portrait, headQuat, headFacing, currentLoc);
             }
 
-            compFace.DrawApparel(quat, bodyFacing, vector, portrait, renderBody, graphics);
+            compFace.DrawApparel(quat, bodyFacing, drawPos, portrait, renderBody, graphics);
 
-            compFace.DrawAlienBodyAddons(quat, bodyFacing, vector, portrait, renderBody, graphics);
+            compFace.DrawAlienBodyAddons(quat, bodyFacing, drawPos, portrait, renderBody, graphics);
 
             // Draw the beard, for the RenderPortrait
             // if (portrait && !headStump)

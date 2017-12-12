@@ -27,6 +27,8 @@ namespace FacialStuff
         public const float YOffsetOnFace = 0.0001f;
         public CompFace CompFace;
 
+        public static readonly float[] HorHeadOffsets = new float[] { 0f, 0.04f, 0.1f, 0.09f, 0.1f, 0.09f };
+
         #endregion Public Fields
 
         #region Protected Constructors
@@ -49,6 +51,29 @@ namespace FacialStuff
 
         }
 
+        public virtual void BaseHeadOffsetAt(Rot4 rotation, ref Vector3 offset)
+        {
+            float num = HorHeadOffsets[(int)this.CompFace.Pawn.story.bodyType];
+            switch (rotation.AsInt)
+            {
+                case 0:
+                    offset = new Vector3(0f, 0f, 0.34f);
+                    return;
+                case 1:
+                    offset = new Vector3(num, 0f, 0.34f);
+                    return;
+                case 2:
+                    offset = new Vector3(0f, 0f, 0.34f);
+                    return;
+                case 3:
+                    offset = new Vector3(-num, 0f, 0.34f);
+                    return;
+                default:
+                    Log.Error("BaseHeadOffsetAt error in " + this.CompFace.Pawn);
+                    offset = Vector3.zero;
+                    return;
+            }
+        }
         public virtual List<Material> BodyBaseAt(
             PawnGraphicSet graphics,
             Rot4 bodyFacing,
@@ -136,7 +161,7 @@ namespace FacialStuff
                     ApparelGraphicRecord apparelGraphicRecord = graphics.apparelGraphics[index];
                     if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer == ApparelLayer.Shell)
                     {
-                        var bodyMesh = this.GetPawnMesh(bodyFacing, true);
+                        var bodyMesh = this.GetPawnMesh(bodyFacing, true, portrait);
                         Material material3 = apparelGraphicRecord.graphic.MatAt(bodyFacing);
                         material3 = graphics.flasher.GetDamagedMat(material3);
                         GenDraw.DrawMeshNowOrLater(bodyMesh, vector, quat, material3, portrait);
@@ -154,7 +179,7 @@ namespace FacialStuff
             if (headMaterial != null)
             {
                 GenDraw.DrawMeshNowOrLater(
-                    this.GetPawnMesh(headFacing, false),
+                    this.GetPawnMesh(headFacing, false, portrait),
                     locFacialY,
                     headQuat,
                     headMaterial,
@@ -170,7 +195,7 @@ namespace FacialStuff
 
         public virtual void DrawBeardAndTache(Quaternion headQuat, Rot4 headFacing, bool portrait, ref Vector3 locFacialY)
         {
-            Mesh headMesh = this.GetPawnMesh(headFacing, false);
+            Mesh headMesh = this.GetPawnMesh(headFacing, false, portrait);
 
             Material beardMat = this.CompFace.FaceMaterial.BeardMatAt(headFacing);
             Material moustacheMatAt = this.CompFace.FaceMaterial.MoustacheMatAt(headFacing);
@@ -204,7 +229,7 @@ namespace FacialStuff
                 Vector3 loc = rootLoc;
                 loc.y += YOffset_Body;
 
-                var bodyMesh = this.GetPawnMesh(bodyFacing, true);
+                var bodyMesh = this.GetPawnMesh(bodyFacing, true, portrait);
 
                 List<Material> bodyBaseAt = null;
                 bool flag = true;
@@ -285,8 +310,11 @@ namespace FacialStuff
                 return;
             }
 
-
-            // Continue vanilla
+            if (this.CompFace.Props.hasHands && Controller.settings.UseHands && this.CarryStuff(out Vector3 drawPos))
+            {
+                this.DrawHands(drawPos);
+                return;
+            }
 
             Stance_Busy stance_Busy = pawn.stances.curStance as Stance_Busy;
             if (stance_Busy != null && !stance_Busy.neverAimWeapon && stance_Busy.focusTarg.IsValid)
@@ -305,7 +333,6 @@ namespace FacialStuff
                 drawLoc.y += 0.04f;
 
                 // default weapon angle axis is upward, but all weapons are facing right, so we turn base weapon angle by 90°
-                num -= 90f;
                 this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc, num);
 
             }
@@ -337,11 +364,6 @@ namespace FacialStuff
                 this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc2, aimAngle);
 
             }
-            else if (this.CompFace.Props.hasHands && Controller.settings.UseHands && this.CarryStuff(out Vector3 drawPos))
-            {
-                this.DrawHands(drawPos);
-            }
-
         }
 
         public bool Aiming()
@@ -389,6 +411,7 @@ namespace FacialStuff
         public virtual void DrawEquipmentAiming(Thing equipment, Vector3 weaponDrawLoc, float aimAngle)
         {
             // New
+            aimAngle -= 90f;
             float weaponAngle = aimAngle;
 
             Mesh weaponMesh;
@@ -406,7 +429,7 @@ namespace FacialStuff
                 weaponPositionOffset += new Vector3(0, -0.5f, 0);
             }
 
-            //   if (aimAngle > 110 && aimAngle < 340)
+            //   if if (aimAngle > 200f && aimAngle < 340f)
             if (aimAngle > 110f && aimAngle < 250f)
             {
                 weaponMesh = MeshPool.plane10Flip;
@@ -453,10 +476,9 @@ namespace FacialStuff
 
 
             Graphic_StackCount graphic_StackCount = equipment.Graphic as Graphic_StackCount;
-            Material matSingle;
-            matSingle = graphic_StackCount != null
-                            ? graphic_StackCount.SubGraphicForStackCount(1, equipment.def).MatSingle
-                            : equipment.Graphic.MatSingle;
+            Material matSingle = graphic_StackCount != null
+                                     ? graphic_StackCount.SubGraphicForStackCount(1, equipment.def).MatSingle
+                                     : equipment.Graphic.MatSingle;
 
             UnityEngine.Graphics.DrawMesh(
                 weaponMesh,
@@ -485,7 +507,7 @@ namespace FacialStuff
             Vector3 b,
             ref Vector3 currentLoc)
         {
-            Mesh hairMesh = this.GetPawnHairMesh(headFacing, graphics);
+            Mesh hairMesh = this.GetPawnHairMesh(graphics, headFacing, portrait);
             List<ApparelGraphicRecord> apparelGraphics = graphics.apparelGraphics;
             List<ApparelGraphicRecord> headgearGraphics = null;
             if (!apparelGraphics.NullOrEmpty())
@@ -516,7 +538,7 @@ namespace FacialStuff
                             x => x.sourceApparel.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)
                                  && !x.sourceApparel.def.apparel.hatRenderedFrontOfFace);
 
-                    if (noRenderBed || filterHeadgear || !apCoversFullHead && !apCoversUpperHead && noRenderGoggles)
+                    if (this.CompFace.Props.hasOrganicHair ||noRenderBed || filterHeadgear || !apCoversFullHead && !apCoversUpperHead && noRenderGoggles)
                     {
                         Material mat = graphics.HairMatAt(headFacing);
                         GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, mat, portrait);
@@ -697,7 +719,7 @@ namespace FacialStuff
 
         public virtual void DrawHeadOverlays(Rot4 headFacing, PawnHeadOverlays headOverlays, Vector3 bodyLoc, Quaternion headQuat)
         {
-            headOverlays?.RenderStatusOverlays(bodyLoc, headQuat, this.GetPawnMesh(headFacing, false));
+            headOverlays?.RenderStatusOverlays(bodyLoc, headQuat, this.GetPawnMesh(headFacing, false, false));
         }
 
         public virtual void DrawNaturalEyes(Quaternion headQuat, Rot4 headFacing, bool portrait, ref Vector3 locFacialY)
@@ -759,7 +781,7 @@ namespace FacialStuff
 
         public virtual void DrawUnnaturalEyeParts(Quaternion headQuat, Rot4 headFacing, bool portrait, ref Vector3 locFacialY)
         {
-            Mesh headMesh = this.GetPawnMesh(headFacing, false);
+            Mesh headMesh = this.GetPawnMesh(headFacing, false, portrait);
             if (this.CompFace.HasEyePatchLeft)
             {
                 Material leftBionicMat = this.CompFace.FaceMaterial.EyeLeftPatchMatAt(headFacing);
@@ -801,7 +823,7 @@ namespace FacialStuff
                 return;
             }
 
-            Mesh headMesh = this.GetPawnMesh(headFacing, false);
+            Mesh headMesh = this.GetPawnMesh(headFacing, false, portrait);
             GenDraw.DrawMeshNowOrLater(headMesh, locFacialY, headQuat, wrinkleMat, portrait);
             locFacialY.y += YOffsetOnFace;
         }
@@ -816,12 +838,12 @@ namespace FacialStuff
 #endif 
         }
 
-        public virtual Mesh GetPawnHairMesh(Rot4 headFacing, PawnGraphicSet graphics)
+        public virtual Mesh GetPawnHairMesh(PawnGraphicSet graphics, Rot4 headFacing, bool portrait)
         {
             return graphics.HairMeshSet.MeshAt(headFacing);
         }
 
-        public virtual Mesh GetPawnMesh(Rot4 facing, bool wantsBody)
+        public virtual Mesh GetPawnMesh(Rot4 facing, bool wantsBody, bool portrait)
         {
             return wantsBody ? MeshPool.humanlikeBodySet.MeshAt(facing) : MeshPool.humanlikeHeadSet.MeshAt(facing);
         }

@@ -144,7 +144,7 @@
                 return;
             }
 
-            if (this.pawn.health.InPainShock && !this.compFace.EyeWiggler.IsAsleep)
+            if (this.pawn.health.InPainShock && !this.compFace.IsAsleep)
             {
                 if (this.compFace.EyeWiggler.EyeRightBlinkNow && this.compFace.EyeWiggler.EyeLeftBlinkNow)
                 {

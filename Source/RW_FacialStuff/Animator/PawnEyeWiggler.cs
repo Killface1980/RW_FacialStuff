@@ -52,8 +52,6 @@ namespace FacialStuff.Animator
 
         private bool halfAnimY;
 
-        private bool isAsleep;
-
         private int jitterLeft;
 
         private int jitterRight;
@@ -100,8 +98,6 @@ namespace FacialStuff.Animator
         }
 
         public bool EyeRightCanBlink { get; set; }
-
-        public bool IsAsleep => this.isAsleep;
 
         public int NextBlinkEnd => this.nextBlinkEnd;
 
@@ -195,8 +191,6 @@ namespace FacialStuff.Animator
             // + " - blinkDuration: " + blinkDuration.ToString("N0"));
             this.nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
             this.nextBlinkEnd = (int)(this.nextBlink + blinkDuration);
-
-            this.isAsleep = !this.pawn.Awake();
 
             // this.JitterLeft = 1f;
             // this.JitterRight = 1f;

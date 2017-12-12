@@ -805,6 +805,8 @@
             return this.cachedNakedMatsBodyBase;
         }
 
+        public bool IsAsleep;
+
         public override void PostDraw()
         {
             base.PostDraw();
@@ -830,10 +832,16 @@
             {
                 this.EyeWiggler.WigglerTick();
 
-                if (!this.EyeWiggler.IsAsleep)
-                {
-                    this.headRotator.RotatorTick();
-                }
+            }
+
+            if (Find.TickManager.TicksGame % 180 == 0)
+            {
+                this.IsAsleep = !this.Pawn.Awake();
+            }
+
+            if (!IsAsleep)
+            {
+                this.headRotator.RotatorTick();
             }
 
             if (this.Props.hasMouth)
@@ -903,13 +911,13 @@
             }
             if (this.PawnFace == null)
             {
-                this.SetPawnFace(new PawnFace(this.Pawn, this.originFaction.def));
+                this.SetPawnFace(new PawnFace(this, this.originFaction.def));
             }
 
             // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
             if (this.PawnFace?.EyeDef == null || this.PawnFace.BrowDef == null || this.PawnFace.BeardDef == null)
             {
-                this.SetPawnFace(new PawnFace(this.Pawn, Faction.OfPlayer.def));
+                this.SetPawnFace(new PawnFace(this, Faction.OfPlayer.def));
             }
 
             // Only for the crowntype ...
@@ -1069,6 +1077,23 @@
                     i++;
                 }
             }
+        }
+
+        public Vector3 BaseHeadOffsetAt(Rot4 headFacing)
+        {
+            var offset = Vector3.zero;
+
+            if (this.pawnDrawers != null)
+            {
+                int i = 0;
+                int count = this.pawnDrawers.Count;
+                while (i < count)
+                {
+                    this.pawnDrawers[i].BaseHeadOffsetAt(headFacing, ref offset);
+                    i++;
+                }
+            }
+            return offset;
         }
     }
 }

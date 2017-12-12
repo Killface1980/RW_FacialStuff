@@ -48,8 +48,9 @@
 
         public float wrinkleIntensity;
 
-        public PawnFace([NotNull] Pawn pawn, FactionDef pawnFactionDef, bool newPawn = true)
+        public PawnFace([NotNull] CompFace face, FactionDef pawnFactionDef, bool newPawn = true)
         {
+            var pawn = face.Pawn;
             this.DrawMouth = true;
 
             this.EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, pawnFactionDef);
@@ -68,7 +69,7 @@
             this.GenerateHairDNA(pawn, false, newPawn);
 
             this.CrownType = pawn.story.crownType;
-            PawnFaceMaker.RandomBeardDefFor(pawn, pawnFactionDef, out this.BeardDef, out this.MoustacheDef);
+            PawnFaceMaker.RandomBeardDefFor(face, pawnFactionDef, out this.BeardDef, out this.MoustacheDef);
 
             this.wrinkleIntensity = Mathf.InverseLerp(45f, 80f, pawn.ageTracker.AgeBiologicalYearsFloat);
             this.wrinkleIntensity -= pawn.story.melanin / 2;

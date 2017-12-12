@@ -230,12 +230,18 @@
         }
 
         public static void RandomBeardDefFor(
-            [NotNull] Pawn pawn,
+            [NotNull] CompFace face,
             [NotNull] FactionDef factionType,
             [NotNull] out BeardDef mainBeard,
             [NotNull] out MoustacheDef moustache)
         {
-            BeardRoulette(pawn, factionType, out mainBeard, out moustache);
+            if (!face.Props.hasBeard)
+            {
+                mainBeard = BeardDefOf.Beard_Shaved;
+                moustache = MoustacheDefOf.Shaved;
+                return;
+            }
+            BeardRoulette(face.Pawn, factionType, out mainBeard, out moustache);
         }
 
         public static BeardDef RandomBeardDefFor([NotNull] Pawn pawn, BeardType type)

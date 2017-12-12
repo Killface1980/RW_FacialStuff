@@ -82,7 +82,6 @@
     <None Include="Harmony\Class1.cs" />
     <None Include="Harmony\Optional\AlienPatches.cs" />
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Components\CompProperties_Face.cs" />
     <Compile Include="Enums\Class1.cs" />
     <Compile Include="Defs\HandDef.cs" />
