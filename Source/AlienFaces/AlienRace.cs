@@ -51,7 +51,7 @@
         {
             get; set;
         }
-        public HashSet<string> HairTags
+        public List<string> HairTags
         {
             get; set;
         }

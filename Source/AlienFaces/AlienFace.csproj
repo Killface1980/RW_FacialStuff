@@ -41,15 +41,7 @@
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="EdBPrepareCarefully">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\735106432\Assemblies\EdBPrepareCarefully.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\UnityEngine.dll</HintPath>
       <Private>False</Private>
@@ -57,8 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlienDrawer.cs" />
-    <Compile Include="Class1.cs" />
-    <Compile Include="Class2.cs" />
+    <Compile Include="AlienRace.cs" />
+    <Compile Include="ProviderAlienRaces.cs" />
+    <Compile Include="PawnColorUtils.cs" />
     <Compile Include="Dialog_AlienFaceStyling.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="HarmonyPatchesAlien.cs" />

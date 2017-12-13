@@ -74,7 +74,7 @@
 
         public static List<BrowDef> browDefs;
 
-        private static List<string> currentFilter;
+        public static List<string> currentFilter = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
 
         private static List<EyeDef> eyeDefs;
 
@@ -209,7 +209,6 @@
             Columns = 12;
             EntrySize = ListWidth / Columns;
             NameBackground = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0.3f));
-            currentFilter = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
             HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                 x => x.hairTags.SharesElementWith(VanillaHairTags));
 

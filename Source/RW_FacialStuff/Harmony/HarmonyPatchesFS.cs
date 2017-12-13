@@ -223,11 +223,14 @@ namespace FacialStuff.Harmony
 
         public static bool RandomHairDefFor_PreFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
         {
-            if (!pawn.HasCompFace())
+            if (!pawn.GetCompFace(out CompFace compFace))
             {
                 return true;
             }
-
+            if (compFace.Props.needsAlienHair)
+            {
+                return true;
+            }
             IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
                                           where hair.hairTags.SharesElementWith(factionType.hairTags)
                                           select hair;

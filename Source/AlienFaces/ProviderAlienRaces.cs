@@ -1,8 +1,13 @@
 ﻿namespace AlienFace
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Reflection;
+
+    using global::AlienRace;
+
+    using JetBrains.Annotations;
 
     using RimWorld;
 
@@ -12,12 +17,14 @@
 
     public class ProviderAlienRaces
     {
-        protected static Dictionary<ThingDef, AlienRace> lookup = new Dictionary<ThingDef, AlienRace>();
+        protected static Dictionary<ThingDef_AlienRace, AlienRace> lookup = new Dictionary<ThingDef_AlienRace, AlienRace>();
         public ProviderAlienRaces()
         {
 
         }
-        public static AlienRace GetAlienRace(ThingDef def)
+
+        [CanBeNull]
+        public static AlienRace GetAlienRace(ThingDef_AlienRace def)
         {
             AlienRace result;
             if (lookup.TryGetValue(def, out result))
@@ -26,45 +33,29 @@
             }
             else
             {
-                if (IsAlienRace(def))
+                result = InitializeAlienRace(def);
+                if (result != null)
                 {
-                    result = InitializeAlienRace(def);
-                    if (result != null)
-                    {
-                        lookup.Add(def, result);
-                    }
-                    return result;
+                    lookup.Add(def, result);
                 }
-                else
-                {
-                    return null;
-                }
+
+                return result;
             }
         }
-        public static bool IsAlienRace(ThingDef raceDef)
+
+        [CanBeNull]
+        public static AlienRace InitializeAlienRace(ThingDef_AlienRace raceDef)
         {
-            FieldInfo alienRaceField = raceDef.GetType().GetField("alienRace", BindingFlags.Public | BindingFlags.Instance);
-            return (alienRaceField != null);
-        }
-        protected static AlienRace InitializeAlienRace(ThingDef raceDef)
-        {
-            object alienRaceObject = GetFieldValue(raceDef, raceDef, "alienRace");
-            if (alienRaceObject == null)
+            ThingDef_AlienRace.AlienSettings race = raceDef.alienRace;
+            GeneralSettings generalSettings = race?.generalSettings;
+            AlienPartGenerator alienPartGenerator = generalSettings?.alienPartGenerator;
+            if (alienPartGenerator == null)
             {
                 return null;
             }
-            object generalSettingsObject = GetFieldValue(raceDef, alienRaceObject, "generalSettings");
-            if (generalSettingsObject == null)
-            {
-                return null;
-            }
-            object alienPartGeneratorObject = GetFieldValue(raceDef, generalSettingsObject, "alienPartGenerator");
-            if (alienPartGeneratorObject == null)
-            {
-                return null;
-            }
-            System.Collections.ICollection graphicPathsCollection = GetFieldValueAsCollection(raceDef, alienRaceObject, "graphicPaths");
-            if (graphicPathsCollection == null)
+
+            List<GraphicPaths> graphicsPaths = race.graphicPaths;
+            if (graphicsPaths == null)
             {
                 return null;
             }
@@ -73,57 +64,33 @@
             AlienRace result = new AlienRace();
 
             // Get the list of body types.
-            System.Collections.ICollection alienBodyTypesCollection = GetFieldValueAsCollection(raceDef, alienPartGeneratorObject, "alienbodytypes");
-            if (alienBodyTypesCollection == null)
+            List<BodyType> alienbodytypes = alienPartGenerator.alienbodytypes;
+            if (alienbodytypes == null)
             {
                 return null;
             }
+
             List<BodyType> bodyTypes = new List<BodyType>();
-            if (alienBodyTypesCollection.Count > 0)
+            if (alienbodytypes.Count > 0)
             {
-                foreach (object o in alienBodyTypesCollection)
+                foreach (BodyType o in alienbodytypes)
                 {
-                    if (o.GetType() == typeof(BodyType))
-                    {
-                        bodyTypes.Add((BodyType)o);
-                    }
+                    bodyTypes.Add((BodyType)o);
                 }
             }
+
             result.BodyTypes = bodyTypes;
 
             // Determine if the alien races uses gender-specific heads.
-            bool? useGenderedHeads = GetFieldValueAsBool(raceDef, alienPartGeneratorObject, "UseGenderedHeads");
-            if (useGenderedHeads == null)
-            {
-                return null;
-            }
-            result.GenderSpecificHeads = useGenderedHeads.Value;
+            result.GenderSpecificHeads = alienPartGenerator.useGenderedHeads;
 
-            // Get the list of crown types.
-            System.Collections.ICollection alienCrownTypesCollection = GetFieldValueAsCollection(raceDef, alienPartGeneratorObject, "aliencrowntypes");
-            if (alienCrownTypesCollection == null)
-            {
-                return null;
-            }
-            List<string> crownTypes = new List<string>();
-            if (alienCrownTypesCollection.Count > 0)
-            {
-                foreach (object o in alienCrownTypesCollection)
-                {
-                    string crownTypeString = o as string;
-                    if (crownTypeString != null)
-                    {
-                        crownTypes.Add(crownTypeString);
-                    }
-                }
-            }
-            result.CrownTypes = crownTypes;
+            result.CrownTypes = alienPartGenerator.aliencrowntypes;
 
             // Go through the graphics paths and find the heads path.
             string graphicsPathForHeads = null;
-            foreach (var graphicsPath in graphicPathsCollection)
+            foreach (GraphicPaths graphicsPath in graphicsPaths)
             {
-                System.Collections.ICollection lifeStageCollection = GetFieldValueAsCollection(raceDef, graphicsPath, "lifeStageDefs");
+                ICollection lifeStageCollection = GetFieldValueAsCollection(raceDef, graphicsPath, "lifeStageDefs");
                 if (lifeStageCollection == null || lifeStageCollection.Count == 0)
                 {
                     string path = GetFieldValueAsString(raceDef, graphicsPath, "head");
@@ -134,12 +101,12 @@
                     }
                 }
             }
+
             result.GraphicsPathForHeads = graphicsPathForHeads;
 
             // Figure out colors.
-            object primaryColorGeneratorValue = GetFieldValue(raceDef, alienPartGeneratorObject, "alienskincolorgen", true);
+            ColorGenerator primaryGenerator = alienPartGenerator.alienskincolorgen;
             result.UseMelaninLevels = true;
-            ColorGenerator primaryGenerator = primaryColorGeneratorValue as ColorGenerator;
             if (primaryGenerator != null)
             {
                 result.UseMelaninLevels = false;
@@ -149,9 +116,9 @@
             {
                 result.PrimaryColors = new List<Color>();
             }
-            object secondaryColorGeneratorValue = GetFieldValue(raceDef, alienPartGeneratorObject, "alienskinsecondcolorgen", true);
+
+            ColorGenerator secondaryGenerator = alienPartGenerator.alienskinsecondcolorgen;
             result.HasSecondaryColor = false;
-            ColorGenerator secondaryGenerator = secondaryColorGeneratorValue as ColorGenerator;
             if (secondaryGenerator != null)
             {
                 result.HasSecondaryColor = true;
@@ -163,34 +130,17 @@
             }
 
             // Hair properties.
-            object hairSettingsValue = GetFieldValue(raceDef, alienRaceObject, "hairSettings", true);
+            HairSettings hairSettings = race.hairSettings;
             result.HasHair = true;
-            if (hairSettingsValue != null)
+            if (hairSettings != null)
             {
-                bool? hasHair = GetFieldValueAsBool(raceDef, hairSettingsValue, "HasHair");
-                if (hasHair != null)
-                {
-                    result.HasHair = hasHair.Value;
-                }
-                var hairTagCollection = GetFieldValueAsCollection(raceDef, hairSettingsValue, "hairTags");
-                if (hairTagCollection != null)
-                {
-                    var hairTags = new HashSet<string>();
-                    foreach (var o in hairTagCollection)
-                    {
-                        string tag = o as string;
-                        if (tag != null)
-                        {
-                            hairTags.Add(tag);
-                        }
-                    }
-                    if (hairTags.Count > 0)
-                    {
-                        result.HairTags = hairTags;
-                    }
-                }
+                result.HasHair = hairSettings.hasHair;
+
+                result.HairTags = hairSettings.hairTags;
+
             }
-            object hairColorGeneratorValue = GetFieldValue(raceDef, alienPartGeneratorObject, "alienhaircolorgen", true);
+
+            object hairColorGeneratorValue = GetFieldValue(raceDef, alienPartGenerator, "alienhaircolorgen", true);
             ColorGenerator hairColorGenerator = hairColorGeneratorValue as ColorGenerator;
             if (hairColorGenerator != null)
             {
@@ -202,7 +152,7 @@
             }
 
             // Apparel properties.
-            object restrictionSettingsValue = GetFieldValue(raceDef, alienRaceObject, "raceRestriction", true);
+            object restrictionSettingsValue = GetFieldValue(raceDef, race, "raceRestriction", true);
             result.RestrictedApparelOnly = false;
             if (restrictionSettingsValue != null)
             {
@@ -211,11 +161,12 @@
                 {
                     result.RestrictedApparelOnly = restrictedApparelOnly.Value;
                 }
-                var restrictedApparelCollection = GetFieldValueAsCollection(raceDef, restrictionSettingsValue, "apparelList");
+
+                ICollection restrictedApparelCollection = GetFieldValueAsCollection(raceDef, restrictionSettingsValue, "apparelList");
                 if (restrictedApparelCollection != null)
                 {
-                    var apparel = new HashSet<string>();
-                    foreach (var o in restrictedApparelCollection)
+                    HashSet<string> apparel = new HashSet<string>();
+                    foreach (object o in restrictedApparelCollection)
                     {
                         string defName = o as string;
                         if (defName != null)
@@ -223,6 +174,7 @@
                             apparel.Add(defName);
                         }
                     }
+
                     if (apparel.Count > 0)
                     {
                         result.RestrictedApparel = apparel;
@@ -232,6 +184,7 @@
 
             return result;
         }
+
         protected static object GetFieldValue(ThingDef raceDef, object source, string name, bool allowNull = false)
         {
             try
@@ -242,6 +195,7 @@
                     Log.Warning("Prepare carefully could not find " + name + " field for " + raceDef.defName);
                     return null;
                 }
+
                 object result = field.GetValue(source);
                 if (result == null)
                 {
@@ -249,6 +203,7 @@
                     {
                         Log.Warning("Prepare carefully could not find " + name + " field value for " + raceDef.defName);
                     }
+
                     return null;
                 }
                 else
@@ -262,14 +217,16 @@
                 return null;
             }
         }
-        protected static System.Collections.ICollection GetFieldValueAsCollection(ThingDef raceDef, object source, string name)
+
+        protected static ICollection GetFieldValueAsCollection(ThingDef raceDef, object source, string name)
         {
             object result = GetFieldValue(raceDef, source, name, true);
             if (result == null)
             {
                 return null;
             }
-            System.Collections.ICollection collection = result as System.Collections.ICollection;
+
+            ICollection collection = result as System.Collections.ICollection;
             if (collection == null)
             {
                 Log.Warning("Prepare carefully could not convert " + name + " field value into a collection for " + raceDef.defName + ".");
@@ -280,6 +237,7 @@
                 return collection;
             }
         }
+
         protected static bool? GetFieldValueAsBool(ThingDef raceDef, object source, string name)
         {
             object result = GetFieldValue(raceDef, source, name, true);
@@ -287,6 +245,7 @@
             {
                 return null;
             }
+
             if (result.GetType() == typeof(bool))
             {
                 return (bool)result;
@@ -297,6 +256,7 @@
                 return null;
             }
         }
+
         protected static string GetFieldValueAsString(ThingDef raceDef, object source, string name)
         {
             object value = GetFieldValue(raceDef, source, name, true);
@@ -304,6 +264,7 @@
             {
                 return null;
             }
+
             string result = value as string;
             if (result != null)
             {
