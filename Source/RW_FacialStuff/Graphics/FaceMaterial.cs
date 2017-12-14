@@ -229,6 +229,10 @@ namespace FacialStuff
                 {
                     return null;
                 }
+                if (!this.compFace.Props.hasMouth)
+                {
+                    return null;
+                }
 
                 if (this.pawn.gender == Gender.Male)
                 {

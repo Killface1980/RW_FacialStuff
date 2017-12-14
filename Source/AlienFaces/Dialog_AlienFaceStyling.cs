@@ -25,20 +25,26 @@ namespace AlienFace
 
     using Controller = FacialStuff.Controller;
 
+    [StaticConstructorOnStartup]
     public class Dialog_AlienFaceStyling : Dialog_FaceStyling
     {
 
-        private AlienRace alienRace;
+        private readonly AlienRace alienRace;
 
         public Dialog_AlienFaceStyling(Pawn p, ThingDef_AlienRace alienProp) : base(p)
         {
             PawnColorUtils.InitializeColors();
-            this.alienRace = ProviderAlienRaces.GetAlienRace(alienProp);
-            CurrentFilter = this.alienRace.HairTags;
-            HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
-                x => x.hairTags.SharesElementWith(CurrentFilter));
-            this.useSkincolorForHair = (this.compFace.Pawn.def as ThingDef_AlienRace).alienRace.generalSettings.alienPartGenerator
+            this.alienRace = ProviderAlienRaces.GetAlienRace(alienProp, p);
+            if (this.alienRace.HasHair)
+            {
+                HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                    x => x.hairTags.SharesElementWith(this.alienRace.HairTags));
+                CurrentFilter = this.alienRace.HairTags;
+
+            }
+            this.useSkincolorForHair = ((ThingDef_AlienRace)this.compFace.Pawn.def).alienRace.generalSettings.alienPartGenerator
                 .useSkincolorForHair;
+            this.genderTab = GenderTab.All;
         }
 
         public override void DoWindowContents(Rect inRect)
@@ -358,11 +364,6 @@ namespace AlienFace
         private void DrawSkinColorSelector(Rect rect)
         {
             Widgets.DrawBoxSolid(rect, new Color(0.3f, 0.3f, 0.3f));
-            Rect contractedBy = rect.ContractedBy(MarginFS / 2);
-
-            GUI.BeginGroup(contractedBy);
-
-            var cursorY = rect.y;
 
             if (this.alienRace.UseMelaninLevels)
             {
@@ -374,10 +375,9 @@ namespace AlienFace
             }
 
 
-            GUI.EndGroup();
         }
 
-        private void DrawHairPicker(Rect rect)
+        public override void DrawHairPicker(Rect rect)
         {
             List<TabRecord> list = new List<TabRecord>();
             var hairTags = this.alienRace.HairTags;
@@ -497,7 +497,7 @@ namespace AlienFace
         }
 
 
-        public void DrawUI(Rect rect)
+        public override void DrawUI(Rect rect)
         {
             GUI.BeginGroup(rect);
             string pawnName = pawn.NameStringShort;
@@ -660,8 +660,8 @@ namespace AlienFace
                     this.DrawTypeSelector(listRect);
                 }
 
-                GUI.EndGroup();
             }
+                GUI.EndGroup();
 
         }
 
@@ -669,7 +669,7 @@ namespace AlienFace
         {
 
             Color currentColor = this.NewHairColor;
-            Rect rect = new Rect(SwatchPosition.x, crect.y+5f, SwatchSize.x, SwatchSize.y);
+            Rect rect = new Rect(SwatchPosition.x, crect.y + 5f, SwatchSize.x, SwatchSize.y);
             if (colors != null)
             {
                 foreach (Color color in colors)

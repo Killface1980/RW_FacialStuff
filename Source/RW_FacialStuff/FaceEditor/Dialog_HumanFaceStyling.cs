@@ -165,7 +165,7 @@
             Justification = "Reviewed. Suppression is OK here.")]
         private bool reInit;
 
-        public bool rerenderPawn;
+        public bool rerenderPawn = true;
 
         private bool saveChangedOnExit;
 
@@ -374,17 +374,14 @@
 
         #region Public Properties
 
-        public static List<string> CurrentFilter
+        public static  List<string> CurrentFilter
         {
-            get
-            {
-                return currentFilter;
-            }
+            get => currentFilter;
 
             set
             {
                 currentFilter = value;
-                filteredHairDefs = hairDefs.FindAll(x => x.hairTags.SharesElementWith(currentFilter));
+                filteredHairDefs = hairDefs.FindAll(x=> x.hairTags.SharesElementWith(currentFilter));
                 filteredHairDefs.SortBy(i => i.LabelCap);
             }
         }
@@ -1409,7 +1406,7 @@
             return baldness;
         }
         */
-        private void DrawHairPicker(Rect rect)
+        public virtual void DrawHairPicker(Rect rect)
         {
             List<TabRecord> list = new List<TabRecord>();
 
@@ -2061,7 +2058,7 @@
             GUI.color = Color.white;
         }
 
-        public void DrawUI(Rect rect)
+        public virtual void DrawUI(Rect rect)
         {
             GUI.BeginGroup(rect);
             string pawnName = pawn.NameStringShort;

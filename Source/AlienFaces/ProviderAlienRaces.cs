@@ -24,7 +24,7 @@
         }
 
         [CanBeNull]
-        public static AlienRace GetAlienRace(ThingDef_AlienRace def)
+        public static AlienRace GetAlienRace(ThingDef_AlienRace def, Pawn p)
         {
             AlienRace result;
             if (lookup.TryGetValue(def, out result))
@@ -33,7 +33,7 @@
             }
             else
             {
-                result = InitializeAlienRace(def);
+                result = InitializeAlienRace(def, p);
                 if (result != null)
                 {
                     lookup.Add(def, result);
@@ -44,7 +44,7 @@
         }
 
         [CanBeNull]
-        public static AlienRace InitializeAlienRace(ThingDef_AlienRace raceDef)
+        public static AlienRace InitializeAlienRace(ThingDef_AlienRace raceDef, Pawn p)
         {
             ThingDef_AlienRace.AlienSettings race = raceDef.alienRace;
             GeneralSettings generalSettings = race?.generalSettings;
@@ -131,12 +131,20 @@
 
             // Hair properties.
             HairSettings hairSettings = race.hairSettings;
-            result.HasHair = true;
+            result.HasHair = false;
             if (hairSettings != null)
             {
                 result.HasHair = hairSettings.hasHair;
 
-                result.HairTags = hairSettings.hairTags;
+                if (hairSettings.hairTags.NullOrEmpty())
+                {
+                    result.HairTags = p.kindDef.defaultFactionType.hairTags;
+                }
+                else
+                {
+                    result.HairTags = hairSettings.hairTags;
+                }
+
 
             }
 
