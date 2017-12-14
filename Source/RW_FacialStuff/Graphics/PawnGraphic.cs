@@ -51,26 +51,17 @@
         [CanBeNull]
         public string texPathBrow;
 
-        [CanBeNull]
-        public string texPathEyeLeft;
 
         [CanBeNull]
         public string texPathEyeLeftClosed;
 
-        [CanBeNull]
-        public string texPathEyeLeftPatch;
 
-        [CanBeNull]
-        public string texPathEyeRight;
 
         [CanBeNull]
         public string texPathEyeRightClosed;
 
-        [CanBeNull]
-        public string texPathEyeRightPatch;
 
-        [CanBeNull]
-        public string texPathJawAddedPart;
+
 
         public Graphic WrinkleGraphic;
 
@@ -105,8 +96,8 @@
             {
 
                 EyeDef pawnFaceEyeDef = this.compFace.PawnFace.EyeDef;
-                this.texPathEyeRight = this.compFace.EyeTexPath(pawnFaceEyeDef.texPath, Side.Right);
-                this.texPathEyeLeft = this.compFace.EyeTexPath(pawnFaceEyeDef.texPath, Side.Left);
+                this.compFace.texPathEyeRight = this.compFace.EyeTexPath(pawnFaceEyeDef.texPath, Side.Right);
+                this.compFace.texPathEyeLeft = this.compFace.EyeTexPath(pawnFaceEyeDef.texPath, Side.Left);
                 this.texPathEyeLeftClosed = this.compFace.EyeClosedTexPath(Side.Left);
                 this.texPathEyeRightClosed = this.compFace.EyeClosedTexPath(Side.Right);
 
@@ -216,13 +207,13 @@
 
         private void InitializeGraphicsEyePatches()
         {
-            if (!this.texPathEyeLeftPatch.NullOrEmpty())
+            if (!this.compFace.texPathEyeLeftPatch.NullOrEmpty())
             {
-                bool flag = !ContentFinder<Texture2D>.Get(this.texPathEyeLeftPatch + "_front", false).NullOrBad();
+                bool flag = !ContentFinder<Texture2D>.Get(this.compFace.texPathEyeLeftPatch + "_front", false).NullOrBad();
                 if (flag)
                 {
                     this.EyeLeftPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
-                                                                   this.texPathEyeLeftPatch,
+                                                   this.compFace.texPathEyeLeftPatch,
                                                                    ShaderDatabase.Transparent,
                                                                    Vector2.one,
                                                                    Color.white) as Graphic_Multi_AddedHeadParts;
@@ -232,7 +223,7 @@
                 {
                     this.compFace.HasEyePatchLeft = false;
                     Log.Message(
-                        "Facial Stuff: No texture for added part: " + this.texPathEyeLeftPatch
+                        "Facial Stuff: No texture for added part: " + this.compFace.texPathEyeLeftPatch
                         + " - Graphic_Multi_AddedHeadParts");
                 }
             }
@@ -241,14 +232,14 @@
                 this.compFace.HasEyePatchLeft = false;
             }
 
-            if (!this.texPathEyeRightPatch.NullOrEmpty())
+            if (!this.compFace.texPathEyeRightPatch.NullOrEmpty())
             {
-                bool flag2 = !ContentFinder<Texture2D>.Get(this.texPathEyeRightPatch + "_front", false).NullOrBad();
+                bool flag2 = !ContentFinder<Texture2D>.Get(this.compFace.texPathEyeRightPatch + "_front", false).NullOrBad();
                 if (flag2)
                 {
                     this.EyeRightPatchGraphic =
                         GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
-                            this.texPathEyeRightPatch,
+                            this.compFace.texPathEyeRightPatch,
                             ShaderDatabase.Transparent,
                             Vector2.one,
                             Color.white) as Graphic_Multi_AddedHeadParts;
@@ -257,7 +248,7 @@
                 else
                 {
                     Log.Message(
-                        "Facial Stuff: No texture for added part: " + this.texPathEyeRightPatch
+                        "Facial Stuff: No texture for added part: " + this.compFace.texPathEyeRightPatch
                         + " - Graphic_Multi_AddedHeadParts");
                     this.compFace.HasEyePatchRight = false;
                 }
@@ -273,13 +264,13 @@
             this.InitializeGraphicsEyePatches();
 
             this.EyeLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-                                      this.texPathEyeLeft,
+                                      this.compFace.texPathEyeLeft,
                                       ShaderDatabase.Cutout,
                                       Vector2.one,
                                       this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
 
             this.EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-                                       this.texPathEyeRight,
+                                       this.compFace.texPathEyeRight,
                                        ShaderDatabase.Cutout,
                                        Vector2.one,
                                        this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
@@ -320,13 +311,13 @@
         }
         private void InitializeGraphicsMouth()
         {
-            if (!this.texPathJawAddedPart.NullOrEmpty())
+            if (!this.compFace.texPathJawAddedPart.NullOrEmpty())
             {
-                bool flag = ContentFinder<Texture2D>.Get(this.texPathJawAddedPart + "_front", false) != null;
+                bool flag = ContentFinder<Texture2D>.Get(this.compFace.texPathJawAddedPart + "_front", false) != null;
                 if (flag)
                 {
                     this.JawGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                          this.texPathJawAddedPart,
+                                          this.compFace.texPathJawAddedPart,
                                                           ShaderDatabase.CutoutSkin,
                                                           Vector2.one,
                                                           Color.white) as Graphic_Multi_NaturalHeadParts;
@@ -338,7 +329,7 @@
 
                 // texture for added/extra part not found, log and default
                 Log.Message(
-                    "Facial Stuff: No texture for added part: " + this.texPathJawAddedPart
+                    "Facial Stuff: No texture for added part: " + this.compFace.texPathJawAddedPart
                     + " - Graphic_Multi_NaturalHeadParts. This is not an error, just an info.");
             }
 

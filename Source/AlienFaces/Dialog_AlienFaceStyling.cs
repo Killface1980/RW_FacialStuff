@@ -367,11 +367,11 @@ namespace AlienFace
 
             if (this.alienRace.UseMelaninLevels)
             {
-                this.DrawHumanlikeColorSelector(5f);
+                this.DrawHumanlikeColorSelector(rect.y + 5f);
             }
             else
             {
-                this.DrawAlienPawnColorSelector(5f, this.alienRace.PrimaryColors, true);
+                this.DrawAlienPawnColorSelector(rect.y + 5f, this.alienRace.PrimaryColors, true);
             }
 
 
@@ -608,12 +608,12 @@ namespace AlienFace
                         this.compFace.PawnFace.HasSameBeardColor = faceCompHasSameBeardColor;
                         this.NewBeardColor = HairMelanin.DarkerBeardColor(this.NewHairColor);
                     }
+                }
 
-                    if (this.compFace.PawnFace.DrawMouth != faceCompDrawMouth)
-                    {
-                        this.compFace.PawnFace.DrawMouth = faceCompDrawMouth;
-                        this.rerenderPawn = true;
-                    }
+                if (this.compFace.PawnFace.DrawMouth != faceCompDrawMouth)
+                {
+                    this.compFace.PawnFace.DrawMouth = faceCompDrawMouth;
+                    this.rerenderPawn = true;
                 }
 
                 set.width = mainRect.width / 2 - 10f;
@@ -661,7 +661,7 @@ namespace AlienFace
                 }
 
             }
-                GUI.EndGroup();
+            GUI.EndGroup();
 
         }
 

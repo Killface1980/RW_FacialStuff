@@ -293,6 +293,11 @@ namespace FacialStuff
             }
         }
 
+        [CanBeNull]
+        public string texPathEyeLeft;
+
+        [CanBeNull]
+        public string texPathEyeRight;
 
         // Verse.PawnRenderer - Vanilla with flava
         public virtual void DrawEquipment(Vector3 rootLoc)
@@ -365,6 +370,10 @@ namespace FacialStuff
 
                 this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc2, aimAngle);
 
+            }
+            else if (pawn.CurJob != null && pawn.CurJob.targetA.Cell == pawn.Rotation.FacingCell)
+            {
+                DrawHands(pawn.DrawPos);
             }
         }
 

@@ -446,23 +446,24 @@
             }
 
             List<BodyPartRecord> allParts = this.Pawn?.RaceProps?.body?.AllParts;
-            if (allParts != null)
+            if (allParts.NullOrEmpty())
             {
-                List<BodyPartRecord> body = allParts;
-                List<Hediff> hediffs = this.Pawn?.health?.hediffSet?.hediffs;
+                return;
+            }
+            List<BodyPartRecord> body = allParts;
+            List<Hediff> hediffs = this.Pawn?.health?.hediffSet?.hediffs;
 
-                if (hediffs.NullOrEmpty() || body.NullOrEmpty())
-                {
-                    // || hediffs.Any(x => x.def == HediffDefOf.MissingBodyPart && x.Part.def == BodyPartDefOf.Head))
-                    return;
-                }
+            if (hediffs.NullOrEmpty() || body.NullOrEmpty())
+            {
+                // || hediffs.Any(x => x.def == HediffDefOf.MissingBodyPart && x.Part.def == BodyPartDefOf.Head))
+                return;
+            }
 
+            // ReSharper disable once AssignNullToNotNullAttribute
+            foreach (Hediff diff in hediffs.Where(diff => diff?.def?.defName != null))
+            {
                 // ReSharper disable once AssignNullToNotNullAttribute
-                foreach (Hediff diff in hediffs.Where(diff => diff?.def?.defName != null))
-                {
-                    // ReSharper disable once AssignNullToNotNullAttribute
-                    this.CheckPart(body, diff);
-                }
+                this.CheckPart(body, diff);
             }
         }
 
@@ -923,13 +924,15 @@
             // Only for the crowntype ...
             CrownTypeChecker.SetHeadOffsets(this.Pawn, this);
 
-            this.PawnGraphic = new PawnGraphic(this);
 
-            this.faceMaterial = new FaceMaterial(this, this.PawnGraphic);
             if (this.Props.hasEyes)
             {
                 this.eyeWiggler = new PawnEyeWiggler(this.Pawn);
             }
+            this.CheckForAddedOrMissingParts();
+
+            this.PawnGraphic = new PawnGraphic(this);
+            this.faceMaterial = new FaceMaterial(this, this.PawnGraphic);
 
             // this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
             this.headRotator = new PawnHeadRotator(this.Pawn);
@@ -937,16 +940,15 @@
             // this.headWiggler = new PawnHeadWiggler(this.pawn);
 
             // ReSharper disable once PossibleNullReferenceException
-            this.CheckForAddedOrMissingParts();
 
             this.InitializePawnDrawer();
 
             return true;
         }
 
-        public void SetPawnFace([NotNull] PawnFace inportedFace)
+        public void SetPawnFace([NotNull] PawnFace importedFace)
         {
-            this.pawnFace = inportedFace;
+            this.pawnFace = importedFace;
         }
 
         // Verse.PawnGraphicSet
@@ -989,6 +991,18 @@
         #endregion Public Methods
 
         #region Private Methods
+        [CanBeNull]
+        public string texPathEyeLeftPatch;
+
+        [CanBeNull]
+        public string texPathJawAddedPart;
+
+        [CanBeNull]
+        public string texPathEyeLeft;
+
+        [CanBeNull]
+        public string texPathEyeRight;
+
 
         private void CheckPart([NotNull] List<BodyPartRecord> body, [NotNull] Hediff hediff)
         {
@@ -1010,13 +1024,13 @@
                     {
                         if (hediff.Part == leftEye)
                         {
-                            this.PawnGraphic.texPathEyeLeftPatch = "AddedParts/" + hediff.def.defName + "_Left" + "_"
+                            this.texPathEyeLeftPatch = "AddedParts/" + hediff.def.defName + "_Left" + "_"
                                                        + this.PawnCrownType;
                         }
 
                         if (hediff.Part == rightEye)
                         {
-                            this.PawnGraphic.texPathEyeRightPatch = "AddedParts/" + hediff.def.defName + "_Right" + "_"
+                            this.texPathEyeRightPatch = "AddedParts/" + hediff.def.defName + "_Right" + "_"
                                                         + this.PawnCrownType;
                         }
                     }
@@ -1025,7 +1039,7 @@
                     {
                         if (hediff.Part == jaw)
                         {
-                            this.PawnGraphic.texPathJawAddedPart = "Mouth/Mouth_" + hediff.def.defName;
+                            this.texPathJawAddedPart = "Mouth/Mouth_" + hediff.def.defName;
                         }
                     }
                 }
@@ -1039,18 +1053,21 @@
             {
                 if (leftEye != null && hediff.Part == leftEye)
                 {
-                    this.PawnGraphic.texPathEyeLeft = this.EyeTexPath("Missing", Side.Left);
+                    this.texPathEyeLeft = this.EyeTexPath("Missing", Side.Left);
                     this.EyeWiggler.EyeLeftCanBlink = false;
                 }
 
                 // ReSharper disable once InvertIf
                 if (rightEye != null && hediff.Part == rightEye)
                 {
-                    this.PawnGraphic.texPathEyeRight = this.EyeTexPath("Missing", Side.Right);
+                    this.texPathEyeRight = this.EyeTexPath("Missing", Side.Right);
                     this.EyeWiggler.EyeRightCanBlink = false;
                 }
             }
         }
+
+        [CanBeNull]
+        public string texPathEyeRightPatch;
 
         [NotNull]
         public string EyeClosedTexPath(Side side)
