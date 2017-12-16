@@ -832,7 +832,11 @@
             if (this.Props.hasEyes)
             {
                 this.EyeWiggler.WigglerTick();
+            }
 
+            if (this.Props.hasHands)
+            {
+                this.BodyAnimator.AnimatorTick();
             }
 
             if (Find.TickManager.TicksGame % 180 == 0)
@@ -936,16 +940,64 @@
 
             // this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
             this.headRotator = new PawnHeadRotator(this.Pawn);
+            this.bodyAnimator = new BodyAnimator(this.Pawn);
 
             // this.headWiggler = new PawnHeadWiggler(this.pawn);
 
             // ReSharper disable once PossibleNullReferenceException
-
+            
             this.InitializePawnDrawer();
 
+            switch (this.Pawn.story.bodyType)
+            {
+                case BodyType.Undefined:
+                case BodyType.Male:
+                    this.bodyDefinition.shoulderOffsetVerFromCenter = 0;
+                    this.bodyDefinition.shoulderWidth = 0.26f;
+                    this.bodyDefinition.armLength = 0.275f;
+                    this.bodyDefinition.hipOffsetVerticalFromCenter = -0.275f;
+                    this.bodyDefinition.hipWidth = 0.175f;
+                    this.bodyDefinition.legLength = 0.275f;
+                    break;
+                case BodyType.Female:
+                    this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
+                    this.bodyDefinition.shoulderWidth = 0.225f;
+                    this.bodyDefinition.armLength = 0.25f;
+                    this.bodyDefinition.hipOffsetVerticalFromCenter = -0.275f;
+                    this.bodyDefinition.hipWidth = 0.175f;
+                    this.bodyDefinition.legLength = 0.275f;
+                    break;
+                case BodyType.Hulk:
+                    this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
+                    this.bodyDefinition.shoulderWidth = 0.3f;
+                    this.bodyDefinition.armLength = 0.3f;
+                    this.bodyDefinition.hipOffsetVerticalFromCenter = -0.3f;
+                    this.bodyDefinition.hipWidth = 0.175f;
+                    this.bodyDefinition.legLength = 0.325f;
+                    break;
+                case BodyType.Fat:
+                    this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
+                    this.bodyDefinition.shoulderWidth = 0.3f;
+                    this.bodyDefinition.armLength = 0.275f;
+                    this.bodyDefinition.hipOffsetVerticalFromCenter = -0.275f;
+                    this.bodyDefinition.hipWidth = 0.2f;
+                    this.bodyDefinition.legLength = 0.3f;
+                    break;
+                case BodyType.Thin:
+                    this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
+                    this.bodyDefinition.shoulderWidth = 0.15f;
+                    this.bodyDefinition.armLength = 0.225f;
+                    this.bodyDefinition.hipOffsetVerticalFromCenter = -0.25f;
+                    this.bodyDefinition.hipWidth = 0.125f;
+                    this.bodyDefinition.legLength = 0.25f;
+                    break;
+
+            }
+            this.bodyDefinition.hipOffsetHorWhenFacingHorizontal = -0.05f;
             return true;
         }
 
+        public BodyDefinition bodyDefinition;
         public void SetPawnFace([NotNull] PawnFace importedFace)
         {
             this.pawnFace = importedFace;
@@ -1069,6 +1121,10 @@
         [CanBeNull]
         public string texPathEyeRightPatch;
 
+        private BodyAnimator bodyAnimator;
+
+        public BodyAnimator BodyAnimator => bodyAnimator;
+
         [NotNull]
         public string EyeClosedTexPath(Side side)
         {
@@ -1112,5 +1168,26 @@
             }
             return offset;
         }
+    }
+
+    public struct BodyDefinition
+    {
+        public  float hipOffsetHorWhenFacingHorizontal;
+
+        public float hipWidth;
+
+        public float hipOffsetVerticalFromCenter;
+
+        public float legLength;
+
+
+        public float shoulderWidth;
+
+        public float shoulderOffsetVerFromCenter;
+
+        public float armLength;
+
+        public float shoulderOffsetWhenFacingHorizontal;
+
     }
 }

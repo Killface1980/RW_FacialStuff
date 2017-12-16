@@ -315,8 +315,8 @@
                 texNameHand,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
-                this.pawn.story.hairColor,
-                this.pawn.story.hairColor);
+                this.pawn.story.SkinColor,
+                this.pawn.story.SkinColor);
         }
         private void InitializeGraphicsMouth()
         {

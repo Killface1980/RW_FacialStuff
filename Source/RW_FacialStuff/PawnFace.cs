@@ -57,14 +57,8 @@
             this.BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, pawnFactionDef);
 
             this.WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn);
-            if (Controller.settings.SameBeardColor)
-            {
-                this.HasSameBeardColor = true;
-            }
-            else
-            {
-                this.HasSameBeardColor = Rand.Value > 0.3f;
-            }
+
+            this.HasSameBeardColor = Rand.Value > 0.3f;
 
             this.GenerateHairDNA(pawn, false, newPawn);
 
@@ -116,7 +110,9 @@
 
         public void GenerateHairDNA([NotNull] Pawn pawn, bool ignoreRelative = false, bool newPawn = true)
         {
-            HairDNA hairDNA = HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor, ignoreRelative);
+            bool sameColor = Controller.settings.SameBeardColor;
+
+            HairDNA hairDNA = HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor || sameColor, ignoreRelative);
             this.EuMelanin = hairDNA.HairColorRequest.EuMelanin;
             this.PheoMelanin = hairDNA.HairColorRequest.PheoMelanin;
             this.Greyness = hairDNA.HairColorRequest.Greyness;

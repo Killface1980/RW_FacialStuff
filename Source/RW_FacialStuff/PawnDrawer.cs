@@ -30,21 +30,13 @@ namespace FacialStuff
         public CompFace CompFace;
         public float handHorizontalOffset = 0.2f;
 
-        public Vector3 shoulderPos = new Vector3(0, 0, 0f);
 
-        public int swingCounter;
-
-        [CanBeNull]
-        public string texPathEyeLeft;
-
-        [CanBeNull]
-        public string texPathEyeRight;
 
         #endregion Public Fields
 
         #region Private Fields
 
-        public SimpleCurve swingCurve =
+        public SimpleCurve swingCurveHands =
             new SimpleCurve
                 {
                     new CurvePoint(0f, 0f),
@@ -54,13 +46,43 @@ namespace FacialStuff
                     new CurvePoint(60f, 0f)
                 };
 
-        public SimpleCurve swingCurve2 =
+        public SimpleCurve swingCurveHandsVertical =
             new SimpleCurve
                 {
                     new CurvePoint(0f, 0f),
-                    new CurvePoint(15f, 0.1f),
+                    new CurvePoint(15f, 0.125f),
                     new CurvePoint(30f, 0f),
-                    new CurvePoint(45f, -0.1f),
+                    new CurvePoint(45f, -0.125f),
+                    new CurvePoint(60f, 0f)
+                };
+
+        public SimpleCurve swingCurveFeet =
+            new SimpleCurve
+                {
+                    new CurvePoint(0f, 0f),
+                    new CurvePoint(15f, 40f),
+                    new CurvePoint(30f, 0f),
+                    new CurvePoint(45f, -40f),
+                    new CurvePoint(60f, 0f)
+                };
+
+        public SimpleCurve PositionY =
+            new SimpleCurve
+                {
+                    new CurvePoint(0f, 0f),
+                    new CurvePoint(15f, 0.2f),
+                    new CurvePoint(30f, 0f),
+                    new CurvePoint(45f, -0.2f),
+                    new CurvePoint(60f, 0f)
+                };
+
+        public SimpleCurve swingCurveFeetNorthSouth =
+            new SimpleCurve
+                {
+                    new CurvePoint(0f, 0f),
+                    new CurvePoint(15f, 0.075f),
+                    new CurvePoint(30f, 0f),
+                    new CurvePoint(45f, -0.075f),
                     new CurvePoint(60f, 0f)
                 };
 
@@ -674,9 +696,10 @@ namespace FacialStuff
             {
                 return;
             }
+            var body = this.CompFace.bodyDefinition;
 
             // Basic values if pawn is carrying stuff
-            float x = -0.2f;
+            float x = -body.shoulderWidth;
             float x2 = -x;
             float y = 0.2f;
             float y2 = y;
@@ -693,31 +716,12 @@ namespace FacialStuff
             if (!carrying)
             {
                 // Offsets for hands from the pawn center
-                center += this.shoulderPos;
-                z = z2 = -0.275f;
+                center.z += body.shoulderOffsetVerFromCenter;
+                z = z2 = -body.armLength;
 
-                // Swing the hands, try complete the cycle
-                if (this.CompFace.Pawn.pather.Moving || this.swingCounter % 30 != 0)
+                if (rot.IsHorizontal)
                 {
-                    if (rot == Rot4.West || rot == Rot4.East)
-                    {
-                        x = x2 = 0;
-                        angle = this.swingCurve.Evaluate(this.swingCounter);
-                    }
-                    else
-                    {
-                        z += this.swingCurve2.Evaluate(this.swingCounter);
-                        z2 -= this.swingCurve2.Evaluate(this.swingCounter);
-                    }
-                    this.swingCounter++;
-                    if (this.swingCounter > 60)
-                    {
-                        this.swingCounter = 0;
-                    }
-
-                }
-                if (rot == Rot4.West || rot == Rot4.East)
-                {
+                    center.x += (rot == Rot4.West ? -1 : 1) * body.shoulderOffsetWhenFacingHorizontal;
                     x = x2 = 0f;
                     y2 *= -1;
                 }
@@ -725,6 +729,25 @@ namespace FacialStuff
                 {
                     y = y2 = -0.2f;
                 }
+
+                // Swing the hands, try complete the cycle
+                if (!this.CompFace.BodyAnimator.Finished)
+                {
+                    if (rot == Rot4.West || rot == Rot4.East)
+                    {
+                        x = x2 = 0;
+                        angle = this.swingCurveHands.Evaluate(this.CompFace.BodyAnimator.swingCounter);
+                    }
+                    else
+                    {
+                        y = this.PositionY.Evaluate(this.CompFace.BodyAnimator.swingCounter);
+                        y2 = -y;
+
+                        z += this.swingCurveHandsVertical.Evaluate(this.CompFace.BodyAnimator.swingCounter);
+                        z2 -= this.swingCurveHandsVertical.Evaluate(this.CompFace.BodyAnimator.swingCounter);
+                    }
+                }
+
 
             }
 
@@ -740,7 +763,7 @@ namespace FacialStuff
 
             UnityEngine.Graphics.DrawMesh(
                 handsMesh,
-                drawPos + new Vector3(x2, y2, z2).RotatedBy(-angle),
+                center + new Vector3(x2, y2, z2).RotatedBy(-angle),
                 Quaternion.AngleAxis(-angle, Vector3.up),
                 handGraphicMatSingle,
                 0);
@@ -767,11 +790,12 @@ namespace FacialStuff
             }
 
             // Basic values 
-            float x = -0.1f;
+            BodyDefinition body = this.CompFace.bodyDefinition;
+            float x = -body.hipWidth;
             float x2 = -x;
             float y = 0.2f;
             float y2 = y;
-            float z = -0.275f;
+            float z = -body.legLength;
             float z2 = z;
 
             // Center = drawpos of carryThing
@@ -781,33 +805,50 @@ namespace FacialStuff
             var rot = this.CompFace.Pawn.Rotation;
 
             // Offsets for hands from the pawn center
-            center.z -= 0.275f;
+            center.z += body.hipOffsetVerticalFromCenter;
 
-            // Swing the hands, try complete the cycle
-            if (this.CompFace.Pawn.pather.Moving || this.swingCounter % 30 != 0)
+            if (rot.IsHorizontal)
             {
-                // Same as hands, but inverted
-                if (rot == Rot4.West || rot == Rot4.East)
-                {
-                    x = x2 = 0;
-                    angle = -this.swingCurve.Evaluate(this.swingCounter);
-                    // Align the center to the hip
-                    center.x += rot == Rot4.West ? 0.05f : -0.05f;
-                }
-                else
-                {
-                    z -= this.swingCurve2.Evaluate(this.swingCounter);
-                    z2 += this.swingCurve2.Evaluate(this.swingCounter);
-                }
-            }
-
-            if (rot == Rot4.West || rot == Rot4.East)
-            {
+                x /= 3;
+                x2 /= 3;
                 y2 *= -1;
             }
             else if (rot == Rot4.North)
             {
                 y = y2 = -0.2f;
+            }
+            bool flag = false;
+            // Swing the hands, try complete the cycle
+            if (!this.CompFace.BodyAnimator.Finished)
+            {
+                flag = true;
+                // Same as hands, but inverted
+                if (rot.IsHorizontal)
+                {
+                    x = x2 = 0;
+                    angle = -this.swingCurveFeet.Evaluate(this.CompFace.BodyAnimator.swingCounter);
+                }
+                else
+                {
+                    y = -this.PositionY.Evaluate(this.CompFace.BodyAnimator.swingCounter);
+                    y2 = -y;
+                    z -= this.swingCurveFeetNorthSouth.Evaluate(this.CompFace.BodyAnimator.swingCounter);
+                    z2 += this.swingCurveFeetNorthSouth.Evaluate(this.CompFace.BodyAnimator.swingCounter);
+                }
+            }
+            if (rot.IsHorizontal)
+            {
+                float multi = rot == Rot4.West ? -1f : 1f;
+
+                // Align the center to the hip
+                center.x += multi * body.hipOffsetHorWhenFacingHorizontal;
+
+                if (!flag)
+                {
+                    // Animation finished, pawn standing
+                    y *= multi;
+                    y2 *= multi;
+                }
             }
 
             Mesh handsMesh = MeshPool.plane10;
@@ -828,20 +869,25 @@ namespace FacialStuff
 
             if (develop)
             {
-
                 // for debug
-                var centerMat =
-                GraphicDatabase.Get<Graphic_Single>("Hands/Human_Hand", ShaderDatabase.CutoutSkin, Vector2.one,
+                var centerMat = GraphicDatabase.Get<Graphic_Single>(
+                    "Hands/Human_Hand",
+                    ShaderDatabase.CutoutSkin,
+                    Vector2.one,
                     Color.blue).MatSingle;
 
-                UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, 0),
-                    Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
+                UnityEngine.Graphics.DrawMesh(
+                    handsMesh,
+                    center + new Vector3(0, 0.301f, 0),
+                    Quaternion.AngleAxis(0, Vector3.up),
+                    centerMat,
+                    0);
 
-               // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z),
-               //     Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
-               //
-               // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z2),
-               //     Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
+                // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z),
+                //     Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
+                //
+                // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z2),
+                //     Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
             }
         }
 
