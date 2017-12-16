@@ -76,6 +76,8 @@
 
         private readonly Pawn pawn;
 
+        public Graphic FootGraphic;
+
         public PawnGraphic(CompFace compFace)
         {
             this.compFace = compFace;
@@ -308,6 +310,13 @@
                 new Vector2(1f, 1f),
                 this.pawn.story.SkinColor,
                 this.pawn.story.SkinColor);
+
+            this.FootGraphic = GraphicDatabase.Get<Graphic_Single>(
+                texNameHand,
+                ShaderDatabase.CutoutSkin,
+                new Vector2(1f, 1f),
+                this.pawn.story.hairColor,
+                this.pawn.story.hairColor);
         }
         private void InitializeGraphicsMouth()
         {

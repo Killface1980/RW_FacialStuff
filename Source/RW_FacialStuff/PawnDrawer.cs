@@ -64,6 +64,8 @@ namespace FacialStuff
                     new CurvePoint(60f, 0f)
                 };
 
+        private bool develop = false;
+
         #endregion Private Fields
 
         #region Protected Constructors
@@ -376,7 +378,10 @@ namespace FacialStuff
             {
                 return;
             }
-            if (this.CompFace.Props.hasHands && Controller.settings.UseHands)
+            this.DrawFeet(pawn.DrawPos);
+
+            bool showHands = this.CompFace.Props.hasHands && Controller.settings.UseHands;
+            if (showHands)
             {
                 if (this.CarryStuff(out Vector3 drawPos))
                 {
@@ -384,9 +389,13 @@ namespace FacialStuff
                     return;
                 }
             }
-            if (pawn.equipment?.Primary == null)
+            bool notEquipped = pawn.equipment?.Primary == null;
+            if (notEquipped)
             {
-                this.DrawHands(pawn.DrawPos, false);
+                if (showHands)
+                {
+                    this.DrawHands(pawn.DrawPos, false);
+                }
                 return;
             }
             if (pawn.CurJob != null && pawn.CurJob.def.neverShowWeapon)
@@ -668,6 +677,7 @@ namespace FacialStuff
 
             // Basic values if pawn is carrying stuff
             float x = -0.2f;
+            float x2 = -x;
             float y = 0.2f;
             float y2 = y;
             float z = -0.025f;
@@ -691,16 +701,11 @@ namespace FacialStuff
                 {
                     if (rot == Rot4.West || rot == Rot4.East)
                     {
-                        x = 0;
-                        y2 *= -1;
+                        x = x2 = 0;
                         angle = this.swingCurve.Evaluate(this.swingCounter);
                     }
                     else
                     {
-                        if (rot == Rot4.North)
-                        {
-                            y = y2 = -0.2f;
-                        }
                         z += this.swingCurve2.Evaluate(this.swingCounter);
                         z2 -= this.swingCurve2.Evaluate(this.swingCounter);
                     }
@@ -711,11 +716,17 @@ namespace FacialStuff
                     }
 
                 }
+                if (rot == Rot4.West || rot == Rot4.East)
+                {
+                    x = x2 = 0f;
+                    y2 *= -1;
+                }
+                else if (rot == Rot4.North)
+                {
+                    y = y2 = -0.2f;
+                }
 
             }
-
-            handGraphicMatSingle.color = this.CompFace.Pawn.story.SkinColor;
-
 
             Mesh handsMesh = MeshPool.plane10;
 
@@ -729,76 +740,167 @@ namespace FacialStuff
 
             UnityEngine.Graphics.DrawMesh(
                 handsMesh,
-                drawPos + new Vector3(-x, y2, z2).RotatedBy(-angle),
+                drawPos + new Vector3(x2, y2, z2).RotatedBy(-angle),
                 Quaternion.AngleAxis(-angle, Vector3.up),
                 handGraphicMatSingle,
                 0);
 
+            if (develop)
+            {
+                // for debug
+                var centerMat =
+                    GraphicDatabase.Get<Graphic_Single>("Hands/Human_Hand", ShaderDatabase.CutoutSkin, Vector2.one,
+                        Color.red).MatSingle;
 
-            //// for debug
-            // var centerMat =
-            //     GraphicDatabase.Get<Graphic_Single>("Hands/Human_Hand", ShaderDatabase.CutoutSkin, Vector2.one,
-            //         Color.red).MatSingle;
-            //
-            // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, 0),
-            //     Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
+                UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, 0),
+                    Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
+            }
         }
 
-        public virtual void DrawHandsAiming(Vector3 weaponPosition, bool flipped, float weaponAngle, CompProperties_WeaponExtensions compWeaponExtensions)
+        public virtual void DrawFeet(Vector3 drawPos)
         {
-            if (compWeaponExtensions != null)
+            Material footGraphic = this.CompFace.PawnGraphic?.FootGraphic?.MatSingle;
+
+            if (footGraphic == null)
             {
-                Material handGraphicMatSingle = this.CompFace.PawnGraphic.HandGraphic.MatSingle;
+                return;
+            }
 
-                if (handGraphicMatSingle != null)
+            // Basic values 
+            float x = -0.1f;
+            float x2 = -x;
+            float y = 0.2f;
+            float y2 = y;
+            float z = -0.275f;
+            float z2 = z;
+
+            // Center = drawpos of carryThing
+            var center = drawPos;
+
+            float angle = 0f;
+            var rot = this.CompFace.Pawn.Rotation;
+
+            // Offsets for hands from the pawn center
+            center.z -= 0.275f;
+
+            // Swing the hands, try complete the cycle
+            if (this.CompFace.Pawn.pather.Moving || this.swingCounter % 30 != 0)
+            {
+                // Same as hands, but inverted
+                if (rot == Rot4.West || rot == Rot4.East)
                 {
-                    handGraphicMatSingle.color = this.CompFace.Pawn.story.SkinColor;
-                    Vector3 firstHandPosition = compWeaponExtensions.FirstHandPosition;
-                    Mesh handsMesh = MeshPool.plane10;
-                    if (firstHandPosition != Vector3.zero)
-                    {
-                        float x = firstHandPosition.x;
-                        float y = firstHandPosition.y;
-                        float z = firstHandPosition.z;
-                        if (flipped)
-                        {
-                            x = -x;
-                        }
-
-                        UnityEngine.Graphics.DrawMesh(
-                            handsMesh,
-                            weaponPosition + new Vector3(x, y, z).RotatedBy(weaponAngle),
-                            Quaternion.AngleAxis(weaponAngle, Vector3.up),
-                            handGraphicMatSingle,
-                            0);
-                    }
-
-                    Vector3 secondHandPosition = compWeaponExtensions.SecondHandPosition;
-                    if (secondHandPosition != Vector3.zero)
-                    {
-                        float x2 = secondHandPosition.x;
-                        float y2 = secondHandPosition.y;
-                        float z2 = secondHandPosition.z;
-                        if (flipped)
-                        {
-                            x2 = -x2;
-                        }
-
-                        UnityEngine.Graphics.DrawMesh(
-                            handsMesh,
-                            weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle),
-                            Quaternion.AngleAxis(weaponAngle, Vector3.up),
-                            handGraphicMatSingle,
-                            0);
-                    }
-                    //// for debug
-                    // var centerMat =
-                    //     GraphicDatabase.Get<Graphic_Single>("Hands/Human_Hand", ShaderDatabase.CutoutSkin, Vector2.one,
-                    //         Color.red).MatSingle;
-                    //
-                    // UnityEngine.Graphics.DrawMesh(handsMesh, weaponPosition + new Vector3(0, 0.001f, 0),
-                    //     Quaternion.AngleAxis(weaponAngle, Vector3.up), centerMat, 0);
+                    x = x2 = 0;
+                    angle = -this.swingCurve.Evaluate(this.swingCounter);
+                    // Align the center to the hip
+                    center.x += rot == Rot4.West ? 0.05f : -0.05f;
                 }
+                else
+                {
+                    z -= this.swingCurve2.Evaluate(this.swingCounter);
+                    z2 += this.swingCurve2.Evaluate(this.swingCounter);
+                }
+            }
+
+            if (rot == Rot4.West || rot == Rot4.East)
+            {
+                y2 *= -1;
+            }
+            else if (rot == Rot4.North)
+            {
+                y = y2 = -0.2f;
+            }
+
+            Mesh handsMesh = MeshPool.plane10;
+
+            UnityEngine.Graphics.DrawMesh(
+                handsMesh,
+                center + new Vector3(x, y, z).RotatedBy(angle),
+                Quaternion.AngleAxis(angle, Vector3.up),
+                footGraphic,
+                0);
+
+            UnityEngine.Graphics.DrawMesh(
+                handsMesh,
+                center + new Vector3(x2, y2, z2).RotatedBy(-angle),
+                Quaternion.AngleAxis(-angle, Vector3.up),
+                footGraphic,
+                0);
+
+            if (develop)
+            {
+
+                // for debug
+                var centerMat =
+                GraphicDatabase.Get<Graphic_Single>("Hands/Human_Hand", ShaderDatabase.CutoutSkin, Vector2.one,
+                    Color.blue).MatSingle;
+
+                UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, 0),
+                    Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
+
+               // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z),
+               //     Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
+               //
+               // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z2),
+               //     Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
+            }
+        }
+
+        public virtual void DrawHandsAiming(Vector3 weaponPosition, bool flipped, float weaponAngle,
+                                            [CanBeNull] CompProperties_WeaponExtensions compWeaponExtensions)
+        {
+            if (compWeaponExtensions == null)
+            {
+                return;
+            }
+            Material handGraphicMatSingle = this.CompFace.PawnGraphic.HandGraphic.MatSingle;
+
+            if (handGraphicMatSingle != null)
+            {
+                Vector3 firstHandPosition = compWeaponExtensions.FirstHandPosition;
+                Mesh handsMesh = MeshPool.plane10;
+                if (firstHandPosition != Vector3.zero)
+                {
+                    float x = firstHandPosition.x;
+                    float y = firstHandPosition.y;
+                    float z = firstHandPosition.z;
+                    if (flipped)
+                    {
+                        x = -x;
+                    }
+
+                    UnityEngine.Graphics.DrawMesh(
+                        handsMesh,
+                        weaponPosition + new Vector3(x, y, z).RotatedBy(weaponAngle),
+                        Quaternion.AngleAxis(weaponAngle, Vector3.up),
+                        handGraphicMatSingle,
+                        0);
+                }
+
+                Vector3 secondHandPosition = compWeaponExtensions.SecondHandPosition;
+                if (secondHandPosition != Vector3.zero)
+                {
+                    float x2 = secondHandPosition.x;
+                    float y2 = secondHandPosition.y;
+                    float z2 = secondHandPosition.z;
+                    if (flipped)
+                    {
+                        x2 = -x2;
+                    }
+
+                    UnityEngine.Graphics.DrawMesh(
+                        handsMesh,
+                        weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle),
+                        Quaternion.AngleAxis(weaponAngle, Vector3.up),
+                        handGraphicMatSingle,
+                        0);
+                }
+                //// for debug
+                // var centerMat =
+                //     GraphicDatabase.Get<Graphic_Single>("Hands/Human_Hand", ShaderDatabase.CutoutSkin, Vector2.one,
+                //         Color.red).MatSingle;
+                //
+                // UnityEngine.Graphics.DrawMesh(handsMesh, weaponPosition + new Vector3(0, 0.001f, 0),
+                //     Quaternion.AngleAxis(weaponAngle, Vector3.up), centerMat, 0);
             }
         }
         public virtual void DrawHeadOverlays(Rot4 headFacing, PawnHeadOverlays headOverlays, Vector3 bodyLoc, Quaternion headQuat)
