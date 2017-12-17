@@ -28,7 +28,6 @@ namespace FacialStuff
         public const float YOffsetOnFace = 0.0001f;
         public static readonly float[] HorHeadOffsets = new float[] { 0f, 0.04f, 0.1f, 0.09f, 0.1f, 0.09f };
         public CompFace CompFace;
-        public float handHorizontalOffset = 0.2f;
 
 
 
@@ -91,6 +90,8 @@ namespace FacialStuff
         public Mesh FootMesh = MeshPool.plane10;
 
         public Mesh HandMesh = MeshPool.plane08;
+
+        private static readonly float YOffsetBodyParts = 0.2f;
 
         #endregion Private Fields
 
@@ -416,7 +417,7 @@ namespace FacialStuff
             {
                 if (showHands)
                 {
-                    this.DrawHands(pawn.DrawPos, false);
+                    this.DrawHands(rootLoc, false);
                 }
                 return;
             }
@@ -460,12 +461,12 @@ namespace FacialStuff
                 }
                 else if (pawn.Rotation == Rot4.East)
                 {
-                    drawLoc2 += new Vector3(0.2f, 0f, -0.22f);
+                    drawLoc2 += new Vector3(YOffsetBodyParts, 0f, -0.22f);
                     drawLoc2.y += 0.04f;
                 }
                 else if (pawn.Rotation == Rot4.West)
                 {
-                    drawLoc2 = rootLoc + new Vector3(-0.2f, 0f, -0.22f);
+                    drawLoc2 = rootLoc + new Vector3(-YOffsetBodyParts, 0f, -0.22f);
                     drawLoc2.y += 0.04f;
                     aimAngle = 217f;
                 }
@@ -475,7 +476,7 @@ namespace FacialStuff
             }
             else
             {
-                this.DrawHands(pawn.DrawPos, false);
+                this.DrawHands(rootLoc, false);
             }
         }
         // Verse.PawnRenderer - Vanilla code with flava at the end
@@ -701,7 +702,7 @@ namespace FacialStuff
             // Basic values if pawn is carrying stuff
             float x = -body.shoulderWidth;
             float x2 = -x;
-            float y = 0.2f;
+            float y = YOffsetBodyParts;
             float y2 = y;
             float z = -0.025f;
             float z2 = -z;
@@ -727,7 +728,7 @@ namespace FacialStuff
                 }
                 else if (rot == Rot4.North)
                 {
-                    y = y2 = -0.2f;
+                    y = y2 = -YOffsetBodyParts;
                 }
 
                 // Swing the hands, try complete the cycle
@@ -753,19 +754,23 @@ namespace FacialStuff
             }
 
             Mesh handsMesh = this.HandMesh;
-
+            var bodyAngle = 0f;
+            if (this.CompFace.Pawn.Downed || this.CompFace.Pawn.Dead)
+            {
+                bodyAngle = this.CompFace.Pawn.Drawer.renderer.wiggler.downedAngle;
+            }
 
             UnityEngine.Graphics.DrawMesh(
                 handsMesh,
-                center + new Vector3(x, y, z).RotatedBy(angle),
-                Quaternion.AngleAxis(angle, Vector3.up),
+                center.RotatedBy(bodyAngle) + new Vector3(x, y, z).RotatedBy(angle),
+                Quaternion.AngleAxis(bodyAngle + angle, Vector3.up),
                 handGraphicMatSingle,
                 0);
 
             UnityEngine.Graphics.DrawMesh(
                 handsMesh,
-                center + new Vector3(x2, y2, z2).RotatedBy(-angle),
-                Quaternion.AngleAxis(-angle, Vector3.up),
+                center.RotatedBy(bodyAngle) + new Vector3(x2, y2, z2).RotatedBy(-angle),
+                Quaternion.AngleAxis(bodyAngle - angle, Vector3.up),
                 handGraphicMatSingle,
                 0);
 
@@ -794,7 +799,7 @@ namespace FacialStuff
             BodyDefinition body = this.CompFace.bodyDefinition;
             float x = -body.hipWidth;
             float x2 = -x;
-            float y = 0.2f;
+            float y = YOffsetBodyParts;
             float y2 = y;
             float z = -body.legLength;
             float z2 = z;
@@ -816,7 +821,7 @@ namespace FacialStuff
             }
             else if (rot == Rot4.North)
             {
-                y = y2 = -0.2f;
+                y = y2 = -YOffsetBodyParts;
             }
             bool flag = false;
             // Swing the hands, try complete the cycle
@@ -853,18 +858,23 @@ namespace FacialStuff
             }
 
             Mesh footMesh = this.FootMesh;
+            var bodyAngle = 0f;
+            if (this.CompFace.Pawn.Downed || this.CompFace.Pawn.Dead)
+            {
+                bodyAngle = this.CompFace.Pawn.Drawer.renderer.wiggler.downedAngle;
+            }
 
             UnityEngine.Graphics.DrawMesh(
                 footMesh,
-                center + new Vector3(x, y, z).RotatedBy(angle),
-                Quaternion.AngleAxis(angle, Vector3.up),
+                center.RotatedBy(bodyAngle) + new Vector3(x, y, z).RotatedBy(angle),
+                Quaternion.AngleAxis(bodyAngle + angle, Vector3.up),
                 footGraphic,
                 0);
 
             UnityEngine.Graphics.DrawMesh(
                 footMesh,
-                center + new Vector3(x2, y2, z2).RotatedBy(-angle),
-                Quaternion.AngleAxis(-angle, Vector3.up),
+                center.RotatedBy(bodyAngle) + new Vector3(x2, y2, z2).RotatedBy(-angle),
+                Quaternion.AngleAxis(bodyAngle - angle, Vector3.up),
                 footGraphic,
                 0);
 
