@@ -8,9 +8,9 @@
     {
         #region Public Fields
 
-        public Vector3 FirstHandPosition ;
+        public Vector3 RightHandPosition ;
 
-        public Vector3 SecondHandPosition ;
+        public Vector3 LeftHandPosition ;
 
         public Vector3 WeaponPositionOffset ;
 

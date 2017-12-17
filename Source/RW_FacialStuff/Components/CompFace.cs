@@ -29,7 +29,6 @@
         [CanBeNull]
         public PawnGraphic PawnGraphic;
 
-        public bool hasNaturalJaw = true;
         public bool IgnoreRenderer;
 
         public bool IsChild;
@@ -114,10 +113,6 @@
         }
 
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
-
-        public bool HasEyePatchLeft { get; set; }
-
-        public bool HasEyePatchRight { get; set; }
 
         public PawnHeadRotator HeadRotator => this.headRotator;
 
@@ -444,6 +439,15 @@
             {
                 return;
             }
+
+            // Reset the stats
+            this.bodyStat.eyeLeft = PartStatus.Natural;
+            this.bodyStat.eyeRight = PartStatus.Natural;
+            this.bodyStat.jaw = PartStatus.Natural;
+            this.bodyStat.handLeft = PartStatus.Natural;
+            this.bodyStat.handRight = PartStatus.Natural;
+            this.bodyStat.footLeft = PartStatus.Natural;
+            this.bodyStat.footRight = PartStatus.Natural;
 
             List<BodyPartRecord> allParts = this.Pawn?.RaceProps?.body?.AllParts;
             if (allParts.NullOrEmpty())
@@ -933,7 +937,7 @@
 
             if (this.Props.hasEyes)
             {
-                this.eyeWiggler = new PawnEyeWiggler(this.Pawn);
+                this.eyeWiggler = new PawnEyeWiggler(this);
             }
             this.CheckForAddedOrMissingParts();
 
@@ -947,15 +951,17 @@
             // this.headWiggler = new PawnHeadWiggler(this.pawn);
 
             // ReSharper disable once PossibleNullReferenceException
-            
+
             this.InitializePawnDrawer();
+
+            this.bodyDefinition.hipOffsetHorWhenFacingHorizontal = -0.05f;
 
             switch (this.Pawn.story.bodyType)
             {
                 case BodyType.Undefined:
                 case BodyType.Male:
                     this.bodyDefinition.shoulderOffsetVerFromCenter = 0;
-                    this.bodyDefinition.shoulderWidth = 0.28f;
+                    this.bodyDefinition.shoulderWidth = 0.285f;
                     this.bodyDefinition.armLength = 0.275f;
                     this.bodyDefinition.hipOffsetVerticalFromCenter = -0.275f;
                     this.bodyDefinition.hipWidth = 0.175f;
@@ -964,18 +970,20 @@
                 case BodyType.Female:
                     this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
                     this.bodyDefinition.shoulderWidth = 0.225f;
-                    this.bodyDefinition.armLength = 0.25f;
+                    this.bodyDefinition.armLength = 0.275f;
                     this.bodyDefinition.hipOffsetVerticalFromCenter = -0.275f;
                     this.bodyDefinition.hipWidth = 0.175f;
                     this.bodyDefinition.legLength = 0.275f;
                     break;
                 case BodyType.Hulk:
                     this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
-                    this.bodyDefinition.shoulderWidth = 0.3f;
+                    this.bodyDefinition.shoulderWidth = 0.35f;
                     this.bodyDefinition.armLength = 0.3f;
                     this.bodyDefinition.hipOffsetVerticalFromCenter = -0.3f;
                     this.bodyDefinition.hipWidth = 0.175f;
-                    this.bodyDefinition.legLength = 0.375f;
+                    this.bodyDefinition.legLength = 0.425f;
+                    this.bodyDefinition.hipOffsetHorWhenFacingHorizontal = -0.15f;
+                    this.bodyDefinition.shoulderOffsetWhenFacingHorizontal = -0.05f;
                     break;
                 case BodyType.Fat:
                     this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
@@ -995,7 +1003,6 @@
                     break;
 
             }
-            this.bodyDefinition.hipOffsetHorWhenFacingHorizontal = -0.05f;
             return true;
         }
 
@@ -1068,6 +1075,10 @@
             BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
             BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
             BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
+            BodyPartRecord leftHand = body.Find(x => x.def == BodyPartDefOf.LeftHand);
+            BodyPartRecord rightHand = body.Find(x => x.def == BodyPartDefOf.RightHand);
+            BodyPartRecord leftFoot = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("LeftFoot"));
+            BodyPartRecord rightFoot = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("RightFoot"));
             AddedBodyPartProps addedPartProps = hediff.def?.addedPartProps;
 
             if (addedPartProps != null)
@@ -1096,6 +1107,26 @@
                             this.texPathJawAddedPart = "Mouth/Mouth_" + hediff.def.defName;
                         }
                     }
+
+                    if (this.Props.hasHands)
+                    {
+                        if (hediff.Part == leftHand)
+                        {
+                            this.bodyStat.handLeft = PartStatus.Artificial;
+                        }
+                        if (hediff.Part == rightHand)
+                        {
+                            this.bodyStat.handRight = PartStatus.Artificial;
+                        }
+                        if (hediff.Part == leftFoot)
+                        {
+                            this.bodyStat.footLeft = PartStatus.Artificial;
+                        }
+                        if (hediff.Part == rightFoot)
+                        {
+                            this.bodyStat.footRight = PartStatus.Artificial;
+                        }
+                    }
                 }
             }
 
@@ -1107,17 +1138,38 @@
             {
                 if (leftEye != null && hediff.Part == leftEye)
                 {
+                    this.bodyStat.eyeLeft = PartStatus.Missing;
                     this.texPathEyeLeft = this.EyeTexPath("Missing", Side.Left);
-                    this.EyeWiggler.EyeLeftCanBlink = false;
                 }
 
                 // ReSharper disable once InvertIf
                 if (rightEye != null && hediff.Part == rightEye)
                 {
+                    this.bodyStat.eyeRight = PartStatus.Missing;
                     this.texPathEyeRight = this.EyeTexPath("Missing", Side.Right);
-                    this.EyeWiggler.EyeRightCanBlink = false;
                 }
             }
+
+            if (this.Props.hasHands)
+            {
+                if (hediff.Part == leftHand)
+                {
+                    this.bodyStat.handLeft = PartStatus.Missing;
+                }
+                if (hediff.Part == rightHand)
+                {
+                    this.bodyStat.handRight = PartStatus.Missing;
+                }
+                if (hediff.Part == leftFoot)
+                {
+                    this.bodyStat.footLeft = PartStatus.Missing;
+                }
+                if (hediff.Part == rightFoot)
+                {
+                    this.bodyStat.footRight = PartStatus.Missing;
+                }
+            }
+
         }
 
         [CanBeNull]
@@ -1135,12 +1187,12 @@
 
         #endregion Private Methods
 
-        // public Vector3 FirstHandPosition;
+        // public Vector3 RightHandPosition;
         //
-        // public Vector3 SecondHandPosition;
+        // public Vector3 LeftHandPosition;
 
 
-        public void DrawEquipment(Vector3 rootLoc)
+        public void DrawEquipment(Vector3 rootLoc, Rot4 bodyFacing)
         {
             if (this.pawnDrawers != null)
             {
@@ -1148,7 +1200,7 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].DrawEquipment(rootLoc);
+                    this.pawnDrawers[i].DrawEquipment(rootLoc, bodyFacing);
                     i++;
                 }
             }
@@ -1170,11 +1222,47 @@
             }
             return offset;
         }
+        public BodyPartStats bodyStat;
+
+        public void ApplyBodyWobble(ref Vector3 rootLoc)
+        {
+            if (this.pawnDrawers != null)
+            {
+                int i = 0;
+                int count = this.pawnDrawers.Count;
+                while (i < count)
+                {
+                    this.pawnDrawers[i].ApplyBodyWobble(ref rootLoc);
+                    i++;
+                }
+            }
+        }
     }
 
+    public struct BodyPartStats
+    {
+        public PartStatus eyeLeft;
+
+        public PartStatus eyeRight;
+
+        public PartStatus jaw;
+
+        public PartStatus handLeft;
+
+        public PartStatus handRight;
+
+        public PartStatus footLeft;
+
+        public PartStatus footRight;
+    }
+
+    public enum PartStatus
+    {
+        Natural, Missing, Artificial
+    }
     public struct BodyDefinition
     {
-        public  float hipOffsetHorWhenFacingHorizontal;
+        public float hipOffsetHorWhenFacingHorizontal;
 
         public float hipWidth;
 

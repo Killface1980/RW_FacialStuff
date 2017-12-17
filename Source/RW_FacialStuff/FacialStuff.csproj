@@ -88,11 +88,11 @@
     <Compile Include="Defs\HandDef.cs" />
     <Compile Include="Components\CompWeaponExtensions.cs" />
     <Compile Include="Components\CompProperties_WeaponExtensions.cs" />
-    <Compile Include="PawnDrawer.cs" />
+    <Compile Include="Drawer\PawnDrawer.cs" />
     <Compile Include="GameComponent_FacialStuff.cs" />
     <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
     <Compile Include="Harmony\Optional\Vampire_Patches.cs" />
-    <Compile Include="HumanDrawer.cs" />
+    <Compile Include="Drawer\HumanDrawer.cs" />
     <Compile Include="Utilities\CrownTypeChecker.cs" />
     <None Include="FaceEditor\Job_FaceStylingJoy.cs" />
     <Compile Include="Components\CompFaceEditor.cs" />

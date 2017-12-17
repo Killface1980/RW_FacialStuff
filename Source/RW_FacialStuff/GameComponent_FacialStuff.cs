@@ -83,12 +83,12 @@ namespace FacialStuff
                                 withHands.compClass = typeof(CompWeaponExtensions);
                                 flag = true;
                             }
-                            if (withHands.FirstHandPosition == Vector3.zero)
+                            if (withHands.RightHandPosition == Vector3.zero)
                             {
-                                withHands.FirstHandPosition = wepSets.firstHandPosition;
+                                withHands.RightHandPosition = wepSets.firstHandPosition;
                             }
-                            if (withHands.SecondHandPosition == Vector3.zero)
-                                withHands.SecondHandPosition = wepSets.secondHandPosition;
+                            if (withHands.LeftHandPosition == Vector3.zero)
+                                withHands.LeftHandPosition = wepSets.secondHandPosition;
                             if (withHands.AttackAngleOffset == 0)
                                 withHands.AttackAngleOffset = wepSets.attackAngleOffset;
                             if (withHands.WeaponPositionOffset == Vector3.zero)
@@ -151,8 +151,8 @@ namespace FacialStuff
                         new CompProperties_WeaponExtensions
                         {
                             compClass = typeof(CompWeaponExtensions),
-                            FirstHandPosition = new Vector3(-0.2f, 0.3f, -0.05f),
-                            SecondHandPosition = new Vector3(0.25f, 0f, -0.05f)
+                            RightHandPosition = new Vector3(-0.2f, 0.3f, -0.05f),
+                            LeftHandPosition = new Vector3(0.25f, 0f, -0.05f)
                         };
                     wepzie.comps.Add(extensions);
                 }

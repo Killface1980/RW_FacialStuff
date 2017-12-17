@@ -66,11 +66,12 @@ namespace FacialStuff.Animator
 
         private int nextBlinkEnd = -5000;
 
-        public PawnEyeWiggler(Pawn p)
+        private CompFace compFace;
+
+        public PawnEyeWiggler(CompFace face)
         {
-            this.pawn = p;
-            this.EyeLeftCanBlink = true;
-            this.EyeRightCanBlink = true;
+            this.compFace = face;
+            this.pawn = face.Pawn;
         }
 
         public bool EyeLeftBlinkNow
@@ -81,8 +82,6 @@ namespace FacialStuff.Animator
                 return blinkNow;
             }
         }
-
-        public bool EyeLeftCanBlink { get; set; }
 
         public Vector3 EyeMoveL => this.eyeMoveL;
 
@@ -96,8 +95,6 @@ namespace FacialStuff.Animator
                 return blinkNow;
             }
         }
-
-        public bool EyeRightCanBlink { get; set; }
 
         public int NextBlinkEnd => this.nextBlinkEnd;
 
@@ -140,12 +137,12 @@ namespace FacialStuff.Animator
                     }
                 }
 
-                if (this.EyeRightCanBlink)
+                if (this.compFace.bodyStat.eyeRight == PartStatus.Natural)
                 {
                     this.eyeMoveR = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
                 }
 
-                if (this.EyeLeftCanBlink)
+                if (this.compFace.bodyStat.eyeLeft == PartStatus.Natural)
                 {
                     this.eyeMoveL = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
                 }

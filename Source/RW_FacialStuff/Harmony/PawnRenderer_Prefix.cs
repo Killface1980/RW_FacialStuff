@@ -110,21 +110,22 @@
             }
 
 #endif
+            // Use the basic quat
+            Quaternion headQuat = quat;
 
+            // Rotate head if possble and wobble around
+            if (!portrait)
+            {
+                compFace.ApplyHeadRotation(renderBody, ref headFacing, ref headQuat);
+                compFace.ApplyBodyWobble(ref rootLoc);
+            }
             // Regular FacePawn rendering 14+ years
 
             // Render body
             PawnWoundDrawer woundDrawer = (PawnWoundDrawer)WoundOverlayFieldInfo?.GetValue(__instance);
             compFace.DrawBody(graphics, rootLoc, quat, bodyFacing, bodyDrawType, woundDrawer, renderBody, portrait);
 
-            // Use the basic quat
-            Quaternion headQuat = quat;
 
-            // Rotate head if possble
-            if (!portrait)
-            {
-                compFace.ApplyHeadRotation(renderBody, ref headFacing, ref headQuat);
-            }
 
 
             Vector3 drawPos = rootLoc;
@@ -231,7 +232,7 @@
 
                 // DrawEquipmentMethodInfo?.Invoke(__instance, new object[] { rootLoc });
 
-                compFace.DrawEquipment(rootLoc);
+                compFace.DrawEquipment(rootLoc, bodyFacing);
 
                 if (pawn.apparel != null)
                 {

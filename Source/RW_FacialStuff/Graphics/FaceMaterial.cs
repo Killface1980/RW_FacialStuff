@@ -50,7 +50,7 @@ namespace FacialStuff
         public Material BeardMatAt(Rot4 facing)
         {
             if (this.pawn.gender != Gender.Male || this.compFace.PawnFace?.BeardDef == BeardDefOf.Beard_Shaved
-                || !this.compFace.hasNaturalJaw)
+                || this.compFace.bodyStat.jaw != PartStatus.Natural)
             {
                 return null;
             }
@@ -104,11 +104,6 @@ namespace FacialStuff
         [CanBeNull]
         public Material EyeLeftMatAt(Rot4 facing, bool portrait)
         {
-            if (this.compFace.HasEyePatchLeft)
-            {
-                return null;
-            }
-
             if (facing == Rot4.East)
             {
                 return null;
@@ -118,7 +113,7 @@ namespace FacialStuff
 
             if (!portrait)
             {
-                if (Controller.settings.MakeThemBlink && this.compFace.EyeWiggler.EyeLeftCanBlink)
+                if (Controller.settings.MakeThemBlink && this.compFace.bodyStat.eyeLeft == PartStatus.Natural)
                 {
                     if (this.compFace.IsAsleep || this.compFace.EyeWiggler.EyeLeftBlinkNow)
                     {
@@ -151,11 +146,6 @@ namespace FacialStuff
         [CanBeNull]
         public Material EyeRightMatAt(Rot4 facing, bool portrait)
         {
-            if (this.compFace.HasEyePatchRight)
-            {
-                return null;
-            }
-
             if (facing == Rot4.West)
             {
                 return null;
@@ -165,7 +155,7 @@ namespace FacialStuff
 
             if (!portrait)
             {
-                if (Controller.settings.MakeThemBlink && this.compFace.EyeWiggler.EyeRightCanBlink)
+                if (Controller.settings.MakeThemBlink && this.compFace.bodyStat.eyeRight == PartStatus.Natural)
                 {
                     if (this.compFace.IsAsleep || this.compFace.EyeWiggler.EyeRightBlinkNow)
                     {
@@ -199,7 +189,7 @@ namespace FacialStuff
         public Material MoustacheMatAt(Rot4 facing)
         {
             if (this.pawn.gender != Gender.Male || this.compFace.PawnFace.MoustacheDef == MoustacheDefOf.Shaved
-                || !this.compFace.hasNaturalJaw)
+                || this.compFace.bodyStat.jaw != PartStatus.Natural)
             {
                 return null;
             }
@@ -219,7 +209,7 @@ namespace FacialStuff
         {
             Material material = null;
 
-            if (!this.compFace.hasNaturalJaw && Controller.settings.ShowExtraParts)
+            if (this.compFace.bodyStat.jaw != PartStatus.Natural && Controller.settings.ShowExtraParts)
             {
                 material = this.pawnGraphic.JawGraphic?.MatAt(facing);
             }

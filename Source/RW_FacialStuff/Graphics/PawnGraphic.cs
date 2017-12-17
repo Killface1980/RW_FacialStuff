@@ -33,7 +33,8 @@
         public Graphic_Multi_AddedHeadParts EyeRightPatchGraphic;
 
         [CanBeNull]
-        public Graphic HandGraphic;
+        public Graphic HandGraphicLeft;
+        public Graphic HandGraphicRight;
 
         [CanBeNull]
         public Graphic_Multi_NaturalHeadParts JawGraphic;
@@ -76,7 +77,8 @@
 
         private readonly Pawn pawn;
 
-        public Graphic FootGraphic;
+        public Graphic FootGraphicLeft;
+        public Graphic FootGraphicRight;
 
         public PawnGraphic(CompFace compFace)
         {
@@ -132,7 +134,7 @@
                 return;
             }
 
-            if (!Controller.settings.UseMouth || !this.compFace.hasNaturalJaw)
+            if (!Controller.settings.UseMouth || this.compFace.bodyStat.jaw != PartStatus.Natural)
             {
                 return;
             }
@@ -219,19 +221,14 @@
                                                                    ShaderDatabase.Transparent,
                                                                    Vector2.one,
                                                                    Color.white) as Graphic_Multi_AddedHeadParts;
-                    this.compFace.HasEyePatchLeft = true;
+                    this.compFace.bodyStat.eyeLeft = PartStatus.Artificial;
                 }
                 else
                 {
-                    this.compFace.HasEyePatchLeft = false;
                     Log.Message(
                         "Facial Stuff: No texture for added part: " + this.compFace.texPathEyeLeftPatch
                         + " - Graphic_Multi_AddedHeadParts");
                 }
-            }
-            else
-            {
-                this.compFace.HasEyePatchLeft = false;
             }
 
             if (!this.compFace.texPathEyeRightPatch.NullOrEmpty())
@@ -245,19 +242,14 @@
                             ShaderDatabase.Transparent,
                             Vector2.one,
                             Color.white) as Graphic_Multi_AddedHeadParts;
-                    this.compFace.HasEyePatchRight = true;
+                    this.compFace.bodyStat.eyeRight = PartStatus.Artificial;
                 }
                 else
                 {
                     Log.Message(
                         "Facial Stuff: No texture for added part: " + this.compFace.texPathEyeRightPatch
                         + " - Graphic_Multi_AddedHeadParts");
-                    this.compFace.HasEyePatchRight = false;
                 }
-            }
-            else
-            {
-                this.compFace.HasEyePatchRight = false;
             }
         }
 
@@ -303,19 +295,34 @@
                 return;
             }
             string texNameHand = "Hands/" + this.compFace.Props.handType + "_Hand";
+            string texNameFoot = "Hands/" + this.compFace.Props.handType + "_Foot";
 
-            this.HandGraphic = GraphicDatabase.Get<Graphic_Single>(
+            this.HandGraphicRight = GraphicDatabase.Get<Graphic_Single>(
                 texNameHand,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
-                this.pawn.story.SkinColor,
+                Color.red,
                 this.pawn.story.SkinColor);
 
-            this.FootGraphic = GraphicDatabase.Get<Graphic_Single>(
+            this.HandGraphicLeft = GraphicDatabase.Get<Graphic_Single>(
                 texNameHand,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
-                this.pawn.story.SkinColor,
+                Color.green,
+                this.pawn.story.SkinColor);
+
+            this.FootGraphicRight = GraphicDatabase.Get<Graphic_Single>(
+                texNameFoot,
+                ShaderDatabase.CutoutSkin,
+                new Vector2(1f, 1f),
+                Color.blue,
+                this.pawn.story.SkinColor);
+
+            this.FootGraphicLeft = GraphicDatabase.Get<Graphic_Single>(
+                texNameFoot,
+                ShaderDatabase.CutoutSkin,
+                new Vector2(1f, 1f),
+                Color.magenta,
                 this.pawn.story.SkinColor);
         }
         private void InitializeGraphicsMouth()
@@ -330,7 +337,7 @@
                                                           ShaderDatabase.CutoutSkin,
                                                           Vector2.one,
                                                           Color.white) as Graphic_Multi_NaturalHeadParts;
-                    this.compFace.hasNaturalJaw = false;
+                    this.compFace.bodyStat.jaw = PartStatus.Artificial;
 
                     // all done, return
                     return;
@@ -342,7 +349,6 @@
                     + " - Graphic_Multi_NaturalHeadParts. This is not an error, just an info.");
             }
 
-            this.compFace.hasNaturalJaw = true;
             this.MouthGraphic = this.mouthgraphic
                 .HumanMouthGraphic[this.pawn.Dead || this.pawn.Downed ? 2 : 3].Graphic;
         }
