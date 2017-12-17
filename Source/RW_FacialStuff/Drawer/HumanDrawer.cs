@@ -566,16 +566,24 @@ namespace FacialStuff
             {
                 flag = true;
                 // Same as hands, but inverted
+                float cyclePercent = this.CompFace.BodyAnimator.cyclePercent;
                 if (rot.IsHorizontal)
                 {
-                    x=posCurve.
-                    x = x2 = 0;
-                    angle = -this.swingCurveFeet.Evaluate(this.CompFace.BodyAnimator.cyclePercent);
+                    if (rot == Rot4.East)
+                    {
+                        cyclePercent = 1f - cyclePercent;
+                    }
+                    x = this.posCurveFeetX.Evaluate(cyclePercent);
+
+                    x2 = -x;
+                    z += this.posCurveFeootRZ.Evaluate(cyclePercent);
+                    z2 += this.posCurveFeootLY.Evaluate(cyclePercent);
+                    angle = -this.swingCurveFeet.Evaluate(cyclePercent);
                 }
                 else
                 {
-                    z -= this.swingCurveFeetNorthSouth.Evaluate(this.CompFace.BodyAnimator.cyclePercent);
-                    z2 += this.swingCurveFeetNorthSouth.Evaluate(this.CompFace.BodyAnimator.cyclePercent);
+                    z -= this.swingCurveFeetNorthSouth.Evaluate(cyclePercent);
+                    z2 += this.swingCurveFeetNorthSouth.Evaluate(cyclePercent);
                 }
             }
             if (rot.IsHorizontal)
@@ -804,14 +812,6 @@ namespace FacialStuff
                 {
                     center.x += (rot == Rot4.West ? -1 : 1) * body.shoulderOffsetWhenFacingHorizontal;
                     x = x2 = 0f;
-                    if (rot == Rot4.East)
-                    {
-                        y2 *= -1;
-                    }
-                    else
-                    {
-                        y *= -1;
-                    }
                 }
                 else if (rot == Rot4.North)
                 {
@@ -824,9 +824,13 @@ namespace FacialStuff
                 if (!this.CompFace.BodyAnimator.Finished)
                 {
                     float cyclePercent = this.CompFace.BodyAnimator.cyclePercent;
-                    if (rot == Rot4.West || rot == Rot4.East)
+                    if (rot.IsHorizontal)
                     {
                         x = x2 = 0;
+                        if (rot == Rot4.West)
+                        {
+                            cyclePercent = 1f - cyclePercent;
+                        }
                         angle = this.swingCurveHands.Evaluate(cyclePercent);
                     }
                     else
@@ -844,7 +848,7 @@ namespace FacialStuff
                 bodyAngle = this.CompFace.Pawn.Drawer.renderer.wiggler.downedAngle;
             }
 
-            if (matRight != null && rot != Rot4.East)
+            if (matRight != null && rot != Rot4.West)
             {
                 if (this.CompFace.bodyStat.handRight == PartStatus.Natural)
                 {
@@ -857,7 +861,7 @@ namespace FacialStuff
                 }
             }
 
-            if (matLeft != null && rot != Rot4.West)
+            if (matLeft != null && rot != Rot4.East)
             {
                 if (this.CompFace.bodyStat.handLeft == PartStatus.Natural)
                 {

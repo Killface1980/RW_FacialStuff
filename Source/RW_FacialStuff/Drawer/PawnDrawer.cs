@@ -19,46 +19,90 @@ namespace FacialStuff
         #region Public Fields
 
         public const float YOffset_Behind = 0.004f;
-        public const float YOffset_Body = 0.0078125f;
+        public const float YOffset_Body = 0.0075f;
         public const float YOffset_PostHead = 0.035f;
         public const float YOffsetOnFace = 0.0001f;
-        public static readonly float[] HorHeadOffsets = new float[] { 0f, 0.04f, 0.1f, 0.09f, 0.1f, 0.09f };
-        public static readonly float YOffsetBodyParts = 0.05f;
+        public static readonly float[] HorHeadOffsets = { 0f, 0.04f, 0.1f, 0.09f, 0.1f, 0.09f };
+        public static readonly float YOffsetBodyParts = 0.005f;
 
 
-        public readonly SimpleCurve swingCurveFeet =
-            new SimpleCurve
-                {
-                    new CurvePoint(0f, 0f),
-                    new CurvePoint(0.25f, 40f),
-                    new CurvePoint(0.5f, 0f),
-                    new CurvePoint(0.75f, -40f),
-                    new CurvePoint(1f, 0f)
-                };
+        public readonly SimpleCurve swingCurveFeet = new SimpleCurve
+                                                         {
+                                                             //// Passing
+                                                             new CurvePoint(0f, 0f),
+                                                             //// Recoil
+                                                             new CurvePoint(0.25f, 0f),
+                                                             //// Passing
+                                                             new CurvePoint(0.5f, 0f),
+                                                             //// Recoil
+                                                             new CurvePoint(0.75f, 0f),
+                                                             //// Passing
+                                                             new CurvePoint(1f, 0f)
+                                                         };
 
-        public readonly SimpleCurve posCurveFeet = new SimpleCurve
+        public readonly SimpleCurve posCurveFeetX = new SimpleCurve
                                                        {
                                                            //// Passing
                                                            new CurvePoint(0f, 0f),
                                                            //// Recoil
-                                                           new CurvePoint(0.25f, 40f),
+                                                           new CurvePoint(0.25f, -0.25f),
                                                            //// Passing
                                                            new CurvePoint(0.5f, 0f),
                                                            //// Recoil
-                                                           new CurvePoint(0.75f, -40f),
+                                                           new CurvePoint(0.75f, 0.25f),
                                                            //// Passing
                                                            new CurvePoint(1f, 0f)
                                                        };
 
-        public readonly SimpleCurve upDownCurve =
-            new SimpleCurve
-                {
-                    new CurvePoint(0f, 0f),
-                    new CurvePoint(0.25f, 0.125f),
-                    new CurvePoint(0.5f, 0f),
-                    new CurvePoint(0.75f, 0.125f),
-                    new CurvePoint(1f, 0f)
-                };
+        public readonly SimpleCurve posCurveFeootRZ = new SimpleCurve
+                                                       {
+                                                           //// Passing
+                                                           new CurvePoint(0f, -0.15f),
+                                                           //// Recoil
+                                                           new CurvePoint(0.25f, 0f),
+                                                           //// Passing
+                                                           new CurvePoint(0.5f, 0f),
+                                                           //// Recoil
+                                                           new CurvePoint(0.75f, 0f),
+                                                           //// Passing
+                                                           new CurvePoint(1f, -0.15f)
+                                                       };
+
+        public readonly SimpleCurve posCurveFeootLY = new SimpleCurve
+                                                       {
+                                                           //// Passing
+                                                           new CurvePoint(0f, 0f),
+                                                           //// Recoil
+                                                           new CurvePoint(0.25f, 0f),
+                                                           //// Passing
+                                                           new CurvePoint(0.5f, -0.15f),
+                                                           //// Recoil
+                                                           new CurvePoint(0.75f, 0f),
+                                                           //// Passing
+                                                           new CurvePoint(1f, 0f)
+                                                       };
+
+        public readonly SimpleCurve upDownCurve = new SimpleCurve
+                                                      {
+                                                          //// Passing
+                                                          new CurvePoint(0f, 0.0f),
+                                                          //// Highpoint
+                                                          new CurvePoint(0.125f, 0.1f),
+                                                          //// Contact 1
+                                                          new CurvePoint(0.25f, 0.0f),
+                                                          //// Recoil 1
+                                                          new CurvePoint(0.375f, -0.05f),
+                                                          //// Passing
+                                                          new CurvePoint(0.5f, 0f),
+                                                          //// Highpoint
+                                                          new CurvePoint(0.625f, 0.1f),
+                                                          //// Contact 2
+                                                          new CurvePoint(0.75f, 0f),
+                                                          //// Recoil 2
+                                                          new CurvePoint(0.875f, -0.05f),
+                                                          //// Passing
+                                                          new CurvePoint(1f, 0f)
+                                                      };
 
         public readonly SimpleCurve swingCurveHands =
             new SimpleCurve
@@ -89,9 +133,9 @@ namespace FacialStuff
                     new SimpleCurve
         {
                     new CurvePoint(0f, 0f),
-                    new CurvePoint(0.25f, 0.075f),
+                    new CurvePoint(0.25f, 0.06f),
                     new CurvePoint(0.5f, 0f),
-                    new CurvePoint(0.75f, -0.075f),
+                    new CurvePoint(0.75f, -0.06f),
                     new CurvePoint(1f, 0f)
         };
 
