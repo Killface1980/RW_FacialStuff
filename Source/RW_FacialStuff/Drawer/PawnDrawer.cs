@@ -36,6 +36,20 @@ namespace FacialStuff
                     new CurvePoint(1f, 0f)
                 };
 
+        public readonly SimpleCurve posCurveFeet = new SimpleCurve
+                                                       {
+                                                           //// Passing
+                                                           new CurvePoint(0f, 0f),
+                                                           //// Recoil
+                                                           new CurvePoint(0.25f, 40f),
+                                                           //// Passing
+                                                           new CurvePoint(0.5f, 0f),
+                                                           //// Recoil
+                                                           new CurvePoint(0.75f, -40f),
+                                                           //// Passing
+                                                           new CurvePoint(1f, 0f)
+                                                       };
+
         public readonly SimpleCurve upDownCurve =
             new SimpleCurve
                 {
@@ -243,7 +257,7 @@ namespace FacialStuff
 
         public virtual void ApplyBodyWobble(ref Vector3 rootLoc)
         {
-            
+
         }
     }
 }

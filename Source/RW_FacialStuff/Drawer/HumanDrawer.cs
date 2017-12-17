@@ -568,6 +568,7 @@ namespace FacialStuff
                 // Same as hands, but inverted
                 if (rot.IsHorizontal)
                 {
+                    x=posCurve.
                     x = x2 = 0;
                     angle = -this.swingCurveFeet.Evaluate(this.CompFace.BodyAnimator.cyclePercent);
                 }
