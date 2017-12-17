@@ -16,6 +16,14 @@
           <li>Gun_ChainShotgun</li>
           <li>Gun_PumpShotgun</li>
         </thingTargets>
+      </li>    
+      
+        <li>
+        <firstHandPosition>(-0.3, 0.3, -0.05)</firstHandPosition>
+        <secondHandPosition>(0.2, 0, -0.15)</secondHandPosition>
+        <thingTargets>
+          <li>Gun_TripleRocket</li>
+        </thingTargets>
       </li>
 
       <li>

@@ -6,6 +6,8 @@
 
     using global::Harmony;
 
+    using RimWorld;
+
     using Verse;
 
     public static class PresetLoader_Postfix
@@ -27,6 +29,10 @@
             PawnFace pawnFace = SaveRecordPawnV3_Postfix.LoadedPawns[record].Face;
             if (pawn.GetCompFace(out CompFace compFace))
             {
+                if (pawnFace == null)
+                {
+                    pawnFace = new PawnFace(compFace, Faction.OfPlayer.def, false);
+                }
                 compFace.SetPawnFace(pawnFace);
                 pawn.story.hairColor = compFace.PawnFace.HairColor;
             }

@@ -823,6 +823,8 @@
                 return;
             }
 
+
+
             // CellRect viewRect = Find.CameraDriver.CurrentViewRect;
             // viewRect = viewRect.ExpandedBy(5);
             // if (!viewRect.Contains(this.pawn.Position))
@@ -953,7 +955,7 @@
                 case BodyType.Undefined:
                 case BodyType.Male:
                     this.bodyDefinition.shoulderOffsetVerFromCenter = 0;
-                    this.bodyDefinition.shoulderWidth = 0.26f;
+                    this.bodyDefinition.shoulderWidth = 0.28f;
                     this.bodyDefinition.armLength = 0.275f;
                     this.bodyDefinition.hipOffsetVerticalFromCenter = -0.275f;
                     this.bodyDefinition.hipWidth = 0.175f;
@@ -973,7 +975,7 @@
                     this.bodyDefinition.armLength = 0.3f;
                     this.bodyDefinition.hipOffsetVerticalFromCenter = -0.3f;
                     this.bodyDefinition.hipWidth = 0.175f;
-                    this.bodyDefinition.legLength = 0.325f;
+                    this.bodyDefinition.legLength = 0.375f;
                     break;
                 case BodyType.Fat:
                     this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;

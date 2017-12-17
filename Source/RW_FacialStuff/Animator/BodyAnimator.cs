@@ -9,7 +9,7 @@ namespace FacialStuff.Animator
 
     public class BodyAnimator
     {
-        public int swingCounter = 30;
+        public float cyclePercent = 0;
 
         public bool Finished;
 
@@ -22,14 +22,12 @@ namespace FacialStuff.Animator
 
         public void AnimatorTick()
         {
-            if (this.pawn.pather.Moving || this.swingCounter % 30 != 0)
+            if (this.pawn.pather.Moving)
             {
-                //  var speed = this.pawn.mov
-                this.swingCounter++;
-                if (this.swingCounter > 60)
-                {
-                    this.swingCounter = 1;
-                }
+                float left = this.pawn.pather.nextCellCostLeft;
+                float total = this.pawn.pather.nextCellCostTotal;
+                this.cyclePercent = left / total;
+
                 this.Finished = false;
             }
             else

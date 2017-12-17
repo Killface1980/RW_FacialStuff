@@ -36,57 +36,61 @@ namespace FacialStuff
 
         #region Private Fields
 
-        public SimpleCurve swingCurveHands =
+        public readonly SimpleCurve swingCurveHands =
             new SimpleCurve
                 {
                     new CurvePoint(0f, 0f),
-                    new CurvePoint(15f, 60f),
-                    new CurvePoint(30f, 0f),
-                    new CurvePoint(45f, -60f),
-                    new CurvePoint(60f, 0f)
+                    new CurvePoint(0.25f, 60f),
+                    new CurvePoint(0.5f, 0f),
+                    new CurvePoint(0.75f, -60f),
+                    new CurvePoint(1f, 0f)
                 };
 
-        public SimpleCurve swingCurveHandsVertical =
+        public readonly SimpleCurve swingCurveHandsVertical =
             new SimpleCurve
                 {
                     new CurvePoint(0f, 0f),
-                    new CurvePoint(15f, 0.125f),
-                    new CurvePoint(30f, 0f),
-                    new CurvePoint(45f, -0.125f),
-                    new CurvePoint(60f, 0f)
+                    new CurvePoint(0.25f, 0.125f),
+                    new CurvePoint(0.5f, 0f),
+                    new CurvePoint(0.75f, -0.125f),
+                    new CurvePoint(1f, 0f)
                 };
 
-        public SimpleCurve swingCurveFeet =
+        public readonly SimpleCurve swingCurveFeet =
             new SimpleCurve
                 {
                     new CurvePoint(0f, 0f),
-                    new CurvePoint(15f, 40f),
-                    new CurvePoint(30f, 0f),
-                    new CurvePoint(45f, -40f),
-                    new CurvePoint(60f, 0f)
+                    new CurvePoint(0.25f, 40f),
+                    new CurvePoint(0.5f, 0f),
+                    new CurvePoint(0.75f, -40f),
+                    new CurvePoint(1f, 0f)
                 };
 
-        public SimpleCurve PositionY =
+        public readonly SimpleCurve PositionY =
             new SimpleCurve
                 {
                     new CurvePoint(0f, 0f),
-                    new CurvePoint(15f, 0.2f),
-                    new CurvePoint(30f, 0f),
-                    new CurvePoint(45f, -0.2f),
-                    new CurvePoint(60f, 0f)
+                    new CurvePoint(0.25f, 0.15f),
+                    new CurvePoint(0.5f, 0f),
+                    new CurvePoint(0.75f, -0.15f),
+                    new CurvePoint(1f, 0f)
                 };
 
         public SimpleCurve swingCurveFeetNorthSouth =
             new SimpleCurve
                 {
                     new CurvePoint(0f, 0f),
-                    new CurvePoint(15f, 0.075f),
-                    new CurvePoint(30f, 0f),
-                    new CurvePoint(45f, -0.075f),
-                    new CurvePoint(60f, 0f)
+                    new CurvePoint(0.25f, 0.075f),
+                    new CurvePoint(0.5f, 0f),
+                    new CurvePoint(0.75f, -0.075f),
+                    new CurvePoint(1f, 0f)
                 };
 
         private bool develop = false;
+
+        public Mesh FootMesh = MeshPool.plane10;
+
+        public Mesh HandMesh = MeshPool.plane08;
 
         #endregion Private Fields
 
@@ -161,10 +165,6 @@ namespace FacialStuff
         {
             drawPos = Vector3.zero;
             Pawn pawn = this.CompFace.Pawn;
-            if (pawn.Rotation == Rot4.North)
-            {
-                return false;
-            }
 
             Thing carriedThing = pawn.carryTracker?.CarriedThing;
             if (carriedThing != null)
@@ -212,7 +212,7 @@ namespace FacialStuff
             CompEquippable primaryEq = this.CompFace.Pawn.equipment?.PrimaryEq;
 
             //   DamageDef damageDef = primaryEq?.PrimaryVerb?.verbProps?.meleeDamageDef;
-            if (primaryEq == null)
+            if (primaryEq?.parent?.def == null)
             {
                 return;
             }
@@ -733,25 +733,26 @@ namespace FacialStuff
                 // Swing the hands, try complete the cycle
                 if (!this.CompFace.BodyAnimator.Finished)
                 {
+                    float cyclePercent = this.CompFace.BodyAnimator.cyclePercent;
                     if (rot == Rot4.West || rot == Rot4.East)
                     {
                         x = x2 = 0;
-                        angle = this.swingCurveHands.Evaluate(this.CompFace.BodyAnimator.swingCounter);
+                        angle = this.swingCurveHands.Evaluate(cyclePercent);
                     }
                     else
                     {
-                        y = this.PositionY.Evaluate(this.CompFace.BodyAnimator.swingCounter);
+                        y = this.PositionY.Evaluate(cyclePercent);
                         y2 = -y;
 
-                        z += this.swingCurveHandsVertical.Evaluate(this.CompFace.BodyAnimator.swingCounter);
-                        z2 -= this.swingCurveHandsVertical.Evaluate(this.CompFace.BodyAnimator.swingCounter);
+                        z += this.swingCurveHandsVertical.Evaluate(cyclePercent);
+                        z2 -= this.swingCurveHandsVertical.Evaluate(cyclePercent);
                     }
                 }
 
 
             }
 
-            Mesh handsMesh = MeshPool.plane10;
+            Mesh handsMesh = this.HandMesh;
 
 
             UnityEngine.Graphics.DrawMesh(
@@ -826,14 +827,14 @@ namespace FacialStuff
                 if (rot.IsHorizontal)
                 {
                     x = x2 = 0;
-                    angle = -this.swingCurveFeet.Evaluate(this.CompFace.BodyAnimator.swingCounter);
+                    angle = -this.swingCurveFeet.Evaluate(this.CompFace.BodyAnimator.cyclePercent);
                 }
                 else
                 {
-                    y = -this.PositionY.Evaluate(this.CompFace.BodyAnimator.swingCounter);
+                    y = -this.PositionY.Evaluate(this.CompFace.BodyAnimator.cyclePercent) / 2;
                     y2 = -y;
-                    z -= this.swingCurveFeetNorthSouth.Evaluate(this.CompFace.BodyAnimator.swingCounter);
-                    z2 += this.swingCurveFeetNorthSouth.Evaluate(this.CompFace.BodyAnimator.swingCounter);
+                    z -= this.swingCurveFeetNorthSouth.Evaluate(this.CompFace.BodyAnimator.cyclePercent);
+                    z2 += this.swingCurveFeetNorthSouth.Evaluate(this.CompFace.BodyAnimator.cyclePercent);
                 }
             }
             if (rot.IsHorizontal)
@@ -851,17 +852,17 @@ namespace FacialStuff
                 }
             }
 
-            Mesh handsMesh = MeshPool.plane10;
+            Mesh footMesh = this.FootMesh;
 
             UnityEngine.Graphics.DrawMesh(
-                handsMesh,
+                footMesh,
                 center + new Vector3(x, y, z).RotatedBy(angle),
                 Quaternion.AngleAxis(angle, Vector3.up),
                 footGraphic,
                 0);
 
             UnityEngine.Graphics.DrawMesh(
-                handsMesh,
+                footMesh,
                 center + new Vector3(x2, y2, z2).RotatedBy(-angle),
                 Quaternion.AngleAxis(-angle, Vector3.up),
                 footGraphic,
@@ -877,7 +878,7 @@ namespace FacialStuff
                     Color.blue).MatSingle;
 
                 UnityEngine.Graphics.DrawMesh(
-                    handsMesh,
+                    footMesh,
                     center + new Vector3(0, 0.301f, 0),
                     Quaternion.AngleAxis(0, Vector3.up),
                     centerMat,
@@ -903,7 +904,7 @@ namespace FacialStuff
             if (handGraphicMatSingle != null)
             {
                 Vector3 firstHandPosition = compWeaponExtensions.FirstHandPosition;
-                Mesh handsMesh = MeshPool.plane10;
+                Mesh handsMesh = this.HandMesh;
                 if (firstHandPosition != Vector3.zero)
                 {
                     float x = firstHandPosition.x;
