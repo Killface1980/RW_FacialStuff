@@ -980,7 +980,7 @@
                 case BodyType.Hulk:
                     this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
                     this.bodyDefinition.shoulderWidth = 0.35f;
-                    this.bodyDefinition.armLength = 0.3f;
+                    this.bodyDefinition.armLength = 0.35f;
                     this.bodyDefinition.hipOffsetVerticalFromCenter = -0.3f;
                     this.bodyDefinition.hipWidth = 0.175f;
                     this.bodyDefinition.legLength = 0.425f;

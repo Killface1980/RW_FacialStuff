@@ -21,122 +21,7 @@ namespace FacialStuff
         protected const float YOffsetOnFace = 0.0001f;
         protected static readonly float[] HorHeadOffsets = { 0f, 0.04f, 0.1f, 0.09f, 0.1f, 0.09f };
         protected static readonly float YOffsetBodyParts = 0.01f;
-        protected readonly SimpleCurve PosCurveFeetX = new SimpleCurve
-                                                       {
-                                                           //// Passing
-                                                           new CurvePoint(0f, 0f),
-                                                           //// Contact 1
-                                                           new CurvePoint(0.25f, -0.25f),
-                                                           //// Passing Mid
-                                                           new CurvePoint(0.5f, 0f),
-                                                           //// Contact 2
-                                                           new CurvePoint(0.75f, 0.25f),
-                                                           //// Passing
-                                                           new CurvePoint(1f, 0f)
-                                                       };
 
-        protected readonly SimpleCurve PosCurveFeootLy = new SimpleCurve
-                                                       {
-                                                           //// Passing
-                                                           new CurvePoint(0f, 0f),
-                                                           //// Contact 1
-                                                           new CurvePoint(0.25f, 0f),
-                                                           //// Passing
-                                                           new CurvePoint(0.5f, -0.15f),
-                                                           //// Contact 2
-                                                           new CurvePoint(0.75f, 0f),
-                                                           //// Passing
-                                                           new CurvePoint(1f, 0f)
-                                                       };
-
-        protected readonly SimpleCurve PosCurveFeootRz = new SimpleCurve
-                                                       {
-                                                           //// Passing
-                                                           new CurvePoint(0f, -0.15f),
-                                                           //// Contact 1
-                                                           new CurvePoint(0.25f, 0f),
-                                                           //// Passing
-                                                           new CurvePoint(0.5f, 0f),
-                                                           //// Contact 2
-                                                           new CurvePoint(0.75f, 0f),
-                                                           //// Passing
-                                                           new CurvePoint(1f, -0.15f)
-                                                       };
-
-        protected readonly SimpleCurve SwingCurveFeet = new SimpleCurve
-                                                         {
-                                                             //// Passing
-                                                             new CurvePoint(0f, 0f),
-                                                             //// Recoil
-                                                             new CurvePoint(0.25f, 0f),
-                                                             //// Passing
-                                                             new CurvePoint(0.5f, 0f),
-                                                             //// Recoil
-                                                             new CurvePoint(0.75f, 0f),
-                                                             //// Passing
-                                                             new CurvePoint(1f, 0f)
-                                                         };
-
-        protected readonly SimpleCurve SwingCurveFeetNorthSouth =
-                    new SimpleCurve
-        {
-                    new CurvePoint(0f, 0f),
-                    new CurvePoint(0.25f, 0.06f),
-                    new CurvePoint(0.5f, 0f),
-                    new CurvePoint(0.75f, -0.06f),
-                    new CurvePoint(1f, 0f)
-        };
-
-        protected readonly SimpleCurve SwingCurveHands = new SimpleCurve
-                                                          {
-                                                              //// Passing Begin
-                                                              new CurvePoint(0f, 0f),
-                                                              //// Recoil 1
-                                                              new CurvePoint(0.375f, 60f),
-                                                              //// Passing Mid
-                                                              new CurvePoint(0.5f, 0f),
-                                                              //// Recoil 2
-                                                              new CurvePoint(0.875f, -60f),
-                                                              //// Passing End
-                                                              new CurvePoint(1f, 0f)
-                                                          };
-
-        protected readonly SimpleCurve SwingCurveHandsVertical = new SimpleCurve
-                                                                  {
-                                                                      //// Passing Begin
-                                                                      new CurvePoint(0f, 0f),
-                                                                      //// Recoil 1
-                                                                      new CurvePoint(0.375f, 0.075f),
-                                                                      //// Passing Mid
-                                                                      new CurvePoint(0.5f, 0f),
-                                                                      //// Recoil 2
-                                                                      new CurvePoint(0.875f, -0.075f),
-                                                                      //// Passing End
-                                                                      new CurvePoint(1f, 0f)
-                                                                  };
-
-        // Includes a complete walk cycle with x-time
-        protected readonly SimpleCurve UpDownCurve = new SimpleCurve
-                                                      {
-                                                          //// Passing Begin
-                                                          new CurvePoint(0f, 0.0f),
-                                                          //// Highpoint
-                                                          new CurvePoint(0.125f, 0.1f),
-                                                          //// Contact 1
-                                                          new CurvePoint(0.25f, 0.0f),
-                                                          //// Recoil 1
-                                                          new CurvePoint(0.375f, -0.025f),
-                                                          //// Passing Mid
-                                                          new CurvePoint(0.5f, 0f),
-                                                          //// Highpoint
-                                                          new CurvePoint(0.625f, 0.1f),
-                                                          //// Contact 2
-                                                          new CurvePoint(0.75f, 0f),
-                                                          //// Recoil 2
-                                                          new CurvePoint(0.875f, -0.025f),
-                                                          //// Passing End
-                                                          new CurvePoint(1f, 0f)
-                                                      };
 
         protected Mesh FootMesh = MeshPool.plane10;
         protected Mesh HandMesh = MeshPool.plane10;
@@ -154,7 +39,6 @@ namespace FacialStuff
         protected PawnDrawer()
         {
         }
-
         #endregion Protected Constructors
 
         #region Public Properties
