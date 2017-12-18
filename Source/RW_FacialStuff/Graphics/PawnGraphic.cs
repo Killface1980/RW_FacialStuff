@@ -1,5 +1,7 @@
 ﻿namespace FacialStuff.Graphics
 {
+    using System;
+
     using FacialStuff.Defs;
     using FacialStuff.Enums;
 
@@ -297,33 +299,91 @@
             string texNameHand = "Hands/" + this.compFace.Props.handType + "_Hand";
             string texNameFoot = "Hands/" + this.compFace.Props.handType + "_Foot";
 
+            Color skinColor = this.pawn.story.SkinColor;
+
+            Color rightColor = skinColor;
+            Color leftColor = rightColor;
+            if (false)
+            {
+                rightColor = Color.red;
+                leftColor = Color.green;
+
+            }
+
+            Color rightHandColor;
+            Color leftHandColor;
+            Color rightFootColor;
+            Color leftFootColor;
+            Color metal = new Color(0.51f, 0.61f, 0.66f);
+
+            switch (this.compFace.bodyStat.handRight)
+            {
+                case PartStatus.Artificial:
+                    rightHandColor = metal;
+                    break;
+                default:
+                    rightHandColor = skinColor;
+                    break;
+            }
+
+            switch (this.compFace.bodyStat.handLeft)
+            {
+                case PartStatus.Artificial:
+                    leftHandColor = metal;
+                    break;
+                default:
+                    leftHandColor = skinColor;
+                    break;
+            }
+
+            switch (this.compFace.bodyStat.footRight)
+            {
+                case PartStatus.Artificial:
+                    rightFootColor = metal;
+                    break;
+                default:
+                    rightFootColor = skinColor;
+                    break;
+            }
+
+            switch (this.compFace.bodyStat.footLeft)
+            {
+                case PartStatus.Artificial:
+                    leftFootColor = metal;
+                    break;
+                default:
+                    leftFootColor = skinColor;
+                    break;
+            }
+
+
             this.HandGraphicRight = GraphicDatabase.Get<Graphic_Single>(
                 texNameHand,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
-                Color.red,
-                this.pawn.story.SkinColor);
+                rightHandColor,
+                skinColor);
 
             this.HandGraphicLeft = GraphicDatabase.Get<Graphic_Single>(
                 texNameHand,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
-                Color.green,
-                this.pawn.story.SkinColor);
+                leftHandColor,
+                skinColor);
 
             this.FootGraphicRight = GraphicDatabase.Get<Graphic_Single>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
-                Color.blue,
-                this.pawn.story.SkinColor);
+                rightFootColor,
+                skinColor);
 
             this.FootGraphicLeft = GraphicDatabase.Get<Graphic_Single>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
-                Color.magenta,
-                this.pawn.story.SkinColor);
+                leftFootColor,
+                skinColor);
         }
         private void InitializeGraphicsMouth()
         {

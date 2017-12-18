@@ -47,8 +47,6 @@
         public const float YOffsetInterval_Clothes = 0.00390625f;
 
 
-        private static MethodInfo DrawEquipmentMethodInfo;
-
         private static FieldInfo PawnHeadOverlaysFieldInfo;
 
         private static Type PawnRendererType;
@@ -232,7 +230,7 @@
 
                 // DrawEquipmentMethodInfo?.Invoke(__instance, new object[] { rootLoc });
 
-                compFace.DrawEquipment(rootLoc, bodyFacing);
+                compFace.DrawEquipment(drawPos, bodyFacing);
 
                 if (pawn.apparel != null)
                 {
@@ -269,9 +267,6 @@
             // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
             WoundOverlayFieldInfo = PawnRendererType.GetField(
                 "woundOverlays",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-            DrawEquipmentMethodInfo = PawnRendererType.GetMethod(
-                "DrawEquipment",
                 BindingFlags.NonPublic | BindingFlags.Instance);
             PawnHeadOverlaysFieldInfo = PawnRendererType.GetField(
                 "statusOverlays",

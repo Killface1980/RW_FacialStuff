@@ -463,10 +463,12 @@
                 return;
             }
 
-            // ReSharper disable once AssignNullToNotNullAttribute
-            foreach (Hediff diff in hediffs.Where(diff => diff?.def?.defName != null))
+            foreach (Hediff diff in hediffs.Where(diff => diff?.def?.defName != null && diff.def == HediffDefOf.MissingBodyPart))
             {
-                // ReSharper disable once AssignNullToNotNullAttribute
+                this.CheckPart(body, diff);
+            }
+            foreach (Hediff diff in hediffs.Where(diff => diff?.def?.defName != null && diff.def.addedPartProps != null))
+            {
                 this.CheckPart(body, diff);
             }
         }
@@ -970,10 +972,10 @@
                 case BodyType.Female:
                     this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
                     this.bodyDefinition.shoulderWidth = 0.225f;
-                    this.bodyDefinition.armLength = 0.275f;
+                    this.bodyDefinition.armLength = 0.3f;
                     this.bodyDefinition.hipOffsetVerticalFromCenter = -0.275f;
                     this.bodyDefinition.hipWidth = 0.175f;
-                    this.bodyDefinition.legLength = 0.275f;
+                    this.bodyDefinition.legLength = 0.3f;
                     break;
                 case BodyType.Hulk:
                     this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
@@ -1075,12 +1077,56 @@
             BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
             BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
             BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
-            BodyPartRecord leftHand = body.Find(x => x.def == BodyPartDefOf.LeftHand);
+            BodyPartRecord leftArm = body.Find(x => x.def == BodyPartDefOf.LeftArm);
+            BodyPartRecord rightArm = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("RightShoulder"));
+            BodyPartRecord leftHand = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("LeftShoulder"));
             BodyPartRecord rightHand = body.Find(x => x.def == BodyPartDefOf.RightHand);
+            BodyPartRecord leftLeg = body.Find(x => x.def == BodyPartDefOf.LeftLeg);
+            BodyPartRecord rightLeg = body.Find(x => x.def == BodyPartDefOf.RightLeg);
             BodyPartRecord leftFoot = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("LeftFoot"));
             BodyPartRecord rightFoot = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("RightFoot"));
-            AddedBodyPartProps addedPartProps = hediff.def?.addedPartProps;
 
+            // Missing parts firs, hands and feet can be replaced by arms/legs
+            if (hediff.def == HediffDefOf.MissingBodyPart)
+            {
+                if (this.Props.hasEyes)
+                {
+                    if (leftEye != null && hediff.Part == leftEye)
+                    {
+                        this.bodyStat.eyeLeft = PartStatus.Missing;
+                        this.texPathEyeLeft = this.EyeTexPath("Missing", Side.Left);
+                    }
+
+                    // ReSharper disable once InvertIf
+                    if (rightEye != null && hediff.Part == rightEye)
+                    {
+                        this.bodyStat.eyeRight = PartStatus.Missing;
+                        this.texPathEyeRight = this.EyeTexPath("Missing", Side.Right);
+                    }
+                }
+
+                if (this.Props.hasHands)
+                {
+                    if (hediff.Part == leftHand)
+                    {
+                        this.bodyStat.handLeft = PartStatus.Missing;
+                    }
+                    if (hediff.Part == rightHand)
+                    {
+                        this.bodyStat.handRight = PartStatus.Missing;
+                    }
+                    if (hediff.Part == leftFoot)
+                    {
+                        this.bodyStat.footLeft = PartStatus.Missing;
+                    }
+                    if (hediff.Part == rightFoot)
+                    {
+                        this.bodyStat.footRight = PartStatus.Missing;
+                    }
+                }
+            }
+
+            AddedBodyPartProps addedPartProps = hediff.def?.addedPartProps;
             if (addedPartProps != null)
             {
                 if (hediff.def?.defName != null && hediff.Part != null)
@@ -1110,19 +1156,19 @@
 
                     if (this.Props.hasHands)
                     {
-                        if (hediff.Part == leftHand)
+                        if (hediff.Part == leftHand || hediff.Part == leftArm)
                         {
                             this.bodyStat.handLeft = PartStatus.Artificial;
                         }
-                        if (hediff.Part == rightHand)
+                        if (hediff.Part == rightHand || hediff.Part == rightArm)
                         {
                             this.bodyStat.handRight = PartStatus.Artificial;
                         }
-                        if (hediff.Part == leftFoot)
+                        if (hediff.Part == leftFoot || hediff.Part == leftLeg)
                         {
                             this.bodyStat.footLeft = PartStatus.Artificial;
                         }
-                        if (hediff.Part == rightFoot)
+                        if (hediff.Part == rightFoot || hediff.Part == rightLeg)
                         {
                             this.bodyStat.footRight = PartStatus.Artificial;
                         }
@@ -1130,45 +1176,6 @@
                 }
             }
 
-            if (hediff.def != HediffDefOf.MissingBodyPart)
-            {
-                return;
-            }
-            if (this.Props.hasEyes)
-            {
-                if (leftEye != null && hediff.Part == leftEye)
-                {
-                    this.bodyStat.eyeLeft = PartStatus.Missing;
-                    this.texPathEyeLeft = this.EyeTexPath("Missing", Side.Left);
-                }
-
-                // ReSharper disable once InvertIf
-                if (rightEye != null && hediff.Part == rightEye)
-                {
-                    this.bodyStat.eyeRight = PartStatus.Missing;
-                    this.texPathEyeRight = this.EyeTexPath("Missing", Side.Right);
-                }
-            }
-
-            if (this.Props.hasHands)
-            {
-                if (hediff.Part == leftHand)
-                {
-                    this.bodyStat.handLeft = PartStatus.Missing;
-                }
-                if (hediff.Part == rightHand)
-                {
-                    this.bodyStat.handRight = PartStatus.Missing;
-                }
-                if (hediff.Part == leftFoot)
-                {
-                    this.bodyStat.footLeft = PartStatus.Missing;
-                }
-                if (hediff.Part == rightFoot)
-                {
-                    this.bodyStat.footRight = PartStatus.Missing;
-                }
-            }
 
         }
 
