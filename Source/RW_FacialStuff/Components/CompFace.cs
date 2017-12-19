@@ -924,7 +924,7 @@
                 case BodyType.Undefined:
                 case BodyType.Male:
                     this.bodySizeDefinition.shoulderOffsetVerFromCenter = 0;
-                    this.bodySizeDefinition.shoulderWidth = 0.285f;
+                    this.bodySizeDefinition.shoulderWidth = 0.25f;
                     this.bodySizeDefinition.armLength = 0.275f;
                     this.bodySizeDefinition.hipOffsetVerticalFromCenter = -0.275f;
                     this.bodySizeDefinition.hipWidth = 0.175f;

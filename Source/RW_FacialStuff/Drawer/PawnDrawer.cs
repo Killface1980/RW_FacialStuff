@@ -25,7 +25,6 @@ namespace FacialStuff
         protected bool isMoving;
         protected float movedPercent;
 
-        protected Mesh FootMesh = MeshPool.plane10;
         protected Mesh HandMesh = MeshPool.plane10;
 
         #endregion Protected Fields
@@ -178,6 +177,7 @@ namespace FacialStuff
         {
             return rotation.AsQuat;
         }
+        protected Pawn Pawn;
 
         public virtual void Initialize()
         {

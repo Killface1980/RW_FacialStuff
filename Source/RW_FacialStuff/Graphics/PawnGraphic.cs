@@ -7,9 +7,12 @@
 
     using JetBrains.Annotations;
 
+    using RimWorld;
+
     using UnityEngine;
 
     using Verse;
+    using Verse.AI;
 
     public class PawnGraphic
     {
@@ -141,6 +144,12 @@
                 return;
             }
 
+            if (this.pawn.Fleeing() || this.pawn.IsBurning())
+            {
+                this.MouthGraphic = this.mouthgraphic.mouthGraphicCrying;
+                return;
+            }
+
             if (this.pawn.health.InPainShock && !this.compFace.IsAsleep)
             {
                 if (this.compFace.EyeWiggler.EyeRightBlinkNow && this.compFace.EyeWiggler.EyeLeftBlinkNow)
@@ -155,10 +164,12 @@
                 this.mood = this.pawn.needs.mood.CurInstantLevel;
             }
 
-            int mouthTextureIndexOfMood = this.mouthgraphic.GetMouthTextureIndexOfMood(this.mood);
+            int indexOfMood = this.mouthgraphic.GetMouthTextureIndexOfMood(this.mood);
 
-            this.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[mouthTextureIndexOfMood].Graphic;
+            this.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[indexOfMood].Graphic;
         }
+
+
 
         #endregion Public Methods
 
@@ -371,14 +382,14 @@
                 leftHandColor,
                 skinColor);
 
-            this.FootGraphicRight = GraphicDatabase.Get<Graphic_Single>(
+            this.FootGraphicRight = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 rightFootColor,
                 skinColor);
 
-            this.FootGraphicLeft = GraphicDatabase.Get<Graphic_Single>(
+            this.FootGraphicLeft = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),

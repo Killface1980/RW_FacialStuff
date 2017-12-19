@@ -2,7 +2,10 @@
 {
     using JetBrains.Annotations;
 
+    using RimWorld;
+
     using Verse;
+    using Verse.AI;
 
     public static class PawnExtensions
     {
@@ -48,6 +51,11 @@
             return false;
         }
 
-
-    }
+        public static bool Fleeing(this Pawn pawn)
+        {
+            Job job = pawn.CurJob;
+            return pawn.MentalStateDef == MentalStateDefOf.PanicFlee
+                   || (job != null && (job.def == JobDefOf.Flee || job.def == JobDefOf.FleeAndCower));
+        }
+}
 }

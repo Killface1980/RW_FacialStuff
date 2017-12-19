@@ -44,7 +44,7 @@
 
         public const float YOffset_Wounds = 0.01953125f;
 
-        public const float YOffsetInterval_Clothes = 0.00390625f;
+        public const float YOffsetInterval_Clothes = 0.004f;
 
 
         private static FieldInfo PawnHeadOverlaysFieldInfo;
@@ -277,4 +277,179 @@
                 BindingFlags.NonPublic | BindingFlags.Instance);
         }
     }
+  
+    /*
+    [HarmonyPatch(
+        typeof(PawnRenderer),
+        "RenderPawnAt",
+        new[]
+            {
+                typeof(Vector3), typeof( RotDrawMode), typeof(bool)
+            })]
+    [HarmonyBefore("com.showhair.rimworld.mod")]
+    public static class HarmonyPatch_RenderPawnAt
+    {
+
+
+        public const float YOffset_Head = 0.02734375f;
+
+        private const float YOffset_OnHead = 0.03125f;
+
+
+        private const float YOffset_Shell = 0.0234375f;
+
+        private const float YOffset_Status = 0.04296875f;
+
+        public const float YOffset_Wounds = 0.01953125f;
+
+        public const float YOffsetInterval_Clothes = 0.00390625f;
+
+
+        private static FieldInfo PawnHeadOverlaysFieldInfo;
+
+        private static Type PawnRendererType;
+
+        // private static FieldInfo PawnFieldInfo;
+        private static FieldInfo WoundOverlayFieldInfo;
+
+        public static bool Prefix(
+            PawnRenderer __instance, Vector3 drawLoc, RotDrawMode bodyDrawType, bool headStump)
+        {
+            GetReflections();
+            Pawn pawn = __instance.graphics.pawn;
+            if (!__instance.graphics.AllResolved)
+            {
+                __instance.graphics.ResolveAllGraphics();
+            }
+            if (pawn.GetPosture() == PawnPosture.Standing)
+            {
+                __instance.RenderPawnInternal(drawLoc, Quaternion.identity, true, bodyDrawType, headStump);
+                if (pawn.carryTracker != null)
+                {
+                    Thing carriedThing = pawn.carryTracker.CarriedThing;
+                    if (carriedThing != null)
+                    {
+                        Vector3 vector = drawLoc;
+                        bool flag = false;
+                        bool flip = false;
+                        if (pawn.CurJob == null || !pawn.jobs.curDriver.ModifyCarriedThingDrawPos(ref vector, ref flag, ref flip))
+                        {
+                            if (carriedThing is Pawn || carriedThing is Corpse)
+                            {
+                                vector += new Vector3(0.44f, 0f, 0f);
+                            }
+                            else
+                            {
+                                vector += new Vector3(0.18f, 0f, 0.05f);
+                            }
+                        }
+                        if (flag)
+                        {
+                            vector.y -= 0.0390625f;
+                        }
+                        else
+                        {
+                            vector.y += 0.0390625f;
+                        }
+                        carriedThing.DrawAt(vector, flip);
+                    }
+                }
+                if (pawn.def.race.specialShadowData != null)
+                {
+                    if (__instance.shadowGraphic == null)
+                    {
+                        __instance.shadowGraphic = new Graphic_Shadow(pawn.def.race.specialShadowData);
+                    }
+                    __instance.shadowGraphic.Draw(drawLoc, Rot4.North, pawn, 0f);
+                }
+                if (__instance.graphics.nakedGraphic != null && __instance.graphics.nakedGraphic.ShadowGraphic != null)
+                {
+                    __instance.graphics.nakedGraphic.ShadowGraphic.Draw(drawLoc, Rot4.North, pawn, 0f);
+                }
+            }
+            else
+            {
+                Rot4 rot = __instance.LayingFacing();
+                Building_Bed building_Bed = pawn.CurrentBed();
+                bool renderBody;
+                Quaternion quat;
+                Vector3 rootLoc;
+                if (building_Bed != null && pawn.RaceProps.Humanlike)
+                {
+                    renderBody = building_Bed.def.building.bed_showSleeperBody;
+                    Rot4 rotation = building_Bed.Rotation;
+                    rotation.AsInt += 2;
+                    quat = rotation.AsQuat;
+                    AltitudeLayer altLayer = (AltitudeLayer)Mathf.Max((int)building_Bed.def.altitudeLayer, 15);
+                    Vector3 vector2 = pawn.Position.ToVector3ShiftedWithAltitude(altLayer);
+                    Vector3 vector3 = vector2;
+                    vector3.y += 0.02734375f;
+                    float d = -__instance.BaseHeadOffsetAt(Rot4.South).z;
+                    Vector3 a = rotation.FacingCell.ToVector3();
+                    rootLoc = vector2 + a * d;
+                    rootLoc.y += 0.0078125f;
+                }
+                else
+                {
+                    renderBody = true;
+                    rootLoc = drawLoc;
+                    if (!pawn.Dead && pawn.CarriedBy == null)
+                    {
+                        rootLoc.y = Altitudes.AltitudeFor(AltitudeLayer.LayingPawn) + 0.0078125f;
+                    }
+                    if (pawn.Downed || pawn.Dead)
+                    {
+                        quat = Quaternion.AngleAxis(__instance.wiggler.downedAngle, Vector3.up);
+                    }
+                    else if (pawn.RaceProps.Humanlike)
+                    {
+                        quat = rot.AsQuat;
+                    }
+                    else
+                    {
+                        Rot4 rot2 = Rot4.West;
+                        int num = pawn.thingIDNumber % 2;
+                        if (num != 0)
+                        {
+                            if (num == 1)
+                            {
+                                rot2 = Rot4.East;
+                            }
+                        }
+                        else
+                        {
+                            rot2 = Rot4.West;
+                        }
+                        quat = rot2.AsQuat;
+                    }
+                }
+                __instance.RenderPawnInternal(rootLoc, quat, renderBody, rot, rot, bodyDrawType, false, headStump);
+            }
+            if (pawn.Spawned && !pawn.Dead)
+            {
+                pawn.stances.StanceTrackerDraw();
+                pawn.pather.PatherDraw();
+            }
+            __instance.DrawDebug();
+        }
+
+        private static void GetReflections()
+        {
+            if (PawnRendererType != null)
+            {
+                return;
+            }
+
+            PawnRendererType = typeof(PawnRenderer);
+
+            // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
+            WoundOverlayFieldInfo = PawnRendererType.GetField(
+                "woundOverlays",
+                BindingFlags.NonPublic | BindingFlags.Instance);
+            PawnHeadOverlaysFieldInfo = PawnRendererType.GetField(
+                "statusOverlays",
+                BindingFlags.NonPublic | BindingFlags.Instance);
+        }
+    }
+    */
 }
