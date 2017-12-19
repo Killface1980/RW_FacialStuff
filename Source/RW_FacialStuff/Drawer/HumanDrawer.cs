@@ -39,17 +39,18 @@ namespace FacialStuff
             return stance_Busy != null && !stance_Busy.neverAimWeapon && stance_Busy.focusTarg.IsValid;
         }
 
-        protected SimpleCurve PosCurveHorizontalFoot;
+        protected SimpleCurve CurveHorizontalFoot;
 
-        protected SimpleCurve PosCurveVerticalFoot;
-        protected SimpleCurve SwingCurveFeet;
+        protected SimpleCurve CurveVerticalFoot;
+        protected SimpleCurve CurveFootAngle;
 
         protected SimpleCurve SwingCurveHands;
 
-        protected SimpleCurve SwingCurveHandsVertical;
+        protected SimpleCurve CurveHandsSwingingVertical;
 
         // Includes a complete walk cycle with x-time
-        protected SimpleCurve BodyUpDownCurve;
+        protected SimpleCurve CurveBodyWobble;
+        protected SimpleCurve CurveBodyAngle;
 
         public override void Initialize()
         {
@@ -65,36 +66,39 @@ namespace FacialStuff
             float down2 = 0.875f;
             float passingEnd = 1f;
 
-            this.PosCurveHorizontalFoot = new SimpleCurve
-                                              {
-                                                  new CurvePoint(passingBegin, 0f),
-                                                  new CurvePoint(contact1, 0.15f),
-                                                  new CurvePoint(passingMid, 0f),
-                                                  new CurvePoint(contact2, -0.125f),
-                                                  new CurvePoint(passingEnd, 0f)
-                                              };
+            this.CurveHorizontalFoot = new SimpleCurve
+                                           {
+                                               new CurvePoint(passingBegin, 0f),
+                                               new CurvePoint(up1, 0.15f),
+                                               new CurvePoint(contact1, 0.25f),
+                                               new CurvePoint(passingMid, 0f),
+                                               new CurvePoint(up2, -0.05f),
+                                               new CurvePoint(contact2, -0.1f),
+                                               new CurvePoint(passingEnd, 0f)
+                                           };
 
 
-            this.PosCurveVerticalFoot =
-                new SimpleCurve
-                    {
-                        new CurvePoint(passingBegin, 0.1f),
-                        new CurvePoint(up1, 0.125f),
-                        new CurvePoint(contact1, 0f),
-                        new CurvePoint(passingMid, 0f),
-                        new CurvePoint(contact2, 0f),
-                        new CurvePoint(passingEnd, 0.1f)
-                    };
+            this.CurveVerticalFoot = new SimpleCurve
+                                         {
+                                             new CurvePoint(passingBegin, 0.1f),
+                                             new CurvePoint(up1, 0.125f),
+                                             new CurvePoint(contact1, 0.025f),
+                                             new CurvePoint(down1, 0),
+                                             new CurvePoint(passingMid, 0f),
+                                             new CurvePoint(contact2, 0.025f),
+                                             new CurvePoint(down2, 0),
+                                             new CurvePoint(passingEnd, 0.1f)
+                                         };
 
-            this.SwingCurveFeet = new SimpleCurve
+            this.CurveFootAngle = new SimpleCurve
                                       {
                                           new CurvePoint(passingBegin, 50f),
-                                          new CurvePoint(up1, 35f),
-                                          new CurvePoint(contact1, -30f),
+                                          new CurvePoint(up1, 40f),
+                                          new CurvePoint(contact1, -35f),
                                           new CurvePoint(down1, 0f),
                                           new CurvePoint(passingMid, 0f),
                                           new CurvePoint(up2, 5f),
-                                          new CurvePoint(contact2, 10f),
+                                          new CurvePoint(contact2, 30f),
                                           new CurvePoint(down2, 45f),
                                           new CurvePoint(passingEnd, 50f)
                                       };
@@ -114,7 +118,7 @@ namespace FacialStuff
                                            new CurvePoint(passingEnd, 0f)
                                        };
 
-            this.SwingCurveHandsVertical = new SimpleCurve
+            this.CurveHandsSwingingVertical = new SimpleCurve
                                                {
                                                    new CurvePoint(passingBegin, 0f),
                                                    new CurvePoint(down1, 0.075f),
@@ -123,7 +127,7 @@ namespace FacialStuff
                                                    new CurvePoint(passingEnd, 0f)
                                                };
 
-            this.BodyUpDownCurve = new SimpleCurve
+            this.CurveBodyWobble = new SimpleCurve
                                        {
                                            new CurvePoint(passingBegin, 0.0f),
                                            new CurvePoint(up1, 0.1f),
@@ -135,17 +139,35 @@ namespace FacialStuff
                                            new CurvePoint(down2, -0.02f),
                                            new CurvePoint(passingEnd, 0f)
                                        };
+
+            this.CurveBodyAngle = new SimpleCurve
+                                       {
+                                           new CurvePoint(passingBegin, 0.0f),
+                                           new CurvePoint(up1, -3f),
+                                          // new CurvePoint(contact1, 0.0f),
+                                           new CurvePoint(down1, 5f),
+                                           new CurvePoint(passingMid, 0f),
+                                           new CurvePoint(up2, -3f),
+                                         //  new CurvePoint(contact2, 0f),
+                                           new CurvePoint(down2, 5f),
+                                           new CurvePoint(passingEnd, 0f)
+                                       };
         }
 
-        public override void ApplyBodyWobble(ref Vector3 rootLoc)
+        public override void ApplyBodyWobble(ref Vector3 rootLoc, ref Quaternion quat)
         {
             if (this.CompFace.BodyAnimator.IsMoving(out float movedPercent))
             {
-                float bam = this.BodyUpDownCurve.Evaluate(movedPercent);
+                float bam = this.CurveBodyWobble.Evaluate(movedPercent);
                 rootLoc.z += bam;
+                if (this.CompFace.Pawn.Rotation.IsHorizontal)
+                {
+                    quat = this.BodyQuat(quat, movedPercent);
+                }
+
             }
 
-            base.ApplyBodyWobble(ref rootLoc);
+            base.ApplyBodyWobble(ref rootLoc, ref quat);
         }
 
         public override void ApplyHeadRotation(bool renderBody, ref Rot4 headFacing, ref Quaternion headQuat)
@@ -184,7 +206,7 @@ namespace FacialStuff
 
             if (this.CompFace.BodyAnimator.IsMoving(out float movedPercent))
             {
-                float bam = this.BodyUpDownCurve.Evaluate(movedPercent);
+                float bam = this.CurveBodyWobble.Evaluate(movedPercent);
                 offset.z += bam / 4;
             }
         }
@@ -258,6 +280,16 @@ namespace FacialStuff
 
             // DamageDef damageDef = primaryEq?.PrimaryVerb?.verbProps?.meleeDamageDef;
             if (primaryEq?.parent?.def == null)
+            {
+                return;
+            }
+
+            if (primaryEq.AllVerbs.NullOrEmpty())
+            {
+                return;
+            }
+
+            if (!primaryEq.AllVerbs.Any(x => x.verbProps.MeleeRange))
             {
                 return;
             }
@@ -645,12 +677,12 @@ namespace FacialStuff
 
             // Basic values 
             BodyDefinition body = this.CompFace.bodyDefinition;
-            float x = -body.hipWidth;
-            float x2 = -x;
-            float y = 0.035f;
-            float y2 = y;
-            float z = -body.legLength;
-            float z2 = z;
+            float rightFootHorizontal = -body.hipWidth;
+            float leftFootHorizontal = -rightFootHorizontal;
+            float rightFootDepth = 0.035f;
+            float leftFootDepth = rightFootDepth;
+            float rightFootVertical = -body.legLength;
+            float leftFootVertical = rightFootVertical;
 
             // Center = drawpos of carryThing
             var center = drawPos;
@@ -664,24 +696,24 @@ namespace FacialStuff
 
             if (rot.IsHorizontal)
             {
-                x /= 3;
-                x2 /= 3;
+                rightFootHorizontal /= 3;
+                leftFootHorizontal /= 3;
                 if (rot == Rot4.East)
                 {
-                    y2 *= -1;
+                    leftFootDepth *= -1;
                 }
                 else
                 {
                     // x *= -1;
                     // x2 *= -1;
-                    y *= -1;
+                    rightFootDepth *= -1;
                 }
             }
             else if (rot == Rot4.North)
             {
-                y = y2 = -0.02f;
-                x *= -1;
-                x2 *= -1;
+                rightFootDepth = leftFootDepth = -0.02f;
+                rightFootHorizontal *= -1;
+                leftFootHorizontal *= -1;
             }
 
             // Swing the hands, try complete the cycle
@@ -698,27 +730,25 @@ namespace FacialStuff
                 }
                 if (rot.IsHorizontal)
                 {
-                    x = this.PosCurveHorizontalFoot.Evaluate(movedPercent);
-                    x2 = this.PosCurveHorizontalFoot.Evaluate(flot);
+                    rightFootHorizontal = this.CurveHorizontalFoot.Evaluate(movedPercent);
+                    leftFootHorizontal = this.CurveHorizontalFoot.Evaluate(flot);
 
-                    footAngleRight = this.SwingCurveFeet.Evaluate(movedPercent);
-                    footAngleLeft = this.SwingCurveFeet.Evaluate(flot);
-                    z += this.PosCurveVerticalFoot.Evaluate(movedPercent);
-                    z2 += this.PosCurveVerticalFoot.Evaluate(flot);
+                    footAngleRight = this.CurveFootAngle.Evaluate(movedPercent);
+                    footAngleLeft = this.CurveFootAngle.Evaluate(flot);
+                    rightFootVertical += this.CurveVerticalFoot.Evaluate(movedPercent);
+                    leftFootVertical += this.CurveVerticalFoot.Evaluate(flot);
                     if (rot == Rot4.West)
                     {
-                        x *= -1f;
-                        x2 *= -1f;
+                        rightFootHorizontal *= -1f;
+                        leftFootHorizontal *= -1f;
                         footAngleLeft *= -1f;
                         footAngleRight *= -1f;
                     }
                 }
                 else
                 {
-                    float multi = rot == Rot4.South ? -1f : 1f;
-
-                    z += multi * this.PosCurveVerticalFoot.Evaluate(movedPercent);
-                    z2 += multi * this.PosCurveVerticalFoot.Evaluate(flot);
+                    rightFootVertical += this.CurveVerticalFoot.Evaluate(movedPercent);
+                    leftFootVertical += this.CurveVerticalFoot.Evaluate(flot);
                 }
             }
 
@@ -744,7 +774,7 @@ namespace FacialStuff
                 {
                     UnityEngine.Graphics.DrawMesh(
                         footMesh,
-                        center.RotatedBy(bodyAngle) + new Vector3(x, y, z).RotatedBy(footAngleRight),
+                        center.RotatedBy(bodyAngle) + new Vector3(rightFootHorizontal, rightFootDepth, rightFootVertical).RotatedBy(footAngleRight),
                         Quaternion.AngleAxis(bodyAngle + footAngleRight, Vector3.up),
                         matRight,
                         0);
@@ -757,7 +787,7 @@ namespace FacialStuff
                 {
                     UnityEngine.Graphics.DrawMesh(
                         footMesh,
-                        center.RotatedBy(bodyAngle) + new Vector3(x2, y2, z2).RotatedBy(footAngleLeft),
+                        center.RotatedBy(bodyAngle) + new Vector3(leftFootHorizontal, leftFootDepth, leftFootVertical).RotatedBy(footAngleLeft),
                         Quaternion.AngleAxis(bodyAngle + footAngleLeft, Vector3.up),
                         matLeft,
                         0);
@@ -968,8 +998,8 @@ namespace FacialStuff
                     }
                     else
                     {
-                        z += this.SwingCurveHandsVertical.Evaluate(movedPercent);
-                        z2 -= this.SwingCurveHandsVertical.Evaluate(movedPercent);
+                        z += this.CurveHandsSwingingVertical.Evaluate(movedPercent);
+                        z2 -= this.CurveHandsSwingingVertical.Evaluate(movedPercent);
                     }
                 }
             }
@@ -1233,6 +1263,16 @@ namespace FacialStuff
             float z = 1f * Mathf.Cos(num * (this.CompFace.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
             asQuat.SetLookRotation(new Vector3(x, 0f, z), Vector3.up);
             return asQuat;
+        }
+
+        public Quaternion BodyQuat(Quaternion quat, float movedPercent)
+        {
+
+            quat *= Quaternion.AngleAxis(
+                (this.CompFace.Pawn.Rotation == Rot4.West ? -1 : 1) * this.CurveBodyAngle.Evaluate(movedPercent),
+                Vector3.up);
+
+            return quat;
         }
 
         #endregion Public Methods

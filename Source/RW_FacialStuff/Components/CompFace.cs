@@ -967,7 +967,7 @@
                     this.bodyDefinition.armLength = 0.275f;
                     this.bodyDefinition.hipOffsetVerticalFromCenter = -0.275f;
                     this.bodyDefinition.hipWidth = 0.175f;
-                    this.bodyDefinition.legLength = 0.275f;
+                    this.bodyDefinition.legLength = 0.3f;
                     break;
                 case BodyType.Female:
                     this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
@@ -1001,7 +1001,7 @@
                     this.bodyDefinition.armLength = 0.225f;
                     this.bodyDefinition.hipOffsetVerticalFromCenter = -0.25f;
                     this.bodyDefinition.hipWidth = 0.125f;
-                    this.bodyDefinition.legLength = 0.25f;
+                    this.bodyDefinition.legLength = 0.3f;
                     break;
 
             }
@@ -1231,7 +1231,7 @@
         }
         public BodyPartStats bodyStat;
 
-        public void ApplyBodyWobble(ref Vector3 rootLoc)
+        public void ApplyBodyWobble(ref Vector3 rootLoc, ref Quaternion quat)
         {
             if (this.pawnDrawers != null)
             {
@@ -1239,7 +1239,7 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].ApplyBodyWobble(ref rootLoc);
+                    this.pawnDrawers[i].ApplyBodyWobble(ref rootLoc, ref quat);
                     i++;
                 }
             }

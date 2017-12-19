@@ -109,13 +109,15 @@
 
 #endif
             // Use the basic quat
-            Quaternion headQuat = quat;
+                Quaternion headQuat = quat;
 
             // Rotate head if possble and wobble around
             if (!portrait)
             {
+                compFace.ApplyBodyWobble(ref rootLoc, ref quat);
+                // Reset the quat as it has been changed
+                headQuat = quat;
                 compFace.ApplyHeadRotation(renderBody, ref headFacing, ref headQuat);
-                compFace.ApplyBodyWobble(ref rootLoc);
             }
             // Regular FacePawn rendering 14+ years
 

@@ -49,7 +49,7 @@ namespace FacialStuff
 
         #region Public Methods
 
-        public virtual void ApplyBodyWobble(ref Vector3 rootLoc)
+        public virtual void ApplyBodyWobble(ref Vector3 rootLoc, ref Quaternion quat)
         {
         }
 
