@@ -53,11 +53,11 @@ namespace FacialStuff
         {
         }
 
-        public virtual void ApplyHeadRotation(bool renderBody, ref Rot4 headFacing, ref Quaternion headQuat)
+        public virtual void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
         {
         }
 
-        public virtual void BaseHeadOffsetAt(Rot4 rotation, ref Vector3 offset)
+        public virtual void BaseHeadOffsetAt(ref Vector3 offset)
         {
         }
 
@@ -85,47 +85,39 @@ namespace FacialStuff
         {
         }
 
-        public virtual void DrawAlienBodyAddons(Quaternion quat, Rot4 bodyFacing, Vector3 rootLoc, bool portrait, bool renderBody, PawnGraphicSet graphics)
+        public virtual void DrawAlienBodyAddons(Quaternion quat, Vector3 rootLoc, bool portrait, bool renderBody)
         {
             // Just for the Aliens
         }
 
-        public virtual void DrawAlienHeadAddons(bool portrait, Quaternion headQuat, Rot4 headFacing, Vector3 currentLoc)
+        public virtual void DrawAlienHeadAddons(bool portrait, Quaternion headQuat, Vector3 currentLoc)
         {
             // Just for the Aliens
         }
 
-        public virtual void DrawApparel(PawnGraphicSet graphics, Quaternion quat, Rot4 bodyFacing, Vector3 vector, bool renderBody, bool portrait)
+        public virtual void DrawApparel(Quaternion quat, Vector3 vector, bool renderBody, bool portrait)
         {
         }
 
-        public virtual void DrawBasicHead(PawnGraphicSet graphics, Quaternion headQuat, Rot4 headFacing, RotDrawMode bodyDrawType, bool headStump, bool portrait, ref Vector3 locFacialY, out bool headDrawn)
+        public virtual void DrawBasicHead(Quaternion headQuat, RotDrawMode bodyDrawType, bool headStump, bool portrait, ref Vector3 locFacialY, out bool headDrawn)
         {
             headDrawn = false;
         }
 
-        public virtual void DrawBeardAndTache(Quaternion headQuat, Rot4 headFacing, bool portrait, ref Vector3 locFacialY)
+        public virtual void DrawBeardAndTache(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
         {
         }
 
-        public virtual void DrawBody(
-                    PawnGraphicSet graphics,
-            [CanBeNull] PawnWoundDrawer woundDrawer,
-            Vector3 rootLoc,
-            Quaternion quat,
-            Rot4 bodyFacing,
-            RotDrawMode bodyDrawType,
-            bool renderBody,
-            bool portrait)
+        public virtual void DrawBody([CanBeNull] PawnWoundDrawer woundDrawer, Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType, bool renderBody, bool portrait)
         {
         }
 
-        public virtual void DrawBrows(Quaternion headQuat, Rot4 headFacing, bool portrait, ref Vector3 locFacialY)
+        public virtual void DrawBrows(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
         {
         }
 
         // Verse.PawnRenderer - Vanilla with flava
-        public virtual void DrawEquipment(Vector3 rootLoc, Rot4 bodyFacing)
+        public virtual void DrawEquipment(Vector3 rootLoc)
         {
         }
 
@@ -137,38 +129,28 @@ namespace FacialStuff
         {
         }
 
-        public virtual void DrawHairAndHeadGear(
-                                    PawnGraphicSet graphics,
-            Vector3 rootLoc,
-            Quaternion headQuat,
-            Rot4 bodyFacing,
-            RotDrawMode bodyDrawType,
-            Rot4 headFacing,
-            bool renderBody,
-            bool portrait,
-            Vector3 b,
-            ref Vector3 currentLoc)
+        public virtual void DrawHairAndHeadGear(Vector3 rootLoc, Quaternion headQuat, RotDrawMode bodyDrawType, bool renderBody, bool portrait, Vector3 b, ref Vector3 currentLoc)
         {
         }
 
-        public virtual void DrawHeadOverlays(Rot4 headFacing, PawnHeadOverlays headOverlays, Vector3 bodyLoc, Quaternion headQuat)
+        public virtual void DrawHeadOverlays(PawnHeadOverlays headOverlays, Vector3 bodyLoc, Quaternion headQuat)
         {
-            headOverlays?.RenderStatusOverlays(bodyLoc, headQuat, this.GetPawnMesh(headFacing, false, false));
+            headOverlays?.RenderStatusOverlays(bodyLoc, headQuat, this.GetPawnMesh(false, false));
         }
 
-        public virtual void DrawNaturalEyes(Quaternion headQuat, Rot4 headFacing, bool portrait, ref Vector3 locFacialY)
-        {
-        }
-
-        public virtual void DrawNaturalMouth(Quaternion headQuat, Rot4 headFacing, bool portrait, ref Vector3 locFacialY)
+        public virtual void DrawNaturalEyes(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
         {
         }
 
-        public virtual void DrawUnnaturalEyeParts(Quaternion headQuat, Rot4 headFacing, bool portrait, ref Vector3 locFacialY)
+        public virtual void DrawNaturalMouth(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
         {
         }
 
-        public virtual void DrawWrinkles(Quaternion headQuat, Rot4 headFacing, RotDrawMode bodyDrawType, bool portrait, ref Vector3 locFacialY)
+        public virtual void DrawUnnaturalEyeParts(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
+        {
+        }
+
+        public virtual void DrawWrinkles(Quaternion headQuat, RotDrawMode bodyDrawType, bool portrait, ref Vector3 locFacialY)
         {
         }
 
@@ -177,17 +159,20 @@ namespace FacialStuff
             return Vector3.zero;
         }
 
-        public virtual Mesh GetPawnHairMesh(PawnGraphicSet graphics, Rot4 headFacing, bool portrait)
+        public virtual Mesh GetPawnHairMesh(bool portrait)
         {
             return graphics.HairMeshSet.MeshAt(headFacing);
         }
 
-        public virtual Mesh GetPawnMesh(Rot4 facing, bool wantsBody, bool portrait)
+        protected Rot4 bodyFacing;
+
+        protected Rot4 headFacing;
+        public virtual Mesh GetPawnMesh(bool wantsBody, bool portrait)
         {
-            return wantsBody ? MeshPool.humanlikeBodySet.MeshAt(facing) : MeshPool.humanlikeHeadSet.MeshAt(facing);
+            return wantsBody ? MeshPool.humanlikeBodySet.MeshAt(bodyFacing) : MeshPool.humanlikeHeadSet.MeshAt(headFacing);
         }
 
-        public virtual Quaternion HeadQuat(Rot4 rotation)
+        public virtual Quaternion QuatHead(Rot4 rotation)
         {
             return rotation.AsQuat;
         }
@@ -197,6 +182,13 @@ namespace FacialStuff
         }
 
         #endregion Public Methods
+        public PawnGraphicSet graphics;
 
+        public virtual void Tick(Rot4 bodyFacing, Rot4 headFacing, PawnGraphicSet graphics)
+        {
+            this.graphics = graphics;
+            this.bodyFacing = bodyFacing;
+            this.headFacing = headFacing;
+        }
     }
 }

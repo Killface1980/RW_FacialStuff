@@ -108,8 +108,10 @@
             }
 
 #endif
+            compFace.TickDrawers(bodyFacing, headFacing, graphics);
+
             // Use the basic quat
-                Quaternion headQuat = quat;
+            Quaternion headQuat = quat;
 
             // Rotate head if possble and wobble around
             if (!portrait)
@@ -117,13 +119,13 @@
                 compFace.ApplyBodyWobble(ref rootLoc, ref quat);
                 // Reset the quat as it has been changed
                 headQuat = quat;
-                compFace.ApplyHeadRotation(renderBody, ref headFacing, ref headQuat);
+                compFace.ApplyHeadRotation(renderBody, ref headQuat);
             }
             // Regular FacePawn rendering 14+ years
 
             // Render body
             PawnWoundDrawer woundDrawer = (PawnWoundDrawer)WoundOverlayFieldInfo?.GetValue(__instance);
-            compFace.DrawBody(graphics, rootLoc, quat, bodyFacing, bodyDrawType, woundDrawer, renderBody, portrait);
+            compFace.DrawBody(rootLoc, quat, bodyDrawType, woundDrawer, renderBody, portrait);
 
 
 
@@ -147,13 +149,13 @@
             {
                 // Rendererd pawn faces
 
-                Vector3 b = headQuat * compFace.BaseHeadOffsetAt(headFacing);
+                Vector3 b = headQuat * compFace.BaseHeadOffsetAt();
 
                 Vector3 locFacialY = a + b;
                 Vector3 currentLoc = rootLoc + b;
                 currentLoc.y += YOffset_OnHead;
 
-                compFace.DrawBasicHead(out bool headDrawn, graphics, headFacing, bodyDrawType, portrait, headStump, ref locFacialY, headQuat);
+                compFace.DrawBasicHead(out bool headDrawn, bodyDrawType, portrait, headStump, ref locFacialY, headQuat);
 
                 if (headDrawn)
                 {
@@ -162,30 +164,30 @@
 
                         if (compFace.Props.hasWrinkles)
                         {
-                            compFace.DrawWrinkles(bodyDrawType, ref locFacialY, headFacing, headQuat, portrait);
+                            compFace.DrawWrinkles(bodyDrawType, ref locFacialY, headQuat, portrait);
                         }
 
                         if (compFace.Props.hasEyes)
                         {
-                            compFace.DrawNaturalEyes(ref locFacialY, portrait, headFacing, headQuat);
+                            compFace.DrawNaturalEyes(ref locFacialY, portrait, headQuat);
 
                             // the brow above
-                            compFace.DrawBrows(ref locFacialY, headFacing, headQuat, portrait);
+                            compFace.DrawBrows(ref locFacialY, headQuat, portrait);
 
                             // and now the added eye parts
-                            compFace.DrawUnnaturalEyeParts(ref locFacialY, headQuat, headFacing, portrait);
+                            compFace.DrawUnnaturalEyeParts(ref locFacialY, headQuat, portrait);
                         }
 
                         if (compFace.Props.hasMouth)
                         {
-                            compFace.DrawNaturalMouth(ref locFacialY, portrait, headFacing, headQuat);
+                            compFace.DrawNaturalMouth(ref locFacialY, portrait, headQuat);
                         }
 
                         // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
                         if (compFace.Props.hasBeard)
                         {
                             // if (!portrait)
-                            compFace.DrawBeardAndTache(ref locFacialY, portrait, headFacing, headQuat);
+                            compFace.DrawBeardAndTache(ref locFacialY, portrait, headQuat);
                         }
 
                         // Deactivated, looks kinda crappy ATM
@@ -205,15 +207,15 @@
 
                 if (!headStump)
                 {
-                    compFace.DrawHairAndHeadGear(rootLoc, bodyFacing, bodyDrawType, ref currentLoc, b, headFacing, graphics, portrait, renderBody, headQuat);
+                    compFace.DrawHairAndHeadGear(rootLoc, bodyDrawType, ref currentLoc, b, portrait, renderBody, headQuat);
                 }
 
-                compFace.DrawAlienHeadAddons(portrait, headQuat, headFacing, currentLoc);
+                compFace.DrawAlienHeadAddons(portrait, headQuat, currentLoc);
             }
 
-            compFace.DrawApparel(quat, bodyFacing, drawPos, portrait, renderBody, graphics);
+            compFace.DrawApparel(quat, drawPos, portrait, renderBody);
 
-            compFace.DrawAlienBodyAddons(quat, bodyFacing, drawPos, portrait, renderBody, graphics);
+            compFace.DrawAlienBodyAddons(quat, drawPos, portrait, renderBody);
 
             // Draw the beard, for the RenderPortrait
             // if (portrait && !headStump)
@@ -232,7 +234,7 @@
 
                 // DrawEquipmentMethodInfo?.Invoke(__instance, new object[] { rootLoc });
 
-                compFace.DrawEquipment(drawPos, bodyFacing);
+                compFace.DrawEquipment(drawPos);
 
                 if (pawn.apparel != null)
                 {
@@ -250,7 +252,7 @@
                 PawnHeadOverlays headOverlays = (PawnHeadOverlays)PawnHeadOverlaysFieldInfo?.GetValue(__instance);
                 if (headOverlays != null)
                 {
-                    compFace.DrawHeadOverlays(headFacing, headOverlays, bodyLoc, headQuat);
+                    compFace.DrawHeadOverlays(headOverlays, bodyLoc, headQuat);
                 }
             }
 

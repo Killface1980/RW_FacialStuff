@@ -233,7 +233,7 @@
 
         #region Public Methods
 
-        public void ApplyHeadRotation(bool renderBody, ref Rot4 headFacing, ref Quaternion headQuat)
+        public void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
         {
             if (this.pawnDrawers != null)
             {
@@ -241,7 +241,7 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].ApplyHeadRotation(renderBody, ref headFacing, ref headQuat);
+                    this.pawnDrawers[i].ApplyHeadRotation(renderBody, ref headQuat);
                     i++;
                 }
             }
@@ -480,7 +480,7 @@
             this.cachedNakedMatsBodyBaseHash = -1;
         }
 
-        public void DrawAlienBodyAddons(Quaternion quat, Rot4 bodyFacing, Vector3 vector, bool portrait, bool renderBody, PawnGraphicSet graphics)
+        public void DrawAlienBodyAddons(Quaternion quat, Vector3 vector, bool portrait, bool renderBody)
         {
             if (this.pawnDrawers != null)
             {
@@ -488,13 +488,13 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].DrawAlienBodyAddons(quat, bodyFacing, vector, portrait, renderBody, graphics);
+                    this.pawnDrawers[i].DrawAlienBodyAddons(quat, vector, portrait, renderBody);
                     i++;
                 }
             }
         }
 
-        public void DrawAlienHeadAddons(bool portrait, Quaternion headQuat, Rot4 headFacing, Vector3 currentLoc)
+        public void DrawAlienHeadAddons(bool portrait, Quaternion headQuat, Vector3 currentLoc)
         {
             if (this.pawnDrawers != null)
             {
@@ -502,13 +502,13 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].DrawAlienHeadAddons(portrait, headQuat, headFacing, currentLoc);
+                    this.pawnDrawers[i].DrawAlienHeadAddons(portrait, headQuat, currentLoc);
                     i++;
                 }
             }
         }
 
-        public void DrawApparel(Quaternion quat, Rot4 bodyFacing, Vector3 vector, bool portrait, bool renderBody, PawnGraphicSet graphics)
+        public void DrawApparel(Quaternion quat, Vector3 vector, bool portrait, bool renderBody)
         {
             if (this.pawnDrawers != null)
             {
@@ -516,21 +516,13 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].DrawApparel(graphics, quat, bodyFacing, vector, renderBody, portrait);
+                    this.pawnDrawers[i].DrawApparel(quat, vector, renderBody, portrait);
                     i++;
                 }
             }
         }
 
-        public void DrawBasicHead(
-                    out bool headDrawn,
-                    PawnGraphicSet graphics,
-                    Rot4 headFacing,
-                    RotDrawMode bodyDrawType,
-                    bool portrait,
-                    bool headStump,
-                    ref Vector3 locFacialY,
-                    Quaternion headQuat)
+        public void DrawBasicHead(out bool headDrawn, RotDrawMode bodyDrawType, bool portrait, bool headStump, ref Vector3 locFacialY, Quaternion headQuat)
         {
             headDrawn = false;
             if (this.pawnDrawers != null)
@@ -540,9 +532,7 @@
                 while (i < count)
                 {
                     this.pawnDrawers[i].DrawBasicHead(
-                        graphics,
                         headQuat,
-                        headFacing,
                         bodyDrawType,
                         headStump,
                         portrait,
@@ -553,7 +543,7 @@
             }
         }
 
-        public void DrawBeardAndTache(ref Vector3 locFacialY, bool portrait, Rot4 headFacing, Quaternion headQuat)
+        public void DrawBeardAndTache(ref Vector3 locFacialY, bool portrait, Quaternion headQuat)
         {
             if (this.pawnDrawers != null)
             {
@@ -561,21 +551,13 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].DrawBeardAndTache(headQuat, headFacing, portrait, ref locFacialY);
+                    this.pawnDrawers[i].DrawBeardAndTache(headQuat, portrait, ref locFacialY);
                     i++;
                 }
             }
         }
 
-        public void DrawBody(
-                    PawnGraphicSet graphics,
-                    Vector3 rootLoc,
-                    Quaternion quat,
-                    Rot4 bodyFacing,
-                    RotDrawMode bodyDrawType,
-                    [CanBeNull] PawnWoundDrawer woundDrawer,
-                    bool renderBody,
-                    bool portrait)
+        public void DrawBody(Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType, [CanBeNull] PawnWoundDrawer woundDrawer, bool renderBody, bool portrait)
         {
             if (this.pawnDrawers != null)
             {
@@ -584,11 +566,9 @@
                 while (i < count)
                 {
                     this.pawnDrawers[i].DrawBody(
-                        graphics,
                         woundDrawer,
                         rootLoc,
                         quat,
-                        bodyFacing,
                         bodyDrawType,
                         renderBody,
                         portrait);
@@ -597,7 +577,7 @@
             }
         }
 
-        public void DrawBrows(ref Vector3 locFacialY, Rot4 headFacing, Quaternion headQuat, bool portrait)
+        public void DrawBrows(ref Vector3 locFacialY, Quaternion headQuat, bool portrait)
         {
             if (this.pawnDrawers != null)
             {
@@ -605,23 +585,13 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].DrawBrows(headQuat, headFacing, portrait, ref locFacialY);
+                    this.pawnDrawers[i].DrawBrows(headQuat, portrait, ref locFacialY);
                     i++;
                 }
             }
         }
 
-        public void DrawHairAndHeadGear(
-                    Vector3 rootLoc,
-                    Rot4 bodyFacing,
-                    RotDrawMode bodyDrawType,
-                    ref Vector3 currentLoc,
-                    Vector3 b,
-                    Rot4 headFacing,
-                    PawnGraphicSet graphics,
-                    bool portrait,
-                    bool renderBody,
-                    Quaternion headQuat)
+        public void DrawHairAndHeadGear(Vector3 rootLoc, RotDrawMode bodyDrawType, ref Vector3 currentLoc, Vector3 b, bool portrait, bool renderBody, Quaternion headQuat)
         {
             if (this.pawnDrawers != null)
             {
@@ -630,12 +600,9 @@
                 while (i < count)
                 {
                     this.pawnDrawers[i].DrawHairAndHeadGear(
-                        graphics,
                         rootLoc,
                         headQuat,
-                        bodyFacing,
                         bodyDrawType,
-                        headFacing,
                         renderBody,
                         portrait,
                         b,
@@ -653,7 +620,7 @@
         //             this.graphics = graphics;
         //     this.renderBody = renderBody;
         // }
-        public void DrawHeadOverlays(Rot4 headFacing, PawnHeadOverlays headOverlays, Vector3 bodyLoc, Quaternion headQuat)
+        public void DrawHeadOverlays(PawnHeadOverlays headOverlays, Vector3 bodyLoc, Quaternion headQuat)
         {
             if (this.pawnDrawers != null)
             {
@@ -661,13 +628,13 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].DrawHeadOverlays(headFacing, headOverlays, bodyLoc, headQuat);
+                    this.pawnDrawers[i].DrawHeadOverlays(headOverlays, bodyLoc, headQuat);
                     i++;
                 }
             }
         }
 
-        public void DrawNaturalEyes(ref Vector3 locFacialY, bool portrait, Rot4 headFacing, Quaternion headQuat)
+        public void DrawNaturalEyes(ref Vector3 locFacialY, bool portrait, Quaternion headQuat)
         {
             if (this.pawnDrawers != null)
             {
@@ -675,13 +642,13 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].DrawNaturalEyes(headQuat, headFacing, portrait, ref locFacialY);
+                    this.pawnDrawers[i].DrawNaturalEyes(headQuat, portrait, ref locFacialY);
                     i++;
                 }
             }
         }
 
-        public void DrawNaturalMouth(ref Vector3 locFacialY, bool portrait, Rot4 headFacing, Quaternion headQuat)
+        public void DrawNaturalMouth(ref Vector3 locFacialY, bool portrait, Quaternion headQuat)
         {
             if (this.pawnDrawers != null)
             {
@@ -689,13 +656,13 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].DrawNaturalMouth(headQuat, headFacing, portrait, ref locFacialY);
+                    this.pawnDrawers[i].DrawNaturalMouth(headQuat, portrait, ref locFacialY);
                     i++;
                 }
             }
         }
 
-        public void DrawUnnaturalEyeParts(ref Vector3 locFacialY, Quaternion headQuat, Rot4 headFacing, bool portrait)
+        public void DrawUnnaturalEyeParts(ref Vector3 locFacialY, Quaternion headQuat, bool portrait)
         {
             if (this.pawnDrawers != null)
             {
@@ -703,13 +670,13 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].DrawUnnaturalEyeParts(headQuat, headFacing, portrait, ref locFacialY);
+                    this.pawnDrawers[i].DrawUnnaturalEyeParts(headQuat, portrait, ref locFacialY);
                     i++;
                 }
             }
         }
 
-        public void DrawWrinkles(RotDrawMode bodyDrawType, ref Vector3 locFacialY, Rot4 headFacing, Quaternion headQuat, bool portrait)
+        public void DrawWrinkles(RotDrawMode bodyDrawType, ref Vector3 locFacialY, Quaternion headQuat, bool portrait)
         {
             if (this.pawnDrawers != null)
             {
@@ -717,7 +684,7 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].DrawWrinkles(headQuat, headFacing, bodyDrawType, portrait, ref locFacialY);
+                    this.pawnDrawers[i].DrawWrinkles(headQuat, bodyDrawType, portrait, ref locFacialY);
                     i++;
                 }
             }
@@ -993,7 +960,7 @@
                     this.bodyDefinition.armLength = 0.275f;
                     this.bodyDefinition.hipOffsetVerticalFromCenter = -0.275f;
                     this.bodyDefinition.hipWidth = 0.2f;
-                    this.bodyDefinition.legLength = 0.3f;
+                    this.bodyDefinition.legLength = 0.35f;
                     break;
                 case BodyType.Thin:
                     this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
@@ -1199,7 +1166,7 @@
         // public Vector3 LeftHandPosition;
 
 
-        public void DrawEquipment(Vector3 rootLoc, Rot4 bodyFacing)
+        public void DrawEquipment(Vector3 rootLoc)
         {
             if (this.pawnDrawers != null)
             {
@@ -1207,13 +1174,13 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].DrawEquipment(rootLoc, bodyFacing);
+                    this.pawnDrawers[i].DrawEquipment(rootLoc);
                     i++;
                 }
             }
         }
 
-        public Vector3 BaseHeadOffsetAt(Rot4 headFacing)
+        public Vector3 BaseHeadOffsetAt()
         {
             var offset = Vector3.zero;
 
@@ -1223,7 +1190,7 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].BaseHeadOffsetAt(headFacing, ref offset);
+                    this.pawnDrawers[i].BaseHeadOffsetAt(ref offset);
                     i++;
                 }
             }
@@ -1240,6 +1207,20 @@
                 while (i < count)
                 {
                     this.pawnDrawers[i].ApplyBodyWobble(ref rootLoc, ref quat);
+                    i++;
+                }
+            }
+        }
+
+        public void TickDrawers(Rot4 bodyFacing, Rot4 headFacing, PawnGraphicSet graphics)
+        {
+            if (this.pawnDrawers != null)
+            {
+                int i = 0;
+                int count = this.pawnDrawers.Count;
+                while (i < count)
+                {
+                    this.pawnDrawers[i].Tick(bodyFacing, headFacing, graphics);
                     i++;
                 }
             }

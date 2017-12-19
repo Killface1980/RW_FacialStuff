@@ -22,9 +22,9 @@ namespace FacialStuff.Animator
         }
 
         // Verse.PawnTweener
-        public bool IsMoving(out float percent)
+        public bool IsMoving(out float movedPercent)
         {
-            percent = 0f;
+            movedPercent = 0f;
             Pawn_PathFollower pather = this.pawn.pather;
             if (pather == null)
             {
@@ -52,7 +52,7 @@ namespace FacialStuff.Animator
             {
                 return false;
             }
-            percent = 1f - pather.nextCellCostLeft / pather.nextCellCostTotal;
+            movedPercent = 1f - pather.nextCellCostLeft / pather.nextCellCostTotal;
             return true;
         }
 

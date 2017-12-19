@@ -14,7 +14,7 @@ namespace AlienFace
 
     using Verse;
 
-    public class AlienDrawer : PawnDrawer
+    public class AlienDrawer : HumanDrawer
     {
         public AlienDrawer()
         {
@@ -22,20 +22,20 @@ namespace AlienFace
         }
 
 
-        public override Mesh GetPawnMesh(Rot4 facing, bool wantsBody, bool portrait) =>
+        public override Mesh GetPawnMesh(bool wantsBody, bool portrait) =>
             this.CompFace.Pawn.def is ThingDef_AlienRace alienProps ?
                 portrait ?
                     wantsBody ?
-                        alienProps.alienRace.generalSettings.alienPartGenerator.bodyPortraitSet.MeshAt(facing) :
-                        alienProps.alienRace.generalSettings.alienPartGenerator.headPortraitSet.MeshAt(facing) :
+                        alienProps.alienRace.generalSettings.alienPartGenerator.bodyPortraitSet.MeshAt(this.bodyFacing) :
+                        alienProps.alienRace.generalSettings.alienPartGenerator.headPortraitSet.MeshAt(this.headFacing) :
                     wantsBody ?
-                        alienProps.alienRace.generalSettings.alienPartGenerator.bodySet.MeshAt(facing) :
-                        alienProps.alienRace.generalSettings.alienPartGenerator.headSet.MeshAt(facing) :
+                        alienProps.alienRace.generalSettings.alienPartGenerator.bodySet.MeshAt(this.bodyFacing) :
+                        alienProps.alienRace.generalSettings.alienPartGenerator.headSet.MeshAt(this.headFacing) :
                 wantsBody ?
-                    MeshPool.humanlikeBodySet.MeshAt(facing) :
-                    MeshPool.humanlikeHeadSet.MeshAt(facing);
+                    MeshPool.humanlikeBodySet.MeshAt(this.bodyFacing) :
+                    MeshPool.humanlikeHeadSet.MeshAt(this.headFacing);
 
-        public override Mesh GetPawnHairMesh(PawnGraphicSet graphics, Rot4 headFacing, bool portrait) =>
+        public override Mesh GetPawnHairMesh(bool portrait) =>
             this.CompFace.Pawn.def is ThingDef_AlienRace alienProps ?
                 (this.CompFace.Pawn.story.crownType == CrownType.Narrow ?
                      (portrait ?
@@ -46,13 +46,7 @@ namespace AlienFace
                           alienProps.alienRace.generalSettings.alienPartGenerator.hairSetAverage)).MeshAt(headFacing) :
                 graphics.HairMeshSet.MeshAt(headFacing);
 
-        public override void DrawAlienBodyAddons(
-            Quaternion quat,
-            Rot4 bodyFacing,
-            Vector3 rootLoc,
-            bool portrait,
-            bool renderBody,
-            PawnGraphicSet graphics)
+        public override void DrawAlienBodyAddons(Quaternion quat, Vector3 rootLoc, bool portrait, bool renderBody)
         {
             var pawn = this.CompFace.Pawn;
             if (pawn.def is ThingDef_AlienRace alienProps)
