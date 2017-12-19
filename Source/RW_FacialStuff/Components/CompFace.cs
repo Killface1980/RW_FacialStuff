@@ -919,63 +919,68 @@
 
             // this.headWiggler = new PawnHeadWiggler(this.pawn);
 
-            // ReSharper disable once PossibleNullReferenceException
-
-            this.InitializePawnDrawer();
-
-            this.bodyDefinition.hipOffsetHorWhenFacingHorizontal = -0.05f;
-
             switch (this.Pawn.story.bodyType)
             {
                 case BodyType.Undefined:
                 case BodyType.Male:
-                    this.bodyDefinition.shoulderOffsetVerFromCenter = 0;
-                    this.bodyDefinition.shoulderWidth = 0.285f;
-                    this.bodyDefinition.armLength = 0.275f;
-                    this.bodyDefinition.hipOffsetVerticalFromCenter = -0.275f;
-                    this.bodyDefinition.hipWidth = 0.175f;
-                    this.bodyDefinition.legLength = 0.3f;
+                    this.bodySizeDefinition.shoulderOffsetVerFromCenter = 0;
+                    this.bodySizeDefinition.shoulderWidth = 0.285f;
+                    this.bodySizeDefinition.armLength = 0.275f;
+                    this.bodySizeDefinition.hipOffsetVerticalFromCenter = -0.275f;
+                    this.bodySizeDefinition.hipWidth = 0.175f;
+                    this.bodySizeDefinition.legLength = 0.3f;
+                    this.walkCycle = WalkCycleDefOf.Human_Default;
                     break;
                 case BodyType.Female:
-                    this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
-                    this.bodyDefinition.shoulderWidth = 0.225f;
-                    this.bodyDefinition.armLength = 0.3f;
-                    this.bodyDefinition.hipOffsetVerticalFromCenter = -0.275f;
-                    this.bodyDefinition.hipWidth = 0.175f;
-                    this.bodyDefinition.legLength = 0.3f;
+                    this.bodySizeDefinition.shoulderOffsetVerFromCenter = 0f;
+                    this.bodySizeDefinition.shoulderWidth = 0.225f;
+                    this.bodySizeDefinition.armLength = 0.3f;
+                    this.bodySizeDefinition.hipOffsetVerticalFromCenter = -0.275f;
+                    this.bodySizeDefinition.hipWidth = 0.175f;
+                    this.bodySizeDefinition.legLength = 0.3f;
+                    this.walkCycle = WalkCycleDefOf.Human_Female;
                     break;
                 case BodyType.Hulk:
-                    this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
-                    this.bodyDefinition.shoulderWidth = 0.35f;
-                    this.bodyDefinition.armLength = 0.35f;
-                    this.bodyDefinition.hipOffsetVerticalFromCenter = -0.3f;
-                    this.bodyDefinition.hipWidth = 0.175f;
-                    this.bodyDefinition.legLength = 0.425f;
-                    this.bodyDefinition.hipOffsetHorWhenFacingHorizontal = -0.15f;
-                    this.bodyDefinition.shoulderOffsetWhenFacingHorizontal = -0.05f;
+                    this.bodySizeDefinition.shoulderOffsetVerFromCenter = 0f;
+                    this.bodySizeDefinition.shoulderWidth = 0.35f;
+                    this.bodySizeDefinition.armLength = 0.35f;
+                    this.bodySizeDefinition.hipOffsetVerticalFromCenter = -0.3f;
+                    this.bodySizeDefinition.hipWidth = 0.175f;
+                    this.bodySizeDefinition.legLength = 0.425f;
+                    this.bodySizeDefinition.hipOffsetHorWhenFacingHorizontal = -0.15f;
+                    this.bodySizeDefinition.shoulderOffsetWhenFacingHorizontal = -0.05f;
+                    this.walkCycle = WalkCycleDefOf.Human_Hulk;
                     break;
                 case BodyType.Fat:
-                    this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
-                    this.bodyDefinition.shoulderWidth = 0.3f;
-                    this.bodyDefinition.armLength = 0.275f;
-                    this.bodyDefinition.hipOffsetVerticalFromCenter = -0.275f;
-                    this.bodyDefinition.hipWidth = 0.2f;
-                    this.bodyDefinition.legLength = 0.35f;
+                    this.bodySizeDefinition.shoulderOffsetVerFromCenter = 0f;
+                    this.bodySizeDefinition.shoulderWidth = 0.3f;
+                    this.bodySizeDefinition.armLength = 0.275f;
+                    this.bodySizeDefinition.hipOffsetVerticalFromCenter = -0.275f;
+                    this.bodySizeDefinition.hipWidth = 0.2f;
+                    this.bodySizeDefinition.legLength = 0.35f;
+                    this.walkCycle = WalkCycleDefOf.Human_Fat;
                     break;
                 case BodyType.Thin:
-                    this.bodyDefinition.shoulderOffsetVerFromCenter = 0f;
-                    this.bodyDefinition.shoulderWidth = 0.15f;
-                    this.bodyDefinition.armLength = 0.225f;
-                    this.bodyDefinition.hipOffsetVerticalFromCenter = -0.25f;
-                    this.bodyDefinition.hipWidth = 0.125f;
-                    this.bodyDefinition.legLength = 0.3f;
+                    this.bodySizeDefinition.shoulderOffsetVerFromCenter = 0f;
+                    this.bodySizeDefinition.shoulderWidth = 0.15f;
+                    this.bodySizeDefinition.armLength = 0.225f;
+                    this.bodySizeDefinition.hipOffsetVerticalFromCenter = -0.25f;
+                    this.bodySizeDefinition.hipWidth = 0.125f;
+                    this.bodySizeDefinition.legLength = 0.3f;
+                    this.walkCycle = WalkCycleDefOf.Human_Thin;
                     break;
 
             }
+
+            this.bodySizeDefinition.hipOffsetHorWhenFacingHorizontal = -0.05f;
+
+            this.InitializePawnDrawer();
+
             return true;
         }
 
-        public BodyDefinition bodyDefinition;
+        public BodyDefinition bodySizeDefinition;
+
         public void SetPawnFace([NotNull] PawnFace importedFace)
         {
             this.pawnFace = importedFace;
@@ -1197,6 +1202,8 @@
             return offset;
         }
         public BodyPartStats bodyStat;
+
+        public WalkCycleDef walkCycle;
 
         public void ApplyBodyWobble(ref Vector3 rootLoc, ref Quaternion quat)
         {

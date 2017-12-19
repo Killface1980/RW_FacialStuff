@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+  passingBegin = 0f;
+  up1          = 0.125f;
+  contact1     = 0.25f;
+  down1        = 0.375f;
+  passingMid   = 0.5f;
+  up2          = 0.625f;
+  contact2     = 0.75f;
+  down2        = 0.875f;
+  passingEnd   = 1f;
+  -->
+
+  <FacialStuff.Defs.WalkCycleDef Abstract ="True" Name ="BaseWalkcycle">
+
+    <CurveFootAngle>
+      <points>
+        <li>0, 50</li>
+        <li>0.125, 40</li>
+        <li>0.25, -35</li>
+        <li>0.375, 0</li>
+        <li>0.5, 0</li>
+        <li>0.625, 12.5</li>
+        <li>0.75, 30</li>
+        <li>0.875, 45</li>
+        <li>1, 50</li>
+      </points>
+    </CurveFootAngle>
+
+    <CurveHandsSwingingVertical>
+      <points>
+        <li>0, 0</li>
+        <li>0.375, 0.075</li>
+        <li>0.5, 0</li>
+        <li>0.875, -0.075</li>
+        <li>1, 0</li>
+      </points>
+    </CurveHandsSwingingVertical>
+
+    <SwingCurveHands>
+      <points>
+        <li>0, 0</li>
+        <li>0.25, 40</li>
+        <li>0.375, 50</li>
+        <li>0.5, 0</li>
+        <li>0.625, -40</li>
+        <li>0.875, -50</li>
+        <li>1, 0</li>
+      </points>
+    </SwingCurveHands>
+
+  </FacialStuff.Defs.WalkCycleDef>
+
+  <FacialStuff.Defs.WalkCycleDef Abstract ="True" Name ="BaseBipedWalkcycleDefault"  ParentName ="BaseWalkcycle">
+    <CurveHorizontalFoot>
+      <points>
+        <li>0, 0</li>
+        <li>0.125, 0.06</li>
+        <li>0.25, 0.1</li>
+        <li>0.5, 0</li>
+        <li>0.625, -0.04</li>
+        <li>0.75, -0.1</li>
+        <li>1, 0</li>
+      </points>
+    </CurveHorizontalFoot>
+ 
+    <BodyWobble>
+      <points>
+        <li>0, 0</li>
+        <li>0.125, 0.1</li>
+        <li>0.25, 0</li>
+        <li>0.375, -0.02</li>
+        <li>0.5, 0</li>
+        <li>0.625, 0.1</li>
+        <li>0.75, 0</li>
+        <li>0.875, -0.02</li>
+        <li>1, 0</li>
+      </points>
+    </BodyWobble>
+
+    <CurveBodyAngle>
+      <points>
+        <li>0, 0</li>
+        <li>0.125, -5</li>
+        <li>0.375, 7</li>
+        <li>0.5, 0</li>
+        <li>0.625, -5</li>
+        <li>0.875, 7</li>
+        <li>1, 0</li>
+      </points>
+    </CurveBodyAngle>
+   
+    <CurveBodyAngleVertical>
+      <points>
+        <li>0, 0</li>
+        <li>0.125, -3</li>
+        <li>0.5, 0</li>
+        <li>0.625, 3</li>
+        <li>1, 0</li>
+      </points>
+      
+    </CurveBodyAngleVertical>
+
+    <CurveVerticalFoot>
+      <points>
+        <li>0, 0.1</li>
+        <li>0.125, 0.125</li>
+        <li>0.25, 0.025</li>
+        <li>0.375, 0</li>
+        <li>0.5, 0</li>
+        <li>0.625, 0</li>
+        <li>0.75, 0.025</li>
+        <li>0.875, 0</li>
+        <li>1, 0.1</li>
+      </points>
+    </CurveVerticalFoot>
+
+
+  </FacialStuff.Defs.WalkCycleDef>
+
+  <FacialStuff.Defs.WalkCycleDef ParentName ="BaseBipedWalkcycleDefault">
+    <defName>Human_Default</defName>
+    <label>Human_Default</label>
+  </FacialStuff.Defs.WalkCycleDef>
+
+  <FacialStuff.Defs.WalkCycleDef ParentName ="BaseWalkcycle">
+    <defName>Human_Female</defName>
+    <label>Human_Female</label>
+ 
+    <CurveHorizontalFoot>
+      <points>
+        <li>0, 0</li>
+        <li>0.125, 0.05</li>
+        <li>0.25, 0.085</li>
+        <li>0.5, 0</li>
+        <li>0.625, -0.03</li>
+        <li>0.75, -0.085</li>
+        <li>1, 0</li>
+      </points>
+    </CurveHorizontalFoot>
+  
+    <BodyWobble>
+      <points>
+        <li>0, 0</li>
+        <li>0.125, 0.125</li>
+        <li>0.25, 0</li>
+        <li>0.375, -0.015</li>
+        <li>0.5, 0</li>
+        <li>0.625, 0.125</li>
+        <li>0.75, 0</li>
+        <li>0.875, -0.015</li>
+        <li>1, 0</li>
+      </points>
+    </BodyWobble>
+    
+    <CurveBodyAngle>
+      <points>
+        <li>0, 0</li>
+        <li>0.125, -4</li>
+        <li>0.375, 7</li>
+        <li>0.5, 0</li>
+        <li>0.625, -4</li>
+        <li>0.875, 7</li>
+        <li>1, 0</li>
+      </points>
+    </CurveBodyAngle>
+   
+    <CurveBodyAngleVertical>
+      <points>
+        <li>0, 0</li>
+        <li>0.125, -5</li>
+        <li>0.5, 0</li>
+        <li>0.625, 5</li>
+        <li>1, 0</li>
+      </points>
+
+    </CurveBodyAngleVertical>
+
+    <CurveVerticalFoot>
+      <points>
+        <li>0, 0.085</li>
+        <li>0.125, 0.1</li>
+        <li>0.25, 0.025</li>
+        <li>0.375, 0</li>
+        <li>0.5, 0</li>
+        <li>0.625, 0</li>
+        <li>0.75, 0.025</li>
+        <li>0.875, 0</li>
+        <li>1, 0.085</li>
+      </points>
+    </CurveVerticalFoot>
+  
+  </FacialStuff.Defs.WalkCycleDef>
+
+  <FacialStuff.Defs.WalkCycleDef ParentName ="BaseBipedWalkcycleDefault">
+    <defName>Human_Hulk</defName>
+    <label>Human_Hulk</label>
+  </FacialStuff.Defs.WalkCycleDef>
+
+  <FacialStuff.Defs.WalkCycleDef ParentName ="BaseBipedWalkcycleDefault">
+    <defName>Human_Fat</defName>
+    <label>Human_Fat</label>
+  </FacialStuff.Defs.WalkCycleDef>
+
+  <FacialStuff.Defs.WalkCycleDef ParentName ="BaseWalkcycle">
+    <defName>Human_Thin</defName>
+    <label>Human_Thin</label>
+    
+    <CurveHorizontalFoot>
+      <points>
+        <li>0, 0</li>
+        <li>0.125, 0.04</li>
+        <li>0.25, 0.07</li>
+        <li>0.5, 0</li>
+        <li>0.625, -0.03</li>
+        <li>0.75, -0.07</li>
+        <li>1, 0</li>
+      </points>
+    </CurveHorizontalFoot>
+  
+    <BodyWobble>
+      <points>
+        <li>0, 0</li>
+        <li>0.125, 0.125</li>
+        <li>0.25, 0</li>
+        <li>0.375, -0.02</li>
+        <li>0.5, 0</li>
+        <li>0.625, 0.125</li>
+        <li>0.75, 0</li>
+        <li>0.875, -0.02</li>
+        <li>1, 0</li>
+      </points>
+    </BodyWobble>
+    
+    <CurveBodyAngle>
+      <points>
+        <li>0, 0</li>
+        <li>0.125, -3</li>
+        <li>0.375, 5</li>
+        <li>0.5, 0</li>
+        <li>0.625, -3</li>
+        <li>0.875, 5</li>
+        <li>1, 0</li>
+      </points>
+    </CurveBodyAngle>
+  
+    <CurveBodyAngleVertical>
+      <points>
+        <li>0, 0</li>
+        <li>0.125, -3</li>
+        <li>0.5, 0</li>
+        <li>0.625, 3</li>
+        <li>1, 0</li>
+      </points>
+
+    </CurveBodyAngleVertical>
+
+    <CurveVerticalFoot>
+      <points>
+        <li>0, 0.075</li>
+        <li>0.125, 0.1</li>
+        <li>0.25, 0.025</li>
+        <li>0.375, 0</li>
+        <li>0.5, 0</li>
+        <li>0.625, 0</li>
+        <li>0.75, 0.025</li>
+        <li>0.875, 0</li>
+        <li>1, 0.075</li>
+      </points>
+    </CurveVerticalFoot>
+
+  </FacialStuff.Defs.WalkCycleDef>
+
+
+</Defs>

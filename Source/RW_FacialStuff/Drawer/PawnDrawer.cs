@@ -22,6 +22,8 @@ namespace FacialStuff
         protected static readonly float[] HorHeadOffsets = { 0f, 0.04f, 0.1f, 0.09f, 0.1f, 0.09f };
         protected static readonly float YOffsetBodyParts = 0.01f;
 
+        protected bool isMoving;
+        protected float movedPercent;
 
         protected Mesh FootMesh = MeshPool.plane10;
         protected Mesh HandMesh = MeshPool.plane10;

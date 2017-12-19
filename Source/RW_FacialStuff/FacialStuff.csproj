@@ -80,6 +80,8 @@
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
     <Compile Include="Components\CompProperties_Face.cs" />
+    <Compile Include="Defs\WalkCycleDefOf.cs" />
+    <Compile Include="Defs\WalkCycleDef.cs" />
     <Compile Include="Enums\Class1.cs" />
     <Compile Include="Defs\HandDef.cs" />
     <Compile Include="Components\CompWeaponExtensions.cs" />
@@ -216,6 +218,9 @@
     </Content>
     <Content Include="..\..\Defs\ThinkTreeDefs\SubTrees_MiscFS.xml">
       <Link>Defs\SubTrees_MiscFS.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WalkCycleDefs\WalkCycleDefs.xml">
+      <Link>Defs\WalkCycleDefs.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WrinkleDefs\WrinkleDef.xml">
       <Link>Defs\FacialDefs\WrinkleDef.xml</Link>
