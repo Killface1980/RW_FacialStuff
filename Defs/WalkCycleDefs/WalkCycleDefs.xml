@@ -37,7 +37,7 @@
       <li>
         <keyFrameAt>0.125</keyFrameAt>
         <FootPositionY>0.0125</FootPositionY>
-        <BodyOffsetVertical>0.125</BodyOffsetVertical>
+        <BodyOffsetVertical>0.15</BodyOffsetVertical>
         <BodyAngle>-5</BodyAngle>
         <BodyAngleVertical>3</BodyAngleVertical>
       </li>
@@ -77,7 +77,7 @@
       <!--up2 - right foot front-->
       <li>
         <keyFrameAt>0.625</keyFrameAt>
-        <BodyOffsetVertical>0.125</BodyOffsetVertical>
+        <BodyOffsetVertical>0.15</BodyOffsetVertical>
         <BodyAngle>-5</BodyAngle>
         <BodyAngleVertical>-3</BodyAngleVertical>
       </li>
@@ -118,110 +118,89 @@
     </animation>
 
   </FacialStuff.Defs.WalkCycleDef>
- 
+
   <FacialStuff.Defs.WalkCycleDef>
 
     <defName>Human_Jog</defName>
     <label>Human_Jog</label>
 
     <animation>
-  
+
       <!--passingBegin-->
       <li>
         <keyFrameAt>0</keyFrameAt>
         <FootAngle>45</FootAngle>
         <FootPositionX>0</FootPositionX>
-        <FootPositionY>0.1</FootPositionY>
-        <HandsSwingAngle>-60</HandsSwingAngle>
-        <HandsSwingPosVertical>0</HandsSwingPosVertical>
-        <BodyOffsetVertical>0</BodyOffsetVertical>
-        <BodyAngle>0</BodyAngle>
-        <BodyAngleVertical>0</BodyAngleVertical>
-      </li>
-
-      <!--up1 - right foot front-->
-      <li>
-        <keyFrameAt>0.125</keyFrameAt>
-        <FootAngle>10</FootAngle>
-        <FootPositionX>0.08</FootPositionX>
-        <FootPositionY>0.125</FootPositionY>
-        <BodyOffsetVertical>0.1</BodyOffsetVertical>
-        <BodyAngle>-5</BodyAngle>
-        <BodyAngleVertical>-3</BodyAngleVertical>
-      </li>
-
-      <!--contact1-->
-      <li>
-        <keyFrameAt>0.25</keyFrameAt>
-        <FootAngle>0</FootAngle>
-        <FootPositionX>0.06</FootPositionX>
-        <FootPositionY>0.025</FootPositionY>
-        <HandsSwingAngle>40</HandsSwingAngle>
-        <BodyOffsetVertical>0</BodyOffsetVertical>
-      </li>
-
-      <!--down1-->
-      <li>
-        <keyFrameAt>0.375</keyFrameAt>
-        <FootAngle>0</FootAngle>
-        <FootPositionY>0</FootPositionY>
-        <HandsSwingAngle>50</HandsSwingAngle>
-        <HandsSwingPosVertical>0.075</HandsSwingPosVertical>
-        <BodyOffsetVertical>-0.02</BodyOffsetVertical>
-        <BodyAngle>7</BodyAngle>
-      </li>
-
-      <!--passingMid-->
-      <li>
-        <keyFrameAt>0.5</keyFrameAt>
-        <FootAngle>0</FootAngle>
-        <FootPositionX>0</FootPositionX>
         <FootPositionY>0</FootPositionY>
         <HandsSwingAngle>0</HandsSwingAngle>
         <HandsSwingPosVertical>0</HandsSwingPosVertical>
-        <BodyOffsetVertical>0</BodyOffsetVertical>
+        <BodyOffsetVertical>0.0</BodyOffsetVertical>
         <BodyAngle>0</BodyAngle>
         <BodyAngleVertical>0</BodyAngleVertical>
       </li>
 
-      <!--up2 - right foot behind-->
+      <!--high 1-->
       <li>
-        <keyFrameAt>0.625</keyFrameAt>
-        <FootAngle>12.5</FootAngle>
-        <FootPositionX>-0.04</FootPositionX>
-        <FootPositionY>0</FootPositionY>
-        <BodyOffsetVertical>0.1</BodyOffsetVertical>
-        <BodyAngle>-5</BodyAngle>
-        <BodyAngleVertical>3</BodyAngleVertical>
+        <keyFrameAt>0.125</keyFrameAt>
+        <BodyOffsetVertical>0.2</BodyOffsetVertical>
+        <BodyAngle>-3</BodyAngle>
+        <HandsSwingAngle>-50</HandsSwingAngle>
       </li>
 
-      <!--contact2-->
+      <!--extreme 1 - right foot behind-->
+      <li>
+        <keyFrameAt>0.25</keyFrameAt>
+        <BodyOffsetVertical>0.15</BodyOffsetVertical>
+        <FootPositionX>-0.125</FootPositionX>
+        <HandsSwingAngle>-60</HandsSwingAngle>
+      </li>
+
+      <!--low 1-->
+      <li>
+        <keyFrameAt>0.375</keyFrameAt>
+        <FootAngle>110</FootAngle>
+        <FootPositionY>0.125</FootPositionY>
+        <BodyOffsetVertical>-0.02</BodyOffsetVertical>
+        <BodyAngle>9</BodyAngle>
+      </li>
+
+      <!-- passinMid -->
+      <li>
+        <keyFrameAt>0.5</keyFrameAt>
+      </li>
+
+      <!--high 2-->
+      <li>
+        <keyFrameAt>0.625</keyFrameAt>
+        <FootAngle>15</FootAngle>
+        <BodyOffsetVertical>0.2</BodyOffsetVertical>
+        <BodyAngle>-3</BodyAngle>
+        <HandsSwingAngle>50</HandsSwingAngle>
+      </li>
+
+      <!--extreme 2 -->
       <li>
         <keyFrameAt>0.75</keyFrameAt>
-        <FootAngle>30</FootAngle>
-        <FootPositionX>-0.1</FootPositionX>
-        <FootPositionY>0.025</FootPositionY>
-        <HandsSwingAngle>-40</HandsSwingAngle>
-        <BodyOffsetVertical>0</BodyOffsetVertical>
+        <BodyOffsetVertical>0.15</BodyOffsetVertical>
+        <FootAngle>0</FootAngle>
+        <FootPositionX>0.125</FootPositionX>
+        <FootPositionY>0</FootPositionY>
+        <HandsSwingAngle>60</HandsSwingAngle>
       </li>
-   
-      <!--down2-->
+
+      <!--low 2-->
       <li>
         <keyFrameAt>0.875</keyFrameAt>
-        <FootAngle>45</FootAngle>
-        <FootPositionY>0</FootPositionY>
-        <HandsSwingAngle>-50</HandsSwingAngle>
-        <HandsSwingPosVertical>-0.075</HandsSwingPosVertical>
         <BodyOffsetVertical>-0.02</BodyOffsetVertical>
-        <BodyAngle>7</BodyAngle>
+        <BodyAngle>5</BodyAngle>
       </li>
 
       <!--passingEnd-->
       <li>
         <keyFrameAt>1</keyFrameAt>
-        <FootAngle>50</FootAngle>
+        <FootAngle>45</FootAngle>
         <FootPositionX>0</FootPositionX>
-        <FootPositionY>0.1</FootPositionY>
+        <FootPositionY>0</FootPositionY>
         <HandsSwingAngle>0</HandsSwingAngle>
         <HandsSwingPosVertical>0</HandsSwingPosVertical>
         <BodyOffsetVertical>0</BodyOffsetVertical>
@@ -233,6 +212,118 @@
 
   </FacialStuff.Defs.WalkCycleDef>
 
-  
+
+  <FacialStuff.Defs.WalkCycleDef>
+
+    <defName>Human_Sprint</defName>
+    <label>Human_Sprint</label>
+
+    <animation>
+
+      <!--passingBegin-->
+      <li>
+        <keyFrameAt>0</keyFrameAt>
+        <FootAngle>0</FootAngle>
+        <FootPositionX>0</FootPositionX>
+        <FootPositionY>0</FootPositionY>
+        <HandsSwingAngle>0</HandsSwingAngle>
+        <HandsSwingPosVertical>0</HandsSwingPosVertical>
+        <BodyOffsetVertical>-0.01</BodyOffsetVertical>
+        <BodyAngle>0</BodyAngle>
+        <BodyAngleVertical>0</BodyAngleVertical>
+      </li>
+
+      <!--kickoff 1-->
+      <li>
+        <keyFrameAt>0.125</keyFrameAt>
+        <FootPositionX>-0.1</FootPositionX>
+        <FootPositionY>0.0125</FootPositionY>
+        <FootAngle>45</FootAngle>
+        <BodyAngle>-5</BodyAngle>
+        <BodyAngleVertical>3</BodyAngleVertical>
+      </li>
+
+      <!--up1 - right foot behind-->
+      <li>
+        <keyFrameAt>0.25</keyFrameAt>
+        <FootPositionX>-0.125</FootPositionX>
+        <FootPositionY>0.1</FootPositionY>
+        <HandsSwingAngle>-40</HandsSwingAngle>
+        <BodyOffsetVertical>0.15</BodyOffsetVertical>
+      </li>
+
+      <!--air 1-->
+      <li>
+        <keyFrameAt>0.375</keyFrameAt>
+        <FootPositionX>-0.1</FootPositionX>
+        <FootAngle>80</FootAngle>
+        <FootPositionY>0.125</FootPositionY>
+        <HandsSwingAngle>-50</HandsSwingAngle>
+        <HandsSwingPosVertical>-0.075</HandsSwingPosVertical>
+        <BodyOffsetVertical>0.2</BodyOffsetVertical>
+        <BodyAngle>7</BodyAngle>
+      </li>
+
+      <!--passingMid-->
+      <li>
+        <keyFrameAt>0.5</keyFrameAt>
+        <FootAngle>90</FootAngle>
+        <FootPositionX>-0.025</FootPositionX>
+        <FootPositionY>0.05</FootPositionY>
+        <HandsSwingAngle>0</HandsSwingAngle>
+        <HandsSwingPosVertical>0</HandsSwingPosVertical>
+        <BodyOffsetVertical>-0.01</BodyOffsetVertical>
+        <BodyAngle>0</BodyAngle>
+        <BodyAngleVertical>0</BodyAngleVertical>
+      </li>
+
+      <!--kickoff 2-->
+      <li>
+        <FootPositionX>0.1</FootPositionX>
+        <FootPositionY>0.125</FootPositionY>
+        <keyFrameAt>0.625</keyFrameAt>
+        <BodyAngle>-5</BodyAngle>
+        <BodyAngleVertical>-3</BodyAngleVertical>
+      </li>
+
+      <!--up2 - right foot front-->
+      <li>
+        <keyFrameAt>0.75</keyFrameAt>
+        <FootAngle>-45</FootAngle>
+        <FootPositionX>0.15</FootPositionX>
+        <FootPositionY>0.05</FootPositionY>
+        <HandsSwingAngle>40</HandsSwingAngle>
+        <BodyOffsetVertical>0.15</BodyOffsetVertical>
+      </li>
+
+      <!--air 2-->
+      <li>
+        <keyFrameAt>0.875</keyFrameAt>
+        <FootAngle>-45</FootAngle>
+        <FootPositionX>0.1</FootPositionX>
+        <FootPositionY>0.025</FootPositionY>
+        <HandsSwingAngle>50</HandsSwingAngle>
+        <HandsSwingPosVertical>0.075</HandsSwingPosVertical>
+        <BodyOffsetVertical>0.2</BodyOffsetVertical>
+        <BodyAngle>7</BodyAngle>
+      </li>
+
+      <!--passingEnd-->
+      <li>
+        <keyFrameAt>1</keyFrameAt>
+        <FootAngle>0</FootAngle>
+        <FootPositionX>0</FootPositionX>
+        <FootPositionY>0</FootPositionY>
+        <HandsSwingAngle>0</HandsSwingAngle>
+        <HandsSwingPosVertical>0</HandsSwingPosVertical>
+        <BodyOffsetVertical>-0.01</BodyOffsetVertical>
+        <BodyAngle>0</BodyAngle>
+        <BodyAngleVertical>0</BodyAngleVertical>
+      </li>
+
+    </animation>
+
+  </FacialStuff.Defs.WalkCycleDef>
+ 
 
 </Defs>

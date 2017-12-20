@@ -10,6 +10,8 @@
 
         public List<PawnKeyframe> animation = new List<PawnKeyframe>();
 
+        public float shoulderAngle;
+
         public SimpleCurve BodyAngle = new SimpleCurve();
 
         public SimpleCurve BodyAngleVertical = new SimpleCurve();

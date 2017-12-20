@@ -1060,14 +1060,26 @@ namespace FacialStuff
             this.isMoving = this.CompFace.BodyAnimator.IsMoving(out this.movedPercent);
             this.BodyWobble = this.walkCycle.BodyOffsetVertical.Evaluate(this.movedPercent);
 
-           // if (this.Pawn.CurJob != null && this.Pawn.CurJob.locomotionUrgency >= LocomotionUrgency.Jog)
-           // {
-           //     this.walkCycle = WalkCycleDefOf.Human_Jog;
-           // }
-           // else
-           // {
-           //     this.walkCycle = this.CompFace.walkCycle;
-           // }
+            if (this.Pawn.CurJob != null)
+            {
+                switch (this.Pawn.CurJob.locomotionUrgency)
+                {
+                    case LocomotionUrgency.None:
+                    case LocomotionUrgency.Amble:
+                    case LocomotionUrgency.Walk:
+                        this.walkCycle = this.CompFace.walkCycle;
+                        break;
+                    case LocomotionUrgency.Jog:
+                        this.walkCycle = WalkCycleDefOf.Human_Jog;
+                        break;
+                    case LocomotionUrgency.Sprint:
+                        this.walkCycle = WalkCycleDefOf.Human_Sprint;
+                        break;
+                }
+            }
+            else
+            {
+            }
         }
 
         #endregion Public Methods
