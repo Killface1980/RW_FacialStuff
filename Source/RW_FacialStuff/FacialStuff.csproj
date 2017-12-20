@@ -43,10 +43,6 @@
       <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\AbilityUser.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AlienRace">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\839005762\Assemblies\AlienRace.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
@@ -79,15 +75,21 @@
     <None Include="Harmony\Optional\AlienPatches.cs" />
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
+    <Compile Include="Components\BodyDefinition.cs" />
+    <Compile Include="Components\BodyPartStats.cs" />
     <Compile Include="Components\CompProperties_Face.cs" />
+    <Compile Include="Components\PartStatus.cs" />
+    <Compile Include="Defs\PawnKeyframe.cs" />
     <Compile Include="Defs\WalkCycleDefOf.cs" />
     <Compile Include="Defs\WalkCycleDef.cs" />
-    <Compile Include="Enums\Class1.cs" />
+    <Compile Include="Enums\MaxLayerToShow.cs" />
     <Compile Include="Defs\HandDef.cs" />
     <Compile Include="Components\CompWeaponExtensions.cs" />
     <Compile Include="Components\CompProperties_WeaponExtensions.cs" />
     <Compile Include="Drawer\PawnDrawer.cs" />
-    <Compile Include="GameComponent_FacialStuff.cs" />
+    <Compile Include="FaceEditor\UI\Util\SelectionChangeListener.cs" />
+    <Compile Include="FaceEditor\UI\Util\UpdatePawnListener.cs" />
+    <Compile Include="Components\GameComponent_FacialStuff.cs" />
     <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
     <Compile Include="Harmony\Optional\Vampire_Patches.cs" />
     <Compile Include="Drawer\HumanDrawer.cs" />
@@ -113,7 +115,7 @@
     <Compile Include="Animator\PawnHeadRotator.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="Graphics\PawnGraphic.cs" />
-    <Compile Include="FaceEditor\Dialog_HumanFaceStyling.cs" />
+    <Compile Include="FaceEditor\Dialog_FaceStyling.cs" />
     <None Include="FaceEditor\UI\DresserUI.cs" />
     <Compile Include="FaceEditor\UI\DTO\DresserDTO.cs" />
     <Compile Include="FaceEditor\UI\DTO\DresserDtoFactory.cs" />
@@ -148,7 +150,7 @@
     <Compile Include="Graphics\Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="Graphics\Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="Graphics\MeshPoolFs.cs" />
-    <Compile Include="Harmony\PawnRenderer_Prefix.cs" />
+    <Compile Include="Harmony\HarmonyPatch_PawnRenderer.cs" />
     <Compile Include="Components\CompFace.cs" />
     <Compile Include="FaceEditor\ColorPicker\ColorWrapper.cs" />
     <Compile Include="FaceEditor\ColorPicker\Dialog_ColorPicker.cs" />

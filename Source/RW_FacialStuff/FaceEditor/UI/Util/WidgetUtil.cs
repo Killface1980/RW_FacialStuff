@@ -30,10 +30,6 @@ namespace FacialStuff.FaceEditor.UI.Util
 
     using Verse;
 
-    public delegate void SelectionChangeListener(object sender);
-
-    public delegate void UpdatePawnListener(object sender, object value, object value2);
-
     [StaticConstructorOnStartup]
     public static class WidgetUtil
     {

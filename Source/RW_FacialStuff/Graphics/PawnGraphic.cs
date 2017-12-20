@@ -2,6 +2,7 @@
 {
     using System;
 
+    using FacialStuff.Animator;
     using FacialStuff.Defs;
     using FacialStuff.Enums;
 
@@ -152,7 +153,8 @@
 
             if (this.pawn.health.InPainShock && !this.compFace.IsAsleep)
             {
-                if (this.compFace.EyeWiggler.EyeRightBlinkNow && this.compFace.EyeWiggler.EyeLeftBlinkNow)
+                PawnEyeWiggler eyeWiggler = this.compFace.EyeWiggler;
+                if (eyeWiggler == null || (eyeWiggler.EyeRightBlinkNow && eyeWiggler.EyeLeftBlinkNow))
                 {
                     this.MouthGraphic = this.mouthgraphic.mouthGraphicCrying;
                     return;

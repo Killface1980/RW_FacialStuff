@@ -47,6 +47,80 @@ namespace FacialStuff
                 }
             }
             this.WeaponComps();
+            this.BuildWalkCycles();
+        }
+
+        private void BuildWalkCycles()
+        {
+            foreach (WalkCycleDef cycle in DefDatabase<WalkCycleDef>.AllDefsListForReading)
+            {
+                //// cycle.BodyAngle = new SimpleCurve();
+                //// cycle.BodyAngleVertical = new SimpleCurve();
+                //// cycle.BodyOffsetVertical = new SimpleCurve();
+                //// cycle.FootAngle = new SimpleCurve();
+                //// cycle.FootPositionX = new SimpleCurve();
+                //// cycle.FootPositionY = new SimpleCurve();
+                //// cycle.HandsSwingAngle = new SimpleCurve();
+                //// cycle.HandsSwingPosVertical = new SimpleCurve();
+
+                foreach (PawnKeyframe key in cycle.animation)
+                {
+                    BuildAnimationKeys(key, cycle);
+                }
+            }
+        }
+
+        private static void BuildAnimationKeys(PawnKeyframe key, WalkCycleDef cycle)
+        {
+            float frameAt = key.keyFrameAt;
+
+            float? bodyAngle = key.BodyAngle;
+            if (bodyAngle.HasValue)
+            {
+                cycle.BodyAngle.Add(frameAt, bodyAngle.Value);
+            }
+
+            float? bodyAngleVertical = key.BodyAngleVertical;
+            if (bodyAngleVertical.HasValue)
+            {
+                cycle.BodyAngleVertical.Add(frameAt, bodyAngleVertical.Value);
+            }
+
+            float? bodyOffsetVertical = key.BodyOffsetVertical;
+            if (bodyOffsetVertical.HasValue)
+            {
+                cycle.BodyOffsetVertical.Add(frameAt, bodyOffsetVertical.Value);
+            }
+
+            float? footAngle = key.FootAngle;
+            if (footAngle.HasValue)
+            {
+                cycle.FootAngle.Add(frameAt, footAngle.Value);
+            }
+
+            float? footPositionX = key.FootPositionX;
+            if (footPositionX.HasValue)
+            {
+                cycle.FootPositionX.Add(frameAt, footPositionX.Value);
+            }
+
+            float? footPositionY = key.FootPositionY;
+            if (footPositionY.HasValue)
+            {
+                cycle.FootPositionY.Add(frameAt, footPositionY.Value);
+            }
+
+            float? handsSwingAngle = key.HandsSwingAngle;
+            if (handsSwingAngle.HasValue)
+            {
+                cycle.HandsSwingAngle.Add(frameAt, handsSwingAngle.Value);
+            }
+
+            float? handsSwingPosVertical = key.HandsSwingPosVertical;
+            if (handsSwingPosVertical.HasValue)
+            {
+                cycle.HandsSwingPosVertical.Add(frameAt, handsSwingPosVertical.Value);
+            }
         }
 
         #endregion Public Constructors
@@ -75,27 +149,39 @@ namespace FacialStuff
                         ThingDef thingDef = ThingDef.Named(t);
                         if (thingDef != null)
                         {
-                            CompProperties_WeaponExtensions withHands = thingDef.GetCompProperties<CompProperties_WeaponExtensions>();
+                            CompProperties_WeaponExtensions withHands =
+                                thingDef.GetCompProperties<CompProperties_WeaponExtensions>();
                             bool flag = false;
                             if (withHands == null)
                             {
-                                withHands = new CompProperties_WeaponExtensions();
-                                withHands.compClass = typeof(CompWeaponExtensions);
+                                withHands =
+                                    new CompProperties_WeaponExtensions { compClass = typeof(CompWeaponExtensions) };
                                 flag = true;
                             }
                             if (withHands.RightHandPosition == Vector3.zero)
                             {
                                 withHands.RightHandPosition = wepSets.firstHandPosition;
                             }
+
                             if (withHands.LeftHandPosition == Vector3.zero)
+                            {
                                 withHands.LeftHandPosition = wepSets.secondHandPosition;
+                            }
+
                             if (withHands.AttackAngleOffset == 0)
+                            {
                                 withHands.AttackAngleOffset = wepSets.attackAngleOffset;
+                            }
+
                             if (withHands.WeaponPositionOffset == Vector3.zero)
+                            {
                                 withHands.WeaponPositionOffset = wepSets.weaponPositionOffset;
+                            }
 
                             if (flag)
+                            {
                                 thingDef.comps.Add(withHands);
+                            }
                         }
                     }
                 }

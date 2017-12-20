@@ -89,7 +89,6 @@
             if (info == null)
             {
                 info = type.GetField(fieldName, GenGeneric.BindingFlagsAll);
-                ;
             }
 
             return info?.GetValue(instance);
@@ -101,7 +100,7 @@
         // public bool IgnoreRenderer;
         public GraphicVectorMeshSet EyeMeshSet => MeshPoolFS.HumanEyeSet[(int)this.FullHeadType];
 
-        [NotNull]
+        [CanBeNull]
         public PawnEyeWiggler EyeWiggler => this.eyeWiggler;
 
         public FaceMaterial FaceMaterial => this.faceMaterial;
@@ -929,7 +928,6 @@
                     this.bodySizeDefinition.hipOffsetVerticalFromCenter = -0.275f;
                     this.bodySizeDefinition.hipWidth = 0.175f;
                     this.bodySizeDefinition.legLength = 0.3f;
-                    this.walkCycle = WalkCycleDefOf.Human_Default;
                     break;
                 case BodyType.Female:
                     this.bodySizeDefinition.shoulderOffsetVerFromCenter = 0f;
@@ -938,7 +936,6 @@
                     this.bodySizeDefinition.hipOffsetVerticalFromCenter = -0.275f;
                     this.bodySizeDefinition.hipWidth = 0.175f;
                     this.bodySizeDefinition.legLength = 0.3f;
-                    this.walkCycle = WalkCycleDefOf.Human_Female;
                     break;
                 case BodyType.Hulk:
                     this.bodySizeDefinition.shoulderOffsetVerFromCenter = 0f;
@@ -949,7 +946,6 @@
                     this.bodySizeDefinition.legLength = 0.425f;
                     this.bodySizeDefinition.hipOffsetHorWhenFacingHorizontal = -0.15f;
                     this.bodySizeDefinition.shoulderOffsetWhenFacingHorizontal = -0.05f;
-                    this.walkCycle = WalkCycleDefOf.Human_Hulk;
                     break;
                 case BodyType.Fat:
                     this.bodySizeDefinition.shoulderOffsetVerFromCenter = 0f;
@@ -958,7 +954,6 @@
                     this.bodySizeDefinition.hipOffsetVerticalFromCenter = -0.275f;
                     this.bodySizeDefinition.hipWidth = 0.2f;
                     this.bodySizeDefinition.legLength = 0.35f;
-                    this.walkCycle = WalkCycleDefOf.Human_Fat;
                     break;
                 case BodyType.Thin:
                     this.bodySizeDefinition.shoulderOffsetVerFromCenter = 0f;
@@ -967,11 +962,9 @@
                     this.bodySizeDefinition.hipOffsetVerticalFromCenter = -0.25f;
                     this.bodySizeDefinition.hipWidth = 0.125f;
                     this.bodySizeDefinition.legLength = 0.3f;
-                    this.walkCycle = WalkCycleDefOf.Human_Thin;
                     break;
-
             }
-
+            this.walkCycle = WalkCycleDefOf.Human_Walking;
             this.bodySizeDefinition.hipOffsetHorWhenFacingHorizontal = -0.05f;
 
             this.InitializePawnDrawer();
@@ -1232,47 +1225,5 @@
                 }
             }
         }
-    }
-
-    public struct BodyPartStats
-    {
-        public PartStatus eyeLeft;
-
-        public PartStatus eyeRight;
-
-        public PartStatus jaw;
-
-        public PartStatus handLeft;
-
-        public PartStatus handRight;
-
-        public PartStatus footLeft;
-
-        public PartStatus footRight;
-    }
-
-    public enum PartStatus
-    {
-        Natural, Missing, Artificial
-    }
-    public struct BodyDefinition
-    {
-        public float hipOffsetHorWhenFacingHorizontal;
-
-        public float hipWidth;
-
-        public float hipOffsetVerticalFromCenter;
-
-        public float legLength;
-
-
-        public float shoulderWidth;
-
-        public float shoulderOffsetVerFromCenter;
-
-        public float armLength;
-
-        public float shoulderOffsetWhenFacingHorizontal;
-
     }
 }

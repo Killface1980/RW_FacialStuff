@@ -1,28 +1,31 @@
 ﻿namespace FacialStuff.Defs
 {
+    using System.Collections.Generic;
+
     using Verse;
 
-    public class WalkCycleDef : Def
+    public partial class WalkCycleDef : Def
     {
         #region Public Fields
 
-        public SimpleCurve BodyAngle;
+        public List<PawnKeyframe> animation = new List<PawnKeyframe>();
 
-        public SimpleCurve BodyAngleVertical;
+        public SimpleCurve BodyAngle = new SimpleCurve();
 
-        public SimpleCurve BodyWobble;
+        public SimpleCurve BodyAngleVertical = new SimpleCurve();
 
-        public SimpleCurve FootAngle;
+        public SimpleCurve BodyOffsetVertical = new SimpleCurve();
 
-        public SimpleCurve HandsSwingAngle;
+        public SimpleCurve FootAngle = new SimpleCurve();
 
-        public SimpleCurve HandsSwingPosVertical;
+        public SimpleCurve FootPositionX = new SimpleCurve();
 
-        public SimpleCurve FootPositionX;
+        public SimpleCurve FootPositionY = new SimpleCurve();
 
-        public SimpleCurve FootPositionY;
+        public SimpleCurve HandsSwingAngle = new SimpleCurve();
 
+        public SimpleCurve HandsSwingPosVertical = new SimpleCurve();
 
-        #endregion Public Fields
+#endregion Public Fields
     }
 }

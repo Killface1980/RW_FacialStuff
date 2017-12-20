@@ -1058,7 +1058,16 @@ namespace FacialStuff
             base.Tick(bodyFacing, headFacing, graphics);
 
             this.isMoving = this.CompFace.BodyAnimator.IsMoving(out this.movedPercent);
-            this.BodyWobble = this.walkCycle.BodyWobble.Evaluate(this.movedPercent);
+            this.BodyWobble = this.walkCycle.BodyOffsetVertical.Evaluate(this.movedPercent);
+
+           // if (this.Pawn.CurJob != null && this.Pawn.CurJob.locomotionUrgency >= LocomotionUrgency.Jog)
+           // {
+           //     this.walkCycle = WalkCycleDefOf.Human_Jog;
+           // }
+           // else
+           // {
+           //     this.walkCycle = this.CompFace.walkCycle;
+           // }
         }
 
         #endregion Public Methods
