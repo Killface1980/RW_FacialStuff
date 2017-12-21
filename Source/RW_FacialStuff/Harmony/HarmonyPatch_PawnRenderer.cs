@@ -77,6 +77,7 @@
                 graphics.ResolveAllGraphics();
             }
 
+
             // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
             if (!pawn.GetCompFace(out CompFace compFace) || compFace.IsChild || compFace.Deactivated)
             {
@@ -86,7 +87,7 @@
 #if develop
             if (faceComp.IgnoreRenderer)
             {
-                switch (faceComp.rotationInt)
+                switch (faceComp.rotation)
                 {
                     case 0:
                         bodyFacing = Rot4.North;
@@ -108,13 +109,20 @@
             }
 
 #endif
+            if (compFace.AnimatorOpen)
+            {
+                bodyFacing = headFacing = compFace.rotation;
+            }
+
             compFace.TickDrawers(bodyFacing, headFacing, graphics);
 
             // Use the basic quat
             Quaternion headQuat = quat;
 
+            var originZ = rootLoc.z;
+
             // Rotate head if possble and wobble around
-            if (!portrait)
+            if (!portrait || compFace.AnimatorOpen)
             {
                 compFace.ApplyBodyWobble(ref rootLoc, ref quat);
                 // Reset the quat as it has been changed
@@ -149,7 +157,7 @@
             {
                 // Rendererd pawn faces
 
-                Vector3 b = headQuat * compFace.BaseHeadOffsetAt();
+                Vector3 b = headQuat * compFace.BaseHeadOffsetAt(portrait);
 
                 Vector3 locFacialY = a + b;
                 Vector3 currentLoc = rootLoc + b;
@@ -227,14 +235,20 @@
             // DrawBeardAndTache(headFacing, portrait, faceComp, mesh2, locFacialY, headQuat);
             // }
 
-            // ReSharper disable once InvertIf
+            if (portrait && compFace.AnimatorOpen)
+            {
+                compFace.DrawEquipment(drawPos, portrait);
+            }
+
+            var footPos = drawPos;
+            footPos.z = originZ;
+
+            compFace.DrawFeet(footPos, portrait);
+
             if (!portrait)
             {
-                // Traverse.Create(__instance).Method("DrawEquipment", new object[] { rootLoc }).GetValue();
 
-                // DrawEquipmentMethodInfo?.Invoke(__instance, new object[] { rootLoc });
-
-                compFace.DrawEquipment(drawPos);
+                compFace.DrawEquipment(drawPos, false);
 
                 if (pawn.apparel != null)
                 {
@@ -277,7 +291,7 @@
                 BindingFlags.NonPublic | BindingFlags.Instance);
         }
     }
-  
+
     /*
     [HarmonyPatch(
         typeof(PawnRenderer),

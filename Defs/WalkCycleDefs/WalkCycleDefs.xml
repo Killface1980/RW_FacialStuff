@@ -124,8 +124,10 @@
     <defName>Human_Jog</defName>
     <label>Human_Jog</label>
 
-    <animation>
+      <shoulderAngle>45</shoulderAngle>
 
+    <animation>
+      
       <!--passingBegin-->
       <li>
         <keyFrameAt>0</keyFrameAt>
@@ -218,6 +220,8 @@
     <defName>Human_Sprint</defName>
     <label>Human_Sprint</label>
 
+    <shoulderAngle>60</shoulderAngle>
+    
     <animation>
 
       <!--passingBegin-->

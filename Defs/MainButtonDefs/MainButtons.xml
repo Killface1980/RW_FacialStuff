@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  
+    <MainButtonDef>
+    <defName>Animator</defName>
+    <label>animator</label>
+    <description>Animate.</description>
+    <tabWindowClass>FacialStuff.MainTabWindow_Animator</tabWindowClass>
+    <canBeTutorDenied>false</canBeTutorDenied>
+    <order>400</order>
+    <validWithoutMap>true</validWithoutMap>
+      <buttonVisible>true</buttonVisible>
+    </MainButtonDef>
+
+</Defs>

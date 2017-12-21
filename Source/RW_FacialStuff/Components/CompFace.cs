@@ -37,7 +37,7 @@
 
         public bool NeedsStyling = true;
 
-        public int rotationInt;
+        public Rot4 rotation = Rot4.East;
 
         #endregion Public Fields
 
@@ -914,7 +914,7 @@
 
             // this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
             this.headRotator = new PawnHeadRotator(this.Pawn);
-            this.bodyAnimator = new BodyAnimator(this.Pawn);
+            this.bodyAnimator = new BodyAnimator(this.Pawn, this);
 
             // this.headWiggler = new PawnHeadWiggler(this.pawn);
 
@@ -964,7 +964,7 @@
                     this.bodySizeDefinition.legLength = 0.3f;
                     break;
             }
-            this.walkCycle = WalkCycleDefOf.Human_Walking;
+
             this.bodySizeDefinition.hipOffsetHorWhenFacingHorizontal = -0.05f;
 
             this.InitializePawnDrawer();
@@ -1164,7 +1164,7 @@
         // public Vector3 LeftHandPosition;
 
 
-        public void DrawEquipment(Vector3 rootLoc)
+        public void DrawEquipment(Vector3 rootLoc, bool portrait)
         {
             if (this.pawnDrawers != null)
             {
@@ -1172,13 +1172,13 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].DrawEquipment(rootLoc);
+                    this.pawnDrawers[i].DrawEquipment(rootLoc, portrait);
                     i++;
                 }
             }
         }
 
-        public Vector3 BaseHeadOffsetAt()
+        public Vector3 BaseHeadOffsetAt(bool portrait)
         {
             var offset = Vector3.zero;
 
@@ -1188,16 +1188,34 @@
                 int count = this.pawnDrawers.Count;
                 while (i < count)
                 {
-                    this.pawnDrawers[i].BaseHeadOffsetAt(ref offset);
+                    this.pawnDrawers[i].BaseHeadOffsetAt(ref offset, portrait);
                     i++;
                 }
             }
             return offset;
         }
+
         public BodyPartStats bodyStat;
 
-        public WalkCycleDef walkCycle;
+        public bool AnimatorOpen;
 
+        public float AnimationPercent;
+
+        public WalkCycleDef walkCycle = WalkCycleDefOf.Human_Walking;
+
+        public void DrawFeet(Vector3 rootLoc, bool portrait)
+        {
+            if (this.pawnDrawers != null)
+            {
+                int i = 0;
+                int count = this.pawnDrawers.Count;
+                while (i < count)
+                {
+                    this.pawnDrawers[i].DrawFeet(rootLoc, portrait);
+                    i++;
+                }
+            }
+        }
         public void ApplyBodyWobble(ref Vector3 rootLoc, ref Quaternion quat)
         {
             if (this.pawnDrawers != null)

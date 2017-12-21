@@ -17,7 +17,7 @@
     {
         private readonly string[] psiToolbarStrings = { "North", "East", "South", "West" };
 
-        private int rotationInt = 2;
+        private int rotation = 2;
 
         public ITab_Pawn_Face()
         {
@@ -60,14 +60,14 @@
 
             if (compFace.IgnoreRenderer)
             {
-                this.rotationInt = GUILayout.SelectionGrid(this.rotationInt, this.psiToolbarStrings, 4);
+                this.rotation =  GUILayout.SelectionGrid(this.rotation, this.psiToolbarStrings, 4);
             }
             else
             {
-                this.rotationInt = this.SelPawn.Rotation.AsInt;
+                this.rotation = this.SelPawn.Rotation.AsInt;
             }
 
-            compFace.rotationInt = this.rotationInt;
+            compFace.rotation = new Rot4(this.rotation);
 
             bool male = this.SelPawn.gender == Gender.Male;
 

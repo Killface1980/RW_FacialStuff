@@ -58,7 +58,7 @@ namespace FacialStuff
         {
         }
 
-        public virtual void BaseHeadOffsetAt(ref Vector3 offset)
+        public virtual void BaseHeadOffsetAt(ref Vector3 offset, bool portrait)
         {
         }
 
@@ -118,7 +118,7 @@ namespace FacialStuff
         }
 
         // Verse.PawnRenderer - Vanilla with flava
-        public virtual void DrawEquipment(Vector3 rootLoc)
+        public virtual void DrawEquipment(Vector3 rootLoc, bool portrait)
         {
         }
 
@@ -126,7 +126,7 @@ namespace FacialStuff
         {
         }
 
-        public virtual void DrawFeet(Vector3 drawPos, Rot4 bodyFacing)
+        public virtual void DrawFeet(Vector3 rootLoc, bool portrait)
         {
         }
 

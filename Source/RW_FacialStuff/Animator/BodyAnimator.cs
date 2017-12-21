@@ -16,15 +16,25 @@ namespace FacialStuff.Animator
 
         private Pawn pawn;
 
-        public BodyAnimator(Pawn p)
+        private CompFace compFace;
+
+        public BodyAnimator(Pawn p, CompFace compface)
         {
             this.pawn = p;
+            this.compFace = compface;
         }
 
         // Verse.PawnTweener
         public bool IsMoving(out float movedPercent)
         {
             movedPercent = 0f;
+
+            if (this.compFace.AnimatorOpen)
+            {
+                movedPercent = this.compFace.AnimationPercent;
+                return true;
+            }
+
             Pawn_PathFollower pather = this.pawn.pather;
             if (pather == null)
             {

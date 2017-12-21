@@ -75,6 +75,7 @@
     <None Include="Harmony\Optional\AlienPatches.cs" />
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
+    <Compile Include="MainTabWindow_Animator.cs" />
     <Compile Include="Components\BodyDefinition.cs" />
     <Compile Include="Components\BodyPartStats.cs" />
     <Compile Include="Components\CompProperties_Face.cs" />
@@ -204,6 +205,9 @@
     <Content Include="..\..\Defs\JobDefs\Clutter_Jobs.xml">
       <Link>Defs\Clutter_Jobs.xml</Link>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Defs\MainButtonDefs\MainButtons.xml">
+      <Link>Defs\MainButtons.xml</Link>
     </Content>
     <Content Include="..\..\Defs\MentalStateDefs\MentalStates_Mood_FS.xml">
       <Link>Defs\MentalStates_Mood_FS.xml</Link>
