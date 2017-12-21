@@ -4,13 +4,13 @@
 
     using Verse;
 
-    public partial class WalkCycleDef : Def
+    public class WalkCycleDef : Def
     {
         #region Public Fields
 
-        public List<PawnKeyframe> animation = new List<PawnKeyframe>();
-
         public float shoulderAngle;
+
+        public List<PawnKeyframe> animation = new List<PawnKeyframe>();
 
         public SimpleCurve BodyAngle = new SimpleCurve();
 

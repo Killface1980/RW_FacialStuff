@@ -9,6 +9,8 @@
     {
         public static readonly Texture2D backgroundTex = ContentFinder<Texture2D>.Get("UI/gradient");
 
+        public static readonly Texture2D backgroundAnimTex = ContentFinder<Texture2D>.Get("UI/walkbg-01");
+
         public static readonly Texture2D BlankTexture;
 
         public static readonly Texture2D MaskTex_Average_FrontBack;

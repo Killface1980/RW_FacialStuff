@@ -322,8 +322,11 @@
 
             Color skinColor = this.pawn.story.SkinColor;
 
-            Color rightColor = Color.red;
-            Color leftColor = Color.blue;
+            Color rightColorFoot = Color.red;
+            Color leftColorFoot = Color.blue;
+
+            Color rightColorHand = Color.cyan;
+            Color leftColorHand = Color.magenta;
 
             Color rightHandColor;
             Color leftHandColor;
@@ -405,30 +408,31 @@
                 texNameHand,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
-                rightColor,
+                rightColorHand,
                 skinColor);
 
             this.HandGraphicLeftCol = GraphicDatabase.Get<Graphic_Single>(
                 texNameHand,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
-                leftColor,
+                leftColorHand,
                 skinColor);
 
             this.FootGraphicRightCol = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
-                rightColor,
+                rightColorFoot,
                 skinColor);
 
             this.FootGraphicLeftCol = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
-                leftColor,
+                leftColorFoot,
                 skinColor);
         }
+
         private void InitializeGraphicsMouth()
         {
             if (!this.compFace.texPathJawAddedPart.NullOrEmpty())
