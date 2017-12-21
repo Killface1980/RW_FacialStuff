@@ -630,8 +630,18 @@ namespace FacialStuff
                     footMeshRight = footMeshLeft = MeshPool.plane10Flip;
                 }
             }
-            matRight = this.CompFace.PawnGraphic?.FootGraphicRight?.MatAt(rot);
-            matLeft = this.CompFace.PawnGraphic?.FootGraphicLeft?.MatAt(rot);
+
+            if (this.CompFace.AnimatorOpen)
+            {
+                matRight = this.CompFace.PawnGraphic?.FootGraphicRightCol?.MatAt(rot);
+                matLeft = this.CompFace.PawnGraphic?.FootGraphicLeftCol?.MatAt(rot);
+            }
+            else
+            {
+                matRight = this.CompFace.PawnGraphic?.FootGraphicRight?.MatAt(rot);
+                matLeft = this.CompFace.PawnGraphic?.FootGraphicLeft?.MatAt(rot);
+            }
+
 
 
 
@@ -649,7 +659,7 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                         footMeshRight,
-                        center.RotatedBy(bodyAngle) + new Vector3(rightFootHorizontal, rightFootDepth, rightFootVertical).RotatedBy(footAngleRight),
+                        center.RotatedBy(bodyAngle) + new Vector3(rightFootHorizontal, rightFootDepth, rightFootVertical),
                         Quaternion.AngleAxis(bodyAngle + footAngleRight, Vector3.up),
                         matRight,
                         portrait);
@@ -662,7 +672,7 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                         footMeshLeft,
-                        center.RotatedBy(bodyAngle) + new Vector3(leftFootHorizontal, leftFootDepth, leftFootVertical).RotatedBy(footAngleLeft),
+                        center.RotatedBy(bodyAngle) + new Vector3(leftFootHorizontal, leftFootDepth, leftFootVertical),
                         Quaternion.AngleAxis(bodyAngle + footAngleLeft, Vector3.up),
                         matLeft,
                         portrait);
@@ -1091,7 +1101,12 @@ namespace FacialStuff
         {
             Material matLeft = this.CompFace.PawnGraphic?.HandGraphicLeft?.MatSingle;
             Material matRight = this.CompFace.PawnGraphic?.HandGraphicRight?.MatSingle;
+            if (this.CompFace.AnimatorOpen)
+            {
+                 matLeft = this.CompFace.PawnGraphic?.HandGraphicLeftCol?.MatSingle;
+                 matRight = this.CompFace.PawnGraphic?.HandGraphicRightCol?.MatSingle;
 
+            }
             BodyDefinition body = this.CompFace.bodySizeDefinition;
 
             // Basic values if pawn is carrying stuff

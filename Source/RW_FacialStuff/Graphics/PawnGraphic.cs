@@ -86,6 +86,14 @@
         public Graphic FootGraphicLeft;
         public Graphic FootGraphicRight;
 
+        public Graphic FootGraphicRightCol;
+
+        public Graphic FootGraphicLeftCol;
+
+        public Graphic HandGraphicLeftCol;
+
+        public Graphic HandGraphicRightCol;
+
         public PawnGraphic(CompFace compFace)
         {
             this.compFace = compFace;
@@ -314,14 +322,8 @@
 
             Color skinColor = this.pawn.story.SkinColor;
 
-            Color rightColor = skinColor;
-            Color leftColor = rightColor;
-            if (false)
-            {
-                rightColor = Color.red;
-                leftColor = Color.green;
-
-            }
+            Color rightColor = Color.red;
+            Color leftColor = Color.blue;
 
             Color rightHandColor;
             Color leftHandColor;
@@ -396,6 +398,35 @@
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 leftFootColor,
+                skinColor);
+
+            // for development
+            this.HandGraphicRightCol = GraphicDatabase.Get<Graphic_Single>(
+                texNameHand,
+                ShaderDatabase.CutoutSkin,
+                new Vector2(1f, 1f),
+                rightColor,
+                skinColor);
+
+            this.HandGraphicLeftCol = GraphicDatabase.Get<Graphic_Single>(
+                texNameHand,
+                ShaderDatabase.CutoutSkin,
+                new Vector2(1f, 1f),
+                leftColor,
+                skinColor);
+
+            this.FootGraphicRightCol = GraphicDatabase.Get<Graphic_Multi>(
+                texNameFoot,
+                ShaderDatabase.CutoutSkin,
+                new Vector2(1f, 1f),
+                rightColor,
+                skinColor);
+
+            this.FootGraphicLeftCol = GraphicDatabase.Get<Graphic_Multi>(
+                texNameFoot,
+                ShaderDatabase.CutoutSkin,
+                new Vector2(1f, 1f),
+                leftColor,
                 skinColor);
         }
         private void InitializeGraphicsMouth()

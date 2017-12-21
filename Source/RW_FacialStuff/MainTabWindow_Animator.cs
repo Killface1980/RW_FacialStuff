@@ -27,13 +27,30 @@ namespace FacialStuff
 
             PortraitsCache.SetDirty(pawn);
 
-            Rect pawnRect = AddPortraitWidget(0f, 30f);
+            Rect pawnRect = AddPortraitWidget(0f, 0f);
+
+            var frames = new Dictionary<float, PawnKeyframe>();
+
+            foreach (PawnKeyframe keyframe in this.compFace.walkCycle.animation)
+            {
+                frames.Add(keyframe.keyFrameAt, keyframe);
+            }
+            var width = inRect.width / 2 / frames.Count;
+            width -= 12f;
+            var buttonRect = new Rect(0f, pawnRect.yMax + 12f, width, 32f);
+            foreach (float frame in frames.Keys)
+            {
+                if (Widgets.ButtonText(buttonRect, frame.ToString()))
+                {
+                    this.compFace.AnimationPercent = frame;
+                }
+                buttonRect.x += buttonRect.width + 12f;
+            }
 
             Listing_Standard listing_Standard = new Listing_Standard { ColumnWidth = (inRect.width - 34f) / 3f };
 
-
             var newRect = inRect;
-            newRect.yMin = pawnRect.yMax + 12f;
+            newRect.yMin = buttonRect.yMax + 12f;
 
             listing_Standard.Begin(newRect);
 
@@ -47,13 +64,13 @@ namespace FacialStuff
                 {
                     this.compFace.AnimationPercent = 0f;
                 }
-                listing_Standard.Slider(this.compFace.AnimationPercent, 0f, 1f);
+                // listing_Standard.Slider(this.compFace.AnimationPercent, 0f, 1f);
             }
             else
             {
 
-                this.compFace.AnimationPercent = listing_Standard.Slider(this.compFace.AnimationPercent, 0f, 1f);
             }
+            this.compFace.AnimationPercent = Mathf.Ceil(listing_Standard.Slider(this.compFace.AnimationPercent, 0f, 1f) * 8) / 8;
 
             if (listing_Standard.ButtonText(this.compFace.walkCycle.LabelCap))
             {
@@ -96,40 +113,64 @@ namespace FacialStuff
             }
 
             listing_Standard.CheckboxLabeled("Loop", ref loop);
-            var frames = new List<float>();
-            listing_Standard.End();
 
-
-            var rect2 = new Rect(0, listing_Standard.CurHeight + newRect.y, inRect.width, inRect.height);
-
-
-            foreach (PawnKeyframe keyframe in this.compFace.walkCycle.animation)
+            if (frames.TryGetValue(this.compFace.AnimationPercent, out PawnKeyframe thisFrame))
             {
-                frames.Add(keyframe.keyFrameAt);
-            }
 
-            var listing2 = new Listing_Standard();
-            listing2.ColumnWidth = (inRect.width - 34f) / frames.Count;
-            listing2.Begin(rect2);
+                this.SetAngle(ref thisFrame.HandsSwingAngle, listing_Standard, this.compFace.walkCycle.HandsSwingAngle, "HandSwing");
 
-            foreach (float frame in frames)
-            {
-                if (listing2.ButtonText(frame.ToString()))
+                this.SetAngle(ref thisFrame.FootAngle, listing_Standard, this.compFace.walkCycle.FootAngle, "FootAngle");
+
+                if (thisFrame.FootPositionX.HasValue)
                 {
-                    this.compFace.AnimationPercent = frame;
-
+                    listing_Standard.Label("FootPosX " + thisFrame.FootPositionX);
+                    thisFrame.FootPositionX = Mathf.Ceil(
+                                                  listing_Standard.Slider(thisFrame.FootPositionX.Value, -0.5f, 0.5f)
+                                                  * 40) / 40;
+                }
+                if (thisFrame.FootPositionY.HasValue)
+                {
+                    listing_Standard.Label("FootPosY " + thisFrame.FootPositionY);
+                    thisFrame.FootPositionY = Mathf.Ceil(
+                                                  listing_Standard.Slider(thisFrame.FootPositionY.Value, -0.5f, 0.5f)
+                                                  * 40) / 40;
                 }
             }
 
-            listing2.End();
-
-            if (frames.Contains(this.compFace.AnimationPercent))
+            if (GUI.changed)
             {
-
+                GameComponent_FacialStuff.BuildWalkCycles();
             }
+
+            // foreach (PawnKeyframe keyframe in frames.Values)
+            // {
+            //     listing_Standard.Label(keyframe.keyFrameAt.ToString());
+            //     listing_Standard.Label(keyframe.FootPositionX.ToString());
+            //     listing_Standard.Label(keyframe.FootPositionY.ToString());
+            //     listing_Standard.Gap();
+            // }
+
+            listing_Standard.End();
 
             //  HarmonyPatch_PawnRenderer.Prefix(this.pawn.Drawer.renderer, Vector3.zero, Rot4.East.AsQuat, true, Rot4.East, Rot4.East, RotDrawMode.Fresh, false, false);
             base.DoWindowContents(inRect);
+        }
+
+        private void SetAngle(ref float? angle, Listing_Standard listing_Standard, SimpleCurve thisFrame, string label)
+        {
+            if (angle.HasValue)
+            {
+                listing_Standard.Label(label + " " + angle);
+                angle = Mathf.FloorToInt(listing_Standard.Slider(angle.Value, -180f, 180f));
+            }
+            else
+            {
+                if (listing_Standard.ButtonText("Add " + label))
+                {
+                    angle =
+                        thisFrame.Evaluate(this.compFace.AnimationPercent);
+                }
+            }
         }
 
         public override void PostClose()

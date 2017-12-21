@@ -47,21 +47,21 @@ namespace FacialStuff
                 }
             }
             this.WeaponComps();
-            this.BuildWalkCycles();
+            BuildWalkCycles();
         }
 
-        private void BuildWalkCycles()
+        public static void BuildWalkCycles()
         {
             foreach (WalkCycleDef cycle in DefDatabase<WalkCycleDef>.AllDefsListForReading)
             {
-                //// cycle.BodyAngle = new SimpleCurve();
-                //// cycle.BodyAngleVertical = new SimpleCurve();
-                //// cycle.BodyOffsetVertical = new SimpleCurve();
-                //// cycle.FootAngle = new SimpleCurve();
-                //// cycle.FootPositionX = new SimpleCurve();
-                //// cycle.FootPositionY = new SimpleCurve();
-                //// cycle.HandsSwingAngle = new SimpleCurve();
-                //// cycle.HandsSwingPosVertical = new SimpleCurve();
+                cycle.BodyAngle = new SimpleCurve();
+                cycle.BodyAngleVertical = new SimpleCurve();
+                cycle.BodyOffsetVertical = new SimpleCurve();
+                cycle.FootAngle = new SimpleCurve();
+                cycle.FootPositionX = new SimpleCurve();
+                cycle.FootPositionY = new SimpleCurve();
+                cycle.HandsSwingAngle = new SimpleCurve();
+                cycle.HandsSwingPosVertical = new SimpleCurve();
 
                 foreach (PawnKeyframe key in cycle.animation)
                 {
