@@ -99,20 +99,28 @@ namespace FacialStuff
             var frames = new List<float>();
             listing_Standard.End();
 
-            var listing2 = new Listing_Standard();
 
             var rect2 = new Rect(0, listing_Standard.CurHeight + newRect.y, inRect.width, inRect.height);
 
-            listing2.ColumnWidth = (inRect.width - 34f) / frames.Count;
-            listing2.Begin(rect2);
+
             foreach (PawnKeyframe keyframe in this.compFace.walkCycle.animation)
             {
-                if (listing2.ButtonText(keyframe.keyFrameAt.ToString()))
-                {
-                    this.compFace.AnimationPercent = keyframe.keyFrameAt;
-                }
                 frames.Add(keyframe.keyFrameAt);
             }
+
+            var listing2 = new Listing_Standard();
+            listing2.ColumnWidth = (inRect.width - 34f) / frames.Count;
+            listing2.Begin(rect2);
+
+            foreach (float frame in frames)
+            {
+                if (listing2.ButtonText(frame.ToString()))
+                {
+                    this.compFace.AnimationPercent = frame;
+
+                }
+            }
+
             listing2.End();
 
             if (frames.Contains(this.compFace.AnimationPercent))
