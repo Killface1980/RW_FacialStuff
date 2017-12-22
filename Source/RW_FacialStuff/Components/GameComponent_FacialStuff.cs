@@ -58,10 +58,11 @@ namespace FacialStuff
                 cycle.FootAngle = new SimpleCurve();
                 cycle.FootPositionX = new SimpleCurve();
                 cycle.FootPositionY = new SimpleCurve();
+                cycle.FootPositionVerticalY = new SimpleCurve();
                 cycle.HandsSwingAngle = new SimpleCurve();
                 cycle.HandsSwingPosVertical = new SimpleCurve();
 
-               // Log.Message(cycle.defName + " has " + cycle.animation.Count);
+                // Log.Message(cycle.defName + " has " + cycle.animation.Count);
                 foreach (PawnKeyframe key in cycle.animation)
                 {
                     BuildAnimationKeys(key, cycle);
@@ -73,7 +74,7 @@ namespace FacialStuff
         {
             float frameAt = (float)key.keyIndex / (cycle.animation.Count - 1);
 
-           // Log.Message("Adding key for " + cycle.defName + " at " + frameAt);
+            // Log.Message("Adding key for " + cycle.defName + " at " + frameAt);
 
             float? bodyAngle = key.BodyAngle;
             if (bodyAngle.HasValue)
@@ -109,6 +110,20 @@ namespace FacialStuff
             if (footPositionY.HasValue)
             {
                 cycle.FootPositionY.Add(frameAt, footPositionY.Value);
+            }
+
+            float? footPositionVerticalY = key.FootPositionVerticalY;
+            if (footPositionVerticalY.HasValue)
+            {
+                cycle.FootPositionVerticalY.Add(frameAt, footPositionVerticalY.Value);
+            }
+            else
+            {
+                if (key.keyIndex == 0)
+                {
+                    cycle.FootPositionVerticalY.Add(0, 0);
+                    cycle.FootPositionVerticalY.Add(1, 0);
+                }
             }
 
             float? handsSwingAngle = key.HandsSwingAngle;

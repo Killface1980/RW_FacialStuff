@@ -9,7 +9,6 @@
     using FacialStuff.Defs;
     using FacialStuff.Enums;
     using FacialStuff.Graphics;
-    using FacialStuff.Harmony;
     using FacialStuff.Utilities;
 
     using JetBrains.Annotations;

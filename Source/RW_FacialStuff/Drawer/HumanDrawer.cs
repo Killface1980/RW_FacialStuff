@@ -567,12 +567,10 @@ namespace FacialStuff
             else if (rot == Rot4.North)
             {
                 rightFootDepth = leftFootDepth = -0.02f;
-            }
-            else
-            {
                 rightFootHorizontal *= -1;
                 leftFootHorizontal *= -1;
             }
+
 
             // Swing the hands, try complete the cycle
             if (this.isMoving)
@@ -607,8 +605,8 @@ namespace FacialStuff
                 }
                 else
                 {
-                    rightFootVertical += cycle.FootPositionX.Evaluate(this.movedPercent);
-                    leftFootVertical += cycle.FootPositionX.Evaluate(flot);
+                    rightFootVertical += cycle.FootPositionVerticalY.Evaluate(this.movedPercent);
+                    leftFootVertical += cycle.FootPositionVerticalY.Evaluate(flot);
                 }
             }
 

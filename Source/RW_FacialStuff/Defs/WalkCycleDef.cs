@@ -28,6 +28,8 @@
 
         public SimpleCurve HandsSwingPosVertical = new SimpleCurve();
 
-#endregion Public Fields
+        public SimpleCurve FootPositionVerticalY = new SimpleCurve();
+
+        #endregion Public Fields
     }
 }

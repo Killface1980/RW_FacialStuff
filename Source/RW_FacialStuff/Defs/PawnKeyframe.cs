@@ -16,6 +16,8 @@
         public float? BodyAngleVertical;
         public float? BodyOffsetVertical;
 
+        public float? FootPositionVerticalY;
+
         #endregion Public Fields
     }
 

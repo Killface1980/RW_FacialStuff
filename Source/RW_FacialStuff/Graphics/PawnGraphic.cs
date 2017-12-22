@@ -1,7 +1,5 @@
 ﻿namespace FacialStuff.Graphics
 {
-    using System;
-
     using FacialStuff.Animator;
     using FacialStuff.Defs;
     using FacialStuff.Enums;
@@ -13,7 +11,6 @@
     using UnityEngine;
 
     using Verse;
-    using Verse.AI;
 
     public class PawnGraphic
     {

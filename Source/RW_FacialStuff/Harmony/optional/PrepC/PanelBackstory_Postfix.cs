@@ -2,8 +2,6 @@
 {
     using EdB.PrepareCarefully;
 
-    using FacialStuff.FaceEditor;
-
     using global::Harmony;
 
     using RimWorld;

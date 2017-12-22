@@ -4,7 +4,6 @@ using Verse;
 
 namespace FacialStuff
 {
-    using FacialStuff.Components;
     using FacialStuff.Enums;
     using JetBrains.Annotations;
     using RimWorld;

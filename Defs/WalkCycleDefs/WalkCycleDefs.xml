@@ -139,6 +139,7 @@
         <BodyAngle>0</BodyAngle>
         <BodyAngleVertical>0</BodyAngleVertical>
         <BodyOffsetVertical>0</BodyOffsetVertical>
+        <FootPositionVerticalY>0</FootPositionVerticalY>
       </li>
       <li>
         <keyIndex>1</keyIndex>
@@ -150,6 +151,7 @@
         <BodyAngle>-5</BodyAngle>
         <BodyAngleVertical>3</BodyAngleVertical>
         <BodyOffsetVertical>0.125</BodyOffsetVertical>
+        <FootPositionVerticalY IsNull="True" />
       </li>
       <li>
         <keyIndex>2</keyIndex>
@@ -161,6 +163,7 @@
         <BodyAngle IsNull="True" />
         <BodyAngleVertical IsNull="True" />
         <BodyOffsetVertical IsNull="True" />
+        <FootPositionVerticalY>0.125</FootPositionVerticalY>
       </li>
       <li>
         <keyIndex>3</keyIndex>
@@ -172,6 +175,7 @@
         <BodyAngle>7</BodyAngle>
         <BodyAngleVertical IsNull="True" />
         <BodyOffsetVertical>-0.025</BodyOffsetVertical>
+        <FootPositionVerticalY IsNull="True" />
       </li>
       <li>
         <keyIndex>4</keyIndex>
@@ -183,6 +187,7 @@
         <BodyAngle>0</BodyAngle>
         <BodyAngleVertical>0</BodyAngleVertical>
         <BodyOffsetVertical>0</BodyOffsetVertical>
+        <FootPositionVerticalY>0</FootPositionVerticalY>
       </li>
       <li>
         <keyIndex>5</keyIndex>
@@ -194,6 +199,7 @@
         <BodyAngle>-5</BodyAngle>
         <BodyAngleVertical>-3</BodyAngleVertical>
         <BodyOffsetVertical>0.125</BodyOffsetVertical>
+        <FootPositionVerticalY IsNull="True" />
       </li>
       <li>
         <keyIndex>6</keyIndex>
@@ -205,6 +211,7 @@
         <BodyAngle IsNull="True" />
         <BodyAngleVertical IsNull="True" />
         <BodyOffsetVertical>0</BodyOffsetVertical>
+        <FootPositionVerticalY>0</FootPositionVerticalY>
       </li>
       <li>
         <keyIndex>7</keyIndex>
@@ -216,6 +223,7 @@
         <BodyAngle>7</BodyAngle>
         <BodyAngleVertical IsNull="True" />
         <BodyOffsetVertical>-0.025</BodyOffsetVertical>
+        <FootPositionVerticalY IsNull="True" />
       </li>
       <li>
         <keyIndex>8</keyIndex>
@@ -227,6 +235,7 @@
         <BodyAngle>0</BodyAngle>
         <BodyAngleVertical>0</BodyAngleVertical>
         <BodyOffsetVertical>0</BodyOffsetVertical>
+        <FootPositionVerticalY>0</FootPositionVerticalY>
       </li>
     </animation>
 

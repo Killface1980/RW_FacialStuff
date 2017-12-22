@@ -1,7 +1,5 @@
 ﻿// RimWorld.JobGiver_InsultingSpree
 
-using RimWorld;
-
 using Verse;
 using Verse.AI;
 

@@ -1,7 +1,5 @@
 ﻿namespace FacialStuff.Harmony.Optional
 {
-    using Verse;
-
     using Werewolf;
 
     public static class Werewolf_Patches

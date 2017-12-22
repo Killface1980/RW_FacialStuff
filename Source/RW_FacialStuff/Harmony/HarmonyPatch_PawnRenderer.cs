@@ -2,16 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
 
-    using FacialStuff.Enums;
-    using FacialStuff.Graphics;
-    using FacialStuff.Harmony.Optional;
-
     using global::Harmony;
-
-    using JetBrains.Annotations;
 
     using RimWorld;
 

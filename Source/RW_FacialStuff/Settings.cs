@@ -2,8 +2,6 @@
 
 namespace FacialStuff
 {
-    using System.Collections.Generic;
-
     using FacialStuff.Enums;
 
     using RimWorld;
