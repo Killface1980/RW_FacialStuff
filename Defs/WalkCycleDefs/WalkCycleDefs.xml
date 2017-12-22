@@ -20,7 +20,7 @@
 
     <animation>
       <li>
-        <keyFrameAt>0</keyFrameAt>
+        <keyIndex>0</keyIndex>
         <FootAngle>0</FootAngle>
         <FootPositionX>0.075</FootPositionX>
         <FootPositionY>0</FootPositionY>
@@ -31,7 +31,7 @@
         <BodyOffsetVertical>0</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.125</keyFrameAt>
+        <keyIndex>1</keyIndex>
         <FootAngle IsNull="True" />
         <FootPositionX IsNull="True" />
         <FootPositionY>0.05</FootPositionY>
@@ -42,7 +42,7 @@
         <BodyOffsetVertical>0.075</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.25</keyFrameAt>
+        <keyIndex>2</keyIndex>
         <FootAngle IsNull="True" />
         <FootPositionX>-0.225</FootPositionX>
         <FootPositionY>0.075</FootPositionY>
@@ -53,7 +53,7 @@
         <BodyOffsetVertical IsNull="True" />
       </li>
       <li>
-        <keyFrameAt>0.375</keyFrameAt>
+        <keyIndex>3</keyIndex>
         <FootAngle>45</FootAngle>
         <FootPositionX>-0.225</FootPositionX>
         <FootPositionY IsNull="True" />
@@ -64,7 +64,7 @@
         <BodyOffsetVertical>-0.025</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.5</keyFrameAt>
+        <keyIndex>4</keyIndex>
         <FootAngle>90</FootAngle>
         <FootPositionX>0</FootPositionX>
         <FootPositionY>0.125</FootPositionY>
@@ -75,7 +75,7 @@
         <BodyOffsetVertical>0</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.625</keyFrameAt>
+        <keyIndex>5</keyIndex>
         <FootAngle IsNull="True" />
         <FootPositionX IsNull="True" />
         <FootPositionY IsNull="True" />
@@ -86,7 +86,7 @@
         <BodyOffsetVertical>0.075</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.75</keyFrameAt>
+        <keyIndex>6</keyIndex>
         <FootAngle>-45</FootAngle>
         <FootPositionX>0.2</FootPositionX>
         <FootPositionY>0.025</FootPositionY>
@@ -97,7 +97,7 @@
         <BodyOffsetVertical>0</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.875</keyFrameAt>
+        <keyIndex>7</keyIndex>
         <FootAngle>0</FootAngle>
         <FootPositionX IsNull="True" />
         <FootPositionY>0</FootPositionY>
@@ -108,7 +108,7 @@
         <BodyOffsetVertical>-0.025</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>1</keyFrameAt>
+        <keyIndex>8</keyIndex>
         <FootAngle>0</FootAngle>
         <FootPositionX>0.075</FootPositionX>
         <FootPositionY>0</FootPositionY>
@@ -130,7 +130,7 @@
 
     <animation>
       <li>
-        <keyFrameAt>0</keyFrameAt>
+        <keyIndex>0</keyIndex>
         <FootAngle>0</FootAngle>
         <FootPositionX>0</FootPositionX>
         <FootPositionY>0</FootPositionY>
@@ -141,7 +141,7 @@
         <BodyOffsetVertical>0</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.125</keyFrameAt>
+        <keyIndex>1</keyIndex>
         <FootAngle IsNull="True" />
         <FootPositionX IsNull="True" />
         <FootPositionY>0.025</FootPositionY>
@@ -152,7 +152,7 @@
         <BodyOffsetVertical>0.125</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.25</keyFrameAt>
+        <keyIndex>2</keyIndex>
         <FootAngle IsNull="True" />
         <FootPositionX>-0.225</FootPositionX>
         <FootPositionY>0.075</FootPositionY>
@@ -163,7 +163,7 @@
         <BodyOffsetVertical IsNull="True" />
       </li>
       <li>
-        <keyFrameAt>0.375</keyFrameAt>
+        <keyIndex>3</keyIndex>
         <FootAngle>45</FootAngle>
         <FootPositionX IsNull="True" />
         <FootPositionY IsNull="True" />
@@ -174,7 +174,7 @@
         <BodyOffsetVertical>-0.025</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.5</keyFrameAt>
+        <keyIndex>4</keyIndex>
         <FootAngle>90</FootAngle>
         <FootPositionX>0</FootPositionX>
         <FootPositionY>0.125</FootPositionY>
@@ -185,7 +185,7 @@
         <BodyOffsetVertical>0</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.625</keyFrameAt>
+        <keyIndex>5</keyIndex>
         <FootAngle IsNull="True" />
         <FootPositionX IsNull="True" />
         <FootPositionY IsNull="True" />
@@ -196,7 +196,7 @@
         <BodyOffsetVertical>0.125</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.75</keyFrameAt>
+        <keyIndex>6</keyIndex>
         <FootAngle>-45</FootAngle>
         <FootPositionX>0.2</FootPositionX>
         <FootPositionY>0.025</FootPositionY>
@@ -207,7 +207,7 @@
         <BodyOffsetVertical>0</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.875</keyFrameAt>
+        <keyIndex>7</keyIndex>
         <FootAngle>0</FootAngle>
         <FootPositionX IsNull="True" />
         <FootPositionY>0</FootPositionY>
@@ -218,7 +218,7 @@
         <BodyOffsetVertical>-0.025</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>1</keyFrameAt>
+        <keyIndex>8</keyIndex>
         <FootAngle>0</FootAngle>
         <FootPositionX>0</FootPositionX>
         <FootPositionY>0</FootPositionY>
@@ -241,7 +241,7 @@
 
     <animation>
       <li>
-        <keyFrameAt>0</keyFrameAt>
+        <keyIndex>0</keyIndex>
         <FootAngle>0</FootAngle>
         <FootPositionX>0</FootPositionX>
         <FootPositionY>0</FootPositionY>
@@ -252,7 +252,7 @@
         <BodyOffsetVertical>0.075</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.125</keyFrameAt>
+        <keyIndex>1</keyIndex>
         <FootAngle IsNull="True" />
         <FootPositionX IsNull="True" />
         <FootPositionY>0.1</FootPositionY>
@@ -263,7 +263,7 @@
         <BodyOffsetVertical>0.15</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.25</keyFrameAt>
+        <keyIndex>2</keyIndex>
         <FootAngle IsNull="True" />
         <FootPositionX>-0.4</FootPositionX>
         <FootPositionY>0.125</FootPositionY>
@@ -274,7 +274,7 @@
         <BodyOffsetVertical>0.15</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.375</keyFrameAt>
+        <keyIndex>3</keyIndex>
         <FootAngle>110</FootAngle>
         <FootPositionX>-0.15</FootPositionX>
         <FootPositionY>0.175</FootPositionY>
@@ -285,7 +285,7 @@
         <BodyOffsetVertical>0</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.5</keyFrameAt>
+        <keyIndex>4</keyIndex>
         <FootAngle>90</FootAngle>
         <FootPositionX IsNull="True" />
         <FootPositionY>0.2</FootPositionY>
@@ -296,7 +296,7 @@
         <BodyOffsetVertical IsNull="True" />
       </li>
       <li>
-        <keyFrameAt>0.625</keyFrameAt>
+        <keyIndex>5</keyIndex>
         <FootAngle>30</FootAngle>
         <FootPositionX IsNull="True" />
         <FootPositionY>0.15</FootPositionY>
@@ -307,7 +307,7 @@
         <BodyOffsetVertical>0.2</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.75</keyFrameAt>
+        <keyIndex>6</keyIndex>
         <FootAngle>-22</FootAngle>
         <FootPositionX>0.275</FootPositionX>
         <FootPositionY>0</FootPositionY>
@@ -318,7 +318,7 @@
         <BodyOffsetVertical>0.15</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.875</keyFrameAt>
+        <keyIndex>7</keyIndex>
         <FootAngle>0</FootAngle>
         <FootPositionX IsNull="True" />
         <FootPositionY IsNull="True" />
@@ -329,7 +329,7 @@
         <BodyOffsetVertical>0</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>1</keyFrameAt>
+        <keyIndex>8</keyIndex>
         <FootAngle>0</FootAngle>
         <FootPositionX>0</FootPositionX>
         <FootPositionY>0</FootPositionY>
@@ -353,7 +353,7 @@
 
     <animation>
       <li>
-        <keyFrameAt>0</keyFrameAt>
+        <keyIndex>0</keyIndex>
         <FootAngle>0</FootAngle>
         <FootPositionX>0</FootPositionX>
         <FootPositionY>0</FootPositionY>
@@ -364,7 +364,7 @@
         <BodyOffsetVertical>0</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.125</keyFrameAt>
+        <keyIndex>1</keyIndex>
         <FootAngle>45</FootAngle>
         <FootPositionX IsNull="True" />
         <FootPositionY>0.1</FootPositionY>
@@ -375,7 +375,7 @@
         <BodyOffsetVertical>0.15</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.25</keyFrameAt>
+        <keyIndex>2</keyIndex>
         <FootAngle IsNull="True" />
         <FootPositionX IsNull="True" />
         <FootPositionY>0.175</FootPositionY>
@@ -386,7 +386,7 @@
         <BodyOffsetVertical IsNull="True" />
       </li>
       <li>
-        <keyFrameAt>0.375</keyFrameAt>
+        <keyIndex>3</keyIndex>
         <FootAngle>80</FootAngle>
         <FootPositionX>-0.4</FootPositionX>
         <FootPositionY>0.175</FootPositionY>
@@ -397,7 +397,7 @@
         <BodyOffsetVertical>0</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.5</keyFrameAt>
+        <keyIndex>4</keyIndex>
         <FootAngle>90</FootAngle>
         <FootPositionX>-0.225</FootPositionX>
         <FootPositionY>0.2</FootPositionY>
@@ -408,7 +408,7 @@
         <BodyOffsetVertical IsNull="True" />
       </li>
       <li>
-        <keyFrameAt>0.625</keyFrameAt>
+        <keyIndex>5</keyIndex>
         <FootAngle>50</FootAngle>
         <FootPositionX IsNull="True" />
         <FootPositionY>0.175</FootPositionY>
@@ -419,7 +419,7 @@
         <BodyOffsetVertical>0.15</BodyOffsetVertical>
       </li>
       <li>
-        <keyFrameAt>0.75</keyFrameAt>
+        <keyIndex>6</keyIndex>
         <FootAngle>-45</FootAngle>
         <FootPositionX>0.175</FootPositionX>
         <FootPositionY>0.075</FootPositionY>
@@ -430,7 +430,7 @@
         <BodyOffsetVertical IsNull="True" />
       </li>
       <li>
-        <keyFrameAt>0.875</keyFrameAt>
+        <keyIndex>7</keyIndex>
         <FootAngle>-45</FootAngle>
         <FootPositionX>0.2</FootPositionX>
         <FootPositionY>0.025</FootPositionY>
@@ -441,7 +441,7 @@
         <BodyOffsetVertical IsNull="True" />
       </li>
       <li>
-        <keyFrameAt>1</keyFrameAt>
+        <keyIndex>8</keyIndex>
         <FootAngle>0</FootAngle>
         <FootPositionX>0</FootPositionX>
         <FootPositionY>0</FootPositionY>

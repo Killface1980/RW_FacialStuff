@@ -8,7 +8,7 @@
     <tabWindowClass>FacialStuff.MainTabWindow_Animator</tabWindowClass>
     <canBeTutorDenied>false</canBeTutorDenied>
     <order>400</order>
-    <validWithoutMap>true</validWithoutMap>
+    <validWithoutMap>false</validWithoutMap>
       <buttonVisible>true</buttonVisible>
     </MainButtonDef>
 

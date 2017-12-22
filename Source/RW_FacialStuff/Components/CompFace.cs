@@ -875,9 +875,6 @@
         /// <summary>
         /// Basic pawn initialization.
         /// </summary>
-        /// <param name="p">
-        /// The pawn.
-        /// </param>
         /// <returns>
         /// Success if all initialized.
         /// </returns>
@@ -888,6 +885,7 @@
             {
                 this.factionInt = this.Pawn.Faction ?? Faction.OfPlayer;
             }
+
             if (this.PawnFace == null)
             {
                 this.SetPawnFace(new PawnFace(this, this.originFaction.def));
@@ -907,6 +905,7 @@
             {
                 this.eyeWiggler = new PawnEyeWiggler(this);
             }
+
             this.CheckForAddedOrMissingParts();
 
             this.PawnGraphic = new PawnGraphic(this);

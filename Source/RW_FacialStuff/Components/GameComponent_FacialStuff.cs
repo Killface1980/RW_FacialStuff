@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace FacialStuff
 {
@@ -63,6 +61,7 @@ namespace FacialStuff
                 cycle.HandsSwingAngle = new SimpleCurve();
                 cycle.HandsSwingPosVertical = new SimpleCurve();
 
+               // Log.Message(cycle.defName + " has " + cycle.animation.Count);
                 foreach (PawnKeyframe key in cycle.animation)
                 {
                     BuildAnimationKeys(key, cycle);
@@ -72,7 +71,9 @@ namespace FacialStuff
 
         private static void BuildAnimationKeys(PawnKeyframe key, WalkCycleDef cycle)
         {
-            float frameAt = key.keyFrameAt;
+            float frameAt = (float)key.keyIndex / (cycle.animation.Count - 1);
+
+           // Log.Message("Adding key for " + cycle.defName + " at " + frameAt);
 
             float? bodyAngle = key.BodyAngle;
             if (bodyAngle.HasValue)
@@ -149,38 +150,40 @@ namespace FacialStuff
                         ThingDef thingDef = ThingDef.Named(t);
                         if (thingDef != null)
                         {
-                            CompProperties_WeaponExtensions withHands =
+                            CompProperties_WeaponExtensions weaponExtensions =
                                 thingDef.GetCompProperties<CompProperties_WeaponExtensions>();
                             bool flag = false;
-                            if (withHands == null)
+
+                            if (weaponExtensions == null)
                             {
-                                withHands =
+                                weaponExtensions =
                                     new CompProperties_WeaponExtensions { compClass = typeof(CompWeaponExtensions) };
                                 flag = true;
                             }
-                            if (withHands.RightHandPosition == Vector3.zero)
+
+                            if (weaponExtensions.RightHandPosition == Vector3.zero)
                             {
-                                withHands.RightHandPosition = wepSets.firstHandPosition;
+                                weaponExtensions.RightHandPosition = wepSets.firstHandPosition;
                             }
 
-                            if (withHands.LeftHandPosition == Vector3.zero)
+                            if (weaponExtensions.LeftHandPosition == Vector3.zero)
                             {
-                                withHands.LeftHandPosition = wepSets.secondHandPosition;
+                                weaponExtensions.LeftHandPosition = wepSets.secondHandPosition;
                             }
 
-                            if (withHands.AttackAngleOffset == 0)
+                            if (!weaponExtensions.AttackAngleOffset.HasValue)
                             {
-                                withHands.AttackAngleOffset = wepSets.attackAngleOffset;
+                                weaponExtensions.AttackAngleOffset = wepSets.attackAngleOffset;
                             }
 
-                            if (withHands.WeaponPositionOffset == Vector3.zero)
+                            if (weaponExtensions.WeaponPositionOffset == Vector3.zero)
                             {
-                                withHands.WeaponPositionOffset = wepSets.weaponPositionOffset;
+                                weaponExtensions.WeaponPositionOffset = wepSets.weaponPositionOffset;
                             }
 
                             if (flag)
                             {
-                                thingDef.comps.Add(withHands);
+                                thingDef.comps.Add(weaponExtensions);
                             }
                         }
                     }

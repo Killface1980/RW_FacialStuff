@@ -14,7 +14,7 @@
 
         public Vector3 WeaponPositionOffset ;
 
-        public float AttackAngleOffset;
+        public float? AttackAngleOffset;
 
         #endregion Public Fields
 

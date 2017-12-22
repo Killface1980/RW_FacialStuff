@@ -81,7 +81,7 @@
     <Compile Include="Components\CompProperties_Face.cs" />
     <Compile Include="Components\PartStatus.cs" />
     <Compile Include="Defs\PawnKeyframe.cs" />
-    <Compile Include="Defs\WalkCycleDefOf.cs" />
+    <Compile Include="DefOfs\WalkCycleDefOf.cs" />
     <Compile Include="Defs\WalkCycleDef.cs" />
     <Compile Include="Enums\MaxLayerToShow.cs" />
     <Compile Include="Defs\HandDef.cs" />
@@ -102,8 +102,8 @@
     <None Include="FacialStuff.ruleset" />
     <None Include="OldStuff\IncidentWorker_FacialStuffUpdateNote.cs" />
     <Compile Include="HairCut\CutHairDB.cs" />
-    <Compile Include="Defs\BeardDefOf.cs" />
-    <Compile Include="Defs\MoustacheDefOf.cs" />
+    <Compile Include="DefOfs\BeardDefOf.cs" />
+    <Compile Include="DefOfs\MoustacheDefOf.cs" />
     <Compile Include="Defs\MoustacheDef.cs" />
     <Compile Include="Defs\BeardDef.cs" />
     <Compile Include="Defs\BrowDef.cs" />
@@ -145,7 +145,7 @@
     <Compile Include="Enums\FullHead.cs" />
     <Compile Include="ITab_Pawn_Face.cs" />
     <Compile Include="Enums\HeadType.cs" />
-    <Compile Include="Defs\MouthDefOf.cs" />
+    <Compile Include="DefOfs\MouthDefOf.cs" />
     <Compile Include="Graphics\FaceTextures.cs" />
     <Compile Include="HairCut\HairCutPawn.cs" />
     <Compile Include="Graphics\Graphic_Multi_NaturalEyes.cs" />
@@ -174,62 +174,61 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\BeardDefs\BeardDef.xml">
-      <Link>Defs\FacialDefs\BeardDef.xml</Link>
+      <Link>Defs\xml\Face\BeardDef.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BrowDefs\BrowDef_Female.xml">
-      <Link>Defs\FacialDefs\BrowDef_Female.xml</Link>
+      <Link>Defs\xml\Face\BrowDef_Female.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BrowDefs\BrowDef_Male.xml">
-      <Link>Defs\FacialDefs\BrowDef_Male.xml</Link>
+      <Link>Defs\xml\Face\BrowDef_Male.xml</Link>
     </Content>
     <Content Include="..\..\Defs\EyeDefs\EyeDef_Female.xml">
-      <Link>Defs\FacialDefs\EyeDef_Female.xml</Link>
+      <Link>Defs\xml\Face\EyeDef_Female.xml</Link>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\EyeDefs\EyeDef_Male.xml">
-      <Link>Defs\FacialDefs\EyeDef_Male.xml</Link>
+      <Link>Defs\xml\Face\EyeDef_Male.xml</Link>
     </Content>
     <Content Include="..\..\Defs\HairDefs\HairsBeGone.xml">
-      <Link>Defs\FacialDefs\HairsBeGone.xml</Link>
+      <Link>Defs\xml\Hair\HairsBeGone.xml</Link>
     </Content>
     <Content Include="..\..\Defs\HairDefs\Killface.xml">
-      <Link>Defs\FacialDefs\Killface.xml</Link>
+      <Link>Defs\xml\Hair\Killface.xml</Link>
     </Content>
     <Content Include="..\..\Defs\HairDefs\NackbladIncRimhair_HairDef.xml">
-      <Link>Defs\NackbladIncRimhair_HairDef.xml</Link>
+      <Link>Defs\xml\Hair\NackbladIncRimhair_HairDef.xml</Link>
     </Content>
     <Content Include="..\..\Defs\HairDefs\SpoonshortagesRimworldHairstyles_HairDefs.xml">
-      <Link>Defs\SpoonshortagesRimworldHairstyles_HairDefs.xml</Link>
+      <Link>Defs\xml\Hair\SpoonshortagesRimworldHairstyles_HairDefs.xml</Link>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="..\..\Defs\JobDefs\Clutter_Jobs.xml">
-      <Link>Defs\Clutter_Jobs.xml</Link>
-      <SubType>Designer</SubType>
+    <Content Include="..\..\Defs\JobDefs\FacialStuff_Jobs.xml">
+      <Link>Defs\xml\FacialStuff_Jobs.xml</Link>
     </Content>
     <Content Include="..\..\Defs\MainButtonDefs\MainButtons.xml">
-      <Link>Defs\MainButtons.xml</Link>
+      <Link>Defs\xml\MainButtons.xml</Link>
     </Content>
     <Content Include="..\..\Defs\MentalStateDefs\MentalStates_Mood_FS.xml">
-      <Link>Defs\MentalStates_Mood_FS.xml</Link>
+      <Link>Defs\xml\MentalStates_Mood_FS.xml</Link>
     </Content>
     <Content Include="..\..\Defs\MoustacheDefs\MoustacheDef.xml">
-      <Link>Defs\FacialDefs\MoustacheDef.xml</Link>
+      <Link>Defs\xml\Face\MoustacheDef.xml</Link>
     </Content>
     <Content Include="..\..\Defs\MouthDefs\MouthDef.xml">
-      <Link>Defs\FacialDefs\MouthDef.xml</Link>
+      <Link>Defs\xml\Face\MouthDef.xml</Link>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\ThingDefs\Dummy.xml">
-      <Link>Defs\Dummy.xml</Link>
+      <Link>Defs\xml\Dummy.xml</Link>
     </Content>
     <Content Include="..\..\Defs\ThinkTreeDefs\SubTrees_MiscFS.xml">
-      <Link>Defs\SubTrees_MiscFS.xml</Link>
+      <Link>Defs\xml\SubTrees_MiscFS.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WalkCycleDefs\WalkCycleDefs.xml">
-      <Link>Defs\WalkCycleDefs.xml</Link>
+      <Link>Defs\FacialDefs\WalkCycleDefs.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WrinkleDefs\WrinkleDef.xml">
-      <Link>Defs\FacialDefs\WrinkleDef.xml</Link>
+      <Link>Defs\xml\Face\WrinkleDef.xml</Link>
     </Content>
     <Content Include="..\..\Languages\English\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\English\FacialStuff_Keyed.xml</Link>

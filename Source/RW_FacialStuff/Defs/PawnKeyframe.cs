@@ -6,7 +6,7 @@
 
         #region Public Fields
 
-        public float keyFrameAt;
+        public int keyIndex;
         public float? FootAngle;
         public float? FootPositionX;
         public float? FootPositionY;
