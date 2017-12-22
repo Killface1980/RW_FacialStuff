@@ -1201,7 +1201,7 @@
 
         public float AnimationPercent;
 
-        public WalkCycleDef walkCycle = WalkCycleDefOf.Human_Walking;
+        public WalkCycleDef walkCycle = WalkCycleDefOf.Human_Walk;
 
         public void DrawFeet(Vector3 rootLoc, bool portrait)
         {

@@ -5,7 +5,9 @@
     [DefOf]
     public static class WalkCycleDefOf
     {
-        public static WalkCycleDef Human_Walking;
+        public static WalkCycleDef Human_Amble;
+
+        public static WalkCycleDef Human_Walk;
 
         public static WalkCycleDef Human_Sprint;
 
