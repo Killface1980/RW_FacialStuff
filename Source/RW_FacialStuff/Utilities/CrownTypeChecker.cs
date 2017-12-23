@@ -1,7 +1,5 @@
 namespace FacialStuff.Utilities
 {
-    using FacialStuff.Enums;
-
     using JetBrains.Annotations;
 
     using Verse;

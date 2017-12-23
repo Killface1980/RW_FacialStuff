@@ -12,5 +12,7 @@
         public static WalkCycleDef Human_Sprint;
 
         public static WalkCycleDef Human_Jog;
+
+        public static WalkCycleDef Quadruped_Walk;
     }
 }

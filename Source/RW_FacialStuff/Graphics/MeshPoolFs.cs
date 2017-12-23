@@ -2,8 +2,6 @@
 {
     using System.Collections.Generic;
 
-    using FacialStuff.Enums;
-
     using UnityEngine;
 
     using Verse;

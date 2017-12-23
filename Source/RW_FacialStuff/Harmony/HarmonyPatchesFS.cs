@@ -213,7 +213,7 @@ namespace FacialStuff.Harmony
                 return;
             }
 
-            compFace.CheckForAddedOrMissingParts();
+            pawn.CheckForAddedOrMissingParts();
             if (!compFace.Deactivated)
             {
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
@@ -247,6 +247,7 @@ namespace FacialStuff.Harmony
             {
                 return;
             }
+            pawn.CheckForAddedOrMissingParts();
 
             // Check if race has face, else return
             if (!pawn.GetCompFace(out CompFace compFace))

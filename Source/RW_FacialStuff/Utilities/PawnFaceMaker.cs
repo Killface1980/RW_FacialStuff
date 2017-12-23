@@ -4,7 +4,6 @@
     using System.Linq;
 
     using FacialStuff.Defs;
-    using FacialStuff.Enums;
 
     using JetBrains.Annotations;
 

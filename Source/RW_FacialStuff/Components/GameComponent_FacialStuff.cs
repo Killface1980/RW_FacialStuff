@@ -9,6 +9,8 @@ namespace FacialStuff
     using FacialStuff.Defs;
     using FacialStuff.Graphics;
 
+    using JetBrains.Annotations;
+
     using RimWorld;
 
     using UnityEngine;
@@ -48,20 +50,40 @@ namespace FacialStuff
             BuildWalkCycles();
         }
 
-        public static void BuildWalkCycles()
+        public static void BuildWalkCycles([CanBeNull] WalkCycleDef defToRebuild = null)
         {
-            foreach (WalkCycleDef cycle in DefDatabase<WalkCycleDef>.AllDefsListForReading)
+            List<WalkCycleDef> cycles = new List<WalkCycleDef>();
+            if (defToRebuild != null)
             {
+                cycles.Add(defToRebuild);
+            }
+            else
+            {
+                cycles = DefDatabase<WalkCycleDef>.AllDefsListForReading;
+            }
+
+            for (int index = 0; index < cycles.Count; index++)
+            {
+                WalkCycleDef cycle = cycles[index];
                 cycle.BodyAngle = new SimpleCurve();
                 cycle.BodyAngleVertical = new SimpleCurve();
-                cycle.BodyOffsetVertical = new SimpleCurve();
+                cycle.BodyOffsetZ = new SimpleCurve();
+                cycle.BodyOffsetVerticalZ = new SimpleCurve();
                 cycle.FootAngle = new SimpleCurve();
                 cycle.FootPositionX = new SimpleCurve();
-                cycle.FootPositionY = new SimpleCurve();
-                cycle.FootPositionVerticalY = new SimpleCurve();
+                cycle.FootPositionZ = new SimpleCurve();
+                cycle.FootPositionVerticalZ = new SimpleCurve();
                 cycle.HandsSwingAngle = new SimpleCurve();
                 cycle.HandsSwingPosVertical = new SimpleCurve();
 
+                if (cycle.animation.NullOrEmpty())
+                {
+                    cycle.animation = new List<PawnKeyframe>();
+                    for (int i = 0; i < 9; i++)
+                    {
+                        cycle.animation.Add(new PawnKeyframe(i));
+                    }
+                }
                 // Log.Message(cycle.defName + " has " + cycle.animation.Count);
                 foreach (PawnKeyframe key in cycle.animation)
                 {
@@ -74,68 +96,39 @@ namespace FacialStuff
         {
             float frameAt = (float)key.keyIndex / (cycle.animation.Count - 1);
 
-            // Log.Message("Adding key for " + cycle.defName + " at " + frameAt);
+            Dictionary<SimpleCurve, float?> dict = new Dictionary<SimpleCurve, float?>();
 
-            float? bodyAngle = key.BodyAngle;
-            if (bodyAngle.HasValue)
+            dict.Add(cycle.BodyOffsetVerticalZ, key.BodyOffsetVerticalZ);
+            dict.Add(cycle.BodyAngle, key.BodyAngle);
+            dict.Add(cycle.BodyAngleVertical, key.BodyAngleVertical);
+            dict.Add(cycle.BodyOffsetZ, key.BodyOffsetZ);
+            dict.Add(cycle.FootAngle, key.FootAngle);
+            dict.Add(cycle.FootPositionX, key.FootPositionX);
+            dict.Add(cycle.FootPositionZ, key.FootPositionZ);
+            dict.Add(cycle.FootPositionVerticalZ, key.FootPositionVerticalZ);
+            dict.Add(cycle.HandsSwingAngle, key.HandsSwingAngle);
+            dict.Add(cycle.HandsSwingPosVertical, key.HandsSwingPosVertical);
+
+            foreach (KeyValuePair<SimpleCurve, float?> pair in dict)
             {
-                cycle.BodyAngle.Add(frameAt, bodyAngle.Value);
+                UpdateCurve(key, pair.Value, pair.Key, frameAt);
             }
 
-            float? bodyAngleVertical = key.BodyAngleVertical;
-            if (bodyAngleVertical.HasValue)
-            {
-                cycle.BodyAngleVertical.Add(frameAt, bodyAngleVertical.Value);
-            }
+        }
 
-            float? bodyOffsetVertical = key.BodyOffsetVertical;
-            if (bodyOffsetVertical.HasValue)
+        private static void UpdateCurve(PawnKeyframe key, float? curvePoint, SimpleCurve simpleCurve, float frameAt)
+        {
+            if (curvePoint.HasValue)
             {
-                cycle.BodyOffsetVertical.Add(frameAt, bodyOffsetVertical.Value);
-            }
-
-            float? footAngle = key.FootAngle;
-            if (footAngle.HasValue)
-            {
-                cycle.FootAngle.Add(frameAt, footAngle.Value);
-            }
-
-            float? footPositionX = key.FootPositionX;
-            if (footPositionX.HasValue)
-            {
-                cycle.FootPositionX.Add(frameAt, footPositionX.Value);
-            }
-
-            float? footPositionY = key.FootPositionY;
-            if (footPositionY.HasValue)
-            {
-                cycle.FootPositionY.Add(frameAt, footPositionY.Value);
-            }
-
-            float? footPositionVerticalY = key.FootPositionVerticalY;
-            if (footPositionVerticalY.HasValue)
-            {
-                cycle.FootPositionVerticalY.Add(frameAt, footPositionVerticalY.Value);
+                simpleCurve.Add(frameAt, curvePoint.Value);
             }
             else
             {
                 if (key.keyIndex == 0)
                 {
-                    cycle.FootPositionVerticalY.Add(0, 0);
-                    cycle.FootPositionVerticalY.Add(1, 0);
+                    simpleCurve.Add(0, 0);
+                    simpleCurve.Add(1, 0);
                 }
-            }
-
-            float? handsSwingAngle = key.HandsSwingAngle;
-            if (handsSwingAngle.HasValue)
-            {
-                cycle.HandsSwingAngle.Add(frameAt, handsSwingAngle.Value);
-            }
-
-            float? handsSwingPosVertical = key.HandsSwingPosVertical;
-            if (handsSwingPosVertical.HasValue)
-            {
-                cycle.HandsSwingPosVertical.Add(frameAt, handsSwingPosVertical.Value);
             }
         }
 

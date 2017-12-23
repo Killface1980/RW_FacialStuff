@@ -3,8 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using FacialStuff.Components;
     using FacialStuff.Defs;
-    using FacialStuff.Enums;
     using FacialStuff.Graphics;
 
     using RimWorld;
@@ -58,6 +58,7 @@
             GUILayout.BeginArea(rect2);
             GUILayout.BeginVertical();
 
+            this.SelPawn.GetCompAnim(out CompBodyAnimator compAni);
             if (compFace.IgnoreRenderer)
             {
                 this.rotation =  GUILayout.SelectionGrid(this.rotation, this.psiToolbarStrings, 4);
@@ -67,7 +68,7 @@
                 this.rotation = this.SelPawn.Rotation.AsInt;
             }
 
-            compFace.rotation = new Rot4(this.rotation);
+            compAni.rotation = new Rot4(this.rotation);
 
             bool male = this.SelPawn.gender == Gender.Male;
 
@@ -411,7 +412,7 @@
                                     {
                                         Color color = Color.white;
                                         pawn.GetCompFace(out CompFace comp2);
-                                        comp2.PawnGraphic.MouthGraphic =
+                                        comp2.PawnFaceGraphic.MouthGraphic =
                                             GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                 current.texPath,
                                                 ShaderDatabase.CutoutSkin,

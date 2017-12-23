@@ -4,12 +4,13 @@ using Verse;
 
 namespace FacialStuff
 {
-    using FacialStuff.Enums;
     using JetBrains.Annotations;
     using RimWorld;
     using System.Collections.Generic;
 
-    public abstract class PawnDrawer
+    using FacialStuff.Components;
+
+    public abstract class PawnHeadDrawer
     {
 
         #region Protected Fields
@@ -36,7 +37,7 @@ namespace FacialStuff
 
         #region Protected Constructors
 
-        protected PawnDrawer()
+        protected PawnHeadDrawer()
         {
         }
         #endregion Protected Constructors
@@ -44,6 +45,7 @@ namespace FacialStuff
         #region Public Properties
 
         public CompFace CompFace { get => this.compFace; set => this.compFace = value; }
+        public CompBodyAnimator CompAnimator { get => this.compAnimator; set => this.compAnimator = value; }
 
         #endregion Public Properties
 
@@ -125,10 +127,6 @@ namespace FacialStuff
         {
         }
 
-        public virtual void DrawFeet(Vector3 rootLoc, bool portrait)
-        {
-        }
-
         public virtual void DrawHairAndHeadGear(Vector3 rootLoc, Quaternion headQuat, RotDrawMode bodyDrawType, bool renderBody, bool portrait, Vector3 b, ref Vector3 currentLoc)
         {
         }
@@ -176,7 +174,8 @@ namespace FacialStuff
         {
             return rotation.AsQuat;
         }
-        protected Pawn Pawn;
+
+        public Pawn Pawn;
 
         public virtual void Initialize()
         {
@@ -184,6 +183,8 @@ namespace FacialStuff
 
         #endregion Public Methods
         public PawnGraphicSet graphics;
+
+        private CompBodyAnimator compAnimator;
 
         public virtual void Tick(Rot4 bodyFacing, Rot4 headFacing, PawnGraphicSet graphics)
         {

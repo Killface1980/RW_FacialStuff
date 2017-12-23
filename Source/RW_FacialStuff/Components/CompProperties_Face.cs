@@ -20,11 +20,9 @@ namespace FacialStuff
 
         public bool hasOrganicHair;
 
-        public bool hasHands;
 
-        public string handType = "Human";
 
-        public List<PawnDrawer> drawers = new List<PawnDrawer>();
+        public List<PawnHeadDrawer> drawers = new List<PawnHeadDrawer>();
 
         public bool needsAlienHair;
 

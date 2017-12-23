@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <FacialStuff.Defs.BodyAnimDef>
+
+    <defName>BodyAnimDef_Male</defName>
+    <label>BodyAnimDef_Male</label>
+
+    <bodyType>Male</bodyType>
+    <shoulderOffsetVerFromCenter>0</shoulderOffsetVerFromCenter>
+    <shoulderWidth>0.25</shoulderWidth>
+    <armLength>0.275</armLength>
+    <hipOffsetVerticalFromCenter>-0.275</hipOffsetVerticalFromCenter>
+    <hipWidth>0.175</hipWidth>
+    <legLength>0.3</legLength>
+
+  </FacialStuff.Defs.BodyAnimDef>
+ 
+   <FacialStuff.Defs.BodyAnimDef>
+
+    <defName>BodyAnimDef_Female</defName>
+    <label>BodyAnimDef_Female</label>
+
+    <bodyType>Female</bodyType>
+    <shoulderOffsetVerFromCenter>0</shoulderOffsetVerFromCenter>
+    <shoulderWidth>0.225</shoulderWidth>
+    <armLength>0.3</armLength>
+    <hipOffsetVerticalFromCenter>-0.275</hipOffsetVerticalFromCenter>
+    <hipWidth>0.175</hipWidth>
+    <legLength>0.3</legLength>
+
+  </FacialStuff.Defs.BodyAnimDef>
+
+   <FacialStuff.Defs.BodyAnimDef>
+
+    <defName>BodyAnimDef_Hulk</defName>
+    <label>BodyAnimDef_Hulk</label>
+
+    <bodyType>Female</bodyType>
+    <shoulderOffsetVerFromCenter>0</shoulderOffsetVerFromCenter>
+    <shoulderWidth>0.35</shoulderWidth>
+    <armLength>0.35</armLength>
+    <hipOffsetVerticalFromCenter>-0.15</hipOffsetVerticalFromCenter>
+    <hipWidth>0.175</hipWidth>
+    <legLength>0.425</legLength>
+<hipOffsetHorWhenFacingHorizontal>-0.15</hipOffsetHorWhenFacingHorizontal>
+  <shoulderOffsetWhenFacingHorizontal>-0.05</shoulderOffsetWhenFacingHorizontal>
+  </FacialStuff.Defs.BodyAnimDef>
+
+  <FacialStuff.Defs.BodyAnimDef>
+
+    <defName>BodyAnimDef_Fat</defName>
+    <label>BodyAnimDef_Fat</label>
+
+    <bodyType>Fat</bodyType>
+    <shoulderOffsetVerFromCenter>0</shoulderOffsetVerFromCenter>
+    <shoulderWidth>0.3</shoulderWidth>
+    <armLength>0.275</armLength>
+    <hipOffsetVerticalFromCenter>-0.275</hipOffsetVerticalFromCenter>
+    <hipWidth>0.175</hipWidth>
+    <legLength>0.3</legLength>
+
+  </FacialStuff.Defs.BodyAnimDef>
+
+  <FacialStuff.Defs.BodyAnimDef>
+
+    <defName>BodyAnimDef_Thin</defName>
+    <label>BodyAnimDef_Thin</label>
+
+    <bodyType>Thin</bodyType>
+    <shoulderOffsetVerFromCenter>0</shoulderOffsetVerFromCenter>
+    <shoulderWidth>0.3</shoulderWidth>
+    <armLength>0.275</armLength>
+    <hipOffsetVerticalFromCenter>-0.275</hipOffsetVerticalFromCenter>
+    <hipWidth>0.175</hipWidth>
+    <legLength>0.3</legLength>
+
+  </FacialStuff.Defs.BodyAnimDef>
+  
+  <FacialStuff.Defs.BodyAnimDef>
+
+    <defName>BodyAnimDef_Husky</defName>
+    <label>BodyAnimDef_Husky</label>
+
+    <shoulderOffsetVerFromCenter>0</shoulderOffsetVerFromCenter>
+    <shoulderWidth>0.3</shoulderWidth>
+    <armLength>0.275</armLength>
+    <hipOffsetVerticalFromCenter>-0.275</hipOffsetVerticalFromCenter>
+    <hipWidth>0.175</hipWidth>
+    <legLength>0.3</legLength>
+
+  </FacialStuff.Defs.BodyAnimDef>
+
+
+
+</Defs>

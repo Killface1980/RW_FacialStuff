@@ -76,11 +76,18 @@
     <None Include="Harmony\Optional\AlienPatches.cs" />
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
+    <Compile Include="Components\CompBodyAnimator.cs" />
+    <Compile Include="Components\CompProperties_BodyAnimator.cs" />
+    <Compile Include="DefOfs\BodyAnimDefOf.cs" />
+    <Compile Include="Defs\BodyAnimDef.cs" />
+    <Compile Include="Drawer\Class1.cs" />
+    <Compile Include="Drawer\HumanBipedDrawer.cs" />
+    <Compile Include="Drawer\PawnBodyDrawer.cs" />
+    <Compile Include="Graphics\PawnBodyGraphic.cs" />
     <Compile Include="MainTabWindow_Animator.cs" />
-    <Compile Include="Components\BodyDefinition.cs" />
     <Compile Include="Components\BodyPartStats.cs" />
     <Compile Include="Components\CompProperties_Face.cs" />
-    <Compile Include="Components\PartStatus.cs" />
+    <Compile Include="Enums\PartStatus.cs" />
     <Compile Include="Defs\PawnKeyframe.cs" />
     <Compile Include="DefOfs\WalkCycleDefOf.cs" />
     <Compile Include="Defs\WalkCycleDef.cs" />
@@ -88,13 +95,13 @@
     <Compile Include="Defs\HandDef.cs" />
     <Compile Include="Components\CompWeaponExtensions.cs" />
     <Compile Include="Components\CompProperties_WeaponExtensions.cs" />
-    <Compile Include="Drawer\PawnDrawer.cs" />
+    <Compile Include="Drawer\PawnHeadDrawer.cs" />
     <Compile Include="FaceEditor\UI\Util\SelectionChangeListener.cs" />
     <Compile Include="FaceEditor\UI\Util\UpdatePawnListener.cs" />
     <Compile Include="Components\GameComponent_FacialStuff.cs" />
     <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
     <Compile Include="Harmony\Optional\Vampire_Patches.cs" />
-    <Compile Include="Drawer\HumanDrawer.cs" />
+    <Compile Include="Drawer\HumanHeadDrawer.cs" />
     <Compile Include="Utilities\CrownTypeChecker.cs" />
     <None Include="FaceEditor\Job_FaceStylingJoy.cs" />
     <Compile Include="Components\CompFaceEditor.cs" />
@@ -116,7 +123,7 @@
     <None Include="newStuff\JoyGiver_ChangeAppearance.cs" />
     <Compile Include="Animator\PawnHeadRotator.cs" />
     <Compile Include="Enums\Side.cs" />
-    <Compile Include="Graphics\PawnGraphic.cs" />
+    <Compile Include="Graphics\PawnFaceGraphic.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.cs" />
     <None Include="FaceEditor\UI\DresserUI.cs" />
     <Compile Include="FaceEditor\UI\DTO\DresserDTO.cs" />
@@ -176,6 +183,9 @@
     </Content>
     <Content Include="..\..\Defs\BeardDefs\BeardDef.xml">
       <Link>Defs\xml\Face\BeardDef.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyMeasureDefs\BodyMeasureDefs.xml">
+      <Link>Defs\xml\BodyMeasureDefs.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BrowDefs\BrowDef_Female.xml">
       <Link>Defs\xml\Face\BrowDef_Female.xml</Link>

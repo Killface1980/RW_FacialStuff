@@ -25,7 +25,7 @@ namespace FacialStuff
         private readonly CompFace compFace;
 
         [NotNull]
-        private readonly PawnGraphic pawnGraphic;
+        private readonly PawnFaceGraphic pawnFaceGraphic;
 
         private Pawn pawn;
 
@@ -33,10 +33,10 @@ namespace FacialStuff
 
         #region Public Constructors
 
-        public FaceMaterial([NotNull] CompFace compFace, [NotNull] PawnGraphic pawnGraphic)
+        public FaceMaterial([NotNull] CompFace compFace, [NotNull] PawnFaceGraphic pawnFaceGraphic)
         {
             this.compFace = compFace;
-            this.pawnGraphic = pawnGraphic;
+            this.pawnFaceGraphic = pawnFaceGraphic;
             this.pawn = this.compFace.Pawn;
             this.flasher = this.pawn.Drawer.renderer.graphics.flasher;
 
@@ -55,7 +55,7 @@ namespace FacialStuff
                 return null;
             }
 
-            Material material = this.pawnGraphic.MainBeardGraphic?.MatAt(facing);
+            Material material = this.pawnFaceGraphic.MainBeardGraphic?.MatAt(facing);
 
             if (material != null)
             {
@@ -68,7 +68,7 @@ namespace FacialStuff
         [CanBeNull]
         public Material BrowMatAt(Rot4 facing)
         {
-            Material material = this.pawnGraphic.BrowGraphic?.MatAt(facing);
+            Material material = this.pawnFaceGraphic.BrowGraphic?.MatAt(facing);
 
             if (material != null)
             {
@@ -86,11 +86,11 @@ namespace FacialStuff
             Material material = null;
             if (bodyCondition == RotDrawMode.Fresh)
             {
-                material = this.pawnGraphic.DeadEyeGraphic?.MatAt(facing);
+                material = this.pawnFaceGraphic.DeadEyeGraphic?.MatAt(facing);
             }
             else if (bodyCondition == RotDrawMode.Rotting)
             {
-                material = this.pawnGraphic.DeadEyeGraphic?.MatAt(facing);
+                material = this.pawnFaceGraphic.DeadEyeGraphic?.MatAt(facing);
             }
 
             if (material != null)
@@ -109,7 +109,7 @@ namespace FacialStuff
                 return null;
             }
 
-            Material material = this.pawnGraphic.EyeLeftGraphic?.MatAt(facing);
+            Material material = this.pawnFaceGraphic.EyeLeftGraphic?.MatAt(facing);
 
             if (!portrait)
             {
@@ -117,7 +117,7 @@ namespace FacialStuff
                 {
                     if (this.compFace.IsAsleep || this.compFace.EyeWiggler.EyeLeftBlinkNow)
                     {
-                        material = this.pawnGraphic.EyeLeftClosedGraphic.MatAt(facing);
+                        material = this.pawnFaceGraphic.EyeLeftClosedGraphic.MatAt(facing);
                     }
                 }
             }
@@ -133,7 +133,7 @@ namespace FacialStuff
         [CanBeNull]
         public Material EyeLeftPatchMatAt(Rot4 facing)
         {
-            Material material = this.pawnGraphic.EyeLeftPatchGraphic?.MatAt(facing);
+            Material material = this.pawnFaceGraphic.EyeLeftPatchGraphic?.MatAt(facing);
 
             if (material != null)
             {
@@ -151,7 +151,7 @@ namespace FacialStuff
                 return null;
             }
 
-            Material material = this.pawnGraphic.EyeRightGraphic?.MatAt(facing);
+            Material material = this.pawnFaceGraphic.EyeRightGraphic?.MatAt(facing);
 
             if (!portrait)
             {
@@ -159,7 +159,7 @@ namespace FacialStuff
                 {
                     if (this.compFace.IsAsleep || this.compFace.EyeWiggler.EyeRightBlinkNow)
                     {
-                        material = this.pawnGraphic.EyeRightClosedGraphic?.MatAt(facing);
+                        material = this.pawnFaceGraphic.EyeRightClosedGraphic?.MatAt(facing);
                     }
                 }
             }
@@ -175,7 +175,7 @@ namespace FacialStuff
         [CanBeNull]
         public Material EyeRightPatchMatAt(Rot4 facing)
         {
-            Material material = this.pawnGraphic.EyeRightPatchGraphic?.MatAt(facing);
+            Material material = this.pawnFaceGraphic.EyeRightPatchGraphic?.MatAt(facing);
 
             if (material != null)
             {
@@ -194,7 +194,7 @@ namespace FacialStuff
                 return null;
             }
 
-            Material material = this.pawnGraphic.MoustacheGraphic?.MatAt(facing);
+            Material material = this.pawnFaceGraphic.MoustacheGraphic?.MatAt(facing);
 
             if (material != null)
             {
@@ -211,7 +211,7 @@ namespace FacialStuff
 
             if (this.compFace.bodyStat.jaw != PartStatus.Natural && Controller.settings.ShowExtraParts)
             {
-                material = this.pawnGraphic.JawGraphic?.MatAt(facing);
+                material = this.pawnFaceGraphic.JawGraphic?.MatAt(facing);
             }
             else
             {
@@ -234,11 +234,11 @@ namespace FacialStuff
 
                 if (portrait)
                 {
-                    material = this.pawnGraphic.mouthgraphic.HumanMouthGraphic[3].Graphic.MatAt(facing);
+                    material = this.pawnFaceGraphic.mouthgraphic.HumanMouthGraphic[3].Graphic.MatAt(facing);
                 }
                 else
                 {
-                    material = this.pawnGraphic.MouthGraphic?.MatAt(facing);
+                    material = this.pawnFaceGraphic.MouthGraphic?.MatAt(facing);
 
                     // if (bodyCondition == RotDrawMode.Fresh)
                     // {
@@ -266,11 +266,11 @@ namespace FacialStuff
             {
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
-                    material = this.pawnGraphic.WrinkleGraphic?.MatAt(facing);
+                    material = this.pawnFaceGraphic.WrinkleGraphic?.MatAt(facing);
                 }
                 else if (bodyCondition == RotDrawMode.Rotting)
                 {
-                    material = this.pawnGraphic.RottingWrinkleGraphic?.MatAt(facing);
+                    material = this.pawnFaceGraphic.RottingWrinkleGraphic?.MatAt(facing);
                 }
             }
 

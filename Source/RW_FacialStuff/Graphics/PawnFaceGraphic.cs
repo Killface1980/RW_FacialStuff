@@ -2,7 +2,6 @@
 {
     using FacialStuff.Animator;
     using FacialStuff.Defs;
-    using FacialStuff.Enums;
 
     using JetBrains.Annotations;
 
@@ -12,7 +11,7 @@
 
     using Verse;
 
-    public class PawnGraphic
+    public class PawnFaceGraphic
     {
 
         #region Public Fields
@@ -35,9 +34,6 @@
         [CanBeNull]
         public Graphic_Multi_AddedHeadParts EyeRightPatchGraphic;
 
-        [CanBeNull]
-        public Graphic HandGraphicLeft;
-        public Graphic HandGraphicRight;
 
         [CanBeNull]
         public Graphic_Multi_NaturalHeadParts JawGraphic;
@@ -80,18 +76,8 @@
 
         private readonly Pawn pawn;
 
-        public Graphic FootGraphicLeft;
-        public Graphic FootGraphicRight;
 
-        public Graphic FootGraphicRightCol;
-
-        public Graphic FootGraphicLeftCol;
-
-        public Graphic HandGraphicLeftCol;
-
-        public Graphic HandGraphicRightCol;
-
-        public PawnGraphic(CompFace compFace)
+        public PawnFaceGraphic(CompFace compFace)
         {
             this.compFace = compFace;
             this.pawn = compFace.Pawn;
@@ -127,10 +113,7 @@
                 this.InitializeGraphicsMouth();
             }
 
-            if (this.compFace.Props.hasHands)
-            {
-                this.InitializeGraphicsHand();
-            }
+
         }
 
         #endregion Private Fields
@@ -308,127 +291,6 @@
                 this.pawn.story.SkinColor);
         }
 
-        private void InitializeGraphicsHand()
-        {
-            if (!this.compFace.Props.hasHands)
-            {
-                return;
-            }
-            string texNameHand = "Hands/" + this.compFace.Props.handType + "_Hand";
-            string texNameFoot = "Hands/" + this.compFace.Props.handType + "_Foot";
-
-            Color skinColor = this.pawn.story.SkinColor;
-
-            Color rightColorFoot = Color.red;
-            Color leftColorFoot = Color.blue;
-
-            Color rightColorHand = Color.cyan;
-            Color leftColorHand = Color.magenta;
-
-            Color rightHandColor;
-            Color leftHandColor;
-            Color rightFootColor;
-            Color leftFootColor;
-            Color metal = new Color(0.51f, 0.61f, 0.66f);
-
-            switch (this.compFace.bodyStat.handRight)
-            {
-                case PartStatus.Artificial:
-                    rightHandColor = metal;
-                    break;
-                default:
-                    rightHandColor = skinColor;
-                    break;
-            }
-
-            switch (this.compFace.bodyStat.handLeft)
-            {
-                case PartStatus.Artificial:
-                    leftHandColor = metal;
-                    break;
-                default:
-                    leftHandColor = skinColor;
-                    break;
-            }
-
-            switch (this.compFace.bodyStat.footRight)
-            {
-                case PartStatus.Artificial:
-                    rightFootColor = metal;
-                    break;
-                default:
-                    rightFootColor = skinColor;
-                    break;
-            }
-
-            switch (this.compFace.bodyStat.footLeft)
-            {
-                case PartStatus.Artificial:
-                    leftFootColor = metal;
-                    break;
-                default:
-                    leftFootColor = skinColor;
-                    break;
-            }
-
-
-            this.HandGraphicRight = GraphicDatabase.Get<Graphic_Single>(
-                texNameHand,
-                ShaderDatabase.CutoutSkin,
-                new Vector2(1f, 1f),
-                rightHandColor,
-                skinColor);
-
-            this.HandGraphicLeft = GraphicDatabase.Get<Graphic_Single>(
-                texNameHand,
-                ShaderDatabase.CutoutSkin,
-                new Vector2(1f, 1f),
-                leftHandColor,
-                skinColor);
-
-            this.FootGraphicRight = GraphicDatabase.Get<Graphic_Multi>(
-                texNameFoot,
-                ShaderDatabase.CutoutSkin,
-                new Vector2(1f, 1f),
-                rightFootColor,
-                skinColor);
-
-            this.FootGraphicLeft = GraphicDatabase.Get<Graphic_Multi>(
-                texNameFoot,
-                ShaderDatabase.CutoutSkin,
-                new Vector2(1f, 1f),
-                leftFootColor,
-                skinColor);
-
-            // for development
-            this.HandGraphicRightCol = GraphicDatabase.Get<Graphic_Single>(
-                texNameHand,
-                ShaderDatabase.CutoutSkin,
-                new Vector2(1f, 1f),
-                rightColorHand,
-                skinColor);
-
-            this.HandGraphicLeftCol = GraphicDatabase.Get<Graphic_Single>(
-                texNameHand,
-                ShaderDatabase.CutoutSkin,
-                new Vector2(1f, 1f),
-                leftColorHand,
-                skinColor);
-
-            this.FootGraphicRightCol = GraphicDatabase.Get<Graphic_Multi>(
-                texNameFoot,
-                ShaderDatabase.CutoutSkin,
-                new Vector2(1f, 1f),
-                rightColorFoot,
-                skinColor);
-
-            this.FootGraphicLeftCol = GraphicDatabase.Get<Graphic_Multi>(
-                texNameFoot,
-                ShaderDatabase.CutoutSkin,
-                new Vector2(1f, 1f),
-                leftColorFoot,
-                skinColor);
-        }
 
         private void InitializeGraphicsMouth()
         {

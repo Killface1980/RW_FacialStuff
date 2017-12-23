@@ -16,19 +16,21 @@
 
         public SimpleCurve BodyAngleVertical = new SimpleCurve();
 
-        public SimpleCurve BodyOffsetVertical = new SimpleCurve();
+        public SimpleCurve BodyOffsetZ = new SimpleCurve();
 
         public SimpleCurve FootAngle = new SimpleCurve();
 
         public SimpleCurve FootPositionX = new SimpleCurve();
 
-        public SimpleCurve FootPositionY = new SimpleCurve();
+        public SimpleCurve FootPositionZ = new SimpleCurve();
 
         public SimpleCurve HandsSwingAngle = new SimpleCurve();
 
         public SimpleCurve HandsSwingPosVertical = new SimpleCurve();
 
-        public SimpleCurve FootPositionVerticalY = new SimpleCurve();
+        public SimpleCurve FootPositionVerticalZ = new SimpleCurve();
+
+        public SimpleCurve BodyOffsetVerticalZ = new SimpleCurve();
 
         #endregion Public Fields
     }

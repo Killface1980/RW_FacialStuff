@@ -3,22 +3,42 @@
 
     public class PawnKeyframe
     {
-
         #region Public Fields
 
         public int keyIndex;
-        public float? FootAngle;
-        public float? FootPositionX;
-        public float? FootPositionY;
-        public float? HandsSwingAngle;
-        public float? HandsSwingPosVertical;
-        public float? BodyAngle;
-        public float? BodyAngleVertical;
-        public float? BodyOffsetVertical;
 
-        public float? FootPositionVerticalY;
+        public float? BodyAngle;
+
+        public float? BodyAngleVertical;
+
+        public float? BodyOffsetVerticalZ;
+
+        public float? BodyOffsetZ;
+
+        public float? FootAngle;
+
+        public float? FootPositionVerticalZ;
+
+        public float? FootPositionX;
+
+        public float? FootPositionZ;
+
+        public float? HandsSwingAngle;
+
+        public float? HandsSwingPosVertical;
+
 
         #endregion Public Fields
+
+        #region Public Constructors
+
+        public PawnKeyframe() { }
+        public PawnKeyframe(int index)
+        {
+            this.keyIndex = index;
+        }
+
+        #endregion Public Constructors
     }
 
 }

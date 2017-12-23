@@ -1,4 +1,4 @@
-﻿namespace FacialStuff.Enums
+﻿namespace FacialStuff
 {
     public enum FullHead : byte
     {

@@ -1,5 +1,7 @@
 ﻿namespace FacialStuff.Animator
 {
+    using FacialStuff.Components;
+
     using Verse;
     using Verse.AI;
 
@@ -11,12 +13,12 @@
 
         private Pawn pawn;
 
-        private CompFace compFace;
+        private CompBodyAnimator compAnim;
 
-        public BodyAnimator(Pawn p, CompFace compface)
+        public BodyAnimator(Pawn p, CompBodyAnimator compAnim)
         {
             this.pawn = p;
-            this.compFace = compface;
+            this.compAnim = compAnim;
         }
 
         // Verse.PawnTweener
@@ -24,9 +26,9 @@
         {
             movedPercent = 0f;
 
-            if (this.compFace.AnimatorOpen)
+            if (this.compAnim.AnimatorOpen)
             {
-                movedPercent = this.compFace.AnimationPercent;
+                movedPercent = this.compAnim.AnimationPercent;
                 return true;
             }
 

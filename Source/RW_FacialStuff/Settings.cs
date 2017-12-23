@@ -2,8 +2,6 @@
 
 namespace FacialStuff
 {
-    using FacialStuff.Enums;
-
     using RimWorld;
 
     using UnityEngine;

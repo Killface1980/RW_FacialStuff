@@ -9,8 +9,6 @@ namespace FacialStuff.Defs
 {
     using System.Collections.Generic;
 
-    using FacialStuff.Enums;
-
     using JetBrains.Annotations;
 
     using RimWorld;

@@ -7,7 +7,6 @@
     using System.Reflection;
 
     using FacialStuff.Defs;
-    using FacialStuff.Enums;
     using FacialStuff.FaceEditor.ColorPicker;
     using FacialStuff.FaceEditor.UI.DTO;
     using FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs;
