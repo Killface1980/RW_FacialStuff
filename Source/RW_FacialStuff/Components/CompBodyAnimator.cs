@@ -61,6 +61,7 @@
 
         public BodyAnimDef bodySizeDefinition;
 
+
         public List<PawnBodyDrawer> PawnDrawers => pawnDrawers;
 
         public void TickDrawers(Rot4 bodyFacing, PawnGraphicSet graphics)

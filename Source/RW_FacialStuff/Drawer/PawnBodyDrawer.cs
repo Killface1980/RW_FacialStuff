@@ -9,8 +9,9 @@ namespace FacialStuff
     using System.Collections.Generic;
 
     using FacialStuff.Components;
+    using FacialStuff.Drawer;
 
-    public abstract class PawnBodyDrawer
+    public class PawnBodyDrawer : BasicDrawer
     {
 
         #region Protected Fields

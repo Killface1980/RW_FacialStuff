@@ -33,6 +33,14 @@ namespace FacialStuff.Graphics
 
         private Pawn pawn;
 
+        public Graphic FrontPawGraphicRight;
+
+        public Graphic FrontPawGraphicLeft;
+
+        public Graphic FrontPawGraphicRightCol;
+
+        public Graphic FrontPawGraphicLeftCol;
+
         public PawnBodyGraphic(CompBodyAnimator compAni)
         {
             this.compAni = compAni;
@@ -43,6 +51,10 @@ namespace FacialStuff.Graphics
                     {
                         this.InitializeGraphicsHand();
                         this.InitializeGraphicsFeet();
+                        if (this.compAni.Props.quadruped)
+                        {
+                            this.InitializeGraphicsFrontPaws();
+                        }
                     });
 
         }
@@ -135,7 +147,7 @@ namespace FacialStuff.Graphics
             Color leftColorFoot = Color.blue;
 
             Color rightFootColor = skinColor;
-            Color leftFootColor =skinColor;
+            Color leftFootColor = skinColor;
             Color metal = new Color(0.51f, 0.61f, 0.66f);
 
             switch (this.compAni.bodyStat.footRight)
@@ -174,6 +186,71 @@ namespace FacialStuff.Graphics
                 skinColor);
 
             this.FootGraphicLeftCol = GraphicDatabase.Get<Graphic_Multi>(
+                texNameFoot,
+                ShaderDatabase.CutoutSkin,
+                new Vector2(1f, 1f),
+                leftColorFoot,
+                skinColor);
+        }
+
+        private void InitializeGraphicsFrontPaws()
+        {
+
+            string texNameFoot = "Hands/" + this.compAni.Props.handType + "_Foot";
+
+            Color skinColor;
+            if (this.pawn.RaceProps.Animal)
+            {
+                skinColor = Color.white;
+            }
+            else
+            {
+                skinColor = this.pawn.story.SkinColor;
+            }
+
+            Color rightColorFoot = Color.cyan;
+            Color leftColorFoot = Color.magenta;
+
+            Color rightFootColor = skinColor;
+            Color leftFootColor = skinColor;
+            Color metal = new Color(0.51f, 0.61f, 0.66f);
+
+            switch (this.compAni.bodyStat.footRight)
+            {
+                case PartStatus.Artificial:
+                    rightFootColor = metal;
+                    break;
+            }
+
+            switch (this.compAni.bodyStat.footLeft)
+            {
+                case PartStatus.Artificial:
+                    leftFootColor = metal;
+                    break;
+            }
+
+            this.FrontPawGraphicRight = GraphicDatabase.Get<Graphic_Multi>(
+                texNameFoot,
+                ShaderDatabase.CutoutSkin,
+                new Vector2(1f, 1f),
+                rightFootColor,
+                skinColor);
+
+            this.FrontPawGraphicLeft = GraphicDatabase.Get<Graphic_Multi>(
+                texNameFoot,
+                ShaderDatabase.CutoutSkin,
+                new Vector2(1f, 1f),
+                leftFootColor,
+                skinColor);
+
+            this.FrontPawGraphicRightCol = GraphicDatabase.Get<Graphic_Multi>(
+                texNameFoot,
+                ShaderDatabase.CutoutSkin,
+                new Vector2(1f, 1f),
+                rightColorFoot,
+                skinColor);
+
+            this.FrontPawGraphicLeftCol = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),

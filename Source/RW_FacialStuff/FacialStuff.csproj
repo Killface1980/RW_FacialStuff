@@ -80,9 +80,10 @@
     <Compile Include="Components\CompProperties_BodyAnimator.cs" />
     <Compile Include="DefOfs\BodyAnimDefOf.cs" />
     <Compile Include="Defs\BodyAnimDef.cs" />
-    <Compile Include="Drawer\Class1.cs" />
+    <Compile Include="Drawer\BasicDrawer.cs" />
     <Compile Include="Drawer\HumanBipedDrawer.cs" />
     <Compile Include="Drawer\PawnBodyDrawer.cs" />
+    <Compile Include="Drawer\QuadrupedDrawer.cs" />
     <Compile Include="Graphics\PawnBodyGraphic.cs" />
     <Compile Include="MainTabWindow_Animator.cs" />
     <Compile Include="Components\BodyPartStats.cs" />

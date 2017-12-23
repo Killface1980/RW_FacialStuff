@@ -28,6 +28,15 @@
         public float? HandsSwingPosVertical;
 
 
+        // Quadrupeds
+        public float? FrontPawAngle;
+
+        public float? FrontPawPositionX;
+
+        public float? FrontPawPositionZ;
+
+        public float? FrontPawPositionVerticalZ;
+
         #endregion Public Fields
 
         #region Public Constructors

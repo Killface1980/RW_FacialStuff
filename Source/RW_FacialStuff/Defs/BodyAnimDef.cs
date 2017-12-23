@@ -13,20 +13,24 @@ namespace FacialStuff.Defs
     {
         public BodyType bodyType = BodyType.Undefined;
 
-        public float hipOffsetHorWhenFacingHorizontal;
-
-        public float hipWidth;
-
-        public float hipOffsetVerticalFromCenter;
-
-        public float legLength;
+        public float armLength;
 
         public float shoulderWidth;
 
         public float shoulderOffsetVerFromCenter;
 
-        public float armLength;
-
         public float shoulderOffsetWhenFacingHorizontal = -0.05f;
+
+
+        public float legLength;
+
+        public float hipWidth;
+
+        public float hipOffsetHorWhenFacingHorizontal;
+
+        public float hipOffsetVerticalFromCenter;
+
+
+
     }
 }

@@ -60,8 +60,10 @@
             <quadruped>true</quadruped>
             <handType>Human</handType>
             <drawers>
-              <li Class ="FacialStuff.HumanBipedDrawer"/>
+              <li Class ="FacialStuff.QuadrupedDrawer"/>
             </drawers>
+            <bodyAnimType>BodyAnimDef_Boomalope</bodyAnimType>
+          <defaultCycleWalk>Quadruped_Walk</defaultCycleWalk>
           </li>
       </value>
       </li>
@@ -91,6 +93,7 @@
               <li Class ="FacialStuff.QuadrupedDrawer"/>
             </drawers>
             <bodyAnimType>BodyAnimDef_Husky</bodyAnimType>
+            <defaultCycleWalk>Quadruped_Walk</defaultCycleWalk>
           </li>
       </value>
       </li>

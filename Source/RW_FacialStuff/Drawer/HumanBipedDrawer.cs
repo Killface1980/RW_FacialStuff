@@ -58,18 +58,23 @@ namespace FacialStuff
             float leftFootHorizontal = -rightFootHorizontal;
             float rightFootDepth = 0.035f;
             float leftFootDepth = rightFootDepth;
-            float rightFootVertical = -body.legLength;
+            float rightFootVertical = 0f;// -body.legLength;
             float leftFootVertical = rightFootVertical;
 
-            // Center = drawpos of carryThing
-            Vector3 center = rootLoc;
+            float offsetGround = -0.625f;
+
+            Vector3 ground = rootLoc;
+            ground.z += offsetGround;
 
             float footAngleRight = 0f;
             float footAngleLeft = 0f;
             Rot4 rot = bodyFacing;
 
-            // Offsets for hands from the pawn center
-            center.z += body.hipOffsetVerticalFromCenter;
+            List<Vector2> groundPos = this.GetJointPositions(
+                rot,
+                body.hipOffsetHorWhenFacingHorizontal,
+                0,
+                body.hipWidth);
 
             if (rot.IsHorizontal)
             {
@@ -81,8 +86,6 @@ namespace FacialStuff
                 }
                 else
                 {
-                    // x *= -1;
-                    // x2 *= -1;
                     rightFootDepth *= -1;
                 }
             }
@@ -139,7 +142,7 @@ namespace FacialStuff
                 float multi = rot == Rot4.West ? -1f : 1f;
 
                 // Align the center to the hip
-                center.x += multi * body.hipOffsetHorWhenFacingHorizontal;
+                ground.x += multi * body.hipOffsetHorWhenFacingHorizontal;
 
                 if (rot == Rot4.East)
                 {
@@ -151,7 +154,7 @@ namespace FacialStuff
                 }
             }
 
-            if (this.CompAnimator.AnimatorOpen)
+            if (MainTabWindow_Animator.Colored)
             {
                 matRight = this.CompAnimator.PawnBodyGraphic?.FootGraphicRightCol?.MatAt(rot);
                 matLeft = this.CompAnimator.PawnBodyGraphic?.FootGraphicLeftCol?.MatAt(rot);
@@ -179,7 +182,7 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                         footMeshRight,
-                        center.RotatedBy(bodyAngle) + new Vector3(rightFootHorizontal, rightFootDepth, rightFootVertical),
+                        ground.RotatedBy(bodyAngle) + new Vector3(rightFootHorizontal, rightFootDepth, rightFootVertical),
                         Quaternion.AngleAxis(bodyAngle + footAngleRight, Vector3.up),
                         matRight,
                         portrait);
@@ -192,7 +195,7 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                         footMeshLeft,
-                        center.RotatedBy(bodyAngle) + new Vector3(leftFootHorizontal, leftFootDepth, leftFootVertical),
+                        ground.RotatedBy(bodyAngle) + new Vector3(leftFootHorizontal, leftFootDepth, leftFootVertical),
                         Quaternion.AngleAxis(bodyAngle + footAngleLeft, Vector3.up),
                         matLeft,
                         portrait);
@@ -206,14 +209,17 @@ namespace FacialStuff
                     "Hands/Human_Foot",
                     ShaderDatabase.CutoutSkin,
                     Vector2.one,
-                    Color.yellow).MatFront;
+                    Color.yellow).MatAt(rot);
 
-                GenDraw.DrawMeshNowOrLater(
+                foreach (Vector2 pos in groundPos)
+                {
+                    GenDraw.DrawMeshNowOrLater(
                     footMeshRight,
-                    center.RotatedBy(bodyAngle) + new Vector3(0, 0.301f, 0),
+                    ground.RotatedBy(bodyAngle) + new Vector3(pos.x, 0.301f, pos.y),
                     Quaternion.AngleAxis(0, Vector3.up),
                     centerMat,
                     portrait);
+                }
 
                 // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z),
                 // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
@@ -227,7 +233,7 @@ namespace FacialStuff
 
         public override void Initialize()
         {
-            
+
             base.Initialize();
         }
 
@@ -253,15 +259,21 @@ namespace FacialStuff
 
         public override void Tick(Rot4 bodyFacing, PawnGraphicSet graphics)
         {
-            base.Tick(bodyFacing,  graphics);
+            base.Tick(bodyFacing, graphics);
 
             this.isMoving = this.CompAnimator.BodyAnimator.IsMoving(out this.movedPercent);
             var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
             this.BodyWobble = curve.Evaluate(this.movedPercent);
 
+            this.SelectWalkcycle();
+
+        }
+
+        public virtual void SelectWalkcycle()
+        {
             if (this.CompAnimator.AnimatorOpen)
             {
-                this.walkCycle = this.CompAnimator.walkCycle;
+                this.walkCycle = MainTabWindow_Animator.EditorWalkcycle;
             }
             else if (this.Pawn.CurJob != null)
             {
@@ -287,7 +299,6 @@ namespace FacialStuff
                         break;
                 }
             }
-
         }
 
         #endregion Public Methods

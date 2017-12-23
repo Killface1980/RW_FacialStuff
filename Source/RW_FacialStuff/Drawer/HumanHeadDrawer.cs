@@ -890,7 +890,7 @@ namespace FacialStuff
 
             if (this.CompAnimator.AnimatorOpen)
             {
-                this.walkCycle = this.CompAnimator.walkCycle;
+                this.walkCycle = MainTabWindow_Animator.EditorWalkcycle;
             }
             else if (this.Pawn.CurJob != null)
             {
@@ -926,10 +926,10 @@ namespace FacialStuff
         {
             Material matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeft?.MatSingle;
             Material matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRight?.MatSingle;
-            if (this.CompAnimator.AnimatorOpen)
+            if (MainTabWindow_Animator.Colored)
             {
-                 matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeftCol?.MatSingle;
-                 matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRightCol?.MatSingle;
+                matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeftCol?.MatSingle;
+                matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRightCol?.MatSingle;
 
             }
             var body = this.CompAnimator.bodySizeDefinition;
@@ -939,14 +939,21 @@ namespace FacialStuff
             float x2 = -x;
             float y = YOffsetBodyParts;
             float y2 = y;
-            float z = -0.025f;
+            float z = body.shoulderOffsetVerFromCenter;
             float z2 = -z;
+
+            Rot4 rot = this.bodyFacing;
+
+            List<Vector2> shoulperPos = this.GetJointPositions(
+                rot,
+                body.shoulderOffsetWhenFacingHorizontal,
+                body.shoulderOffsetVerFromCenter,
+                body.shoulderWidth);
 
             // Center = drawpos of carryThing
             Vector3 center = drawPos;
 
             float handSwingAngle = 0f;
-            Rot4 rot = this.bodyFacing;
             var shoulderAngle = 0f;
 
             // Has the pawn something in his hands?
@@ -1055,10 +1062,15 @@ namespace FacialStuff
                     Vector2.one,
                     Color.red).MatSingle;
 
-                GenDraw.DrawMeshNowOrLater(handsMesh, center + new Vector3(0, 0.301f, 0),
-                    Quaternion.AngleAxis(0, Vector3.up), centerMat, portrait);
+                foreach (Vector2 pos in shoulperPos)
+                {
+                    GenDraw.DrawMeshNowOrLater(handsMesh, drawPos + new Vector3(pos.x, 0.301f, pos.y),
+                        Quaternion.AngleAxis(0, Vector3.up), centerMat, portrait);
+                }
             }
         }
+
+
 
         #endregion Protected Methods
     }

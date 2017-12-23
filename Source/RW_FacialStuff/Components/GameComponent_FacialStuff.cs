@@ -76,6 +76,13 @@ namespace FacialStuff
                 cycle.HandsSwingAngle = new SimpleCurve();
                 cycle.HandsSwingPosVertical = new SimpleCurve();
 
+                // Quadrupeds
+                cycle.FrontPawAngle = new SimpleCurve();
+                cycle.FrontPawPositionX = new SimpleCurve();
+                cycle.FrontPawPositionZ = new SimpleCurve();
+                cycle.FrontPawPositionVerticalZ = new SimpleCurve();
+
+
                 if (cycle.animation.NullOrEmpty())
                 {
                     cycle.animation = new List<PawnKeyframe>();
@@ -96,18 +103,32 @@ namespace FacialStuff
         {
             float frameAt = (float)key.keyIndex / (cycle.animation.Count - 1);
 
-            Dictionary<SimpleCurve, float?> dict = new Dictionary<SimpleCurve, float?>();
+            Dictionary<SimpleCurve, float?> dict =
+                new Dictionary<SimpleCurve, float?>
+                    {
+                        { cycle.BodyOffsetVerticalZ, key.BodyOffsetVerticalZ },
+                        { cycle.BodyAngle, key.BodyAngle },
+                        { cycle.BodyAngleVertical, key.BodyAngleVertical },
+                        { cycle.BodyOffsetZ, key.BodyOffsetZ },
+                        { cycle.FootAngle, key.FootAngle },
+                        { cycle.FootPositionX, key.FootPositionX },
+                        { cycle.FootPositionZ, key.FootPositionZ },
+                        { cycle.FootPositionVerticalZ, key.FootPositionVerticalZ },
+                        { cycle.HandsSwingAngle, key.HandsSwingAngle },
+                        { cycle.HandsSwingPosVertical, key.HandsSwingPosVertical },
+                        { cycle.FrontPawAngle, key.FrontPawAngle },
+                        { cycle.FrontPawPositionX, key.FrontPawPositionX },
+                        { cycle.FrontPawPositionZ, key.FrontPawPositionZ },
+                        {
+                            cycle.FrontPawPositionVerticalZ,
+                            key.FrontPawPositionVerticalZ
+                        }
+                    };
 
-            dict.Add(cycle.BodyOffsetVerticalZ, key.BodyOffsetVerticalZ);
-            dict.Add(cycle.BodyAngle, key.BodyAngle);
-            dict.Add(cycle.BodyAngleVertical, key.BodyAngleVertical);
-            dict.Add(cycle.BodyOffsetZ, key.BodyOffsetZ);
-            dict.Add(cycle.FootAngle, key.FootAngle);
-            dict.Add(cycle.FootPositionX, key.FootPositionX);
-            dict.Add(cycle.FootPositionZ, key.FootPositionZ);
-            dict.Add(cycle.FootPositionVerticalZ, key.FootPositionVerticalZ);
-            dict.Add(cycle.HandsSwingAngle, key.HandsSwingAngle);
-            dict.Add(cycle.HandsSwingPosVertical, key.HandsSwingPosVertical);
+
+            // Quadruped
+
+
 
             foreach (KeyValuePair<SimpleCurve, float?> pair in dict)
             {
@@ -124,6 +145,7 @@ namespace FacialStuff
             }
             else
             {
+                // No value at 0 => add points to prevent the curve from bugging out
                 if (key.keyIndex == 0)
                 {
                     simpleCurve.Add(0, 0);
