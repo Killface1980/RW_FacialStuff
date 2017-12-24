@@ -7,12 +7,13 @@
     <label>BodyAnimDef_Male</label>
 
     <bodyType>Male</bodyType>
+    <armLength>0.3</armLength>
+    <shoulderWidth>0.325</shoulderWidth>
     <shoulderOffsetVerFromCenter>0</shoulderOffsetVerFromCenter>
-    <shoulderWidth>0.25</shoulderWidth>
-    <armLength>0.275</armLength>
-    <hipOffsetVerticalFromCenter>-0.275</hipOffsetVerticalFromCenter>
+    <shoulderOffsetWhenFacingHorizontal>-0.05</shoulderOffsetWhenFacingHorizontal>
     <hipWidth>0.175</hipWidth>
-    <legLength>0.3</legLength>
+    <hipOffsetHorWhenFacingHorizontal>-0.1</hipOffsetHorWhenFacingHorizontal>
+    <extraLegLength>0</extraLegLength>
 
   </FacialStuff.Defs.BodyAnimDef>
  
@@ -21,31 +22,32 @@
     <defName>BodyAnimDef_Female</defName>
     <label>BodyAnimDef_Female</label>
 
-    <bodyType>Female</bodyType>
-    <shoulderOffsetVerFromCenter>0</shoulderOffsetVerFromCenter>
-    <shoulderWidth>0.225</shoulderWidth>
-    <armLength>0.3</armLength>
-    <hipOffsetVerticalFromCenter>-0.275</hipOffsetVerticalFromCenter>
-    <hipWidth>0.175</hipWidth>
-    <legLength>0.3</legLength>
+     <bodyType>Female</bodyType>
+     <armLength>0.3</armLength>
+     <shoulderWidth>0.25</shoulderWidth>
+     <shoulderOffsetVerFromCenter>0</shoulderOffsetVerFromCenter>
+     <shoulderOffsetWhenFacingHorizontal>-0.025</shoulderOffsetWhenFacingHorizontal>
+     <hipWidth>0.2</hipWidth>
+     <hipOffsetHorWhenFacingHorizontal>-0.125</hipOffsetHorWhenFacingHorizontal>
+     <extraLegLength>0.05</extraLegLength>
 
-  </FacialStuff.Defs.BodyAnimDef>
+   </FacialStuff.Defs.BodyAnimDef>
 
    <FacialStuff.Defs.BodyAnimDef>
 
     <defName>BodyAnimDef_Hulk</defName>
     <label>BodyAnimDef_Hulk</label>
 
-    <bodyType>Female</bodyType>
-    <shoulderOffsetVerFromCenter>0</shoulderOffsetVerFromCenter>
-    <shoulderWidth>0.35</shoulderWidth>
-    <armLength>0.35</armLength>
-    <hipOffsetVerticalFromCenter>-0.15</hipOffsetVerticalFromCenter>
-    <hipWidth>0.175</hipWidth>
-    <legLength>0.425</legLength>
-<hipOffsetHorWhenFacingHorizontal>-0.15</hipOffsetHorWhenFacingHorizontal>
-  <shoulderOffsetWhenFacingHorizontal>-0.05</shoulderOffsetWhenFacingHorizontal>
-  </FacialStuff.Defs.BodyAnimDef>
+    <bodyType>Hulk</bodyType>
+     <armLength>0.525</armLength>
+     <shoulderWidth>0.4</shoulderWidth>
+     <shoulderOffsetVerFromCenter>0.075</shoulderOffsetVerFromCenter>
+     <shoulderOffsetWhenFacingHorizontal>-0.125</shoulderOffsetWhenFacingHorizontal>
+     <hipWidth>0.25</hipWidth>
+     <hipOffsetHorWhenFacingHorizontal>-0.2</hipOffsetHorWhenFacingHorizontal>
+     <extraLegLength>0.2</extraLegLength>
+
+   </FacialStuff.Defs.BodyAnimDef>
 
   <FacialStuff.Defs.BodyAnimDef>
 
@@ -53,12 +55,14 @@
     <label>BodyAnimDef_Fat</label>
 
     <bodyType>Fat</bodyType>
-    <shoulderOffsetVerFromCenter>0</shoulderOffsetVerFromCenter>
-    <shoulderWidth>0.3</shoulderWidth>
-    <armLength>0.275</armLength>
-    <hipOffsetVerticalFromCenter>-0.275</hipOffsetVerticalFromCenter>
-    <hipWidth>0.175</hipWidth>
-    <legLength>0.3</legLength>
+    <armLength>0.4</armLength>
+    <shoulderWidth>0.4</shoulderWidth>
+    <shoulderOffsetVerFromCenter>0.05</shoulderOffsetVerFromCenter>
+    <shoulderOffsetWhenFacingHorizontal>-0.1</shoulderOffsetWhenFacingHorizontal>
+    <hipWidth>0.225</hipWidth>
+    <hipOffsetHorWhenFacingHorizontal>-0.15</hipOffsetHorWhenFacingHorizontal>
+    <extraLegLength>0.025</extraLegLength>
+
 
   </FacialStuff.Defs.BodyAnimDef>
 
@@ -68,12 +72,54 @@
     <label>BodyAnimDef_Thin</label>
 
     <bodyType>Thin</bodyType>
-    <shoulderOffsetVerFromCenter>0</shoulderOffsetVerFromCenter>
-    <shoulderWidth>0.3</shoulderWidth>
     <armLength>0.275</armLength>
-    <hipOffsetVerticalFromCenter>-0.275</hipOffsetVerticalFromCenter>
-    <hipWidth>0.175</hipWidth>
-    <legLength>0.3</legLength>
+    <shoulderWidth>0.175</shoulderWidth>
+    <hipWidth>0.125</hipWidth>
+    <extraLegLength>0.025</extraLegLength>
+    <shoulderOffsets>
+      <li>
+        <x>0.125</x>
+        <y>0</y>
+        <z>0.025</z>
+      </li>
+      <li>
+        <x>-0.025</x>
+        <y>0</y>
+        <z>0</z>
+      </li>
+      <li>
+        <x>-0.125</x>
+        <y>0</y>
+        <z>0.025</z>
+      </li>
+      <li>
+        <x>0.025</x>
+        <y>0</y>
+        <z>0</z>
+      </li>
+    </shoulderOffsets>
+    <hipOffsets>
+      <li>
+        <x>0.125</x>
+        <y>0</y>
+        <z>0</z>
+      </li>
+      <li>
+        <x>-0.125</x>
+        <y>0.05</y>
+        <z>0</z>
+      </li>
+      <li>
+        <x>-0.125</x>
+        <y>0</y>
+        <z>0</z>
+      </li>
+      <li>
+        <x>0.125</x>
+        <y>-0.05</y>
+        <z>0</z>
+      </li>
+    </hipOffsets>
 
   </FacialStuff.Defs.BodyAnimDef>
   
@@ -102,6 +148,62 @@
     <hipOffsetVerticalFromCenter>-0.275</hipOffsetVerticalFromCenter>
     <hipWidth>0.175</hipWidth>
     <legLength>0.3</legLength>
+
+  </FacialStuff.Defs.BodyAnimDef>
+  <FacialStuff.Defs.BodyAnimDef>
+
+    <defName>BodyAnimDef_WildBoar</defName>
+    <label>BodyAnimDef_WildBoar</label>
+
+    <bodyType>Undefined</bodyType>
+    <armLength>0.275</armLength>
+    <shoulderWidth>0.3</shoulderWidth>
+    <hipWidth>0.175</hipWidth>
+    <extraLegLength>-0.15</extraLegLength>
+    <shoulderOffsets>
+      <li>
+        <x>0.15</x>
+        <y>0</y>
+        <z>0.1</z>
+      </li>
+      <li>
+        <x>0.25</x>
+        <y>0</y>
+        <z>0</z>
+      </li>
+      <li>
+        <x>-0.15</x>
+        <y>0</y>
+        <z>0.1</z>
+      </li>
+      <li>
+        <x>-0.25</x>
+        <y>0</y>
+        <z>0</z>
+      </li>
+    </shoulderOffsets>
+    <hipOffsets>
+      <li>
+        <x>0.25</x>
+        <y>0</y>
+        <z>-0.05</z>
+      </li>
+      <li>
+        <x>-0.375</x>
+        <y>0.025</y>
+        <z>0</z>
+      </li>
+      <li>
+        <x>-0.25</x>
+        <y>0</y>
+        <z>-0.05</z>
+      </li>
+      <li>
+        <x>0.375</x>
+        <y>-0.025</y>
+        <z>0</z>
+      </li>
+    </hipOffsets>
 
   </FacialStuff.Defs.BodyAnimDef>
 

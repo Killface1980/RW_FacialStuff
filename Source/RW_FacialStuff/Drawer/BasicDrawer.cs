@@ -15,24 +15,31 @@ namespace FacialStuff.Drawer
         {
         }
 
-        protected List<Vector2> GetJointPositions(
-            Rot4 rot,
-            float jointOffsetHorizontalX,
-            float jointOffsetZ,
-            float jointOffsetVerticalX)
+        protected JointLister GetJointPositions(Rot4 rot, Vector3 vector)
         {
-            List<Vector2> positions = new List<Vector2>();
+
+            JointLister joints = new JointLister();
             if (rot.IsHorizontal)
             {
-                positions.Add(new Vector2((rot == Rot4.East ? 1 : -1) * jointOffsetHorizontalX, jointOffsetZ));
+                joints.rightJoint = new Vector3(vector.x, vector.y, vector.z);
+                joints.leftJoint = new Vector3(vector.x, -vector.y, vector.z);
+
             }
             else
             {
-                bool north = rot == Rot4.North;
-                positions.Add(new Vector2(north ? 1 : -1 * jointOffsetVerticalX, jointOffsetZ));
-                positions.Add(new Vector2(north ? -1 : 1 * jointOffsetVerticalX, jointOffsetZ));
+                joints.rightJoint = new Vector3(vector.x, vector.y, vector.z);
+                joints.leftJoint = new Vector3(-vector.x, vector.y, vector.z);
             }
-            return positions;
+
+            return joints;
         }
+
+    }
+
+    public struct JointLister
+    {
+        public Vector3 leftJoint;
+
+        public Vector3 rightJoint;
     }
 }

@@ -40,6 +40,10 @@
 
         public SimpleCurve FrontPawPositionVerticalZ = new SimpleCurve();
 
+        public SimpleCurve ShoulderOffsetHorizontalX = new SimpleCurve();
+
+        public SimpleCurve HipOffsetHorizontalX = new SimpleCurve();
+
         #endregion Public Fields
     }
 }

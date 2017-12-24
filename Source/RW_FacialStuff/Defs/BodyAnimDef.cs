@@ -7,6 +7,8 @@ namespace FacialStuff.Defs
 {
     using RimWorld;
 
+    using UnityEngine;
+
     using Verse;
 
    public class BodyAnimDef : Def
@@ -17,20 +19,24 @@ namespace FacialStuff.Defs
 
         public float shoulderWidth;
 
-        public float shoulderOffsetVerFromCenter;
 
-        public float shoulderOffsetWhenFacingHorizontal = -0.05f;
-
-
-        public float legLength;
+       // public float legLength;
 
         public float hipWidth;
 
-        public float hipOffsetHorWhenFacingHorizontal;
 
-        public float hipOffsetVerticalFromCenter;
-
+        public float extraLegLength;
 
 
-    }
+        public List<Vector3> shoulderOffsets =
+            new List<Vector3> { Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero };
+
+        public List<Vector3> hipOffsets =
+            new List<Vector3> { Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero };
+
+        // public float hipOffsetVerticalFromCenter;
+
+
+
+}
 }

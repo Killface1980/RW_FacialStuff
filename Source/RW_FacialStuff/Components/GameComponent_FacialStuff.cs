@@ -75,6 +75,8 @@ namespace FacialStuff
                 cycle.FootPositionVerticalZ = new SimpleCurve();
                 cycle.HandsSwingAngle = new SimpleCurve();
                 cycle.HandsSwingPosVertical = new SimpleCurve();
+                cycle.ShoulderOffsetHorizontalX = new SimpleCurve();
+                cycle.HipOffsetHorizontalX = new SimpleCurve();
 
                 // Quadrupeds
                 cycle.FrontPawAngle = new SimpleCurve();
@@ -107,6 +109,8 @@ namespace FacialStuff
                 new Dictionary<SimpleCurve, float?>
                     {
                         { cycle.BodyOffsetVerticalZ, key.BodyOffsetVerticalZ },
+                        { cycle.ShoulderOffsetHorizontalX, key.ShoulderOffsetHorizontalX },
+                        { cycle.HipOffsetHorizontalX, key.HipOffsetHorizontalX },
                         { cycle.BodyAngle, key.BodyAngle },
                         { cycle.BodyAngleVertical, key.BodyAngleVertical },
                         { cycle.BodyOffsetZ, key.BodyOffsetZ },
@@ -124,9 +128,6 @@ namespace FacialStuff
                             key.FrontPawPositionVerticalZ
                         }
                     };
-
-
-            // Quadruped
 
 
 

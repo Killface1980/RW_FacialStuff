@@ -73,23 +73,6 @@
 
         private Room theRoom;
 
-        public static FieldInfo infoJitterer;
-
-        public float JitterMax = 0.35f;
-
-        public JitterHandler Jitterer
-            => GetHiddenValue(typeof(Pawn_DrawTracker), Pawn.Drawer, "jitterer", infoJitterer) as
-                   JitterHandler;
-
-        public static object GetHiddenValue(Type type, object instance, string fieldName, [CanBeNull] FieldInfo info)
-        {
-            if (info == null)
-            {
-                info = type.GetField(fieldName, GenGeneric.BindingFlagsAll);
-            }
-
-            return info?.GetValue(instance);
-        }
         #endregion Private Fields
 
         #region Public Properties
@@ -944,19 +927,7 @@
         // public Vector3 LeftHandPosition;
 
 
-        public void DrawEquipment(Vector3 rootLoc, bool portrait)
-        {
-            if (this.PawnDrawers != null)
-            {
-                int i = 0;
-                int count = this.PawnDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnDrawers[i].DrawEquipment(rootLoc, portrait);
-                    i++;
-                }
-            }
-        }
+
 
         public Vector3 BaseHeadOffsetAt(bool portrait)
         {

@@ -72,20 +72,26 @@
                 graphics.ResolveAllGraphics();
             }
 
-           bool wantsAnimation = pawn.GetCompAnim(out CompBodyAnimator compAnim);
+            bool wantsAnimation = pawn.GetCompAnim(out CompBodyAnimator compAnim);
 
             PawnWoundDrawer woundDrawer = (PawnWoundDrawer)WoundOverlayFieldInfo?.GetValue(__instance);
+
+            var footPos = rootLoc;
+
+
             // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
             if (!pawn.GetCompFace(out CompFace compFace) || compFace.IsChild || compFace.Deactivated)
             {
                 if (wantsAnimation)
                 {
-                compAnim.ApplyBodyWobble(ref rootLoc, ref quat);
                     if (compAnim.AnimatorOpen)
                     {
                         bodyFacing = headFacing = compAnim.rotation;
                     }
                     compAnim.TickDrawers(bodyFacing, graphics);
+                    compAnim.ApplyBodyWobble(ref rootLoc, ref quat);
+
+
                     RenderAnimatedPawn(
                         pawn,
                         graphics,
@@ -95,7 +101,8 @@
                         bodyFacing,
                         bodyDrawType,
                         portrait,
-                        woundDrawer, compAnim);
+                        woundDrawer, compAnim,
+                        footPos);
                     return false;
                 }
                 return true;
@@ -136,7 +143,6 @@
             // Use the basic quat
             Quaternion headQuat = quat;
 
-            var originZ = rootLoc.z;
 
             // Rotate head if possble and wobble around
             if (!portrait || compAnim.AnimatorOpen)
@@ -253,18 +259,16 @@
 
             if (portrait && compAnim.AnimatorOpen)
             {
-                compFace.DrawEquipment(drawPos, portrait);
+                compAnim.DrawEquipment(drawPos, portrait);
             }
 
-            var footPos = drawPos;
-            footPos.z = originZ;
 
             compAnim.DrawFeet(footPos, portrait);
 
             if (!portrait)
             {
 
-                compFace.DrawEquipment(drawPos, false);
+                compAnim.DrawEquipment(drawPos, false);
 
                 if (pawn.apparel != null)
                 {
@@ -289,13 +293,7 @@
             return false;
         }
 
-        private static void RenderAnimatedPawn(Pawn pawn, PawnGraphicSet graphics, Vector3 rootLoc,
-                                               Quaternion quat,
-                                               bool renderBody,
-                                               Rot4 bodyFacing,
-                                               RotDrawMode bodyDrawType,
-                                               bool portrait,
-                                               PawnWoundDrawer woundDrawer, CompBodyAnimator compAnim)
+        private static void RenderAnimatedPawn(Pawn pawn, PawnGraphicSet graphics, Vector3 rootLoc, Quaternion quat, bool renderBody, Rot4 bodyFacing, RotDrawMode bodyDrawType, bool portrait, PawnWoundDrawer woundDrawer, CompBodyAnimator compAnim, Vector3 footPos)
         {
             Mesh mesh = null;
             if (renderBody)
@@ -349,7 +347,7 @@
                 Graphics.DrawMesh(mesh, vector, quat, graphics.packGraphic.MatAt(bodyFacing, null), 0);
             }
 
-            compAnim.DrawFeet(rootLoc, portrait);
+            compAnim.DrawFeet(footPos, portrait);
         }
 
         private static void GetReflections()

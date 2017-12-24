@@ -56,7 +56,24 @@ namespace FacialStuff
         public virtual void ApplyBodyWobble(ref Vector3 rootLoc, ref Quaternion quat)
         {
         }
+        public virtual void DrawEquipment(Vector3 rootLoc, bool portrait)
+        {
+        }
 
+        public virtual void DrawEquipmentAiming(Thing equipment, Vector3 weaponDrawLoc, Vector3 rootLoc, float aimAngle)
+        {
+        }
+
+
+
+        public virtual bool CarryWeaponOpenly()
+        {
+            return false;
+        }
+
+        public virtual void DoAttackAnimationOffsets(ref float weaponAngle, ref Vector3 weaponPosition, bool flipped)
+        {
+        }
         public virtual List<Material> BodyBaseAt(
             PawnGraphicSet graphics,
             Rot4 bodyFacing,

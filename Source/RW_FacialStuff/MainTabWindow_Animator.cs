@@ -52,46 +52,13 @@ namespace FacialStuff
                     pawnRect.height);
 
                 // Menu next to pawn
-            Rect newRect = settingsRect.LeftHalf();
+                Rect newRect = settingsRect.LeftHalf();
                 this.DoSettingsMenu(newRect);
 
                 Rect bodyEditor = settingsRect.RightHalf();
                 bodyEditor.xMin += this.spacing;
 
-                GUI.BeginGroup(bodyEditor);
-
-                Rect sliderRect = new Rect(0, 0, this.width, this.defaultHeight);
-
-                BodyAnimDef bodyAnimDef = this.CompAnim.bodySizeDefinition;
-
-
-
-                this.DrawBodyStats("armLength", ref bodyAnimDef.armLength, ref sliderRect);
-                this.DrawBodyStats("shoulderOffsetVerFromCenter", ref bodyAnimDef.shoulderOffsetVerFromCenter, ref sliderRect);
-                this.DrawBodyStats("legLength", ref bodyAnimDef.legLength, ref sliderRect);
-                this.DrawBodyStats("hipOffsetVerticalFromCenter",
-                    ref bodyAnimDef.hipOffsetVerticalFromCenter, ref sliderRect);
-
-                if (rotation.IsHorizontal)
-                {
-                    this.DrawBodyStats("shoulderOffsetWhenFacingHorizontal",
-                        ref bodyAnimDef.shoulderOffsetWhenFacingHorizontal, ref sliderRect);
-                    this.DrawBodyStats("hipOffsetHorWhenFacingHorizontal",
-                        ref bodyAnimDef.hipOffsetHorWhenFacingHorizontal, ref sliderRect);
-
-                }
-                else
-                {
-                    this.DrawBodyStats("shoulderWidth", ref bodyAnimDef.shoulderWidth, ref sliderRect);
-                    this.DrawBodyStats("hipWidth", ref bodyAnimDef.hipWidth, ref sliderRect);
-                    
-                }
-
-
-
-                GUI.EndGroup();
-
-
+                this.DrawBodySettingsEditor(bodyEditor, rotation);
             }
 
             this.frameLabel = this.currentFrame + 1;
@@ -103,183 +70,14 @@ namespace FacialStuff
             Rect timeline = new Rect(0f, rotator.yMax + this.spacing, inRect.width / 2 - this.spacing, 32f);
 
             Rect buttonRect = new Rect(0f, timeline.yMax + this.spacing, widthButton, 32f);
+            Rect controller = inRect.BottomHalf();
+            controller.yMin = buttonRect.yMax + this.spacing;
 
             this.DrawRotator(rotator);
             this.DrawTimelineSlider(count, timeline, ref animationSlider);
             this.DrawTimelineButtons(frames, buttonRect, count, ref animationSlider);
 
-
-
-            Rect controller = inRect.BottomHalf();
-            controller.yMin = buttonRect.yMax + this.spacing;
-
-            Rect leftController = controller.LeftHalf();
-            Rect rightController = controller.RightHalf();
-            leftController.xMax -= this.spacing;
-
-            rightController.xMin += this.spacing;
-
-            GUI.BeginGroup(leftController);
-
-            PawnKeyframe thisFrame = frames[this.currentFrame];
-            {
-                Rect editorRect = new Rect(0f, 0f, leftController.width, 48f);
-
-                // Dictionary<int, float> keysFloats = new Dictionary<int, float>();
-
-                // // Get the next keyframe
-                // for (int i = 0; i < frames.Count; i++)
-                // {
-                //     float? footPositionX = frames[i].FootPositionX;
-                //     if (!footPositionX.HasValue)
-                //     {
-                //         continue;
-                //     }
-                //     keysFloats.Add(frames[i].keyIndex, footPositionX.Value);
-                // }
-
-                if (rotation.IsHorizontal)
-                {
-                    this.SetPosition(
-                        ref thisFrame.FootPositionX,
-                        editorRect,
-                        EditorWalkcycle.FootPositionX,
-                        "FootPosX");
-
-                    editorRect.y += editorRect.height;
-
-                    this.SetPosition(
-                        ref thisFrame.FootPositionZ,
-                        editorRect,
-                        EditorWalkcycle.FootPositionZ,
-                        "FootPosY");
-
-                    editorRect.y += editorRect.height;
-
-                    this.SetAngle(ref thisFrame.FootAngle, editorRect, EditorWalkcycle.FootAngle, "FootAngle");
-
-                    editorRect.y += editorRect.height;
-
-                    // Quadruped
-
-
-                }
-                else
-                {
-                    this.SetPosition(
-                        ref thisFrame.FootPositionVerticalZ,
-                        editorRect,
-                        EditorWalkcycle.FootPositionVerticalZ,
-                        "FootPosVerticalY");
-
-                    editorRect.y += editorRect.height;
-
-
-
-                }
-
-                GUI.EndGroup();
-
-                GUI.BeginGroup(rightController);
-
-                editorRect.x = 0f;
-                editorRect.y = 0f;
-
-                if (rotation.IsHorizontal)
-                {
-                    if (this.CompAnim.Props.bipedWithHands)
-                    {
-                        this.SetAngle(
-                            ref thisFrame.HandsSwingAngle,
-                            editorRect,
-                            EditorWalkcycle.HandsSwingAngle,
-                            "HandSwing");
-
-                        editorRect.y += editorRect.height;
-                    }
-
-                    if (this.CompAnim.Props.quadruped)
-                    {
-                        this.SetPosition(
-                            ref thisFrame.FrontPawPositionX,
-                            editorRect,
-                            EditorWalkcycle.FrontPawPositionX,
-                            "FrontPawPosX");
-
-                        editorRect.y += editorRect.height;
-
-                        this.SetPosition(
-                            ref thisFrame.FrontPawPositionZ,
-                            editorRect,
-                            EditorWalkcycle.FrontPawPositionZ,
-                            "FrontPawPosY");
-
-                        editorRect.y += editorRect.height;
-
-                        this.SetAngle(ref thisFrame.FrontPawAngle, editorRect, EditorWalkcycle.FrontPawAngle, "FrontPawAngle");
-
-                        editorRect.y += editorRect.height;
-
-                    }
-
-                    this.SetPosition(
-                        ref thisFrame.BodyOffsetZ,
-                        editorRect,
-                        EditorWalkcycle.BodyOffsetZ,
-                        "BodyOffsetZ");
-
-                    editorRect.y += editorRect.height;
-
-                    this.SetAngle(ref thisFrame.BodyAngle, editorRect, EditorWalkcycle.BodyAngle, "BodyAngle");
-
-                    editorRect.y += editorRect.height;
-                }
-                else
-                {
-                    if (this.CompAnim.Props.bipedWithHands)
-                    {
-                        this.SetAngleShoulder(ref EditorWalkcycle.shoulderAngle, editorRect, "ShoulderAngle");
-
-                        editorRect.y += editorRect.height;
-
-                        this.SetPosition(
-                        ref thisFrame.HandsSwingPosVertical,
-                        editorRect,
-                        EditorWalkcycle.HandsSwingPosVertical,
-                        "HandsSwingPosVertical");
-                        editorRect.y += editorRect.height;
-                    }
-                    if (this.CompAnim.Props.quadruped)
-                    {
-                        this.SetPosition(
-                            ref thisFrame.FrontPawPositionVerticalZ,
-                            editorRect,
-                            EditorWalkcycle.FrontPawPositionVerticalZ,
-                            "FrontPawPosVerticalY");
-                    }
-                    this.SetPosition(
-                        ref thisFrame.BodyOffsetVerticalZ,
-                        editorRect,
-                        EditorWalkcycle.BodyOffsetVerticalZ,
-                        "BodyOffsetVerticalZ");
-
-                    editorRect.y += editorRect.height;
-
-                    this.SetAngle(
-                        ref thisFrame.BodyAngleVertical,
-                        editorRect,
-                        EditorWalkcycle.BodyAngleVertical,
-                        "BodyAngleVertical");
-
-                    editorRect.y += editorRect.height;
-
-
-                }
-
-
-
-                GUI.EndGroup();
-            }
+            this.DrawKeyframeEditor(controller, frames, rotation);
 
             if (GUI.changed)
             {
@@ -294,6 +92,7 @@ namespace FacialStuff
                 PawnKeyframe firstFrame = frames.FirstOrDefault();
                 PawnKeyframe lastFrame = frames.LastOrDefault();
 
+                // Todo: complete this!
                 if (this.currentFrame == firstFrame.keyIndex)
                 {
                     lastFrame.BodyAngle = firstFrame.BodyAngle;
@@ -327,6 +126,209 @@ namespace FacialStuff
 
             // HarmonyPatch_PawnRenderer.Prefix(this.pawn.Drawer.renderer, Vector3.zero, Rot4.East.AsQuat, true, Rot4.East, Rot4.East, RotDrawMode.Fresh, false, false);
             base.DoWindowContents(inRect);
+        }
+
+        private void DrawBodySettingsEditor(Rect bodyEditor, Rot4 rotation)
+        {
+            GUI.BeginGroup(bodyEditor);
+
+            Rect sliderRect = new Rect(0, 0, this.width, this.defaultHeight);
+
+            this.bodyAnimDef = this.CompAnim.bodySizeDefinition;
+
+            // this.DrawBodyStats("legLength", ref bodyAnimDef.legLength, ref sliderRect);
+            // this.DrawBodyStats("hipOffsetVerticalFromCenter",
+            //     ref bodyAnimDef.hipOffsetVerticalFromCenter, ref sliderRect);
+
+            Vector3 shoulderOffset = this.bodyAnimDef.shoulderOffsets[rotation.AsInt];
+            bool shoulderFlipped = shoulderOffset.y < 0;
+            this.DrawBodyStats(
+                    "shoulderOffsetX",
+                    ref shoulderOffset.x,
+                    ref sliderRect);
+            this.DrawBodyStats(
+                    "shoulderOffsetY",
+                    ref shoulderFlipped,
+                    ref sliderRect);
+            this.DrawBodyStats(
+                    "shoulderOffsetZ",
+                    ref shoulderOffset.z,
+                    ref sliderRect);
+
+            Vector3 hipOffset = this.bodyAnimDef.hipOffsets[rotation.AsInt];
+            bool hipFlipped = hipOffset.y < 0;
+
+            this.DrawBodyStats(
+                    "hipOffsetX",
+                    ref hipOffset.x,
+                    ref sliderRect);
+            this.DrawBodyStats(
+                    "hipOffsetY",
+                    ref hipFlipped,
+                    ref sliderRect);
+            this.DrawBodyStats(
+                    "hipOffsetZ",
+                    ref hipOffset.z,
+                    ref sliderRect);
+
+            if (GUI.changed)
+            {
+                this.SetNewVector(rotation, shoulderOffset, this.bodyAnimDef.shoulderOffsets, shoulderFlipped);
+                this.SetNewVector(rotation, hipOffset, this.bodyAnimDef.hipOffsets, hipFlipped);
+            }
+
+            this.DrawBodyStats("armLength", ref this.bodyAnimDef.armLength, ref sliderRect);
+            this.DrawBodyStats("extraLegLength", ref this.bodyAnimDef.extraLegLength, ref sliderRect);
+
+            GUI.EndGroup();
+        }
+
+        private void SetNewVector(Rot4 rotation, Vector3 newOffset, List<Vector3> offset, bool flipped)
+        {
+            newOffset.y = (rotation == Rot4.North ? -1 : 1) * 0.025f;
+            if (flipped)
+            {
+                newOffset.y *= -1;
+            }
+            offset[rotation.AsInt] = newOffset;
+            newOffset.x *= -1;
+            if (rotation.IsHorizontal)
+            {
+                newOffset.y *= -1;
+            }
+            offset[rotation.Opposite.AsInt] = newOffset;
+        }
+
+        private void DrawKeyframeEditor(Rect controller, List<PawnKeyframe> frames, Rot4 rotation)
+        {
+            Rect leftController = controller.LeftHalf();
+            Rect rightController = controller.RightHalf();
+            leftController.xMax -= this.spacing;
+
+            rightController.xMin += this.spacing;
+
+            PawnKeyframe thisFrame = frames[this.currentFrame];
+            {
+                GUI.BeginGroup(leftController);
+                Rect editorRect = new Rect(0f, 0f, leftController.width, 48f);
+
+                // Dictionary<int, float> keysFloats = new Dictionary<int, float>();
+
+                // // Get the next keyframe
+                // for (int i = 0; i < frames.Count; i++)
+                // {
+                //     float? footPositionX = frames[i].FootPositionX;
+                //     if (!footPositionX.HasValue)
+                //     {
+                //         continue;
+                //     }
+                //     keysFloats.Add(frames[i].keyIndex, footPositionX.Value);
+                // }
+
+                if (rotation.IsHorizontal)
+                {
+                    this.SetPosition(ref thisFrame.FootPositionX, ref editorRect, EditorWalkcycle.FootPositionX, "FootPosX");
+
+                    this.SetPosition(ref thisFrame.FootPositionZ, ref editorRect, EditorWalkcycle.FootPositionZ, "FootPosY");
+
+                    this.SetAngle(ref thisFrame.FootAngle, ref editorRect, EditorWalkcycle.FootAngle, "FootAngle");
+
+                    this.SetPosition(
+                        ref thisFrame.HipOffsetHorizontalX,
+                        ref editorRect,
+                        EditorWalkcycle.HipOffsetHorizontalX,
+                        "HipOffsetHorizontalX");
+
+                    // Quadruped
+                }
+                else
+                {
+                    this.SetPosition(
+                        ref thisFrame.FootPositionVerticalZ,
+                        ref editorRect,
+                        EditorWalkcycle.FootPositionVerticalZ,
+                        "FootPosVerticalY");
+                }
+
+                GUI.EndGroup();
+
+                GUI.BeginGroup(rightController);
+
+                editorRect.x = 0f;
+                editorRect.y = 0f;
+
+                if (rotation.IsHorizontal)
+                {
+                    if (this.CompAnim.Props.bipedWithHands)
+                    {
+                        this.SetAngle(ref thisFrame.HandsSwingAngle, ref editorRect, EditorWalkcycle.HandsSwingAngle, "HandSwing");
+                    }
+
+                    if (this.CompAnim.Props.quadruped)
+                    {
+                        this.SetPosition(
+                            ref thisFrame.FrontPawPositionX,
+                            ref editorRect,
+                            EditorWalkcycle.FrontPawPositionX,
+                            "FrontPawPosX");
+
+                        this.SetPosition(
+                            ref thisFrame.FrontPawPositionZ,
+                            ref editorRect,
+                            EditorWalkcycle.FrontPawPositionZ,
+                            "FrontPawPosY");
+
+
+                        this.SetAngle(ref thisFrame.FrontPawAngle, ref editorRect, EditorWalkcycle.FrontPawAngle, "FrontPawAngle");
+
+                    }
+                    this.SetPosition(
+                        ref thisFrame.ShoulderOffsetHorizontalX,
+                        ref editorRect,
+                        EditorWalkcycle.ShoulderOffsetHorizontalX,
+                        "ShoulderOffsetHorizontalX");
+
+
+                    this.SetPosition(ref thisFrame.BodyOffsetZ, ref editorRect, EditorWalkcycle.BodyOffsetZ, "BodyOffsetZ");
+
+                    this.SetAngle(ref thisFrame.BodyAngle, ref editorRect, EditorWalkcycle.BodyAngle, "BodyAngle");
+                }
+                else
+                {
+                    if (this.CompAnim.Props.bipedWithHands)
+                    {
+                        this.SetAngleShoulder(ref EditorWalkcycle.shoulderAngle, ref editorRect, "ShoulderAngle");
+
+                        this.SetPosition(
+                            ref thisFrame.HandsSwingPosVertical,
+                            ref editorRect,
+                            EditorWalkcycle.HandsSwingPosVertical,
+                            "HandsSwingPosVertical");
+                    }
+                    if (this.CompAnim.Props.quadruped)
+                    {
+                        this.SetPosition(
+                            ref thisFrame.FrontPawPositionVerticalZ,
+                            ref editorRect,
+                            EditorWalkcycle.FrontPawPositionVerticalZ,
+                            "FrontPawPosVerticalY");
+                    }
+                    this.SetPosition(
+                        ref thisFrame.BodyOffsetVerticalZ,
+                        ref editorRect,
+                        EditorWalkcycle.BodyOffsetVerticalZ,
+                        "BodyOffsetVerticalZ");
+
+
+                    this.SetAngle(
+                        ref thisFrame.BodyAngleVertical,
+                        ref editorRect,
+                        EditorWalkcycle.BodyAngleVertical,
+                        "BodyAngleVertical");
+                }
+
+                GUI.EndGroup();
+            }
         }
 
         private void DoSettingsMenu(Rect newRect)
@@ -388,17 +390,20 @@ namespace FacialStuff
             }
 
             listing_Standard.Gap();
-            if (listing_Standard.ButtonText("Export WalkCycle"))
-            {
-                string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-                DirectXmlSaver.SaveDataObject(EditorWalkcycle, configFolder + "/Exported_" + EditorWalkcycle.defName + ".xml");
-            }
             if (listing_Standard.ButtonText("Export BodyDef"))
             {
                 string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
                 DirectXmlSaver.SaveDataObject(
-                    this.CompAnim.bodySizeDefinition,
-                    configFolder + "/Exported_" + this.CompAnim.bodySizeDefinition.defName + ".xml");
+                    this.bodyAnimDef,
+                    configFolder + "/Exported_Animator.xml");
+                //configFolder + "/Exported_" + this.CompAnim.bodySizeDefinition.defName + ".xml");
+            }
+            if (listing_Standard.ButtonText("Export WalkCycle"))
+            {
+                string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
+                DirectXmlSaver.SaveDataObject(EditorWalkcycle,
+                    configFolder + "/Exported_Animator.xml");
+                //configFolder + "/Exported_" + EditorWalkcycle.defName + ".xml");
             }
 
             listing_Standard.End();
@@ -419,6 +424,15 @@ namespace FacialStuff
                 leftValue.ToString(),
                 rightValue.ToString(),
                 0.025f);
+
+            sliderRect.y += sliderRect.height;
+
+        }
+
+        private void DrawBodyStats(string label, ref bool flipped, ref Rect sliderRect)
+        {
+
+            Widgets.CheckboxLabeled(sliderRect, label, ref flipped);
 
             sliderRect.y += sliderRect.height;
 
@@ -497,7 +511,7 @@ namespace FacialStuff
             GUI.EndGroup();
         }
 
-        private void SetAngle(ref float? angle, Rect editorRect, SimpleCurve thisFrame, string label)
+        private void SetAngle(ref float? angle, ref Rect editorRect, SimpleCurve thisFrame, string label)
         {
             Rect sliderRect = new Rect(editorRect.x, editorRect.y, this.width, this.defaultHeight);
             Rect buttonRect = new Rect(sliderRect.xMax + this.spacing, editorRect.y, this.widthButton, this.defaultHeight);
@@ -518,9 +532,11 @@ namespace FacialStuff
                     angle = thisFrame.Evaluate(this.CompAnim.AnimationPercent);
                 }
             }
+            editorRect.y += editorRect.height;
+
         }
 
-        private void SetAngleShoulder(ref float angle, Rect editorRect, string label)
+        private void SetAngleShoulder(ref float angle, ref Rect editorRect, string label)
         {
             Rect labelRect = new Rect(editorRect.x, editorRect.y, this.widthLabel, this.defaultHeight);
             Rect sliderRect = new Rect(labelRect.xMax, editorRect.y, this.width, this.defaultHeight);
@@ -528,9 +544,11 @@ namespace FacialStuff
 
             Widgets.Label(labelRect, label + " " + angle);
             angle = Mathf.FloorToInt(Widgets.HorizontalSlider(sliderRect, angle, -180f, 180f));
+
+            editorRect.y += editorRect.height;
         }
 
-        private void SetPosition(ref float? position, Rect editorRect, SimpleCurve thisFrame, string label, Dictionary<int, float> keysFloats = null)
+        private void SetPosition(ref float? position, ref Rect editorRect, SimpleCurve thisFrame, string label, Dictionary<int, float> keysFloats = null)
         {
             Rect sliderRect = new Rect(editorRect.x, editorRect.y, this.width, this.defaultHeight);
             Rect buttonRect = new Rect(sliderRect.xMax + this.spacing, editorRect.y, this.widthButton, this.defaultHeight);
@@ -555,6 +573,7 @@ namespace FacialStuff
                     position = thisFrame.Evaluate(this.CompAnim.AnimationPercent);
                 }
             }
+            editorRect.y += editorRect.height;
             // GUI.color = Color.red;
             // if (keysFloats != null)
             // {
@@ -607,7 +626,9 @@ namespace FacialStuff
         private CompBodyAnimator compAnim;
         public CompBodyAnimator CompAnim => this.compAnim;
 
-        private float zoom = 1.25f;
+        private float zoom = 1f;
+
+        private BodyAnimDef bodyAnimDef;
 
         public static WalkCycleDef EditorWalkcycle => editorWalkcycle;
 

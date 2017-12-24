@@ -6,6 +6,7 @@ using System.Text;
 namespace FacialStuff
 {
     using FacialStuff.Defs;
+    using FacialStuff.Drawer;
 
     using UnityEngine;
 
@@ -56,113 +57,55 @@ namespace FacialStuff
                 return;
             }
 
-            Material matLeft;
-            Material matRight;
+            Vector3 ground = rootLoc;
+            ground.z += OffsetGround;
+
+
 
             // Basic values
             var body = this.CompAnimator.bodySizeDefinition;
-            float rightFootHorizontal = -body.hipWidth;
-            float leftFootHorizontal = -rightFootHorizontal;
-            float rightFootDepth = 0.035f;
-            float leftFootDepth = rightFootDepth;
-            float rightFootVertical = 0f;//-body.legLength;
-            float leftFootVertical = rightFootVertical;
+
+            Rot4 rot = bodyFacing;
+            JointLister jointPositions = this.GetJointPositions(rot, body.shoulderOffsets[rot.AsInt]);
+
+            Vector3 rightFootAnim = Vector3.zero;
+            Vector3 leftFootAnim = Vector3.zero;
+
+            float offsetJoint = this.walkCycle.ShoulderOffsetHorizontalX.Evaluate(this.movedPercent);
+            WalkCycleDef cycle = this.walkCycle;
+
+
+
+
 
             // Center = drawpos of carryThing
-            Vector3 center = rootLoc;
 
             float footAngleRight = 0f;
+
             float footAngleLeft = 0f;
-            Rot4 rot = bodyFacing;
-
-            // Offsets for hands from the pawn center
-            center.z += body.hipOffsetVerticalFromCenter;
-
-            if (rot.IsHorizontal)
-            {
-                rightFootHorizontal /= 3;
-                leftFootHorizontal /= 3;
-                if (rot == Rot4.East)
-                {
-                    leftFootDepth *= -1;
-                }
-                else
-                {
-                    // x *= -1;
-                    // x2 *= -1;
-                    rightFootDepth *= -1;
-                }
-            }
-            else if (rot == Rot4.North)
-            {
-                rightFootDepth = leftFootDepth = -0.02f;
-                rightFootHorizontal *= -1;
-                leftFootHorizontal *= -1;
-            }
+            this.DoWalkCycleOffsets(
+                ref rightFootAnim,
+                ref leftFootAnim,
+                ref footAngleRight,
+                ref footAngleLeft,
+                ref offsetJoint,
+                cycle.FrontPawPositionX,
+                cycle.FrontPawPositionZ,
+                cycle.FrontPawAngle,
+                cycle.FrontPawPositionVerticalZ);
 
 
-            // Swing the hands, try complete the cycle
-            if (this.isMoving)
-            {
-                float flot = this.movedPercent;
-                if (flot <= 0.5f)
-                {
-                    flot += 0.5f;
-                }
-                else
-                {
-                    flot -= 0.5f;
-                }
-
-                WalkCycleDef cycle = this.walkCycle;
-                if (rot.IsHorizontal)
-                {
-                    rightFootHorizontal = cycle.FrontPawPositionX.Evaluate(this.movedPercent);
-                    leftFootHorizontal = cycle.FrontPawPositionX.Evaluate(flot);
-
-                    footAngleRight = cycle.FrontPawAngle.Evaluate(this.movedPercent);
-                    footAngleLeft = cycle.FrontPawAngle.Evaluate(flot);
-                    rightFootVertical += cycle.FrontPawPositionZ.Evaluate(this.movedPercent);
-                    leftFootVertical += cycle.FrontPawPositionZ.Evaluate(flot);
-                    if (rot == Rot4.West)
-                    {
-                        rightFootHorizontal *= -1f;
-                        leftFootHorizontal *= -1f;
-                        footAngleLeft *= -1f;
-                        footAngleRight *= -1f;
-                    }
-                }
-                else
-                {
-                    rightFootVertical += cycle.FrontPawPositionVerticalZ.Evaluate(this.movedPercent);
-                    leftFootVertical += cycle.FrontPawPositionVerticalZ.Evaluate(flot);
-                }
-            }
-
-            Mesh footMeshRight = MeshPool.plane10;
-            Mesh footMeshLeft = MeshPool.plane10Flip;
-            if (rot.IsHorizontal)
-            {
-                float multi = rot == Rot4.West ? -1f : 1f;
-
-                // Align the center to the hip
-                center.x += multi * body.hipOffsetHorWhenFacingHorizontal;
-
-                if (rot == Rot4.East)
-                {
-                    footMeshRight = footMeshLeft = MeshPool.plane10;
-                }
-                else
-                {
-                    footMeshRight = footMeshLeft = MeshPool.plane10Flip;
-                }
-            }
+            this.GetMeshesFoot(out Mesh footMeshRight, out Mesh footMeshLeft);
 #if develop
             {
  }
 #else
             {
             }
+
+            Material matLeft;
+
+            Material matRight;
 #endif
             if (MainTabWindow_Animator.Colored)
             {
@@ -192,7 +135,7 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                         footMeshRight,
-                        center.RotatedBy(bodyAngle) + new Vector3(rightFootHorizontal, rightFootDepth, rightFootVertical),
+                        ground.RotatedBy(bodyAngle) + jointPositions.rightJoint+ rightFootAnim,
                         Quaternion.AngleAxis(bodyAngle + footAngleRight, Vector3.up),
                         matRight,
                         portrait);
@@ -205,7 +148,7 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                         footMeshLeft,
-                        center.RotatedBy(bodyAngle) + new Vector3(leftFootHorizontal, leftFootDepth, leftFootVertical),
+                        ground.RotatedBy(bodyAngle) + jointPositions.leftJoint+leftFootAnim,
                         Quaternion.AngleAxis(bodyAngle + footAngleLeft, Vector3.up),
                         matLeft,
                         portrait);
@@ -215,18 +158,26 @@ namespace FacialStuff
             if (MainTabWindow_Animator.develop)
             {
                 // for debug
-                Material centerMat = GraphicDatabase.Get<Graphic_Multi>(
-                    "Hands/Human_Foot",
-                    ShaderDatabase.CutoutSkin,
+                Material centerMat = GraphicDatabase.Get<Graphic_Single>(
+                    "Hands/Ground",
+                    ShaderDatabase.Transparent,
                     Vector2.one,
-                    Color.yellow).MatFront;
+                    Color.cyan).MatSingle;
+
 
                 GenDraw.DrawMeshNowOrLater(
-                    footMeshRight,
-                    center.RotatedBy(bodyAngle) + new Vector3(0, 0.301f, 0),
+                    footMeshLeft,
+                    ground.RotatedBy(bodyAngle) + jointPositions.leftJoint + new Vector3(offsetJoint, 0.301f, 0),
                     Quaternion.AngleAxis(0, Vector3.up),
                     centerMat,
                     portrait);
+
+                GenDraw.DrawMeshNowOrLater(
+                        footMeshRight,
+                        ground.RotatedBy(bodyAngle) + jointPositions.rightJoint + new Vector3(offsetJoint, 0.301f, 0),
+                        Quaternion.AngleAxis(0, Vector3.up),
+                        centerMat,
+                        portrait);
 
                 // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z),
                 // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);

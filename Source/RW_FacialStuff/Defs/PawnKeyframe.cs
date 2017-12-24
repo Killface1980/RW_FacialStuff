@@ -1,5 +1,6 @@
 ﻿namespace FacialStuff.Defs
 {
+    using Verse;
 
     public class PawnKeyframe
     {
@@ -36,6 +37,10 @@
         public float? FrontPawPositionZ;
 
         public float? FrontPawPositionVerticalZ;
+
+        public float? ShoulderOffsetHorizontalX;
+
+        public float? HipOffsetHorizontalX;
 
         #endregion Public Fields
 

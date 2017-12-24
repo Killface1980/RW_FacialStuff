@@ -131,120 +131,174 @@
     <animation>
       <li>
         <keyIndex>0</keyIndex>
+        <BodyAngle>0</BodyAngle>
+        <BodyAngleVertical>0</BodyAngleVertical>
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0</BodyOffsetZ>
         <FootAngle>0</FootAngle>
+        <FootPositionVerticalZ>0</FootPositionVerticalZ>
         <FootPositionX>0</FootPositionX>
         <FootPositionZ>0</FootPositionZ>
         <HandsSwingAngle>0</HandsSwingAngle>
         <HandsSwingPosVertical>0</HandsSwingPosVertical>
-        <BodyAngle>0</BodyAngle>
-        <BodyAngleVertical>0</BodyAngleVertical>
-        <BodyOffsetZ>0</BodyOffsetZ>
-        <FootPositionVerticalZ>0</FootPositionVerticalZ>
-        <BodyOffsetVerticalZ IsNull="True" />
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX>0</HipOffsetHorizontalX>
       </li>
       <li>
         <keyIndex>1</keyIndex>
+        <BodyAngle>-5</BodyAngle>
+        <BodyAngleVertical>3</BodyAngleVertical>
+        <BodyOffsetVerticalZ>0.075</BodyOffsetVerticalZ>
+        <BodyOffsetZ>0.125</BodyOffsetZ>
         <FootAngle>0</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
         <FootPositionX IsNull="True" />
         <FootPositionZ>0</FootPositionZ>
         <HandsSwingAngle IsNull="True" />
         <HandsSwingPosVertical IsNull="True" />
-        <BodyAngle>-5</BodyAngle>
-        <BodyAngleVertical>3</BodyAngleVertical>
-        <BodyOffsetZ>0.125</BodyOffsetZ>
-        <FootPositionVerticalZ IsNull="True" />
-        <BodyOffsetVerticalZ>0.075</BodyOffsetVerticalZ>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX>0.025</HipOffsetHorizontalX>
       </li>
       <li>
         <keyIndex>2</keyIndex>
+        <BodyAngle IsNull="True" />
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ IsNull="True" />
         <FootAngle IsNull="True" />
+        <FootPositionVerticalZ>0.125</FootPositionVerticalZ>
         <FootPositionX>-0.3</FootPositionX>
         <FootPositionZ>0.075</FootPositionZ>
         <HandsSwingAngle>-40</HandsSwingAngle>
         <HandsSwingPosVertical IsNull="True" />
-        <BodyAngle IsNull="True" />
-        <BodyAngleVertical IsNull="True" />
-        <BodyOffsetZ IsNull="True" />
-        <FootPositionVerticalZ>0.125</FootPositionVerticalZ>
-        <BodyOffsetVerticalZ IsNull="True" />
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
       </li>
       <li>
         <keyIndex>3</keyIndex>
+        <BodyAngle>7</BodyAngle>
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>-0.025</BodyOffsetZ>
         <FootAngle>45</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
         <FootPositionX IsNull="True" />
         <FootPositionZ>0.15</FootPositionZ>
         <HandsSwingAngle>-50</HandsSwingAngle>
         <HandsSwingPosVertical>-0.075</HandsSwingPosVertical>
-        <BodyAngle>7</BodyAngle>
-        <BodyAngleVertical IsNull="True" />
-        <BodyOffsetZ>-0.025</BodyOffsetZ>
-        <FootPositionVerticalZ IsNull="True" />
-        <BodyOffsetVerticalZ IsNull="True" />
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX>-0.05</HipOffsetHorizontalX>
       </li>
       <li>
         <keyIndex>4</keyIndex>
-        <FootAngle>90</FootAngle>
-        <FootPositionX>0</FootPositionX>
-        <FootPositionZ>0.1</FootPositionZ>
-        <HandsSwingAngle>0</HandsSwingAngle>
-        <HandsSwingPosVertical>0</HandsSwingPosVertical>
         <BodyAngle>0</BodyAngle>
         <BodyAngleVertical>0</BodyAngleVertical>
-        <BodyOffsetZ>0</BodyOffsetZ>
-        <FootPositionVerticalZ>0</FootPositionVerticalZ>
         <BodyOffsetVerticalZ>0</BodyOffsetVerticalZ>
+        <BodyOffsetZ>0</BodyOffsetZ>
+        <FootAngle>90</FootAngle>
+        <FootPositionVerticalZ>0</FootPositionVerticalZ>
+        <FootPositionX>0</FootPositionX>
+        <FootPositionZ>0.15</FootPositionZ>
+        <HandsSwingAngle>0</HandsSwingAngle>
+        <HandsSwingPosVertical>0</HandsSwingPosVertical>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX>0</HipOffsetHorizontalX>
       </li>
       <li>
         <keyIndex>5</keyIndex>
+        <BodyAngle>-5</BodyAngle>
+        <BodyAngleVertical>-3</BodyAngleVertical>
+        <BodyOffsetVerticalZ>0.075</BodyOffsetVerticalZ>
+        <BodyOffsetZ>0.125</BodyOffsetZ>
         <FootAngle>63</FootAngle>
-        <FootPositionX IsNull="True" />
+        <FootPositionVerticalZ IsNull="True" />
+        <FootPositionX>0.15</FootPositionX>
         <FootPositionZ>0.175</FootPositionZ>
         <HandsSwingAngle IsNull="True" />
         <HandsSwingPosVertical IsNull="True" />
-        <BodyAngle>-5</BodyAngle>
-        <BodyAngleVertical>-3</BodyAngleVertical>
-        <BodyOffsetZ>0.125</BodyOffsetZ>
-        <FootPositionVerticalZ IsNull="True" />
-        <BodyOffsetVerticalZ>0.075</BodyOffsetVerticalZ>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX>0.025</HipOffsetHorizontalX>
       </li>
       <li>
         <keyIndex>6</keyIndex>
+        <BodyAngle IsNull="True" />
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0</BodyOffsetZ>
         <FootAngle>-30</FootAngle>
+        <FootPositionVerticalZ>0</FootPositionVerticalZ>
         <FootPositionX>0.2</FootPositionX>
         <FootPositionZ>0</FootPositionZ>
         <HandsSwingAngle>40</HandsSwingAngle>
         <HandsSwingPosVertical IsNull="True" />
-        <BodyAngle IsNull="True" />
-        <BodyAngleVertical IsNull="True" />
-        <BodyOffsetZ>0</BodyOffsetZ>
-        <FootPositionVerticalZ>0</FootPositionVerticalZ>
-        <BodyOffsetVerticalZ IsNull="True" />
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
       </li>
       <li>
         <keyIndex>7</keyIndex>
+        <BodyAngle>7</BodyAngle>
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>-0.025</BodyOffsetZ>
         <FootAngle>-8</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
         <FootPositionX>0.175</FootPositionX>
         <FootPositionZ>0</FootPositionZ>
         <HandsSwingAngle>50</HandsSwingAngle>
         <HandsSwingPosVertical>0.075</HandsSwingPosVertical>
-        <BodyAngle>7</BodyAngle>
-        <BodyAngleVertical IsNull="True" />
-        <BodyOffsetZ>-0.025</BodyOffsetZ>
-        <FootPositionVerticalZ IsNull="True" />
-        <BodyOffsetVerticalZ IsNull="True" />
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX>-0.05</HipOffsetHorizontalX>
       </li>
       <li>
         <keyIndex>8</keyIndex>
+        <BodyAngle>0</BodyAngle>
+        <BodyAngleVertical>0</BodyAngleVertical>
+        <BodyOffsetVerticalZ>0</BodyOffsetVerticalZ>
+        <BodyOffsetZ>0</BodyOffsetZ>
         <FootAngle>0</FootAngle>
+        <FootPositionVerticalZ>0</FootPositionVerticalZ>
         <FootPositionX>0</FootPositionX>
         <FootPositionZ>0</FootPositionZ>
         <HandsSwingAngle>0</HandsSwingAngle>
         <HandsSwingPosVertical>0</HandsSwingPosVertical>
-        <BodyAngle>0</BodyAngle>
-        <BodyAngleVertical>0</BodyAngleVertical>
-        <BodyOffsetZ>0</BodyOffsetZ>
-        <FootPositionVerticalZ>0</FootPositionVerticalZ>
-        <BodyOffsetVerticalZ>0</BodyOffsetVerticalZ>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX>0</HipOffsetHorizontalX>
       </li>
     </animation>
 
@@ -260,102 +314,174 @@
     <animation>
       <li>
         <keyIndex>0</keyIndex>
+        <BodyAngle>0</BodyAngle>
+        <BodyAngleVertical>0</BodyAngleVertical>
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0.075</BodyOffsetZ>
         <FootAngle>0</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
         <FootPositionX>0</FootPositionX>
         <FootPositionZ>0</FootPositionZ>
         <HandsSwingAngle>0</HandsSwingAngle>
         <HandsSwingPosVertical>0</HandsSwingPosVertical>
-        <BodyAngle>0</BodyAngle>
-        <BodyAngleVertical>0</BodyAngleVertical>
-        <BodyOffsetZ>0.075</BodyOffsetZ>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
       </li>
       <li>
         <keyIndex>1</keyIndex>
+        <BodyAngle>-3</BodyAngle>
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0.15</BodyOffsetZ>
         <FootAngle IsNull="True" />
+        <FootPositionVerticalZ IsNull="True" />
         <FootPositionX IsNull="True" />
         <FootPositionZ>0.1</FootPositionZ>
         <HandsSwingAngle>-50</HandsSwingAngle>
         <HandsSwingPosVertical IsNull="True" />
-        <BodyAngle>-3</BodyAngle>
-        <BodyAngleVertical IsNull="True" />
-        <BodyOffsetZ>0.15</BodyOffsetZ>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX>0.025</HipOffsetHorizontalX>
       </li>
       <li>
         <keyIndex>2</keyIndex>
+        <BodyAngle IsNull="True" />
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0.15</BodyOffsetZ>
         <FootAngle IsNull="True" />
+        <FootPositionVerticalZ IsNull="True" />
         <FootPositionX>-0.4</FootPositionX>
         <FootPositionZ>0.125</FootPositionZ>
         <HandsSwingAngle>-60</HandsSwingAngle>
         <HandsSwingPosVertical IsNull="True" />
-        <BodyAngle IsNull="True" />
-        <BodyAngleVertical IsNull="True" />
-        <BodyOffsetZ>0.15</BodyOffsetZ>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
       </li>
       <li>
         <keyIndex>3</keyIndex>
+        <BodyAngle>9</BodyAngle>
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0</BodyOffsetZ>
         <FootAngle>110</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
         <FootPositionX>-0.15</FootPositionX>
         <FootPositionZ>0.175</FootPositionZ>
         <HandsSwingAngle IsNull="True" />
         <HandsSwingPosVertical IsNull="True" />
-        <BodyAngle>9</BodyAngle>
-        <BodyAngleVertical IsNull="True" />
-        <BodyOffsetZ>0</BodyOffsetZ>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX>-0.05</HipOffsetHorizontalX>
       </li>
       <li>
         <keyIndex>4</keyIndex>
+        <BodyAngle IsNull="True" />
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ IsNull="True" />
         <FootAngle>90</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
         <FootPositionX IsNull="True" />
         <FootPositionZ>0.2</FootPositionZ>
         <HandsSwingAngle IsNull="True" />
         <HandsSwingPosVertical IsNull="True" />
-        <BodyAngle IsNull="True" />
-        <BodyAngleVertical IsNull="True" />
-        <BodyOffsetZ IsNull="True" />
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
       </li>
       <li>
         <keyIndex>5</keyIndex>
+        <BodyAngle>-3</BodyAngle>
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0.2</BodyOffsetZ>
         <FootAngle>30</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
         <FootPositionX IsNull="True" />
         <FootPositionZ>0.15</FootPositionZ>
         <HandsSwingAngle>50</HandsSwingAngle>
         <HandsSwingPosVertical IsNull="True" />
-        <BodyAngle>-3</BodyAngle>
-        <BodyAngleVertical IsNull="True" />
-        <BodyOffsetZ>0.2</BodyOffsetZ>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX>0.025</HipOffsetHorizontalX>
       </li>
       <li>
         <keyIndex>6</keyIndex>
+        <BodyAngle IsNull="True" />
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0.15</BodyOffsetZ>
         <FootAngle>-22</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
         <FootPositionX>0.275</FootPositionX>
         <FootPositionZ>0</FootPositionZ>
         <HandsSwingAngle>60</HandsSwingAngle>
         <HandsSwingPosVertical IsNull="True" />
-        <BodyAngle IsNull="True" />
-        <BodyAngleVertical IsNull="True" />
-        <BodyOffsetZ>0.15</BodyOffsetZ>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
       </li>
       <li>
         <keyIndex>7</keyIndex>
+        <BodyAngle>5</BodyAngle>
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0</BodyOffsetZ>
         <FootAngle>0</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
         <FootPositionX IsNull="True" />
         <FootPositionZ IsNull="True" />
         <HandsSwingAngle IsNull="True" />
         <HandsSwingPosVertical IsNull="True" />
-        <BodyAngle>5</BodyAngle>
-        <BodyAngleVertical IsNull="True" />
-        <BodyOffsetZ>0</BodyOffsetZ>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX>-0.025</HipOffsetHorizontalX>
       </li>
       <li>
         <keyIndex>8</keyIndex>
+        <BodyAngle>0</BodyAngle>
+        <BodyAngleVertical>0</BodyAngleVertical>
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0.075</BodyOffsetZ>
         <FootAngle>0</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
         <FootPositionX>0</FootPositionX>
         <FootPositionZ>0</FootPositionZ>
         <HandsSwingAngle>0</HandsSwingAngle>
         <HandsSwingPosVertical>0</HandsSwingPosVertical>
-        <BodyAngle>0</BodyAngle>
-        <BodyAngleVertical>0</BodyAngleVertical>
-        <BodyOffsetZ>0.075</BodyOffsetZ>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX>0</HipOffsetHorizontalX>
       </li>
     </animation>
 

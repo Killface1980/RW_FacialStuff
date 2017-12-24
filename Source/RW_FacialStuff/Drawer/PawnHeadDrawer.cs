@@ -73,20 +73,7 @@ namespace FacialStuff
             return new List<Material>();
         }
 
-        public virtual bool CarryStuff(out Vector3 drawPos)
-        {
-            drawPos = Vector3.zero;
-            return false;
-        }
 
-        public virtual bool CarryWeaponOpenly()
-        {
-            return false;
-        }
-
-        public virtual void DoAttackAnimationOffsets(ref float weaponAngle, ref Vector3 weaponPosition, bool flipped)
-        {
-        }
 
         public virtual void DrawAlienBodyAddons(Quaternion quat, Vector3 rootLoc, bool portrait, bool renderBody)
         {
@@ -119,14 +106,6 @@ namespace FacialStuff
         {
         }
 
-        // Verse.PawnRenderer - Vanilla with flava
-        public virtual void DrawEquipment(Vector3 rootLoc, bool portrait)
-        {
-        }
-
-        public virtual void DrawEquipmentAiming(Thing equipment, Vector3 weaponDrawLoc, Vector3 rootLoc, float aimAngle)
-        {
-        }
 
         public virtual void DrawHairAndHeadGear(Vector3 rootLoc, Quaternion headQuat, RotDrawMode bodyDrawType, bool renderBody, bool portrait, Vector3 b, ref Vector3 currentLoc)
         {
