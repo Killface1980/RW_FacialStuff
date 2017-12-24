@@ -5,7 +5,6 @@
     using System.Reflection;
 
     using FacialStuff.Animator;
-    using FacialStuff.DefOfs;
     using FacialStuff.Defs;
     using FacialStuff.Graphics;
 
@@ -177,38 +176,32 @@
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
+
             this.bodyAnimator = new BodyAnimator(this.Pawn, this);
+
             this.PawnBodyGraphic = new PawnBodyGraphic(this);
 
+            BodyType bodyType = BodyType.Undefined;
 
-            if (this.Props.bodyAnimType != null)
+            if (this.Pawn.story?.bodyType != null)
             {
-                this.bodySizeDefinition = this.Props.bodyAnimType;
+                bodyType = this.Pawn.story.bodyType;
+            }
+
+            string defName = "BodyAnimDef_" + this.Pawn.def.defName + "_" + bodyType;
+
+
+            BodyAnimDef newDef = DefDatabase<BodyAnimDef>.GetNamedSilentFail(defName);
+
+
+            if (newDef != null)
+            {
+
+                this.bodySizeDefinition = newDef;
             }
             else
             {
-                if (this.Pawn.RaceProps.Humanlike)
-                {
-                    switch (this.Pawn.story.bodyType)
-                    {
-                        case BodyType.Undefined:
-                        case BodyType.Male:
-                            this.bodySizeDefinition = BodyAnimDefOf.BodyAnimDef_Male;
-                            break;
-                        case BodyType.Female:
-                            this.bodySizeDefinition = BodyAnimDefOf.BodyAnimDef_Female;
-                            break;
-                        case BodyType.Hulk:
-                            this.bodySizeDefinition = BodyAnimDefOf.BodyAnimDef_Hulk;
-                            break;
-                        case BodyType.Fat:
-                            this.bodySizeDefinition = BodyAnimDefOf.BodyAnimDef_Fat;
-                            break;
-                        case BodyType.Thin:
-                            this.bodySizeDefinition = BodyAnimDefOf.BodyAnimDef_Thin;
-                            break;
-                    }
-                }
+                this.bodySizeDefinition = new BodyAnimDef { defName = defName, label = defName };
             }
 
             this.InitializePawnDrawer();

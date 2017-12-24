@@ -8,6 +8,8 @@ namespace FacialStuff
     using FacialStuff.Defs;
     using FacialStuff.Drawer;
 
+    using RimWorld;
+
     using UnityEngine;
 
     using Verse;
@@ -65,7 +67,7 @@ namespace FacialStuff
             // Basic values
             var body = this.CompAnimator.bodySizeDefinition;
 
-            Rot4 rot = bodyFacing;
+            Rot4 rot = this.bodyFacing;
             JointLister jointPositions = this.GetJointPositions(rot, body.shoulderOffsets[rot.AsInt]);
 
             Vector3 rightFootAnim = Vector3.zero;

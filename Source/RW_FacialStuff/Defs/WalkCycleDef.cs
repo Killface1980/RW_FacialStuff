@@ -1,6 +1,8 @@
-﻿namespace FacialStuff.Defs
+﻿namespace RimWorld
 {
     using System.Collections.Generic;
+
+    using FacialStuff.Defs;
 
     using Verse;
 

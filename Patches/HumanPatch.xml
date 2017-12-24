@@ -62,7 +62,6 @@
             <drawers>
               <li Class ="FacialStuff.QuadrupedDrawer"/>
             </drawers>
-            <bodyAnimType>BodyAnimDef_Boomalope</bodyAnimType>
           <defaultCycleWalk>Quadruped_Walk</defaultCycleWalk>
           </li>
       </value>
@@ -92,7 +91,6 @@
             <drawers>
               <li Class ="FacialStuff.QuadrupedDrawer"/>
             </drawers>
-            <bodyAnimType>BodyAnimDef_Husky</bodyAnimType>
             <defaultCycleWalk>Quadruped_Walk</defaultCycleWalk>
           </li>
       </value>
@@ -122,11 +120,11 @@
             <drawers>
               <li Class ="FacialStuff.QuadrupedDrawer"/>
             </drawers>
-            <bodyAnimType>BodyAnimDef_WildBoar</bodyAnimType>
             <defaultCycleWalk>Quadruped_Walk</defaultCycleWalk>
           </li>
       </value>
       </li>
     </operations>
   </Operation>
+  
 </Patch>

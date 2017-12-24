@@ -27,25 +27,26 @@
 
         private static Texture2D maskTexSide;
 
-        private static string modPath;
+        private static string mergedHairPath;
 
-        private static string ModPath
+
+        private static string MergedHairPath
         {
             get
             {
-                if (modPath != null)
+                if (!mergedHairPath.NullOrEmpty())
                 {
-                    return modPath;
+                    return mergedHairPath;
                 }
 
                 ModMetaData mod = ModLister.AllInstalledMods.FirstOrDefault(
                     x => { return x?.Name != null && x.Active && x.Name.StartsWith("Facial Stuff"); });
                 if (mod != null)
                 {
-                    modPath = mod.RootDir + "/Textures/MergedHair/";
+                    mergedHairPath = mod.RootDir + "/Textures/MergedHair/";
                 }
 
-                return modPath;
+                return mergedHairPath;
             }
         }
 
@@ -97,7 +98,7 @@
             string oldPath = req.path;
             string name = Path.GetFileNameWithoutExtension(oldPath);
 
-            req.path = ModPath + name;
+            req.path = MergedHairPath + name;
 
             if (AllGraphics.TryGetValue(req, out Graphic graphic))
             {
@@ -139,7 +140,7 @@
 
                 CutOutHair(ref temptextureback, maskTexFrontBack);
 
-                req.path = ModPath + name;
+                req.path = MergedHairPath + name;
 
                 // if (!name.NullOrEmpty() && !File.Exists(req.path + "_front.png"))
                 // {
@@ -181,7 +182,7 @@
             HairDef hairDef,
             string name)
         {
-            string path = ModPath + name;
+            string path = MergedHairPath + name;
             if (!name.NullOrEmpty() && !File.Exists(path + "_front.png"))
             {
                 LongEventHandler.ExecuteWhenFinished(

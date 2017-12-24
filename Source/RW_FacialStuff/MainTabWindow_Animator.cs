@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace FacialStuff
 {
+    using System;
     using System.IO;
 
     using FacialStuff.Components;
@@ -62,7 +63,8 @@ namespace FacialStuff
             }
 
             this.frameLabel = this.currentFrame + 1;
-            float space = this.spacing * (count - 1);
+            int lastIndex = count - 1;
+            float space = this.spacing * lastIndex;
             float widthButton = ((inRect.width / 2) - this.spacing - space) / count;
             float animationSlider = this.CompAnim.AnimationPercent;
 
@@ -85,37 +87,24 @@ namespace FacialStuff
                 if (!this.loop && animationSlider != this.CompAnim.AnimationPercent)
                 {
                     this.CompAnim.AnimationPercent = animationSlider;
-                    this.currentFrame = (int)(this.CompAnim.AnimationPercent * (count - 1));
+                    this.currentFrame = (int)(this.CompAnim.AnimationPercent * lastIndex);
                     // Log.Message("current frame: " + this.currentFrame);
                 }
 
-                PawnKeyframe firstFrame = frames.FirstOrDefault();
-                PawnKeyframe lastFrame = frames.LastOrDefault();
+                PawnKeyframe firstOrDefault = frames.FirstOrDefault();
+                PawnKeyframe lastOrDefault = frames.LastOrDefault();
+                PawnKeyframe thisFrame = frames[this.currentFrame];
 
-                // Todo: complete this!
-                if (this.currentFrame == firstFrame.keyIndex)
+                if (firstOrDefault != null && lastOrDefault != null)
                 {
-                    lastFrame.BodyAngle = firstFrame.BodyAngle;
-                    lastFrame.BodyAngleVertical = firstFrame.BodyAngleVertical;
-                    lastFrame.BodyOffsetZ = firstFrame.BodyOffsetZ;
-                    lastFrame.FootAngle = firstFrame.FootAngle;
-                    lastFrame.FootPositionX = firstFrame.FootPositionX;
-                    lastFrame.FootPositionZ = firstFrame.FootPositionZ;
-                    lastFrame.FootPositionVerticalZ = firstFrame.FootPositionVerticalZ;
-                    lastFrame.HandsSwingAngle = firstFrame.HandsSwingAngle;
-                    lastFrame.HandsSwingPosVertical = firstFrame.HandsSwingPosVertical;
-                }
-                else if (this.currentFrame == lastFrame.keyIndex)
-                {
-                    firstFrame.BodyAngle = lastFrame.BodyAngle;
-                    firstFrame.BodyAngleVertical = lastFrame.BodyAngleVertical;
-                    firstFrame.BodyOffsetZ = lastFrame.BodyOffsetZ;
-                    firstFrame.FootAngle = lastFrame.FootAngle;
-                    firstFrame.FootPositionX = lastFrame.FootPositionX;
-                    firstFrame.FootPositionZ = lastFrame.FootPositionZ;
-                    firstFrame.FootPositionVerticalZ = lastFrame.FootPositionVerticalZ;
-                    firstFrame.HandsSwingAngle = lastFrame.HandsSwingAngle;
-                    firstFrame.HandsSwingPosVertical = lastFrame.HandsSwingPosVertical;
+                    if (this.currentFrame == 0)
+                    {
+                        SynchronizeFrames(thisFrame, frames[lastIndex]);
+                    }
+                    if (this.currentFrame == lastIndex)
+                    {
+                        SynchronizeFrames(thisFrame, frames[0]);
+                    }
                 }
 
                 if (!this.loop)
@@ -128,11 +117,31 @@ namespace FacialStuff
             base.DoWindowContents(inRect);
         }
 
+        private static void SynchronizeFrames(PawnKeyframe sourceFrame, PawnKeyframe targetFrame)
+        {
+            targetFrame.BodyAngle = sourceFrame.BodyAngle;
+            targetFrame.BodyAngleVertical = sourceFrame.BodyAngleVertical;
+            targetFrame.BodyOffsetVerticalZ = sourceFrame.BodyOffsetVerticalZ;
+            targetFrame.BodyOffsetZ = sourceFrame.BodyOffsetZ;
+            targetFrame.FootAngle = sourceFrame.FootAngle;
+            targetFrame.FootPositionVerticalZ = sourceFrame.FootPositionVerticalZ;
+            targetFrame.FootPositionX = sourceFrame.FootPositionX;
+            targetFrame.FootPositionZ = sourceFrame.FootPositionZ;
+            targetFrame.FrontPawAngle = sourceFrame.FrontPawAngle;
+            targetFrame.FrontPawPositionVerticalZ = sourceFrame.FrontPawPositionVerticalZ;
+            targetFrame.FrontPawPositionX = sourceFrame.FrontPawPositionVerticalZ;
+            targetFrame.FrontPawPositionZ = sourceFrame.FrontPawPositionVerticalZ;
+            targetFrame.HandsSwingAngle = sourceFrame.FrontPawPositionVerticalZ;
+            targetFrame.HandsSwingPosVertical = sourceFrame.FrontPawPositionVerticalZ;
+            targetFrame.HipOffsetHorizontalX = sourceFrame.FrontPawPositionVerticalZ;
+            targetFrame.ShoulderOffsetHorizontalX = sourceFrame.FrontPawPositionVerticalZ;
+        }
+
         private void DrawBodySettingsEditor(Rect bodyEditor, Rot4 rotation)
         {
             GUI.BeginGroup(bodyEditor);
 
-            Rect sliderRect = new Rect(0, 0, this.width, this.defaultHeight);
+            Rect sliderRect = new Rect(0, 0, this.width, bodyEditor.height / 8);
 
             this.bodyAnimDef = this.CompAnim.bodySizeDefinition;
 
@@ -141,40 +150,55 @@ namespace FacialStuff
             //     ref bodyAnimDef.hipOffsetVerticalFromCenter, ref sliderRect);
 
             Vector3 shoulderOffset = this.bodyAnimDef.shoulderOffsets[rotation.AsInt];
-            bool shoulderFlipped = shoulderOffset.y < 0;
-            this.DrawBodyStats(
-                    "shoulderOffsetX",
-                    ref shoulderOffset.x,
-                    ref sliderRect);
-            this.DrawBodyStats(
-                    "shoulderOffsetY",
-                    ref shoulderFlipped,
-                    ref sliderRect);
-            this.DrawBodyStats(
-                    "shoulderOffsetZ",
-                    ref shoulderOffset.z,
-                    ref sliderRect);
+
+            if (shoulderOffset.y == 0f)
+            {
+                if (rotation == Rot4.West)
+                {
+                    shoulderOffset.y = -0.025f;
+                }
+                else
+                {
+                    shoulderOffset.y = 0.025f;
+                }
+            }
+
+            bool front = shoulderOffset.y > 0;
+
+            if (rotation == Rot4.West)
+            {
+                front = shoulderOffset.y < 0;
+            }
+
+            this.DrawBodyStats("shoulderOffsetX", ref shoulderOffset.x, ref sliderRect);
+            this.DrawBodyStats("shoulderOffsetZ", ref shoulderOffset.z, ref sliderRect);
+            this.DrawBodyStats("shoulderFront", ref front, ref sliderRect);
 
             Vector3 hipOffset = this.bodyAnimDef.hipOffsets[rotation.AsInt];
-            bool hipFlipped = hipOffset.y < 0;
-
-            this.DrawBodyStats(
-                    "hipOffsetX",
-                    ref hipOffset.x,
-                    ref sliderRect);
-            this.DrawBodyStats(
-                    "hipOffsetY",
-                    ref hipFlipped,
-                    ref sliderRect);
-            this.DrawBodyStats(
-                    "hipOffsetZ",
-                    ref hipOffset.z,
-                    ref sliderRect);
+            if (hipOffset.y == 0f)
+            {
+                if (rotation == Rot4.West)
+                {
+                    hipOffset.y = -0.025f;
+                }
+                else
+                {
+                    hipOffset.y = 0.025f;
+                }
+            }
+            bool hipFront = hipOffset.y > 0;
+            if (rotation == Rot4.West)
+            {
+                hipFront = hipOffset.y < 0;
+            }
+            this.DrawBodyStats("hipOffsetX", ref hipOffset.x, ref sliderRect);
+            this.DrawBodyStats("hipOffsetZ", ref hipOffset.z, ref sliderRect);
+            this.DrawBodyStats("hipFront", ref hipFront, ref sliderRect);
 
             if (GUI.changed)
             {
-                this.SetNewVector(rotation, shoulderOffset, this.bodyAnimDef.shoulderOffsets, shoulderFlipped);
-                this.SetNewVector(rotation, hipOffset, this.bodyAnimDef.hipOffsets, hipFlipped);
+                this.SetNewVector(rotation, shoulderOffset, this.bodyAnimDef.shoulderOffsets, front);
+                this.SetNewVector(rotation, hipOffset, this.bodyAnimDef.hipOffsets, hipFront);
             }
 
             this.DrawBodyStats("armLength", ref this.bodyAnimDef.armLength, ref sliderRect);
@@ -183,20 +207,37 @@ namespace FacialStuff
             GUI.EndGroup();
         }
 
-        private void SetNewVector(Rot4 rotation, Vector3 newOffset, List<Vector3> offset, bool flipped)
+        private void SetNewVector(Rot4 rotation, Vector3 newOffset, List<Vector3> offset, bool front)
         {
-            newOffset.y = (rotation == Rot4.North ? -1 : 1) * 0.025f;
-            if (flipped)
+            newOffset.y = (front ? 1 : -1) * 0.025f;
+            if (rotation == Rot4.West)
             {
                 newOffset.y *= -1;
             }
+
+            // Set new offset
             offset[rotation.AsInt] = newOffset;
-            newOffset.x *= -1;
-            if (rotation.IsHorizontal)
+
+            Vector3 opposite = newOffset;
+
+            var oppY = offset[rotation.Opposite.AsInt].y;
+            var oppZ = offset[rotation.Opposite.AsInt].z;
+
+            // Opposite side
+            opposite.x *= -1;
+            if (!rotation.IsHorizontal)
             {
-                newOffset.y *= -1;
+                // Keep the north south stats
+                opposite.y = oppY;
+                opposite.z = oppZ;
             }
-            offset[rotation.Opposite.AsInt] = newOffset;
+            else
+            {
+                opposite.y *= -1;
+
+            }
+
+            offset[rotation.Opposite.AsInt] = opposite;
         }
 
         private void DrawKeyframeEditor(Rect controller, List<PawnKeyframe> frames, Rot4 rotation)
@@ -392,21 +433,45 @@ namespace FacialStuff
             listing_Standard.Gap();
             if (listing_Standard.ButtonText("Export BodyDef"))
             {
-                string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
+                string configFolder = DefPath;
+
+                // BodyAnimDef animDef = this.bodyAnimDef;
+                ExportAnimDefs.Defs animDef = new ExportAnimDefs.Defs(this.bodyAnimDef); ;
+
                 DirectXmlSaver.SaveDataObject(
-                    this.bodyAnimDef,
-                    configFolder + "/Exported_Animator.xml");
-                //configFolder + "/Exported_" + this.CompAnim.bodySizeDefinition.defName + ".xml");
+                    animDef,
+                    configFolder + "/BodyAnimDefs/" + this.bodyAnimDef.defName + ".xml");
             }
             if (listing_Standard.ButtonText("Export WalkCycle"))
             {
-                string configFolder = Path.GetDirectoryName(GenFilePaths.ModsConfigFilePath);
-                DirectXmlSaver.SaveDataObject(EditorWalkcycle,
-                    configFolder + "/Exported_Animator.xml");
-                //configFolder + "/Exported_" + EditorWalkcycle.defName + ".xml");
+                string configFolder = DefPath;
+                ExportCycleDefs.Defs cycle = new ExportCycleDefs.Defs(EditorWalkcycle);
+                DirectXmlSaver.SaveDataObject(cycle,
+                    configFolder + "/WalkCycleDefs/" + EditorWalkcycle.defName + ".xml");
             }
 
             listing_Standard.End();
+        }
+        private static string defPath;
+
+        public static string DefPath
+        {
+            get
+            {
+                if (!defPath.NullOrEmpty())
+                {
+                    return defPath;
+                }
+
+                ModMetaData mod = ModLister.AllInstalledMods.FirstOrDefault(
+                    x => { return x?.Name != null && x.Active && x.Name.StartsWith("Facial Stuff"); });
+                if (mod != null)
+                {
+                    defPath = mod.RootDir + "/Defs";
+                }
+
+                return defPath;
+            }
         }
 
         private void DrawBodyStats(string label, ref float value, ref Rect sliderRect)

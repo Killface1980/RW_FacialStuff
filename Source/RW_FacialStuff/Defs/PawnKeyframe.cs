@@ -4,43 +4,28 @@
 
     public class PawnKeyframe
     {
+
         #region Public Fields
 
-        public int keyIndex;
-
         public float? BodyAngle;
-
         public float? BodyAngleVertical;
-
         public float? BodyOffsetVerticalZ;
-
         public float? BodyOffsetZ;
-
         public float? FootAngle;
-
         public float? FootPositionVerticalZ;
-
         public float? FootPositionX;
-
         public float? FootPositionZ;
-
-        public float? HandsSwingAngle;
-
-        public float? HandsSwingPosVertical;
-
-
         // Quadrupeds
         public float? FrontPawAngle;
 
-        public float? FrontPawPositionX;
-
-        public float? FrontPawPositionZ;
-
         public float? FrontPawPositionVerticalZ;
-
-        public float? ShoulderOffsetHorizontalX;
-
+        public float? FrontPawPositionX;
+        public float? FrontPawPositionZ;
+        public float? HandsSwingAngle;
+        public float? HandsSwingPosVertical;
         public float? HipOffsetHorizontalX;
+        public float? ShoulderOffsetHorizontalX;
+        public int keyIndex;
 
         #endregion Public Fields
 
@@ -53,6 +38,7 @@
         }
 
         #endregion Public Constructors
+
     }
 
 }

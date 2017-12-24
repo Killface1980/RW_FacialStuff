@@ -1,0 +1,635 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <WalkCycleDef>
+    <shoulderAngle>0</shoulderAngle>
+    <animation>
+      <li>
+        <keyIndex>0</keyIndex>
+        <BodyAngle>0</BodyAngle>
+        <BodyAngleVertical>0</BodyAngleVertical>
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0</BodyOffsetZ>
+        <FootAngle>0</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
+        <FootPositionX>0.075</FootPositionX>
+        <FootPositionZ>0</FootPositionZ>
+        <HandsSwingAngle>0</HandsSwingAngle>
+        <HandsSwingPosVertical>0</HandsSwingPosVertical>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
+      </li>
+      <li>
+        <keyIndex>1</keyIndex>
+        <BodyAngle>-5</BodyAngle>
+        <BodyAngleVertical>3</BodyAngleVertical>
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0.075</BodyOffsetZ>
+        <FootAngle IsNull="True" />
+        <FootPositionVerticalZ IsNull="True" />
+        <FootPositionX IsNull="True" />
+        <FootPositionZ>0.05</FootPositionZ>
+        <HandsSwingAngle IsNull="True" />
+        <HandsSwingPosVertical IsNull="True" />
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
+      </li>
+      <li>
+        <keyIndex>2</keyIndex>
+        <BodyAngle IsNull="True" />
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ IsNull="True" />
+        <FootAngle IsNull="True" />
+        <FootPositionVerticalZ IsNull="True" />
+        <FootPositionX>-0.225</FootPositionX>
+        <FootPositionZ>0.075</FootPositionZ>
+        <HandsSwingAngle IsNull="True" />
+        <HandsSwingPosVertical IsNull="True" />
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
+      </li>
+      <li>
+        <keyIndex>3</keyIndex>
+        <BodyAngle>7</BodyAngle>
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>-0.025</BodyOffsetZ>
+        <FootAngle>45</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
+        <FootPositionX>-0.225</FootPositionX>
+        <FootPositionZ IsNull="True" />
+        <HandsSwingAngle>-80</HandsSwingAngle>
+        <HandsSwingPosVertical>-0.075</HandsSwingPosVertical>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
+      </li>
+      <li>
+        <keyIndex>4</keyIndex>
+        <BodyAngle>0</BodyAngle>
+        <BodyAngleVertical>0</BodyAngleVertical>
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0</BodyOffsetZ>
+        <FootAngle>90</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
+        <FootPositionX>0</FootPositionX>
+        <FootPositionZ>0.125</FootPositionZ>
+        <HandsSwingAngle>0</HandsSwingAngle>
+        <HandsSwingPosVertical>0</HandsSwingPosVertical>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
+      </li>
+      <li>
+        <keyIndex>5</keyIndex>
+        <BodyAngle>-5</BodyAngle>
+        <BodyAngleVertical>-3</BodyAngleVertical>
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0.075</BodyOffsetZ>
+        <FootAngle IsNull="True" />
+        <FootPositionVerticalZ IsNull="True" />
+        <FootPositionX IsNull="True" />
+        <FootPositionZ IsNull="True" />
+        <HandsSwingAngle IsNull="True" />
+        <HandsSwingPosVertical IsNull="True" />
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
+      </li>
+      <li>
+        <keyIndex>6</keyIndex>
+        <BodyAngle IsNull="True" />
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0</BodyOffsetZ>
+        <FootAngle>-45</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
+        <FootPositionX>0.2</FootPositionX>
+        <FootPositionZ>0.025</FootPositionZ>
+        <HandsSwingAngle IsNull="True" />
+        <HandsSwingPosVertical IsNull="True" />
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
+      </li>
+      <li>
+        <keyIndex>7</keyIndex>
+        <BodyAngle>7</BodyAngle>
+        <BodyAngleVertical IsNull="True" />
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>-0.025</BodyOffsetZ>
+        <FootAngle>0</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
+        <FootPositionX IsNull="True" />
+        <FootPositionZ>0</FootPositionZ>
+        <HandsSwingAngle>80</HandsSwingAngle>
+        <HandsSwingPosVertical>0.075</HandsSwingPosVertical>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
+      </li>
+      <li>
+        <keyIndex>8</keyIndex>
+        <BodyAngle>0</BodyAngle>
+        <BodyAngleVertical>0</BodyAngleVertical>
+        <BodyOffsetVerticalZ IsNull="True" />
+        <BodyOffsetZ>0</BodyOffsetZ>
+        <FootAngle>0</FootAngle>
+        <FootPositionVerticalZ IsNull="True" />
+        <FootPositionX>0.075</FootPositionX>
+        <FootPositionZ>0</FootPositionZ>
+        <HandsSwingAngle>0</HandsSwingAngle>
+        <HandsSwingPosVertical>0</HandsSwingPosVertical>
+        <FrontPawAngle IsNull="True" />
+        <FrontPawPositionX IsNull="True" />
+        <FrontPawPositionZ IsNull="True" />
+        <FrontPawPositionVerticalZ IsNull="True" />
+        <ShoulderOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX IsNull="True" />
+      </li>
+    </animation>
+    <BodyAngle>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.125</x>
+            <y>-5</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.375</x>
+            <y>7</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.5</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.625</x>
+            <y>-5</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.875</x>
+            <y>7</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </BodyAngle>
+    <BodyAngleVertical>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.125</x>
+            <y>3</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.5</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.625</x>
+            <y>-3</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </BodyAngleVertical>
+    <BodyOffsetZ>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.125</x>
+            <y>0.075</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.375</x>
+            <y>-0.025</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.5</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.625</x>
+            <y>0.075</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.75</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.875</x>
+            <y>-0.025</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </BodyOffsetZ>
+    <FootAngle>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.375</x>
+            <y>45</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.5</x>
+            <y>90</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.75</x>
+            <y>-45</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.875</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </FootAngle>
+    <FootPositionX>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0.075</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.25</x>
+            <y>-0.225</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.375</x>
+            <y>-0.225</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.5</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.75</x>
+            <y>0.2</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0.075</y>
+          </loc>
+        </li>
+      </points>
+    </FootPositionX>
+    <FootPositionZ>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.125</x>
+            <y>0.05</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.25</x>
+            <y>0.075</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.5</x>
+            <y>0.125</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.75</x>
+            <y>0.025</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.875</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </FootPositionZ>
+    <HandsSwingAngle>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.375</x>
+            <y>-80</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.5</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.875</x>
+            <y>80</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </HandsSwingAngle>
+    <HandsSwingPosVertical>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.375</x>
+            <y>-0.075</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.5</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.875</x>
+            <y>0.075</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </HandsSwingPosVertical>
+    <FootPositionVerticalZ>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </FootPositionVerticalZ>
+    <BodyOffsetVerticalZ>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </BodyOffsetVerticalZ>
+    <FrontPawAngle>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </FrontPawAngle>
+    <FrontPawPositionX>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </FrontPawPositionX>
+    <FrontPawPositionZ>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </FrontPawPositionZ>
+    <FrontPawPositionVerticalZ>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </FrontPawPositionVerticalZ>
+    <ShoulderOffsetHorizontalX>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </ShoulderOffsetHorizontalX>
+    <HipOffsetHorizontalX>
+      <points>
+        <li>
+          <loc>
+            <x>0</x>
+            <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>1</x>
+            <y>0</y>
+          </loc>
+        </li>
+      </points>
+    </HipOffsetHorizontalX>
+    <defName>Human_Amble</defName>
+    <label>Human_Amble</label>
+  </WalkCycleDef>
+</Defs>

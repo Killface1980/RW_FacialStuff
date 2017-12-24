@@ -4,6 +4,8 @@
 
     using FacialStuff.Defs;
 
+    using RimWorld;
+
     using UnityEngine;
 
     using Verse;
@@ -15,8 +17,6 @@
         public string handType = "Human";
 
         public bool bipedWithHands = false;
-
-        public BodyAnimDef bodyAnimType;
 
         public Vector3 hipOffset;
 
