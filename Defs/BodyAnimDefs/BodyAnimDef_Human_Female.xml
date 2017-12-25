@@ -1,33 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <BodyAnimDef>
-    <armLength>0.3</armLength>
-    <extraLegLength>0.05</extraLegLength>
+    <armLength>0.275</armLength>
+    <extraLegLength>0.025</extraLegLength>
     <shoulderOffsets>
       <li>
-        <x>0.175</x>
+        <x>0.225</x>
         <y>-0.025</y>
         <z>0</z>
       </li>
       <li>
-        <x>-0.025</x>
+        <x>0</x>
         <y>0.025</y>
-        <z>0.025</z>
+        <z>-0.075</z>
       </li>
       <li>
-        <x>-0.175</x>
+        <x>-0.225</x>
         <y>0.025</y>
         <z>0</z>
       </li>
       <li>
-        <x>0.025</x>
+        <x>0</x>
         <y>-0.025</y>
-        <z>0.025</z>
+        <z>-0.075</z>
       </li>
     </shoulderOffsets>
     <hipOffsets>
       <li>
-        <x>0.125</x>
+        <x>0.2</x>
         <y>-0.025</y>
         <z>0</z>
       </li>
@@ -37,7 +37,7 @@
         <z>0</z>
       </li>
       <li>
-        <x>-0.125</x>
+        <x>-0.2</x>
         <y>0.025</y>
         <z>0</z>
       </li>
@@ -47,7 +47,7 @@
         <z>0</z>
       </li>
     </hipOffsets>
-    <defName>BodyAnimDef_Human_Thin</defName>
-    <label>BodyAnimDef_Human_Thin</label>
+    <defName>BodyAnimDef_Human_Female</defName>
+    <label>BodyAnimDef_Human_Female</label>
   </BodyAnimDef>
 </Defs>

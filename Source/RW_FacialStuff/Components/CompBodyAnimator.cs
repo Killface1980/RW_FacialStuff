@@ -20,7 +20,6 @@
     {
         #region Public Fields
 
-        public float AnimationPercent;
 
         public bool AnimatorOpen;
 

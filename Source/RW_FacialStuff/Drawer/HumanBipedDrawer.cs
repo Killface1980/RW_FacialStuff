@@ -558,6 +558,7 @@ namespace FacialStuff
                 ref leftHand,
                 ref shoulderAngle,
                 ref handSwingAngle,
+                ref shoulperPos,
                 carrying,
                 cycle.HandsSwingPosVertical,
                 cycle.HandsSwingAngle, offsetJoint);
@@ -631,7 +632,17 @@ namespace FacialStuff
             }
         }
 
-        private void DoWalkCycleOffsets(float armLength, ref Vector3 rightHand, ref Vector3 leftHand, ref float shoulderAngle, ref float handSwingAngle, bool carrying, SimpleCurve cycleHandsSwingPosVertical, SimpleCurve cycleHandsSwingAngle, float offsetJoint)
+        private void DoWalkCycleOffsets(
+            float armLength,
+            ref Vector3 rightHand,
+            ref Vector3 leftHand,
+            ref float shoulderAngle,
+            ref float handSwingAngle,
+            ref JointLister shoulderPos,
+            bool carrying,
+            SimpleCurve cycleHandsSwingPosVertical,
+            SimpleCurve cycleHandsSwingAngle,
+            float offsetJoint)
         {
             var rot = this.bodyFacing;
             // Basic values if pawn is carrying stuff
@@ -674,7 +685,9 @@ namespace FacialStuff
                 {
                     if (rot.IsHorizontal)
                     {
-                        x = x2 = (rot == Rot4.West ? -1 : 1) * offsetJoint;
+                        float f = (rot == Rot4.West ? -1 : 1) * offsetJoint;
+                        shoulderPos.rightJoint.x += f;
+                        shoulderPos.leftJoint.x += f;
 
                         handSwingAngle = (rot == Rot4.West ? -1 : 1) * cycleHandsSwingAngle.Evaluate(this.movedPercent);
 

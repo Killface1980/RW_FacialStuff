@@ -28,7 +28,7 @@
 
             if (this.compAnim.AnimatorOpen)
             {
-                movedPercent = this.compAnim.AnimationPercent;
+                movedPercent = MainTabWindow_Animator.AnimationPercent;
                 return true;
             }
 
