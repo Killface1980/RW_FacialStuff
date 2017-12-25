@@ -170,7 +170,7 @@ namespace FacialStuff
         {
             targetFrame.BodyAngle = sourceFrame.BodyAngle;
             targetFrame.BodyAngleVertical = sourceFrame.BodyAngleVertical;
-            targetFrame.BodyOffsetVerticalZ = sourceFrame.BodyOffsetVerticalZ;
+           // targetFrame.BodyOffsetVerticalZ = sourceFrame.BodyOffsetVerticalZ;
             targetFrame.BodyOffsetZ = sourceFrame.BodyOffsetZ;
             targetFrame.FootAngle = sourceFrame.FootAngle;
             targetFrame.FootPositionVerticalZ = sourceFrame.FootPositionVerticalZ;
@@ -372,6 +372,18 @@ namespace FacialStuff
                 editorRect.x = 0f;
                 editorRect.y = 0f;
 
+
+                framesAt = (from keyframe in frames
+                            where keyframe.BodyOffsetZ.HasValue
+                            select keyframe.keyIndex).ToList();
+
+                this.SetPosition(
+                    ref thisFrame.BodyOffsetZ,
+                    ref editorRect,
+                    EditorWalkcycle.BodyOffsetZ,
+                    "BodyOffsetZ",
+                    framesAt);
+
                 if (rotation.IsHorizontal)
                 {
                     if (this.CompAnim.Props.bipedWithHands)
@@ -420,10 +432,6 @@ namespace FacialStuff
                         "ShoulderOffsetHorizontalX", framesAt);
 
 
-                    framesAt = (from keyframe in frames
-                                where keyframe.BodyOffsetZ.HasValue
-                                select keyframe.keyIndex).ToList();
-                    this.SetPosition(ref thisFrame.BodyOffsetZ, ref editorRect, EditorWalkcycle.BodyOffsetZ, "BodyOffsetZ", framesAt);
 
                     framesAt = (from keyframe in frames
                                 where keyframe.BodyAngle.HasValue
@@ -457,15 +465,15 @@ namespace FacialStuff
                             EditorWalkcycle.FrontPawPositionVerticalZ,
                             "FrontPawPosVerticalY", framesAt);
                     }
-                    framesAt = (from keyframe in frames
-                                where keyframe.BodyOffsetVerticalZ.HasValue
-                                select keyframe.keyIndex).ToList();
-
-                    this.SetPosition(
-                        ref thisFrame.BodyOffsetVerticalZ,
-                        ref editorRect,
-                        EditorWalkcycle.BodyOffsetVerticalZ,
-                        "BodyOffsetVerticalZ", framesAt);
+                   // framesAt = (from keyframe in frames
+                   //             where keyframe.BodyOffsetVerticalZ.HasValue
+                   //             select keyframe.keyIndex).ToList();
+                   //
+                   // this.SetPosition(
+                   //     ref thisFrame.BodyOffsetVerticalZ,
+                   //     ref editorRect,
+                   //     EditorWalkcycle.BodyOffsetVerticalZ,
+                   //     "BodyOffsetVerticalZ", framesAt);
 
 
                     framesAt = (from keyframe in frames

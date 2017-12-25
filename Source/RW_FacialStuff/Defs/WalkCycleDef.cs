@@ -32,7 +32,7 @@
 
         public SimpleCurve FootPositionVerticalZ = new SimpleCurve();
 
-        public SimpleCurve BodyOffsetVerticalZ = new SimpleCurve();
+      //  public SimpleCurve BodyOffsetVerticalZ = new SimpleCurve();
 
         public SimpleCurve FrontPawAngle = new SimpleCurve();
 

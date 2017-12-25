@@ -9,7 +9,7 @@
 
         public float? BodyAngle;
         public float? BodyAngleVertical;
-        public float? BodyOffsetVerticalZ;
+       // public float? BodyOffsetVerticalZ;
         public float? BodyOffsetZ;
         public float? FootAngle;
         public float? FootPositionVerticalZ;

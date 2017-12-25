@@ -68,7 +68,7 @@ namespace FacialStuff
                 cycle.BodyAngle = new SimpleCurve();
                 cycle.BodyAngleVertical = new SimpleCurve();
                 cycle.BodyOffsetZ = new SimpleCurve();
-                cycle.BodyOffsetVerticalZ = new SimpleCurve();
+              //  cycle.BodyOffsetVerticalZ = new SimpleCurve();
                 cycle.FootAngle = new SimpleCurve();
                 cycle.FootPositionX = new SimpleCurve();
                 cycle.FootPositionZ = new SimpleCurve();
@@ -108,7 +108,7 @@ namespace FacialStuff
             Dictionary<SimpleCurve, float?> dict =
                 new Dictionary<SimpleCurve, float?>
                     {
-                        { cycle.BodyOffsetVerticalZ, key.BodyOffsetVerticalZ },
+                       // { cycle.BodyOffsetVerticalZ, key.BodyOffsetVerticalZ },
                         { cycle.ShoulderOffsetHorizontalX, key.ShoulderOffsetHorizontalX },
                         { cycle.HipOffsetHorizontalX, key.HipOffsetHorizontalX },
                         { cycle.BodyAngle, key.BodyAngle },

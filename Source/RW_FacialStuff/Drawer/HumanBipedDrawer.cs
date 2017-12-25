@@ -824,7 +824,8 @@ namespace FacialStuff
             base.Tick(bodyFacing, graphics);
 
             this.isMoving = this.CompAnimator.BodyAnimator.IsMoving(out this.movedPercent);
-            var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
+           // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
+            var curve = this.walkCycle.BodyOffsetZ;
             this.BodyWobble = curve.Evaluate(this.movedPercent);
 
             this.SelectWalkcycle();
