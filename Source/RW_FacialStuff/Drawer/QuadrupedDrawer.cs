@@ -93,8 +93,7 @@ namespace FacialStuff
                 ref offsetJoint,
                 cycle.FrontPawPositionX,
                 cycle.FrontPawPositionZ,
-                cycle.FrontPawAngle,
-                cycle.FrontPawPositionVerticalZ);
+                cycle.FrontPawAngle);
 
 
             this.GetMeshesFoot(out Mesh footMeshRight, out Mesh footMeshLeft);

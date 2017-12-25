@@ -30,7 +30,7 @@
 
         public SimpleCurve HandsSwingPosVertical = new SimpleCurve();
 
-        public SimpleCurve FootPositionVerticalZ = new SimpleCurve();
+       // public SimpleCurve FootPositionVerticalZ = new SimpleCurve();
 
       //  public SimpleCurve BodyOffsetVerticalZ = new SimpleCurve();
 
@@ -40,7 +40,7 @@
 
         public SimpleCurve FrontPawPositionZ = new SimpleCurve();
 
-        public SimpleCurve FrontPawPositionVerticalZ = new SimpleCurve();
+       // public SimpleCurve FrontPawPositionVerticalZ = new SimpleCurve();
 
         public SimpleCurve ShoulderOffsetHorizontalX = new SimpleCurve();
 

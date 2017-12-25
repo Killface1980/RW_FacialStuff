@@ -72,7 +72,7 @@ namespace FacialStuff
                 cycle.FootAngle = new SimpleCurve();
                 cycle.FootPositionX = new SimpleCurve();
                 cycle.FootPositionZ = new SimpleCurve();
-                cycle.FootPositionVerticalZ = new SimpleCurve();
+              //  cycle.FootPositionVerticalZ = new SimpleCurve();
                 cycle.HandsSwingAngle = new SimpleCurve();
                 cycle.HandsSwingPosVertical = new SimpleCurve();
                 cycle.ShoulderOffsetHorizontalX = new SimpleCurve();
@@ -82,7 +82,7 @@ namespace FacialStuff
                 cycle.FrontPawAngle = new SimpleCurve();
                 cycle.FrontPawPositionX = new SimpleCurve();
                 cycle.FrontPawPositionZ = new SimpleCurve();
-                cycle.FrontPawPositionVerticalZ = new SimpleCurve();
+                //cycle.FrontPawPositionVerticalZ = new SimpleCurve();
 
 
                 if (cycle.animation.NullOrEmpty())
@@ -117,16 +117,16 @@ namespace FacialStuff
                         { cycle.FootAngle, key.FootAngle },
                         { cycle.FootPositionX, key.FootPositionX },
                         { cycle.FootPositionZ, key.FootPositionZ },
-                        { cycle.FootPositionVerticalZ, key.FootPositionVerticalZ },
+                      //  { cycle.FootPositionVerticalZ, key.FootPositionVerticalZ },
                         { cycle.HandsSwingAngle, key.HandsSwingAngle },
                         { cycle.HandsSwingPosVertical, key.HandsSwingPosVertical },
                         { cycle.FrontPawAngle, key.FrontPawAngle },
                         { cycle.FrontPawPositionX, key.FrontPawPositionX },
                         { cycle.FrontPawPositionZ, key.FrontPawPositionZ },
-                        {
-                            cycle.FrontPawPositionVerticalZ,
-                            key.FrontPawPositionVerticalZ
-                        }
+                       // {
+                       //     cycle.FrontPawPositionVerticalZ,
+                       //     key.FrontPawPositionVerticalZ
+                       // }
                     };
 
 

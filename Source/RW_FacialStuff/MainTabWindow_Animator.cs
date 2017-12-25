@@ -173,11 +173,11 @@ namespace FacialStuff
            // targetFrame.BodyOffsetVerticalZ = sourceFrame.BodyOffsetVerticalZ;
             targetFrame.BodyOffsetZ = sourceFrame.BodyOffsetZ;
             targetFrame.FootAngle = sourceFrame.FootAngle;
-            targetFrame.FootPositionVerticalZ = sourceFrame.FootPositionVerticalZ;
+          //  targetFrame.FootPositionVerticalZ = sourceFrame.FootPositionVerticalZ;
             targetFrame.FootPositionX = sourceFrame.FootPositionX;
             targetFrame.FootPositionZ = sourceFrame.FootPositionZ;
             targetFrame.FrontPawAngle = sourceFrame.FrontPawAngle;
-            targetFrame.FrontPawPositionVerticalZ = sourceFrame.FrontPawPositionVerticalZ;
+           // targetFrame.FrontPawPositionVerticalZ = sourceFrame.FrontPawPositionVerticalZ;
             targetFrame.FrontPawPositionX = sourceFrame.FrontPawPositionX;
             targetFrame.FrontPawPositionZ = sourceFrame.FrontPawPositionZ;
             targetFrame.HandsSwingAngle = sourceFrame.HandsSwingAngle;
@@ -352,18 +352,18 @@ namespace FacialStuff
 
                     // Quadruped
                 }
-                else
-                {
-                    framesAt = (from keyframe in frames
-                                where keyframe.FootPositionVerticalZ.HasValue
-                                select keyframe.keyIndex).ToList();
-
-                    this.SetPosition(
-                        ref thisFrame.FootPositionVerticalZ,
-                        ref editorRect,
-                        EditorWalkcycle.FootPositionVerticalZ,
-                        "FootPosVerticalY", framesAt);
-                }
+               // else
+               // {
+               //     framesAt = (from keyframe in frames
+               //                 where keyframe.FootPositionVerticalZ.HasValue
+               //                 select keyframe.keyIndex).ToList();
+               //
+               //     this.SetPosition(
+               //         ref thisFrame.FootPositionVerticalZ,
+               //         ref editorRect,
+               //         EditorWalkcycle.FootPositionVerticalZ,
+               //         "FootPosVerticalY", framesAt);
+               // }
 
                 GUI.EndGroup();
 
@@ -383,6 +383,15 @@ namespace FacialStuff
                     EditorWalkcycle.BodyOffsetZ,
                     "BodyOffsetZ",
                     framesAt);
+
+                framesAt = (from keyframe in frames
+                            where keyframe.FrontPawPositionZ.HasValue
+                            select keyframe.keyIndex).ToList();
+                this.SetPosition(
+                    ref thisFrame.FrontPawPositionZ,
+                    ref editorRect,
+                    EditorWalkcycle.FrontPawPositionZ,
+                    "FrontPawPosY", framesAt);
 
                 if (rotation.IsHorizontal)
                 {
@@ -406,14 +415,7 @@ namespace FacialStuff
                             EditorWalkcycle.FrontPawPositionX,
                             "FrontPawPosX", framesAt);
 
-                        framesAt = (from keyframe in frames
-                                    where keyframe.FrontPawPositionZ.HasValue
-                                    select keyframe.keyIndex).ToList();
-                        this.SetPosition(
-                            ref thisFrame.FrontPawPositionZ,
-                            ref editorRect,
-                            EditorWalkcycle.FrontPawPositionZ,
-                            "FrontPawPosY", framesAt);
+
 
                         framesAt = (from keyframe in frames
                                     where keyframe.FrontPawAngle.HasValue
@@ -454,17 +456,17 @@ namespace FacialStuff
                             EditorWalkcycle.HandsSwingPosVertical,
                             "HandsSwingPosVertical", framesAt);
                     }
-                    framesAt = (from keyframe in frames
-                                where keyframe.FrontPawPositionVerticalZ.HasValue
-                                select keyframe.keyIndex).ToList();
-                    if (this.CompAnim.Props.quadruped)
-                    {
-                        this.SetPosition(
-                            ref thisFrame.FrontPawPositionVerticalZ,
-                            ref editorRect,
-                            EditorWalkcycle.FrontPawPositionVerticalZ,
-                            "FrontPawPosVerticalY", framesAt);
-                    }
+                   // framesAt = (from keyframe in frames
+                   //             where keyframe.FrontPawPositionVerticalZ.HasValue
+                   //             select keyframe.keyIndex).ToList();
+                   // if (this.CompAnim.Props.quadruped)
+                   // {
+                   //     this.SetPosition(
+                   //         ref thisFrame.FrontPawPositionVerticalZ,
+                   //         ref editorRect,
+                   //         EditorWalkcycle.FrontPawPositionVerticalZ,
+                   //         "FrontPawPosVerticalY", framesAt);
+                   // }
                    // framesAt = (from keyframe in frames
                    //             where keyframe.BodyOffsetVerticalZ.HasValue
                    //             select keyframe.keyIndex).ToList();

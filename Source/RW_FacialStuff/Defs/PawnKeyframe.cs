@@ -12,13 +12,13 @@
        // public float? BodyOffsetVerticalZ;
         public float? BodyOffsetZ;
         public float? FootAngle;
-        public float? FootPositionVerticalZ;
+       // public float? FootPositionVerticalZ;
         public float? FootPositionX;
         public float? FootPositionZ;
         // Quadrupeds
         public float? FrontPawAngle;
 
-        public float? FrontPawPositionVerticalZ;
+      //  public float? FrontPawPositionVerticalZ;
         public float? FrontPawPositionX;
         public float? FrontPawPositionZ;
         public float? HandsSwingAngle;

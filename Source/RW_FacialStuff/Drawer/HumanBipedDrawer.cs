@@ -75,6 +75,7 @@ namespace FacialStuff
 
             float offsetJoint = this.walkCycle.HipOffsetHorizontalX.Evaluate(this.movedPercent);
             var cycle = this.walkCycle;
+
             this.DoWalkCycleOffsets(
                 ref rightFootAnim,
                 ref leftFootAnim,
@@ -83,8 +84,7 @@ namespace FacialStuff
                ref offsetJoint,
                 cycle.FootPositionX,
                 cycle.FootPositionZ,
-                cycle.FootAngle,
-                cycle.FootPositionVerticalZ);
+                cycle.FootAngle);
 
             this.GetMeshesFoot(out Mesh footMeshRight, out Mesh footMeshLeft);
 
@@ -723,8 +723,7 @@ namespace FacialStuff
             ref float offsetJoint,
             SimpleCurve offsetX,
             SimpleCurve offsetZ,
-            SimpleCurve angle,
-            SimpleCurve offsetVerticalZ)
+            SimpleCurve angle)
         {
             if (!this.isMoving)
             {
@@ -766,8 +765,8 @@ namespace FacialStuff
             }
             else
             {
-                rightFoot.z = offsetVerticalZ.Evaluate(this.movedPercent);
-                leftFoot.z = offsetVerticalZ.Evaluate(flot);
+                rightFoot.z = offsetZ.Evaluate(this.movedPercent);
+                leftFoot.z = offsetZ.Evaluate(flot);
                 offsetJoint = 0;
             }
         }
