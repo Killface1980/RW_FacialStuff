@@ -86,7 +86,8 @@
                 {
                     if (compAnim.AnimatorOpen)
                     {
-                        bodyFacing = headFacing = compAnim.rotation;
+                        bodyFacing =  MainTabWindow_Animator.BodyRot;
+                        headFacing = MainTabWindow_Animator.HeadRot;
                     }
                     compAnim.TickDrawers(bodyFacing, graphics);
                     compAnim.ApplyBodyWobble(ref rootLoc, ref quat);
@@ -134,7 +135,8 @@
 #endif
             if (compAnim.AnimatorOpen)
             {
-                bodyFacing = headFacing = compAnim.rotation;
+                bodyFacing = MainTabWindow_Animator.BodyRot;
+                headFacing = MainTabWindow_Animator.HeadRot;
             }
 
             compFace.TickDrawers(bodyFacing, headFacing, graphics);

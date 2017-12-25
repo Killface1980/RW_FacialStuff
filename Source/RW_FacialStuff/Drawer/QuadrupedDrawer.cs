@@ -68,7 +68,10 @@ namespace FacialStuff
             var body = this.CompAnimator.bodySizeDefinition;
 
             Rot4 rot = this.bodyFacing;
-            JointLister jointPositions = this.GetJointPositions(rot, body.shoulderOffsets[rot.AsInt]);
+            JointLister jointPositions = this.GetJointPositions(
+                rot,
+                body.shoulderOffsets[rot.AsInt],
+                body.shoulderOffsets[Rot4.North.AsInt].x);
 
             Vector3 rightFootAnim = Vector3.zero;
             Vector3 leftFootAnim = Vector3.zero;

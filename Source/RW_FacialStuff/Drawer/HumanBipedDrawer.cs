@@ -19,10 +19,6 @@ namespace FacialStuff
     {
         protected const float OffsetGround = -0.575f;
 
-        #region Private Fields
-
-        #endregion Private Fields
-
         #region Public Constructors
 
         public HumanBipedDrawer()
@@ -59,7 +55,7 @@ namespace FacialStuff
             Material matRight;
 
             // Basic values
-            var body = this.CompAnimator.bodySizeDefinition;
+            BodyAnimDef body = this.CompAnimator.bodySizeDefinition;
 
             Vector3 ground = rootLoc;
             ground.z += OffsetGround;
@@ -68,13 +64,16 @@ namespace FacialStuff
             float footAngleLeft = 0f;
             Rot4 rot = bodyFacing;
 
-            JointLister groundPos = this.GetJointPositions(rot, body.hipOffsets[rot.AsInt]);
+            JointLister groundPos = this.GetJointPositions(
+                rot,
+                body.hipOffsets[rot.AsInt],
+                body.hipOffsets[Rot4.North.AsInt].x);
 
             Vector3 rightFootAnim = Vector3.zero;
             Vector3 leftFootAnim = Vector3.zero;
 
             float offsetJoint = this.walkCycle.HipOffsetHorizontalX.Evaluate(this.movedPercent);
-            var cycle = this.walkCycle;
+            WalkCycleDef cycle = this.walkCycle;
 
             this.DoWalkCycleOffsets(
                 ref rightFootAnim,
@@ -253,6 +252,7 @@ namespace FacialStuff
                 {
                     drawLoc2 += new Vector3(0, 0.04f, -0.22f);
                 }
+
                 this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc2, rootLoc, aimAngle);
             }
             else
@@ -260,6 +260,7 @@ namespace FacialStuff
                 this.DrawHands(rootLoc, portrait);
             }
         }
+
         public virtual bool Aiming()
         {
             Stance_Busy stance_Busy = this.Pawn.stances.curStance as Stance_Busy;
@@ -411,6 +412,7 @@ namespace FacialStuff
                     this.DrawHands(rootLoc, false, rightSide: false);
                 }
             }
+
             if (MainTabWindow_Animator.develop)
             {
 
@@ -425,6 +427,7 @@ namespace FacialStuff
              Quaternion.AngleAxis(weaponAngle, Vector3.up), centerMat, 0);
             }
         }
+
         public override bool CarryStuff(out Vector3 drawPos)
         {
             Pawn pawn = this.Pawn;
@@ -531,21 +534,25 @@ namespace FacialStuff
                 matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRightCol?.MatSingle;
 
             }
-            var body = this.CompAnimator.bodySizeDefinition;
+
+            BodyAnimDef body = this.CompAnimator.bodySizeDefinition;
 
 
             Rot4 rot = this.bodyFacing;
 
-            JointLister shoulperPos = this.GetJointPositions(rot, body.shoulderOffsets[rot.AsInt]);
+            JointLister shoulperPos = this.GetJointPositions(
+                rot,
+                body.shoulderOffsets[rot.AsInt],
+                body.shoulderOffsets[Rot4.North.AsInt].x);
 
             // Center = drawpos of carryThing
             Vector3 center = drawPos;
 
             float handSwingAngle = 0f;
-            var shoulderAngle = 0f;
+            float shoulderAngle = 0f;
 
-            var rightHand = Vector3.zero;
-            var leftHand = Vector3.zero;
+            Vector3 rightHand = Vector3.zero;
+            Vector3 leftHand = Vector3.zero;
 
             // Todo: inclide this
             float offsetJoint = this.walkCycle.ShoulderOffsetHorizontalX.Evaluate(this.movedPercent);
@@ -560,7 +567,8 @@ namespace FacialStuff
                 ref handSwingAngle,
                 ref shoulperPos,
                 carrying,
-                cycle.HandsSwingAngle, offsetJoint);
+                cycle.HandsSwingAngle,
+                offsetJoint);
 
 
             Mesh handsMesh = this.HandMesh;
@@ -576,6 +584,7 @@ namespace FacialStuff
 
 
             }
+
             if (matRight != null && rightSide)
             {
                 // if (carrying || rot != Rot4.West)
@@ -583,8 +592,8 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                         handsMesh,
-                        (drawPos.RotatedBy(bodyAngle)
-                         + shoulperPos.rightJoint + rightHand.RotatedBy(handSwingAngle - shoulderAngle)),
+                        drawPos.RotatedBy(bodyAngle)
+                         + shoulperPos.rightJoint + rightHand.RotatedBy(handSwingAngle - shoulderAngle),
                         Quaternion.AngleAxis(bodyAngle + handSwingAngle, Vector3.up),
                         matRight,
                         portrait);
@@ -618,14 +627,14 @@ namespace FacialStuff
                 GenDraw.DrawMeshNowOrLater(
                     handsMesh,
                     drawPos + shoulperPos.leftJoint + new Vector3(0, 0.301f, 0),
-                    Quaternion.AngleAxis(shoulderAngle, Vector3.up),
+                    Quaternion.AngleAxis(-shoulderAngle, Vector3.up),
                     centerMat,
                     portrait);
 
                 GenDraw.DrawMeshNowOrLater(
                     handsMesh,
                     drawPos + shoulperPos.rightJoint + new Vector3(0, 0.301f, 0),
-                    Quaternion.AngleAxis(0, Vector3.up),
+                    Quaternion.AngleAxis(-shoulderAngle, Vector3.up),
                     centerMat,
                     portrait);
             }
@@ -642,7 +651,8 @@ namespace FacialStuff
             SimpleCurve cycleHandsSwingAngle,
             float offsetJoint)
         {
-            var rot = this.bodyFacing;
+            Rot4 rot = this.bodyFacing;
+         
             // Basic values if pawn is carrying stuff
             float x = 0;
             float x2 = -x;
@@ -695,16 +705,16 @@ namespace FacialStuff
                         z += cycleHandsSwingAngle.Evaluate(this.movedPercent) / 300;
                         z2 -= cycleHandsSwingAngle.Evaluate(this.movedPercent) / 300;
 
-                        z += 0.075f;
-                        z2 += 0.075f;
+                        z += 0.2f;
+                        z2 += 0.2f;
 
-                        z += this.walkCycle.shoulderAngle / 250;
-                        z2 += this.walkCycle.shoulderAngle / 250;
+                        z += this.walkCycle.shoulderAngle / 200;
+                        z2 += this.walkCycle.shoulderAngle / 200;
                     }
 
                 }
 
-                if (this.Pawn.Fleeing() || this.Pawn.IsBurning())
+                if (MainTabWindow_Animator.panic || this.Pawn.Fleeing() || this.Pawn.IsBurning())
                 {
                     float offset = 1f + armLength;
                     x *= offset;
@@ -714,6 +724,7 @@ namespace FacialStuff
                     handSwingAngle += 180f;
                     shoulderAngle = 0f;
                 }
+
                 rightHand = new Vector3(x, y, z);
                 leftHand = new Vector3(x2, y2, z2);
             }
@@ -744,7 +755,7 @@ namespace FacialStuff
                 flot -= 0.5f;
             }
 
-            var rot = this.bodyFacing;
+            Rot4 rot = this.bodyFacing;
             if (rot.IsHorizontal)
             {
                 rightFoot.x = offsetX.Evaluate(this.movedPercent);
@@ -777,7 +788,7 @@ namespace FacialStuff
 
         protected void GetMeshesFoot(out Mesh footMeshRight, out Mesh footMeshLeft)
         {
-            var rot = this.bodyFacing;
+            Rot4 rot = this.bodyFacing;
             footMeshRight = MeshPool.plane10;
             footMeshLeft = MeshPool.plane10Flip;
             if (rot.IsHorizontal)
@@ -827,12 +838,12 @@ namespace FacialStuff
             base.Tick(bodyFacing, graphics);
 
             this.isMoving = this.CompAnimator.BodyAnimator.IsMoving(out this.movedPercent);
+
             // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
-            var curve = this.walkCycle.BodyOffsetZ;
+            SimpleCurve curve = this.walkCycle.BodyOffsetZ;
             this.BodyWobble = curve.Evaluate(this.movedPercent);
 
             this.SelectWalkcycle();
-
         }
 
         public virtual void SelectWalkcycle()
@@ -845,9 +856,7 @@ namespace FacialStuff
             {
                 // switch (this.Pawn.mindState.duty.locomotion)
                 // {
-                //         
                 // }
-
                 switch (this.Pawn.CurJob.locomotionUrgency)
                 {
                     case LocomotionUrgency.None:

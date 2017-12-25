@@ -68,7 +68,7 @@
                 this.rotation = this.SelPawn.Rotation.AsInt;
             }
 
-            compAni.rotation = new Rot4(this.rotation);
+            MainTabWindow_Animator.BodyRot = new Rot4(this.rotation);
 
             bool male = this.SelPawn.gender == Gender.Male;
 

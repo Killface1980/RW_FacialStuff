@@ -28,7 +28,6 @@
         [CanBeNull]
         public PawnBodyGraphic PawnBodyGraphic;
 
-        public Rot4 rotation = Rot4.East;
 
         public WalkCycleDef walkCycle = WalkCycleDefOf.Human_Walk;
 
