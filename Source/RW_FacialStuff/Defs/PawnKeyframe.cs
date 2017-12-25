@@ -22,7 +22,7 @@
         public float? FrontPawPositionX;
         public float? FrontPawPositionZ;
         public float? HandsSwingAngle;
-        public float? HandsSwingPosVertical;
+      //  public float? HandsSwingPosVertical;
         public float? HipOffsetHorizontalX;
         public float? ShoulderOffsetHorizontalX;
         public int keyIndex;

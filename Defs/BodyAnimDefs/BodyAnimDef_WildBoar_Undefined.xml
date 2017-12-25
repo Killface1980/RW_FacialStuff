@@ -2,12 +2,12 @@
 <Defs>
   <BodyAnimDef>
     <armLength>0</armLength>
-    <extraLegLength>-0.2</extraLegLength>
+    <extraLegLength>-0.15</extraLegLength>
     <shoulderOffsets>
       <li>
         <x>0.25</x>
         <y>-0.025</y>
-        <z>0.8</z>
+        <z>0.65</z>
       </li>
       <li>
         <x>0.25</x>
@@ -28,7 +28,7 @@
     <hipOffsets>
       <li>
         <x>0.25</x>
-        <y>0.025</y>
+        <y>-0.025</y>
         <z>0.05</z>
       </li>
       <li>

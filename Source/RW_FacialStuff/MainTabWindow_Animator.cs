@@ -181,7 +181,7 @@ namespace FacialStuff
             targetFrame.FrontPawPositionX = sourceFrame.FrontPawPositionX;
             targetFrame.FrontPawPositionZ = sourceFrame.FrontPawPositionZ;
             targetFrame.HandsSwingAngle = sourceFrame.HandsSwingAngle;
-            targetFrame.HandsSwingPosVertical = sourceFrame.HandsSwingPosVertical;
+          //  targetFrame.HandsSwingPosVertical = sourceFrame.HandsSwingPosVertical;
             targetFrame.HipOffsetHorizontalX = sourceFrame.HipOffsetHorizontalX;
             targetFrame.ShoulderOffsetHorizontalX = sourceFrame.ShoulderOffsetHorizontalX;
         }
@@ -384,26 +384,41 @@ namespace FacialStuff
                     "BodyOffsetZ",
                     framesAt);
 
-                framesAt = (from keyframe in frames
-                            where keyframe.FrontPawPositionZ.HasValue
-                            select keyframe.keyIndex).ToList();
-                this.SetPosition(
-                    ref thisFrame.FrontPawPositionZ,
-                    ref editorRect,
-                    EditorWalkcycle.FrontPawPositionZ,
-                    "FrontPawPosY", framesAt);
 
-                if (rotation.IsHorizontal)
-                {
+
                     if (this.CompAnim.Props.bipedWithHands)
                     {
-                        framesAt = (from keyframe in frames
+                        this.SetAngleShoulder(ref EditorWalkcycle.shoulderAngle, ref editorRect, "ShoulderAngle");
+
+                    framesAt = (from keyframe in frames
                                     where keyframe.HandsSwingAngle.HasValue
                                     select keyframe.keyIndex).ToList();
 
                         this.SetAngle(ref thisFrame.HandsSwingAngle, ref editorRect, EditorWalkcycle.HandsSwingAngle, "HandSwing", framesAt);
-                    }
 
+                        framesAt = (from keyframe in frames
+                                    where keyframe.ShoulderOffsetHorizontalX.HasValue
+                                    select keyframe.keyIndex).ToList();
+                        this.SetPosition(
+                            ref thisFrame.ShoulderOffsetHorizontalX,
+                            ref editorRect,
+                            EditorWalkcycle.ShoulderOffsetHorizontalX,
+                            "ShoulderOffsetHorizontalX", framesAt);
+                }
+
+                if (this.CompAnim.Props.quadruped)
+                {
+                    framesAt = (from keyframe in frames
+                                where keyframe.FrontPawPositionZ.HasValue
+                                select keyframe.keyIndex).ToList();
+                    this.SetPosition(
+                        ref thisFrame.FrontPawPositionZ,
+                        ref editorRect,
+                        EditorWalkcycle.FrontPawPositionZ,
+                        "FrontPawPosY", framesAt);
+                }
+                if (rotation.IsHorizontal)
+                {
                     if (this.CompAnim.Props.quadruped)
                     {
                         framesAt = (from keyframe in frames
@@ -424,14 +439,7 @@ namespace FacialStuff
                         this.SetAngle(ref thisFrame.FrontPawAngle, ref editorRect, EditorWalkcycle.FrontPawAngle, "FrontPawAngle", framesAt);
 
                     }
-                    framesAt = (from keyframe in frames
-                                where keyframe.ShoulderOffsetHorizontalX.HasValue
-                                select keyframe.keyIndex).ToList();
-                    this.SetPosition(
-                        ref thisFrame.ShoulderOffsetHorizontalX,
-                        ref editorRect,
-                        EditorWalkcycle.ShoulderOffsetHorizontalX,
-                        "ShoulderOffsetHorizontalX", framesAt);
+
 
 
 
@@ -445,16 +453,15 @@ namespace FacialStuff
                 {
                     if (this.CompAnim.Props.bipedWithHands)
                     {
-                        this.SetAngleShoulder(ref EditorWalkcycle.shoulderAngle, ref editorRect, "ShoulderAngle");
 
-                        framesAt = (from keyframe in frames
-                                    where keyframe.HandsSwingPosVertical.HasValue
-                                    select keyframe.keyIndex).ToList();
-                        this.SetPosition(
-                            ref thisFrame.HandsSwingPosVertical,
-                            ref editorRect,
-                            EditorWalkcycle.HandsSwingPosVertical,
-                            "HandsSwingPosVertical", framesAt);
+                       // framesAt = (from keyframe in frames
+                       //             where keyframe.HandsSwingPosVertical.HasValue
+                       //             select keyframe.keyIndex).ToList();
+                       // this.SetPosition(
+                       //     ref thisFrame.HandsSwingPosVertical,
+                       //     ref editorRect,
+                       //     EditorWalkcycle.HandsSwingPosVertical,
+                       //     "HandsSwingPosVertical", framesAt);
                     }
                    // framesAt = (from keyframe in frames
                    //             where keyframe.FrontPawPositionVerticalZ.HasValue
@@ -746,7 +753,7 @@ namespace FacialStuff
             Rect sliderRect = new Rect(labelRect.xMax, editorRect.y, this.sliderWidth, this.defaultHeight);
 
             Widgets.Label(labelRect, label + " " + angle);
-            angle = Mathf.FloorToInt(Widgets.HorizontalSlider(sliderRect, angle, -180f, 180f));
+            angle = Mathf.FloorToInt(Widgets.HorizontalSlider(sliderRect, angle, 0, 180f));
 
             editorRect.y += editorRect.height;
         }

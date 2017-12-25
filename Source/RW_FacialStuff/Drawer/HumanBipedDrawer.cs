@@ -560,7 +560,6 @@ namespace FacialStuff
                 ref handSwingAngle,
                 ref shoulperPos,
                 carrying,
-                cycle.HandsSwingPosVertical,
                 cycle.HandsSwingAngle, offsetJoint);
 
 
@@ -640,7 +639,6 @@ namespace FacialStuff
             ref float handSwingAngle,
             ref JointLister shoulderPos,
             bool carrying,
-            SimpleCurve cycleHandsSwingPosVertical,
             SimpleCurve cycleHandsSwingAngle,
             float offsetJoint)
         {
@@ -694,8 +692,14 @@ namespace FacialStuff
                     }
                     else
                     {
-                        z += cycleHandsSwingPosVertical.Evaluate(this.movedPercent);
-                        z2 -= cycleHandsSwingPosVertical.Evaluate(this.movedPercent);
+                        z += cycleHandsSwingAngle.Evaluate(this.movedPercent) / 300;
+                        z2 -= cycleHandsSwingAngle.Evaluate(this.movedPercent) / 300;
+
+                        z += 0.075f;
+                        z2 += 0.075f;
+
+                        z += this.walkCycle.shoulderAngle / 250;
+                        z2 += this.walkCycle.shoulderAngle / 250;
                     }
 
                 }
@@ -823,7 +827,7 @@ namespace FacialStuff
             base.Tick(bodyFacing, graphics);
 
             this.isMoving = this.CompAnimator.BodyAnimator.IsMoving(out this.movedPercent);
-           // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
+            // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
             var curve = this.walkCycle.BodyOffsetZ;
             this.BodyWobble = curve.Evaluate(this.movedPercent);
 

@@ -237,10 +237,6 @@
     <Content Include="..\..\Defs\ThinkTreeDefs\SubTrees_MiscFS.xml">
       <Link>Defs\xml\SubTrees_MiscFS.xml</Link>
     </Content>
-    <Content Include="..\..\Defs\WalkCycleDefs\WalkCycleDefs.xml">
-      <Link>Defs\xml\WalkCycleDefs.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="..\..\Defs\WrinkleDefs\WrinkleDef.xml">
       <Link>Defs\xml\Face\WrinkleDef.xml</Link>
     </Content>

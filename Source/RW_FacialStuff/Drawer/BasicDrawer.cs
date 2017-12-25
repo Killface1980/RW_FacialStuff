@@ -21,8 +21,9 @@ namespace FacialStuff.Drawer
             JointLister joints = new JointLister();
             if (rot.IsHorizontal)
             {
-                joints.rightJoint = new Vector3(vector.x, vector.y, vector.z);
-                joints.leftJoint = new Vector3(vector.x, -vector.y, vector.z);
+                float offset = rot == Rot4.East ? -0.01f : 0.01f;
+                joints.rightJoint = new Vector3(vector.x + offset, vector.y, vector.z);
+                joints.leftJoint = new Vector3(vector.x - offset, -vector.y, vector.z);
 
             }
             else
