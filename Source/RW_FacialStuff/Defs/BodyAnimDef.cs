@@ -26,7 +26,7 @@ namespace RimWorld
 
         public float extraLegLength;
 
-        public WalkCycleType WalkCycleType;
+        public string WalkCycleType;
 
         public List<Vector3> shoulderOffsets =
             new List<Vector3> { Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero };

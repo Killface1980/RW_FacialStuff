@@ -12,11 +12,11 @@
     {
         #region Public Fields
 
-        public WalkCycleType WalkCycleType;
+        public string WalkCycleType;
 
         public float shoulderAngle;
 
-        public List<PawnKeyframe> animation = new List<PawnKeyframe>();
+        public List<PawnKeyframe> keyframes = new List<PawnKeyframe>();
 
         public SimpleCurve BodyAngle = new SimpleCurve();
 

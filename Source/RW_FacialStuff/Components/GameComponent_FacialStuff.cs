@@ -49,21 +49,21 @@ namespace FacialStuff
                 }
             }
             this.WeaponComps();
-           // BuildWalkCycles();
+            // BuildWalkCycles();
 
-           // foreach (BodyAnimDef def in DefDatabase<BodyAnimDef>.AllDefsListForReading)
-           // {
-           //     if (def.walkCycles.Count == 0)
-           //     {
-           //         var length = Enum.GetNames(typeof(LocomotionUrgency)).Length;
-           //         for (int index = 0; index < length; index++)
-           //         {
-           //             WalkCycleDef cycleDef = new WalkCycleDef();
-           //             cycleDef.defName = def.defName + "_cycle";
-           //             def.walkCycles.Add(index, cycleDef);
-           //         }
-           //     }
-           // }
+            // foreach (BodyAnimDef def in DefDatabase<BodyAnimDef>.AllDefsListForReading)
+            // {
+            //     if (def.walkCycles.Count == 0)
+            //     {
+            //         var length = Enum.GetNames(typeof(LocomotionUrgency)).Length;
+            //         for (int index = 0; index < length; index++)
+            //         {
+            //             WalkCycleDef cycleDef = new WalkCycleDef();
+            //             cycleDef.defName = def.defName + "_cycle";
+            //             def.walkCycles.Add(index, cycleDef);
+            //         }
+            //     }
+            // }
         }
 
         public static void BuildWalkCycles([CanBeNull] WalkCycleDef defToRebuild = null)
@@ -84,11 +84,11 @@ namespace FacialStuff
                 cycle.BodyAngle = new SimpleCurve();
                 cycle.BodyAngleVertical = new SimpleCurve();
                 cycle.BodyOffsetZ = new SimpleCurve();
-              //  cycle.BodyOffsetVerticalZ = new SimpleCurve();
+                //  cycle.BodyOffsetVerticalZ = new SimpleCurve();
                 cycle.FootAngle = new SimpleCurve();
                 cycle.FootPositionX = new SimpleCurve();
                 cycle.FootPositionZ = new SimpleCurve();
-              //  cycle.FootPositionVerticalZ = new SimpleCurve();
+                //  cycle.FootPositionVerticalZ = new SimpleCurve();
                 cycle.HandsSwingAngle = new SimpleCurve();
                 cycle.HandsSwingPosVertical = new SimpleCurve();
                 cycle.ShoulderOffsetHorizontalX = new SimpleCurve();
@@ -101,16 +101,16 @@ namespace FacialStuff
                 //cycle.FrontPawPositionVerticalZ = new SimpleCurve();
 
 
-                if (cycle.animation.NullOrEmpty())
+                if (cycle.keyframes.NullOrEmpty())
                 {
-                    cycle.animation = new List<PawnKeyframe>();
+                    cycle.keyframes = new List<PawnKeyframe>();
                     for (int i = 0; i < 9; i++)
                     {
-                        cycle.animation.Add(new PawnKeyframe(i));
+                        cycle.keyframes.Add(new PawnKeyframe(i));
                     }
                 }
                 // Log.Message(cycle.defName + " has " + cycle.animation.Count);
-                foreach (PawnKeyframe key in cycle.animation)
+                foreach (PawnKeyframe key in cycle.keyframes)
                 {
                     BuildAnimationKeys(key, cycle);
                 }
@@ -119,7 +119,36 @@ namespace FacialStuff
 
         private static void BuildAnimationKeys(PawnKeyframe key, WalkCycleDef cycle)
         {
-            float frameAt = (float)key.keyIndex / (cycle.animation.Count - 1);
+            List<PawnKeyframe> keyframes = cycle.keyframes;
+
+            List<PawnKeyframe> autoKeys = keyframes.Where(x => x.status != KeyStatus.Manual).ToList();
+
+            List<PawnKeyframe> manualKeys = keyframes.Where(x => x.status == KeyStatus.Manual).ToList();
+
+            float autoFrames = (float)key.keyIndex / (autoKeys.Count - 1);
+
+            float frameAt;
+
+            // Distribute manual keys
+            if (!manualKeys.NullOrEmpty())
+            {
+                frameAt = (float)key.keyIndex / (autoKeys.Count - 1);
+                Log.Message("frameAt " + frameAt.ToString());
+                float divider = (float)1 / (autoKeys.Count - 1);
+                Log.Message("divider " + divider.ToString());
+                float? shift = manualKeys.Find(x => x.keyIndex == key.keyIndex)?.shift;
+                if (shift.HasValue)
+                {
+                    Log.Message("shift " + shift.ToString());
+                    frameAt += divider * shift.Value;
+                    Log.Message("new frameAt " + frameAt.ToString());
+                }
+
+            }
+            else
+            {
+                frameAt = (float)key.keyIndex / (keyframes.Count - 1);
+            }
 
             Dictionary<SimpleCurve, float?> dict =
                 new Dictionary<SimpleCurve, float?>

@@ -85,7 +85,8 @@
     <Compile Include="Drawer\HumanBipedDrawer.cs" />
     <Compile Include="Drawer\PawnBodyDrawer.cs" />
     <Compile Include="Drawer\QuadrupedDrawer.cs" />
-    <Compile Include="Enums\WalkcycleType.cs" />
+    <Compile Include="Enums\KeyStatus.cs" />
+    <None Include="Enums\WalkcycleType.cs" />
     <Compile Include="Graphics\PawnBodyGraphic.cs" />
     <Compile Include="MainTabWindow_Animator.cs" />
     <Compile Include="Enums\BodyPartStats.cs" />
@@ -237,6 +238,21 @@
     </Content>
     <Content Include="..\..\Defs\ThinkTreeDefs\SubTrees_MiscFS.xml">
       <Link>Defs\xml\SubTrees_MiscFS.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WalkCycleDefs\Biped_Amble.xml">
+      <Link>Defs\DefsGenerated\Biped_Amble.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WalkCycleDefs\Biped_Jog.xml">
+      <Link>Defs\DefsGenerated\Biped_Jog.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WalkCycleDefs\Biped_Sprint.xml">
+      <Link>Defs\DefsGenerated\Biped_Sprint.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WalkCycleDefs\Biped_Walk.xml">
+      <Link>Defs\DefsGenerated\Biped_Walk.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WalkCycleDefs\Quadruped_Walk.xml">
+      <Link>Defs\DefsGenerated\Quadruped_Walk.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WrinkleDefs\WrinkleDef.xml">
       <Link>Defs\xml\Face\WrinkleDef.xml</Link>

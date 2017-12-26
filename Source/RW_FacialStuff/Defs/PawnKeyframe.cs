@@ -27,6 +27,10 @@
         public float? ShoulderOffsetHorizontalX;
         public int keyIndex;
 
+        public KeyStatus status = KeyStatus.Automatic;
+
+        public float shift;
+
         #endregion Public Fields
 
         #region Public Constructors

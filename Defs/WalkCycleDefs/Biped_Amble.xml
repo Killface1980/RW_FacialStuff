@@ -3,7 +3,7 @@
   <WalkCycleDef>
     <WalkCycleType>Biped</WalkCycleType>
     <shoulderAngle>0</shoulderAngle>
-    <animation>
+    <keyframes>
       <li>
         <BodyAngle>0</BodyAngle>
         <BodyAngleVertical>-3</BodyAngleVertical>
@@ -139,7 +139,7 @@
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>8</keyIndex>
       </li>
-    </animation>
+    </keyframes>
     <BodyAngle>
       <points>
         <li>

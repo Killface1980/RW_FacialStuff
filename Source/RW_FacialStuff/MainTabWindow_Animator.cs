@@ -48,6 +48,10 @@ namespace FacialStuff
         }
         private static float animationPercent;
 
+        private void RedistKeys()
+        {
+        }
+
         public override void DoWindowContents(Rect inRect)
         {
             this.FindRandomPawn();
@@ -56,11 +60,8 @@ namespace FacialStuff
 
             PortraitsCache.SetDirty(this.pawn);
 
-            List<PawnKeyframe> frames = EditorWalkcycle.animation;
-
-            int count = frames.Count;
+            int count = pawnKeyframes.Count;
             this.frameLabel = CurrentFrameInt + 1;
-            lastInd = count - 1;
 
             Rot4 rotation = BodyRot;
 
@@ -115,11 +116,11 @@ namespace FacialStuff
 
             this.DrawTimelineSlider(count, timeline.width);
 
-            this.DrawTimelineButtons(frames, timeline.width, count);
+            this.DrawTimelineButtons(timeline.width, count);
 
             GUI.EndGroup();
 
-            this.DrawKeyframeEditor(keyframes, frames, rotation);
+            this.DrawKeyframeEditor(keyframes, rotation);
 
 
             Rect statusRect = inRect.LeftPart(0.25f).ContractedBy(this.spacing);
@@ -149,15 +150,13 @@ namespace FacialStuff
                     // Log.Message("current frame: " + this.CurrentFrameInt);
                 }
 
-                PawnKeyframe thisFrame = frames[CurrentFrameInt];
-
                 if (CurrentFrameInt == 0)
                 {
-                    SynchronizeFrames(thisFrame, frames[lastInd]);
+                    SynchronizeFrames(this.currentFrame, pawnKeyframes[LastInd]);
                 }
-                if (CurrentFrameInt == lastInd)
+                if (CurrentFrameInt == LastInd)
                 {
-                    SynchronizeFrames(thisFrame, frames[0]);
+                    SynchronizeFrames(this.currentFrame, pawnKeyframes[0]);
                 }
 
                 if (!this.loop)
@@ -289,8 +288,9 @@ namespace FacialStuff
 
             offset[rotation.Opposite.AsInt] = opposite;
         }
+        private PawnKeyframe currentFrame => pawnKeyframes[CurrentFrameInt];
 
-        private void DrawKeyframeEditor(Rect controller, List<PawnKeyframe> frames, Rot4 rotation)
+        private void DrawKeyframeEditor(Rect controller, Rot4 rotation)
         {
             Rect leftController = controller.LeftHalf();
             Rect rightController = controller.RightHalf();
@@ -298,7 +298,6 @@ namespace FacialStuff
 
             rightController.xMin += this.spacing;
 
-            PawnKeyframe thisFrame = frames[CurrentFrameInt];
             {
                 GUI.BeginGroup(leftController);
                 Rect editorRect = new Rect(0f, 0f, leftController.width, 56f);
@@ -317,6 +316,7 @@ namespace FacialStuff
                 // }
 
                 List<int> framesAt;
+                var frames = pawnKeyframes;
                 if (rotation.IsHorizontal)
                 {
 
@@ -324,7 +324,7 @@ namespace FacialStuff
                                 where keyframe.FootPositionX.HasValue
                                 select keyframe.keyIndex).ToList();
 
-                    this.SetPosition(ref thisFrame.FootPositionX, ref editorRect, EditorWalkcycle.FootPositionX, "FootPosX", framesAt);
+                    this.SetPosition(ref currentFrame.FootPositionX, ref editorRect, EditorWalkcycle.FootPositionX, "FootPosX", framesAt);
 
 
                     framesAt = (from keyframe in frames
@@ -332,7 +332,7 @@ namespace FacialStuff
                                 select keyframe.keyIndex).ToList();
 
                     this.SetPosition(
-                        ref thisFrame.FootPositionZ,
+                        ref currentFrame.FootPositionZ,
                         ref editorRect,
                         EditorWalkcycle.FootPositionZ,
                         "FootPosY", framesAt);
@@ -341,14 +341,14 @@ namespace FacialStuff
                                 where keyframe.FootAngle.HasValue
                                 select keyframe.keyIndex).ToList();
 
-                    this.SetAngle(ref thisFrame.FootAngle, ref editorRect, EditorWalkcycle.FootAngle, "FootAngle", framesAt);
+                    this.SetAngle(ref currentFrame.FootAngle, ref editorRect, EditorWalkcycle.FootAngle, "FootAngle", framesAt);
 
                     framesAt = (from keyframe in frames
                                 where keyframe.HipOffsetHorizontalX.HasValue
                                 select keyframe.keyIndex).ToList();
 
                     this.SetPosition(
-                        ref thisFrame.HipOffsetHorizontalX,
+                        ref currentFrame.HipOffsetHorizontalX,
                         ref editorRect,
                         EditorWalkcycle.HipOffsetHorizontalX,
                         "HipOffsetHorizontalX", framesAt);
@@ -388,13 +388,13 @@ namespace FacialStuff
                                 where keyframe.HandsSwingAngle.HasValue
                                 select keyframe.keyIndex).ToList();
 
-                    this.SetAngle(ref thisFrame.HandsSwingAngle, ref editorRect, EditorWalkcycle.HandsSwingAngle, "HandSwing", framesAt);
+                    this.SetAngle(ref currentFrame.HandsSwingAngle, ref editorRect, EditorWalkcycle.HandsSwingAngle, "HandSwing", framesAt);
 
                     framesAt = (from keyframe in frames
                                 where keyframe.ShoulderOffsetHorizontalX.HasValue
                                 select keyframe.keyIndex).ToList();
                     this.SetPosition(
-                        ref thisFrame.ShoulderOffsetHorizontalX,
+                        ref currentFrame.ShoulderOffsetHorizontalX,
                         ref editorRect,
                         EditorWalkcycle.ShoulderOffsetHorizontalX,
                         "ShoulderOffsetHorizontalX", framesAt);
@@ -408,16 +408,17 @@ namespace FacialStuff
                                     where keyframe.FrontPawPositionX.HasValue
                                     select keyframe.keyIndex).ToList();
                         this.SetPosition(
-                            ref thisFrame.FrontPawPositionX,
+                            ref currentFrame.FrontPawPositionX,
                             ref editorRect,
                             EditorWalkcycle.FrontPawPositionX,
-                            "FrontPawPosX", framesAt);
+                            "FrontPawPositionX", framesAt);
 
                         framesAt = (from keyframe in frames
                                     where keyframe.FrontPawPositionZ.HasValue
                                     select keyframe.keyIndex).ToList();
+
                         this.SetPosition(
-                            ref thisFrame.FrontPawPositionZ,
+                            ref currentFrame.FrontPawPositionZ,
                             ref editorRect,
                             EditorWalkcycle.FrontPawPositionZ,
                             "FrontPawPositionZ", framesAt);
@@ -426,7 +427,7 @@ namespace FacialStuff
                                     where keyframe.FrontPawAngle.HasValue
                                     select keyframe.keyIndex).ToList();
 
-                        this.SetAngle(ref thisFrame.FrontPawAngle, ref editorRect, EditorWalkcycle.FrontPawAngle, "FrontPawAngle", framesAt);
+                        this.SetAngle(ref currentFrame.FrontPawAngle, ref editorRect, EditorWalkcycle.FrontPawAngle, "FrontPawAngle", framesAt);
 
                     }
 
@@ -437,7 +438,7 @@ namespace FacialStuff
                                 where keyframe.BodyAngle.HasValue
                                 select keyframe.keyIndex).ToList();
 
-                    this.SetAngle(ref thisFrame.BodyAngle, ref editorRect, EditorWalkcycle.BodyAngle, "BodyAngle", framesAt);
+                    this.SetAngle(ref currentFrame.BodyAngle, ref editorRect, EditorWalkcycle.BodyAngle, "BodyAngle", framesAt);
                 }
                 else
                 {
@@ -479,7 +480,7 @@ namespace FacialStuff
                                 where keyframe.BodyAngleVertical.HasValue
                                 select keyframe.keyIndex).ToList();
                     this.SetAngle(
-                        ref thisFrame.BodyAngleVertical,
+                        ref currentFrame.BodyAngleVertical,
                         ref editorRect,
                         EditorWalkcycle.BodyAngleVertical,
                         "BodyAngleVertical", framesAt);
@@ -491,7 +492,7 @@ namespace FacialStuff
                             select keyframe.keyIndex).ToList();
 
                 this.SetPosition(
-                    ref thisFrame.BodyOffsetZ,
+                    ref currentFrame.BodyOffsetZ,
                     ref editorRect,
                     EditorWalkcycle.BodyOffsetZ,
                     "BodyOffsetZ",
@@ -550,7 +551,7 @@ namespace FacialStuff
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
                 foreach (WalkCycleDef current in from bsm in DefDatabase<WalkCycleDef>.AllDefs orderby bsm.LabelCap select bsm)
                 {
-                    if (this.bodyAnimDef.WalkCycleType == WalkCycleType.None)
+                    if (this.bodyAnimDef.WalkCycleType == "None")
                     {
                         break;
                     }
@@ -592,21 +593,30 @@ namespace FacialStuff
             {
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
 
-                string[] names = Enum.GetNames(typeof(WalkCycleType));
-                for (int index = 0; index < names.Length; index++)
+                var listy = DefDatabase<WalkCycleDef>.AllDefsListForReading;
+
+                var stringsy = new List<string>();
+
+                foreach (WalkCycleDef cycleDef in listy)
                 {
-                    string name = names[index];
-                    WalkCycleType myenum = (WalkCycleType)Enum.ToObject(typeof(WalkCycleType), index);
+                    if (!stringsy.Contains(cycleDef.WalkCycleType))
+                    {
+                        stringsy.Add(cycleDef.WalkCycleType);
+                    }
+                }
+                foreach (string s in stringsy)
+                {
                     list.Add(
                         new FloatMenuOption(
-                            name,
-                            delegate { this.bodyAnimDef.WalkCycleType = myenum; }));
+                            s,
+                            delegate { this.bodyAnimDef.WalkCycleType = s; }));
                 }
+
 
                 Find.WindowStack.Add(new FloatMenu(list));
 
             }
-
+            /*
             if (listing_Standard.ButtonText("Walk cycle only for: " + EditorWalkcycle.WalkCycleType))
             {
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
@@ -625,7 +635,6 @@ namespace FacialStuff
                 Find.WindowStack.Add(new FloatMenu(list));
 
             }
-
             if (listing_Standard.ButtonText("Locomotion Urgency: " + EditorWalkcycle.locomotionUrgency))
             {
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
@@ -644,7 +653,47 @@ namespace FacialStuff
                 Find.WindowStack.Add(new FloatMenu(list));
 
             }
+            */
 
+            if (listing_Standard.ButtonText("Add 1 keyframe: "))
+            {
+                List<FloatMenuOption> list = new List<FloatMenuOption>();
+
+                for (int index = 0; index < pawnKeyframes.Count - 1; index++)
+                {
+                    PawnKeyframe keyframe = pawnKeyframes[index];
+                    list.Add(
+                        new FloatMenuOption(
+                            "Add after " + (keyframe.keyIndex + 1),
+                            delegate
+                                {
+                                    pawnKeyframes.Insert(keyframe.keyIndex + 1, new PawnKeyframe());
+
+                                    this.ReIndexKeyframes();
+                                }));
+                }
+
+                Find.WindowStack.Add(new FloatMenu(list));
+
+            }
+            if (CurrentFrameInt != 0 && CurrentFrameInt != LastInd)
+            {
+                if (listing_Standard.ButtonText("Remove current keyframe " + (CurrentFrameInt + 1)))
+                {
+                    pawnKeyframes.RemoveAt(CurrentFrameInt);
+                    this.ReIndexKeyframes();
+                }
+            }
+            if (CurrentFrameInt != 0 && CurrentFrameInt != LastInd)
+            {
+
+                float shift = this.currentShift;
+                shift = Mathf.Round(listing_Standard.Slider(shift, -1f, 1f) * 20f) / 20f;
+                if (GUI.changed)
+                {
+                    this.currentShift = shift;
+                }
+            }
 
             listing_Standard.Gap();
             if (listing_Standard.ButtonText("Export BodyDef"))
@@ -668,6 +717,37 @@ namespace FacialStuff
 
             listing_Standard.End();
         }
+
+        public float currentShift
+        {
+            get
+            {
+                return this.currentFrame.shift;
+            }
+            set
+            {
+                if (Math.Abs(value) < 0.05f)
+                {
+                    this.currentFrame.status = KeyStatus.Automatic;
+                }
+                else
+                {
+                    this.currentFrame.status = KeyStatus.Manual;
+                }
+                this.currentFrame.shift = value;
+                GameComponent_FacialStuff.BuildWalkCycles(EditorWalkcycle);
+            }
+        }
+
+        private void ReIndexKeyframes()
+        {
+            for (int index = 0; index < pawnKeyframes.Count; index++)
+            {
+                PawnKeyframe keyframe = pawnKeyframes[index];
+                keyframe.keyIndex = index;
+            }
+        }
+
         private static string defPath;
 
         public static string DefPath
@@ -719,15 +799,19 @@ namespace FacialStuff
 
         }
 
-        private void DrawTimelineButtons(List<PawnKeyframe> frames, float width, int count)
+        private void DrawTimelineButtons(float width, int count)
         {
             Rect buttonRect = new Rect(0f, 48f, (width - (count - 1) * this.spacing) / count, 32f);
-            foreach (PawnKeyframe keyframe in frames)
+            foreach (PawnKeyframe keyframe in pawnKeyframes)
             {
                 int keyIndex = keyframe.keyIndex;
                 if (keyIndex == CurrentFrameInt)
                 {
                     GUI.color = selectedColor;
+                }
+                if (keyframe.status == KeyStatus.Manual)
+                {
+                    GUI.color *= Color.cyan;
                 }
                 if (Widgets.ButtonText(buttonRect, (keyIndex + 1).ToString()))
                 {
@@ -741,7 +825,6 @@ namespace FacialStuff
         private void DrawTimelineSlider(int count, float width)
         {
             Rect timeline = new Rect(0f, 0f, width, 40f);
-            float steps = (float)1 / (count - 1);
             string label = "Current frame: " + this.frameLabel;
             if (this.loop)
             {
@@ -871,9 +954,9 @@ namespace FacialStuff
         {
             if (!framesAt.NullOrEmpty())
             {
-                buttonRect.width /= lastInd + 3;
+                buttonRect.width /= LastInd + 2;
 
-                for (int i = 0; i < lastInd + 1; i++)
+                for (int i = 0; i < LastInd + 1; i++)
                 {
                     if (framesAt.Contains(i))
                     {
@@ -990,7 +1073,13 @@ namespace FacialStuff
 
         public static WalkCycleDef EditorWalkcycle => editorWalkcycle;
 
-        private static int lastInd;
+        public static int LastInd
+        {
+            get
+            {
+                return pawnKeyframes.Count - 1;
+            }
+        }
 
         private static float animSlider;
 
@@ -1001,6 +1090,8 @@ namespace FacialStuff
         private Color removeColor = new Color(1f, 0.25f, 0.25f);
 
         private Color addColor = new Color(0.25f, 1f, 0.25f);
+
+        private static List<PawnKeyframe> pawnKeyframes => EditorWalkcycle.keyframes;
 
         public static Rot4 HeadRot => headRot;
 
@@ -1023,7 +1114,7 @@ namespace FacialStuff
             set
             {
                 animationPercent = value;
-                int frame = (int)(animationPercent * lastInd);
+                int frame = (int)(animationPercent * LastInd);
                 currentFrameInt = frame;
 
             }
@@ -1032,7 +1123,7 @@ namespace FacialStuff
         private static void SetCurrentFrame(int frame)
         {
             {
-                animSlider = (float)frame / ((float)lastInd);
+                animSlider = (float)frame / ((float)LastInd);
 
             }
         }

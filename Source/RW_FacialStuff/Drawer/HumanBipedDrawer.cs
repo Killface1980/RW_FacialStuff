@@ -328,7 +328,7 @@ namespace FacialStuff
 
             weaponAngle %= 360f;
 
-            // weapon angle and position offsets based on current attack animation sequence
+            // weapon angle and position offsets based on current attack keyframes sequence
             this.DoAttackAnimationOffsets(ref weaponAngle, ref weaponPositionOffset, flipped);
 
             Graphic_StackCount graphic_StackCount = equipment.Graphic as Graphic_StackCount;
