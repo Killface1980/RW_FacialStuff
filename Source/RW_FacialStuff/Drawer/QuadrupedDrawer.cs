@@ -65,7 +65,7 @@ namespace FacialStuff
 
 
             // Basic values
-            var body = this.CompAnimator.bodySizeDefinition;
+            var body = this.CompAnimator.bodyAnim;
 
             Rot4 rot = this.bodyFacing;
             JointLister jointPositions = this.GetJointPositions(

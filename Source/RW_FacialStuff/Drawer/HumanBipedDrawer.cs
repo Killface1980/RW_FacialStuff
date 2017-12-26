@@ -44,7 +44,7 @@ namespace FacialStuff
                 quat = this.QuatBody(quat, this.movedPercent);
             }
 
-            rootLoc.z += this.CompAnimator.bodySizeDefinition.extraLegLength;
+            rootLoc.z += this.CompAnimator.bodyAnim.extraLegLength;
 
             base.ApplyBodyWobble(ref rootLoc, ref quat);
         }
@@ -55,7 +55,7 @@ namespace FacialStuff
             Material matRight;
 
             // Basic values
-            BodyAnimDef body = this.CompAnimator.bodySizeDefinition;
+            BodyAnimDef body = this.CompAnimator.bodyAnim;
 
             Vector3 ground = rootLoc;
             ground.z += OffsetGround;
@@ -535,7 +535,7 @@ namespace FacialStuff
 
             }
 
-            BodyAnimDef body = this.CompAnimator.bodySizeDefinition;
+            BodyAnimDef body = this.CompAnimator.bodyAnim;
 
 
             Rot4 rot = this.bodyFacing;
@@ -804,7 +804,7 @@ namespace FacialStuff
             }
         }
 
-        protected WalkCycleDef walkCycle = WalkCycleDefOf.Human_Walk;
+        protected WalkCycleDef walkCycle = WalkCycleDefOf.Biped_Walk;
 
 
         public override void Initialize()
@@ -854,6 +854,16 @@ namespace FacialStuff
             }
             else if (this.Pawn.CurJob != null)
             {
+                if (this.CompAnimator.bodyAnim.walkCycles.TryGetValue(
+                    this.Pawn.CurJob.locomotionUrgency.GetHashCode(),
+                    out WalkCycleDef cycle))
+                {
+                    if (cycle != null)
+                    {
+                        this.walkCycle = cycle;
+                        return;
+                    }
+                }
                 // switch (this.Pawn.mindState.duty.locomotion)
                 // {
                 // }
@@ -861,16 +871,16 @@ namespace FacialStuff
                 {
                     case LocomotionUrgency.None:
                     case LocomotionUrgency.Amble:
-                        this.walkCycle = WalkCycleDefOf.Human_Amble;
+                        this.walkCycle = WalkCycleDefOf.Biped_Amble;
                         break;
                     case LocomotionUrgency.Walk:
-                        this.walkCycle = WalkCycleDefOf.Human_Walk;
+                        this.walkCycle = WalkCycleDefOf.Biped_Walk;
                         break;
                     case LocomotionUrgency.Jog:
-                        this.walkCycle = WalkCycleDefOf.Human_Jog;
+                        this.walkCycle = WalkCycleDefOf.Biped_Jog;
                         break;
                     case LocomotionUrgency.Sprint:
-                        this.walkCycle = WalkCycleDefOf.Human_Sprint;
+                        this.walkCycle = WalkCycleDefOf.Biped_Sprint;
                         break;
                 }
             }

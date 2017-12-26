@@ -26,7 +26,7 @@
 
         public bool quadruped = false;
 
-        public WalkCycleDef defaultCycleWalk = WalkCycleDefOf.Human_Walk;
+        public WalkCycleDef defaultCycleWalk = WalkCycleDefOf.Biped_Walk;
 
         #endregion Public Fields
 

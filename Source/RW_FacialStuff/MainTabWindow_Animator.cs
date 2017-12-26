@@ -15,6 +15,7 @@ namespace FacialStuff
     using UnityEngine;
 
     using Verse;
+    using Verse.AI;
 
     public class MainTabWindow_Animator : MainTabWindow
     {
@@ -50,6 +51,8 @@ namespace FacialStuff
         public override void DoWindowContents(Rect inRect)
         {
             this.FindRandomPawn();
+
+            this.bodyAnimDef = this.CompAnim.bodyAnim;
 
             PortraitsCache.SetDirty(this.pawn);
 
@@ -193,7 +196,6 @@ namespace FacialStuff
 
             Rect sliderRect = new Rect(0, 0, this.sliderWidth, 40f);
 
-            this.bodyAnimDef = this.CompAnim.bodySizeDefinition;
 
             // this.DrawBodyStats("legLength", ref bodyAnimDef.legLength, ref sliderRect);
             // this.DrawBodyStats("hipOffsetVerticalFromCenter",
@@ -374,16 +376,7 @@ namespace FacialStuff
                 editorRect.y = 0f;
 
 
-                framesAt = (from keyframe in frames
-                            where keyframe.BodyOffsetZ.HasValue
-                            select keyframe.keyIndex).ToList();
 
-                this.SetPosition(
-                    ref thisFrame.BodyOffsetZ,
-                    ref editorRect,
-                    EditorWalkcycle.BodyOffsetZ,
-                    "BodyOffsetZ",
-                    framesAt);
 
 
 
@@ -407,17 +400,6 @@ namespace FacialStuff
                         "ShoulderOffsetHorizontalX", framesAt);
                 }
 
-                if (this.CompAnim.Props.quadruped)
-                {
-                    framesAt = (from keyframe in frames
-                                where keyframe.FrontPawPositionZ.HasValue
-                                select keyframe.keyIndex).ToList();
-                    this.SetPosition(
-                        ref thisFrame.FrontPawPositionZ,
-                        ref editorRect,
-                        EditorWalkcycle.FrontPawPositionZ,
-                        "FrontPawPosY", framesAt);
-                }
                 if (rotation.IsHorizontal)
                 {
                     if (this.CompAnim.Props.quadruped)
@@ -431,7 +413,14 @@ namespace FacialStuff
                             EditorWalkcycle.FrontPawPositionX,
                             "FrontPawPosX", framesAt);
 
-
+                        framesAt = (from keyframe in frames
+                                    where keyframe.FrontPawPositionZ.HasValue
+                                    select keyframe.keyIndex).ToList();
+                        this.SetPosition(
+                            ref thisFrame.FrontPawPositionZ,
+                            ref editorRect,
+                            EditorWalkcycle.FrontPawPositionZ,
+                            "FrontPawPositionZ", framesAt);
 
                         framesAt = (from keyframe in frames
                                     where keyframe.FrontPawAngle.HasValue
@@ -496,6 +485,18 @@ namespace FacialStuff
                         "BodyAngleVertical", framesAt);
                 }
 
+
+                framesAt = (from keyframe in frames
+                            where keyframe.BodyOffsetZ.HasValue
+                            select keyframe.keyIndex).ToList();
+
+                this.SetPosition(
+                    ref thisFrame.BodyOffsetZ,
+                    ref editorRect,
+                    EditorWalkcycle.BodyOffsetZ,
+                    "BodyOffsetZ",
+                    framesAt);
+
                 GUI.EndGroup();
             }
         }
@@ -509,6 +510,9 @@ namespace FacialStuff
             listing_Standard.Begin(newRect);
 
             listing_Standard.Label(this.pawn.LabelCap);
+            listing_Standard.Label(EditorWalkcycle.LabelCap);
+            listing_Standard.Label(this.bodyAnimDef.LabelCap);
+
             this.zoom = listing_Standard.Slider(this.zoom, 0.5f, 1.5f);
 
             listing_Standard.CheckboxLabeled("Develop", ref develop);
@@ -542,21 +546,105 @@ namespace FacialStuff
 
             if (listing_Standard.ButtonText(EditorWalkcycle.LabelCap))
             {
+                var exists = new List<string>();
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
                 foreach (WalkCycleDef current in from bsm in DefDatabase<WalkCycleDef>.AllDefs orderby bsm.LabelCap select bsm)
                 {
+                    if (this.bodyAnimDef.WalkCycleType == WalkCycleType.None)
+                    {
+                        break;
+                    }
+                    if (current.WalkCycleType != this.bodyAnimDef.WalkCycleType)
+                    {
+                        continue;
+                    }
                     WalkCycleDef smLocal = current;
                     list.Add(new FloatMenuOption(smLocal.LabelCap, delegate { editorWalkcycle = smLocal; }));
+                    exists.Add(smLocal.locomotionUrgency.ToString());
                 }
-                // list.Add(new FloatMenuOption("Add new ...",
-                //     delegate
-                //         {
-                //             var newCycle = new WalkCycleDef();
-                //             GameComponent_FacialStuff.BuildWalkCycles(newCycle);
-                //             this.compAnim.walkCycle = newCycle;
-                //         }));
+                string[] names = Enum.GetNames(typeof(LocomotionUrgency));
+                for (int index = 0; index < names.Length; index++)
+                {
+                    string name = names[index];
+                    LocomotionUrgency myenum = (LocomotionUrgency)Enum.ToObject(typeof(LocomotionUrgency), index);
+
+                    if (exists.Contains(myenum.ToString()))
+                    {
+                        continue;
+                    }
+                    list.Add(
+                        new FloatMenuOption(
+                            "Add new " + this.bodyAnimDef.WalkCycleType + "_" + myenum,
+                            delegate
+                                {
+                                    var newCycle = new WalkCycleDef();
+                                    newCycle.defName = newCycle.label = this.bodyAnimDef.WalkCycleType + "_" + name;
+                                    newCycle.locomotionUrgency = myenum;
+                                    newCycle.WalkCycleType = this.bodyAnimDef.WalkCycleType;
+                                    GameComponent_FacialStuff.BuildWalkCycles(newCycle);
+                                    editorWalkcycle = newCycle;
+                                }));
+                }
                 Find.WindowStack.Add(new FloatMenu(list));
             }
+
+            if (listing_Standard.ButtonText("This pawn is using: " + this.bodyAnimDef.WalkCycleType))
+            {
+                List<FloatMenuOption> list = new List<FloatMenuOption>();
+
+                string[] names = Enum.GetNames(typeof(WalkCycleType));
+                for (int index = 0; index < names.Length; index++)
+                {
+                    string name = names[index];
+                    WalkCycleType myenum = (WalkCycleType)Enum.ToObject(typeof(WalkCycleType), index);
+                    list.Add(
+                        new FloatMenuOption(
+                            name,
+                            delegate { this.bodyAnimDef.WalkCycleType = myenum; }));
+                }
+
+                Find.WindowStack.Add(new FloatMenu(list));
+
+            }
+
+            if (listing_Standard.ButtonText("Walk cycle only for: " + EditorWalkcycle.WalkCycleType))
+            {
+                List<FloatMenuOption> list = new List<FloatMenuOption>();
+
+                string[] names = Enum.GetNames(typeof(WalkCycleType));
+                for (int index = 0; index < names.Length; index++)
+                {
+                    string name = names[index];
+                    WalkCycleType myenum = (WalkCycleType)Enum.ToObject(typeof(WalkCycleType), index);
+                    list.Add(
+                        new FloatMenuOption(
+                            name,
+                            delegate { EditorWalkcycle.WalkCycleType = myenum; }));
+                }
+
+                Find.WindowStack.Add(new FloatMenu(list));
+
+            }
+
+            if (listing_Standard.ButtonText("Locomotion Urgency: " + EditorWalkcycle.locomotionUrgency))
+            {
+                List<FloatMenuOption> list = new List<FloatMenuOption>();
+
+                string[] names = Enum.GetNames(typeof(LocomotionUrgency));
+                for (int index = 0; index < names.Length; index++)
+                {
+                    string name = names[index];
+                    LocomotionUrgency myenum = (LocomotionUrgency)Enum.ToObject(typeof(LocomotionUrgency), index);
+                    list.Add(
+                        new FloatMenuOption(
+                            name,
+                            delegate { EditorWalkcycle.locomotionUrgency = myenum; }));
+                }
+
+                Find.WindowStack.Add(new FloatMenu(list));
+
+            }
+
 
             listing_Standard.Gap();
             if (listing_Standard.ButtonText("Export BodyDef"))
@@ -637,11 +725,15 @@ namespace FacialStuff
             foreach (PawnKeyframe keyframe in frames)
             {
                 int keyIndex = keyframe.keyIndex;
+                if (keyIndex == CurrentFrameInt)
+                {
+                    GUI.color = selectedColor;
+                }
                 if (Widgets.ButtonText(buttonRect, (keyIndex + 1).ToString()))
                 {
                     SetCurrentFrame(keyIndex);
                 }
-
+                GUI.color = Color.white;
                 buttonRect.x += buttonRect.width + this.spacing;
             }
         }
@@ -754,18 +846,22 @@ namespace FacialStuff
             if (!this.loop && angle.HasValue)
             {
                 angle = Widgets.HorizontalSlider(sliderRect, angle.Value, -180f, 180f, false, label + " " + angle, "-180", "180", 1f);
+                GUI.color = this.removeColor;
                 if (Widgets.ButtonText(buttonRect, "- " + this.frameLabel))
                 {
                     angle = null;
                 }
+                GUI.color = Color.white;
             }
             else
             {
                 Widgets.HorizontalSlider(sliderRect, thisFrame.Evaluate(AnimationPercent), -180f, 180f, false, label + " " + angle, "-180", "180");
+                GUI.color = this.addColor;
                 if (Widgets.ButtonText(buttonRect, "+ " + this.frameLabel))
                 {
                     angle = thisFrame.Evaluate(AnimationPercent);
                 }
+                GUI.color = Color.white;
             }
             editorRect.y += editorRect.height;
 
@@ -775,18 +871,25 @@ namespace FacialStuff
         {
             if (!framesAt.NullOrEmpty())
             {
-                var lastButt = buttonRect.width;
-                buttonRect.width /= lastInd + 1;
+                buttonRect.width /= lastInd + 3;
 
-                foreach (int index in framesAt)
+                for (int i = 0; i < lastInd + 1; i++)
                 {
-                    if (Widgets.ButtonText(buttonRect, (index + 1).ToString()))
+                    if (framesAt.Contains(i))
                     {
-                        SetCurrentFrame(index);
+                        if (i == CurrentFrameInt)
+                        {
+                            GUI.color = selectedColor;
+                        }
+                        if (Widgets.ButtonText(buttonRect, (i + 1).ToString()))
+                        {
+                            SetCurrentFrame(i);
+                        }
+                        GUI.color = Color.white;
+
                     }
                     buttonRect.x += buttonRect.width;
                 }
-                buttonRect.x = lastButt - buttonRect.width;
             }
         }
 
@@ -820,26 +923,30 @@ namespace FacialStuff
             if (!this.loop && position.HasValue)
             {
                 position = Widgets.HorizontalSlider(sliderRect, position.Value, leftValue, rightValue, false, label + " " + position, leftValue.ToString(), rightValue.ToString(), 0.025f);
+                GUI.color = this.removeColor;
                 if (Widgets.ButtonText(buttonRect, "- " + this.frameLabel))
                 {
                     position = null;
                 }
+                GUI.color = Color.white;
             }
             else
             {
                 Widgets.HorizontalSlider(sliderRect, thisFrame.Evaluate(AnimationPercent), leftValue, rightValue, false, label + " " + position, "-0.4", "0.4");
 
 
+                GUI.color = this.addColor;
                 if (Widgets.ButtonText(buttonRect, "+ " + this.frameLabel))
                 {
                     position = thisFrame.Evaluate(AnimationPercent);
                 }
+                GUI.color = Color.white;
             }
             editorRect.y += editorRect.height;
 
         }
 
-        private static WalkCycleDef editorWalkcycle = WalkCycleDefOf.Human_Walk;
+        private static WalkCycleDef editorWalkcycle = WalkCycleDefOf.Biped_Walk;
 
         public override void PostClose()
         {
@@ -857,7 +964,8 @@ namespace FacialStuff
 
                 this.pawn.GetCompAnim(out this.compAnim);
                 this.CompAnim.AnimatorOpen = true;
-                editorWalkcycle = this.CompAnim.walkCycle;
+                editorWalkcycle = WalkCycleDefOf.Biped_Jog;
+                //  editorWalkcycle = this.CompAnim.bodyAnim.walkCycles[0];
             }
 
         }
@@ -887,6 +995,12 @@ namespace FacialStuff
         private static float animSlider;
 
         public static bool panic;
+
+        private static Color selectedColor = new Color(1f, 0.79f, 0.26f);
+
+        private Color removeColor = new Color(1f, 0.25f, 0.25f);
+
+        private Color addColor = new Color(0.25f, 1f, 0.25f);
 
         public static Rot4 HeadRot => headRot;
 

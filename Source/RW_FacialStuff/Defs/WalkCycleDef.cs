@@ -2,13 +2,17 @@
 {
     using System.Collections.Generic;
 
+    using FacialStuff;
     using FacialStuff.Defs;
 
     using Verse;
+    using Verse.AI;
 
     public class WalkCycleDef : Def
     {
         #region Public Fields
+
+        public WalkCycleType WalkCycleType;
 
         public float shoulderAngle;
 
@@ -30,9 +34,9 @@
 
         public SimpleCurve HandsSwingPosVertical = new SimpleCurve();
 
-       // public SimpleCurve FootPositionVerticalZ = new SimpleCurve();
+        // public SimpleCurve FootPositionVerticalZ = new SimpleCurve();
 
-      //  public SimpleCurve BodyOffsetVerticalZ = new SimpleCurve();
+        //  public SimpleCurve BodyOffsetVerticalZ = new SimpleCurve();
 
         public SimpleCurve FrontPawAngle = new SimpleCurve();
 
@@ -40,11 +44,13 @@
 
         public SimpleCurve FrontPawPositionZ = new SimpleCurve();
 
-       // public SimpleCurve FrontPawPositionVerticalZ = new SimpleCurve();
+        // public SimpleCurve FrontPawPositionVerticalZ = new SimpleCurve();
 
         public SimpleCurve ShoulderOffsetHorizontalX = new SimpleCurve();
 
         public SimpleCurve HipOffsetHorizontalX = new SimpleCurve();
+
+        public LocomotionUrgency locomotionUrgency = LocomotionUrgency.None;
 
         #endregion Public Fields
     }

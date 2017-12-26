@@ -28,9 +28,6 @@
         [CanBeNull]
         public PawnBodyGraphic PawnBodyGraphic;
 
-
-        public WalkCycleDef walkCycle = WalkCycleDefOf.Human_Walk;
-
         #endregion Public Fields
 
         #region Private Fields
@@ -57,7 +54,7 @@
         #endregion Public Properties
         private List<PawnBodyDrawer> pawnDrawers;
 
-        public BodyAnimDef bodySizeDefinition;
+        public BodyAnimDef bodyAnim;
 
 
         public List<PawnBodyDrawer> PawnDrawers => pawnDrawers;
@@ -195,11 +192,11 @@
             if (newDef != null)
             {
 
-                this.bodySizeDefinition = newDef;
+                this.bodyAnim = newDef;
             }
             else
             {
-                this.bodySizeDefinition = new BodyAnimDef { defName = defName, label = defName };
+                this.bodyAnim = new BodyAnimDef { defName = defName, label = defName };
             }
 
             this.InitializePawnDrawer();

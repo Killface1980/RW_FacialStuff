@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace FacialStuff
 {
+    using System;
     using System.IO;
 
     using FacialStuff.Components;
@@ -16,6 +17,7 @@ namespace FacialStuff
     using UnityEngine;
 
     using Verse;
+    using Verse.AI;
 
     public class GameComponent_FacialStuff : GameComponent
     {
@@ -47,7 +49,21 @@ namespace FacialStuff
                 }
             }
             this.WeaponComps();
-            BuildWalkCycles();
+           // BuildWalkCycles();
+
+           // foreach (BodyAnimDef def in DefDatabase<BodyAnimDef>.AllDefsListForReading)
+           // {
+           //     if (def.walkCycles.Count == 0)
+           //     {
+           //         var length = Enum.GetNames(typeof(LocomotionUrgency)).Length;
+           //         for (int index = 0; index < length; index++)
+           //         {
+           //             WalkCycleDef cycleDef = new WalkCycleDef();
+           //             cycleDef.defName = def.defName + "_cycle";
+           //             def.walkCycles.Add(index, cycleDef);
+           //         }
+           //     }
+           // }
         }
 
         public static void BuildWalkCycles([CanBeNull] WalkCycleDef defToRebuild = null)

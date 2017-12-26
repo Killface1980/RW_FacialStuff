@@ -482,7 +482,7 @@ namespace FacialStuff
 #endif
         }
 
-        private WalkCycleDef walkCycle = WalkCycleDefOf.Human_Walk;
+        private WalkCycleDef walkCycle = WalkCycleDefOf.Biped_Walk;
 
 
         public override void Initialize()
@@ -562,16 +562,16 @@ namespace FacialStuff
                 {
                     case LocomotionUrgency.None:
                     case LocomotionUrgency.Amble:
-                        this.walkCycle = WalkCycleDefOf.Human_Amble;
+                        this.walkCycle = WalkCycleDefOf.Biped_Amble;
                         break;
                     case LocomotionUrgency.Walk:
-                        this.walkCycle = WalkCycleDefOf.Human_Walk;
+                        this.walkCycle = WalkCycleDefOf.Biped_Walk;
                         break;
                     case LocomotionUrgency.Jog:
-                        this.walkCycle = WalkCycleDefOf.Human_Jog;
+                        this.walkCycle = WalkCycleDefOf.Biped_Jog;
                         break;
                     case LocomotionUrgency.Sprint:
-                        this.walkCycle = WalkCycleDefOf.Human_Sprint;
+                        this.walkCycle = WalkCycleDefOf.Biped_Sprint;
                         break;
                 }
             }

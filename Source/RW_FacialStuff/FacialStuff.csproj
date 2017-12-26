@@ -85,9 +85,10 @@
     <Compile Include="Drawer\HumanBipedDrawer.cs" />
     <Compile Include="Drawer\PawnBodyDrawer.cs" />
     <Compile Include="Drawer\QuadrupedDrawer.cs" />
+    <Compile Include="Enums\WalkcycleType.cs" />
     <Compile Include="Graphics\PawnBodyGraphic.cs" />
     <Compile Include="MainTabWindow_Animator.cs" />
-    <Compile Include="Components\BodyPartStats.cs" />
+    <Compile Include="Enums\BodyPartStats.cs" />
     <Compile Include="Components\CompProperties_Face.cs" />
     <Compile Include="Enums\PartStatus.cs" />
     <Compile Include="Defs\PawnKeyframe.cs" />

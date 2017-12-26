@@ -2,7 +2,30 @@
 <Defs>
   <BodyAnimDef>
     <armLength>0.3</armLength>
+    <walkCycles>
+      <li>
+        <key>0</key>
+        <value IsNull="True" />
+      </li>
+      <li>
+        <key>1</key>
+        <value IsNull="True" />
+      </li>
+      <li>
+        <key>2</key>
+        <value IsNull="True" />
+      </li>
+      <li>
+        <key>3</key>
+        <value IsNull="True" />
+      </li>
+      <li>
+        <key>4</key>
+        <value IsNull="True" />
+      </li>
+    </walkCycles>
     <extraLegLength>0</extraLegLength>
+    <WalkCycleType>Biped</WalkCycleType>
     <shoulderOffsets>
       <li>
         <x>0.175</x>
