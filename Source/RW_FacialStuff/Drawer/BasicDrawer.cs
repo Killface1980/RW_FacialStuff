@@ -20,18 +20,34 @@ namespace FacialStuff.Drawer
         protected JointLister GetJointPositions(Rot4 rot, Vector3 vector, float jointWidth)
         {
             JointLister joints = new JointLister();
+            float leftZ = vector.z;
+            float rightZ = vector.z;
+            float leftX = vector.x;
+            float rightX = vector.x;
+
+            float rightY = vector.y;
+            float leftY = vector.y;
             if (rot.IsHorizontal)
             {
-                float offset = -1f * jointWidth / 5;
-                joints.rightJoint = new Vector3(vector.x + offset, vector.y, vector.z);
-                joints.leftJoint = new Vector3(vector.x - offset, -vector.y, vector.z);
+                if (rot == Rot4.East)
+                {
+                leftX -= jointWidth / 8;
+                    leftZ += +jointWidth / 3;
+                }
+                else
+                {
+                rightX -= jointWidth / 8;
+                    rightZ += +jointWidth / 3;
+                }
 
+                leftY *= -1;
             }
             else
             {
-                joints.rightJoint = new Vector3(vector.x, vector.y, vector.z);
-                joints.leftJoint = new Vector3(-vector.x, vector.y, vector.z);
+                leftX *= -1;
             }
+            joints.rightJoint = new Vector3(rightX, rightY, rightZ);
+            joints.leftJoint = new Vector3(leftX, leftY, leftZ);
 
             return joints;
         }

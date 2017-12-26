@@ -56,7 +56,6 @@ namespace FacialStuff
         {
             this.FindRandomPawn();
 
-            this.bodyAnimDef = this.CompAnim.bodyAnim;
 
             PortraitsCache.SetDirty(this.pawn);
 
@@ -549,19 +548,15 @@ namespace FacialStuff
             {
                 var exists = new List<string>();
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
-                foreach (WalkCycleDef current in from bsm in DefDatabase<WalkCycleDef>.AllDefs orderby bsm.LabelCap select bsm)
+                this.bodyAnimDef.walkCycles.Clear();
+
+                foreach (WalkCycleDef walkcycle in (from bsm in DefDatabase<WalkCycleDef>.AllDefs
+                                                  orderby bsm.LabelCap
+                                                  select bsm).TakeWhile(current => this.bodyAnimDef.WalkCycleType != "None").Where(current => current.WalkCycleType == this.bodyAnimDef.WalkCycleType))
                 {
-                    if (this.bodyAnimDef.WalkCycleType == "None")
-                    {
-                        break;
-                    }
-                    if (current.WalkCycleType != this.bodyAnimDef.WalkCycleType)
-                    {
-                        continue;
-                    }
-                    WalkCycleDef smLocal = current;
-                    list.Add(new FloatMenuOption(smLocal.LabelCap, delegate { editorWalkcycle = smLocal; }));
-                    exists.Add(smLocal.locomotionUrgency.ToString());
+                    list.Add(new FloatMenuOption(walkcycle.LabelCap, delegate { editorWalkcycle = walkcycle; }));
+                    exists.Add(walkcycle.locomotionUrgency.ToString());
+                    this.bodyAnimDef.walkCycles.Add(walkcycle.locomotionUrgency, walkcycle);
                 }
                 string[] names = Enum.GetNames(typeof(LocomotionUrgency));
                 for (int index = 0; index < names.Length; index++)
@@ -584,6 +579,9 @@ namespace FacialStuff
                                     newCycle.WalkCycleType = this.bodyAnimDef.WalkCycleType;
                                     GameComponent_FacialStuff.BuildWalkCycles(newCycle);
                                     editorWalkcycle = newCycle;
+
+                                    this.bodyAnimDef.walkCycles.Add(myenum, newCycle);
+
                                 }));
                 }
                 Find.WindowStack.Add(new FloatMenu(list));
@@ -698,21 +696,29 @@ namespace FacialStuff
             listing_Standard.Gap();
             if (listing_Standard.ButtonText("Export BodyDef"))
             {
-                string configFolder = DefPath;
+                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("Confirm overwriting " + this.bodyAnimDef.defName + ".xml", delegate
+                    {
+                        ExportAnimDefs.Defs animDef = new ExportAnimDefs.Defs(this.bodyAnimDef); ;
+
+                        string configFolder = DefPath;
+                        DirectXmlSaver.SaveDataObject(
+                            animDef,
+                            configFolder + "/BodyAnimDefs/" + this.bodyAnimDef.defName + ".xml");
+                    }, true, null));
+
 
                 // BodyAnimDef animDef = this.bodyAnimDef;
-                ExportAnimDefs.Defs animDef = new ExportAnimDefs.Defs(this.bodyAnimDef); ;
-
-                DirectXmlSaver.SaveDataObject(
-                    animDef,
-                    configFolder + "/BodyAnimDefs/" + this.bodyAnimDef.defName + ".xml");
             }
             if (listing_Standard.ButtonText("Export WalkCycle"))
             {
-                string configFolder = DefPath;
-                ExportCycleDefs.Defs cycle = new ExportCycleDefs.Defs(EditorWalkcycle);
-                DirectXmlSaver.SaveDataObject(cycle,
-                    configFolder + "/WalkCycleDefs/" + EditorWalkcycle.defName + ".xml");
+                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("Confirm overwriting " + EditorWalkcycle.defName + ".xml", delegate
+                    {
+                        string configFolder = DefPath;
+                        ExportCycleDefs.Defs cycle = new ExportCycleDefs.Defs(EditorWalkcycle);
+                        DirectXmlSaver.SaveDataObject(cycle,
+                            configFolder + "/WalkCycleDefs/" + EditorWalkcycle.defName + ".xml");
+                    }, true, null));
+
             }
 
             listing_Standard.End();
@@ -1069,7 +1075,7 @@ namespace FacialStuff
 
         private float zoom = 1f;
 
-        private BodyAnimDef bodyAnimDef;
+        private BodyAnimDef bodyAnimDef => CompAnim.bodyAnim;
 
         public static WalkCycleDef EditorWalkcycle => editorWalkcycle;
 

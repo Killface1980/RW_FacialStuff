@@ -865,35 +865,42 @@ namespace FacialStuff
             }
             else if (this.Pawn.CurJob != null)
             {
-                if (this.CompAnimator.bodyAnim.walkCycles.TryGetValue(
-                    this.Pawn.CurJob.locomotionUrgency.GetHashCode(),
-                    out WalkCycleDef cycle))
+                Dictionary<LocomotionUrgency, WalkCycleDef> cycles = this.CompAnimator.bodyAnim.walkCycles;
+
+                if (cycles != null)
                 {
-                    if (cycle != null)
+                    if (cycles.TryGetValue(
+                            this.Pawn.CurJob.locomotionUrgency,
+                            out WalkCycleDef cycle))
                     {
-                        this.walkCycle = cycle;
-                        return;
+                        if (cycle != null)
+                        {
+                            this.walkCycle = cycle;
+                            return;
+                        }
+                    }
+                    else if (cycles.Count > 0)
+                    {
+                        this.walkCycle = this.CompAnimator.bodyAnim.walkCycles.FirstOrDefault().Value;
                     }
                 }
-                // switch (this.Pawn.mindState.duty.locomotion)
-                // {
-                // }
-                switch (this.Pawn.CurJob.locomotionUrgency)
-                {
-                    case LocomotionUrgency.None:
-                    case LocomotionUrgency.Amble:
-                        this.walkCycle = WalkCycleDefOf.Biped_Amble;
-                        break;
-                    case LocomotionUrgency.Walk:
-                        this.walkCycle = WalkCycleDefOf.Biped_Walk;
-                        break;
-                    case LocomotionUrgency.Jog:
-                        this.walkCycle = WalkCycleDefOf.Biped_Jog;
-                        break;
-                    case LocomotionUrgency.Sprint:
-                        this.walkCycle = WalkCycleDefOf.Biped_Sprint;
-                        break;
-                }
+
+               // switch (this.Pawn.CurJob.locomotionUrgency)
+               // {
+               //     case LocomotionUrgency.None:
+               //     case LocomotionUrgency.Amble:
+               //         this.walkCycle = WalkCycleDefOf.Biped_Amble;
+               //         break;
+               //     case LocomotionUrgency.Walk:
+               //         this.walkCycle = WalkCycleDefOf.Biped_Walk;
+               //         break;
+               //     case LocomotionUrgency.Jog:
+               //         this.walkCycle = WalkCycleDefOf.Biped_Jog;
+               //         break;
+               //     case LocomotionUrgency.Sprint:
+               //         this.walkCycle = WalkCycleDefOf.Biped_Sprint;
+               //         break;
+               // }
             }
         }
 

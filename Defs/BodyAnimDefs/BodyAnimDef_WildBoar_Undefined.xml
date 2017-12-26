@@ -2,8 +2,13 @@
 <Defs>
   <BodyAnimDef>
     <armLength>0</armLength>
-    <walkCycles />
-    <extraLegLength>-0.175</extraLegLength>
+    <walkCycles>
+      <li>
+        <key>Walk</key>
+        <value>Quadruped_Walk</value>
+      </li>
+    </walkCycles>
+    <extraLegLength>-0.125</extraLegLength>
     <WalkCycleType>Quadruped</WalkCycleType>
     <shoulderOffsets>
       <li>
@@ -34,7 +39,7 @@
         <z>0.05</z>
       </li>
       <li>
-        <x>-0.425</x>
+        <x>-0.4</x>
         <y>0.025</y>
         <z>0</z>
       </li>
@@ -44,7 +49,7 @@
         <z>0.65</z>
       </li>
       <li>
-        <x>0.425</x>
+        <x>0.4</x>
         <y>-0.025</y>
         <z>0</z>
       </li>

@@ -18,8 +18,8 @@ namespace RimWorld
     {
         public float armLength;
 
-        public Dictionary<int, WalkCycleDef> walkCycles =
-            new Dictionary<int, WalkCycleDef>();
+        public Dictionary<LocomotionUrgency, WalkCycleDef> walkCycles =
+            new Dictionary<LocomotionUrgency, WalkCycleDef>();
 
         // public float legLength;
 
