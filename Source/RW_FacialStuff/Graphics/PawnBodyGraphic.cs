@@ -136,7 +136,9 @@ namespace FacialStuff.Graphics
             Color skinColor;
             if (this.pawn.RaceProps.Animal)
             {
-                skinColor = Color.white;
+                PawnKindLifeStage curKindLifeStage = this.pawn.ageTracker.CurKindLifeStage;
+
+                skinColor = curKindLifeStage.bodyGraphicData.color;
             }
             else
             {
@@ -201,7 +203,9 @@ namespace FacialStuff.Graphics
             Color skinColor;
             if (this.pawn.RaceProps.Animal)
             {
-                skinColor = Color.white;
+                PawnKindLifeStage curKindLifeStage = this.pawn.ageTracker.CurKindLifeStage;
+
+                skinColor = curKindLifeStage.bodyGraphicData.color;
             }
             else
             {

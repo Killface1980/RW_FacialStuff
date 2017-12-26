@@ -3,7 +3,7 @@
   <BodyAnimDef>
     <armLength>0</armLength>
     <walkCycles />
-    <extraLegLength>-0.15</extraLegLength>
+    <extraLegLength>-0.175</extraLegLength>
     <WalkCycleType>Quadruped</WalkCycleType>
     <shoulderOffsets>
       <li>
@@ -12,7 +12,7 @@
         <z>0.65</z>
       </li>
       <li>
-        <x>0.25</x>
+        <x>0.15</x>
         <y>0.025</y>
         <z>0</z>
       </li>
@@ -22,7 +22,7 @@
         <z>-0.025</z>
       </li>
       <li>
-        <x>-0.25</x>
+        <x>-0.15</x>
         <y>-0.025</y>
         <z>0</z>
       </li>
@@ -34,7 +34,7 @@
         <z>0.05</z>
       </li>
       <li>
-        <x>-0.325</x>
+        <x>-0.425</x>
         <y>0.025</y>
         <z>0</z>
       </li>
@@ -44,7 +44,7 @@
         <z>0.65</z>
       </li>
       <li>
-        <x>0.325</x>
+        <x>0.425</x>
         <y>-0.025</y>
         <z>0</z>
       </li>

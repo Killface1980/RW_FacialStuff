@@ -18,6 +18,8 @@
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>0</keyIndex>
+        <status>Automatic</status>
+        <shift>0</shift>
       </li>
       <li>
         <BodyAngle>-5</BodyAngle>
@@ -33,6 +35,8 @@
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>1</keyIndex>
+        <status>Automatic</status>
+        <shift>0</shift>
       </li>
       <li>
         <BodyAngle IsNull="True" />
@@ -48,6 +52,8 @@
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>2</keyIndex>
+        <status>Automatic</status>
+        <shift>0</shift>
       </li>
       <li>
         <BodyAngle>7</BodyAngle>
@@ -63,6 +69,8 @@
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>3</keyIndex>
+        <status>Automatic</status>
+        <shift>0</shift>
       </li>
       <li>
         <BodyAngle>0</BodyAngle>
@@ -78,6 +86,8 @@
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>4</keyIndex>
+        <status>Automatic</status>
+        <shift>0</shift>
       </li>
       <li>
         <BodyAngle>-5</BodyAngle>
@@ -93,6 +103,8 @@
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>5</keyIndex>
+        <status>Automatic</status>
+        <shift>0</shift>
       </li>
       <li>
         <BodyAngle IsNull="True" />
@@ -108,6 +120,8 @@
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>6</keyIndex>
+        <status>Automatic</status>
+        <shift>0</shift>
       </li>
       <li>
         <BodyAngle>7</BodyAngle>
@@ -123,6 +137,8 @@
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>7</keyIndex>
+        <status>Automatic</status>
+        <shift>0</shift>
       </li>
       <li>
         <BodyAngle>0</BodyAngle>
@@ -138,6 +154,8 @@
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>8</keyIndex>
+        <status>Automatic</status>
+        <shift>0</shift>
       </li>
     </keyframes>
     <BodyAngle>

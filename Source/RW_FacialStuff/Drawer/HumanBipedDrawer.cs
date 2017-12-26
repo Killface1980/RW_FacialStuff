@@ -51,6 +51,11 @@ namespace FacialStuff
 
         public override void DrawFeet(Vector3 rootLoc, bool portrait)
         {
+            if (portrait && !this.CompAnimator.AnimatorOpen)
+            {
+                return;
+            }
+
             Material matLeft;
             Material matRight;
 
@@ -94,8 +99,8 @@ namespace FacialStuff
             }
             else
             {
-                matRight = this.CompAnimator.PawnBodyGraphic?.FootGraphicRight?.MatAt(rot);
-                matLeft = this.CompAnimator.PawnBodyGraphic?.FootGraphicLeft?.MatAt(rot);
+                matRight = this.flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FootGraphicRight?.MatAt(rot));
+                matLeft = this.flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FootGraphicLeft?.MatAt(rot));
             }
 
 
@@ -170,6 +175,11 @@ namespace FacialStuff
         public override void DrawEquipment(Vector3 rootLoc, bool portrait)
         {
             Pawn pawn = this.Pawn;
+
+            if (portrait && !this.CompAnimator.AnimatorOpen)
+            {
+                return;
+            }
 
             if (pawn.Dead || !pawn.Spawned)
             {
@@ -526,8 +536,8 @@ namespace FacialStuff
 
         protected void DrawHands(Vector3 drawPos, bool portrait, bool carrying = false, bool rightSide = true, bool leftSide = true)
         {
-            Material matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeft?.MatSingle;
-            Material matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRight?.MatSingle;
+            Material matLeft = this.flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.HandGraphicLeft?.MatSingle);
+            Material matRight = this.flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.HandGraphicRight?.MatSingle);
             if (MainTabWindow_Animator.Colored)
             {
                 matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeftCol?.MatSingle;
@@ -578,12 +588,7 @@ namespace FacialStuff
             {
                 bodyAngle = pawn.Drawer.renderer.wiggler.downedAngle;
             }
-            {
 
-
-
-
-            }
 
             if (matRight != null && rightSide)
             {
@@ -652,7 +657,7 @@ namespace FacialStuff
             float offsetJoint)
         {
             Rot4 rot = this.bodyFacing;
-         
+
             // Basic values if pawn is carrying stuff
             float x = 0;
             float x2 = -x;
@@ -672,12 +677,10 @@ namespace FacialStuff
                     x = x2 = 0f;
                     if (rot == Rot4.East)
                     {
-                        shoulderAngle = this.walkCycle.shoulderAngle;
                         y2 = -0.5f;
                     }
                     else
                     {
-                        shoulderAngle = -this.walkCycle.shoulderAngle;
                         y = -0.05f;
                     }
                 }
@@ -693,7 +696,13 @@ namespace FacialStuff
                 {
                     if (rot.IsHorizontal)
                     {
-                        float f = (rot == Rot4.West ? -1 : 1) * offsetJoint;
+                        float lookie = rot == Rot4.West ? -1f : 1f;
+                        float f = lookie * offsetJoint;
+
+
+                        shoulderAngle = lookie * this.walkCycle.shoulderAngle;
+
+
                         shoulderPos.rightJoint.x += f;
                         shoulderPos.leftJoint.x += f;
 
@@ -708,8 +717,8 @@ namespace FacialStuff
                         z += 0.2f;
                         z2 += 0.2f;
 
-                        z += this.walkCycle.shoulderAngle / 200;
-                        z2 += this.walkCycle.shoulderAngle / 200;
+                        z += this.walkCycle.shoulderAngle / 300;
+                        z2 += this.walkCycle.shoulderAngle / 300;
                     }
 
                 }
@@ -806,9 +815,11 @@ namespace FacialStuff
 
         protected WalkCycleDef walkCycle = WalkCycleDefOf.Biped_Walk;
 
+        protected DamageFlasher flasher;
 
         public override void Initialize()
         {
+            this.flasher = this.Pawn.Drawer.renderer.graphics.flasher;
 
             base.Initialize();
         }

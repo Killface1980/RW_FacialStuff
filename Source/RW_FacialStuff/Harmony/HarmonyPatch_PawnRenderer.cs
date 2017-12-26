@@ -86,7 +86,7 @@
                 {
                     if (compAnim.AnimatorOpen)
                     {
-                        bodyFacing =  MainTabWindow_Animator.BodyRot;
+                        bodyFacing = MainTabWindow_Animator.BodyRot;
                         headFacing = MainTabWindow_Animator.HeadRot;
                     }
                     compAnim.TickDrawers(bodyFacing, graphics);
@@ -259,19 +259,13 @@
             // DrawBeardAndTache(headFacing, portrait, faceComp, mesh2, locFacialY, headQuat);
             // }
 
-            if (portrait && compAnim.AnimatorOpen)
-            {
-                compAnim.DrawEquipment(drawPos, portrait);
-            }
 
+            compAnim.DrawEquipment(drawPos, portrait);
 
-            compAnim.DrawFeet(footPos, portrait);
+                compAnim.DrawFeet(footPos, portrait);
 
             if (!portrait)
             {
-
-                compAnim.DrawEquipment(drawPos, false);
-
                 if (pawn.apparel != null)
                 {
                     List<Apparel> wornApparel = pawn.apparel.WornApparel;

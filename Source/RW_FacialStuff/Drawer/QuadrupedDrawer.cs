@@ -48,8 +48,12 @@ namespace FacialStuff
 
         public override void DrawFeet(Vector3 rootLoc, bool portrait)
         {
-            base.DrawFeet(rootLoc, portrait);
+            if (portrait && !this.CompAnimator.AnimatorOpen)
+            {
+                return;
+            }
             this.DrawFrontPaws(rootLoc, portrait);
+            base.DrawFeet(rootLoc, portrait);
         }
 
         public virtual void DrawFrontPaws(Vector3 rootLoc, bool portrait)
@@ -118,8 +122,8 @@ namespace FacialStuff
             }
             else
             {
-                matRight = this.CompAnimator.PawnBodyGraphic?.FrontPawGraphicRight?.MatAt(rot);
-                matLeft = this.CompAnimator.PawnBodyGraphic?.FrontPawGraphicLeft?.MatAt(rot);
+                matRight = this.flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FrontPawGraphicRight?.MatAt(rot));
+                matLeft = this.flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FrontPawGraphicLeft?.MatAt(rot));
             }
 
 

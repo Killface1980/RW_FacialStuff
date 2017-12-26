@@ -58,7 +58,7 @@
         <value>
           <li Class = "FacialStuff.CompProperties_BodyAnimator">
             <quadruped>true</quadruped>
-            <handType>Human</handType>
+            <handType>Animal</handType>
             <drawers>
               <li Class ="FacialStuff.QuadrupedDrawer"/>
             </drawers>
@@ -87,7 +87,7 @@
         <value>
           <li Class = "FacialStuff.CompProperties_BodyAnimator">
             <quadruped>true</quadruped>
-            <handType>Human</handType>
+            <handType>Animal</handType>
             <drawers>
               <li Class ="FacialStuff.QuadrupedDrawer"/>
             </drawers>
@@ -116,7 +116,7 @@
         <value>
           <li Class = "FacialStuff.CompProperties_BodyAnimator">
             <quadruped>true</quadruped>
-            <handType>Human</handType>
+            <handType>WildBoar</handType>
             <drawers>
               <li Class ="FacialStuff.QuadrupedDrawer"/>
             </drawers>
