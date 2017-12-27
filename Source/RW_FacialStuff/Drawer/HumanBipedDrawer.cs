@@ -368,7 +368,7 @@ namespace FacialStuff
                 }
                 else
                 {
-                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.RightHand);
+                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.LeftHand);
                 }
             }
 
@@ -394,7 +394,7 @@ namespace FacialStuff
                 }
                 else
                 {
-                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.LeftHand);
+                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.RightHand);
                 }
             }
 

@@ -29,8 +29,11 @@
                     return;
                 }
 
-                SaveRecordFaceV3 face = new SaveRecordFaceV3(customPawn.Pawn);
-                face.ExposeData();
+                if (customPawn != null)
+                {
+                    SaveRecordFaceV3 face = new SaveRecordFaceV3(customPawn.Pawn);
+                    face.ExposeData();
+                }
             }
             else if (Scribe.mode == LoadSaveMode.LoadingVars)
             {
