@@ -18,12 +18,6 @@ namespace FacialStuff
 
         #region Protected Fields
 
-        protected const float YOffset_Behind = 0.004f;
-        protected const float YOffset_Body = 0.0075f;
-        protected const float YOffset_PostHead = 0.035f;
-        protected const float YOffsetOnFace = 0.0001f;
-        protected static readonly float[] HorHeadOffsets = { 0f, 0.04f, 0.1f, 0.09f, 0.1f, 0.09f };
-        protected static readonly float YOffsetBodyParts = 0.01f;
 
         protected bool isMoving;
         protected float movedPercent;
@@ -68,7 +62,7 @@ namespace FacialStuff
             
         }
 
-        public virtual void DrawEquipmentAiming(Thing equipment, Vector3 weaponDrawLoc, Vector3 rootLoc, float aimAngle)
+        public virtual void DrawEquipmentAiming(Thing equipment, Vector3 weaponDrawLoc, Vector3 rootLoc, float aimAngle, bool portrait)
         {
         }
 

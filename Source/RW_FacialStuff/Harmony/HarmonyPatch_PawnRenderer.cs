@@ -45,6 +45,7 @@
         public const float YOffset_Wounds = 0.02f;
 
         public const float YOffsetInterval_Clothes = 0.004f;
+        public const  float YOffsetBodyParts = 0.01f;
 
 
         private static FieldInfo PawnHeadOverlaysFieldInfo;

@@ -92,14 +92,14 @@ namespace FacialStuff
             if (portrait || renderBody && !this.CompAnimator.HideShellLayer || !renderBody && !Controller.settings.HideShellWhileRoofed
                 && Controller.settings.IgnoreRenderBody)
             {
-                for (int index = 0; index < this.graphics.apparelGraphics.Count; index++)
+                for (int index = 0; index < this.Graphics.apparelGraphics.Count; index++)
                 {
-                    ApparelGraphicRecord apparelGraphicRecord = this.graphics.apparelGraphics[index];
+                    ApparelGraphicRecord apparelGraphicRecord = this.Graphics.apparelGraphics[index];
                     if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer == ApparelLayer.Shell)
                     {
                         Mesh bodyMesh = this.GetPawnMesh(true, portrait);
                         Material material3 = apparelGraphicRecord.graphic.MatAt(this.bodyFacing);
-                        material3 = this.graphics.flasher.GetDamagedMat(material3);
+                        material3 = this.Graphics.flasher.GetDamagedMat(material3);
                         GenDraw.DrawMeshNowOrLater(bodyMesh, vector, quat, material3, portrait);
 
                         // possible fix for phasing apparel
@@ -111,7 +111,7 @@ namespace FacialStuff
 
         public override void DrawBasicHead(Quaternion headQuat, RotDrawMode bodyDrawType, bool headStump, bool portrait, ref Vector3 locFacialY, out bool headDrawn)
         {
-            Material headMaterial = this.graphics.HeadMatAt(this.headFacing, bodyDrawType, headStump);
+            Material headMaterial = this.Graphics.HeadMatAt(this.headFacing, bodyDrawType, headStump);
             if (headMaterial != null)
             {
                 GenDraw.DrawMeshNowOrLater(
@@ -171,7 +171,7 @@ namespace FacialStuff
         public override void DrawHairAndHeadGear(Vector3 rootLoc, Quaternion headQuat, RotDrawMode bodyDrawType, bool renderBody, bool portrait, Vector3 b, ref Vector3 currentLoc)
         {
             Mesh hairMesh = this.GetPawnHairMesh(portrait);
-            List<ApparelGraphicRecord> apparelGraphics = this.graphics.apparelGraphics;
+            List<ApparelGraphicRecord> apparelGraphics = this.Graphics.apparelGraphics;
             List<ApparelGraphicRecord> headgearGraphics = null;
             if (!apparelGraphics.NullOrEmpty())
             {
@@ -203,7 +203,7 @@ namespace FacialStuff
 
                     if (this.CompFace.Props.hasOrganicHair || noRenderBed || filterHeadgear || !apCoversFullHead && !apCoversUpperHead && noRenderGoggles)
                     {
-                        Material mat = this.graphics.HairMatAt(this.headFacing);
+                        Material mat = this.Graphics.HairMatAt(this.headFacing);
                         GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, mat, portrait);
                         currentLoc.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
                     }
@@ -255,7 +255,7 @@ namespace FacialStuff
                     {
                         ApparelGraphicRecord headgearGraphic = headgearGraphics[index];
                         Material headGearMat = headgearGraphic.graphic.MatAt(this.headFacing);
-                        headGearMat = this.graphics.flasher.GetDamagedMat(headGearMat);
+                        headGearMat = this.Graphics.flasher.GetDamagedMat(headGearMat);
 
                         Vector3 thisLoc = currentLoc;
                         if (headgearGraphic.sourceApparel.def.apparel.hatRenderedFrontOfFace)
@@ -276,7 +276,7 @@ namespace FacialStuff
                 // Draw regular hair if no hat worn
                 if (bodyDrawType != RotDrawMode.Dessicated)
                 {
-                    Material hairMat = this.graphics.HairMatAt(this.headFacing);
+                    Material hairMat = this.Graphics.HairMatAt(this.headFacing);
                     GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, hairMat, portrait);
                 }
             }

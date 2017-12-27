@@ -5,43 +5,44 @@ using Verse;
 namespace FacialStuff
 {
     using JetBrains.Annotations;
-    using RimWorld;
-    using System.Collections.Generic;
 
     using FacialStuff.Drawer;
 
     public class PawnHeadDrawer : BasicDrawer
     {
 
+        #region Public Fields
+
+        public PawnGraphicSet Graphics;
+
+        public Pawn Pawn;
+
+        #endregion Public Fields
+
         #region Protected Fields
 
         protected static readonly float[] HorHeadOffsets = { 0f, 0.04f, 0.1f, 0.09f, 0.1f, 0.09f };
-        protected static readonly float YOffsetBodyParts = 0.01f;
 
         protected bool isMoving;
+
         protected float movedPercent;
 
-        protected Mesh HandMesh = MeshPool.plane10;
-
         #endregion Protected Fields
-
-        #region Private Fields
-
-        #endregion Private Fields
 
         #region Protected Constructors
 
         protected PawnHeadDrawer()
         {
         }
+
         #endregion Protected Constructors
 
         #region Public Properties
 
-        public CompFace CompFace { get; set; }
-
         [CanBeNull]
         public CompBodyAnimator CompAnimator { get; set; }
+
+        public CompFace CompFace { get; set; }
 
         #endregion Public Properties
 
@@ -121,31 +122,27 @@ namespace FacialStuff
 
         public virtual Mesh GetPawnHairMesh(bool portrait)
         {
-            return graphics.HairMeshSet.MeshAt(headFacing);
+            return this.Graphics.HairMeshSet.MeshAt(headFacing);
         }
 
 
 
-
-        public virtual Quaternion QuatHead(Rot4 rotation)
-        {
-            return rotation.AsQuat;
-        }
-
-        public Pawn Pawn;
 
         public virtual void Initialize()
         {
         }
 
-        #endregion Public Methods
-        public PawnGraphicSet graphics;
-
+        public virtual Quaternion QuatHead(Rot4 rotation)
+        {
+            return rotation.AsQuat;
+        }
         public virtual void Tick(Rot4 bodyFacing, Rot4 headFacing, PawnGraphicSet graphics)
         {
-            this.graphics = graphics;
+            this.Graphics = graphics;
             this.bodyFacing = bodyFacing;
             this.headFacing = headFacing;
         }
+
+        #endregion Public Methods
     }
 }

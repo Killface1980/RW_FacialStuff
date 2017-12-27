@@ -190,6 +190,7 @@ namespace FacialStuff
             {
                 return;
             }
+
             if (pawn.CurJob != null && pawn.CurJob.def.neverShowWeapon)
             {
                 return;
@@ -214,9 +215,9 @@ namespace FacialStuff
                 drawLoc.y += 0.04f;
 
                 // default weapon angle axis is upward, but all weapons are facing right, so we turn base weapon angle by 90°
-                this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc, rootLoc, num);
+                this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc, rootLoc, num, portrait);
             }
-            else if (this.CarryWeaponOpenly())
+            else if (this.CarryWeaponOpenly() || MainTabWindow_Animator.Equipment)
             {
                 float aimAngle = 143f;
                 Vector3 drawLoc2 = rootLoc;
@@ -225,11 +226,11 @@ namespace FacialStuff
                 {
                     if (rotation == Rot4.East)
                     {
-                        drawLoc2 += new Vector3(YOffsetBodyParts, 0.04f, -0.22f);
+                        drawLoc2 += new Vector3(HarmonyPatch_PawnRenderer.YOffsetBodyParts, 0.04f, -0.22f);
                     }
                     else if (rotation == Rot4.West)
                     {
-                        drawLoc2 += new Vector3(-YOffsetBodyParts, 0.04f, -0.22f);
+                        drawLoc2 += new Vector3(-HarmonyPatch_PawnRenderer.YOffsetBodyParts, 0.04f, -0.22f);
                         aimAngle = 217f;
                     }
                 }
@@ -242,7 +243,7 @@ namespace FacialStuff
                     drawLoc2 += new Vector3(0, 0.04f, -0.22f);
                 }
 
-                this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc2, rootLoc, aimAngle);
+                this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc2, rootLoc, aimAngle, portrait);
             }
         }
 
@@ -253,7 +254,7 @@ namespace FacialStuff
         }
 
         // Verse.PawnRenderer - Vanilla code with flava at the end
-        public override void DrawEquipmentAiming(Thing equipment, Vector3 weaponDrawLoc, Vector3 rootLoc, float aimAngle)
+        public override void DrawEquipmentAiming(Thing equipment, Vector3 weaponDrawLoc, Vector3 rootLoc, float aimAngle, bool portrait)
         {
             // New
             aimAngle -= 90f;
@@ -321,12 +322,12 @@ namespace FacialStuff
                                      ? graphic_StackCount.SubGraphicForStackCount(1, equipment.def).MatSingle
                                      : equipment.Graphic.MatSingle;
 
-            UnityEngine.Graphics.DrawMesh(
+            GenDraw.DrawMeshNowOrLater(
                 weaponMesh,
                 weaponDrawLoc + weaponPositionOffset,
                 Quaternion.AngleAxis(weaponAngle, Vector3.up),
                 matSingle,
-                0);
+                portrait);
 
             // Now the remaining hands if possible
             if (this.CompAnimator.Props.bipedWithHands && Controller.settings.UseHands)
@@ -365,12 +366,12 @@ namespace FacialStuff
                         x = -x;
                     }
 
-                    UnityEngine.Graphics.DrawMesh(
+                    GenDraw.DrawMeshNowOrLater(
                         handsMesh,
                         weaponPosition + new Vector3(x, y, z).RotatedBy(weaponAngle),
                         Quaternion.AngleAxis(weaponAngle, Vector3.up),
                         matRight,
-                        0);
+                        portrait);
                 }
                 else
                 {
@@ -399,12 +400,12 @@ namespace FacialStuff
                             x2 = -x2;
                         }
 
-                        UnityEngine.Graphics.DrawMesh(
+                        GenDraw.DrawMeshNowOrLater(
                             handsMesh,
                             weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle),
                             Quaternion.AngleAxis(weaponAngle, Vector3.up),
                             matLeft,
-                            0);
+                            portrait);
                     }
                     else
                     {
@@ -477,22 +478,22 @@ namespace FacialStuff
 
             // total weapon angle change during animation sequence
             int totalSwingAngle = 0;
-            float animationPhasePercent = this.CompAnimator.Jitterer.CurrentOffset.magnitude / this.CompAnimator.JitterMax;
+            Vector3 currentOffset = this.CompAnimator.Jitterer.CurrentOffset;
+
+            float jitterMax = this.CompAnimator.JitterMax;
+            float magnitude = currentOffset.magnitude;
+            float animationPhasePercent = magnitude / jitterMax;
+
             if (damageDef == DamageDefOf.Stab)
             {
-                weaponPosition += this.CompAnimator.Jitterer.CurrentOffset;
+                weaponPosition += currentOffset;
 
                 // + new Vector3(0, 0, Mathf.Pow(this.CompFace.Jitterer.CurrentOffset.magnitude, 0.25f))/2;
             }
             else if (damageDef == DamageDefOf.Blunt || damageDef == DamageDefOf.Cut)
             {
                 totalSwingAngle = 120;
-                weaponPosition += this.CompAnimator.Jitterer.CurrentOffset + new Vector3(
-                                      0,
-                                      0,
-                                      Mathf.Sin(
-                                          this.CompAnimator.Jitterer.CurrentOffset.magnitude * Mathf.PI
-                                          / this.CompAnimator.JitterMax) / 10);
+                weaponPosition += currentOffset + new Vector3(0, 0, Mathf.Sin(magnitude * Mathf.PI / jitterMax) / 10);
             }
 
             weaponAngle += flipped ? -animationPhasePercent * totalSwingAngle : animationPhasePercent * totalSwingAngle;
@@ -654,7 +655,7 @@ namespace FacialStuff
             // Basic values if pawn is carrying stuff
             float x = 0;
             float x2 = -x;
-            float y = YOffsetBodyParts;
+            float y = HarmonyPatch_PawnRenderer.YOffset_Behind;
             float y2 = y;
             float z = 0;
             float z2 = -z;
@@ -708,8 +709,8 @@ namespace FacialStuff
                     z += 0.2f;
                     z2 += 0.2f;
 
-                    z += this.CompAnimator.walkCycle.shoulderAngle / 500;
-                    z2 += this.CompAnimator.walkCycle.shoulderAngle / 500;
+                    z += this.CompAnimator.walkCycle.shoulderAngle / 800;
+                    z2 += this.CompAnimator.walkCycle.shoulderAngle / 800;
                 }
 
             }

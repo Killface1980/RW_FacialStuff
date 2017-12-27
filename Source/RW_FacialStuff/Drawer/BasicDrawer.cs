@@ -1,5 +1,7 @@
 ﻿namespace FacialStuff.Drawer
 {
+    using FacialStuff.Harmony;
+
     using UnityEngine;
 
     using Verse;
@@ -17,13 +19,14 @@
         {
             var rot = this.bodyFacing;
             JointLister joints = new JointLister();
-            float leftZ = vector.z;
-            float rightZ = vector.z;
             float leftX = vector.x;
             float rightX = vector.x;
+            float leftZ = vector.z;
+            float rightZ = vector.z;
 
-            float rightY = vector.y;
-            float leftY = vector.y;
+            float leftY = HarmonyPatch_PawnRenderer.YOffset_Behind;
+            float rightY = HarmonyPatch_PawnRenderer.YOffset_Behind;
+
             if (carrying)
             {
 
@@ -33,32 +36,36 @@
                 rightZ = -leftZ;
                 if (rot == Rot4.North)
                 {
-                    leftY = rightY = -vector.y;
+                    leftY = rightY = -HarmonyPatch_PawnRenderer.YOffset_Body;
                 }
             }
             else if (rot.IsHorizontal)
             {
                 float offsetX = jointWidth / 8;
-                float offsetZ = jointWidth / 2;
+                float offsetZ = jointWidth * 0.6f;
 
                 if (rot == Rot4.East)
                 {
-                    leftX -= offsetX;
-                    rightX += offsetX;
+
+                    leftY = -HarmonyPatch_PawnRenderer.YOffset_Body;
                     leftZ += +offsetZ;
+
                 }
                 else
                 {
-                    leftX += offsetX;
-                    rightX -= offsetX;
-                    rightZ += offsetZ;
-                }
 
-                leftY *= -1;
+                    rightY = -HarmonyPatch_PawnRenderer.YOffset_Body;
+                    rightZ += offsetZ;
+
+                }
+                leftX += offsetX;
+                rightX -= offsetX;
+
+
             }
             else
             {
-                leftX *= -1;
+                leftX = -rightX;
 
             }
             joints.rightJoint = new Vector3(rightX, rightY, rightZ);

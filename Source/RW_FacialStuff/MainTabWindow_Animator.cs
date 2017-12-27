@@ -517,6 +517,7 @@ namespace FacialStuff
 
             listing_Standard.CheckboxLabeled("Develop", ref develop);
             listing_Standard.CheckboxLabeled("Colored", ref Colored);
+            listing_Standard.CheckboxLabeled("Equipment", ref Equipment);
 
             if (listing_Standard.ButtonText(this.pawn.LabelCap))
             {
@@ -1098,6 +1099,8 @@ namespace FacialStuff
         private Color removeColor = new Color(1f, 0.25f, 0.25f);
 
         private Color addColor = new Color(0.25f, 1f, 0.25f);
+
+        public static bool Equipment;
 
         private static List<PawnKeyframe> pawnKeyframes => EditorWalkcycle.keyframes;
 
