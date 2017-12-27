@@ -432,7 +432,6 @@ namespace FacialStuff
                        || (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
         }
 
-
         public override void DoAttackAnimationOffsets(ref float weaponAngle, ref Vector3 weaponPosition, bool flipped)
         {
             CompEquippable primaryEq = this.Pawn.equipment?.PrimaryEq;
@@ -490,10 +489,10 @@ namespace FacialStuff
             }
 
             // return if hands already drawn on weapon
-            if (this.CarryWeaponOpenly())
+            if (this.Pawn.equipment.Primary != null
+                && this.Pawn.equipment.Primary.def.HasComp(typeof(CompWeaponExtensions)))
             {
-                if (this.Pawn.equipment.Primary != null
-                    && this.Pawn.equipment.Primary.def.HasComp(typeof(CompWeaponExtensions)))
+                if (this.CarryWeaponOpenly())
                 {
                     if (drawSide == HandsToDraw.Both)
                     {

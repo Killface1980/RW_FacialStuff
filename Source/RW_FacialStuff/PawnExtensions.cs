@@ -15,12 +15,12 @@
 
     public static class PawnExtensions
     {
-        public static bool GetCompFace([NotNull] this Pawn pawn, [NotNull] out CompFace compFace)
+        public static bool GetCompFace([NotNull] this Pawn pawn, [CanBeNull] out CompFace compFace)
         {
             compFace = pawn.GetComp<CompFace>();
             return compFace != null;
         }
-        public static bool GetCompAnim([NotNull] this Pawn pawn, [NotNull] out CompBodyAnimator compAnim)
+        public static bool GetCompAnim([NotNull] this Pawn pawn, [CanBeNull] out CompBodyAnimator compAnim)
         {
             compAnim = pawn.GetComp<CompBodyAnimator>();
             return compAnim != null;

@@ -77,17 +77,17 @@
                 graphics.ResolveAllGraphics();
             }
 
-            bool wantsAnimation = pawn.GetCompAnim(out CompBodyAnimator compAnim);
+            pawn.GetCompAnim(out CompBodyAnimator compAnim);
 
             PawnWoundDrawer woundDrawer = (PawnWoundDrawer)WoundOverlayFieldInfo?.GetValue(__instance);
 
-            var footPos = rootLoc;
+            Vector3 footPos = rootLoc;
 
 
             // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
             if (!pawn.GetCompFace(out CompFace compFace) || compFace.IsChild || compFace.Deactivated)
             {
-                if (wantsAnimation)
+                if (compAnim != null)
                 {
                     if (compAnim.AnimatorOpen)
                     {
@@ -138,14 +138,17 @@
             }
 
 #endif
-            if (compAnim.AnimatorOpen)
+            if (compAnim != null)
             {
-                bodyFacing = MainTabWindow_Animator.BodyRot;
-                headFacing = MainTabWindow_Animator.HeadRot;
+                if (compAnim.AnimatorOpen)
+                {
+                    bodyFacing = MainTabWindow_Animator.BodyRot;
+                    headFacing = MainTabWindow_Animator.HeadRot;
+                }
             }
 
             compFace.TickDrawers(bodyFacing, headFacing, graphics);
-            compAnim.TickDrawers(bodyFacing, graphics);
+                compAnim?.TickDrawers(bodyFacing, graphics);
 
             // Use the basic quat
             Quaternion headQuat = quat;
@@ -154,7 +157,7 @@
             // Rotate head if possble and wobble around
             if (!portrait || compAnim.AnimatorOpen)
             {
-                compAnim.ApplyBodyWobble(ref rootLoc, ref quat);
+                compAnim?.ApplyBodyWobble(ref rootLoc, ref quat);
                 // Reset the quat as it has been changed
                 headQuat = quat;
                 compFace.ApplyHeadRotation(renderBody, ref headQuat);
@@ -265,15 +268,15 @@
             // }
 
 
-            compAnim.DrawEquipment(drawPos, portrait);
+            compAnim?.DrawEquipment(drawPos, portrait);
 
-            bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
+            bool showHands = compAnim != null && (compAnim.Props.bipedWithHands && Controller.settings.UseHands);
             if (showHands)
             {
                 compAnim.DrawHands(drawPos, portrait, false);
             }
 
-            compAnim.DrawFeet(footPos, portrait);
+            compAnim?.DrawFeet(footPos, portrait);
 
             if (!portrait)
             {

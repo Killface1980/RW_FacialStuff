@@ -493,7 +493,7 @@
 
         public void DrawBody(Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType, [CanBeNull] PawnWoundDrawer woundDrawer, bool renderBody, bool portrait)
         {
-            if (this.PawnDrawers != null)
+            if (!this.PawnDrawers.NullOrEmpty())
             {
                 int i = 0;
                 int count = this.PawnDrawers.Count;
