@@ -104,6 +104,21 @@
                 }
             }
         }
+
+        public void DrawHands(Vector3 rootLoc, bool portrait, bool carrying)
+        {
+            if (this.pawnDrawers != null)
+            {
+                int i = 0;
+                int count = this.pawnDrawers.Count;
+                while (i < count)
+                {
+                    this.pawnDrawers[i].DrawHands(rootLoc, portrait, carrying);
+                    i++;
+                }
+            }
+        }
+
         public void ApplyBodyWobble(ref Vector3 rootLoc, ref Quaternion quat)
         {
             if (this.pawnDrawers != null)
@@ -124,9 +139,10 @@
         public JitterHandler Jitterer
             => GetHiddenValue(typeof(Pawn_DrawTracker), Pawn.Drawer, "jitterer", infoJitterer) as
                    JitterHandler;
+
         public void DrawEquipment(Vector3 rootLoc, bool portrait)
         {
-            if (this.PawnDrawers != null)
+            if (!this.PawnDrawers.NullOrEmpty())
             {
                 int i = 0;
                 int count = this.PawnDrawers.Count;

@@ -2,6 +2,7 @@
 
 namespace FacialStuff.Harmony
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -70,6 +71,12 @@ namespace FacialStuff.Harmony
             // new[] { typeof(Hediff), typeof(BodyPartRecord), typeof(DamageInfo) }),
             // null,
             // new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(AddHediff_Postfix)));
+            harmony.Patch(
+                AccessTools.Method(typeof(PawnRenderer), nameof(PawnRenderer.RenderPawnAt), new[] { typeof(Vector3), typeof(RotDrawMode), typeof(bool) }),
+                new HarmonyMethod(typeof(Class2), nameof(Class2.RenderPawnAt)),
+                null
+                );
+
             harmony.Patch(
                 AccessTools.Method(typeof(HediffSet), nameof(HediffSet.DirtyCache)),
                 null,

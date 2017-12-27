@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FacialStuff.Drawer
+﻿namespace FacialStuff.Drawer
 {
-    using RimWorld;
-
     using UnityEngine;
 
     using Verse;
@@ -16,9 +9,11 @@ namespace FacialStuff.Drawer
         protected BasicDrawer()
         {
         }
+        protected Rot4 bodyFacing;
 
-        protected JointLister GetJointPositions(Rot4 rot, Vector3 vector, float jointWidth)
+        protected JointLister GetJointPositions(Vector3 vector, float jointWidth, bool carrying = false)
         {
+            var rot = this.bodyFacing;
             JointLister joints = new JointLister();
             float leftZ = vector.z;
             float rightZ = vector.z;
@@ -27,17 +22,34 @@ namespace FacialStuff.Drawer
 
             float rightY = vector.y;
             float leftY = vector.y;
-            if (rot.IsHorizontal)
+            if (carrying)
             {
+
+                leftX -= jointWidth / 2;
+                rightX += jointWidth / 2;
+                leftZ = -0.025f;
+                rightZ = -leftZ;
+                if (rot == Rot4.North)
+                {
+                    leftY = rightY = -vector.y;
+                }
+            }
+            else if (rot.IsHorizontal)
+            {
+                float offsetX = jointWidth / 8;
+                float offsetZ = jointWidth / 2;
+
                 if (rot == Rot4.East)
                 {
-                leftX -= jointWidth / 8;
-                    leftZ += +jointWidth / 3;
+                    leftX -= offsetX;
+                    rightX += offsetX;
+                    leftZ += +offsetZ;
                 }
                 else
                 {
-                rightX -= jointWidth / 8;
-                    rightZ += +jointWidth / 3;
+                    leftX += offsetX;
+                    rightX -= offsetX;
+                    rightZ += offsetZ;
                 }
 
                 leftY *= -1;
@@ -45,6 +57,7 @@ namespace FacialStuff.Drawer
             else
             {
                 leftX *= -1;
+
             }
             joints.rightJoint = new Vector3(rightX, rightY, rightZ);
             joints.leftJoint = new Vector3(leftX, leftY, leftZ);

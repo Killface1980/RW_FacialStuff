@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FacialStuff
+﻿namespace FacialStuff
 {
     using FacialStuff.Defs;
     using FacialStuff.Drawer;
@@ -73,7 +68,6 @@ namespace FacialStuff
 
             Rot4 rot = this.bodyFacing;
             JointLister jointPositions = this.GetJointPositions(
-                rot,
                 body.shoulderOffsets[rot.AsInt],
                 body.shoulderOffsets[Rot4.North.AsInt].x);
 

@@ -3,12 +3,10 @@ using System.Linq;
 
 namespace FacialStuff
 {
-    using FacialStuff.Components;
     using FacialStuff.Defs;
-    using FacialStuff.Drawer;
     using FacialStuff.Graphics;
     using FacialStuff.Harmony;
-    using JetBrains.Annotations;
+
     using RimWorld;
     using UnityEngine;
     using Verse;
@@ -134,7 +132,7 @@ namespace FacialStuff
                         GenDraw.DrawMeshNowOrLater(bodyMesh, vector, quat, material3, portrait);
 
                         // possible fix for phasing apparel
-                        vector.y += YOffsetOnFace;
+                        vector.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
                     }
                 }
             }
@@ -151,7 +149,7 @@ namespace FacialStuff
                     headQuat,
                     headMaterial,
                     portrait);
-                locFacialY.y += YOffsetOnFace;
+                locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
                 headDrawn = true;
             }
             else
@@ -170,13 +168,13 @@ namespace FacialStuff
             if (beardMat != null)
             {
                 GenDraw.DrawMeshNowOrLater(headMesh, locFacialY, headQuat, beardMat, portrait);
-                locFacialY.y += YOffsetOnFace;
+                locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
             }
 
             if (moustacheMatAt != null)
             {
                 GenDraw.DrawMeshNowOrLater(headMesh, locFacialY, headQuat, moustacheMatAt, portrait);
-                locFacialY.y += YOffsetOnFace;
+                locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
             }
         }
 
@@ -186,7 +184,7 @@ namespace FacialStuff
             if (renderBody || Controller.settings.IgnoreRenderBody)
             {
                 Vector3 loc = rootLoc;
-                loc.y += YOffset_Body;
+                loc.y += HarmonyPatch_PawnRenderer.YOffset_Body;
 
                 Mesh bodyMesh = this.GetPawnMesh(true, portrait);
 
@@ -247,7 +245,7 @@ namespace FacialStuff
                     headQuat,
                     browMat,
                     portrait);
-                locFacialY.y += YOffsetOnFace;
+                locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
             }
         }
 
@@ -290,7 +288,7 @@ namespace FacialStuff
                     {
                         Material mat = this.graphics.HairMatAt(this.headFacing);
                         GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, mat, portrait);
-                        currentLoc.y += YOffsetOnFace;
+                        currentLoc.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
                     }
                     else if (Controller.settings.MergeHair && !apCoversFullHead)
                     {
@@ -300,7 +298,7 @@ namespace FacialStuff
                         if (hairCutMat != null)
                         {
                             GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, hairCutMat, portrait);
-                            currentLoc.y += YOffsetOnFace;
+                            currentLoc.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
                         }
                     }
                 }
@@ -346,7 +344,9 @@ namespace FacialStuff
                         if (headgearGraphic.sourceApparel.def.apparel.hatRenderedFrontOfFace)
                         {
                             thisLoc = rootLoc + b;
-                            thisLoc.y += !(this.bodyFacing == Rot4.North) ? YOffset_PostHead : YOffset_Behind;
+                            thisLoc.y += !(this.bodyFacing == Rot4.North)
+                                             ? HarmonyPatch_PawnRenderer.YOffset_PostHead
+                                             : HarmonyPatch_PawnRenderer.YOffset_Behind;
                         }
 
                         GenDraw.DrawMeshNowOrLater(hairMesh, thisLoc, headQuat, headGearMat, portrait);
@@ -383,7 +383,7 @@ namespace FacialStuff
                         headQuat,
                         leftEyeMat,
                         portrait);
-                    locFacialY.y += YOffsetOnFace;
+                    locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
                 }
             }
 
@@ -400,7 +400,7 @@ namespace FacialStuff
                         headQuat,
                         rightEyeMat,
                         portrait);
-                    locFacialY.y += YOffsetOnFace;
+                    locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
                 }
             }
         }
@@ -420,7 +420,7 @@ namespace FacialStuff
 
                 Vector3 drawLoc = locFacialY + headQuat * mouthOffset;
                 GenDraw.DrawMeshNowOrLater(meshMouth, drawLoc, headQuat, mouthMat, portrait);
-                locFacialY.y += YOffsetOnFace;
+                locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
             }
         }
 
@@ -438,7 +438,7 @@ namespace FacialStuff
                         headQuat,
                         leftBionicMat,
                         portrait);
-                    locFacialY.y += YOffsetOnFace;
+                    locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
                 }
             }
 
@@ -449,7 +449,7 @@ namespace FacialStuff
                 if (rightBionicMat != null)
                 {
                     GenDraw.DrawMeshNowOrLater(headMesh, locFacialY + this.EyeOffset(this.headFacing), headQuat, rightBionicMat, portrait);
-                    locFacialY.y += YOffsetOnFace;
+                    locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
                 }
             }
         }
@@ -470,7 +470,7 @@ namespace FacialStuff
 
             Mesh headMesh = this.GetPawnMesh(false, portrait);
             GenDraw.DrawMeshNowOrLater(headMesh, locFacialY, headQuat, wrinkleMat, portrait);
-            locFacialY.y += YOffsetOnFace;
+            locFacialY.y += HarmonyPatch_PawnRenderer.YOffsetOnFace;
         }
 
         public override Vector3 EyeOffset(Rot4 headFacing)

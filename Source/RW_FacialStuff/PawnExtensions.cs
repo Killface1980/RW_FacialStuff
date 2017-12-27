@@ -47,8 +47,12 @@
 
         public static bool HasCompFace([CanBeNull] this Pawn pawn)
         {
-            CompFace compFace = pawn?.GetComp<CompFace>();
-            return compFace != null;
+            return pawn.def.HasComp(typeof(CompFace));
+        }
+
+        public static bool HasCompAnimator([CanBeNull] this Pawn pawn)
+        {
+            return pawn.def.HasComp(typeof(CompBodyAnimator));
         }
 
         public static bool HasPawnFace([NotNull] this Pawn pawn)

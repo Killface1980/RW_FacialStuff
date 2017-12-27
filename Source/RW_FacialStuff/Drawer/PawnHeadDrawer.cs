@@ -8,7 +8,6 @@ namespace FacialStuff
     using RimWorld;
     using System.Collections.Generic;
 
-    using FacialStuff.Components;
     using FacialStuff.Drawer;
 
     public class PawnHeadDrawer : BasicDrawer
@@ -16,10 +15,6 @@ namespace FacialStuff
 
         #region Protected Fields
 
-        protected const float YOffset_Behind = 0.004f;
-        protected const float YOffset_Body = 0.0075f;
-        protected const float YOffset_PostHead = 0.035f;
-        protected const float YOffsetOnFace = 0.0001f;
         protected static readonly float[] HorHeadOffsets = { 0f, 0.04f, 0.1f, 0.09f, 0.1f, 0.09f };
         protected static readonly float YOffsetBodyParts = 0.01f;
 

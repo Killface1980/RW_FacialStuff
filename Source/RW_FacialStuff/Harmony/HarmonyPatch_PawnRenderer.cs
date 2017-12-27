@@ -32,6 +32,11 @@
 
         private const float YOffset_OnHead = 0.03125f;
 
+        public const float YOffset_Behind = 0.004f;
+        public const float YOffset_Body = 0.0075f;
+        public const float YOffset_PostHead = 0.035f;
+        public const float YOffsetOnFace = 0.0001f;
+        public const float YOffset_CarriedThing = 0.04f;
 
         private const float YOffset_Shell = 0.0234375f;
 
@@ -262,7 +267,13 @@
 
             compAnim.DrawEquipment(drawPos, portrait);
 
-                compAnim.DrawFeet(footPos, portrait);
+            bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
+            if (showHands)
+            {
+                compAnim.DrawHands(drawPos, portrait, false);
+            }
+
+            compAnim.DrawFeet(footPos, portrait);
 
             if (!portrait)
             {

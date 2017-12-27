@@ -537,6 +537,8 @@ namespace FacialStuff
                                     this.pawn = smLocal;
                                     smLocal.GetCompAnim(out this.compAnim);
                                     //        editorWalkcycle = this.CompAnim.Props.defaultCycleWalk;
+                                    editorWalkcycle = this.CompAnim.bodyAnim.walkCycles.FirstOrDefault().Value;
+
                                     this.CompAnim.AnimatorOpen = true;
                                 }));
                 }
@@ -1053,7 +1055,7 @@ namespace FacialStuff
 
                 this.pawn.GetCompAnim(out this.compAnim);
                 this.CompAnim.AnimatorOpen = true;
-                editorWalkcycle = WalkCycleDefOf.Biped_Jog;
+                editorWalkcycle = this.CompAnim.bodyAnim.walkCycles.FirstOrDefault().Value;
                 //  editorWalkcycle = this.CompAnim.bodyAnim.walkCycles[0];
             }
 

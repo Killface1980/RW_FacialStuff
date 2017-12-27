@@ -4,11 +4,8 @@ using Verse;
 
 namespace FacialStuff
 {
-    using JetBrains.Annotations;
-    using RimWorld;
     using System.Collections.Generic;
 
-    using FacialStuff.Components;
     using FacialStuff.Drawer;
 
     public class PawnBodyDrawer : BasicDrawer
@@ -56,8 +53,14 @@ namespace FacialStuff
         public virtual void ApplyBodyWobble(ref Vector3 rootLoc, ref Quaternion quat)
         {
         }
+
         public virtual void DrawEquipment(Vector3 rootLoc, bool portrait)
         {
+        }
+
+        public virtual void DrawHands(Vector3 drawPos, bool portrait, bool carrying = false, HandsToDraw drawSide = HandsToDraw.Both)
+        {
+            
         }
 
         public virtual void DrawEquipmentAiming(Thing equipment, Vector3 weaponDrawLoc, Vector3 rootLoc, float aimAngle)
@@ -83,9 +86,8 @@ namespace FacialStuff
             return new List<Material>();
         }
 
-        public virtual bool CarryStuff(out Vector3 drawPos)
+        public virtual bool CarryStuff()
         {
-            drawPos = Vector3.zero;
             return false;
         }
 
@@ -95,7 +97,6 @@ namespace FacialStuff
 
 
 
-        protected Rot4 bodyFacing;
 
         public Pawn Pawn;
 
