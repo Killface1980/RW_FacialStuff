@@ -28,7 +28,7 @@
     {
 
 
-        public const float YOffset_Head = 0.02734375f;
+        public const float YOffset_Head = 0.027f;
 
         private const float YOffset_OnHead = 0.03125f;
 
@@ -40,9 +40,9 @@
 
         private const float YOffset_Shell = 0.0234375f;
 
-        private const float YOffset_Status = 0.04296875f;
+        private const float YOffset_Status = 0.043f;
 
-        public const float YOffset_Wounds = 0.01953125f;
+        public const float YOffset_Wounds = 0.02f;
 
         public const float YOffsetInterval_Clothes = 0.004f;
 

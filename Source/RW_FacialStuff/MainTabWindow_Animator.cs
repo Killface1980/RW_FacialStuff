@@ -706,7 +706,7 @@ namespace FacialStuff
                         DirectXmlSaver.SaveDataObject(
                             animDef,
                             configFolder + "/BodyAnimDefs/" + this.bodyAnimDef.defName + ".xml");
-                    }, true, null));
+                    }, true));
 
 
                 // BodyAnimDef animDef = this.bodyAnimDef;

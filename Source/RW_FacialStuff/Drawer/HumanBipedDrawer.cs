@@ -120,8 +120,8 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                         footMeshRight,
-                        ground.RotatedBy(bodyAngle) + groundPos.rightJoint
-                        + rightFootAnim,
+                        (ground + groundPos.rightJoint
+                        + rightFootAnim).RotatedBy(bodyAngle),
                         Quaternion.AngleAxis(bodyAngle + footAngleRight, Vector3.up),
                         matRight,
                         portrait);
@@ -134,8 +134,8 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                         footMeshLeft,
-                        ground.RotatedBy(bodyAngle) + groundPos.leftJoint
-                        + leftFootAnim,
+                        (ground + groundPos.leftJoint
+                        + leftFootAnim).RotatedBy(bodyAngle),
                         Quaternion.AngleAxis(bodyAngle + footAngleLeft, Vector3.up),
                         matLeft,
                         portrait);
@@ -331,7 +331,13 @@ namespace FacialStuff
             // Now the remaining hands if possible
             if (this.CompAnimator.Props.bipedWithHands && Controller.settings.UseHands)
             {
-                this.DrawHandsAiming(weaponDrawLoc + weaponPositionOffset, rootLoc, flipped, weaponAngle, compWeaponExtensions, false);
+                this.DrawHandsAiming(
+                    weaponDrawLoc + weaponPositionOffset,
+                    rootLoc,
+                    flipped,
+                    weaponAngle,
+                    compWeaponExtensions,
+                    false);
             }
         }
 
@@ -342,8 +348,8 @@ namespace FacialStuff
                 return;
             }
 
-            Material matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeft.MatSingle;
-            Material matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRight.MatSingle;
+            Material matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeft?.MatSingle;
+            Material matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRight?.MatSingle;
 
             Mesh handsMesh = this.HandMesh;
             if (matRight != null)
@@ -368,33 +374,42 @@ namespace FacialStuff
                 }
                 else
                 {
-                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.LeftHand);
+                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.RightHand);
                 }
             }
 
+
             if (matLeft != null)
             {
-                Vector3 secondHandPosition = compWeaponExtensions.LeftHandPosition;
-                if (secondHandPosition != Vector3.zero)
+                if (this.isMoving)
                 {
-                    float x2 = secondHandPosition.x;
-                    float y2 = secondHandPosition.y;
-                    float z2 = secondHandPosition.z;
-                    if (flipped)
-                    {
-                        x2 = -x2;
-                    }
-
-                    UnityEngine.Graphics.DrawMesh(
-                        handsMesh,
-                        weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle),
-                        Quaternion.AngleAxis(weaponAngle, Vector3.up),
-                        matLeft,
-                        0);
+                    // hold the weapon with only one hand while moving
+                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.LeftHand);
                 }
                 else
                 {
-                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.RightHand);
+                    Vector3 secondHandPosition = compWeaponExtensions.LeftHandPosition;
+                    if (secondHandPosition != Vector3.zero)
+                    {
+                        float x2 = secondHandPosition.x;
+                        float y2 = secondHandPosition.y;
+                        float z2 = secondHandPosition.z;
+                        if (flipped)
+                        {
+                            x2 = -x2;
+                        }
+
+                        UnityEngine.Graphics.DrawMesh(
+                            handsMesh,
+                            weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle),
+                            Quaternion.AngleAxis(weaponAngle, Vector3.up),
+                            matLeft,
+                            0);
+                    }
+                    else
+                    {
+                        this.DrawHands(rootLoc, portrait, false, HandsToDraw.LeftHand);
+                    }
                 }
             }
 
@@ -539,9 +554,9 @@ namespace FacialStuff
             Vector3 leftHand = Vector3.zero;
 
             // Todo: inclide this
-            float offsetJoint = this.CompAnimator.walkCycle.ShoulderOffsetHorizontalX.Evaluate(this.movedPercent);
-
             WalkCycleDef cycle = this.CompAnimator.walkCycle;
+            float offsetJoint = cycle.ShoulderOffsetHorizontalX.Evaluate(this.movedPercent);
+
 
             this.DoWalkCycleOffsets(
                 body.armLength,
@@ -570,8 +585,8 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                         handsMesh,
-                        drawPos.RotatedBy(bodyAngle)
-                         + shoulperPos.rightJoint + rightHand.RotatedBy(handSwingAngle - shoulderAngle),
+                        (drawPos
+                         + shoulperPos.rightJoint + rightHand.RotatedBy(handSwingAngle - shoulderAngle)).RotatedBy(bodyAngle),
                         Quaternion.AngleAxis(bodyAngle + handSwingAngle, Vector3.up),
                         matRight,
                         portrait);
@@ -584,8 +599,8 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                         handsMesh,
-                        drawPos.RotatedBy(bodyAngle)
-                        + shoulperPos.leftJoint + leftHand.RotatedBy(-handSwingAngle - shoulderAngle),
+                        (drawPos
+                        + shoulperPos.leftJoint + leftHand.RotatedBy(-handSwingAngle - shoulderAngle)).RotatedBy(bodyAngle),
                         Quaternion.AngleAxis(bodyAngle - handSwingAngle, Vector3.up),
                         matLeft,
                         portrait);
