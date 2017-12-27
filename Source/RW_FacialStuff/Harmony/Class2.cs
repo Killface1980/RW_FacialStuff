@@ -11,6 +11,7 @@ namespace FacialStuff.Harmony
 
     using Verse;
 
+    [StaticConstructorOnStartup]
     public static class Class2
     {
         private static Graphic_Shadow shadowGraphic;

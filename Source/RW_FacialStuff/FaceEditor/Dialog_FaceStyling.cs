@@ -2364,7 +2364,10 @@
             {
                 typeof(Pawn_StoryTracker).GetField("headGraphicPath", BindingFlags.Instance | BindingFlags.NonPublic)
                     .SetValue(pawn.story, value);
-                pawn.story.crownType = (CrownType)value2;
+                if (value2 != null)
+                {
+                    pawn.story.crownType = (CrownType)value2;
+                }
             }
             else if (sender is SliderWidgetDTO)
             {

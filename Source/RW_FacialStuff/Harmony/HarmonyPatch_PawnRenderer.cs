@@ -84,35 +84,6 @@
             Vector3 footPos = rootLoc;
 
 
-            // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
-            if (!pawn.GetCompFace(out CompFace compFace) || compFace.IsChild || compFace.Deactivated)
-            {
-                if (compAnim != null)
-                {
-                    if (compAnim.AnimatorOpen)
-                    {
-                        bodyFacing = MainTabWindow_Animator.BodyRot;
-                        headFacing = MainTabWindow_Animator.HeadRot;
-                    }
-                    compAnim.TickDrawers(bodyFacing, graphics);
-                    compAnim.ApplyBodyWobble(ref rootLoc, ref quat);
-
-
-                    RenderAnimatedPawn(
-                        pawn,
-                        graphics,
-                        rootLoc,
-                        quat,
-                        renderBody,
-                        bodyFacing,
-                        bodyDrawType,
-                        portrait,
-                        woundDrawer, compAnim,
-                        footPos);
-                    return false;
-                }
-                return true;
-            }
 #if develop
             if (faceComp.IgnoreRenderer)
             {
@@ -138,6 +109,37 @@
             }
 
 #endif
+            pawn.GetCompFace(out CompFace compFace);
+            // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
+            if (compFace == null || compFace.IsChild || compFace.Deactivated)
+            {
+                if (compAnim == null)
+                {
+                    return true;
+                }
+                if (compAnim.AnimatorOpen)
+                {
+                    bodyFacing = MainTabWindow_Animator.BodyRot;
+                    headFacing = MainTabWindow_Animator.HeadRot;
+                }
+                compAnim.TickDrawers(bodyFacing, graphics);
+                compAnim.ApplyBodyWobble(ref rootLoc, ref quat);
+
+
+                RenderAnimatedPawn(
+                    pawn,
+                    graphics,
+                    rootLoc,
+                    quat,
+                    renderBody,
+                    bodyFacing,
+                    bodyDrawType,
+                    portrait,
+                    woundDrawer, compAnim,
+                    footPos);
+                return false;
+            }
+
             if (compAnim != null)
             {
                 if (compAnim.AnimatorOpen)
@@ -147,8 +149,11 @@
                 }
             }
 
+
             compFace.TickDrawers(bodyFacing, headFacing, graphics);
-                compAnim?.TickDrawers(bodyFacing, graphics);
+
+            compAnim?.TickDrawers(bodyFacing, graphics);
+
 
             // Use the basic quat
             Quaternion headQuat = quat;
@@ -162,11 +167,12 @@
                 headQuat = quat;
                 compFace.ApplyHeadRotation(renderBody, ref headQuat);
             }
+
+
             // Regular FacePawn rendering 14+ years
 
             // Render body
-            compFace.DrawBody(rootLoc, quat, bodyDrawType, woundDrawer, renderBody, portrait);
-
+            compAnim?.DrawBody(rootLoc, quat, bodyDrawType, woundDrawer, renderBody, portrait);
 
 
 

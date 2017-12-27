@@ -3,9 +3,11 @@ using System.Linq;
 
 namespace FacialStuff
 {
+    using FacialStuff.Animator;
     using FacialStuff.Components;
     using FacialStuff.Defs;
     using FacialStuff.Drawer;
+    using FacialStuff.Harmony;
 
     using JetBrains.Annotations;
     using RimWorld;
@@ -35,7 +37,7 @@ namespace FacialStuff
         {
             if (this.isMoving)
             {
-                SimpleCurve curve = this.walkCycle.BodyOffsetZ;
+                SimpleCurve curve = this.CompAnimator.walkCycle.BodyOffsetZ;
                 float bam = curve.Evaluate(this.movedPercent);
 
                 // Log.Message(CompFace.Pawn + " - " + this.movedPercent + " - " + bam.ToString());
@@ -75,8 +77,8 @@ namespace FacialStuff
             Vector3 rightFootAnim = Vector3.zero;
             Vector3 leftFootAnim = Vector3.zero;
 
-            float offsetJoint = this.walkCycle.HipOffsetHorizontalX.Evaluate(this.movedPercent);
-            WalkCycleDef cycle = this.walkCycle;
+            float offsetJoint = this.CompAnimator.walkCycle.HipOffsetHorizontalX.Evaluate(this.movedPercent);
+            WalkCycleDef cycle = this.CompAnimator.walkCycle;
 
             this.DoWalkCycleOffsets(
                 ref rightFootAnim,
@@ -366,7 +368,7 @@ namespace FacialStuff
                 }
                 else
                 {
-                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.LeftHand);
+                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.RightHand);
                 }
             }
 
@@ -537,9 +539,9 @@ namespace FacialStuff
             Vector3 leftHand = Vector3.zero;
 
             // Todo: inclide this
-            float offsetJoint = this.walkCycle.ShoulderOffsetHorizontalX.Evaluate(this.movedPercent);
+            float offsetJoint = this.CompAnimator.walkCycle.ShoulderOffsetHorizontalX.Evaluate(this.movedPercent);
 
-            WalkCycleDef cycle = this.walkCycle;
+            WalkCycleDef cycle = this.CompAnimator.walkCycle;
 
             this.DoWalkCycleOffsets(
                 body.armLength,
@@ -674,7 +676,7 @@ namespace FacialStuff
                     float f = lookie * offsetJoint;
 
 
-                    shoulderAngle = lookie * this.walkCycle.shoulderAngle;
+                    shoulderAngle = lookie * this.CompAnimator.walkCycle.shoulderAngle;
 
 
                     shoulderPos.rightJoint.x += f;
@@ -691,8 +693,8 @@ namespace FacialStuff
                     z += 0.2f;
                     z2 += 0.2f;
 
-                    z += this.walkCycle.shoulderAngle / 500;
-                    z2 += this.walkCycle.shoulderAngle / 500;
+                    z += this.CompAnimator.walkCycle.shoulderAngle / 500;
+                    z2 += this.CompAnimator.walkCycle.shoulderAngle / 500;
                 }
 
             }
@@ -786,7 +788,6 @@ namespace FacialStuff
             }
         }
 
-        protected WalkCycleDef walkCycle = WalkCycleDefOf.Biped_Walk;
 
         protected DamageFlasher flasher;
 
@@ -810,20 +811,91 @@ namespace FacialStuff
 
             base.Initialize();
         }
+        public override List<Material> BodyBaseAt(
+            PawnGraphicSet graphics,
+            Rot4 bodyFacing,
+            RotDrawMode bodyDrawType,
+            MaxLayerToShow layer)
+        {
+            switch (layer)
+            {
+                case MaxLayerToShow.Naked: return this.CompAnimator.NakedMatsBodyBaseAt(bodyFacing, bodyDrawType);
+                case MaxLayerToShow.OnSkin: return this.CompAnimator.UnderwearMatsBodyBaseAt(bodyFacing, bodyDrawType);
+                default: return graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
+            }
+
+            return base.BodyBaseAt(graphics, bodyFacing, bodyDrawType, layer);
+        }
+
+        public override void DrawBody(PawnWoundDrawer woundDrawer, Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType, bool renderBody, bool portrait)
+        {
+            // renderBody is AFAIK only used for beds, so ignore it and undress
+            if (renderBody || Controller.settings.IgnoreRenderBody)
+            {
+                Vector3 loc = rootLoc;
+                loc.y += HarmonyPatch_PawnRenderer.YOffset_Body;
+
+                Mesh bodyMesh = this.GetPawnMesh(true, portrait);
+
+                List<Material> bodyBaseAt = null;
+                bool flag = true;
+                if (!portrait && Controller.settings.HideShellWhileRoofed)
+                {
+                    if (this.CompAnimator.InRoom)
+                    {
+                        MaxLayerToShow layer;
+                        if (this.CompAnimator.InPrivateRoom)
+                        {
+                            layer = renderBody
+                                        ? Controller.settings.LayerInPrivateRoom
+                                        : Controller.settings.LayerInOwnedBed;
+                        }
+                        else
+                        {
+                            layer = renderBody ? Controller.settings.LayerInRoom : Controller.settings.LayerInBed;
+                        }
+
+                        bodyBaseAt = this.BodyBaseAt(this.graphics, this.bodyFacing, bodyDrawType, layer);
+                        flag = false;
+                    }
+                }
+
+                if (flag)
+                {
+                    bodyBaseAt = this.graphics.MatsBodyBaseAt(this.bodyFacing, bodyDrawType);
+                }
+
+                for (int i = 0; i < bodyBaseAt.Count; i++)
+                {
+                    Material damagedMat = this.graphics.flasher.GetDamagedMat(bodyBaseAt[i]);
+                    GenDraw.DrawMeshNowOrLater(bodyMesh, loc, quat, damagedMat, portrait);
+                    loc.y += HarmonyPatch_PawnRenderer.YOffsetInterval_Clothes;
+                }
+
+                if (bodyDrawType == RotDrawMode.Fresh)
+                {
+                    Vector3 drawLoc = rootLoc;
+                    drawLoc.y += HarmonyPatch_PawnRenderer.YOffset_Wounds;
+
+                    woundDrawer?.RenderOverBody(drawLoc, bodyMesh, quat, portrait);
+                }
+            }
+        }
+
 
         public Quaternion QuatBody(Quaternion quat, float movedPercent)
         {
             if (this.bodyFacing.IsHorizontal)
             {
                 quat *= Quaternion.AngleAxis(
-                    (this.bodyFacing == Rot4.West ? -1 : 1) * this.walkCycle.BodyAngle.Evaluate(movedPercent),
+                    (this.bodyFacing == Rot4.West ? -1 : 1) * this.CompAnimator.walkCycle.BodyAngle.Evaluate(movedPercent),
                     Vector3.up);
             }
             else
             {
                 quat *= Quaternion.AngleAxis(
                     (this.bodyFacing == Rot4.South ? -1 : 1)
-                    * this.walkCycle.BodyAngleVertical.Evaluate(movedPercent),
+                    * this.CompAnimator.walkCycle.BodyAngleVertical.Evaluate(movedPercent),
                     Vector3.up);
             }
 
@@ -835,7 +907,11 @@ namespace FacialStuff
         {
             base.Tick(bodyFacing, graphics);
 
-            this.isMoving = this.CompAnimator.BodyAnimator.IsMoving(out this.movedPercent);
+            BodyAnimator animator = this.CompAnimator.BodyAnimator;
+            if (animator != null)
+            {
+                this.isMoving = animator.IsMoving(out this.movedPercent);
+            }
 
             // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
 
@@ -846,27 +922,31 @@ namespace FacialStuff
         {
             if (this.CompAnimator.AnimatorOpen)
             {
-                this.walkCycle = MainTabWindow_Animator.EditorWalkcycle;
+                this.CompAnimator.walkCycle = MainTabWindow_Animator.EditorWalkcycle;
             }
             else if (this.Pawn.CurJob != null)
             {
-                Dictionary<LocomotionUrgency, WalkCycleDef> cycles = this.CompAnimator.bodyAnim.walkCycles;
-
-                if (cycles != null)
+                BodyAnimDef animDef = this.CompAnimator.bodyAnim;
+                if (animDef != null)
                 {
-                    if (cycles.TryGetValue(
+                    Dictionary<LocomotionUrgency, WalkCycleDef> cycles = animDef.walkCycles;
+
+                    if (cycles != null)
+                    {
+                        if (cycles.TryGetValue(
                             this.Pawn.CurJob.locomotionUrgency,
                             out WalkCycleDef cycle))
-                    {
-                        if (cycle != null)
                         {
-                            this.walkCycle = cycle;
-                            return;
+                            if (cycle != null)
+                            {
+                                this.CompAnimator.walkCycle = cycle;
+                                return;
+                            }
                         }
-                    }
-                    else if (cycles.Count > 0)
-                    {
-                        this.walkCycle = this.CompAnimator.bodyAnim.walkCycles.FirstOrDefault().Value;
+                        else if (cycles.Count > 0)
+                        {
+                            this.CompAnimator.walkCycle = animDef.walkCycles.FirstOrDefault().Value;
+                        }
                     }
                 }
 

@@ -33,21 +33,6 @@ namespace FacialStuff
         protected float BodyWobble;
 
 
-
-        public override void ApplyBodyWobble(ref Vector3 rootLoc, ref Quaternion quat)
-        {
-            if (this.isMoving)
-            {
-                float bam = this.BodyWobble;
-
-                // Log.Message(CompFace.Pawn + " - " + this.movedPercent + " - " + bam.ToString());
-                rootLoc.z += bam;
-                quat = this.QuatBody(quat, this.movedPercent);
-            }
-
-            base.ApplyBodyWobble(ref rootLoc, ref quat);
-        }
-
         public override void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
         {
             if (this.CompFace.Props.canRotateHead && Controller.settings.UseHeadRotator)
@@ -98,27 +83,13 @@ namespace FacialStuff
             }
         }
 
-        public override List<Material> BodyBaseAt(
-            PawnGraphicSet graphics,
-            Rot4 bodyFacing,
-            RotDrawMode bodyDrawType,
-            MaxLayerToShow layer)
-        {
-            switch (layer)
-            {
-                case MaxLayerToShow.Naked: return this.CompFace.NakedMatsBodyBaseAt(bodyFacing, bodyDrawType);
-                case MaxLayerToShow.OnSkin: return this.CompFace.UnderwearMatsBodyBaseAt(bodyFacing, bodyDrawType);
-                default: return graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
-            }
 
-            return base.BodyBaseAt(graphics, bodyFacing, bodyDrawType, layer);
-        }
 
 
 
         public override void DrawApparel(Quaternion quat, Vector3 vector, bool renderBody, bool portrait)
         {
-            if (portrait || renderBody && !this.CompFace.HideShellLayer || !renderBody && !Controller.settings.HideShellWhileRoofed
+            if (portrait || renderBody && !this.CompAnimator.HideShellLayer || !renderBody && !Controller.settings.HideShellWhileRoofed
                 && Controller.settings.IgnoreRenderBody)
             {
                 for (int index = 0; index < this.graphics.apparelGraphics.Count; index++)
@@ -178,60 +149,6 @@ namespace FacialStuff
             }
         }
 
-        public override void DrawBody(PawnWoundDrawer woundDrawer, Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType, bool renderBody, bool portrait)
-        {
-            // renderBody is AFAIK only used for beds, so ignore it and undress
-            if (renderBody || Controller.settings.IgnoreRenderBody)
-            {
-                Vector3 loc = rootLoc;
-                loc.y += HarmonyPatch_PawnRenderer.YOffset_Body;
-
-                Mesh bodyMesh = this.GetPawnMesh(true, portrait);
-
-                List<Material> bodyBaseAt = null;
-                bool flag = true;
-                if (!portrait && Controller.settings.HideShellWhileRoofed)
-                {
-                    if (this.CompFace.InRoom)
-                    {
-                        MaxLayerToShow layer;
-                        if (this.CompFace.InPrivateRoom)
-                        {
-                            layer = renderBody
-                                        ? Controller.settings.LayerInPrivateRoom
-                                        : Controller.settings.LayerInOwnedBed;
-                        }
-                        else
-                        {
-                            layer = renderBody ? Controller.settings.LayerInRoom : Controller.settings.LayerInBed;
-                        }
-
-                        bodyBaseAt = this.BodyBaseAt(this.graphics, this.bodyFacing, bodyDrawType, layer);
-                        flag = false;
-                    }
-                }
-
-                if (flag)
-                {
-                    bodyBaseAt = this.graphics.MatsBodyBaseAt(this.bodyFacing, bodyDrawType);
-                }
-
-                for (int i = 0; i < bodyBaseAt.Count; i++)
-                {
-                    Material damagedMat = this.graphics.flasher.GetDamagedMat(bodyBaseAt[i]);
-                    GenDraw.DrawMeshNowOrLater(bodyMesh, loc, quat, damagedMat, portrait);
-                    loc.y += HarmonyPatch_PawnRenderer.YOffsetInterval_Clothes;
-                }
-
-                if (bodyDrawType == RotDrawMode.Fresh)
-                {
-                    Vector3 drawLoc = rootLoc;
-                    drawLoc.y += HarmonyPatch_PawnRenderer.YOffset_Wounds;
-
-                    woundDrawer?.RenderOverBody(drawLoc, bodyMesh, quat, portrait);
-                }
-            }
-        }
 
         public override void DrawBrows(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
         {
@@ -262,7 +179,7 @@ namespace FacialStuff
                     .Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead).ToList();
             }
 
-            bool noRenderRoofed = this.CompFace.HideHat;
+            bool noRenderRoofed = this.CompAnimator.HideHat;
             bool noRenderBed = Controller.settings.HideHatInBed && (!renderBody);
             bool noRenderGoggles = Controller.settings.FilterHats;
 
@@ -482,7 +399,6 @@ namespace FacialStuff
 #endif
         }
 
-        private WalkCycleDef walkCycle = WalkCycleDefOf.Biped_Walk;
 
 
         public override void Initialize()
@@ -491,24 +407,6 @@ namespace FacialStuff
             this.CompAnimator = this.Pawn.GetComp<CompBodyAnimator>();
         }
 
-        public Quaternion QuatBody(Quaternion quat, float movedPercent)
-        {
-            if (this.bodyFacing.IsHorizontal)
-            {
-                quat *= Quaternion.AngleAxis(
-                    (this.bodyFacing == Rot4.West ? -1 : 1) * this.walkCycle.BodyAngle.Evaluate(movedPercent),
-                    Vector3.up);
-            }
-            else
-            {
-                quat *= Quaternion.AngleAxis(
-                    (this.bodyFacing == Rot4.South ? -1 : 1)
-                    * this.walkCycle.BodyAngleVertical.Evaluate(movedPercent),
-                    Vector3.up);
-            }
-
-            return quat;
-        }
 
         public override Quaternion QuatHead(Rot4 rotation)
         {
@@ -524,14 +422,14 @@ namespace FacialStuff
                 if (this.bodyFacing.IsHorizontal)
                 {
                     asQuat *= Quaternion.AngleAxis(
-                        (this.bodyFacing == Rot4.West ? 1 : -1) * this.walkCycle.BodyAngle.Evaluate(this.movedPercent),
+                        (this.bodyFacing == Rot4.West ? 1 : -1) * this.CompAnimator.walkCycle.BodyAngle.Evaluate(this.movedPercent),
                         Vector3.up);
                 }
                 else
                 {
                     asQuat *= Quaternion.AngleAxis(
                         (this.bodyFacing == Rot4.South ? 1 : -1)
-                        * this.walkCycle.BodyAngleVertical.Evaluate(this.movedPercent),
+                        * this.CompAnimator.walkCycle.BodyAngleVertical.Evaluate(this.movedPercent),
                         Vector3.up);
                 }
             }
@@ -543,39 +441,19 @@ namespace FacialStuff
         {
             base.Tick(bodyFacing, headFacing, graphics);
 
-            this.isMoving = this.CompAnimator.BodyAnimator.IsMoving(out this.movedPercent);
-          //  var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
-            var curve = this.walkCycle.BodyOffsetZ;
+            CompBodyAnimator animator = this.CompAnimator;
+            if (animator == null)
+            {
+                return;
+            }
+            if (animator.BodyAnimator != null)
+            {
+                this.isMoving = animator.BodyAnimator.IsMoving(out this.movedPercent);
+            }
+            //  var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
+
+            var curve = animator.walkCycle.BodyOffsetZ;
             this.BodyWobble = curve.Evaluate(this.movedPercent);
-
-            if (this.CompAnimator.AnimatorOpen)
-            {
-                this.walkCycle = MainTabWindow_Animator.EditorWalkcycle;
-            }
-            else if (this.Pawn.CurJob != null)
-            {
-                // switch (this.Pawn.mindState.duty.locomotion)
-                // {
-                //         
-                // }
-                switch (this.Pawn.CurJob.locomotionUrgency)
-                {
-                    case LocomotionUrgency.None:
-                    case LocomotionUrgency.Amble:
-                        this.walkCycle = WalkCycleDefOf.Biped_Amble;
-                        break;
-                    case LocomotionUrgency.Walk:
-                        this.walkCycle = WalkCycleDefOf.Biped_Walk;
-                        break;
-                    case LocomotionUrgency.Jog:
-                        this.walkCycle = WalkCycleDefOf.Biped_Jog;
-                        break;
-                    case LocomotionUrgency.Sprint:
-                        this.walkCycle = WalkCycleDefOf.Biped_Sprint;
-                        break;
-                }
-            }
-
         }
 
         #endregion Public Methods

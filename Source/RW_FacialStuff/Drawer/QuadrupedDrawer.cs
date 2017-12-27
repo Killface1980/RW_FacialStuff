@@ -12,34 +12,6 @@
 
     public class QuadrupedDrawer : HumanBipedDrawer
     {
-        public override void SelectWalkcycle()
-        {
-            if (this.CompAnimator.AnimatorOpen)
-            {
-                this.walkCycle = MainTabWindow_Animator.EditorWalkcycle;
-            }
-            else if (this.Pawn.CurJob != null)
-            {
-                // Todo: create cycles
-                switch (this.Pawn.CurJob.locomotionUrgency)
-                {
-                    case LocomotionUrgency.None:
-                    case LocomotionUrgency.Amble:
-                        this.walkCycle = WalkCycleDefOf.Quadruped_Walk;
-                        break;
-                    case LocomotionUrgency.Walk:
-                        this.walkCycle = WalkCycleDefOf.Quadruped_Walk;
-                        break;
-                    case LocomotionUrgency.Jog:
-                        this.walkCycle = WalkCycleDefOf.Quadruped_Walk;
-                        break;
-                    case LocomotionUrgency.Sprint:
-                        this.walkCycle = WalkCycleDefOf.Quadruped_Walk;
-                        break;
-                }
-            }
-
-        }
 
         public override void DrawFeet(Vector3 rootLoc, bool portrait)
         {
@@ -64,9 +36,13 @@
 
 
             // Basic values
-            var body = this.CompAnimator.bodyAnim;
+            BodyAnimDef body = this.CompAnimator.bodyAnim;
 
             Rot4 rot = this.bodyFacing;
+            if (body == null)
+            {
+                return;
+            }
             JointLister jointPositions = this.GetJointPositions(
                 body.shoulderOffsets[rot.AsInt],
                 body.shoulderOffsets[Rot4.North.AsInt].x);
@@ -74,8 +50,8 @@
             Vector3 rightFootAnim = Vector3.zero;
             Vector3 leftFootAnim = Vector3.zero;
 
-            float offsetJoint = this.walkCycle.ShoulderOffsetHorizontalX.Evaluate(this.movedPercent);
-            WalkCycleDef cycle = this.walkCycle;
+            float offsetJoint = this.CompAnimator.walkCycle.ShoulderOffsetHorizontalX.Evaluate(this.movedPercent);
+            WalkCycleDef cycle = this.CompAnimator.walkCycle;
 
 
 
@@ -175,11 +151,11 @@
                     portrait);
 
                 GenDraw.DrawMeshNowOrLater(
-                        footMeshRight,
-                        ground.RotatedBy(bodyAngle) + jointPositions.rightJoint + new Vector3(offsetJoint, 0.301f, 0),
-                        Quaternion.AngleAxis(0, Vector3.up),
-                        centerMat,
-                        portrait);
+                    footMeshRight,
+                    ground.RotatedBy(bodyAngle) + jointPositions.rightJoint + new Vector3(offsetJoint, 0.301f, 0),
+                    Quaternion.AngleAxis(0, Vector3.up),
+                    centerMat,
+                    portrait);
 
                 // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z),
                 // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);

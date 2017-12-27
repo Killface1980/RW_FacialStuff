@@ -11,6 +11,8 @@
         }
         protected Rot4 bodyFacing;
 
+        protected Rot4 headFacing;
+
         protected JointLister GetJointPositions(Vector3 vector, float jointWidth, bool carrying = false)
         {
             var rot = this.bodyFacing;
@@ -65,6 +67,10 @@
             return joints;
         }
 
+        public virtual Mesh GetPawnMesh(bool wantsBody, bool portrait)
+        {
+            return wantsBody ? MeshPool.humanlikeBodySet.MeshAt(bodyFacing) : MeshPool.humanlikeHeadSet.MeshAt(headFacing);
+        }
     }
 
     public struct JointLister

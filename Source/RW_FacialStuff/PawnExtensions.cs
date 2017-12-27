@@ -35,7 +35,7 @@
                 return false;
             }
 
-            PawnFace face = compFace.PawnFace;
+            PawnFace face = compFace?.PawnFace;
             if (face != null)
             {
                 pawnFace = face;

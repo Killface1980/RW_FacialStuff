@@ -271,7 +271,7 @@ namespace FacialStuff.Harmony
             }
 
             __instance.ClearCache();
-            compFace.ClearCache();
+            pawn.GetComp<CompBodyAnimator>()?.ClearCache();
 
             GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
 

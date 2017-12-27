@@ -27,8 +27,6 @@ namespace FacialStuff
 
         #region Private Fields
 
-        private CompFace compFace;
-
         #endregion Private Fields
 
         #region Protected Constructors
@@ -40,16 +38,14 @@ namespace FacialStuff
 
         #region Public Properties
 
-        public CompFace CompFace { get => this.compFace; set => this.compFace = value; }
-        public CompBodyAnimator CompAnimator { get => this.compAnimator; set => this.compAnimator = value; }
+        public CompFace CompFace { get; set; }
+
+        [CanBeNull]
+        public CompBodyAnimator CompAnimator { get; set; }
 
         #endregion Public Properties
 
         #region Public Methods
-
-        public virtual void ApplyBodyWobble(ref Vector3 rootLoc, ref Quaternion quat)
-        {
-        }
 
         public virtual void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
         {
@@ -59,14 +55,7 @@ namespace FacialStuff
         {
         }
 
-        public virtual List<Material> BodyBaseAt(
-            PawnGraphicSet graphics,
-            Rot4 bodyFacing,
-            RotDrawMode bodyDrawType,
-            MaxLayerToShow layer)
-        {
-            return new List<Material>();
-        }
+
 
 
 
@@ -93,9 +82,7 @@ namespace FacialStuff
         {
         }
 
-        public virtual void DrawBody([CanBeNull] PawnWoundDrawer woundDrawer, Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType, bool renderBody, bool portrait)
-        {
-        }
+
 
         public virtual void DrawBrows(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
         {
@@ -137,13 +124,8 @@ namespace FacialStuff
             return graphics.HairMeshSet.MeshAt(headFacing);
         }
 
-        protected Rot4 bodyFacing;
 
-        protected Rot4 headFacing;
-        public virtual Mesh GetPawnMesh(bool wantsBody, bool portrait)
-        {
-            return wantsBody ? MeshPool.humanlikeBodySet.MeshAt(bodyFacing) : MeshPool.humanlikeHeadSet.MeshAt(headFacing);
-        }
+
 
         public virtual Quaternion QuatHead(Rot4 rotation)
         {
@@ -158,8 +140,6 @@ namespace FacialStuff
 
         #endregion Public Methods
         public PawnGraphicSet graphics;
-
-        private CompBodyAnimator compAnimator;
 
         public virtual void Tick(Rot4 bodyFacing, Rot4 headFacing, PawnGraphicSet graphics)
         {

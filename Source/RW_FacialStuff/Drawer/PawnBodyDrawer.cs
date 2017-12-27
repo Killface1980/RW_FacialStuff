@@ -7,6 +7,11 @@ namespace FacialStuff
     using System.Collections.Generic;
 
     using FacialStuff.Drawer;
+    using FacialStuff.Harmony;
+
+    using JetBrains.Annotations;
+
+    using RimWorld;
 
     public class PawnBodyDrawer : BasicDrawer
     {
@@ -101,6 +106,10 @@ namespace FacialStuff
         public Pawn Pawn;
 
         public virtual void Initialize()
+        {
+        }
+
+        public virtual void DrawBody([CanBeNull] PawnWoundDrawer woundDrawer, Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType, bool renderBody, bool portrait)
         {
         }
 
