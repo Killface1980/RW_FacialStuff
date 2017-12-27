@@ -11,6 +11,7 @@
         protected BasicDrawer()
         {
         }
+
         protected Rot4 bodyFacing;
 
         protected Rot4 headFacing;
@@ -24,8 +25,8 @@
             float leftZ = vector.z;
             float rightZ = vector.z;
 
-            float leftY = HarmonyPatch_PawnRenderer.YOffset_Behind;
-            float rightY = HarmonyPatch_PawnRenderer.YOffset_Behind;
+            float leftY = HarmonyPatch_PawnRenderer.YOffset_HandsFeet;
+            float rightY = HarmonyPatch_PawnRenderer.YOffset_HandsFeet;
 
             if (carrying)
             {

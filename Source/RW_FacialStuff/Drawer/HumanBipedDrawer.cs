@@ -706,9 +706,6 @@ namespace FacialStuff
                     z += cycleHandsSwingAngle.Evaluate(this.movedPercent) / 500;
                     z2 -= cycleHandsSwingAngle.Evaluate(this.movedPercent) / 500;
 
-                    z += 0.2f;
-                    z2 += 0.2f;
-
                     z += this.CompAnimator.walkCycle.shoulderAngle / 800;
                     z2 += this.CompAnimator.walkCycle.shoulderAngle / 800;
                 }
