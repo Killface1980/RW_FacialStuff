@@ -1,37 +1,25 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace FacialStuff
+﻿namespace FacialStuff
 {
-    using FacialStuff.Defs;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using FacialStuff.Graphics;
-    using FacialStuff.Harmony;
 
     using RimWorld;
+
     using UnityEngine;
+
     using Verse;
-    using Verse.AI;
 
     public class HumanHeadDrawer : PawnHeadDrawer
     {
-        #region Private Fields
-
-
-        #endregion Private Fields
-
-        #region Public Constructors
-
-        public HumanHeadDrawer()
-        {
-            // Needs a constructor
-        }
-
-        #endregion Public Constructors
-
-        #region Public Methods
+        #region Protected Fields
 
         protected float BodyWobble;
 
+        #endregion Protected Fields
+
+        #region Public Methods
 
         public override void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
         {
@@ -50,11 +38,11 @@ namespace FacialStuff
             float horHeadOffset = HorHeadOffsets[(int)pawn.story.bodyType];
             float verHeadOffset = VerHeadOffsets[(int)pawn.story.bodyType];
 
-             if (this.CompAnimator.AnimatorOpen)
-             {
-                 horHeadOffset += MainTabWindow_Animator.horHeadOffset;
-                 verHeadOffset += MainTabWindow_Animator.verHeadOffset;
-             }
+            if (this.CompAnimator.AnimatorOpen)
+            {
+                horHeadOffset += MainTabWindowAnimator.HorHeadOffset;
+                verHeadOffset += MainTabWindowAnimator.VerHeadOffset;
+            }
 
             switch (this.bodyFacing.AsInt)
             {
@@ -79,6 +67,7 @@ namespace FacialStuff
                     offset = Vector3.zero;
                     return;
             }
+
             if (!portrait)
             {
                 if (this.isMoving)
@@ -91,14 +80,10 @@ namespace FacialStuff
             }
         }
 
-
-
-
-
         public override void DrawApparel(Quaternion quat, Vector3 vector, bool renderBody, bool portrait)
         {
-            if (portrait || renderBody && !this.CompAnimator.HideShellLayer || !renderBody && !Controller.settings.HideShellWhileRoofed
-                && Controller.settings.IgnoreRenderBody)
+            if (portrait || renderBody && !this.CompAnimator.HideShellLayer || !renderBody
+                && !Controller.settings.HideShellWhileRoofed && Controller.settings.IgnoreRenderBody)
             {
                 for (int index = 0; index < this.Graphics.apparelGraphics.Count; index++)
                 {
@@ -117,7 +102,13 @@ namespace FacialStuff
             }
         }
 
-        public override void DrawBasicHead(Quaternion headQuat, RotDrawMode bodyDrawType, bool headStump, bool portrait, ref Vector3 locFacialY, out bool headDrawn)
+        public override void DrawBasicHead(
+            Quaternion headQuat,
+            RotDrawMode bodyDrawType,
+            bool headStump,
+            bool portrait,
+            ref Vector3 locFacialY,
+            out bool headDrawn)
         {
             Material headMaterial = this.Graphics.HeadMatAt(this.headFacing, bodyDrawType, headStump);
             if (headMaterial != null)
@@ -157,7 +148,6 @@ namespace FacialStuff
             }
         }
 
-
         public override void DrawBrows(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
         {
             Material browMat = this.CompFace.FaceMaterial.BrowMatAt(this.headFacing);
@@ -174,9 +164,14 @@ namespace FacialStuff
             }
         }
 
-
-
-        public override void DrawHairAndHeadGear(Vector3 rootLoc, Quaternion headQuat, RotDrawMode bodyDrawType, bool renderBody, bool portrait, Vector3 b, ref Vector3 currentLoc)
+        public override void DrawHairAndHeadGear(
+            Vector3 rootLoc,
+            Quaternion headQuat,
+            RotDrawMode bodyDrawType,
+            bool renderBody,
+            bool portrait,
+            Vector3 b,
+            ref Vector3 currentLoc)
         {
             Mesh hairMesh = this.GetPawnHairMesh(portrait);
             List<ApparelGraphicRecord> apparelGraphics = this.Graphics.apparelGraphics;
@@ -188,12 +183,12 @@ namespace FacialStuff
             }
 
             bool noRenderRoofed = this.CompAnimator.HideHat;
-            bool noRenderBed = Controller.settings.HideHatInBed && (!renderBody);
+            bool noRenderBed = Controller.settings.HideHatInBed && !renderBody;
             bool noRenderGoggles = Controller.settings.FilterHats;
 
             if (!headgearGraphics.NullOrEmpty())
             {
-                bool filterHeadgear = (portrait && Prefs.HatsOnlyOnMap) || (!portrait && noRenderRoofed);
+                bool filterHeadgear = portrait && Prefs.HatsOnlyOnMap || !portrait && noRenderRoofed;
 
                 // Draw regular hair if appparel or environment allows it (FS feature)
                 if (bodyDrawType != RotDrawMode.Dessicated)
@@ -209,7 +204,8 @@ namespace FacialStuff
                             x => x.sourceApparel.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)
                                  && !x.sourceApparel.def.apparel.hatRenderedFrontOfFace);
 
-                    if (this.CompFace.Props.hasOrganicHair || noRenderBed || filterHeadgear || !apCoversFullHead && !apCoversUpperHead && noRenderGoggles)
+                    if (this.CompFace.Props.hasOrganicHair || noRenderBed || filterHeadgear
+                        || !apCoversFullHead && !apCoversUpperHead && noRenderGoggles)
                     {
                         Material mat = this.Graphics.HairMatAt(this.headFacing);
                         GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, mat, portrait);
@@ -290,16 +286,14 @@ namespace FacialStuff
             }
         }
 
-
         public override void DrawNaturalEyes(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
         {
             Mesh eyeMesh = this.CompFace.EyeMeshSet.mesh.MeshAt(this.headFacing);
 
             // natural eyes
-            if (this.CompFace.bodyStat.eyeLeft != PartStatus.Artificial)
+            if (this.CompFace.bodyStat.EyeLeft != PartStatus.Artificial)
             {
-                Material leftEyeMat =
-                    this.CompFace.FaceMaterial.EyeLeftMatAt(this.headFacing, portrait);
+                Material leftEyeMat = this.CompFace.FaceMaterial.EyeLeftMatAt(this.headFacing, portrait);
                 if (leftEyeMat != null)
                 {
                     GenDraw.DrawMeshNowOrLater(
@@ -312,10 +306,9 @@ namespace FacialStuff
                 }
             }
 
-            if (this.CompFace.bodyStat.eyeRight != PartStatus.Artificial)
+            if (this.CompFace.bodyStat.EyeRight != PartStatus.Artificial)
             {
-                Material rightEyeMat =
-                    this.CompFace.FaceMaterial.EyeRightMatAt(this.headFacing, portrait);
+                Material rightEyeMat = this.CompFace.FaceMaterial.EyeRightMatAt(this.headFacing, portrait);
 
                 if (rightEyeMat != null)
                 {
@@ -352,7 +345,7 @@ namespace FacialStuff
         public override void DrawUnnaturalEyeParts(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
         {
             Mesh headMesh = this.GetPawnMesh(false, portrait);
-            if (this.CompFace.bodyStat.eyeLeft == PartStatus.Artificial)
+            if (this.CompFace.bodyStat.EyeLeft == PartStatus.Artificial)
             {
                 Material leftBionicMat = this.CompFace.FaceMaterial.EyeLeftPatchMatAt(this.headFacing);
                 if (leftBionicMat != null)
@@ -367,19 +360,28 @@ namespace FacialStuff
                 }
             }
 
-            if (this.CompFace.bodyStat.eyeRight == PartStatus.Artificial)
+            if (this.CompFace.bodyStat.EyeRight == PartStatus.Artificial)
             {
                 Material rightBionicMat = this.CompFace.FaceMaterial.EyeRightPatchMatAt(this.headFacing);
 
                 if (rightBionicMat != null)
                 {
-                    GenDraw.DrawMeshNowOrLater(headMesh, locFacialY + this.EyeOffset(this.headFacing), headQuat, rightBionicMat, portrait);
+                    GenDraw.DrawMeshNowOrLater(
+                        headMesh,
+                        locFacialY + this.EyeOffset(this.headFacing),
+                        headQuat,
+                        rightBionicMat,
+                        portrait);
                     locFacialY.y += Offsets.YOffsetInterval_OnFace;
                 }
             }
         }
 
-        public override void DrawWrinkles(Quaternion headQuat, RotDrawMode bodyDrawType, bool portrait, ref Vector3 locFacialY)
+        public override void DrawWrinkles(
+            Quaternion headQuat,
+            RotDrawMode bodyDrawType,
+            bool portrait,
+            ref Vector3 locFacialY)
         {
             if (!Controller.settings.UseWrinkles)
             {
@@ -407,14 +409,11 @@ namespace FacialStuff
 #endif
         }
 
-
-
         public override void Initialize()
         {
             base.Initialize();
             this.CompAnimator = this.Pawn.GetComp<CompBodyAnimator>();
         }
-
 
         public override Quaternion QuatHead(Rot4 rotation)
         {
@@ -430,7 +429,8 @@ namespace FacialStuff
                 if (this.bodyFacing.IsHorizontal)
                 {
                     asQuat *= Quaternion.AngleAxis(
-                        (this.bodyFacing == Rot4.West ? 1 : -1) * this.CompAnimator.walkCycle.BodyAngle.Evaluate(this.movedPercent),
+                        (this.bodyFacing == Rot4.West ? 1 : -1)
+                        * this.CompAnimator.walkCycle.BodyAngle.Evaluate(this.movedPercent),
                         Vector3.up);
                 }
                 else
@@ -454,23 +454,17 @@ namespace FacialStuff
             {
                 return;
             }
+
             if (animator.BodyAnimator != null)
             {
                 this.isMoving = animator.BodyAnimator.IsMoving(out this.movedPercent);
             }
-            //  var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
 
-            var curve = animator.walkCycle.BodyOffsetZ;
+            // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
+            SimpleCurve curve = animator.walkCycle.BodyOffsetZ;
             this.BodyWobble = curve.Evaluate(this.movedPercent);
         }
 
         #endregion Public Methods
-
-        #region Protected Methods
-
-
-
-
-        #endregion Protected Methods
     }
 }

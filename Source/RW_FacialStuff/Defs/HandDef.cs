@@ -1,4 +1,9 @@
-﻿namespace FacialStuff.Defs
+﻿// ReSharper disable StyleCop.SA1307
+// ReSharper disable InconsistentNaming
+// ReSharper disable StyleCop.SA1401
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable UnassignedField.Global
+namespace FacialStuff.Defs
 {
     using System.Collections.Generic;
 
@@ -33,5 +38,4 @@
 
         #endregion Public Classes
     }
-
 }

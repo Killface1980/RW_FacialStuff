@@ -8,7 +8,7 @@
     {
         public GraphicMeshSet mesh;
 
-        private Vector2 offSet;
+        private readonly Vector2 offSet;
 
         public GraphicVectorMeshSet(float size, Vector2 offSet)
         {

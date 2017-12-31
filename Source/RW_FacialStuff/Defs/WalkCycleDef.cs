@@ -1,8 +1,12 @@
-﻿namespace RimWorld
+﻿// ReSharper disable StyleCop.SA1307
+// ReSharper disable InconsistentNaming
+// ReSharper disable StyleCop.SA1401
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable UnassignedField.Global
+namespace RimWorld
 {
     using System.Collections.Generic;
 
-    using FacialStuff;
     using FacialStuff.Defs;
 
     using Verse;
@@ -36,8 +40,7 @@
 
         // public SimpleCurve FootPositionVerticalZ = new SimpleCurve();
 
-        //  public SimpleCurve BodyOffsetVerticalZ = new SimpleCurve();
-
+        // public SimpleCurve BodyOffsetVerticalZ = new SimpleCurve();
         public SimpleCurve FrontPawAngle = new SimpleCurve();
 
         public SimpleCurve FrontPawPositionX = new SimpleCurve();
@@ -45,7 +48,6 @@
         public SimpleCurve FrontPawPositionZ = new SimpleCurve();
 
         // public SimpleCurve FrontPawPositionVerticalZ = new SimpleCurve();
-
         public SimpleCurve ShoulderOffsetHorizontalX = new SimpleCurve();
 
         public SimpleCurve HipOffsetHorizontalX = new SimpleCurve();

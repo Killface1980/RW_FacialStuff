@@ -16,6 +16,7 @@
     {
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once StyleCop.SA1307
+        [NotNull]
         [SuppressMessage(
             "StyleCop.CSharp.MaintainabilityRules",
             "SA1401:FieldsMustBePrivate",
@@ -57,6 +58,7 @@
                 {
                     continue;
                 }
+
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
                 PortraitsCache.SetDirty(pawn);
             }

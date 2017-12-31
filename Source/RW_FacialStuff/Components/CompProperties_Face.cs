@@ -20,8 +20,6 @@ namespace FacialStuff
 
         public bool hasOrganicHair;
 
-
-
         public List<PawnHeadDrawer> drawers = new List<PawnHeadDrawer>();
 
         public bool needsAlienHair;

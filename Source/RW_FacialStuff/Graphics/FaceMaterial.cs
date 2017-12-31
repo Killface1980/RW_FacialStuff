@@ -50,7 +50,7 @@ namespace FacialStuff
         public Material BeardMatAt(Rot4 facing)
         {
             if (this.pawn.gender != Gender.Male || this.compFace.PawnFace?.BeardDef == BeardDefOf.Beard_Shaved
-                || this.compFace.bodyStat.jaw != PartStatus.Natural)
+                || this.compFace.bodyStat.Jaw != PartStatus.Natural)
             {
                 return null;
             }
@@ -113,7 +113,7 @@ namespace FacialStuff
 
             if (!portrait)
             {
-                if (Controller.settings.MakeThemBlink && this.compFace.bodyStat.eyeLeft == PartStatus.Natural)
+                if (Controller.settings.MakeThemBlink && this.compFace.bodyStat.EyeLeft == PartStatus.Natural)
                 {
                     if (this.compFace.IsAsleep || this.compFace.EyeWiggler.EyeLeftBlinkNow)
                     {
@@ -155,7 +155,7 @@ namespace FacialStuff
 
             if (!portrait)
             {
-                if (Controller.settings.MakeThemBlink && this.compFace.bodyStat.eyeRight == PartStatus.Natural)
+                if (Controller.settings.MakeThemBlink && this.compFace.bodyStat.EyeRight == PartStatus.Natural)
                 {
                     if (this.compFace.IsAsleep || this.compFace.EyeWiggler.EyeRightBlinkNow)
                     {
@@ -189,7 +189,7 @@ namespace FacialStuff
         public Material MoustacheMatAt(Rot4 facing)
         {
             if (this.pawn.gender != Gender.Male || this.compFace.PawnFace.MoustacheDef == MoustacheDefOf.Shaved
-                || this.compFace.bodyStat.jaw != PartStatus.Natural)
+                || this.compFace.bodyStat.Jaw != PartStatus.Natural)
             {
                 return null;
             }
@@ -209,7 +209,7 @@ namespace FacialStuff
         {
             Material material = null;
 
-            if (this.compFace.bodyStat.jaw != PartStatus.Natural && Controller.settings.ShowExtraParts)
+            if (this.compFace.bodyStat.Jaw != PartStatus.Natural && Controller.settings.ShowExtraParts)
             {
                 material = this.pawnFaceGraphic.JawGraphic?.MatAt(facing);
             }
@@ -219,6 +219,7 @@ namespace FacialStuff
                 {
                     return null;
                 }
+
                 if (!this.compFace.Props.hasMouth)
                 {
                     return null;

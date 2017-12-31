@@ -2,6 +2,7 @@
 <Defs>
   <BodyAnimDef>
     <armLength>0</armLength>
+    <offCenterX>-0.03578644</offCenterX>
     <walkCycles>
       <li>
         <key>Walk</key>

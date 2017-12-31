@@ -33,6 +33,7 @@
                 {
                     pawnFace = new PawnFace(compFace, Faction.OfPlayer.def, false);
                 }
+
                 compFace.SetPawnFace(pawnFace);
                 pawn.story.hairColor = compFace.PawnFace.HairColor;
             }

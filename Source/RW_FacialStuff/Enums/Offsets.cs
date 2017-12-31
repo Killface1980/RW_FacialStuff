@@ -1,12 +1,10 @@
-﻿namespace FacialStuff
+﻿// ReSharper disable StyleCop.SA1310
+// ReSharper disable InconsistentNaming
+namespace FacialStuff
 {
-   public static class Offsets
+    public static class Offsets
     {
-
         //// total max with repetitions: LayerSpacing = 0.46875f;
-
-
-
         public const float YOffset_PrimaryEquipmentUnder = 0f;
 
         public const float YOffsetInterval_OnFace       = 0.0001f;

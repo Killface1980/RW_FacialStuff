@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FacialStuff.ExportAnimDefs
+﻿namespace FacialStuff.ExportAnimDefs
 {
     using RimWorld;
-
-    using Verse;
 
     public class Defs
     {

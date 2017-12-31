@@ -26,6 +26,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using Verse;
@@ -82,16 +83,16 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
             {
                 if (value == Gender.Female)
                 {
-                    this.savedMaleIndex = this.index;
+                    this.savedMaleIndex = this.Index;
                     this.headTypes = this.femaleHeadTypes;
-                    this.index = this.savedFemaleIndex;
+                    this.Index = this.savedFemaleIndex;
                 }
                 else
                 {
                     // Male
-                    this.savedFemaleIndex = this.index;
+                    this.savedFemaleIndex = this.Index;
                     this.headTypes = this.maleHeadTypes;
-                    this.index = this.savedMaleIndex;
+                    this.Index = this.savedMaleIndex;
                 }
 
                 this.IndexChanged();
@@ -102,11 +103,11 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                this.selectedItem2 = this.headTypes[this.index].Contains("Narrow")
+                this.selectedItem2 = this.headTypes[this.Index].Contains("Narrow")
                                          ? CrownType.Narrow
                                          : CrownType.Average;
 
-                return this.headTypes[this.index];
+                return this.headTypes[this.Index];
             }
         }
 
@@ -122,7 +123,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                string[] array = this.headTypes[this.index].Split(new[] { '_' }, StringSplitOptions.None);
+                string[] array = this.headTypes[this.Index].Split(new[] { '_' }, StringSplitOptions.None);
                 return array[array.Count() - 2] + ", " + array[array.Count() - 1];
             }
         }
@@ -136,7 +137,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
                     continue;
                 }
 
-                this.index = i;
+                this.Index = i;
                 break;
             }
         }

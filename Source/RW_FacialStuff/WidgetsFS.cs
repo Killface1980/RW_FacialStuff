@@ -25,10 +25,12 @@
             {
                 rect.y += Mathf.Round((rect.height - 16f) / 2f);
             }
+
             if (!label.NullOrEmpty())
             {
                 rect.y += 5f;
             }
+
             float num = GUI.HorizontalSlider(rect, value, leftValue, rightValue);
             if (!label.NullOrEmpty() || !leftAlignedLabel.NullOrEmpty() || !rightAlignedLabel.NullOrEmpty())
             {
@@ -42,23 +44,28 @@
                     Text.Anchor = TextAnchor.UpperLeft;
                     Widgets.Label(rect, leftAlignedLabel);
                 }
+
                 if (!rightAlignedLabel.NullOrEmpty())
                 {
                     Text.Anchor = TextAnchor.UpperRight;
                     Widgets.Label(rect, rightAlignedLabel);
                 }
+
                 if (!label.NullOrEmpty())
                 {
                     Text.Anchor = TextAnchor.UpperCenter;
                     Widgets.Label(rect, label);
                 }
+
                 Text.Anchor = anchor;
                 Text.Font = font;
             }
+
             if (roundTo > 0f)
             {
                 num = (float)Mathf.RoundToInt(num / roundTo) * roundTo;
             }
+
             return num;
         }
 

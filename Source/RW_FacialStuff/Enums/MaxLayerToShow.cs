@@ -2,8 +2,19 @@
 {
     public enum MaxLayerToShow : byte
     {
-        Naked =0,
-        OnSkin=1,
-        Middle=2,
+        /// <summary>
+        /// Naked.
+        /// </summary>
+        Naked = 0,
+
+        /// <summary>
+        /// On skin.
+        /// </summary>
+        OnSkin = 1,
+
+        /// <summary>
+        /// Middle.
+        /// </summary>
+        Middle = 2,
     }
 }

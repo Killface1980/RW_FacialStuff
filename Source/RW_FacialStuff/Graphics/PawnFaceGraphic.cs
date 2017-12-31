@@ -1,4 +1,6 @@
-﻿namespace FacialStuff.Graphics
+﻿// ReSharper disable StyleCop.SA1401
+
+namespace FacialStuff.Graphics
 {
     using FacialStuff.Animator;
     using FacialStuff.Defs;
@@ -13,9 +15,6 @@
 
     public class PawnFaceGraphic
     {
-
-        #region Public Fields
-
         public Graphic BrowGraphic;
 
         public Graphic DeadEyeGraphic;
@@ -34,7 +33,6 @@
         [CanBeNull]
         public Graphic_Multi_AddedHeadParts EyeRightPatchGraphic;
 
-
         [CanBeNull]
         public Graphic_Multi_NaturalHeadParts JawGraphic;
 
@@ -44,6 +42,7 @@
         public Graphic MoustacheGraphic;
 
         public HumanMouthGraphics mouthgraphic;
+
         public Graphic_Multi_NaturalHeadParts MouthGraphic;
 
         public Graphic RottingWrinkleGraphic;
@@ -51,37 +50,25 @@
         [CanBeNull]
         public string texPathBrow;
 
-
         [CanBeNull]
-        public string texPathEyeLeftClosed;
-
-
+        public readonly string texPathEyeLeftClosed;
 
         [CanBeNull]
         public string texPathEyeRightClosed;
 
-
-
-
         public Graphic WrinkleGraphic;
-
-        #endregion Public Fields
-
-        #region Private Fields
 
         [NotNull]
         private readonly CompFace compFace;
 
-        private float mood = 0.5f;
-
         private readonly Pawn pawn;
 
+        private float mood = 0.5f;
 
         public PawnFaceGraphic(CompFace compFace)
         {
             this.compFace = compFace;
             this.pawn = compFace.Pawn;
-
 
             if (this.compFace.Props.hasWrinkles)
             {
@@ -95,7 +82,6 @@
 
             if (this.compFace.Props.hasEyes)
             {
-
                 EyeDef pawnFaceEyeDef = this.compFace.PawnFace.EyeDef;
                 this.compFace.texPathEyeRight = this.compFace.EyeTexPath(pawnFaceEyeDef.texPath, Side.Right);
                 this.compFace.texPathEyeLeft = this.compFace.EyeTexPath(pawnFaceEyeDef.texPath, Side.Left);
@@ -107,19 +93,13 @@
                 this.texPathBrow = this.compFace.BrowTexPath(this.compFace.PawnFace.BrowDef);
                 this.InitializeGraphicsBrows();
             }
+
             if (this.compFace.Props.hasMouth)
             {
                 this.mouthgraphic = new HumanMouthGraphics(this.pawn);
                 this.InitializeGraphicsMouth();
             }
-
-
         }
-
-        #endregion Private Fields
-
-        #region Public Methods
-
 
         public void SetMouthAccordingToMoodLevel()
         {
@@ -128,7 +108,7 @@
                 return;
             }
 
-            if (!Controller.settings.UseMouth || this.compFace.bodyStat.jaw != PartStatus.Natural)
+            if (!Controller.settings.UseMouth || this.compFace.bodyStat.Jaw != PartStatus.Natural)
             {
                 return;
             }
@@ -142,7 +122,7 @@
             if (this.pawn.health.InPainShock && !this.compFace.IsAsleep)
             {
                 PawnEyeWiggler eyeWiggler = this.compFace.EyeWiggler;
-                if (eyeWiggler == null || (eyeWiggler.EyeRightBlinkNow && eyeWiggler.EyeLeftBlinkNow))
+                if (eyeWiggler == null || eyeWiggler.EyeRightBlinkNow && eyeWiggler.EyeLeftBlinkNow)
                 {
                     this.MouthGraphic = this.mouthgraphic.mouthGraphicCrying;
                     return;
@@ -159,20 +139,14 @@
             this.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[indexOfMood].Graphic;
         }
 
-
-
-        #endregion Public Methods
-
-        #region Private Methods
-
         private void InitializeGraphicsBeard()
         {
             PawnFace pawnFace = this.compFace.PawnFace;
             if (pawnFace != null)
             {
-                string mainBeardDefTexPath = compFace.GetBeardPath(pawnFace.BeardDef);
+                string mainBeardDefTexPath = this.compFace.GetBeardPath(pawnFace.BeardDef);
 
-                string moustacheDefTexPath = compFace.GetMoustachePath(pawnFace.MoustacheDef);
+                string moustacheDefTexPath = this.compFace.GetMoustachePath(pawnFace.MoustacheDef);
 
                 Color beardColor = pawnFace.BeardColor;
                 Color tacheColor = pawnFace.BeardColor;
@@ -216,15 +190,16 @@
         {
             if (!this.compFace.texPathEyeLeftPatch.NullOrEmpty())
             {
-                bool flag = !ContentFinder<Texture2D>.Get(this.compFace.texPathEyeLeftPatch + "_front", false).NullOrBad();
+                bool flag = !ContentFinder<Texture2D>.Get(this.compFace.texPathEyeLeftPatch + "_front", false)
+                                .NullOrBad();
                 if (flag)
                 {
                     this.EyeLeftPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
                                                    this.compFace.texPathEyeLeftPatch,
-                                                                   ShaderDatabase.Transparent,
-                                                                   Vector2.one,
-                                                                   Color.white) as Graphic_Multi_AddedHeadParts;
-                    this.compFace.bodyStat.eyeLeft = PartStatus.Artificial;
+                                                   ShaderDatabase.Transparent,
+                                                   Vector2.one,
+                                                   Color.white) as Graphic_Multi_AddedHeadParts;
+                    this.compFace.bodyStat.EyeLeft = PartStatus.Artificial;
                 }
                 else
                 {
@@ -236,16 +211,16 @@
 
             if (!this.compFace.texPathEyeRightPatch.NullOrEmpty())
             {
-                bool flag2 = !ContentFinder<Texture2D>.Get(this.compFace.texPathEyeRightPatch + "_front", false).NullOrBad();
+                bool flag2 = !ContentFinder<Texture2D>.Get(this.compFace.texPathEyeRightPatch + "_front", false)
+                                 .NullOrBad();
                 if (flag2)
                 {
-                    this.EyeRightPatchGraphic =
-                        GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
-                            this.compFace.texPathEyeRightPatch,
-                            ShaderDatabase.Transparent,
-                            Vector2.one,
-                            Color.white) as Graphic_Multi_AddedHeadParts;
-                    this.compFace.bodyStat.eyeRight = PartStatus.Artificial;
+                    this.EyeRightPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
+                                                    this.compFace.texPathEyeRightPatch,
+                                                    ShaderDatabase.Transparent,
+                                                    Vector2.one,
+                                                    Color.white) as Graphic_Multi_AddedHeadParts;
+                    this.compFace.bodyStat.EyeRight = PartStatus.Artificial;
                 }
                 else
                 {
@@ -291,7 +266,6 @@
                 this.pawn.story.SkinColor);
         }
 
-
         private void InitializeGraphicsMouth()
         {
             if (!this.compFace.texPathJawAddedPart.NullOrEmpty())
@@ -301,10 +275,10 @@
                 {
                     this.JawGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                           this.compFace.texPathJawAddedPart,
-                                                          ShaderDatabase.CutoutSkin,
-                                                          Vector2.one,
-                                                          Color.white) as Graphic_Multi_NaturalHeadParts;
-                    this.compFace.bodyStat.jaw = PartStatus.Artificial;
+                                          ShaderDatabase.CutoutSkin,
+                                          Vector2.one,
+                                          Color.white) as Graphic_Multi_NaturalHeadParts;
+                    this.compFace.bodyStat.Jaw = PartStatus.Artificial;
 
                     // all done, return
                     return;
@@ -316,8 +290,7 @@
                     + " - Graphic_Multi_NaturalHeadParts. This is not an error, just an info.");
             }
 
-            this.MouthGraphic = this.mouthgraphic
-                .HumanMouthGraphic[this.pawn.Dead || this.pawn.Downed ? 2 : 3].Graphic;
+            this.MouthGraphic = this.mouthgraphic.HumanMouthGraphic[this.pawn.Dead || this.pawn.Downed ? 2 : 3].Graphic;
         }
 
         private void InitializeGraphicsWrinkles()
@@ -326,7 +299,7 @@
 
             PawnFace pawnFace = this.compFace.PawnFace;
             {
-                wrinkleColor.a = pawnFace.wrinkleIntensity;
+                wrinkleColor.a = pawnFace.WrinkleIntensity;
 
                 WrinkleDef pawnFaceWrinkleDef = pawnFace.WrinkleDef;
 
@@ -343,7 +316,5 @@
                     wrinkleColor * FaceTextures.SkinRottingMultiplyColor);
             }
         }
-
-        #endregion Private Methods
     }
 }

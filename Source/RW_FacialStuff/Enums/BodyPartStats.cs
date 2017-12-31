@@ -2,21 +2,21 @@ namespace FacialStuff
 {
     public struct BodyPartStats
     {
-        public PartStatus handLeft;
+        public PartStatus HandLeft;
 
-        public PartStatus handRight;
+        public PartStatus HandRight;
 
-        public PartStatus footLeft;
+        public PartStatus FootLeft;
 
-        public PartStatus footRight;
+        public PartStatus FootRight;
     }
 
     public struct FacePartStats
     {
-        public PartStatus eyeLeft;
+        public PartStatus EyeLeft;
 
-        public PartStatus eyeRight;
+        public PartStatus EyeRight;
 
-        public PartStatus jaw;
+        public PartStatus Jaw;
     }
 }

@@ -4,6 +4,8 @@
 
     using FacialStuff.Defs;
 
+    using JetBrains.Annotations;
+
     using RimWorld;
 
     using UnityEngine;
@@ -22,6 +24,7 @@
 
         public Vector3 shoulderOffset;
 
+        [NotNull]
         public List<PawnBodyDrawer> drawers = new List<PawnBodyDrawer>();
 
         public bool quadruped = false;

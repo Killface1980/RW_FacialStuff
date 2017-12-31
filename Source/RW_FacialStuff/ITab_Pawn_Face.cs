@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using FacialStuff.Components;
     using FacialStuff.Defs;
     using FacialStuff.Graphics;
 
@@ -68,7 +67,7 @@
                 this.rotation = this.SelPawn.Rotation.AsInt;
             }
 
-            MainTabWindow_Animator.BodyRot = new Rot4(this.rotation);
+            MainTabWindowAnimator.BodyRot = new Rot4(this.rotation);
 
             bool male = this.SelPawn.gender == Gender.Male;
 

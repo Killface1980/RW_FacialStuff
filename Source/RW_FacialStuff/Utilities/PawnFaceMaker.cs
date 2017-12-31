@@ -240,6 +240,7 @@
                 moustache = MoustacheDefOf.Shaved;
                 return;
             }
+
             BeardRoulette(face.Pawn, factionType, out mainBeard, out moustache);
         }
 

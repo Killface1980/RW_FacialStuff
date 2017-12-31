@@ -33,7 +33,7 @@ namespace FacialStuff.FaceEditor.UI.DTO
 
     public class DresserDTO
     {
-        public Pawn Pawn;
+        private readonly Pawn pawn;
 
         private readonly long originalAgeBioTicks;
 
@@ -41,21 +41,21 @@ namespace FacialStuff.FaceEditor.UI.DTO
 
         public DresserDTO(Pawn pawn)
         {
-            this.Pawn = pawn;
+            this.pawn = pawn;
             this.originalAgeBioTicks = pawn.ageTracker.AgeBiologicalTicks;
             this.originalAgeChronTicks = pawn.ageTracker.AgeChronologicalTicks;
 
-            this.BodyTypeSelectionDto = new BodyTypeSelectionDTO(this.Pawn.story.bodyType, this.Pawn.gender);
-            this.HeadTypeSelectionDto = new HeadTypeSelectionDTO(this.Pawn.story.HeadGraphicPath, this.Pawn.gender);
+            this.BodyTypeSelectionDto = new BodyTypeSelectionDTO(this.pawn.story.bodyType, this.pawn.gender);
+            this.HeadTypeSelectionDto = new HeadTypeSelectionDTO(this.pawn.story.HeadGraphicPath, this.pawn.gender);
 
-            this.GenderSelectionDto = new GenderSelectionDTO(this.Pawn.gender);
+            this.GenderSelectionDto = new GenderSelectionDTO(this.pawn.gender);
             this.GenderSelectionDto.SelectionChangeListener += delegate
                 {
                     this.BodyTypeSelectionDto.Gender = (Gender)this.GenderSelectionDto.SelectedItem;
                     this.HeadTypeSelectionDto.Gender = (Gender)this.GenderSelectionDto.SelectedItem;
                 };
 
-            this.SkinColorSliderDto = new SliderWidgetDTO(this.Pawn.story.melanin, 0, 1);
+            this.SkinColorSliderDto = new SliderWidgetDTO(this.pawn.story.melanin, 0, 1);
         }
 
         public BodyTypeSelectionDTO BodyTypeSelectionDto { get; }
@@ -73,8 +73,8 @@ namespace FacialStuff.FaceEditor.UI.DTO
             this.BodyTypeSelectionDto.ResetToDefault();
             this.SkinColorSliderDto.ResetToDefault();
             this.HeadTypeSelectionDto.ResetToDefault();
-            this.Pawn.ageTracker.AgeBiologicalTicks = this.originalAgeBioTicks;
-            this.Pawn.ageTracker.AgeChronologicalTicks = this.originalAgeChronTicks;
+            this.pawn.ageTracker.AgeBiologicalTicks = this.originalAgeBioTicks;
+            this.pawn.ageTracker.AgeChronologicalTicks = this.originalAgeChronTicks;
         }
 
         public void SetUpdatePawnListeners(UpdatePawnListener updatePawn)

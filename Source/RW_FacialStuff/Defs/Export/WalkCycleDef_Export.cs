@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FacialStuff.ExportCycleDefs
+﻿namespace FacialStuff.ExportCycleDefs
 {
-    using FacialStuff.Defs;
-
     using RimWorld;
-
-    using Verse;
 
     public class Defs
     {

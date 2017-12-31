@@ -2,6 +2,8 @@
 
 namespace FacialStuff.Animator
 {
+    using JetBrains.Annotations;
+
     using RimWorld;
 
     using UnityEngine;
@@ -10,6 +12,8 @@ namespace FacialStuff.Animator
 
     public class PawnEyeWiggler
     {
+        #region Private Fields
+
         private static readonly SimpleCurve EyeMotionFullCurve =
             new SimpleCurve
                 {
@@ -28,6 +32,9 @@ namespace FacialStuff.Animator
                     new CurvePoint(0.75f, 0f)
                 };
 
+        [NotNull]
+        private readonly CompFace compFace;
+
         private readonly SimpleCurve consciousnessCurve =
             new SimpleCurve { new CurvePoint(0f, 5f), new CurvePoint(0.5f, 2f), new CurvePoint(1f, 1f) };
 
@@ -39,10 +46,6 @@ namespace FacialStuff.Animator
             new SimpleCurve { new CurvePoint(0f, 1f), new CurvePoint(0.65f, 1f), new CurvePoint(1f, 2f) };
 
         private readonly Pawn pawn;
-
-        private Vector3 eyeMoveL = new Vector3(0, 0, 0);
-
-        private Vector3 eyeMoveR = new Vector3(0, 0, 0);
 
         private float flippedX;
 
@@ -64,15 +67,19 @@ namespace FacialStuff.Animator
 
         private int nextBlink = -5000;
 
-        private int nextBlinkEnd = -5000;
+        #endregion Private Fields
 
-        private CompFace compFace;
+        #region Public Constructors
 
         public PawnEyeWiggler(CompFace face)
         {
             this.compFace = face;
             this.pawn = face.Pawn;
         }
+
+        #endregion Public Constructors
+
+        #region Public Properties
 
         public bool EyeLeftBlinkNow
         {
@@ -83,9 +90,9 @@ namespace FacialStuff.Animator
             }
         }
 
-        public Vector3 EyeMoveL => this.eyeMoveL;
+        public Vector3 EyeMoveL { get; private set; } = new Vector3(0, 0, 0);
 
-        public Vector3 EyeMoveR => this.eyeMoveR;
+        public Vector3 EyeMoveR { get; private set; } = new Vector3(0, 0, 0);
 
         public bool EyeRightBlinkNow
         {
@@ -96,7 +103,11 @@ namespace FacialStuff.Animator
             }
         }
 
-        public int NextBlinkEnd => this.nextBlinkEnd;
+        public int NextBlinkEnd { get; private set; } = -5000;
+
+        #endregion Public Properties
+
+        #region Public Methods
 
         public void WigglerTick()
         {
@@ -137,14 +148,14 @@ namespace FacialStuff.Animator
                     }
                 }
 
-                if (this.compFace.bodyStat.eyeRight == PartStatus.Natural)
+                if (this.compFace.bodyStat.EyeRight == PartStatus.Natural)
                 {
-                    this.eyeMoveR = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
+                    this.EyeMoveR = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
                 }
 
-                if (this.compFace.bodyStat.eyeLeft == PartStatus.Natural)
+                if (this.compFace.bodyStat.EyeLeft == PartStatus.Natural)
                 {
-                    this.eyeMoveL = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
+                    this.EyeMoveL = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
                 }
             }
 
@@ -157,6 +168,10 @@ namespace FacialStuff.Animator
             }
         }
 
+        #endregion Public Methods
+
+        #region Private Methods
+
         private void SetNextBlink(int tickManagerTicksGame)
         {
             // Eye blinking controller
@@ -168,13 +183,24 @@ namespace FacialStuff.Animator
             // + " - blinkDurationORG: " + blinkDuration.ToString("N0"));
 
             // TODO: use a curve for evaluation => more control, precise setting of blinking
-            float consciousness =
-                this.consciousnessCurve.Evaluate(this.pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness));
+            Pawn_HealthTracker health = this.pawn.health;
+            float pain = 0f;
+            if (health != null)
+            {
+                if (health.capacities != null)
+                {
+                    float consciousness =
+                        this.consciousnessCurve.Evaluate(health.capacities.GetLevel(PawnCapacityDefOf.Consciousness));
 
-            ticksTillNextBlink /= consciousness;
-            blinkDuration *= consciousness;
+                    ticksTillNextBlink /= consciousness;
+                    blinkDuration *= consciousness;
+                }
 
-            float pain = this.painCurve.Evaluate(this.pawn.health.hediffSet.PainTotal);
+                if (health.hediffSet != null)
+                {
+                    pain = this.painCurve.Evaluate(health.hediffSet.PainTotal);
+                }
+            }
 
             ticksTillNextBlink /= pain;
             blinkDuration *= pain;
@@ -187,7 +213,7 @@ namespace FacialStuff.Animator
             // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
             // + " - blinkDuration: " + blinkDuration.ToString("N0"));
             this.nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
-            this.nextBlinkEnd = (int)(this.nextBlink + blinkDuration);
+            this.NextBlinkEnd = (int)(this.nextBlink + blinkDuration);
 
             // this.JitterLeft = 1f;
             // this.JitterRight = 1f;
@@ -225,5 +251,7 @@ namespace FacialStuff.Animator
 
             this.lastBlinkended = tickManagerTicksGame;
         }
+
+        #endregion Private Methods
     }
 }

@@ -1,15 +1,19 @@
 ﻿namespace FacialStuff
 {
+    using System;
+    using System.Collections.Generic;
+
     using FacialStuff.Animator;
     using FacialStuff.Defs;
     using FacialStuff.Graphics;
     using FacialStuff.Utilities;
+
     using JetBrains.Annotations;
+
     using RimWorld;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+
     using UnityEngine;
+
     using Verse;
 
     public class CompFace : ThingComp
@@ -33,18 +37,11 @@
 
         private Vector2 eyeOffset = Vector2.zero;
 
-        [NotNull]
-        private PawnEyeWiggler eyeWiggler;
-
-        public List<PawnHeadDrawer> PawnDrawers => pawnDrawers;
-
-        private FaceMaterial faceMaterial;
+        public List<PawnHeadDrawer> PawnDrawers { get; private set; }
 
         private Faction factionInt;
 
         private float factionMelanin;
-
-        private PawnHeadRotator headRotator;
 
         // private float blinkRate;
         // public PawnHeadWiggler headWiggler;
@@ -62,9 +59,10 @@
         public GraphicVectorMeshSet EyeMeshSet => MeshPoolFS.HumanEyeSet[(int)this.FullHeadType];
 
         [CanBeNull]
-        public PawnEyeWiggler EyeWiggler => this.eyeWiggler;
+        [NotNull]
+        public PawnEyeWiggler EyeWiggler { get; private set; }
 
-        public FaceMaterial FaceMaterial => this.faceMaterial;
+        public FaceMaterial FaceMaterial { get; private set; }
 
         public float FactionMelanin
         {
@@ -74,7 +72,7 @@
 
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
 
-        public PawnHeadRotator HeadRotator => this.headRotator;
+        public PawnHeadRotator HeadRotator { get; private set; }
 
         [NotNull]
         public GraphicVectorMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
@@ -326,7 +324,6 @@
         }
 
         // Can be called externally
-
         public void DrawAlienBodyAddons(Quaternion quat, Vector3 vector, bool portrait, bool renderBody)
         {
             if (this.PawnDrawers != null)
@@ -441,11 +438,11 @@
 
         // public void SetFaceRender(bool portrait, Quaternion headQuat, Rot4 headFacing, bool renderBody, PawnGraphicSet graphics)
         // {
-        //             this.portrait = portrait;
-        //             this.headQuat = headQuat;
-        //             this.headFacing = headFacing;
-        //             this.graphics = graphics;
-        //     this.renderBody = renderBody;
+        // this.portrait = portrait;
+        // this.headQuat = headQuat;
+        // this.headFacing = headFacing;
+        // this.graphics = graphics;
+        // this.renderBody = renderBody;
         // }
         public void DrawHeadOverlays(PawnHeadOverlays headOverlays, Vector3 bodyLoc, Quaternion headQuat)
         {
@@ -558,7 +555,7 @@
         {
             if (this.Props.drawers.Any())
             {
-                this.pawnDrawers = new List<PawnHeadDrawer>();
+                this.PawnDrawers = new List<PawnHeadDrawer>();
                 for (int i = 0; i < this.Props.drawers.Count; i++)
                 {
                     PawnHeadDrawer thingComp = (PawnHeadDrawer)Activator.CreateInstance(this.Props.drawers[i].GetType());
@@ -605,7 +602,7 @@
 
             if (!IsAsleep)
             {
-                this.headRotator.RotatorTick();
+                this.HeadRotator.RotatorTick();
             }
 
             if (this.Props.hasMouth)
@@ -635,7 +632,6 @@
             Scribe_Values.Look(ref this.IsChild, "isChild");
 
             // Scribe_References.Look(ref this.theRoom, "theRoom");
-
             Scribe_Values.Look(ref this.Deactivated, "dontrender");
 
             // Scribe_Values.Look(ref this.roofed, "roofed");
@@ -685,17 +681,16 @@
 
             if (this.Props.hasEyes)
             {
-                this.eyeWiggler = new PawnEyeWiggler(this);
+                this.EyeWiggler = new PawnEyeWiggler(this);
             }
 
             this.PawnFaceGraphic = new PawnFaceGraphic(this);
-            this.faceMaterial = new FaceMaterial(this, this.PawnFaceGraphic);
+            this.FaceMaterial = new FaceMaterial(this, this.PawnFaceGraphic);
 
             // this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
-            this.headRotator = new PawnHeadRotator(this.Pawn);
+            this.HeadRotator = new PawnHeadRotator(this.Pawn);
 
             // this.headWiggler = new PawnHeadWiggler(this.pawn);
-
             return true;
         }
 
@@ -705,7 +700,6 @@
         }
 
         // Verse.PawnGraphicSet
-
         #endregion Public Methods
 
         #region Private Methods
@@ -734,9 +728,7 @@
         #endregion Private Methods
 
         // public Vector3 RightHandPosition;
-        //
         // public Vector3 LeftHandPosition;
-
         public Vector3 BaseHeadOffsetAt(bool portrait)
         {
             Vector3 offset = Vector3.zero;
@@ -756,8 +748,6 @@
         }
 
         public FacePartStats bodyStat;
-
-        private List<PawnHeadDrawer> pawnDrawers;
 
         private bool initialized;
 

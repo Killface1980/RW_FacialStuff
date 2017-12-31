@@ -102,7 +102,7 @@ namespace FacialStuff.FaceEditor.UI.Util
             GUI.Label(labelRect, selectionWidgetDto.SelectedItemLabel, MiddleCenter);
 
             GUI.color = Color.grey;
-            Widgets.DrawBox(labelRect, 1);
+            Widgets.DrawBox(labelRect);
 
             Rect nextButtonRect = new Rect(rect.width - NavButtonSize.x, 0, NavButtonSize.x, NavButtonSize.y);
             if (GUI.Button(nextButtonRect, nextTexture))

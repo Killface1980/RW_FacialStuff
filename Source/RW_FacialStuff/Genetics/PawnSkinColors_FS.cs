@@ -74,8 +74,8 @@ namespace FacialStuff.Genetics
             }
 
             float t = Mathf.InverseLerp(
-                SkinColors[skinDataLeftIndexByWhiteness].melanin,
-                SkinColors[skinDataLeftIndexByWhiteness + 1].melanin,
+                SkinColors[skinDataLeftIndexByWhiteness].Melanin,
+                SkinColors[skinDataLeftIndexByWhiteness + 1].Melanin,
                 melanin);
             __result = Mathf.Lerp(
                 GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness),
@@ -94,7 +94,7 @@ namespace FacialStuff.Genetics
             }
 
             int num = leftIndexForValue + 1;
-            return Mathf.InverseLerp(SkinColors[leftIndexForValue].melanin, SkinColors[num].melanin, value);
+            return Mathf.InverseLerp(SkinColors[leftIndexForValue].Melanin, SkinColors[num].Melanin, value);
         }
 
         public static Color GetSkinColor(float melanin)
@@ -102,16 +102,16 @@ namespace FacialStuff.Genetics
             int skinDataIndexOfMelanin = GetSkinDataIndexOfMelanin(melanin);
             if (skinDataIndexOfMelanin == SkinColors.Length - 1)
             {
-                return SkinColors[skinDataIndexOfMelanin].color;
+                return SkinColors[skinDataIndexOfMelanin].Color;
             }
 
             float t = Mathf.InverseLerp(
-                SkinColors[skinDataIndexOfMelanin].melanin,
-                SkinColors[skinDataIndexOfMelanin + 1].melanin,
+                SkinColors[skinDataIndexOfMelanin].Melanin,
+                SkinColors[skinDataIndexOfMelanin + 1].Melanin,
                 melanin);
             return Color.Lerp(
-                SkinColors[skinDataIndexOfMelanin].color,
-                SkinColors[skinDataIndexOfMelanin + 1].color,
+                SkinColors[skinDataIndexOfMelanin].Color,
+                SkinColors[skinDataIndexOfMelanin + 1].Color,
                 t);
         }
 
@@ -126,7 +126,7 @@ namespace FacialStuff.Genetics
             int result = 0;
             for (int i = 0; i < SkinColors.Length; i++)
             {
-                if (melanin < SkinColors[i].melanin)
+                if (melanin < SkinColors[i].Melanin)
                 {
                     break;
                 }
@@ -137,6 +137,7 @@ namespace FacialStuff.Genetics
             return result;
         }
 
+        // ReSharper disable once InconsistentNaming
         public static bool GetSkinDataIndexOfMelanin_Prefix(ref int __result, float melanin)
         {
             __result = GetSkinDataIndexOfMelanin(melanin);
@@ -156,7 +157,7 @@ namespace FacialStuff.Genetics
             }
 
             int num = leftIndex + 1;
-            return Mathf.Lerp(SkinColors[leftIndex].melanin, SkinColors[num].melanin, lerp);
+            return Mathf.Lerp(SkinColors[leftIndex].Melanin, SkinColors[num].Melanin, lerp);
         }
 
         public static bool IsDarkSkin_Prefix(ref bool __result, Color color)
@@ -172,7 +173,7 @@ namespace FacialStuff.Genetics
             int num = 0;
             for (int i = 0; i < SkinColors.Length; i++)
             {
-                if (value < SkinColors[i].selector)
+                if (value < SkinColors[i].Selector)
                 {
                     break;
                 }
@@ -182,12 +183,12 @@ namespace FacialStuff.Genetics
 
             if (num == SkinColors.Length - 1)
             {
-                __result = SkinColors[num].melanin;
+                __result = SkinColors[num].Melanin;
                 return false;
             }
 
-            float t = Mathf.InverseLerp(SkinColors[num].selector, SkinColors[num + 1].selector, value);
-            __result = Mathf.Lerp(SkinColors[num].melanin, SkinColors[num + 1].melanin, t);
+            float t = Mathf.InverseLerp(SkinColors[num].Selector, SkinColors[num + 1].Selector, value);
+            __result = Mathf.Lerp(SkinColors[num].Melanin, SkinColors[num + 1].Melanin, t);
             return false;
         }
 
@@ -207,20 +208,20 @@ namespace FacialStuff.Genetics
             float num = 0f;
             if (skinDataIndex == 0)
             {
-                num += SkinColors[skinDataIndex].selector;
+                num += SkinColors[skinDataIndex].Selector;
             }
             else if (SkinColors.Length > 1)
             {
-                num += (SkinColors[skinDataIndex].selector - SkinColors[skinDataIndex - 1].selector) / 2f;
+                num += (SkinColors[skinDataIndex].Selector - SkinColors[skinDataIndex - 1].Selector) / 2f;
             }
 
             if (skinDataIndex == SkinColors.Length - 1)
             {
-                num += 1f - SkinColors[skinDataIndex].selector;
+                num += 1f - SkinColors[skinDataIndex].Selector;
             }
             else if (SkinColors.Length > 1)
             {
-                num += (SkinColors[skinDataIndex + 1].selector - SkinColors[skinDataIndex].selector) / 2f;
+                num += (SkinColors[skinDataIndex + 1].Selector - SkinColors[skinDataIndex].Selector) / 2f;
             }
 
             return num;
@@ -230,11 +231,11 @@ namespace FacialStuff.Genetics
         {
             #region Public Fields
 
-            public Color color;
+            public Color Color;
 
-            public float melanin;
+            public float Melanin;
 
-            public float selector;
+            public float Selector;
 
             #endregion Public Fields
 
@@ -242,9 +243,9 @@ namespace FacialStuff.Genetics
 
             public SkinColorData(float melanin, float selector, Color color)
             {
-                this.melanin = melanin;
-                this.selector = selector;
-                this.color = color;
+                this.Melanin = melanin;
+                this.Selector = selector;
+                this.Color = color;
             }
 
             #endregion Public Constructors

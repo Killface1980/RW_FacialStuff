@@ -6,11 +6,8 @@ namespace FacialStuff
 {
     using JetBrains.Annotations;
 
-    using FacialStuff.Drawer;
-
     public class PawnHeadDrawer : BasicDrawer
     {
-
         #region Public Fields
 
         public PawnGraphicSet Graphics;
@@ -142,6 +139,7 @@ namespace FacialStuff
         {
             return rotation.AsQuat;
         }
+
         public virtual void Tick(Rot4 bodyFacing, Rot4 headFacing, PawnGraphicSet graphics)
         {
             this.Graphics = graphics;

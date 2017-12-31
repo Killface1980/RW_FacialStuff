@@ -17,10 +17,12 @@
 
         public static void TransformInto_Prefix(CompWerewolf __instance)
         {
-            if (__instance.Pawn.GetCompFace(out CompFace compFace))
+            if (!__instance.Pawn.GetCompFace(out CompFace compFace))
             {
-                compFace.Deactivated = true;
+                return;
             }
+
+            compFace.Deactivated = true;
         }
     }
 }

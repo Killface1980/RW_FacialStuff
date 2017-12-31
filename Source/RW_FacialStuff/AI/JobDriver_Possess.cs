@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+// ReSharper disable InconsistentNaming
 namespace FacialStuff.AI
 {
     using RimWorld;
@@ -70,7 +70,10 @@ namespace FacialStuff.AI
                             break;
                         }
 
-                        if (c.InBounds(this.pawn.Map) && c.Standable(this.pawn.Map)) break;
+                        if (c.InBounds(this.pawn.Map) && c.Standable(this.pawn.Map))
+                        {
+                            break;
+                        }
                     }
 
                     this.job.targetB = c;
@@ -131,8 +134,7 @@ namespace FacialStuff.AI
                             this.job.targetA.Cell,
                             this.Map,
                             ThingDefOf.FilthVomit,
-                            this.pawn.LabelIndefinite(),
-                            1);
+                            this.pawn.LabelIndefinite());
                         if (this.pawn.needs.food.CurLevelPercentage > 0.10000000149011612)
                         {
                             this.pawn.needs.food.CurLevel -= (float)(this.pawn.needs.food.MaxLevel * 0.02);
@@ -145,8 +147,7 @@ namespace FacialStuff.AI
                             this.pawn.Position.RandomAdjacentCell8Way(),
                             this.Map,
                             ThingDefOf.FilthVomit,
-                            this.pawn.LabelIndefinite(),
-                            1);
+                            this.pawn.LabelIndefinite());
                     }
 
                     this.ticksLeft--;
@@ -168,15 +169,22 @@ namespace FacialStuff.AI
             Action action = delegate
                 {
                     MentalState_Possessed mentalState_InsultingSpree = base.pawn.MentalState as MentalState_Possessed;
-                    if (mentalState_InsultingSpree != null && Find.TickManager.TicksGame - mentalState_InsultingSpree.lastInsultTicks < 300)// 1200)
+                    if (mentalState_InsultingSpree != null
+                        && Find.TickManager.TicksGame - mentalState_InsultingSpree.lastInsultTicks < 300)
+                    {
+                        // 1200)
                         return;
+                    }
+
                     base.pawn.jobs.curDriver.ReadyForNextToil();
                 };
-            Toil toil = new Toil();
-            toil.initAction = action;
-            toil.tickAction = action;
-            toil.socialMode = RandomSocialMode.Off;
-            toil.defaultCompleteMode = ToilCompleteMode.Never;
+            Toil toil = new Toil
+                            {
+                                initAction = action,
+                                tickAction = action,
+                                socialMode = RandomSocialMode.Off,
+                                defaultCompleteMode = ToilCompleteMode.Never
+                            };
             return toil;
         }
 

@@ -2,7 +2,6 @@
 
 namespace FacialStuff
 {
-    using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -23,12 +22,13 @@ namespace FacialStuff
 
             list.Begin(rect);
 
-            var kinds = new List<ThingDef>();
+            List<ThingDef> kinds = new List<ThingDef>();
             foreach (PawnKindDef kindDef in DefDatabase<PawnKindDef>.AllDefsListForReading.Where(
                 kindDef => !kinds.Contains(kindDef.race)))
             {
                 kinds.Add(kindDef.race);
             }
+
             kinds = kinds.OrderBy(x => x.defName).ToList();
             foreach (ThingDef thingDef in kinds)
             {
@@ -37,8 +37,10 @@ namespace FacialStuff
                 {
                     label += " is animated";
                 }
+
                 list.Label(label);
             }
+
             list.End();
 
             if (GUI.changed)
@@ -46,11 +48,6 @@ namespace FacialStuff
                 this.Mod.WriteSettings();
             }
 
-        }
-
-        public override void ExposeData()
-        {
-            base.ExposeData();
         }
 
         #endregion Public Methods

@@ -10,7 +10,7 @@ namespace FacialStuff.AI
         protected override Job TryGiveJob(Pawn pawn)
         {
             MentalState_Possessed mentalStatePossessed = pawn.MentalState as MentalState_Possessed;
-            if (mentalStatePossessed != null && mentalStatePossessed.target != null && pawn.CanReach(mentalStatePossessed.target, PathEndMode.Touch, Danger.Deadly, false, TraverseMode.ByPawn))
+            if (mentalStatePossessed != null && mentalStatePossessed.target != null && pawn.CanReach(mentalStatePossessed.target, PathEndMode.Touch, Danger.Deadly))
             {
                 return new Job(DefDatabase<JobDef>.GetNamed("Possess"), mentalStatePossessed.target);
             }

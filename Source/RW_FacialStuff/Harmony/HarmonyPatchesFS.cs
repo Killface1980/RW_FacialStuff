@@ -31,8 +31,6 @@ namespace FacialStuff.Harmony
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             // harmony.Patch(AccessTools.Method(typeof(PawnRenderer), "RenderPawnInternal", new Type[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) }), null, null, new HarmonyMethod(typeof(Alien), nameof(Alien.RenderPawnInternalTranspiler)));
-
-
             if (Patches2.Plants)
             {
                 harmony.Patch(
@@ -50,7 +48,6 @@ namespace FacialStuff.Harmony
             // new HarmonyMethod(
             // typeof(Dialog_Options_DoWindowContents_Patch),
             // nameof(Dialog_Options_DoWindowContents_Patch.Transpiler)));
-
             harmony.Patch(
                 AccessTools.Method(typeof(Page_ConfigureStartingPawns), "DrawPortraitArea"),
                 null,
@@ -106,12 +103,11 @@ namespace FacialStuff.Harmony
 
             // if (!skinPatched)
             // {
-            //     AccessTools.Field(typeof(PawnSkinColors), "SkinColors").SetValue(
-            //         typeof(PawnSkinColors_FS.SkinColorData),
-            //         PawnSkinColors_FS.SkinColors);
-            //     skinPatched = true;
+            // AccessTools.Field(typeof(PawnSkinColors), "SkinColors").SetValue(
+            // typeof(PawnSkinColors_FS.SkinColorData),
+            // PawnSkinColors_FS.SkinColors);
+            // skinPatched = true;
             // }
-
             harmony.Patch(
                 AccessTools.Method(typeof(PawnSkinColors), "GetSkinDataIndexOfMelanin"),
                 new HarmonyMethod(
@@ -208,7 +204,8 @@ namespace FacialStuff.Harmony
 
         public static void OpenStylingWindow(Pawn pawn)
         {
-            Find.WindowStack.Add(new Dialog_FaceStyling(pawn));
+            pawn.GetCompFace(out CompFace face);
+            Find.WindowStack.Add(new Dialog_FaceStyling(face));
         }
 
         public static void DirtyCache_Postfix(HediffSet __instance)
@@ -244,10 +241,12 @@ namespace FacialStuff.Harmony
             {
                 return true;
             }
+
             if (compFace.Props.needsAlienHair)
             {
                 return true;
             }
+
             IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
                                           where hair.hairTags.SharesElementWith(factionType.hairTags)
                                           select hair;
@@ -264,6 +263,7 @@ namespace FacialStuff.Harmony
             {
                 return;
             }
+
             pawn.CheckForAddedOrMissingParts();
 
             // Check if race has face, else return
@@ -320,6 +320,7 @@ namespace FacialStuff.Harmony
                 __instance.desiccatedHeadGraphic = GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
                 __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
             }
+
             __instance.rottingGraphic =
                 GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
                     pawn.story.bodyType,
@@ -354,18 +355,22 @@ namespace FacialStuff.Harmony
                 if (pawn.GetCompFace(out CompFace compFace))
                 {
                     if (compFace.Props.canRotateHead)
+                    {
                         if (compFace.HeadRotator != null && !compFace.IsChild)
                         {
                             compFace.HeadRotator.LookAtPawn(recipient);
                         }
+                    }
                 }
 
                 if (recipient.GetCompFace(out CompFace recipientFace))
                 {
                     if (recipientFace.Props.canRotateHead)
-                    if (recipientFace.HeadRotator != null && !recipientFace.IsChild)
+                    {
+                        if (recipientFace.HeadRotator != null && !recipientFace.IsChild)
                     {
                         recipientFace.HeadRotator.LookAtPawn(pawn);
+                    }
                     }
                 }
             }

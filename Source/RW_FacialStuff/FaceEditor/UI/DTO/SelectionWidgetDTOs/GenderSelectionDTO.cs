@@ -39,7 +39,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
             this.OriginalGender = currentGender;
             this.genders.Add(Gender.Male);
             this.genders.Add(Gender.Female);
-            this.index = currentGender == Gender.Male ? 0 : 1;
+            this.Index = currentGender == Gender.Male ? 0 : 1;
         }
 
         public override int Count
@@ -54,7 +54,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.genders[this.index];
+                return this.genders[this.Index];
             }
         }
 
@@ -70,18 +70,18 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.genders[this.index].ToString().Translate().CapitalizeFirst();
+                return this.genders[this.Index].ToString().Translate().CapitalizeFirst();
             }
         }
 
         public override void ResetToDefault()
         {
-            if (this.OriginalGender == this.genders[this.index])
+            if (this.OriginalGender == this.genders[this.Index])
             {
                 return;
             }
 
-            this.index = this.OriginalGender == Gender.Male ? 0 : 1;
+            this.Index = this.OriginalGender == Gender.Male ? 0 : 1;
             this.IndexChanged();
         }
     }

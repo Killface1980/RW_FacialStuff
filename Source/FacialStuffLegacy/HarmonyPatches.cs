@@ -1,18 +1,12 @@
-﻿// ReSharper disable All
-
-namespace FacialStuff.Harmony
+﻿namespace FacialStuff.Harmony
 {
-    using System.Collections.Generic;
     using System.Linq;
 
     using FacialStuff.FaceStyling_Bench;
 
     using global::Harmony;
 
-    using RimWorld;
-
     using Verse;
-    using Verse.Sound;
 
     [StaticConstructorOnStartup]
     public static class HarmonyPatches

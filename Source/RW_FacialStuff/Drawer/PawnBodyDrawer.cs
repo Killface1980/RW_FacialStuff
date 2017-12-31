@@ -6,44 +6,39 @@ namespace FacialStuff
 {
     using System.Collections.Generic;
 
-    using FacialStuff.Drawer;
-    using FacialStuff.Harmony;
-
     using JetBrains.Annotations;
 
     using RimWorld;
 
     public class PawnBodyDrawer : BasicDrawer
     {
+        #region Public Fields
+
+        public PawnGraphicSet Graphics;
+
+        #endregion Public Fields
 
         #region Protected Fields
 
-
-        protected bool isMoving;
-        protected float movedPercent;
-
         protected Mesh HandMesh = MeshPool.plane10;
+        protected bool IsMoving;
+        protected float MovedPercent;
 
         #endregion Protected Fields
-
-        #region Private Fields
-
-        #endregion Private Fields
 
         #region Protected Constructors
 
         protected PawnBodyDrawer()
         {
         }
+
         #endregion Protected Constructors
 
         #region Public Properties
 
-        public CompBodyAnimator CompAnimator
-        {
-            get => this.compAnimator;
-            set => this.compAnimator = value;
-        }
+        public CompBodyAnimator CompAnimator { get; set; }
+
+        public Pawn Pawn { get; set; }
 
         #endregion Public Properties
 
@@ -53,29 +48,6 @@ namespace FacialStuff
         {
         }
 
-        public virtual void DrawEquipment(Vector3 rootLoc, bool portrait)
-        {
-        }
-
-        public virtual void DrawHands(Vector3 drawPos, bool portrait, bool carrying = false, HandsToDraw drawSide = HandsToDraw.Both)
-        {
-            
-        }
-
-        public virtual void DrawEquipmentAiming(Thing equipment, Vector3 weaponDrawLoc, Vector3 rootLoc, float aimAngle, bool portrait)
-        {
-        }
-
-
-
-        public virtual bool CarryWeaponOpenly()
-        {
-            return false;
-        }
-
-        public virtual void DoAttackAnimationOffsets(ref float weaponAngle, ref Vector3 weaponPosition, bool flipped)
-        {
-        }
         public virtual List<Material> BodyBaseAt(
             PawnGraphicSet graphics,
             Rot4 bodyFacing,
@@ -90,32 +62,33 @@ namespace FacialStuff
             return false;
         }
 
+        public virtual void DrawBody(PawnWoundDrawer woundDrawer, Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType, bool renderBody, bool portrait)
+        {
+        }
+
+        public virtual void DrawEquipment(Vector3 rootLoc, bool portrait)
+        {
+        }
+
         public virtual void DrawFeet(Vector3 rootLoc, bool portrait)
         {
         }
 
+        public virtual void DrawHands(Vector3 drawPos, bool portrait, bool carrying = false, HandsToDraw drawSide = HandsToDraw.Both)
+        {
 
-
-
-        public Pawn Pawn;
+        }
 
         public virtual void Initialize()
         {
         }
 
-        public virtual void DrawBody([CanBeNull] PawnWoundDrawer woundDrawer, Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType, bool renderBody, bool portrait)
+        public virtual void Tick(Rot4 bodyFacing, PawnGraphicSet graphics)
         {
+            this.Graphics = graphics;
+            this.bodyFacing = bodyFacing;
         }
 
         #endregion Public Methods
-        public PawnGraphicSet graphics;
-
-        private CompBodyAnimator compAnimator;
-
-        public virtual void Tick(Rot4 bodyFacing, PawnGraphicSet graphics)
-        {
-            this.graphics = graphics;
-            this.bodyFacing = bodyFacing;
-        }
     }
 }

@@ -36,14 +36,14 @@
                 GUI.color = new Color(0.623529f, 0.623529f, 0.623529f);
             }
 
-            GUI.DrawTexture(rect, ContentFinder<Texture2D>.Get("Buttons/ButtonFace", true));
+            GUI.DrawTexture(rect, ContentFinder<Texture2D>.Get("Buttons/ButtonFace"));
             string tip = "FacialStuffEditor.EditFace".Translate();
             TooltipHandler.TipRegion(rect, tip);
 
             // ReSharper disable once InvertIf
-            if (Widgets.ButtonInvisible(rect, false))
+            if (Widgets.ButtonInvisible(rect))
             {
-                SoundDefOf.TickLow.PlayOneShotOnCamera(null);
+                SoundDefOf.TickLow.PlayOneShotOnCamera();
                 HarmonyPatchesFS.OpenStylingWindow(pawn);
             }
         }

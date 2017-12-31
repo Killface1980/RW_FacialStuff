@@ -34,13 +34,21 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 
     public class BodyTypeSelectionDTO : ASelectionWidgetDTO
     {
+        #region Public Fields
+
         public readonly BodyType OriginalBodyType;
 
-        private List<BodyType> bodyTypes;
+        #endregion Public Fields
+
+        #region Private Fields
 
         private readonly List<BodyType> femaleBodyTypes;
-
         private readonly List<BodyType> maleBodyTypes;
+        private List<BodyType> bodyTypes;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public BodyTypeSelectionDTO(BodyType bodyType, Gender gender)
         {
@@ -66,6 +74,10 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
             this.bodyTypes = gender == Gender.Male ? this.maleBodyTypes : this.femaleBodyTypes;
             this.FindIndex(bodyType);
         }
+
+        #endregion Public Constructors
+
+        #region Public Properties
 
         public override int Count
         {
@@ -107,7 +119,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.bodyTypes[this.index];
+                return this.bodyTypes[this.Index];
             }
         }
 
@@ -123,15 +135,23 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.bodyTypes[this.index].ToString();
+                return this.bodyTypes[this.Index].ToString();
             }
         }
+
+        #endregion Public Properties
+
+        #region Public Methods
 
         public override void ResetToDefault()
         {
             this.FindIndex(this.OriginalBodyType);
             this.IndexChanged();
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         private void FindIndex(BodyType bodyType)
         {
@@ -142,9 +162,11 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
                     continue;
                 }
 
-                this.index = i;
+                this.Index = i;
                 break;
             }
         }
+
+        #endregion Private Methods
     }
 }

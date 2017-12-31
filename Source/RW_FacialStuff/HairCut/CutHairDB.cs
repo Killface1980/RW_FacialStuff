@@ -13,7 +13,6 @@
 
     using Verse;
 
-
     // ReSharper disable once InconsistentNaming
     [StaticConstructorOnStartup]
     public static class CutHairDB

@@ -18,7 +18,7 @@
 
         public override bool TryMakePreToilReservations()
         {
-            return this.pawn.Reserve(this.job.targetA, this.job, 1, -1, null);
+            return this.pawn.Reserve(this.job.targetA, this.job);
         }
 
         protected override IEnumerable<Toil> MakeNewToils()
@@ -37,7 +37,7 @@
                                 initAction = delegate
                                     {
                                         CompFaceEditor faceStylerNew =
-                                            this.TargetA.Thing.TryGetComp<CompFaceEditor>();
+                                            this.TargetA.Thing?.TryGetComp<CompFaceEditor>();
                                         if (faceStylerNew != null)
                                         {
                                             Pawn actor = this.GetActor();

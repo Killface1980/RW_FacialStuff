@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
+// ReSharper disable StyleCop.SA1307
+// ReSharper disable InconsistentNaming
 namespace RimWorld
 {
-    using FacialStuff;
-
-    using RimWorld;
-
     using UnityEngine;
 
     using Verse;
@@ -18,11 +12,10 @@ namespace RimWorld
     {
         public float armLength;
 
+        public float offCenterX;
+
         public Dictionary<LocomotionUrgency, WalkCycleDef> walkCycles =
             new Dictionary<LocomotionUrgency, WalkCycleDef>();
-
-        // public float legLength;
-
 
         public float extraLegLength;
 
@@ -36,8 +29,5 @@ namespace RimWorld
 
 
         // public float hipOffsetVerticalFromCenter;
-
-
-
     }
 }

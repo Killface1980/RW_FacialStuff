@@ -1,7 +1,5 @@
 ﻿namespace FacialStuff.Animator
 {
-    using FacialStuff.Components;
-
     using Verse;
     using Verse.AI;
 
@@ -10,7 +8,6 @@
         // public float cyclePercent = 0;
 
         // public bool Finished;
-
         private Pawn pawn;
 
         private CompBodyAnimator compAnim;
@@ -28,7 +25,7 @@
 
             if (this.compAnim.AnimatorOpen)
             {
-                movedPercent = MainTabWindow_Animator.AnimationPercent;
+                movedPercent = MainTabWindowAnimator.AnimationPercent;
                 return true;
             }
 
@@ -47,18 +44,22 @@
             {
                 return false;
             }
+
             if (pather.BuildingBlockingNextPathCell() != null)
             {
                 return false;
             }
+
             if (pather.NextCellDoorToManuallyOpen() != null)
             {
                 return false;
             }
+
             if (pather.WillCollideWithPawnOnNextPathCell())
             {
                 return false;
             }
+
             movedPercent = 1f - pather.nextCellCostLeft / pather.nextCellCostTotal;
             return true;
         }
@@ -67,15 +68,14 @@
         {
             // if (this.pawn.pather.Moving)
             // {
-            //     float left = this.pawn.pather.nextCellCostLeft;
-            //     float total = this.pawn.pather.nextCellCostTotal;
-            //     this.cyclePercent = 1f - left / total;
-            //
-            //     this.Finished = false;
+            // float left = this.pawn.pather.nextCellCostLeft;
+            // float total = this.pawn.pather.nextCellCostTotal;
+            // this.cyclePercent = 1f - left / total;
+            // this.Finished = false;
             // }
             // else
             // {
-            //     this.Finished = true;
+            // this.Finished = true;
             // }
         }
 

@@ -1,7 +1,5 @@
-﻿namespace FacialStuff.Drawer
+﻿namespace FacialStuff
 {
-    using FacialStuff.Harmony;
-
     using UnityEngine;
 
     using Verse;
@@ -18,7 +16,7 @@
 
         protected JointLister GetJointPositions(Vector3 vector, float jointWidth, float emptyHandsOffsetY = 0f, bool carrying = false)
         {
-            var rot = this.bodyFacing;
+            Rot4 rot = this.bodyFacing;
             JointLister joints = new JointLister();
             float leftX = vector.x;
             float rightX = vector.x;
@@ -40,7 +38,7 @@
             else if (rot.IsHorizontal)
             {
                 float offsetX = jointWidth * 0.1f;
-                float offsetZ = jointWidth * 0.4f;
+                float offsetZ = jointWidth * 0.2f;
 
                 if (rot == Rot4.East)
                 {
@@ -56,6 +54,7 @@
                     rightZ += offsetZ;
 
                 }
+
                 leftX += offsetX;
                 rightX -= offsetX;
 
@@ -80,7 +79,7 @@
 
         public virtual Mesh GetPawnMesh(bool wantsBody, bool portrait)
         {
-            return wantsBody ? MeshPool.humanlikeBodySet.MeshAt(bodyFacing) : MeshPool.humanlikeHeadSet.MeshAt(headFacing);
+            return wantsBody ? MeshPool.humanlikeBodySet.MeshAt(this.bodyFacing) : MeshPool.humanlikeHeadSet.MeshAt(this.headFacing);
         }
     }
 

@@ -16,7 +16,7 @@ namespace FacialStuff
 
         private bool hideHatInBed = true;
 
-        private bool hideHatWhileRoofed = false;
+        private bool hideHatWhileRoofed;
 
         private bool hideShellWhileRoofed = true;
         private bool ignoreRenderBody;
@@ -38,18 +38,19 @@ namespace FacialStuff
 
         private bool useCaching;
 
-        private bool useFreeWill;
-
         private bool useHeadRotator = true;
         private bool useMouth = true;
-        private bool useNastyGrin = false;
+        private bool useNastyGrin;
         private bool useWeirdHairChoices = true;
 
         private bool useWrinkles = true;
 
         public bool UseHands => this.useHands;
+        public bool UseFeet => this.useFeet;
 
         private bool useHands = true;
+
+        private bool useFeet = true;
 
         #endregion Private Fields
 
@@ -94,7 +95,8 @@ namespace FacialStuff
         public bool UseCaching => this.useCaching;
 
         public bool UseDNAByFaction { get; } = false;
-        public bool UseFreeWill => this.useFreeWill;
+        public bool UseFreeWill { get; }
+
         public bool UseHeadRotator => this.useHeadRotator;
         public bool UseMouth => this.useMouth;
         public bool UseNastyGrin => this.useNastyGrin;
@@ -140,10 +142,7 @@ namespace FacialStuff
                 "Settings.SameBeardColor".Translate(),
                 ref this.sameBeardColor,
                 "Settings.SameBeardColorTooltip".Translate());
-            list.CheckboxLabeled(
-                "Settings.UseHands".Translate(),
-                ref this.useHands,
-                "Settings.UseHandsTooltip".Translate());
+
             // list.CheckboxLabeled(
             // "Settings.HideHatWhileRoofed".Translate(),
             // ref this.hideHatWhileRoofed,
@@ -164,6 +163,18 @@ namespace FacialStuff
                 "Settings.UseNastyGrin".Translate(),
                 ref this.useNastyGrin,
                 "Settings.UseNastyGrinTooltip".Translate());
+
+            list.Gap();
+            list.Label("Settings.HandsFeetLabel".Translate());
+            list.GapLine();
+            list.CheckboxLabeled(
+                "Settings.UseHands".Translate(),
+                ref this.useHands,
+                "Settings.UseHandsTooltip".Translate());
+            list.CheckboxLabeled(
+                "Settings.UseFeet".Translate(),
+                ref this.useFeet,
+                "Settings.UseFeetTooltip".Translate());
 
             list.Gap();
             list.Label("Settings.EditorLabel".Translate());
@@ -303,6 +314,7 @@ namespace FacialStuff
             Scribe_Values.Look(ref this.useWrinkles, "useWrinkles", false, true);
             Scribe_Values.Look(ref this.useMouth, "useMouth", false, true);
             Scribe_Values.Look(ref this.useHands, "useHands");
+            Scribe_Values.Look(ref this.useFeet, "useFeet");
             Scribe_Values.Look(ref this.mergeHair, "mergeHair", false, true);
             Scribe_Values.Look(ref this.hideHatWhileRoofed, "hideHatWhileRoofed", false, true);
             Scribe_Values.Look(ref this.hideHatInBed, "hideHatInBed", false, true);

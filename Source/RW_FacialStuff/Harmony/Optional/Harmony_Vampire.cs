@@ -29,23 +29,20 @@
                                 typeof(Vampire.CompVampire),
                                 nameof(Vampire.CompVampire.PostExposeData)),
                             null,
-                            new HarmonyMethod(typeof(Vampire_Patches), nameof(Vampire_Patches.Transformed_Postfix)),
-                            null);
+                            new HarmonyMethod(typeof(Vampire_Patches), nameof(Vampire_Patches.Transformed_Postfix)));
 
                         harmony.Patch(
                             AccessTools.Method(
                                 typeof(Vampire.CompVampire), "set_CurrentForm"),
                             null,
-                            new HarmonyMethod(typeof(Vampire_Patches), nameof(Vampire_Patches.Transformed_Postfix)),
-                            null);
+                            new HarmonyMethod(typeof(Vampire_Patches), nameof(Vampire_Patches.Transformed_Postfix)));
 
                         harmony.Patch(
                             AccessTools.Method(
                                 typeof(Vampire.CompVampire),
                                 nameof(Vampire.CompVampire.InitializeVampirism)),
                             null,
-                            new HarmonyMethod(typeof(Vampire_Patches), nameof(Vampire_Patches.Transformed_Postfix)),
-                            null);
+                            new HarmonyMethod(typeof(Vampire_Patches), nameof(Vampire_Patches.Transformed_Postfix)));
 
 
                     }))();

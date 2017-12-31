@@ -23,7 +23,7 @@ namespace FacialStuff.AI
                 return false;
             }
 
-            InsultingSpreeMentalStateUtility.GetInsultCandidatesFor(pawn, candidates, true);
+            InsultingSpreeMentalStateUtility.GetInsultCandidatesFor(pawn, candidates);
             bool result = candidates.Count >= 2;
             candidates.Clear();
             return result;

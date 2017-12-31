@@ -3,7 +3,6 @@ using System.Linq;
 
 namespace FacialStuff
 {
-    using System;
     using System.IO;
 
     using FacialStuff.Components;
@@ -17,7 +16,6 @@ namespace FacialStuff
     using UnityEngine;
 
     using Verse;
-    using Verse.AI;
 
     public class GameComponent_FacialStuff : GameComponent
     {
@@ -48,21 +46,23 @@ namespace FacialStuff
                     CutHairDB.ExportHairCut(hairDef, name);
                 }
             }
+
             this.WeaponComps();
+
             // BuildWalkCycles();
 
             // foreach (BodyAnimDef def in DefDatabase<BodyAnimDef>.AllDefsListForReading)
             // {
-            //     if (def.walkCycles.Count == 0)
-            //     {
-            //         var length = Enum.GetNames(typeof(LocomotionUrgency)).Length;
-            //         for (int index = 0; index < length; index++)
-            //         {
-            //             WalkCycleDef cycleDef = new WalkCycleDef();
-            //             cycleDef.defName = def.defName + "_cycle";
-            //             def.walkCycles.Add(index, cycleDef);
-            //         }
-            //     }
+            // if (def.walkCycles.Count == 0)
+            // {
+            // var length = Enum.GetNames(typeof(LocomotionUrgency)).Length;
+            // for (int index = 0; index < length; index++)
+            // {
+            // WalkCycleDef cycleDef = new WalkCycleDef();
+            // cycleDef.defName = def.defName + "_cycle";
+            // def.walkCycles.Add(index, cycleDef);
+            // }
+            // }
             // }
         }
 
@@ -84,11 +84,13 @@ namespace FacialStuff
                 cycle.BodyAngle = new SimpleCurve();
                 cycle.BodyAngleVertical = new SimpleCurve();
                 cycle.BodyOffsetZ = new SimpleCurve();
-                //  cycle.BodyOffsetVerticalZ = new SimpleCurve();
+
+                // cycle.BodyOffsetVerticalZ = new SimpleCurve();
                 cycle.FootAngle = new SimpleCurve();
                 cycle.FootPositionX = new SimpleCurve();
                 cycle.FootPositionZ = new SimpleCurve();
-                //  cycle.FootPositionVerticalZ = new SimpleCurve();
+
+                // cycle.FootPositionVerticalZ = new SimpleCurve();
                 cycle.HandsSwingAngle = new SimpleCurve();
                 cycle.HandsSwingPosVertical = new SimpleCurve();
                 cycle.ShoulderOffsetHorizontalX = new SimpleCurve();
@@ -98,9 +100,8 @@ namespace FacialStuff
                 cycle.FrontPawAngle = new SimpleCurve();
                 cycle.FrontPawPositionX = new SimpleCurve();
                 cycle.FrontPawPositionZ = new SimpleCurve();
-                //cycle.FrontPawPositionVerticalZ = new SimpleCurve();
 
-
+                // cycle.FrontPawPositionVerticalZ = new SimpleCurve();
                 if (cycle.keyframes.NullOrEmpty())
                 {
                     cycle.keyframes = new List<PawnKeyframe>();
@@ -109,6 +110,7 @@ namespace FacialStuff
                         cycle.keyframes.Add(new PawnKeyframe(i));
                     }
                 }
+
                 // Log.Message(cycle.defName + " has " + cycle.animation.Count);
                 foreach (PawnKeyframe key in cycle.keyframes)
                 {
@@ -153,8 +155,10 @@ namespace FacialStuff
             Dictionary<SimpleCurve, float?> dict =
                 new Dictionary<SimpleCurve, float?>
                     {
-                       // { cycle.BodyOffsetVerticalZ, key.BodyOffsetVerticalZ },
-                        { cycle.ShoulderOffsetHorizontalX, key.ShoulderOffsetHorizontalX },
+                        {
+                            cycle.ShoulderOffsetHorizontalX,
+                            key.ShoulderOffsetHorizontalX
+                        },
                         { cycle.HipOffsetHorizontalX, key.HipOffsetHorizontalX },
                         { cycle.BodyAngle, key.BodyAngle },
                         { cycle.BodyAngleVertical, key.BodyAngleVertical },
@@ -162,17 +166,21 @@ namespace FacialStuff
                         { cycle.FootAngle, key.FootAngle },
                         { cycle.FootPositionX, key.FootPositionX },
                         { cycle.FootPositionZ, key.FootPositionZ },
-                      //  { cycle.FootPositionVerticalZ, key.FootPositionVerticalZ },
                         { cycle.HandsSwingAngle, key.HandsSwingAngle },
-                     //   { cycle.HandsSwingPosVertical, key.HandsSwingPosVertical },
                         { cycle.HandsSwingPosVertical, key.HandsSwingAngle },
                         { cycle.FrontPawAngle, key.FrontPawAngle },
                         { cycle.FrontPawPositionX, key.FrontPawPositionX },
                         { cycle.FrontPawPositionZ, key.FrontPawPositionZ },
-                       // {
-                       //     cycle.FrontPawPositionVerticalZ,
-                       //     key.FrontPawPositionVerticalZ
-                       // }
+
+                        // { cycle.BodyOffsetVerticalZ, key.BodyOffsetVerticalZ },
+
+                        // { cycle.FootPositionVerticalZ, key.FootPositionVerticalZ },
+
+                        // { cycle.HandsSwingPosVertical, key.HandsSwingPosVertical },
+                        // {
+                        // cycle.FrontPawPositionVerticalZ,
+                        // key.FrontPawPositionVerticalZ
+                        // }
                     };
 
 
@@ -222,6 +230,7 @@ namespace FacialStuff
                     {
                         continue;
                     }
+
                     foreach (string t in wepSets.thingTargets)
                     {
                         ThingDef thingDef = ThingDef.Named(t);
@@ -296,6 +305,7 @@ namespace FacialStuff
                 {
                     continue;
                 }
+
                 hairDef.texPath = "Hair/" + folder + hairname;
                 break;
             }

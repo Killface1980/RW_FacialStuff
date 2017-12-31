@@ -1,5 +1,7 @@
 ﻿namespace FacialStuff
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using FacialStuff.Defs;
     using FacialStuff.Genetics;
     using FacialStuff.Utilities;
@@ -14,43 +16,43 @@
 
     public class PawnFace : IExposable
     {
-        public Color BeardColor;
+        private Color beardColor;
 
         [CanBeNull]
-        public BeardDef BeardDef;
+        private BeardDef beardDef;
 
         [CanBeNull]
-        public BrowDef BrowDef;
-
-        public CrownType CrownType;
+        private BrowDef browDef;
 
         // public float Cuticula;
-        public bool DrawMouth = true;
+        private bool drawMouth = true;
 
-        public float EuMelanin;
-
-        [CanBeNull]
-        public EyeDef EyeDef;
-
-        public float Greyness;
-
-        public Color HairColor;
-
-        public bool HasSameBeardColor;
+        [SuppressMessage(
+            "StyleCop.CSharp.NamingRules",
+            "SA1305:FieldNamesMustNotUseHungarianNotation",
+            Justification = "Reviewed. Suppression is OK here.")]
+        private float euMelanin;
 
         [CanBeNull]
-        public MoustacheDef MoustacheDef;
+        private EyeDef eyeDef;
 
-        public float PheoMelanin;
+        private float greyness;
 
-        [NotNull]
-        public WrinkleDef WrinkleDef;
+        private Color hairColor;
 
-        public float wrinkleIntensity;
+        private bool hasSameBeardColor;
+
+        private MoustacheDef moustacheDef;
+
+        private float pheoMelanin;
+
+        private WrinkleDef wrinkleDef;
+
+        private float wrinkleIntensity;
 
         public PawnFace([NotNull] CompFace face, FactionDef pawnFactionDef, bool newPawn = true)
         {
-            var pawn = face.Pawn;
+            Pawn pawn = face.Pawn;
             this.DrawMouth = true;
 
             this.EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, pawnFactionDef);
@@ -62,11 +64,10 @@
 
             this.GenerateHairDNA(pawn, false, newPawn);
 
-            this.CrownType = pawn.story.crownType;
-            PawnFaceMaker.RandomBeardDefFor(face, pawnFactionDef, out this.BeardDef, out this.MoustacheDef);
+            PawnFaceMaker.RandomBeardDefFor(face, pawnFactionDef, out this.beardDef, out this.moustacheDef);
 
-            this.wrinkleIntensity = Mathf.InverseLerp(45f, 80f, pawn.ageTracker.AgeBiologicalYearsFloat);
-            this.wrinkleIntensity -= pawn.story.melanin / 2;
+            this.WrinkleIntensity = Mathf.InverseLerp(45f, 80f, pawn.ageTracker.AgeBiologicalYearsFloat);
+            this.WrinkleIntensity -= pawn.story.melanin / 2;
 
             // this.MelaninOrg = pawn.story.melanin;
         }
@@ -77,26 +78,104 @@
             // for RW to not bug out
         }
 
+        public Color BeardColor
+        {
+            get => this.beardColor;
+            set => this.beardColor = value;
+        }
+
+        public BeardDef BeardDef
+        {
+            get => this.beardDef;
+            set => this.beardDef = value;
+        }
+
+        public BrowDef BrowDef
+        {
+            get => this.browDef;
+            set => this.browDef = value;
+        }
+
+        public bool DrawMouth
+        {
+            get => this.drawMouth;
+            set => this.drawMouth = value;
+        }
+
+        public float EuMelanin
+        {
+            get => this.euMelanin;
+            set => this.euMelanin = value;
+        }
+
+        public EyeDef EyeDef
+        {
+            get => this.eyeDef;
+            set => this.eyeDef = value;
+        }
+
+        public float Greyness
+        {
+            get => this.greyness;
+            set => this.greyness = value;
+        }
+
+        public Color HairColor
+        {
+            get => this.hairColor;
+            set => this.hairColor = value;
+        }
+
+        public bool HasSameBeardColor
+        {
+            get => this.hasSameBeardColor;
+            set => this.hasSameBeardColor = value;
+        }
+
+        public MoustacheDef MoustacheDef
+        {
+            get => this.moustacheDef;
+            set => this.moustacheDef = value;
+        }
+
+        public float PheoMelanin
+        {
+            get => this.pheoMelanin;
+            set => this.pheoMelanin = value;
+        }
+
+        [NotNull]
+        public WrinkleDef WrinkleDef
+        {
+            get => this.wrinkleDef;
+            set => this.wrinkleDef = value;
+        }
+
+        public float WrinkleIntensity
+        {
+            get => this.wrinkleIntensity;
+            set => this.wrinkleIntensity = value;
+        }
+
         public void ExposeData()
         {
-            Scribe_Defs.Look(ref this.EyeDef, "EyeDef");
-            Scribe_Defs.Look(ref this.BrowDef, "BrowDef");
+            Scribe_Defs.Look(ref this.eyeDef, "EyeDef");
+            Scribe_Defs.Look(ref this.browDef, "BrowDef");
 
-            Scribe_Defs.Look(ref this.WrinkleDef, "WrinkleDef");
-            Scribe_Defs.Look(ref this.BeardDef, "BeardDef");
-            Scribe_Defs.Look(ref this.MoustacheDef, "MoustacheDef");
+            Scribe_Defs.Look(ref this.wrinkleDef, "WrinkleDef");
+            Scribe_Defs.Look(ref this.beardDef, "BeardDef");
+            Scribe_Defs.Look(ref this.moustacheDef, "MoustacheDef");
 
-            Scribe_Values.Look(ref this.DrawMouth, "drawMouth");
+            Scribe_Values.Look(ref this.drawMouth, "drawMouth");
 
-            Scribe_Values.Look(ref this.CrownType, "crownType");
-            Scribe_Values.Look(ref this.BeardColor, "BeardColor");
-            Scribe_Values.Look(ref this.HasSameBeardColor, "sameBeardColor");
+            Scribe_Values.Look(ref this.beardColor, "BeardColor");
+            Scribe_Values.Look(ref this.hasSameBeardColor, "sameBeardColor");
 
-            Scribe_Values.Look(ref this.EuMelanin, "euMelanin");
-            Scribe_Values.Look(ref this.PheoMelanin, "pheoMelanin");
-            Scribe_Values.Look(ref this.Greyness, "greyness");
+            Scribe_Values.Look(ref this.euMelanin, "euMelanin");
+            Scribe_Values.Look(ref this.pheoMelanin, "pheoMelanin");
+            Scribe_Values.Look(ref this.greyness, "greyness");
 
-            Scribe_Values.Look(ref this.HairColor, "hairColor");
+            Scribe_Values.Look(ref this.hairColor, "hairColor");
             Scribe_Values.Look(ref this.wrinkleIntensity, "wrinkles");
 
             // Scribe_Values.Look(ref this.MelaninOrg, "melaninOrg");
@@ -112,7 +191,8 @@
         {
             bool sameColor = Controller.settings.SameBeardColor;
 
-            HairDNA hairDNA = HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor || sameColor, ignoreRelative);
+            HairDNA hairDNA =
+                HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor || sameColor, ignoreRelative);
             this.EuMelanin = hairDNA.HairColorRequest.EuMelanin;
             this.PheoMelanin = hairDNA.HairColorRequest.PheoMelanin;
             this.Greyness = hairDNA.HairColorRequest.Greyness;

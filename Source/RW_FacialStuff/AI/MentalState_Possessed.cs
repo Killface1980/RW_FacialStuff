@@ -29,10 +29,10 @@
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_References.Look(ref this.target, "target", false);
-            Scribe_Values.Look(ref this.insultedTargetAtLeastOnce, "insultedTargetAtLeastOnce", false, false);
-            Scribe_Values.Look(ref this.lastInsultTicks, "lastInsultTicks", 0, false);
-            Scribe_Values.Look(ref this.targetFoundTicks, "targetFoundTicks", 0, false);
+            Scribe_References.Look(ref this.target, "target");
+            Scribe_Values.Look(ref this.insultedTargetAtLeastOnce, "insultedTargetAtLeastOnce");
+            Scribe_Values.Look(ref this.lastInsultTicks, "lastInsultTicks");
+            Scribe_Values.Look(ref this.targetFoundTicks, "targetFoundTicks");
 
             // Scribe_References.Look<Corpse>(ref this.corpse, "corpse", false);
         }
@@ -40,7 +40,7 @@
         public override void MentalStateTick()
         {
             if (this.target != null
-                && !InsultingSpreeMentalStateUtility.CanChaseAndInsult(this.pawn, this.target, false, true))
+                && !InsultingSpreeMentalStateUtility.CanChaseAndInsult(this.pawn, this.target))
             {
                 this.ChooseNextTarget();
             }
@@ -69,7 +69,7 @@
         // Verse.AI.MentalState_InsultingSpreeAll
         private void ChooseNextTarget()
         {
-            InsultingSpreeMentalStateUtility.GetInsultCandidatesFor(this.pawn, candidates, true);
+            InsultingSpreeMentalStateUtility.GetInsultCandidatesFor(this.pawn, candidates);
             if (!candidates.Any())
             {
                 this.target = null;

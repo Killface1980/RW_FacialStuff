@@ -1,84 +1,85 @@
+// ReSharper disable All
 namespace FacialStuff.FaceEditor.ColorPicker
 {
     using System.Globalization;
 
     using UnityEngine;
 
-    public class ColorHelper
+    public static class ColorHelper
     {
         /// <summary>
         ///     From http://answers.unity3d.com/questions/701956/hsv-to-rgb-without-editorguiutilityhsvtorgb.html
         /// </summary>
-        /// <param name="H"></param>
-        /// <param name="S"></param>
-        /// <param name="V"></param>
-        /// <param name="A"></param>
+        /// <param name="h"></param>
+        /// <param name="s"></param>
+        /// <param name="v"></param>
+        /// <param name="a"></param>
         /// <returns></returns>
-        public static Color HSVtoRGB(float H, float S, float V, float A = 1f)
+        public static Color HSVtoRGB(float h, float s, float v, float a = 1f)
         {
-            if (S == 0f)
+            if (s == 0f)
             {
-                return new Color(V, V, V, A);
+                return new Color(v, v, v, a);
             }
 
-            if (V == 0f)
+            if (v == 0f)
             {
-                return new Color(0f, 0f, 0f, A);
+                return new Color(0f, 0f, 0f, a);
             }
 
             Color col = Color.black;
-            float Hval = H * 6f;
+            float Hval = h * 6f;
             int sel = Mathf.FloorToInt(Hval);
             float mod = Hval - sel;
-            float v1 = V * (1f - S);
-            float v2 = V * (1f - S * mod);
-            float v3 = V * (1f - S * (1f - mod));
+            float v1 = v * (1f - s);
+            float v2 = v * (1f - s * mod);
+            float v3 = v * (1f - s * (1f - mod));
             switch (sel + 1)
             {
                 case 0:
-                    col.r = V;
+                    col.r = v;
                     col.g = v1;
                     col.b = v2;
                     break;
 
                 case 1:
-                    col.r = V;
+                    col.r = v;
                     col.g = v3;
                     col.b = v1;
                     break;
 
                 case 2:
                     col.r = v2;
-                    col.g = V;
+                    col.g = v;
                     col.b = v1;
                     break;
 
                 case 3:
                     col.r = v1;
-                    col.g = V;
+                    col.g = v;
                     col.b = v3;
                     break;
 
                 case 4:
                     col.r = v1;
                     col.g = v2;
-                    col.b = V;
+                    col.b = v;
                     break;
 
                 case 5:
                     col.r = v3;
                     col.g = v1;
-                    col.b = V;
+                    col.b = v;
                     break;
 
                 case 6:
-                    col.r = V;
+                    col.r = v;
                     col.g = v1;
                     col.b = v2;
                     break;
 
                 case 7:
-                    col.r = V;
+                    col.r = v;
                     col.g = v3;
                     col.b = v1;
                     break;
@@ -86,7 +87,7 @@ namespace FacialStuff.FaceEditor.ColorPicker
             col.r = Mathf.Clamp(col.r, 0f, 1f);
             col.g = Mathf.Clamp(col.g, 0f, 1f);
             col.b = Mathf.Clamp(col.b, 0f, 1f);
-            col.a = Mathf.Clamp(A, 0f, 1f);
+            col.a = Mathf.Clamp(a, 0f, 1f);
             return col;
         }
 

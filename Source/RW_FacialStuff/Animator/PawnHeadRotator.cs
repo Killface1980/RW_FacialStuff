@@ -1,14 +1,14 @@
 ﻿namespace FacialStuff.Animator
 {
-    using System.Collections.Generic;
-
     using JetBrains.Annotations;
-
+    using System.Collections.Generic;
     using Verse;
     using Verse.AI;
 
     public class PawnHeadRotator
     {
+        #region Public Fields
+
         public readonly SimpleCurve MotionCurve =
             new SimpleCurve
                 {
@@ -18,21 +18,59 @@
                     new CurvePoint(360f, 0f)
                 };
 
+        #endregion Public Fields
+
+        #region Private Fields
+
         private readonly Pawn pawn;
 
+        private bool clockwise;
+        private Rot4 currentRot = Rot4.Random;
         private int headRotation;
 
         private int nextRotation = -5000;
 
         private int nextRotationEnd = -5000;
 
+        private bool possessed;
         private RotationDirection rotationMod;
 
+        private int rotCount;
         private Thing target;
 
-        private int rotCount = 0;
+        #endregion Private Fields
 
-        private bool clockwise;
+        #region Public Constructors
+
+        public PawnHeadRotator(Pawn p)
+        {
+            this.pawn = p;
+        }
+
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        public float CurrentMovement
+        {
+            get
+            {
+                return this.MotionCurve.Evaluate(this.headRotation);
+            }
+        }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
+        public void LookAtPawn(Thing t)
+        {
+            this.target = t;
+            this.FaceHead();
+            this.SetNextRotation(Find.TickManager.TicksGame + 720);
+
+            // Log.Message(this.pawn + " look at " + p);
+        }
 
         public void RotateRandomly()
         {
@@ -45,37 +83,6 @@
 
             this.currentRot.Rotate(this.clockwise ? RotationDirection.Clockwise : RotationDirection.Counterclockwise);
             this.rotCount--;
-        }
-
-        public void SetUnPossessed()
-        {
-            this.possessed = false;
-        }
-
-        private Rot4 currentRot = Rot4.Random;
-
-        private bool possessed;
-
-        public PawnHeadRotator(Pawn p)
-        {
-            this.pawn = p;
-        }
-
-        public float CurrentMovement
-        {
-            get
-            {
-                return this.MotionCurve.Evaluate(this.headRotation);
-            }
-        }
-
-        public void LookAtPawn(Thing t)
-        {
-            this.target = t;
-            this.FaceHead();
-            this.SetNextRotation(Find.TickManager.TicksGame + 720);
-
-            // Log.Message(this.pawn + " look at " + p);
         }
 
         public Rot4 Rotation(Rot4 headFacing, bool renderBody)
@@ -144,6 +151,15 @@
             }
         }
 
+        public void SetUnPossessed()
+        {
+            this.possessed = false;
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
         // Verse.AI.GenAI
         private bool EnemyIsNear([NotNull] Pawn p, float radius)
         {
@@ -155,41 +171,43 @@
                 return false;
             }
 
-            List<IAttackTarget> potentialTargetsFor = p.Map.attackTargetsCache.GetPotentialTargetsFor(p);
-            foreach (IAttackTarget attackTarget in potentialTargetsFor)
+            List<IAttackTarget> potentialTargetsFor = p.Map?.attackTargetsCache?.GetPotentialTargetsFor(p);
+            if (!potentialTargetsFor.NullOrEmpty())
             {
-                if (!attackTarget.ThreatDisabled())
+                // ReSharper disable once PossibleNullReferenceException
+                foreach (IAttackTarget attackTarget in potentialTargetsFor)
                 {
-                    if (p.Position.InHorDistOf(((Thing)attackTarget).Position, radius))
+                    if (attackTarget != null && !attackTarget.ThreatDisabled())
                     {
-                        enemy = true;
-                        break;
+                        if (p.Position.InHorDistOf(((Thing)attackTarget).Position, radius))
+                        {
+                            enemy = true;
+                            break;
+                        }
                     }
                 }
             }
 
-            if (enemy)
+            if (!enemy)
             {
-                Thing thing = (Thing)AttackTargetFinder.BestAttackTarget(
-                    p,
-                    TargetScanFlags.NeedReachable | TargetScanFlags.NeedThreat,
-                    x => x is Pawn,
-                    0f,
-                    radius,
-                    default(IntVec3),
-                    3.40282347E+38f,
-                    true);
-
-                if (thing != null)
-                {
-                    this.target = thing;
-                    return true;
-                }
-
                 return false;
             }
+            Thing thing = (Thing)AttackTargetFinder.BestAttackTarget(
+                p,
+                TargetScanFlags.NeedReachable | TargetScanFlags.NeedThreat,
+                x => x is Pawn,
+                0f,
+                radius,
+                default(IntVec3),
+                3.40282347E+38f,
+                true);
 
-            return false;
+            if (thing == null)
+            {
+                return false;
+            }
+            this.target = thing;
+            return true;
         }
 
         private void FaceHead()
@@ -268,10 +286,11 @@
                 // 8 = 1 field; 24 = 2 fields;
                 for (int i = 0; i < 8; i++)
                 {
+                    // ReSharper disable once PossibleNullReferenceException
                     IntVec3 intVec = position + GenRadial.RadialPattern[i];
                     if (intVec.InBounds(this.pawn.Map))
                     {
-                        Thing thing = intVec.GetThingList(this.pawn.Map).Find(x => x is Pawn);
+                        Thing thing = intVec.GetThingList(this.pawn.Map)?.Find(x => x is Pawn);
 
                         if (thing != null && thing != this.pawn)
                         {
@@ -320,5 +339,7 @@
                 this.FaceHead();
             }
         }
+
+        #endregion Private Methods
     }
 }

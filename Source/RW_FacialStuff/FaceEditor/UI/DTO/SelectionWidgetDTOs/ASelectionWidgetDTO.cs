@@ -24,15 +24,29 @@
 
 namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using FacialStuff.FaceEditor.UI.Util;
 
+    [SuppressMessage("ReSharper", "StyleCop.SA1215")]
+    [SuppressMessage("ReSharper", "StyleCop.SA1401")]
     public abstract class ASelectionWidgetDTO
     {
-        protected int index;
+        #region Protected Fields
+
+        protected int Index;
+
+        #endregion Protected Fields
+
+        #region Public Events
 
         public event SelectionChangeListener SelectionChangeListener;
 
         public event UpdatePawnListener UpdatePawnListener;
+
+        #endregion Public Events
+
+        #region Public Properties
 
         public abstract int Count { get; }
 
@@ -42,12 +56,16 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 
         public abstract string SelectedItemLabel { get; }
 
+        #endregion Public Properties
+
+        #region Public Methods
+
         public void DecreaseIndex()
         {
-            --this.index;
-            if (this.index < 0)
+            --this.Index;
+            if (this.Index < 0)
             {
-                this.index = this.Count - 1;
+                this.Index = this.Count - 1;
             }
 
             this.IndexChanged();
@@ -55,16 +73,20 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 
         public void IncreaseIndex()
         {
-            ++this.index;
-            if (this.index >= this.Count)
+            ++this.Index;
+            if (this.Index >= this.Count)
             {
-                this.index = 0;
+                this.Index = 0;
             }
 
             this.IndexChanged();
         }
 
         public abstract void ResetToDefault();
+
+        #endregion Public Methods
+
+        #region Protected Methods
 
         protected void IndexChanged()
         {
@@ -76,5 +98,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             this.UpdatePawnListener?.Invoke(this, item, item2);
         }
+
+        #endregion Protected Methods
     }
 }

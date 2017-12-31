@@ -5,8 +5,6 @@
     using System.Linq;
     using System.Reflection;
 
-    using FacialStuff.Components;
-
     using global::Harmony;
 
     using RimWorld;
@@ -27,22 +25,15 @@
     [HarmonyBefore("com.showhair.rimworld.mod")]
     public static class HarmonyPatch_PawnRenderer
     {
+        private static FieldInfo pawnHeadOverlaysFieldInfo;
 
+        private static Type pawnRendererType;
 
-
-
-
-
-
-
-        private static FieldInfo PawnHeadOverlaysFieldInfo;
-
-        private static Type PawnRendererType;
         // Verse.Altitudes
         public const float LayerSpacing = 0.46875f;
 
         // private static FieldInfo PawnFieldInfo;
-        private static FieldInfo WoundOverlayFieldInfo;
+        private static FieldInfo woundOverlayFieldInfo;
 
         public static bool Prefix(
             PawnRenderer __instance,
@@ -68,8 +59,9 @@
             }
 
             pawn.GetCompAnim(out CompBodyAnimator compAnim);
+            bool footy = compAnim != null && Controller.settings.UseFeet;
 
-            PawnWoundDrawer woundDrawer = (PawnWoundDrawer)WoundOverlayFieldInfo?.GetValue(__instance);
+            PawnWoundDrawer woundDrawer = (PawnWoundDrawer)woundOverlayFieldInfo?.GetValue(__instance);
 
             if (Patches2.Plants)
             {
@@ -82,15 +74,15 @@
                     }
                 }
             }
-
-            // Try to move the y position behind while another pawn is standing near
-            // if (false)
             {
+                // Try to move the y position behind while another pawn is standing near
+                // if (false)
                 if (!portrait && pawn.Spawned)
                 {
                     RecalcRootLocY(ref rootLoc, pawn);
                 }
             }
+
             Vector3 footPos = rootLoc;
 
 #if develop
@@ -123,15 +115,17 @@
             // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
             if (compFace == null || compFace.IsChild || compFace.Deactivated)
             {
-                if (compAnim == null)
+                if (compAnim == null || !footy)
                 {
                     return true;
                 }
+
                 if (compAnim.AnimatorOpen)
                 {
-                    bodyFacing = MainTabWindow_Animator.BodyRot;
-                    headFacing = MainTabWindow_Animator.HeadRot;
+                    bodyFacing = MainTabWindowAnimator.BodyRot;
+                    headFacing = MainTabWindowAnimator.HeadRot;
                 }
+
                 compAnim.TickDrawers(bodyFacing, graphics);
                 compAnim.ApplyBodyWobble(ref rootLoc, ref quat);
 
@@ -146,7 +140,7 @@
                     portrait,
                     woundDrawer,
                     compAnim,
-                    rootLoc);
+                    footPos);
 
                 return false;
             }
@@ -155,8 +149,8 @@
             {
                 if (compAnim.AnimatorOpen)
                 {
-                    bodyFacing = MainTabWindow_Animator.BodyRot;
-                    headFacing = MainTabWindow_Animator.HeadRot;
+                    bodyFacing = MainTabWindowAnimator.BodyRot;
+                    headFacing = MainTabWindowAnimator.HeadRot;
                 }
             }
 
@@ -170,7 +164,11 @@
             // Rotate head if possble and wobble around
             if (!portrait || compAnim.AnimatorOpen)
             {
-                compAnim?.ApplyBodyWobble(ref rootLoc, ref quat);
+                if (footy)
+                {
+                    compAnim?.ApplyBodyWobble(ref rootLoc, ref quat);
+                }
+
                 // Reset the quat as it has been changed
                 headQuat = quat;
                 compFace.ApplyHeadRotation(renderBody, ref headQuat);
@@ -197,7 +195,6 @@
             if (graphics.headGraphic != null)
             {
                 // Rendererd pawn faces
-
                 Vector3 b = headQuat * compFace.BaseHeadOffsetAt(portrait);
 
                 Vector3 locFacialY = a + b;
@@ -274,13 +271,16 @@
 
             compAnim?.DrawEquipment(drawPos, portrait);
 
-            bool showHands = compAnim != null && (compAnim.Props.bipedWithHands && Controller.settings.UseHands);
+            bool showHands = compAnim != null && compAnim.Props.bipedWithHands && Controller.settings.UseHands;
             if (showHands)
             {
                 Vector3 handPos = drawPos;
                 handPos.y = rootLoc.y;
                 compAnim.DrawHands(handPos, portrait, false);
+            }
 
+            if (footy)
+            {
                 compAnim?.DrawFeet(footPos, portrait);
             }
 
@@ -298,7 +298,7 @@
                 Vector3 bodyLoc = rootLoc;
                 bodyLoc.y += Offsets.YOffset_Status;
 
-                PawnHeadOverlays headOverlays = (PawnHeadOverlays)PawnHeadOverlaysFieldInfo?.GetValue(__instance);
+                PawnHeadOverlays headOverlays = (PawnHeadOverlays)pawnHeadOverlaysFieldInfo?.GetValue(__instance);
                 if (headOverlays != null)
                 {
                     compFace.DrawHeadOverlays(headOverlays, bodyLoc, headQuat);
@@ -313,9 +313,8 @@
             Vector3 loc = rootLoc;
             List<Pawn> pawns = pawn.Map.mapPawns.AllPawnsSpawned
                 .Where(
-                    otherPawn => otherPawn.DrawPos.x >= loc.x - 1
-                                 && otherPawn.DrawPos.x <= loc.x + 1 && otherPawn.DrawPos.z < loc.z)
-                .ToList();
+                    otherPawn => otherPawn.DrawPos.x >= loc.x - 1 && otherPawn.DrawPos.x <= loc.x + 1
+                                 && otherPawn.DrawPos.z < loc.z).ToList();
             List<Pawn> leftOf = pawns.Where(other => other.DrawPos.x < loc.x).ToList();
 
             if (!pawns.NullOrEmpty())
@@ -323,19 +322,33 @@
                 loc.y -= 0.075f * pawns.Count;
                 loc.y += 0.005f * leftOf.Count;
             }
+
             rootLoc = loc;
         }
 
-        private static void RenderAnimatedPawn(Pawn pawn, PawnGraphicSet graphics, Vector3 rootLoc, Quaternion quat, bool renderBody, Rot4 bodyFacing, RotDrawMode bodyDrawType, bool portrait, PawnWoundDrawer woundDrawer, CompBodyAnimator compAnim, Vector3 footPos)
+        private static void RenderAnimatedPawn(
+            Pawn pawn,
+            PawnGraphicSet graphics,
+            Vector3 rootLoc,
+            Quaternion quat,
+            bool renderBody,
+            Rot4 bodyFacing,
+            RotDrawMode bodyDrawType,
+            bool portrait,
+            PawnWoundDrawer woundDrawer,
+            CompBodyAnimator compAnim,
+            Vector3 footPos)
         {
             Mesh mesh = null;
+            Vector3 loc = rootLoc;
             if (renderBody)
             {
-                Vector3 loc = rootLoc;
-                loc.y += 0.0078125f;
-                if (bodyDrawType == RotDrawMode.Dessicated && !pawn.RaceProps.Humanlike && graphics.dessicatedGraphic != null && !portrait)
+                loc.x += compAnim.bodyAnim.offCenterX;
+                loc.y += Offsets.YOffset_Body;
+                if (bodyDrawType == RotDrawMode.Dessicated && !pawn.RaceProps.Humanlike
+                    && graphics.dessicatedGraphic != null && !portrait)
                 {
-                    graphics.dessicatedGraphic.Draw(loc, bodyFacing, pawn, 0f);
+                    graphics.dessicatedGraphic.Draw(loc, bodyFacing, pawn);
                 }
                 else
                 {
@@ -347,56 +360,58 @@
                     {
                         mesh = graphics.nakedGraphic.MeshAt(bodyFacing);
                     }
+
                     List<Material> list = graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
                     for (int i = 0; i < list.Count; i++)
                     {
                         Material damagedMat = graphics.flasher.GetDamagedMat(list[i]);
                         GenDraw.DrawMeshNowOrLater(mesh, loc, quat, damagedMat, portrait);
-                        loc.y += 0.00390625f;
+                        loc.y += Offsets.YOffset_Behind;
                     }
+
                     if (bodyDrawType == RotDrawMode.Fresh)
                     {
                         Vector3 drawLoc = rootLoc;
-                        drawLoc.y += 0.01953125f;
+                        drawLoc.y += Offsets.YOffset_Wounds;
                         woundDrawer.RenderOverBody(drawLoc, mesh, quat, portrait);
                     }
                 }
             }
+
             Vector3 vector = rootLoc;
-            Vector3 a = rootLoc;
             if (bodyFacing != Rot4.North)
             {
-                a.y += 0.02734375f;
-                vector.y += 0.0234375f;
+                vector.y += Offsets.YOffset_Shell;
             }
             else
             {
-                a.y += 0.0234375f;
-                vector.y += 0.02734375f;
+                vector.y += Offsets.YOffset_Head;
             }
 
-            if (!portrait && pawn.RaceProps.Animal && pawn.inventory != null && pawn.inventory.innerContainer.Count > 0 && graphics.packGraphic != null)
+            if (!portrait && pawn.RaceProps.Animal && pawn.inventory != null && pawn.inventory.innerContainer.Count > 0
+                && graphics.packGraphic != null)
             {
-                Graphics.DrawMesh(mesh, vector, quat, graphics.packGraphic.MatAt(bodyFacing, null), 0);
+                Graphics.DrawMesh(mesh, vector, quat, graphics.packGraphic.MatAt(bodyFacing), 0);
             }
 
+            footPos.y = loc.y;
             compAnim.DrawFeet(footPos, portrait);
         }
 
         private static void GetReflections()
         {
-            if (PawnRendererType != null)
+            if (pawnRendererType != null)
             {
                 return;
             }
 
-            PawnRendererType = typeof(PawnRenderer);
+            pawnRendererType = typeof(PawnRenderer);
 
             // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
-            WoundOverlayFieldInfo = PawnRendererType.GetField(
+            woundOverlayFieldInfo = pawnRendererType.GetField(
                 "woundOverlays",
                 BindingFlags.NonPublic | BindingFlags.Instance);
-            PawnHeadOverlaysFieldInfo = PawnRendererType.GetField(
+            pawnHeadOverlaysFieldInfo = pawnRendererType.GetField(
                 "statusOverlays",
                 BindingFlags.NonPublic | BindingFlags.Instance);
         }

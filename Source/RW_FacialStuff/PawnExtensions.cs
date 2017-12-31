@@ -1,10 +1,7 @@
 ﻿namespace FacialStuff
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using FacialStuff.Components;
 
     using JetBrains.Annotations;
 
@@ -20,6 +17,7 @@
             compFace = pawn.GetComp<CompFace>();
             return compFace != null;
         }
+
         public static bool GetCompAnim([NotNull] this Pawn pawn, [CanBeNull] out CompBodyAnimator compAnim)
         {
             compAnim = pawn.GetComp<CompBodyAnimator>();
@@ -86,19 +84,21 @@
             {
                 return;
             }
+
             // Reset the stats
             if (pawn.GetCompFace(out CompFace face))
             {
-                face.bodyStat.eyeLeft = PartStatus.Natural;
-                face.bodyStat.eyeRight = PartStatus.Natural;
-                face.bodyStat.jaw = PartStatus.Natural;
+                face.bodyStat.EyeLeft = PartStatus.Natural;
+                face.bodyStat.EyeRight = PartStatus.Natural;
+                face.bodyStat.Jaw = PartStatus.Natural;
             }
+
             if (pawn.GetCompAnim(out CompBodyAnimator anim))
             {
-                anim.bodyStat.handLeft = PartStatus.Natural;
-                anim.bodyStat.handRight = PartStatus.Natural;
-                anim.bodyStat.footLeft = PartStatus.Natural;
-                anim.bodyStat.footRight = PartStatus.Natural;
+                anim.bodyStat.HandLeft = PartStatus.Natural;
+                anim.bodyStat.HandRight = PartStatus.Natural;
+                anim.bodyStat.FootLeft = PartStatus.Natural;
+                anim.bodyStat.FootRight = PartStatus.Natural;
             }
 
             List<BodyPartRecord> allParts = pawn?.RaceProps?.body?.AllParts;
@@ -106,6 +106,7 @@
             {
                 return;
             }
+
             List<BodyPartRecord> body = allParts;
             List<Hediff> hediffs = pawn?.health?.hediffSet?.hediffs;
 
@@ -115,11 +116,14 @@
                 return;
             }
 
-            foreach (Hediff diff in hediffs.Where(diff => diff?.def?.defName != null && diff.def == HediffDefOf.MissingBodyPart))
+            foreach (Hediff diff in hediffs.Where(
+                diff => diff?.def?.defName != null && diff.def == HediffDefOf.MissingBodyPart))
             {
                 CheckPart(body, diff, face, anim);
             }
-            foreach (Hediff diff in hediffs.Where(diff => diff?.def?.defName != null && diff.def.addedPartProps != null))
+
+            foreach (Hediff diff in hediffs.Where(
+                diff => diff?.def?.defName != null && diff.def.addedPartProps != null))
             {
                 CheckPart(body, diff, face, anim);
             }
@@ -157,14 +161,14 @@
                 {
                     if (leftEye != null && hediff.Part == leftEye)
                     {
-                        face.bodyStat.eyeLeft = PartStatus.Missing;
+                        face.bodyStat.EyeLeft = PartStatus.Missing;
                         face.texPathEyeLeft = face.EyeTexPath("Missing", Side.Left);
                     }
 
                     // ReSharper disable once InvertIf
                     if (rightEye != null && hediff.Part == rightEye)
                     {
-                        face.bodyStat.eyeRight = PartStatus.Missing;
+                        face.bodyStat.EyeRight = PartStatus.Missing;
                         face.texPathEyeRight = face.EyeTexPath("Missing", Side.Right);
                     }
                 }
@@ -173,19 +177,22 @@
                 {
                     if (hediff.Part == leftHand)
                     {
-                        anim.bodyStat.handLeft = PartStatus.Missing;
+                        anim.bodyStat.HandLeft = PartStatus.Missing;
                     }
+
                     if (hediff.Part == rightHand)
                     {
-                        anim.bodyStat.handRight = PartStatus.Missing;
+                        anim.bodyStat.HandRight = PartStatus.Missing;
                     }
+
                     if (hediff.Part == leftFoot)
                     {
-                        anim.bodyStat.footLeft = PartStatus.Missing;
+                        anim.bodyStat.FootLeft = PartStatus.Missing;
                     }
+
                     if (hediff.Part == rightFoot)
                     {
-                        anim.bodyStat.footRight = PartStatus.Missing;
+                        anim.bodyStat.FootRight = PartStatus.Missing;
                     }
                 }
             }
@@ -211,6 +218,7 @@
                                                             + face.PawnCrownType;
                             }
                         }
+
                         if (face.Props.hasMouth)
                         {
                             if (hediff.Part == jaw)
@@ -227,20 +235,23 @@
                         {
                             if (hediff.Part == leftHand || hediff.Part == leftArm)
                             {
-                                anim.bodyStat.handLeft = PartStatus.Artificial;
+                                anim.bodyStat.HandLeft = PartStatus.Artificial;
                             }
+
                             if (hediff.Part == rightHand || hediff.Part == rightArm)
                             {
-                                anim.bodyStat.handRight = PartStatus.Artificial;
+                                anim.bodyStat.HandRight = PartStatus.Artificial;
                             }
                         }
+
                         if (hediff.Part == leftFoot || hediff.Part == leftLeg)
                         {
-                            anim.bodyStat.footLeft = PartStatus.Artificial;
+                            anim.bodyStat.FootLeft = PartStatus.Artificial;
                         }
+
                         if (hediff.Part == rightFoot || hediff.Part == rightLeg)
                         {
-                            anim.bodyStat.footRight = PartStatus.Artificial;
+                            anim.bodyStat.FootRight = PartStatus.Artificial;
                         }
                     }
                 }
