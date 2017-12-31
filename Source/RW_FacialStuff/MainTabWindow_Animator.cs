@@ -508,16 +508,19 @@ namespace FacialStuff
             Listing_Standard listing_Standard = new Listing_Standard();
 
             listing_Standard.Begin(newRect);
+            var label = this.pawn.LabelCap + " - " + EditorWalkcycle.LabelCap + " - " + this.bodyAnimDef.LabelCap;
 
-            listing_Standard.Label(this.pawn.LabelCap);
-            listing_Standard.Label(EditorWalkcycle.LabelCap);
-            listing_Standard.Label(this.bodyAnimDef.LabelCap);
+            listing_Standard.Label(label);
 
             this.zoom = listing_Standard.Slider(this.zoom, 0.5f, 1.5f);
 
             listing_Standard.CheckboxLabeled("Develop", ref develop);
             listing_Standard.CheckboxLabeled("Colored", ref Colored);
-            listing_Standard.CheckboxLabeled("Equipment", ref Equipment);
+            // listing_Standard.CheckboxLabeled("Equipment", ref Equipment);
+
+            listing_Standard.Label(horHeadOffset.ToString("N2") + " - " + verHeadOffset.ToString("N2"));
+            horHeadOffset = listing_Standard.Slider(horHeadOffset, -1f, 1f);
+            verHeadOffset = listing_Standard.Slider(verHeadOffset, -1f, 1f);
 
             if (listing_Standard.ButtonText(this.pawn.LabelCap))
             {
@@ -554,8 +557,8 @@ namespace FacialStuff
                 this.bodyAnimDef.walkCycles.Clear();
 
                 foreach (WalkCycleDef walkcycle in (from bsm in DefDatabase<WalkCycleDef>.AllDefs
-                                                  orderby bsm.LabelCap
-                                                  select bsm).TakeWhile(current => this.bodyAnimDef.WalkCycleType != "None").Where(current => current.WalkCycleType == this.bodyAnimDef.WalkCycleType))
+                                                    orderby bsm.LabelCap
+                                                    select bsm).TakeWhile(current => this.bodyAnimDef.WalkCycleType != "None").Where(current => current.WalkCycleType == this.bodyAnimDef.WalkCycleType))
                 {
                     list.Add(new FloatMenuOption(walkcycle.LabelCap, delegate { editorWalkcycle = walkcycle; }));
                     exists.Add(walkcycle.locomotionUrgency.ToString());
@@ -1101,6 +1104,14 @@ namespace FacialStuff
         private Color addColor = new Color(0.25f, 1f, 0.25f);
 
         public static bool Equipment;
+
+        public static float horHeadOffset;
+
+        public static float verHeadOffset;
+
+        // public static float horHeadOffset;
+
+        // public static float verHeadOffset;
 
         private static List<PawnKeyframe> pawnKeyframes => EditorWalkcycle.keyframes;
 

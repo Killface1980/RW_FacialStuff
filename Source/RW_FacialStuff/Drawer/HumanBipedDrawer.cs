@@ -5,9 +5,7 @@ namespace FacialStuff
 {
     using FacialStuff.Animator;
     using FacialStuff.Components;
-    using FacialStuff.Defs;
     using FacialStuff.Drawer;
-    using FacialStuff.Harmony;
 
     using JetBrains.Annotations;
     using RimWorld;
@@ -17,7 +15,13 @@ namespace FacialStuff
 
     public class HumanBipedDrawer : PawnBodyDrawer
     {
+        #region Protected Fields
+
         protected const float OffsetGround = -0.575f;
+
+        protected DamageFlasher flasher;
+
+        #endregion Protected Fields
 
         #region Public Constructors
 
@@ -30,8 +34,11 @@ namespace FacialStuff
 
         #region Public Methods
 
-
-
+        public virtual bool Aiming()
+        {
+            Stance_Busy stanceBusy = this.Pawn.stances.curStance as Stance_Busy;
+            return stanceBusy != null && !stanceBusy.neverAimWeapon && stanceBusy.focusTarg.IsValid;
+        }
 
         public override void ApplyBodyWobble(ref Vector3 rootLoc, ref Quaternion quat)
         {
@@ -50,125 +57,144 @@ namespace FacialStuff
             base.ApplyBodyWobble(ref rootLoc, ref quat);
         }
 
-        public override void DrawFeet(Vector3 rootLoc, bool portrait)
+        public override List<Material> BodyBaseAt(
+            PawnGraphicSet graphics,
+            Rot4 bodyFacing,
+            RotDrawMode bodyDrawType,
+            MaxLayerToShow layer)
         {
-            if (portrait && !this.CompAnimator.AnimatorOpen)
+            switch (layer)
+            {
+                case MaxLayerToShow.Naked: return this.CompAnimator.NakedMatsBodyBaseAt(bodyFacing, bodyDrawType);
+                case MaxLayerToShow.OnSkin: return this.CompAnimator.UnderwearMatsBodyBaseAt(bodyFacing, bodyDrawType);
+                default: return graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
+            }
+
+            return base.BodyBaseAt(graphics, bodyFacing, bodyDrawType, layer);
+        }
+
+        public override bool CarryStuff()
+        {
+            Pawn pawn = this.Pawn;
+
+            Thing carriedThing = pawn.carryTracker?.CarriedThing;
+            if (carriedThing != null)
+            {
+                return true;
+            }
+
+            return base.CarryStuff();
+        }
+
+        public override bool CarryWeaponOpenly()
+        {
+            Pawn pawn = this.Pawn;
+            return (pawn.carryTracker == null || pawn.carryTracker.CarriedThing == null)
+                   && (pawn.Drafted || (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon)
+                       || (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
+        }
+
+        public override void DoAttackAnimationOffsets(ref float weaponAngle, ref Vector3 weaponPosition, bool flipped)
+        {
+            CompEquippable primaryEq = this.Pawn.equipment?.PrimaryEq;
+
+            // DamageDef damageDef = primaryEq?.PrimaryVerb?.verbProps?.meleeDamageDef;
+            if (primaryEq?.parent?.def == null)
             {
                 return;
             }
 
-            Material matLeft;
-            Material matRight;
-
-            // Basic values
-            BodyAnimDef body = this.CompAnimator.bodyAnim;
-
-            Vector3 ground = rootLoc;
-            ground.z += OffsetGround;
-
-            float footAngleRight = 0f;
-            float footAngleLeft = 0f;
-            Rot4 rot = this.bodyFacing;
-
-            JointLister groundPos = this.GetJointPositions(
-                body.hipOffsets[rot.AsInt],
-                body.hipOffsets[Rot4.North.AsInt].x);
-
-            Vector3 rightFootAnim = Vector3.zero;
-            Vector3 leftFootAnim = Vector3.zero;
-
-            float offsetJoint = this.CompAnimator.walkCycle.HipOffsetHorizontalX.Evaluate(this.movedPercent);
-            WalkCycleDef cycle = this.CompAnimator.walkCycle;
-
-            this.DoWalkCycleOffsets(
-                ref rightFootAnim,
-                ref leftFootAnim,
-                ref footAngleRight,
-                ref footAngleLeft,
-               ref offsetJoint,
-                cycle.FootPositionX,
-                cycle.FootPositionZ,
-                cycle.FootAngle);
-
-            this.GetMeshesFoot(out Mesh footMeshRight, out Mesh footMeshLeft);
-
-            if (MainTabWindow_Animator.Colored)
+            if (primaryEq.AllVerbs.NullOrEmpty())
             {
-                matRight = this.CompAnimator.PawnBodyGraphic?.FootGraphicRightCol?.MatAt(rot);
-                matLeft = this.CompAnimator.PawnBodyGraphic?.FootGraphicLeftCol?.MatAt(rot);
-            }
-            else
-            {
-                matRight = this.flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FootGraphicRight?.MatAt(rot));
-                matLeft = this.flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FootGraphicLeft?.MatAt(rot));
+                return;
             }
 
-
-
-
-            float bodyAngle = 0f;
-
-            Pawn pawn = this.Pawn;
-            if (pawn.Downed || pawn.Dead)
+            if (!primaryEq.AllVerbs.Any(x => x.verbProps.MeleeRange))
             {
-                bodyAngle = pawn.Drawer.renderer.wiggler.downedAngle;
+                return;
             }
 
-            if (matRight != null)
+            DamageDef damageDef = ThingUtility.PrimaryMeleeWeaponDamageType(primaryEq.parent.def);
+            if (damageDef == null)
             {
-                if (this.CompAnimator.bodyStat.footRight != PartStatus.Missing)
+                return;
+            }
+
+            // total weapon angle change during animation sequence
+            int totalSwingAngle = 0;
+            Vector3 currentOffset = this.CompAnimator.Jitterer.CurrentOffset;
+
+            float jitterMax = this.CompAnimator.JitterMax;
+            float magnitude = currentOffset.magnitude;
+            float animationPhasePercent = magnitude / jitterMax;
+
+            if (damageDef == DamageDefOf.Stab)
+            {
+                weaponPosition += currentOffset;
+
+                // + new Vector3(0, 0, Mathf.Pow(this.CompFace.Jitterer.CurrentOffset.magnitude, 0.25f))/2;
+            }
+            else if (damageDef == DamageDefOf.Blunt || damageDef == DamageDefOf.Cut)
+            {
+                totalSwingAngle = 120;
+                weaponPosition += currentOffset + new Vector3(0, 0, Mathf.Sin(magnitude * Mathf.PI / jitterMax) / 10);
+            }
+
+            weaponAngle += flipped ? -animationPhasePercent * totalSwingAngle : animationPhasePercent * totalSwingAngle;
+        }
+
+        public override void DrawBody(PawnWoundDrawer woundDrawer, Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType, bool renderBody, bool portrait)
+        {
+            // renderBody is AFAIK only used for beds, so ignore it and undress
+            if (renderBody || Controller.settings.IgnoreRenderBody)
+            {
+                Vector3 loc = rootLoc;
+                loc.y += Offsets.YOffset_Body;
+
+                Mesh bodyMesh = this.GetPawnMesh(true, portrait);
+
+                List<Material> bodyBaseAt = null;
+                bool flag = true;
+                if (!portrait && Controller.settings.HideShellWhileRoofed)
                 {
-                    GenDraw.DrawMeshNowOrLater(
-                        footMeshRight,
-                        (ground + groundPos.rightJoint
-                        + rightFootAnim).RotatedBy(bodyAngle),
-                        Quaternion.AngleAxis(bodyAngle + footAngleRight, Vector3.up),
-                        matRight,
-                        portrait);
-                }
-            }
+                    if (this.CompAnimator.InRoom)
+                    {
+                        MaxLayerToShow layer;
+                        if (this.CompAnimator.InPrivateRoom)
+                        {
+                            layer = renderBody
+                                        ? Controller.settings.LayerInPrivateRoom
+                                        : Controller.settings.LayerInOwnedBed;
+                        }
+                        else
+                        {
+                            layer = renderBody ? Controller.settings.LayerInRoom : Controller.settings.LayerInBed;
+                        }
 
-            if (matLeft != null)
-            {
-                if (this.CompAnimator.bodyStat.footLeft != PartStatus.Missing)
+                        bodyBaseAt = this.BodyBaseAt(this.graphics, this.bodyFacing, bodyDrawType, layer);
+                        flag = false;
+                    }
+                }
+
+                if (flag)
                 {
-                    GenDraw.DrawMeshNowOrLater(
-                        footMeshLeft,
-                        (ground + groundPos.leftJoint
-                        + leftFootAnim).RotatedBy(bodyAngle),
-                        Quaternion.AngleAxis(bodyAngle + footAngleLeft, Vector3.up),
-                        matLeft,
-                        portrait);
+                    bodyBaseAt = this.graphics.MatsBodyBaseAt(this.bodyFacing, bodyDrawType);
                 }
-            }
 
-            if (MainTabWindow_Animator.develop)
-            {
-                // for debug
-                Material centerMat = GraphicDatabase.Get<Graphic_Single>(
-                    "Hands/Ground",
-                    ShaderDatabase.Transparent,
-                    Vector2.one,
-                    Color.red).MatSingle;
+                for (int i = 0; i < bodyBaseAt.Count; i++)
+                {
+                    Material damagedMat = this.graphics.flasher.GetDamagedMat(bodyBaseAt[i]);
+                    GenDraw.DrawMeshNowOrLater(bodyMesh, loc, quat, damagedMat, portrait);
+                    loc.y += Offsets.YOffsetInterval_Clothes;
+                }
 
-                GenDraw.DrawMeshNowOrLater(
-                footMeshLeft,
-                ground.RotatedBy(bodyAngle) + groundPos.leftJoint + new Vector3(offsetJoint, 0.301f, 0),
-                Quaternion.AngleAxis(0, Vector3.up),
-                centerMat,
-                portrait);
+                if (bodyDrawType == RotDrawMode.Fresh)
+                {
+                    Vector3 drawLoc = rootLoc;
+                    drawLoc.y += Offsets.YOffset_Wounds;
 
-                GenDraw.DrawMeshNowOrLater(
-                    footMeshRight,
-                    ground.RotatedBy(bodyAngle) + groundPos.rightJoint + new Vector3(offsetJoint, 0.301f, 0),
-                    Quaternion.AngleAxis(0, Vector3.up),
-                    centerMat,
-                    portrait);
-
-                // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z),
-                // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
-                // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z2),
-                // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
+                    woundDrawer?.RenderOverBody(drawLoc, bodyMesh, quat, portrait);
+                }
             }
         }
 
@@ -196,7 +222,6 @@ namespace FacialStuff
                 return;
             }
 
-
             if (pawn.stances.curStance is Stance_Busy stance_Busy && !stance_Busy.neverAimWeapon
                 && stance_Busy.focusTarg.IsValid)
             {
@@ -212,7 +237,7 @@ namespace FacialStuff
 
                 Vector3 b = new Vector3(0f, 0f, 0.4f).RotatedBy(num);
                 Vector3 drawLoc = rootLoc + b;
-                drawLoc.y += 0.04f;
+                drawLoc.y += Offsets.YOffset_PrimaryEquipmentOver;
 
                 // default weapon angle axis is upward, but all weapons are facing right, so we turn base weapon angle by 90°
                 this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc, rootLoc, num, portrait);
@@ -226,31 +251,25 @@ namespace FacialStuff
                 {
                     if (rotation == Rot4.East)
                     {
-                        drawLoc2 += new Vector3(HarmonyPatch_PawnRenderer.YOffsetBodyParts, 0.04f, -0.22f);
+                        drawLoc2 += new Vector3(0.2f, Offsets.YOffset_PrimaryEquipmentOver, -0.22f);
                     }
                     else if (rotation == Rot4.West)
                     {
-                        drawLoc2 += new Vector3(-HarmonyPatch_PawnRenderer.YOffsetBodyParts, 0.04f, -0.22f);
+                        drawLoc2 += new Vector3(-0.2f, Offsets.YOffset_PrimaryEquipmentOver, -0.22f);
                         aimAngle = 217f;
                     }
                 }
                 else if (rotation == Rot4.North)
                 {
-                    drawLoc2 += new Vector3(0, 0, -0.11f);
+                    drawLoc2 += new Vector3(0, Offsets.YOffset_PrimaryEquipmentUnder, -0.11f);
                 }
                 else if (rotation == Rot4.South)
                 {
-                    drawLoc2 += new Vector3(0, 0.04f, -0.22f);
+                    drawLoc2 += new Vector3(0, Offsets.YOffset_PrimaryEquipmentOver, -0.22f);
                 }
 
                 this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc2, rootLoc, aimAngle, portrait);
             }
-        }
-
-        public virtual bool Aiming()
-        {
-            Stance_Busy stance_Busy = this.Pawn.stances.curStance as Stance_Busy;
-            return stance_Busy != null && !stance_Busy.neverAimWeapon && stance_Busy.focusTarg.IsValid;
         }
 
         // Verse.PawnRenderer - Vanilla code with flava at the end
@@ -342,161 +361,125 @@ namespace FacialStuff
             }
         }
 
-        public void DrawHandsAiming(Vector3 weaponPosition, Vector3 rootLoc, bool flipped, float weaponAngle, [CanBeNull] CompProperties_WeaponExtensions compWeaponExtensions, bool portrait)
+        public override void DrawFeet(Vector3 rootLoc, bool portrait)
         {
-            if (compWeaponExtensions == null)
+            if (portrait && !this.CompAnimator.AnimatorOpen)
             {
                 return;
             }
 
-            Material matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeft?.MatSingle;
-            Material matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRight?.MatSingle;
+            Vector3 ground = rootLoc;
+            ground.z += OffsetGround;
 
-            Mesh handsMesh = this.HandMesh;
+            float footAngleRight = 0f;
+            float footAngleLeft = 0f;
+            Rot4 rot = this.bodyFacing;
+
+
+
+            // Basic values
+            BodyAnimDef body = this.CompAnimator.bodyAnim;
+            JointLister groundPos = this.GetJointPositions(
+                body.hipOffsets[rot.AsInt],
+                body.hipOffsets[Rot4.North.AsInt].x,
+                0f);
+
+            Vector3 rightFootAnim = Vector3.zero;
+            Vector3 leftFootAnim = Vector3.zero;
+
+            float offsetJoint = this.CompAnimator.walkCycle.HipOffsetHorizontalX.Evaluate(this.movedPercent);
+            WalkCycleDef cycle = this.CompAnimator.walkCycle;
+
+            this.DoWalkCycleOffsets(
+                ref rightFootAnim,
+                ref leftFootAnim,
+                ref footAngleRight,
+                ref footAngleLeft,
+               ref offsetJoint,
+                cycle.FootPositionX,
+                cycle.FootPositionZ,
+                cycle.FootAngle);
+
+            this.GetMeshesFoot(out Mesh footMeshRight, out Mesh footMeshLeft);
+
+            Material matRight;
+
+            Material matLeft;
+            if (MainTabWindow_Animator.Colored)
+            {
+                matRight = this.CompAnimator.PawnBodyGraphic?.FootGraphicRightCol?.MatAt(rot);
+                matLeft = this.CompAnimator.PawnBodyGraphic?.FootGraphicLeftCol?.MatAt(rot);
+            }
+            else
+            {
+                matRight = this.flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FootGraphicRight?.MatAt(rot));
+                matLeft = this.flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FootGraphicLeft?.MatAt(rot));
+            }
+
+            float bodyAngle = 0f;
+
+            Pawn pawn = this.Pawn;
+            if (pawn.Downed || pawn.Dead)
+            {
+                bodyAngle = pawn.Drawer.renderer.wiggler.downedAngle;
+            }
+
             if (matRight != null)
             {
-                Vector3 firstHandPosition = compWeaponExtensions.RightHandPosition;
-                if (firstHandPosition != Vector3.zero)
+                if (this.CompAnimator.bodyStat.footRight != PartStatus.Missing)
                 {
-                    float x = firstHandPosition.x;
-                    float y = firstHandPosition.y;
-                    float z = firstHandPosition.z;
-                    if (flipped)
-                    {
-                        x = -x;
-                    }
-
                     GenDraw.DrawMeshNowOrLater(
-                        handsMesh,
-                        weaponPosition + new Vector3(x, y, z).RotatedBy(weaponAngle),
-                        Quaternion.AngleAxis(weaponAngle, Vector3.up),
+                        footMeshRight,
+                        (ground + groundPos.rightJoint
+                        + rightFootAnim).RotatedBy(bodyAngle),
+                        Quaternion.AngleAxis(bodyAngle + footAngleRight, Vector3.up),
                         matRight,
                         portrait);
                 }
-                else
-                {
-                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.RightHand);
-                }
             }
-
 
             if (matLeft != null)
             {
-                if (this.isMoving)
+                if (this.CompAnimator.bodyStat.footLeft != PartStatus.Missing)
                 {
-                    // hold the weapon with only one hand while moving
-                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.LeftHand);
-                }
-                else
-                {
-                    Vector3 secondHandPosition = compWeaponExtensions.LeftHandPosition;
-                    if (secondHandPosition != Vector3.zero)
-                    {
-                        float x2 = secondHandPosition.x;
-                        float y2 = secondHandPosition.y;
-                        float z2 = secondHandPosition.z;
-                        if (flipped)
-                        {
-                            x2 = -x2;
-                        }
-
-                        GenDraw.DrawMeshNowOrLater(
-                            handsMesh,
-                            weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle),
-                            Quaternion.AngleAxis(weaponAngle, Vector3.up),
-                            matLeft,
-                            portrait);
-                    }
-                    else
-                    {
-                        this.DrawHands(rootLoc, portrait, false, HandsToDraw.LeftHand);
-                    }
+                    GenDraw.DrawMeshNowOrLater(
+                        footMeshLeft,
+                        (ground + groundPos.leftJoint
+                        + leftFootAnim).RotatedBy(bodyAngle),
+                        Quaternion.AngleAxis(bodyAngle + footAngleLeft, Vector3.up),
+                        matLeft,
+                        portrait);
                 }
             }
 
             if (MainTabWindow_Animator.develop)
             {
-
-                //// for debug
+                // for debug
                 Material centerMat = GraphicDatabase.Get<Graphic_Single>(
-                    "Hands/Human_Hand_dev",
-                    ShaderDatabase.CutoutSkin,
+                    "Hands/Ground",
+                    ShaderDatabase.Transparent,
                     Vector2.one,
-                    Color.white).MatSingle;
+                    Color.red).MatSingle;
 
-                UnityEngine.Graphics.DrawMesh(handsMesh, weaponPosition + new Vector3(0, 0.001f, 0),
-             Quaternion.AngleAxis(weaponAngle, Vector3.up), centerMat, 0);
+                GenDraw.DrawMeshNowOrLater(
+                    footMeshLeft,
+                    ground.RotatedBy(bodyAngle) + groundPos.leftJoint + new Vector3(offsetJoint, -0.301f, 0),
+                    Quaternion.AngleAxis(0, Vector3.up),
+                    centerMat,
+                    portrait);
+
+                GenDraw.DrawMeshNowOrLater(
+                    footMeshRight,
+                    ground.RotatedBy(bodyAngle) + groundPos.rightJoint + new Vector3(offsetJoint, 0.301f, 0),
+                    Quaternion.AngleAxis(0, Vector3.up),
+                    centerMat,
+                    portrait);
+
+                // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z),
+                // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
+                // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z2),
+                // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
             }
-        }
-
-        public override bool CarryStuff()
-        {
-            Pawn pawn = this.Pawn;
-
-            Thing carriedThing = pawn.carryTracker?.CarriedThing;
-            if (carriedThing != null)
-            {
-                return true;
-            }
-
-            return base.CarryStuff();
-        }
-
-        public override bool CarryWeaponOpenly()
-        {
-            Pawn pawn = this.Pawn;
-            return (pawn.carryTracker == null || pawn.carryTracker.CarriedThing == null)
-                   && (pawn.Drafted || (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon)
-                       || (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
-        }
-
-        public override void DoAttackAnimationOffsets(ref float weaponAngle, ref Vector3 weaponPosition, bool flipped)
-        {
-            CompEquippable primaryEq = this.Pawn.equipment?.PrimaryEq;
-
-            // DamageDef damageDef = primaryEq?.PrimaryVerb?.verbProps?.meleeDamageDef;
-            if (primaryEq?.parent?.def == null)
-            {
-                return;
-            }
-
-            if (primaryEq.AllVerbs.NullOrEmpty())
-            {
-                return;
-            }
-
-            if (!primaryEq.AllVerbs.Any(x => x.verbProps.MeleeRange))
-            {
-                return;
-            }
-
-            DamageDef damageDef = ThingUtility.PrimaryMeleeWeaponDamageType(primaryEq.parent.def);
-            if (damageDef == null)
-            {
-                return;
-            }
-
-            // total weapon angle change during animation sequence
-            int totalSwingAngle = 0;
-            Vector3 currentOffset = this.CompAnimator.Jitterer.CurrentOffset;
-
-            float jitterMax = this.CompAnimator.JitterMax;
-            float magnitude = currentOffset.magnitude;
-            float animationPhasePercent = magnitude / jitterMax;
-
-            if (damageDef == DamageDefOf.Stab)
-            {
-                weaponPosition += currentOffset;
-
-                // + new Vector3(0, 0, Mathf.Pow(this.CompFace.Jitterer.CurrentOffset.magnitude, 0.25f))/2;
-            }
-            else if (damageDef == DamageDefOf.Blunt || damageDef == DamageDefOf.Cut)
-            {
-                totalSwingAngle = 120;
-                weaponPosition += currentOffset + new Vector3(0, 0, Mathf.Sin(magnitude * Mathf.PI / jitterMax) / 10);
-            }
-
-            weaponAngle += flipped ? -animationPhasePercent * totalSwingAngle : animationPhasePercent * totalSwingAngle;
         }
 
         public override void DrawHands(Vector3 drawPos, bool portrait, bool carrying, HandsToDraw drawSide = HandsToDraw.Both)
@@ -535,12 +518,12 @@ namespace FacialStuff
 
             BodyAnimDef body = this.CompAnimator.bodyAnim;
 
-
             Rot4 rot = this.bodyFacing;
 
             JointLister shoulperPos = this.GetJointPositions(
                 body.shoulderOffsets[rot.AsInt],
                 body.shoulderOffsets[Rot4.North.AsInt].x,
+                Offsets.YOffset_PostHead,
                 carrying);
 
             // DoCarriedOffsets(ref shoulperPos);
@@ -558,7 +541,6 @@ namespace FacialStuff
             WalkCycleDef cycle = this.CompAnimator.walkCycle;
             float offsetJoint = cycle.ShoulderOffsetHorizontalX.Evaluate(this.movedPercent);
 
-
             this.DoWalkCycleOffsets(
                 body.armLength,
                 ref rightHand,
@@ -570,7 +552,6 @@ namespace FacialStuff
                 cycle.HandsSwingAngle,
                 offsetJoint);
 
-
             Mesh handsMesh = this.HandMesh;
             float bodyAngle = 0f;
             Pawn pawn = this.Pawn;
@@ -578,7 +559,6 @@ namespace FacialStuff
             {
                 bodyAngle = pawn.Drawer.renderer.wiggler.downedAngle;
             }
-
 
             if (matRight != null && drawSide != HandsToDraw.LeftHand)
             {
@@ -619,7 +599,7 @@ namespace FacialStuff
 
                 GenDraw.DrawMeshNowOrLater(
                     handsMesh,
-                    drawPos + shoulperPos.leftJoint + new Vector3(0, 0.301f, 0),
+                    drawPos + shoulperPos.leftJoint + new Vector3(0, -0.301f, 0),
                     Quaternion.AngleAxis(-shoulderAngle, Vector3.up),
                     centerMat,
                     portrait);
@@ -633,99 +613,186 @@ namespace FacialStuff
             }
         }
 
-        private void DoWalkCycleOffsets(
-            float armLength,
-            ref Vector3 rightHand,
-            ref Vector3 leftHand,
-            ref float shoulderAngle,
-            ref float handSwingAngle,
-            ref JointLister shoulderPos,
-            bool carrying,
-            SimpleCurve cycleHandsSwingAngle,
-            float offsetJoint)
+        public void DrawHandsAiming(Vector3 weaponPosition, Vector3 rootLoc, bool flipped, float weaponAngle, [CanBeNull] CompProperties_WeaponExtensions compWeaponExtensions, bool portrait)
         {
-            // Has the pawn something in his hands?
-            if (carrying)
+            if (compWeaponExtensions == null)
             {
                 return;
             }
 
-            Rot4 rot = this.bodyFacing;
+            Material matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeft?.MatSingle;
+            Material matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRight?.MatSingle;
 
-            // Basic values if pawn is carrying stuff
-            float x = 0;
-            float x2 = -x;
-            float y = HarmonyPatch_PawnRenderer.YOffset_Behind;
-            float y2 = y;
-            float z = 0;
-            float z2 = -z;
-
-
-            // Offsets for hands from the pawn center
-            z = z2 = -armLength;
-
-            if (rot.IsHorizontal)
+            Mesh handsMesh = this.HandMesh;
+            if (matRight != null)
             {
-                x = x2 = 0f;
-                if (rot == Rot4.East)
+                Vector3 firstHandPosition = compWeaponExtensions.RightHandPosition;
+                if (firstHandPosition != Vector3.zero)
                 {
-                    y2 = -0.5f;
+                    float x = firstHandPosition.x;
+                    float y = firstHandPosition.y;
+                    float z = firstHandPosition.z;
+                    if (flipped)
+                    {
+                        x = -x;
+                    }
+
+                    GenDraw.DrawMeshNowOrLater(
+                        handsMesh,
+                        weaponPosition + new Vector3(x, y, z).RotatedBy(weaponAngle),
+                        Quaternion.AngleAxis(weaponAngle, Vector3.up),
+                        matRight,
+                        portrait);
                 }
                 else
                 {
-                    y = -0.05f;
+                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.RightHand);
                 }
             }
-            else if (rot == Rot4.North)
-            {
-                y = y2 = -0.02f;
-                x *= -1;
-                x2 *= -1;
-            }
 
-            // Swing the hands, try complete the cycle
-            if (this.isMoving)
+            if (matLeft != null)
             {
-                if (rot.IsHorizontal)
+                if (this.isMoving)
                 {
-                    float lookie = rot == Rot4.West ? -1f : 1f;
-                    float f = lookie * offsetJoint;
-
-
-                    shoulderAngle = lookie * this.CompAnimator.walkCycle.shoulderAngle;
-
-
-                    shoulderPos.rightJoint.x += f;
-                    shoulderPos.leftJoint.x += f;
-
-                    handSwingAngle = (rot == Rot4.West ? -1 : 1) * cycleHandsSwingAngle.Evaluate(this.movedPercent);
-
+                    // hold the weapon with only one hand while moving
+                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.LeftHand);
                 }
                 else
                 {
-                    z += cycleHandsSwingAngle.Evaluate(this.movedPercent) / 500;
-                    z2 -= cycleHandsSwingAngle.Evaluate(this.movedPercent) / 500;
+                    Vector3 secondHandPosition = compWeaponExtensions.LeftHandPosition;
+                    if (secondHandPosition != Vector3.zero)
+                    {
+                        float x2 = secondHandPosition.x;
+                        float y2 = secondHandPosition.y;
+                        float z2 = secondHandPosition.z;
+                        if (flipped)
+                        {
+                            x2 = -x2;
+                        }
 
-                    z += this.CompAnimator.walkCycle.shoulderAngle / 800;
-                    z2 += this.CompAnimator.walkCycle.shoulderAngle / 800;
+                        GenDraw.DrawMeshNowOrLater(
+                            handsMesh,
+                            weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle),
+                            Quaternion.AngleAxis(weaponAngle, Vector3.up),
+                            matLeft,
+                            portrait);
+                    }
+                    else
+                    {
+                        this.DrawHands(rootLoc, portrait, false, HandsToDraw.LeftHand);
+                    }
                 }
-
             }
 
-            if (MainTabWindow_Animator.panic || this.Pawn.Fleeing() || this.Pawn.IsBurning())
+            if (MainTabWindow_Animator.develop)
             {
-                float offset = 1f + armLength;
-                x *= offset;
-                z *= offset;
-                x2 *= offset;
-                z2 *= offset;
-                handSwingAngle += 180f;
-                shoulderAngle = 0f;
-            }
+                //// for debug
+                Material centerMat = GraphicDatabase.Get<Graphic_Single>(
+                    "Hands/Human_Hand_dev",
+                    ShaderDatabase.CutoutSkin,
+                    Vector2.one,
+                    Color.white).MatSingle;
 
-            rightHand = new Vector3(x, y, z);
-            leftHand = new Vector3(x2, y2, z2);
+                UnityEngine.Graphics.DrawMesh(handsMesh, weaponPosition + new Vector3(0, 0.001f, 0),
+             Quaternion.AngleAxis(weaponAngle, Vector3.up), centerMat, 0);
+            }
         }
+
+        public override void Initialize()
+        {
+            this.flasher = this.Pawn.Drawer.renderer.graphics.flasher;
+
+            base.Initialize();
+        }
+
+        public Quaternion QuatBody(Quaternion quat, float movedPercent)
+        {
+            if (this.bodyFacing.IsHorizontal)
+            {
+                quat *= Quaternion.AngleAxis(
+                    (this.bodyFacing == Rot4.West ? -1 : 1) * this.CompAnimator.walkCycle.BodyAngle.Evaluate(movedPercent),
+                    Vector3.up);
+            }
+            else
+            {
+                quat *= Quaternion.AngleAxis(
+                    (this.bodyFacing == Rot4.South ? -1 : 1)
+                    * this.CompAnimator.walkCycle.BodyAngleVertical.Evaluate(movedPercent),
+                    Vector3.up);
+            }
+
+            return quat;
+        }
+
+        public virtual void SelectWalkcycle()
+        {
+            if (this.CompAnimator.AnimatorOpen)
+            {
+                this.CompAnimator.walkCycle = MainTabWindow_Animator.EditorWalkcycle;
+            }
+            else if (this.Pawn.CurJob != null)
+            {
+                BodyAnimDef animDef = this.CompAnimator.bodyAnim;
+                if (animDef != null)
+                {
+                    Dictionary<LocomotionUrgency, WalkCycleDef> cycles = animDef.walkCycles;
+
+                    if (cycles != null)
+                    {
+                        if (cycles.TryGetValue(
+                            this.Pawn.CurJob.locomotionUrgency,
+                            out WalkCycleDef cycle))
+                        {
+                            if (cycle != null)
+                            {
+                                this.CompAnimator.walkCycle = cycle;
+                                return;
+                            }
+                        }
+                        else if (cycles.Count > 0)
+                        {
+                            this.CompAnimator.walkCycle = animDef.walkCycles.FirstOrDefault().Value;
+                        }
+                    }
+                }
+
+                // switch (this.Pawn.CurJob.locomotionUrgency)
+                // {
+                //     case LocomotionUrgency.None:
+                //     case LocomotionUrgency.Amble:
+                //         this.walkCycle = WalkCycleDefOf.Biped_Amble;
+                //         break;
+                //     case LocomotionUrgency.Walk:
+                //         this.walkCycle = WalkCycleDefOf.Biped_Walk;
+                //         break;
+                //     case LocomotionUrgency.Jog:
+                //         this.walkCycle = WalkCycleDefOf.Biped_Jog;
+                //         break;
+                //     case LocomotionUrgency.Sprint:
+                //         this.walkCycle = WalkCycleDefOf.Biped_Sprint;
+                //         break;
+                // }
+            }
+        }
+
+        public override void Tick(Rot4 bodyFacing, PawnGraphicSet graphics)
+        {
+            base.Tick(bodyFacing, graphics);
+
+            BodyAnimator animator = this.CompAnimator.BodyAnimator;
+            if (animator != null)
+            {
+                this.isMoving = animator.IsMoving(out this.movedPercent);
+            }
+
+            // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
+
+            this.SelectWalkcycle();
+        }
+
+        #endregion Public Methods
+
+        #region Protected Methods
 
         protected void DoWalkCycleOffsets(
             ref Vector3 rightFoot,
@@ -801,16 +868,15 @@ namespace FacialStuff
             }
         }
 
+        #endregion Protected Methods
 
-        protected DamageFlasher flasher;
+        #region Private Methods
 
         private void DoCarriedOffsets(ref JointLister shoulperPos)
         {
-
             if (this.bodyFacing == Rot4.North)
             {
                 shoulperPos.rightJoint.y = shoulperPos.leftJoint.y;
-
             }
             else
             {
@@ -818,174 +884,95 @@ namespace FacialStuff
             }
         }
 
-        public override void Initialize()
+        private void DoWalkCycleOffsets(
+                                                                    float armLength,
+            ref Vector3 rightHand,
+            ref Vector3 leftHand,
+            ref float shoulderAngle,
+            ref float handSwingAngle,
+            ref JointLister shoulderPos,
+            bool carrying,
+            SimpleCurve cycleHandsSwingAngle,
+            float offsetJoint)
         {
-            this.flasher = this.Pawn.Drawer.renderer.graphics.flasher;
-
-            base.Initialize();
-        }
-        public override List<Material> BodyBaseAt(
-            PawnGraphicSet graphics,
-            Rot4 bodyFacing,
-            RotDrawMode bodyDrawType,
-            MaxLayerToShow layer)
-        {
-            switch (layer)
+            // Has the pawn something in his hands?
+            if (carrying)
             {
-                case MaxLayerToShow.Naked: return this.CompAnimator.NakedMatsBodyBaseAt(bodyFacing, bodyDrawType);
-                case MaxLayerToShow.OnSkin: return this.CompAnimator.UnderwearMatsBodyBaseAt(bodyFacing, bodyDrawType);
-                default: return graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
+                return;
             }
 
-            return base.BodyBaseAt(graphics, bodyFacing, bodyDrawType, layer);
-        }
+            Rot4 rot = this.bodyFacing;
 
-        public override void DrawBody(PawnWoundDrawer woundDrawer, Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType, bool renderBody, bool portrait)
-        {
-            // renderBody is AFAIK only used for beds, so ignore it and undress
-            if (renderBody || Controller.settings.IgnoreRenderBody)
+            // Basic values if pawn is carrying stuff
+            float x = 0;
+            float x2 = -x;
+            float y = Offsets.YOffset_Behind;
+            float y2 = y;
+            float z = 0;
+            float z2 = -z;
+
+            // Offsets for hands from the pawn center
+            z = z2 = -armLength;
+
+            if (rot.IsHorizontal)
             {
-                Vector3 loc = rootLoc;
-                loc.y += HarmonyPatch_PawnRenderer.YOffset_Body;
-
-                Mesh bodyMesh = this.GetPawnMesh(true, portrait);
-
-                List<Material> bodyBaseAt = null;
-                bool flag = true;
-                if (!portrait && Controller.settings.HideShellWhileRoofed)
+                x = x2 = 0f;
+                if (rot == Rot4.East)
                 {
-                    if (this.CompAnimator.InRoom)
-                    {
-                        MaxLayerToShow layer;
-                        if (this.CompAnimator.InPrivateRoom)
-                        {
-                            layer = renderBody
-                                        ? Controller.settings.LayerInPrivateRoom
-                                        : Controller.settings.LayerInOwnedBed;
-                        }
-                        else
-                        {
-                            layer = renderBody ? Controller.settings.LayerInRoom : Controller.settings.LayerInBed;
-                        }
-
-                        bodyBaseAt = this.BodyBaseAt(this.graphics, this.bodyFacing, bodyDrawType, layer);
-                        flag = false;
-                    }
+                    y2 = -0.5f;
                 }
-
-                if (flag)
+                else
                 {
-                    bodyBaseAt = this.graphics.MatsBodyBaseAt(this.bodyFacing, bodyDrawType);
-                }
-
-                for (int i = 0; i < bodyBaseAt.Count; i++)
-                {
-                    Material damagedMat = this.graphics.flasher.GetDamagedMat(bodyBaseAt[i]);
-                    GenDraw.DrawMeshNowOrLater(bodyMesh, loc, quat, damagedMat, portrait);
-                    loc.y += HarmonyPatch_PawnRenderer.YOffsetInterval_Clothes;
-                }
-
-                if (bodyDrawType == RotDrawMode.Fresh)
-                {
-                    Vector3 drawLoc = rootLoc;
-                    drawLoc.y += HarmonyPatch_PawnRenderer.YOffset_Wounds;
-
-                    woundDrawer?.RenderOverBody(drawLoc, bodyMesh, quat, portrait);
+                    y = -0.05f;
                 }
             }
-        }
-
-
-        public Quaternion QuatBody(Quaternion quat, float movedPercent)
-        {
-            if (this.bodyFacing.IsHorizontal)
+            else if (rot == Rot4.North)
             {
-                quat *= Quaternion.AngleAxis(
-                    (this.bodyFacing == Rot4.West ? -1 : 1) * this.CompAnimator.walkCycle.BodyAngle.Evaluate(movedPercent),
-                    Vector3.up);
-            }
-            else
-            {
-                quat *= Quaternion.AngleAxis(
-                    (this.bodyFacing == Rot4.South ? -1 : 1)
-                    * this.CompAnimator.walkCycle.BodyAngleVertical.Evaluate(movedPercent),
-                    Vector3.up);
+                y = y2 = -0.02f;
+                x *= -1;
+                x2 *= -1;
             }
 
-            return quat;
-        }
-
-
-        public override void Tick(Rot4 bodyFacing, PawnGraphicSet graphics)
-        {
-            base.Tick(bodyFacing, graphics);
-
-            BodyAnimator animator = this.CompAnimator.BodyAnimator;
-            if (animator != null)
+            // Swing the hands, try complete the cycle
+            if (this.isMoving)
             {
-                this.isMoving = animator.IsMoving(out this.movedPercent);
-            }
-
-            // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
-
-            this.SelectWalkcycle();
-        }
-
-        public virtual void SelectWalkcycle()
-        {
-            if (this.CompAnimator.AnimatorOpen)
-            {
-                this.CompAnimator.walkCycle = MainTabWindow_Animator.EditorWalkcycle;
-            }
-            else if (this.Pawn.CurJob != null)
-            {
-                BodyAnimDef animDef = this.CompAnimator.bodyAnim;
-                if (animDef != null)
+                if (rot.IsHorizontal)
                 {
-                    Dictionary<LocomotionUrgency, WalkCycleDef> cycles = animDef.walkCycles;
+                    float lookie = rot == Rot4.West ? -1f : 1f;
+                    float f = lookie * offsetJoint;
 
-                    if (cycles != null)
-                    {
-                        if (cycles.TryGetValue(
-                            this.Pawn.CurJob.locomotionUrgency,
-                            out WalkCycleDef cycle))
-                        {
-                            if (cycle != null)
-                            {
-                                this.CompAnimator.walkCycle = cycle;
-                                return;
-                            }
-                        }
-                        else if (cycles.Count > 0)
-                        {
-                            this.CompAnimator.walkCycle = animDef.walkCycles.FirstOrDefault().Value;
-                        }
-                    }
+                    shoulderAngle = lookie * this.CompAnimator.walkCycle.shoulderAngle;
+
+                    shoulderPos.rightJoint.x += f;
+                    shoulderPos.leftJoint.x += f;
+
+                    handSwingAngle = (rot == Rot4.West ? -1 : 1) * cycleHandsSwingAngle.Evaluate(this.movedPercent);
                 }
+                else
+                {
+                    z += cycleHandsSwingAngle.Evaluate(this.movedPercent) / 500;
+                    z2 -= cycleHandsSwingAngle.Evaluate(this.movedPercent) / 500;
 
-                // switch (this.Pawn.CurJob.locomotionUrgency)
-                // {
-                //     case LocomotionUrgency.None:
-                //     case LocomotionUrgency.Amble:
-                //         this.walkCycle = WalkCycleDefOf.Biped_Amble;
-                //         break;
-                //     case LocomotionUrgency.Walk:
-                //         this.walkCycle = WalkCycleDefOf.Biped_Walk;
-                //         break;
-                //     case LocomotionUrgency.Jog:
-                //         this.walkCycle = WalkCycleDefOf.Biped_Jog;
-                //         break;
-                //     case LocomotionUrgency.Sprint:
-                //         this.walkCycle = WalkCycleDefOf.Biped_Sprint;
-                //         break;
-                // }
+                    z += this.CompAnimator.walkCycle.shoulderAngle / 800;
+                    z2 += this.CompAnimator.walkCycle.shoulderAngle / 800;
+                }
             }
+
+            if (MainTabWindow_Animator.panic || this.Pawn.Fleeing() || this.Pawn.IsBurning())
+            {
+                float offset = 1f + armLength;
+                x *= offset;
+                z *= offset;
+                x2 *= offset;
+                z2 *= offset;
+                handSwingAngle += 180f;
+                shoulderAngle = 0f;
+            }
+
+            rightHand = new Vector3(x, y, z);
+            leftHand = new Vector3(x2, y2, z2);
         }
 
-        #endregion Public Methods
-
-        #region Protected Methods
-
-        #endregion Protected Methods
+        #endregion Private Methods
     }
 }

@@ -20,7 +20,7 @@
         <value>Biped_Walk</value>
       </li>
     </walkCycles>
-    <extraLegLength>0.025</extraLegLength>
+    <extraLegLength>0.125</extraLegLength>
     <WalkCycleType>Biped</WalkCycleType>
     <shoulderOffsets>
       <li>

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     using FacialStuff.Components;
@@ -28,30 +29,17 @@
     {
 
 
-        public const float YOffset_Head = 0.027f;
 
-        private const float YOffset_OnHead = 0.03125f;
 
-        public const float YOffset_Behind = 0.004f;
-        public const float YOffset_HandsFeet = 0.02f;
-        public const float YOffset_Body = 0.0075f;
-        public const float YOffset_PostHead = 0.035f;
-        public const float YOffsetOnFace = 0.0001f;
-        public const float YOffset_CarriedThing = 0.04f;
 
-        private const float YOffset_Shell = 0.0234375f;
 
-        private const float YOffset_Status = 0.043f;
-
-        public const float YOffset_Wounds = 0.02f;
-
-        public const float YOffsetInterval_Clothes = 0.004f;
-        public const  float YOffsetBodyParts = 0.01f;
 
 
         private static FieldInfo PawnHeadOverlaysFieldInfo;
 
         private static Type PawnRendererType;
+        // Verse.Altitudes
+        public const float LayerSpacing = 0.46875f;
 
         // private static FieldInfo PawnFieldInfo;
         private static FieldInfo WoundOverlayFieldInfo;
@@ -83,8 +71,27 @@
 
             PawnWoundDrawer woundDrawer = (PawnWoundDrawer)WoundOverlayFieldInfo?.GetValue(__instance);
 
-            Vector3 footPos = rootLoc;
+            if (Patches2.Plants)
+            {
+                if (pawn.Spawned)
+                {
+                    Plant plant = (pawn.Position + IntVec3.South).GetPlant(pawn.Map);
+                    if (plant != null && Patches2.plantMoved.Contains(plant))
+                    {
+                        rootLoc.y = plant.DrawPos.y - (Patches2.steps / 2);
+                    }
+                }
+            }
 
+            // Try to move the y position behind while another pawn is standing near
+            // if (false)
+            {
+                if (!portrait && pawn.Spawned)
+                {
+                    RecalcRootLocY(ref rootLoc, pawn);
+                }
+            }
+            Vector3 footPos = rootLoc;
 
 #if develop
             if (faceComp.IgnoreRenderer)
@@ -112,6 +119,7 @@
 
 #endif
             pawn.GetCompFace(out CompFace compFace);
+
             // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
             if (compFace == null || compFace.IsChild || compFace.Deactivated)
             {
@@ -127,7 +135,6 @@
                 compAnim.TickDrawers(bodyFacing, graphics);
                 compAnim.ApplyBodyWobble(ref rootLoc, ref quat);
 
-
                 RenderAnimatedPawn(
                     pawn,
                     graphics,
@@ -137,8 +144,10 @@
                     bodyFacing,
                     bodyDrawType,
                     portrait,
-                    woundDrawer, compAnim,
-                    footPos);
+                    woundDrawer,
+                    compAnim,
+                    rootLoc);
+
                 return false;
             }
 
@@ -151,15 +160,12 @@
                 }
             }
 
-
             compFace.TickDrawers(bodyFacing, headFacing, graphics);
 
             compAnim?.TickDrawers(bodyFacing, graphics);
 
-
             // Use the basic quat
             Quaternion headQuat = quat;
-
 
             // Rotate head if possble and wobble around
             if (!portrait || compAnim.AnimatorOpen)
@@ -170,28 +176,23 @@
                 compFace.ApplyHeadRotation(renderBody, ref headQuat);
             }
 
-
             // Regular FacePawn rendering 14+ years
 
             // Render body
             compAnim?.DrawBody(rootLoc, quat, bodyDrawType, woundDrawer, renderBody, portrait);
 
-
-
             Vector3 drawPos = rootLoc;
             Vector3 a = rootLoc;
             if (bodyFacing != Rot4.North)
             {
-                a.y += YOffset_Head;
-                drawPos.y += YOffset_Shell;
+                a.y += Offsets.YOffset_Head;
+                drawPos.y += Offsets.YOffset_Shell;
             }
             else
             {
-                a.y += YOffset_Shell;
-                drawPos.y += YOffset_Head;
+                a.y += Offsets.YOffset_Shell;
+                drawPos.y += Offsets.YOffset_Head;
             }
-
-
 
             if (graphics.headGraphic != null)
             {
@@ -201,7 +202,7 @@
 
                 Vector3 locFacialY = a + b;
                 Vector3 currentLoc = rootLoc + b;
-                currentLoc.y += YOffset_OnHead;
+                currentLoc.y += Offsets.YOffset_OnHead;
 
                 compFace.DrawBasicHead(out bool headDrawn, bodyDrawType, portrait, headStump, ref locFacialY, headQuat);
 
@@ -209,7 +210,6 @@
                 {
                     if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
                     {
-
                         if (compFace.Props.hasWrinkles)
                         {
                             compFace.DrawWrinkles(bodyDrawType, ref locFacialY, headQuat, portrait);
@@ -245,7 +245,7 @@
                         // if (deadEyeMat != null)
                         // {
                         // GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, deadEyeMat, portrait);
-                        // locFacialY.y += YOffsetOnFace;
+                        // locFacialY.y += YOffsetInterval_OnFace;
                         // }
 
                         // }
@@ -255,7 +255,14 @@
 
                 if (!headStump)
                 {
-                    compFace.DrawHairAndHeadGear(rootLoc, bodyDrawType, ref currentLoc, b, portrait, renderBody, headQuat);
+                    compFace.DrawHairAndHeadGear(
+                        rootLoc,
+                        bodyDrawType,
+                        ref currentLoc,
+                        b,
+                        portrait,
+                        renderBody,
+                        headQuat);
                 }
 
                 compFace.DrawAlienHeadAddons(portrait, headQuat, currentLoc);
@@ -265,27 +272,17 @@
 
             compFace.DrawAlienBodyAddons(quat, drawPos, portrait, renderBody);
 
-            // Draw the beard, for the RenderPortrait
-            // if (portrait && !headStump)
-            // {
-            // Vector3 b = headQuat * __instance.BaseHeadOffsetAt(headFacing);
-            // Vector3 locFacialY = a + b;
-            // // no rotation wanted
-            // Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
-            // DrawBeardAndTache(headFacing, portrait, faceComp, mesh2, locFacialY, headQuat);
-            // }
-
-
             compAnim?.DrawEquipment(drawPos, portrait);
-
 
             bool showHands = compAnim != null && (compAnim.Props.bipedWithHands && Controller.settings.UseHands);
             if (showHands)
             {
-                compAnim.DrawHands(drawPos, portrait, false);
-            }
+                Vector3 handPos = drawPos;
+                handPos.y = rootLoc.y;
+                compAnim.DrawHands(handPos, portrait, false);
 
-            compAnim?.DrawFeet(footPos, portrait);
+                compAnim?.DrawFeet(footPos, portrait);
+            }
 
             if (!portrait)
             {
@@ -298,9 +295,8 @@
                     }
                 }
 
-
                 Vector3 bodyLoc = rootLoc;
-                bodyLoc.y += YOffset_Status;
+                bodyLoc.y += Offsets.YOffset_Status;
 
                 PawnHeadOverlays headOverlays = (PawnHeadOverlays)PawnHeadOverlaysFieldInfo?.GetValue(__instance);
                 if (headOverlays != null)
@@ -310,6 +306,24 @@
             }
 
             return false;
+        }
+
+        private static void RecalcRootLocY(ref Vector3 rootLoc, Pawn pawn)
+        {
+            Vector3 loc = rootLoc;
+            List<Pawn> pawns = pawn.Map.mapPawns.AllPawnsSpawned
+                .Where(
+                    otherPawn => otherPawn.DrawPos.x >= loc.x - 1
+                                 && otherPawn.DrawPos.x <= loc.x + 1 && otherPawn.DrawPos.z < loc.z)
+                .ToList();
+            List<Pawn> leftOf = pawns.Where(other => other.DrawPos.x < loc.x).ToList();
+
+            if (!pawns.NullOrEmpty())
+            {
+                loc.y -= 0.075f * pawns.Count;
+                loc.y += 0.005f * leftOf.Count;
+            }
+            rootLoc = loc;
         }
 
         private static void RenderAnimatedPawn(Pawn pawn, PawnGraphicSet graphics, Vector3 rootLoc, Quaternion quat, bool renderBody, Rot4 bodyFacing, RotDrawMode bodyDrawType, bool portrait, PawnWoundDrawer woundDrawer, CompBodyAnimator compAnim, Vector3 footPos)

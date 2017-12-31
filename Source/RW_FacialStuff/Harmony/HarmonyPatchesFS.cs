@@ -33,6 +33,16 @@ namespace FacialStuff.Harmony
             // harmony.Patch(AccessTools.Method(typeof(PawnRenderer), "RenderPawnInternal", new Type[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) }), null, null, new HarmonyMethod(typeof(Alien), nameof(Alien.RenderPawnInternalTranspiler)));
 
 
+            if (Patches2.Plants)
+            {
+                harmony.Patch(
+                 AccessTools.Method(typeof(Thing), nameof(Thing.Draw)),
+                 new HarmonyMethod(typeof(Patches2), nameof(Patches2.Prefix_DrawAt)),
+                 null);
+            }
+
+
+
             // harmony.Patch(
             // AccessTools.Method(typeof(Dialog_Options), nameof(Dialog_Options.DoWindowContents)),
             // null,
@@ -73,7 +83,7 @@ namespace FacialStuff.Harmony
             // new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(AddHediff_Postfix)));
             harmony.Patch(
                 AccessTools.Method(typeof(PawnRenderer), nameof(PawnRenderer.RenderPawnAt), new[] { typeof(Vector3), typeof(RotDrawMode), typeof(bool) }),
-                new HarmonyMethod(typeof(Class2), nameof(Class2.RenderPawnAt)),
+                new HarmonyMethod(typeof(Patches2), nameof(Patches2.RenderPawnAt)),
                 null
                 );
 

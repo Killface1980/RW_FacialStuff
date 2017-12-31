@@ -19,6 +19,10 @@
             {
                 return;
             }
+            if (this.Pawn.RaceProps.Animal)
+            {
+                rootLoc.y = -Offsets.YOffset_Behind;
+            }
             this.DrawFrontPaws(rootLoc, portrait);
             base.DrawFeet(rootLoc, portrait);
         }
@@ -45,7 +49,8 @@
             }
             JointLister jointPositions = this.GetJointPositions(
                 body.shoulderOffsets[rot.AsInt],
-                body.shoulderOffsets[Rot4.North.AsInt].x);
+                body.shoulderOffsets[Rot4.North.AsInt].x,
+                0f);
 
             Vector3 rightFootAnim = Vector3.zero;
             Vector3 leftFootAnim = Vector3.zero;

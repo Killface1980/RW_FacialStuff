@@ -16,7 +16,7 @@
 
         protected Rot4 headFacing;
 
-        protected JointLister GetJointPositions(Vector3 vector, float jointWidth, bool carrying = false)
+        protected JointLister GetJointPositions(Vector3 vector, float jointWidth, float emptyHandsOffsetY = 0f, bool carrying = false)
         {
             var rot = this.bodyFacing;
             JointLister joints = new JointLister();
@@ -25,8 +25,9 @@
             float leftZ = vector.z;
             float rightZ = vector.z;
 
-            float leftY = HarmonyPatch_PawnRenderer.YOffset_HandsFeet;
-            float rightY = HarmonyPatch_PawnRenderer.YOffset_HandsFeet;
+            float offsetY = (carrying ? 0f : emptyHandsOffsetY) + Offsets.YOffset_HandsFeet;
+            float leftY = offsetY;
+            float rightY = offsetY;
 
             if (carrying)
             {
@@ -35,27 +36,23 @@
                 rightX += jointWidth / 2;
                 leftZ = -0.025f;
                 rightZ = -leftZ;
-                if (rot == Rot4.North)
-                {
-                    leftY = rightY = -HarmonyPatch_PawnRenderer.YOffset_Body;
-                }
             }
             else if (rot.IsHorizontal)
             {
-                float offsetX = jointWidth / 8;
-                float offsetZ = jointWidth * 0.6f;
+                float offsetX = jointWidth * 0.1f;
+                float offsetZ = jointWidth * 0.4f;
 
                 if (rot == Rot4.East)
                 {
 
-                    leftY = -HarmonyPatch_PawnRenderer.YOffset_Body;
+                    leftY = -Offsets.YOffset_Behind;
                     leftZ += +offsetZ;
 
                 }
                 else
                 {
 
-                    rightY = -HarmonyPatch_PawnRenderer.YOffset_Body;
+                    rightY = -Offsets.YOffset_Behind;
                     rightZ += offsetZ;
 
                 }
@@ -67,8 +64,14 @@
             else
             {
                 leftX = -rightX;
-
             }
+
+            if (rot == Rot4.North)
+            {
+                leftY = rightY = -Offsets.YOffset_Behind;
+            }
+
+
             joints.rightJoint = new Vector3(rightX, rightY, rightZ);
             joints.leftJoint = new Vector3(leftX, leftY, leftZ);
 

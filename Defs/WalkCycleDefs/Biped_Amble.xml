@@ -32,7 +32,7 @@
         <FrontPawPositionX IsNull="True" />
         <FrontPawPositionZ IsNull="True" />
         <HandsSwingAngle IsNull="True" />
-        <HipOffsetHorizontalX IsNull="True" />
+        <HipOffsetHorizontalX>0.05</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>1</keyIndex>
         <status>Automatic</status>
@@ -66,7 +66,7 @@
         <FrontPawPositionX IsNull="True" />
         <FrontPawPositionZ IsNull="True" />
         <HandsSwingAngle>-50</HandsSwingAngle>
-        <HipOffsetHorizontalX>-0.1</HipOffsetHorizontalX>
+        <HipOffsetHorizontalX>-0.025</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>3</keyIndex>
         <status>Automatic</status>
@@ -77,13 +77,13 @@
         <BodyAngleVertical>3</BodyAngleVertical>
         <BodyOffsetZ>0</BodyOffsetZ>
         <FootAngle>90</FootAngle>
-        <FootPositionX>0</FootPositionX>
+        <FootPositionX>0.15</FootPositionX>
         <FootPositionZ>0.125</FootPositionZ>
         <FrontPawAngle IsNull="True" />
         <FrontPawPositionX IsNull="True" />
         <FrontPawPositionZ IsNull="True" />
         <HandsSwingAngle>0</HandsSwingAngle>
-        <HipOffsetHorizontalX>-0.075</HipOffsetHorizontalX>
+        <HipOffsetHorizontalX>0.025</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>4</keyIndex>
         <status>Automatic</status>
@@ -100,7 +100,7 @@
         <FrontPawPositionX IsNull="True" />
         <FrontPawPositionZ IsNull="True" />
         <HandsSwingAngle IsNull="True" />
-        <HipOffsetHorizontalX>-0.025</HipOffsetHorizontalX>
+        <HipOffsetHorizontalX>0.025</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>5</keyIndex>
         <status>Automatic</status>
@@ -134,7 +134,7 @@
         <FrontPawPositionX IsNull="True" />
         <FrontPawPositionZ IsNull="True" />
         <HandsSwingAngle>50</HandsSwingAngle>
-        <HipOffsetHorizontalX>-0.1</HipOffsetHorizontalX>
+        <HipOffsetHorizontalX>-0.05</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX IsNull="True" />
         <keyIndex>7</keyIndex>
         <status>Automatic</status>
@@ -341,7 +341,7 @@
         <li>
           <loc>
             <x>0.5</x>
-            <y>0</y>
+            <y>0.15</y>
           </loc>
         </li>
         <li>
@@ -552,26 +552,32 @@
         </li>
         <li>
           <loc>
+            <x>0.125</x>
+            <y>0.05</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
             <x>0.375</x>
-            <y>-0.1</y>
-          </loc>
-        </li>
-        <li>
-          <loc>
-            <x>0.5</x>
-            <y>-0.075</y>
-          </loc>
-        </li>
-        <li>
-          <loc>
-            <x>0.625</x>
             <y>-0.025</y>
           </loc>
         </li>
         <li>
           <loc>
+            <x>0.5</x>
+            <y>0.025</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.625</x>
+            <y>0.025</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
             <x>0.875</x>
-            <y>-0.1</y>
+            <y>-0.05</y>
           </loc>
         </li>
         <li>

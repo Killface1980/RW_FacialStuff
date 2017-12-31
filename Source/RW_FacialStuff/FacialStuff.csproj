@@ -76,8 +76,9 @@
     <None Include="Harmony\Optional\AlienPatches.cs" />
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
-    <Compile Include="Class1.cs" />
-    <Compile Include="Class2.cs" />
+    <Compile Include="Controller_Animator.cs" />
+    <Compile Include="Enums\Offsets.cs" />
+    <Compile Include="Settings_Animator.cs" />
     <Compile Include="Components\CompBodyAnimator.cs" />
     <Compile Include="Components\CompProperties_BodyAnimator.cs" />
     <Compile Include="Defs\BodyAnimDef.cs" />
@@ -92,7 +93,7 @@
     <None Include="Enums\WalkcycleType.cs" />
     <Compile Include="Enums\RaceOption.cs" />
     <Compile Include="Graphics\PawnBodyGraphic.cs" />
-    <Compile Include="Harmony\Class2.cs" />
+    <Compile Include="Harmony\Patches2.cs" />
     <Compile Include="MainTabWindow_Animator.cs" />
     <Compile Include="Enums\BodyPartStats.cs" />
     <Compile Include="Components\CompProperties_Face.cs" />

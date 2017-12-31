@@ -202,6 +202,12 @@
             }
         }
 
+        public override string CompInspectStringExtra()
+        {
+            string extra = this.Pawn.DrawPos.ToString();
+            return extra;
+        }
+
         public void DrawFeet(Vector3 rootLoc, bool portrait)
         {
             if (this.pawnBodyDrawers != null)

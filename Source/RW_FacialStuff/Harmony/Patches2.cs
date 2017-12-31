@@ -5,6 +5,7 @@ using System.Text;
 
 namespace FacialStuff.Harmony
 {
+
     using RimWorld;
 
     using UnityEngine;
@@ -12,9 +13,15 @@ namespace FacialStuff.Harmony
     using Verse;
 
     [StaticConstructorOnStartup]
-    public static class Class2
+    public static class Patches2
     {
         private static Graphic_Shadow shadowGraphic;
+
+        public static bool Plants;
+
+        public static float steps;
+
+        public static List<Thing> plantMoved = new List<Thing>();
 
         // Verse.PawnRenderer
         public static bool RenderPawnAt(PawnRenderer __instance, Vector3 drawLoc, RotDrawMode bodyDrawType, bool headStump)
@@ -28,6 +35,10 @@ namespace FacialStuff.Harmony
             {
                 return true;
             }
+            if (pawn.RaceProps.Animal)
+            {
+                return true;
+            }
             if (pawn.GetPosture() != PawnPosture.Standing)
             {
                 return true;
@@ -37,7 +48,7 @@ namespace FacialStuff.Harmony
             {
                 return true;
             }
-            HarmonyPatch_PawnRenderer.Prefix(__instance, drawLoc, Quaternion.identity, true,pawn.Rotation, pawn.Rotation, bodyDrawType, false, headStump);
+            HarmonyPatch_PawnRenderer.Prefix(__instance, drawLoc, Quaternion.identity, true, pawn.Rotation, pawn.Rotation, bodyDrawType, false, headStump);
             Vector3 loc = drawLoc;
             bool behind = false;
             bool flip = false;
@@ -59,11 +70,11 @@ namespace FacialStuff.Harmony
             }
             if (behind)
             {
-                loc.y -= HarmonyPatch_PawnRenderer.YOffset_CarriedThing;
+                loc.y -= Offsets.YOffset_CarriedThing;
             }
             else
             {
-                loc.y += HarmonyPatch_PawnRenderer.YOffset_CarriedThing;
+                loc.y += Offsets.YOffset_CarriedThing;
             }
             carriedThing.DrawAt(loc, flip);
 
@@ -95,5 +106,32 @@ namespace FacialStuff.Harmony
             return false;
         }
 
+        public static void Prefix_DrawAt(Thing __instance)
+        {
+            if (__instance.def.thingClass != typeof(Plant))
+            {
+                return;
+            }
+
+            if (plantMoved.Contains(__instance))
+            {
+                return;
+            }
+
+            int maxSize = __instance.Map.Size.z;
+            steps = (HarmonyPatch_PawnRenderer.LayerSpacing * 0.9f) / (float)maxSize;
+
+            Vector3 drawPos = __instance.DrawPos;
+
+            Log.Message(__instance.def.defName +
+                " origin " + drawPos + " - maxSize " + maxSize + " - steps " + steps + " - z pos " + drawPos.z + " => "
+                + (drawPos.y -= steps * drawPos.z));
+            drawPos.y -= steps * drawPos.z;
+            __instance.Position = drawPos.ToIntVec3();
+
+            // __instance.DrawWorker(loc, rot, thing.def, thing, extraRotation);
+            plantMoved.Add(__instance);
+
+        }
     }
 }
