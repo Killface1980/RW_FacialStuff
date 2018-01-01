@@ -3,6 +3,7 @@
 namespace FacialStuff.Graphics
 {
     using FacialStuff.Animator;
+    using FacialStuff.DefOfs;
     using FacialStuff.Defs;
 
     using JetBrains.Annotations;
@@ -23,22 +24,18 @@ namespace FacialStuff.Graphics
 
         public Graphic_Multi_NaturalEyes EyeLeftGraphic;
 
-        [CanBeNull]
         public Graphic_Multi_AddedHeadParts EyeLeftPatchGraphic;
 
         public Graphic_Multi_NaturalEyes EyeRightClosedGraphic;
 
         public Graphic_Multi_NaturalEyes EyeRightGraphic;
 
-        [CanBeNull]
         public Graphic_Multi_AddedHeadParts EyeRightPatchGraphic;
 
-        [CanBeNull]
         public Graphic_Multi_NaturalHeadParts JawGraphic;
 
         public Graphic MainBeardGraphic;
 
-        [CanBeNull]
         public Graphic MoustacheGraphic;
 
         public HumanMouthGraphics mouthgraphic;
@@ -47,13 +44,11 @@ namespace FacialStuff.Graphics
 
         public Graphic RottingWrinkleGraphic;
 
-        [CanBeNull]
         public string texPathBrow;
 
-        [CanBeNull]
+        [NotNull]
         public readonly string texPathEyeLeftClosed;
 
-        [CanBeNull]
         public string texPathEyeRightClosed;
 
         public Graphic WrinkleGraphic;
@@ -61,6 +56,7 @@ namespace FacialStuff.Graphics
         [NotNull]
         private readonly CompFace compFace;
 
+        [NotNull]
         private readonly Pawn pawn;
 
         private float mood = 0.5f;
@@ -235,35 +231,37 @@ namespace FacialStuff.Graphics
         {
             this.InitializeGraphicsEyePatches();
 
+            Color eyeColor = Color.black;
+
             this.EyeLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                       this.compFace.texPathEyeLeft,
                                       ShaderDatabase.Cutout,
                                       Vector2.one,
-                                      this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
+                                      eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                        this.compFace.texPathEyeRight,
                                        ShaderDatabase.Cutout,
                                        Vector2.one,
-                                       this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
+                                       eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                             this.texPathEyeLeftClosed,
                                             ShaderDatabase.Cutout,
                                             Vector2.one,
-                                            this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
+                                            eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                              this.texPathEyeRightClosed,
                                              ShaderDatabase.Cutout,
                                              Vector2.one,
-                                             this.pawn.story.SkinColor) as Graphic_Multi_NaturalEyes;
+                                             eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.DeadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                 "Eyes/Eyes_Dead",
                 ShaderDatabase.Cutout,
                 Vector2.one,
-                this.pawn.story.SkinColor);
+                Color.black);
         }
 
         private void InitializeGraphicsMouth()

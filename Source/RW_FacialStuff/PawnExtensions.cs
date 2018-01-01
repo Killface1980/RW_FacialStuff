@@ -24,6 +24,16 @@
             return compAnim != null;
         }
 
+        public static CompFace GetCompFace([NotNull] this Pawn pawn)
+        {
+            return pawn.GetComp<CompFace>();
+        }
+
+        public static CompBodyAnimator GetCompAnim([NotNull] this Pawn pawn)
+        {
+            return pawn.GetComp<CompBodyAnimator>();
+        }
+
         public static bool GetPawnFace([NotNull] this Pawn pawn, [NotNull] out PawnFace pawnFace)
         {
             pawnFace = null;

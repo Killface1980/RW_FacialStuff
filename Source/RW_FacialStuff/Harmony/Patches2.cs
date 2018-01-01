@@ -33,6 +33,12 @@ namespace FacialStuff.Harmony
                 return true;
             }
 
+            bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
+            if (!showHands)
+            {
+                return true;
+            }
+
             if (pawn.RaceProps.Animal)
             {
                 return true;
@@ -49,19 +55,24 @@ namespace FacialStuff.Harmony
                 return true;
             }
 
-            HarmonyPatch_PawnRenderer.Prefix(
-                __instance,
-                drawLoc,
-                Quaternion.identity,
-                true,
-                pawn.Rotation,
-                pawn.Rotation,
-                bodyDrawType,
-                false,
-                headStump);
+            if (!HarmonyPatch_PawnRenderer.Prefix(
+                    __instance,
+                    drawLoc,
+                    Quaternion.identity,
+                    true,
+                    pawn.Rotation,
+                    pawn.Rotation,
+                    bodyDrawType,
+                    false,
+                    headStump))
+            {
+                return true;
+            }
             Vector3 loc = drawLoc;
             bool behind = false;
             bool flip = false;
+
+
             if (pawn.CurJob == null || !pawn.jobs.curDriver.ModifyCarriedThingDrawPos(ref loc, ref behind, ref flip))
             {
                 if (carriedThing is Pawn || carriedThing is Corpse)
@@ -90,7 +101,6 @@ namespace FacialStuff.Harmony
 
             carriedThing.DrawAt(loc, flip);
 
-            bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
             if (showHands)
             {
                 compAnim.DrawHands(loc, false, true);

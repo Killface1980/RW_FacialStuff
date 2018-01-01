@@ -10,8 +10,10 @@ namespace FacialStuff
     {
         #region Public Fields
 
+        [NotNull]
         public PawnGraphicSet Graphics;
 
+        [NotNull]
         public Pawn Pawn;
 
         #endregion Public Fields
@@ -26,15 +28,15 @@ namespace FacialStuff
 
         protected static readonly float[] VerHeadOffsets = { 0.34f, 0.37f, 0.36f, 0.37f, 0.44f, 0.35f };
 
-        protected bool isMoving;
+        protected bool IsMoving;
 
-        protected float movedPercent;
+        protected float MovedPercent;
 
         #endregion Protected Fields
 
         #region Protected Constructors
 
-        protected PawnHeadDrawer()
+        public PawnHeadDrawer()
         {
         }
 

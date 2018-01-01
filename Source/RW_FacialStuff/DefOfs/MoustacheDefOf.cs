@@ -1,5 +1,7 @@
-﻿namespace FacialStuff.Defs
+﻿namespace FacialStuff.DefOfs
 {
+    using FacialStuff.Defs;
+
     using RimWorld;
 
     [DefOf]

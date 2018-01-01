@@ -40,8 +40,8 @@
 
             if (this.CompAnimator.AnimatorOpen)
             {
-                horHeadOffset += MainTabWindowAnimator.HorHeadOffset;
-                verHeadOffset += MainTabWindowAnimator.VerHeadOffset;
+                horHeadOffset += MainTabWindow_Animator.HorHeadOffset;
+                verHeadOffset += MainTabWindow_Animator.VerHeadOffset;
             }
 
             switch (this.bodyFacing.AsInt)
@@ -70,7 +70,7 @@
 
             if (!portrait)
             {
-                if (this.isMoving)
+                if (this.IsMoving)
                 {
                     float bam = this.BodyWobble;
 
@@ -424,20 +424,20 @@
             asQuat.SetLookRotation(new Vector3(x, 0f, z), Vector3.up);
 
             // remove the body rotation
-            if (this.isMoving)
+            if (this.IsMoving && Controller.settings.UseFeet)
             {
                 if (this.bodyFacing.IsHorizontal)
                 {
                     asQuat *= Quaternion.AngleAxis(
                         (this.bodyFacing == Rot4.West ? 1 : -1)
-                        * this.CompAnimator.walkCycle.BodyAngle.Evaluate(this.movedPercent),
+                        * this.CompAnimator.WalkCycle.BodyAngle.Evaluate(this.MovedPercent),
                         Vector3.up);
                 }
                 else
                 {
                     asQuat *= Quaternion.AngleAxis(
                         (this.bodyFacing == Rot4.South ? 1 : -1)
-                        * this.CompAnimator.walkCycle.BodyAngleVertical.Evaluate(this.movedPercent),
+                        * this.CompAnimator.WalkCycle.BodyAngleVertical.Evaluate(this.MovedPercent),
                         Vector3.up);
                 }
             }
@@ -457,12 +457,22 @@
 
             if (animator.BodyAnimator != null)
             {
-                this.isMoving = animator.BodyAnimator.IsMoving(out this.movedPercent);
+                this.IsMoving = animator.BodyAnimator.IsMoving(out this.MovedPercent);
             }
 
             // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
-            SimpleCurve curve = animator.walkCycle.BodyOffsetZ;
-            this.BodyWobble = curve.Evaluate(this.movedPercent);
+            if (Controller.settings.UseFeet)
+            {
+                if (animator.WalkCycle != null)
+                {
+                    SimpleCurve curve = animator.WalkCycle.BodyOffsetZ;
+                    this.BodyWobble = curve.Evaluate(this.MovedPercent);
+                }
+            }
+            else
+            {
+                this.BodyWobble = 0f;
+            }
         }
 
         #endregion Public Methods

@@ -1,24 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Facial Stuff 0.18.0</name>
+  <name>Facial Stuff 0.18.5</name>
   <author>Killface</author>
   <url></url>
   <targetVersion>0.18.0</targetVersion>
   <description>This mod aims to provide more visual individuality for your colonists
+- hands and feet, partially animated
+- 30+ different beards for males, some of them combinable
+- edited vanilla hair styles with 10 steps of hair loss
 - new eyes and brows for both sexes
 - animated eye &amp; mouth textures
 - alternate eye and jaw textures for pawns with implants or removed parts
 - 10 newly defined skin colors instead of the vanilla 6
 - hair genetics according to real life (including the effects of eumelanin &amp; pheomelanin)
-- adds the ability to change the head and body type for all Humans (needs activation in the mod options)
-- fully compatible with Children &amp; Pregnancy, Werewolves and Prepare Carefully
-- 30+ different beards, some of them combinable
-- possibility to show hair under hats
-- multiple visibility options for hats on map
-- added vanilla hair styles with 10 steps of hair loss
 - includes selected trending hair colors of 5501
-- add hands to pawns that hold weapons (vanilia weapons only) thx mrofa
+- possibility to show hair under hats
+- multiple visibility options for head gear on map
+- multiple visibility options for apparel layers in rooms/private rooms
+- adds the ability to change the head and body type for all Humans (needs activation in the mod options)
+- fully compatible with Children &amp; Pregnancy, Vampires, Werewolves and Prepare Carefully
 - all features can be disabled in the mod options menu
+
+- Walk cycle editor, disabled by default. Check out the MainButtons.xml for activation (intended for modders)
 
 + includes a modified version of &apos;Spoonshortage&apos;s Rimworld Hairstyles 1.2&apos; by spoonshortage
 + includes a modified version of &apos;Nackblad Inc Rimhair 1.1&apos; by nackblad
@@ -26,7 +29,7 @@
 Patches the PawnRenderer via Harmony and returns &apos;false&apos; thus being incompatible to mods doing the same.
 
 Initial Face Styling bench code adapted from "Clutter" by mrofa (available at the Ludeon forums)
-Hands adapted from "Clutter Weapon Hands" by mrofa
+Hands based on "Clutter Weapon Hands" by mrofa. 
 Body, gender and head changer code adapted from Change Dresser by Kiame Vivacity
 Prepare Carefully saving / loading code adapted from Psychology by {WOBBLY} The Word-Mule
 Inspiration for the new renderer and all of its benefits by {WOBBLY} The Word-Mule and ChJees

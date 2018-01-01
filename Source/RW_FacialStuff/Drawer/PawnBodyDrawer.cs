@@ -36,15 +36,17 @@ namespace FacialStuff
 
         #region Public Properties
 
+        [NotNull]
         public CompBodyAnimator CompAnimator { get; set; }
 
+        [NotNull]
         public Pawn Pawn { get; set; }
 
         #endregion Public Properties
 
         #region Public Methods
 
-        public virtual void ApplyBodyWobble(ref Vector3 rootLoc, ref Quaternion quat)
+        public virtual void ApplyBodyWobble(ref Vector3 rootLoc, ref Vector3 footPos, ref Quaternion quat)
         {
         }
 

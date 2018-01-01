@@ -1,5 +1,6 @@
 ﻿namespace FacialStuff.Graphics
 {
+    using FacialStuff.DefOfs;
     using FacialStuff.Defs;
 
     using global::Harmony;

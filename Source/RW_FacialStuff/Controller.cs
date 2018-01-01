@@ -34,7 +34,6 @@
             settings.DoWindowContents(inRect);
         }
 
-        [NotNull]
         public override string SettingsCategory()
         {
             return "Facial Stuff";

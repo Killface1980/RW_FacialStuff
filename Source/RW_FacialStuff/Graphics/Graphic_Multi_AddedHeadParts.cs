@@ -1,3 +1,4 @@
+// ReSharper disable NonReadonlyMemberInGetHashCode
 namespace FacialStuff.Graphics
 {
     using System;

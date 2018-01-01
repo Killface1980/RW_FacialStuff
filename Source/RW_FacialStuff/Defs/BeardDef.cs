@@ -4,6 +4,9 @@
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 // ReSharper disable InconsistentNaming
 // ReSharper disable CollectionNeverUpdated.Global
+// ReSharper disable UnassignedField.Global
+
+// ReSharper disable StyleCop.SA1310
 
 namespace FacialStuff.Defs
 {
@@ -28,6 +31,6 @@ namespace FacialStuff.Defs
         public List<ThingDef> forbiddenOnRace = new List<ThingDef>();
 
         [NotNull]
-        public string texPath;
+        public string texPath= string.Empty;
     }
 }

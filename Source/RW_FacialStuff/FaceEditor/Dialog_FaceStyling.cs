@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Reflection;
 
+    using FacialStuff.DefOfs;
     using FacialStuff.Defs;
     using FacialStuff.FaceEditor.ColorPicker;
     using FacialStuff.FaceEditor.UI.DTO;
@@ -28,6 +29,8 @@
     // ReSharper disable once InconsistentNaming
     public class Dialog_FaceStyling : Window
     {
+        #region Public Fields
+
         public static readonly Color ColorSwatchBorder = new Color(0.77255f, 0.77255f, 0.77255f);
 
         public static readonly Color ColorSwatchSelection = new Color(0.9098f, 0.9098f, 0.9098f);
@@ -50,6 +53,32 @@
 
         public static List<HairDef> FilteredHairDefs;
 
+        [NotNull]
+        public readonly CompFace compFace;
+
+        public readonly bool initialized;
+        public readonly Gender originalGender;
+        public DresserDTO dresserDto;
+        public FilterTab filterTab;
+        public GenderTab genderTab;
+        public Vector2 pickerPosition = Vector2.zero;
+        public Vector2 pickerSize = new Vector2(200, 200);
+        public bool rerenderPawn = true;
+
+        public Vector2 scrollPositionHairAll = Vector2.zero;
+
+        public Vector2 scrollPositionHairAny = Vector2.zero;
+
+        public Vector2 scrollPositionHairFemale = Vector2.zero;
+
+        public Vector2 scrollPositionHairMale = Vector2.zero;
+        public bool skinPage = true;
+        public FaceStyleTab tab;
+
+        #endregion Public Fields
+
+        #region Private Fields
+
         private static readonly Color DarkBackground = new Color(0.12f, 0.12f, 0.12f);
 
         private static readonly List<BeardDef> FullBeardDefs;
@@ -71,7 +100,7 @@
 
         private static readonly List<string> VanillaHairTags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
 
-        private static List<BrowDef> browDefs;
+        public static List<BrowDef> browDefs;
 
         private static List<string> currentFilter = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
 
@@ -81,43 +110,11 @@
 
         private static long MaxAge = 1000000000 * TicksPerYear;
 
-        private static Pawn pawn;
+        public static Pawn pawn;
 
         private static Vector2 portraitSize = new Vector2(203f, 203f);
 
         private static float PreviewSize = 220f;
-
-        [NotNull]
-        public readonly CompFace compFace;
-
-        public readonly bool initialized;
-
-        public readonly Gender originalGender;
-
-        public DresserDTO dresserDto;
-
-        public FilterTab filterTab;
-
-        public GenderTab genderTab;
-
-        public Vector2 pickerPosition = Vector2.zero;
-
-        public Vector2 pickerSize = new Vector2(200, 200);
-
-        public bool rerenderPawn = true;
-
-        public Vector2 scrollPositionHairAll = Vector2.zero;
-
-        public Vector2 scrollPositionHairAny = Vector2.zero;
-
-        public Vector2 scrollPositionHairFemale = Vector2.zero;
-
-        public Vector2 scrollPositionHairMale = Vector2.zero;
-
-        public bool skinPage = true;
-
-        public FaceStyleTab tab;
-
         private readonly ColorWrapper colourWrapper;
 
         private readonly bool gear;
@@ -193,6 +190,10 @@
         private SpecialTab specialTab;
 
         private Vector2 swatchSize = new Vector2(14, 14);
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         static Dialog_FaceStyling()
         {
@@ -314,6 +315,10 @@
             this.rerenderPawn = true;
         }
 
+        #endregion Public Constructors
+
+        #region Public Enums
+
         public enum FaceStyleTab : byte
         {
             Hair,
@@ -349,6 +354,10 @@
             All
         }
 
+        #endregion Public Enums
+
+        #region Private Enums
+
         private enum BeardTab : byte
         {
             Combinable,
@@ -364,6 +373,10 @@
 
             Any
         }
+
+        #endregion Private Enums
+
+        #region Public Properties
 
         public static List<string> CurrentFilter
         {
@@ -447,6 +460,10 @@
             }
         }
 
+        #endregion Public Properties
+
+        #region Private Properties
+
         private BeardDef NewBeard
         {
             get => this.newBeard;
@@ -497,6 +514,10 @@
                 this.UpdatePawnDefs(value);
             }
         }
+
+        #endregion Private Properties
+
+        #region Public Methods
 
         public static Rect AddPortraitWidget(float left, float top)
         {
@@ -1514,6 +1535,10 @@
             this.rerenderPawn = true;
         }
 
+        #endregion Public Methods
+
+        #region Private Methods
+
         // ReSharper disable once MethodTooLong
         private static void FillDefs()
         {
@@ -2427,6 +2452,8 @@
 
             this.rerenderPawn = true;
         }
+
+        #endregion Private Methods
 
         // private void CheckSelectedFacePresetHasName()
         // }

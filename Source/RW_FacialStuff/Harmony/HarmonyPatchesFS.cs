@@ -237,18 +237,38 @@ namespace FacialStuff.Harmony
 
         public static bool RandomHairDefFor_PreFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
         {
+            Log.Message("1 - " + pawn );
             if (!pawn.GetCompFace(out CompFace compFace))
             {
                 return true;
             }
+            Log.Message("2 - " + pawn.def.defName);
 
-            if (compFace.Props.needsAlienHair)
+            if (compFace.Props.useAlienRacesHairTags)
             {
                 return true;
             }
 
+            FactionDef faction = factionType;
+
+            if (faction == null)
+            {
+                faction = FactionDefOf.PlayerColony;
+            }
+
+            List<string> hairTags = faction.hairTags;
+
+            if (pawn.def == ThingDefOf.Human)
+            {
+                List<string> vanillatags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
+                if (!hairTags.Any(x => vanillatags.Contains(x)))
+                {
+                    hairTags.AddRange(vanillatags);
+                }
+            }
+
             IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
-                                          where hair.hairTags.SharesElementWith(factionType.hairTags)
+                                          where hair.hairTags.SharesElementWith(hairTags)
                                           select hair;
 
             __result = source.RandomElementByWeight(hair => PawnFaceMaker.HairChoiceLikelihoodFor(hair, pawn));
@@ -368,9 +388,9 @@ namespace FacialStuff.Harmony
                     if (recipientFace.Props.canRotateHead)
                     {
                         if (recipientFace.HeadRotator != null && !recipientFace.IsChild)
-                    {
-                        recipientFace.HeadRotator.LookAtPawn(pawn);
-                    }
+                        {
+                            recipientFace.HeadRotator.LookAtPawn(pawn);
+                        }
                     }
                 }
             }

@@ -4,8 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using FacialStuff.DefOfs;
     using FacialStuff.Defs;
     using FacialStuff.Graphics;
+
+    using JetBrains.Annotations;
 
     using RimWorld;
 
@@ -14,8 +17,11 @@
     using Verse;
     using Verse.AI;
 
-    public class MainTabWindowAnimator : MainTabWindow
+    public class MainTabWindow_Animator : MainTabWindow
     {
+
+        #region Public Fields
+
         public static Rot4 bodyRot = Rot4.East;
 
         public static bool Colored;
@@ -32,6 +38,16 @@
 
         public static float VerHeadOffset;
 
+        public int FrameLabel = 1;
+        public bool Loop;
+        public Pawn Pawn;
+
+        #endregion Public Fields
+
+        #region Private Fields
+
+        private static readonly Color selectedColor = new Color(1f, 0.79f, 0.26f);
+
         private static float animationPercent;
 
         private static float animSlider;
@@ -39,18 +55,7 @@
         private static string defPath;
 
         private static Vector2 portraitSize = new Vector2(320f, 320f);
-
-        private static readonly Color selectedColor = new Color(1f, 0.79f, 0.26f);
-
-        public int FrameLabel = 1;
-
-        public bool Loop;
-
-        public Pawn Pawn;
-
         private readonly Color addColor = new Color(0.25f, 1f, 0.25f);
-
-        private CompBodyAnimator compAnim;
 
         private readonly float defaultHeight = 36f;
 
@@ -60,18 +65,19 @@
 
         private readonly float spacing = 12f;
 
-        private float widthButton = 120f;
-
         private readonly float widthLabel = 150f;
+
+        private CompBodyAnimator compAnim;
 
         private float zoom = 1f;
 
+        #endregion Private Fields
+
+        #region Public Properties
+
         public static float AnimationPercent
         {
-            get
-            {
-                return animationPercent;
-            }
+            get => animationPercent;
 
             set
             {
@@ -90,8 +96,6 @@
                 headRot = value;
             }
         }
-
-        public static int CurrentFrameInt { get; private set; }
 
         public static string DefPath
         {
@@ -113,10 +117,10 @@
             }
         }
 
+        [NotNull]
         public static WalkCycleDef EditorWalkcycle { get; private set; } = WalkCycleDefOf.Biped_Walk;
 
         public static Rot4 HeadRot => headRot;
-
         public static int LastInd
         {
             get
@@ -126,7 +130,6 @@
         }
 
         public CompBodyAnimator CompAnim => this.compAnim;
-
         public float CurrentShift
         {
             get
@@ -159,6 +162,11 @@
             }
         }
 
+        #endregion Public Properties
+
+        #region Private Properties
+
+        private static int CurrentFrameInt { get; set; }
         // public static float horHeadOffset;
 
         // public static float verHeadOffset;
@@ -167,6 +175,10 @@
         private BodyAnimDef BodyAnimDef => this.CompAnim.bodyAnim;
 
         private PawnKeyframe CurrentFrame => PawnKeyframes[CurrentFrameInt];
+
+        #endregion Private Properties
+
+        #region Public Methods
 
         public void AddPortraitWidget(float inRectWidth)
         {
@@ -303,6 +315,10 @@
 
             base.PostClose();
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         private static void DoActiveKeyframeButtons(List<int> framesAt, ref Rect buttonRect)
         {
@@ -1230,5 +1246,8 @@
 
             editorRect.y += editorRect.height;
         }
+
+        #endregion Private Methods
+
     }
 }

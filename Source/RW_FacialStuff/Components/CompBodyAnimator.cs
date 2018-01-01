@@ -1,41 +1,39 @@
 ﻿namespace FacialStuff
 {
-    using FacialStuff.Animator;
-    using FacialStuff.Defs;
-    using FacialStuff.Graphics;
-    using JetBrains.Annotations;
-    using RimWorld;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
+
+    using FacialStuff.Animator;
+    using FacialStuff.DefOfs;
+    using FacialStuff.Defs;
+    using FacialStuff.Graphics;
+
+    using JetBrains.Annotations;
+
+    using RimWorld;
+
     using UnityEngine;
+
     using Verse;
 
     public class CompBodyAnimator : ThingComp
     {
-
         #region Public Fields
 
-        public static FieldInfo infoJitterer;
         public bool AnimatorOpen;
-
         public BodyAnimDef bodyAnim;
-
         public BodyPartStats bodyStat;
-
         public float JitterMax = 0.35f;
-
-        public int lastRoomCheck;
-
         public PawnBodyGraphic PawnBodyGraphic;
-
-        public WalkCycleDef walkCycle = WalkCycleDefOf.Biped_Walk;
+        public WalkCycleDef WalkCycle = WalkCycleDefOf.Biped_Walk;
 
         #endregion Public Fields
 
         #region Private Fields
 
+        private static FieldInfo infoJitterer;
         [NotNull]
         private List<Material> cachedNakedMatsBodyBase = new List<Material>();
 
@@ -43,7 +41,7 @@
         private List<Material> cachedSkinMatsBodyBase = new List<Material>();
         private int cachedSkinMatsBodyBaseHash = -1;
         private bool initialized;
-
+        private int lastRoomCheck;
         private Room theRoom;
 
         #endregion Private Fields
@@ -152,7 +150,7 @@
             return info?.GetValue(instance);
         }
 
-        public void ApplyBodyWobble(ref Vector3 rootLoc, ref Quaternion quat)
+        public void ApplyBodyWobble(ref Vector3 rootLoc, ref Vector3 footPos,  ref Quaternion quat)
         {
             if (this.PawnBodyDrawers != null)
             {
@@ -160,7 +158,7 @@
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
-                    this.PawnBodyDrawers[i].ApplyBodyWobble(ref rootLoc, ref quat);
+                    this.PawnBodyDrawers[i].ApplyBodyWobble(ref rootLoc, ref footPos, ref quat);
                     i++;
                 }
             }
@@ -173,11 +171,11 @@
             this.cachedNakedMatsBodyBaseHash = -1;
         }
 
-        public override string CompInspectStringExtra()
-        {
-            string extra = this.Pawn.DrawPos.ToString();
-            return extra;
-        }
+        // public override string CompInspectStringExtra()
+        // {
+        //     string extra = this.Pawn.DrawPos.ToString();
+        //     return extra;
+        // }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public void DrawBody(Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType, [CanBeNull] PawnWoundDrawer woundDrawer, bool renderBody, bool portrait)
@@ -260,6 +258,18 @@
                     thingComp.Initialize();
                 }
             }
+            else
+            {
+                this.PawnBodyDrawers = new List<PawnBodyDrawer>();
+
+                PawnBodyDrawer thingComp = (PawnBodyDrawer)Activator.CreateInstance(typeof(HumanBipedDrawer));
+                thingComp.CompAnimator = this;
+                thingComp.Pawn = this.Pawn;
+                this.PawnBodyDrawers.Add(thingComp);
+                thingComp.Initialize();
+
+
+            }
         }
 
         public List<Material> NakedMatsBodyBaseAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
@@ -341,19 +351,22 @@
             {
                 bodyType = this.Pawn.story.bodyType;
             }
-
-            string defName = "BodyAnimDef_" + this.Pawn.def.defName + "_" + bodyType;
-
-            BodyAnimDef newDef = DefDatabase<BodyAnimDef>.GetNamedSilentFail(defName);
-
-            if (newDef != null)
+            List<string> names = new List<string>
+                                     {
+                                         "BodyAnimDef_" + this.Pawn.def.defName + "_" + bodyType,
+                                         "BodyAnimDef_" + ThingDefOf.Human.defName + "_" + bodyType
+                                     };
+            foreach (string name in names)
             {
-                this.bodyAnim = newDef;
+                BodyAnimDef newDef = DefDatabase<BodyAnimDef>.GetNamedSilentFail(name);
+                if (newDef != null)
+                {
+                    this.bodyAnim = newDef;
+                    return;
+                }
             }
-            else
-            {
-                this.bodyAnim = new BodyAnimDef { defName = defName, label = defName };
-            }
+
+            this.bodyAnim = new BodyAnimDef { defName = this.Pawn.def.defName, label = this.Pawn.def.defName };
         }
 
         public void TickDrawers(Rot4 bodyFacing, PawnGraphicSet graphics)

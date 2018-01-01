@@ -194,6 +194,27 @@
     <Content Include="..\..\Defs\BeardDefs\BeardDef.xml">
       <Link>Defs\xml\Face\BeardDef.xml</Link>
     </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Fat.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Human_Fat.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Female.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Human_Female.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Hulk.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Human_Hulk.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Male.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Human_Male.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Thin.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Human_Thin.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Husky_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Husky_Undefined.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_WildBoar_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_WildBoar_Undefined.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\BrowDefs\BrowDef_Female.xml">
       <Link>Defs\xml\Face\BrowDef_Female.xml</Link>
     </Content>

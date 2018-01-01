@@ -1,5 +1,6 @@
 namespace FacialStuff
 {
+    using FacialStuff.DefOfs;
     using FacialStuff.Defs;
     using FacialStuff.Graphics;
 

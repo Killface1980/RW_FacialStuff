@@ -4,17 +4,21 @@
 
     using Verse;
 
+    // ReSharper disable UnassignedField.Global
+    // ReSharper disable StyleCop.SA1307
+    // ReSharper disable StyleCop.SA1401
+    // ReSharper disable InconsistentNaming
     public class CompProperties_WeaponExtensions : CompProperties
     {
         #region Public Fields
 
-        public Vector3 RightHandPosition ;
-
-        public Vector3 LeftHandPosition ;
-
-        public Vector3 WeaponPositionOffset ;
-
         public float? AttackAngleOffset;
+
+        public Vector3 LeftHandPosition;
+
+        public Vector3 RightHandPosition;
+
+        public Vector3 WeaponPositionOffset;
 
         #endregion Public Fields
 
@@ -28,4 +32,3 @@
         #endregion Public Constructors
     }
 }
-

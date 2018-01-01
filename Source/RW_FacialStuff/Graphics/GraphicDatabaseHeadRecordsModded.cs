@@ -1,8 +1,6 @@
 ﻿namespace FacialStuff.Graphics
 {
-    using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
 
     using JetBrains.Annotations;
@@ -15,6 +13,7 @@
     {
         #region Public Fields
 
+        [NotNull]
         public static readonly List<HeadGraphicRecordVanillaCustom> HeadsVanillaCustom =
             new List<HeadGraphicRecordVanillaCustom>();
 
@@ -22,8 +21,10 @@
 
         #region Private Fields
 
+        [NotNull]
         private static readonly string SkullPath = "Things/Pawn/Humanlike/Heads/None_Average_Skull";
 
+        [NotNull]
         private static readonly string StumpPath = "Things/Pawn/Humanlike/Heads/None_Average_Stump";
 
         private static HeadGraphicRecordVanillaCustom skull;
@@ -66,7 +67,7 @@
             BuildDatabaseIfNecessary();
             foreach (HeadGraphicRecordVanillaCustom headGraphicRecordVanillaCustom in HeadsVanillaCustom)
             {
-                if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story.HeadGraphicPath.Remove(0, 22))
+                if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story?.HeadGraphicPath?.Remove(0, 22))
                 {
                     // Log.Message("Getting vanilla " + pawn.story.HeadGraphicPath.Remove(0, 22) + ".");
                     return headGraphicRecordVanillaCustom.GetGraphic(color);
@@ -74,10 +75,10 @@
             }
 
             Log.Message(
-                "Tried to get pawn head at path " + pawn.story.HeadGraphicPath.Remove(0, 22)
+                "Tried to get pawn head at path " + pawn.story?.HeadGraphicPath?.Remove(0, 22)
                 + " that was not found. Defaulting...");
 
-            return HeadsVanillaCustom.First().GetGraphic(color);
+            return HeadsVanillaCustom.First()?.GetGraphic(color);
         }
 
         public static Graphic_Multi GetStump(Color skinColor)
@@ -101,10 +102,6 @@
         {
             #region Public Fields
 
-            public CrownType crownType;
-
-            public Gender gender;
-
             public string graphicPathVanillaCustom;
 
             #endregion Public Fields
@@ -121,22 +118,6 @@
             public HeadGraphicRecordVanillaCustom(string graphicPath)
             {
                 this.graphicPathVanillaCustom = graphicPath;
-                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
-
-                string[] array = fileNameWithoutExtension?.Split('_');
-
-                try
-                {
-                    this.crownType =
-                        (CrownType)(byte)ParseHelper.FromString(array[array.Length - 2], typeof(CrownType));
-                    this.gender = (Gender)(byte)ParseHelper.FromString(array[array.Length - 3], typeof(Gender));
-                }
-                catch (Exception ex)
-                {
-                    Log.Error("Parse error with head graphic at " + graphicPath + ": " + ex.Message);
-                    this.crownType = CrownType.Undefined;
-                    this.gender = Gender.None;
-                }
             }
 
             #endregion Public Constructors

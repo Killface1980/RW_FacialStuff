@@ -51,7 +51,7 @@
             // Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
             PawnGraphicSet graphics = __instance.graphics;
 
-            Pawn pawn = graphics.pawn;
+            Pawn pawn = graphics?.pawn;
 
             if (!graphics.AllResolved)
             {
@@ -63,17 +63,17 @@
 
             PawnWoundDrawer woundDrawer = (PawnWoundDrawer)woundOverlayFieldInfo?.GetValue(__instance);
 
-            if (Patches2.Plants)
-            {
-                if (pawn.Spawned)
-                {
-                    Plant plant = (pawn.Position + IntVec3.South).GetPlant(pawn.Map);
-                    if (plant != null && Patches2.plantMoved.Contains(plant))
-                    {
-                        rootLoc.y = plant.DrawPos.y - (Patches2.steps / 2);
-                    }
-                }
-            }
+            // if (Patches2.Plants)
+            // {
+            //     if (pawn.Spawned)
+            //     {
+            //         Plant plant = (pawn.Position + IntVec3.South).GetPlant(pawn.Map);
+            //         if (plant != null && Patches2.plantMoved.Contains(plant))
+            //         {
+            //             rootLoc.y = plant.DrawPos.y - (Patches2.steps / 2);
+            //         }
+            //     }
+            // }
             {
                 // Try to move the y position behind while another pawn is standing near
                 // if (false)
@@ -113,7 +113,7 @@
             pawn.GetCompFace(out CompFace compFace);
 
             // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
-            if (compFace == null || compFace.IsChild || compFace.Deactivated)
+            if (compFace == null)
             {
                 if (compAnim == null || !footy)
                 {
@@ -122,12 +122,12 @@
 
                 if (compAnim.AnimatorOpen)
                 {
-                    bodyFacing = MainTabWindowAnimator.BodyRot;
-                    headFacing = MainTabWindowAnimator.HeadRot;
+                    bodyFacing = MainTabWindow_Animator.BodyRot;
+                    headFacing = MainTabWindow_Animator.HeadRot;
                 }
 
                 compAnim.TickDrawers(bodyFacing, graphics);
-                compAnim.ApplyBodyWobble(ref rootLoc, ref quat);
+                compAnim.ApplyBodyWobble(ref rootLoc, ref footPos, ref quat);
 
                 RenderAnimatedPawn(
                     pawn,
@@ -145,12 +145,17 @@
                 return false;
             }
 
+            if (compFace.IsChild || compFace.Deactivated)
+            {
+                return true;
+            }
+
             if (compAnim != null)
             {
                 if (compAnim.AnimatorOpen)
                 {
-                    bodyFacing = MainTabWindowAnimator.BodyRot;
-                    headFacing = MainTabWindowAnimator.HeadRot;
+                    bodyFacing = MainTabWindow_Animator.BodyRot;
+                    headFacing = MainTabWindow_Animator.HeadRot;
                 }
             }
 
@@ -166,7 +171,7 @@
             {
                 if (footy)
                 {
-                    compAnim?.ApplyBodyWobble(ref rootLoc, ref quat);
+                    compAnim?.ApplyBodyWobble(ref rootLoc, ref footPos, ref quat);
                 }
 
                 // Reset the quat as it has been changed
@@ -308,13 +313,65 @@
             return false;
         }
 
-        private static void RecalcRootLocY(ref Vector3 rootLoc, Pawn pawn)
+        /// <summary>
+        ///     Gets all Pawns inside the supplied radius. If any.
+        /// </summary>
+        /// <param name="center">Radius center.</param>
+        /// <param name="map">Map to look in.</param>
+        /// <param name="radius">The radius from the center.</param>
+        /// <param name="targetPredicate">Optional predicate on each candidate.</param>
+        /// <returns>Matching Pawns inside the Radius.</returns>
+        public static IEnumerable<Pawn> GetPawnsInsideRadius(LocalTargetInfo center, Map map, float radius,
+                                                             Predicate<Pawn> targetPredicate)
+        {
+            //With no predicate, just grab everything.
+            if (targetPredicate == null)
+            {
+                targetPredicate = thing => true;
+            }
+
+            foreach (Pawn pawn in map.listerThings.ThingsInGroup(ThingRequestGroup.Pawn))
+            {
+                if (CircleIntersectionTest(pawn.Position.x, pawn.Position.y, 1f, center.Cell.x, center.Cell.y, radius)
+                    && targetPredicate(pawn))
+                {
+                    yield return pawn;
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Simple Circle to Circle intersection test.
+        /// </summary>
+        /// <param name="x0">Circle 0 X-position</param>
+        /// <param name="y0">Circle 0 Y-position</param>
+        /// <param name="radius0">Circle 0 Radius</param>
+        /// <param name="x1">Circle 1 X-position</param>
+        /// <param name="y1">Circle 1 Y-position</param>
+        /// <param name="radius1">Circle 1 Radius</param>
+        /// <returns>True if a intersection occured. False if not.</returns>
+        public static bool CircleIntersectionTest(float x0, float y0, float radius0, float x1, float y1, float radius1)
+        {
+            float radiusSum = radius0 * radius0 + radius1 * radius1;
+            float distance = (x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0);
+
+            // Intersection occured.
+            if (distance <= radiusSum)
+            {
+                return true;
+            }
+
+            // No intersection.
+            return false;
+        }
+    
+    private static void RecalcRootLocY(ref Vector3 rootLoc, Pawn pawn)
         {
             Vector3 loc = rootLoc;
             List<Pawn> pawns = pawn.Map.mapPawns.AllPawnsSpawned
                 .Where(
-                    otherPawn => otherPawn.DrawPos.x >= loc.x - 1 && otherPawn.DrawPos.x <= loc.x + 1
-                                 && otherPawn.DrawPos.z < loc.z).ToList();
+                    otherPawn => otherPawn != pawn && otherPawn.DrawPos.x >= loc.x - 1
+                                 && otherPawn.DrawPos.x <= loc.x + 1 && otherPawn.DrawPos.z < loc.z).ToList();
             List<Pawn> leftOf = pawns.Where(other => other.DrawPos.x < loc.x).ToList();
 
             if (!pawns.NullOrEmpty())

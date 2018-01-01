@@ -4,6 +4,7 @@
     using System.Collections.Generic;
 
     using FacialStuff.Animator;
+    using FacialStuff.DefOfs;
     using FacialStuff.Defs;
     using FacialStuff.Graphics;
     using FacialStuff.Utilities;
@@ -37,6 +38,7 @@
 
         private Vector2 eyeOffset = Vector2.zero;
 
+        [NotNull]
         public List<PawnHeadDrawer> PawnDrawers { get; private set; }
 
         private Faction factionInt;
@@ -48,7 +50,6 @@
         private Vector2 mouthOffset = Vector2.zero;
 
         // must be null, always initialize with pawn
-        [CanBeNull]
         private PawnFace pawnFace;
 
         #endregion Private Fields
@@ -58,7 +59,6 @@
         // public bool IgnoreRenderer;
         public GraphicVectorMeshSet EyeMeshSet => MeshPoolFS.HumanEyeSet[(int)this.FullHeadType];
 
-        [CanBeNull]
         [NotNull]
         public PawnEyeWiggler EyeWiggler { get; private set; }
 
@@ -323,6 +323,7 @@
             return "Brows/Brow_" + this.Pawn.gender + "_" + browDef.texPath;
         }
 
+
         // Can be called externally
         public void DrawAlienBodyAddons(Quaternion quat, Vector3 vector, bool portrait, bool renderBody)
         {
@@ -389,7 +390,7 @@
 
         public void DrawBeardAndTache(ref Vector3 locFacialY, bool portrait, Quaternion headQuat)
         {
-            if (this.PawnDrawers != null)
+            if (!this.PawnDrawers.NullOrEmpty())
             {
                 int i = 0;
                 int count = this.PawnDrawers.Count;
@@ -403,7 +404,7 @@
 
         public void DrawBrows(ref Vector3 locFacialY, Quaternion headQuat, bool portrait)
         {
-            if (this.PawnDrawers != null)
+            if (!this.PawnDrawers.NullOrEmpty())
             {
                 int i = 0;
                 int count = this.PawnDrawers.Count;
@@ -417,7 +418,7 @@
 
         public void DrawHairAndHeadGear(Vector3 rootLoc, RotDrawMode bodyDrawType, ref Vector3 currentLoc, Vector3 b, bool portrait, bool renderBody, Quaternion headQuat)
         {
-            if (this.PawnDrawers != null)
+            if (!this.PawnDrawers.NullOrEmpty())
             {
                 int i = 0;
                 int count = this.PawnDrawers.Count;
@@ -558,12 +559,24 @@
                 this.PawnDrawers = new List<PawnHeadDrawer>();
                 for (int i = 0; i < this.Props.drawers.Count; i++)
                 {
-                    PawnHeadDrawer thingComp = (PawnHeadDrawer)Activator.CreateInstance(this.Props.drawers[i].GetType());
+                    PawnHeadDrawer thingComp =
+                        (PawnHeadDrawer)Activator.CreateInstance(this.Props.drawers[i].GetType());
                     thingComp.CompFace = this;
                     thingComp.Pawn = this.Pawn;
                     this.PawnDrawers.Add(thingComp);
                     thingComp.Initialize();
                 }
+            }
+            else
+            {
+                this.PawnDrawers = new List<PawnHeadDrawer>();
+                PawnHeadDrawer thingComp =
+                    (PawnHeadDrawer)Activator.CreateInstance(typeof(HumanHeadDrawer));
+                thingComp.CompFace = this;
+                thingComp.Pawn = this.Pawn;
+                this.PawnDrawers.Add(thingComp);
+                thingComp.Initialize();
+
             }
         }
 

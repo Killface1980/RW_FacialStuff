@@ -1,35 +1,35 @@
 ﻿namespace FacialStuff
 {
-    using System.Collections.Generic;
+    // ReSharper disable UnassignedField.Global
+    // ReSharper disable StyleCop.SA1307
+    // ReSharper disable StyleCop.SA1401
+    // ReSharper disable InconsistentNaming
 
     using FacialStuff.Defs;
-
     using JetBrains.Annotations;
-
     using RimWorld;
+    using System.Collections.Generic;
+
+    using FacialStuff.DefOfs;
 
     using UnityEngine;
-
     using Verse;
 
     public class CompProperties_BodyAnimator : CompProperties
     {
+
         #region Public Fields
 
-        public string handType = "Human";
-
         public bool bipedWithHands = false;
-
-        public Vector3 hipOffset;
-
-        public Vector3 shoulderOffset;
-
+        public WalkCycleDef defaultCycleWalk = WalkCycleDefOf.Biped_Walk;
         [NotNull]
         public List<PawnBodyDrawer> drawers = new List<PawnBodyDrawer>();
 
-        public bool quadruped = false;
+        public string handType = "Human";
+        public Vector3 hipOffset;
 
-        public WalkCycleDef defaultCycleWalk = WalkCycleDefOf.Biped_Walk;
+        public bool quadruped = false;
+        public Vector3 shoulderOffset;
 
         #endregion Public Fields
 
@@ -41,5 +41,6 @@
         }
 
         #endregion Public Constructors
+
     }
 }

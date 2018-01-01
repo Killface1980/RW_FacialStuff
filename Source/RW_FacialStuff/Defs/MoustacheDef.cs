@@ -28,6 +28,6 @@ namespace FacialStuff.Defs
         public List<ThingDef> forbiddenOnRace = new List<ThingDef>();
 
         [NotNull]
-        public string texPath;
+        public string texPath = string.Empty;
     }
 }

@@ -15,9 +15,10 @@
                 return;
             }
 
-            if (this.Pawn.RaceProps.Animal)
+            // Fix the position, maybe needs new code in GetJointPositions()?
+            if (this.bodyFacing == Rot4.South)
             {
-                rootLoc.y -= Offsets.YOffset_Behind;
+                rootLoc.y -= Offsets.YOffset_HandsFeet * 2f - Offsets.YOffset_Behind;
             }
 
             this.DrawFrontPaws(rootLoc, portrait);
@@ -50,8 +51,8 @@
             Vector3 rightFootAnim = Vector3.zero;
             Vector3 leftFootAnim = Vector3.zero;
 
-            float offsetJoint = this.CompAnimator.walkCycle.ShoulderOffsetHorizontalX.Evaluate(this.MovedPercent);
-            WalkCycleDef cycle = this.CompAnimator.walkCycle;
+            float offsetJoint = this.CompAnimator.WalkCycle.ShoulderOffsetHorizontalX.Evaluate(this.MovedPercent);
+            WalkCycleDef cycle = this.CompAnimator.WalkCycle;
 
             // Center = drawpos of carryThing
             float footAngleRight = 0f;
@@ -79,7 +80,7 @@
 
             Material matRight;
 #endif
-            if (!MainTabWindowAnimator.Colored)
+            if (!MainTabWindow_Animator.Colored)
             {
                 switch (rot.AsInt)
                 {
@@ -145,7 +146,7 @@
                 }
             }
 
-            if (MainTabWindowAnimator.Develop)
+            if (MainTabWindow_Animator.Develop)
             {
                 // for debug
                 Material centerMat = GraphicDatabase

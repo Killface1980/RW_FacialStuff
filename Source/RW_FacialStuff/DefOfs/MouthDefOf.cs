@@ -6,8 +6,11 @@
 // ReSharper disable CollectionNeverUpdated.Global
 // ReSharper disable UnassignedField.Global
 
-namespace FacialStuff.Defs
+// ReSharper disable StyleCop.SA1310
+namespace FacialStuff.DefOfs
 {
+    using FacialStuff.Defs;
+
     using RimWorld;
 
     [DefOf]

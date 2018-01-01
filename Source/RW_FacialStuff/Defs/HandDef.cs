@@ -7,6 +7,8 @@ namespace FacialStuff.Defs
 {
     using System.Collections.Generic;
 
+    using JetBrains.Annotations;
+
     using UnityEngine;
 
     using Verse;
@@ -15,6 +17,7 @@ namespace FacialStuff.Defs
     {
         #region Public Fields
 
+        [NotNull]
         public List<CompTargets> WeaponCompLoader = new List<CompTargets>();
 
         #endregion Public Fields
@@ -27,6 +30,8 @@ namespace FacialStuff.Defs
 
             public Vector3 firstHandPosition = Vector3.zero;
             public Vector3 secondHandPosition = Vector3.zero;
+
+            [NotNull]
             public List<string> thingTargets = new List<string>();
 
             public float? attackAngleOffset;
