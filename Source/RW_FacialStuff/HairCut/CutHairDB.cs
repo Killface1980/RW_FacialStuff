@@ -1,18 +1,14 @@
-﻿namespace FacialStuff.Graphics
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using JetBrains.Annotations;
+using RimWorld;
+using UnityEngine;
+using Verse;
+
+namespace FacialStuff.GraphicsFS
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-
-    using JetBrains.Annotations;
-
-    using RimWorld;
-
-    using UnityEngine;
-
-    using Verse;
-
     // ReSharper disable once InconsistentNaming
     [StaticConstructorOnStartup]
     public static class CutHairDB
@@ -22,30 +18,30 @@
 
         private static readonly List<HairCutPawn> PawnHairCache = new List<HairCutPawn>();
 
-        private static Texture2D maskTexFrontBack;
+        private static Texture2D _maskTexFrontBack;
 
-        private static Texture2D maskTexSide;
+        private static Texture2D _maskTexSide;
 
-        private static string mergedHairPath;
+        private static string _mergedHairPath;
 
 
         private static string MergedHairPath
         {
             get
             {
-                if (!mergedHairPath.NullOrEmpty())
+                if (!_mergedHairPath.NullOrEmpty())
                 {
-                    return mergedHairPath;
+                    return _mergedHairPath;
                 }
 
                 ModMetaData mod = ModLister.AllInstalledMods.FirstOrDefault(
                     x => { return x?.Name != null && x.Active && x.Name.StartsWith("Facial Stuff"); });
                 if (mod != null)
                 {
-                    mergedHairPath = mod.RootDir + "/Textures/MergedHair/";
+                    _mergedHairPath = mod.RootDir + "/Textures/MergedHair/";
                 }
 
-                return mergedHairPath;
+                return _mergedHairPath;
             }
         }
 
@@ -130,14 +126,14 @@
                 temptextureback = FaceTextures.MakeReadable(temptextureback);
 
                 // intentional, only 1 mask tex. todo: rename, cleanup
-                maskTexFrontBack = FaceTextures.MaskTex_Average_FrontBack;
-                maskTexSide = FaceTextures.MaskTex_Narrow_Side;
+                _maskTexFrontBack = FaceTextures.MaskTexAverageFrontBack;
+                _maskTexSide = FaceTextures.MaskTexNarrowSide;
 
-                CutOutHair(ref temptexturefront, maskTexFrontBack);
+                CutOutHair(ref temptexturefront, _maskTexFrontBack);
 
-                CutOutHair(ref temptextureside, maskTexSide);
+                CutOutHair(ref temptextureside, _maskTexSide);
 
-                CutOutHair(ref temptextureback, maskTexFrontBack);
+                CutOutHair(ref temptextureback, _maskTexFrontBack);
 
                 req.path = MergedHairPath + name;
 
@@ -197,14 +193,14 @@
                             temptextureback = FaceTextures.MakeReadable(temptextureback);
 
                         // intentional, only 1 mask tex. todo: rename, cleanup
-                        maskTexFrontBack = FaceTextures.MaskTex_Average_FrontBack;
-                            maskTexSide = FaceTextures.MaskTex_Narrow_Side;
+                        _maskTexFrontBack = FaceTextures.MaskTexAverageFrontBack;
+                            _maskTexSide = FaceTextures.MaskTexNarrowSide;
 
-                            CutOutHair(ref temptexturefront, maskTexFrontBack);
+                            CutOutHair(ref temptexturefront, _maskTexFrontBack);
 
-                            CutOutHair(ref temptextureside, maskTexSide);
+                            CutOutHair(ref temptextureside, _maskTexSide);
 
-                            CutOutHair(ref temptextureback, maskTexFrontBack);
+                            CutOutHair(ref temptextureback, _maskTexFrontBack);
 
 
 

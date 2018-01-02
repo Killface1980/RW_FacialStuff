@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
   <FacialStuff.Defs.HandDef>
 
-    <defName>PawnHandSettingsVanilla</defName>
+    <defName>PawnSettingsVanilla</defName>
     <label>Weapon comp loader</label>
     <thingClass>Thing</thingClass>
-    <WeaponCompLoader>
+    <CompLoaderTargets>
       <li>
         <firstHandPosition>(-0.3, 0.3, -0.05)</firstHandPosition>
         <secondHandPosition>(0.2, 0, -0.05)</secondHandPosition>
@@ -133,7 +133,7 @@
         </thingTargets>
       </li>
 
-    </WeaponCompLoader>
+    </CompLoaderTargets>
 
   </FacialStuff.Defs.HandDef>
 

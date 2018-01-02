@@ -220,7 +220,7 @@ namespace FacialStuffEditor.UI
                 stringValue = (value / factor).ToString();
             }
 
-            string result = WidgetUtil.AddNumberTextInput(labelLeft, top, inputLeft, inputWidth, label, stringValue);
+            string __result = WidgetUtil.AddNumberTextInput(labelLeft, top, inputLeft, inputWidth, label, stringValue);
             try
             {
                 if (result.Length == 0)

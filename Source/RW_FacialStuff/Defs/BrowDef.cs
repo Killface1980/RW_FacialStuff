@@ -5,14 +5,12 @@
 // ReSharper disable InconsistentNaming
 // ReSharper disable CollectionNeverUpdated.Global
 
+using System.Collections.Generic;
+using RimWorld;
+using Verse;
+
 namespace FacialStuff.Defs
 {
-    using System.Collections.Generic;
-
-    using RimWorld;
-
-    using Verse;
-
     public class BrowDef : Def
     {
         public HairGender hairGender = HairGender.Any;

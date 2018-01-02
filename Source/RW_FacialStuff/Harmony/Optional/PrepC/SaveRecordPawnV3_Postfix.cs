@@ -1,14 +1,11 @@
-﻿namespace FacialStuff.Harmony.Optional.PrepC
+﻿using System.Collections.Generic;
+using System.Linq;
+using EdB.PrepareCarefully;
+using Harmony;
+using Verse;
+
+namespace FacialStuff.Harmony.Optional.PrepC
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using EdB.PrepareCarefully;
-
-    using global::Harmony;
-
-    using Verse;
-
     public static class SaveRecordPawnV3_Postfix
     {
         // Don't use CustomPawn here, must be object!!!

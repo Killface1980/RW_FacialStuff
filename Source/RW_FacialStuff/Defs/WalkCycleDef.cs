@@ -5,17 +5,15 @@
 // ReSharper disable UnassignedField.Global
 // ReSharper disable NotNullMemberIsNotInitialized
 // ReSharper disable CheckNamespace
+
+using System.Collections.Generic;
+using FacialStuff.Defs;
+using JetBrains.Annotations;
+using Verse;
+using Verse.AI;
+
 namespace RimWorld
 {
-    using System.Collections.Generic;
-
-    using FacialStuff.Defs;
-
-    using JetBrains.Annotations;
-
-    using Verse;
-    using Verse.AI;
-
     public class WalkCycleDef : Def
     {
         #region Public Fields

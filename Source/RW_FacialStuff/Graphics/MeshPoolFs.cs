@@ -1,14 +1,13 @@
 ﻿// ReSharper disable StyleCop.SA1401
+
+using System.Collections.Generic;
+using UnityEngine;
+using Verse;
+
 namespace FacialStuff
 {
-    using System.Collections.Generic;
-
-    using UnityEngine;
-
-    using Verse;
-
     [StaticConstructorOnStartup]
-    public static class MeshPoolFS
+    public static class MeshPoolFs
     {
         #region Public Fields
 
@@ -76,7 +75,7 @@ namespace FacialStuff
 
         #region Public Constructors
 
-        static MeshPoolFS()
+        static MeshPoolFs()
         {
             EyeVector = new List<Vector2>
                             {

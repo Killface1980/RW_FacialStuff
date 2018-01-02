@@ -1,51 +1,49 @@
-﻿namespace FacialStuff.AI
+﻿using System.Collections.Generic;
+using System.Linq;
+using RimWorld;
+using UnityEngine;
+using Verse;
+using Verse.AI;
+
+namespace FacialStuff.AI
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using RimWorld;
-
-    using UnityEngine;
-
-    using Verse;
-    using Verse.AI;
-
     public class MentalState_Possessed : MentalState
     {
         private const int CheckChooseNewTargetIntervalTicks = 250;
 
         private const int MaxSameTargetChaseTicks = 1250;
 
-        private static readonly List<Pawn> candidates = new List<Pawn>();
+        private static readonly List<Pawn> Candidates = new List<Pawn>();
 
-        public bool insultedTargetAtLeastOnce;
+        public bool InsultedTargetAtLeastOnce;
 
-        public int lastInsultTicks = -999999;
+        public int LastInsultTicks = -999999;
 
-        public Pawn target;
+        public Pawn Target;
 
-        private int targetFoundTicks;
+        private int _targetFoundTicks;
 
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_References.Look(ref this.target, "target");
-            Scribe_Values.Look(ref this.insultedTargetAtLeastOnce, "insultedTargetAtLeastOnce");
-            Scribe_Values.Look(ref this.lastInsultTicks, "lastInsultTicks");
-            Scribe_Values.Look(ref this.targetFoundTicks, "targetFoundTicks");
+            Scribe_References.Look(ref this.Target, "target");
+            Scribe_Values.Look(ref this.InsultedTargetAtLeastOnce, "insultedTargetAtLeastOnce");
+            Scribe_Values.Look(ref this.LastInsultTicks, "lastInsultTicks");
+            Scribe_Values.Look(ref this._targetFoundTicks, "targetFoundTicks");
 
             // Scribe_References.Look<Corpse>(ref this.corpse, "corpse", false);
         }
 
         public override void MentalStateTick()
         {
-            if (this.target != null
-                && !InsultingSpreeMentalStateUtility.CanChaseAndInsult(this.pawn, this.target))
+            if (this.Target != null
+             && !InsultingSpreeMentalStateUtility.CanChaseAndInsult(this.pawn, this.Target))
             {
                 this.ChooseNextTarget();
             }
 
-            if (this.pawn.IsHashIntervalTick(CheckChooseNewTargetIntervalTicks) && (this.target == null || this.insultedTargetAtLeastOnce))
+            if (this.pawn.IsHashIntervalTick(CheckChooseNewTargetIntervalTicks) &&
+                (this.Target == null || this.InsultedTargetAtLeastOnce))
             {
                 this.ChooseNextTarget();
             }
@@ -69,26 +67,25 @@
         // Verse.AI.MentalState_InsultingSpreeAll
         private void ChooseNextTarget()
         {
-            InsultingSpreeMentalStateUtility.GetInsultCandidatesFor(this.pawn, candidates);
-            if (!candidates.Any())
+            InsultingSpreeMentalStateUtility.GetInsultCandidatesFor(this.pawn, Candidates);
+            if (!Candidates.Any())
             {
-                this.target = null;
-                this.insultedTargetAtLeastOnce = false;
-                this.targetFoundTicks = -1;
+                this.Target = null;
+                this.InsultedTargetAtLeastOnce = false;
+                this._targetFoundTicks = -1;
             }
             else
             {
-                Pawn pawn =
-                    this.target == null || Find.TickManager.TicksGame - this.targetFoundTicks <= MaxSameTargetChaseTicks
-                    || !candidates.Any(x => x != this.target)
-                        ? candidates.RandomElementByWeight(x => this.GetCandidateWeight(x))
-                        : (from x in candidates where x != this.target select x).RandomElementByWeight(
-                            x => this.GetCandidateWeight(x));
-                if (pawn != this.target)
+                bool finished = Find.TickManager.TicksGame - this._targetFoundTicks <= MaxSameTargetChaseTicks;
+                Pawn p = this.Target == null || finished || !Candidates.Any(x => x != this.Target)
+                                    ? Candidates.RandomElementByWeight(x => this.GetCandidateWeight(x))
+                                    : (from x in Candidates where x != this.Target select x)
+                                   .RandomElementByWeight(x => this.GetCandidateWeight(x));
+                if (p != this.Target)
                 {
-                    this.target = pawn;
-                    this.insultedTargetAtLeastOnce = false;
-                    this.targetFoundTicks = Find.TickManager.TicksGame;
+                    this.Target = p;
+                    this.InsultedTargetAtLeastOnce = false;
+                    this._targetFoundTicks = Find.TickManager.TicksGame;
                 }
             }
         }

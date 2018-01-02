@@ -2,12 +2,12 @@
 // ReSharper disable StyleCop.SA1307
 // ReSharper disable StyleCop.SA1401
 // ReSharper disable InconsistentNaming
+
+using System.Collections.Generic;
+using Verse;
+
 namespace FacialStuff
 {
-    using System.Collections.Generic;
-
-    using Verse;
-
     public class CompProperties_Face : CompProperties
     {
         public bool canRotateHead;

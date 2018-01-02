@@ -22,34 +22,32 @@
  * SOFTWARE.
  */
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Verse;
+
 namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-
-    using Verse;
-
-    public class HeadTypeSelectionDTO : ASelectionWidgetDTO
+    public class HeadTypeSelectionDto : ASelectionWidgetDto
     {
         public readonly CrownType OriginalCrownType;
 
         public readonly string OriginalHeadType;
 
-        private readonly List<string> femaleHeadTypes = new List<string>();
+        private readonly List<string> _femaleHeadTypes = new List<string>();
 
-        private List<string> headTypes;
+        private List<string> _headTypes;
 
-        private readonly List<string> maleHeadTypes = new List<string>();
+        private readonly List<string> _maleHeadTypes = new List<string>();
 
-        private int savedFemaleIndex;
+        private int _savedFemaleIndex;
 
-        private int savedMaleIndex;
+        private int _savedMaleIndex;
 
-        private object selectedItem2;
+        private object _selectedItem2;
 
-        public HeadTypeSelectionDTO(string headType, Gender gender)
+        public HeadTypeSelectionDto(string headType, Gender gender)
         {
             this.OriginalHeadType = headType;
 
@@ -62,8 +60,8 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
                 this.OriginalCrownType = CrownType.Average;
             }
 
-            AddHeadTypesToList("Things/Pawn/Humanlike/Heads/Male", this.maleHeadTypes);
-            AddHeadTypesToList("Things/Pawn/Humanlike/Heads/Female", this.femaleHeadTypes);
+            AddHeadTypesToList("Things/Pawn/Humanlike/Heads/Male", this._maleHeadTypes);
+            AddHeadTypesToList("Things/Pawn/Humanlike/Heads/Female", this._femaleHeadTypes);
 
             this.Gender = gender;
             this.FindIndex(headType);
@@ -73,7 +71,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.headTypes.Count;
+                return this._headTypes.Count;
             }
         }
 
@@ -83,16 +81,16 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
             {
                 if (value == Gender.Female)
                 {
-                    this.savedMaleIndex = this.Index;
-                    this.headTypes = this.femaleHeadTypes;
-                    this.Index = this.savedFemaleIndex;
+                    this._savedMaleIndex = this.Index;
+                    this._headTypes = this._femaleHeadTypes;
+                    this.Index = this._savedFemaleIndex;
                 }
                 else
                 {
                     // Male
-                    this.savedFemaleIndex = this.Index;
-                    this.headTypes = this.maleHeadTypes;
-                    this.Index = this.savedMaleIndex;
+                    this._savedFemaleIndex = this.Index;
+                    this._headTypes = this._maleHeadTypes;
+                    this.Index = this._savedMaleIndex;
                 }
 
                 this.IndexChanged();
@@ -103,11 +101,11 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                this.selectedItem2 = this.headTypes[this.Index].Contains("Narrow")
+                this._selectedItem2 = this._headTypes[this.Index].Contains("Narrow")
                                          ? CrownType.Narrow
                                          : CrownType.Average;
 
-                return this.headTypes[this.Index];
+                return this._headTypes[this.Index];
             }
         }
 
@@ -115,7 +113,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.selectedItem2;
+                return this._selectedItem2;
             }
         }
 
@@ -123,16 +121,16 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                string[] array = this.headTypes[this.Index].Split(new[] { '_' }, StringSplitOptions.None);
+                string[] array = this._headTypes[this.Index].Split(new[] { '_' }, StringSplitOptions.None);
                 return array[array.Count() - 2] + ", " + array[array.Count() - 1];
             }
         }
 
         public void FindIndex(string headType)
         {
-            for (int i = 0; i < this.headTypes.Count; ++i)
+            for (int i = 0; i < this._headTypes.Count; ++i)
             {
-                if (!this.headTypes[i].Equals(headType))
+                if (!this._headTypes[i].Equals(headType))
                 {
                     continue;
                 }

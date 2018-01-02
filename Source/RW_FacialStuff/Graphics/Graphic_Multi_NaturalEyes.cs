@@ -1,68 +1,62 @@
-﻿namespace FacialStuff.Graphics
+﻿using System;
+using System.IO;
+using UnityEngine;
+using Verse;
+
+namespace FacialStuff.GraphicsFS
 {
-    using System;
-    using System.IO;
-
-    using UnityEngine;
-
-    using Verse;
-
     public class Graphic_Multi_NaturalEyes : Graphic
     {
-        private readonly Material[] mats = new Material[4];
+        private readonly Material[] _mats = new Material[4];
 
         public string GraphicPath => this.path;
 
-        public override Material MatBack => this.mats[0];
-
-        public override Material MatFront => this.mats[2];
-
-        public Material MatLeft => this.mats[3];
-
-        public Material MatRight => this.mats[1];
+        public override Material MatBack  => this._mats[0];
+        public override Material MatFront => this._mats[2];
+        public          Material MatLeft  => this._mats[3];
+        public          Material MatRight => this._mats[1];
 
         public override bool ShouldDrawRotated => this.MatRight == this.MatBack;
 
         public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
         {
-            return GraphicDatabase.Get<Graphic_Multi>(
-                this.path,
-                newShader,
-                this.drawSize,
-                newColor,
-                newColorTwo,
-                this.data);
+            return GraphicDatabase.Get<Graphic_Multi>(this.path,
+                                                      newShader, this.drawSize,
+                                                      newColor,
+                                                      newColorTwo, this.data);
         }
 
         public override int GetHashCode()
         {
             int seed = 0;
-            seed = Gen.HashCombine(seed, this.path);
-            seed = Gen.HashCombineStruct(seed, this.color);
+            seed     = Gen.HashCombine(seed, this.path);
+            seed     = Gen.HashCombineStruct(seed, this.color);
+
             return Gen.HashCombineStruct(seed, this.colorTwo);
         }
 
         public override void Init(GraphicRequest req)
         {
-            this.data = req.graphicData;
-            this.path = req.path;
-            this.color = req.color;
-            this.colorTwo = req.colorTwo;
-            this.drawSize = req.drawSize;
+            this.data              = req.graphicData;
+            this.path              = req.path;
+            this.color             = req.color;
+            this.colorTwo          = req.colorTwo;
+            this.drawSize          = req.drawSize;
             Texture2D[] array = new Texture2D[4];
 
             string eyeType = null;
-            string side = null;
-            string gender = null;
+            string side    = null;
+            string gender  = null;
 
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(req.path);
 
+            // ReSharper disable once PossibleNullReferenceException
             string[] array2 = fileNameWithoutExtension.Split('_');
             try
             {
                 eyeType = array2[1];
-                gender = array2[2];
-                side = array2[3];
+                gender  = array2[2];
+                side    = array2[3];
             }
             catch (Exception ex)
             {
@@ -76,8 +70,8 @@
             else
             {
                 Log.Message(
-                    "Facial Stuff: Failed to get front texture at " + req.path + "_front"
-                    + " - Graphic_Multi_NaturalEyes");
+                            "Facial Stuff: Failed to get front texture at " + req.path + "_front"
+                          + " - Graphic_Multi_NaturalEyes");
                 return;
 
                 // array[2] = MaskTextures.BlankTexture();
@@ -87,6 +81,7 @@
 
             if (ContentFinder<Texture2D>.Get(sidePath))
             {
+                // ReSharper disable once PossibleNullReferenceException
                 if (side.Equals("Right"))
                 {
                     array[3] = FaceTextures.BlankTexture;
@@ -128,15 +123,16 @@
                 }
 
                 MaterialRequest req2 = default(MaterialRequest);
-                req2.mainTex = array[i];
-                req2.shader = req.shader;
-                req2.color = this.color;
-                req2.colorTwo = this.colorTwo;
+                req2.mainTex         = array[i];
+                req2.shader          = req.shader;
+                req2.color           = this.color;
+                req2.colorTwo        = this.colorTwo;
 
+                // ReSharper disable once PossibleNullReferenceException
                 req2.mainTex.filterMode = FilterMode.Trilinear;
 
                 // req2.maskTex = array2[i];
-                this.mats[i] = MaterialPool.MatFrom(req2);
+                this._mats[i] = MaterialPool.MatFrom(req2);
             }
         }
 
@@ -144,10 +140,10 @@
         {
             switch (rot.AsInt)
             {
-                case 0: return this.MatBack;
-                case 1: return this.MatRight;
-                case 2: return this.MatFront;
-                case 3: return this.MatLeft;
+                case 0:  return this.MatBack;
+                case 1:  return this.MatRight;
+                case 2:  return this.MatFront;
+                case 3:  return this.MatLeft;
                 default: return BaseContent.BadMat;
             }
         }
@@ -155,13 +151,10 @@
         public override string ToString()
         {
             return string.Concat(
-                "Multi(initPath=",
-                this.path,
-                ", color=",
-                this.color,
-                ", colorTwo=",
-                this.colorTwo,
-                ")");
+                                 "Multi(initPath=", this.path,
+                                 ", color=", this.color,
+                                 ", colorTwo=", this.colorTwo,
+                                 ")");
         }
     }
 }

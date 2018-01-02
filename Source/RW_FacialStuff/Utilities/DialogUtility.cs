@@ -1,13 +1,10 @@
+using System;
+using JetBrains.Annotations;
+using UnityEngine;
+using Verse;
+
 namespace FacialStuff.Utilities
 {
-    using System;
-
-    using JetBrains.Annotations;
-
-    using UnityEngine;
-
-    using Verse;
-
     public static class DialogUtility
     {
         public const float BottomAreaHeight = 38f;

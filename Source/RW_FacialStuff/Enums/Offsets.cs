@@ -1,5 +1,5 @@
-﻿// ReSharper disable StyleCop.SA1310
-// ReSharper disable InconsistentNaming
+﻿// ReSharper disable InconsistentNaming
+
 namespace FacialStuff
 {
     public static class Offsets
@@ -19,7 +19,5 @@ namespace FacialStuff
         public const float YOffset_PrimaryEquipmentOver  = 0.04f;
         public const float YOffset_CarriedThing          = 0.04f;
         public const float YOffset_Status                = 0.043f;
-
-
     }
 }

@@ -1,11 +1,9 @@
-﻿namespace FacialStuff
+﻿using System.Diagnostics.CodeAnalysis;
+using UnityEngine;
+using Verse;
+
+namespace FacialStuff
 {
-    using System.Diagnostics.CodeAnalysis;
-
-    using UnityEngine;
-
-    using Verse;
-
     public class Controller_Animator : Mod
     {
         #region Public Fields

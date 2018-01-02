@@ -15,6 +15,6 @@
         /// <summary>
         /// Middle.
         /// </summary>
-        Middle = 2,
+        Middle = 2
     }
 }

@@ -2,15 +2,30 @@
 <Defs>
   <BodyAnimDef>
     <armLength>0</armLength>
-    <offCenterX>-0.03578644</offCenterX>
-    <walkCycles>
-      <li>
-        <key>Walk</key>
-        <value>Quadruped_Walk</value>
-      </li>
-    </walkCycles>
     <extraLegLength>0.075</extraLegLength>
-    <WalkCycleType>Quadruped</WalkCycleType>
+    <hipOffsets>
+      <li>
+        <x>0.225</x>
+        <y>-0.025</y>
+        <z>0.275</z>
+      </li>
+      <li>
+        <x>-0.475</x>
+        <y>0.025</y>
+        <z>0</z>
+      </li>
+      <li>
+        <x>-0.225</x>
+        <y>-0.025</y>
+        <z>0.8</z>
+      </li>
+      <li>
+        <x>0.475</x>
+        <y>-0.025</y>
+        <z>0</z>
+      </li>
+    </hipOffsets>
+    <offCenterX>-0.03578644</offCenterX>
     <shoulderOffsets>
       <li>
         <x>0.225</x>
@@ -33,28 +48,13 @@
         <z>0</z>
       </li>
     </shoulderOffsets>
-    <hipOffsets>
+    <walkCycles>
       <li>
-        <x>0.225</x>
-        <y>-0.025</y>
-        <z>0.275</z>
+        <key>Walk</key>
+        <value>Quadruped_Walk</value>
       </li>
-      <li>
-        <x>-0.425</x>
-        <y>0.025</y>
-        <z>0</z>
-      </li>
-      <li>
-        <x>-0.225</x>
-        <y>-0.025</y>
-        <z>0.8</z>
-      </li>
-      <li>
-        <x>0.425</x>
-        <y>-0.025</y>
-        <z>0</z>
-      </li>
-    </hipOffsets>
+    </walkCycles>
+    <WalkCycleType>Quadruped</WalkCycleType>
     <defName>BodyAnimDef_Husky_Undefined</defName>
     <label>BodyAnimDef_Husky_Undefined</label>
   </BodyAnimDef>

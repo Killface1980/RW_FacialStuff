@@ -1,15 +1,12 @@
 ﻿// ReSharper disable MissingXmlDoc
 
+using JetBrains.Annotations;
+using RimWorld;
+using UnityEngine;
+using Verse;
+
 namespace FacialStuff.Animator
 {
-    using JetBrains.Annotations;
-
-    using RimWorld;
-
-    using UnityEngine;
-
-    using Verse;
-
     public class PawnEyeWiggler
     {
         #region Private Fields
@@ -33,39 +30,39 @@ namespace FacialStuff.Animator
                 };
 
         [NotNull]
-        private readonly CompFace compFace;
+        private readonly CompFace _compFace;
 
-        private readonly SimpleCurve consciousnessCurve =
+        private readonly SimpleCurve _consciousnessCurve =
             new SimpleCurve { new CurvePoint(0f, 5f), new CurvePoint(0.5f, 2f), new CurvePoint(1f, 1f) };
 
-        private readonly float factorX = 0.02f;
+        private readonly float _factorX = 0.02f;
 
-        private readonly float factorY = 0.01f;
+        private readonly float _factorY = 0.01f;
 
-        private readonly SimpleCurve painCurve =
+        private readonly SimpleCurve _painCurve =
             new SimpleCurve { new CurvePoint(0f, 1f), new CurvePoint(0.65f, 1f), new CurvePoint(1f, 2f) };
 
-        private readonly Pawn pawn;
+        private readonly Pawn _pawn;
 
-        private float flippedX;
+        private float _flippedX;
 
-        private float flippedY;
+        private float _flippedY;
 
-        private bool halfAnimX;
+        private bool _halfAnimX;
 
-        private bool halfAnimY;
+        private bool _halfAnimY;
 
-        private int jitterLeft;
+        private int _jitterLeft;
 
-        private int jitterRight;
+        private int _jitterRight;
 
-        private int lastBlinkended;
+        private int _lastBlinkended;
 
-        private bool moveX;
+        private bool _moveX;
 
-        private bool moveY;
+        private bool _moveY;
 
-        private int nextBlink = -5000;
+        private int _nextBlink = -5000;
 
         #endregion Private Fields
 
@@ -73,8 +70,8 @@ namespace FacialStuff.Animator
 
         public PawnEyeWiggler(CompFace face)
         {
-            this.compFace = face;
-            this.pawn = face.Pawn;
+            this._compFace = face;
+            this._pawn = face.Pawn;
         }
 
         #endregion Public Constructors
@@ -85,7 +82,7 @@ namespace FacialStuff.Animator
         {
             get
             {
-                bool blinkNow = Find.TickManager.TicksGame >= this.nextBlink + this.jitterLeft;
+                bool blinkNow = Find.TickManager.TicksGame >= this._nextBlink + this._jitterLeft;
                 return blinkNow;
             }
         }
@@ -98,7 +95,7 @@ namespace FacialStuff.Animator
         {
             get
             {
-                bool blinkNow = Find.TickManager.TicksGame >= this.nextBlink + this.jitterRight;
+                bool blinkNow = Find.TickManager.TicksGame >= this._nextBlink + this._jitterRight;
                 return blinkNow;
             }
         }
@@ -118,44 +115,44 @@ namespace FacialStuff.Animator
 
             int tickManagerTicksGame = Find.TickManager.TicksGame;
 
-            float x = Mathf.InverseLerp(this.lastBlinkended, this.nextBlink, tickManagerTicksGame);
+            float x = Mathf.InverseLerp(this._lastBlinkended, this._nextBlink, tickManagerTicksGame);
             float movePixel = 0f;
             float movePixelY = 0f;
 
-            if (this.moveX || this.moveY)
+            if (this._moveX || this._moveY)
             {
-                if (this.moveX)
+                if (this._moveX)
                 {
-                    if (this.halfAnimX)
+                    if (this._halfAnimX)
                     {
-                        movePixel = EyeMotionHalfCurve.Evaluate(x) * this.factorX;
+                        movePixel = EyeMotionHalfCurve.Evaluate(x) * this._factorX;
                     }
                     else
                     {
-                        movePixel = EyeMotionFullCurve.Evaluate(x) * this.factorX;
+                        movePixel = EyeMotionFullCurve.Evaluate(x) * this._factorX;
                     }
                 }
 
-                if (this.moveY)
+                if (this._moveY)
                 {
-                    if (this.halfAnimY)
+                    if (this._halfAnimY)
                     {
-                        movePixelY = EyeMotionHalfCurve.Evaluate(x) * this.factorY;
+                        movePixelY = EyeMotionHalfCurve.Evaluate(x) * this._factorY;
                     }
                     else
                     {
-                        movePixelY = EyeMotionFullCurve.Evaluate(x) * this.factorY;
+                        movePixelY = EyeMotionFullCurve.Evaluate(x) * this._factorY;
                     }
                 }
 
-                if (this.compFace.bodyStat.EyeRight == PartStatus.Natural)
+                if (this._compFace.BodyStat.EyeRight == PartStatus.Natural)
                 {
-                    this.EyeMoveR = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
+                    this.EyeMoveR = new Vector3(movePixel * this._flippedX, 0, movePixelY * this._flippedY);
                 }
 
-                if (this.compFace.bodyStat.EyeLeft == PartStatus.Natural)
+                if (this._compFace.BodyStat.EyeLeft == PartStatus.Natural)
                 {
-                    this.EyeMoveL = new Vector3(movePixel * this.flippedX, 0, movePixelY * this.flippedY);
+                    this.EyeMoveL = new Vector3(movePixel * this._flippedX, 0, movePixelY * this._flippedY);
                 }
             }
 
@@ -183,14 +180,13 @@ namespace FacialStuff.Animator
             // + " - blinkDurationORG: " + blinkDuration.ToString("N0"));
 
             // TODO: use a curve for evaluation => more control, precise setting of blinking
-            Pawn_HealthTracker health = this.pawn.health;
+            Pawn_HealthTracker health = this._pawn.health;
             float pain = 0f;
             if (health != null)
             {
                 if (health.capacities != null)
                 {
-                    float consciousness =
-                        this.consciousnessCurve.Evaluate(health.capacities.GetLevel(PawnCapacityDefOf.Consciousness));
+                    float consciousness = this._consciousnessCurve.Evaluate(health.capacities.GetLevel(PawnCapacityDefOf.Consciousness));
 
                     ticksTillNextBlink /= consciousness;
                     blinkDuration *= consciousness;
@@ -198,7 +194,7 @@ namespace FacialStuff.Animator
 
                 if (health.hediffSet != null)
                 {
-                    pain = this.painCurve.Evaluate(health.hediffSet.PainTotal);
+                    pain = this._painCurve.Evaluate(health.hediffSet.PainTotal);
                 }
             }
 
@@ -212,8 +208,8 @@ namespace FacialStuff.Animator
             // Log.Message(
             // "FS Blinker: " + this.pawn + " - Consc: " + dynamic.ToStringPercent() + " - factorC: " + factor.ToString("N2") + " - ticksTillNextBlink: " + ticksTillNextBlink.ToString("N0")
             // + " - blinkDuration: " + blinkDuration.ToString("N0"));
-            this.nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
-            this.NextBlinkEnd = (int)(this.nextBlink + blinkDuration);
+            this._nextBlink = (int)(tickManagerTicksGame + ticksTillNextBlink);
+            this.NextBlinkEnd = (int)(this._nextBlink + blinkDuration);
 
             // this.JitterLeft = 1f;
             // this.JitterRight = 1f;
@@ -225,31 +221,31 @@ namespace FacialStuff.Animator
             if (Rand.Value > 0.9f)
             {
                 // early "nerous" blinking. I guss positive values have no effect ...
-                this.jitterLeft = (int)Rand.Range(-10f, 90f);
-                this.jitterRight = (int)Rand.Range(-10f, 90f);
+                this._jitterLeft = (int)Rand.Range(-10f, 90f);
+                this._jitterRight = (int)Rand.Range(-10f, 90f);
             }
             else
             {
-                this.jitterLeft = 0;
-                this.jitterRight = 0;
+                this._jitterLeft = 0;
+                this._jitterRight = 0;
             }
 
             // only animate eye movement if animation lasts at least 2.5 seconds
             if (ticksTillNextBlink > 80f)
             {
-                this.moveX = Rand.Value > 0.7f;
-                this.moveY = Rand.Value > 0.85f;
-                this.halfAnimX = Rand.Value > 0.3f;
-                this.halfAnimY = Rand.Value > 0.3f;
-                this.flippedX = Rand.Range(-1f, 1f);
-                this.flippedY = Rand.Range(-1f, 1f);
+                this._moveX = Rand.Value > 0.7f;
+                this._moveY = Rand.Value > 0.85f;
+                this._halfAnimX = Rand.Value > 0.3f;
+                this._halfAnimY = Rand.Value > 0.3f;
+                this._flippedX = Rand.Range(-1f, 1f);
+                this._flippedY = Rand.Range(-1f, 1f);
             }
             else
             {
-                this.moveX = this.moveY = false;
+                this._moveX = this._moveY = false;
             }
 
-            this.lastBlinkended = tickManagerTicksGame;
+            this._lastBlinkended = tickManagerTicksGame;
         }
 
         #endregion Private Methods

@@ -1,7 +1,7 @@
-﻿namespace FacialStuff.Harmony.Optional
-{
-    using Vampire;
+﻿using Vampire;
 
+namespace FacialStuff.Harmony.Optional
+{
     public static class Vampire_Patches
     {
         public static void Transformed_Postfix(CompVampire __instance)

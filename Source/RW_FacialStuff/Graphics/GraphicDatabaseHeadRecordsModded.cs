@@ -1,14 +1,11 @@
-﻿namespace FacialStuff.Graphics
+﻿using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
+using UnityEngine;
+using Verse;
+
+namespace FacialStuff.GraphicsFS
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using JetBrains.Annotations;
-
-    using UnityEngine;
-
-    using Verse;
-
     public static class GraphicDatabaseHeadRecordsModded
     {
         #region Public Fields
@@ -27,9 +24,9 @@
         [NotNull]
         private static readonly string StumpPath = "Things/Pawn/Humanlike/Heads/None_Average_Stump";
 
-        private static HeadGraphicRecordVanillaCustom skull;
+        private static HeadGraphicRecordVanillaCustom _skull;
 
-        private static HeadGraphicRecordVanillaCustom stump;
+        private static HeadGraphicRecordVanillaCustom _stump;
 
         #endregion Private Fields
 
@@ -37,7 +34,7 @@
 
         public static void BuildDatabaseIfNecessary()
         {
-            if (HeadsVanillaCustom.Count > 0 && skull != null && stump != null)
+            if (HeadsVanillaCustom.Count > 0 && _skull != null && _stump != null)
             {
                 return;
             }
@@ -58,8 +55,8 @@
             HeadsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Narrow_Pointy"));
             HeadsVanillaCustom.Add(new HeadGraphicRecordVanillaCustom("Heads/Male/Male_Narrow_Wide"));
 
-            skull = new HeadGraphicRecordVanillaCustom(SkullPath);
-            stump = new HeadGraphicRecordVanillaCustom(StumpPath);
+            _skull = new HeadGraphicRecordVanillaCustom(SkullPath);
+            _stump = new HeadGraphicRecordVanillaCustom(StumpPath);
         }
 
         public static Graphic_Multi GetModdedHeadNamed([NotNull] Pawn pawn, Color color)
@@ -67,7 +64,7 @@
             BuildDatabaseIfNecessary();
             foreach (HeadGraphicRecordVanillaCustom headGraphicRecordVanillaCustom in HeadsVanillaCustom)
             {
-                if (headGraphicRecordVanillaCustom.graphicPathVanillaCustom == pawn.story?.HeadGraphicPath?.Remove(0, 22))
+                if (headGraphicRecordVanillaCustom.GraphicPathVanillaCustom == pawn.story?.HeadGraphicPath?.Remove(0, 22))
                 {
                     // Log.Message("Getting vanilla " + pawn.story.HeadGraphicPath.Remove(0, 22) + ".");
                     return headGraphicRecordVanillaCustom.GetGraphic(color);
@@ -84,14 +81,14 @@
         public static Graphic_Multi GetStump(Color skinColor)
         {
             BuildDatabaseIfNecessary();
-            return stump.GetGraphic(skinColor);
+            return _stump.GetGraphic(skinColor);
         }
 
         public static void Reset()
         {
             HeadsVanillaCustom.Clear();
-            skull = null;
-            stump = null;
+            _skull = null;
+            _stump = null;
         }
 
         #endregion Public Methods
@@ -102,13 +99,13 @@
         {
             #region Public Fields
 
-            public string graphicPathVanillaCustom;
+            public string GraphicPathVanillaCustom;
 
             #endregion Public Fields
 
             #region Private Fields
 
-            private readonly List<KeyValuePair<Color, Graphic_Multi>> graphics =
+            private readonly List<KeyValuePair<Color, Graphic_Multi>> _graphics =
                 new List<KeyValuePair<Color, Graphic_Multi>>();
 
             #endregion Private Fields
@@ -117,7 +114,7 @@
 
             public HeadGraphicRecordVanillaCustom(string graphicPath)
             {
-                this.graphicPathVanillaCustom = graphicPath;
+                this.GraphicPathVanillaCustom = graphicPath;
             }
 
             #endregion Public Constructors
@@ -126,20 +123,19 @@
 
             public Graphic_Multi GetGraphic(Color color)
             {
-                for (int i = 0; i < this.graphics.Count; i++)
+                for (int i = 0; i < this._graphics.Count; i++)
                 {
-                    if (color.IndistinguishableFrom(this.graphics[i].Key))
+                    if (color.IndistinguishableFrom(this._graphics[i].Key))
                     {
-                        return this.graphics[i].Value;
+                        return this._graphics[i].Value;
                     }
                 }
 
-                Graphic_Multi graphicMultiHead = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(
-                    this.graphicPathVanillaCustom,
+                Graphic_Multi graphicMultiHead = (Graphic_Multi)GraphicDatabase.Get<Graphic_Multi>(this.GraphicPathVanillaCustom,
                     ShaderDatabase.CutoutSkin,
                     Vector2.one,
                     color);
-                this.graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphicMultiHead));
+                this._graphics.Add(new KeyValuePair<Color, Graphic_Multi>(color, graphicMultiHead));
                 return graphicMultiHead;
             }
 

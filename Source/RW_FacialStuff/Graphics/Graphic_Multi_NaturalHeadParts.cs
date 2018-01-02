@@ -1,9 +1,8 @@
-﻿namespace FacialStuff.Graphics
+﻿using UnityEngine;
+using Verse;
+
+namespace FacialStuff.GraphicsFS
 {
-    using UnityEngine;
-
-    using Verse;
-
     // public class GraphicModded: Graphic
     // {
     // public virtual Material MatFrontNarrow { get; }
@@ -13,29 +12,26 @@
     // class taken from vanilla, base is Graphic_Multi; needed for adding stuff AFTER game has loaded
     public class Graphic_Multi_NaturalHeadParts : Graphic
     {
-        private readonly Material[] mats = new Material[3];
+        private readonly Material[] _mats = new Material[3];
 
         public string GraphicPath => this.path;
 
-        public override Material MatBack => this.mats[0];
+        public override Material MatBack => this._mats[0];
 
-        public override Material MatFront => this.mats[2];
+        public override Material MatFront => this._mats[2];
 
-        public override Material MatSide => this.mats[1];
+        public override Material MatSide => this._mats[1];
 
-        public override Material MatSingle => this.mats[2];
+        public override Material MatSingle => this._mats[2];
 
         public override bool ShouldDrawRotated => this.MatSide == this.MatBack;
 
         public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
         {
-            return GraphicDatabase.Get<Graphic_Multi>(
-                this.path,
-                newShader,
-                this.drawSize,
+            return GraphicDatabase.Get<Graphic_Multi>(this.path,
+                newShader, this.drawSize,
                 newColor,
-                newColorTwo,
-                this.data);
+                newColorTwo, this.data);
         }
 
         public override int GetHashCode()
@@ -147,19 +143,16 @@
                 req2.mainTex.filterMode = FilterMode.Trilinear;
 
                 // req2.maskTex = array2[i];
-                this.mats[i] = MaterialPool.MatFrom(req2);
+                this._mats[i] = MaterialPool.MatFrom(req2);
             }
         }
 
         public override string ToString()
         {
             return string.Concat(
-                "Multi(initPath=",
-                this.path,
-                ", color=",
-                this.color,
-                ", colorTwo=",
-                this.colorTwo,
+                "Multi(initPath=", this.path,
+                ", color=", this.color,
+                ", colorTwo=", this.colorTwo,
                 ")");
         }
     }

@@ -4,12 +4,11 @@
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 // ReSharper disable UnassignedField.Global
 
+using System.Collections.Generic;
+using Verse;
+
 namespace FacialStuff.Defs
 {
-    using System.Collections.Generic;
-
-    using Verse;
-
     public class MouthDef : Def
     {
         public List<string> hairTags = new List<string>();

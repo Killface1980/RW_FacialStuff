@@ -1,30 +1,24 @@
-﻿namespace FacialStuff
+﻿using System;
+using System.Collections.Generic;
+using FacialStuff.Animator;
+using FacialStuff.DefOfs;
+using FacialStuff.Defs;
+using FacialStuff.GraphicsFS;
+using FacialStuff.Utilities;
+using JetBrains.Annotations;
+using RimWorld;
+using UnityEngine;
+using Verse;
+
+namespace FacialStuff
 {
-    using System;
-    using System.Collections.Generic;
-
-    using FacialStuff.Animator;
-    using FacialStuff.DefOfs;
-    using FacialStuff.Defs;
-    using FacialStuff.Graphics;
-    using FacialStuff.Utilities;
-
-    using JetBrains.Annotations;
-
-    using RimWorld;
-
-    using UnityEngine;
-
-    using Verse;
-
     public class CompFace : ThingComp
     {
         #region Public Fields
 
         public bool Deactivated;
 
-        [CanBeNull]
-        public PawnFaceGraphic PawnFaceGraphic;
+        [CanBeNull] public PawnFaceGraphic PawnFaceGraphic;
 
         public bool IgnoreRenderer;
 
@@ -36,38 +30,38 @@
 
         #region Private Fields
 
-        private Vector2 eyeOffset = Vector2.zero;
+        private Vector2 _eyeOffset = Vector2.zero;
 
         [NotNull]
         public List<PawnHeadDrawer> PawnDrawers { get; private set; }
 
-        private Faction factionInt;
+        private Faction _factionInt;
 
-        private float factionMelanin;
+        private float _factionMelanin;
 
         // private float blinkRate;
         // public PawnHeadWiggler headWiggler;
-        private Vector2 mouthOffset = Vector2.zero;
+        private Vector2 _mouthOffset = Vector2.zero;
 
         // must be null, always initialize with pawn
-        private PawnFace pawnFace;
+        private PawnFace _pawnFace;
 
         #endregion Private Fields
 
         #region Public Properties
 
         // public bool IgnoreRenderer;
-        public GraphicVectorMeshSet EyeMeshSet => MeshPoolFS.HumanEyeSet[(int)this.FullHeadType];
+        public GraphicVectorMeshSet EyeMeshSet => MeshPoolFs.HumanEyeSet[(int) this.FullHeadType];
 
         [NotNull]
-        public PawnEyeWiggler EyeWiggler { get; private set; }
+        public PawnEyeWiggler EyeWiggler { get; set; }
 
-        public FaceMaterial FaceMaterial { get; private set; }
+        public FaceMaterial FaceMaterial { get; set; }
 
         public float FactionMelanin
         {
-            get => this.factionMelanin;
-            set => this.factionMelanin = value;
+            get => this._factionMelanin;
+            set => this._factionMelanin = value;
         }
 
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
@@ -75,14 +69,11 @@
         public PawnHeadRotator HeadRotator { get; private set; }
 
         [NotNull]
-        public GraphicVectorMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
+        public GraphicVectorMeshSet MouthMeshSet => MeshPoolFs.HumanlikeMouthSet[(int) this.FullHeadType];
 
-        public Faction originFaction
+        public Faction OriginFaction
         {
-            get
-            {
-                return this.factionInt;
-            }
+            get { return this._factionInt; }
         }
 
         [NotNull]
@@ -91,7 +82,7 @@
         public CrownType PawnCrownType => this.Pawn?.story.crownType ?? CrownType.Average;
 
         [CanBeNull]
-        public PawnFace PawnFace => this.pawnFace;
+        public PawnFace PawnFace => this._pawnFace;
 
         public HeadType PawnHeadType
         {
@@ -118,14 +109,10 @@
 
         public CompProperties_Face Props
         {
-            get
-            {
-                return (CompProperties_Face)this.props;
-            }
+            get { return (CompProperties_Face) this.props; }
         }
 
         #endregion Public Properties
-
 
 
         #region Public Methods
@@ -134,7 +121,7 @@
         {
             if (!this.PawnDrawers.NullOrEmpty())
             {
-                int i = 0;
+                int i     = 0;
                 int count = this.PawnDrawers.Count;
                 while (i < count)
                 {
@@ -156,11 +143,11 @@
                     case HeadType.Normal:
                         if (male)
                         {
-                            this.eyeOffset = MeshPoolFS.EyeMaleAverageNormalOffset;
+                            this._eyeOffset = MeshPoolFs.EyeMaleAverageNormalOffset;
                         }
                         else
                         {
-                            this.eyeOffset = MeshPoolFS.EyeFemaleAverageNormalOffset;
+                            this._eyeOffset = MeshPoolFs.EyeFemaleAverageNormalOffset;
                         }
 
                         break;
@@ -168,11 +155,11 @@
                     case HeadType.Pointy:
                         if (male)
                         {
-                            this.eyeOffset = MeshPoolFS.EyeMaleAveragePointyOffset;
+                            this._eyeOffset = MeshPoolFs.EyeMaleAveragePointyOffset;
                         }
                         else
                         {
-                            this.eyeOffset = MeshPoolFS.EyeFemaleAveragePointyOffset;
+                            this._eyeOffset = MeshPoolFs.EyeFemaleAveragePointyOffset;
                         }
 
                         break;
@@ -180,11 +167,11 @@
                     case HeadType.Wide:
                         if (male)
                         {
-                            this.eyeOffset = MeshPoolFS.EyeMaleAverageWideOffset;
+                            this._eyeOffset = MeshPoolFs.EyeMaleAverageWideOffset;
                         }
                         else
                         {
-                            this.eyeOffset = MeshPoolFS.EyeFemaleAverageWideOffset;
+                            this._eyeOffset = MeshPoolFs.EyeFemaleAverageWideOffset;
                         }
 
                         break;
@@ -195,48 +182,28 @@
                 switch (this.PawnHeadType)
                 {
                     case HeadType.Normal:
-                        if (male)
-                        {
-                            this.eyeOffset = MeshPoolFS.EyeMaleNarrowNormalOffset;
-                        }
-                        else
-                        {
-                            this.eyeOffset = MeshPoolFS.EyeFemaleNarrowNormalOffset;
-                        }
-
+                        this._eyeOffset = male
+                                         ? MeshPoolFs.EyeMaleNarrowNormalOffset
+                                         : MeshPoolFs.EyeFemaleNarrowNormalOffset;
                         break;
 
                     case HeadType.Pointy:
-                        if (male)
-                        {
-                            this.eyeOffset = MeshPoolFS.EyeMaleNarrowPointyOffset;
-                        }
-                        else
-                        {
-                            this.eyeOffset = MeshPoolFS.EyeFemaleNarrowPointyOffset;
-                        }
-
+                        this._eyeOffset = male
+                                         ? MeshPoolFs.EyeMaleNarrowPointyOffset
+                                         : MeshPoolFs.EyeFemaleNarrowPointyOffset;
                         break;
 
                     case HeadType.Wide:
-                        if (male)
-                        {
-                            this.eyeOffset = MeshPoolFS.EyeMaleNarrowWideOffset;
-                        }
-                        else
-                        {
-                            this.eyeOffset = MeshPoolFS.EyeFemaleNarrowWideOffset;
-                        }
-
+                        this._eyeOffset = male ? MeshPoolFs.EyeMaleNarrowWideOffset : MeshPoolFs.EyeFemaleNarrowWideOffset;
                         break;
                 }
             }
 
             switch (rotation.AsInt)
             {
-                case 1: return new Vector3(this.eyeOffset.x, 0f, -this.eyeOffset.y);
-                case 2: return new Vector3(0, 0f, -this.eyeOffset.y);
-                case 3: return new Vector3(-this.eyeOffset.x, 0f, -this.eyeOffset.y);
+                case 1:  return new Vector3(this._eyeOffset.x,  0f, -this._eyeOffset.y);
+                case 2:  return new Vector3(0,             0f, -this._eyeOffset.y);
+                case 3:  return new Vector3(-this._eyeOffset.x, 0f, -this._eyeOffset.y);
                 default: return Vector3.zero;
             }
         }
@@ -253,11 +220,11 @@
                     case HeadType.Normal:
                         if (male)
                         {
-                            this.mouthOffset = MeshPoolFS.MouthMaleAverageNormalOffset;
+                            this._mouthOffset = MeshPoolFs.MouthMaleAverageNormalOffset;
                         }
                         else
                         {
-                            this.mouthOffset = MeshPoolFS.MouthFemaleAverageNormalOffset;
+                            this._mouthOffset = MeshPoolFs.MouthFemaleAverageNormalOffset;
                         }
 
                         break;
@@ -265,11 +232,11 @@
                     case HeadType.Pointy:
                         if (male)
                         {
-                            this.mouthOffset = MeshPoolFS.MouthMaleAveragePointyOffset;
+                            this._mouthOffset = MeshPoolFs.MouthMaleAveragePointyOffset;
                         }
                         else
                         {
-                            this.mouthOffset = MeshPoolFS.MouthFemaleAveragePointyOffset;
+                            this._mouthOffset = MeshPoolFs.MouthFemaleAveragePointyOffset;
                         }
 
                         break;
@@ -277,11 +244,11 @@
                     case HeadType.Wide:
                         if (male)
                         {
-                            this.mouthOffset = MeshPoolFS.MouthMaleAverageWideOffset;
+                            this._mouthOffset = MeshPoolFs.MouthMaleAverageWideOffset;
                         }
                         else
                         {
-                            this.mouthOffset = MeshPoolFS.MouthFemaleAverageWideOffset;
+                            this._mouthOffset = MeshPoolFs.MouthFemaleAverageWideOffset;
                         }
 
                         break;
@@ -292,17 +259,20 @@
                 switch (this.PawnHeadType)
                 {
                     case HeadType.Normal:
-                        this.mouthOffset = male ? MeshPoolFS.MouthMaleNarrowNormalOffset : MeshPoolFS.MouthFemaleNarrowNormalOffset;
+                        this._mouthOffset =
+                            male ? MeshPoolFs.MouthMaleNarrowNormalOffset : MeshPoolFs.MouthFemaleNarrowNormalOffset;
 
                         break;
 
                     case HeadType.Pointy:
-                        this.mouthOffset = male ? MeshPoolFS.MouthMaleNarrowPointyOffset : MeshPoolFS.MouthFemaleNarrowPointyOffset;
+                        this._mouthOffset =
+                            male ? MeshPoolFs.MouthMaleNarrowPointyOffset : MeshPoolFs.MouthFemaleNarrowPointyOffset;
 
                         break;
 
                     case HeadType.Wide:
-                        this.mouthOffset = male ? MeshPoolFS.MouthMaleNarrowWideOffset : MeshPoolFS.MouthFemaleNarrowWideOffset;
+                        this._mouthOffset =
+                            male ? MeshPoolFs.MouthMaleNarrowWideOffset : MeshPoolFs.MouthFemaleNarrowWideOffset;
 
                         break;
                 }
@@ -310,9 +280,9 @@
 
             switch (rotation.AsInt)
             {
-                case 1: return new Vector3(this.mouthOffset.x, 0f, -this.mouthOffset.y);
-                case 2: return new Vector3(0, 0f, -this.mouthOffset.y);
-                case 3: return new Vector3(-this.mouthOffset.x, 0f, -this.mouthOffset.y);
+                case 1:  return new Vector3(this._mouthOffset.x,  0f, -this._mouthOffset.y);
+                case 2:  return new Vector3(0,               0f, -this._mouthOffset.y);
+                case 3:  return new Vector3(-this._mouthOffset.x, 0f, -this._mouthOffset.y);
                 default: return Vector3.zero;
             }
         }
@@ -327,113 +297,115 @@
         // Can be called externally
         public void DrawAlienBodyAddons(Quaternion quat, Vector3 vector, bool portrait, bool renderBody)
         {
-            if (this.PawnDrawers != null)
+            if (this.PawnDrawers.NullOrEmpty())
             {
-                int i = 0;
-                int count = this.PawnDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnDrawers[i].DrawAlienBodyAddons(quat, vector, portrait, renderBody);
-                    i++;
-                }
+                return;
+            }
+
+            int i     = 0;
+            int count = this.PawnDrawers.Count;
+            while (i < count)
+            {
+                this.PawnDrawers[i].DrawAlienBodyAddons(quat, vector, portrait, renderBody);
+                i++;
             }
         }
 
         public void DrawAlienHeadAddons(bool portrait, Quaternion headQuat, Vector3 currentLoc)
         {
-            if (this.PawnDrawers != null)
+            if (this.PawnDrawers.NullOrEmpty())
             {
-                int i = 0;
-                int count = this.PawnDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnDrawers[i].DrawAlienHeadAddons(portrait, headQuat, currentLoc);
-                    i++;
-                }
+                return;
+            }
+
+            int i     = 0;
+            int count = this.PawnDrawers.Count;
+            while (i < count)
+            {
+                this.PawnDrawers[i].DrawAlienHeadAddons(portrait, headQuat, currentLoc);
+                i++;
             }
         }
 
-        public void DrawApparel(Quaternion quat, Vector3 vector, bool portrait, bool renderBody)
-        {
-            if (this.PawnDrawers != null)
-            {
-                int i = 0;
-                int count = this.PawnDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnDrawers[i].DrawApparel(quat, vector, renderBody, portrait);
-                    i++;
-                }
-            }
-        }
 
-        public void DrawBasicHead(out bool headDrawn, RotDrawMode bodyDrawType, bool portrait, bool headStump, ref Vector3 locFacialY, Quaternion headQuat)
+
+        public void DrawBasicHead(out bool    headDrawn, RotDrawMode bodyDrawType, bool portrait, bool headStump,
+                                  ref Vector3 locFacialY, Quaternion headQuat)
         {
             headDrawn = false;
-            if (this.PawnDrawers != null)
+            if (this.PawnDrawers.NullOrEmpty())
             {
-                int i = 0;
-                int count = this.PawnDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnDrawers[i].DrawBasicHead(
-                        headQuat,
-                        bodyDrawType,
-                        headStump,
-                        portrait,
-                        ref locFacialY,
-                        out headDrawn);
-                    i++;
-                }
+                return;
+            }
+
+            int i     = 0;
+            int count = this.PawnDrawers.Count;
+            while (i < count)
+            {
+                this.PawnDrawers[i].DrawBasicHead(
+                                             headQuat,
+                                             bodyDrawType,
+                                             headStump,
+                                             portrait,
+                                             ref locFacialY,
+                                             out headDrawn);
+                i++;
             }
         }
 
         public void DrawBeardAndTache(ref Vector3 locFacialY, bool portrait, Quaternion headQuat)
         {
-            if (!this.PawnDrawers.NullOrEmpty())
+            if (this.PawnDrawers.NullOrEmpty())
             {
-                int i = 0;
-                int count = this.PawnDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnDrawers[i].DrawBeardAndTache(headQuat, portrait, ref locFacialY);
-                    i++;
-                }
+                return;
+            }
+
+            int i     = 0;
+            int count = this.PawnDrawers.Count;
+            while (i < count)
+            {
+                this.PawnDrawers[i].DrawBeardAndTache(headQuat, portrait, ref locFacialY);
+                i++;
             }
         }
 
         public void DrawBrows(ref Vector3 locFacialY, Quaternion headQuat, bool portrait)
         {
-            if (!this.PawnDrawers.NullOrEmpty())
+            if (this.PawnDrawers.NullOrEmpty())
             {
-                int i = 0;
-                int count = this.PawnDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnDrawers[i].DrawBrows(headQuat, portrait, ref locFacialY);
-                    i++;
-                }
+                return;
+            }
+
+            int i     = 0;
+            int count = this.PawnDrawers.Count;
+            while (i < count)
+            {
+                this.PawnDrawers[i]?.DrawBrows(headQuat, portrait, ref locFacialY);
+                i++;
             }
         }
 
-        public void DrawHairAndHeadGear(Vector3 rootLoc, RotDrawMode bodyDrawType, ref Vector3 currentLoc, Vector3 b, bool portrait, bool renderBody, Quaternion headQuat)
+        public void DrawHairAndHeadGear(Vector3 rootLoc, RotDrawMode bodyDrawType, ref Vector3 currentLoc, Vector3 b,
+                                        bool    portrait, bool       renderBody, Quaternion    headQuat)
         {
-            if (!this.PawnDrawers.NullOrEmpty())
+            if (this.PawnDrawers.NullOrEmpty())
             {
-                int i = 0;
-                int count = this.PawnDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnDrawers[i].DrawHairAndHeadGear(
-                        rootLoc,
-                        headQuat,
-                        bodyDrawType,
-                        renderBody,
-                        portrait,
-                        b,
-                        ref currentLoc);
-                    i++;
-                }
+                return;
+            }
+
+            int i     = 0;
+            int count = this.PawnDrawers.Count;
+            while (i < count)
+            {
+                this.PawnDrawers[i]?.DrawHairAndHeadGear(
+                                                    rootLoc,
+                                                    headQuat,
+                                                    bodyDrawType,
+                                                    renderBody,
+                                                    portrait,
+                                                    b,
+                                                    ref currentLoc);
+                i++;
             }
         }
 
@@ -447,71 +419,81 @@
         // }
         public void DrawHeadOverlays(PawnHeadOverlays headOverlays, Vector3 bodyLoc, Quaternion headQuat)
         {
-            if (this.PawnDrawers != null)
+            if (this.PawnDrawers.NullOrEmpty())
             {
-                int i = 0;
-                int count = this.PawnDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnDrawers[i].DrawHeadOverlays(headOverlays, bodyLoc, headQuat);
-                    i++;
-                }
+                return;
+            }
+
+            int i     = 0;
+            int count = this.PawnDrawers.Count;
+            while (i < count)
+            {
+                this.PawnDrawers[i]?.DrawHeadOverlays(headOverlays, bodyLoc, headQuat);
+                i++;
             }
         }
 
         public void DrawNaturalEyes(ref Vector3 locFacialY, bool portrait, Quaternion headQuat)
         {
-            if (this.PawnDrawers != null)
+            if (this.PawnDrawers.NullOrEmpty())
             {
-                int i = 0;
-                int count = this.PawnDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnDrawers[i].DrawNaturalEyes(headQuat, portrait, ref locFacialY);
-                    i++;
-                }
+                return;
+            }
+
+            int i     = 0;
+            int count = this.PawnDrawers.Count;
+            while (i < count)
+            {
+                this.PawnDrawers[i]?.DrawNaturalEyes(headQuat, portrait, ref locFacialY);
+                i++;
             }
         }
 
         public void DrawNaturalMouth(ref Vector3 locFacialY, bool portrait, Quaternion headQuat)
         {
-            if (this.PawnDrawers != null)
+            if (this.PawnDrawers.NullOrEmpty())
             {
-                int i = 0;
-                int count = this.PawnDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnDrawers[i].DrawNaturalMouth(headQuat, portrait, ref locFacialY);
-                    i++;
-                }
+                return;
+            }
+
+            int i     = 0;
+            int count = this.PawnDrawers.Count;
+            while (i < count)
+            {
+                this.PawnDrawers[i]?.DrawNaturalMouth(headQuat, portrait, ref locFacialY);
+                i++;
             }
         }
 
         public void DrawUnnaturalEyeParts(ref Vector3 locFacialY, Quaternion headQuat, bool portrait)
         {
-            if (this.PawnDrawers != null)
+            if (this.PawnDrawers.NullOrEmpty())
             {
-                int i = 0;
-                int count = this.PawnDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnDrawers[i].DrawUnnaturalEyeParts(headQuat, portrait, ref locFacialY);
-                    i++;
-                }
+                return;
+            }
+
+            int i     = 0;
+            int count = this.PawnDrawers.Count;
+            while (i < count)
+            {
+                this.PawnDrawers[i]?.DrawUnnaturalEyeParts(headQuat, portrait, ref locFacialY);
+                i++;
             }
         }
 
         public void DrawWrinkles(RotDrawMode bodyDrawType, ref Vector3 locFacialY, Quaternion headQuat, bool portrait)
         {
-            if (this.PawnDrawers != null)
+            if (this.PawnDrawers.NullOrEmpty())
             {
-                int i = 0;
-                int count = this.PawnDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnDrawers[i].DrawWrinkles(headQuat, bodyDrawType, portrait, ref locFacialY);
-                    i++;
-                }
+                return;
+            }
+
+            int i     = 0;
+            int count = this.PawnDrawers.Count;
+            while (i < count)
+            {
+                this.PawnDrawers[i]?.DrawWrinkles(headQuat, bodyDrawType, portrait, ref locFacialY);
+                i++;
             }
         }
 
@@ -560,23 +542,22 @@
                 for (int i = 0; i < this.Props.drawers.Count; i++)
                 {
                     PawnHeadDrawer thingComp =
-                        (PawnHeadDrawer)Activator.CreateInstance(this.Props.drawers[i].GetType());
+                        (PawnHeadDrawer) Activator.CreateInstance(this.Props.drawers[i].GetType());
                     thingComp.CompFace = this;
-                    thingComp.Pawn = this.Pawn;
+                    thingComp.Pawn     = this.Pawn;
                     this.PawnDrawers.Add(thingComp);
                     thingComp.Initialize();
                 }
             }
             else
             {
-                this.PawnDrawers = new List<PawnHeadDrawer>();
+                this.PawnDrawers              = new List<PawnHeadDrawer>();
                 PawnHeadDrawer thingComp =
-                    (PawnHeadDrawer)Activator.CreateInstance(typeof(HumanHeadDrawer));
+                    (PawnHeadDrawer) Activator.CreateInstance(typeof(HumanHeadDrawer));
                 thingComp.CompFace = this;
-                thingComp.Pawn = this.Pawn;
+                thingComp.Pawn     = this.Pawn;
                 this.PawnDrawers.Add(thingComp);
                 thingComp.Initialize();
-
             }
         }
 
@@ -613,7 +594,7 @@
                 this.IsAsleep = !this.Pawn.Awake();
             }
 
-            if (!IsAsleep)
+            if (!this.IsAsleep)
             {
                 this.HeadRotator.RotatorTick();
             }
@@ -622,7 +603,7 @@
             {
                 if (Find.TickManager.TicksGame % 30 == 0)
                 {
-                    this.PawnFaceGraphic.SetMouthAccordingToMoodLevel();
+                    this.PawnFaceGraphic?.SetMouthAccordingToMoodLevel();
                 }
             }
         }
@@ -631,7 +612,7 @@
         {
             base.PostExposeData();
 
-            Scribe_References.Look(ref this.factionInt, "pawnFaction");
+            Scribe_References.Look(ref this._factionInt, "pawnFaction");
 
             // Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
 
@@ -639,7 +620,7 @@
             // "Facial Stuff updated pawn " + this.parent.Label + "-" + face.BeardDef + "-" + face.EyeDef);
 
             // Force ResolveAllGraphics
-            Scribe_Deep.Look(ref this.pawnFace, "pawnFace");
+            Scribe_Deep.Look(ref this._pawnFace, "pawnFace");
 
             // Scribe_References.Look(ref this.pawn, "pawn");
             Scribe_Values.Look(ref this.IsChild, "isChild");
@@ -648,7 +629,7 @@
             Scribe_Values.Look(ref this.Deactivated, "dontrender");
 
             // Scribe_Values.Look(ref this.roofed, "roofed");
-            Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
+            Scribe_Values.Look(ref this._factionMelanin, "factionMelanin");
 
             // Faction needs to be saved like in Thing.ExposeData
             // string facID = (this.factionInt == null) ? "null" : this.factionInt.GetUniqueLoadID();
@@ -673,14 +654,14 @@
         /// </returns>
         public bool InitializeCompFace()
         {
-            if (this.originFaction == null)
+            if (this.OriginFaction == null)
             {
-                this.factionInt = this.Pawn.Faction ?? Faction.OfPlayer;
+                this._factionInt = this.Pawn.Faction ?? Faction.OfPlayer;
             }
 
             if (this.PawnFace == null)
             {
-                this.SetPawnFace(new PawnFace(this, this.originFaction.def));
+                this.SetPawnFace(new PawnFace(this, this.OriginFaction?.def));
             }
 
             // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
@@ -698,7 +679,7 @@
             }
 
             this.PawnFaceGraphic = new PawnFaceGraphic(this);
-            this.FaceMaterial = new FaceMaterial(this, this.PawnFaceGraphic);
+            this.FaceMaterial    = new FaceMaterial(this, this.PawnFaceGraphic);
 
             // this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
             this.HeadRotator = new PawnHeadRotator(this.Pawn);
@@ -709,28 +690,24 @@
 
         public void SetPawnFace([NotNull] PawnFace importedFace)
         {
-            this.pawnFace = importedFace;
+            this._pawnFace = importedFace;
         }
 
         // Verse.PawnGraphicSet
+
         #endregion Public Methods
 
         #region Private Methods
 
-        [CanBeNull]
-        public string texPathEyeLeftPatch;
+        [CanBeNull] public string TexPathEyeLeftPatch;
 
-        [CanBeNull]
-        public string texPathJawAddedPart;
+        [CanBeNull] public string TexPathJawAddedPart;
 
-        [CanBeNull]
-        public string texPathEyeLeft;
+        [CanBeNull] public string TexPathEyeLeft;
 
-        [CanBeNull]
-        public string texPathEyeRight;
+        [CanBeNull] public string TexPathEyeRight;
 
-        [CanBeNull]
-        public string texPathEyeRightPatch;
+        [CanBeNull] public string TexPathEyeRightPatch;
 
         [NotNull]
         public string EyeClosedTexPath(Side side)
@@ -746,35 +723,34 @@
         {
             Vector3 offset = Vector3.zero;
 
-            if (!this.PawnDrawers.NullOrEmpty())
+            if (this.PawnDrawers.NullOrEmpty()) return offset;
+
+            int i     = 0;
+            int count = this.PawnDrawers.Count;
+            while (i < count)
             {
-                int i = 0;
-                int count = this.PawnDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnDrawers[i].BaseHeadOffsetAt(ref offset, portrait);
-                    i++;
-                }
+                this.PawnDrawers[i].BaseHeadOffsetAt(ref offset, portrait);
+                i++;
             }
 
             return offset;
         }
 
-        public FacePartStats bodyStat;
+        public FacePartStats BodyStat;
 
-        private bool initialized;
+        private bool _initialized;
 
         public void TickDrawers(Rot4 bodyFacing, Rot4 headFacing, PawnGraphicSet graphics)
         {
-            if (!this.initialized)
+            if (!this._initialized)
             {
                 this.InitializePawnDrawer();
-                this.initialized = true;
+                this._initialized = true;
             }
 
             if (!this.PawnDrawers.NullOrEmpty())
             {
-                int i = 0;
+                int i     = 0;
                 int count = this.PawnDrawers.Count;
                 while (i < count)
                 {

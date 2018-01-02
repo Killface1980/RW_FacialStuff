@@ -22,38 +22,36 @@
  * SOFTWARE.
  */
 
+using FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs;
+using UnityEngine;
+using Verse;
+
 namespace FacialStuff.FaceEditor.UI.Util
 {
-    using FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs;
-
-    using UnityEngine;
-
-    using Verse;
-
     [StaticConstructorOnStartup]
     public static class WidgetUtil
     {
         public static readonly Vector2 NavButtonSize = new Vector2(30f, 30f);
 
-        public static Texture2D nextTexture;
+        public static Texture2D NextTexture;
 
-        public static Texture2D previousTexture;
+        public static Texture2D PreviousTexture;
 
-        private static GUIStyle middleCenterGuiStyle;
+        private static GUIStyle _middleCenterGuiStyle;
 
         public static GUIStyle MiddleCenter
         {
             get
             {
-                if (middleCenterGuiStyle != null)
+                if (_middleCenterGuiStyle != null)
                 {
-                    return middleCenterGuiStyle;
+                    return _middleCenterGuiStyle;
                 }
 
-                middleCenterGuiStyle = GUI.skin.label;
-                middleCenterGuiStyle.alignment = TextAnchor.MiddleCenter;
+                _middleCenterGuiStyle = GUI.skin.label;
+                _middleCenterGuiStyle.alignment = TextAnchor.MiddleCenter;
 
-                return middleCenterGuiStyle;
+                return _middleCenterGuiStyle;
             }
         }
 
@@ -70,7 +68,7 @@ namespace FacialStuff.FaceEditor.UI.Util
             float top,
             float width,
             string label,
-            ASelectionWidgetDTO selectionWidgetDto)
+            ASelectionWidgetDto selectionWidgetDto)
         {
             const float buffer = 5f;
 
@@ -89,7 +87,7 @@ namespace FacialStuff.FaceEditor.UI.Util
             Text.Anchor = TextAnchor.MiddleCenter;
 
             Rect previousButtonRect = new Rect(left, 0, NavButtonSize.x, NavButtonSize.y);
-            if (GUI.Button(previousButtonRect, previousTexture))
+            if (GUI.Button(previousButtonRect, PreviousTexture))
             {
                 selectionWidgetDto.DecreaseIndex();
             }
@@ -105,7 +103,7 @@ namespace FacialStuff.FaceEditor.UI.Util
             Widgets.DrawBox(labelRect);
 
             Rect nextButtonRect = new Rect(rect.width - NavButtonSize.x, 0, NavButtonSize.x, NavButtonSize.y);
-            if (GUI.Button(nextButtonRect, nextTexture))
+            if (GUI.Button(nextButtonRect, NextTexture))
             {
                 selectionWidgetDto.IncreaseIndex();
             }

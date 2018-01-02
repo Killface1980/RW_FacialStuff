@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
+using FacialStuff.FaceEditor.UI.Util;
+
 namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 {
-    using FacialStuff.FaceEditor.UI.Util;
-
-    public class SliderWidgetDTO
+    public class SliderWidgetDto
     {
         public readonly float MaxValue;
 
@@ -34,9 +34,9 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 
         public readonly float OriginalValue;
 
-        private float selectedValue;
+        private float _selectedValue;
 
-        public SliderWidgetDTO(float value, float minValue, float maxValue)
+        public SliderWidgetDto(float value, float minValue, float maxValue)
         {
             this.OriginalValue = value;
             this.SelectedValue = value;
@@ -50,24 +50,24 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.selectedValue;
+                return this._selectedValue;
             }
 
             set
             {
-                if (this.selectedValue == value)
+                if (this._selectedValue == value)
                 {
                     return;
                 }
 
-                this.selectedValue = value;
+                this._selectedValue = value;
                 this.UpdatePawnListener?.Invoke(this, value, null);
             }
         }
 
         public void ResetToDefault()
         {
-            this.selectedValue = this.OriginalValue;
+            this._selectedValue = this.OriginalValue;
             this.UpdatePawnListener?.Invoke(this, this.OriginalValue, null);
         }
     }

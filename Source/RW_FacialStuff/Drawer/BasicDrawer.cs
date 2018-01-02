@@ -1,27 +1,20 @@
-﻿namespace FacialStuff
+﻿using JetBrains.Annotations;
+using UnityEngine;
+using Verse;
+
+namespace FacialStuff
 {
-    using UnityEngine;
-
-    using Verse;
-
-    public struct JointLister
-    {
-        #region Public Fields
-
-        public Vector3 leftJoint;
-
-        public Vector3 rightJoint;
-
-        #endregion Public Fields
-    }
-
     public abstract class BasicDrawer
     {
         #region Protected Fields
 
-        protected Rot4 bodyFacing;
+        [NotNull] protected internal Pawn Pawn { get; set; }
 
-        protected Rot4 headFacing;
+        [NotNull] protected PawnGraphicSet Graphics;
+
+        protected Rot4 BodyFacing;
+
+        protected Rot4 HeadFacing;
 
         #endregion Protected Fields
 
@@ -30,8 +23,8 @@
         public virtual Mesh GetPawnMesh(bool wantsBody, bool portrait)
         {
             return wantsBody
-                       ? MeshPool.humanlikeBodySet?.MeshAt(this.bodyFacing)
-                       : MeshPool.humanlikeHeadSet?.MeshAt(this.headFacing);
+                       ? MeshPool.humanlikeBodySet?.MeshAt(this.BodyFacing)
+                       : MeshPool.humanlikeHeadSet?.MeshAt(this.HeadFacing);
         }
 
         #endregion Public Methods
@@ -44,7 +37,7 @@
             float emptyHandsOffsetY = 0f,
             bool carrying = false)
         {
-            Rot4 rot = this.bodyFacing;
+            Rot4 rot = this.BodyFacing;
             JointLister joints = new JointLister();
             float leftX = vector.x;
             float rightX = vector.x;
@@ -89,10 +82,12 @@
             if (rot == Rot4.North)
             {
                 leftY = rightY = -Offsets.YOffset_Behind;
+               // leftX *= -1;
+               // rightX *= -1;
             }
 
-            joints.rightJoint = new Vector3(rightX, rightY, rightZ);
-            joints.leftJoint = new Vector3(leftX, leftY, leftZ);
+            joints.RightJoint = new Vector3(rightX, rightY, rightZ);
+            joints.LeftJoint = new Vector3(leftX, leftY, leftZ);
 
             return joints;
         }

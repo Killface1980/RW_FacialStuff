@@ -7,12 +7,12 @@
 // ReSharper disable UnassignedField.Global
 
 // ReSharper disable StyleCop.SA1310
+
+using FacialStuff.Defs;
+using RimWorld;
+
 namespace FacialStuff.DefOfs
 {
-    using FacialStuff.Defs;
-
-    using RimWorld;
-
     [DefOf]
     public static class MouthDefOf
     {

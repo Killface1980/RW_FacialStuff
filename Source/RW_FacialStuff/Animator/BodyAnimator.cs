@@ -1,21 +1,21 @@
-﻿namespace FacialStuff.Animator
-{
-    using Verse;
-    using Verse.AI;
+﻿using Verse;
+using Verse.AI;
 
+namespace FacialStuff.Animator
+{
     public class BodyAnimator
     {
         // public float cyclePercent = 0;
 
         // public bool Finished;
-        private Pawn pawn;
+        private readonly Pawn _pawn;
 
-        private CompBodyAnimator compAnim;
+        private readonly CompBodyAnimator _compAnim;
 
         public BodyAnimator(Pawn p, CompBodyAnimator compAnim)
         {
-            this.pawn = p;
-            this.compAnim = compAnim;
+            this._pawn          = p;
+            this._compAnim = compAnim;
         }
 
         // Verse.PawnTweener
@@ -23,13 +23,13 @@
         {
             movedPercent = 0f;
 
-            if (this.compAnim.AnimatorOpen)
+            if (this._compAnim.AnimatorOpen)
             {
                 movedPercent = MainTabWindow_Animator.AnimationPercent;
                 return true;
             }
 
-            Pawn_PathFollower pather = this.pawn.pather;
+            Pawn_PathFollower pather = this._pawn.pather;
             if (pather == null)
             {
                 return false;
@@ -40,7 +40,7 @@
                 return false;
             }
 
-            if (this.pawn.stances.FullBodyBusy)
+            if (this._pawn.stances.FullBodyBusy)
             {
                 return false;
             }
@@ -78,6 +78,5 @@
             // this.Finished = true;
             // }
         }
-
     }
 }

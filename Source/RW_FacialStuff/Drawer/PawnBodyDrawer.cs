@@ -1,20 +1,14 @@
-﻿using UnityEngine;
-
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
+using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace FacialStuff
 {
-    using System.Collections.Generic;
-
-    using JetBrains.Annotations;
-
-    using RimWorld;
-
     public class PawnBodyDrawer : BasicDrawer
     {
         #region Public Fields
-
-        public PawnGraphicSet Graphics;
 
         #endregion Public Fields
 
@@ -39,8 +33,6 @@ namespace FacialStuff
         [NotNull]
         public CompBodyAnimator CompAnimator { get; set; }
 
-        [NotNull]
-        public Pawn Pawn { get; set; }
 
         #endregion Public Properties
 
@@ -49,7 +41,9 @@ namespace FacialStuff
         public virtual void ApplyBodyWobble(ref Vector3 rootLoc, ref Vector3 footPos, ref Quaternion quat)
         {
         }
-
+        public virtual void DrawApparel(Quaternion quat, Vector3 vector, bool renderBody, bool portrait)
+        {
+        }
         public virtual List<Material> BodyBaseAt(
             PawnGraphicSet graphics,
             Rot4 bodyFacing,
@@ -88,7 +82,7 @@ namespace FacialStuff
         public virtual void Tick(Rot4 bodyFacing, PawnGraphicSet graphics)
         {
             this.Graphics = graphics;
-            this.bodyFacing = bodyFacing;
+            this.BodyFacing = bodyFacing;
         }
 
         #endregion Public Methods

@@ -22,23 +22,22 @@
  * SOFTWARE.
  */
 
+using System.Collections.Generic;
+using Verse;
+
 namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 {
-    using System.Collections.Generic;
-
-    using Verse;
-
-    public class GenderSelectionDTO : ASelectionWidgetDTO
+    public class GenderSelectionDto : ASelectionWidgetDto
     {
         public readonly Gender OriginalGender;
 
-        private readonly List<Gender> genders = new List<Gender>(2);
+        private readonly List<Gender> _genders = new List<Gender>(2);
 
-        public GenderSelectionDTO(Gender currentGender)
+        public GenderSelectionDto(Gender currentGender)
         {
             this.OriginalGender = currentGender;
-            this.genders.Add(Gender.Male);
-            this.genders.Add(Gender.Female);
+            this._genders.Add(Gender.Male);
+            this._genders.Add(Gender.Female);
             this.Index = currentGender == Gender.Male ? 0 : 1;
         }
 
@@ -46,7 +45,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.genders.Count;
+                return this._genders.Count;
             }
         }
 
@@ -54,7 +53,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.genders[this.Index];
+                return this._genders[this.Index];
             }
         }
 
@@ -70,13 +69,13 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.genders[this.Index].ToString().Translate().CapitalizeFirst();
+                return this._genders[this.Index].ToString().Translate().CapitalizeFirst();
             }
         }
 
         public override void ResetToDefault()
         {
-            if (this.OriginalGender == this.genders[this.Index])
+            if (this.OriginalGender == this._genders[this.Index])
             {
                 return;
             }

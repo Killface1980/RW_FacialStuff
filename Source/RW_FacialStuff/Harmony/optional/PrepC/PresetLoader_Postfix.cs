@@ -1,15 +1,11 @@
-﻿namespace FacialStuff.Harmony.Optional.PrepC
+﻿using System.Linq;
+using EdB.PrepareCarefully;
+using Harmony;
+using RimWorld;
+using Verse;
+
+namespace FacialStuff.Harmony.Optional.PrepC
 {
-    using System.Linq;
-
-    using EdB.PrepareCarefully;
-
-    using global::Harmony;
-
-    using RimWorld;
-
-    using Verse;
-
     public static class PresetLoader_Postfix
     {
         [HarmonyPostfix]
@@ -35,10 +31,9 @@
                 }
 
                 compFace.SetPawnFace(pawnFace);
+                // ReSharper disable once PossibleNullReferenceException
                 pawn.story.hairColor = compFace.PawnFace.HairColor;
             }
-
-            // ReSharper disable once PossibleNullReferenceException
         }
     }
 }

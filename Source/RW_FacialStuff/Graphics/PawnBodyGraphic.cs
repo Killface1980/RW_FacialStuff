@@ -1,11 +1,10 @@
 ﻿// ReSharper disable StyleCop.SA1401
 
-namespace FacialStuff.Graphics
+using UnityEngine;
+using Verse;
+
+namespace FacialStuff.GraphicsFS
 {
-    using UnityEngine;
-
-    using Verse;
-
     public class PawnBodyGraphic
     {
         public readonly CompBodyAnimator CompAni;
@@ -46,14 +45,14 @@ namespace FacialStuff.Graphics
 
         public Graphic HandGraphicRightShadow;
 
-        private readonly Pawn pawn;
+        private readonly Pawn _pawn;
 
-        private readonly Color shadowColor = new Color(0.54f, 0.56f, 0.6f);
+        private readonly Color _shadowColor = new Color(0.54f, 0.56f, 0.6f);
 
         public PawnBodyGraphic(CompBodyAnimator compAni)
         {
             this.CompAni = compAni;
-            this.pawn = compAni.Pawn;
+            this._pawn = compAni.Pawn;
 
             LongEventHandler.ExecuteWhenFinished(
                 () =>
@@ -72,15 +71,15 @@ namespace FacialStuff.Graphics
             string texNameFoot = "Hands/" + this.CompAni.Props.handType + "_Foot";
 
             Color skinColor;
-            if (this.pawn.RaceProps.Animal)
+            if (this._pawn.story == null)
             {
-                PawnKindLifeStage curKindLifeStage = this.pawn.ageTracker.CurKindLifeStage;
+                PawnKindLifeStage curKindLifeStage = this._pawn.ageTracker.CurKindLifeStage;
 
                 skinColor = curKindLifeStage.bodyGraphicData.color;
             }
             else
             {
-                skinColor = this.pawn.story.SkinColor;
+                skinColor = this._pawn.story.SkinColor;
             }
 
             Color rightColorFoot = Color.red;
@@ -90,22 +89,22 @@ namespace FacialStuff.Graphics
             Color leftFootColor = skinColor;
             Color metal = new Color(0.51f, 0.61f, 0.66f);
 
-            switch (this.CompAni.bodyStat.FootRight)
+            switch (this.CompAni.BodyStat.FootRight)
             {
                 case PartStatus.Artificial:
                     rightFootColor = metal;
                     break;
             }
 
-            switch (this.CompAni.bodyStat.FootLeft)
+            switch (this.CompAni.BodyStat.FootLeft)
             {
                 case PartStatus.Artificial:
                     leftFootColor = metal;
                     break;
             }
 
-            Color rightFootShadowColor = rightFootColor * this.shadowColor;
-            Color leftFootShadowColor = leftFootColor * this.shadowColor;
+            Color rightFootShadowColor = rightFootColor * this._shadowColor;
+            Color leftFootShadowColor = leftFootColor * this._shadowColor;
 
             this.FootGraphicRight = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
@@ -155,15 +154,15 @@ namespace FacialStuff.Graphics
             string texNameFoot = "Hands/" + this.CompAni.Props.handType + "_Foot";
 
             Color skinColor;
-            if (this.pawn.RaceProps.Animal)
+            if (this._pawn.story == null)
             {
-                PawnKindLifeStage curKindLifeStage = this.pawn.ageTracker.CurKindLifeStage;
+                PawnKindLifeStage curKindLifeStage = this._pawn.ageTracker.CurKindLifeStage;
 
                 skinColor = curKindLifeStage.bodyGraphicData.color;
             }
             else
             {
-                skinColor = this.pawn.story.SkinColor;
+                skinColor = this._pawn.story.SkinColor;
             }
 
             Color rightColorFoot = Color.cyan;
@@ -173,22 +172,22 @@ namespace FacialStuff.Graphics
             Color leftFootColor = skinColor;
             Color metal = new Color(0.51f, 0.61f, 0.66f);
 
-            switch (this.CompAni.bodyStat.FootRight)
+            switch (this.CompAni.BodyStat.FootRight)
             {
                 case PartStatus.Artificial:
                     rightFootColor = metal;
                     break;
             }
 
-            switch (this.CompAni.bodyStat.FootLeft)
+            switch (this.CompAni.BodyStat.FootLeft)
             {
                 case PartStatus.Artificial:
                     leftFootColor = metal;
                     break;
             }
 
-            Color rightFootColorShadow = rightFootColor * this.shadowColor;
-            Color leftFootColorShadow = leftFootColor * this.shadowColor;
+            Color rightFootColorShadow = rightFootColor * this._shadowColor;
+            Color leftFootColorShadow = leftFootColor * this._shadowColor;
 
             this.FrontPawGraphicRight = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
@@ -242,7 +241,18 @@ namespace FacialStuff.Graphics
 
             string texNameHand = "Hands/" + this.CompAni.Props.handType + "_Hand";
 
-            Color skinColor = this.pawn.story.SkinColor;
+
+            Color skinColor;
+            if (this._pawn.story == null)
+            {
+                PawnKindLifeStage curKindLifeStage = this._pawn.ageTracker.CurKindLifeStage;
+
+                skinColor = curKindLifeStage.bodyGraphicData.color;
+            }
+            else
+            {
+                skinColor = this._pawn.story.SkinColor;
+            }
 
             Color rightColorHand = Color.cyan;
             Color leftColorHand = Color.magenta;
@@ -252,22 +262,22 @@ namespace FacialStuff.Graphics
 
             Color metal = new Color(0.51f, 0.61f, 0.66f);
 
-            switch (this.CompAni.bodyStat.HandRight)
+            switch (this.CompAni.BodyStat.HandRight)
             {
                 case PartStatus.Artificial:
                     rightHandColor = metal;
                     break;
             }
 
-            switch (this.CompAni.bodyStat.HandLeft)
+            switch (this.CompAni.BodyStat.HandLeft)
             {
                 case PartStatus.Artificial:
                     leftHandColor = metal;
                     break;
             }
 
-            Color leftHandColorShadow = leftHandColor * this.shadowColor;
-            Color rightHandColorShadow = rightHandColor * this.shadowColor;
+            Color leftHandColorShadow = leftHandColor * this._shadowColor;
+            Color rightHandColorShadow = rightHandColor * this._shadowColor;
 
             this.HandGraphicRight = GraphicDatabase.Get<Graphic_Single>(
                 texNameHand,

@@ -1,12 +1,10 @@
-﻿namespace FacialStuff.FaceEditor
+﻿using System.Collections.Generic;
+using FacialStuff.Harmony;
+using Verse;
+using Verse.AI;
+
+namespace FacialStuff.FaceEditor
 {
-    using System.Collections.Generic;
-
-    using FacialStuff.Harmony;
-
-    using Verse;
-    using Verse.AI;
-
     // ReSharper disable once UnusedMember.Global
     public class Job_FaceStyling : JobDriver
     {
@@ -36,8 +34,7 @@
                             {
                                 initAction = delegate
                                     {
-                                        CompFaceEditor faceStylerNew =
-                                            this.TargetA.Thing?.TryGetComp<CompFaceEditor>();
+                                        CompFaceEditor faceStylerNew = this.TargetA.Thing?.TryGetComp<CompFaceEditor>();
                                         if (faceStylerNew != null)
                                         {
                                             Pawn actor = this.GetActor();

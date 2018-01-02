@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Defs>
+  <FacialStuff.Defs.AnimationTargetDef>
+
+    <defName>PawnAnimatorSettingsVanilla</defName>
+    <label>Animation comp loader</label>
+    <thingClass>Thing</thingClass>
+    <CompLoaderTargets>
+      <li>
+        <handType>Animal</handType>
+        <quadruped>true</quadruped>
+        <bodyDrawers>
+          <li Class="FacialStuff.QuadrupedDrawer" />
+        </bodyDrawers>
+        <thingTargets>
+          <li>YorkshireTerrier</li>
+          <li>Husky</li>
+          <li>LabradorRetriever</li>
+          <li>Cat</li>
+          <li>Boomrat</li>
+          <li>Boomalope</li>
+        </thingTargets>
+      </li>
+      <li>
+        <handType>WildBoar</handType>
+        <quadruped>true</quadruped>
+        <bodyDrawers>
+          <li Class="FacialStuff.QuadrupedDrawer" />
+        </bodyDrawers>
+        <thingTargets>
+          <li>WildBoar</li>
+        </thingTargets>
+      </li>
+      <li>
+        <handType>Human</handType>
+        <quadruped>true</quadruped>
+        <bodyDrawers>
+          <li Class ="FacialStuff.QuadrupedDrawer"/>
+          <!--   
+          <li Class="FacialStuff.CentipedeDrawer" />
+          -->
+        </bodyDrawers>
+        <thingTargets>
+          <li>Mechanoid_Centipede</li>
+        </thingTargets>
+      </li>
+      <li>
+        <handType>Human</handType>
+        <bipedWithHands>true</bipedWithHands>
+        <bodyDrawers>
+          <li Class="FacialStuff.HumanBipedDrawer" />
+        </bodyDrawers>
+        <thingTargets>
+          <li>Mechanoid_Scyther</li>
+        </thingTargets>
+      </li>
+
+    </CompLoaderTargets>
+
+  </FacialStuff.Defs.AnimationTargetDef>
+
+</Defs>

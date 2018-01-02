@@ -24,47 +24,46 @@
 
 // Blatantly stolen from "Change Dresser"
 
+using FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs;
+using FacialStuff.FaceEditor.UI.Util;
+using Verse;
+
 namespace FacialStuff.FaceEditor.UI.DTO
 {
-    using FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs;
-    using FacialStuff.FaceEditor.UI.Util;
-
-    using Verse;
-
     public class DresserDTO
     {
-        private readonly Pawn pawn;
+        private readonly Pawn _pawn;
 
-        private readonly long originalAgeBioTicks;
+        private readonly long _originalAgeBioTicks;
 
-        private readonly long originalAgeChronTicks;
+        private readonly long _originalAgeChronTicks;
 
         public DresserDTO(Pawn pawn)
         {
-            this.pawn = pawn;
-            this.originalAgeBioTicks = pawn.ageTracker.AgeBiologicalTicks;
-            this.originalAgeChronTicks = pawn.ageTracker.AgeChronologicalTicks;
+            this._pawn = pawn;
+            this._originalAgeBioTicks = pawn.ageTracker.AgeBiologicalTicks;
+            this._originalAgeChronTicks = pawn.ageTracker.AgeChronologicalTicks;
 
-            this.BodyTypeSelectionDto = new BodyTypeSelectionDTO(this.pawn.story.bodyType, this.pawn.gender);
-            this.HeadTypeSelectionDto = new HeadTypeSelectionDTO(this.pawn.story.HeadGraphicPath, this.pawn.gender);
+            this.BodyTypeSelectionDto = new BodyTypeSelectionDto(this._pawn.story.bodyType, this._pawn.gender);
+            this.HeadTypeSelectionDto = new HeadTypeSelectionDto(this._pawn.story.HeadGraphicPath, this._pawn.gender);
 
-            this.GenderSelectionDto = new GenderSelectionDTO(this.pawn.gender);
+            this.GenderSelectionDto = new GenderSelectionDto(this._pawn.gender);
             this.GenderSelectionDto.SelectionChangeListener += delegate
                 {
-                    this.BodyTypeSelectionDto.Gender = (Gender)this.GenderSelectionDto.SelectedItem;
-                    this.HeadTypeSelectionDto.Gender = (Gender)this.GenderSelectionDto.SelectedItem;
+                    this.BodyTypeSelectionDto.Gender = (Gender) this.GenderSelectionDto.SelectedItem;
+                    this.HeadTypeSelectionDto.Gender = (Gender) this.GenderSelectionDto.SelectedItem;
                 };
 
-            this.SkinColorSliderDto = new SliderWidgetDTO(this.pawn.story.melanin, 0, 1);
+            this.SkinColorSliderDto = new SliderWidgetDto(this._pawn.story.melanin, 0, 1);
         }
 
-        public BodyTypeSelectionDTO BodyTypeSelectionDto { get; }
+        public BodyTypeSelectionDto BodyTypeSelectionDto { get; }
 
-        public GenderSelectionDTO GenderSelectionDto { get; }
+        public GenderSelectionDto GenderSelectionDto { get; }
 
-        public HeadTypeSelectionDTO HeadTypeSelectionDto { get; }
+        public HeadTypeSelectionDto HeadTypeSelectionDto { get; }
 
-        public SliderWidgetDTO SkinColorSliderDto { get; }
+        public SliderWidgetDto SkinColorSliderDto { get; }
 
         public void ResetToDefault()
         {
@@ -73,8 +72,8 @@ namespace FacialStuff.FaceEditor.UI.DTO
             this.BodyTypeSelectionDto.ResetToDefault();
             this.SkinColorSliderDto.ResetToDefault();
             this.HeadTypeSelectionDto.ResetToDefault();
-            this.pawn.ageTracker.AgeBiologicalTicks = this.originalAgeBioTicks;
-            this.pawn.ageTracker.AgeChronologicalTicks = this.originalAgeChronTicks;
+            this._pawn.ageTracker.AgeBiologicalTicks = this._originalAgeBioTicks;
+            this._pawn.ageTracker.AgeChronologicalTicks = this._originalAgeChronTicks;
         }
 
         public void SetUpdatePawnListeners(UpdatePawnListener updatePawn)

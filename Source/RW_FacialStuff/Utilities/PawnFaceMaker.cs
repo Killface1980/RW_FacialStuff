@@ -1,17 +1,13 @@
-﻿namespace FacialStuff.Utilities
+﻿using System.Collections.Generic;
+using System.Linq;
+using FacialStuff.DefOfs;
+using FacialStuff.Defs;
+using JetBrains.Annotations;
+using RimWorld;
+using Verse;
+
+namespace FacialStuff.Utilities
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using FacialStuff.DefOfs;
-    using FacialStuff.Defs;
-
-    using JetBrains.Annotations;
-
-    using RimWorld;
-
-    using Verse;
-
     public static class PawnFaceMaker
     {
         public static WrinkleDef AssignWrinkleDefFor(Pawn pawn)
@@ -56,42 +52,9 @@
 
                         // More traditional gender roles
                         case TechLevel.Neolithic:
-                            if (pawn.gender == Gender.Male)
+                            switch (pawn.gender)
                             {
-                                if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
-                                {
-                                    return 0f;
-                                }
-
-                                switch (hair.hairGender)
-                                {
-                                    case HairGender.Male: return 70f;
-                                    case HairGender.MaleUsually: return 40f;
-                                    case HairGender.Any: return 30f;
-                                    case HairGender.FemaleUsually: return 3f;
-                                    case HairGender.Female: return 1f;
-                                }
-                            }
-
-                            if (pawn.gender == Gender.Female)
-                            {
-                                switch (hair.hairGender)
-                                {
-                                    case HairGender.Male: return 1f;
-                                    case HairGender.MaleUsually: return 3f;
-                                    case HairGender.Any: return 30f;
-                                    case HairGender.FemaleUsually: return 40f;
-                                    case HairGender.Female: return 70f;
-                                }
-                            }
-
-                            break;
-
-                        // Fashion victims
-                        case TechLevel.Medieval:
-                            {
-                                if (pawn.gender == Gender.Male)
-                                {
+                                case Gender.Male:
                                     if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
                                     {
                                         return 0f;
@@ -99,24 +62,61 @@
 
                                     switch (hair.hairGender)
                                     {
-                                        case HairGender.Male: return 70f;
-                                        case HairGender.MaleUsually: return 30f;
-                                        case HairGender.Any: return 40f;
-                                        case HairGender.FemaleUsually: return 5f;
-                                        case HairGender.Female: return 1f;
+                                        case HairGender.Male:          return 70f;
+                                        case HairGender.MaleUsually:   return 40f;
+                                        case HairGender.Any:           return 30f;
+                                        case HairGender.FemaleUsually: return 3f;
+                                        case HairGender.Female:        return 1f;
                                     }
-                                }
 
-                                if (pawn.gender == Gender.Female)
-                                {
+                                    break;
+                                case Gender.Female:
                                     switch (hair.hairGender)
                                     {
-                                        case HairGender.Male: return 1f;
-                                        case HairGender.MaleUsually: return 5f;
-                                        case HairGender.Any: return 40f;
-                                        case HairGender.FemaleUsually: return 30f;
-                                        case HairGender.Female: return 70f;
+                                        case HairGender.Male:          return 1f;
+                                        case HairGender.MaleUsually:   return 3f;
+                                        case HairGender.Any:           return 30f;
+                                        case HairGender.FemaleUsually: return 40f;
+                                        case HairGender.Female:        return 70f;
                                     }
+
+                                    break;
+                            }
+
+                            break;
+
+                        // Fashion victims
+                        case TechLevel.Medieval:
+                            {
+                                switch (pawn.gender)
+                                {
+                                    case Gender.Male:
+                                        if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
+                                        {
+                                            return 0f;
+                                        }
+
+                                        switch (hair.hairGender)
+                                        {
+                                            case HairGender.Male:          return 70f;
+                                            case HairGender.MaleUsually:   return 30f;
+                                            case HairGender.Any:           return 40f;
+                                            case HairGender.FemaleUsually: return 5f;
+                                            case HairGender.Female:        return 1f;
+                                        }
+
+                                        break;
+                                    case Gender.Female:
+                                        switch (hair.hairGender)
+                                        {
+                                            case HairGender.Male:          return 1f;
+                                            case HairGender.MaleUsually:   return 5f;
+                                            case HairGender.Any:           return 40f;
+                                            case HairGender.FemaleUsually: return 30f;
+                                            case HairGender.Female:        return 70f;
+                                        }
+
+                                        break;
                                 }
 
                                 break;
@@ -124,33 +124,35 @@
 
                         // High affection to unisex
                         case TechLevel.Industrial:
-                            if (pawn.gender == Gender.Male)
+                            switch (pawn.gender)
                             {
-                                if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
-                                {
-                                    return 0f;
-                                }
+                                case Gender.Male:
+                                    if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
+                                    {
+                                        return 0f;
+                                    }
 
-                                switch (hair.hairGender)
-                                {
-                                    case HairGender.Male: return 60f;
-                                    case HairGender.MaleUsually: return 40f;
-                                    case HairGender.Any: return 70f;
-                                    case HairGender.FemaleUsually: return 10f;
-                                    case HairGender.Female: return 1f;
-                                }
-                            }
+                                    switch (hair.hairGender)
+                                    {
+                                        case HairGender.Male:          return 60f;
+                                        case HairGender.MaleUsually:   return 40f;
+                                        case HairGender.Any:           return 70f;
+                                        case HairGender.FemaleUsually: return 10f;
+                                        case HairGender.Female:        return 1f;
+                                    }
 
-                            if (pawn.gender == Gender.Female)
-                            {
-                                switch (hair.hairGender)
-                                {
-                                    case HairGender.Male: return 1f;
-                                    case HairGender.MaleUsually: return 10f;
-                                    case HairGender.Any: return 70f;
-                                    case HairGender.FemaleUsually: return 40f;
-                                    case HairGender.Female: return 60f;
-                                }
+                                    break;
+                                case Gender.Female:
+                                    switch (hair.hairGender)
+                                    {
+                                        case HairGender.Male:          return 1f;
+                                        case HairGender.MaleUsually:   return 10f;
+                                        case HairGender.Any:           return 70f;
+                                        case HairGender.FemaleUsually: return 40f;
+                                        case HairGender.Female:        return 60f;
+                                    }
+
+                                    break;
                             }
 
                             break;
@@ -159,70 +161,72 @@
                         case TechLevel.Spacer:
                         case TechLevel.Ultra:
                         case TechLevel.Transcendent:
-                            if (pawn.gender == Gender.Male)
+                            switch (pawn.gender)
                             {
-                                if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 45)
-                                {
-                                    return 0f;
-                                }
+                                case Gender.Male:
+                                    if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 45)
+                                    {
+                                        return 0f;
+                                    }
 
-                                switch (hair.hairGender)
-                                {
-                                    case HairGender.Male: return 15f;
-                                    case HairGender.MaleUsually: return 30f;
-                                    case HairGender.Any: return 35f;
-                                    case HairGender.FemaleUsually: return 30f;
-                                    case HairGender.Female: return 15f;
-                                }
-                            }
+                                    switch (hair.hairGender)
+                                    {
+                                        case HairGender.Male:          return 15f;
+                                        case HairGender.MaleUsually:   return 30f;
+                                        case HairGender.Any:           return 35f;
+                                        case HairGender.FemaleUsually: return 30f;
+                                        case HairGender.Female:        return 15f;
+                                    }
 
-                            if (pawn.gender == Gender.Female)
-                            {
-                                switch (hair.hairGender)
-                                {
-                                    case HairGender.Male: return 15f;
-                                    case HairGender.MaleUsually: return 30f;
-                                    case HairGender.Any: return 35f;
-                                    case HairGender.FemaleUsually: return 30f;
-                                    case HairGender.Female: return 15f;
-                                }
+                                    break;
+                                case Gender.Female:
+                                    switch (hair.hairGender)
+                                    {
+                                        case HairGender.Male:          return 15f;
+                                        case HairGender.MaleUsually:   return 30f;
+                                        case HairGender.Any:           return 35f;
+                                        case HairGender.FemaleUsually: return 30f;
+                                        case HairGender.Female:        return 15f;
+                                    }
+
+                                    break;
                             }
 
                             break;
-
-                        default: break;
                     }
                 }
             }
 
             // Everyone else
-            if (pawn.gender == Gender.Male)
+            switch (pawn.gender)
             {
-                if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 35)
-                {
-                    return 0f;
-                }
+                case Gender.Male:
+                    if (hair.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 35)
+                    {
+                        return 0f;
+                    }
 
-                switch (hair.hairGender)
-                {
-                    case HairGender.Male: return 70f;
-                    case HairGender.MaleUsually: return 30f;
-                    case HairGender.Any: return 50f;
-                    case HairGender.FemaleUsually: return 0f;
-                    case HairGender.Female: return 0f;
-                }
-            }
+                    switch (hair.hairGender)
+                    {
+                        case HairGender.Male:          return 70f;
+                        case HairGender.MaleUsually:   return 30f;
+                        case HairGender.Any:           return 50f;
+                        case HairGender.FemaleUsually: return 0f;
+                        case HairGender.Female:        return 0f;
+                    }
 
-            if (pawn.gender == Gender.Female)
-            {
-                switch (hair.hairGender)
-                {
-                    case HairGender.Male: return 0f;
-                    case HairGender.MaleUsually: return 0f;
-                    case HairGender.Any: return 50f;
-                    case HairGender.FemaleUsually: return 30f;
-                    case HairGender.Female: return 70f;
-                }
+                    break;
+                case Gender.Female:
+                    switch (hair.hairGender)
+                    {
+                        case HairGender.Male:          return 0f;
+                        case HairGender.MaleUsually:   return 0f;
+                        case HairGender.Any:           return 50f;
+                        case HairGender.FemaleUsually: return 30f;
+                        case HairGender.Female:        return 70f;
+                    }
+
+                    break;
             }
 
             Log.Error(string.Concat("Unknown hair likelihood for ", hair, " with ", pawn));

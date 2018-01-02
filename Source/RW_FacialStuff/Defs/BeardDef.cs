@@ -8,16 +8,13 @@
 
 // ReSharper disable StyleCop.SA1310
 
+using System.Collections.Generic;
+using JetBrains.Annotations;
+using RimWorld;
+using Verse;
+
 namespace FacialStuff.Defs
 {
-    using System.Collections.Generic;
-
-    using JetBrains.Annotations;
-
-    using RimWorld;
-
-    using Verse;
-
     public class BeardDef : Def
     {
         public BeardType beardType;

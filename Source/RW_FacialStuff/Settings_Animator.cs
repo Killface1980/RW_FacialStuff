@@ -1,17 +1,15 @@
 ﻿// ReSharper disable StyleCop.SA1401
 
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using Verse;
+
 namespace FacialStuff
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using UnityEngine;
-
-    using Verse;
-
     public class Settings_Animator : ModSettings
     {
-        public Dictionary<ThingDef, RaceOption> options = new Dictionary<ThingDef, RaceOption>();
+        public Dictionary<ThingDef, RaceOption> Options = new Dictionary<ThingDef, RaceOption>();
 
         #region Public Methods
 

@@ -1,8 +1,8 @@
-﻿namespace FacialStuff.Genetics
-{
-    using UnityEngine;
+﻿using UnityEngine;
 
-    public struct HairDNA
+namespace FacialStuff.Genetics
+{
+    public struct HairDna
     {
         public HairColorRequest HairColorRequest { get; set; }
 

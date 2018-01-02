@@ -22,17 +22,15 @@
  * SOFTWARE.
  */
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using RimWorld;
+using Verse;
+
 namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using RimWorld;
-
-    using Verse;
-
-    public class BodyTypeSelectionDTO : ASelectionWidgetDTO
+    public class BodyTypeSelectionDto : ASelectionWidgetDto
     {
         #region Public Fields
 
@@ -42,36 +40,36 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 
         #region Private Fields
 
-        private readonly List<BodyType> femaleBodyTypes;
-        private readonly List<BodyType> maleBodyTypes;
-        private List<BodyType> bodyTypes;
+        private readonly List<BodyType> _femaleBodyTypes;
+        private readonly List<BodyType> _maleBodyTypes;
+        private List<BodyType> _bodyTypes;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public BodyTypeSelectionDTO(BodyType bodyType, Gender gender)
+        public BodyTypeSelectionDto(BodyType bodyType, Gender gender)
         {
             this.OriginalBodyType = bodyType;
 
             Array a = Enum.GetValues(typeof(BodyType));
-            this.bodyTypes = new List<BodyType>(a.Length);
-            this.maleBodyTypes = new List<BodyType>(a.Length - 1);
-            this.femaleBodyTypes = new List<BodyType>(a.Length - 1);
+            this._bodyTypes = new List<BodyType>(a.Length);
+            this._maleBodyTypes = new List<BodyType>(a.Length - 1);
+            this._femaleBodyTypes = new List<BodyType>(a.Length - 1);
             foreach (BodyType bt in a.Cast<BodyType>().Where(bt => bt != BodyType.Undefined))
             {
                 if (bt != BodyType.Female)
                 {
-                    this.maleBodyTypes.Add(bt);
+                    this._maleBodyTypes.Add(bt);
                 }
 
                 if (bt != BodyType.Male)
                 {
-                    this.femaleBodyTypes.Add(bt);
+                    this._femaleBodyTypes.Add(bt);
                 }
             }
 
-            this.bodyTypes = gender == Gender.Male ? this.maleBodyTypes : this.femaleBodyTypes;
+            this._bodyTypes = gender == Gender.Male ? this._maleBodyTypes : this._femaleBodyTypes;
             this.FindIndex(bodyType);
         }
 
@@ -83,7 +81,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.bodyTypes.Count;
+                return this._bodyTypes.Count;
             }
         }
 
@@ -91,10 +89,10 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             set
             {
-                BodyType bodyType = (BodyType)this.SelectedItem;
+                BodyType bodyType = (BodyType) this.SelectedItem;
                 if (value == Gender.Female)
                 {
-                    this.bodyTypes = this.femaleBodyTypes;
+                    this._bodyTypes = this._femaleBodyTypes;
                     if (bodyType == BodyType.Male)
                     {
                         bodyType = BodyType.Female;
@@ -103,7 +101,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
                 else
                 {
                     // Male
-                    this.bodyTypes = this.maleBodyTypes;
+                    this._bodyTypes = this._maleBodyTypes;
                     if (bodyType == BodyType.Female)
                     {
                         bodyType = BodyType.Male;
@@ -119,7 +117,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.bodyTypes[this.Index];
+                return this._bodyTypes[this.Index];
             }
         }
 
@@ -135,7 +133,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             get
             {
-                return this.bodyTypes[this.Index].ToString();
+                return this._bodyTypes[this.Index].ToString();
             }
         }
 
@@ -155,9 +153,9 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 
         private void FindIndex(BodyType bodyType)
         {
-            for (int i = 0; i < this.bodyTypes.Count; ++i)
+            for (int i = 0; i < this._bodyTypes.Count; ++i)
             {
-                if (this.bodyTypes[i] != bodyType)
+                if (this._bodyTypes[i] != bodyType)
                 {
                     continue;
                 }

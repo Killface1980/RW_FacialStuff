@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
+using Verse;
+using Verse.AI;
+
 namespace FacialStuff.FaceEditor.UI.DTO
 {
-    using Verse;
-    using Verse.AI;
-
     internal static class DresserDtoFactory
     {
         public static DresserDTO Create(Pawn pawn, Job job)

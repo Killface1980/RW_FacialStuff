@@ -1,7 +1,7 @@
-﻿namespace FacialStuff.ExportCycleDefs
-{
-    using RimWorld;
+﻿using RimWorld;
 
+namespace FacialStuff.ExportCycleDefs
+{
     // ReSharper disable StyleCop.SA1307
     // ReSharper disable StyleCop.SA1401
     // ReSharper disable MissingXmlDoc

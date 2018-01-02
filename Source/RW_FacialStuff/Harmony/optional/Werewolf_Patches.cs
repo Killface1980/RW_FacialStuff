@@ -1,7 +1,7 @@
-﻿namespace FacialStuff.Harmony.Optional
-{
-    using Werewolf;
+﻿using Werewolf;
 
+namespace FacialStuff.Harmony.Optional
+{
     public static class Werewolf_Patches
     {
         public static void TransformBack_Postfix(CompWerewolf __instance)

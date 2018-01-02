@@ -1,16 +1,12 @@
-﻿namespace FacialStuff.Harmony.Optional.PrepC
+﻿using EdB.PrepareCarefully;
+using Harmony;
+using RimWorld;
+using UnityEngine;
+using Verse;
+using Verse.Sound;
+
+namespace FacialStuff.Harmony.Optional.PrepC
 {
-    using EdB.PrepareCarefully;
-
-    using global::Harmony;
-
-    using RimWorld;
-
-    using UnityEngine;
-
-    using Verse;
-    using Verse.Sound;
-
     public static class PanelBackstory_Postfix
     {
         [HarmonyPostfix]

@@ -1,68 +1,67 @@
+using UnityEngine;
+using Verse;
+
 namespace FacialStuff.Genetics
 {
-    using UnityEngine;
-
-    using Verse;
-
-    public static class PawnSkinColors_FS
+    public static class PawnSkinColors_Fs
     {
         public static readonly SkinColorData[] SkinColors =
-            {
-                // Preference of lighter skin colors in favor of more hair color variety
-                new SkinColorData(
-                    0f,
-                    0f,
-                    new Color32(255, 233, 217, 255)),
-                new SkinColorData(
-                    0.05f,
-                    0.1f,
-                    new Color32(242, 196, 193, 255)),
-                new SkinColorData(
-                    0.15f,
-                    0.25f,
-                    new Color32(243, 210, 181, 255)),
-                new SkinColorData(
-                    0.35f,
-                    0.45f,
-                    new Color32(235, 184, 141, 255)),
+        {
+            // Preference of lighter skin colors in favor of more hair color variety
+            new SkinColorData(
+                              0f,
+                              0f,
+                              new Color32(255, 233, 217, 255)),
+            new SkinColorData(
+                              0.05f,
+                              0.1f,
+                              new Color32(242, 196, 193, 255)),
+            new SkinColorData(
+                              0.15f,
+                              0.25f,
+                              new Color32(243, 210, 181, 255)),
+            new SkinColorData(
+                              0.35f,
+                              0.45f,
+                              new Color32(235, 184, 141, 255)),
 
-                // new Color32(242, 190, 145, 255)),
-                new SkinColorData(
-                    0.5f,
-                    0.6f,
-                    new Color32(255, 235, 170, 255)),
+            // new Color32(242, 190, 145, 255)),
+            new SkinColorData(
+                              0.5f,
+                              0.6f,
+                              new Color32(255, 235, 170, 255)),
 
-                // new Color32(255, 231, 179, 255)),
-                new SkinColorData(
-                    0.7f,
-                    0.8f,
-                    new Color32(218, 136, 87, 255)),
-                new SkinColorData(
-                    0.8f,
-                    0.85f,
-                    new Color32(165, 93, 41, 255)),
-                new SkinColorData(
-                    0.85f,
-                    0.9f,
-                    new Color32(127, 71, 51, 255)),
-                new SkinColorData(
-                    0.95f,
-                    0.95f,
-                    new Color32(101, 56, 41, 255)),
-                new SkinColorData(
-                    1f,
-                    1f,
-                    new Color32(76, 36, 23, 255))
+            // new Color32(255, 231, 179, 255)),
+            new SkinColorData(
+                              0.7f,
+                              0.8f,
+                              new Color32(218, 136, 87, 255)),
+            new SkinColorData(
+                              0.8f,
+                              0.85f,
+                              new Color32(165, 93, 41, 255)),
+            new SkinColorData(
+                              0.85f,
+                              0.9f,
+                              new Color32(127, 71, 51, 255)),
+            new SkinColorData(
+                              0.95f,
+                              0.95f,
+                              new Color32(101, 56, 41, 255)),
+            new SkinColorData(
+                              1f,
+                              1f,
+                              new Color32(76, 36, 23, 255))
 
-                // Vanilla
+            // Vanilla
 
-                // new SkinColorData(0f, 0f, new Color(0.9490196f, 0.929411769f, 0.8784314f)),
-                // new SkinColorData(0.25f, 0.215f, new Color(1f, 0.9372549f, 0.8352941f)),
-                // new SkinColorData(0.5f, 0.715f, new Color(1f, 0.9372549f, 0.7411765f)),
-                // new SkinColorData(0.75f, 0.8f, new Color(0.894117653f, 0.619607866f, 0.3529412f)),
-                // new SkinColorData(0.9f, 0.95f, new Color(0.509803951f, 0.356862754f, 0.1882353f)),
-                // new SkinColorData(1f, 1f, new Color(0.3882353f, 0.274509817f, 0.141176477f))
-            };
+            // new SkinColorData(0f, 0f, new Color(0.9490196f, 0.929411769f, 0.8784314f)),
+            // new SkinColorData(0.25f, 0.215f, new Color(1f, 0.9372549f, 0.8352941f)),
+            // new SkinColorData(0.5f, 0.715f, new Color(1f, 0.9372549f, 0.7411765f)),
+            // new SkinColorData(0.75f, 0.8f, new Color(0.894117653f, 0.619607866f, 0.3529412f)),
+            // new SkinColorData(0.9f, 0.95f, new Color(0.509803951f, 0.356862754f, 0.1882353f)),
+            // new SkinColorData(1f, 1f, new Color(0.3882353f, 0.274509817f, 0.141176477f))
+        };
 
         public static bool GetMelaninCommonalityFactor_Prefix(ref float __result, float melanin)
         {
@@ -74,13 +73,13 @@ namespace FacialStuff.Genetics
             }
 
             float t = Mathf.InverseLerp(
-                SkinColors[skinDataLeftIndexByWhiteness].Melanin,
-                SkinColors[skinDataLeftIndexByWhiteness + 1].Melanin,
-                melanin);
+                                        SkinColors[skinDataLeftIndexByWhiteness].Melanin,
+                                        SkinColors[skinDataLeftIndexByWhiteness + 1].Melanin,
+                                        melanin);
             __result = Mathf.Lerp(
-                GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness),
-                GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness + 1),
-                t);
+                                  GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness),
+                                  GetSkinCommonalityFactor(skinDataLeftIndexByWhiteness + 1),
+                                  t);
             return false;
         }
 
@@ -106,13 +105,13 @@ namespace FacialStuff.Genetics
             }
 
             float t = Mathf.InverseLerp(
-                SkinColors[skinDataIndexOfMelanin].Melanin,
-                SkinColors[skinDataIndexOfMelanin + 1].Melanin,
-                melanin);
+                                        SkinColors[skinDataIndexOfMelanin].Melanin,
+                                        SkinColors[skinDataIndexOfMelanin + 1].Melanin,
+                                        melanin);
             return Color.Lerp(
-                SkinColors[skinDataIndexOfMelanin].Color,
-                SkinColors[skinDataIndexOfMelanin + 1].Color,
-                t);
+                              SkinColors[skinDataIndexOfMelanin].Color,
+                              SkinColors[skinDataIndexOfMelanin + 1].Color,
+                              t);
         }
 
         public static bool GetSkinColor_Prefix(ref Color __result, float melanin)
@@ -123,7 +122,7 @@ namespace FacialStuff.Genetics
 
         public static int GetSkinDataIndexOfMelanin(float melanin)
         {
-            int result = 0;
+            int __result = 0;
             for (int i = 0; i < SkinColors.Length; i++)
             {
                 if (melanin < SkinColors[i].Melanin)
@@ -131,10 +130,10 @@ namespace FacialStuff.Genetics
                     break;
                 }
 
-                result = i;
+                __result = i;
             }
 
-            return result;
+            return __result;
         }
 
         // ReSharper disable once InconsistentNaming
@@ -163,14 +162,14 @@ namespace FacialStuff.Genetics
         public static bool IsDarkSkin_Prefix(ref bool __result, Color color)
         {
             Color skinColor = GetSkinColor(0.5f);
-            __result = color.r + color.g + color.b <= skinColor.r + skinColor.g + skinColor.b + 0.01f;
+            __result        = color.r + color.g + color.b <= skinColor.r + skinColor.g + skinColor.b + 0.01f;
             return false;
         }
 
         public static bool RandomMelanin_Prefix(ref float __result)
         {
             float value = Rand.Value;
-            int num = 0;
+            int   num   = 0;
             for (int i = 0; i < SkinColors.Length; i++)
             {
                 if (value < SkinColors[i].Selector)
@@ -187,8 +186,8 @@ namespace FacialStuff.Genetics
                 return false;
             }
 
-            float t = Mathf.InverseLerp(SkinColors[num].Selector, SkinColors[num + 1].Selector, value);
-            __result = Mathf.Lerp(SkinColors[num].Melanin, SkinColors[num + 1].Melanin, t);
+            float t  = Mathf.InverseLerp(SkinColors[num].Selector, SkinColors[num + 1].Selector, value);
+            __result = Mathf.Lerp(SkinColors[num].Melanin, SkinColors[num         + 1].Melanin, t);
             return false;
         }
 
@@ -243,9 +242,9 @@ namespace FacialStuff.Genetics
 
             public SkinColorData(float melanin, float selector, Color color)
             {
-                this.Melanin = melanin;
+                this.Melanin  = melanin;
                 this.Selector = selector;
-                this.Color = color;
+                this.Color    = color;
             }
 
             #endregion Public Constructors

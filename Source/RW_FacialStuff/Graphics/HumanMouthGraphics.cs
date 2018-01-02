@@ -1,22 +1,17 @@
-﻿namespace FacialStuff.Graphics
+﻿using FacialStuff.DefOfs;
+using Harmony;
+using JetBrains.Annotations;
+using UnityEngine;
+using Verse;
+
+namespace FacialStuff.GraphicsFS
 {
-    using FacialStuff.DefOfs;
-    using FacialStuff.Defs;
-
-    using global::Harmony;
-
-    using JetBrains.Annotations;
-
-    using UnityEngine;
-
-    using Verse;
-
     [StaticConstructorOnStartup]
     public class HumanMouthGraphics
     {
         public MouthGraphicData[] HumanMouthGraphic;
 
-        public Graphic_Multi_NaturalHeadParts mouthGraphicCrying;
+        public Graphic_Multi_NaturalHeadParts MouthGraphicCrying;
 
         public HumanMouthGraphics([NotNull] Pawn p)
         {
@@ -72,7 +67,7 @@
                     Vector2.one,
                     color) as Graphic_Multi_NaturalHeadParts;
 
-            this.mouthGraphicCrying = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+            this.MouthGraphicCrying = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                           MouthDefOf.Mouth_Crying.texPath,
                                           ShaderDatabase.CutoutSkin,
                                           Vector2.one,
@@ -110,7 +105,7 @@
                                                  new MouthGraphicData(0.4f, mouthGraphic04),
                                                  new MouthGraphicData(0.55f, mouthGraphic03),
                                                  new MouthGraphicData(0.7f, mouthGraphic02),
-                                                 new MouthGraphicData(flag ? 0.8f : 0.85f, mouthGraphic01),
+                                                 new MouthGraphicData(flag ? 0.8f : 0.85f, mouthGraphic01)
                                              };
                 if (flag)
                 {
@@ -121,7 +116,7 @@
 
         public int GetMouthTextureIndexOfMood(float mood)
         {
-            int result = 0;
+            int __result = 0;
             for (int i = 0; i < this.HumanMouthGraphic.Length; i++)
             {
                 if (mood < this.HumanMouthGraphic[i].Mood)
@@ -129,10 +124,10 @@
                     break;
                 }
 
-                result = i;
+                __result = i;
             }
 
-            return result;
+            return __result;
         }
 
         public struct MouthGraphicData

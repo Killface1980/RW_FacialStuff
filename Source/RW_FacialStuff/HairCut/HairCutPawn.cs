@@ -1,11 +1,9 @@
-﻿namespace FacialStuff.Graphics
+﻿using JetBrains.Annotations;
+using UnityEngine;
+using Verse;
+
+namespace FacialStuff.GraphicsFS
 {
-    using JetBrains.Annotations;
-
-    using UnityEngine;
-
-    using Verse;
-
     public class HairCutPawn
     {
         public Graphic HairCutGraphic;

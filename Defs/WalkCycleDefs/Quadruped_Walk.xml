@@ -17,9 +17,9 @@
         <HandsSwingAngle>0</HandsSwingAngle>
         <HipOffsetHorizontalX>-0.05</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX>0</ShoulderOffsetHorizontalX>
-        <keyIndex>0</keyIndex>
-        <status>Automatic</status>
-        <shift>0</shift>
+        <KeyIndex>0</KeyIndex>
+        <Status>Automatic</Status>
+        <Shift>0</Shift>
       </li>
       <li>
         <BodyAngle IsNull="True" />
@@ -34,9 +34,9 @@
         <HandsSwingAngle IsNull="True" />
         <HipOffsetHorizontalX>-0.1</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>1</keyIndex>
-        <status>Automatic</status>
-        <shift>0</shift>
+        <KeyIndex>1</KeyIndex>
+        <Status>Automatic</Status>
+        <Shift>0</Shift>
       </li>
       <li>
         <BodyAngle>3</BodyAngle>
@@ -51,9 +51,9 @@
         <HandsSwingAngle>-40</HandsSwingAngle>
         <HipOffsetHorizontalX>-0.125</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>2</keyIndex>
-        <status>Automatic</status>
-        <shift>0</shift>
+        <KeyIndex>2</KeyIndex>
+        <Status>Automatic</Status>
+        <Shift>0</Shift>
       </li>
       <li>
         <BodyAngle IsNull="True" />
@@ -68,9 +68,9 @@
         <HandsSwingAngle>-50</HandsSwingAngle>
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>3</keyIndex>
-        <status>Automatic</status>
-        <shift>0</shift>
+        <KeyIndex>3</KeyIndex>
+        <Status>Automatic</Status>
+        <Shift>0</Shift>
       </li>
       <li>
         <BodyAngle>-5</BodyAngle>
@@ -85,9 +85,9 @@
         <HandsSwingAngle>0</HandsSwingAngle>
         <HipOffsetHorizontalX>-0.05</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>4</keyIndex>
-        <status>Automatic</status>
-        <shift>0</shift>
+        <KeyIndex>4</KeyIndex>
+        <Status>Automatic</Status>
+        <Shift>0</Shift>
       </li>
       <li>
         <BodyAngle IsNull="True" />
@@ -102,9 +102,9 @@
         <HandsSwingAngle IsNull="True" />
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>5</keyIndex>
-        <status>Automatic</status>
-        <shift>0</shift>
+        <KeyIndex>5</KeyIndex>
+        <Status>Automatic</Status>
+        <Shift>0</Shift>
       </li>
       <li>
         <BodyAngle>3</BodyAngle>
@@ -119,9 +119,9 @@
         <HandsSwingAngle>40</HandsSwingAngle>
         <HipOffsetHorizontalX>-0.1</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>6</keyIndex>
-        <status>Automatic</status>
-        <shift>0</shift>
+        <KeyIndex>6</KeyIndex>
+        <Status>Automatic</Status>
+        <Shift>0</Shift>
       </li>
       <li>
         <BodyAngle IsNull="True" />
@@ -136,9 +136,9 @@
         <HandsSwingAngle>50</HandsSwingAngle>
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>7</keyIndex>
-        <status>Automatic</status>
-        <shift>0</shift>
+        <KeyIndex>7</KeyIndex>
+        <Status>Automatic</Status>
+        <Shift>0</Shift>
       </li>
       <li>
         <BodyAngle IsNull="True" />
@@ -153,9 +153,9 @@
         <HandsSwingAngle IsNull="True" />
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>8</keyIndex>
-        <status>Automatic</status>
-        <shift>0</shift>
+        <KeyIndex>8</KeyIndex>
+        <Status>Automatic</Status>
+        <Shift>0</Shift>
       </li>
       <li>
         <BodyAngle>-5</BodyAngle>
@@ -170,9 +170,9 @@
         <HandsSwingAngle>0</HandsSwingAngle>
         <HipOffsetHorizontalX>-0.05</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX>0</ShoulderOffsetHorizontalX>
-        <keyIndex>9</keyIndex>
-        <status>Automatic</status>
-        <shift>0</shift>
+        <KeyIndex>9</KeyIndex>
+        <Status>Automatic</Status>
+        <Shift>0</Shift>
       </li>
     </keyframes>
     <BodyAngle>

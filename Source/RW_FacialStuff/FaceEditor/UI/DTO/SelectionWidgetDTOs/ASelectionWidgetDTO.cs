@@ -22,15 +22,14 @@
  * SOFTWARE.
  */
 
+using System.Diagnostics.CodeAnalysis;
+using FacialStuff.FaceEditor.UI.Util;
+
 namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 {
-    using System.Diagnostics.CodeAnalysis;
-
-    using FacialStuff.FaceEditor.UI.Util;
-
     [SuppressMessage("ReSharper", "StyleCop.SA1215")]
     [SuppressMessage("ReSharper", "StyleCop.SA1401")]
-    public abstract class ASelectionWidgetDTO
+    public abstract class ASelectionWidgetDto
     {
         #region Protected Fields
 

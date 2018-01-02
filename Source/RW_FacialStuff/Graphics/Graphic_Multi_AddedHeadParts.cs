@@ -1,37 +1,33 @@
 // ReSharper disable NonReadonlyMemberInGetHashCode
-namespace FacialStuff.Graphics
+
+using System;
+using UnityEngine;
+using Verse;
+
+namespace FacialStuff.GraphicsFS
 {
-    using System;
-
-    using UnityEngine;
-
-    using Verse;
-
     public class Graphic_Multi_AddedHeadParts : Graphic
     {
-        private readonly Material[] mats = new Material[4];
+        private readonly Material[] _mats = new Material[4];
 
         public string GraphicPath => this.path;
 
-        public override Material MatBack => this.mats[0];
+        public override Material MatBack => this._mats[0];
 
-        public override Material MatFront => this.mats[2];
+        public override Material MatFront => this._mats[2];
 
-        public Material MatLeft => this.mats[3];
+        public Material MatLeft => this._mats[3];
 
-        public Material MatRight => this.mats[1];
+        public Material MatRight => this._mats[1];
 
         public override bool ShouldDrawRotated => this.MatRight == this.MatBack;
 
         public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
         {
-            return GraphicDatabase.Get<Graphic_Multi>(
-                this.path,
-                newShader,
-                this.drawSize,
+            return GraphicDatabase.Get<Graphic_Multi>(this.path,
+                newShader, this.drawSize,
                 newColor,
-                newColorTwo,
-                this.data);
+                newColorTwo, this.data);
         }
 
         public override int GetHashCode()
@@ -88,6 +84,7 @@ namespace FacialStuff.Graphics
 
             if (!sideTex.NullOrBad())
             {
+                // ReSharper disable once PossibleNullReferenceException
                 if (side.Equals("Right"))
                 {
                     if (!side2Tex.NullOrBad())
@@ -150,10 +147,11 @@ namespace FacialStuff.Graphics
                 req2.color = this.color;
                 req2.colorTwo = this.colorTwo;
 
+                // ReSharper disable once PossibleNullReferenceException
                 req2.mainTex.filterMode = FilterMode.Trilinear;
 
                 // req2.maskTex = array2[i];
-                this.mats[i] = MaterialPool.MatFrom(req2);
+                this._mats[i] = MaterialPool.MatFrom(req2);
             }
         }
 
@@ -172,12 +170,9 @@ namespace FacialStuff.Graphics
         public override string ToString()
         {
             return string.Concat(
-                "Multi(initPath=",
-                this.path,
-                ", color=",
-                this.color,
-                ", colorTwo=",
-                this.colorTwo,
+                "Multi(initPath=", this.path,
+                ", color=", this.color,
+                ", colorTwo=", this.colorTwo,
                 ")");
         }
     }

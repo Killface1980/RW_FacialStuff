@@ -31,11 +31,11 @@ namespace FacialStuff.Defs
         public float? HipOffsetHorizontalX;
 
         public float? ShoulderOffsetHorizontalX;
-        public int keyIndex;
+        public int KeyIndex;
 
-        public KeyStatus status = KeyStatus.Automatic;
+        public KeyStatus Status = KeyStatus.Automatic;
 
-        public float shift;
+        public float Shift;
 
         #endregion Public Fields
 
@@ -47,7 +47,7 @@ namespace FacialStuff.Defs
 
         public PawnKeyframe(int index)
         {
-            this.keyIndex = index;
+            this.KeyIndex = index;
         }
 
         #endregion Public Constructors

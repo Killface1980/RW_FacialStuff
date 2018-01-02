@@ -1,7 +1,7 @@
 ﻿// Verse.AI.MentalStateWorker_InsultingSpreeAll
 
 using System.Collections.Generic;
-
+using JetBrains.Annotations;
 using Verse;
 using Verse.AI;
 
@@ -9,9 +9,9 @@ namespace FacialStuff.AI
 {
     public class MentalStateWorker_Possessed : MentalStateWorker
     {
-        private static List<Pawn> candidates = new List<Pawn>();
+        private static readonly List<Pawn> Candidates = new List<Pawn>();
 
-        public override bool StateCanOccur(Pawn pawn)
+        public override bool StateCanOccur([NotNull] Pawn pawn)
         {
             if (!base.StateCanOccur(pawn))
             {
@@ -23,9 +23,9 @@ namespace FacialStuff.AI
                 return false;
             }
 
-            InsultingSpreeMentalStateUtility.GetInsultCandidatesFor(pawn, candidates);
-            bool result = candidates.Count >= 2;
-            candidates.Clear();
+            InsultingSpreeMentalStateUtility.GetInsultCandidatesFor(pawn, Candidates);
+            bool result = Candidates != null && Candidates.Count >= 2;
+            Candidates?.Clear();
             return result;
         }
     }

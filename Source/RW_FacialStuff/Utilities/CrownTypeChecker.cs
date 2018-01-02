@@ -1,9 +1,8 @@
+using JetBrains.Annotations;
+using Verse;
+
 namespace FacialStuff.Utilities
 {
-    using JetBrains.Annotations;
-
-    using Verse;
-
     public static class CrownTypeChecker
     {
         public static void SetHeadOffsets([NotNull] Pawn p, [NotNull] CompFace compFace)

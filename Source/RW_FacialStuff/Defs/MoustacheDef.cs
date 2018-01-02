@@ -5,16 +5,13 @@
 // ReSharper disable InconsistentNaming
 // ReSharper disable CollectionNeverUpdated.Global
 
+using System.Collections.Generic;
+using JetBrains.Annotations;
+using RimWorld;
+using Verse;
+
 namespace FacialStuff.Defs
 {
-    using System.Collections.Generic;
-
-    using JetBrains.Annotations;
-
-    using RimWorld;
-
-    using Verse;
-
     public class MoustacheDef : Def
     {
         public bool drawMouth;

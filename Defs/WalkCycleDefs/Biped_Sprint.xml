@@ -17,7 +17,7 @@
         <HandsSwingAngle IsNull="True" />
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>0</keyIndex>
+        <KeyIndex>0</KeyIndex>
       </li>
       <li>
         <BodyAngle>-5</BodyAngle>
@@ -32,7 +32,7 @@
         <HandsSwingAngle IsNull="True" />
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>1</keyIndex>
+        <KeyIndex>1</KeyIndex>
       </li>
       <li>
         <BodyAngle IsNull="True" />
@@ -47,7 +47,7 @@
         <HandsSwingAngle>-40</HandsSwingAngle>
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>2</keyIndex>
+        <KeyIndex>2</KeyIndex>
       </li>
       <li>
         <BodyAngle>7</BodyAngle>
@@ -62,7 +62,7 @@
         <HandsSwingAngle>-50</HandsSwingAngle>
         <HipOffsetHorizontalX>-0.1</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>3</keyIndex>
+        <KeyIndex>3</KeyIndex>
       </li>
       <li>
         <BodyAngle>0</BodyAngle>
@@ -77,7 +77,7 @@
         <HandsSwingAngle>0</HandsSwingAngle>
         <HipOffsetHorizontalX>0</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>4</keyIndex>
+        <KeyIndex>4</KeyIndex>
       </li>
       <li>
         <BodyAngle>-5</BodyAngle>
@@ -92,7 +92,7 @@
         <HandsSwingAngle IsNull="True" />
         <HipOffsetHorizontalX>0.05</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>5</keyIndex>
+        <KeyIndex>5</KeyIndex>
       </li>
       <li>
         <BodyAngle IsNull="True" />
@@ -107,7 +107,7 @@
         <HandsSwingAngle>40</HandsSwingAngle>
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>6</keyIndex>
+        <KeyIndex>6</KeyIndex>
       </li>
       <li>
         <BodyAngle>7</BodyAngle>
@@ -122,7 +122,7 @@
         <HandsSwingAngle>50</HandsSwingAngle>
         <HipOffsetHorizontalX>-0.075</HipOffsetHorizontalX>
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>7</keyIndex>
+        <KeyIndex>7</KeyIndex>
       </li>
       <li>
         <BodyAngle>0</BodyAngle>
@@ -137,7 +137,7 @@
         <HandsSwingAngle IsNull="True" />
         <HipOffsetHorizontalX IsNull="True" />
         <ShoulderOffsetHorizontalX IsNull="True" />
-        <keyIndex>8</keyIndex>
+        <KeyIndex>8</KeyIndex>
       </li>
     </keyframes>
     <BodyAngle>

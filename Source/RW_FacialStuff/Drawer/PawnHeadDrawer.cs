@@ -1,20 +1,14 @@
+using JetBrains.Annotations;
 using UnityEngine;
-
 using Verse;
 
 namespace FacialStuff
 {
-    using JetBrains.Annotations;
-
     public class PawnHeadDrawer : BasicDrawer
     {
         #region Public Fields
 
-        [NotNull]
-        public PawnGraphicSet Graphics;
 
-        [NotNull]
-        public Pawn Pawn;
 
         #endregion Public Fields
 
@@ -35,10 +29,6 @@ namespace FacialStuff
         #endregion Protected Fields
 
         #region Protected Constructors
-
-        public PawnHeadDrawer()
-        {
-        }
 
         #endregion Protected Constructors
 
@@ -75,9 +65,7 @@ namespace FacialStuff
             // Just for the Aliens
         }
 
-        public virtual void DrawApparel(Quaternion quat, Vector3 vector, bool renderBody, bool portrait)
-        {
-        }
+
 
         public virtual void DrawBasicHead(Quaternion headQuat, RotDrawMode bodyDrawType, bool headStump, bool portrait, ref Vector3 locFacialY, out bool headDrawn)
         {
@@ -127,7 +115,7 @@ namespace FacialStuff
 
         public virtual Mesh GetPawnHairMesh(bool portrait)
         {
-            return this.Graphics.HairMeshSet.MeshAt(headFacing);
+            return this.Graphics.HairMeshSet.MeshAt(this.HeadFacing);
         }
 
 
@@ -145,8 +133,8 @@ namespace FacialStuff
         public virtual void Tick(Rot4 bodyFacing, Rot4 headFacing, PawnGraphicSet graphics)
         {
             this.Graphics = graphics;
-            this.bodyFacing = bodyFacing;
-            this.headFacing = headFacing;
+            this.BodyFacing = bodyFacing;
+            this.HeadFacing = headFacing;
         }
 
         #endregion Public Methods

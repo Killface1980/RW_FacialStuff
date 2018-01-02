@@ -1,48 +1,41 @@
-﻿namespace FacialStuff
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+using FacialStuff.Animator;
+using FacialStuff.DefOfs;
+using FacialStuff.GraphicsFS;
+using JetBrains.Annotations;
+using RimWorld;
+using UnityEngine;
+using Verse;
+
+namespace FacialStuff
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Reflection;
-
-    using FacialStuff.Animator;
-    using FacialStuff.DefOfs;
-    using FacialStuff.Defs;
-    using FacialStuff.Graphics;
-
-    using JetBrains.Annotations;
-
-    using RimWorld;
-
-    using UnityEngine;
-
-    using Verse;
-
     public class CompBodyAnimator : ThingComp
     {
         #region Public Fields
 
-        public bool AnimatorOpen;
-        public BodyAnimDef bodyAnim;
-        public BodyPartStats bodyStat;
-        public float JitterMax = 0.35f;
-        public PawnBodyGraphic PawnBodyGraphic;
-        public WalkCycleDef WalkCycle = WalkCycleDefOf.Biped_Walk;
+        private static     FieldInfo       _infoJitterer;
+        public             float           JitterMax = 0.35f;
+        public             bool            AnimatorOpen;
+        [NotNull] public   BodyAnimDef     BodyAnim;
+        public             BodyPartStats   BodyStat;
+        public             PawnBodyGraphic PawnBodyGraphic;
+        [CanBeNull] public WalkCycleDef    WalkCycle = WalkCycleDefOf.Biped_Walk;
 
         #endregion Public Fields
 
         #region Private Fields
 
-        private static FieldInfo infoJitterer;
-        [NotNull]
-        private List<Material> cachedNakedMatsBodyBase = new List<Material>();
+        [NotNull] private readonly List<Material> _cachedNakedMatsBodyBase = new List<Material>();
 
-        private int cachedNakedMatsBodyBaseHash = -1;
-        private List<Material> cachedSkinMatsBodyBase = new List<Material>();
-        private int cachedSkinMatsBodyBaseHash = -1;
-        private bool initialized;
-        private int lastRoomCheck;
-        private Room theRoom;
+        private          int            _cachedNakedMatsBodyBaseHash = -1;
+        private readonly List<Material> _cachedSkinMatsBodyBase      = new List<Material>();
+        private          int            _cachedSkinMatsBodyBaseHash  = -1;
+        private          bool           _initialized;
+        private          int            _lastRoomCheck;
+        private          Room           _theRoom;
 
         #endregion Private Fields
 
@@ -92,20 +85,33 @@
         }
 
         public JitterHandler Jitterer
-            => GetHiddenValue(typeof(Pawn_DrawTracker), this.Pawn.Drawer, "jitterer", infoJitterer) as
-                   JitterHandler;
+            => GetHiddenValue(typeof(Pawn_DrawTracker), this.Pawn.Drawer, "jitterer", _infoJitterer) as
+               JitterHandler;
 
         [NotNull]
         public Pawn Pawn => this.parent as Pawn;
 
         public List<PawnBodyDrawer> PawnBodyDrawers { get; private set; }
 
+        public void DrawApparel(Quaternion quat, Vector3 vector, bool portrait, bool renderBody)
+        {
+            if (this.PawnBodyDrawers.NullOrEmpty())
+            {
+                return;
+            }
+
+            int i     = 0;
+            int count = this.PawnBodyDrawers.Count;
+            while (i < count)
+            {
+                this.PawnBodyDrawers[i].DrawApparel(quat, vector, renderBody, portrait);
+                i++;
+            }
+        }
+
         public CompProperties_BodyAnimator Props
         {
-            get
-            {
-                return (CompProperties_BodyAnimator)this.props;
-            }
+            get { return (CompProperties_BodyAnimator) this.props; }
         }
 
         public bool HideHat => this.InRoom && Controller.settings.HideHatWhileRoofed;
@@ -124,15 +130,15 @@
                     return null;
                 }
 
-                if (Find.TickManager.TicksGame < this.lastRoomCheck + 60f)
+                if (Find.TickManager.TicksGame < this._lastRoomCheck + 60f)
                 {
-                    return this.theRoom;
+                    return this._theRoom;
                 }
 
-                this.theRoom = this.Pawn.GetRoom();
-                this.lastRoomCheck = Find.TickManager.TicksGame;
+                this._theRoom       = this.Pawn.GetRoom();
+                this._lastRoomCheck = Find.TickManager.TicksGame;
 
-                return this.theRoom;
+                return this._theRoom;
             }
         }
 
@@ -140,21 +146,21 @@
 
         #region Public Methods
 
-        public static object GetHiddenValue(Type type, object instance, string fieldName, [CanBeNull] FieldInfo info)
+        public static object GetHiddenValue(Type type, object __instance, string fieldName, [CanBeNull] FieldInfo info)
         {
             if (info == null)
             {
                 info = type.GetField(fieldName, GenGeneric.BindingFlagsAll);
             }
 
-            return info?.GetValue(instance);
+            return info?.GetValue(__instance);
         }
 
-        public void ApplyBodyWobble(ref Vector3 rootLoc, ref Vector3 footPos,  ref Quaternion quat)
+        public void ApplyBodyWobble(ref Vector3 rootLoc, ref Vector3 footPos, ref Quaternion quat)
         {
             if (this.PawnBodyDrawers != null)
             {
-                int i = 0;
+                int i     = 0;
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
@@ -167,8 +173,8 @@
         // Verse.PawnGraphicSet
         public void ClearCache()
         {
-            this.cachedSkinMatsBodyBaseHash = -1;
-            this.cachedNakedMatsBodyBaseHash = -1;
+            this._cachedSkinMatsBodyBaseHash  = -1;
+            this._cachedNakedMatsBodyBaseHash = -1;
         }
 
         // public override string CompInspectStringExtra()
@@ -178,7 +184,8 @@
         // }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public void DrawBody(Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType, [CanBeNull] PawnWoundDrawer woundDrawer, bool renderBody, bool portrait)
+        public void DrawBody(Vector3                     rootLoc, Quaternion quat, RotDrawMode bodyDrawType,
+                             [CanBeNull] PawnWoundDrawer woundDrawer, bool   renderBody, bool  portrait)
         {
             if (this.PawnBodyDrawers.NullOrEmpty())
             {
@@ -190,12 +197,12 @@
             while (i < this.PawnBodyDrawers.Count)
             {
                 this.PawnBodyDrawers[i].DrawBody(
-                    woundDrawer,
-                    rootLoc,
-                    quat,
-                    bodyDrawType,
-                    renderBody,
-                    portrait);
+                                                 woundDrawer,
+                                                 rootLoc,
+                                                 quat,
+                                                 bodyDrawType,
+                                                 renderBody,
+                                                 portrait);
                 i++;
             }
         }
@@ -205,7 +212,7 @@
         {
             if (!this.PawnBodyDrawers.NullOrEmpty())
             {
-                int i = 0;
+                int i     = 0;
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
@@ -214,12 +221,13 @@
                 }
             }
         }
+
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public void DrawFeet(Vector3 rootLoc, bool portrait)
         {
             if (!this.PawnBodyDrawers.NullOrEmpty())
             {
-                int i = 0;
+                int i     = 0;
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
@@ -234,7 +242,7 @@
         {
             if (!this.PawnBodyDrawers.NullOrEmpty())
             {
-                int i = 0;
+                int i     = 0;
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
@@ -251,9 +259,10 @@
                 this.PawnBodyDrawers = new List<PawnBodyDrawer>();
                 for (int i = 0; i < this.Props.drawers.Count; i++)
                 {
-                    PawnBodyDrawer thingComp = (PawnBodyDrawer)Activator.CreateInstance(this.Props.drawers[i].GetType());
+                    PawnBodyDrawer thingComp =
+                    (PawnBodyDrawer) Activator.CreateInstance(this.Props.drawers[i].GetType());
                     thingComp.CompAnimator = this;
-                    thingComp.Pawn = this.Pawn;
+                    thingComp.Pawn         = this.Pawn;
                     this.PawnBodyDrawers.Add(thingComp);
                     thingComp.Initialize();
                 }
@@ -262,35 +271,33 @@
             {
                 this.PawnBodyDrawers = new List<PawnBodyDrawer>();
 
-                PawnBodyDrawer thingComp = (PawnBodyDrawer)Activator.CreateInstance(typeof(HumanBipedDrawer));
-                thingComp.CompAnimator = this;
-                thingComp.Pawn = this.Pawn;
+                PawnBodyDrawer thingComp = (PawnBodyDrawer) Activator.CreateInstance(typeof(HumanBipedDrawer));
+                thingComp.CompAnimator   = this;
+                thingComp.Pawn           = this.Pawn;
                 this.PawnBodyDrawers.Add(thingComp);
                 thingComp.Initialize();
-
-
             }
         }
 
         public List<Material> NakedMatsBodyBaseAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
-            int num = facing.AsInt + 1000 * (int)bodyCondition;
-            if (num != this.cachedNakedMatsBodyBaseHash)
+            int num = facing.AsInt + 1000 * (int) bodyCondition;
+            if (num != this._cachedNakedMatsBodyBaseHash)
             {
-                this.cachedNakedMatsBodyBase.Clear();
-                this.cachedNakedMatsBodyBaseHash = num;
-                PawnGraphicSet graphics = this.Pawn.Drawer.renderer.graphics;
+                this._cachedNakedMatsBodyBase.Clear();
+                this._cachedNakedMatsBodyBaseHash = num;
+                PawnGraphicSet graphics           = this.Pawn.Drawer.renderer.graphics;
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
-                    this.cachedNakedMatsBodyBase.Add(graphics.nakedGraphic.MatAt(facing));
+                    this._cachedNakedMatsBodyBase.Add(graphics.nakedGraphic.MatAt(facing));
                 }
                 else if (bodyCondition == RotDrawMode.Rotting || graphics.dessicatedGraphic == null)
                 {
-                    this.cachedNakedMatsBodyBase.Add(graphics.rottingGraphic.MatAt(facing));
+                    this._cachedNakedMatsBodyBase.Add(graphics.rottingGraphic.MatAt(facing));
                 }
                 else if (bodyCondition == RotDrawMode.Dessicated)
                 {
-                    this.cachedNakedMatsBodyBase.Add(graphics.dessicatedGraphic.MatAt(facing));
+                    this._cachedNakedMatsBodyBase.Add(graphics.dessicatedGraphic.MatAt(facing));
                 }
 
                 for (int i = 0; i < graphics.apparelGraphics.Count; i++)
@@ -301,13 +308,13 @@
                     {
                         if (lastLayer != ApparelLayer.Shell && lastLayer != ApparelLayer.Overhead)
                         {
-                            this.cachedNakedMatsBodyBase.Add(graphics.apparelGraphics[i].graphic.MatAt(facing));
+                            this._cachedNakedMatsBodyBase.Add(graphics.apparelGraphics[i].graphic.MatAt(facing));
                         }
                     }
                 }
             }
 
-            return this.cachedNakedMatsBodyBase;
+            return this._cachedNakedMatsBodyBase;
         }
 
         public override void PostDraw()
@@ -334,7 +341,7 @@
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Values.Look(ref this.lastRoomCheck, "lastRoomCheck");
+            Scribe_Values.Look(ref this._lastRoomCheck, "lastRoomCheck");
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -351,35 +358,37 @@
             {
                 bodyType = this.Pawn.story.bodyType;
             }
-            List<string> names = new List<string>
-                                     {
-                                         "BodyAnimDef_" + this.Pawn.def.defName + "_" + bodyType,
-                                         "BodyAnimDef_" + ThingDefOf.Human.defName + "_" + bodyType
-                                     };
+
+            string       defaultName = "BodyAnimDef_" + this.Pawn.def.defName + "_" + bodyType;
+            List<string> names       = new List<string>
+                                       {
+                                       defaultName,
+                                       "BodyAnimDef_" + ThingDefOf.Human.defName + "_" + bodyType
+                                       };
             foreach (string name in names)
             {
                 BodyAnimDef newDef = DefDatabase<BodyAnimDef>.GetNamedSilentFail(name);
                 if (newDef != null)
                 {
-                    this.bodyAnim = newDef;
+                    this.BodyAnim = newDef;
                     return;
                 }
             }
 
-            this.bodyAnim = new BodyAnimDef { defName = this.Pawn.def.defName, label = this.Pawn.def.defName };
+            this.BodyAnim = new BodyAnimDef {defName = defaultName, label = defaultName};
         }
 
         public void TickDrawers(Rot4 bodyFacing, PawnGraphicSet graphics)
         {
-            if (!initialized)
+            if (!this._initialized)
             {
                 this.InitializePawnDrawer();
-                initialized = true;
+                this._initialized = true;
             }
 
             if (!this.PawnBodyDrawers.NullOrEmpty())
             {
-                int i = 0;
+                int i     = 0;
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
@@ -391,23 +400,23 @@
 
         public List<Material> UnderwearMatsBodyBaseAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
-            int num = facing.AsInt + 1000 * (int)bodyCondition;
-            if (num != this.cachedSkinMatsBodyBaseHash)
+            int num = facing.AsInt + 1000 * (int) bodyCondition;
+            if (num != this._cachedSkinMatsBodyBaseHash)
             {
-                this.cachedSkinMatsBodyBase.Clear();
-                this.cachedSkinMatsBodyBaseHash = num;
-                PawnGraphicSet graphics = this.Pawn.Drawer.renderer.graphics;
+                this._cachedSkinMatsBodyBase.Clear();
+                this._cachedSkinMatsBodyBaseHash = num;
+                PawnGraphicSet graphics          = this.Pawn.Drawer.renderer.graphics;
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
-                    this.cachedSkinMatsBodyBase.Add(graphics.nakedGraphic.MatAt(facing));
+                    this._cachedSkinMatsBodyBase.Add(graphics.nakedGraphic.MatAt(facing));
                 }
                 else if (bodyCondition == RotDrawMode.Rotting || graphics.dessicatedGraphic == null)
                 {
-                    this.cachedSkinMatsBodyBase.Add(graphics.rottingGraphic.MatAt(facing));
+                    this._cachedSkinMatsBodyBase.Add(graphics.rottingGraphic.MatAt(facing));
                 }
                 else if (bodyCondition == RotDrawMode.Dessicated)
                 {
-                    this.cachedSkinMatsBodyBase.Add(graphics.dessicatedGraphic.MatAt(facing));
+                    this._cachedSkinMatsBodyBase.Add(graphics.dessicatedGraphic.MatAt(facing));
                 }
 
                 for (int i = 0; i < graphics.apparelGraphics.Count; i++)
@@ -417,15 +426,14 @@
                     // if (lastLayer != ApparelLayer.Shell && lastLayer != ApparelLayer.Overhead)
                     if (lastLayer == ApparelLayer.OnSkin)
                     {
-                        this.cachedSkinMatsBodyBase.Add(graphics.apparelGraphics[i].graphic.MatAt(facing));
+                        this._cachedSkinMatsBodyBase.Add(graphics.apparelGraphics[i].graphic.MatAt(facing));
                     }
                 }
             }
 
-            return this.cachedSkinMatsBodyBase;
+            return this._cachedSkinMatsBodyBase;
         }
 
         #endregion Public Methods
-
     }
 }

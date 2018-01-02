@@ -47,6 +47,9 @@
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CompActivatableEffect">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\CompActivatableEffect.dll</HintPath>
+    </Reference>
     <Reference Include="EdBPrepareCarefully">
       <HintPath>..\..\..\..\..\..\workshop\content\294100\735106432\Assemblies\EdBPrepareCarefully.dll</HintPath>
       <Private>False</Private>
@@ -77,7 +80,17 @@
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
     <Compile Include="Controller_Animator.cs" />
+    <Compile Include="Components\CompLoaderTargets.cs" />
+    <Compile Include="Defs\AnimationTargetDef.cs" />
+    <None Include="Drawer\CentipedeDrawer.cs" />
+    <Compile Include="Drawer\JointLister.cs" />
     <Compile Include="Enums\Offsets.cs" />
+    <Compile Include="FaceEditor\Dialog_FaceStyling.BeardTab.cs" />
+    <Compile Include="FaceEditor\Dialog_FaceStyling.FaceStyleTab.cs" />
+    <Compile Include="FaceEditor\Dialog_FaceStyling.FilterTab.cs" />
+    <Compile Include="FaceEditor\Dialog_FaceStyling.GenderTab.cs" />
+    <Compile Include="FaceEditor\Dialog_FaceStyling.SpecialTab.cs" />
+    <None Include="Harmony\Optional\Harmony_JecsTools.cs" />
     <Compile Include="Settings_Animator.cs" />
     <Compile Include="Components\CompBodyAnimator.cs" />
     <Compile Include="Components\CompProperties_BodyAnimator.cs" />
@@ -93,7 +106,6 @@
     <None Include="Enums\WalkcycleType.cs" />
     <Compile Include="Enums\RaceOption.cs" />
     <Compile Include="Graphics\PawnBodyGraphic.cs" />
-    <Compile Include="Harmony\Patches2.cs" />
     <Compile Include="MainTabWindow_Animator.cs" />
     <Compile Include="Enums\BodyPartStats.cs" />
     <Compile Include="Components\CompProperties_Face.cs" />
@@ -194,6 +206,9 @@
     <Content Include="..\..\Defs\BeardDefs\BeardDef.xml">
       <Link>Defs\xml\Face\BeardDef.xml</Link>
     </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Boomrat_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Boomrat_Undefined.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Fat.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_Human_Fat.xml</Link>
     </Content>
@@ -211,6 +226,9 @@
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Husky_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_Husky_Undefined.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_LabradorRetriever_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_LabradorRetriever_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_WildBoar_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_WildBoar_Undefined.xml</Link>
@@ -260,23 +278,26 @@
     <Content Include="..\..\Defs\ThingDefs\Dummy.xml">
       <Link>Defs\xml\Dummy.xml</Link>
     </Content>
+    <Content Include="..\..\Defs\ThingDefs\PawnAnimationTargets.xml">
+      <Link>Defs\xml\PawnAnimationTargets.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\ThinkTreeDefs\SubTrees_MiscFS.xml">
       <Link>Defs\xml\SubTrees_MiscFS.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WalkCycleDefs\Biped_Amble.xml">
-      <Link>Defs\DefsGenerated\Biped_Amble.xml</Link>
+      <Link>Defs\xml\Generated\WCycles\Biped_Amble.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WalkCycleDefs\Biped_Jog.xml">
-      <Link>Defs\DefsGenerated\Biped_Jog.xml</Link>
+      <Link>Defs\xml\Generated\WCycles\Biped_Jog.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WalkCycleDefs\Biped_Sprint.xml">
-      <Link>Defs\DefsGenerated\Biped_Sprint.xml</Link>
+      <Link>Defs\xml\Generated\WCycles\Biped_Sprint.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WalkCycleDefs\Biped_Walk.xml">
-      <Link>Defs\DefsGenerated\Biped_Walk.xml</Link>
+      <Link>Defs\xml\Generated\WCycles\Biped_Walk.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WalkCycleDefs\Quadruped_Walk.xml">
-      <Link>Defs\DefsGenerated\Quadruped_Walk.xml</Link>
+      <Link>Defs\xml\Generated\WCycles\Quadruped_Walk.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WrinkleDefs\WrinkleDef.xml">
       <Link>Defs\xml\Face\WrinkleDef.xml</Link>

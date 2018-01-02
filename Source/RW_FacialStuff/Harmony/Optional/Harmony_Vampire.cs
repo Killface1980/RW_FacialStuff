@@ -1,11 +1,10 @@
-﻿namespace FacialStuff.Harmony.Optional
+﻿using System;
+using Harmony;
+using Vampire;
+using Verse;
+
+namespace FacialStuff.Harmony.Optional
 {
-    using System;
-
-    using global::Harmony;
-
-    using Verse;
-
     [StaticConstructorOnStartup]
     internal static class Harmony_Vampire
     {
@@ -18,29 +17,29 @@
                 ((Action)(() =>
                     {
                         if (AccessTools.Method(
-                                typeof(Vampire.VampireUtility),
-                                nameof(Vampire.VampireUtility.AdjustTimeTables)) == null)
+                                typeof(VampireUtility),
+                                nameof(VampireUtility.AdjustTimeTables)) == null)
                         {
                             return;
                         }
 
                         harmony.Patch(
                             AccessTools.Method(
-                                typeof(Vampire.CompVampire),
-                                nameof(Vampire.CompVampire.PostExposeData)),
+                                typeof(CompVampire),
+                                nameof(CompVampire.PostExposeData)),
                             null,
                             new HarmonyMethod(typeof(Vampire_Patches), nameof(Vampire_Patches.Transformed_Postfix)));
 
                         harmony.Patch(
                             AccessTools.Method(
-                                typeof(Vampire.CompVampire), "set_CurrentForm"),
+                                typeof(CompVampire), "set_CurrentForm"),
                             null,
                             new HarmonyMethod(typeof(Vampire_Patches), nameof(Vampire_Patches.Transformed_Postfix)));
 
                         harmony.Patch(
                             AccessTools.Method(
-                                typeof(Vampire.CompVampire),
-                                nameof(Vampire.CompVampire.InitializeVampirism)),
+                                typeof(CompVampire),
+                                nameof(CompVampire.InitializeVampirism)),
                             null,
                             new HarmonyMethod(typeof(Vampire_Patches), nameof(Vampire_Patches.Transformed_Postfix)));
 
