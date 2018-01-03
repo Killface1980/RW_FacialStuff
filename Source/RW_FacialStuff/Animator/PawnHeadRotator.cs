@@ -124,9 +124,6 @@ namespace FacialStuff.Animator
 
             if (tickManagerTicksGame > this._nextRotationEnd)
             {
-                // Stop tracking after a while
-                this._target = null;
-
                 // Set upnext blinking cycle
                 this.SetNextRotation(tickManagerTicksGame);
 
@@ -172,14 +169,10 @@ namespace FacialStuff.Animator
                 // ReSharper disable once PossibleNullReferenceException
                 foreach (IAttackTarget attackTarget in potentialTargetsFor)
                 {
-                    if (attackTarget != null && !attackTarget.ThreatDisabled())
-                    {
-                        if (p.Position.InHorDistOf(((Thing) attackTarget).Position, radius))
-                        {
-                            enemy = true;
-                            break;
-                        }
-                    }
+                    if (attackTarget == null || attackTarget.ThreatDisabled()) continue;
+                    if (!p.Position.InHorDistOf(((Thing) attackTarget).Position, radius)) continue;
+                    enemy = true;
+                    break;
                 }
             }
 
@@ -215,7 +208,7 @@ namespace FacialStuff.Animator
                 this.FindClosestTarget();
             }
 
-            if (this._target != null)
+            if (this._target != null && this._pawn.Position.InHorDistOf(this._target.Position, 6f))
             {
                 // if (random)
                 // {
@@ -249,20 +242,17 @@ namespace FacialStuff.Animator
                     return;
                 }
             }
+            else
+            {
+                this._target = null;
+            }
 
-            // Make them smile.
-            // if (this.pawn.pather.Moving)
-            // {
-            // this.rotationMod = RotationDirection.None;
-            // return;
-            // }
             this._rotationMod = RotationDirection.None;
         }
 
         // RimWorld.JobDriver_StandAndBeSociallyActive
         private void FindClosestTarget()
         {
-            this._target = null;
 
             // Watch out for enemies
             Job job = this._pawn.CurJob;
@@ -290,37 +280,20 @@ namespace FacialStuff.Animator
                     {
                         Thing thing = intVec.GetThingList(this._pawn.Map)?.Find(x => x is Pawn);
 
-                        if (thing != null && thing != this._pawn)
+                        if (!(thing is Pawn otherPawn) || otherPawn == this._pawn || otherPawn.Dead || otherPawn.Downed) continue;
+                        
+                        if (GenSight.LineOfSight(position, intVec, this._pawn.Map))
                         {
-                            if (GenSight.LineOfSight(position, intVec, this._pawn.Map))
-                            {
-                                // Log.Message(this.pawn + " will look at random pawn " + thing);
-                                this._target = thing;
-                            }
+                            // Log.Message(this.pawn + " will look at random pawn " + thing);
+                            this._target = otherPawn;
+                            return;
                         }
                     }
                 }
             }
 
-            /* Kinda stupid and unnecessary
-            Job job = this.pawn.CurJob;
-            if (job != null && job.targetA.IsValid)
-            {
-                LocalTargetInfo targetA = this.pawn.CurJob.targetA;
-                if (!targetA.HasThing)
-                {
-                    return;
-                }
+            this._target = null;
 
-                Thing thing = targetA.Thing;
-                if (this.pawn.Position.InHorDistOf(thing.Position, 5f))
-                {
-                    // Log.Message(this.pawn + " will look at job thing " + thing);
-                    this.target = thing;
-                    return;
-                }
-            }
-            */
         }
 
         private void SetNextRotation(int tickManagerTicksGame)

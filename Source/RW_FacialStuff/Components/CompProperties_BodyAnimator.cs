@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using FacialStuff.DefOfs;
 using JetBrains.Annotations;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -13,19 +11,6 @@ namespace FacialStuff
     // ReSharper disable InconsistentNaming
     public class CompProperties_BodyAnimator : CompProperties
     {
-        #region Public Fields
-
-        public           bool                 bipedWithHands;
-        [NotNull] public List<PawnBodyDrawer> drawers          = new List<PawnBodyDrawer>();
-
-        public string  handType = "Human";
-        public Vector3 hipOffset;
-
-        public bool    quadruped;
-        public Vector3 shoulderOffset;
-
-        #endregion Public Fields
-
         #region Public Constructors
 
         public CompProperties_BodyAnimator()
@@ -34,5 +19,18 @@ namespace FacialStuff
         }
 
         #endregion Public Constructors
+
+        #region Public Fields
+
+        [NotNull] public List<PawnBodyDrawer> drawers = new List<PawnBodyDrawer>();
+
+        public string  handType = "Human";
+        public Vector3 hipOffset;
+        public Vector3 shoulderOffset;
+
+        public bool    bipedWithHands;
+        public bool    quadruped;
+
+        #endregion Public Fields
     }
 }

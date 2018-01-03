@@ -66,7 +66,7 @@ namespace FacialStuff
         {
         }
 
-        public virtual void DrawFeet(Quaternion bodyQuat, Vector3 rootLoc, bool portrait)
+        public virtual void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
         {
         }
 

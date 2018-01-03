@@ -47,8 +47,16 @@
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CompActivatableEffect">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\CompActivatableEffect.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="EdBPrepareCarefully">
       <HintPath>..\..\..\..\..\..\workshop\content\294100\735106432\Assemblies\EdBPrepareCarefully.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ProjectJedi">
+      <HintPath>..\..\..\Star-Wars---The-Force\Assemblies\ProjectJedi.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Core" />
@@ -87,6 +95,10 @@
     <Compile Include="FaceEditor\Dialog_FaceStyling.FilterTab.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.GenderTab.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.SpecialTab.cs" />
+    <Compile Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
+    <Compile Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
+    <Compile Include="PawnFeetTweener.cs" />
+    <Compile Include="PawnHandsTweener.cs" />
     <Compile Include="Settings_Animator.cs" />
     <Compile Include="Components\CompBodyAnimator.cs" />
     <Compile Include="Components\CompProperties_BodyAnimator.cs" />
@@ -205,6 +217,18 @@
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Boomrat_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_Boomrat_Undefined.xml</Link>
     </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Caribou_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Caribou_Undefined.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Cat_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Cat_Undefined.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Deer_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Deer_Undefined.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Elk_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Elk_Undefined.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Fat.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_Human_Fat.xml</Link>
     </Content>
@@ -223,11 +247,26 @@
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Husky_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_Husky_Undefined.xml</Link>
     </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Ibex_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Ibex_Undefined.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_LabradorRetriever_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_LabradorRetriever_Undefined.xml</Link>
     </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Mechanoid_Centipede_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Mechanoid_Centipede_Undefined.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Mechanoid_Scyther_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Mechanoid_Scyther_Undefined.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Tortoise_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Tortoise_Undefined.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_WildBoar_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_WildBoar_Undefined.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_YorkshireTerrier_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_YorkshireTerrier_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BrowDefs\BrowDef_Female.xml">
       <Link>Defs\xml\Face\BrowDef_Female.xml</Link>

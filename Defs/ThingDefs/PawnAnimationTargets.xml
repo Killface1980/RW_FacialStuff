@@ -20,6 +20,8 @@
           <li>Cat</li>
           <li>Boomrat</li>
           <li>Boomalope</li>
+          <li>Deer</li>
+          <li>Ibex</li>
         </thingTargets>
       </li>
       <li>
@@ -29,7 +31,10 @@
           <li Class="FacialStuff.QuadrupedDrawer" />
         </bodyDrawers>
         <thingTargets>
+          <li>Caribou</li>
+          <li>Tortoise</li>
           <li>WildBoar</li>
+          <li>Elk</li>
         </thingTargets>
       </li>
       <li>

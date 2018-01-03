@@ -19,6 +19,7 @@ namespace FacialStuff
 
         public override void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
         {
+
             if (this.CompFace.Props.canRotateHead && Controller.settings.UseHeadRotator)
             {
                 this.HeadFacing = this.CompFace.HeadRotator.Rotation(this.HeadFacing, renderBody);

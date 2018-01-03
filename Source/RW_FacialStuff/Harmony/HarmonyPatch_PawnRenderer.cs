@@ -73,12 +73,14 @@ namespace FacialStuff.Harmony
 
             // Try to move the y position behind while another pawn is standing near
             // if (false)
+            Vector3 baseDrawLoc = rootLoc;
             if (!portrait && pawn.Spawned)
             {
-                RecalcRootLocY(ref rootLoc, pawn);
+                RecalcRootLocY(ref baseDrawLoc, pawn);
             }
 
-            Vector3 footPos = rootLoc;
+            // Let's save the basic location for later
+            Vector3 footPos = baseDrawLoc;
 
 #if develop
             if (faceComp.IgnoreRenderer)
@@ -108,6 +110,7 @@ namespace FacialStuff.Harmony
 
             // No face => must be animal, simplify it
             Quaternion bodyQuat = quat;
+            Quaternion footQuat = bodyQuat;
 
             if (!pawn.GetCompFace(out CompFace compFace))
             {
@@ -123,12 +126,12 @@ namespace FacialStuff.Harmony
                 }
 
                 compAnim.TickDrawers(bodyFacing, graphics);
-                compAnim.ApplyBodyWobble(ref rootLoc, ref footPos, ref bodyQuat);
+                compAnim.ApplyBodyWobble(ref baseDrawLoc, ref footPos, ref bodyQuat);
 
                 RenderAnimalPawn(
                                    pawn,
                                    graphics,
-                                   rootLoc,
+                                   baseDrawLoc,
                                    bodyQuat,
                                    renderBody,
                                    bodyFacing,
@@ -136,7 +139,7 @@ namespace FacialStuff.Harmony
                                    portrait,
                                    woundDrawer,
                                    compAnim,
-                                   footPos);
+                                   footPos, footQuat);
 
                 return false;
             }
@@ -165,7 +168,7 @@ namespace FacialStuff.Harmony
             {
                 if (footy)
                 {
-                    compAnim.ApplyBodyWobble(ref rootLoc, ref footPos, ref bodyQuat);
+                    compAnim.ApplyBodyWobble(ref baseDrawLoc, ref footPos, ref bodyQuat);
                 }
 
                 // Reset the quat as it has been changed
@@ -176,10 +179,10 @@ namespace FacialStuff.Harmony
             // Regular FacePawn rendering 14+ years
 
             // Render body
-            compAnim.DrawBody(rootLoc, bodyQuat, bodyDrawType, woundDrawer, renderBody, portrait);
+            compAnim.DrawBody(baseDrawLoc, bodyQuat, bodyDrawType, woundDrawer, renderBody, portrait);
 
-            Vector3 drawPos = rootLoc;
-            Vector3 a = rootLoc;
+            Vector3 drawPos = baseDrawLoc;
+            Vector3 a = baseDrawLoc;
             if (bodyFacing != Rot4.North)
             {
                 a.y += Offsets.YOffset_Head;
@@ -197,7 +200,7 @@ namespace FacialStuff.Harmony
                 Vector3 b = headQuat * compFace.BaseHeadOffsetAt(portrait);
 
                 Vector3 locFacialY = a + b;
-                Vector3 currentLoc = rootLoc + b;
+                Vector3 currentLoc = baseDrawLoc + b;
                 currentLoc.y += Offsets.YOffset_OnHead;
 
                 compFace.DrawBasicHead(out bool headDrawn, bodyDrawType, portrait, headStump, ref locFacialY, headQuat);
@@ -252,7 +255,7 @@ namespace FacialStuff.Harmony
                 if (!headStump)
                 {
                     compFace.DrawHairAndHeadGear(
-                                                 rootLoc,
+                                                 baseDrawLoc,
                                                  bodyDrawType,
                                                  ref currentLoc,
                                                  b,
@@ -268,6 +271,9 @@ namespace FacialStuff.Harmony
 
             compFace.DrawAlienBodyAddons(bodyQuat, drawPos, portrait, renderBody);
 
+            // No wobble for equipment, looks funnier - nah!
+           // Vector3 equipPos = rootLoc;
+           // equipPos.y = drawPos.y;
             compAnim.DrawEquipment(drawPos, portrait);
 
             // if (!portrait)
@@ -281,14 +287,15 @@ namespace FacialStuff.Harmony
             bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
             if (showHands)
             {
+                // Reset the position for the hands
                 Vector3 handPos = drawPos;
-                handPos.y = rootLoc.y;
+                handPos.y = baseDrawLoc.y;
                 compAnim.DrawHands(bodyQuat, handPos, portrait, false);
             }
 
             if (footy)
             {
-                compAnim?.DrawFeet(bodyQuat, footPos, portrait);
+                compAnim?.DrawFeet(bodyQuat, footQuat, footPos, portrait);
             }
 
             if (!portrait)
@@ -302,7 +309,7 @@ namespace FacialStuff.Harmony
                     }
                 }
 
-                Vector3 bodyLoc = rootLoc;
+                Vector3 bodyLoc = baseDrawLoc;
                 bodyLoc.y += Offsets.YOffset_Status;
 
                 PawnHeadOverlays headOverlays = (PawnHeadOverlays)pawnHeadOverlaysFieldInfo?.GetValue(__instance);
@@ -376,13 +383,13 @@ namespace FacialStuff.Harmony
                       otherPawn => otherPawn != pawn &&
                                    otherPawn.DrawPos.x >= loc.x - 1 &&
                                    otherPawn.DrawPos.x <= loc.x + 1 &&
-                                   otherPawn.DrawPos.z < loc.z).ToList();
-            List<Pawn> leftOfPawn = pawns.Where(other => other.DrawPos.x < loc.x).ToList();
+                                   otherPawn.DrawPos.z <= loc.z).ToList();
+            List<Pawn> leftOfPawn = pawns.Where(other => other.DrawPos.x <= loc.x).ToList();
 
             if (!pawns.NullOrEmpty())
             {
-                loc.y -= 0.075f * pawns.Count;
-                loc.y += 0.005f * leftOfPawn.Count;
+                loc.y -= 0.04f * pawns.Count;
+                loc.y -= 0.01f * leftOfPawn.Count;
             }
 
             rootLoc = loc;
@@ -460,18 +467,17 @@ namespace FacialStuff.Harmony
             }
         }
 
-        private static void RenderAnimalPawn(
-            Pawn pawn,
-            PawnGraphicSet graphics,
-            Vector3 rootLoc,
-            Quaternion quat,
-            bool renderBody,
-            Rot4 bodyFacing,
-            RotDrawMode bodyDrawType,
-            bool portrait,
-            PawnWoundDrawer woundDrawer,
-            CompBodyAnimator compAnim,
-            Vector3 footPos)
+        private static void RenderAnimalPawn(Pawn             pawn,
+                                             PawnGraphicSet   graphics,
+                                             Vector3          rootLoc,
+                                             Quaternion       quat,
+                                             bool             renderBody,
+                                             Rot4             bodyFacing,
+                                             RotDrawMode      bodyDrawType,
+                                             bool             portrait,
+                                             PawnWoundDrawer  woundDrawer,
+                                             CompBodyAnimator compAnim,
+                                             Vector3          footPos, Quaternion footQuat)
         {
             Mesh mesh = null;
             Vector3 loc = rootLoc;
@@ -526,12 +532,12 @@ namespace FacialStuff.Harmony
             if (!portrait && pawn.RaceProps.Animal && pawn.inventory != null && pawn.inventory.innerContainer.Count > 0
              && graphics.packGraphic != null)
             {
-                UnityEngine.Graphics.DrawMesh(mesh, vector, quat, graphics.packGraphic.MatAt(bodyFacing), 0);
+                Graphics.DrawMesh(mesh, vector, quat, graphics.packGraphic.MatAt(bodyFacing), 0);
             }
 
             footPos.y = loc.y;
             compAnim.DrawHands(quat, footPos, portrait, false);
-            compAnim.DrawFeet(quat, footPos, portrait);
+            compAnim.DrawFeet(quat, footQuat, footPos, portrait);
         }
 
         private static void GetReflections()

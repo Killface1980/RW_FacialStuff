@@ -223,7 +223,7 @@ namespace FacialStuff
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public void DrawFeet(Quaternion bodyQuat, Vector3 rootLoc, bool portrait)
+        public void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
         {
             if (!this.PawnBodyDrawers.NullOrEmpty())
             {
@@ -231,7 +231,7 @@ namespace FacialStuff
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
-                    this.PawnBodyDrawers[i].DrawFeet(bodyQuat, rootLoc, portrait);
+                    this.PawnBodyDrawers[i].DrawFeet(bodyQuat, footQuat, rootLoc, portrait);
                     i++;
                 }
             }

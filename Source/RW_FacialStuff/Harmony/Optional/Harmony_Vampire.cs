@@ -43,6 +43,12 @@ namespace FacialStuff.Harmony.Optional
                             null,
                             new HarmonyMethod(typeof(Vampire_Patches), nameof(Vampire_Patches.Transformed_Postfix)));
 
+                        harmony.Patch(
+                                      AccessTools.Method(
+                                                         typeof(HumanBipedDrawer),
+                                                         nameof(HumanBipedDrawer.DrawEquipment)),
+                                      null,
+                                      new HarmonyMethod(typeof(Vampire_Patches), nameof(Vampire_Patches.DrawEquipment_PostFix)));
 
                     }))();
             }

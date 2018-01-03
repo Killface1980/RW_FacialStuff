@@ -2,10 +2,8 @@
 using System.IO;
 using System.Linq;
 using FacialStuff.Components;
-using FacialStuff.DefOfs;
 using FacialStuff.Defs;
 using FacialStuff.GraphicsFS;
-using Harmony;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;

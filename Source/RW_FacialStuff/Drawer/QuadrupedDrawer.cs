@@ -6,7 +6,7 @@ namespace FacialStuff
 {
     public class QuadrupedDrawer : HumanBipedDrawer
     {
-        public override void DrawFeet(Quaternion bodyQuat, Vector3 rootLoc, bool portrait)
+        public override void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
         {
             if (portrait && !this.CompAnimator.AnimatorOpen)
             {
@@ -19,11 +19,20 @@ namespace FacialStuff
                 rootLoc.y -= Offsets.YOffset_HandsFeet * 2f - Offsets.YOffset_Behind;
             }
 
-            this.DrawFrontPaws(bodyQuat, rootLoc, portrait);
-            base.DrawFeet(bodyQuat, rootLoc, portrait);
+            this.DrawFrontPaws(bodyQuat, footQuat, rootLoc, portrait);
+
+            rootLoc.y += this.BodyFacing == Rot4.North ? Offsets.YOffset_Behind : -Offsets.YOffset_Behind;
+
+            base.DrawFeet(bodyQuat, footQuat, rootLoc, portrait);
         }
 
-        public virtual void DrawFrontPaws(Quaternion bodyQuat, Vector3 rootLoc, bool portrait)
+        public override void DrawHands(Quaternion  bodyQuat, Vector3 drawPos, bool portrait, bool carrying = false,
+                                       HandsToDraw drawSide                                                = HandsToDraw.Both)
+        {
+           // base.DrawHands(bodyQuat, drawPos, portrait, carrying, drawSide);
+        }
+
+        public virtual void DrawFrontPaws(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
         {
             if (!this.CompAnimator.Props.quadruped)
             {
@@ -113,22 +122,14 @@ namespace FacialStuff
             }
 
 
+            var drawQuat = this.IsMoving ? footQuat : bodyQuat;
+            Vector3 ground = rootLoc + drawQuat * new Vector3(0, 0, OffsetGround);
 
+            this.handTweener.HandPositions[0] = ground + jointPositions.LeftJoint + leftFootAnim;
+            this.handTweener.HandPositions[1] = ground + jointPositions.RightJoint +
+                                                rightFootAnim;
 
-            Vector3 ground = rootLoc + bodyQuat * new Vector3(0, 0, OffsetGround);
-            if (matRight != null)
-            {
-                if (this.CompAnimator.BodyStat.FootRight != PartStatus.Missing)
-                {
-                    GenDraw.DrawMeshNowOrLater(
-                                               footMeshRight,
-                                               ground + jointPositions.RightJoint +
-                                               rightFootAnim,
-                                               bodyQuat*Quaternion.AngleAxis(footAngleRight, Vector3.up),
-                                               matRight,
-                                               portrait);
-                }
-            }
+            this.handTweener.PreHandPosCalculation();
 
             if (matLeft != null)
             {
@@ -136,9 +137,22 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                                                footMeshLeft,
-                                               ground + jointPositions.LeftJoint + leftFootAnim,
-                                               bodyQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
+                                               this.handTweener.TweenedHandsPos[0]             ,
+                                               drawQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
                                                matLeft,
+                                               portrait);
+                }
+            }
+
+            if (matRight != null)
+            {
+                if (this.CompAnimator.BodyStat.FootRight != PartStatus.Missing)
+                {
+                    GenDraw.DrawMeshNowOrLater(
+                                               footMeshRight,
+                                               this.handTweener.TweenedHandsPos[1],
+                                               drawQuat*Quaternion.AngleAxis(footAngleRight, Vector3.up),
+                                               matRight,
                                                portrait);
                 }
             }
@@ -154,7 +168,7 @@ namespace FacialStuff
                                            footMeshLeft,
                                            ground + jointPositions.LeftJoint +
                                            new Vector3(offsetJoint, 0.301f, 0),
-                                           bodyQuat * Quaternion.AngleAxis(0, Vector3.up),
+                                           drawQuat * Quaternion.AngleAxis(0, Vector3.up),
                                            centerMat,
                                            portrait);
 
@@ -162,7 +176,7 @@ namespace FacialStuff
                                            footMeshRight,
                                            ground + jointPositions.RightJoint +
                                            new Vector3(offsetJoint, 0.301f, 0),
-                                           bodyQuat * Quaternion.AngleAxis(0, Vector3.up),
+                                           drawQuat * Quaternion.AngleAxis(0, Vector3.up),
                                            centerMat,
                                            portrait);
 

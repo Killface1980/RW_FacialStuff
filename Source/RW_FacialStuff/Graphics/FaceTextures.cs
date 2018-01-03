@@ -57,7 +57,7 @@ namespace FacialStuff.GraphicsFS
                 RenderTextureReadWrite.Linear);
 
             // Blit the pixels on texture to the RenderTexture
-            UnityEngine.Graphics.Blit(texture, tmp);
+            Graphics.Blit(texture, tmp);
 
             // Set the current RenderTexture to the temporary one we created
             RenderTexture.active = tmp;
