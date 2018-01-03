@@ -107,6 +107,8 @@ namespace FacialStuff.Harmony
 #endif
 
             // No face => must be animal, simplify it
+            Quaternion bodyQuat = quat;
+
             if (!pawn.GetCompFace(out CompFace compFace))
             {
                 if (!footy)
@@ -121,13 +123,13 @@ namespace FacialStuff.Harmony
                 }
 
                 compAnim.TickDrawers(bodyFacing, graphics);
-                compAnim.ApplyBodyWobble(ref rootLoc, ref footPos, ref quat);
+                compAnim.ApplyBodyWobble(ref rootLoc, ref footPos, ref bodyQuat);
 
                 RenderAnimalPawn(
                                    pawn,
                                    graphics,
                                    rootLoc,
-                                   quat,
+                                   bodyQuat,
                                    renderBody,
                                    bodyFacing,
                                    bodyDrawType,
@@ -156,25 +158,25 @@ namespace FacialStuff.Harmony
             compAnim.TickDrawers(bodyFacing, graphics);
 
             // Use the basic quat
-            Quaternion headQuat = quat;
+            Quaternion headQuat = bodyQuat;
 
             // Rotate head if possble and wobble around
             if (!portrait || compAnim.AnimatorOpen)
             {
                 if (footy)
                 {
-                    compAnim.ApplyBodyWobble(ref rootLoc, ref footPos, ref quat);
+                    compAnim.ApplyBodyWobble(ref rootLoc, ref footPos, ref bodyQuat);
                 }
 
                 // Reset the quat as it has been changed
-                headQuat = quat;
+                headQuat = bodyQuat;
                 compFace.ApplyHeadRotation(renderBody, ref headQuat);
             }
 
             // Regular FacePawn rendering 14+ years
 
             // Render body
-            compAnim.DrawBody(rootLoc, quat, bodyDrawType, woundDrawer, renderBody, portrait);
+            compAnim.DrawBody(rootLoc, bodyQuat, bodyDrawType, woundDrawer, renderBody, portrait);
 
             Vector3 drawPos = rootLoc;
             Vector3 a = rootLoc;
@@ -262,31 +264,31 @@ namespace FacialStuff.Harmony
                 compFace.DrawAlienHeadAddons(portrait, headQuat, currentLoc);
             }
 
-            compAnim.DrawApparel(quat, drawPos, portrait, renderBody);
+            compAnim.DrawApparel(bodyQuat, drawPos, portrait, renderBody);
 
-            compFace.DrawAlienBodyAddons(quat, drawPos, portrait, renderBody);
+            compFace.DrawAlienBodyAddons(bodyQuat, drawPos, portrait, renderBody);
 
             compAnim.DrawEquipment(drawPos, portrait);
 
-            if (!portrait)
-            {
-                 Traverse.Create(__instance).Method("DrawEquipment", new object[] { rootLoc }).GetValue();
-
-                 DrawEquipmentMethodInfo?.Invoke(__instance, new object[] { drawPos });
-
-            }
+            // if (!portrait)
+            // {
+            //      Traverse.Create(__instance).Method("DrawEquipment", new object[] { rootLoc }).GetValue();
+            //
+            //      DrawEquipmentMethodInfo?.Invoke(__instance, new object[] { drawPos });
+            //
+            // }
 
             bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
             if (showHands)
             {
                 Vector3 handPos = drawPos;
                 handPos.y = rootLoc.y;
-                compAnim.DrawHands(handPos, portrait, false);
+                compAnim.DrawHands(bodyQuat, handPos, portrait, false);
             }
 
             if (footy)
             {
-                compAnim?.DrawFeet(footPos, portrait);
+                compAnim?.DrawFeet(bodyQuat, footPos, portrait);
             }
 
             if (!portrait)
@@ -528,8 +530,8 @@ namespace FacialStuff.Harmony
             }
 
             footPos.y = loc.y;
-            compAnim.DrawHands(footPos, portrait, false);
-            compAnim.DrawFeet(footPos, portrait);
+            compAnim.DrawHands(quat, footPos, portrait, false);
+            compAnim.DrawFeet(quat, footPos, portrait);
         }
 
         private static void GetReflections()

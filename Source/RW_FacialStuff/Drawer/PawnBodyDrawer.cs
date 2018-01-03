@@ -66,11 +66,13 @@ namespace FacialStuff
         {
         }
 
-        public virtual void DrawFeet(Vector3 rootLoc, bool portrait)
+        public virtual void DrawFeet(Quaternion bodyQuat, Vector3 rootLoc, bool portrait)
         {
         }
 
-        public virtual void DrawHands(Vector3 drawPos, bool portrait, bool carrying = false, HandsToDraw drawSide = HandsToDraw.Both)
+        public virtual void DrawHands(Quaternion  bodyQuat, Vector3 drawPos, bool portrait, bool carrying = false,
+                                      HandsToDraw drawSide                                                =
+                                      HandsToDraw.Both)
         {
 
         }

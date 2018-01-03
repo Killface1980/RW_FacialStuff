@@ -8,7 +8,8 @@ namespace FacialStuff
     {
         #region Protected Fields
 
-        [NotNull] protected internal Pawn Pawn { get; set; }
+        [NotNull]
+        public Pawn Pawn { get; set; }
 
         [NotNull] protected PawnGraphicSet Graphics;
 
@@ -32,17 +33,17 @@ namespace FacialStuff
         #region Protected Methods
 
         protected JointLister GetJointPositions(
-            Vector3 vector,
+            Vector3 offsets,
             float jointWidth,
             float emptyHandsOffsetY = 0f,
             bool carrying = false)
         {
             Rot4 rot = this.BodyFacing;
             JointLister joints = new JointLister();
-            float leftX = vector.x;
-            float rightX = vector.x;
-            float leftZ = vector.z;
-            float rightZ = vector.z;
+            float leftX = offsets.x;
+            float rightX = offsets.x;
+            float leftZ = offsets.z;
+            float rightZ = offsets.z;
 
             float offsetY = (carrying ? 0f : emptyHandsOffsetY) + Offsets.YOffset_HandsFeet;
             float leftY = offsetY;

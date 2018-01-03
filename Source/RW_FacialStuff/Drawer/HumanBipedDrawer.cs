@@ -50,8 +50,10 @@ namespace FacialStuff
             if (this.CompAnimator.BodyAnim != null)
             {
                 float legModifier = this.CompAnimator.BodyAnim.extraLegLength;
-                rootLoc.z += legModifier * 0.7f;
-                footPos.z -= legModifier * 0.3f;
+                float footPosZ = -legModifier * 0.5f;
+                float rootLocZ = legModifier * 0.5f;
+                rootLoc += quat * new Vector3(0, 0, rootLocZ);
+                footPos += quat * new Vector3(0, 0, footPosZ);
             }
 
             base.ApplyBodyWobble(ref rootLoc, ref footPos, ref quat);
@@ -300,19 +302,20 @@ namespace FacialStuff
                             ? stanceBusy.focusTarg.Thing.DrawPos
                             : stanceBusy.focusTarg.Cell.ToVector3Shifted();
 
-                float num = 0f;
+                float aimAngle = 0f;
                 if ((aimVector - pawn.DrawPos).MagnitudeHorizontalSquared() > 0.001f)
                 {
-                    num = (aimVector - pawn.DrawPos).AngleFlat();
+                    aimAngle = (aimVector - pawn.DrawPos).AngleFlat();
                 }
 
-                Vector3 b = new Vector3(0f, 0f, 0.4f).RotatedBy(num);
+                Vector3 b = new Vector3(0f, 0f, 0.4f).RotatedBy(aimAngle);
                 Vector3 drawLoc = rootLoc + b;
                 drawLoc.y += Offsets.YOffset_PrimaryEquipmentOver;
 
                 // default weapon angle axis is upward, but all weapons are facing right, so we turn base weapon angle by 90°
-                this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc, rootLoc, num, portrait);
-
+                bool dummy = false;
+                this.DrawEquipmentAiming(pawn.equipment.Primary, ref drawLoc, rootLoc, ref aimAngle, portrait,
+                                         ref dummy);
             }
             else if (this.CarryWeaponOpenly() || MainTabWindow_Animator.Equipment)
             {
@@ -340,23 +343,23 @@ namespace FacialStuff
                     drawLoc2 += new Vector3(0, Offsets.YOffset_PrimaryEquipmentOver, -0.22f);
                 }
 
-                this.DrawEquipmentAiming(pawn.equipment.Primary, drawLoc2, rootLoc, aimAngle, portrait);
+                bool dummy = false;
+                this.DrawEquipmentAiming(pawn.equipment.Primary, ref drawLoc2, rootLoc, ref aimAngle, portrait,
+                                         ref dummy);
             }
         }
 
         // Verse.PawnRenderer
         public void DrawEquipmentAiming(
         Thing equipment,
-        Vector3 weaponDrawLoc,
+        ref Vector3 weaponDrawLoc,
         Vector3 rootLoc,
-        float aimAngle,
-        bool portrait)
+        ref float aimAngle,
+        bool portrait, ref bool flipped)
         {
             // New
             aimAngle -= 90f;
-            float weaponAngle = aimAngle;
 
-            bool flipped;
             bool aiming = this.Aiming();
 
             Mesh weaponMesh;
@@ -374,11 +377,11 @@ namespace FacialStuff
             if (aimAngle > 110f && aimAngle < 250f)
             {
                 weaponMesh = MeshPool.plane10Flip;
-                weaponAngle -= 180f;
-                weaponAngle -= equipment.def.equippedAngleOffset;
+                aimAngle -= 180f;
+                aimAngle -= equipment.def.equippedAngleOffset;
                 if (aiming)
                 {
-                    weaponAngle -= compWeaponExtensions?.AttackAngleOffset ?? 0;
+                    aimAngle -= compWeaponExtensions?.AttackAngleOffset ?? 0;
                 }
 
                 flipped = true;
@@ -394,10 +397,10 @@ namespace FacialStuff
             else
             {
                 weaponMesh = MeshPool.plane10;
-                weaponAngle += equipment.def.equippedAngleOffset;
+                aimAngle += equipment.def.equippedAngleOffset;
                 if (aiming)
                 {
-                    weaponAngle += compWeaponExtensions?.AttackAngleOffset ?? 0;
+                    aimAngle += compWeaponExtensions?.AttackAngleOffset ?? 0;
                 }
 
                 flipped = false;
@@ -408,20 +411,20 @@ namespace FacialStuff
                 }
             }
 
-            weaponAngle %= 360f;
+            aimAngle %= 360f;
 
             // weapon angle and position offsets based on current attack keyframes sequence
-            this.DoAttackAnimationOffsets(ref weaponAngle, ref weaponPositionOffset, flipped);
+            this.DoAttackAnimationOffsets(ref aimAngle, ref weaponPositionOffset, flipped);
 
             Material matSingle = equipment.Graphic is Graphic_StackCount graphicStackCount
-                                                   ? graphicStackCount.SubGraphicForStackCount(1, equipment.def)
-                                                                      .MatSingle
-                                                   : equipment.Graphic.MatSingle;
-
+                                 ? graphicStackCount.SubGraphicForStackCount(1, equipment.def)
+                                                    .MatSingle
+                                 : equipment.Graphic.MatSingle;
+            weaponDrawLoc += weaponPositionOffset;
             GenDraw.DrawMeshNowOrLater(
                                        weaponMesh,
-                                       weaponDrawLoc + weaponPositionOffset,
-                                       Quaternion.AngleAxis(weaponAngle, Vector3.up),
+                                       weaponDrawLoc,
+                                       Quaternion.AngleAxis(aimAngle, Vector3.up),
                                        matSingle,
                                        portrait);
 
@@ -429,24 +432,21 @@ namespace FacialStuff
             if (this.CompAnimator.Props.bipedWithHands && Controller.settings.UseHands)
             {
                 this.DrawHandsAiming(
-                                     weaponDrawLoc + weaponPositionOffset,
+                                     weaponDrawLoc,
                                      rootLoc,
                                      flipped,
-                                     weaponAngle,
+                                     aimAngle,
                                      compWeaponExtensions,
                                      false);
             }
         }
 
-        public override void DrawFeet(Vector3 rootLoc, bool portrait)
+        public override void DrawFeet(Quaternion bodyQuat, Vector3 rootLoc, bool portrait)
         {
             if (portrait && !this.CompAnimator.AnimatorOpen)
             {
                 return;
             }
-
-            Vector3 ground = rootLoc;
-            ground.z += OffsetGround;
 
             Rot4 rot = this.BodyFacing;
 
@@ -456,136 +456,132 @@ namespace FacialStuff
                                                            body.hipOffsets[rot.AsInt],
                                                            body.hipOffsets[Rot4.North.AsInt].x);
 
-            Vector3 rightFootAnim = Vector3.zero;
-            Vector3 leftFootAnim =Vector3.zero;
+            Vector3 rightFootCycle = Vector3.zero;
+            Vector3 leftFootCycle = Vector3.zero;
             float footAngleRight = 0;
             float footAngleLeft = 0;
             float offsetJoint = 0;
             WalkCycleDef cycle = this.CompAnimator.WalkCycle;
             if (cycle != null)
             {
-
                 offsetJoint = cycle.HipOffsetHorizontalX.Evaluate(this.MovedPercent);
 
                 this.DoWalkCycleOffsets(
-                                        ref  rightFootAnim,
-                                        ref  leftFootAnim,
-                                        ref  footAngleRight,
-                                        ref  footAngleLeft,
+                                        ref rightFootCycle,
+                                        ref leftFootCycle,
+                                        ref footAngleRight,
+                                        ref footAngleLeft,
                                         ref offsetJoint,
                                         cycle.FootPositionX,
                                         cycle.FootPositionZ,
                                         cycle.FootAngle);
-
             }
-                this.GetMeshesFoot(out Mesh footMeshRight, out Mesh footMeshLeft);
 
-                float bodyAngle = 0f;
+            this.GetMeshesFoot(out Mesh footMeshRight, out Mesh footMeshLeft);
 
-                Pawn pawn = this.Pawn;
-                if (pawn.Downed || pawn.Dead)
+            Material matRight;
+            Material matLeft;
+
+            if (MainTabWindow_Animator.Colored)
+            {
+                matRight = this.CompAnimator.PawnBodyGraphic?.FootGraphicRightCol?.MatAt(rot);
+                matLeft = this.CompAnimator.PawnBodyGraphic?.FootGraphicLeftCol?.MatAt(rot);
+            }
+            else
+            {
+                switch (rot.AsInt)
                 {
-                    bodyAngle = pawn.Drawer.renderer.wiggler.downedAngle;
+                    default:
+                        matRight = this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FootGraphicRight
+                                                                 ?.MatAt(rot));
+                        matLeft = this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FootGraphicLeft
+                                                                ?.MatAt(rot));
+                        break;
+
+                    case 1:
+                        matRight = this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FootGraphicRight
+                                                                 ?.MatAt(rot));
+                        matLeft = this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic
+                                                                ?.FootGraphicLeftShadow
+                                                                ?.MatAt(rot));
+                        break;
+
+                    case 3:
+                        matRight = this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic
+                                                                 ?.FootGraphicRightShadow
+                                                                 ?.MatAt(rot));
+                        matLeft = this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FootGraphicLeft
+                                                                ?.MatAt(rot));
+                        break;
                 }
+            }
 
-                Material matRight;
+            bool drawRight = matRight != null && this.CompAnimator.BodyStat.FootRight != PartStatus.Missing;
 
-                Material matLeft;
-                if (!MainTabWindow_Animator.Colored)
-                {
-                    switch (rot.AsInt)
-                    {
-                        default:
-                            matRight = this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FootGraphicRight
-                                                                     ?.MatAt(rot));
-                            matLeft = this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FootGraphicLeft
-                                                                    ?.MatAt(rot));
-                            break;
+            bool drawLeft = matLeft != null && this.CompAnimator.BodyStat.FootLeft != PartStatus.Missing;
 
-                        case 1:
-                            matRight = this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FootGraphicRight
-                                                                     ?.MatAt(rot));
-                            matLeft = this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic
-                                                                    ?.FootGraphicLeftShadow
-                                                                    ?.MatAt(rot));
-                            break;
+            groundPos.LeftJoint = bodyQuat * groundPos.LeftJoint;
+            groundPos.RightJoint = bodyQuat * groundPos.RightJoint;
+            leftFootCycle = bodyQuat * leftFootCycle;
+            rightFootCycle = bodyQuat * rightFootCycle;
 
-                        case 3:
-                            matRight = this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic
-                                                                     ?.FootGraphicRightShadow
-                                                                     ?.MatAt(rot));
-                            matLeft = this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.FootGraphicLeft
-                                                                    ?.MatAt(rot));
-                            break;
-                    }
-                }
-                else
-                {
-                    matRight = this.CompAnimator.PawnBodyGraphic?.FootGraphicRightCol?.MatAt(rot);
-                    matLeft = this.CompAnimator.PawnBodyGraphic?.FootGraphicLeftCol?.MatAt(rot);
-                }
 
-                bool drawRight = matRight != null && this.CompAnimator.BodyStat.FootRight != PartStatus.Missing;
+            Vector3 ground = rootLoc + bodyQuat * new Vector3(0, 0, OffsetGround);
 
-                bool drawLeft = matLeft != null && this.CompAnimator.BodyStat.FootLeft != PartStatus.Missing;
+            if (drawLeft)
+            {
+                GenDraw.DrawMeshNowOrLater(
+                                           footMeshLeft,
+                                          ground + groundPos.LeftJoint + leftFootCycle,
+                                           bodyQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
+                                           matLeft,
+                                           portrait);
+            }
 
-                if (drawLeft)
-                {
-                    GenDraw.DrawMeshNowOrLater(
-                                               footMeshLeft,
-                                               (ground + groundPos.LeftJoint + leftFootAnim)
-                                              .RotatedBy(bodyAngle),
-                                               Quaternion.AngleAxis(bodyAngle + footAngleLeft, Vector3.up),
-                                               matLeft,
-                                               portrait);
-                }
+            if (drawRight)
+            {
+                GenDraw.DrawMeshNowOrLater(
+                                           footMeshRight,
+                                           ground + groundPos.RightJoint + rightFootCycle,
+                                           bodyQuat * Quaternion.AngleAxis(footAngleRight, Vector3.up),
+                                           matRight,
+                                           portrait);
+            }
 
-                if (drawRight)
-                {
-                    GenDraw.DrawMeshNowOrLater(
-                                               footMeshRight,
-                                               (ground + groundPos.RightJoint + rightFootAnim)
-                                              .RotatedBy(bodyAngle),
-                                               Quaternion.AngleAxis(bodyAngle + footAngleRight, Vector3.up),
-                                               matRight,
-                                               portrait);
-                }
+            if (MainTabWindow_Animator.Develop)
+            {
+                // for debug
+                Material centerMat = GraphicDatabase
+                                    .Get<Graphic_Single>("Hands/Ground", ShaderDatabase.Transparent, Vector2.one,
+                                                         Color.red).MatSingle;
 
-                if (MainTabWindow_Animator.Develop)
-                {
-                    // for debug
-                    Material centerMat = GraphicDatabase
-                                        .Get<Graphic_Single>("Hands/Ground", ShaderDatabase.Transparent, Vector2.one,
-                                                             Color.red).MatSingle;
+                GenDraw.DrawMeshNowOrLater(
+                                           footMeshLeft,
+                                           ground + groundPos.LeftJoint +
+                                           new Vector3(offsetJoint, -0.301f, 0),
+                                           bodyQuat * Quaternion.AngleAxis(0, Vector3.up),
+                                           centerMat,
+                                           portrait);
 
-                    GenDraw.DrawMeshNowOrLater(
-                                               footMeshLeft,
-                                               ground.RotatedBy(bodyAngle) + groundPos.LeftJoint +
-                                               new Vector3(offsetJoint, -0.301f, 0),
-                                               Quaternion.AngleAxis(0, Vector3.up),
-                                               centerMat,
-                                               portrait);
+                GenDraw.DrawMeshNowOrLater(
+                                           footMeshRight,
+                                           ground + groundPos.RightJoint +
+                                           new Vector3(offsetJoint, 0.301f, 0),
+                                           bodyQuat * Quaternion.AngleAxis(0, Vector3.up),
+                                           centerMat,
+                                           portrait);
 
-                    GenDraw.DrawMeshNowOrLater(
-                                               footMeshRight,
-                                               ground.RotatedBy(bodyAngle) + groundPos.RightJoint +
-                                               new Vector3(offsetJoint, 0.301f, 0),
-                                               Quaternion.AngleAxis(0, Vector3.up),
-                                               centerMat,
-                                               portrait);
-
-                    // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z),
-                    // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
-                    // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z2),
-                    // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
+                // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z),
+                // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
+                // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z2),
+                // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
             }
         }
 
-        public override void DrawHands(
-        Vector3 drawPos,
-        bool portrait,
-        bool carrying = false,
-        HandsToDraw drawSide = HandsToDraw.Both)
+        public override void DrawHands(Quaternion bodyQuat, Vector3 drawPos,
+                                       bool portrait,
+                                       bool carrying = false,
+                                       HandsToDraw drawSide = HandsToDraw.Both)
         {
             if (portrait && !this.CompAnimator.AnimatorOpen)
             {
@@ -596,6 +592,7 @@ namespace FacialStuff
             {
                 return;
             }
+
             // return if hands already drawn on weapon
             if (this.Pawn.equipment.Primary != null
              && this.Pawn.equipment.Primary.def.HasComp(typeof(CompWeaponExtensions)))
@@ -631,9 +628,8 @@ namespace FacialStuff
 
             float handSwingAngle = 0f;
             float shoulderAngle = 0f;
-
-            Vector3 rightHand = Vector3.zero;
-            Vector3 leftHand = Vector3.zero;
+            Vector3 rightHandCycle = Vector3.zero;
+            Vector3 leftHandCycle = Vector3.zero;
 
             // Todo: inclide this
             WalkCycleDef cycle = this.CompAnimator.WalkCycle;
@@ -643,8 +639,8 @@ namespace FacialStuff
 
                 this.DoWalkCycleOffsets(
                                         body.armLength,
-                                        ref rightHand,
-                                        ref leftHand,
+                                        ref rightHandCycle,
+                                        ref leftHandCycle,
                                         ref shoulderAngle,
                                         ref handSwingAngle,
                                         ref shoulperPos,
@@ -653,21 +649,20 @@ namespace FacialStuff
                                         offsetJoint);
             }
 
-            this.DoAttackAnimationHandOffsets(ref handSwingAngle, ref rightHand, false);
+            this.DoAttackAnimationHandOffsets(ref handSwingAngle, ref rightHandCycle, false);
 
             Mesh handsMesh = this.HandMesh;
-            float bodyAngle = 0f;
-            Pawn pawn = this.Pawn;
-            if (pawn.Downed || pawn.Dead)
-            {
-                bodyAngle = pawn.Drawer.renderer.wiggler.downedAngle;
-            }
 
             Material matLeft =
             this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.HandGraphicLeft?.MatSingle);
             Material matRight =
             this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.HandGraphicRight?.MatSingle);
-            if (!MainTabWindow_Animator.Colored)
+            if (MainTabWindow_Animator.Colored)
+            {
+                matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeftCol?.MatSingle;
+                matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRightCol?.MatSingle;
+            }
+            else
             {
                 if (!carrying)
                 {
@@ -685,43 +680,41 @@ namespace FacialStuff
                     }
                 }
             }
-            else
-            {
-                matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeftCol?.MatSingle;
-                matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRightCol?.MatSingle;
-            }
-
-            bool drawRight = matRight != null &&
-                             drawSide != HandsToDraw.LeftHand
-                          && this.CompAnimator.BodyStat.HandRight != PartStatus.Missing;
 
             bool drawLeft = matLeft != null &&
                             drawSide != HandsToDraw.RightHand
                          && this.CompAnimator.BodyStat.HandLeft != PartStatus.Missing;
+            bool drawRight = matRight != null &&
+                             drawSide != HandsToDraw.LeftHand
+                          && this.CompAnimator.BodyStat.HandRight != PartStatus.Missing;
 
-            if (drawRight)
-            {
-                GenDraw.DrawMeshNowOrLater(
-                                           handsMesh,
-                                           (drawPos + shoulperPos.RightJoint +
-                                            rightHand.RotatedBy(handSwingAngle - shoulderAngle))
-                                          .RotatedBy(bodyAngle),
-                                           Quaternion.AngleAxis(bodyAngle + handSwingAngle, Vector3.up),
-                                           matRight,
-                                           portrait);
-            }
+            shoulperPos.LeftJoint = bodyQuat * shoulperPos.LeftJoint;
+            shoulperPos.RightJoint = bodyQuat * shoulperPos.RightJoint;
+            leftHandCycle = bodyQuat * leftHandCycle;
+            rightHandCycle = bodyQuat * rightHandCycle;
 
             if (drawLeft)
             {
                 GenDraw.DrawMeshNowOrLater(
                                            handsMesh,
-                                           (drawPos + shoulperPos.LeftJoint +
-                                            leftHand.RotatedBy(-handSwingAngle - shoulderAngle))
-                                          .RotatedBy(bodyAngle),
-                                           Quaternion.AngleAxis(bodyAngle - handSwingAngle, Vector3.up),
+                                           drawPos + shoulperPos.LeftJoint +
+                                           leftHandCycle.RotatedBy(-handSwingAngle - shoulderAngle),
+                                           bodyQuat * Quaternion.AngleAxis(-handSwingAngle, Vector3.up),
                                            matLeft,
                                            portrait);
             }
+
+            if (drawRight)
+            {
+                GenDraw.DrawMeshNowOrLater(
+                                           handsMesh,
+                                           drawPos + shoulperPos.RightJoint +
+                                           rightHandCycle.RotatedBy(handSwingAngle - shoulderAngle),
+                                           bodyQuat * Quaternion.AngleAxis(handSwingAngle, Vector3.up),
+                                           matRight,
+                                           portrait);
+            }
+
 
             if (MainTabWindow_Animator.Develop)
             {
@@ -735,14 +728,14 @@ namespace FacialStuff
                 GenDraw.DrawMeshNowOrLater(
                                            handsMesh,
                                            drawPos + shoulperPos.LeftJoint + new Vector3(0, -0.301f, 0),
-                                           Quaternion.AngleAxis(-shoulderAngle, Vector3.up),
+                                           bodyQuat * Quaternion.AngleAxis(-shoulderAngle, Vector3.up),
                                            centerMat,
                                            portrait);
 
                 GenDraw.DrawMeshNowOrLater(
                                            handsMesh,
                                            drawPos + shoulperPos.RightJoint + new Vector3(0, 0.301f, 0),
-                                           Quaternion.AngleAxis(-shoulderAngle, Vector3.up),
+                                           bodyQuat * Quaternion.AngleAxis(-shoulderAngle, Vector3.up),
                                            centerMat,
                                            portrait);
             }
@@ -787,7 +780,7 @@ namespace FacialStuff
                 }
                 else
                 {
-                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.RightHand);
+                    this.DrawHands(Quaternion.identity, rootLoc, portrait, false, HandsToDraw.RightHand);
                 }
             }
 
@@ -796,7 +789,7 @@ namespace FacialStuff
                 if (this.IsMoving)
                 {
                     // hold the weapon with only one hand while moving
-                    this.DrawHands(rootLoc, portrait, false, HandsToDraw.LeftHand);
+                    this.DrawHands(Quaternion.identity, rootLoc, portrait, false, HandsToDraw.LeftHand);
                 }
                 else
                 {
@@ -820,7 +813,7 @@ namespace FacialStuff
                     }
                     else
                     {
-                        this.DrawHands(rootLoc, portrait, false, HandsToDraw.LeftHand);
+                        this.DrawHands(Quaternion.identity, rootLoc, portrait, false, HandsToDraw.LeftHand);
                     }
                 }
             }
@@ -939,9 +932,9 @@ namespace FacialStuff
 
         protected void DoWalkCycleOffsets(ref Vector3 rightFoot,
                                           ref Vector3 leftFoot,
-                                          ref float   footAngleRight,
-                                          ref float   footAngleLeft,
-                                          ref float   offsetJoint,
+                                          ref float footAngleRight,
+                                          ref float footAngleLeft,
+                                          ref float offsetJoint,
                                           SimpleCurve offsetX,
                                           SimpleCurve offsetZ,
                                           SimpleCurve angle)
@@ -999,7 +992,7 @@ namespace FacialStuff
             float bodySize = this.Pawn.def.race.baseBodySize;
             if (Math.Abs(bodySize - 1f) > 0.05f)
             {
-                var curve = new SimpleCurve {new CurvePoint(0f, 0.5f), new CurvePoint(1f, 1f)};
+                var curve = new SimpleCurve { new CurvePoint(0f, 0.5f), new CurvePoint(1f, 1f) };
                 float mod = curve.Evaluate(bodySize);
                 rightFoot.x *= mod;
                 rightFoot.z *= mod;

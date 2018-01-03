@@ -223,7 +223,7 @@ namespace FacialStuff
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public void DrawFeet(Vector3 rootLoc, bool portrait)
+        public void DrawFeet(Quaternion bodyQuat, Vector3 rootLoc, bool portrait)
         {
             if (!this.PawnBodyDrawers.NullOrEmpty())
             {
@@ -231,14 +231,14 @@ namespace FacialStuff
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
-                    this.PawnBodyDrawers[i].DrawFeet(rootLoc, portrait);
+                    this.PawnBodyDrawers[i].DrawFeet(bodyQuat, rootLoc, portrait);
                     i++;
                 }
             }
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public void DrawHands(Vector3 rootLoc, bool portrait, bool carrying)
+        public void DrawHands(Quaternion bodyQuat, Vector3 rootLoc, bool portrait, bool carrying)
         {
             if (!this.PawnBodyDrawers.NullOrEmpty())
             {
@@ -246,7 +246,7 @@ namespace FacialStuff
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
-                    this.PawnBodyDrawers[i].DrawHands(rootLoc, portrait, carrying);
+                    this.PawnBodyDrawers[i].DrawHands(bodyQuat,rootLoc, portrait, carrying);
                     i++;
                 }
             }

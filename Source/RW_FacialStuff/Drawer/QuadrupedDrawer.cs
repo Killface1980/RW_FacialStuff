@@ -6,7 +6,7 @@ namespace FacialStuff
 {
     public class QuadrupedDrawer : HumanBipedDrawer
     {
-        public override void DrawFeet(Vector3 rootLoc, bool portrait)
+        public override void DrawFeet(Quaternion bodyQuat, Vector3 rootLoc, bool portrait)
         {
             if (portrait && !this.CompAnimator.AnimatorOpen)
             {
@@ -14,24 +14,22 @@ namespace FacialStuff
             }
 
             // Fix the position, maybe needs new code in GetJointPositions()?
-            if (this.BodyFacing == Rot4.South)
+            if (!this.BodyFacing.IsHorizontal)
             {
                 rootLoc.y -= Offsets.YOffset_HandsFeet * 2f - Offsets.YOffset_Behind;
             }
 
-            this.DrawFrontPaws(rootLoc, portrait);
-            base.DrawFeet(rootLoc, portrait);
+            this.DrawFrontPaws(bodyQuat, rootLoc, portrait);
+            base.DrawFeet(bodyQuat, rootLoc, portrait);
         }
 
-        public virtual void DrawFrontPaws(Vector3 rootLoc, bool portrait)
+        public virtual void DrawFrontPaws(Quaternion bodyQuat, Vector3 rootLoc, bool portrait)
         {
             if (!this.CompAnimator.Props.quadruped)
             {
                 return;
             }
 
-            Vector3 ground = rootLoc;
-            ground.z       += OffsetGround;
 
             // Basic values
             BodyAnimDef body = this.CompAnimator.BodyAnim;
@@ -46,12 +44,12 @@ namespace FacialStuff
                                                                 body.shoulderOffsets[rot.AsInt],
                                                                 body.shoulderOffsets[Rot4.North.AsInt].x);
 
-            Vector3 rightFootAnim  = Vector3.zero;
-            Vector3 leftFootAnim   = Vector3.zero;
-            float   footAngleRight = 0f;
+            Vector3 rightFootAnim = Vector3.zero;
+            Vector3 leftFootAnim = Vector3.zero;
+            float footAngleRight = 0f;
 
             float footAngleLeft = 0f;
-            float offsetJoint   = 0;
+            float offsetJoint = 0;
 
             WalkCycleDef cycle = this.CompAnimator.WalkCycle;
             if (cycle != null)
@@ -82,7 +80,12 @@ namespace FacialStuff
 
             Material matRight;
 #endif
-            if (!MainTabWindow_Animator.Colored)
+            if (MainTabWindow_Animator.Colored)
+            {
+                matRight = this.CompAnimator.PawnBodyGraphic?.FrontPawGraphicRightCol?.MatAt(rot);
+                matLeft = this.CompAnimator.PawnBodyGraphic?.FrontPawGraphicLeftCol?.MatAt(rot);
+            }
+            else
             {
                 switch (rot.AsInt)
                 {
@@ -108,29 +111,20 @@ namespace FacialStuff
                         break;
                 }
             }
-            else
-            {
-                matRight = this.CompAnimator.PawnBodyGraphic?.FrontPawGraphicRightCol?.MatAt(rot);
-                matLeft  = this.CompAnimator.PawnBodyGraphic?.FrontPawGraphicLeftCol?.MatAt(rot);
-            }
 
-            float bodyAngle = 0f;
 
-            Pawn pawn = this.Pawn;
-            if (pawn.Downed || pawn.Dead)
-            {
-                bodyAngle = pawn.Drawer.renderer.wiggler.downedAngle;
-            }
 
+
+            Vector3 ground = rootLoc + bodyQuat * new Vector3(0, 0, OffsetGround);
             if (matRight != null)
             {
                 if (this.CompAnimator.BodyStat.FootRight != PartStatus.Missing)
                 {
                     GenDraw.DrawMeshNowOrLater(
                                                footMeshRight,
-                                               ground.RotatedBy(bodyAngle) + jointPositions.RightJoint +
+                                               ground + jointPositions.RightJoint +
                                                rightFootAnim,
-                                               Quaternion.AngleAxis(bodyAngle + footAngleRight, Vector3.up),
+                                               bodyQuat*Quaternion.AngleAxis(footAngleRight, Vector3.up),
                                                matRight,
                                                portrait);
                 }
@@ -142,8 +136,8 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                                                footMeshLeft,
-                                               ground.RotatedBy(bodyAngle)    + jointPositions.LeftJoint + leftFootAnim,
-                                               Quaternion.AngleAxis(bodyAngle + footAngleLeft, Vector3.up),
+                                               ground + jointPositions.LeftJoint + leftFootAnim,
+                                               bodyQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
                                                matLeft,
                                                portrait);
                 }
@@ -158,17 +152,17 @@ namespace FacialStuff
 
                 GenDraw.DrawMeshNowOrLater(
                                            footMeshLeft,
-                                           ground.RotatedBy(bodyAngle) + jointPositions.LeftJoint +
+                                           ground + jointPositions.LeftJoint +
                                            new Vector3(offsetJoint, 0.301f, 0),
-                                           Quaternion.AngleAxis(0, Vector3.up),
+                                           bodyQuat * Quaternion.AngleAxis(0, Vector3.up),
                                            centerMat,
                                            portrait);
 
                 GenDraw.DrawMeshNowOrLater(
                                            footMeshRight,
-                                           ground.RotatedBy(bodyAngle) + jointPositions.RightJoint +
+                                           ground + jointPositions.RightJoint +
                                            new Vector3(offsetJoint, 0.301f, 0),
-                                           Quaternion.AngleAxis(0, Vector3.up),
+                                           bodyQuat * Quaternion.AngleAxis(0, Vector3.up),
                                            centerMat,
                                            portrait);
 

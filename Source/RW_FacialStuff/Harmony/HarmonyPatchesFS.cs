@@ -523,8 +523,8 @@ namespace FacialStuff.Harmony
 
 
             carriedThing.DrawAt(loc, flip);
-            compAnim.DrawHands(loc, false, true);
-
+            compAnim.DrawHands(Quaternion.identity, loc, false, true);
+            
 
             if (pawn.def.race.specialShadowData != null)
             {

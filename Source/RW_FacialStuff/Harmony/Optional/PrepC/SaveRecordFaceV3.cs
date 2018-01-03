@@ -1,11 +1,11 @@
-﻿namespace FacialStuff.Harmony.Optional.PrepC
-{
-    using Verse;
+﻿using Verse;
 
+namespace FacialStuff.Harmony.Optional.PrepC
+{
     public class SaveRecordFaceV3 : IExposable
     {
         // private PawnFace face = new PawnFace();
-        private PawnFace face;
+        private PawnFace _face;
 
         public SaveRecordFaceV3()
         {
@@ -21,21 +21,21 @@
 
         public PawnFace Face
         {
-            get => this.face;
-            private set => this.face = value;
+            get => this._face;
+            private set => this._face = value;
         }
 
         public void ExposeData()
         {
             if (Scribe.mode == LoadSaveMode.Saving || Scribe.loader.curXmlParent["PawnFace"] != null)
             {
-                Scribe_Deep.Look(ref this.face, "PawnFace");
+                Scribe_Deep.Look(ref this._face, "PawnFace");
             }
         }
 
         public void SetFace(PawnFace pawnFace)
         {
-            this.face = pawnFace;
+            this._face = pawnFace;
         }
     }
 }
