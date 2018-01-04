@@ -70,9 +70,7 @@ namespace FacialStuff
         {
         }
 
-        public virtual void DrawHands(Quaternion  bodyQuat, Vector3 drawPos, bool portrait, bool carrying = false,
-                                      HandsToDraw drawSide                                                =
-                                      HandsToDraw.Both)
+        public virtual void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, bool carrying = false)
         {
 
         }

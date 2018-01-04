@@ -123,7 +123,7 @@ namespace LightSabers
                     matrix.SetTRS(weaponDrawLoc, Quaternion.AngleAxis(num, Vector3.up), s);
                     Graphics.DrawMesh(mesh, matrix, matSingle, 0);
 
-                    __instance.DrawHandsAiming(weaponDrawLoc, rootLoc, flipped, aimAngle, null, portrait);
+                    __instance.DrawHandsAiming(weaponDrawLoc, flipped, aimAngle, null);
                     return false;
                 }
             }

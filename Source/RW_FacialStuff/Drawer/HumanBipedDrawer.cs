@@ -21,6 +21,9 @@ namespace FacialStuff
         public PawnHandsTweener handTweener;
         private Vector3 rightHand;
         private PawnFeetTweener feetTweener;
+        private Quaternion weaponQuat = new Quaternion();
+        private Vector3 _secondHandPosition;
+        private Vector3 _firstHandPosition;
 
         #endregion Protected Fields
 
@@ -450,11 +453,9 @@ namespace FacialStuff
             {
                 this.DrawHandsAiming(
                                      weaponPosition,
-                                     rootLoc,
                                      flipped,
                                      aimAngle,
-                                     compWeaponExtensions,
-                                     false);
+                                     compWeaponExtensions);
             }
         }
 
@@ -603,8 +604,7 @@ namespace FacialStuff
 
         public override void DrawHands(Quaternion bodyQuat, Vector3 drawPos,
                                        bool portrait,
-                                       bool carrying = false,
-                                       HandsToDraw drawSide = HandsToDraw.Both)
+                                       bool carrying = false)
         {
             if (portrait && !this.CompAnimator.AnimatorOpen)
             {
@@ -614,19 +614,6 @@ namespace FacialStuff
             if (!this.CompAnimator.Props.bipedWithHands)
             {
                 return;
-            }
-
-            // return if hands already drawn on weapon
-            if (this.Pawn.equipment.Primary != null
-             && this.Pawn.equipment.Primary.def.HasComp(typeof(CompWeaponExtensions)))
-            {
-                if (this.CarryWeaponOpenly())
-                {
-                    if (drawSide == HandsToDraw.Both)
-                    {
-                        return;
-                    }
-                }
             }
 
             // return if hands already drawn on carrything
@@ -644,12 +631,11 @@ namespace FacialStuff
                                                              body.shoulderOffsets[Rot4.North.AsInt].x,
                                                              carrying);
 
-            float handSwingAngle = 0f;
-            float shoulderAngle = 0f;
-            Vector3 rightHandCycle = Vector3.zero;
-            Vector3 leftHandCycle = Vector3.zero;
-
-            WalkCycleDef cycle = this.CompAnimator.WalkCycle;
+            float        handSwingAngle = 0f;
+            float        shoulderAngle  = 0f;
+            Vector3      rightHandCycle = Vector3.zero;
+            Vector3      leftHandCycle  = Vector3.zero;
+            WalkCycleDef cycle          = this.CompAnimator.WalkCycle;
 
             if (cycle != null)
             {
@@ -678,7 +664,7 @@ namespace FacialStuff
 
             if (MainTabWindow_Animator.Colored)
             {
-                matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeftCol?.MatSingle;
+                matLeft  = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeftCol?.MatSingle;
                 matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRightCol?.MatSingle;
             }
             else if (!carrying)
@@ -697,38 +683,56 @@ namespace FacialStuff
                 }
             }
 
-            bool drawLeft = matLeft != null &&
-                            drawSide != HandsToDraw.RightHand
-                         && this.CompAnimator.BodyStat.HandLeft != PartStatus.Missing;
-            bool drawRight = matRight != null &&
-                             drawSide != HandsToDraw.LeftHand
+            bool drawLeft = matLeft                               != null
+                         && this.CompAnimator.BodyStat.HandLeft   != PartStatus.Missing;
+            bool drawRight = matRight                             != null
                           && this.CompAnimator.BodyStat.HandRight != PartStatus.Missing;
-
-
-            TweenThing handLeft = TweenThing.HandLeft;
             if (drawLeft)
             {
-                shoulperPos.LeftJoint = bodyQuat * shoulperPos.LeftJoint;
-                leftHandCycle = bodyQuat * leftHandCycle.RotatedBy(-handSwingAngle - shoulderAngle);
-                this.handTweener.HandPositions[(int)handLeft] =
-                drawPos + shoulperPos.LeftJoint +
-                leftHandCycle;
+                Quaternion quat;
+                Vector3    position;
+                if (!this.IsMoving && this._secondHandPosition != Vector3.zero)
+                {
+                    position = this._secondHandPosition;
+                    quat     = this.weaponQuat;
+                }
+                else
+                {
+                    shoulperPos.LeftJoint = bodyQuat * shoulperPos.LeftJoint;
+                    leftHandCycle         = bodyQuat * leftHandCycle.RotatedBy(-handSwingAngle - shoulderAngle);
 
-                Quaternion quat = bodyQuat * Quaternion.AngleAxis(-handSwingAngle, Vector3.up);
+                    position = drawPos + shoulperPos.LeftJoint + leftHandCycle;
+                    quat     = bodyQuat * Quaternion.AngleAxis(-handSwingAngle, Vector3.up);
+                }
+
+                TweenThing handLeft                            = TweenThing.HandLeft;
+                this.handTweener.HandPositions[(int) handLeft] = position;
                 this.DrawTweenedHand(handLeft, handsMesh, matLeft, quat, portrait);
-
             }
 
-            TweenThing handRight = TweenThing.HandRight;
             if (drawRight)
             {
-                shoulperPos.RightJoint = bodyQuat * shoulperPos.RightJoint;
-                rightHandCycle = bodyQuat * rightHandCycle.RotatedBy(handSwingAngle - shoulderAngle);
-                this.handTweener.HandPositions[(int)handRight] =drawPos + shoulperPos.RightJoint +rightHandCycle;
+                TweenThing handRight = TweenThing.HandRight;
+                Quaternion quat;
+                Vector3    position;
+                if (this._firstHandPosition != Vector3.zero)
+                {
+                    quat     = this.weaponQuat;
+                    position = this._firstHandPosition;
+                }
+                else
+                {
+                    shoulperPos.RightJoint = bodyQuat * shoulperPos.RightJoint;
+                    rightHandCycle         =
+                    bodyQuat * rightHandCycle.RotatedBy(handSwingAngle - shoulderAngle);
 
-                Quaternion quat = bodyQuat * Quaternion.AngleAxis(handSwingAngle, Vector3.up);
-                this.DrawTweenedHand(handRight, handsMesh, matRight, quat, portrait);
+                    position = drawPos + shoulperPos.RightJoint + rightHandCycle;
+                    quat     = bodyQuat * Quaternion.AngleAxis(handSwingAngle, Vector3.up);
+                }
 
+                this.handTweener.HandPositions[(int) handRight] =
+                position;
+                DrawTweenedHand(handRight, handsMesh, matRight, quat, portrait);
             }
 
             if (MainTabWindow_Animator.Develop)
@@ -758,108 +762,56 @@ namespace FacialStuff
 
         public void DrawHandsAiming(
         Vector3 weaponPosition,
-        Vector3 rootLoc,
         bool flipped,
         float weaponAngle,
-        [CanBeNull] CompProperties_WeaponExtensions compWeaponExtensions,
-        bool portrait)
+        [CanBeNull] CompProperties_WeaponExtensions compWeaponExtensions)
         {
+            // Prepare everything for DrawHands, but do nothing
+
             if (compWeaponExtensions == null) return;
-            bool drawLeft = false;
-            bool drawRight = false;
 
-            Material matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeft?.MatSingle;
-            Material matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRight?.MatSingle;
+            this._firstHandPosition = compWeaponExtensions.RightHandPosition;
+            this._secondHandPosition = compWeaponExtensions.LeftHandPosition;
 
-            Mesh handsMesh = this.HandMesh;
-            TweenThing handRight = TweenThing.HandRight;
-            if (matRight != null)
+            if (this._firstHandPosition != Vector3.zero)
             {
-                Vector3 firstHandPosition = compWeaponExtensions.RightHandPosition;
-                if (firstHandPosition != Vector3.zero)
+                float x = this._firstHandPosition.x;
+                float y = this._firstHandPosition.y;
+                float z = this._firstHandPosition.z;
+                if (flipped)
                 {
-                    drawRight = true;
-                    float x = firstHandPosition.x;
-                    float y = firstHandPosition.y;
-                    float z = firstHandPosition.z;
-                    if (flipped)
-                    {
-                        x = -x;
-                    }
-
-                    this.handTweener.HandPositions[(int)handRight] =
-                    weaponPosition + new Vector3(x, y, z).RotatedBy(weaponAngle);
+                    x = -x;
                 }
+
+                this._firstHandPosition =
+                weaponPosition + new Vector3(x, y, z).RotatedBy(weaponAngle);
             }
 
-            TweenThing handLeft = TweenThing.HandLeft;
-            if (matLeft != null)
+            if (this._secondHandPosition != Vector3.zero)
             {
-                if (!this.IsMoving)
+                float x2 = this._secondHandPosition.x;
+                float y2 = this._secondHandPosition.y;
+                float z2 = this._secondHandPosition.z;
+                if (flipped)
                 {
-                    Vector3 secondHandPosition = compWeaponExtensions.LeftHandPosition;
-                    if (secondHandPosition != Vector3.zero)
-                    {
-                        drawLeft = true;
-                        float x2 = secondHandPosition.x;
-                        float y2 = secondHandPosition.y;
-                        float z2 = secondHandPosition.z;
-                        if (flipped)
-                        {
-                            x2 = -x2;
-                        }
-
-                        this.handTweener.HandPositions[(int)handLeft] =
-                        weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle);
-                    }
+                    x2 = -x2;
                 }
+
+                this._secondHandPosition =
+                weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle);
             }
 
 
-            Quaternion angleAxis = Quaternion.AngleAxis(weaponAngle, Vector3.up);
-            if (drawLeft)
-            {
-                this.DrawTweenedHand(handLeft, handsMesh, matLeft, angleAxis, portrait);
-            }
-            else
-            {
-                this.DrawHands(Quaternion.identity, rootLoc, portrait, false, HandsToDraw.LeftHand);
-            }
-
-            if (drawRight)
-            {
-                this.DrawTweenedHand(handRight, handsMesh, matRight, angleAxis, portrait);
-            }
-            else
-            {
-                this.DrawHands(Quaternion.identity, rootLoc, portrait, false, HandsToDraw.RightHand);
-            }
-
-            if (MainTabWindow_Animator.Develop)
-            {
-                //// for debug
-                Material centerMat = GraphicDatabase.Get<Graphic_Single>(
-                                                                         "Hands/Human_Hand_dev",
-                                                                         ShaderDatabase.CutoutSkin,
-                                                                         Vector2.one,
-                                                                         Color.white).MatSingle;
-
-                UnityEngine.Graphics.DrawMesh(
-                                              handsMesh,
-                                              weaponPosition + new Vector3(0, 0.001f, 0),
-                                              angleAxis,
-                                              centerMat,
-                                              0);
-            }
+            this.weaponQuat = Quaternion.AngleAxis(weaponAngle, Vector3.up);
         }
 
         private void DrawTweenedHand(TweenThing tweenThing, Mesh handsMesh, Material material, Quaternion quat,
-                                     bool       portrait)
+                                     bool portrait)
         {
             this.handTweener.PreHandPosCalculation(tweenThing, this.IsMoving);
             GenDraw.DrawMeshNowOrLater(
                                        handsMesh,
-                                       this.handTweener.TweenedHandsPos[(int) tweenThing],
+                                       this.handTweener.TweenedHandsPos[(int)tweenThing],
                                        quat,
                                        material,
                                        portrait);
@@ -954,6 +906,8 @@ namespace FacialStuff
 
             // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
             this.SelectWalkcycle();
+            this._firstHandPosition = Vector3.zero;
+            this._secondHandPosition = Vector3.zero;
         }
 
         #endregion Public Methods
@@ -1018,6 +972,7 @@ namespace FacialStuff
                 leftFoot.z = offsetZ.Evaluate(flot);
                 offsetJoint = 0;
             }
+
             // smaller steps for smaller pawns
             float bodySize = this.Pawn.def.race.baseBodySize;
             if (Math.Abs(bodySize - 1f) > 0.05f)

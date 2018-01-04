@@ -26,8 +26,7 @@ namespace FacialStuff
             base.DrawFeet(bodyQuat, footQuat, rootLoc, portrait);
         }
 
-        public override void DrawHands(Quaternion  bodyQuat, Vector3 drawPos, bool portrait, bool carrying = false,
-                                       HandsToDraw drawSide                                                = HandsToDraw.Both)
+        public override void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, bool carrying = false)
         {
            // base.DrawHands(bodyQuat, drawPos, portrait, carrying, drawSide);
         }
