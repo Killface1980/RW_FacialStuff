@@ -14,13 +14,7 @@ namespace FacialStuff
 
         private const float SpringTightness = 0.35f;
 
-        public List<Vector3> TweenedFootPos
-        {
-            get
-            {
-                return this._tweenedFootPos;
-            }
-        }
+        public List<Vector3> TweenedFootPos => this._tweenedFootPos;
 
         public List<Vector3> LastTickTweenedFeetVelocity
         {

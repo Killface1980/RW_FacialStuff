@@ -237,7 +237,6 @@ namespace FacialStuff
                         }
                     }
 
-
                     if (anim != null)
                     {
                         if (anim.Props.bipedWithHands)

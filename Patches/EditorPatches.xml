@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-   <Operation Class="PatchOperationSequence">
+  <Operation Class="PatchOperationSequence">
     <success>Always</success>
     <operations>
       <li Class="PatchOperationConditional">
@@ -14,18 +14,22 @@
         </nomatch>
       </li>
       <li Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName = "Dresser"]</xpath>
-        <value>
-          <hasInteractionCell>True</hasInteractionCell>
-          <interactionCellOffset>(0,0,1)</interactionCellOffset>
-        </value>
-      </li>
-      <li Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName = "Dresser"]/comps</xpath>
         <value>
           <li>
             <compClass>FacialStuff.CompFaceEditor</compClass>
           </li>
+        </value>
+      </li>
+      <li Class="PatchOperationTest">
+        <xpath>/Defs/ThingDef[defName = "Dresser"]/hasInteractionCell</xpath>
+        <success>Invert</success>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName = "Dresser"]</xpath>
+        <value>
+          <hasInteractionCell>True</hasInteractionCell>
+          <interactionCellOffset>(0,0,1)</interactionCellOffset>
         </value>
       </li>
     </operations>

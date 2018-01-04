@@ -349,7 +349,7 @@ namespace FacialStuff
             base.PostSpawnSetup(respawningAfterLoad);
 
             this.BodyAnimator = new BodyAnimator(this.Pawn, this);
-
+            this.Pawn.CheckForAddedOrMissingParts();
             this.PawnBodyGraphic = new PawnBodyGraphic(this);
 
             BodyType bodyType = BodyType.Undefined;
