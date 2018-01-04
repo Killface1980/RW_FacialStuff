@@ -523,6 +523,9 @@ namespace FacialStuff.Harmony
 
 
             carriedThing.DrawAt(loc, flip);
+
+            loc.y += (pawn.Rotation == Rot4.North ? -1f : 1f) * Offsets.YOffset_Body;
+
             compAnim.DrawHands(Quaternion.identity, loc, false, true);
             
 

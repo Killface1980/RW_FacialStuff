@@ -26,7 +26,7 @@ namespace FacialStuff.Animator
             if (this._compAnim.AnimatorOpen)
             {
                 movedPercent = MainTabWindow_Animator.AnimationPercent;
-                return true;
+                return MainTabWindow_Animator.isMoving;
             }
 
             Pawn_PathFollower pather = this._pawn.pather;

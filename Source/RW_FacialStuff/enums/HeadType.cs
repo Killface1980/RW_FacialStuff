@@ -2,12 +2,12 @@
 {
     public enum HeadType : byte
     {
-        Normal,
+        Normal = 0,
 
-        Pointy,
+        Pointy = 1,
 
-        Wide,
+        Wide = 2,
 
-        Undefined
+        Undefined = 3
     }
 }

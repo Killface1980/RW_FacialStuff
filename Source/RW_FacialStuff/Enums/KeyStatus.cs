@@ -2,7 +2,7 @@
 {
     public enum KeyStatus
     {
-        Automatic,
-        Manual
+        Automatic = 0,
+        Manual = 1
     }
 }

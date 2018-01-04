@@ -2,10 +2,10 @@
 {
     public enum BeardType : byte
     {
-        LowerBeard,
+        LowerBeard = 0,
 
-        FullBeard,
+        FullBeard = 1,
 
-        None
+        None = 2
     }
 }

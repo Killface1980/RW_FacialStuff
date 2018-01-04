@@ -2,6 +2,6 @@ namespace FacialStuff
 {
     public enum PartStatus
     {
-        Natural, Missing, Artificial
+        Natural = 0, Missing = 1, Artificial = 2
     }
 }

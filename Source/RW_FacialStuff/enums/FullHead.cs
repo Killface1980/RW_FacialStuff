@@ -26,6 +26,6 @@
 
         FemaleNarrowWide = 11,
 
-        Undefined
+        Undefined = 12
     }
 }

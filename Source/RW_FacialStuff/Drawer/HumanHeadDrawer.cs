@@ -190,7 +190,7 @@ namespace FacialStuff
                         GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, mat, portrait);
                         currentLoc.y += Offsets.YOffsetInterval_OnFace;
                     }
-                    else if (Controller.settings.MergeHair && !apCoversFullHead)
+                    else if (Controller.settings.MergeHair) // && !apCoversFullHead)
                     {
                         // If not, display the hair cut
                         HairCutPawn hairPawn   = CutHairDB.GetHairCache(this.Pawn);

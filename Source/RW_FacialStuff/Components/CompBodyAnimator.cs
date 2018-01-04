@@ -16,13 +16,13 @@ namespace FacialStuff
     {
         #region Public Fields
 
-        private static     FieldInfo       _infoJitterer;
-        public             float           JitterMax = 0.35f;
-        public             bool            AnimatorOpen;
-        [NotNull] public   BodyAnimDef     BodyAnim;
-        public             BodyPartStats   BodyStat;
-        public             PawnBodyGraphic PawnBodyGraphic;
-        [CanBeNull] public WalkCycleDef    WalkCycle = WalkCycleDefOf.Biped_Walk;
+        private static FieldInfo _infoJitterer;
+        public float JitterMax = 0.35f;
+        public bool AnimatorOpen;
+        [NotNull] public BodyAnimDef BodyAnim;
+        public BodyPartStats BodyStat;
+        public PawnBodyGraphic PawnBodyGraphic;
+        [CanBeNull] public WalkCycleDef WalkCycle = WalkCycleDefOf.Biped_Walk;
 
         #endregion Public Fields
 
@@ -30,12 +30,12 @@ namespace FacialStuff
 
         [NotNull] private readonly List<Material> _cachedNakedMatsBodyBase = new List<Material>();
 
-        private          int            _cachedNakedMatsBodyBaseHash = -1;
-        private readonly List<Material> _cachedSkinMatsBodyBase      = new List<Material>();
-        private          int            _cachedSkinMatsBodyBaseHash  = -1;
-        private          bool           _initialized;
-        private          int            _lastRoomCheck;
-        private          Room           _theRoom;
+        private int _cachedNakedMatsBodyBaseHash = -1;
+        private readonly List<Material> _cachedSkinMatsBodyBase = new List<Material>();
+        private int _cachedSkinMatsBodyBaseHash = -1;
+        private bool _initialized;
+        private int _lastRoomCheck;
+        private Room _theRoom;
 
         #endregion Private Fields
 
@@ -100,7 +100,7 @@ namespace FacialStuff
                 return;
             }
 
-            int i     = 0;
+            int i = 0;
             int count = this.PawnBodyDrawers.Count;
             while (i < count)
             {
@@ -111,7 +111,7 @@ namespace FacialStuff
 
         public CompProperties_BodyAnimator Props
         {
-            get { return (CompProperties_BodyAnimator) this.props; }
+            get { return (CompProperties_BodyAnimator)this.props; }
         }
 
         public bool HideHat => this.InRoom && Controller.settings.HideHatWhileRoofed;
@@ -135,7 +135,7 @@ namespace FacialStuff
                     return this._theRoom;
                 }
 
-                this._theRoom       = this.Pawn.GetRoom();
+                this._theRoom = this.Pawn.GetRoom();
                 this._lastRoomCheck = Find.TickManager.TicksGame;
 
                 return this._theRoom;
@@ -160,7 +160,7 @@ namespace FacialStuff
         {
             if (this.PawnBodyDrawers != null)
             {
-                int i     = 0;
+                int i = 0;
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
@@ -173,7 +173,7 @@ namespace FacialStuff
         // Verse.PawnGraphicSet
         public void ClearCache()
         {
-            this._cachedSkinMatsBodyBaseHash  = -1;
+            this._cachedSkinMatsBodyBaseHash = -1;
             this._cachedNakedMatsBodyBaseHash = -1;
         }
 
@@ -184,8 +184,8 @@ namespace FacialStuff
         // }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public void DrawBody(Vector3                     rootLoc, Quaternion quat, RotDrawMode bodyDrawType,
-                             [CanBeNull] PawnWoundDrawer woundDrawer, bool   renderBody, bool  portrait)
+        public void DrawBody(Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType,
+                             [CanBeNull] PawnWoundDrawer woundDrawer, bool renderBody, bool portrait)
         {
             if (this.PawnBodyDrawers.NullOrEmpty())
             {
@@ -212,7 +212,7 @@ namespace FacialStuff
         {
             if (!this.PawnBodyDrawers.NullOrEmpty())
             {
-                int i     = 0;
+                int i = 0;
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
@@ -227,7 +227,7 @@ namespace FacialStuff
         {
             if (!this.PawnBodyDrawers.NullOrEmpty())
             {
-                int i     = 0;
+                int i = 0;
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
@@ -242,11 +242,11 @@ namespace FacialStuff
         {
             if (!this.PawnBodyDrawers.NullOrEmpty())
             {
-                int i     = 0;
+                int i = 0;
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
-                    this.PawnBodyDrawers[i].DrawHands(bodyQuat,rootLoc, portrait, carrying);
+                    this.PawnBodyDrawers[i].DrawHands(bodyQuat, rootLoc, portrait, carrying);
                     i++;
                 }
             }
@@ -260,9 +260,9 @@ namespace FacialStuff
                 for (int i = 0; i < this.Props.drawers.Count; i++)
                 {
                     PawnBodyDrawer thingComp =
-                    (PawnBodyDrawer) Activator.CreateInstance(this.Props.drawers[i].GetType());
+                    (PawnBodyDrawer)Activator.CreateInstance(this.Props.drawers[i].GetType());
                     thingComp.CompAnimator = this;
-                    thingComp.Pawn         = this.Pawn;
+                    thingComp.Pawn = this.Pawn;
                     this.PawnBodyDrawers.Add(thingComp);
                     thingComp.Initialize();
                 }
@@ -271,9 +271,9 @@ namespace FacialStuff
             {
                 this.PawnBodyDrawers = new List<PawnBodyDrawer>();
 
-                PawnBodyDrawer thingComp = (PawnBodyDrawer) Activator.CreateInstance(typeof(HumanBipedDrawer));
-                thingComp.CompAnimator   = this;
-                thingComp.Pawn           = this.Pawn;
+                PawnBodyDrawer thingComp = (PawnBodyDrawer)Activator.CreateInstance(typeof(HumanBipedDrawer));
+                thingComp.CompAnimator = this;
+                thingComp.Pawn = this.Pawn;
                 this.PawnBodyDrawers.Add(thingComp);
                 thingComp.Initialize();
             }
@@ -281,12 +281,12 @@ namespace FacialStuff
 
         public List<Material> NakedMatsBodyBaseAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
-            int num = facing.AsInt + 1000 * (int) bodyCondition;
+            int num = facing.AsInt + 1000 * (int)bodyCondition;
             if (num != this._cachedNakedMatsBodyBaseHash)
             {
                 this._cachedNakedMatsBodyBase.Clear();
                 this._cachedNakedMatsBodyBaseHash = num;
-                PawnGraphicSet graphics           = this.Pawn.Drawer.renderer.graphics;
+                PawnGraphicSet graphics = this.Pawn.Drawer.renderer.graphics;
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
                     this._cachedNakedMatsBodyBase.Add(graphics.nakedGraphic.MatAt(facing));
@@ -359,8 +359,8 @@ namespace FacialStuff
                 bodyType = this.Pawn.story.bodyType;
             }
 
-            string       defaultName = "BodyAnimDef_" + this.Pawn.def.defName + "_" + bodyType;
-            List<string> names       = new List<string>
+            string defaultName = "BodyAnimDef_" + this.Pawn.def.defName + "_" + bodyType;
+            List<string> names = new List<string>
                                        {
                                        defaultName,
                                        "BodyAnimDef_" + ThingDefOf.Human.defName + "_" + bodyType
@@ -375,7 +375,8 @@ namespace FacialStuff
                 }
             }
 
-            this.BodyAnim = new BodyAnimDef {defName = defaultName, label = defaultName};
+            this.BodyAnim = new BodyAnimDef { defName = defaultName, label = defaultName };
+            DefDatabase<BodyAnimDef>.Add(this.BodyAnim);
         }
 
         public void TickDrawers(Rot4 bodyFacing, PawnGraphicSet graphics)
@@ -388,7 +389,7 @@ namespace FacialStuff
 
             if (!this.PawnBodyDrawers.NullOrEmpty())
             {
-                int i     = 0;
+                int i = 0;
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
@@ -400,12 +401,12 @@ namespace FacialStuff
 
         public List<Material> UnderwearMatsBodyBaseAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
         {
-            int num = facing.AsInt + 1000 * (int) bodyCondition;
+            int num = facing.AsInt + 1000 * (int)bodyCondition;
             if (num != this._cachedSkinMatsBodyBaseHash)
             {
                 this._cachedSkinMatsBodyBase.Clear();
                 this._cachedSkinMatsBodyBaseHash = num;
-                PawnGraphicSet graphics          = this.Pawn.Drawer.renderer.graphics;
+                PawnGraphicSet graphics = this.Pawn.Drawer.renderer.graphics;
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
                     this._cachedSkinMatsBodyBase.Add(graphics.nakedGraphic.MatAt(facing));

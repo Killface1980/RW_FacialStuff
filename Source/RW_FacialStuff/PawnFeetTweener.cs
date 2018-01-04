@@ -12,7 +12,7 @@ namespace FacialStuff
 
         private List<Vector3> _lastTickSpringFootPos = new List<Vector3> { Vector3.zero, Vector3.zero };
 
-        private const float SpringTightness = 0.15f;
+        private const float SpringTightness = 0.35f;
 
         public List<Vector3> TweenedFootPos
         {

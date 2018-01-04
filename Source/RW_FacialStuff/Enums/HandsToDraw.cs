@@ -2,8 +2,8 @@
 {
     public enum HandsToDraw
     {
-        Both,
-        RightHand,
-        LeftHand
+        Both = 0,
+        RightHand = 1,
+        LeftHand = 2
     }
 }

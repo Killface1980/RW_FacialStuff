@@ -19,6 +19,7 @@ namespace FacialStuff
         public static bool  Colored;
         public static bool  Develop;
         public static bool  Equipment;
+        public static bool isOpen;
         public static float HorHeadOffset;
         public static bool  Panic;
         public static float VerHeadOffset;
@@ -50,6 +51,7 @@ namespace FacialStuff
 
         private static string  _defPath;
         private static Vector2 _portraitSize = new Vector2(320f, 320f);
+        public static bool isMoving = true;
 
         #endregion Private Fields
 
@@ -287,7 +289,7 @@ namespace FacialStuff
         {
             this.CompAnim.AnimatorOpen = false;
             this.Pawn                  = null;
-
+            isOpen = false;
             base.PostClose();
         }
 
@@ -369,6 +371,7 @@ namespace FacialStuff
 
             listingStandard.CheckboxLabeled("Develop", ref Develop);
             listingStandard.CheckboxLabeled("Colored", ref Colored);
+            listingStandard.CheckboxLabeled("Moving", ref isMoving);
 
             // listing_Standard.CheckboxLabeled("Equipment", ref Equipment);
 
@@ -1057,6 +1060,7 @@ namespace FacialStuff
                     EditorWalkcycle = this.CompAnim.BodyAnim.walkCycles.FirstOrDefault().Value;
                 }
 
+                isOpen = true;
                 // editorWalkcycle = this.CompAnim.bodyAnim.walkCycles[0];
             }
         }

@@ -9,7 +9,7 @@ namespace FacialStuff.Animator
     {
         #region Public Fields
 
-        public readonly SimpleCurve MotionCurve =
+        private readonly SimpleCurve MotionCurve =
             new SimpleCurve
             {
                 new CurvePoint(0f,   0f),
@@ -132,6 +132,7 @@ namespace FacialStuff.Animator
                 // this.rotationMod = RotationDirection.None;
                 // return;
                 // }
+                this._target = null;
                 this.FaceHead();
             }
             else

@@ -123,13 +123,13 @@ namespace FacialStuff
 
 
             var drawQuat = this.IsMoving ? footQuat : bodyQuat;
-            Vector3 ground = rootLoc + drawQuat * new Vector3(0, 0, OffsetGround);
+            Vector3 ground = rootLoc + drawQuat * new Vector3(0, 0, OffsetGroundZ);
 
-            this.handTweener.HandPositions[0] = ground + jointPositions.LeftJoint + leftFootAnim;
-            this.handTweener.HandPositions[1] = ground + jointPositions.RightJoint +
+            this.handTweener.HandPositions[(int)TweenThing.HandLeft] = ground + jointPositions.LeftJoint + leftFootAnim;
+            this.handTweener.HandPositions[(int)TweenThing.HandRight] = ground + jointPositions.RightJoint +
                                                 rightFootAnim;
 
-            this.handTweener.PreHandPosCalculation();
+            this.handTweener.PreHandPosCalculation(this.IsMoving);
 
             if (matLeft != null)
             {
@@ -137,7 +137,7 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                                                footMeshLeft,
-                                               this.handTweener.TweenedHandsPos[0]             ,
+                                               this.handTweener.TweenedHandsPos[(int)TweenThing.HandLeft]             ,
                                                drawQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
                                                matLeft,
                                                portrait);
@@ -150,7 +150,7 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                                                footMeshRight,
-                                               this.handTweener.TweenedHandsPos[1],
+                                               this.handTweener.TweenedHandsPos[(int)TweenThing.HandRight],
                                                drawQuat*Quaternion.AngleAxis(footAngleRight, Vector3.up),
                                                matRight,
                                                portrait);
