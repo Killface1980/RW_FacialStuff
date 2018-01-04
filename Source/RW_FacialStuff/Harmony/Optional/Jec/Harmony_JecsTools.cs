@@ -123,7 +123,7 @@ namespace LightSabers
                     matrix.SetTRS(weaponDrawLoc, Quaternion.AngleAxis(num, Vector3.up), s);
                     Graphics.DrawMesh(mesh, matrix, matSingle, 0);
 
-                    __instance.DrawHandsAiming(weaponDrawLoc, flipped, aimAngle, null);
+                    __instance.CalculateHandsAiming(weaponDrawLoc, flipped, aimAngle, null);
                     return false;
                 }
             }
@@ -143,7 +143,6 @@ namespace LightSabers
         /// <param name="__instance"></param>
         public static void DrawEquipmentAimingPostFix(HumanBipedDrawer __instance, Thing equipment,
                                                       ref Vector3 weaponDrawLoc,
-                                                      Vector3 rootLoc,
                                                       ref float aimAngle,
                                                       bool portrait, ref bool flipped)
         {

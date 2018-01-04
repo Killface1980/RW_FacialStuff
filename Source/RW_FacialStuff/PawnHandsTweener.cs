@@ -80,9 +80,7 @@ namespace FacialStuff
         public void PreHandPosCalculation(TweenThing      tweenThing, bool isMoving,
                                           SpringTightness spring = SpringTightness.Medium)
         {
-
-            float tightness = this._springTightness[(int) spring];
-            int   side      = (int) tweenThing;
+            int side = (int)tweenThing;
 
             if (isMoving || MainTabWindow_Animator.isOpen)
             {
@@ -106,7 +104,9 @@ namespace FacialStuff
                 if (tickRateMultiplier < 5f)
                 {
                     Vector3 a        = this.TweenedHandPosRoot(side) - this._tweenedHandsPos[side];
-                    float   progress = tightness * (RealTime.deltaTime * 60f * tickRateMultiplier);
+
+                    float tightness = this._springTightness[(int)spring];
+                    float progress = tightness * (RealTime.deltaTime * 60f * tickRateMultiplier);
                     if (RealTime.deltaTime > 0.05f)
                     {
                         progress = Mathf.Min(progress, 1f);
