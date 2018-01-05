@@ -37,6 +37,11 @@ namespace RimWorld
 
         public string WalkCycleType ="Undefined";
 
+        [NotNull]
+        public List< PoseCycleDef> poseCycles =new List<PoseCycleDef>();
+
+        public string PoseCycleType;
+
         #endregion Public Fields
 
         // public float hipOffsetVerticalFromCenter;

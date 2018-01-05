@@ -137,6 +137,7 @@ namespace FacialStuff
             {
                 CheckPart(body, diff, face, anim);
             }
+            
         }
 
         private static void CheckPart(List<BodyPartRecord> body, Hediff hediff, [CanBeNull] CompFace         face,

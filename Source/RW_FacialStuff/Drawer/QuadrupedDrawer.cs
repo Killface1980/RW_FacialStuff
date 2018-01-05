@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using FacialStuff.AnimatorWindows;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -8,7 +9,7 @@ namespace FacialStuff
     {
         public override void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
         {
-            if (portrait && !this.CompAnimator.AnimatorOpen)
+            if (portrait && !this.CompAnimator.AnyOpen())
             {
                 return;
             }
@@ -88,7 +89,7 @@ namespace FacialStuff
 
             Material matRight;
 #endif
-            if (MainTabWindow_Animator.Colored)
+            if (MainTabWindow_WalkAnimator.Colored)
             {
                 matRight = this.CompAnimator.PawnBodyGraphic?.FrontPawGraphicRightCol?.MatAt(rot);
                 matLeft = this.CompAnimator.PawnBodyGraphic?.FrontPawGraphicLeftCol?.MatAt(rot);
@@ -124,11 +125,11 @@ namespace FacialStuff
             var drawQuat = this.IsMoving ? footQuat : bodyQuat;
             Vector3 ground = rootLoc + drawQuat * new Vector3(0, 0, OffsetGroundZ);
 
-            this.handTweener.HandPositions[(int)TweenThing.HandLeft] = ground + jointPositions.LeftJoint + leftFootAnim;
-            this.handTweener.HandPositions[(int)TweenThing.HandRight] = ground + jointPositions.RightJoint +
+            this.PartTweener.PartPositions[(int)TweenThing.HandLeft] = ground + jointPositions.LeftJoint + leftFootAnim;
+            this.PartTweener.PartPositions[(int)TweenThing.HandRight] = ground + jointPositions.RightJoint +
                                                 rightFootAnim;
 
-            this.handTweener.PreHandPosCalculation(this.IsMoving);
+            this.PartTweener.PreHandPosCalculation();
 
             if (matLeft != null)
             {
@@ -136,7 +137,7 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                                                footMeshLeft,
-                                               this.handTweener.TweenedHandsPos[(int)TweenThing.HandLeft]             ,
+                                               this.PartTweener.TweenedPartsPos[(int)TweenThing.HandLeft]             ,
                                                drawQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
                                                matLeft,
                                                portrait);
@@ -149,14 +150,14 @@ namespace FacialStuff
                 {
                     GenDraw.DrawMeshNowOrLater(
                                                footMeshRight,
-                                               this.handTweener.TweenedHandsPos[(int)TweenThing.HandRight],
+                                               this.PartTweener.TweenedPartsPos[(int)TweenThing.HandRight],
                                                drawQuat*Quaternion.AngleAxis(footAngleRight, Vector3.up),
                                                matRight,
                                                portrait);
                 }
             }
 
-            if (MainTabWindow_Animator.Develop)
+            if (MainTabWindow_WalkAnimator.Develop)
             {
                 // for debug
                 Material centerMat = GraphicDatabase

@@ -1,6 +1,6 @@
 ﻿using RimWorld;
 
-namespace FacialStuff.ExportWalkCycleDefs
+namespace FacialStuff.ExportPoseCycleDefs
 {
     // ReSharper disable StyleCop.SA1307
     // ReSharper disable StyleCop.SA1401
@@ -13,11 +13,11 @@ namespace FacialStuff.ExportWalkCycleDefs
     // ReSharper disable StyleCop.SA1310
     public class Defs
     {
-        public WalkCycleDef WalkCycleDef;
+        public PoseCycleDef PoseCycleDef;
 
-        public Defs(WalkCycleDef walkCycleDef)
+        public Defs(PoseCycleDef poseCycleDef)
         {
-            this.WalkCycleDef = walkCycleDef;
+            this.PoseCycleDef = poseCycleDef;
         }
     }
 }

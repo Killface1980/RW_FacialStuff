@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using FacialStuff.Animator;
+﻿using FacialStuff.Animator;
 using FacialStuff.DefOfs;
 using FacialStuff.GraphicsFS;
 using JetBrains.Annotations;
 using RimWorld;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -16,9 +16,16 @@ namespace FacialStuff
     {
         #region Public Fields
 
+        public bool AnyOpen()
+        {
+            return this.AnimatorPoseOpen != this.AnimatorWalkOpen;
+
+        }
+
         private static FieldInfo _infoJitterer;
         public float JitterMax = 0.35f;
-        public bool AnimatorOpen;
+        public bool AnimatorPoseOpen;
+        public bool AnimatorWalkOpen;
         [NotNull] public BodyAnimDef BodyAnim;
         public BodyPartStats BodyStat;
         public PawnBodyGraphic PawnBodyGraphic;
@@ -36,6 +43,7 @@ namespace FacialStuff
         private bool _initialized;
         private int _lastRoomCheck;
         private Room _theRoom;
+        [CanBeNull] public PoseCycleDef PoseCycle;
 
         #endregion Private Fields
 
@@ -365,18 +373,22 @@ namespace FacialStuff
                                        defaultName,
                                        "BodyAnimDef_" + ThingDefOf.Human.defName + "_" + bodyType
                                        };
+
+            bool needsNewBdef = true;
             foreach (string name in names)
             {
                 BodyAnimDef newDef = DefDatabase<BodyAnimDef>.GetNamedSilentFail(name);
-                if (newDef != null)
-                {
-                    this.BodyAnim = newDef;
-                    return;
-                }
+                if (newDef == null) continue;
+                this.BodyAnim = newDef;
+                needsNewBdef  = false;
+                break;
             }
 
-            this.BodyAnim = new BodyAnimDef { defName = defaultName, label = defaultName };
-            DefDatabase<BodyAnimDef>.Add(this.BodyAnim);
+            if (needsNewBdef)
+            {
+                this.BodyAnim = new BodyAnimDef { defName = defaultName, label = defaultName };
+                DefDatabase<BodyAnimDef>.Add(this.BodyAnim);
+            }
         }
 
         public void TickDrawers(Rot4 bodyFacing, PawnGraphicSet graphics)

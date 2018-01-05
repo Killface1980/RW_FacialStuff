@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FacialStuff.AnimatorWindows;
 using FacialStuff.GraphicsFS;
 using RimWorld;
 using UnityEngine;
@@ -36,10 +37,10 @@ namespace FacialStuff
             float verHeadOffset = VerHeadOffsets[(int) pawn.story.bodyType];
 
             CompBodyAnimator animator = this.CompAnimator;
-            if (animator != null && animator.AnimatorOpen)
+            if (animator != null && animator.AnyOpen())
             {
-                horHeadOffset += MainTabWindow_Animator.HorHeadOffset;
-                verHeadOffset += MainTabWindow_Animator.VerHeadOffset;
+                horHeadOffset += MainTabWindow_WalkAnimator.HorHeadOffset;
+                verHeadOffset += MainTabWindow_WalkAnimator.VerHeadOffset;
             }
 
             switch (this.BodyFacing.AsInt)
@@ -409,18 +410,19 @@ namespace FacialStuff
             // remove the body rotation
             if (this.IsMoving && Controller.settings.UseFeet)
             {
+                WalkCycleDef walkCycle = this.CompAnimator?.WalkCycle;
                 if (this.BodyFacing.IsHorizontal)
                 {
                     asQuat *= Quaternion.AngleAxis(
                                                    (this.BodyFacing == Rot4.West ? 1 : -1)
-                                                 * this.CompAnimator?.WalkCycle?.BodyAngle.Evaluate(this.MovedPercent) ?? 0f,
+                                                 * walkCycle?.BodyAngle.Evaluate(this.MovedPercent) ?? 0f,
                                                    Vector3.up);
                 }
                 else
                 {
                     asQuat *= Quaternion.AngleAxis(
                                                    (this.BodyFacing == Rot4.South ? 1 : -1)
-                                                 * this.CompAnimator?.WalkCycle?.BodyAngleVertical.Evaluate(this.MovedPercent) ?? 0f,
+                                                 * walkCycle?.BodyAngleVertical.Evaluate(this.MovedPercent) ?? 0f,
                                                    Vector3.up);
                 }
             }
@@ -446,9 +448,10 @@ namespace FacialStuff
             // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
             if (Controller.settings.UseFeet)
             {
-                if (animator.WalkCycle != null)
+                WalkCycleDef walkCycle = animator.WalkCycle;
+                if (walkCycle != null)
                 {
-                    SimpleCurve curve = animator.WalkCycle.BodyOffsetZ;
+                    SimpleCurve curve = walkCycle.BodyOffsetZ;
                     this.BodyWobble        = curve.Evaluate(this.MovedPercent);
                 }
             }

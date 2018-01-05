@@ -18,6 +18,10 @@ namespace FacialStuff.Defs
 
         public float? FootPositionZ;
 
+        public float? HandPositionX;
+
+        public float? HandPositionZ;
+
         // Quadrupeds
         public float? FrontPawAngle;
 

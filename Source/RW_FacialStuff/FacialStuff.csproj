@@ -88,6 +88,8 @@
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />
     <None Include="Drawer\CentipedeDrawer.cs" />
+    <Compile Include="Defs\Export\PoseCycleDef_Export.cs" />
+    <Compile Include="Defs\WalkCycleDef - Kopieren.cs" />
     <Compile Include="Drawer\JointLister.cs" />
     <Compile Include="Enums\Offsets.cs" />
     <Compile Include="Enums\SpringTightness.cs" />
@@ -99,8 +101,9 @@
     <Compile Include="FaceEditor\Dialog_FaceStyling.SpecialTab.cs" />
     <Compile Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
     <Compile Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
-    <Compile Include="PawnFeetTweener.cs" />
-    <Compile Include="PawnHandsTweener.cs" />
+    <Compile Include="AnimatorWindows\MainTabWindow_BaseAnimator.cs" />
+    <Compile Include="AnimatorWindows\MainTabWindow_PoseAnimator.cs" />
+    <Compile Include="Animator\PawnPartsTweener.cs" />
     <Compile Include="Settings_Animator.cs" />
     <Compile Include="Components\CompBodyAnimator.cs" />
     <Compile Include="Components\CompProperties_BodyAnimator.cs" />
@@ -116,7 +119,7 @@
     <None Include="Enums\WalkcycleType.cs" />
     <Compile Include="Enums\RaceOption.cs" />
     <Compile Include="Graphics\PawnBodyGraphic.cs" />
-    <Compile Include="MainTabWindow_Animator.cs" />
+    <Compile Include="AnimatorWindows\MainTabWindow_WalkAnimator.cs" />
     <Compile Include="Enums\BodyPartStats.cs" />
     <Compile Include="Components\CompProperties_Face.cs" />
     <Compile Include="Enums\PartStatus.cs" />

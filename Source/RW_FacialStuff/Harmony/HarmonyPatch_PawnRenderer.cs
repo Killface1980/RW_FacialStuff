@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FacialStuff.AnimatorWindows;
 using Harmony;
 using RimWorld;
 using UnityEngine;
@@ -119,10 +120,10 @@ namespace FacialStuff.Harmony
                     return true;
                 }
 
-                if (compAnim.AnimatorOpen)
+                if (compAnim.AnyOpen())
                 {
-                    bodyFacing = MainTabWindow_Animator.BodyRot;
-                    headFacing = MainTabWindow_Animator.HeadRot;
+                    bodyFacing = MainTabWindow_WalkAnimator.BodyRot;
+                    headFacing = MainTabWindow_WalkAnimator.HeadRot;
                 }
 
                 compAnim.TickDrawers(bodyFacing, graphics);
@@ -150,10 +151,10 @@ namespace FacialStuff.Harmony
                 return true;
             }
 
-            if (compAnim.AnimatorOpen)
+            if (compAnim.AnyOpen())
             {
-                bodyFacing = MainTabWindow_Animator.BodyRot;
-                headFacing = MainTabWindow_Animator.HeadRot;
+                bodyFacing = MainTabWindow_BaseAnimator.BodyRot;
+                headFacing = MainTabWindow_BaseAnimator.HeadRot;
             }
 
             compFace.TickDrawers(bodyFacing, headFacing, graphics);
@@ -164,7 +165,7 @@ namespace FacialStuff.Harmony
             Quaternion headQuat = bodyQuat;
 
             // Rotate head if possble and wobble around
-            if (!portrait || compAnim.AnimatorOpen)
+            if (!portrait || compAnim.AnimatorWalkOpen)
             {
                 if (footy)
                 {

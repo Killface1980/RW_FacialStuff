@@ -223,6 +223,7 @@ namespace FacialStuff.Harmony
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
                 PortraitsCache.SetDirty(pawn);
             }
+                pawn.GetCompAnim()?.PawnBodyGraphic?.Initialize();
         }
 
         public static bool RandomHairDefFor_PreFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
@@ -276,6 +277,7 @@ namespace FacialStuff.Harmony
             }
 
             pawn.CheckForAddedOrMissingParts();
+            pawn.GetCompAnim()?.PawnBodyGraphic?.Initialize();
 
             // Check if race has face, else return
             if (!pawn.GetCompFace(out CompFace compFace))

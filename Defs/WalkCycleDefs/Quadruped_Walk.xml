@@ -7,7 +7,7 @@
       <li>
         <BodyAngle>-5</BodyAngle>
         <BodyAngleVertical>0</BodyAngleVertical>
-        <BodyOffsetZ>0</BodyOffsetZ>
+        <BodyOffsetZ IsNull="True" />
         <FootAngle>0</FootAngle>
         <FootPositionX>-0.175</FootPositionX>
         <FootPositionZ>0</FootPositionZ>
@@ -50,7 +50,7 @@
         <FrontPawPositionZ>0</FrontPawPositionZ>
         <HandsSwingAngle>-40</HandsSwingAngle>
         <HipOffsetHorizontalX>-0.125</HipOffsetHorizontalX>
-        <ShoulderOffsetHorizontalX IsNull="True" />
+        <ShoulderOffsetHorizontalX>-0.05</ShoulderOffsetHorizontalX>
         <KeyIndex>2</KeyIndex>
         <Status>Automatic</Status>
         <Shift>0</Shift>
@@ -84,7 +84,7 @@
         <FrontPawPositionZ>0.2</FrontPawPositionZ>
         <HandsSwingAngle>0</HandsSwingAngle>
         <HipOffsetHorizontalX>-0.05</HipOffsetHorizontalX>
-        <ShoulderOffsetHorizontalX IsNull="True" />
+        <ShoulderOffsetHorizontalX>0.025</ShoulderOffsetHorizontalX>
         <KeyIndex>4</KeyIndex>
         <Status>Automatic</Status>
         <Shift>0</Shift>
@@ -118,7 +118,7 @@
         <FrontPawPositionZ>0</FrontPawPositionZ>
         <HandsSwingAngle>40</HandsSwingAngle>
         <HipOffsetHorizontalX>-0.1</HipOffsetHorizontalX>
-        <ShoulderOffsetHorizontalX IsNull="True" />
+        <ShoulderOffsetHorizontalX>-0.05</ShoulderOffsetHorizontalX>
         <KeyIndex>6</KeyIndex>
         <Status>Automatic</Status>
         <Shift>0</Shift>
@@ -160,7 +160,7 @@
       <li>
         <BodyAngle>-5</BodyAngle>
         <BodyAngleVertical>0</BodyAngleVertical>
-        <BodyOffsetZ>0</BodyOffsetZ>
+        <BodyOffsetZ IsNull="True" />
         <FootAngle>0</FootAngle>
         <FootPositionX>-0.175</FootPositionX>
         <FootPositionZ>0</FootPositionZ>
@@ -621,6 +621,24 @@
           <loc>
             <x>0</x>
             <y>0</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.2222222</x>
+            <y>-0.05</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.4444444</x>
+            <y>0.025</y>
+          </loc>
+        </li>
+        <li>
+          <loc>
+            <x>0.6666667</x>
+            <y>-0.05</y>
           </loc>
         </li>
         <li>

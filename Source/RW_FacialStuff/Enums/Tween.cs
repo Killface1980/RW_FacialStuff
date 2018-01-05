@@ -4,7 +4,9 @@
     {
         HandLeft = 0,
         HandRight = 1,
-        Equipment = 2,
-        Max = 3
+        FootLeft = 2,
+        FootRight = 3,
+        Equipment = 4,
+        Max = 5,
     }
 }

@@ -1,4 +1,5 @@
-﻿using Verse;
+﻿using FacialStuff.AnimatorWindows;
+using Verse;
 using Verse.AI;
 
 namespace FacialStuff.Animator
@@ -23,10 +24,14 @@ namespace FacialStuff.Animator
         {
             movedPercent = 0f;
 
-            if (this._compAnim.AnimatorOpen)
+            if (this._compAnim.AnimatorWalkOpen)
             {
-                movedPercent = MainTabWindow_Animator.AnimationPercent;
-                return MainTabWindow_Animator.isMoving;
+                movedPercent = MainTabWindow_BaseAnimator.AnimationPercent;
+                return true;
+            }
+            if (this._compAnim.AnimatorPoseOpen)
+            {
+                return false;
             }
 
             Pawn_PathFollower pather = this._pawn.pather;
@@ -62,6 +67,19 @@ namespace FacialStuff.Animator
 
             movedPercent = 1f - pather.nextCellCostLeft / pather.nextCellCostTotal;
             return true;
+        }
+
+        public bool IsPosing(out float movedPercent)
+        {
+            movedPercent = 0f;
+
+            if (this._compAnim.AnimatorPoseOpen)
+            {
+                movedPercent = MainTabWindow_BaseAnimator.AnimationPercent;
+                return true;
+            }
+
+            return false;
         }
 
         public void AnimatorTick()

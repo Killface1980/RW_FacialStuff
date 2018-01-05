@@ -1,13 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-  
-    <MainButtonDef>
-    <defName>Animator</defName>
-    <label>animator</label>
+
+  <MainButtonDef>
+    <defName>Pose Animator</defName>
+    <label>pose animator</label>
     <description>Animate.</description>
-    <tabWindowClass>FacialStuff.MainTabWindow_Animator</tabWindowClass>
+    <tabWindowClass>FacialStuff.AnimatorWindows.MainTabWindow_PoseAnimator</tabWindowClass>
     <canBeTutorDenied>false</canBeTutorDenied>
     <order>400</order>
+    <validWithoutMap>false</validWithoutMap>
+    <buttonVisible>true</buttonVisible>
+  </MainButtonDef>
+  
+  <MainButtonDef>
+    <defName>Walk Animator</defName>
+    <label>walk animator</label>
+    <description>Animate.</description>
+    <tabWindowClass>FacialStuff.AnimatorWindows.MainTabWindow_WalkAnimator</tabWindowClass>
+    <canBeTutorDenied>false</canBeTutorDenied>
+    <order>410</order>
     <validWithoutMap>false</validWithoutMap>
       <buttonVisible>true</buttonVisible>
     </MainButtonDef>

@@ -54,16 +54,21 @@ namespace FacialStuff.GraphicsFS
             this.CompAni = compAni;
             this._pawn = compAni.Pawn;
 
+            this.Initialize();
+        }
+
+        public void Initialize()
+        {
             LongEventHandler.ExecuteWhenFinished(
-                () =>
-                    {
-                        this.InitializeGraphicsHand();
-                        this.InitializeGraphicsFeet();
-                        if (this.CompAni.Props.quadruped)
-                        {
-                            this.InitializeGraphicsFrontPaws();
-                        }
-                    });
+                                                 () =>
+                                                 {
+                                                     this.InitializeGraphicsHand();
+                                                     this.InitializeGraphicsFeet();
+                                                     if (this.CompAni.Props.quadruped)
+                                                     {
+                                                         this.InitializeGraphicsFrontPaws();
+                                                     }
+                                                 });
         }
 
         private void InitializeGraphicsFeet()
