@@ -152,7 +152,7 @@ namespace FacialStuff.AnimatorWindows
             this.FindRandomPawn();
 
             PortraitsCache.SetDirty(this.Pawn);
-            SetKeyframes();
+            this.SetKeyframes();
             this._frameLabel = CurrentFrameInt + 1;
 
             Rot4 rotation = BodyRot;

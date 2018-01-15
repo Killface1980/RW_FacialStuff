@@ -34,7 +34,7 @@ namespace FacialStuff
 
         protected JointLister GetJointPositions(Vector3 offsets,
                                                 float   jointWidth,
-                                                bool    carrying          = false)
+                                                bool    carrying          = false, bool armed = false)
         {
             Rot4 rot = this.BodyFacing;
             JointLister joints = new JointLister();
@@ -43,7 +43,7 @@ namespace FacialStuff
             float leftZ = offsets.z;
             float rightZ = offsets.z;
 
-            float offsetY =  Offsets.YOffset_HandsFeet;
+            float offsetY = armed? Offsets.YOffset_Behind : Offsets.YOffset_HandsFeet;
             float leftY = offsetY;
             float rightY = offsetY;
 

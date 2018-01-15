@@ -64,7 +64,7 @@ namespace FacialStuff
                 this._rotation = this.SelPawn.Rotation.AsInt;
             }
 
-            MainTabWindow_WalkAnimator.BodyRot = new Rot4(this._rotation);
+            MainTabWindow_BaseAnimator.BodyRot = new Rot4(this._rotation);
 
             bool male = this.SelPawn.gender == Gender.Male;
 

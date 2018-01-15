@@ -21,6 +21,10 @@ namespace FacialStuff
             return this.AnimatorPoseOpen != this.AnimatorWalkOpen;
 
         }
+        public Vector3 FirstHandPosition;
+        public Vector3 SecondHandPosition;
+        public PawnPartsTweener PartTweener;
+        public Quaternion WeaponQuat = new Quaternion();
 
         private static FieldInfo _infoJitterer;
         public float JitterMax = 0.35f;

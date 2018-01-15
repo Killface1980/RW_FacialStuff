@@ -9,7 +9,7 @@
     <canBeTutorDenied>false</canBeTutorDenied>
     <order>400</order>
     <validWithoutMap>false</validWithoutMap>
-    <buttonVisible>true</buttonVisible>
+    <buttonVisible>false</buttonVisible>
   </MainButtonDef>
   
   <MainButtonDef>

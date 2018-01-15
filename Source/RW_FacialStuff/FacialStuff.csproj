@@ -99,8 +99,8 @@
     <Compile Include="FaceEditor\Dialog_FaceStyling.FilterTab.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.GenderTab.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.SpecialTab.cs" />
-    <Compile Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
-    <Compile Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
+    <None Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
+    <None Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_BaseAnimator.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_PoseAnimator.cs" />
     <Compile Include="Animator\PawnPartsTweener.cs" />

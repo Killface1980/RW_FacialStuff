@@ -122,8 +122,8 @@ namespace FacialStuff.Harmony
 
                 if (compAnim.AnyOpen())
                 {
-                    bodyFacing = MainTabWindow_WalkAnimator.BodyRot;
-                    headFacing = MainTabWindow_WalkAnimator.HeadRot;
+                    bodyFacing = MainTabWindow_BaseAnimator.BodyRot;
+                    headFacing = MainTabWindow_BaseAnimator.HeadRot;
                 }
 
                 compAnim.TickDrawers(bodyFacing, graphics);
@@ -273,17 +273,18 @@ namespace FacialStuff.Harmony
             compFace.DrawAlienBodyAddons(bodyQuat, drawPos, portrait, renderBody);
 
             // No wobble for equipment, looks funnier - nah!
-           // Vector3 equipPos = rootLoc;
-           // equipPos.y = drawPos.y;
-            compAnim.DrawEquipment(drawPos, portrait);
+            // Vector3 equipPos = rootLoc;
+            // equipPos.y = drawPos.y;
 
-            // if (!portrait)
-            // {
-            //      Traverse.Create(__instance).Method("DrawEquipment", new object[] { rootLoc }).GetValue();
-            //
-            //      DrawEquipmentMethodInfo?.Invoke(__instance, new object[] { drawPos });
-            //
-            // }
+            //compAnim.DrawEquipment(drawPos, portrait);
+
+             if (!portrait)
+             {
+               //   Traverse.Create(__instance).Method("DrawEquipment", rootLoc).GetValue();
+            
+                  DrawEquipmentMethodInfo?.Invoke(__instance, new object[] { drawPos });
+            
+             }
 
             bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
             if (showHands)
@@ -389,7 +390,7 @@ namespace FacialStuff.Harmony
 
             if (!pawns.NullOrEmpty())
             {
-                loc.y -= 0.04f * pawns.Count;
+                loc.y -= 0.08f * pawns.Count;
                 loc.y -= 0.01f * leftOfPawn.Count;
             }
 

@@ -89,7 +89,7 @@ namespace FacialStuff
 
             Material matRight;
 #endif
-            if (MainTabWindow_WalkAnimator.Colored)
+            if (MainTabWindow_BaseAnimator.Colored)
             {
                 matRight = this.CompAnimator.PawnBodyGraphic?.FrontPawGraphicRightCol?.MatAt(rot);
                 matLeft = this.CompAnimator.PawnBodyGraphic?.FrontPawGraphicLeftCol?.MatAt(rot);
@@ -125,19 +125,18 @@ namespace FacialStuff
             var drawQuat = this.IsMoving ? footQuat : bodyQuat;
             Vector3 ground = rootLoc + drawQuat * new Vector3(0, 0, OffsetGroundZ);
 
-            this.PartTweener.PartPositions[(int)TweenThing.HandLeft] = ground + jointPositions.LeftJoint + leftFootAnim;
-            this.PartTweener.PartPositions[(int)TweenThing.HandRight] = ground + jointPositions.RightJoint +
+            this.CompAnimator.PartTweener.PartPositions[(int)TweenThing.HandLeft] = ground + jointPositions.LeftJoint + leftFootAnim;
+            this.CompAnimator.PartTweener.PartPositions[(int)TweenThing.HandRight] = ground + jointPositions.RightJoint +
                                                 rightFootAnim;
 
-            this.PartTweener.PreHandPosCalculation();
+            this.CompAnimator.PartTweener.PreHandPosCalculation();
 
             if (matLeft != null)
             {
                 if (this.CompAnimator.BodyStat.FootLeft != PartStatus.Missing)
                 {
                     GenDraw.DrawMeshNowOrLater(
-                                               footMeshLeft,
-                                               this.PartTweener.TweenedPartsPos[(int)TweenThing.HandLeft]             ,
+                                               footMeshLeft, this.CompAnimator.PartTweener.TweenedPartsPos[(int)TweenThing.HandLeft]             ,
                                                drawQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
                                                matLeft,
                                                portrait);
@@ -149,15 +148,14 @@ namespace FacialStuff
                 if (this.CompAnimator.BodyStat.FootRight != PartStatus.Missing)
                 {
                     GenDraw.DrawMeshNowOrLater(
-                                               footMeshRight,
-                                               this.PartTweener.TweenedPartsPos[(int)TweenThing.HandRight],
+                                               footMeshRight, this.CompAnimator.PartTweener.TweenedPartsPos[(int)TweenThing.HandRight],
                                                drawQuat*Quaternion.AngleAxis(footAngleRight, Vector3.up),
                                                matRight,
                                                portrait);
                 }
             }
 
-            if (MainTabWindow_WalkAnimator.Develop)
+            if (MainTabWindow_BaseAnimator.Develop)
             {
                 // for debug
                 Material centerMat = GraphicDatabase
