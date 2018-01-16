@@ -2,7 +2,7 @@
 
 namespace FacialStuff.Genetics
 {
-    public struct HairDna
+    public struct HairDNA
     {
         public HairColorRequest HairColorRequest { get; set; }
 

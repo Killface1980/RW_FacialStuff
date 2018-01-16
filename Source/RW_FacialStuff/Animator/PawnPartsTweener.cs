@@ -4,7 +4,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace FacialStuff
+namespace FacialStuff.Animator
 {
     public class PawnPartsTweener
     {
@@ -168,7 +168,7 @@ namespace FacialStuff
         private bool _starting;
         private float _lockProgress;
         private bool _moving;
-        private bool ended;
+        private bool _ended;
 
         public void Update(bool isMoving, float movedPercent)
         {
@@ -192,7 +192,7 @@ namespace FacialStuff
                     this._startPos = this._pawn.Position;
                     this._starting = true;
                     this._moving = false;
-                    this.ended = false;
+                    this._ended = false;
                 }
 
                 // close the lock at 20 %, end start sequence
@@ -218,11 +218,11 @@ namespace FacialStuff
                     if (this._lockProgress <= 0f)
                     {
                         this._moving = false;
-                        this.ended = true;
+                        this._ended = true;
                     }
                 }
 
-                if (this.ended)
+                if (this._ended)
                 {
                     this._startPos = IntVec3.Zero;
                 }

@@ -14,7 +14,7 @@
 - 10 newly defined skin colors instead of the vanilla 6
 - hair genetics according to real life (including the effects of eumelanin &amp; pheomelanin)
 - includes selected trending hair colors of 5501
-- possibility to show hair under hats
+- possibility to show hair under hats (hair cut textures can be cached on disk, deactivated by default)
 - multiple visibility options for head gear on map
 - multiple visibility options for apparel layers in rooms/private rooms
 - adds the ability to change the head and body type for all Humans (needs activation in the mod options)
@@ -23,16 +23,17 @@
 
 - Walk cycle editor, disabled by default. Check out the MainButtons.xml for activation (intended for modders)
 
-+ includes a modified version of &apos;Spoonshortage&apos;s Rimworld Hairstyles 1.2&apos; by spoonshortage
-+ includes a modified version of &apos;Nackblad Inc Rimhair 1.1&apos; by nackblad
++ hair textures with beards from the &apos;Spoonshortage&apos;s Rimworld Hairstyles 1.2&apos; and &apos;Nackblad Inc Rimhair 1.1&apos; mods are replaced by shaved versions
+  This mod contains no hair packs itself any more. Please subscribe to what you like.
 
 Patches the PawnRenderer via Harmony and returns &apos;false&apos; thus being incompatible to mods doing the same.
+Look out for the FS "Alien Faces" addon if you're using erdelf's Humanoid Alien Framework. 
 
-    Initial Face Styling bench code adapted from "Clutter" by mrofa (available at the Ludeon forums)
+    Initial Face Editor code adapted from "Clutter" by mrofa (available at the Ludeon forums)
     Hands based on "Clutter Weapon Hands" by mrofa.
     Body, gender and head changer code adapted from Change Dresser by Kiame Vivacity
     Prepare Carefully saving / loading code adapted from Psychology by {WOBBLY} The Word-Mule
     Inspiration for the new renderer and all of its benefits by {WOBBLY} The Word-Mule and ChJees
-    Special thanks to pardeike for Harmony and help with transpilers and NotFood for the Dresser patch
+    Special thanks to pardeike for Harmony and help with transpilers and NotFood for the new Dresser patch
   </description>
 </ModMetaData>

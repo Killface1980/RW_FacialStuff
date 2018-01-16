@@ -2,10 +2,10 @@
 
 <Defs>
   <FacialStuff.Defs.AnimationTargetDef>
-
     <defName>PawnAnimatorSettingsVanilla</defName>
     <label>Animation comp loader</label>
     <thingClass>Thing</thingClass>
+  <!-- Deactivated fo r first release 
     <CompLoaderTargets>
       <li>
         <handType>Animal</handType>
@@ -42,9 +42,6 @@
         <quadruped>true</quadruped>
         <bodyDrawers>
           <li Class ="FacialStuff.QuadrupedDrawer"/>
-          <!--   
-          <li Class="FacialStuff.CentipedeDrawer" />
-          -->
         </bodyDrawers>
         <thingTargets>
           <li>Mechanoid_Centipede</li>
@@ -62,7 +59,6 @@
       </li>
 
     </CompLoaderTargets>
-
+-->
   </FacialStuff.Defs.AnimationTargetDef>
-
 </Defs>

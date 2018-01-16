@@ -1,5 +1,6 @@
 ﻿using RimWorld;
 
+// ReSharper disable once CheckNamespace
 namespace FacialStuff.ExportAnimDefs
 {
     // ReSharper disable StyleCop.SA1307

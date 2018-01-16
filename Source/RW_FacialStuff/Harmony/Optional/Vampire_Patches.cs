@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
-using Vampire;
-using Verse;
+﻿using Vampire;
 
 namespace FacialStuff.Harmony.Optional
 {
@@ -24,27 +21,6 @@ namespace FacialStuff.Harmony.Optional
 
                 compFace.Deactivated = false;
             }
-        }
-
-        public static void DrawEquipment_PostFix(HumanBipedDrawer __instance, Vector3 rootLoc, bool portrait)
-        {
-            Pawn pawn = __instance.Pawn;
-            if (pawn.health?.hediffSet?.hediffs == null || pawn.health.hediffSet.hediffs.Count <= 0)
-            {
-                return;
-            }
-
-            Hediff shieldHediff =
-            pawn.health.hediffSet.hediffs.FirstOrDefault((Hediff x) =>
-                                                             x.TryGetComp<HediffComp_Shield>() != null);
-
-            if (shieldHediff == null)
-            {
-                return;
-            }
-
-            HediffComp_Shield shield = shieldHediff.TryGetComp<HediffComp_Shield>();
-            shield?.DrawWornExtras();
         }
     }
 }

@@ -443,10 +443,11 @@ namespace FacialStuff.AnimatorWindows
 
         protected override void SetCurrentCycle()
         {
-            if (this.CompAnim.BodyAnim.poseCycles.Any())
+            BodyAnimDef anim = this.CompAnim.BodyAnim;
+            if (anim != null && anim.poseCycles.Any())
             {
                 EditorPosecycle =
-                this.CompAnim.BodyAnim.poseCycles.FirstOrDefault();
+                anim.poseCycles.FirstOrDefault();
             }
         }
         public override void SetKeyframes()
@@ -458,9 +459,10 @@ namespace FacialStuff.AnimatorWindows
         protected override void FindRandomPawn()
         {
             base.FindRandomPawn();
-            if (this.CompAnim.BodyAnim.walkCycles.Any())
+            BodyAnimDef anim = this.CompAnim.BodyAnim;
+            if (anim != null && anim.walkCycles.Any())
             {
-                EditorPosecycle = this.CompAnim.BodyAnim.poseCycles.FirstOrDefault();
+                EditorPosecycle = anim.poseCycles.FirstOrDefault();
             }
                 this.CompAnim.AnimatorPoseOpen = true;
         }

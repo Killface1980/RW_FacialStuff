@@ -188,10 +188,8 @@ namespace FacialStuff
 
         public void GenerateHairDna([NotNull] Pawn pawn, bool ignoreRelative = false, bool newPawn = true)
         {
-            bool sameColor = Controller.settings.SameBeardColor;
-
-            HairDna hairDna =
-                HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor || sameColor, ignoreRelative);
+            HairDNA hairDna =
+                HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor, ignoreRelative);
             this.EuMelanin = hairDna.HairColorRequest.EuMelanin;
             this.PheoMelanin = hairDna.HairColorRequest.PheoMelanin;
             this.Greyness = hairDna.HairColorRequest.Greyness;
@@ -205,7 +203,7 @@ namespace FacialStuff
             else
             {
                 this.HairColor = pawn.story.hairColor;
-                this.BeardColor = HairMelanin.DarkerBeardColor(this.HairColor);
+                this.BeardColor = HairMelanin.ShuffledBeardColor(this.HairColor);
             }
         }
 

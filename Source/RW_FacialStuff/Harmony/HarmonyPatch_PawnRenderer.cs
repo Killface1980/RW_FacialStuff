@@ -31,7 +31,7 @@ namespace FacialStuff.Harmony
 
         // private static FieldInfo PawnFieldInfo;
         private static FieldInfo _woundOverlayFieldInfo;
-        private static MethodInfo DrawEquipmentMethodInfo;
+        private static MethodInfo _drawEquipmentMethodInfo;
 
         public static bool Prefix(PawnRenderer __instance,
                                   Vector3 rootLoc,
@@ -54,8 +54,6 @@ namespace FacialStuff.Harmony
             {
                 graphics.ResolveAllGraphics();
             }
-
-            ;
             bool footy = pawn.GetCompAnim(out CompBodyAnimator compAnim) && Controller.settings.UseFeet;
 
             PawnWoundDrawer woundDrawer = (PawnWoundDrawer)_woundOverlayFieldInfo?.GetValue(__instance);
@@ -282,7 +280,7 @@ namespace FacialStuff.Harmony
              {
                //   Traverse.Create(__instance).Method("DrawEquipment", rootLoc).GetValue();
             
-                  DrawEquipmentMethodInfo?.Invoke(__instance, new object[] { drawPos });
+                  _drawEquipmentMethodInfo?.Invoke(__instance, new object[] { drawPos });
             
              }
 
@@ -550,7 +548,7 @@ namespace FacialStuff.Harmony
             }
 
             _pawnRendererType = typeof(PawnRenderer);
-            DrawEquipmentMethodInfo = _pawnRendererType.GetMethod(
+            _drawEquipmentMethodInfo = _pawnRendererType.GetMethod(
                                                                  "DrawEquipment",
                                                                  BindingFlags.NonPublic | BindingFlags.Instance);
             // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);

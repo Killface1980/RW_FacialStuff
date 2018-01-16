@@ -2,7 +2,7 @@
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.GraphicsFS
+namespace FacialStuff.HairCut
 {
     public class HairCutPawn
     {

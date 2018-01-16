@@ -1,11 +1,10 @@
 ﻿// ReSharper disable All
 
-using FacialStuff.Components;
+using FacialStuff.HairCut;
 using JetBrains.Annotations;
 
 namespace FacialStuff.Harmony
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Verse;
 
-namespace FacialStuff.Components
+namespace FacialStuff
 {
     // ReSharper disable UnassignedField.Global
     // ReSharper disable StyleCop.SA1307

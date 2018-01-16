@@ -51,10 +51,11 @@ namespace FacialStuff.AnimatorWindows
 
         protected override void SetCurrentCycle()
         {
-            if (this.CompAnim.BodyAnim.walkCycles.Any())
+            BodyAnimDef anim = this.CompAnim.BodyAnim;
+            if (anim != null && anim.walkCycles.Any())
             {
                 EditorWalkcycle =
-                this.CompAnim.BodyAnim.walkCycles.FirstOrDefault().Value;
+                anim.walkCycles.FirstOrDefault().Value;
             }
         }
 
@@ -512,9 +513,10 @@ namespace FacialStuff.AnimatorWindows
         protected override void FindRandomPawn()
         {
             base.FindRandomPawn();
-            if (this.CompAnim.BodyAnim.walkCycles.Any())
+            BodyAnimDef anim = this.CompAnim.BodyAnim;
+            if (anim != null && anim.walkCycles.Any())
             {
-                EditorWalkcycle = this.CompAnim.BodyAnim.walkCycles.FirstOrDefault().Value;
+                EditorWalkcycle = anim.walkCycles.FirstOrDefault().Value;
             }
                 this.CompAnim.AnimatorWalkOpen = true;
         }

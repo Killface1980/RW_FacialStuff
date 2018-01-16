@@ -23,16 +23,16 @@ namespace FacialStuff
         }
         public Vector3 FirstHandPosition;
         public Vector3 SecondHandPosition;
-        public PawnPartsTweener PartTweener;
+        [CanBeNull] public PawnPartsTweener PartTweener;
         public Quaternion WeaponQuat = new Quaternion();
 
         private static FieldInfo _infoJitterer;
         public float JitterMax = 0.35f;
         public bool AnimatorPoseOpen;
         public bool AnimatorWalkOpen;
-        [NotNull] public BodyAnimDef BodyAnim;
+        [CanBeNull] public BodyAnimDef BodyAnim;
         public BodyPartStats BodyStat;
-        public PawnBodyGraphic PawnBodyGraphic;
+        [CanBeNull] public PawnBodyGraphic PawnBodyGraphic;
         [CanBeNull] public WalkCycleDef WalkCycle = WalkCycleDefOf.Biped_Walk;
 
         #endregion Public Fields
@@ -46,7 +46,7 @@ namespace FacialStuff
         private int _cachedSkinMatsBodyBaseHash = -1;
         private bool _initialized;
         private int _lastRoomCheck;
-        private Room _theRoom;
+        [CanBeNull] private Room _theRoom;
         [CanBeNull] public PoseCycleDef PoseCycle;
 
         #endregion Private Fields

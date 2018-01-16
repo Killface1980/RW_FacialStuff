@@ -118,7 +118,7 @@
     <Compile Include="Enums\KeyStatus.cs" />
     <None Include="Enums\WalkcycleType.cs" />
     <Compile Include="Enums\RaceOption.cs" />
-    <Compile Include="Graphics\PawnBodyGraphic.cs" />
+    <Compile Include="GraphicsFS\PawnBodyGraphic.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_WalkAnimator.cs" />
     <Compile Include="Enums\BodyPartStats.cs" />
     <Compile Include="Components\CompProperties_Face.cs" />
@@ -140,8 +140,8 @@
     <Compile Include="Utilities\CrownTypeChecker.cs" />
     <None Include="FaceEditor\Job_FaceStylingJoy.cs" />
     <Compile Include="Components\CompFaceEditor.cs" />
-    <Compile Include="Graphics\FaceMaterial.cs" />
-    <Compile Include="Graphics\GraphicVectorMeshSet.cs" />
+    <Compile Include="GraphicsFS\FaceMaterial.cs" />
+    <Compile Include="GraphicsFS\GraphicVectorMeshSet.cs" />
     <None Include="FacialStuff.ruleset" />
     <None Include="OldStuff\IncidentWorker_FacialStuffUpdateNote.cs" />
     <Compile Include="HairCut\CutHairDB.cs" />
@@ -158,7 +158,7 @@
     <None Include="newStuff\JoyGiver_ChangeAppearance.cs" />
     <Compile Include="Animator\PawnHeadRotator.cs" />
     <Compile Include="Enums\Side.cs" />
-    <Compile Include="Graphics\PawnFaceGraphic.cs" />
+    <Compile Include="GraphicsFS\PawnFaceGraphic.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.cs" />
     <None Include="FaceEditor\UI\DresserUI.cs" />
     <Compile Include="FaceEditor\UI\DTO\DresserDTO.cs" />
@@ -179,7 +179,7 @@
     <Compile Include="Harmony\Optional\PrepC\SaveRecordFaceV3.cs" />
     <Compile Include="Harmony\Optional\PrepC\SaveRecordPawnV3_Postfix.cs" />
     <Compile Include="Harmony\Optional\Werewolf_Patches.cs" />
-    <Compile Include="Graphics\HumanMouthGraphics.cs" />
+    <Compile Include="GraphicsFS\HumanMouthGraphics.cs" />
     <Compile Include="PawnFace.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
@@ -189,11 +189,11 @@
     <Compile Include="ITab_Pawn_Face.cs" />
     <Compile Include="Enums\HeadType.cs" />
     <Compile Include="DefOfs\MouthDefOf.cs" />
-    <Compile Include="Graphics\FaceTextures.cs" />
+    <Compile Include="GraphicsFS\FaceTextures.cs" />
     <Compile Include="HairCut\HairCutPawn.cs" />
-    <Compile Include="Graphics\Graphic_Multi_NaturalEyes.cs" />
-    <Compile Include="Graphics\Graphic_Multi_AddedHeadParts.cs" />
-    <Compile Include="Graphics\MeshPoolFs.cs" />
+    <Compile Include="GraphicsFS\Graphic_Multi_NaturalEyes.cs" />
+    <Compile Include="GraphicsFS\Graphic_Multi_AddedHeadParts.cs" />
+    <Compile Include="GraphicsFS\MeshPoolFs.cs" />
     <Compile Include="Harmony\HarmonyPatch_PawnRenderer.cs" />
     <Compile Include="Components\CompFace.cs" />
     <Compile Include="FaceEditor\ColorPicker\ColorWrapper.cs" />
@@ -202,8 +202,8 @@
     <Compile Include="FaceEditor\Job_FaceStyling.cs" />
     <None Include="FaceEditor\Preset.cs" />
     <None Include="FaceEditor\PresetDatabase.cs" />
-    <Compile Include="Graphics\GraphicDatabaseHeadRecordsModded.cs" />
-    <Compile Include="Graphics\Graphic_Multi_NaturalHeadParts.cs" />
+    <Compile Include="GraphicsFS\GraphicDatabaseHeadRecordsModded.cs" />
+    <Compile Include="GraphicsFS\Graphic_Multi_NaturalHeadParts.cs" />
     <Compile Include="Utilities\DialogUtility.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Genetics\PawnSkinColors_FS.cs" />
@@ -291,13 +291,6 @@
     </Content>
     <Content Include="..\..\Defs\HairDefs\Killface.xml">
       <Link>Defs\xml\Hair\Killface.xml</Link>
-    </Content>
-    <Content Include="..\..\Defs\HairDefs\NackbladIncRimhair_HairDef.xml">
-      <Link>Defs\xml\Hair\NackbladIncRimhair_HairDef.xml</Link>
-    </Content>
-    <Content Include="..\..\Defs\HairDefs\SpoonshortagesRimworldHairstyles_HairDefs.xml">
-      <Link>Defs\xml\Hair\SpoonshortagesRimworldHairstyles_HairDefs.xml</Link>
-      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\JobDefs\FacialStuff_Jobs.xml">
       <Link>Defs\xml\FacialStuff_Jobs.xml</Link>

@@ -9,7 +9,7 @@ namespace FacialStuff.Animator
     {
         #region Public Fields
 
-        private readonly SimpleCurve MotionCurve =
+        private readonly SimpleCurve _motionCurve =
             new SimpleCurve
             {
                 new CurvePoint(0f,   0f),
@@ -51,7 +51,7 @@ namespace FacialStuff.Animator
 
         public float CurrentMovement
         {
-            get { return this.MotionCurve.Evaluate(this._headRotation); }
+            get { return this._motionCurve.Evaluate(this._headRotation); }
         }
 
         #endregion Public Properties

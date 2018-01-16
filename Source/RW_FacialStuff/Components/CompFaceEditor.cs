@@ -5,8 +5,6 @@ namespace FacialStuff
     using System;
     using System.Collections.Generic;
 
-    using FaceEditor;
-
     using Verse;
     using Verse.AI;
 

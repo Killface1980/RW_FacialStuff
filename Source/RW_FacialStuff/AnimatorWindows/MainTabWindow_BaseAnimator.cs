@@ -94,7 +94,6 @@ namespace FacialStuff.AnimatorWindows
             get
             {
                 return new Vector2(1440f, 980f);
-                return base.InitialSize;
             }
         }
 

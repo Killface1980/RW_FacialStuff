@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using FacialStuff.Components;
 using FacialStuff.Defs;
 using FacialStuff.GraphicsFS;
+using FacialStuff.HairCut;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
@@ -16,7 +16,7 @@ namespace FacialStuff
         #region Private Fields
 
         private static readonly List<string> NackbladTex =
-        new List<string> {"bushy", "crisis", "erik", "jr", "guard", "karl", "olof", "ruff", "trimmed"};
+        new List<string> {"bushy", "crisis", "erik", "guard", "jr",  "karl", "olof", "ruff", "trimmed"};
 
         private static readonly List<string> SpoonTex = new List<string> {"SPSBeard", "SPSScot", "SPSViking"};
 

@@ -363,7 +363,7 @@ namespace FacialStuff.FaceEditor
 
                 if (this.PawnFace.HasSameBeardColor && !this._reInit)
                 {
-                    Color color = HairMelanin.DarkerBeardColor(value);
+                    Color color = HairMelanin.ShuffledBeardColor(value);
                     this.UpdatePawnColors(this.NewBeard, color);
                 }
             }
@@ -1292,7 +1292,7 @@ namespace FacialStuff.FaceEditor
                 {
                     this.RemoveColorPicker();
                     this.PawnFace.HasSameBeardColor = faceCompHasSameBeardColor;
-                    this.NewBeardColor                       = HairMelanin.DarkerBeardColor(this.NewHairColor);
+                    this.NewBeardColor                       = HairMelanin.ShuffledBeardColor(this.NewHairColor);
                 }
 
                 if (this.PawnFace.DrawMouth != faceCompDrawMouth)

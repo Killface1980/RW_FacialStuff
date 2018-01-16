@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using FacialStuff.Animator;
 using FacialStuff.AnimatorWindows;
-using FacialStuff.Components;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
@@ -32,7 +31,6 @@ namespace FacialStuff
 
         //  private PawnFeetTweener feetTweener;
         private float _animatedPercent;
-        private bool _isPosing;
 
         #endregion Private Fields
 
@@ -351,16 +349,18 @@ namespace FacialStuff
 
             // Basic values
             BodyAnimDef body = this.CompAnimator.BodyAnim;
+            if (body == null) return;
+
             JointLister groundPos = this.GetJointPositions(
                                                            body.hipOffsets[rot.AsInt],
                                                            body.hipOffsets[Rot4.North.AsInt].x);
 
-            Vector3 rightFootCycle = Vector3.zero;
-            Vector3 leftFootCycle = Vector3.zero;
-            float footAngleRight = 0;
-            float footAngleLeft = 0;
-            float offsetJoint = 0;
-            WalkCycleDef cycle = this.CompAnimator.WalkCycle;
+            Vector3      rightFootCycle = Vector3.zero;
+            Vector3      leftFootCycle  = Vector3.zero;
+            float        footAngleRight = 0;
+            float        footAngleLeft  = 0;
+            float        offsetJoint    = 0;
+            WalkCycleDef cycle          = this.CompAnimator.WalkCycle;
             if (cycle != null)
             {
                 offsetJoint = cycle.HipOffsetHorizontalX.Evaluate(this.MovedPercent);
@@ -384,7 +384,7 @@ namespace FacialStuff
             if (MainTabWindow_BaseAnimator.Colored)
             {
                 matRight = this.CompAnimator.PawnBodyGraphic?.FootGraphicRightCol?.MatAt(rot);
-                matLeft = this.CompAnimator.PawnBodyGraphic?.FootGraphicLeftCol?.MatAt(rot);
+                matLeft  = this.CompAnimator.PawnBodyGraphic?.FootGraphicLeftCol?.MatAt(rot);
             }
             else
             {
@@ -419,35 +419,47 @@ namespace FacialStuff
 
             bool drawLeft = matLeft != null && this.CompAnimator.BodyStat.FootLeft != PartStatus.Missing;
 
-            groundPos.LeftJoint = drawQuat * groundPos.LeftJoint;
-            groundPos.RightJoint = drawQuat * groundPos.RightJoint;
-            leftFootCycle = drawQuat * leftFootCycle;
-            rightFootCycle = drawQuat * rightFootCycle;
-            Vector3 ground = rootLoc + drawQuat * new Vector3(0, 0, OffsetGroundZ);
+            groundPos.LeftJoint  = drawQuat           * groundPos.LeftJoint;
+            groundPos.RightJoint = drawQuat           * groundPos.RightJoint;
+            leftFootCycle        = drawQuat           * leftFootCycle;
+            rightFootCycle       = drawQuat           * rightFootCycle;
+            Vector3 ground       = rootLoc + drawQuat * new Vector3(0, 0, OffsetGroundZ);
 
             if (drawLeft)
             {
 
-                TweenThing leftFoot = TweenThing.FootLeft;
-                this.CompAnimator.PartTweener.PartPositions[(int)leftFoot] = ground + groundPos.LeftJoint + leftFootCycle;
-                this.CompAnimator.PartTweener.PreHandPosCalculation(leftFoot);
-                GenDraw.DrawMeshNowOrLater(
-                                           footMeshLeft, this.CompAnimator.PartTweener.TweenedPartsPos[(int)leftFoot],
-                                           drawQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
-                                           matLeft,
-                                           portrait);
+                TweenThing       leftFoot = TweenThing.FootLeft;
+                PawnPartsTweener tweener  = this.CompAnimator.PartTweener;
+                if (tweener != null)
+                {
+                    tweener.PartPositions[(int)leftFoot] =
+                    ground + groundPos.LeftJoint + leftFootCycle;
+                    tweener.PreHandPosCalculation(leftFoot);
+                    GenDraw.DrawMeshNowOrLater(
+                                               footMeshLeft,
+                                               tweener.TweenedPartsPos[(int)leftFoot],
+                                               drawQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
+                                               matLeft,
+                                               portrait);
+                }
             }
 
             if (drawRight)
             {
-                TweenThing rightFoot = TweenThing.FootRight;
-                this.CompAnimator.PartTweener.PartPositions[(int)rightFoot] = ground + groundPos.RightJoint + rightFootCycle;
-                this.CompAnimator.PartTweener.PreHandPosCalculation(rightFoot);
-                GenDraw.DrawMeshNowOrLater(
-                                           footMeshRight, this.CompAnimator.PartTweener.TweenedPartsPos[(int)rightFoot],
-                                           drawQuat * Quaternion.AngleAxis(footAngleRight, Vector3.up),
-                                           matRight,
-                                           portrait);
+                TweenThing       rightFoot = TweenThing.FootRight;
+                PawnPartsTweener tweener   = this.CompAnimator.PartTweener;
+                if (tweener != null)
+                {
+                    tweener.PartPositions[(int)rightFoot] =
+                    ground + groundPos.RightJoint + rightFootCycle;
+                    tweener.PreHandPosCalculation(rightFoot);
+                    GenDraw.DrawMeshNowOrLater(
+                                               footMeshRight,
+                                               tweener.TweenedPartsPos[(int)rightFoot],
+                                               drawQuat * Quaternion.AngleAxis(footAngleRight, Vector3.up),
+                                               matRight,
+                                               portrait);
+                }
             }
 
             if (MainTabWindow_BaseAnimator.Develop)
@@ -504,17 +516,19 @@ namespace FacialStuff
 
             Rot4 rot = this.BodyFacing;
 
+            if (body == null) return;
+
             JointLister shoulperPos = this.GetJointPositions(
                                                              body.shoulderOffsets[rot.AsInt],
                                                              body.shoulderOffsets[Rot4.North.AsInt].x,
                                                              carrying);
 
-            List<float> handSwingAngle = new List<float> { 0f, 0f };
-            List<float> shoulderAngle = new List<float> { 0f, 0f };
-            Vector3 rightHand = Vector3.zero;
-            Vector3 leftHand = Vector3.zero;
-            WalkCycleDef walkCycle = this.CompAnimator.WalkCycle;
-            PoseCycleDef poseCycle = this.CompAnimator.PoseCycle;
+            List<float>  handSwingAngle = new List<float> { 0f, 0f };
+            List<float>  shoulderAngle  = new List<float> { 0f, 0f };
+            Vector3      rightHand      = Vector3.zero;
+            Vector3      leftHand       = Vector3.zero;
+            WalkCycleDef walkCycle      = this.CompAnimator.WalkCycle;
+            PoseCycleDef poseCycle      = this.CompAnimator.PoseCycle;
 
             if (walkCycle != null)
             {
@@ -544,12 +558,12 @@ namespace FacialStuff
 
             Mesh handsMesh = this.HandMesh;
 
-            Material matLeft = this.LeftHandMat;
+            Material matLeft  = this.LeftHandMat;
             Material matRight = this.RightHandMat;
 
             if (MainTabWindow_BaseAnimator.Colored)
             {
-                matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeftCol?.MatSingle;
+                matLeft  = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeftCol?.MatSingle;
                 matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRightCol?.MatSingle;
             }
             else if (!carrying)
@@ -566,25 +580,25 @@ namespace FacialStuff
                 }
             }
 
-            bool drawLeft = matLeft != null && this.CompAnimator.BodyStat.HandLeft != PartStatus.Missing;
+            bool drawLeft  = matLeft  != null && this.CompAnimator.BodyStat.HandLeft  != PartStatus.Missing;
             bool drawRight = matRight != null && this.CompAnimator.BodyStat.HandRight != PartStatus.Missing;
 
             if (drawLeft)
             {
                 Quaternion quat;
-                Vector3 position;
+                Vector3    position;
                 if (!this.IsMoving && this.CompAnimator.SecondHandPosition != Vector3.zero)
                 {
                     position = this.CompAnimator.SecondHandPosition;
-                    quat = this.CompAnimator.WeaponQuat;
+                    quat     = this.CompAnimator.WeaponQuat;
                 }
                 else
                 {
                     shoulperPos.LeftJoint = bodyQuat * shoulperPos.LeftJoint;
-                    leftHand = bodyQuat * leftHand.RotatedBy(-handSwingAngle[0] - shoulderAngle[0]);
+                    leftHand              = bodyQuat * leftHand.RotatedBy(-handSwingAngle[0] - shoulderAngle[0]);
 
                     position = drawPos + shoulperPos.LeftJoint + leftHand;
-                    quat = bodyQuat * Quaternion.AngleAxis(-handSwingAngle[0], Vector3.up);
+                    quat     = bodyQuat * Quaternion.AngleAxis(-handSwingAngle[0], Vector3.up);
                 }
 
                 TweenThing handLeft = TweenThing.HandLeft;
@@ -594,20 +608,20 @@ namespace FacialStuff
             if (drawRight)
             {
                 Quaternion quat;
-                Vector3 position;
+                Vector3    position;
                 if (this.CompAnimator.FirstHandPosition != Vector3.zero)
                 {
-                    quat = this.CompAnimator.WeaponQuat;
+                    quat     = this.CompAnimator.WeaponQuat;
                     position = this.CompAnimator.FirstHandPosition;
                 }
                 else
                 {
                     shoulperPos.RightJoint = bodyQuat * shoulperPos.RightJoint;
-                    rightHand =
+                    rightHand              =
                     bodyQuat * rightHand.RotatedBy(handSwingAngle[1] - shoulderAngle[1]);
 
                     position = drawPos + shoulperPos.RightJoint + rightHand;
-                    quat = bodyQuat * Quaternion.AngleAxis(handSwingAngle[1], Vector3.up);
+                    quat     = bodyQuat * Quaternion.AngleAxis(handSwingAngle[1], Vector3.up);
                 }
 
                 TweenThing handRight = TweenThing.HandRight;
@@ -681,9 +695,9 @@ namespace FacialStuff
             {
                 BodyAnimDef animDef = this.CompAnimator.BodyAnim;
 
-                Dictionary<LocomotionUrgency, WalkCycleDef> cycles = animDef.walkCycles;
+                Dictionary<LocomotionUrgency, WalkCycleDef> cycles = animDef?.walkCycles;
 
-                if (cycles.Count > 0)
+                if (cycles != null && cycles.Count > 0)
                 {
                     if (cycles.TryGetValue(this.Pawn.CurJob.locomotionUrgency, out WalkCycleDef cycle))
                     {
@@ -727,9 +741,9 @@ namespace FacialStuff
             {
                 BodyAnimDef animDef = this.CompAnimator.BodyAnim;
 
-                List<PoseCycleDef> cycles = animDef.poseCycles;
+                List<PoseCycleDef> cycles = animDef?.poseCycles;
 
-                if (cycles.Count > 0)
+                if (cycles != null && cycles.Count > 0)
                 {
                     this.CompAnimator.PoseCycle = animDef.poseCycles.FirstOrDefault();
                 }
@@ -761,7 +775,7 @@ namespace FacialStuff
             if (animator != null)
             {
                 this.IsMoving = animator.IsMoving(out this.MovedPercent);
-                this._isPosing = animator.IsPosing(out this._animatedPercent);
+                animator.IsPosing(out this._animatedPercent);
             }
 
             // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
@@ -771,7 +785,7 @@ namespace FacialStuff
             this.CompAnimator.SecondHandPosition = Vector3.zero;
 
 
-            this.CompAnimator.PartTweener.Update(this.IsMoving, this.MovedPercent);
+            this.CompAnimator.PartTweener?.Update(this.IsMoving, this.MovedPercent);
 
         }
 
@@ -1012,12 +1026,14 @@ namespace FacialStuff
                                      TweenThing tweenThing,
                                      bool portrait)
         {
-            this.CompAnimator.PartTweener.PartPositions[(int)tweenThing] = position;
+            PawnPartsTweener tweener = this.CompAnimator.PartTweener;
+            if (tweener == null) return;
+            tweener.PartPositions[(int) tweenThing] = position;
 
-            this.CompAnimator.PartTweener.PreHandPosCalculation(tweenThing);
+            tweener.PreHandPosCalculation(tweenThing);
 
             GenDraw.DrawMeshNowOrLater(
-                                       handsMesh, this.CompAnimator.PartTweener.TweenedPartsPos[(int)tweenThing],
+                                       handsMesh, tweener.TweenedPartsPos[(int) tweenThing],
                                        quat,
                                        material,
                                        portrait);

@@ -54,7 +54,7 @@ namespace FacialStuff
             GUILayout.BeginArea(rect2);
             GUILayout.BeginVertical();
 
-            this.SelPawn.GetCompAnim(out CompBodyAnimator compAni);
+            this.SelPawn.GetCompAnim(out CompBodyAnimator _);
             if (compFace.IgnoreRenderer)
             {
                 this._rotation =  GUILayout.SelectionGrid(this._rotation, this._psiToolbarStrings, 4);

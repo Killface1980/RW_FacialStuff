@@ -1,4 +1,5 @@
-﻿using FacialStuff.AnimatorWindows;
+﻿using FacialStuff.Animator;
+using FacialStuff.AnimatorWindows;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -125,33 +126,43 @@ namespace FacialStuff
             var drawQuat = this.IsMoving ? footQuat : bodyQuat;
             Vector3 ground = rootLoc + drawQuat * new Vector3(0, 0, OffsetGroundZ);
 
-            this.CompAnimator.PartTweener.PartPositions[(int)TweenThing.HandLeft] = ground + jointPositions.LeftJoint + leftFootAnim;
-            this.CompAnimator.PartTweener.PartPositions[(int)TweenThing.HandRight] = ground + jointPositions.RightJoint +
-                                                rightFootAnim;
-
-            this.CompAnimator.PartTweener.PreHandPosCalculation();
-
-            if (matLeft != null)
+            PawnPartsTweener tweener = this.CompAnimator.PartTweener;
+            if (tweener != null)
             {
-                if (this.CompAnimator.BodyStat.FootLeft != PartStatus.Missing)
+                tweener.PartPositions[(int) TweenThing.HandLeft] =
+                ground + jointPositions.LeftJoint + leftFootAnim;
+                tweener.PartPositions[(int) TweenThing.HandRight] =
+                ground + jointPositions.RightJoint +
+                rightFootAnim;
+
+                tweener.PreHandPosCalculation();
+
+                if (matLeft != null)
                 {
-                    GenDraw.DrawMeshNowOrLater(
-                                               footMeshLeft, this.CompAnimator.PartTweener.TweenedPartsPos[(int)TweenThing.HandLeft]             ,
-                                               drawQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
-                                               matLeft,
-                                               portrait);
+                    if (this.CompAnimator.BodyStat.FootLeft != PartStatus.Missing)
+                    {
+                        GenDraw.DrawMeshNowOrLater(
+                                                   footMeshLeft,
+                                                   tweener.TweenedPartsPos
+                                                   [(int) TweenThing.HandLeft],
+                                                   drawQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
+                                                   matLeft,
+                                                   portrait);
+                    }
                 }
-            }
 
-            if (matRight != null)
-            {
-                if (this.CompAnimator.BodyStat.FootRight != PartStatus.Missing)
+                if (matRight != null)
                 {
-                    GenDraw.DrawMeshNowOrLater(
-                                               footMeshRight, this.CompAnimator.PartTweener.TweenedPartsPos[(int)TweenThing.HandRight],
-                                               drawQuat*Quaternion.AngleAxis(footAngleRight, Vector3.up),
-                                               matRight,
-                                               portrait);
+                    if (this.CompAnimator.BodyStat.FootRight != PartStatus.Missing)
+                    {
+                        GenDraw.DrawMeshNowOrLater(
+                                                   footMeshRight,
+                                                   tweener.TweenedPartsPos
+                                                   [(int) TweenThing.HandRight],
+                                                   drawQuat * Quaternion.AngleAxis(footAngleRight, Vector3.up),
+                                                   matRight,
+                                                   portrait);
+                    }
                 }
             }
 
