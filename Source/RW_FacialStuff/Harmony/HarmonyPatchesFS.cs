@@ -1,5 +1,7 @@
 ﻿// ReSharper disable All
 
+using System;
+using System.Reflection.Emit;
 using FacialStuff.HairCut;
 using JetBrains.Annotations;
 
@@ -25,7 +27,7 @@ namespace FacialStuff.Harmony
         {
             HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.mod");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
-
+            HarmonyInstance.DEBUG = true;
             // harmony.Patch(AccessTools.Method(typeof(PawnRenderer), "RenderPawnInternal", new Type[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) }), null, null, new HarmonyMethod(typeof(Alien), nameof(Alien.RenderPawnInternalTranspiler)));
 
             // harmony.Patch(
@@ -35,6 +37,7 @@ namespace FacialStuff.Harmony
             // new HarmonyMethod(
             // typeof(Dialog_Options_DoWindowContents_Patch),
             // nameof(Dialog_Options_DoWindowContents_Patch.Transpiler)));
+
             harmony.Patch(
                           AccessTools.Method(typeof(Page_ConfigureStartingPawns), "DrawPortraitArea"),
                           null,
@@ -47,9 +50,11 @@ namespace FacialStuff.Harmony
 
             harmony.Patch(
                           AccessTools.Method(typeof(PawnRenderer), nameof(PawnRenderer.DrawEquipmentAiming)),
-                          new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DrawEquipmentAiming)),
+                          new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DrawEquipmentAiming_Prefix)),
                           null,
-                          null);
+                          //            null);
+                          new HarmonyMethod(typeof(HarmonyPatchesFS),
+                                            nameof(HarmonyPatchesFS.DrawEquipmentAiming_Transpiler)));
 
             // harmony.Patch(
             // AccessTools.Method(
@@ -567,21 +572,24 @@ namespace FacialStuff.Harmony
 
         public static bool Aiming(Pawn pawn)
         {
+            Log.Message(pawn.LabelShort);
             return pawn.stances.curStance is Stance_Busy stanceBusy && !stanceBusy.neverAimWeapon &&
                    stanceBusy.focusTarg.IsValid;
         }
+
         public static bool CarryWeaponOpenly(Pawn pawn)
         {
             return pawn.carryTracker?.CarriedThing == null &&
-                   (pawn.Drafted                                                      ||
-                    (pawn.CurJob         != null && pawn.CurJob.def.alwaysShowWeapon) ||
+                   (pawn.Drafted ||
+                    (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon) ||
                     (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
         }
+
         public static bool DrawEquipmentAiming(PawnRenderer __instance, Thing eq, Vector3 drawLoc, float aimAngle)
         {
-            var pawn = __instance.graphics.pawn;
+            Pawn pawn = __instance.graphics.pawn;
             ThingWithComps equipment = eq as ThingWithComps;
-            var weaponDrawLoc = drawLoc;
+            Vector3 weaponDrawLoc = drawLoc;
 
             // Flip it for north
             if (CarryWeaponOpenly(pawn) && pawn.Rotation == Rot4.North)
@@ -612,7 +620,6 @@ namespace FacialStuff.Harmony
             {
                 weaponPositionOffset += new Vector3(0, -0.5f, 0);
             }
-
 
 
             bool flipped;
@@ -693,6 +700,141 @@ namespace FacialStuff.Harmony
             return false;
         }
 
+
+        public static void DrawEquipmentAiming_Prefix(PawnRenderer __instance, Thing eq, ref Vector3 drawLoc,
+                                                      ref float aimAngle)
+        {
+            Pawn pawn = __instance.graphics.pawn;
+            ThingWithComps equipment = eq as ThingWithComps;
+            Vector3 weaponDrawLoc = drawLoc;
+
+            // Flip it for north
+            //  if (CarryWeaponOpenly(pawn) && pawn.Rotation == Rot4.North && aimAngle== 143f)
+            if (pawn.Rotation == Rot4.North && aimAngle == 143f)
+            {
+                aimAngle = 217f;
+            }
+
+            // if (pawn.Rotation == Rot4.West)
+            // {
+            //     drawLoc.y -= 0.05f;
+            // }
+        }
+
+        private static readonly FieldInfo pawnField = AccessTools.Field(typeof(Pawn_EquipmentTracker), "pawn");
+
+        public static IEnumerable<CodeInstruction> DrawEquipmentAiming_Transpiler(
+        IEnumerable<CodeInstruction> instructions,
+        ILGenerator ilGen)
+        {
+            List<CodeInstruction> instructionList = instructions.ToList();
+
+            int index = instructionList.FindIndex(x => x.opcode == OpCodes.Ldloc_0);
+            instructionList.InsertRange(index, new List<CodeInstruction>
+                                                   {
+                                                   // DoCalculations(eq, ref myDrawLoc, ref myAimAngle);
+                                                   new CodeInstruction(OpCodes.Ldarg_1),
+                                                   new CodeInstruction(OpCodes.Ldarga, 2),
+                                                   new CodeInstruction(OpCodes.Ldloca_S, 1),
+                                                   new CodeInstruction(OpCodes.Ldarg_3),
+                                                   new CodeInstruction(OpCodes.Call,
+                                                                       AccessTools.Method(typeof(HarmonyPatchesFS),
+                                                                                          nameof(DoCalculations))),
+    });
+            instructionList[index].labels.Add(ilGen.DefineLabel());
+            return instructionList;
+        }
+
+
+        private static void ChangeAngleForNorth(Pawn pawn, ref float aimAngle)
+        {
+            if (CarryWeaponOpenly(pawn) && pawn.Rotation == Rot4.North)
+            {
+                aimAngle = 217f;
+            }
+        }
+
+        public static void DoCalculations(Thing eq, ref Vector3 drawLoc, ref float weaponAngle, float aimAngle)
+        {
+            Pawn pawn = (Pawn)pawnField?.GetValue(eq.ParentHolder as Pawn_EquipmentTracker);
+            if (pawn == null)
+            {
+                return;
+            }
+
+            bool aiming = Aiming(pawn);
+            Vector3 weaponPositionOffset = Vector3.zero;
+
+            CompProperties_WeaponExtensions compWeaponExtensions =
+            eq.def.GetCompProperties<CompProperties_WeaponExtensions>();
+
+            // Return if nothing to do
+            if (compWeaponExtensions == null)
+            {
+                return;
+            }
+
+            if (!pawn.GetCompAnim(out CompBodyAnimator animator))
+            {
+                return;
+            }
+
+            if (pawn.Rotation == Rot4.West || pawn.Rotation == Rot4.North)
+            {
+                weaponPositionOffset += new Vector3(0, -0.5f, 0);
+            }
+
+            bool flipped = false;
+            if (compWeaponExtensions != null)
+            {
+                if (aimAngle > 200f && aimAngle < 340f)
+                {
+                    if (aiming)
+                    {
+                        weaponAngle -= compWeaponExtensions?.AttackAngleOffset ?? 0;
+                    }
+
+
+                    weaponPositionOffset += compWeaponExtensions.WeaponPositionOffset;
+
+                    // flip x position offset
+                    weaponPositionOffset.x *= -1;
+                    flipped = true;
+                }
+                else
+                {
+                    if (aiming)
+                    {
+                        weaponAngle += compWeaponExtensions?.AttackAngleOffset ?? 0;
+                    }
+
+                    weaponPositionOffset += compWeaponExtensions.WeaponPositionOffset;
+                }
+            }
+
+            // weapon angle and position offsets based on current attack keyframes sequence
+
+            DoAttackAnimationOffsets(pawn, ref weaponAngle, ref weaponPositionOffset, flipped, animator);
+
+            animator.PartTweener.PartPositions[(int)TweenThing.Equipment] = drawLoc + weaponPositionOffset;
+
+            animator.PartTweener.PreHandPosCalculation(TweenThing.Equipment);
+
+            drawLoc = animator.PartTweener.TweenedPartsPos[(int)TweenThing.Equipment];
+
+
+            // Now the remaining hands if possible
+            if (animator.Props.bipedWithHands && Controller.settings.UseHands)
+            {
+                CalculateHandsAiming(
+                                     drawLoc,
+                                     flipped,
+                                     weaponAngle,
+                                     compWeaponExtensions, animator, pawn);
+            }
+        }
+
+
         public static void DoAttackAnimationOffsets(Pawn pawn, ref float weaponAngle,
                                                     ref Vector3 weaponPosition,
                                                     bool flipped, CompBodyAnimator animator)
@@ -753,7 +895,10 @@ namespace FacialStuff.Harmony
         {
             // Prepare everything for DrawHands, but do nothing
 
-            if (compWeaponExtensions == null) return;
+            if (compWeaponExtensions == null)
+            {
+                return;
+            }
 
             animator.FirstHandPosition = compWeaponExtensions.RightHandPosition;
             animator.SecondHandPosition = compWeaponExtensions.LeftHandPosition;
@@ -800,60 +945,60 @@ namespace FacialStuff.Harmony
             animator.WeaponQuat = Quaternion.AngleAxis(weaponAngle, Vector3.up);
         }
 
-        // [HarmonyPatch(typeof(Dialog_Options))]
-        // [HarmonyPatch("DoWindowContents")]
-        // internal static class Dialog_Options_DoWindowContents_Patch
-        // {
-        // public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        // {
-        // MethodInfo m_set_HatsOnlyOnMap = AccessTools.Method(typeof(Prefs), "set_HatsOnlyOnMap");
-        // MethodInfo m_MoreStuff = AccessTools.Method(typeof(Dialog_Options_DoWindowContents_Patch), "MoreStuff");
-        // foreach (CodeInstruction instruction in instructions)
-        // {
-        // yield return instruction;
-        // if (instruction.opcode == OpCodes.Call && instruction.operand == m_set_HatsOnlyOnMap)
-        // {
-        // yield return new CodeInstruction(OpCodes.Ldloc_1);
-        // yield return new CodeInstruction(OpCodes.Call, m_MoreStuff);
-        // }
-        // }
-        // }
-        // private static void MoreStuff(Listing_Standard listing_Standard)
-        // {
-        // bool hideHatWhileRoofed = Controller.settings.HideHatWhileRoofed;
-        // listing_Standard.CheckboxLabeled(
-        // "Settings.HideHatWhileRoofed".Translate(),
-        // ref hideHatWhileRoofed,
-        // "Settings.HideHatWhileRoofedTooltip".Translate());
-        // bool showHeadWear = Controller.settings.FilterHats;
-        // listing_Standard.CheckboxLabeled(
-        // "Settings.FilterHats".Translate(),
-        // ref showHeadWear,
-        // "Settings.FilterHatsTooltip".Translate());
-        // bool hideHatsInBed = Controller.settings.HideHatInBed;
-        // listing_Standard.CheckboxLabeled(
-        // "Settings.HideHatInBed".Translate(),
-        // ref hideHatsInBed,
-        // "Settings.HideHatInBedTooltip".Translate());
-        // if (GUI.changed)
-        // {
-        // if (showHeadWear != Controller.settings.FilterHats)
-        // {
-        // Controller.settings.FilterHats = showHeadWear;
-        // Controller.settings.Write();
-        // }
-        // if (hideHatWhileRoofed != Controller.settings.HideHatWhileRoofed)
-        // {
-        // Controller.settings.HideHatWhileRoofed = hideHatWhileRoofed;
-        // Controller.settings.Write();
-        // }
-        // if (hideHatsInBed != Controller.settings.HideHatInBed)
-        // {
-        // Controller.settings.HideHatInBed = hideHatsInBed;
-        // Controller.settings.Write();
-        // }
-        // }
-        // }
-        // }
+        //[HarmonyPatch(typeof(Dialog_Options))]
+        //[HarmonyPatch("DoWindowContents")]
+        //internal static class Dialog_Options_DoWindowContents_Patch
+        //{
+        //    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        //    {
+        //        MethodInfo m_set_HatsOnlyOnMap = AccessTools.Method(typeof(Prefs), "set_HatsOnlyOnMap");
+        //        MethodInfo m_MoreStuff = AccessTools.Method(typeof(Dialog_Options_DoWindowContents_Patch), "MoreStuff");
+        //        foreach (CodeInstruction instruction in instructions)
+        //        {
+        //            yield return instruction;
+        //            if (instruction.opcode == OpCodes.Call && instruction.operand == m_set_HatsOnlyOnMap)
+        //            {
+        //                yield return new CodeInstruction(OpCodes.Ldloc_1);
+        //                yield return new CodeInstruction(OpCodes.Call, m_MoreStuff);
+        //            }
+        //        }
+        //    }
+        //    private static void MoreStuff(Listing_Standard listing_Standard)
+        //  {
+        //      bool hideHatWhileRoofed = Controller.settings.HideHatWhileRoofed;
+        //      listing_Standard.CheckboxLabeled(
+        //      "Settings.HideHatWhileRoofed".Translate(),
+        //      ref hideHatWhileRoofed,
+        //      "Settings.HideHatWhileRoofedTooltip".Translate());
+        //      bool showHeadWear = Controller.settings.FilterHats;
+        //      listing_Standard.CheckboxLabeled(
+        //      "Settings.FilterHats".Translate(),
+        //      ref showHeadWear,
+        //      "Settings.FilterHatsTooltip".Translate());
+        //      bool hideHatsInBed = Controller.settings.HideHatInBed;
+        //      listing_Standard.CheckboxLabeled(
+        //      "Settings.HideHatInBed".Translate(),
+        //      ref hideHatsInBed,
+        //      "Settings.HideHatInBedTooltip".Translate());
+        //      if (GUI.changed)
+        //      {
+        //          if (showHeadWear != Controller.settings.FilterHats)
+        //          {
+        //              Controller.settings.FilterHats = showHeadWear;
+        //              Controller.settings.Write();
+        //          }
+        //          if (hideHatWhileRoofed != Controller.settings.HideHatWhileRoofed)
+        //          {
+        //              Controller.settings.HideHatWhileRoofed = hideHatWhileRoofed;
+        //              Controller.settings.Write();
+        //          }
+        //          if (hideHatsInBed != Controller.settings.HideHatInBed)
+        //          {
+        //              Controller.settings.HideHatInBed = hideHatsInBed;
+        //              Controller.settings.Write();
+        //          }
+        //      }
+        //  }
+        //}
     }
 }

@@ -349,7 +349,10 @@ namespace FacialStuff
 
             // Basic values
             BodyAnimDef body = this.CompAnimator.BodyAnim;
-            if (body == null) return;
+            if (body == null)
+            {
+                return;
+            }
 
             JointLister groundPos = this.GetJointPositions(
                                                            body.hipOffsets[rot.AsInt],
@@ -516,7 +519,10 @@ namespace FacialStuff
 
             Rot4 rot = this.BodyFacing;
 
-            if (body == null) return;
+            if (body == null)
+            {
+                return;
+            }
 
             JointLister shoulperPos = this.GetJointPositions(
                                                              body.shoulderOffsets[rot.AsInt],
@@ -857,7 +863,7 @@ namespace FacialStuff
             float bodySize = this.Pawn.def.race.baseBodySize;
             if (Math.Abs(bodySize - 1f) > 0.05f)
             {
-                var curve = new SimpleCurve { new CurvePoint(0f, 0.5f), new CurvePoint(1f, 1f) };
+                SimpleCurve curve = new SimpleCurve { new CurvePoint(0f, 0.5f), new CurvePoint(1f, 1f) };
                 float mod = curve.Evaluate(bodySize);
                 rightFoot.x *= mod;
                 rightFoot.z *= mod;
@@ -1027,7 +1033,11 @@ namespace FacialStuff
                                      bool portrait)
         {
             PawnPartsTweener tweener = this.CompAnimator.PartTweener;
-            if (tweener == null) return;
+            if (tweener == null)
+            {
+                return;
+            }
+
             tweener.PartPositions[(int) tweenThing] = position;
 
             tweener.PreHandPosCalculation(tweenThing);

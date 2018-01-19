@@ -323,6 +323,7 @@ namespace FacialStuff.AnimatorWindows
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
 
                 if (PawnKeyframes != null)
+                {
                     for (int index = 0; index < PawnKeyframes.Count - 1; index++)
                     {
                         PawnKeyframe keyframe = PawnKeyframes[index];
@@ -337,6 +338,7 @@ namespace FacialStuff.AnimatorWindows
                                                          this.ReIndexKeyframes();
                                                      }));
                     }
+                }
 
                 Find.WindowStack.Add(new FloatMenu(list));
             }
@@ -371,13 +373,21 @@ namespace FacialStuff.AnimatorWindows
             get
             {
                 PawnKeyframe currentFrame = this.CurrentFrame;
-                if (currentFrame != null) return currentFrame.Shift;
+                if (currentFrame != null)
+                {
+                    return currentFrame.Shift;
+                }
+
                 return 0f;
             }
 
             set
             {
-                if (this.CurrentFrame == null) return;
+                if (this.CurrentFrame == null)
+                {
+                    return;
+                }
+
                 if (Math.Abs(value) < 0.05f)
                 {
                     this.CurrentFrame.Status = KeyStatus.Automatic;

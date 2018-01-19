@@ -290,7 +290,10 @@ namespace FacialStuff.AnimatorWindows
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         protected override void DrawKeyframeEditor(Rect controller, Rot4 rotation)
         {
-            if (this.CurrentFrame== null)return;
+            if (this.CurrentFrame== null)
+            {
+                return;
+            }
 
             Rect leftController = controller.LeftHalf();
             Rect rightController = controller.RightHalf();

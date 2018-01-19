@@ -12,7 +12,9 @@ namespace FacialStuff.AI
         private readonly TargetIndex TargetInd = TargetIndex.A;
 
         private int         ticksLeft;
+/*
         private TargetIndex VomitInd = TargetIndex.B;
+*/
 
         private Pawn Target => (Pawn) (Thing) this.pawn.CurJob.GetTarget(this.TargetInd);
 

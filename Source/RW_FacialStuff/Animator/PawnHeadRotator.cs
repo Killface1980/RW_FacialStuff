@@ -170,8 +170,16 @@ namespace FacialStuff.Animator
                 // ReSharper disable once PossibleNullReferenceException
                 foreach (IAttackTarget attackTarget in potentialTargetsFor)
                 {
-                    if (attackTarget == null || attackTarget.ThreatDisabled()) continue;
-                    if (!p.Position.InHorDistOf(((Thing) attackTarget).Position, radius)) continue;
+                    if (attackTarget == null || attackTarget.ThreatDisabled())
+                    {
+                        continue;
+                    }
+
+                    if (!p.Position.InHorDistOf(((Thing) attackTarget).Position, radius))
+                    {
+                        continue;
+                    }
+
                     enemy = true;
                     break;
                 }
@@ -281,8 +289,11 @@ namespace FacialStuff.Animator
                     {
                         Thing thing = intVec.GetThingList(this._pawn.Map)?.Find(x => x is Pawn);
 
-                        if (!(thing is Pawn otherPawn) || otherPawn == this._pawn || otherPawn.Dead || otherPawn.Downed) continue;
-                        
+                        if (!(thing is Pawn otherPawn) || otherPawn == this._pawn || otherPawn.Dead || otherPawn.Downed)
+                        {
+                            continue;
+                        }
+
                         if (GenSight.LineOfSight(position, intVec, this._pawn.Map))
                         {
                             // Log.Message(this.pawn + " will look at random pawn " + thing);

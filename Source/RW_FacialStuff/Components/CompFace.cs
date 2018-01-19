@@ -16,15 +16,21 @@ namespace FacialStuff
     {
         #region Public Fields
 
-        public bool Deactivated;
+        public FacePartStats BodyStat;
 
         [CanBeNull] public PawnFaceGraphic PawnFaceGraphic;
 
+        public bool Deactivated;
         public bool IgnoreRenderer;
-
+        public bool IsAsleep;
         public bool IsChild;
-
         public bool NeedsStyling = true;
+
+        [CanBeNull] public string TexPathEyeLeft;
+        [CanBeNull] public string TexPathEyeLeftPatch;
+        [CanBeNull] public string TexPathEyeRight;
+        [CanBeNull] public string TexPathEyeRightPatch;
+        [CanBeNull] public string TexPathJawAddedPart;
 
         #endregion Public Fields
 
@@ -32,15 +38,12 @@ namespace FacialStuff
 
         private Vector2 _eyeOffset = Vector2.zero;
 
-        [NotNull]
-        public List<PawnHeadDrawer> PawnHeadDrawers { get; private set; }
-
         private Faction _factionInt;
 
         private float _factionMelanin;
 
-        // private float blinkRate;
-        // public PawnHeadWiggler headWiggler;
+        private bool _initialized;
+
         private Vector2 _mouthOffset = Vector2.zero;
 
         // must be null, always initialize with pawn
@@ -76,9 +79,6 @@ namespace FacialStuff
             get { return this._factionInt; }
         }
 
-        [NotNull]
-        public Pawn Pawn => this.parent as Pawn;
-
         public CrownType PawnCrownType => this.Pawn?.story.crownType ?? CrownType.Average;
 
         [CanBeNull]
@@ -112,8 +112,17 @@ namespace FacialStuff
             get { return (CompProperties_Face) this.props; }
         }
 
+        [NotNull]
+        public Pawn Pawn => this.parent as Pawn;
+
         #endregion Public Properties
 
+        #region Private Properties
+
+        [NotNull]
+        private List<PawnHeadDrawer> PawnHeadDrawers { get; set; }
+
+        #endregion Private Properties
 
         #region Public Methods
 
@@ -183,18 +192,19 @@ namespace FacialStuff
                 {
                     case HeadType.Normal:
                         this._eyeOffset = male
-                                         ? MeshPoolFs.EyeMaleNarrowNormalOffset
-                                         : MeshPoolFs.EyeFemaleNarrowNormalOffset;
+                                          ? MeshPoolFs.EyeMaleNarrowNormalOffset
+                                          : MeshPoolFs.EyeFemaleNarrowNormalOffset;
                         break;
 
                     case HeadType.Pointy:
                         this._eyeOffset = male
-                                         ? MeshPoolFs.EyeMaleNarrowPointyOffset
-                                         : MeshPoolFs.EyeFemaleNarrowPointyOffset;
+                                          ? MeshPoolFs.EyeMaleNarrowPointyOffset
+                                          : MeshPoolFs.EyeFemaleNarrowPointyOffset;
                         break;
 
                     case HeadType.Wide:
-                        this._eyeOffset = male ? MeshPoolFs.EyeMaleNarrowWideOffset : MeshPoolFs.EyeFemaleNarrowWideOffset;
+                        this._eyeOffset =
+                        male ? MeshPoolFs.EyeMaleNarrowWideOffset : MeshPoolFs.EyeFemaleNarrowWideOffset;
                         break;
                 }
             }
@@ -202,10 +212,32 @@ namespace FacialStuff
             switch (rotation.AsInt)
             {
                 case 1:  return new Vector3(this._eyeOffset.x,  0f, -this._eyeOffset.y);
-                case 2:  return new Vector3(0,             0f, -this._eyeOffset.y);
+                case 2:  return new Vector3(0,                  0f, -this._eyeOffset.y);
                 case 3:  return new Vector3(-this._eyeOffset.x, 0f, -this._eyeOffset.y);
                 default: return Vector3.zero;
             }
+        }
+
+        // public Vector3 RightHandPosition;
+        // public Vector3 LeftHandPosition;
+        public Vector3 BaseHeadOffsetAt(bool portrait)
+        {
+            Vector3 offset = Vector3.zero;
+
+            if (this.PawnHeadDrawers.NullOrEmpty())
+            {
+                return offset;
+            }
+
+            int i     = 0;
+            int count = this.PawnHeadDrawers.Count;
+            while (i < count)
+            {
+                this.PawnHeadDrawers[i].BaseHeadOffsetAt(ref offset, portrait);
+                i++;
+            }
+
+            return offset;
         }
 
         // only for development
@@ -260,19 +292,19 @@ namespace FacialStuff
                 {
                     case HeadType.Normal:
                         this._mouthOffset =
-                            male ? MeshPoolFs.MouthMaleNarrowNormalOffset : MeshPoolFs.MouthFemaleNarrowNormalOffset;
+                        male ? MeshPoolFs.MouthMaleNarrowNormalOffset : MeshPoolFs.MouthFemaleNarrowNormalOffset;
 
                         break;
 
                     case HeadType.Pointy:
                         this._mouthOffset =
-                            male ? MeshPoolFs.MouthMaleNarrowPointyOffset : MeshPoolFs.MouthFemaleNarrowPointyOffset;
+                        male ? MeshPoolFs.MouthMaleNarrowPointyOffset : MeshPoolFs.MouthFemaleNarrowPointyOffset;
 
                         break;
 
                     case HeadType.Wide:
                         this._mouthOffset =
-                            male ? MeshPoolFs.MouthMaleNarrowWideOffset : MeshPoolFs.MouthFemaleNarrowWideOffset;
+                        male ? MeshPoolFs.MouthMaleNarrowWideOffset : MeshPoolFs.MouthFemaleNarrowWideOffset;
 
                         break;
                 }
@@ -281,7 +313,7 @@ namespace FacialStuff
             switch (rotation.AsInt)
             {
                 case 1:  return new Vector3(this._mouthOffset.x,  0f, -this._mouthOffset.y);
-                case 2:  return new Vector3(0,               0f, -this._mouthOffset.y);
+                case 2:  return new Vector3(0,                    0f, -this._mouthOffset.y);
                 case 3:  return new Vector3(-this._mouthOffset.x, 0f, -this._mouthOffset.y);
                 default: return Vector3.zero;
             }
@@ -328,7 +360,6 @@ namespace FacialStuff
         }
 
 
-
         public void DrawBasicHead(out bool    headDrawn, RotDrawMode bodyDrawType, bool portrait, bool headStump,
                                   ref Vector3 locFacialY, Quaternion headQuat)
         {
@@ -343,12 +374,12 @@ namespace FacialStuff
             while (i < count)
             {
                 this.PawnHeadDrawers[i].DrawBasicHead(
-                                             headQuat,
-                                             bodyDrawType,
-                                             headStump,
-                                             portrait,
-                                             ref locFacialY,
-                                             out headDrawn);
+                                                      headQuat,
+                                                      bodyDrawType,
+                                                      headStump,
+                                                      portrait,
+                                                      ref locFacialY,
+                                                      out headDrawn);
                 i++;
             }
         }
@@ -398,13 +429,13 @@ namespace FacialStuff
             while (i < count)
             {
                 this.PawnHeadDrawers[i]?.DrawHairAndHeadGear(
-                                                    rootLoc,
-                                                    headQuat,
-                                                    bodyDrawType,
-                                                    renderBody,
-                                                    portrait,
-                                                    b,
-                                                    ref currentLoc);
+                                                             rootLoc,
+                                                             headQuat,
+                                                             bodyDrawType,
+                                                             renderBody,
+                                                             portrait,
+                                                             b,
+                                                             ref currentLoc);
                 i++;
             }
         }
@@ -497,6 +528,12 @@ namespace FacialStuff
             }
         }
 
+        [NotNull]
+        public string EyeClosedTexPath(Side side)
+        {
+            return this.EyeTexPath("Closed", side);
+        }
+
         // TODO: Remove or make usable
         // public void DefineSkinDNA()
         // {
@@ -534,6 +571,48 @@ namespace FacialStuff
             return def.texPath + "_" + this.PawnCrownType;
         }
 
+        /// <summary>
+        /// Basic pawn initialization.
+        /// </summary>
+        /// <returns>
+        /// Success if all initialized.
+        /// </returns>
+        public bool InitializeCompFace()
+        {
+            if (this.OriginFaction == null)
+            {
+                this._factionInt = this.Pawn.Faction ?? Faction.OfPlayer;
+            }
+
+            if (this.PawnFace == null)
+            {
+                this.SetPawnFace(new PawnFace(this, this.OriginFaction?.def));
+            }
+
+            // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
+            if (this.PawnFace?.EyeDef == null || this.PawnFace.BrowDef == null || this.PawnFace.BeardDef == null)
+            {
+                this.SetPawnFace(new PawnFace(this, Faction.OfPlayer.def));
+            }
+
+            // Only for the crowntype ...
+            CrownTypeChecker.SetHeadOffsets(this.Pawn, this);
+
+            if (this.Props.hasEyes)
+            {
+                this.EyeWiggler = new PawnEyeWiggler(this);
+            }
+
+            this.PawnFaceGraphic = new PawnFaceGraphic(this);
+            this.FaceMaterial    = new FaceMaterial(this, this.PawnFaceGraphic);
+
+            // this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
+            this.HeadRotator = new PawnHeadRotator(this.Pawn);
+
+            // this.headWiggler = new PawnHeadWiggler(this.pawn);
+            return true;
+        }
+
         public void InitializePawnDrawer()
         {
             if (this.Props.drawers.Any())
@@ -542,7 +621,7 @@ namespace FacialStuff
                 for (int i = 0; i < this.Props.drawers.Count; i++)
                 {
                     PawnHeadDrawer thingComp =
-                        (PawnHeadDrawer) Activator.CreateInstance(this.Props.drawers[i].GetType());
+                    (PawnHeadDrawer) Activator.CreateInstance(this.Props.drawers[i].GetType());
                     thingComp.CompFace = this;
                     thingComp.Pawn     = this.Pawn;
                     this.PawnHeadDrawers.Add(thingComp);
@@ -551,17 +630,15 @@ namespace FacialStuff
             }
             else
             {
-                this.PawnHeadDrawers              = new List<PawnHeadDrawer>();
+                this.PawnHeadDrawers     = new List<PawnHeadDrawer>();
                 PawnHeadDrawer thingComp =
-                    (PawnHeadDrawer) Activator.CreateInstance(typeof(HumanHeadDrawer));
+                (PawnHeadDrawer) Activator.CreateInstance(typeof(HumanHeadDrawer));
                 thingComp.CompFace = this;
                 thingComp.Pawn     = this.Pawn;
                 this.PawnHeadDrawers.Add(thingComp);
                 thingComp.Initialize();
             }
         }
-
-        public bool IsAsleep;
 
         public override void PostDraw()
         {
@@ -646,99 +723,10 @@ namespace FacialStuff
             // }
         }
 
-        /// <summary>
-        /// Basic pawn initialization.
-        /// </summary>
-        /// <returns>
-        /// Success if all initialized.
-        /// </returns>
-        public bool InitializeCompFace()
-        {
-            if (this.OriginFaction == null)
-            {
-                this._factionInt = this.Pawn.Faction ?? Faction.OfPlayer;
-            }
-
-            if (this.PawnFace == null)
-            {
-                this.SetPawnFace(new PawnFace(this, this.OriginFaction?.def));
-            }
-
-            // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
-            if (this.PawnFace?.EyeDef == null || this.PawnFace.BrowDef == null || this.PawnFace.BeardDef == null)
-            {
-                this.SetPawnFace(new PawnFace(this, Faction.OfPlayer.def));
-            }
-
-            // Only for the crowntype ...
-            CrownTypeChecker.SetHeadOffsets(this.Pawn, this);
-
-            if (this.Props.hasEyes)
-            {
-                this.EyeWiggler = new PawnEyeWiggler(this);
-            }
-
-            this.PawnFaceGraphic = new PawnFaceGraphic(this);
-            this.FaceMaterial    = new FaceMaterial(this, this.PawnFaceGraphic);
-
-            // this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
-            this.HeadRotator = new PawnHeadRotator(this.Pawn);
-
-            // this.headWiggler = new PawnHeadWiggler(this.pawn);
-            return true;
-        }
-
         public void SetPawnFace([NotNull] PawnFace importedFace)
         {
             this._pawnFace = importedFace;
         }
-
-        // Verse.PawnGraphicSet
-
-        #endregion Public Methods
-
-        #region Private Methods
-
-        [CanBeNull] public string TexPathEyeLeftPatch;
-
-        [CanBeNull] public string TexPathJawAddedPart;
-
-        [CanBeNull] public string TexPathEyeLeft;
-
-        [CanBeNull] public string TexPathEyeRight;
-
-        [CanBeNull] public string TexPathEyeRightPatch;
-
-        [NotNull]
-        public string EyeClosedTexPath(Side side)
-        {
-            return this.EyeTexPath("Closed", side);
-        }
-
-        #endregion Private Methods
-
-        // public Vector3 RightHandPosition;
-        // public Vector3 LeftHandPosition;
-        public Vector3 BaseHeadOffsetAt(bool portrait)
-        {
-            Vector3 offset = Vector3.zero;
-
-            if (this.PawnHeadDrawers.NullOrEmpty()) return offset;
-
-            int i     = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i].BaseHeadOffsetAt(ref offset, portrait);
-                i++;
-            }
-
-            return offset;
-        }
-
-        public FacePartStats BodyStat;
-
-        private bool _initialized;
 
         public void TickDrawers(Rot4 bodyFacing, Rot4 headFacing, PawnGraphicSet graphics)
         {
@@ -759,5 +747,7 @@ namespace FacialStuff
                 }
             }
         }
+
+        #endregion Public Methods
     }
 }

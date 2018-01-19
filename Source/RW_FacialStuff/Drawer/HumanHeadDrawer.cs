@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FacialStuff.AnimatorWindows;
-using FacialStuff.GraphicsFS;
 using FacialStuff.HairCut;
 using RimWorld;
 using UnityEngine;

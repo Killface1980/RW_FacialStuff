@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using FacialStuff.Defs;
-using FacialStuff.GraphicsFS;
 using FacialStuff.HairCut;
 using JetBrains.Annotations;
 using RimWorld;
@@ -175,10 +174,12 @@ namespace FacialStuff
 
                         // Log.Message(cycle.defName + " has " + cycle.animation.Count);
                         if (cycle.keyframes != null)
+                        {
                             foreach (PawnKeyframe key in cycle.keyframes)
                             {
                                 BuildAnimationKeys(key, cycle);
                             }
+                        }
                     }
                 }
             }
@@ -582,7 +583,10 @@ namespace FacialStuff
                     {
                         string   t        = pawnSets.thingTargets[j];
                         ThingDef thingDef = ThingDef.Named(t);
-                        if (thingDef == null) continue;
+                        if (thingDef == null)
+                        {
+                            continue;
+                        }
                         //if (DefDatabase<BodyAnimDef>
                         //   .AllDefsListForReading.Any(x => x.defName.Contains(thingDef.defName))) continue;
                         if (thingDef.HasComp(typeof(CompBodyAnimator)))

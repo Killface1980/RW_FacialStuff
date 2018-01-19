@@ -123,7 +123,7 @@ namespace FacialStuff
             }
 
 
-            var drawQuat = this.IsMoving ? footQuat : bodyQuat;
+            Quaternion drawQuat = this.IsMoving ? footQuat : bodyQuat;
             Vector3 ground = rootLoc + drawQuat * new Vector3(0, 0, OffsetGroundZ);
 
             PawnPartsTweener tweener = this.CompAnimator.PartTweener;
