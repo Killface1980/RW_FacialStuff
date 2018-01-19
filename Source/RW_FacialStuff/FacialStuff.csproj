@@ -136,7 +136,7 @@
     <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
     <Compile Include="Harmony\Optional\Vampire_Patches.cs" />
     <Compile Include="Drawer\HumanHeadDrawer.cs" />
-    <Compile Include="Utilities\Class1.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Utilities\CrownTypeChecker.cs" />
     <None Include="FaceEditor\Job_FaceStylingJoy.cs" />
     <Compile Include="Components\CompFaceEditor.cs" />
@@ -308,8 +308,11 @@
       <Link>Defs\xml\Face\MouthDef.xml</Link>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="..\..\Defs\ThingDefs\Dummy.xml">
-      <Link>Defs\xml\Dummy.xml</Link>
+    <Content Include="..\..\Defs\ThingDefs\HandDefs_Weapons_LightSabers.xml">
+      <Link>Defs\xml\HandDefs_Weapons_LightSabers.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\ThingDefs\HandDefs_Weapons_Vanilla.xml">
+      <Link>Defs\xml\HandDefs_Weapons_Vanilla.xml</Link>
     </Content>
     <Content Include="..\..\Defs\ThingDefs\PawnAnimationTargets.xml">
       <Link>Defs\xml\PawnAnimationTargets.xml</Link>

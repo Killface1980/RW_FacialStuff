@@ -15,7 +15,7 @@ namespace FacialStuff
         #region Private Fields
 
         private static readonly List<string> NackbladTex =
-        new List<string> {"bushy", "crisis", "erik", "guard", "jr",  "karl", "olof", "ruff", "trimmed"};
+        new List<string> {"Nbi_bushy", "Nbi_crisis", "Nbi_erik", "Nbi_guard", "Nbi_jr", "Nbi_karl", "Nbi_olof", "Nbi_ruff", "Nbi_trimmed" };
 
         private static readonly List<string> SpoonTex = new List<string> {"SPSBeard", "SPSScot", "SPSViking"};
 

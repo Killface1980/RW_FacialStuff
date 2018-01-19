@@ -23,6 +23,26 @@ namespace FacialStuff.Harmony
     [StaticConstructorOnStartup]
     public static class HarmonyPatchesFS
     {
+        #region Public Fields
+
+        public static List<Thing> PlantMoved = new List<Thing>();
+
+        public static bool Plants;
+
+        public static float Steps;
+
+        #endregion Public Fields
+
+        #region Private Fields
+
+        private static readonly FieldInfo pawnField = AccessTools.Field(typeof(Pawn_EquipmentTracker), "pawn");
+
+        private static Graphic_Shadow _shadowGraphic;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
         static HarmonyPatchesFS()
         {
             HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.mod");
@@ -167,6 +187,10 @@ namespace FacialStuff.Harmony
             CheckAllInjected();
         }
 
+        #endregion Public Constructors
+
+        #region Public Methods
+
         public static void AddFaceEditButton(Page_ConfigureStartingPawns __instance, Rect rect)
         {
             FieldInfo PawnFieldInfo =
@@ -205,10 +229,78 @@ namespace FacialStuff.Harmony
             }
         }
 
-        public static void OpenStylingWindow(Pawn pawn)
+        public static bool Aiming(Pawn pawn)
         {
-            pawn.GetCompFace(out CompFace face);
-            Find.WindowStack.Add(new Dialog_FaceStyling(face));
+            Log.Message(pawn.LabelShort);
+            return pawn.stances.curStance is Stance_Busy stanceBusy && !stanceBusy.neverAimWeapon &&
+                   stanceBusy.focusTarg.IsValid;
+        }
+
+        public static void CalculateHandsAiming(
+        Vector3 weaponPosition,
+        bool flipped,
+        float weaponAngle,
+        [CanBeNull] CompProperties_WeaponExtensions compWeaponExtensions,
+        CompBodyAnimator animator, Pawn pawn)
+        {
+            // Prepare everything for DrawHands, but do nothing
+
+            if (compWeaponExtensions == null)
+            {
+                return;
+            }
+
+            animator.FirstHandPosition = compWeaponExtensions.RightHandPosition;
+            animator.SecondHandPosition = compWeaponExtensions.LeftHandPosition;
+
+            if (animator.FirstHandPosition != Vector3.zero)
+            {
+                float x = animator.FirstHandPosition.x;
+                float y = animator.FirstHandPosition.y;
+                float z = animator.FirstHandPosition.z;
+                if (flipped)
+                {
+                    x = -x;
+                }
+
+                if (pawn.Rotation == Rot4.North)
+                {
+                    y *= -1f;
+                }
+
+                animator.FirstHandPosition =
+                weaponPosition + new Vector3(x, y, z).RotatedBy(weaponAngle);
+            }
+
+            if (animator.SecondHandPosition != Vector3.zero)
+            {
+                float x2 = animator.SecondHandPosition.x;
+                float y2 = animator.SecondHandPosition.y;
+                float z2 = animator.SecondHandPosition.z;
+                if (flipped)
+                {
+                    x2 = -x2;
+                }
+
+                if (pawn.Rotation == Rot4.North)
+                {
+                    y2 *= -1f;
+                }
+
+                animator.SecondHandPosition =
+                weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle);
+            }
+
+
+            animator.WeaponQuat = Quaternion.AngleAxis(weaponAngle, Vector3.up);
+        }
+
+        public static bool CarryWeaponOpenly(Pawn pawn)
+        {
+            return pawn.carryTracker?.CarriedThing == null &&
+                   (pawn.Drafted ||
+                    (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon) ||
+                    (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
         }
 
         public static void DirtyCache_Postfix(HediffSet __instance)
@@ -240,6 +332,184 @@ namespace FacialStuff.Harmony
             pawn.GetCompAnim()?.PawnBodyGraphic?.Initialize();
         }
 
+        public static void DoAttackAnimationOffsets(Pawn pawn, ref float weaponAngle,
+                                                    ref Vector3 weaponPosition,
+                                                    bool flipped, CompBodyAnimator animator)
+        {
+            CompEquippable primaryEq = pawn.equipment?.PrimaryEq;
+
+            // DamageDef damageDef = primaryEq?.PrimaryVerb?.verbProps?.meleeDamageDef;
+            if (primaryEq?.parent?.def == null)
+            {
+                return;
+            }
+
+            if (primaryEq.AllVerbs.NullOrEmpty())
+            {
+                return;
+            }
+
+            if (!primaryEq.AllVerbs.Any(x => x.verbProps.MeleeRange))
+            {
+                return;
+            }
+
+            DamageDef damageDef = ThingUtility.PrimaryMeleeWeaponDamageType(primaryEq.parent.def);
+            if (damageDef == null)
+            {
+                return;
+            }
+
+            // total weapon angle change during animation sequence
+            int totalSwingAngle = 0;
+            Vector3 currentOffset = animator.Jitterer.CurrentOffset;
+
+            float jitterMax = animator.JitterMax;
+            float magnitude = currentOffset.magnitude;
+            float animationPhasePercent = magnitude / jitterMax;
+
+            if (damageDef == DamageDefOf.Stab)
+            {
+                weaponPosition += currentOffset;
+
+                // + new Vector3(0, 0, Mathf.Pow(this.CompFace.Jitterer.CurrentOffset.magnitude, 0.25f))/2;
+            }
+            else if (damageDef == DamageDefOf.Blunt || damageDef == DamageDefOf.Cut)
+            {
+                totalSwingAngle = 120;
+                weaponPosition += currentOffset + new Vector3(0, 0, Mathf.Sin(magnitude * Mathf.PI / jitterMax) / 10);
+            }
+
+            weaponAngle += flipped ? -animationPhasePercent * totalSwingAngle : animationPhasePercent * totalSwingAngle;
+        }
+
+        public static void DoCalculations(Thing eq, ref Vector3 drawLoc, ref float weaponAngle, float aimAngle)
+        {
+            Pawn pawn = (Pawn)pawnField?.GetValue(eq.ParentHolder as Pawn_EquipmentTracker);
+            if (pawn == null)
+            {
+                return;
+            }
+
+            bool aiming = Aiming(pawn);
+            Vector3 weaponPositionOffset = Vector3.zero;
+
+            CompProperties_WeaponExtensions compWeaponExtensions =
+            eq.def.GetCompProperties<CompProperties_WeaponExtensions>();
+
+            // Return if nothing to do
+            if (compWeaponExtensions == null)
+            {
+                return;
+            }
+
+            if (!pawn.GetCompAnim(out CompBodyAnimator animator))
+            {
+                return;
+            }
+
+            if (pawn.Rotation == Rot4.West || pawn.Rotation == Rot4.North)
+            {
+                weaponPositionOffset += new Vector3(0, -0.5f, 0);
+            }
+
+            bool flipped = false;
+            if (compWeaponExtensions != null)
+            {
+                if (aimAngle > 200f && aimAngle < 340f)
+                {
+                    if (aiming)
+                    {
+                        weaponAngle -= compWeaponExtensions?.AttackAngleOffset ?? 0;
+                    }
+
+
+                    weaponPositionOffset += compWeaponExtensions.WeaponPositionOffset;
+
+                    // flip x position offset
+                    weaponPositionOffset.x *= -1;
+                    flipped = true;
+                }
+                else
+                {
+                    if (aiming)
+                    {
+                        weaponAngle += compWeaponExtensions?.AttackAngleOffset ?? 0;
+                    }
+
+                    weaponPositionOffset += compWeaponExtensions.WeaponPositionOffset;
+                }
+            }
+
+            // weapon angle and position offsets based on current attack keyframes sequence
+
+            DoAttackAnimationOffsets(pawn, ref weaponAngle, ref weaponPositionOffset, flipped, animator);
+
+            animator.PartTweener.PartPositions[(int)TweenThing.Equipment] = drawLoc + weaponPositionOffset;
+
+            animator.PartTweener.PreHandPosCalculation(TweenThing.Equipment);
+
+            drawLoc = animator.PartTweener.TweenedPartsPos[(int)TweenThing.Equipment];
+
+
+            // Now the remaining hands if possible
+            if (animator.Props.bipedWithHands && Controller.settings.UseHands)
+            {
+                CalculateHandsAiming(
+                                     drawLoc,
+                                     flipped,
+                                     weaponAngle,
+                                     compWeaponExtensions, animator, pawn);
+            }
+        }
+
+        public static void DrawEquipmentAiming_Prefix(PawnRenderer __instance, Thing eq, ref Vector3 drawLoc,
+                                                      ref float aimAngle)
+        {
+            Pawn pawn = __instance.graphics.pawn;
+            ThingWithComps equipment = eq as ThingWithComps;
+            Vector3 weaponDrawLoc = drawLoc;
+
+            // Flip it for north
+            //  if (CarryWeaponOpenly(pawn) && pawn.Rotation == Rot4.North && aimAngle== 143f)
+            if (pawn.Rotation == Rot4.North && aimAngle == 143f)
+            {
+                aimAngle = 217f;
+            }
+
+            // if (pawn.Rotation == Rot4.West)
+            // {
+            //     drawLoc.y -= 0.05f;
+            // }
+        }
+
+        public static IEnumerable<CodeInstruction> DrawEquipmentAiming_Transpiler(
+        IEnumerable<CodeInstruction> instructions,
+        ILGenerator ilGen)
+        {
+            List<CodeInstruction> instructionList = instructions.ToList();
+
+            int index = instructionList.FindIndex(x => x.opcode == OpCodes.Ldloc_0);
+            instructionList.InsertRange(index, new List<CodeInstruction>
+                                                   {
+                                                   // DoCalculations(eq, ref myDrawLoc, ref myAimAngle);
+                                                   new CodeInstruction(OpCodes.Ldarg_1),
+                                                   new CodeInstruction(OpCodes.Ldarga, 2),
+                                                   new CodeInstruction(OpCodes.Ldloca_S, 1),
+                                                   new CodeInstruction(OpCodes.Ldarg_3),
+                                                   new CodeInstruction(OpCodes.Call,
+                                                                       AccessTools.Method(typeof(HarmonyPatchesFS),
+                                                                                          nameof(DoCalculations))),
+    });
+            instructionList[index].labels.Add(ilGen.DefineLabel());
+            return instructionList;
+        }
+
+        public static void OpenStylingWindow(Pawn pawn)
+        {
+            pawn.GetCompFace(out CompFace face);
+            Find.WindowStack.Add(new Dialog_FaceStyling(face));
+        }
         public static bool RandomHairDefFor_PreFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
         {
             Log.Message("1 - " + pawn);
@@ -278,6 +548,106 @@ namespace FacialStuff.Harmony
                                           select hair;
 
             __result = source.RandomElementByWeight(hair => PawnFaceMaker.HairChoiceLikelihoodFor(hair, pawn));
+            return false;
+        }
+
+        // Verse.PawnRenderer
+        public static bool RenderPawnAt(PawnRenderer __instance, Vector3 drawLoc, RotDrawMode bodyDrawType,
+                                        bool headStump)
+        {
+            Pawn pawn = __instance.graphics.pawn;
+            if (!__instance.graphics.AllResolved)
+            {
+                __instance.graphics.ResolveAllGraphics();
+            }
+
+            if (pawn.RaceProps.Animal)
+            {
+                return true;
+            }
+
+            if (!pawn.GetCompAnim(out CompBodyAnimator compAnim))
+            {
+                return true;
+            }
+
+            bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
+            if (!showHands)
+            {
+                return true;
+            }
+
+            if (pawn.GetPosture() != PawnPosture.Standing)
+            {
+                return true;
+            }
+
+            Thing carriedThing = pawn.carryTracker?.CarriedThing;
+            if (carriedThing == null)
+            {
+                return true;
+            }
+
+            Vector3 loc = drawLoc;
+            HarmonyPatch_PawnRenderer.Prefix(
+                                             __instance,
+                                             drawLoc,
+                                             Quaternion.identity,
+                                             true,
+                                             pawn.Rotation,
+                                             pawn.Rotation,
+                                             bodyDrawType,
+                                             false,
+                                             headStump, ref loc);
+
+            bool behind = false;
+            bool flip = false;
+
+
+            if (pawn.CurJob == null || !pawn.jobs.curDriver.ModifyCarriedThingDrawPos(ref loc, ref behind, ref flip))
+            {
+                if (carriedThing is Pawn || carriedThing is Corpse)
+                {
+                    loc += new Vector3(0.44f, 0f, 0f);
+                }
+                else
+                {
+                    loc += new Vector3(0.18f, 0f, 0.05f);
+                }
+            }
+
+            loc.y += (pawn.Rotation == Rot4.North ? -1f : 1f) * Offsets.YOffset_CarriedThing;
+
+
+            carriedThing.DrawAt(loc, flip);
+
+            loc.y += (pawn.Rotation == Rot4.North ? -1f : 1f) * Offsets.YOffset_Body;
+
+            compAnim.DrawHands(Quaternion.identity, loc, false, true);
+
+
+            if (pawn.def.race.specialShadowData != null)
+            {
+                if (_shadowGraphic == null)
+                {
+                    _shadowGraphic = new Graphic_Shadow(pawn.def.race.specialShadowData);
+                }
+
+                _shadowGraphic.Draw(drawLoc, Rot4.North, pawn);
+            }
+
+            if (__instance.graphics.nakedGraphic != null && __instance.graphics.nakedGraphic.ShadowGraphic != null)
+            {
+                __instance.graphics.nakedGraphic.ShadowGraphic.Draw(drawLoc, Rot4.North, pawn);
+            }
+
+            if (pawn.Spawned && !pawn.Dead)
+            {
+                pawn.stances.StanceTrackerDraw();
+                pawn.pather.PatherDraw();
+            }
+
+            // __instance.DrawDebug();
             return false;
         }
 
@@ -406,10 +776,22 @@ namespace FacialStuff.Harmony
             }
         }
 
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private static void ChangeAngleForNorth(Pawn pawn, ref float aimAngle)
+        {
+            if (CarryWeaponOpenly(pawn) && pawn.Rotation == Rot4.North)
+            {
+                aimAngle = 217f;
+            }
+        }
+
         private static void CheckAllInjected()
         {
-            // Now to enjoy the benefits of having made a popular mod!
-            // This will be our little secret.
+            // Thanks to all modders out there for providing help and support.
+            // This is just for me.
             Backstory childMe = new Backstory
             {
                 bodyTypeMale = BodyType.Male,
@@ -434,7 +816,7 @@ namespace FacialStuff.Harmony
                 bodyTypeFemale = BodyType.Female,
                 slot = BackstorySlot.Adulthood,
                 baseDesc =
-                                  "HECAP left the military early on and acquired his skills on his own. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
+                                  "HECAP tells no one about his past. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
                 shuffleable = false,
                 spawnCategories = new List<string>()
             };
@@ -462,543 +844,6 @@ namespace FacialStuff.Harmony
             BackstoryDatabase.AddBackstory(adultMale);
         }
 
-        private static Graphic_Shadow _shadowGraphic;
-
-        public static bool Plants;
-
-        public static float Steps;
-
-        public static List<Thing> PlantMoved = new List<Thing>();
-
-        // Verse.PawnRenderer
-        public static bool RenderPawnAt(PawnRenderer __instance, Vector3 drawLoc, RotDrawMode bodyDrawType,
-                                        bool headStump)
-        {
-            Pawn pawn = __instance.graphics.pawn;
-            if (!__instance.graphics.AllResolved)
-            {
-                __instance.graphics.ResolveAllGraphics();
-            }
-
-            if (pawn.RaceProps.Animal)
-            {
-                return true;
-            }
-
-            if (!pawn.GetCompAnim(out CompBodyAnimator compAnim))
-            {
-                return true;
-            }
-
-            bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
-            if (!showHands)
-            {
-                return true;
-            }
-
-            if (pawn.GetPosture() != PawnPosture.Standing)
-            {
-                return true;
-            }
-
-            Thing carriedThing = pawn.carryTracker?.CarriedThing;
-            if (carriedThing == null)
-            {
-                return true;
-            }
-
-            Vector3 loc = drawLoc;
-            HarmonyPatch_PawnRenderer.Prefix(
-                                             __instance,
-                                             drawLoc,
-                                             Quaternion.identity,
-                                             true,
-                                             pawn.Rotation,
-                                             pawn.Rotation,
-                                             bodyDrawType,
-                                             false,
-                                             headStump, ref loc);
-
-            bool behind = false;
-            bool flip = false;
-
-
-            if (pawn.CurJob == null || !pawn.jobs.curDriver.ModifyCarriedThingDrawPos(ref loc, ref behind, ref flip))
-            {
-                if (carriedThing is Pawn || carriedThing is Corpse)
-                {
-                    loc += new Vector3(0.44f, 0f, 0f);
-                }
-                else
-                {
-                    loc += new Vector3(0.18f, 0f, 0.05f);
-                }
-            }
-
-            loc.y += (pawn.Rotation == Rot4.North ? -1f : 1f) * Offsets.YOffset_CarriedThing;
-
-
-            carriedThing.DrawAt(loc, flip);
-
-            loc.y += (pawn.Rotation == Rot4.North ? -1f : 1f) * Offsets.YOffset_Body;
-
-            compAnim.DrawHands(Quaternion.identity, loc, false, true);
-
-
-            if (pawn.def.race.specialShadowData != null)
-            {
-                if (_shadowGraphic == null)
-                {
-                    _shadowGraphic = new Graphic_Shadow(pawn.def.race.specialShadowData);
-                }
-
-                _shadowGraphic.Draw(drawLoc, Rot4.North, pawn);
-            }
-
-            if (__instance.graphics.nakedGraphic != null && __instance.graphics.nakedGraphic.ShadowGraphic != null)
-            {
-                __instance.graphics.nakedGraphic.ShadowGraphic.Draw(drawLoc, Rot4.North, pawn);
-            }
-
-            if (pawn.Spawned && !pawn.Dead)
-            {
-                pawn.stances.StanceTrackerDraw();
-                pawn.pather.PatherDraw();
-            }
-
-            // __instance.DrawDebug();
-            return false;
-        }
-
-        public static bool Aiming(Pawn pawn)
-        {
-            Log.Message(pawn.LabelShort);
-            return pawn.stances.curStance is Stance_Busy stanceBusy && !stanceBusy.neverAimWeapon &&
-                   stanceBusy.focusTarg.IsValid;
-        }
-
-        public static bool CarryWeaponOpenly(Pawn pawn)
-        {
-            return pawn.carryTracker?.CarriedThing == null &&
-                   (pawn.Drafted ||
-                    (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon) ||
-                    (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
-        }
-
-        public static bool DrawEquipmentAiming(PawnRenderer __instance, Thing eq, Vector3 drawLoc, float aimAngle)
-        {
-            Pawn pawn = __instance.graphics.pawn;
-            ThingWithComps equipment = eq as ThingWithComps;
-            Vector3 weaponDrawLoc = drawLoc;
-
-            // Flip it for north
-            if (CarryWeaponOpenly(pawn) && pawn.Rotation == Rot4.North)
-            {
-                aimAngle = 217f;
-            }
-
-            aimAngle -= 90f;
-
-            bool aiming = Aiming(pawn);
-
-            Mesh weaponMesh;
-            Vector3 weaponPositionOffset = Vector3.zero;
-
-            CompProperties_WeaponExtensions compWeaponExtensions =
-            pawn.equipment.Primary.def.GetCompProperties<CompProperties_WeaponExtensions>();
-            if (compWeaponExtensions == null)
-            {
-                return true;
-            }
-
-            if (!pawn.GetCompAnim(out CompBodyAnimator animator))
-            {
-                return true;
-            }
-
-            if (pawn.Rotation == Rot4.West || pawn.Rotation == Rot4.North)
-            {
-                weaponPositionOffset += new Vector3(0, -0.5f, 0);
-            }
-
-
-            bool flipped;
-            // if if (aimAngle > 200f && aimAngle < 340f)
-            if (aimAngle > 110f && aimAngle < 250f)
-            {
-                weaponMesh = MeshPool.plane10Flip;
-                aimAngle -= 180f;
-                aimAngle -= equipment.def.equippedAngleOffset;
-                if (aiming)
-                {
-                    aimAngle -= compWeaponExtensions?.AttackAngleOffset ?? 0;
-                }
-
-                flipped = true;
-
-                if (!aiming && compWeaponExtensions != null)
-                {
-                    weaponPositionOffset += compWeaponExtensions.WeaponPositionOffset;
-
-                    // flip x position offset
-                    weaponPositionOffset.x *= -1;
-                }
-            }
-            else
-            {
-                weaponMesh = MeshPool.plane10;
-                aimAngle += equipment.def.equippedAngleOffset;
-                if (aiming)
-                {
-                    aimAngle += compWeaponExtensions?.AttackAngleOffset ?? 0;
-                }
-
-                flipped = false;
-
-                if (!aiming && compWeaponExtensions != null)
-                {
-                    weaponPositionOffset += compWeaponExtensions.WeaponPositionOffset;
-                }
-            }
-
-            aimAngle %= 360f;
-
-            // weapon angle and position offsets based on current attack keyframes sequence
-
-            DoAttackAnimationOffsets(pawn, ref aimAngle, ref weaponPositionOffset, flipped, animator);
-
-            Material matSingle = equipment.Graphic is Graphic_StackCount graphicStackCount
-                                 ? graphicStackCount.SubGraphicForStackCount(1, equipment.def)
-                                                    .MatSingle
-                                 : equipment.Graphic.MatSingle;
-            weaponDrawLoc += weaponPositionOffset;
-
-
-            animator.PartTweener.PartPositions[(int)TweenThing.Equipment] = weaponDrawLoc;
-
-
-            animator.PartTweener.PreHandPosCalculation(TweenThing.Equipment);
-
-            Vector3 weaponPosition = animator.PartTweener.TweenedPartsPos[(int)TweenThing.Equipment];
-            GenDraw.DrawMeshNowOrLater(
-                                       weaponMesh,
-                                       weaponPosition,
-                                       Quaternion.AngleAxis(aimAngle, Vector3.up),
-                                       matSingle,
-                                       false);
-
-            // Now the remaining hands if possible
-            if (animator.Props.bipedWithHands && Controller.settings.UseHands)
-            {
-                CalculateHandsAiming(
-                                     weaponPosition,
-                                     flipped,
-                                     aimAngle,
-                                     compWeaponExtensions, animator, pawn);
-            }
-
-            return false;
-        }
-
-
-        public static void DrawEquipmentAiming_Prefix(PawnRenderer __instance, Thing eq, ref Vector3 drawLoc,
-                                                      ref float aimAngle)
-        {
-            Pawn pawn = __instance.graphics.pawn;
-            ThingWithComps equipment = eq as ThingWithComps;
-            Vector3 weaponDrawLoc = drawLoc;
-
-            // Flip it for north
-            //  if (CarryWeaponOpenly(pawn) && pawn.Rotation == Rot4.North && aimAngle== 143f)
-            if (pawn.Rotation == Rot4.North && aimAngle == 143f)
-            {
-                aimAngle = 217f;
-            }
-
-            // if (pawn.Rotation == Rot4.West)
-            // {
-            //     drawLoc.y -= 0.05f;
-            // }
-        }
-
-        private static readonly FieldInfo pawnField = AccessTools.Field(typeof(Pawn_EquipmentTracker), "pawn");
-
-        public static IEnumerable<CodeInstruction> DrawEquipmentAiming_Transpiler(
-        IEnumerable<CodeInstruction> instructions,
-        ILGenerator ilGen)
-        {
-            List<CodeInstruction> instructionList = instructions.ToList();
-
-            int index = instructionList.FindIndex(x => x.opcode == OpCodes.Ldloc_0);
-            instructionList.InsertRange(index, new List<CodeInstruction>
-                                                   {
-                                                   // DoCalculations(eq, ref myDrawLoc, ref myAimAngle);
-                                                   new CodeInstruction(OpCodes.Ldarg_1),
-                                                   new CodeInstruction(OpCodes.Ldarga, 2),
-                                                   new CodeInstruction(OpCodes.Ldloca_S, 1),
-                                                   new CodeInstruction(OpCodes.Ldarg_3),
-                                                   new CodeInstruction(OpCodes.Call,
-                                                                       AccessTools.Method(typeof(HarmonyPatchesFS),
-                                                                                          nameof(DoCalculations))),
-    });
-            instructionList[index].labels.Add(ilGen.DefineLabel());
-            return instructionList;
-        }
-
-
-        private static void ChangeAngleForNorth(Pawn pawn, ref float aimAngle)
-        {
-            if (CarryWeaponOpenly(pawn) && pawn.Rotation == Rot4.North)
-            {
-                aimAngle = 217f;
-            }
-        }
-
-        public static void DoCalculations(Thing eq, ref Vector3 drawLoc, ref float weaponAngle, float aimAngle)
-        {
-            Pawn pawn = (Pawn)pawnField?.GetValue(eq.ParentHolder as Pawn_EquipmentTracker);
-            if (pawn == null)
-            {
-                return;
-            }
-
-            bool aiming = Aiming(pawn);
-            Vector3 weaponPositionOffset = Vector3.zero;
-
-            CompProperties_WeaponExtensions compWeaponExtensions =
-            eq.def.GetCompProperties<CompProperties_WeaponExtensions>();
-
-            // Return if nothing to do
-            if (compWeaponExtensions == null)
-            {
-                return;
-            }
-
-            if (!pawn.GetCompAnim(out CompBodyAnimator animator))
-            {
-                return;
-            }
-
-            if (pawn.Rotation == Rot4.West || pawn.Rotation == Rot4.North)
-            {
-                weaponPositionOffset += new Vector3(0, -0.5f, 0);
-            }
-
-            bool flipped = false;
-            if (compWeaponExtensions != null)
-            {
-                if (aimAngle > 200f && aimAngle < 340f)
-                {
-                    if (aiming)
-                    {
-                        weaponAngle -= compWeaponExtensions?.AttackAngleOffset ?? 0;
-                    }
-
-
-                    weaponPositionOffset += compWeaponExtensions.WeaponPositionOffset;
-
-                    // flip x position offset
-                    weaponPositionOffset.x *= -1;
-                    flipped = true;
-                }
-                else
-                {
-                    if (aiming)
-                    {
-                        weaponAngle += compWeaponExtensions?.AttackAngleOffset ?? 0;
-                    }
-
-                    weaponPositionOffset += compWeaponExtensions.WeaponPositionOffset;
-                }
-            }
-
-            // weapon angle and position offsets based on current attack keyframes sequence
-
-            DoAttackAnimationOffsets(pawn, ref weaponAngle, ref weaponPositionOffset, flipped, animator);
-
-            animator.PartTweener.PartPositions[(int)TweenThing.Equipment] = drawLoc + weaponPositionOffset;
-
-            animator.PartTweener.PreHandPosCalculation(TweenThing.Equipment);
-
-            drawLoc = animator.PartTweener.TweenedPartsPos[(int)TweenThing.Equipment];
-
-
-            // Now the remaining hands if possible
-            if (animator.Props.bipedWithHands && Controller.settings.UseHands)
-            {
-                CalculateHandsAiming(
-                                     drawLoc,
-                                     flipped,
-                                     weaponAngle,
-                                     compWeaponExtensions, animator, pawn);
-            }
-        }
-
-
-        public static void DoAttackAnimationOffsets(Pawn pawn, ref float weaponAngle,
-                                                    ref Vector3 weaponPosition,
-                                                    bool flipped, CompBodyAnimator animator)
-        {
-            CompEquippable primaryEq = pawn.equipment?.PrimaryEq;
-
-            // DamageDef damageDef = primaryEq?.PrimaryVerb?.verbProps?.meleeDamageDef;
-            if (primaryEq?.parent?.def == null)
-            {
-                return;
-            }
-
-            if (primaryEq.AllVerbs.NullOrEmpty())
-            {
-                return;
-            }
-
-            if (!primaryEq.AllVerbs.Any(x => x.verbProps.MeleeRange))
-            {
-                return;
-            }
-
-            DamageDef damageDef = ThingUtility.PrimaryMeleeWeaponDamageType(primaryEq.parent.def);
-            if (damageDef == null)
-            {
-                return;
-            }
-
-            // total weapon angle change during animation sequence
-            int totalSwingAngle = 0;
-            Vector3 currentOffset = animator.Jitterer.CurrentOffset;
-
-            float jitterMax = animator.JitterMax;
-            float magnitude = currentOffset.magnitude;
-            float animationPhasePercent = magnitude / jitterMax;
-
-            if (damageDef == DamageDefOf.Stab)
-            {
-                weaponPosition += currentOffset;
-
-                // + new Vector3(0, 0, Mathf.Pow(this.CompFace.Jitterer.CurrentOffset.magnitude, 0.25f))/2;
-            }
-            else if (damageDef == DamageDefOf.Blunt || damageDef == DamageDefOf.Cut)
-            {
-                totalSwingAngle = 120;
-                weaponPosition += currentOffset + new Vector3(0, 0, Mathf.Sin(magnitude * Mathf.PI / jitterMax) / 10);
-            }
-
-            weaponAngle += flipped ? -animationPhasePercent * totalSwingAngle : animationPhasePercent * totalSwingAngle;
-        }
-
-        public static void CalculateHandsAiming(
-        Vector3 weaponPosition,
-        bool flipped,
-        float weaponAngle,
-        [CanBeNull] CompProperties_WeaponExtensions compWeaponExtensions,
-        CompBodyAnimator animator, Pawn pawn)
-        {
-            // Prepare everything for DrawHands, but do nothing
-
-            if (compWeaponExtensions == null)
-            {
-                return;
-            }
-
-            animator.FirstHandPosition = compWeaponExtensions.RightHandPosition;
-            animator.SecondHandPosition = compWeaponExtensions.LeftHandPosition;
-
-            if (animator.FirstHandPosition != Vector3.zero)
-            {
-                float x = animator.FirstHandPosition.x;
-                float y = animator.FirstHandPosition.y;
-                float z = animator.FirstHandPosition.z;
-                if (flipped)
-                {
-                    x = -x;
-                }
-
-                if (pawn.Rotation == Rot4.North)
-                {
-                    y *= -1f;
-                }
-
-                animator.FirstHandPosition =
-                weaponPosition + new Vector3(x, y, z).RotatedBy(weaponAngle);
-            }
-
-            if (animator.SecondHandPosition != Vector3.zero)
-            {
-                float x2 = animator.SecondHandPosition.x;
-                float y2 = animator.SecondHandPosition.y;
-                float z2 = animator.SecondHandPosition.z;
-                if (flipped)
-                {
-                    x2 = -x2;
-                }
-
-                if (pawn.Rotation == Rot4.North)
-                {
-                    y2 *= -1f;
-                }
-
-                animator.SecondHandPosition =
-                weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle);
-            }
-
-
-            animator.WeaponQuat = Quaternion.AngleAxis(weaponAngle, Vector3.up);
-        }
-
-        //[HarmonyPatch(typeof(Dialog_Options))]
-        //[HarmonyPatch("DoWindowContents")]
-        //internal static class Dialog_Options_DoWindowContents_Patch
-        //{
-        //    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        //    {
-        //        MethodInfo m_set_HatsOnlyOnMap = AccessTools.Method(typeof(Prefs), "set_HatsOnlyOnMap");
-        //        MethodInfo m_MoreStuff = AccessTools.Method(typeof(Dialog_Options_DoWindowContents_Patch), "MoreStuff");
-        //        foreach (CodeInstruction instruction in instructions)
-        //        {
-        //            yield return instruction;
-        //            if (instruction.opcode == OpCodes.Call && instruction.operand == m_set_HatsOnlyOnMap)
-        //            {
-        //                yield return new CodeInstruction(OpCodes.Ldloc_1);
-        //                yield return new CodeInstruction(OpCodes.Call, m_MoreStuff);
-        //            }
-        //        }
-        //    }
-        //    private static void MoreStuff(Listing_Standard listing_Standard)
-        //  {
-        //      bool hideHatWhileRoofed = Controller.settings.HideHatWhileRoofed;
-        //      listing_Standard.CheckboxLabeled(
-        //      "Settings.HideHatWhileRoofed".Translate(),
-        //      ref hideHatWhileRoofed,
-        //      "Settings.HideHatWhileRoofedTooltip".Translate());
-        //      bool showHeadWear = Controller.settings.FilterHats;
-        //      listing_Standard.CheckboxLabeled(
-        //      "Settings.FilterHats".Translate(),
-        //      ref showHeadWear,
-        //      "Settings.FilterHatsTooltip".Translate());
-        //      bool hideHatsInBed = Controller.settings.HideHatInBed;
-        //      listing_Standard.CheckboxLabeled(
-        //      "Settings.HideHatInBed".Translate(),
-        //      ref hideHatsInBed,
-        //      "Settings.HideHatInBedTooltip".Translate());
-        //      if (GUI.changed)
-        //      {
-        //          if (showHeadWear != Controller.settings.FilterHats)
-        //          {
-        //              Controller.settings.FilterHats = showHeadWear;
-        //              Controller.settings.Write();
-        //          }
-        //          if (hideHatWhileRoofed != Controller.settings.HideHatWhileRoofed)
-        //          {
-        //              Controller.settings.HideHatWhileRoofed = hideHatWhileRoofed;
-        //              Controller.settings.Write();
-        //          }
-        //          if (hideHatsInBed != Controller.settings.HideHatInBed)
-        //          {
-        //              Controller.settings.HideHatInBed = hideHatsInBed;
-        //              Controller.settings.Write();
-        //          }
-        //      }
-        //  }
-        //}
+        #endregion Private Methods
     }
 }
