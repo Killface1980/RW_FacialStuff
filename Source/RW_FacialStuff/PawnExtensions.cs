@@ -273,13 +273,13 @@ namespace FacialStuff
                 {
                     if (hediff.Part == leftEye)
                     {
-                        face.TexPathEyeLeftPatch = "AddedParts/" + hediff.def.defName + "_Left" + "_"
+                        face.TexPathEyeLeftPatch = "Things/Pawn/Humanlike/AddedParts/" + hediff.def.defName + "_Left" + "_"
                                                  + face.PawnCrownType;
                     }
 
                     if (hediff.Part == rightEye)
                     {
-                        face.TexPathEyeRightPatch = "AddedParts/" + hediff.def.defName + "_Right" + "_"
+                        face.TexPathEyeRightPatch = "Things/Pawn/Humanlike/AddedParts/" + hediff.def.defName + "_Right" + "_"
                                                   + face.PawnCrownType;
                     }
                 }
@@ -288,7 +288,7 @@ namespace FacialStuff
                 {
                     if (hediff.Part == jaw)
                     {
-                        face.TexPathJawAddedPart = "Mouth/Mouth_" + hediff.def.defName;
+                        face.TexPathJawAddedPart = "Things/Pawn/Humanlike/Mouth/Mouth_" + hediff.def.defName;
                     }
                 }
             }

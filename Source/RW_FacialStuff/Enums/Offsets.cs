@@ -6,8 +6,8 @@ namespace FacialStuff
     {
         //// total max with repetitions: LayerSpacing = 0.46875f;
         public const float YOffset_PrimaryEquipmentUnder = 0f;
-        public const float YOffsetInterval_OnFace        = 0.0001f;
-        public const float YOffsetInterval_Clothes       = 0.0004f;
+        public const float YOffsetInterval_OnFace        = 0.001f;
+        public const float YOffsetInterval_Clothes       = 0.002f;
         public const float YOffset_Behind                = 0.004f;
         public const float YOffset_Body                  = 0.0075f;
         public const float YOffset_Wounds                = 0.02f;

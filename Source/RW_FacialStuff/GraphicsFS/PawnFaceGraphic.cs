@@ -254,7 +254,7 @@ namespace FacialStuff.GraphicsFS
                                          Graphic_Multi_NaturalEyes;
 
             this.DeadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                                                      "Eyes/Eyes_Dead",
+                                                                                      "Things/Pawn/Humanlike/Eyes/Eyes_Dead",
                                                                                       ShaderDatabase.Cutout,
                                                                                       Vector2.one,
                                                                                       Color.black);

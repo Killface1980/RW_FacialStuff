@@ -7,7 +7,7 @@
     <label>Chaplin</label>
     <hairGender>MaleUsually</hairGender>
     <forbiddenOnRace/>
-    <texPath>Moustaches/Moustache_Chaplin</texPath>
+    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_Chaplin</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -18,7 +18,7 @@
     <defName>Moustache_DoctorWatson</defName>
     <label>Doctor Watson</label>
     <forbiddenOnRace/>
-    <texPath>Moustaches/Moustache_DoctorWatson</texPath>
+    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_DoctorWatson</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -31,7 +31,7 @@
     <label>Freddie Fishtail</label>
     <hairGender>MaleUsually</hairGender>
     <forbiddenOnRace/>
-    <texPath>Moustaches/Moustache_FishTail</texPath>
+    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_FishTail</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -44,7 +44,7 @@
     <defName>Moustache_LeChef</defName>
     <label>Le Chef</label>
     <forbiddenOnRace/>    
-    <texPath>Moustaches/Moustache_LeChef</texPath>
+    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_LeChef</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -55,7 +55,7 @@
     <defName>Moustache_LittleWatson</defName>
     <label>Little Watson</label>
     <forbiddenOnRace/>
-    <texPath>Moustaches/Moustache_LittleWatson</texPath>
+    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_LittleWatson</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -68,7 +68,7 @@
     <label>Mister Slave</label>
     <hairGender>MaleUsually</hairGender>
     <forbiddenOnRace/>
-    <texPath>Moustaches/Moustache_MisterSlave</texPath>
+    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_MisterSlave</texPath>
     <hairTags>
       <li>Rural</li>
       <li>Punk</li>
@@ -79,7 +79,7 @@
     <defName>Shaved</defName>
     <label>0Shaved</label>
     <forbiddenOnRace/>
-    <texPath>Moustaches/Moustache_Shaved</texPath>
+    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_Shaved</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -93,7 +93,7 @@
     <label>Master Souvarov</label>
     <hairGender>MaleUsually</hairGender>
     <forbiddenOnRace/>
-    <texPath>Moustaches/Moustache_Souvarov</texPath>
+    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_Souvarov</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -105,7 +105,7 @@
     <defName>Moustache_Western</defName>
     <label>Gunslinger</label>
     <forbiddenOnRace/>
-    <texPath>Moustaches/Moustache_Western</texPath>
+    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_Western</texPath>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>

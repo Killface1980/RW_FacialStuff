@@ -15,7 +15,7 @@ namespace FacialStuff
         #region Private Fields
 
         private static readonly List<string> NackbladTex =
-        new List<string> {"Nbi_bushy", "Nbi_crisis", "Nbi_erik", "Nbi_guard", "Nbi_jr", "Nbi_karl", "Nbi_olof", "Nbi_ruff", "Nbi_trimmed" };
+        new List<string> {"nbi_bushy", "nbi_crisis", "nbi_erik", "nbi_guard", "nbi_jr", "nbi_karl", "nbi_olof", "nbi_ruff", "nbi_trimmed" };
 
         private static readonly List<string> SpoonTex = new List<string> {"SPSBeard", "SPSScot", "SPSViking"};
 
@@ -416,17 +416,17 @@ namespace FacialStuff
 
         private static void CheckReplaceHairTexPath(HairDef hairDef)
         {
-            string       folder;
+            string       folder = "Things/Pawn/Humanlike/Hair/";
             List<string> collection;
             if (hairDef.defName.Contains("SPS"))
             {
                 collection = SpoonTex;
-                folder     = "Spoon/";
+                folder     += "Spoon/";
             }
             else
             {
                 collection = NackbladTex;
-                folder     = "Nackblad/";
+                folder     += "Nackblad/";
             }
 
             for (int index = 0; index < collection.Count; index++)
@@ -437,7 +437,7 @@ namespace FacialStuff
                     continue;
                 }
 
-                hairDef.texPath = "Hair/" + folder + hairname;
+                hairDef.texPath = folder + hairname;
                 break;
             }
         }

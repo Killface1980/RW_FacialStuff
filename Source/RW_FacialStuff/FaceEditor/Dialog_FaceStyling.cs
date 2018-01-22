@@ -1366,7 +1366,7 @@ namespace FacialStuff.FaceEditor
             this._reInit                             = true;
             this.PawnFace.HasSameBeardColor = Rand.Value > 0.3f;
             this.NewHair                             = PawnHairChooser.RandomHairDefFor(Pawn, Faction.OfPlayer.def);
-            this.PawnFace.GenerateHairDna(Pawn, true);
+            this.PawnFace.GenerateHairDNA(Pawn, true);
             this.NewHairColor  = this.PawnFace.HairColor;
             this.NewBeardColor = this.PawnFace.BeardColor;
             PawnFaceMaker.RandomBeardDefFor(this.CompFace,
@@ -2192,7 +2192,7 @@ namespace FacialStuff.FaceEditor
 
         private void DrawSpecialPicker(Rect rect)
         {
-            foreach (GraphicDatabaseHeadRecordsModded.HeadGraphicRecordVanillaCustom source in
+            foreach (GraphicDatabaseHeadRecordsModded.HeadGraphicRecord source in
             GraphicDatabaseHeadRecordsModded.HeadsVanillaCustom)
             {
                 source.GetGraphic(Pawn.story.SkinColor);
@@ -2380,7 +2380,6 @@ namespace FacialStuff.FaceEditor
             {
                 string path = this.CompFace.EyeTexPath(def.texPath, Side.Right);
 
-                // "Eyes/Eye_" + pawn.gender + compFace.crownType + "_" + def.texPath   + "_Right";
                 __result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                                           path,
                                                                           ShaderDatabase.CutoutSkin,

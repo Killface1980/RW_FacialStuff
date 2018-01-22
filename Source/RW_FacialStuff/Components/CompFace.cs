@@ -79,7 +79,7 @@ namespace FacialStuff
             get { return this._factionInt; }
         }
 
-        public CrownType PawnCrownType => this.Pawn?.story.crownType ?? CrownType.Average;
+        public virtual CrownType PawnCrownType => this.Pawn?.story.crownType ?? CrownType.Average;
 
         [CanBeNull]
         public PawnFace PawnFace => this._pawnFace;
@@ -322,7 +322,7 @@ namespace FacialStuff
         [NotNull]
         public string BrowTexPath([NotNull] BrowDef browDef)
         {
-            return "Brows/Brow_" + this.Pawn.gender + "_" + browDef.texPath;
+            return "Things/Pawn/Humanlike/Brows/Brow_" + this.Pawn.gender + "_" + browDef.texPath;
         }
 
 
@@ -544,7 +544,7 @@ namespace FacialStuff
         public string EyeTexPath([NotNull] string eyeDefPath, Side side)
         {
             // ReSharper disable once PossibleNullReferenceException
-            string path = "Eyes/Eye_" + eyeDefPath + "_" + this.Pawn.gender + "_" + side;
+            string path = "Things/Pawn/Humanlike/Eyes/Eye_" + eyeDefPath + "_" + this.Pawn.gender + "_" + side;
 
             return path;
         }
@@ -554,10 +554,10 @@ namespace FacialStuff
         {
             if (def == BeardDefOf.Beard_Shaved)
             {
-                return "Beards/Beard_Shaved";
+                return "Things/Pawn/Humanlike/Beards/Beard_Shaved";
             }
 
-            return "Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;
+            return "Things/Pawn/Humanlike/Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;
         }
 
         [NotNull]
@@ -577,7 +577,7 @@ namespace FacialStuff
         /// <returns>
         /// Success if all initialized.
         /// </returns>
-        public bool InitializeCompFace()
+        public virtual bool InitializeCompFace()
         {
             if (this.OriginFaction == null)
             {

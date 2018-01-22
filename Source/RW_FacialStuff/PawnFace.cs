@@ -61,7 +61,7 @@ namespace FacialStuff
 
             this.HasSameBeardColor = Rand.Value > 0.3f;
 
-            this.GenerateHairDna(pawn, false, newPawn);
+            this.GenerateHairDNA(pawn, false, newPawn);
 
             PawnFaceMaker.RandomBeardDefFor(face, pawnFactionDef, out this._beardDef, out this._moustacheDef);
 
@@ -186,7 +186,7 @@ namespace FacialStuff
             // Scribe_Values.Look(ref this.melaninOrg, "MelaninOrg");
         }
 
-        public void GenerateHairDna([NotNull] Pawn pawn, bool ignoreRelative = false, bool newPawn = true)
+        public void GenerateHairDNA([NotNull] Pawn pawn, bool ignoreRelative = false, bool newPawn = true)
         {
             HairDNA hairDna =
                 HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor, ignoreRelative);
@@ -203,7 +203,14 @@ namespace FacialStuff
             else
             {
                 this.HairColor = pawn.story.hairColor;
-                this.BeardColor = HairMelanin.ShuffledBeardColor(this.HairColor);
+                if (Controller.settings.SameBeardColor)
+                {
+                    this.BeardColor = this.HairColor;
+                }
+                else
+                {
+                    this.BeardColor = HairMelanin.ShuffledBeardColor(this.HairColor);
+                }
             }
         }
 

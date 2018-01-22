@@ -83,6 +83,7 @@
     <None Include="Harmony\Optional\AlienPatches.cs" />
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
+    <None Include="Components\CompHumanFace.cs" />
     <Compile Include="Controller_Animator.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />
@@ -136,7 +137,6 @@
     <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
     <Compile Include="Harmony\Optional\Vampire_Patches.cs" />
     <Compile Include="Drawer\HumanHeadDrawer.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Utilities\CrownTypeChecker.cs" />
     <None Include="FaceEditor\Job_FaceStylingJoy.cs" />
     <Compile Include="Components\CompFaceEditor.cs" />
@@ -316,6 +316,7 @@
     </Content>
     <Content Include="..\..\Defs\ThingDefs\PawnAnimationTargets.xml">
       <Link>Defs\xml\PawnAnimationTargets.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\ThinkTreeDefs\SubTrees_MiscFS.xml">
       <Link>Defs\xml\SubTrees_MiscFS.xml</Link>

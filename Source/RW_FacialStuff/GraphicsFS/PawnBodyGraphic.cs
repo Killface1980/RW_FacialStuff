@@ -73,7 +73,7 @@ namespace FacialStuff.GraphicsFS
 
         private void InitializeGraphicsFeet()
         {
-            string texNameFoot = "Hands/" + this.CompAni.Props.handType + "_Foot";
+            string texNameFoot = "Things/Pawn/Humanlike/Feet/" + this.CompAni.Props.handType + "_Foot";
 
             Color skinColor;
             if (this._pawn.story == null)
@@ -244,7 +244,7 @@ namespace FacialStuff.GraphicsFS
                 return;
             }
 
-            string texNameHand = "Hands/" + this.CompAni.Props.handType + "_Hand";
+            string texNameHand = "Things/Pawn/Humanlike/Hands/" + this.CompAni.Props.handType + "_Hand";
 
 
             Color skinColor;

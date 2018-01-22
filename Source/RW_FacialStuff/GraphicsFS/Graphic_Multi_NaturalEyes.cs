@@ -11,10 +11,10 @@ namespace FacialStuff.GraphicsFS
 
         public string GraphicPath => this.path;
 
-        public override Material MatBack  => this._mats[0];
+        public override Material MatBack => this._mats[0];
         public override Material MatFront => this._mats[2];
-        public          Material MatLeft  => this._mats[3];
-        public          Material MatRight => this._mats[1];
+        public Material MatLeft => this._mats[3];
+        public Material MatRight => this._mats[1];
 
         public override bool ShouldDrawRotated => this.MatRight == this.MatBack;
 
@@ -29,24 +29,24 @@ namespace FacialStuff.GraphicsFS
         public override int GetHashCode()
         {
             int seed = 0;
-            seed     = Gen.HashCombine(seed, this.path);
-            seed     = Gen.HashCombineStruct(seed, this.color);
+            seed = Gen.HashCombine(seed, this.path);
+            seed = Gen.HashCombineStruct(seed, this.color);
 
             return Gen.HashCombineStruct(seed, this.colorTwo);
         }
 
         public override void Init(GraphicRequest req)
         {
-            this.data              = req.graphicData;
-            this.path              = req.path;
-            this.color             = req.color;
-            this.colorTwo          = req.colorTwo;
-            this.drawSize          = req.drawSize;
+            this.data = req.graphicData;
+            this.path = req.path;
+            this.color = req.color;
+            this.colorTwo = req.colorTwo;
+            this.drawSize = req.drawSize;
             Texture2D[] array = new Texture2D[4];
 
             string eyeType = null;
-            string side    = null;
-            string gender  = null;
+            string side = null;
+            string gender = null;
 
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(req.path);
 
@@ -55,8 +55,8 @@ namespace FacialStuff.GraphicsFS
             try
             {
                 eyeType = array2[1];
-                gender  = array2[2];
-                side    = array2[3];
+                gender = array2[2];
+                side = array2[3];
             }
             catch (Exception ex)
             {
@@ -77,8 +77,9 @@ namespace FacialStuff.GraphicsFS
                 // array[2] = MaskTextures.BlankTexture();
             }
 
-            string sidePath = "Eyes/Eye_" + eyeType + "_" + gender + "_side";
+            string sidePath = Path.GetDirectoryName(req.path) +"/Eye_" + eyeType+"_" + gender + "_side";
 
+            // 1 texture= 1 eye, blank for the opposite side
             if (ContentFinder<Texture2D>.Get(sidePath))
             {
                 // ReSharper disable once PossibleNullReferenceException
@@ -123,10 +124,10 @@ namespace FacialStuff.GraphicsFS
                 }
 
                 MaterialRequest req2 = default(MaterialRequest);
-                req2.mainTex         = array[i];
-                req2.shader          = req.shader;
-                req2.color           = this.color;
-                req2.colorTwo        = this.colorTwo;
+                req2.mainTex = array[i];
+                req2.shader = req.shader;
+                req2.color = this.color;
+                req2.colorTwo = this.colorTwo;
 
                 // ReSharper disable once PossibleNullReferenceException
                 req2.mainTex.filterMode = FilterMode.Trilinear;
@@ -140,10 +141,10 @@ namespace FacialStuff.GraphicsFS
         {
             switch (rot.AsInt)
             {
-                case 0:  return this.MatBack;
-                case 1:  return this.MatRight;
-                case 2:  return this.MatFront;
-                case 3:  return this.MatLeft;
+                case 0: return this.MatBack;
+                case 1: return this.MatRight;
+                case 2: return this.MatFront;
+                case 3: return this.MatLeft;
                 default: return BaseContent.BadMat;
             }
         }

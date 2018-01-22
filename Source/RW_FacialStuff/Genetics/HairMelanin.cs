@@ -149,7 +149,11 @@ namespace FacialStuff.Genetics
                 hairColor = Color.Lerp(hairColor, color2, Rand.Range(0.66f, 1f));
             }
 
-            if (Controller.settings.SameBeardColor || sameBeardColor)
+            if (Controller.settings.SameBeardColor)
+            {
+                beardColor = hairColor;
+            }
+            else if (sameBeardColor)
             {
                 beardColor = ShuffledBeardColor(hairColor);
             }

@@ -4,7 +4,7 @@
 <HairDef>
     <label>Scientist</label>
     <hairGender>MaleUsually</hairGender>
-    <texPath>Hair/Killface/Scientist</texPath>
+    <texPath>Things/Pawn/Humanlike/Hair/Killface/Scientist</texPath>
     <defName>Scientist</defName>
 		<hairTags>
 			<li>Urban</li>
