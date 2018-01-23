@@ -12,15 +12,12 @@ namespace FacialStuff
     {
         #region Protected Fields
 
-        protected float BodyWobble;
-
         #endregion Protected Fields
 
         #region Public Methods
 
         public override void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
         {
-
             if (this.CompFace.Props.canRotateHead && Controller.settings.UseHeadRotator)
             {
                 this.HeadFacing = this.CompFace.HeadRotator.Rotation(this.HeadFacing, renderBody);
@@ -69,12 +66,15 @@ namespace FacialStuff
 
             if (!portrait)
             {
-                if (this.IsMoving)
+                CompBodyAnimator bodyAnimator = this.CompAnimator;
+                if (bodyAnimator != null && bodyAnimator.IsMoving)
                 {
-                    float bam = this.BodyWobble;
-
                     // Let's try a slightly stiffy head
-                    offset.z -= 0.25f * bam;
+                    CompBodyAnimator compAnimator = this.CompAnimator;
+                    if (compAnimator != null)
+                    {
+                        offset.z -= 0.25f * compAnimator.BodyOffsetZ;
+                    }
                 }
             }
         }
@@ -315,7 +315,7 @@ namespace FacialStuff
                 // Mesh meshMouth = __instance.graphics.HairMeshSet.MeshAt(headFacing);
                 Mesh meshMouth = this.CompFace.MouthMeshSet.Mesh.MeshAt(this.HeadFacing);
 #if develop
-                            Vector3 mouthOffset = compFace.BaseMouthOffsetAt(headFacing);
+                            Vector3 mouthOffset = this.CompFace.BaseMouthOffsetAt(this.HeadFacing);
 #else
                 Vector3 mouthOffset = this.CompFace.MouthMeshSet.OffsetAt(this.HeadFacing);
 #endif
@@ -387,7 +387,7 @@ namespace FacialStuff
         public override Vector3 EyeOffset(Rot4 headFacing)
         {
 #if develop
-                    faceComp.BaseEyeOffsetAt(headFacing);
+                  return this.CompFace.BaseEyeOffsetAt(headFacing);
 #else
             return this.CompFace.EyeMeshSet.OffsetAt(headFacing);
 #endif
@@ -406,23 +406,25 @@ namespace FacialStuff
             float      x      = 1f * Mathf.Sin(num * (this.CompFace.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
             float      z      = 1f * Mathf.Cos(num * (this.CompFace.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
             asQuat.SetLookRotation(new Vector3(x, 0f, z), Vector3.up);
+            return asQuat;
 
             // remove the body rotation
-            if (this.IsMoving && Controller.settings.UseFeet)
+            CompBodyAnimator animator = this.CompAnimator;
+            if (animator != null && (animator.IsMoving && Controller.settings.UseFeet))
             {
                 WalkCycleDef walkCycle = this.CompAnimator?.WalkCycle;
                 if (this.BodyFacing.IsHorizontal)
                 {
                     asQuat *= Quaternion.AngleAxis(
                                                    (this.BodyFacing == Rot4.West ? 1 : -1)
-                                                 * walkCycle?.BodyAngle.Evaluate(this.MovedPercent) ?? 0f,
+                                                 * walkCycle?.BodyAngle.Evaluate(this.CompAnimator.MovedPercent) ?? 0f,
                                                    Vector3.up);
                 }
                 else
                 {
                     asQuat *= Quaternion.AngleAxis(
                                                    (this.BodyFacing == Rot4.South ? 1 : -1)
-                                                 * walkCycle?.BodyAngleVertical.Evaluate(this.MovedPercent) ?? 0f,
+                                                 * walkCycle?.BodyAngleVertical.Evaluate(this.CompAnimator.MovedPercent) ?? 0f,
                                                    Vector3.up);
                 }
             }
@@ -440,26 +442,9 @@ namespace FacialStuff
                 return;
             }
 
-            if (animator.BodyAnimator != null)
-            {
-                this.IsMoving = animator.BodyAnimator.IsMoving(out this.MovedPercent);
-            }
-
             // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
-            if (Controller.settings.UseFeet)
-            {
-                WalkCycleDef walkCycle = animator.WalkCycle;
-                if (walkCycle != null)
-                {
-                    SimpleCurve curve = walkCycle.BodyOffsetZ;
-                    this.BodyWobble        = curve.Evaluate(this.MovedPercent);
-                }
-            }
-            else
-            {
-                this.BodyWobble = 0f;
-            }
         }
+
 
         #endregion Public Methods
     }

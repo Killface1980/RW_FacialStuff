@@ -11,6 +11,8 @@ namespace FacialStuff
 {
     public class PawnFace : IExposable
     {
+        #region Private Fields
+
         private Color _beardColor;
 
         [CanBeNull]
@@ -45,6 +47,10 @@ namespace FacialStuff
 
         private float _wrinkleIntensity;
 
+        #endregion Private Fields
+
+        #region Public Constructors
+
         public PawnFace([NotNull] CompFace face, FactionDef pawnFactionDef, bool newPawn = true)
         {
             Pawn pawn = face.Pawn;
@@ -76,6 +82,10 @@ namespace FacialStuff
         {
             // for RW to not bug out
         }
+
+        #endregion Public Constructors
+
+        #region Public Properties
 
         public Color BeardColor
         {
@@ -156,6 +166,10 @@ namespace FacialStuff
             set => this._wrinkleIntensity = value;
         }
 
+        #endregion Public Properties
+
+        #region Public Methods
+
         public void ExposeData()
         {
             Scribe_Defs.Look(ref this._eyeDef, "EyeDef");
@@ -203,16 +217,12 @@ namespace FacialStuff
             else
             {
                 this.HairColor = pawn.story.hairColor;
-                if (Controller.settings.SameBeardColor)
-                {
-                    this.BeardColor = this.HairColor;
-                }
-                else
-                {
-                    this.BeardColor = HairMelanin.ShuffledBeardColor(this.HairColor);
-                }
+                this.BeardColor = HairMelanin.ShuffledBeardColor(this.HairColor);
             }
+
         }
+
+        #endregion Public Methods
 
         // public float MelaninOrg;
     }

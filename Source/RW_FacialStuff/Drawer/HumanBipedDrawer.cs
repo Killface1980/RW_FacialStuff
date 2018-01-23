@@ -61,17 +61,15 @@ namespace FacialStuff
 
         public override void ApplyBodyWobble(ref Vector3 rootLoc, ref Vector3 footPos, ref Quaternion quat)
         {
-            if (this.IsMoving)
+            if (this.CompAnimator.IsMoving)
             {
                 WalkCycleDef walkCycle = this.CompAnimator.WalkCycle;
                 if (walkCycle != null)
                 {
-                    SimpleCurve curve = walkCycle.BodyOffsetZ;
+                    float bam = this.CompAnimator.BodyOffsetZ;
 
-                    float percent = this.MovedPercent;
-                    float bam = curve.Evaluate(percent);
                     rootLoc.z += bam;
-                    quat = this.QuatBody(quat, percent);
+                    quat = this.QuatBody(quat, this.CompAnimator.MovedPercent);
 
                     // Log.Message(CompFace.Pawn + " - " + this.movedPercent + " - " + bam.ToString());
                 }
@@ -87,7 +85,7 @@ namespace FacialStuff
                 Vector3 vector4 = new Vector3(0, 0, posModF);
 
                 // No rotation when moving
-                if (!this.IsMoving)
+                if (!this.CompAnimator.IsMoving)
                 {
                     vector3 = quat * vector3;
                     vector4 = quat * vector4;
@@ -98,6 +96,31 @@ namespace FacialStuff
             }
 
             base.ApplyBodyWobble(ref rootLoc, ref footPos, ref quat);
+        }
+
+        public void ApplyEquipmentWobble(ref Vector3 rootLoc)
+        {
+            if (this.CompAnimator.IsMoving)
+            {
+                WalkCycleDef walkCycle = this.CompAnimator.WalkCycle;
+                if (walkCycle != null)
+                {
+                    float bam = this.CompAnimator.BodyOffsetZ;
+                    rootLoc.z += bam;
+
+                    // Log.Message(CompFace.Pawn + " - " + this.movedPercent + " - " + bam.ToString());
+                }
+            }
+
+            // Adds the leg length to the rootloc and relocates the feet to keep the pawn in center, e.g. for shields
+            if (this.CompAnimator.BodyAnim != null)
+            {
+                float legModifier = this.CompAnimator.BodyAnim.extraLegLength;
+                float posModB = legModifier * 0.85f;
+                Vector3 vector3 = new Vector3(0, 0, posModB);
+
+                rootLoc += vector3;
+            }
         }
 
         public override List<Material> BodyBaseAt(
@@ -338,12 +361,17 @@ namespace FacialStuff
 
         public override void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
         {
+            if (this.Pawn.Dead)
+            {
+                return;
+            }
+
             if (portrait && !this.CompAnimator.AnyOpen())
             {
                 return;
             }
 
-            Quaternion drawQuat = this.IsMoving ? footQuat : bodyQuat;
+            Quaternion drawQuat = this.CompAnimator.IsMoving ? footQuat : bodyQuat;
 
             Rot4 rot = this.BodyFacing;
 
@@ -358,15 +386,15 @@ namespace FacialStuff
                                                            body.hipOffsets[rot.AsInt],
                                                            body.hipOffsets[Rot4.North.AsInt].x);
 
-            Vector3      rightFootCycle = Vector3.zero;
-            Vector3      leftFootCycle  = Vector3.zero;
-            float        footAngleRight = 0;
-            float        footAngleLeft  = 0;
-            float        offsetJoint    = 0;
-            WalkCycleDef cycle          = this.CompAnimator.WalkCycle;
+            Vector3 rightFootCycle = Vector3.zero;
+            Vector3 leftFootCycle = Vector3.zero;
+            float footAngleRight = 0;
+            float footAngleLeft = 0;
+            float offsetJoint = 0;
+            WalkCycleDef cycle = this.CompAnimator.WalkCycle;
             if (cycle != null)
             {
-                offsetJoint = cycle.HipOffsetHorizontalX.Evaluate(this.MovedPercent);
+                offsetJoint = cycle.HipOffsetHorizontalX.Evaluate(this.CompAnimator.MovedPercent);
 
                 this.DoWalkCycleOffsets(
                                         ref rightFootCycle,
@@ -387,7 +415,7 @@ namespace FacialStuff
             if (MainTabWindow_BaseAnimator.Colored)
             {
                 matRight = this.CompAnimator.PawnBodyGraphic?.FootGraphicRightCol?.MatAt(rot);
-                matLeft  = this.CompAnimator.PawnBodyGraphic?.FootGraphicLeftCol?.MatAt(rot);
+                matLeft = this.CompAnimator.PawnBodyGraphic?.FootGraphicLeftCol?.MatAt(rot);
             }
             else
             {
@@ -422,22 +450,22 @@ namespace FacialStuff
 
             bool drawLeft = matLeft != null && this.CompAnimator.BodyStat.FootLeft != PartStatus.Missing;
 
-            groundPos.LeftJoint  = drawQuat           * groundPos.LeftJoint;
-            groundPos.RightJoint = drawQuat           * groundPos.RightJoint;
-            leftFootCycle        = drawQuat           * leftFootCycle;
-            rightFootCycle       = drawQuat           * rightFootCycle;
-            Vector3 ground       = rootLoc + drawQuat * new Vector3(0, 0, OffsetGroundZ);
+            groundPos.LeftJoint = drawQuat * groundPos.LeftJoint;
+            groundPos.RightJoint = drawQuat * groundPos.RightJoint;
+            leftFootCycle = drawQuat * leftFootCycle;
+            rightFootCycle = drawQuat * rightFootCycle;
+            Vector3 ground = rootLoc + drawQuat * new Vector3(0, 0, OffsetGroundZ);
 
             if (drawLeft)
             {
 
-                TweenThing       leftFoot = TweenThing.FootLeft;
-                PawnPartsTweener tweener  = this.CompAnimator.PartTweener;
+                TweenThing leftFoot = TweenThing.FootLeft;
+                PawnPartsTweener tweener = this.CompAnimator.PartTweener;
                 if (tweener != null)
                 {
                     tweener.PartPositions[(int)leftFoot] =
                     ground + groundPos.LeftJoint + leftFootCycle;
-                    tweener.PreHandPosCalculation(leftFoot);
+                    tweener.PreThingPosCalculation(leftFoot);
                     GenDraw.DrawMeshNowOrLater(
                                                footMeshLeft,
                                                tweener.TweenedPartsPos[(int)leftFoot],
@@ -449,13 +477,13 @@ namespace FacialStuff
 
             if (drawRight)
             {
-                TweenThing       rightFoot = TweenThing.FootRight;
-                PawnPartsTweener tweener   = this.CompAnimator.PartTweener;
+                TweenThing rightFoot = TweenThing.FootRight;
+                PawnPartsTweener tweener = this.CompAnimator.PartTweener;
                 if (tweener != null)
                 {
                     tweener.PartPositions[(int)rightFoot] =
                     ground + groundPos.RightJoint + rightFootCycle;
-                    tweener.PreHandPosCalculation(rightFoot);
+                    tweener.PreThingPosCalculation(rightFoot);
                     GenDraw.DrawMeshNowOrLater(
                                                footMeshRight,
                                                tweener.TweenedPartsPos[(int)rightFoot],
@@ -497,8 +525,13 @@ namespace FacialStuff
 
         public override void DrawHands(Quaternion bodyQuat, Vector3 drawPos,
                                        bool portrait,
-                                       bool carrying = false)
+                                       Thing carriedThing = null, bool flip = false)
         {
+            if (this.Pawn.Dead)
+            {
+                return;
+
+            }
             if (portrait && !this.CompAnimator.AnyOpen())
             {
                 return;
@@ -510,9 +543,17 @@ namespace FacialStuff
             }
 
             // return if hands already drawn on carrything
-            if (this.CarryStuff() && !carrying)
+            if (this.CarryStuff() && carriedThing == null)
             {
                 return;
+            }
+
+            bool carrying = carriedThing != null;
+
+            if (carrying)
+            {
+                this.ApplyEquipmentWobble(ref drawPos);
+                carriedThing.DrawAt(drawPos, flip);
             }
 
             BodyAnimDef body = this.CompAnimator.BodyAnim;
@@ -529,16 +570,16 @@ namespace FacialStuff
                                                              body.shoulderOffsets[Rot4.North.AsInt].x,
                                                              carrying);
 
-            List<float>  handSwingAngle = new List<float> { 0f, 0f };
-            List<float>  shoulderAngle  = new List<float> { 0f, 0f };
-            Vector3      rightHand      = Vector3.zero;
-            Vector3      leftHand       = Vector3.zero;
-            WalkCycleDef walkCycle      = this.CompAnimator.WalkCycle;
-            PoseCycleDef poseCycle      = this.CompAnimator.PoseCycle;
+            List<float> handSwingAngle = new List<float> { 0f, 0f };
+            List<float> shoulderAngle = new List<float> { 0f, 0f };
+            Vector3 rightHand = Vector3.zero;
+            Vector3 leftHand = Vector3.zero;
+            WalkCycleDef walkCycle = this.CompAnimator.WalkCycle;
+            PoseCycleDef poseCycle = this.CompAnimator.PoseCycle;
 
             if (walkCycle != null)
             {
-                float offsetJoint = walkCycle.ShoulderOffsetHorizontalX.Evaluate(this.MovedPercent);
+                float offsetJoint = walkCycle.ShoulderOffsetHorizontalX.Evaluate(this.CompAnimator.MovedPercent);
 
                 this.DoWalkCycleOffsets(
                                         body.armLength,
@@ -564,15 +605,15 @@ namespace FacialStuff
 
             Mesh handsMesh = this.HandMesh;
 
-            Material matLeft  = this.LeftHandMat;
+            Material matLeft = this.LeftHandMat;
             Material matRight = this.RightHandMat;
 
             if (MainTabWindow_BaseAnimator.Colored)
             {
-                matLeft  = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeftCol?.MatSingle;
+                matLeft = this.CompAnimator.PawnBodyGraphic?.HandGraphicLeftCol?.MatSingle;
                 matRight = this.CompAnimator.PawnBodyGraphic?.HandGraphicRightCol?.MatSingle;
             }
-            else if (!carrying)
+            else if (carriedThing == null)
             {
                 switch (rot.AsInt)
                 {
@@ -586,52 +627,56 @@ namespace FacialStuff
                 }
             }
 
-            bool drawLeft  = matLeft  != null && this.CompAnimator.BodyStat.HandLeft  != PartStatus.Missing;
+            bool drawLeft = matLeft != null && this.CompAnimator.BodyStat.HandLeft != PartStatus.Missing;
             bool drawRight = matRight != null && this.CompAnimator.BodyStat.HandRight != PartStatus.Missing;
 
             if (drawLeft)
             {
                 Quaternion quat;
-                Vector3    position;
-                if (!this.IsMoving && this.CompAnimator.SecondHandPosition != Vector3.zero)
+                Vector3 position;
+                bool noTween = false;
+                if (!this.CompAnimator.IsMoving && this.CompAnimator.SecondHandPosition != Vector3.zero)
                 {
                     position = this.CompAnimator.SecondHandPosition;
-                    quat     = this.CompAnimator.WeaponQuat;
+                    quat = this.CompAnimator.WeaponQuat;
+                    noTween = true;
                 }
                 else
                 {
                     shoulperPos.LeftJoint = bodyQuat * shoulperPos.LeftJoint;
-                    leftHand              = bodyQuat * leftHand.RotatedBy(-handSwingAngle[0] - shoulderAngle[0]);
+                    leftHand = bodyQuat * leftHand.RotatedBy(-handSwingAngle[0] - shoulderAngle[0]);
 
                     position = drawPos + shoulperPos.LeftJoint + leftHand;
-                    quat     = bodyQuat * Quaternion.AngleAxis(-handSwingAngle[0], Vector3.up);
+                    quat = bodyQuat * Quaternion.AngleAxis(-handSwingAngle[0], Vector3.up);
                 }
 
                 TweenThing handLeft = TweenThing.HandLeft;
-                this.DrawTweenedHand(position, handsMesh, matLeft, quat, handLeft, portrait);
+                this.DrawTweenedHand(position, handsMesh, matLeft, quat, handLeft, portrait, noTween);
             }
 
             if (drawRight)
             {
                 Quaternion quat;
-                Vector3    position;
+                Vector3 position;
+                bool noTween = false;
                 if (this.CompAnimator.FirstHandPosition != Vector3.zero)
                 {
-                    quat     = this.CompAnimator.WeaponQuat;
+                    quat = this.CompAnimator.WeaponQuat;
                     position = this.CompAnimator.FirstHandPosition;
+                    noTween = true;
                 }
                 else
                 {
                     shoulperPos.RightJoint = bodyQuat * shoulperPos.RightJoint;
-                    rightHand              =
+                    rightHand =
                     bodyQuat * rightHand.RotatedBy(handSwingAngle[1] - shoulderAngle[1]);
 
                     position = drawPos + shoulperPos.RightJoint + rightHand;
-                    quat     = bodyQuat * Quaternion.AngleAxis(handSwingAngle[1], Vector3.up);
+                    quat = bodyQuat * Quaternion.AngleAxis(handSwingAngle[1], Vector3.up);
                 }
 
                 TweenThing handRight = TweenThing.HandRight;
-                this.DrawTweenedHand(position, handsMesh, matRight, quat, handRight, portrait);
+                this.DrawTweenedHand(position, handsMesh, matRight, quat, handRight, portrait, noTween);
             }
 
             if (MainTabWindow_BaseAnimator.Develop)
@@ -672,20 +717,21 @@ namespace FacialStuff
             WalkCycleDef walkCycle = this.CompAnimator.WalkCycle;
             if (walkCycle != null)
             {
+                float angle;
                 if (this.BodyFacing.IsHorizontal)
                 {
-                    quat *= Quaternion.AngleAxis(
-                                                 (this.BodyFacing == Rot4.West ? -1 : 1)
-                                               * walkCycle.BodyAngle.Evaluate(movedPercent),
-                                                 Vector3.up);
+                    angle = (this.BodyFacing == Rot4.West ? -1 : 1)
+                             * walkCycle.BodyAngle.Evaluate(movedPercent);
                 }
                 else
                 {
-                    quat *= Quaternion.AngleAxis(
-                                                 (this.BodyFacing == Rot4.South ? -1 : 1)
-                                               * walkCycle.BodyAngleVertical.Evaluate(movedPercent),
-                                                 Vector3.up);
+                    angle = (this.BodyFacing == Rot4.South ? -1 : 1)
+                             * walkCycle.BodyAngleVertical.Evaluate(movedPercent);
                 }
+
+                quat *= Quaternion.AngleAxis(angle, Vector3.up);
+                this.CompAnimator.BodyAngle = angle;
+
             }
 
             return quat;
@@ -739,9 +785,10 @@ namespace FacialStuff
 
         public virtual void SelectPosecycle()
         {
+            return;
             if (this.CompAnimator.AnimatorPoseOpen)
             {
-                this.CompAnimator.PoseCycle = MainTabWindow_PoseAnimator.EditorPosecycle;
+                //  this.CompAnimator.PoseCycle = MainTabWindow_PoseAnimator.EditorPosecycle;
             }
             else if (this.Pawn.CurJob != null)
             {
@@ -780,7 +827,7 @@ namespace FacialStuff
             BodyAnimator animator = this.CompAnimator.BodyAnimator;
             if (animator != null)
             {
-                this.IsMoving = animator.IsMoving(out this.MovedPercent);
+                this.CompAnimator.IsMoving = animator.IsMoving(out this.CompAnimator.MovedPercent);
                 animator.IsPosing(out this._animatedPercent);
             }
 
@@ -791,7 +838,7 @@ namespace FacialStuff
             this.CompAnimator.SecondHandPosition = Vector3.zero;
 
 
-            this.CompAnimator.PartTweener?.Update(this.IsMoving, this.MovedPercent);
+            this.CompAnimator.PartTweener?.Update(this.CompAnimator.IsMoving, this.CompAnimator.MovedPercent);
 
         }
 
@@ -813,12 +860,12 @@ namespace FacialStuff
             footAngleRight = 0;
             footAngleLeft = 0;
 
-            if (!this.IsMoving)
+            if (!this.CompAnimator.IsMoving)
             {
                 return;
             }
 
-            float percent = this.MovedPercent;
+            float percent = this.CompAnimator.MovedPercent;
             float flot = percent;
             if (flot <= 0.5f)
             {
@@ -949,10 +996,10 @@ namespace FacialStuff
             }
 
             // Swing the hands, try complete the cycle
-            if (this.IsMoving)
+            if (this.CompAnimator.IsMoving)
             {
                 WalkCycleDef walkCycle = this.CompAnimator.WalkCycle;
-                float percent = this.MovedPercent;
+                float percent = this.CompAnimator.MovedPercent;
                 if (rot.IsHorizontal)
                 {
                     float lookie = rot == Rot4.West ? -1f : 1f;
@@ -1030,7 +1077,7 @@ namespace FacialStuff
 
         private void DrawTweenedHand(Vector3 position, Mesh handsMesh, Material material, Quaternion quat,
                                      TweenThing tweenThing,
-                                     bool portrait)
+                                     bool portrait, bool noTween)
         {
             PawnPartsTweener tweener = this.CompAnimator.PartTweener;
             if (tweener == null)
@@ -1038,12 +1085,12 @@ namespace FacialStuff
                 return;
             }
 
-            tweener.PartPositions[(int) tweenThing] = position;
+            tweener.PartPositions[(int)tweenThing] = position;
 
-            tweener.PreHandPosCalculation(tweenThing);
+            tweener.PreThingPosCalculation(tweenThing, noTween);
 
             GenDraw.DrawMeshNowOrLater(
-                                       handsMesh, tweener.TweenedPartsPos[(int) tweenThing],
+                                       handsMesh, tweener.TweenedPartsPos[(int)tweenThing],
                                        quat,
                                        material,
                                        portrait);

@@ -3,7 +3,7 @@ using Verse;
 
 namespace FacialStuff.Genetics
 {
-    public static class PawnSkinColors_Fs
+    public static class PawnSkinColors_FS
     {
         public static readonly SkinColorData[] SkinColors =
         {

@@ -84,7 +84,7 @@
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
     <None Include="Components\CompHumanFace.cs" />
-    <Compile Include="Controller_Animator.cs" />
+    <None Include="Controller_Animator.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />
     <None Include="Drawer\CentipedeDrawer.cs" />
@@ -102,9 +102,9 @@
     <None Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
     <None Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_BaseAnimator.cs" />
-    <Compile Include="AnimatorWindows\MainTabWindow_PoseAnimator.cs" />
+    <None Include="AnimatorWindows\MainTabWindow_PoseAnimator.cs" />
     <Compile Include="Animator\PawnPartsTweener.cs" />
-    <Compile Include="Settings_Animator.cs" />
+    <None Include="Settings_Animator.cs" />
     <Compile Include="Components\CompBodyAnimator.cs" />
     <Compile Include="Components\CompProperties_BodyAnimator.cs" />
     <Compile Include="Defs\BodyAnimDef.cs" />
@@ -313,6 +313,7 @@
     </Content>
     <Content Include="..\..\Defs\ThingDefs\HandDefs_Weapons_Vanilla.xml">
       <Link>Defs\xml\HandDefs_Weapons_Vanilla.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\ThingDefs\PawnAnimationTargets.xml">
       <Link>Defs\xml\PawnAnimationTargets.xml</Link>

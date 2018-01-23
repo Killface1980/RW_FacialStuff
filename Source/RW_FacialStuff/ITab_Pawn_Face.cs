@@ -9,13 +9,17 @@ using Verse;
 
 namespace FacialStuff
 {
-    public class Tab_Pawn_Face : ITab
+    public class ITab_Pawn_Face : ITab
     {
         private readonly string[] _psiToolbarStrings = { "North", "East", "South", "West" };
 
-        private int _rotation = 2;
+        private static int _rotation = 2;
+        public static Vector3 RightHandPosition;
 
-        public Tab_Pawn_Face()
+        public static Vector3 LeftHandPosition;
+        private Pawn pawn;
+
+        public ITab_Pawn_Face()
         {
             this.labelKey = "TabFace";
             this.tutorTag = "Face";
@@ -23,13 +27,14 @@ namespace FacialStuff
 
         public override bool IsVisible => this.SelPawn.HasCompFace();
 
-        public override void OnOpen()
-        {
-            // this.thoughtScrollPosition = default(Vector2);
-        }
 
         protected override void FillTab()
         {
+            if (this.pawn != this.SelPawn)
+            {
+                this.pawn = this.SelPawn;
+                LeftHandPosition = RightHandPosition = WeaponOffset = AimedWeaponOffset = Vector3.zero;
+            }
             if (!this.SelPawn.GetCompFace(out CompFace compFace))
             {
                 return;
@@ -40,6 +45,10 @@ namespace FacialStuff
             Rect checkbox = new Rect(rect.x, rect.y, rect.width, 24f);
 
             Widgets.CheckboxLabeled(checkbox, "Ignore renderer", ref compFace.IgnoreRenderer);
+            if (GUI.changed)
+            {
+                IgnoreRenderer = compFace.IgnoreRenderer;
+            }
 
             Rect pawnRect = new Rect(rect.x, checkbox.yMax, rect.width, 24f);
 
@@ -57,14 +66,39 @@ namespace FacialStuff
             this.SelPawn.GetCompAnim(out CompBodyAnimator _);
             if (compFace.IgnoreRenderer)
             {
-                this._rotation =  GUILayout.SelectionGrid(this._rotation, this._psiToolbarStrings, 4);
+                _rotation = GUILayout.SelectionGrid(_rotation, this._psiToolbarStrings, 4);
+                if (GUI.changed)
+                {
+                    this.SelPawn.Rotation = new Rot4(_rotation);
+                }
             }
             else
             {
-                this._rotation = this.SelPawn.Rotation.AsInt;
+                _rotation = this.SelPawn.Rotation.AsInt;
             }
 
-            MainTabWindow_BaseAnimator.BodyRot = new Rot4(this._rotation);
+            CompWeaponExtensions extensions = this.SelPawn.equipment?.Primary.GetComp<CompWeaponExtensions>();
+            if (this.SelPawn.Drafted && extensions != null)
+            {
+                GUILayout.Label(this.pawn.equipment.Primary.def.defName);
+                GUILayout.Label("Offset: " + WeaponOffset.x.ToString("N2") + " / " + WeaponOffset.y.ToString("N2") + " / " + WeaponOffset.z.ToString("N2"));
+                WeaponOffset.x = GUILayout.HorizontalSlider(WeaponOffset.x, -1f, 1f);
+                WeaponOffset.y = GUILayout.HorizontalSlider(WeaponOffset.y, -1f, 1f);
+                WeaponOffset.z = GUILayout.HorizontalSlider(WeaponOffset.z, -1f, 1f);
+                GUILayout.Label("OffsetAiming: " + AimedWeaponOffset.x.ToString("N2") + " / " + AimedWeaponOffset.y.ToString("N2") + " / " + AimedWeaponOffset.z.ToString("N2"));
+                AimedWeaponOffset.x = GUILayout.HorizontalSlider(AimedWeaponOffset.x, -1f, 1f);
+                AimedWeaponOffset.y = GUILayout.HorizontalSlider(AimedWeaponOffset.y, -1f, 1f);
+                AimedWeaponOffset.z = GUILayout.HorizontalSlider(AimedWeaponOffset.z, -1f, 1f);
+
+                GUILayout.Label("RH: " + RightHandPosition.x.ToString("N2") + " / " + RightHandPosition.z.ToString("N2"));
+                RightHandPosition.x = GUILayout.HorizontalSlider(RightHandPosition.x, -1f, 1f);
+                RightHandPosition.z = GUILayout.HorizontalSlider(RightHandPosition.z, -1f, 1f);
+
+                GUILayout.Label("LH: " + LeftHandPosition.x.ToString("N2") + " / " + LeftHandPosition.z.ToString("N2"));
+                LeftHandPosition.x = GUILayout.HorizontalSlider(LeftHandPosition.x, -1f, 1f);
+                LeftHandPosition.z = GUILayout.HorizontalSlider(LeftHandPosition.z, -1f, 1f);
+
+            }
 
             bool male = this.SelPawn.gender == Gender.Male;
 
@@ -437,5 +471,9 @@ namespace FacialStuff
 
             // this.size = NeedsCardUtility.GetSize(base.SelPawn);
         }
+        public static Vector3 WeaponOffset;
+        public static Vector3 AimedWeaponOffset;
+        public static bool IgnoreRenderer;
     }
+
 }

@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
   <FacialStuff.Defs.HandDef>
-
+<!--weaponPositionOffset Y defines the X value while facing horizontal-->
     <defName>PawnSettingsVanilla</defName>
     <label>Weapon comp loader</label>
     <thingClass>Thing</thingClass>
     <CompLoaderTargets>
       <li>
-        <firstHandPosition>(-0.3, 0.03, -0.05)</firstHandPosition>
-        <secondHandPosition>(0.2, 0, -0.05)</secondHandPosition>
+        <firstHandPosition>(-0.22, 0.03, -0.11)</firstHandPosition>
+        <weaponPositionOffset>(0.06,0,-0.03)</weaponPositionOffset>
         <thingTargets>
           <li>Gun_BoltActionRifle</li>
           <li>Gun_SniperRifle</li>
@@ -16,9 +16,30 @@
           <li>Gun_ChainShotgun</li>
           <li>Gun_PumpShotgun</li>
         </thingTargets>
-      </li>    
-      
-        <li>
+      </li>
+      <li>
+        <secondHandPosition>(0.07, 0, -0.02)</secondHandPosition>
+        <thingTargets>
+          <li>Gun_BoltActionRifle</li>
+          <li>Gun_SniperRifle</li>
+          <li>Gun_IncendiaryLauncher</li>
+        </thingTargets>
+      </li> 
+      <li>
+        <secondHandPosition>(0.24, 0, -0.02)</secondHandPosition>
+        <thingTargets>
+          <li>Gun_ChainShotgun</li>
+          <li>Gun_PumpShotgun</li>
+        </thingTargets>
+      </li>
+      <li>
+        <aimedWeaponPositionOffset>(-0.04,0.23,0.22)</aimedWeaponPositionOffset>
+        <thingTargets>
+          <li>Gun_SniperRifle</li>
+        </thingTargets>
+      </li>
+
+      <li>
         <firstHandPosition>(-0.3, 0.03, -0.05)</firstHandPosition>
         <secondHandPosition>(0.2, 0, -0.15)</secondHandPosition>
         <thingTargets>
@@ -29,6 +50,7 @@
 
       <li>
         <firstHandPosition>(-0.2,0.03,-0.1)</firstHandPosition>
+        <aimedWeaponPositionOffset>(-0.1,0.21,0.03)</aimedWeaponPositionOffset>
         <thingTargets>
           <li>Gun_Autopistol</li>
           <li>Gun_Revolver</li>
@@ -37,9 +59,21 @@
       </li>
 
       <li>
-        <firstHandPosition>(-0.2,0.03,0)</firstHandPosition>
+        <firstHandPosition>(-0.18,0.03,0.01)</firstHandPosition>
+        <weaponPositionOffset>(-0.05,0,-0.02)</weaponPositionOffset>
         <thingTargets>
           <li>MeleeWeapon_Knife</li>
+          <li>Beer</li>
+          <li>ThrumboHorn</li>
+          <li>ElephantTusk</li>
+          <li>WoodLog</li>
+        </thingTargets>
+      </li>
+
+      <li>
+        <firstHandPosition>(-0.28,0.03,0.04)</firstHandPosition>
+        <weaponPositionOffset>(0.01,0,-0.02)</weaponPositionOffset>
+        <thingTargets>
           <li>MeleeWeapon_Shiv</li>
           <li>MeleeWeapon_Gladius</li>
           <li>MeleeWeapon_Mace</li>
@@ -63,7 +97,8 @@
       </li>
 
       <li>
-        <firstHandPosition>(-0.25,0.03,0)</firstHandPosition>
+        <firstHandPosition>(-0.05,0.03,0)</firstHandPosition>
+        <weaponPositionOffset>(-0.15,0,0.06)</weaponPositionOffset>
         <thingTargets>
           <li>Pila</li>
         </thingTargets>
@@ -71,7 +106,8 @@
 
       <li>
         <firstHandPosition>(-0.4,0.03,0)</firstHandPosition>
-        <secondHandPosition>(0.2,0,0.1)</secondHandPosition>
+        <secondHandPosition>(-0.03,0,0.2)</secondHandPosition>
+        <weaponPositionOffset>(0.06,0,-0.2)</weaponPositionOffset>
         <thingTargets>
           <li>Gun_Minigun</li>
         </thingTargets>
@@ -110,11 +146,21 @@
       </li>
 
       <li>
-        <firstHandPosition>(-0.1,0.03,0)</firstHandPosition>
+        <!--  <firstHandPosition>(-0.1,0.03,0)</firstHandPosition>
         <secondHandPosition>(0.1,0,0.02)</secondHandPosition>
+      -->
+        <firstHandPosition>(0.13,0.03,-0.06)</firstHandPosition>
+        <secondHandPosition>(-0.09,0,0.01)</secondHandPosition>
         <thingTargets>
           <li>Bow_Short</li>
           <li>Bow_Great</li>
+        </thingTargets>
+      </li>
+
+      <li>
+        <firstHandPosition>(0.03,0.03,-0.01)</firstHandPosition>
+        <secondHandPosition>(-0.07,0,0.01)</secondHandPosition>
+        <thingTargets>
           <li>Bow_Recurve</li>
         </thingTargets>
       </li>

@@ -81,31 +81,7 @@ namespace FacialStuff.Harmony
             // Let's save the basic location for later
             Vector3 footPos = baseDrawLoc;
 
-#if develop
-            if (faceComp.IgnoreRenderer)
-            {
-                switch (faceComp.rotation)
-                {
-                    case 0:
-                        bodyFacing = Rot4.North;
-                        break;
 
-                    case 1:
-                        bodyFacing = Rot4.East;
-                        break;
-
-                    case 2:
-                        bodyFacing = Rot4.South;
-                        break;
-
-                    case 3:
-                        bodyFacing = Rot4.West;
-                        break;
-                }
-                headFacing = bodyFacing;
-            }
-
-#endif
 
             // No face => must be animal, simplify it
             Quaternion bodyQuat = quat;
@@ -196,13 +172,14 @@ namespace FacialStuff.Harmony
             if (graphics.headGraphic != null)
             {
                 // Rendererd pawn faces
-                Vector3 b = headQuat * compFace.BaseHeadOffsetAt(portrait);
+                // Vector3 b =  compFace.BaseHeadOffsetAt(portrait).RotatedBy(compAnim.BodyAngle);
 
-                Vector3 locFacialY = a + b;
-                Vector3 currentLoc = baseDrawLoc + b;
+                Vector3 headLoc = bodyQuat * compFace.BaseHeadOffsetAt(portrait);
+
+                Vector3 currentLoc = baseDrawLoc + headLoc;
                 currentLoc.y += Offsets.YOffset_OnHead;
 
-                compFace.DrawBasicHead(out bool headDrawn, bodyDrawType, portrait, headStump, ref locFacialY, headQuat);
+                compFace.DrawBasicHead(out bool headDrawn, bodyDrawType, portrait, headStump, ref currentLoc, headQuat);
 
                 if (headDrawn)
                 {
@@ -210,30 +187,30 @@ namespace FacialStuff.Harmony
                     {
                         if (compFace.Props.hasWrinkles)
                         {
-                            compFace.DrawWrinkles(bodyDrawType, ref locFacialY, headQuat, portrait);
+                            compFace.DrawWrinkles(bodyDrawType, ref currentLoc, headQuat, portrait);
                         }
 
                         if (compFace.Props.hasEyes)
                         {
-                            compFace.DrawNaturalEyes(ref locFacialY, portrait, headQuat);
+                            compFace.DrawNaturalEyes(ref currentLoc, portrait, headQuat);
 
                             // the brow above
-                            compFace.DrawBrows(ref locFacialY, headQuat, portrait);
+                            compFace.DrawBrows(ref currentLoc, headQuat, portrait);
 
                             // and now the added eye parts
-                            compFace.DrawUnnaturalEyeParts(ref locFacialY, headQuat, portrait);
+                            compFace.DrawUnnaturalEyeParts(ref currentLoc, headQuat, portrait);
                         }
 
                         if (compFace.Props.hasMouth)
                         {
-                            compFace.DrawNaturalMouth(ref locFacialY, portrait, headQuat);
+                            compFace.DrawNaturalMouth(ref currentLoc, portrait, headQuat);
                         }
 
                         // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
                         if (compFace.Props.hasBeard)
                         {
                             // if (!portrait)
-                            compFace.DrawBeardAndTache(ref locFacialY, portrait, headQuat);
+                            compFace.DrawBeardAndTache(ref currentLoc, portrait, headQuat);
                         }
 
                         // Deactivated, looks kinda crappy ATM
@@ -257,7 +234,7 @@ namespace FacialStuff.Harmony
                                                  baseDrawLoc,
                                                  bodyDrawType,
                                                  ref currentLoc,
-                                                 b,
+                                                 headLoc,
                                                  portrait,
                                                  renderBody,
                                                  headQuat);
@@ -276,13 +253,13 @@ namespace FacialStuff.Harmony
 
             //compAnim.DrawEquipment(drawPos, portrait);
 
-             if (!portrait)
-             {
-               //   Traverse.Create(__instance).Method("DrawEquipment", rootLoc).GetValue();
-            
-                  _drawEquipmentMethodInfo?.Invoke(__instance, new object[] { drawPos });
-            
-             }
+            if (!portrait)
+            {
+                //   Traverse.Create(__instance).Method("DrawEquipment", rootLoc).GetValue();
+
+                _drawEquipmentMethodInfo?.Invoke(__instance, new object[] { drawPos });
+
+            }
 
             bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
             if (showHands)
@@ -290,7 +267,7 @@ namespace FacialStuff.Harmony
                 // Reset the position for the hands
                 Vector3 handPos = drawPos;
                 handPos.y = baseDrawLoc.y;
-                compAnim.DrawHands(bodyQuat, handPos, portrait, false);
+                compAnim.DrawHands(bodyQuat, handPos, portrait);
             }
 
             if (footy)
@@ -467,17 +444,17 @@ namespace FacialStuff.Harmony
             }
         }
 
-        private static void RenderAnimalPawn(Pawn             pawn,
-                                             PawnGraphicSet   graphics,
-                                             Vector3          rootLoc,
-                                             Quaternion       quat,
-                                             bool             renderBody,
-                                             Rot4             bodyFacing,
-                                             RotDrawMode      bodyDrawType,
-                                             bool             portrait,
-                                             PawnWoundDrawer  woundDrawer,
+        private static void RenderAnimalPawn(Pawn pawn,
+                                             PawnGraphicSet graphics,
+                                             Vector3 rootLoc,
+                                             Quaternion quat,
+                                             bool renderBody,
+                                             Rot4 bodyFacing,
+                                             RotDrawMode bodyDrawType,
+                                             bool portrait,
+                                             PawnWoundDrawer woundDrawer,
                                              CompBodyAnimator compAnim,
-                                             Vector3          footPos, Quaternion footQuat)
+                                             Vector3 footPos, Quaternion footQuat)
         {
             Mesh mesh = null;
             Vector3 loc = rootLoc;
@@ -536,7 +513,7 @@ namespace FacialStuff.Harmony
             }
 
             footPos.y = loc.y;
-            compAnim.DrawHands(quat, footPos, portrait, false);
+            compAnim.DrawHands(quat, footPos, portrait);
             compAnim.DrawFeet(quat, footQuat, footPos, portrait);
         }
 

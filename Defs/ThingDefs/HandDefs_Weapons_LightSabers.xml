@@ -5,6 +5,7 @@
     <defName>PawnSettingsLightSabers</defName>
     <label>Weapon comp loader</label>
     <thingClass>Thing</thingClass>
+    <!--Saber not working dur to oversized weapons
     <CompLoaderTargets>
 
       <li>
@@ -29,6 +30,7 @@
       </li>
 
     </CompLoaderTargets>
+-->
 
   </FacialStuff.Defs.HandDef>
 

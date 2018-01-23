@@ -15,8 +15,7 @@ namespace FacialStuff
         #region Protected Fields
 
         protected Mesh HandMesh = MeshPool.plane10;
-        protected bool IsMoving;
-        protected float MovedPercent;
+
 
         #endregion Protected Fields
 
@@ -70,7 +69,8 @@ namespace FacialStuff
         {
         }
 
-        public virtual void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, bool carrying = false)
+        public virtual void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, Thing carriedThing = null,
+                                      bool       flip = false)
         {
 
         }

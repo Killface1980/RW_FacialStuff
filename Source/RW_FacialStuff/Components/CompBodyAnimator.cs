@@ -262,7 +262,7 @@ namespace FacialStuff
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public void DrawHands(Quaternion bodyQuat, Vector3 rootLoc, bool portrait, bool carrying)
+        public void DrawHands(Quaternion bodyQuat, Vector3 rootLoc, bool portrait, Thing carriedThing = null, bool flip = false)
         {
             if (!this.PawnBodyDrawers.NullOrEmpty())
             {
@@ -270,7 +270,7 @@ namespace FacialStuff
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
-                    this.PawnBodyDrawers[i].DrawHands(bodyQuat, rootLoc, portrait, carrying);
+                    this.PawnBodyDrawers[i].DrawHands(bodyQuat, rootLoc, portrait, carriedThing, flip);
                     i++;
                 }
             }
@@ -468,5 +468,28 @@ namespace FacialStuff
         }
 
         #endregion Public Methods
+        public bool  IsMoving;
+        public float MovedPercent;
+        public float BodyAngle;
+
+        public float BodyOffsetZ
+        {
+            get
+            {
+                {
+                    if (Controller.settings.UseFeet)
+                    {
+                        WalkCycleDef walkCycle = this.WalkCycle;
+                        if (walkCycle != null)
+                        {
+                            SimpleCurve curve = walkCycle.BodyOffsetZ;
+                            return curve.Evaluate(this.MovedPercent);
+                        }
+                    }
+
+                    return 0f;
+                }
+            }
+        }
     }
 }

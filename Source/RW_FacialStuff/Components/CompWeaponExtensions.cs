@@ -11,9 +11,10 @@ namespace FacialStuff
     {
         #region Public Fields
 
-        public Vector3 FirstHandPosition;
-
-        public Vector3 SecondHandPosition;
+        public CompProperties_WeaponExtensions Props
+        {
+            get { return (CompProperties_WeaponExtensions)this.props; }
+        }
 
         #endregion Public Fields
     }

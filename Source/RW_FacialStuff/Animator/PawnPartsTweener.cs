@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using FacialStuff.AnimatorWindows;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using Verse;
 using Verse.AI;
 
@@ -17,10 +18,10 @@ namespace FacialStuff.Animator
 
         #region Private Fields
 
-        private const float HardSpringTightness = 0.35f;
-        private const float MediumSpringTightness = 0.15f;
         private const float SoftSpringTightness = 0.05f;
-        private const float StiffSpringTightness  = 0.6f;
+        private const float MediumSpringTightness = 0.15f;
+        private const float HardSpringTightness = 0.35f;
+        private const float StiffSpringTightness = 0.6f;
 
         private readonly List<int> _lastDrawFrame;
         private readonly List<Vector3> _lastTickSpringPartPos;
@@ -39,13 +40,13 @@ namespace FacialStuff.Animator
 
         public PawnPartsTweener(Pawn p)
         {
-            this._pawn                  = p;
-            this.PartPositions          = new List<Vector3>();
-            this._lastDrawFrame         = new List<int>();
+            this._pawn = p;
+            this.PartPositions = new List<Vector3>();
+            this._lastDrawFrame = new List<int>();
             this._lastTickSpringPartPos = new List<Vector3>();
-            this._tweenedPartsPos       = new List<Vector3>();
+            this._tweenedPartsPos = new List<Vector3>();
 
-            for (int i = 0; i < (int) TweenThing.Max; i++)
+            for (int i = 0; i < (int)TweenThing.Max; i++)
             {
                 this.PartPositions.Add(Vector3.zero);
                 this._lastDrawFrame.Add(-1);
@@ -54,7 +55,7 @@ namespace FacialStuff.Animator
             }
 
             this._springTightness =
-            new List<float> {SoftSpringTightness, MediumSpringTightness, HardSpringTightness, StiffSpringTightness};
+            new List<float> { SoftSpringTightness, MediumSpringTightness, HardSpringTightness, StiffSpringTightness };
         }
 
         #endregion Public Constructors
@@ -68,7 +69,7 @@ namespace FacialStuff.Animator
                 List<Vector3> list = new List<Vector3>();
                 for (int index = 0; index < this.TweenedPartsPos.Count; index++)
                 {
-                    Vector3 handsPos          = this.TweenedPartsPos[index];
+                    Vector3 handsPos = this.TweenedPartsPos[index];
                     Vector3 lastTickSpringPos = this._lastTickSpringPartPos[index];
                     list.Add(handsPos - lastTickSpringPos);
                 }
@@ -86,17 +87,31 @@ namespace FacialStuff.Animator
 
         #region Public Methods
 
-        public void PreHandPosCalculation(TweenThing      tweenThing,
+        public void PreThingPosCalculation(TweenThing tweenThing, bool noTween = false,
                                           SpringTightness spring = SpringTightness.Medium)
         {
-            int side = (int) tweenThing;
+#if !develop
 
-            if (MainTabWindow_BaseAnimator.IsOpen)
+#endif
+
+
+            int side = (int)tweenThing;
+
+            if (MainTabWindow_BaseAnimator.IsOpen || ITab_Pawn_Face.IgnoreRenderer || noTween)
             {
                 this.ResetTweenedPartPosToRoot(side);
                 return;
             }
 
+            if (this._pawn.Dead || this._pawn.Downed)
+            {
+                spring = SpringTightness.Soft;
+            }
+
+            if (this._pawn.carryTracker?.CarriedThing != null && tweenThing <= TweenThing.HandRight)
+            {
+                spring = SpringTightness.Hard;
+            }
             // if (this._lockProgress >= 1f)
             // {
             //     this.ResetTweenedPartPosToRoot(side);
@@ -115,13 +130,13 @@ namespace FacialStuff.Animator
             else
             {
                 this._lastTickSpringPartPos[side] = this._tweenedPartsPos[side];
-                float tickRateMultiplier          = Find.TickManager.TickRateMultiplier;
+                float tickRateMultiplier = Find.TickManager.TickRateMultiplier;
                 if (tickRateMultiplier < 5f)
                 {
                     Vector3 a = this.TweenedPartPosRoot(side) - this._tweenedPartsPos[side];
 
-                    float tightness = this._springTightness[(int) spring];
-                    float progress  = tightness * (RealTime.deltaTime * 60f * tickRateMultiplier);
+                    float tightness = this._springTightness[(int)spring];
+                    float progress = tightness * (RealTime.deltaTime * 60f * tickRateMultiplier);
                     // Add the lock
                     progress += this._lockProgress;
                     if (RealTime.deltaTime > 0.05f)
@@ -129,8 +144,8 @@ namespace FacialStuff.Animator
                         progress = Mathf.Min(progress, 1f);
                     }
 
-                    Vector3 tweenedHandsPo      = this._tweenedPartsPos[side] + a * progress;
-                    tweenedHandsPo.y            = this.PartPositions[side].y;
+                    Vector3 tweenedHandsPo = this._tweenedPartsPos[side] + a * progress;
+                    tweenedHandsPo.y = this.PartPositions[side].y;
                     this._tweenedPartsPos[side] = tweenedHandsPo;
                 }
                 else
@@ -144,7 +159,7 @@ namespace FacialStuff.Animator
 
         public void ResetTweenedPartPosToRoot(int side)
         {
-            this._tweenedPartsPos[side]       = this.TweenedPartPosRoot(side);
+            this._tweenedPartsPos[side] = this.TweenedPartPosRoot(side);
             this._lastTickSpringPartPos[side] = this._tweenedPartsPos[side];
         }
 
@@ -211,10 +226,10 @@ namespace FacialStuff.Animator
 
         #region Internal Methods
 
-        internal void PreHandPosCalculation()
+        internal void PreThingPosCalculation()
         {
-            this.PreHandPosCalculation(TweenThing.HandLeft);
-            this.PreHandPosCalculation(TweenThing.HandRight);
+            this.PreThingPosCalculation(TweenThing.HandLeft);
+            this.PreThingPosCalculation(TweenThing.HandRight);
         }
 
         #endregion Internal Methods

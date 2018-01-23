@@ -18,9 +18,12 @@
   <Settings.IgnoreWhileDrafted>Ignore the above settings for drafted pawns.</Settings.IgnoreWhileDrafted>
   <Settings.IgnoreWhileDraftedTooltip></Settings.IgnoreWhileDraftedTooltip>
   
+  <Settings.HandsFeetLabel>Hands and Feet</Settings.HandsFeetLabel>
   <Settings.UseHands>Show Hands</Settings.UseHands>
   <Settings.UseHandsTooltip>Shows hands while pawn is drafted. Vanilla weapons only ATM.</Settings.UseHandsTooltip>
-  
+  <Settings.UseFeet>Show Feet</Settings.UseFeet>
+  <Settings.UseHandsTooltip>Show animated feet.</Settings.UseHandsTooltip>
+
   <Settings.FilterHats>Ignore goggles</Settings.FilterHats>
   <Settings.FilterHatsTooltip>Extra head gear like goggles is not visible on pawns while indoors.</Settings.FilterHatsTooltip>
 
@@ -43,7 +46,7 @@
   <Settings.MakeThemBlink>Enable eye animation</Settings.MakeThemBlink>
   <Settings.MakeThemBlinkTooltip>Colonists stop staring at you.</Settings.MakeThemBlinkTooltip>
   <Settings.UseCaching>Export cached hair cuts</Settings.UseCaching>
-  <Settings.UseCachingTooltip>Export hair cut textures to the mod folder as png. Please deactivate in case something goes wrong.</Settings.UseCachingTooltip>
+  <Settings.UseCachingTooltip>Export hair cut textures to the mod folder as png. Please deactivate in case something goes wrong. Deactivated by default. </Settings.UseCachingTooltip>
   <Settings.UseHeadRotator>Activate head rotator</Settings.UseHeadRotator>
   <Settings.UseHeadRotatorTooltip>Enables pawns to look at each other while socially interacting or being curious.</Settings.UseHeadRotatorTooltip>
   <Settings.UseNastyGrin>Use nasty grin</Settings.UseNastyGrin>

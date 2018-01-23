@@ -299,8 +299,6 @@ namespace FacialStuff.Utilities
                 source = from brow in DefDatabase<BrowDef>.AllDefs select brow;
             }
 
-            BrowDef chosenBrows;
-
             /*
                         switch (pawn.story.traits.DegreeOfTrait(TraitDef.Named("NaturalMood")))
                         {

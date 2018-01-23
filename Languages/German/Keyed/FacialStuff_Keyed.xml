@@ -18,8 +18,11 @@
   <Settings.IgnoreWhileDrafted>Ignoriere die obigen Einstellungen für Krieger mit gezückter Waffe.</Settings.IgnoreWhileDrafted>
   <Settings.IgnoreWhileDraftedTooltip></Settings.IgnoreWhileDraftedTooltip>
 
-  <Settings.UseHands>Zeige Gände</Settings.UseHands>
+  <Settings.HandsFeetLabel>Hand und Fuß</Settings.HandsFeetLabel>
+  <Settings.UseHands>Zeige Hände</Settings.UseHands>
   <Settings.UseHandsTooltip>Zeige Hände wenn Waffen gezückt sind. Momentan nur für Vanilla-Waffen.</Settings.UseHandsTooltip>
+  <Settings.UseFeet>Zeige Füsse</Settings.UseFeet>
+  <Settings.UseHandsTooltip>Zeige animierte Füsse.</Settings.UseHandsTooltip>
   
   <Settings.FilterHats>Ignoriere Brillen</Settings.FilterHats>
   <Settings.FilterHatsTooltip>Sachen für die Augen sind in Räumen nicht sichtbar.</Settings.FilterHatsTooltip>
@@ -43,7 +46,7 @@
   <Settings.MakeThemBlink>Animiere Augen</Settings.MakeThemBlink>
   <Settings.MakeThemBlinkTooltip>Jetzt wird geblinzelt.</Settings.MakeThemBlinkTooltip>
   <Settings.UseCaching>Exportiere HairCache</Settings.UseCaching>
-  <Settings.UseCachingTooltip>Exportiert erstellte HairCut-Texturen als png in das Mod-Verzeichnis. Bitte deaktivieren falls irgendetwas nicht funktioniert.</Settings.UseCachingTooltip>
+  <Settings.UseCachingTooltip>Exportiert erstellte HairCut-Texturen als png in das Mod-Verzeichnis. Bitte deaktivieren falls irgendetwas nicht funktioniert. Standardgemäß deaktiviert.</Settings.UseCachingTooltip>
   <Settings.UseHeadRotator>Ermögliche Kopfdrehungen</Settings.UseHeadRotator>
   <Settings.UseHeadRotatorTooltip>Ermöglicht den Charakteren, sich gegenseitig anzuschauen wenn sie sozial aktiv order einfach nur neugierig sind.</Settings.UseHeadRotatorTooltip>
   <Settings.UseNastyGrin>Benutze fieses Grinsen</Settings.UseNastyGrin>

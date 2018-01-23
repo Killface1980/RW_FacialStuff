@@ -54,7 +54,7 @@ namespace FacialStuff
         #region Public Properties
 
         // public bool IgnoreRenderer;
-        public GraphicVectorMeshSet EyeMeshSet => MeshPoolFs.HumanEyeSet[(int) this.FullHeadType];
+        public GraphicVectorMeshSet EyeMeshSet => MeshPoolFs.HumanEyeSet[(int)this.FullHeadType];
 
         [NotNull]
         public PawnEyeWiggler EyeWiggler { get; set; }
@@ -72,7 +72,7 @@ namespace FacialStuff
         public PawnHeadRotator HeadRotator { get; private set; }
 
         [NotNull]
-        public GraphicVectorMeshSet MouthMeshSet => MeshPoolFs.HumanlikeMouthSet[(int) this.FullHeadType];
+        public GraphicVectorMeshSet MouthMeshSet => MeshPoolFs.HumanlikeMouthSet[(int)this.FullHeadType];
 
         public Faction OriginFaction
         {
@@ -88,19 +88,17 @@ namespace FacialStuff
         {
             get
             {
-                if (this.Pawn.story?.HeadGraphicPath == null)
+                if (this.Pawn.story?.HeadGraphicPath != null)
                 {
-                    return HeadType.Normal;
-                }
+                    if (this.Pawn.story.HeadGraphicPath.Contains("Pointy"))
+                    {
+                        return HeadType.Pointy;
+                    }
 
-                if (this.Pawn.story.HeadGraphicPath.Contains("Pointy"))
-                {
-                    return HeadType.Pointy;
-                }
-
-                if (this.Pawn.story.HeadGraphicPath.Contains("Wide"))
-                {
-                    return HeadType.Wide;
+                    if (this.Pawn.story.HeadGraphicPath.Contains("Wide"))
+                    {
+                        return HeadType.Wide;
+                    }
                 }
 
                 return HeadType.Normal;
@@ -109,7 +107,7 @@ namespace FacialStuff
 
         public CompProperties_Face Props
         {
-            get { return (CompProperties_Face) this.props; }
+            get { return (CompProperties_Face)this.props; }
         }
 
         [NotNull]
@@ -130,7 +128,7 @@ namespace FacialStuff
         {
             if (!this.PawnHeadDrawers.NullOrEmpty())
             {
-                int i     = 0;
+                int i = 0;
                 int count = this.PawnHeadDrawers.Count;
                 while (i < count)
                 {
@@ -211,9 +209,9 @@ namespace FacialStuff
 
             switch (rotation.AsInt)
             {
-                case 1:  return new Vector3(this._eyeOffset.x,  0f, -this._eyeOffset.y);
-                case 2:  return new Vector3(0,                  0f, -this._eyeOffset.y);
-                case 3:  return new Vector3(-this._eyeOffset.x, 0f, -this._eyeOffset.y);
+                case 1: return new Vector3(this._eyeOffset.x, 0f, -this._eyeOffset.y);
+                case 2: return new Vector3(0, 0f, -this._eyeOffset.y);
+                case 3: return new Vector3(-this._eyeOffset.x, 0f, -this._eyeOffset.y);
                 default: return Vector3.zero;
             }
         }
@@ -229,7 +227,7 @@ namespace FacialStuff
                 return offset;
             }
 
-            int i     = 0;
+            int i = 0;
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
@@ -312,9 +310,9 @@ namespace FacialStuff
 
             switch (rotation.AsInt)
             {
-                case 1:  return new Vector3(this._mouthOffset.x,  0f, -this._mouthOffset.y);
-                case 2:  return new Vector3(0,                    0f, -this._mouthOffset.y);
-                case 3:  return new Vector3(-this._mouthOffset.x, 0f, -this._mouthOffset.y);
+                case 1: return new Vector3(this._mouthOffset.x, 0f, -this._mouthOffset.y);
+                case 2: return new Vector3(0, 0f, -this._mouthOffset.y);
+                case 3: return new Vector3(-this._mouthOffset.x, 0f, -this._mouthOffset.y);
                 default: return Vector3.zero;
             }
         }
@@ -334,7 +332,7 @@ namespace FacialStuff
                 return;
             }
 
-            int i     = 0;
+            int i = 0;
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
@@ -350,7 +348,7 @@ namespace FacialStuff
                 return;
             }
 
-            int i     = 0;
+            int i = 0;
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
@@ -360,7 +358,7 @@ namespace FacialStuff
         }
 
 
-        public void DrawBasicHead(out bool    headDrawn, RotDrawMode bodyDrawType, bool portrait, bool headStump,
+        public void DrawBasicHead(out bool headDrawn, RotDrawMode bodyDrawType, bool portrait, bool headStump,
                                   ref Vector3 locFacialY, Quaternion headQuat)
         {
             headDrawn = false;
@@ -369,7 +367,7 @@ namespace FacialStuff
                 return;
             }
 
-            int i     = 0;
+            int i = 0;
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
@@ -391,7 +389,7 @@ namespace FacialStuff
                 return;
             }
 
-            int i     = 0;
+            int i = 0;
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
@@ -407,7 +405,7 @@ namespace FacialStuff
                 return;
             }
 
-            int i     = 0;
+            int i = 0;
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
@@ -417,14 +415,14 @@ namespace FacialStuff
         }
 
         public void DrawHairAndHeadGear(Vector3 rootLoc, RotDrawMode bodyDrawType, ref Vector3 currentLoc, Vector3 b,
-                                        bool    portrait, bool       renderBody, Quaternion    headQuat)
+                                        bool portrait, bool renderBody, Quaternion headQuat)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
                 return;
             }
 
-            int i     = 0;
+            int i = 0;
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
@@ -455,7 +453,7 @@ namespace FacialStuff
                 return;
             }
 
-            int i     = 0;
+            int i = 0;
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
@@ -471,7 +469,7 @@ namespace FacialStuff
                 return;
             }
 
-            int i     = 0;
+            int i = 0;
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
@@ -487,7 +485,7 @@ namespace FacialStuff
                 return;
             }
 
-            int i     = 0;
+            int i = 0;
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
@@ -503,7 +501,7 @@ namespace FacialStuff
                 return;
             }
 
-            int i     = 0;
+            int i = 0;
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
@@ -519,7 +517,7 @@ namespace FacialStuff
                 return;
             }
 
-            int i     = 0;
+            int i = 0;
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
@@ -604,7 +602,7 @@ namespace FacialStuff
             }
 
             this.PawnFaceGraphic = new PawnFaceGraphic(this);
-            this.FaceMaterial    = new FaceMaterial(this, this.PawnFaceGraphic);
+            this.FaceMaterial = new FaceMaterial(this, this.PawnFaceGraphic);
 
             // this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
             this.HeadRotator = new PawnHeadRotator(this.Pawn);
@@ -621,20 +619,20 @@ namespace FacialStuff
                 for (int i = 0; i < this.Props.drawers.Count; i++)
                 {
                     PawnHeadDrawer thingComp =
-                    (PawnHeadDrawer) Activator.CreateInstance(this.Props.drawers[i].GetType());
+                    (PawnHeadDrawer)Activator.CreateInstance(this.Props.drawers[i].GetType());
                     thingComp.CompFace = this;
-                    thingComp.Pawn     = this.Pawn;
+                    thingComp.Pawn = this.Pawn;
                     this.PawnHeadDrawers.Add(thingComp);
                     thingComp.Initialize();
                 }
             }
             else
             {
-                this.PawnHeadDrawers     = new List<PawnHeadDrawer>();
+                this.PawnHeadDrawers = new List<PawnHeadDrawer>();
                 PawnHeadDrawer thingComp =
-                (PawnHeadDrawer) Activator.CreateInstance(typeof(HumanHeadDrawer));
+                (PawnHeadDrawer)Activator.CreateInstance(typeof(HumanHeadDrawer));
                 thingComp.CompFace = this;
-                thingComp.Pawn     = this.Pawn;
+                thingComp.Pawn = this.Pawn;
                 this.PawnHeadDrawers.Add(thingComp);
                 thingComp.Initialize();
             }
@@ -738,7 +736,7 @@ namespace FacialStuff
 
             if (!this.PawnHeadDrawers.NullOrEmpty())
             {
-                int i     = 0;
+                int i = 0;
                 int count = this.PawnHeadDrawers.Count;
                 while (i < count)
                 {

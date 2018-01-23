@@ -543,6 +543,11 @@ namespace FacialStuff
                                 weaponExtensions.WeaponPositionOffset = wepSets.weaponPositionOffset;
                             }
 
+                            if (weaponExtensions.AimedWeaponPositionOffset == Vector3.zero)
+                            {
+                                weaponExtensions.AimedWeaponPositionOffset = wepSets.aimedWeaponPositionOffset;
+                            }
+
                             if (flag)
                             {
                                 thingDef.comps?.Add(weaponExtensions);

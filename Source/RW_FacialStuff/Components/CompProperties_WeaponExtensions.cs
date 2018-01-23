@@ -18,6 +18,7 @@ namespace FacialStuff
         public Vector3 RightHandPosition;
 
         public Vector3 WeaponPositionOffset;
+        public Vector3 AimedWeaponPositionOffset;
 
         #endregion Public Fields
 

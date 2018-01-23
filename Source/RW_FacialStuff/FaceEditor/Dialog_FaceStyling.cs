@@ -2022,9 +2022,9 @@ namespace FacialStuff.FaceEditor
 
             GUI.BeginGroup(contractedBy);
 
-            int currentSwatchIndex = PawnSkinColors_Fs.GetSkinDataIndexOfMelanin(this.NewMelanin);
+            int currentSwatchIndex = PawnSkinColors_FS.GetSkinDataIndexOfMelanin(this.NewMelanin);
 
-            int   colorCount = PawnSkinColors_Fs.SkinColors.Length;
+            int   colorCount = PawnSkinColors_FS.SkinColors.Length;
             float size       = contractedBy.width / (colorCount - 1);
 
             Rect swatchRect = new Rect(0, 0, size, size);
@@ -2033,13 +2033,13 @@ namespace FacialStuff.FaceEditor
             int clickedIndex = -1;
             for (int i = 0; i < colorCount - 1; i++)
             {
-                Color color = PawnSkinColors_Fs.SkinColors[i].Color;
+                Color color = PawnSkinColors_FS.SkinColors[i].Color;
 
                 // If the swatch is selected, draw a heavier border around it.
                 // bool isThisSwatchSelected = i == currentSwatchIndex;
-                bool isThisSwatchSelected = this.NewMelanin >= PawnSkinColors_Fs.SkinColors[i].Melanin
+                bool isThisSwatchSelected = this.NewMelanin >= PawnSkinColors_FS.SkinColors[i].Melanin
                                          && this.NewMelanin
-                                          < PawnSkinColors_Fs.SkinColors[Mathf.Min(colorCount - 1, i + 1)].Melanin;
+                                          < PawnSkinColors_FS.SkinColors[Mathf.Min(colorCount - 1, i + 1)].Melanin;
                 if (isThisSwatchSelected)
                 {
                     this.DrawColorSelected(swatchRect);
@@ -2096,12 +2096,12 @@ namespace FacialStuff.FaceEditor
             Rect currentColorRect = new Rect(0, melaninSlider.yMax + MarginFS, 20, 20);
 
             Widgets.DrawBoxSolid(currentColorRect,                 ColorSwatchBorder);
-            Widgets.DrawBoxSolid(currentColorRect.ContractedBy(1), PawnSkinColors_Fs.GetSkinColor(melly));
+            Widgets.DrawBoxSolid(currentColorRect.ContractedBy(1), PawnSkinColors_FS.GetSkinColor(melly));
 
             // Figure out the lerp value so that we can draw the slider.
             float minValue = 0.00f;
             float maxValue = 0.999f;
-            float t        = PawnSkinColors_Fs.GetRelativeLerpValue(melly);
+            float t        = PawnSkinColors_FS.GetRelativeLerpValue(melly);
             if (t < minValue)
             {
                 t = minValue;
@@ -2142,7 +2142,7 @@ namespace FacialStuff.FaceEditor
                     currentSwatchIndex = clickedIndex;
                 }
 
-                float melaninLevel = PawnSkinColors_Fs.GetValueFromRelativeLerp(currentSwatchIndex, newValue);
+                float melaninLevel = PawnSkinColors_FS.GetValueFromRelativeLerp(currentSwatchIndex, newValue);
                 melly              = melaninLevel;
             }
 

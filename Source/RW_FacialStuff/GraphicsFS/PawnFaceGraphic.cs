@@ -156,6 +156,11 @@ namespace FacialStuff.GraphicsFS
                     beardColor = Color.white;
                 }
 
+                if (Controller.settings.SameBeardColor)
+                {
+                    beardColor = tacheColor = this._pawn.story.hairColor;
+                }
+
                 this.MoustacheGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                                                             moustacheDefTexPath,
                                                                                             ShaderDatabase.Cutout,

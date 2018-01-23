@@ -18,13 +18,10 @@ namespace FacialStuff
         // protected static readonly float[] HorHeadOffsets = { 0f, 0.04f, 0.1f, 0.09f, 0.1f, 0.09f };
 
         // Undefined -0, Male -1, Female -2, Thin -3, Hulk -4, Fat -5
-        protected static readonly float[] HorHeadOffsets = { 0f,    0.06f, 0.11f,  0.11f, 0.18f,  0.17f };
+        protected static readonly float[] HorHeadOffsets = { 0f,    0.06f, 0.11f,  0.11f, 0.26f,  0.17f };
 
-        protected static readonly float[] VerHeadOffsets = { 0.34f, 0.37f, 0.36f, 0.37f, 0.44f, 0.35f };
+        protected static readonly float[] VerHeadOffsets = { 0.34f, 0.37f, 0.36f, 0.37f, 0.41f, 0.35f };
 
-        protected bool IsMoving;
-
-        protected float MovedPercent;
 
         #endregion Protected Fields
 

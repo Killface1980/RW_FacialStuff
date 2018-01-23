@@ -65,7 +65,7 @@ namespace FacialStuff.AnimatorWindows
             base.DoBasicSettingsMenu(listing);
 
 
-          //  listing.CheckboxLabeled("Moving", ref IsMoving);
+            //  listing.CheckboxLabeled("Moving", ref IsMoving);
 
             // listing_Standard.CheckboxLabeled("Equipment", ref Equipment);
 
@@ -201,7 +201,7 @@ namespace FacialStuff.AnimatorWindows
         public override void PreOpen()
         {
             base.PreOpen();
-           // IsMoving = true;
+            // IsMoving = true;
         }
 
         protected override void SetAnimOpen()
@@ -290,7 +290,7 @@ namespace FacialStuff.AnimatorWindows
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         protected override void DrawKeyframeEditor(Rect controller, Rot4 rotation)
         {
-            if (this.CurrentFrame== null)
+            if (this.CurrentFrame == null)
             {
                 return;
             }
@@ -515,13 +515,18 @@ namespace FacialStuff.AnimatorWindows
 
         protected override void FindRandomPawn()
         {
-            base.FindRandomPawn();
-            BodyAnimDef anim = this.CompAnim.BodyAnim;
-            if (anim != null && anim.walkCycles.Any())
+            if (this.Pawn == null)
             {
-                EditorWalkcycle = anim.walkCycles.FirstOrDefault().Value;
-            }
+
+                base.FindRandomPawn();
+
+                BodyAnimDef anim = this.CompAnim.BodyAnim;
+                if (anim != null && anim.walkCycles.Any())
+                {
+                    EditorWalkcycle = anim.walkCycles.FirstOrDefault().Value;
+                }
                 this.CompAnim.AnimatorWalkOpen = true;
+            }
         }
 
         #endregion Public Methods

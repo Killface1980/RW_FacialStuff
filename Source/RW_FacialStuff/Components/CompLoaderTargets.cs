@@ -29,6 +29,7 @@ namespace FacialStuff
         public bool quadruped;
         public bool bipedWithHands;
         public List<PawnBodyDrawer> bodyDrawers;
+        public Vector3 aimedWeaponPositionOffset;
 
         #endregion Public Fields
     }

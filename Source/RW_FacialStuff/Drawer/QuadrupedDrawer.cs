@@ -28,7 +28,8 @@ namespace FacialStuff
             base.DrawFeet(bodyQuat, footQuat, rootLoc, portrait);
         }
 
-        public override void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, bool carrying = false)
+        public override void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, Thing carriedThing = null,
+                                       bool       flip = false)
         {
            // base.DrawHands(bodyQuat, drawPos, portrait, carrying, drawSide);
         }
@@ -64,7 +65,7 @@ namespace FacialStuff
             WalkCycleDef cycle = this.CompAnimator.WalkCycle;
             if (cycle != null)
             {
-                offsetJoint = cycle.ShoulderOffsetHorizontalX.Evaluate(this.MovedPercent);
+                offsetJoint = cycle.ShoulderOffsetHorizontalX.Evaluate(this.CompAnimator.MovedPercent);
 
                 // Center = drawpos of carryThing
                 this.DoWalkCycleOffsets(
@@ -86,10 +87,10 @@ namespace FacialStuff
             {
             }
 
+#endif
             Material matLeft;
 
             Material matRight;
-#endif
             if (MainTabWindow_BaseAnimator.Colored)
             {
                 matRight = this.CompAnimator.PawnBodyGraphic?.FrontPawGraphicRightCol?.MatAt(rot);
@@ -123,7 +124,7 @@ namespace FacialStuff
             }
 
 
-            Quaternion drawQuat = this.IsMoving ? footQuat : bodyQuat;
+            Quaternion drawQuat = this.CompAnimator.IsMoving ? footQuat : bodyQuat;
             Vector3 ground = rootLoc + drawQuat * new Vector3(0, 0, OffsetGroundZ);
 
             PawnPartsTweener tweener = this.CompAnimator.PartTweener;
@@ -135,7 +136,7 @@ namespace FacialStuff
                 ground + jointPositions.RightJoint +
                 rightFootAnim;
 
-                tweener.PreHandPosCalculation();
+                tweener.PreThingPosCalculation();
 
                 if (matLeft != null)
                 {
