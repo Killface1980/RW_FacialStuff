@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <BodyAnimDef>
-    <armLength>0.55</armLength>
+    <armLength>0.45</armLength>
     <extraLegLength>0.35</extraLegLength>
     <hipOffsets>
       <li>
@@ -35,7 +35,7 @@
       <li>
         <x>-0.075</x>
         <y>0.025</y>
-        <z>0.05</z>
+        <z>0</z>
       </li>
       <li>
         <x>-0.375</x>
@@ -45,7 +45,7 @@
       <li>
         <x>0.075</x>
         <y>-0.025</y>
-        <z>0.05</z>
+        <z>0</z>
       </li>
     </shoulderOffsets>
     <walkCycles>

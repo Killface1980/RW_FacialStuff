@@ -88,8 +88,10 @@
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />
     <None Include="Drawer\CentipedeDrawer.cs" />
+    <Compile Include="Defs\Export\WeaponExtensionDef_Export.cs" />
     <Compile Include="Defs\Export\PoseCycleDef_Export.cs" />
-    <Compile Include="Defs\WalkCycleDef - Kopieren.cs" />
+    <Compile Include="Defs\PoseCycleDef.cs" />
+    <Compile Include="Defs\WeaponExtensionDef.cs" />
     <Compile Include="Drawer\JointLister.cs" />
     <Compile Include="Enums\Offsets.cs" />
     <Compile Include="Enums\SpringTightness.cs" />
@@ -137,6 +139,7 @@
     <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
     <Compile Include="Harmony\Optional\Vampire_Patches.cs" />
     <Compile Include="Drawer\HumanHeadDrawer.cs" />
+    <Compile Include="ITab_Pawn_Weapons.cs" />
     <Compile Include="Utilities\CrownTypeChecker.cs" />
     <None Include="FaceEditor\Job_FaceStylingJoy.cs" />
     <Compile Include="Components\CompFaceEditor.cs" />

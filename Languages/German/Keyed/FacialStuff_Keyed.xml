@@ -22,7 +22,7 @@
   <Settings.UseHands>Zeige Hände</Settings.UseHands>
   <Settings.UseHandsTooltip>Zeige Hände wenn Waffen gezückt sind. Momentan nur für Vanilla-Waffen.</Settings.UseHandsTooltip>
   <Settings.UseFeet>Zeige Füsse</Settings.UseFeet>
-  <Settings.UseHandsTooltip>Zeige animierte Füsse.</Settings.UseHandsTooltip>
+  <Settings.UseFeetTooltip>Zeige animierte Füsse.</Settings.UseFeetTooltip>
   
   <Settings.FilterHats>Ignoriere Brillen</Settings.FilterHats>
   <Settings.FilterHatsTooltip>Sachen für die Augen sind in Räumen nicht sichtbar.</Settings.FilterHatsTooltip>

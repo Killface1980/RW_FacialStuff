@@ -22,7 +22,7 @@
   <Settings.UseHands>Show Hands</Settings.UseHands>
   <Settings.UseHandsTooltip>Shows hands while pawn is drafted. Vanilla weapons only ATM.</Settings.UseHandsTooltip>
   <Settings.UseFeet>Show Feet</Settings.UseFeet>
-  <Settings.UseHandsTooltip>Show animated feet.</Settings.UseHandsTooltip>
+  <Settings.UseFeetTooltip>Show animated feet.</Settings.UseFeetTooltip>
 
   <Settings.FilterHats>Ignore goggles</Settings.FilterHats>
   <Settings.FilterHatsTooltip>Extra head gear like goggles is not visible on pawns while indoors.</Settings.FilterHatsTooltip>

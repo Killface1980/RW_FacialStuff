@@ -53,12 +53,6 @@ namespace FacialStuff
 
         #region Public Methods
 
-        public virtual bool Aiming()
-        {
-            return this.Pawn.stances.curStance is Stance_Busy stanceBusy && !stanceBusy.neverAimWeapon &&
-                   stanceBusy.focusTarg.IsValid;
-        }
-
         public override void ApplyBodyWobble(ref Vector3 rootLoc, ref Vector3 footPos, ref Quaternion quat)
         {
             if (this.CompAnimator.IsMoving)
@@ -280,84 +274,6 @@ namespace FacialStuff
                 }
             }
         }
-        /*
-        public override void DrawEquipment(Vector3 rootLoc, bool portrait)
-        {
-            Pawn pawn = this.Pawn;
-
-            if (portrait && !this.CompAnimator.AnyOpen())
-            {
-                return;
-            }
-
-            if (pawn.Dead || !pawn.Spawned)
-            {
-                return;
-            }
-
-            if (pawn.equipment == null || pawn.equipment.Primary == null)
-            {
-                return;
-            }
-
-            if (pawn.CurJob != null && pawn.CurJob.def.neverShowWeapon)
-            {
-                return;
-            }
-
-            if (pawn.stances.curStance is Stance_Busy stanceBusy && !stanceBusy.neverAimWeapon
-                                                                 && stanceBusy.focusTarg.IsValid)
-            {
-                Vector3 aimVector = stanceBusy.focusTarg.HasThing
-                                    ? stanceBusy.focusTarg.Thing.DrawPos
-                                    : stanceBusy.focusTarg.Cell.ToVector3Shifted();
-
-                float aimAngle = 0f;
-                if ((aimVector - pawn.DrawPos).MagnitudeHorizontalSquared() > 0.001f)
-                {
-                    aimAngle = (aimVector - pawn.DrawPos).AngleFlat();
-                }
-
-                Vector3 b = new Vector3(0f, 0f, 0.4f).RotatedBy(aimAngle);
-                Vector3 drawLoc = rootLoc + b;
-                drawLoc.y += Offsets.YOffset_PrimaryEquipmentOver;
-
-                // default weapon angle axis is upward, but all weapons are facing right, so we turn base weapon angle by 90°
-                bool dummy = false;
-                this.DrawEquipmentAiming(pawn.equipment.Primary, ref drawLoc, ref aimAngle, portrait,
-                                         ref dummy);
-            }
-            else if (this.CarryWeaponOpenly() || MainTabWindow_WalkAnimator.Equipment)
-            {
-                float aimAngle = 143f;
-                Vector3 drawLoc2 = rootLoc;
-                Rot4 rotation = this.BodyFacing;
-
-                switch (rotation.AsInt)
-                {
-                    case 0:
-                        drawLoc2 += new Vector3(0, Offsets.YOffset_PrimaryEquipmentUnder, -0.11f);
-                        aimAngle = 217f;
-                        break;
-                    case 1:
-                        drawLoc2 += new Vector3(0.2f, Offsets.YOffset_PrimaryEquipmentOver, -0.22f);
-                        break;
-                    case 2:
-                        drawLoc2 += new Vector3(0, Offsets.YOffset_PrimaryEquipmentOver, -0.22f);
-                        break;
-                    case 3:
-                        drawLoc2 += new Vector3(-0.2f, Offsets.YOffset_PrimaryEquipmentOver, -0.22f);
-                        aimAngle = 217f;
-                        break;
-                }
-
-                bool dummy = false;
-                this.DrawEquipmentAiming(pawn.equipment.Primary, ref drawLoc2, ref aimAngle, portrait,
-                                         ref dummy);
-            }
-        }
-        */
-        // Verse.PawnRenderer
 
         public override void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
         {
@@ -459,16 +375,18 @@ namespace FacialStuff
             if (drawLeft)
             {
 
-                TweenThing leftFoot = TweenThing.FootLeft;
-                PawnPartsTweener tweener = this.CompAnimator.PartTweener;
-                if (tweener != null)
+                // TweenThing leftFoot = TweenThing.FootLeft;
+                // PawnPartsTweener tweener = this.CompAnimator.PartTweener;
+                // if (tweener != null)
                 {
-                    tweener.PartPositions[(int)leftFoot] =
-                    ground + groundPos.LeftJoint + leftFootCycle;
-                    tweener.PreThingPosCalculation(leftFoot);
+                    Vector3 position = ground + groundPos.LeftJoint + leftFootCycle;
+
+                    // tweener.PartPositions[(int)leftFoot] = position;
+                    // tweener.PreThingPosCalculation(leftFoot, spring: SpringTightness.Stff);
+
                     GenDraw.DrawMeshNowOrLater(
                                                footMeshLeft,
-                                               tweener.TweenedPartsPos[(int)leftFoot],
+                                               position,// tweener.TweenedPartsPos[(int)leftFoot],
                                                drawQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
                                                matLeft,
                                                portrait);
@@ -477,20 +395,20 @@ namespace FacialStuff
 
             if (drawRight)
             {
-                TweenThing rightFoot = TweenThing.FootRight;
-                PawnPartsTweener tweener = this.CompAnimator.PartTweener;
-                if (tweener != null)
-                {
-                    tweener.PartPositions[(int)rightFoot] =
-                    ground + groundPos.RightJoint + rightFootCycle;
-                    tweener.PreThingPosCalculation(rightFoot);
+                // TweenThing rightFoot = TweenThing.FootRight;
+                // PawnPartsTweener tweener = this.CompAnimator.PartTweener;
+                // if (tweener != null)
+                // {
+                Vector3 position = ground + groundPos.RightJoint + rightFootCycle;
+                // tweener.PartPositions[(int)rightFoot] = position;
+                //     tweener.PreThingPosCalculation(rightFoot, spring: SpringTightness.Stff);
                     GenDraw.DrawMeshNowOrLater(
                                                footMeshRight,
-                                               tweener.TweenedPartsPos[(int)rightFoot],
+                                               position, // tweener.TweenedPartsPos[(int)rightFoot],
                                                drawQuat * Quaternion.AngleAxis(footAngleRight, Vector3.up),
                                                matRight,
                                                portrait);
-                }
+                // }
             }
 
             if (MainTabWindow_BaseAnimator.Develop)
@@ -838,7 +756,7 @@ namespace FacialStuff
             this.CompAnimator.SecondHandPosition = Vector3.zero;
 
 
-            this.CompAnimator.PartTweener?.Update(this.CompAnimator.IsMoving, this.CompAnimator.MovedPercent);
+            this.CompAnimator.PartTweener?.UpdateTweenerLock(this.CompAnimator.IsMoving, this.CompAnimator.MovedPercent);
 
         }
 

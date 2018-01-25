@@ -103,7 +103,7 @@ namespace FacialStuff.AnimatorWindows
 
         protected static int CurrentFrameInt { get; set; }
 
-        protected static string DefPath
+        public static string DefPath
         {
             get
             {

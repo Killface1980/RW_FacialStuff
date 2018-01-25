@@ -33,6 +33,10 @@ namespace FacialStuff.Animator
         private bool _moving;
         private bool _starting;
         private IntVec3 _startPos;
+        public float WeaponAngle;
+        public float TweenedWeaponAngle;
+        private float _lastTickAngle;
+        private int _lastDrawFrameAngle;
 
         #endregion Private Fields
 
@@ -90,14 +94,9 @@ namespace FacialStuff.Animator
         public void PreThingPosCalculation(TweenThing tweenThing, bool noTween = false,
                                           SpringTightness spring = SpringTightness.Medium)
         {
-#if !develop
-
-#endif
-
-
             int side = (int)tweenThing;
 
-            if (MainTabWindow_BaseAnimator.IsOpen || ITab_Pawn_Face.IgnoreRenderer || noTween)
+            if (MainTabWindow_BaseAnimator.IsOpen || ITab_Pawn_Weapons.IgnoreRenderer || noTween)
             {
                 this.ResetTweenedPartPosToRoot(side);
                 return;
@@ -163,7 +162,13 @@ namespace FacialStuff.Animator
             this._lastTickSpringPartPos[side] = this._tweenedPartsPos[side];
         }
 
-        public void Update(bool isMoving, float movedPercent)
+        public void ResetTweenedAngle()
+        {
+            this.TweenedWeaponAngle = this.TweenedAngleRoot();
+            this._lastTickAngle = this.TweenedWeaponAngle;
+        }
+
+        public void UpdateTweenerLock(bool isMoving, float movedPercent)
         {
             if (Find.TickManager.Paused)
             {
@@ -174,51 +179,55 @@ namespace FacialStuff.Animator
             if (pather == null)
             {
                 this._startPos = IntVec3.Zero;
+                this._lockProgress = 0f;
                 return;
             }
 
-            if (isMoving)
+            if (!isMoving)
             {
-                // Already walking?
-                if (this._startPos == IntVec3.Zero)
+                return;
+            }
+
+            // Already walking?
+            if (this._startPos == IntVec3.Zero)
+            {
+                this._startPos = this._pawn.Position;
+                this._starting = true;
+                this._moving   = false;
+                this._ended    = false;
+            }
+
+            // close the lock at 20 %, end start sequence
+            if (this._starting)
+            {
+                this._lockProgress = Mathf.InverseLerp(0f, 0.1f, movedPercent);
+
+                if (this._lockProgress >= 1f)
                 {
-                    this._startPos = this._pawn.Position;
-                    this._starting = true;
+                    this._starting = false;
+                    this._moving   = true;
+                }
+            }
+
+            if (this._moving)
+            {
+                // open the lock when nearing destination
+                if (pather.nextCell == pather.Destination.Cell)
+                {
+                    this._lockProgress = Mathf.InverseLerp(1f, 0.9f, movedPercent);
+                }
+
+                if (this._lockProgress <= 0.1f)
+                {
                     this._moving = false;
-                    this._ended = false;
+                    this._ended  = true;
                 }
+            }
 
-                // close the lock at 20 %, end start sequence
-                if (this._starting)
-                {
-                    this._lockProgress = Mathf.InverseLerp(0f, 0.15f, movedPercent);
-
-                    if (this._lockProgress >= 1f)
-                    {
-                        this._starting = false;
-                        this._moving = true;
-                    }
-                }
-
-                if (this._moving)
-                {
-                    // open the lock when nearing destination
-                    if (pather.nextCell == pather.Destination.Cell)
-                    {
-                        this._lockProgress = Mathf.InverseLerp(1f, 0.85f, movedPercent);
-                    }
-
-                    if (this._lockProgress <= 0f)
-                    {
-                        this._moving = false;
-                        this._ended = true;
-                    }
-                }
-
-                if (this._ended)
-                {
-                    this._startPos = IntVec3.Zero;
-                }
+            if (this._ended)
+            {
+                this._startPos = IntVec3.Zero;
+                this._lockProgress = 0f;
             }
         }
 
@@ -241,6 +250,56 @@ namespace FacialStuff.Animator
             return this.PartPositions[side];
         }
 
+        private float TweenedAngleRoot()
+        {
+            return this.WeaponAngle;
+        }
+
         #endregion Private Methods
+
+        public void WeaponAngleCalculation()
+        {
+
+            if (MainTabWindow_BaseAnimator.IsOpen || ITab_Pawn_Weapons.IgnoreRenderer)
+            {
+                this.ResetTweenedAngle();
+                return;
+            }
+
+            if (this._lastDrawFrameAngle == Find.TickManager.TicksGame)
+            {
+                return;
+            }
+
+            if (_lastDrawFrameAngle < Find.TickManager.TicksGame - 1)
+            {
+                ResetTweenedAngle();
+            }
+            else
+            {
+                this._lastTickAngle = this.TweenedWeaponAngle;
+                float tickRateMultiplier = Find.TickManager.TickRateMultiplier;
+                if (tickRateMultiplier < 5f)
+                {
+                    float a = this.TweenedAngleRoot() - TweenedWeaponAngle;
+
+                    float tightness = 0.05f;
+                    float progress = tightness * (RealTime.deltaTime * 60f * tickRateMultiplier);
+                    if (RealTime.deltaTime > 0.05f)
+                    {
+                        progress = Mathf.Min(progress, 1f);
+                    }
+
+                    float tweenedHandsPo = this.TweenedWeaponAngle + a * progress;
+                    this.TweenedWeaponAngle = tweenedHandsPo;
+                }
+                else
+                {
+                    this.TweenedWeaponAngle = this.TweenedAngleRoot();
+                }
+            }
+
+            _lastDrawFrameAngle = Find.TickManager.TicksGame;
+        }
     }
 }

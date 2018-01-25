@@ -14,9 +14,7 @@ namespace FacialStuff
         private readonly string[] _psiToolbarStrings = { "North", "East", "South", "West" };
 
         private static int _rotation = 2;
-        public static Vector3 RightHandPosition;
 
-        public static Vector3 LeftHandPosition;
         private Pawn pawn;
 
         public ITab_Pawn_Face()
@@ -30,11 +28,7 @@ namespace FacialStuff
 
         protected override void FillTab()
         {
-            if (this.pawn != this.SelPawn)
-            {
-                this.pawn = this.SelPawn;
-                LeftHandPosition = RightHandPosition = WeaponOffset = AimedWeaponOffset = Vector3.zero;
-            }
+
             if (!this.SelPawn.GetCompFace(out CompFace compFace))
             {
                 return;
@@ -45,10 +39,6 @@ namespace FacialStuff
             Rect checkbox = new Rect(rect.x, rect.y, rect.width, 24f);
 
             Widgets.CheckboxLabeled(checkbox, "Ignore renderer", ref compFace.IgnoreRenderer);
-            if (GUI.changed)
-            {
-                IgnoreRenderer = compFace.IgnoreRenderer;
-            }
 
             Rect pawnRect = new Rect(rect.x, checkbox.yMax, rect.width, 24f);
 
@@ -66,39 +56,17 @@ namespace FacialStuff
             this.SelPawn.GetCompAnim(out CompBodyAnimator _);
             if (compFace.IgnoreRenderer)
             {
-                _rotation = GUILayout.SelectionGrid(_rotation, this._psiToolbarStrings, 4);
-                if (GUI.changed)
-                {
-                    this.SelPawn.Rotation = new Rot4(_rotation);
-                }
+           //     _rotation = GUILayout.SelectionGrid(_rotation, this._psiToolbarStrings, 4);
+           //     if (GUI.changed)
+           //     {
+           //         this.SelPawn.Rotation = new Rot4(_rotation);
+           //     }
+           // }
+           // else
+           // {
+           //     _rotation = this.SelPawn.Rotation.AsInt;
             }
-            else
-            {
-                _rotation = this.SelPawn.Rotation.AsInt;
-            }
 
-            CompWeaponExtensions extensions = this.SelPawn.equipment?.Primary.GetComp<CompWeaponExtensions>();
-            if (this.SelPawn.Drafted && extensions != null)
-            {
-                GUILayout.Label(this.pawn.equipment.Primary.def.defName);
-                GUILayout.Label("Offset: " + WeaponOffset.x.ToString("N2") + " / " + WeaponOffset.y.ToString("N2") + " / " + WeaponOffset.z.ToString("N2"));
-                WeaponOffset.x = GUILayout.HorizontalSlider(WeaponOffset.x, -1f, 1f);
-                WeaponOffset.y = GUILayout.HorizontalSlider(WeaponOffset.y, -1f, 1f);
-                WeaponOffset.z = GUILayout.HorizontalSlider(WeaponOffset.z, -1f, 1f);
-                GUILayout.Label("OffsetAiming: " + AimedWeaponOffset.x.ToString("N2") + " / " + AimedWeaponOffset.y.ToString("N2") + " / " + AimedWeaponOffset.z.ToString("N2"));
-                AimedWeaponOffset.x = GUILayout.HorizontalSlider(AimedWeaponOffset.x, -1f, 1f);
-                AimedWeaponOffset.y = GUILayout.HorizontalSlider(AimedWeaponOffset.y, -1f, 1f);
-                AimedWeaponOffset.z = GUILayout.HorizontalSlider(AimedWeaponOffset.z, -1f, 1f);
-
-                GUILayout.Label("RH: " + RightHandPosition.x.ToString("N2") + " / " + RightHandPosition.z.ToString("N2"));
-                RightHandPosition.x = GUILayout.HorizontalSlider(RightHandPosition.x, -1f, 1f);
-                RightHandPosition.z = GUILayout.HorizontalSlider(RightHandPosition.z, -1f, 1f);
-
-                GUILayout.Label("LH: " + LeftHandPosition.x.ToString("N2") + " / " + LeftHandPosition.z.ToString("N2"));
-                LeftHandPosition.x = GUILayout.HorizontalSlider(LeftHandPosition.x, -1f, 1f);
-                LeftHandPosition.z = GUILayout.HorizontalSlider(LeftHandPosition.z, -1f, 1f);
-
-            }
 
             bool male = this.SelPawn.gender == Gender.Male;
 
@@ -471,9 +439,7 @@ namespace FacialStuff
 
             // this.size = NeedsCardUtility.GetSize(base.SelPawn);
         }
-        public static Vector3 WeaponOffset;
-        public static Vector3 AimedWeaponOffset;
-        public static bool IgnoreRenderer;
+       // public static bool IgnoreRenderer;
     }
 
 }

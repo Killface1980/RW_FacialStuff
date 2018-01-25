@@ -43,6 +43,7 @@ namespace FacialStuff
                 }
             }
 
+            this.WeaponCompsNew();
             this.WeaponComps();
             this.AnimalPawnComps();
             // BuildWalkCycles();
@@ -551,10 +552,45 @@ namespace FacialStuff
                             if (flag)
                             {
                                 thingDef.comps?.Add(weaponExtensions);
+
                             }
                         }
                     }
                 }
+            }
+
+            this.LaserLoad();
+        }
+
+        private void WeaponCompsNew()
+        {
+            // ReSharper disable once PossibleNullReferenceException
+            foreach (WeaponExtensionDef weaponExtensionDef in DefDatabase<WeaponExtensionDef>.AllDefsListForReading)
+            {
+                ThingDef thingDef = ThingDef.Named(weaponExtensionDef.weapon);
+
+                if (thingDef == null)
+                {
+                    continue;
+                }
+
+                if (thingDef.HasComp(typeof(CompProperties_WeaponExtensions)))
+                {
+                    return;
+                }
+
+                CompProperties_WeaponExtensions weaponExtensions =
+                new CompProperties_WeaponExtensions
+                {
+                compClass                 = typeof(CompWeaponExtensions),
+                AttackAngleOffset         = weaponExtensionDef.attackAngleOffset,
+                WeaponPositionOffset      = weaponExtensionDef.weaponPositionOffset,
+                AimedWeaponPositionOffset = weaponExtensionDef.aimedWeaponPositionOffset,
+                RightHandPosition         = weaponExtensionDef.firstHandPosition,
+                LeftHandPosition          = weaponExtensionDef.secondHandPosition,
+                };
+
+                thingDef.comps?.Add(weaponExtensions);
             }
 
             this.LaserLoad();

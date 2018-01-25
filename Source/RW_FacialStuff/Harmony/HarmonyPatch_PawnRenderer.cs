@@ -257,7 +257,7 @@ namespace FacialStuff.Harmony
             {
                 //   Traverse.Create(__instance).Method("DrawEquipment", rootLoc).GetValue();
 
-                _drawEquipmentMethodInfo?.Invoke(__instance, new object[] { drawPos });
+                _drawEquipmentMethodInfo?.Invoke(__instance, new object[] { baseDrawLoc });
 
             }
 
