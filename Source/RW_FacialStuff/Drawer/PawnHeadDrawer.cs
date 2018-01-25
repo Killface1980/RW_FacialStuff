@@ -80,7 +80,9 @@ namespace FacialStuff
         }
 
 
-        public virtual void DrawHairAndHeadGear(Vector3 rootLoc, Quaternion headQuat, RotDrawMode bodyDrawType, bool renderBody, bool portrait, Vector3 b, ref Vector3 currentLoc)
+        public virtual void DrawHairAndHeadGear(Vector3 currentLoc, RotDrawMode bodyDrawType, Quaternion headQuat,
+                                                bool    renderBody, bool        portrait,
+                                                Vector3 hatInFrontOfFace)
         {
         }
 

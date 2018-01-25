@@ -414,8 +414,9 @@ namespace FacialStuff
             }
         }
 
-        public void DrawHairAndHeadGear(Vector3 rootLoc, RotDrawMode bodyDrawType, ref Vector3 currentLoc, Vector3 b,
-                                        bool portrait, bool renderBody, Quaternion headQuat)
+        public void DrawHairAndHeadGear(Vector3 currentLoc, RotDrawMode bodyDrawType,
+                                        bool    portrait, bool          renderBody, Quaternion headQuat,
+                                        Vector3 hatInFrontOfFace)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -426,14 +427,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawHairAndHeadGear(
-                                                             rootLoc,
-                                                             headQuat,
-                                                             bodyDrawType,
-                                                             renderBody,
-                                                             portrait,
-                                                             b,
-                                                             ref currentLoc);
+                this.PawnHeadDrawers[i]?.DrawHairAndHeadGear(currentLoc, bodyDrawType, headQuat, renderBody, portrait, hatInFrontOfFace);
                 i++;
             }
         }

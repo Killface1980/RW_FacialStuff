@@ -5,7 +5,7 @@
     <defName>PawnAnimatorSettingsVanilla</defName>
     <label>Animation comp loader</label>
     <thingClass>Thing</thingClass>
-  <!-- Deactivated fo r first release 
+  <!-- Deactivated for initial release 
     <CompLoaderTargets>
       <li>
         <handType>Animal</handType>

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using TinyTween;
 using UnityEngine;
 using Verse;
 
@@ -471,6 +472,11 @@ namespace FacialStuff
         public bool  IsMoving;
         public float MovedPercent;
         public float BodyAngle;
+        public float lastAimAngle;
+        public FloatTween tween = new FloatTween();
+        public Vector3Tween eqTweener = new Vector3Tween();
+        public Vector3 lastEqPos = Vector3.zero;
+        public float lastWeaponAngle;
 
         public float BodyOffsetZ
         {

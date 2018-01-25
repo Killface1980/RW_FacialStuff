@@ -7,9 +7,11 @@ using Harmony;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using static FacialStuff.Offsets;
 
 namespace FacialStuff.Harmony
 {
+
     // ReSharper disable once InconsistentNaming
     [HarmonyPatch(
         typeof(PawnRenderer),
@@ -33,6 +35,8 @@ namespace FacialStuff.Harmony
         private static FieldInfo _woundOverlayFieldInfo;
         private static MethodInfo _drawEquipmentMethodInfo;
 
+        private static bool logY = false;
+
         public static bool Prefix(PawnRenderer __instance,
                                   Vector3 rootLoc,
                                   Quaternion quat,
@@ -41,7 +45,7 @@ namespace FacialStuff.Harmony
                                   Rot4 headFacing,
                                   RotDrawMode bodyDrawType,
                                   bool portrait,
-                                  bool headStump, ref Vector3 __state)
+                                  bool headStump)
         {
             GetReflections();
 
@@ -73,11 +77,25 @@ namespace FacialStuff.Harmony
             // Try to move the y position behind while another pawn is standing near
             // if (false)
             Vector3 baseDrawLoc = rootLoc;
+
+
+#if develop
+            string log = String.Empty;
+            if (logY)
+            {
+                log += pawn.LabelShort + " - baseDrawLoc: " + baseDrawLoc.y.ToString("N5");
+            }
+#endif
             if (!portrait && pawn.Spawned)
             {
                 RecalcRootLocY(ref baseDrawLoc, pawn);
             }
-
+#if develop
+            if (logY)
+            {
+                log += "\nRecalc - baseDrawLoc: " + baseDrawLoc.y.ToString("N5");
+            }
+#endif
             // Let's save the basic location for later
             Vector3 footPos = baseDrawLoc;
 
@@ -154,63 +172,69 @@ namespace FacialStuff.Harmony
             // Regular FacePawn rendering 14+ years
 
             // Render body
+            // if (renderBody)
             compAnim.DrawBody(baseDrawLoc, bodyQuat, bodyDrawType, woundDrawer, renderBody, portrait);
-
-            Vector3 drawPos = baseDrawLoc;
-            Vector3 a = baseDrawLoc;
+#if develop
+            if (logY)
+            {
+                log += "\nDrawBody - baseDrawLoc: " + baseDrawLoc.y.ToString("N5");
+            }
+#endif
+            Vector3 bodyPos = baseDrawLoc;
+            Vector3 headPos = baseDrawLoc;
             if (bodyFacing != Rot4.North)
             {
-                a.y += Offsets.YOffset_Head;
-                drawPos.y += Offsets.YOffset_Shell;
+                headPos.y += YOffset_Head;
+                bodyPos.y += YOffset_Shell;
             }
             else
             {
-                a.y += Offsets.YOffset_Shell;
-                drawPos.y += Offsets.YOffset_Head;
+                headPos.y += YOffset_Shell;
+                bodyPos.y += YOffset_Head;
             }
 
             if (graphics.headGraphic != null)
             {
                 // Rendererd pawn faces
-                // Vector3 b =  compFace.BaseHeadOffsetAt(portrait).RotatedBy(compAnim.BodyAngle);
 
-                Vector3 headLoc = bodyQuat * compFace.BaseHeadOffsetAt(portrait);
+                Vector3 b = bodyQuat * compFace.BaseHeadOffsetAt(portrait);
+                Vector3 headDrawLoc = headPos + b;
+                Vector3 hatInFrontOfFace = baseDrawLoc + b;
+                hatInFrontOfFace.y       += ((!(bodyFacing == Rot4.North)) ? YOffset_PostHead : YOffset_Behind);
+                Vector3 overHead = baseDrawLoc + b;
+                overHead.y += YOffset_OnHead;
 
-                Vector3 currentLoc = baseDrawLoc + headLoc;
-                currentLoc.y += Offsets.YOffset_OnHead;
-
-                compFace.DrawBasicHead(out bool headDrawn, bodyDrawType, portrait, headStump, ref currentLoc, headQuat);
-
+                compFace.DrawBasicHead(out bool headDrawn, bodyDrawType, portrait, headStump, ref headDrawLoc, headQuat);
                 if (headDrawn)
                 {
                     if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
                     {
                         if (compFace.Props.hasWrinkles)
                         {
-                            compFace.DrawWrinkles(bodyDrawType, ref currentLoc, headQuat, portrait);
+                            compFace.DrawWrinkles(bodyDrawType, ref headDrawLoc, headQuat, portrait);
                         }
 
                         if (compFace.Props.hasEyes)
                         {
-                            compFace.DrawNaturalEyes(ref currentLoc, portrait, headQuat);
+                            compFace.DrawNaturalEyes(ref headDrawLoc, portrait, headQuat);
 
                             // the brow above
-                            compFace.DrawBrows(ref currentLoc, headQuat, portrait);
+                            compFace.DrawBrows(ref headDrawLoc, headQuat, portrait);
 
                             // and now the added eye parts
-                            compFace.DrawUnnaturalEyeParts(ref currentLoc, headQuat, portrait);
+                            compFace.DrawUnnaturalEyeParts(ref headDrawLoc, headQuat, portrait);
                         }
 
                         if (compFace.Props.hasMouth)
                         {
-                            compFace.DrawNaturalMouth(ref currentLoc, portrait, headQuat);
+                            compFace.DrawNaturalMouth(ref headDrawLoc, portrait, headQuat);
                         }
 
                         // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
                         if (compFace.Props.hasBeard)
                         {
                             // if (!portrait)
-                            compFace.DrawBeardAndTache(ref currentLoc, portrait, headQuat);
+                            compFace.DrawBeardAndTache(ref headDrawLoc, portrait, headQuat);
                         }
 
                         // Deactivated, looks kinda crappy ATM
@@ -230,22 +254,24 @@ namespace FacialStuff.Harmony
 
                 if (!headStump)
                 {
-                    compFace.DrawHairAndHeadGear(
-                                                 baseDrawLoc,
+                    compFace.DrawHairAndHeadGear(overHead,
                                                  bodyDrawType,
-                                                 ref currentLoc,
-                                                 headLoc,
                                                  portrait,
                                                  renderBody,
-                                                 headQuat);
+                                                 headQuat, hatInFrontOfFace);
                 }
 
-                compFace.DrawAlienHeadAddons(portrait, headQuat, currentLoc);
+                compFace.DrawAlienHeadAddons(portrait, headQuat, overHead);
             }
 
-            compAnim.DrawApparel(bodyQuat, drawPos, portrait, renderBody);
-
-            compFace.DrawAlienBodyAddons(bodyQuat, drawPos, portrait, renderBody);
+            compAnim.DrawApparel(bodyQuat, bodyPos, portrait, renderBody);
+#if develop
+            if (logY)
+            {
+                log += "\nDrawApparel - bodyPos: " + bodyPos.y.ToString("N5");
+            }
+#endif
+            compFace.DrawAlienBodyAddons(bodyQuat, bodyPos, portrait, renderBody);
 
             // No wobble for equipment, looks funnier - nah!
             // Vector3 equipPos = rootLoc;
@@ -258,14 +284,18 @@ namespace FacialStuff.Harmony
                 //   Traverse.Create(__instance).Method("DrawEquipment", rootLoc).GetValue();
 
                 _drawEquipmentMethodInfo?.Invoke(__instance, new object[] { baseDrawLoc });
-
             }
-
+#if develop
+            if (logY)
+            {
+                log += "\n_drawEquipmentMethodInfo - baseDrawLoc: " + baseDrawLoc.y.ToString("N5");
+            }
+#endif
             bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
+                Vector3 handPos = bodyPos;
             if (showHands)
             {
                 // Reset the position for the hands
-                Vector3 handPos = drawPos;
                 handPos.y = baseDrawLoc.y;
                 compAnim.DrawHands(bodyQuat, handPos, portrait);
             }
@@ -274,7 +304,13 @@ namespace FacialStuff.Harmony
             {
                 compAnim?.DrawFeet(bodyQuat, footQuat, footPos, portrait);
             }
-
+#if develop
+            if (logY)
+            {
+                log += "\nHands + Feet - handPos, footPos: " + handPos.y.ToString("N5") + ", "+ footPos.y.ToString("N5") + "\nEND";
+                Log.Message(log);
+            }
+#endif
             if (!portrait)
             {
                 if (pawn.apparel != null)
@@ -287,7 +323,7 @@ namespace FacialStuff.Harmony
                 }
 
                 Vector3 bodyLoc = baseDrawLoc;
-                bodyLoc.y += Offsets.YOffset_Status;
+                bodyLoc.y += YOffset_Status;
 
                 PawnHeadOverlays headOverlays = (PawnHeadOverlays)pawnHeadOverlaysFieldInfo?.GetValue(__instance);
                 if (headOverlays != null)
@@ -295,8 +331,6 @@ namespace FacialStuff.Harmony
                     compFace.DrawHeadOverlays(headOverlays, bodyLoc, headQuat);
                 }
             }
-
-            __state = drawPos;
             return false;
         }
 
@@ -361,12 +395,12 @@ namespace FacialStuff.Harmony
                                    otherPawn.DrawPos.x >= loc.x - 1 &&
                                    otherPawn.DrawPos.x <= loc.x + 1 &&
                                    otherPawn.DrawPos.z <= loc.z).ToList();
-            List<Pawn> leftOfPawn = pawns.Where(other => other.DrawPos.x <= loc.x).ToList();
+          //  List<Pawn> leftOfPawn = pawns.Where(other => other.DrawPos.x <= loc.x).ToList();
 
             if (!pawns.NullOrEmpty())
             {
-                loc.y -= 0.08f * pawns.Count;
-                loc.y -= 0.01f * leftOfPawn.Count;
+                loc.y -= 0.4f * pawns.Count;
+             //   loc.y -= 0.1f * leftOfPawn.Count;
             }
 
             rootLoc = loc;
@@ -461,7 +495,7 @@ namespace FacialStuff.Harmony
             if (renderBody)
             {
                 loc.x += compAnim.BodyAnim?.offCenterX ?? 0f;
-                loc.y += Offsets.YOffset_Body;
+                loc.y += YOffset_Body;
                 if (bodyDrawType == RotDrawMode.Dessicated &&
                     !pawn.RaceProps.Humanlike
                  && graphics.dessicatedGraphic != null && !portrait)
@@ -484,13 +518,13 @@ namespace FacialStuff.Harmony
                     {
                         Material damagedMat = graphics.flasher.GetDamagedMat(list[i]);
                         GenDraw.DrawMeshNowOrLater(mesh, loc, quat, damagedMat, portrait);
-                        loc.y += Offsets.YOffset_Behind;
+                        loc.y += YOffset_Behind;
                     }
 
                     if (bodyDrawType == RotDrawMode.Fresh)
                     {
                         Vector3 drawLoc = rootLoc;
-                        drawLoc.y += Offsets.YOffset_Wounds;
+                        drawLoc.y += YOffset_Wounds;
                         woundDrawer.RenderOverBody(drawLoc, mesh, quat, portrait);
                     }
                 }
@@ -499,11 +533,11 @@ namespace FacialStuff.Harmony
             Vector3 vector = rootLoc;
             if (bodyFacing != Rot4.North)
             {
-                vector.y += Offsets.YOffset_Shell;
+                vector.y += YOffset_Shell;
             }
             else
             {
-                vector.y += Offsets.YOffset_Head;
+                vector.y += YOffset_Head;
             }
 
             if (!portrait && pawn.RaceProps.Animal && pawn.inventory != null && pawn.inventory.innerContainer.Count > 0

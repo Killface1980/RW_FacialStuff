@@ -1,25 +1,44 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FacialStuff.AnimatorWindows;
 using FacialStuff.Defs;
 using FacialStuff.GraphicsFS;
+using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using static FacialStuff.Offsets;
 
 namespace FacialStuff
 {
     public class ITab_Pawn_Weapons : ITab
     {
-        private readonly string[] _psiToolbarStrings = { "North", "East", "South", "West" };
+        #region Public Fields
+
+        public static bool IgnoreRenderer;
+
+        #endregion Public Fields
+
+        #region Private Fields
 
         private static int _rotation = 2;
-        public static Vector3 RightHandPosition;
+        [CanBeNull] private static CompProperties_WeaponExtensions weaponExtensions;
 
-        public static Vector3 LeftHandPosition;
-        private Pawn pawn;
-        private bool _rightFront = true;
+        private readonly string[] _psiToolbarStrings =
+        {"North", "East", "South", "West"};
+
         private bool _leftFront;
+        private bool _rightFront = true;
+
+        private bool _useSecondHand =
+        weaponExtensions?.RightHandPosition != Vector3.zero;
+
+        private Pawn pawn;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public ITab_Pawn_Weapons()
         {
@@ -27,32 +46,85 @@ namespace FacialStuff
             this.tutorTag = "FWeapons";
         }
 
+        #endregion Public Constructors
+
+        #region Public Properties
+
         public override bool IsVisible => this.SelPawn.HasCompFace();
+
+        public bool leftFront
+        {
+            set
+            {
+                if (weaponExtensions != null)
+                {
+                    {
+                        weaponExtensions.LeftHandPosition.y = (value ? 1f : -1f) * YOffset_HandsFeet;
+                    }
+                }
+            }
+        }
+
+        public bool rightFront
+        {
+            set
+            {
+                if (weaponExtensions != null)
+                {
+                    weaponExtensions.RightHandPosition.y = (value ? 1f : -1f) * YOffset_HandsFeet;
+                }
+            }
+        }
+
+        public bool UseSecondHand
+        {
+            set
+            {
+                if (weaponExtensions != null)
+                {
+                    if (value)
+                    {
+                        if (weaponExtensions.LeftHandPosition == Vector3.zero)
+                        {
+                            this.leftFront = false;
+                        }
+                    }
+                    else
+                    {
+                        weaponExtensions.LeftHandPosition = Vector3.zero;
+                    }
+                }
+            }
+        }
+
+        #endregion Public Properties
+
+        #region Protected Methods
 
         protected override void FillTab()
         {
             if (this.pawn != this.SelPawn)
             {
                 this.pawn = this.SelPawn;
-                LeftHandPosition = RightHandPosition = WeaponOffset = AimedWeaponOffset = Vector3.zero;
             }
 
+            bool horizontal = this.pawn.Rotation.IsHorizontal;
             if (!this.SelPawn.GetCompFace(out CompFace compFace))
             {
                 return;
             }
 
-            Rect rect = new Rect(10f, 10f, 330f, 430f);
+            Rect rect = new Rect(10f, 10f, 330f, 530f);
 
+            Listing_Standard listing = new Listing_Standard();
 
-            GUILayout.BeginArea(rect);
-            GUILayout.BeginVertical();
+            listing.Begin(rect);
 
 
             this.SelPawn.GetCompAnim(out CompBodyAnimator _);
 
 
-            compFace.IgnoreRenderer = GUILayout.Toggle(compFace.IgnoreRenderer, "Ignore renderer");
+            listing.CheckboxLabeled("Ignore renderer", ref compFace.IgnoreRenderer);
             if (GUI.changed)
             {
                 IgnoreRenderer = compFace.IgnoreRenderer;
@@ -64,63 +136,95 @@ namespace FacialStuff
                 return;
             }
 
-            CompWeaponExtensions extensions = primary?.GetComp<CompWeaponExtensions>();
+            weaponExtensions = primary?.def.GetCompProperties<CompProperties_WeaponExtensions>();
+
+            if (weaponExtensions == null)
+            {
+                weaponExtensions = new CompProperties_WeaponExtensions
+                {
+                    compClass = typeof(CompWeaponExtensions)
+                };
+
+                primary.def.comps?.Add(weaponExtensions);
+            }
+
             if (this.SelPawn.Drafted)
             {
-                GUILayout.Label(this.pawn.equipment.Primary.def.defName);
+                listing.Label(this.pawn.equipment.Primary.def.defName);
 
-                Vector3 propWeapOffset = Vector3.zero;
-                Vector3 propAimOffset = Vector3.zero;
-                Vector3 propLeftOffset = Vector3.zero;
-                Vector3 propRightOffset = Vector3.zero;
+                Vector3 weaponOffset = weaponExtensions.WeaponPositionOffset;
 
-                if (extensions != null)
+                listing.Label("Offset: " +
+                              (weaponOffset.x).ToString("N2") + " / " +
+                              (weaponOffset.y).ToString("N2") + " / " +
+                              (weaponOffset.z).ToString("N2"));
+                if (horizontal)
                 {
-                    propWeapOffset = extensions.Props.WeaponPositionOffset;
-                    propAimOffset = extensions.Props.AimedWeaponPositionOffset;
-                    propLeftOffset = extensions.Props.LeftHandPosition;
-                    propRightOffset = extensions.Props.RightHandPosition;
+                    weaponOffset.y = listing.Slider(weaponOffset.y, -1f, 1f);
+
+                }
+                else
+                {
+                    weaponOffset.x = listing.Slider(weaponOffset.x, -1f, 1f);
+
+                }
+                weaponOffset.z = listing.Slider(weaponOffset.z, -1f, 1f);
+
+                Vector3 aimedOffset = weaponExtensions.AimedWeaponPositionOffset;
+                listing.Label("OffsetAiming: " +
+                              (aimedOffset.x).ToString("N2") + " / " +
+                              (aimedOffset.y).ToString("N2") + " / " +
+                              (aimedOffset.z).ToString("N2"));
+                if (horizontal)
+                {
+                    aimedOffset.y = listing.Slider(aimedOffset.y, -1f, 1f);
+
+                }
+                else
+                {
+                    aimedOffset.x = listing.Slider(aimedOffset.x, -1f, 1f);
+
+                }
+                aimedOffset.z = listing.Slider(aimedOffset.z, -1f, 1f);
+
+                Vector3 rightHandPosition = weaponExtensions.RightHandPosition;
+                listing.Label("RH: " +
+                              (rightHandPosition.x).ToString("N2") + " / " +
+                              (rightHandPosition.z).ToString("N2"));
+
+                listing.Gap();
+                rightHandPosition.y =
+                listing.Slider(rightHandPosition.y, -YOffset_HandsFeet, YOffset_HandsFeet, leftAlignedLabel: "behind",
+                               rightAlignedLabel: "front", roundTo: YOffset_HandsFeet);
+
+                rightHandPosition.x = listing.Slider(rightHandPosition.x, -1f, 1f);
+                rightHandPosition.z = listing.Slider(rightHandPosition.z, -1f, 1f);
+
+                Vector3 leftHandPosition = weaponExtensions.LeftHandPosition;
+                listing.Label("LH: " +
+                              (leftHandPosition.x).ToString("N2") + " / " +
+                              (leftHandPosition.z).ToString("N2"));
+
+                listing.Gap();
+                leftHandPosition.y =
+                listing.Slider(leftHandPosition.y, -YOffset_HandsFeet,
+                               YOffset_HandsFeet, leftAlignedLabel: "behind",
+                               rightAlignedLabel: "front", roundTo: YOffset_HandsFeet);
+
+                leftHandPosition.x = listing.Slider(leftHandPosition.x, -1f, 1f);
+                leftHandPosition.z = listing.Slider(leftHandPosition.z, -1f, 1f);
+
+                if (leftHandPosition != Vector3.zero)
+                {
+                    if (listing.ButtonText("Remove left hand"))
+                    {
+                        leftHandPosition = Vector3.zero;
+                    }
                 }
 
-                GUILayout.Label("Offset: " +
-                                (propWeapOffset.x + WeaponOffset.x).ToString("N2") + " / " +
-                                (propWeapOffset.y + WeaponOffset.y).ToString("N2") + " / " +
-                                (propWeapOffset.z + WeaponOffset.z).ToString("N2"));
+                listing.Gap();
 
-                WeaponOffset.x = GUILayout.HorizontalSlider(WeaponOffset.x, -1f, 1f);
-                WeaponOffset.y = GUILayout.HorizontalSlider(WeaponOffset.y, -1f, 1f);
-                WeaponOffset.z = GUILayout.HorizontalSlider(WeaponOffset.z, -1f, 1f);
-
-                GUILayout.Label("OffsetAiming: " +
-                                (propAimOffset.x + AimedWeaponOffset.x).ToString("N2") + " / " +
-                                (propAimOffset.y + AimedWeaponOffset.y).ToString("N2") + " / " +
-                                (propAimOffset.z + AimedWeaponOffset.z).ToString("N2"));
-
-                AimedWeaponOffset.x = GUILayout.HorizontalSlider(AimedWeaponOffset.x, -1f, 1f);
-                AimedWeaponOffset.y = GUILayout.HorizontalSlider(AimedWeaponOffset.y, -1f, 1f);
-                AimedWeaponOffset.z = GUILayout.HorizontalSlider(AimedWeaponOffset.z, -1f, 1f);
-
-                GUILayout.Label("RH: " +
-                                (propRightOffset.x + RightHandPosition.x).ToString("N2") + " / " +
-                                (propRightOffset.z + RightHandPosition.z).ToString("N2"));
-                rightFront = GUILayout.Toggle(rightFront, "front");
-                RightHandPosition.x = GUILayout.HorizontalSlider(RightHandPosition.x, -1f, 1f);
-                RightHandPosition.z = GUILayout.HorizontalSlider(RightHandPosition.z, -1f, 1f);
-
-                this.UseSecondHand = GUILayout.Toggle(this.UseSecondHand, "Use left hand");
-                if (this.UseSecondHand)
-                {
-                    GUILayout.Label("LH: " +
-                                    (propLeftOffset.x + LeftHandPosition.x).ToString("N2") + " / " +
-                                    (propLeftOffset.z + LeftHandPosition.z).ToString("N2"));
-
-                    leftFront = GUILayout.Toggle(leftFront, "front");
-                    LeftHandPosition.x = GUILayout.HorizontalSlider(LeftHandPosition.x, -1f, 1f);
-                    LeftHandPosition.z = GUILayout.HorizontalSlider(LeftHandPosition.z, -1f, 1f);
-                }
-
-
-                if (GUILayout.Button("Export WeaponExtensionDef"))
+                if (listing.ButtonText("Export WeaponExtensionDef"))
                 {
                     string defName = "WeaponExtensionDef_" + primary?.def.defName;
 
@@ -140,22 +244,11 @@ namespace FacialStuff
                         wepDef = DefDatabase<WeaponExtensionDef>.GetNamed(defName);
                     }
 
-                    // clear existing offsets
-                    propRightOffset.y = propLeftOffset.y = 0f;
+                    wepDef.weaponPositionOffset = weaponOffset;
+                    wepDef.aimedWeaponPositionOffset = aimedOffset;
+                    wepDef.firstHandPosition = rightHandPosition;
+                    wepDef.secondHandPosition = leftHandPosition;
 
-                    wepDef.weaponPositionOffset = propWeapOffset + WeaponOffset;
-                    wepDef.aimedWeaponPositionOffset = propAimOffset + AimedWeaponOffset;
-                    wepDef.firstHandPosition = propRightOffset + RightHandPosition;
-                    wepDef.secondHandPosition = propLeftOffset + LeftHandPosition;
-
-                    if (wepDef.firstHandPosition != Vector3.zero)
-                    {
-                        wepDef.firstHandPosition.y = this.rightY;
-                    }
-                    if (wepDef.secondHandPosition != Vector3.zero)
-                    {
-                        wepDef.secondHandPosition.y = this.leftY;
-                    }
                     string configFolder = MainTabWindow_BaseAnimator.DefPath;
                     string path = configFolder + "/WeaponExtensionDefs/" + wepDef.defName + ".xml";
 
@@ -175,61 +268,28 @@ namespace FacialStuff
                                                                               },
                                                                               true));
                 }
-            }
 
-
-            GUILayout.EndVertical();
-
-            GUILayout.EndArea();
-
-            // NeedsCardUtility.DoNeedsMoodAndThoughts(new Rect(0f, 0f, this.size.x, this.size.y), base.SelPawn, ref this.thoughtScrollPosition);
-        }
-
-        public bool UseSecondHand
-        {
-            get { return this._useSecondHand; }
-            set
-            {
-                this._useSecondHand = value;
-                if (!value)
+                if (GUI.changed)
                 {
-                    LeftHandPosition=Vector3.zero;
+                    weaponExtensions.WeaponPositionOffset = weaponOffset;
+                    weaponExtensions.AimedWeaponPositionOffset = aimedOffset;
+                    weaponExtensions.LeftHandPosition = leftHandPosition;
+                    weaponExtensions.RightHandPosition = rightHandPosition;
                 }
             }
-        }
 
-        public bool leftFront
-        {
-            get { return this._leftFront; }
-            set
-            {
-                this._leftFront = value;
-                leftY = (value ? 1f : -1f) * 0.003f;
-            }
-        }
 
-        public bool rightFront
-        {
-            get { return this._rightFront; }
-            set
-            {
-                this._rightFront = value;
-                rightY = (value ? 1f : -1f) * 0.003f;
-            }
+            listing.End();
+            // NeedsCardUtility.DoNeedsMoodAndThoughts(new Rect(0f, 0f, this.size.x, this.size.y), base.SelPawn, ref this.thoughtScrollPosition);
         }
 
         protected override void UpdateSize()
         {
-            this.size = new Vector2(350f, 450f);
+            this.size = new Vector2(350f, 550f);
 
             // this.size = NeedsCardUtility.GetSize(base.SelPawn);
         }
 
-        public static Vector3 WeaponOffset;
-        public static Vector3 AimedWeaponOffset;
-        public static bool IgnoreRenderer;
-        private float leftY = -0.003f;
-        private float rightY = 0.003f;
-        private bool _useSecondHand;
+        #endregion Protected Methods
     }
 }

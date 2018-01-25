@@ -25,6 +25,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>FacialStuff.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -34,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <CodeAnalysisRuleSet>FacialStuff.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -85,6 +87,7 @@
     <Compile Include="Animator\BodyAnimator.cs" />
     <None Include="Components\CompHumanFace.cs" />
     <None Include="Controller_Animator.cs" />
+    <Compile Include="Tweener\Class1.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />
     <None Include="Drawer\CentipedeDrawer.cs" />
@@ -309,13 +312,6 @@
     </Content>
     <Content Include="..\..\Defs\MouthDefs\MouthDef.xml">
       <Link>Defs\xml\Face\MouthDef.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="..\..\Defs\ThingDefs\HandDefs_Weapons_LightSabers.xml">
-      <Link>Defs\xml\HandDefs_Weapons_LightSabers.xml</Link>
-    </Content>
-    <Content Include="..\..\Defs\ThingDefs\HandDefs_Weapons_Vanilla.xml">
-      <Link>Defs\xml\HandDefs_Weapons_Vanilla.xml</Link>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\ThingDefs\PawnAnimationTargets.xml">

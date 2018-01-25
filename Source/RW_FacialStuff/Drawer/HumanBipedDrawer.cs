@@ -73,8 +73,8 @@ namespace FacialStuff
             if (this.CompAnimator.BodyAnim != null)
             {
                 float legModifier = this.CompAnimator.BodyAnim.extraLegLength;
-                float posModB = legModifier * 0.85f;
-                float posModF = -legModifier * 0.15f;
+                float posModB = legModifier * 0.75f;
+                float posModF = -legModifier * 0.25f;
                 Vector3 vector3 = new Vector3(0, 0, posModB);
                 Vector3 vector4 = new Vector3(0, 0, posModF);
 
@@ -225,8 +225,8 @@ namespace FacialStuff
             // renderBody is AFAIK only used for beds, so ignore it and undress
             if (renderBody || Controller.settings.IgnoreRenderBody)
             {
-                Vector3 loc = rootLoc;
-                loc.y += Offsets.YOffset_Body;
+                Vector3 bodyLoc = rootLoc;
+                bodyLoc.y += Offsets.YOffset_Body;
 
                 Mesh bodyMesh = this.GetPawnMesh(true, portrait);
 
@@ -261,8 +261,8 @@ namespace FacialStuff
                 for (int i = 0; i < bodyBaseAt.Count; i++)
                 {
                     Material damagedMat = this.Graphics.flasher.GetDamagedMat(bodyBaseAt[i]);
-                    GenDraw.DrawMeshNowOrLater(bodyMesh, loc, quat, damagedMat, portrait);
-                    loc.y += Offsets.YOffsetInterval_Clothes;
+                    GenDraw.DrawMeshNowOrLater(bodyMesh, bodyLoc, quat, damagedMat, portrait);
+                    bodyLoc.y += Offsets.YOffsetInterval_Clothes;
                 }
 
                 if (bodyDrawType == RotDrawMode.Fresh)
@@ -450,6 +450,7 @@ namespace FacialStuff
                 return;
 
             }
+
             if (portrait && !this.CompAnimator.AnyOpen())
             {
                 return;

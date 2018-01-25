@@ -13,12 +13,12 @@ namespace FacialStuff
 
         public float? AttackAngleOffset;
 
-        public Vector3 LeftHandPosition;
+        public Vector3 LeftHandPosition = Vector3.zero;
 
-        public Vector3 RightHandPosition;
+        public Vector3 RightHandPosition = Vector3.zero;
 
-        public Vector3 WeaponPositionOffset;
-        public Vector3 AimedWeaponPositionOffset;
+        public Vector3 WeaponPositionOffset = Vector3.zero;
+        public Vector3 AimedWeaponPositionOffset = Vector3.zero;
 
         #endregion Public Fields
 
