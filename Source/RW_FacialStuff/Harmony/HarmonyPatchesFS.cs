@@ -295,17 +295,15 @@ namespace FacialStuff.Harmony
                 return;
             }
 
-            if (primaryEq.AllVerbs.NullOrEmpty())
-            {
-                return;
-            }
+            Stance_Busy busy = pawn.stances.curStance as Stance_Busy;
+            if (busy== null) { return;}
 
-            if (!primaryEq.AllVerbs.Any(x => x.verbProps.MeleeRange))
-            {
-                return;
-            }
+          //  if (!busy.verb.IsMeleeAttack)
+          //  {
+          //      return;
+          //  }
 
-            DamageDef damageDef = ThingUtility.PrimaryMeleeWeaponDamageType(primaryEq.parent.def);
+            DamageDef damageDef = busy.verb.GetDamageDef();//ThingUtility.PrimaryMeleeWeaponDamageType(primaryEq.parent.def);
             if (damageDef == null)
             {
                 return;
@@ -332,6 +330,7 @@ namespace FacialStuff.Harmony
                 weaponAngle += flipped ? -animationPhasePercent * totalSwingAngle : animationPhasePercent * totalSwingAngle;
                 noTween = true;
             }
+            
 
         }
         //  private static float RecoilMax = -0.15f;
@@ -464,39 +463,33 @@ namespace FacialStuff.Harmony
             {
                 // If pawn flips sides, no tween
 
-                bool x = Mathf.Abs(animator.lastAimAngle - angleStanding) < 3f && Mathf.Abs(aimAngle - angleStandingFlipped) < 3f;
-                bool y = Mathf.Abs(animator.lastAimAngle - angleStandingFlipped) < 3f && Mathf.Abs(aimAngle - angleStanding) < 3f;
+                bool x = Mathf.Abs(animator.lastAimAngle - angleStanding) < 3f &&
+                         Mathf.Abs(aimAngle - angleStandingFlipped) < 3f;
+                bool y = Mathf.Abs(animator.lastAimAngle - angleStandingFlipped) < 3f &&
+                         Mathf.Abs(aimAngle - angleStanding) < 3f;
+                bool z = Math.Abs(Mathf.Abs(aimAngle - animator.lastAimAngle) - 180f) < 12f;
 
-                if (!x && !y)
+                if (!x && !y && !z)
                 {
+
                     FloatTween tween = animator.tween;
-                    switch (tween.State)
+                    if (!Find.TickManager.Paused)
                     {
-                        case TweenState.Stopped:
+                        if (Math.Abs(tween.EndValue - weaponAngle) > 6f)
+                        {
                             tween.Start(animator.lastWeaponAngle, weaponAngle, angleChange, ScaleFuncs.QuadraticEaseInOut);
-                            break;
-
-                        case default(TweenState):
-                            if (!Find.TickManager.Paused)
-                            {
-                                tween.Update(6f);
-                            }
-
-                            break;
+                        }
+                        tween.Update(6f);
                     }
-
                     weaponAngle = tween.CurrentValue;
                 }
+
             }
 
             animator.lastAimAngle = aimAngle;
             animator.lastWeaponAngle = weaponAngle;
 
 
-
-            // animator.PartTweener.WeaponAngle = weaponAngle;
-            // animator.PartTweener.WeaponAngleCalculation();
-            // weaponAngle = animator.PartTweener.TweenedWeaponAngle;
 
             // Now the remaining hands if possible
             if (animator.Props.bipedWithHands && Controller.settings.UseHands)
@@ -621,7 +614,7 @@ namespace FacialStuff.Harmony
             List<CodeInstruction> instructionList = instructions.ToList();
 
             int index = instructionList.FindIndex(x => x.opcode == OpCodes.Ldloc_0);
-            var labels = instructionList[index].labels;
+            List<Label> labels = instructionList[index].labels;
             instructionList[index].labels = new List<Label>();
             instructionList.InsertRange(index, new List<CodeInstruction>
                                                {

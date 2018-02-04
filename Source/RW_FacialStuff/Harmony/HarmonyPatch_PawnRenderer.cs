@@ -38,7 +38,7 @@ namespace FacialStuff.Harmony
         private static bool logY = false;
 
         public static bool Prefix(PawnRenderer __instance,
-                                  Vector3 rootLoc,
+                                  ref Vector3 rootLoc,
                                   Quaternion quat,
                                   bool renderBody,
                                   Rot4 bodyFacing,
@@ -76,26 +76,15 @@ namespace FacialStuff.Harmony
 
             // Try to move the y position behind while another pawn is standing near
             // if (false)
-            Vector3 baseDrawLoc = rootLoc;
 
 
-#if develop
-            string log = String.Empty;
-            if (logY)
-            {
-                log += pawn.LabelShort + " - baseDrawLoc: " + baseDrawLoc.y.ToString("N5");
-            }
-#endif
+
             if (!portrait && pawn.Spawned)
             {
-                RecalcRootLocY(ref baseDrawLoc, pawn);
+                RecalcRootLocY(ref rootLoc, pawn);
             }
-#if develop
-            if (logY)
-            {
-                log += "\nRecalc - baseDrawLoc: " + baseDrawLoc.y.ToString("N5");
-            }
-#endif
+
+            Vector3 baseDrawLoc = rootLoc;
             // Let's save the basic location for later
             Vector3 footPos = baseDrawLoc;
 
@@ -174,12 +163,7 @@ namespace FacialStuff.Harmony
             // Render body
             // if (renderBody)
             compAnim.DrawBody(baseDrawLoc, bodyQuat, bodyDrawType, woundDrawer, renderBody, portrait);
-#if develop
-            if (logY)
-            {
-                log += "\nDrawBody - baseDrawLoc: " + baseDrawLoc.y.ToString("N5");
-            }
-#endif
+
             Vector3 bodyPos = baseDrawLoc;
             Vector3 headPos = baseDrawLoc;
             if (bodyFacing != Rot4.North)
@@ -225,11 +209,6 @@ namespace FacialStuff.Harmony
                             compFace.DrawUnnaturalEyeParts(ref headDrawLoc, headQuat, portrait);
                         }
 
-                        if (compFace.Props.hasMouth)
-                        {
-                            compFace.DrawNaturalMouth(ref headDrawLoc, portrait, headQuat);
-                        }
-
                         // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
                         if (compFace.Props.hasBeard)
                         {
@@ -237,6 +216,10 @@ namespace FacialStuff.Harmony
                             compFace.DrawBeardAndTache(ref headDrawLoc, portrait, headQuat);
                         }
 
+                        if (compFace.Props.hasMouth)
+                        {
+                            compFace.DrawNaturalMouth(ref headDrawLoc, portrait, headQuat);
+                        }
                         // Deactivated, looks kinda crappy ATM
                         // if (pawn.Dead)
                         // {
@@ -265,12 +248,7 @@ namespace FacialStuff.Harmony
             }
 
             compAnim.DrawApparel(bodyQuat, bodyPos, portrait, renderBody);
-#if develop
-            if (logY)
-            {
-                log += "\nDrawApparel - bodyPos: " + bodyPos.y.ToString("N5");
-            }
-#endif
+
             compFace.DrawAlienBodyAddons(bodyQuat, bodyPos, portrait, renderBody);
 
             // No wobble for equipment, looks funnier - nah!
@@ -285,12 +263,7 @@ namespace FacialStuff.Harmony
 
                 _drawEquipmentMethodInfo?.Invoke(__instance, new object[] { baseDrawLoc });
             }
-#if develop
-            if (logY)
-            {
-                log += "\n_drawEquipmentMethodInfo - baseDrawLoc: " + baseDrawLoc.y.ToString("N5");
-            }
-#endif
+
             bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
                 Vector3 handPos = bodyPos;
             if (showHands)
@@ -304,13 +277,7 @@ namespace FacialStuff.Harmony
             {
                 compAnim?.DrawFeet(bodyQuat, footQuat, footPos, portrait);
             }
-#if develop
-            if (logY)
-            {
-                log += "\nHands + Feet - handPos, footPos: " + handPos.y.ToString("N5") + ", "+ footPos.y.ToString("N5") + "\nEND";
-                Log.Message(log);
-            }
-#endif
+
             if (!portrait)
             {
                 if (pawn.apparel != null)
@@ -399,7 +366,7 @@ namespace FacialStuff.Harmony
 
             if (!pawns.NullOrEmpty())
             {
-                loc.y -= 0.4f * pawns.Count;
+                loc.y -= 0.043f * pawns.Count;
              //   loc.y -= 0.1f * leftOfPawn.Count;
             }
 

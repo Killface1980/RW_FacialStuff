@@ -477,6 +477,7 @@ namespace FacialStuff
         public Vector3Tween eqTweener = new Vector3Tween();
         public Vector3 lastEqPos = Vector3.zero;
         public float lastWeaponAngle;
+        public float desiredAimAngle;
 
         public float BodyOffsetZ
         {

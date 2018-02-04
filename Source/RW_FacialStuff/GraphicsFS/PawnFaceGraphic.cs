@@ -233,30 +233,27 @@ namespace FacialStuff.GraphicsFS
         {
             this.InitializeGraphicsEyePatches();
 
-            Color eyeColor = Color.black;
+            Color eyeColor = Color.white;
 
             this.EyeLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this._compFace.TexPathEyeLeft,
-                                                                                 ShaderDatabase.Cutout,
+                                                                                 ShaderDatabase.CutoutComplex,
                                                                                  Vector2.one,
                                                                                  eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this._compFace.TexPathEyeRight,
-                                                                                  ShaderDatabase.Cutout,
+                                                                                  ShaderDatabase.CutoutComplex,
                                                                                   Vector2.one,
-                                                                                  eyeColor) as
-                                   Graphic_Multi_NaturalEyes;
+                                                                                  eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.TexPathEyeLeftClosed,
                                                                                        ShaderDatabase.Cutout,
                                                                                        Vector2.one,
-                                                                                       eyeColor) as
-                                        Graphic_Multi_NaturalEyes;
+                                                                                       eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.TexPathEyeRightClosed,
                                                                                         ShaderDatabase.Cutout,
                                                                                         Vector2.one,
-                                                                                        eyeColor) as
-                                         Graphic_Multi_NaturalEyes;
+                                                                                        eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.DeadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                                                       "Things/Pawn/Humanlike/Eyes/Eyes_Dead",
@@ -278,6 +275,10 @@ namespace FacialStuff.GraphicsFS
                                                                         Vector2.one,
                                                                         Color.white) as Graphic_Multi_NaturalHeadParts;
                     this._compFace.BodyStat.Jaw = PartStatus.Artificial;
+                    if (this._compFace.TexPathJawAddedPart.Contains("ROMV_Fangs"))
+                    {
+                        this._compFace.BodyStat.Jaw = PartStatus.DisplayOverBeard;
+                    }
 
                     // all done, return
                     return;

@@ -105,16 +105,4 @@
     </hairTags>
   </FacialStuff.Defs.MouthDef>
 
-	<FacialStuff.Defs.MouthDef>
-    <defName>Mouth_BionicJaw</defName>
-    <label>BionicJaw</label>
-	  <forbiddenOnRace/>
-    <texPath>Things/Pawn/Humanlike/Mouth/Mouth_BionicJaw</texPath>
-    <hairTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </hairTags>
-  </FacialStuff.Defs.MouthDef>
 </Defs>

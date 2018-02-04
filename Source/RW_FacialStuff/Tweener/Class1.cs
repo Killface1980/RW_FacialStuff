@@ -240,14 +240,10 @@ namespace TinyTween
             {
                 throw new ArgumentException("duration must be greater than 0");
             }
-            if (scaleFunc == null)
-            {
-                throw new ArgumentNullException("scaleFunc");
-            }
 
             this.currentTime = 0;
             this.duration = duration;
-            this.scaleFunc = scaleFunc;
+            this.scaleFunc = scaleFunc ?? throw new ArgumentNullException("scaleFunc");
             this.state = TweenState.Running;
 
             this.start = start;
@@ -313,6 +309,7 @@ namespace TinyTween
 
             this.UpdateValue();
         }
+
 
         /// <summary>
         /// Helper that uses the current time, duration, and delegates to update the current value.

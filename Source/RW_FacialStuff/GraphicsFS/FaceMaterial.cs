@@ -46,7 +46,7 @@ namespace FacialStuff.GraphicsFS
         public Material BeardMatAt(Rot4 facing)
         {
             if (this._pawn.gender != Gender.Male || this._compFace.PawnFace?.BeardDef == BeardDefOf.Beard_Shaved
-                || this._compFace.BodyStat.Jaw != PartStatus.Natural)
+                || this._compFace.BodyStat.Jaw != PartStatus.Natural || this._compFace.BodyStat.Jaw != PartStatus.DisplayOverBeard)
             {
                 return null;
             }
@@ -185,7 +185,7 @@ namespace FacialStuff.GraphicsFS
         public Material MoustacheMatAt(Rot4 facing)
         {
             if (this._pawn.gender != Gender.Male || this._compFace.PawnFace?.MoustacheDef == MoustacheDefOf.Shaved
-                || this._compFace.BodyStat.Jaw != PartStatus.Natural)
+                || this._compFace.BodyStat.Jaw != PartStatus.Natural || this._compFace.BodyStat.Jaw!=PartStatus.DisplayOverBeard)
             {
                 return null;
             }
