@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using FacialStuff.AnimatorWindows;
+﻿using FacialStuff.AnimatorWindows;
 using FacialStuff.HairCut;
 using RimWorld;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Verse;
 
@@ -20,8 +20,8 @@ namespace FacialStuff
         {
             if (this.CompFace.Props.canRotateHead && Controller.settings.UseHeadRotator)
             {
-                this.HeadFacing =  this.CompFace.HeadRotator.Rotation(this.HeadFacing, renderBody);
-                headQuat        *= this.QuatHead(this.HeadFacing);
+                this.HeadFacing = this.CompFace.HeadRotator.Rotation(this.HeadFacing, renderBody);
+                headQuat *= this.QuatHead(this.HeadFacing);
 
                 // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
             }
@@ -29,9 +29,9 @@ namespace FacialStuff
 
         public override void BaseHeadOffsetAt(ref Vector3 offset, bool portrait)
         {
-            Pawn  pawn          = this.Pawn;
-            float horHeadOffset = HorHeadOffsets[(int) pawn.story.bodyType];
-            float verHeadOffset = VerHeadOffsets[(int) pawn.story.bodyType];
+            Pawn pawn = this.Pawn;
+            float horHeadOffset = HorHeadOffsets[(int)pawn.story.bodyType];
+            float verHeadOffset = VerHeadOffsets[(int)pawn.story.bodyType];
 
             CompBodyAnimator animator = this.CompAnimator;
             if (animator != null && animator.AnyOpen())
@@ -81,23 +81,22 @@ namespace FacialStuff
 
 
         public override void DrawBasicHead(
-        Quaternion  headQuat,
+        Quaternion headQuat,
         RotDrawMode bodyDrawType,
-        bool        headStump,
-        bool        portrait,
-        ref Vector3 locFacialY,
-        out bool    headDrawn)
+        bool headStump,
+        bool portrait,
+        Vector3 drawLoc,
+        out bool headDrawn)
         {
             Material headMaterial = this.Graphics.HeadMatAt(this.HeadFacing, bodyDrawType, headStump);
             if (headMaterial != null)
             {
                 GenDraw.DrawMeshNowOrLater(this.GetPawnMesh(false, portrait),
-                                           locFacialY,
+                                           drawLoc,
                                            headQuat,
                                            headMaterial,
                                            portrait);
-                locFacialY.y += Offsets.YOffsetInterval_OnFace;
-                headDrawn    =  true;
+                headDrawn = true;
             }
             else
             {
@@ -105,27 +104,27 @@ namespace FacialStuff
             }
         }
 
-        public override void DrawBeardAndTache(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
+        public override void DrawBeardAndTache(Vector3 beardLoc, Vector3 tacheLoc, Quaternion headQuat, bool portrait)
         {
             Mesh headMesh = this.GetPawnMesh(false, portrait);
 
-            Material beardMat       = this.CompFace.FaceMaterial.BeardMatAt(this.HeadFacing);
+            Material beardMat = this.CompFace.FaceMaterial.BeardMatAt(this.HeadFacing);
             Material moustacheMatAt = this.CompFace.FaceMaterial.MoustacheMatAt(this.HeadFacing);
 
             if (beardMat != null)
             {
-                GenDraw.DrawMeshNowOrLater(headMesh, locFacialY, headQuat, beardMat, portrait);
-                locFacialY.y += Offsets.YOffsetInterval_OnFace;
+                GenDraw.DrawMeshNowOrLater(headMesh, beardLoc, headQuat, beardMat, portrait);
             }
 
             if (moustacheMatAt != null)
             {
-                GenDraw.DrawMeshNowOrLater(headMesh, locFacialY, headQuat, moustacheMatAt, portrait);
-                locFacialY.y += Offsets.YOffsetInterval_OnFace;
+                GenDraw.DrawMeshNowOrLater(headMesh, tacheLoc, headQuat, moustacheMatAt, portrait);
             }
         }
 
-        public override void DrawBrows(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
+        public override void DrawBrows(Quaternion headQuat,
+            bool portrait,
+            Vector3 drawLoc)
         {
             Material browMat = this.CompFace.FaceMaterial.BrowMatAt(this.HeadFacing);
             if (browMat != null)
@@ -133,22 +132,21 @@ namespace FacialStuff
                 Mesh eyeMesh = this.CompFace.EyeMeshSet.Mesh.MeshAt(this.HeadFacing);
                 GenDraw.DrawMeshNowOrLater(
                                            eyeMesh,
-                                           locFacialY + this.EyeOffset(this.HeadFacing),
+                                           drawLoc + this.EyeOffset(this.HeadFacing),
                                            headQuat,
                                            browMat,
                                            portrait);
-                locFacialY.y += Offsets.YOffsetInterval_OnFace;
             }
         }
 
-        public override void DrawHairAndHeadGear(Vector3     currentLoc,
+        public override void DrawHairAndHeadGear(Vector3 hairLoc, Vector3 headgearLoc,
                                                  RotDrawMode bodyDrawType,
-                                                 Quaternion  headQuat,
-                                                 bool        renderBody,
-                                                 bool        portrait, Vector3 hatInFrontOfFace)
+                                                 Quaternion headQuat,
+                                                 bool renderBody,
+                                                 bool portrait, Vector3 hatInFrontOfFace)
         {
-            Mesh                       hairMesh         = this.GetPawnHairMesh(portrait);
-            List<ApparelGraphicRecord> apparelGraphics  = this.Graphics.apparelGraphics;
+            Mesh hairMesh = this.GetPawnHairMesh(portrait);
+            List<ApparelGraphicRecord> apparelGraphics = this.Graphics.apparelGraphics;
             List<ApparelGraphicRecord> headgearGraphics = null;
             if (!apparelGraphics.NullOrEmpty())
             {
@@ -158,8 +156,8 @@ namespace FacialStuff
 
             CompBodyAnimator animator = this.CompAnimator;
 
-            bool noRenderRoofed  = animator != null                 && animator.HideHat;
-            bool noRenderBed     = Controller.settings.HideHatInBed && !renderBody;
+            bool noRenderRoofed = animator != null && animator.HideHat;
+            bool noRenderBed = Controller.settings.HideHatInBed && !renderBody;
             bool noRenderGoggles = Controller.settings.FilterHats;
 
             if (!headgearGraphics.NullOrEmpty())
@@ -186,18 +184,16 @@ namespace FacialStuff
                      || !apCoversFullHead && !apCoversUpperHead && noRenderGoggles)
                     {
                         Material mat = this.Graphics.HairMatAt(this.HeadFacing);
-                        GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, mat, portrait);
-                        currentLoc.y += Offsets.YOffsetInterval_OnFace;
+                        GenDraw.DrawMeshNowOrLater(hairMesh, hairLoc, headQuat, mat, portrait);
                     }
                     else if (Controller.settings.MergeHair) // && !apCoversFullHead)
                     {
                         // If not, display the hair cut
-                        HairCutPawn hairPawn   = CutHairDB.GetHairCache(this.Pawn);
-                        Material    hairCutMat = hairPawn.HairCutMatAt(this.HeadFacing);
+                        HairCutPawn hairPawn = CutHairDB.GetHairCache(this.Pawn);
+                        Material hairCutMat = hairPawn.HairCutMatAt(this.HeadFacing);
                         if (hairCutMat != null)
                         {
-                            GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, hairCutMat, portrait);
-                            currentLoc.y += Offsets.YOffsetInterval_OnFace;
+                            GenDraw.DrawMeshNowOrLater(hairMesh, hairLoc, headQuat, hairCutMat, portrait);
                         }
                     }
                 }
@@ -243,16 +239,16 @@ namespace FacialStuff
                 for (int index = 0; index < headgearGraphics?.Count; index++)
                 {
                     ApparelGraphicRecord headgearGraphic = headgearGraphics[index];
-                    Material             headGearMat     = headgearGraphic.graphic.MatAt(this.HeadFacing);
-                    headGearMat                          = this.Graphics.flasher.GetDamagedMat(headGearMat);
+                    Material headGearMat = headgearGraphic.graphic.MatAt(this.HeadFacing);
+                    headGearMat = this.Graphics.flasher.GetDamagedMat(headGearMat);
 
                     if (headgearGraphic.sourceApparel.def.apparel.hatRenderedFrontOfFace)
                     {
-                        currentLoc = hatInFrontOfFace;
+                        headgearLoc = hatInFrontOfFace;
                     }
 
-                    GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, headGearMat, portrait);
-                    currentLoc.y += Offsets.YOffsetInterval_Clothes;
+                    GenDraw.DrawMeshNowOrLater(hairMesh, headgearLoc, headQuat, headGearMat, portrait);
+                    headgearLoc.y += Offsets.YOffsetInterval_Clothes;
                 }
             }
             else
@@ -261,12 +257,12 @@ namespace FacialStuff
                 if (bodyDrawType != RotDrawMode.Dessicated)
                 {
                     Material hairMat = this.Graphics.HairMatAt(this.HeadFacing);
-                    GenDraw.DrawMeshNowOrLater(hairMesh, currentLoc, headQuat, hairMat, portrait);
+                    GenDraw.DrawMeshNowOrLater(hairMesh, hairLoc, headQuat, hairMat, portrait);
                 }
             }
         }
 
-        public override void DrawNaturalEyes(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
+        public override void DrawNaturalEyes(Quaternion headQuat, bool portrait, Vector3 drawLoc)
         {
             Mesh eyeMesh = this.CompFace.EyeMeshSet.Mesh.MeshAt(this.HeadFacing);
 
@@ -276,14 +272,16 @@ namespace FacialStuff
                 Material leftEyeMat = this.CompFace.FaceMaterial.EyeLeftMatAt(this.HeadFacing, portrait);
                 if (leftEyeMat != null)
                 {
+                    Vector3 left = drawLoc;
+                    drawLoc.y += Offsets.YOffset_LeftPart;
+
                     GenDraw.DrawMeshNowOrLater(
                                                eyeMesh,
-                                               locFacialY + this.EyeOffset(this.HeadFacing) +
+                                               left + this.EyeOffset(this.HeadFacing) +
                                                this.CompFace.EyeWiggler.EyeMoveL,
                                                headQuat,
                                                leftEyeMat,
                                                portrait);
-                    locFacialY.y += Offsets.YOffsetInterval_OnFace;
                 }
             }
 
@@ -293,19 +291,21 @@ namespace FacialStuff
 
                 if (rightEyeMat != null)
                 {
+                    Vector3 right = drawLoc;
+                    right.y += Offsets.YOffset_RightPart;
+
                     GenDraw.DrawMeshNowOrLater(
                                                eyeMesh,
-                                               locFacialY + this.EyeOffset(this.HeadFacing) +
+                                               right + this.EyeOffset(this.HeadFacing) +
                                                this.CompFace.EyeWiggler.EyeMoveR,
                                                headQuat,
                                                rightEyeMat,
                                                portrait);
-                    locFacialY.y += Offsets.YOffsetInterval_OnFace;
                 }
             }
         }
 
-        public override void DrawNaturalMouth(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
+        public override void DrawNaturalMouth(Quaternion headQuat, bool portrait, Vector3 drawLoc)
         {
             Material mouthMat = this.CompFace.FaceMaterial.MouthMatAt(this.HeadFacing, portrait);
             if (mouthMat != null)
@@ -318,13 +318,12 @@ namespace FacialStuff
                 Vector3 mouthOffset = this.CompFace.MouthMeshSet.OffsetAt(this.HeadFacing);
 #endif
 
-                Vector3 drawLoc = locFacialY + headQuat * mouthOffset;
-                GenDraw.DrawMeshNowOrLater(meshMouth, drawLoc, headQuat, mouthMat, portrait);
-                locFacialY.y += Offsets.YOffsetInterval_OnFace;
+                Vector3 mouthLoc = drawLoc + headQuat * mouthOffset;
+                GenDraw.DrawMeshNowOrLater(meshMouth, mouthLoc, headQuat, mouthMat, portrait);
             }
         }
 
-        public override void DrawUnnaturalEyeParts(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
+        public override void DrawUnnaturalEyeParts(Quaternion headQuat, bool portrait, Vector3 drawLoc)
         {
             Mesh headMesh = this.GetPawnMesh(false, portrait);
             if (this.CompFace.BodyStat.EyeLeft == PartStatus.Artificial)
@@ -332,13 +331,14 @@ namespace FacialStuff
                 Material leftBionicMat = this.CompFace.FaceMaterial.EyeLeftPatchMatAt(this.HeadFacing);
                 if (leftBionicMat != null)
                 {
+                    Vector3 left = drawLoc;
+                    left.y += Offsets.YOffset_LeftPart;
                     GenDraw.DrawMeshNowOrLater(
                                                headMesh,
-                                               locFacialY + this.EyeOffset(this.HeadFacing),
+                                               left + this.EyeOffset(this.HeadFacing),
                                                headQuat,
                                                leftBionicMat,
                                                portrait);
-                    locFacialY.y += Offsets.YOffsetInterval_OnFace;
                 }
             }
 
@@ -348,22 +348,23 @@ namespace FacialStuff
 
                 if (rightBionicMat != null)
                 {
+                    Vector3 right = drawLoc;
+                    right.y += Offsets.YOffset_RightPart;
                     GenDraw.DrawMeshNowOrLater(
                                                headMesh,
-                                               locFacialY + this.EyeOffset(this.HeadFacing),
+                                               right + this.EyeOffset(this.HeadFacing),
                                                headQuat,
                                                rightBionicMat,
                                                portrait);
-                    locFacialY.y += Offsets.YOffsetInterval_OnFace;
                 }
             }
         }
 
         public override void DrawWrinkles(
-        Quaternion  headQuat,
+        Quaternion headQuat,
         RotDrawMode bodyDrawType,
-        bool        portrait,
-        ref Vector3 locFacialY)
+        bool portrait,
+         Vector3 drawLoc)
         {
             if (!Controller.settings.UseWrinkles)
             {
@@ -378,8 +379,7 @@ namespace FacialStuff
             }
 
             Mesh headMesh = this.GetPawnMesh(false, portrait);
-            GenDraw.DrawMeshNowOrLater(headMesh, locFacialY, headQuat, wrinkleMat, portrait);
-            locFacialY.y += Offsets.YOffsetInterval_OnFace;
+            GenDraw.DrawMeshNowOrLater(headMesh, drawLoc, headQuat, wrinkleMat, portrait);
         }
 
         public override Vector3 EyeOffset(Rot4 headFacing)
@@ -399,9 +399,9 @@ namespace FacialStuff
 
         public override Quaternion QuatHead(Rot4 rotation)
         {
-            float      num    = 1f;
+            float num = 1f;
             Quaternion asQuat = rotation.AsQuat;
-            float      x      =
+            float x =
             1f * Mathf.Sin(num * (this.CompFace.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
             float z =
             1f * Mathf.Cos(num * (this.CompFace.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));

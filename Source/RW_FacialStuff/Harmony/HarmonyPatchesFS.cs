@@ -783,9 +783,10 @@ namespace FacialStuff.Harmony
                                                              pawn.story.bodyType,
                                                              ShaderDatabase.CutoutSkin,
                                                              rotColor);
-            __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(
+
+            __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi_Four>(
                                                                         pawn.story.hairDef.texPath,
-                                                                        ShaderDatabase.Cutout,
+                                                                        ShaderDatabase.CutoutComplex,
                                                                         Vector2.one,
                                                                         pawn.story.hairColor);
             PortraitsCache.SetDirty(pawn);

@@ -12,11 +12,11 @@ namespace FacialStuff.GraphicsFS
         public string GraphicPath => this.path;
 
         public override Material MatBack => this._mats[0];
+        public override Material MatSide => this._mats[1];
         public override Material MatFront => this._mats[2];
         public Material MatLeft => this._mats[3];
-        public Material MatRight => this._mats[1];
 
-        public override bool ShouldDrawRotated => this.MatRight == this.MatBack;
+        public override bool ShouldDrawRotated => this.MatSide == this.MatBack;
 
         public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
         {
@@ -51,12 +51,12 @@ namespace FacialStuff.GraphicsFS
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(req.path);
 
             // ReSharper disable once PossibleNullReferenceException
-            string[] array2 = fileNameWithoutExtension.Split('_');
+            string[] arrayString = fileNameWithoutExtension.Split('_');
             try
             {
-                eyeType = array2[1];
-                gender = array2[2];
-                side = array2[3];
+                eyeType = arrayString[1];
+                gender = arrayString[2];
+                side = arrayString[3];
             }
             catch (Exception ex)
             {
@@ -116,6 +116,53 @@ namespace FacialStuff.GraphicsFS
                 array[0] = FaceTextures.BlankTexture;
             }
 
+            Texture2D[] array2 = new Texture2D[4];
+            if (req.shader.SupportsMaskTex())
+            {
+                array2[2] = ContentFinder<Texture2D>.Get(req.path + "_frontm", false);
+                if (array2[2] != null)
+                {
+                    array2[0] = FaceTextures.BlankTexture;
+
+                    string sidePath2 = Path.GetDirectoryName(req.path) + "/Eye_" + eyeType + "_" + gender + "_sidem";
+
+                    // 1 texture= 1 eye, blank for the opposite side
+
+                    if (side.Equals("Right"))
+                    {
+                        array2[3] = FaceTextures.BlankTexture;
+                    }
+                    else
+                    {
+                        array2[3] = ContentFinder<Texture2D>.Get(sidePath2);
+                    }
+
+                    if (side.Equals("Left"))
+                    {
+                        array2[1] = FaceTextures.BlankTexture;
+                    }
+                    else
+                    {
+                        array2[1] = ContentFinder<Texture2D>.Get(sidePath2);
+                    }
+
+                    if (array2[1] == null)
+                    {
+                        array2[1] = array2[0];
+                    }
+                    if (array2[3] == null)
+                    {
+                        array2[3] = array2[0];
+                    }
+
+
+                    if (array2[2] == null)
+                    {
+                        array2[2] = array2[0];
+                    }
+                }
+            }
+
             for (int i = 0; i < 4; i++)
             {
                 if (array[i] == null)
@@ -129,8 +176,9 @@ namespace FacialStuff.GraphicsFS
                 req2.color = this.color;
                 req2.colorTwo = this.colorTwo;
 
-                // ReSharper disable once PossibleNullReferenceException
-                req2.mainTex.filterMode = FilterMode.Trilinear;
+                req2.maskTex = array2[i];
+                
+               // req2.mainTex.filterMode = FilterMode.Trilinear;
 
                 // req2.maskTex = array2[i];
                 this._mats[i] = MaterialPool.MatFrom(req2);
@@ -142,7 +190,7 @@ namespace FacialStuff.GraphicsFS
             switch (rot.AsInt)
             {
                 case 0: return this.MatBack;
-                case 1: return this.MatRight;
+                case 1: return this.MatSide;
                 case 2: return this.MatFront;
                 case 3: return this.MatLeft;
                 default: return BaseContent.BadMat;

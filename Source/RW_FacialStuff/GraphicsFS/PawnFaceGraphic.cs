@@ -12,6 +12,10 @@ namespace FacialStuff.GraphicsFS
 {
     public class PawnFaceGraphic
     {
+        const string STR_Eyes_Dead = "Things/Pawn/Humanlike/Eyes/Eyes_Dead";
+        const string STR_Front = "_front";
+        const string STR_ROMV_Fangs = "ROMV_Fangs";
+
         public Graphic BrowGraphic;
 
         public Graphic DeadEyeGraphic;
@@ -188,7 +192,7 @@ namespace FacialStuff.GraphicsFS
         {
             if (!this._compFace.TexPathEyeLeftPatch.NullOrEmpty())
             {
-                bool flag = !ContentFinder<Texture2D>.Get(this._compFace.TexPathEyeLeftPatch + "_front", false)
+                bool flag = !ContentFinder<Texture2D>.Get(this._compFace.TexPathEyeLeftPatch + STR_Front, false)
                                                      .NullOrBad();
                 if (flag)
                 {
@@ -209,7 +213,7 @@ namespace FacialStuff.GraphicsFS
 
             if (!this._compFace.TexPathEyeRightPatch.NullOrEmpty())
             {
-                bool flag2 = !ContentFinder<Texture2D>.Get(this._compFace.TexPathEyeRightPatch + "_front", false)
+                bool flag2 = !ContentFinder<Texture2D>.Get(this._compFace.TexPathEyeRightPatch + STR_Front, false)
                                                       .NullOrBad();
                 if (flag2)
                 {
@@ -246,18 +250,18 @@ namespace FacialStuff.GraphicsFS
                                                                                   eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.TexPathEyeLeftClosed,
-                                                                                       ShaderDatabase.Cutout,
+                                                                                       ShaderDatabase.CutoutComplex,
                                                                                        Vector2.one,
                                                                                        eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.TexPathEyeRightClosed,
-                                                                                        ShaderDatabase.Cutout,
+                                                                                        ShaderDatabase.CutoutComplex,
                                                                                         Vector2.one,
                                                                                         eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.DeadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                                                      "Things/Pawn/Humanlike/Eyes/Eyes_Dead",
-                                                                                      ShaderDatabase.Cutout,
+                                                                                      STR_Eyes_Dead,
+                                                                                      ShaderDatabase.CutoutComplex,
                                                                                       Vector2.one,
                                                                                       Color.black);
         }
@@ -266,7 +270,7 @@ namespace FacialStuff.GraphicsFS
         {
             if (!this._compFace.TexPathJawAddedPart.NullOrEmpty())
             {
-                bool flag = ContentFinder<Texture2D>.Get(this._compFace.TexPathJawAddedPart + "_front", false) != null;
+                bool flag = ContentFinder<Texture2D>.Get(this._compFace.TexPathJawAddedPart + STR_Front, false) != null;
                 if (flag)
                 {
                     this.JawGraphic =
@@ -275,7 +279,7 @@ namespace FacialStuff.GraphicsFS
                                                                         Vector2.one,
                                                                         Color.white) as Graphic_Multi_NaturalHeadParts;
                     this._compFace.BodyStat.Jaw = PartStatus.Artificial;
-                    if (this._compFace.TexPathJawAddedPart.Contains("ROMV_Fangs"))
+                    if (this._compFace.TexPathJawAddedPart.Contains(STR_ROMV_Fangs))
                     {
                         this._compFace.BodyStat.Jaw = PartStatus.DisplayOverBeard;
                     }

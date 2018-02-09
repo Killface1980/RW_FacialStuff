@@ -87,6 +87,7 @@
     <Compile Include="Animator\BodyAnimator.cs" />
     <None Include="Components\CompHumanFace.cs" />
     <None Include="Controller_Animator.cs" />
+    <Compile Include="GraphicsFS\Graphic_Multi_Four.cs" />
     <Compile Include="Tweener\Class1.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />

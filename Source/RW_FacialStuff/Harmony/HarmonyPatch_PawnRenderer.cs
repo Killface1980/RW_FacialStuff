@@ -24,333 +24,50 @@ namespace FacialStuff.Harmony
     [HarmonyBefore("com.showhair.rimworld.mod")]
     public static class HarmonyPatch_PawnRenderer
     {
-        private static FieldInfo pawnHeadOverlaysFieldInfo;
-
-        private static Type _pawnRendererType;
 
         // Verse.Altitudes
         public const float LayerSpacing = 0.46875f;
 
-        // private static FieldInfo PawnFieldInfo;
-        private static FieldInfo _woundOverlayFieldInfo;
         private static MethodInfo _drawEquipmentMethodInfo;
 
+        private static Type _pawnRendererType;
+
+        // private static FieldInfo PawnFieldInfo;
+        private static FieldInfo _woundOverlayFieldInfo;
+
         private static bool logY = false;
+        private static FieldInfo pawnHeadOverlaysFieldInfo;
 
-        public static bool Prefix(PawnRenderer __instance,
-                                  ref Vector3 rootLoc,
-                                  Quaternion quat,
-                                  bool renderBody,
-                                  Rot4 bodyFacing,
-                                  Rot4 headFacing,
-                                  RotDrawMode bodyDrawType,
-                                  bool portrait,
-                                  bool headStump)
+        private static void ExtendSearchGrid(IntVec3 searchPos, ref List<IntVec3> cells)
         {
-            GetReflections();
-
-            // Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
-            PawnGraphicSet graphics = __instance.graphics;
-
-            Pawn pawn = graphics.pawn;
-
-            if (!graphics.AllResolved)
+            List<IntVec3> allcells = GenAdj.CellsAdjacent8Way(searchPos, Rot4.North, new IntVec2(1, 1)).ToList();
+            foreach (IntVec3 c in allcells)
             {
-                graphics.ResolveAllGraphics();
-            }
-            bool footy = pawn.GetCompAnim(out CompBodyAnimator compAnim) && Controller.settings.UseFeet;
-
-            PawnWoundDrawer woundDrawer = (PawnWoundDrawer)_woundOverlayFieldInfo?.GetValue(__instance);
-
-            // if (Patches2.Plants)
-            // {
-            //     if (pawn.Spawned)
-            //     {
-            //         Plant plant = (pawn.Position + IntVec3.South).GetPlant(pawn.Map);
-            //         if (plant != null && Patches2.plantMoved.Contains(plant))
-            //         {
-            //             rootLoc.y = plant.DrawPos.y - (Patches2.steps / 2);
-            //         }
-            //     }
-            // }
-
-            // Try to move the y position behind while another pawn is standing near
-            // if (false)
-
-
-
-            if (!portrait && pawn.Spawned)
-            {
-                RecalcRootLocY(ref rootLoc, pawn);
-            }
-
-            Vector3 baseDrawLoc = rootLoc;
-            // Let's save the basic location for later
-            Vector3 footPos = baseDrawLoc;
-
-
-
-            // No face => must be animal, simplify it
-            Quaternion bodyQuat = quat;
-            Quaternion footQuat = bodyQuat;
-
-            if (!pawn.GetCompFace(out CompFace compFace))
-            {
-                if (!footy)
+                if (!cells.Contains(c))
                 {
-                    return true;
-                }
-
-                if (compAnim.AnyOpen())
-                {
-                    bodyFacing = MainTabWindow_BaseAnimator.BodyRot;
-                    headFacing = MainTabWindow_BaseAnimator.HeadRot;
-                }
-
-                compAnim.TickDrawers(bodyFacing, graphics);
-                compAnim.ApplyBodyWobble(ref baseDrawLoc, ref footPos, ref bodyQuat);
-
-                RenderAnimalPawn(
-                                   pawn,
-                                   graphics,
-                                   baseDrawLoc,
-                                   bodyQuat,
-                                   renderBody,
-                                   bodyFacing,
-                                   bodyDrawType,
-                                   portrait,
-                                   woundDrawer,
-                                   compAnim,
-                                   footPos, footQuat);
-
-                return false;
-            }
-
-            // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
-            if (compFace.IsChild || compFace.Deactivated)
-            {
-                return true;
-            }
-
-            if (compAnim.AnyOpen())
-            {
-                bodyFacing = MainTabWindow_BaseAnimator.BodyRot;
-                headFacing = MainTabWindow_BaseAnimator.HeadRot;
-            }
-
-            compFace.TickDrawers(bodyFacing, headFacing, graphics);
-
-            compAnim.TickDrawers(bodyFacing, graphics);
-
-            // Use the basic quat
-            Quaternion headQuat = bodyQuat;
-
-            // Rotate head if possble and wobble around
-            if (!portrait || compAnim.AnimatorWalkOpen)
-            {
-                if (footy)
-                {
-                    compAnim.ApplyBodyWobble(ref baseDrawLoc, ref footPos, ref bodyQuat);
-                }
-
-                // Reset the quat as it has been changed
-                headQuat = bodyQuat;
-                compFace.ApplyHeadRotation(renderBody, ref headQuat);
-            }
-
-            // Regular FacePawn rendering 14+ years
-
-            // Render body
-            // if (renderBody)
-            compAnim.DrawBody(baseDrawLoc, bodyQuat, bodyDrawType, woundDrawer, renderBody, portrait);
-
-            Vector3 bodyPos = baseDrawLoc;
-            Vector3 headPos = baseDrawLoc;
-            if (bodyFacing != Rot4.North)
-            {
-                headPos.y += YOffset_Head;
-                bodyPos.y += YOffset_Shell;
-            }
-            else
-            {
-                headPos.y += YOffset_Shell;
-                bodyPos.y += YOffset_Head;
-            }
-
-            if (graphics.headGraphic != null)
-            {
-                // Rendererd pawn faces
-
-                Vector3 b = bodyQuat * compFace.BaseHeadOffsetAt(portrait);
-                Vector3 headDrawLoc = headPos + b;
-                Vector3 hatInFrontOfFace = baseDrawLoc + b;
-                hatInFrontOfFace.y       += ((!(bodyFacing == Rot4.North)) ? YOffset_PostHead : YOffset_Behind);
-                Vector3 overHead = baseDrawLoc + b;
-                overHead.y += YOffset_OnHead;
-
-                compFace.DrawBasicHead(out bool headDrawn, bodyDrawType, portrait, headStump, ref headDrawLoc, headQuat);
-                if (headDrawn)
-                {
-                    if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
-                    {
-                        if (compFace.Props.hasWrinkles)
-                        {
-                            compFace.DrawWrinkles(bodyDrawType, ref headDrawLoc, headQuat, portrait);
-                        }
-
-                        if (compFace.Props.hasEyes)
-                        {
-                            compFace.DrawNaturalEyes(ref headDrawLoc, portrait, headQuat);
-
-                            // the brow above
-                            compFace.DrawBrows(ref headDrawLoc, headQuat, portrait);
-
-                            // and now the added eye parts
-                            compFace.DrawUnnaturalEyeParts(ref headDrawLoc, headQuat, portrait);
-                        }
-
-                        // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
-                        if (compFace.Props.hasBeard)
-                        {
-                            // if (!portrait)
-                            compFace.DrawBeardAndTache(ref headDrawLoc, portrait, headQuat);
-                        }
-
-                        if (compFace.Props.hasMouth)
-                        {
-                            compFace.DrawNaturalMouth(ref headDrawLoc, portrait, headQuat);
-                        }
-                        // Deactivated, looks kinda crappy ATM
-                        // if (pawn.Dead)
-                        // {
-                        // Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, bodyDrawType);
-                        // if (deadEyeMat != null)
-                        // {
-                        // GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, deadEyeMat, portrait);
-                        // locFacialY.y += YOffsetInterval_OnFace;
-                        // }
-
-                        // }
-                        // else
-                    }
-                }
-
-                if (!headStump)
-                {
-                    compFace.DrawHairAndHeadGear(overHead,
-                                                 bodyDrawType,
-                                                 portrait,
-                                                 renderBody,
-                                                 headQuat, hatInFrontOfFace);
-                }
-
-                compFace.DrawAlienHeadAddons(portrait, headQuat, overHead);
-            }
-
-            compAnim.DrawApparel(bodyQuat, bodyPos, portrait, renderBody);
-
-            compFace.DrawAlienBodyAddons(bodyQuat, bodyPos, portrait, renderBody);
-
-            // No wobble for equipment, looks funnier - nah!
-            // Vector3 equipPos = rootLoc;
-            // equipPos.y = drawPos.y;
-
-            //compAnim.DrawEquipment(drawPos, portrait);
-
-            if (!portrait)
-            {
-                //   Traverse.Create(__instance).Method("DrawEquipment", rootLoc).GetValue();
-
-                _drawEquipmentMethodInfo?.Invoke(__instance, new object[] { baseDrawLoc });
-            }
-
-            bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
-                Vector3 handPos = bodyPos;
-            if (showHands)
-            {
-                // Reset the position for the hands
-                handPos.y = baseDrawLoc.y;
-                compAnim.DrawHands(bodyQuat, handPos, portrait);
-            }
-
-            if (footy)
-            {
-                compAnim?.DrawFeet(bodyQuat, footQuat, footPos, portrait);
-            }
-
-            if (!portrait)
-            {
-                if (pawn.apparel != null)
-                {
-                    List<Apparel> wornApparel = pawn.apparel.WornApparel;
-                    foreach (Apparel ap in wornApparel)
-                    {
-                        ap.DrawWornExtras();
-                    }
-                }
-
-                Vector3 bodyLoc = baseDrawLoc;
-                bodyLoc.y += YOffset_Status;
-
-                PawnHeadOverlays headOverlays = (PawnHeadOverlays)pawnHeadOverlaysFieldInfo?.GetValue(__instance);
-                if (headOverlays != null)
-                {
-                    compFace.DrawHeadOverlays(headOverlays, bodyLoc, headQuat);
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        ///     Gets all Pawns inside the supplied radius. If any.
-        /// </summary>
-        /// <param name="center">Radius center.</param>
-        /// <param name="map">Map to look in.</param>
-        /// <param name="radius">The radius from the center.</param>
-        /// <param name="targetPredicate">Optional predicate on each candidate.</param>
-        /// <returns>Matching Pawns inside the Radius.</returns>
-        public static IEnumerable<Pawn> GetPawnsInsideRadius(LocalTargetInfo center, Map map, float radius,
-                                                             Predicate<Pawn> targetPredicate)
-        {
-            //With no predicate, just grab everything.
-            if (targetPredicate == null)
-            {
-                targetPredicate = thing => true;
-            }
-
-            foreach (Pawn pawn in map.listerThings.ThingsInGroup(ThingRequestGroup.Pawn))
-            {
-                if (CircleIntersectionTest(pawn.Position.x, pawn.Position.y, 1f, center.Cell.x, center.Cell.y, radius)
-                 && targetPredicate(pawn))
-                {
-                    yield return pawn;
+                    cells.Add(c);
                 }
             }
         }
 
-        /// <summary>
-        ///     Simple Circle to Circle intersection test.
-        /// </summary>
-        /// <param name="x0">Circle 0 X-position</param>
-        /// <param name="y0">Circle 0 Y-position</param>
-        /// <param name="radius0">Circle 0 Radius</param>
-        /// <param name="x1">Circle 1 X-position</param>
-        /// <param name="y1">Circle 1 Y-position</param>
-        /// <param name="radius1">Circle 1 Radius</param>
-        /// <returns>True if a intersection occured. False if not.</returns>
-        public static bool CircleIntersectionTest(float x0, float y0, float radius0, float x1, float y1, float radius1)
+        private static void GetReflections()
         {
-            float radiusSum = radius0 * radius0 + radius1 * radius1;
-            float distance = (x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0);
-
-            // Intersection occured.
-            if (distance <= radiusSum)
+            if (_pawnRendererType != null)
             {
-                return true;
+                return;
             }
 
-            // No intersection.
-            return false;
+            _pawnRendererType = typeof(PawnRenderer);
+            _drawEquipmentMethodInfo = _pawnRendererType.GetMethod(
+                                                                 "DrawEquipment",
+                                                                 BindingFlags.NonPublic | BindingFlags.Instance);
+            // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
+            _woundOverlayFieldInfo = _pawnRendererType.GetField(
+                                                              "woundOverlays",
+                                                              BindingFlags.NonPublic | BindingFlags.Instance);
+            pawnHeadOverlaysFieldInfo = _pawnRendererType.GetField(
+                                                                  "statusOverlays",
+                                                                  BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
         private static void RecalcRootLocY(ref Vector3 rootLoc, Pawn pawn)
@@ -362,12 +79,12 @@ namespace FacialStuff.Harmony
                                    otherPawn.DrawPos.x >= loc.x - 1 &&
                                    otherPawn.DrawPos.x <= loc.x + 1 &&
                                    otherPawn.DrawPos.z <= loc.z).ToList();
-          //  List<Pawn> leftOfPawn = pawns.Where(other => other.DrawPos.x <= loc.x).ToList();
+            //  List<Pawn> leftOfPawn = pawns.Where(other => other.DrawPos.x <= loc.x).ToList();
 
             if (!pawns.NullOrEmpty())
             {
-                loc.y -= 0.043f * pawns.Count;
-             //   loc.y -= 0.1f * leftOfPawn.Count;
+                loc.y -= 0.05f * pawns.Count;
+                //   loc.y -= 0.1f * leftOfPawn.Count;
             }
 
             rootLoc = loc;
@@ -430,18 +147,6 @@ namespace FacialStuff.Harmony
 
                 rootLoc.y -= steps * below.Count;
                 rootLoc.y += steps * 0.2f * leftOf.Count;
-            }
-        }
-
-        private static void ExtendSearchGrid(IntVec3 searchPos, ref List<IntVec3> cells)
-        {
-            List<IntVec3> allcells = GenAdj.CellsAdjacent8Way(searchPos, Rot4.North, new IntVec2(1, 1)).ToList();
-            foreach (IntVec3 c in allcells)
-            {
-                if (!cells.Contains(c))
-                {
-                    cells.Add(c);
-                }
             }
         }
 
@@ -518,24 +223,343 @@ namespace FacialStuff.Harmony
             compAnim.DrawFeet(quat, footQuat, footPos, portrait);
         }
 
-        private static void GetReflections()
+        /// <summary>
+        ///     Simple Circle to Circle intersection test.
+        /// </summary>
+        /// <param name="x0">Circle 0 X-position</param>
+        /// <param name="y0">Circle 0 Y-position</param>
+        /// <param name="radius0">Circle 0 Radius</param>
+        /// <param name="x1">Circle 1 X-position</param>
+        /// <param name="y1">Circle 1 Y-position</param>
+        /// <param name="radius1">Circle 1 Radius</param>
+        /// <returns>True if a intersection occured. False if not.</returns>
+        public static bool CircleIntersectionTest(float x0, float y0, float radius0, float x1, float y1, float radius1)
         {
-            if (_pawnRendererType != null)
+            float radiusSum = radius0 * radius0 + radius1 * radius1;
+            float distance = (x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0);
+
+            // Intersection occured.
+            if (distance <= radiusSum)
             {
-                return;
+                return true;
             }
 
-            _pawnRendererType = typeof(PawnRenderer);
-            _drawEquipmentMethodInfo = _pawnRendererType.GetMethod(
-                                                                 "DrawEquipment",
-                                                                 BindingFlags.NonPublic | BindingFlags.Instance);
-            // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
-            _woundOverlayFieldInfo = _pawnRendererType.GetField(
-                                                              "woundOverlays",
-                                                              BindingFlags.NonPublic | BindingFlags.Instance);
-            pawnHeadOverlaysFieldInfo = _pawnRendererType.GetField(
-                                                                  "statusOverlays",
-                                                                  BindingFlags.NonPublic | BindingFlags.Instance);
+            // No intersection.
+            return false;
+        }
+
+        /// <summary>
+        ///     Gets all Pawns inside the supplied radius. If any.
+        /// </summary>
+        /// <param name="center">Radius center.</param>
+        /// <param name="map">Map to look in.</param>
+        /// <param name="radius">The radius from the center.</param>
+        /// <param name="targetPredicate">Optional predicate on each candidate.</param>
+        /// <returns>Matching Pawns inside the Radius.</returns>
+        public static IEnumerable<Pawn> GetPawnsInsideRadius(LocalTargetInfo center, Map map, float radius,
+                                                             Predicate<Pawn> targetPredicate)
+        {
+            //With no predicate, just grab everything.
+            if (targetPredicate == null)
+            {
+                targetPredicate = thing => true;
+            }
+
+            foreach (Pawn pawn in map.listerThings.ThingsInGroup(ThingRequestGroup.Pawn))
+            {
+                if (CircleIntersectionTest(pawn.Position.x, pawn.Position.y, 1f, center.Cell.x, center.Cell.y, radius)
+                 && targetPredicate(pawn))
+                {
+                    yield return pawn;
+                }
+            }
+        }
+
+        public static bool Prefix(PawnRenderer __instance,
+                                  ref Vector3 rootLoc,
+                                  Quaternion quat,
+                                  bool renderBody,
+                                  Rot4 bodyFacing,
+                                  Rot4 headFacing,
+                                  RotDrawMode bodyDrawType,
+                                  bool portrait,
+                                  bool headStump)
+        {
+            GetReflections();
+
+            // Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
+            PawnGraphicSet graphics = __instance.graphics;
+
+            Pawn pawn = graphics.pawn;
+
+            if (!graphics.AllResolved)
+            {
+                graphics.ResolveAllGraphics();
+            }
+            bool footy = pawn.GetCompAnim(out CompBodyAnimator compAnim) && Controller.settings.UseFeet;
+
+            PawnWoundDrawer woundDrawer = (PawnWoundDrawer)_woundOverlayFieldInfo?.GetValue(__instance);
+
+            // if (Patches2.Plants)
+            // {
+            //     if (pawn.Spawned)
+            //     {
+            //         Plant plant = (pawn.Position + IntVec3.South).GetPlant(pawn.Map);
+            //         if (plant != null && Patches2.plantMoved.Contains(plant))
+            //         {
+            //             rootLoc.y = plant.DrawPos.y - (Patches2.steps / 2);
+            //         }
+            //     }
+            // }
+
+            // Try to move the y position behind while another pawn is standing near
+            if (!portrait && pawn.Spawned)
+            {
+                RecalcRootLocY(ref rootLoc, pawn);
+            }
+
+            Vector3 baseDrawLoc = rootLoc;
+            // Let's save the basic location for later
+            Vector3 footPos = baseDrawLoc;
+
+
+
+            // No face => must be animal, simplify it
+            Quaternion bodyQuat = quat;
+            Quaternion footQuat = bodyQuat;
+
+            if (!pawn.GetCompFace(out CompFace compFace))
+            {
+                if (!footy)
+                {
+                    return true;
+                }
+
+                if (compAnim.AnyOpen())
+                {
+                    bodyFacing = MainTabWindow_BaseAnimator.BodyRot;
+                    headFacing = MainTabWindow_BaseAnimator.HeadRot;
+                }
+
+                compAnim.TickDrawers(bodyFacing, graphics);
+                compAnim.ApplyBodyWobble(ref baseDrawLoc, ref footPos, ref bodyQuat);
+
+                RenderAnimalPawn(
+                                   pawn,
+                                   graphics,
+                                   baseDrawLoc,
+                                   bodyQuat,
+                                   renderBody,
+                                   bodyFacing,
+                                   bodyDrawType,
+                                   portrait,
+                                   woundDrawer,
+                                   compAnim,
+                                   footPos, footQuat);
+
+                return false;
+            }
+
+            // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
+            if (compFace.IsChild || compFace.Deactivated)
+            {
+                return true;
+            }
+
+            if (compAnim.AnyOpen())
+            {
+                bodyFacing = MainTabWindow_BaseAnimator.BodyRot;
+                headFacing = MainTabWindow_BaseAnimator.HeadRot;
+            }
+
+            compFace.TickDrawers(bodyFacing, headFacing, graphics);
+
+            compAnim.TickDrawers(bodyFacing, graphics);
+
+            // Use the basic quat
+            Quaternion headQuat = bodyQuat;
+
+            // Rotate head if possible and wobble around
+            if (!portrait || compAnim.AnimatorWalkOpen)
+            {
+                if (footy)
+                {
+                    compAnim.ApplyBodyWobble(ref baseDrawLoc, ref footPos, ref bodyQuat);
+                }
+
+                // Reset the quat as it has been changed
+                headQuat = bodyQuat;
+                compFace.ApplyHeadRotation(renderBody, ref headQuat);
+            }
+
+            // Regular FacePawn rendering 14+ years
+
+            // Render body
+            // if (renderBody)
+            compAnim.DrawBody(baseDrawLoc, bodyQuat, bodyDrawType, woundDrawer, renderBody, portrait);
+
+            Vector3 bodyPos = baseDrawLoc;
+            Vector3 headPos = baseDrawLoc;
+            if (bodyFacing != Rot4.North)
+            {
+                headPos.y += YOffset_Head;
+                bodyPos.y += YOffset_Shell;
+            }
+            else
+            {
+                headPos.y += YOffset_Shell;
+                bodyPos.y += YOffset_Head;
+            }
+
+            if (graphics.headGraphic != null)
+            {
+                // Rendererd pawn faces
+
+                Vector3 b = bodyQuat * compFace.BaseHeadOffsetAt(portrait);
+                Vector3 headDrawLoc = headPos + b;
+
+
+                compFace.DrawBasicHead(out bool headDrawn, bodyDrawType, portrait, headStump, headDrawLoc, headQuat);
+
+                if (headDrawn)
+                {
+                    if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
+                    {
+                        if (compFace.Props.hasWrinkles)
+                        {
+                            Vector3 wrinkleLoc = headDrawLoc;
+                            wrinkleLoc.y += YOffset_Wrinkles;
+                            compFace.DrawWrinkles(bodyDrawType, wrinkleLoc, headQuat, portrait);
+                        }
+
+                        if (compFace.Props.hasEyes)
+                        {
+                            Vector3 eyeLoc = headDrawLoc;
+                            eyeLoc.y += YOffset_Eyes;
+
+                            compFace.DrawNaturalEyes(eyeLoc, portrait, headQuat);
+
+                            Vector3 browLoc = headDrawLoc;
+                            browLoc.y += YOffset_Brows;
+                            // the brow above
+                            compFace.DrawBrows(browLoc, headQuat, portrait);
+
+                            // and now the added eye parts
+                            Vector3 unnaturalEyeLoc = headDrawLoc;
+                            unnaturalEyeLoc.y += YOffset_UnnaturalEyes;
+                            compFace.DrawUnnaturalEyeParts(unnaturalEyeLoc, headQuat, portrait);
+                        }
+
+                        // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
+                        if (compFace.Props.hasBeard)
+                        {
+                            Vector3 beardLoc = headDrawLoc;
+                            Vector3 tacheLoc = headDrawLoc;
+
+                            beardLoc.y += Offsets.YOffset_Beard;
+                            tacheLoc.y += Offsets.YOffset_Tache;
+
+                            compFace.DrawBeardAndTache(beardLoc, tacheLoc, portrait, headQuat);
+                        }
+
+                        if (compFace.Props.hasMouth)
+                        {
+                            Vector3 mouthLoc = headDrawLoc;
+                            mouthLoc.y += YOffset_Mouth;
+                            compFace.DrawNaturalMouth(mouthLoc, portrait, headQuat);
+                        }
+                        // Deactivated, looks kinda crappy ATM
+                        // if (pawn.Dead)
+                        // {
+                        // Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, bodyDrawType);
+                        // if (deadEyeMat != null)
+                        // {
+                        // GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, deadEyeMat, portrait);
+                        // locFacialY.y += YOffsetInterval_OnFace;
+                        // }
+
+                        // }
+                        // else
+                    }
+                }
+
+                if (!headStump)
+                {
+                    Vector3 overHead = baseDrawLoc + b;
+                    overHead.y += YOffset_OnHead;
+
+                    Vector3 hairLoc = overHead;
+                    Vector3 headgearLoc = overHead;
+                    Vector3 hatInFrontOfFace = baseDrawLoc + b;
+
+
+                    hairLoc.y += YOffset_HairOnHead;
+                    headgearLoc.y += YOffset_GearOnHead;
+                    hatInFrontOfFace.y += ((!(bodyFacing == Rot4.North)) ? YOffset_PostHead : YOffset_Behind);
+
+                    compFace.DrawHairAndHeadGear(hairLoc, headgearLoc,
+                                                 bodyDrawType,
+                                                 portrait,
+                                                 renderBody,
+                                                 headQuat, hatInFrontOfFace);
+
+                compFace.DrawAlienHeadAddons(portrait, headQuat, overHead);
+                }
+
+            }
+
+            compAnim.DrawApparel(bodyQuat, bodyPos, portrait, renderBody);
+
+            compFace.DrawAlienBodyAddons(bodyQuat, bodyPos, portrait, renderBody, bodyFacing);
+
+            // No wobble for equipment, looks funnier - nah!
+            // Vector3 equipPos = rootLoc;
+            // equipPos.y = drawPos.y;
+
+            //compAnim.DrawEquipment(drawPos, portrait);
+
+            if (!portrait)
+            {
+                //   Traverse.Create(__instance).Method("DrawEquipment", rootLoc).GetValue();
+
+                _drawEquipmentMethodInfo?.Invoke(__instance, new object[] { baseDrawLoc });
+            }
+
+            bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
+            Vector3 handPos = bodyPos;
+            if (showHands)
+            {
+                // Reset the position for the hands
+                handPos.y = baseDrawLoc.y;
+                compAnim.DrawHands(bodyQuat, handPos, portrait);
+            }
+
+            if (footy)
+            {
+                compAnim?.DrawFeet(bodyQuat, footQuat, footPos, portrait);
+            }
+
+            if (!portrait)
+            {
+                if (pawn.apparel != null)
+                {
+                    List<Apparel> wornApparel = pawn.apparel.WornApparel;
+                    foreach (Apparel ap in wornApparel)
+                    {
+                        ap.DrawWornExtras();
+                    }
+                }
+
+                Vector3 bodyLoc = baseDrawLoc;
+                bodyLoc.y += YOffset_Status;
+
+                PawnHeadOverlays headOverlays = (PawnHeadOverlays)pawnHeadOverlaysFieldInfo?.GetValue(__instance);
+                if (headOverlays != null)
+                {
+                    compFace.DrawHeadOverlays(headOverlays, bodyLoc, headQuat);
+                }
+            }
+            return false;
         }
     }
 

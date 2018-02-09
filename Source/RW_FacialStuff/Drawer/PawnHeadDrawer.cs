@@ -52,7 +52,7 @@ namespace FacialStuff
 
 
 
-        public virtual void DrawAlienBodyAddons(Quaternion quat, Vector3 rootLoc, bool portrait, bool renderBody)
+        public virtual void DrawAlienBodyAddons(bool portrait, Vector3 rootLoc, Quaternion quat, bool renderBody, Rot4 rotation)
         {
             // Just for the Aliens
         }
@@ -64,23 +64,23 @@ namespace FacialStuff
 
 
 
-        public virtual void DrawBasicHead(Quaternion headQuat, RotDrawMode bodyDrawType, bool headStump, bool portrait, ref Vector3 locFacialY, out bool headDrawn)
+        public virtual void DrawBasicHead(Quaternion headQuat, RotDrawMode bodyDrawType, bool headStump, bool portrait, Vector3 drawLoc, out bool headDrawn)
         {
             headDrawn = false;
         }
 
-        public virtual void DrawBeardAndTache(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
+        public virtual void DrawBeardAndTache(Vector3 beardLoc, Vector3 tacheLoc, Quaternion headQuat, bool portrait)
         {
         }
 
 
 
-        public virtual void DrawBrows(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
+        public virtual void DrawBrows(Quaternion headQuat, bool portrait, Vector3 locFacialY)
         {
         }
 
 
-        public virtual void DrawHairAndHeadGear(Vector3 currentLoc, RotDrawMode bodyDrawType, Quaternion headQuat,
+        public virtual void DrawHairAndHeadGear(Vector3 hairLoc, Vector3 headgearLoc, RotDrawMode bodyDrawType, Quaternion headQuat,
                                                 bool    renderBody, bool        portrait,
                                                 Vector3 hatInFrontOfFace)
         {
@@ -91,19 +91,19 @@ namespace FacialStuff
             headOverlays?.RenderStatusOverlays(bodyLoc, headQuat, this.GetPawnMesh(false, false));
         }
 
-        public virtual void DrawNaturalEyes(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
+        public virtual void DrawNaturalEyes(Quaternion headQuat, bool portrait, Vector3 drawLoc)
         {
         }
 
-        public virtual void DrawNaturalMouth(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
+        public virtual void DrawNaturalMouth(Quaternion headQuat, bool portrait, Vector3 drawLoc)
         {
         }
 
-        public virtual void DrawUnnaturalEyeParts(Quaternion headQuat, bool portrait, ref Vector3 locFacialY)
+        public virtual void DrawUnnaturalEyeParts(Quaternion headQuat, bool portrait, Vector3 drawLoc)
         {
         }
 
-        public virtual void DrawWrinkles(Quaternion headQuat, RotDrawMode bodyDrawType, bool portrait, ref Vector3 locFacialY)
+        public virtual void DrawWrinkles(Quaternion headQuat, RotDrawMode bodyDrawType, bool portrait,  Vector3 drawLoc)
         {
         }
 

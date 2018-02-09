@@ -325,7 +325,7 @@ namespace FacialStuff
 
 
         // Can be called externally
-        public void DrawAlienBodyAddons(Quaternion quat, Vector3 vector, bool portrait, bool renderBody)
+        public void DrawAlienBodyAddons(Quaternion quat, Vector3 vector, bool portrait, bool renderBody, Rot4 rotation)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -336,7 +336,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i].DrawAlienBodyAddons(quat, vector, portrait, renderBody);
+                this.PawnHeadDrawers[i].DrawAlienBodyAddons(portrait, vector, quat, renderBody, rotation);
                 i++;
             }
         }
@@ -359,7 +359,7 @@ namespace FacialStuff
 
 
         public void DrawBasicHead(out bool headDrawn, RotDrawMode bodyDrawType, bool portrait, bool headStump,
-                                  ref Vector3 locFacialY, Quaternion headQuat)
+                                  Vector3 drawLoc, Quaternion headQuat)
         {
             headDrawn = false;
             if (this.PawnHeadDrawers.NullOrEmpty())
@@ -376,13 +376,13 @@ namespace FacialStuff
                                                       bodyDrawType,
                                                       headStump,
                                                       portrait,
-                                                      ref locFacialY,
+                                                      drawLoc,
                                                       out headDrawn);
                 i++;
             }
         }
 
-        public void DrawBeardAndTache(ref Vector3 locFacialY, bool portrait, Quaternion headQuat)
+        public void DrawBeardAndTache(Vector3 beardLoc, Vector3 tacheLoc, bool portrait, Quaternion headQuat)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -393,12 +393,12 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i].DrawBeardAndTache(headQuat, portrait, ref locFacialY);
+                this.PawnHeadDrawers[i].DrawBeardAndTache(beardLoc, tacheLoc, headQuat, portrait);
                 i++;
             }
         }
 
-        public void DrawBrows(ref Vector3 locFacialY, Quaternion headQuat, bool portrait)
+        public void DrawBrows(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -409,12 +409,12 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawBrows(headQuat, portrait, ref locFacialY);
+                this.PawnHeadDrawers[i]?.DrawBrows(headQuat, portrait, drawLoc);
                 i++;
             }
         }
 
-        public void DrawHairAndHeadGear(Vector3 currentLoc, RotDrawMode bodyDrawType,
+        public void DrawHairAndHeadGear(Vector3 hairLoc, Vector3 headgearLoc, RotDrawMode bodyDrawType,
                                         bool    portrait, bool          renderBody, Quaternion headQuat,
                                         Vector3 hatInFrontOfFace)
         {
@@ -427,7 +427,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawHairAndHeadGear(currentLoc, bodyDrawType, headQuat, renderBody, portrait, hatInFrontOfFace);
+                this.PawnHeadDrawers[i]?.DrawHairAndHeadGear(hairLoc, headgearLoc, bodyDrawType, headQuat, renderBody, portrait, hatInFrontOfFace);
                 i++;
             }
         }
@@ -456,7 +456,7 @@ namespace FacialStuff
             }
         }
 
-        public void DrawNaturalEyes(ref Vector3 locFacialY, bool portrait, Quaternion headQuat)
+        public void DrawNaturalEyes(Vector3 drawLoc, bool portrait, Quaternion headQuat)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -467,12 +467,12 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawNaturalEyes(headQuat, portrait, ref locFacialY);
+                this.PawnHeadDrawers[i]?.DrawNaturalEyes(headQuat, portrait, drawLoc);
                 i++;
             }
         }
 
-        public void DrawNaturalMouth(ref Vector3 locFacialY, bool portrait, Quaternion headQuat)
+        public void DrawNaturalMouth(Vector3 drawLoc, bool portrait, Quaternion headQuat)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -483,12 +483,12 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawNaturalMouth(headQuat, portrait, ref locFacialY);
+                this.PawnHeadDrawers[i]?.DrawNaturalMouth(headQuat, portrait, drawLoc);
                 i++;
             }
         }
 
-        public void DrawUnnaturalEyeParts(ref Vector3 locFacialY, Quaternion headQuat, bool portrait)
+        public void DrawUnnaturalEyeParts(Vector3 locFacialY, Quaternion headQuat, bool portrait)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -499,12 +499,12 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawUnnaturalEyeParts(headQuat, portrait, ref locFacialY);
+                this.PawnHeadDrawers[i]?.DrawUnnaturalEyeParts(headQuat, portrait, locFacialY);
                 i++;
             }
         }
 
-        public void DrawWrinkles(RotDrawMode bodyDrawType, ref Vector3 locFacialY, Quaternion headQuat, bool portrait)
+        public void DrawWrinkles(RotDrawMode bodyDrawType, Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -515,7 +515,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawWrinkles(headQuat, bodyDrawType, portrait, ref locFacialY);
+                this.PawnHeadDrawers[i]?.DrawWrinkles(headQuat, bodyDrawType, portrait, drawLoc);
                 i++;
             }
         }

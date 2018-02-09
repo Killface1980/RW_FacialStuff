@@ -82,7 +82,14 @@ namespace FacialStuff.GraphicsFS
             Texture2D side2Tex = ContentFinder<Texture2D>.Get(addedpartName + "_" + crowntype + "_side2", false);
             Texture2D backTex = ContentFinder<Texture2D>.Get(req.path + "_back", false);
 
-            if (!sideTex.NullOrBad())
+            if (sideTex.NullOrBad())
+            {
+                Log.Message(
+                    "Facial Stuff: No texture found at " + addedpartName + "_" + crowntype + "_side"
+                    + " - Graphic_Multi_AddedHeadParts. This message is just a note, no error.");
+                array[3] = FaceTextures.BlankTexture;
+            }
+            else
             {
                 // ReSharper disable once PossibleNullReferenceException
                 if (side.Equals("Right"))
@@ -103,26 +110,19 @@ namespace FacialStuff.GraphicsFS
 
                 if (side.Equals("Left"))
                 {
-                    if (!side2Tex.NullOrBad())
+                    if (side2Tex.NullOrBad())
                     {
-                        array[1] = side2Tex;
+                        array[1] = FaceTextures.BlankTexture;
                     }
                     else
                     {
-                        array[1] = FaceTextures.BlankTexture;
+                        array[1] = side2Tex;
                     }
                 }
                 else
                 {
                     array[1] = sideTex;
                 }
-            }
-            else
-            {
-                Log.Message(
-                    "Facial Stuff: No texture found at " + addedpartName + "_" + crowntype + "_side"
-                    + " - Graphic_Multi_AddedHeadParts. This message is just a note, no error.");
-                array[3] = FaceTextures.BlankTexture;
             }
 
             if (backTex)
@@ -141,7 +141,7 @@ namespace FacialStuff.GraphicsFS
                     Log.Message("Array = null at: " + i);
                 }
 
-                MaterialRequest req2 = default(MaterialRequest);
+                MaterialRequest req2 = default;
                 req2.mainTex = array[i];
                 req2.shader = req.shader;
                 req2.color = this.color;

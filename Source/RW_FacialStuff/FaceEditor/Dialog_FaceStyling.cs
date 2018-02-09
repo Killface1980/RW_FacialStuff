@@ -102,8 +102,6 @@ namespace FacialStuff.FaceEditor
 
         private static List<HairDef> _hairDefs;
 
-        private static long _maxAge = 1000000000 * TicksPerYear;
-
         public static Pawn Pawn;
 
         private static Vector2 _portraitSize = new Vector2(203f, 203f);
@@ -2344,7 +2342,7 @@ namespace FacialStuff.FaceEditor
 
                 __result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                                           path,
-                                                                          ShaderDatabase.CutoutSkin,
+                                                                          ShaderDatabase.CutoutComplex,
                                                                           new Vector2(38f, 38f),
                                                                           Color.white,
                                                                           Color.white) as Graphic_Multi_NaturalEyes;
@@ -2382,7 +2380,7 @@ namespace FacialStuff.FaceEditor
 
                 __result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                                           path,
-                                                                          ShaderDatabase.CutoutSkin,
+                                                                          ShaderDatabase.CutoutComplex,
                                                                           new Vector2(38f, 38f),
                                                                           Color.white,
                                                                           Color.white) as Graphic_Multi_NaturalEyes;
