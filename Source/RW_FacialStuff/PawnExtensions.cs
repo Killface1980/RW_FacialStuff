@@ -132,6 +132,10 @@ namespace FacialStuff
                 return;
             }
 
+            if (!hediff.Visible)
+            {
+                return;
+            }
 
             BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
             BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);

@@ -250,18 +250,18 @@ namespace FacialStuff.GraphicsFS
                                                                                   eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.TexPathEyeLeftClosed,
-                                                                                       ShaderDatabase.CutoutComplex,
+                                                                                       ShaderDatabase.Cutout,
                                                                                        Vector2.one,
                                                                                        eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.TexPathEyeRightClosed,
-                                                                                        ShaderDatabase.CutoutComplex,
+                                                                                        ShaderDatabase.Cutout,
                                                                                         Vector2.one,
                                                                                         eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.DeadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                                                       STR_Eyes_Dead,
-                                                                                      ShaderDatabase.CutoutComplex,
+                                                                                      ShaderDatabase.Cutout,
                                                                                       Vector2.one,
                                                                                       Color.black);
         }

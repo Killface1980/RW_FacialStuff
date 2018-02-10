@@ -5,7 +5,7 @@ using Verse;
 
 namespace FacialStuff.GraphicsFS
 {
-    public class Graphic_Multi_NaturalEyes : Graphic
+    public class Graphic_Multi_NaturalEyes : Graphic_Multi_Four
     {
         private readonly Material[] _mats = new Material[4];
 
@@ -16,24 +16,6 @@ namespace FacialStuff.GraphicsFS
         public override Material MatFront => this._mats[2];
         public Material MatLeft => this._mats[3];
 
-        public override bool ShouldDrawRotated => this.MatSide == this.MatBack;
-
-        public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
-        {
-            return GraphicDatabase.Get<Graphic_Multi>(this.path,
-                                                      newShader, this.drawSize,
-                                                      newColor,
-                                                      newColorTwo, this.data);
-        }
-
-        public override int GetHashCode()
-        {
-            int seed = 0;
-            seed = Gen.HashCombine(seed, this.path);
-            seed = Gen.HashCombineStruct(seed, this.color);
-
-            return Gen.HashCombineStruct(seed, this.colorTwo);
-        }
 
         public override void Init(GraphicRequest req)
         {
@@ -136,7 +118,7 @@ namespace FacialStuff.GraphicsFS
                 }
                 else
                 {
-                    array2[3] = ContentFinder<Texture2D>.Get(sidePath2);
+                    array2[3] = ContentFinder<Texture2D>.Get(sidePath2, false);
                 }
 
                 if (side.Equals("Left"))
@@ -145,7 +127,7 @@ namespace FacialStuff.GraphicsFS
                 }
                 else
                 {
-                    array2[1] = ContentFinder<Texture2D>.Get(sidePath2);
+                    array2[1] = ContentFinder<Texture2D>.Get(sidePath2, false);
                 }
                 if (array2[1]== null) { array2[1] = FaceTextures.RedTexture; }
                 if (array2[3] == null) { array2[3] = FaceTextures.RedTexture; }
@@ -178,15 +160,6 @@ namespace FacialStuff.GraphicsFS
                 case 3: return this.MatLeft;
                 default: return BaseContent.BadMat;
             }
-        }
-
-        public override string ToString()
-        {
-            return string.Concat(
-                                 "Multi(initPath=", this.path,
-                                 ", color=", this.color,
-                                 ", colorTwo=", this.colorTwo,
-                                 ")");
         }
     }
 }

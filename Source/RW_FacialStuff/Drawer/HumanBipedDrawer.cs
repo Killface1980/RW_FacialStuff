@@ -323,7 +323,7 @@ namespace FacialStuff
                                         cycle.FootAngle);
             }
 
-            this.GetMeshesFoot(out Mesh footMeshRight, out Mesh footMeshLeft);
+            this.GetBipedMesh(out Mesh footMeshRight, out Mesh footMeshLeft);
 
             Material matRight;
             Material matLeft;
@@ -522,7 +522,7 @@ namespace FacialStuff
 
             this.DoAttackAnimationHandOffsets(ref handSwingAngle, ref rightHand, false);
 
-            Mesh handsMesh = this.HandMesh;
+            GetBipedMesh(out Mesh handMeshRight, out Mesh handMeshLeft);
 
             Material matLeft = this.LeftHandMat;
             Material matRight = this.RightHandMat;
@@ -570,7 +570,7 @@ namespace FacialStuff
                 }
 
                 TweenThing handLeft = TweenThing.HandLeft;
-                this.DrawTweenedHand(position, handsMesh, matLeft, quat, handLeft, portrait, noTween);
+                this.DrawTweenedHand(position, handMeshLeft, matLeft, quat, handLeft, portrait, noTween);
             }
 
             if (drawRight)
@@ -595,7 +595,7 @@ namespace FacialStuff
                 }
 
                 TweenThing handRight = TweenThing.HandRight;
-                this.DrawTweenedHand(position, handsMesh, matRight, quat, handRight, portrait, noTween);
+                this.DrawTweenedHand(position, handMeshRight, matRight, quat, handRight, portrait, noTween);
             }
 
             if (MainTabWindow_BaseAnimator.Develop)
@@ -608,14 +608,14 @@ namespace FacialStuff
                                                                          Color.white).MatSingle;
 
                 GenDraw.DrawMeshNowOrLater(
-                                           handsMesh,
+                                           handMeshLeft,
                                            drawPos + shoulperPos.LeftJoint + new Vector3(0, -0.301f, 0),
                                            bodyQuat * Quaternion.AngleAxis(-shoulderAngle[0], Vector3.up),
                                            centerMat,
                                            portrait);
 
                 GenDraw.DrawMeshNowOrLater(
-                                           handsMesh,
+                                           handMeshRight,
                                            drawPos + shoulperPos.RightJoint + new Vector3(0, 0.301f, 0),
                                            bodyQuat * Quaternion.AngleAxis(-shoulderAngle[1], Vector3.up),
                                            centerMat,
@@ -838,25 +838,25 @@ namespace FacialStuff
             }
         }
 
-        protected void GetMeshesFoot(out Mesh footMeshRight, out Mesh footMeshLeft)
+        protected void GetBipedMesh(out Mesh meshRight, out Mesh meshLeft)
         {
             Rot4 rot = this.BodyFacing;
 
             switch (rot.AsInt)
             {
                 default:
-                    footMeshRight = MeshPool.plane10;
-                    footMeshLeft = MeshPool.plane10Flip;
+                    meshRight = MeshPool.plane10;
+                    meshLeft = MeshPool.plane10Flip;
                     break;
 
                 case 1:
-                    footMeshRight = MeshPool.plane10;
-                    footMeshLeft = MeshPool.plane10;
+                    meshRight = MeshPool.plane10;
+                    meshLeft = MeshPool.plane10;
                     break;
 
                 case 3:
-                    footMeshRight = MeshPool.plane10Flip;
-                    footMeshLeft = MeshPool.plane10Flip;
+                    meshRight = MeshPool.plane10Flip;
+                    meshLeft = MeshPool.plane10Flip;
                     break;
             }
         }

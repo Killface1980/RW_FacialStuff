@@ -14,6 +14,7 @@ namespace FacialStuff.HairCut
     [StaticConstructorOnStartup]
     public static class CutHairDB
     {
+        const string STR_MergedHair = "/Textures/MergedHair/";
         private static readonly Dictionary<GraphicRequest, Graphic> AllGraphics =
             new Dictionary<GraphicRequest, Graphic>();
 
@@ -39,7 +40,7 @@ namespace FacialStuff.HairCut
                     x => { return x?.Name != null && x.Active && x.Name.StartsWith("Facial Stuff"); });
                 if (mod != null)
                 {
-                    _mergedHairPath = mod.RootDir + "/Textures/MergedHair/";
+                    _mergedHairPath = mod.RootDir + STR_MergedHair;
                 }
 
                 return _mergedHairPath;
@@ -100,7 +101,7 @@ namespace FacialStuff.HairCut
             {
                 return (T)graphic;
             }
-
+            
             // no graphics found, create =>
             graphic = Activator.CreateInstance<T>();
 
@@ -122,9 +123,13 @@ namespace FacialStuff.HairCut
                 Texture2D temptextureside = graphic.MatSide.mainTexture as Texture2D;
                 Texture2D temptextureback = graphic.MatBack.mainTexture as Texture2D;
 
+                Texture2D temptextureside2 = (graphic as Graphic_Multi_Four).MatLeft.mainTexture as Texture2D;
+
                 temptexturefront = FaceTextures.MakeReadable(temptexturefront);
                 temptextureside = FaceTextures.MakeReadable(temptextureside);
                 temptextureback = FaceTextures.MakeReadable(temptextureback);
+
+                temptextureside2 = FaceTextures.MakeReadable(temptextureside2);
 
                 // intentional, only 1 mask tex. todo: rename, cleanup
                 _maskTexFrontBack = FaceTextures.MaskTexAverageFrontBack;
@@ -135,6 +140,8 @@ namespace FacialStuff.HairCut
                 CutOutHair(ref temptextureside, _maskTexSide);
 
                 CutOutHair(ref temptextureback, _maskTexFrontBack);
+
+                CutOutHair(ref temptextureside2, _maskTexSide);
 
                 req.path = MergedHairPath + name;
 
@@ -150,19 +157,23 @@ namespace FacialStuff.HairCut
                 temptexturefront.Compress(true);
                 temptextureside.Compress(true);
                 temptextureback.Compress(true);
+                temptextureside2.Compress(true);
 
                 temptexturefront.mipMapBias = 0.5f;
                 temptextureside.mipMapBias = 0.5f;
                 temptextureback.mipMapBias = 0.5f;
+                temptextureside2.mipMapBias = 0.5f;
 
                 temptexturefront.Apply(false, true);
                 temptextureside.Apply(false, true);
                 temptextureback.Apply(false, true);
+                temptextureside2.Apply(false, true);
 
                 graphic.MatFront.mainTexture = temptexturefront;
                 graphic.MatSide.mainTexture = temptextureside;
                 graphic.MatBack.mainTexture = temptextureback;
-
+                (graphic as Graphic_Multi_Four).MatLeft.mainTexture = temptextureside2;
+                
                 // Object.Destroy(temptexturefront);
                 // Object.Destroy(temptextureside);
                 // Object.Destroy(temptextureback);
@@ -184,17 +195,19 @@ namespace FacialStuff.HairCut
                 LongEventHandler.ExecuteWhenFinished(
                     delegate
                         {
-                            Graphic graphic = GraphicDatabase.Get<Graphic_Multi>(hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                            Graphic graphic = GraphicDatabase.Get<Graphic_Multi_Four>(hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
                             Texture2D temptexturefront = graphic.MatFront.mainTexture as Texture2D;
                             Texture2D temptextureside = graphic.MatSide.mainTexture as Texture2D;
                             Texture2D temptextureback = graphic.MatBack.mainTexture as Texture2D;
-
+                            Texture2D temptextureside2 = (graphic as Graphic_Multi_Four).MatLeft.mainTexture as Texture2D;
+                            
                             temptexturefront = FaceTextures.MakeReadable(temptexturefront);
                             temptextureside = FaceTextures.MakeReadable(temptextureside);
                             temptextureback = FaceTextures.MakeReadable(temptextureback);
+                            temptextureside2 = FaceTextures.MakeReadable(temptextureside2);
 
-                        // intentional, only 1 mask tex. todo: rename, cleanup
-                        _maskTexFrontBack = FaceTextures.MaskTexAverageFrontBack;
+                            // intentional, only 1 mask tex. todo: rename, cleanup
+                            _maskTexFrontBack = FaceTextures.MaskTexAverageFrontBack;
                             _maskTexSide = FaceTextures.MaskTexNarrowSide;
 
                             CutOutHair(ref temptexturefront, _maskTexFrontBack);
@@ -202,6 +215,7 @@ namespace FacialStuff.HairCut
                             CutOutHair(ref temptextureside, _maskTexSide);
 
                             CutOutHair(ref temptextureback, _maskTexFrontBack);
+                            CutOutHair(ref temptextureside2, _maskTexSide);
 
 
 
@@ -211,6 +225,8 @@ namespace FacialStuff.HairCut
                             File.WriteAllBytes(path + "_side.png", bytes2);
                             byte[] bytes3 = temptextureback.EncodeToPNG();
                             File.WriteAllBytes(path + "_back.png", bytes3);
+                            byte[] bytes4 = temptextureside2.EncodeToPNG();
+                            File.WriteAllBytes(path + "_side2.png", bytes2);
 
 
                         });

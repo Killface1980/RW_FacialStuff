@@ -7,13 +7,6 @@ namespace Verse
     public class Graphic_Multi_Four : Graphic_Multi
     {
         private Material[] mats = new Material[4];
-        public override Material MatSingle
-        {
-            get
-            {
-                return this.MatFront;
-            }
-        }
 
         public override Material MatFront
         {
@@ -46,13 +39,6 @@ namespace Verse
             }
         }
 
-        public override bool ShouldDrawRotated
-        {
-            get
-            {
-                return this.MatSide == this.MatBack;
-            }
-        }
 
         public override Material MatAt(Rot4 rot, Thing thing = null)
         {
@@ -70,6 +56,7 @@ namespace Verse
                     return BaseContent.BadMat;
             }
         }
+
         public override void Init(GraphicRequest req)
         {
             this.data = req.graphicData;
@@ -138,31 +125,5 @@ namespace Verse
             }
         }
 
-        public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
-        {
-            return GraphicDatabase.Get<Graphic_Multi>(this.path, newShader, this.drawSize, newColor, newColorTwo, this.data);
-        }
-
-        public override string ToString()
-        {
-            return string.Concat(new object[]
-            {
-                "Multi(initPath=",
-                this.path,
-                ", color=",
-                this.color,
-                ", colorTwo=",
-                this.colorTwo,
-                ")"
-            });
-        }
-
-        public override int GetHashCode()
-        {
-            int seed = 0;
-            seed = Gen.HashCombine<string>(seed, this.path);
-            seed = Gen.HashCombineStruct<Color>(seed, this.color);
-            return Gen.HashCombineStruct<Color>(seed, this.colorTwo);
-        }
     }
 }

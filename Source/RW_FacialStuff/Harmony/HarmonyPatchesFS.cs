@@ -756,7 +756,7 @@ namespace FacialStuff.Harmony
             if (Controller.settings.MergeHair)
             {
                 HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
-                hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi>(
+                hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi_Four>(
                                                                        pawn.story.hairDef.texPath,
                                                                        ShaderDatabase.Cutout,
                                                                        Vector2.one,

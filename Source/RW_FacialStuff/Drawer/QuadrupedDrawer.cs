@@ -79,7 +79,7 @@ namespace FacialStuff
                                         cycle.FrontPawAngle);
             }
 
-            this.GetMeshesFoot(out Mesh footMeshRight, out Mesh footMeshLeft);
+            this.GetBipedMesh(out Mesh footMeshRight, out Mesh footMeshLeft);
 #if develop
             {
  }

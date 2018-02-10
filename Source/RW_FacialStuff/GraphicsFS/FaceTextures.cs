@@ -31,6 +31,8 @@ namespace FacialStuff.GraphicsFS
             MaskTexNarrowSide = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_side"));
 
             BlankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
+
+            // The RedTexture is used as a mask texture, in case hair/eyes have no mask on their own
             RedTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
 
             for (int x = 0; x < BlankTexture.width; x++)
