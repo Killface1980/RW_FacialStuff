@@ -12,6 +12,8 @@ namespace FacialStuff.GraphicsFS
 
         public static readonly Texture2D BlankTexture;
 
+        public static readonly Texture2D RedTexture;
+
         public static readonly Texture2D MaskTexAverageFrontBack;
 
         public static readonly Texture2D MaskTexNarrowSide;
@@ -29,6 +31,7 @@ namespace FacialStuff.GraphicsFS
             MaskTexNarrowSide = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_side"));
 
             BlankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
+            RedTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
 
             for (int x = 0; x < BlankTexture.width; x++)
             {
@@ -37,11 +40,22 @@ namespace FacialStuff.GraphicsFS
                     BlankTexture.SetPixel(x, y, Color.clear);
                 }
             }
+            for (int x = 0; x < RedTexture.width; x++)
+            {
+                for (int y = 0; y < RedTexture.height; y++)
+                {
+                    RedTexture.SetPixel(x, y, Color.red);
+                }
+            }
 
             BlankTexture.name = "Blank";
+            RedTexture.name = "Red";
 
             BlankTexture.Compress(false);
             BlankTexture.Apply(false, true);
+
+            RedTexture.Compress(false);
+            RedTexture.Apply(false, true);
         }
 
         public static Texture2D MakeReadable(Texture2D texture)

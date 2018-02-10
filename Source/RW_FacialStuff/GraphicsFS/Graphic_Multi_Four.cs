@@ -1,20 +1,12 @@
-﻿using System;
+﻿using FacialStuff.GraphicsFS;
+using System;
 using UnityEngine;
 
 namespace Verse
 {
-    public class Graphic_Multi_Four : Graphic
+    public class Graphic_Multi_Four : Graphic_Multi
     {
         private Material[] mats = new Material[4];
-
-        public string GraphicPath
-        {
-            get
-            {
-                return this.path;
-            }
-        }
-
         public override Material MatSingle
         {
             get
@@ -38,7 +30,8 @@ namespace Verse
                 return this.mats[1];
             }
         }
-        public  Material MatLeft
+
+        public Material MatLeft
         {
             get
             {
@@ -60,6 +53,7 @@ namespace Verse
                 return this.MatSide == this.MatBack;
             }
         }
+
         public override Material MatAt(Rot4 rot, Thing thing = null)
         {
             switch (rot.AsInt)
@@ -83,7 +77,7 @@ namespace Verse
             this.color = req.color;
             this.colorTwo = req.colorTwo;
             this.drawSize = req.drawSize;
-            Texture2D[] array = new Texture2D[3];
+            Texture2D[] array = new Texture2D[4];
             array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", false);
             if (array[0] == null)
             {
@@ -103,31 +97,34 @@ namespace Verse
             array[3] = ContentFinder<Texture2D>.Get(req.path + "_side2", false);
             if (array[3] == null)
             {
-                array[3] = array[0];
+                array[3] = array[1];
             }
 
             Texture2D[] array2 = new Texture2D[4];
             if (req.shader.SupportsMaskTex())
             {
                 array2[0] = ContentFinder<Texture2D>.Get(req.path + "_backm", false);
-                if (array2[0] != null)
+                if (array2[0] == null)
                 {
-                    array2[1] = ContentFinder<Texture2D>.Get(req.path + "_sidem", false);
-                    if (array2[1] == null)
-                    {
-                        array2[1] = array2[0];
-                    }
-                    array2[2] = ContentFinder<Texture2D>.Get(req.path + "_frontm", false);
-                    if (array2[2] == null)
-                    {
-                        array2[2] = array2[0];
-                    }
-                    array2[3] = ContentFinder<Texture2D>.Get(req.path + "_side2m", false);
-                    if (array2[3] == null)
-                    {
-                        array2[3] = array2[0];
-                    }
+                    array2[0] = FaceTextures.RedTexture;
                 }
+                array2[1] = ContentFinder<Texture2D>.Get(req.path + "_sidem", false);
+                if (array2[1] == null)
+                {
+                    array2[1] = FaceTextures.RedTexture;
+                }
+                array2[2] = ContentFinder<Texture2D>.Get(req.path + "_frontm", false);
+                if (array2[2] == null)
+                {
+                    array2[2] = FaceTextures.RedTexture;
+                }
+                array2[3] = ContentFinder<Texture2D>.Get(req.path + "_side2m", false);
+                if (array2[3] == null)
+                {
+                    array2[3] = FaceTextures.RedTexture;
+                }
+
+
             }
             for (int i = 0; i < 4; i++)
             {
