@@ -325,21 +325,7 @@ namespace FacialStuff
 
 
         // Can be called externally
-        public void DrawAlienBodyAddons(Quaternion quat, Vector3 vector, bool portrait, bool renderBody, Rot4 rotation)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
 
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i].DrawAlienBodyAddons(portrait, vector, quat, renderBody, rotation);
-                i++;
-            }
-        }
 
         public void DrawAlienHeadAddons(bool portrait, Quaternion headQuat, Vector3 currentLoc)
         {

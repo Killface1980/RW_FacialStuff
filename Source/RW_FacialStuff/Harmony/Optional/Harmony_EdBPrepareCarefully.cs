@@ -1,7 +1,7 @@
-﻿using System;
-using EdB.PrepareCarefully;
+﻿using EdB.PrepareCarefully;
 using FacialStuff.Harmony.Optional.PrepC;
 using Harmony;
+using System;
 using Verse;
 
 namespace FacialStuff.Harmony.Optional

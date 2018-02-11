@@ -64,7 +64,10 @@ namespace FacialStuff
         public virtual void DrawEquipment(Vector3 rootLoc, bool portrait)
         {
         }
-
+        public virtual void DrawAlienBodyAddons(bool portrait, Vector3 rootLoc, Quaternion quat, bool renderBody, Rot4 rotation)
+        {
+            // Just for the Aliens
+        }
         public virtual void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
         {
         }

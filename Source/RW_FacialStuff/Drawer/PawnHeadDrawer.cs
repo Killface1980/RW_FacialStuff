@@ -6,28 +6,19 @@ namespace FacialStuff
 {
     public class PawnHeadDrawer : BasicDrawer
     {
-        #region Public Fields
-
-
-
-        #endregion Public Fields
-
         #region Protected Fields
 
         // original values
         // protected static readonly float[] HorHeadOffsets = { 0f, 0.04f, 0.1f, 0.09f, 0.1f, 0.09f };
 
         // Undefined -0, Male -1, Female -2, Thin -3, Hulk -4, Fat -5
-        protected static readonly float[] HorHeadOffsets = { 0f,    0.06f, 0.11f,  0.11f, 0.26f,  0.17f };
+        protected static readonly float[] HorHeadOffsets = { 0f, 0.06f, 0.11f, 0.11f, 0.26f, 0.17f };
 
         protected static readonly float[] VerHeadOffsets = { 0.34f, 0.37f, 0.36f, 0.37f, 0.41f, 0.35f };
 
-
         #endregion Protected Fields
 
-        #region Protected Constructors
 
-        #endregion Protected Constructors
 
         #region Public Properties
 
@@ -48,21 +39,10 @@ namespace FacialStuff
         {
         }
 
-
-
-
-
-        public virtual void DrawAlienBodyAddons(bool portrait, Vector3 rootLoc, Quaternion quat, bool renderBody, Rot4 rotation)
-        {
-            // Just for the Aliens
-        }
-
         public virtual void DrawAlienHeadAddons(bool portrait, Quaternion headQuat, Vector3 currentLoc)
         {
             // Just for the Aliens
         }
-
-
 
         public virtual void DrawBasicHead(Quaternion headQuat, RotDrawMode bodyDrawType, bool headStump, bool portrait, Vector3 drawLoc, out bool headDrawn)
         {
@@ -73,15 +53,12 @@ namespace FacialStuff
         {
         }
 
-
-
         public virtual void DrawBrows(Quaternion headQuat, bool portrait, Vector3 locFacialY)
         {
         }
 
-
         public virtual void DrawHairAndHeadGear(Vector3 hairLoc, Vector3 headgearLoc, RotDrawMode bodyDrawType, Quaternion headQuat,
-                                                bool    renderBody, bool        portrait,
+                                                bool renderBody, bool portrait,
                                                 Vector3 hatInFrontOfFace)
         {
         }
@@ -103,7 +80,7 @@ namespace FacialStuff
         {
         }
 
-        public virtual void DrawWrinkles(Quaternion headQuat, RotDrawMode bodyDrawType, bool portrait,  Vector3 drawLoc)
+        public virtual void DrawWrinkles(Quaternion headQuat, RotDrawMode bodyDrawType, bool portrait, Vector3 drawLoc)
         {
         }
 
@@ -116,9 +93,6 @@ namespace FacialStuff
         {
             return this.Graphics.HairMeshSet.MeshAt(this.HeadFacing);
         }
-
-
-
 
         public virtual void Initialize()
         {

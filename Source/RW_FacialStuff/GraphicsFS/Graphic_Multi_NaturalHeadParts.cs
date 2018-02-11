@@ -10,7 +10,7 @@ namespace FacialStuff.GraphicsFS
     // }
 
     // class taken from vanilla, base is Graphic_Multi; needed for adding stuff AFTER game has loaded
-    public class Graphic_Multi_NaturalHeadParts : Graphic
+    public class Graphic_Multi_NaturalHeadParts : Graphic_Multi
     {
         private readonly Material[] _mats = new Material[3];
 
@@ -25,22 +25,6 @@ namespace FacialStuff.GraphicsFS
         public override Material MatSingle => this._mats[2];
 
         public override bool ShouldDrawRotated => this.MatSide == this.MatBack;
-
-        public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
-        {
-            return GraphicDatabase.Get<Graphic_Multi>(this.path,
-                newShader, this.drawSize,
-                newColor,
-                newColorTwo, this.data);
-        }
-
-        public override int GetHashCode()
-        {
-            int seed = 0;
-            seed = Gen.HashCombine(seed, this.path);
-            seed = Gen.HashCombineStruct(seed, this.color);
-            return Gen.HashCombineStruct(seed, this.colorTwo);
-        }
 
         public override void Init(GraphicRequest req)
         {
@@ -90,7 +74,14 @@ namespace FacialStuff.GraphicsFS
             }
             else
             {
-                array[0] = FaceTextures.BlankTexture;
+                if (req.path.Contains("Moustache") || req.path.Contains("Beard"))
+                {
+                    array[0] = array[2];
+                }
+                else
+                {
+                    array[0] = FaceTextures.BlankTexture;
+                }
             }
 
             // Texture2D[] array2 = new Texture2D[3];

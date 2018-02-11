@@ -487,8 +487,8 @@ namespace FacialStuff.Harmony
                             Vector3 beardLoc = headDrawLoc;
                             Vector3 tacheLoc = headDrawLoc;
 
-                            beardLoc.y += Offsets.YOffset_Beard;
-                            tacheLoc.y += Offsets.YOffset_Tache;
+                            beardLoc.y += (((headFacing == Rot4.North)) ? YOffset_Behind : YOffset_Beard);
+                            tacheLoc.y += (((headFacing == Rot4.North)) ? YOffset_Behind : YOffset_Tache);
 
                             compFace.DrawBeardAndTache(beardLoc, tacheLoc, portrait, headQuat);
                         }
@@ -526,7 +526,7 @@ namespace FacialStuff.Harmony
 
                     hairLoc.y += YOffset_HairOnHead;
                     headgearLoc.y += YOffset_GearOnHead;
-                    hatInFrontOfFace.y += ((!(bodyFacing == Rot4.North)) ? YOffset_PostHead : YOffset_Behind);
+                    hatInFrontOfFace.y += ((!(headFacing == Rot4.North)) ? YOffset_PostHead : YOffset_Behind);
 
                     compFace.DrawHairAndHeadGear(hairLoc, headgearLoc,
                                                  bodyDrawType,
@@ -541,7 +541,7 @@ namespace FacialStuff.Harmony
 
             compAnim.DrawApparel(bodyQuat, bodyPos, portrait, renderBody);
 
-            compFace.DrawAlienBodyAddons(bodyQuat, bodyPos, portrait, renderBody, bodyFacing);
+            compAnim.DrawAlienBodyAddons(bodyQuat, bodyPos, portrait, renderBody, bodyFacing);
 
             // No wobble for equipment, looks funnier - nah!
             // Vector3 equipPos = rootLoc;

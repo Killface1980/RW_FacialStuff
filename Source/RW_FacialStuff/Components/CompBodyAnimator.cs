@@ -479,7 +479,21 @@ namespace FacialStuff
         public float lastWeaponAngle;
         public float desiredAimAngle;
         public float DrawOffsetY;
+        public void DrawAlienBodyAddons(Quaternion quat, Vector3 vector, bool portrait, bool renderBody, Rot4 rotation)
+        {
+            if (this.PawnBodyDrawers.NullOrEmpty())
+            {
+                return;
+            }
 
+            int i = 0;
+            int count = this.PawnBodyDrawers.Count;
+            while (i < count)
+            {
+                this.PawnBodyDrawers[i].DrawAlienBodyAddons(portrait, vector, quat, renderBody, rotation);
+                i++;
+            }
+        }
         public float BodyOffsetZ
         {
             get

@@ -14,21 +14,28 @@ namespace FacialStuff.GraphicsFS
 
         public static readonly Texture2D RedTexture;
 
-        public static readonly Texture2D MaskTexAverageFrontBack;
+        public static readonly Texture2D MaskTexUppherheadFrontBack;
 
-        public static readonly Texture2D MaskTexNarrowSide;
+        public static readonly Texture2D MaskTexUpperheadSide;
 
         public static readonly Color SkinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
         private static Texture2D _maskTexAverageSide;
 
         private static Texture2D _maskTexNarrowFrontBack;
+        public static readonly  Texture2D MaskTexFullheadFrontBack;
+        public static readonly Texture2D MaskTexFullheadSide;
 
         static FaceTextures()
         {
-            MaskTexAverageFrontBack = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_front"));
+            MaskTexUppherheadFrontBack = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Upperhead_front"));
 
-            MaskTexNarrowSide = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_side"));
+            MaskTexUpperheadSide = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Upperhead_side"));
+
+            MaskTexFullheadFrontBack = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Fullhead_front"));
+
+            MaskTexFullheadSide = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Fullhead_side"));
+
 
             BlankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
 

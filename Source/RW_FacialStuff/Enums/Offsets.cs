@@ -20,25 +20,24 @@ namespace FacialStuff
         public const float YOffset_Wounds = 0.01953125f;
         public const float YOffset_Shell = 0.0234375f;
 
-        public const float YOffset_Head          = 0.02734375f;
+        public const float YOffset_Head = 0.02734375f;
 
-        public const float YOffset_Wrinkles      = 0.0005f;
-        public const float YOffset_Eyes          = 0.001f;
-        public const float YOffset_Brows         = 0.0015f;
+        public const float YOffset_Wrinkles = 0.0005f;
+        public const float YOffset_Eyes = 0.001f;
+        public const float YOffset_Brows = 0.0015f;
         public const float YOffset_UnnaturalEyes = 0.002f;
 
-        public const float YOffset_Beard         = 0.003f;
-        public const float YOffset_Tache         = 0.0035f;
+        public const float YOffset_Beard = 0.003f;
+        public const float YOffset_Tache = 0.0035f;
 
-        public const float YOffset_Mouth         = 0.004f;
+        public const float YOffset_Mouth = 0.004f;
 
-        public const float YOffset_LeftPart  = 0.0001f;
+        public const float YOffset_LeftPart = 0.0001f;
         public const float YOffset_RightPart = 0.0002f;
 
-
         public const float YOffset_OnHead = 0.03125f;
-        public const float YOffset_HairOnHead   = 0.0005f; // FS
-        public const float YOffset_GearOnHead   = 0.001f; // FS
+        public const float YOffset_HairOnHead = 0.0005f; // FS
+        public const float YOffset_GearOnHead = 0.001f; // FS
 
         public const float YOffset_PostHead = 0.03515625f;
         public const float YOffset_HandsFeetOver = 0.03734375f; // FS

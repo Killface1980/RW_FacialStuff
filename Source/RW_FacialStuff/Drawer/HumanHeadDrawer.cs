@@ -10,9 +10,6 @@ namespace FacialStuff
 {
     public class HumanHeadDrawer : PawnHeadDrawer
     {
-        #region Protected Fields
-
-        #endregion Protected Fields
 
         #region Public Methods
 
@@ -78,7 +75,6 @@ namespace FacialStuff
                 }
             }
         }
-
 
         public override void DrawBasicHead(
         Quaternion headQuat,
@@ -447,5 +443,6 @@ namespace FacialStuff
         }
 
         #endregion Public Methods
+
     }
 }

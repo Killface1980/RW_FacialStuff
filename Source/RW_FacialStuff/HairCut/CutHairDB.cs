@@ -48,12 +48,12 @@ namespace FacialStuff.HairCut
         }
 
         // ReSharper disable once MissingXmlDoc
-        public static Graphic Get<T>(string path, Shader shader, Vector2 drawSize, Color color)
+        public static Graphic Get<T>(string path, Shader shader, Vector2 drawSize, Color color, HeadCoverage coverage)
             where T : Graphic, new()
         {
-            // Added second 'color' to get a separate graphic
+                        // Added second 'color' to get a separate graphic
             GraphicRequest req = new GraphicRequest(typeof(T), path, shader, drawSize, color, color, null, 0);
-            return GetInner<T>(req);
+            return GetInner<T>(req, coverage);
         }
 
         public static HairCutPawn GetHairCache(Pawn pawn)
@@ -89,19 +89,20 @@ namespace FacialStuff.HairCut
             hairTex.Apply();
         }
 
-        private static T GetInner<T>(GraphicRequest req)
+        private static T GetInner<T>(GraphicRequest req, HeadCoverage coverage)
             where T : Graphic, new()
         {
             string oldPath = req.path;
             string name = Path.GetFileNameWithoutExtension(oldPath);
 
-            req.path = MergedHairPath + name;
+            string newPath = MergedHairPath + name + "_" + coverage.ToString();
+            req.path = newPath;
 
             if (AllGraphics.TryGetValue(req, out Graphic graphic))
             {
                 return (T)graphic;
             }
-            
+
             // no graphics found, create =>
             graphic = Activator.CreateInstance<T>();
 
@@ -131,9 +132,18 @@ namespace FacialStuff.HairCut
 
                 temptextureside2 = FaceTextures.MakeReadable(temptextureside2);
 
-                // intentional, only 1 mask tex. todo: rename, cleanup
-                _maskTexFrontBack = FaceTextures.MaskTexAverageFrontBack;
-                _maskTexSide = FaceTextures.MaskTexNarrowSide;
+                    // new mask textures 
+                if (coverage == HeadCoverage.UpperHead)
+                {
+                    _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack;
+                    _maskTexSide = FaceTextures.MaskTexUpperheadSide;
+                }
+                else
+                {
+                    _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack;
+                    _maskTexSide = FaceTextures.MaskTexFullheadSide;
+                }
+
 
                 CutOutHair(ref temptexturefront, _maskTexFrontBack);
 
@@ -143,7 +153,7 @@ namespace FacialStuff.HairCut
 
                 CutOutHair(ref temptextureside2, _maskTexSide);
 
-                req.path = MergedHairPath + name;
+                req.path = newPath;
 
                 // if (!name.NullOrEmpty() && !File.Exists(req.path + "_front.png"))
                 // {
@@ -173,7 +183,7 @@ namespace FacialStuff.HairCut
                 graphic.MatSide.mainTexture = temptextureside;
                 graphic.MatBack.mainTexture = temptextureback;
                 (graphic as Graphic_Multi_Four).MatLeft.mainTexture = temptextureside2;
-                
+
                 // Object.Destroy(temptexturefront);
                 // Object.Destroy(temptextureside);
                 // Object.Destroy(temptextureback);
@@ -190,47 +200,68 @@ namespace FacialStuff.HairCut
             string name)
         {
             string path = MergedHairPath + name;
-            if (!name.NullOrEmpty() && !File.Exists(path + "_front.png"))
+            if (!name.NullOrEmpty() && !File.Exists(path + "_Upperhead_front.png"))
             {
                 LongEventHandler.ExecuteWhenFinished(
                     delegate
-                        {
-                            Graphic graphic = GraphicDatabase.Get<Graphic_Multi_Four>(hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
-                            Texture2D temptexturefront = graphic.MatFront.mainTexture as Texture2D;
-                            Texture2D temptextureside = graphic.MatSide.mainTexture as Texture2D;
-                            Texture2D temptextureback = graphic.MatBack.mainTexture as Texture2D;
-                            Texture2D temptextureside2 = (graphic as Graphic_Multi_Four).MatLeft.mainTexture as Texture2D;
-                            
-                            temptexturefront = FaceTextures.MakeReadable(temptexturefront);
-                            temptextureside = FaceTextures.MakeReadable(temptextureside);
-                            temptextureback = FaceTextures.MakeReadable(temptextureback);
-                            temptextureside2 = FaceTextures.MakeReadable(temptextureside2);
+                    {
+                        Graphic graphic = GraphicDatabase.Get<Graphic_Multi_Four>(hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
 
-                            // intentional, only 1 mask tex. todo: rename, cleanup
-                            _maskTexFrontBack = FaceTextures.MaskTexAverageFrontBack;
-                            _maskTexSide = FaceTextures.MaskTexNarrowSide;
+                        Texture2D temptexturefront, temptextureside, temptextureback, temptextureside2;
 
-                            CutOutHair(ref temptexturefront, _maskTexFrontBack);
+                        SetTempTextures(graphic, out temptexturefront, out temptextureside, out temptextureback, out temptextureside2);
 
-                            CutOutHair(ref temptextureside, _maskTexSide);
+                        var upperPath = path + "_Upperhead";
 
-                            CutOutHair(ref temptextureback, _maskTexFrontBack);
-                            CutOutHair(ref temptextureside2, _maskTexSide);
+                        _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack;
+                        _maskTexSide = FaceTextures.MaskTexUpperheadSide;
 
+                        CutOutHair(upperPath, ref temptexturefront, ref temptextureside, ref temptextureback, ref temptextureside2);
 
+                        SetTempTextures(graphic, out temptexturefront, out temptextureside, out temptextureback, out temptextureside2);
 
-                            byte[] bytes = temptexturefront.EncodeToPNG();
-                            File.WriteAllBytes(path + "_front.png", bytes);
-                            byte[] bytes2 = temptextureside.EncodeToPNG();
-                            File.WriteAllBytes(path + "_side.png", bytes2);
-                            byte[] bytes3 = temptextureback.EncodeToPNG();
-                            File.WriteAllBytes(path + "_back.png", bytes3);
-                            byte[] bytes4 = temptextureside2.EncodeToPNG();
-                            File.WriteAllBytes(path + "_side2.png", bytes2);
+                        var fullPath = path + "_Fullhead";
 
+                        _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack;
+                        _maskTexSide = FaceTextures.MaskTexFullheadSide;
 
-                        });
+                        CutOutHair(fullPath, ref temptexturefront, ref temptextureside, ref temptextureback, ref temptextureside2);
+                    });
             }
+        }
+
+        private static void SetTempTextures(Graphic graphic, out Texture2D temptexturefront, out Texture2D temptextureside, out Texture2D temptextureback, out Texture2D temptextureside2)
+        {
+            temptexturefront = graphic.MatFront.mainTexture as Texture2D;
+            temptextureside = graphic.MatSide.mainTexture as Texture2D;
+            temptextureback = graphic.MatBack.mainTexture as Texture2D;
+            temptextureside2 = (graphic as Graphic_Multi_Four).MatLeft.mainTexture as Texture2D;
+
+            temptexturefront = FaceTextures.MakeReadable(temptexturefront);
+            temptextureside = FaceTextures.MakeReadable(temptextureside);
+            temptextureback = FaceTextures.MakeReadable(temptextureback);
+            temptextureside2 = FaceTextures.MakeReadable(temptextureside2);
+        }
+
+        private static void CutOutHair(string exportPath, ref Texture2D temptexturefront, ref Texture2D temptextureside, ref Texture2D temptextureback, ref Texture2D temptextureside2)
+        {
+            CutOutHair(ref temptexturefront, _maskTexFrontBack);
+
+            CutOutHair(ref temptextureside, _maskTexSide);
+
+            CutOutHair(ref temptextureback, _maskTexFrontBack);
+            CutOutHair(ref temptextureside2, _maskTexSide);
+
+
+
+            byte[] bytes = temptexturefront.EncodeToPNG();
+            File.WriteAllBytes(exportPath + "_front.png", bytes);
+            byte[] bytes2 = temptextureside.EncodeToPNG();
+            File.WriteAllBytes(exportPath + "_side.png", bytes2);
+            byte[] bytes3 = temptextureback.EncodeToPNG();
+            File.WriteAllBytes(exportPath + "_back.png", bytes3);
+            byte[] bytes4 = temptextureside2.EncodeToPNG();
+            File.WriteAllBytes(exportPath + "_side2.png", bytes2);
         }
     }
 }

@@ -1,23 +1,23 @@
 ﻿// ReSharper disable All
 
-using System;
-using System.Reflection.Emit;
 using FacialStuff.HairCut;
 using FacialStuff.Tweener;
 using JetBrains.Annotations;
+using System;
+using System.Reflection.Emit;
 
 namespace FacialStuff.Harmony
 {
+    using FaceEditor;
+    using Genetics;
+    using global::Harmony;
+    using GraphicsFS;
+    using RimWorld;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using FaceEditor;
-    using Genetics;
-    using GraphicsFS;
-    using Utilities;
-    using global::Harmony;
-    using RimWorld;
     using UnityEngine;
+    using Utilities;
     using Verse;
     using Verse.Sound;
 
@@ -74,11 +74,16 @@ namespace FacialStuff.Harmony
                           new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(ResolveAllGraphics_Postfix)));
 
             harmony.Patch(
-                          AccessTools.Method(typeof(PawnRenderer), nameof(PawnRenderer.DrawEquipmentAiming)),
-                          new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DrawEquipmentAiming_Prefix)),
-                          null,
-                          new HarmonyMethod(typeof(HarmonyPatchesFS),
-                                            nameof(HarmonyPatchesFS.DrawEquipmentAiming_Transpiler)));
+                     AccessTools.Method(typeof(PawnGraphicSet), nameof(PawnGraphicSet.ResolveApparelGraphics)),
+                     null,
+                     new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(ResolveApparelGraphics_Postfix)));
+
+            harmony.Patch(
+                      AccessTools.Method(typeof(PawnRenderer), nameof(PawnRenderer.DrawEquipmentAiming)),
+                      new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DrawEquipmentAiming_Prefix)),
+                      null,
+                      new HarmonyMethod(typeof(HarmonyPatchesFS),
+                                        nameof(HarmonyPatchesFS.DrawEquipmentAiming_Transpiler)));
 
             // harmony.Patch(
             // AccessTools.Method(
@@ -245,7 +250,6 @@ namespace FacialStuff.Harmony
                    stanceBusy.focusTarg.IsValid;
         }
 
-
         public static bool CarryWeaponOpenly(Pawn pawn)
         {
             return pawn.carryTracker?.CarriedThing == null &&
@@ -330,9 +334,8 @@ namespace FacialStuff.Harmony
                 weaponAngle += flipped ? -animationPhasePercent * totalSwingAngle : animationPhasePercent * totalSwingAngle;
                 noTween = true;
             }
-
-
         }
+
         //  private static float RecoilMax = -0.15f;
         //  private static  Vector3 curOffset = new Vector3(0f, 0f, 0f);
         //  public static void AddOffset(float dist, float dir)
@@ -458,7 +461,6 @@ namespace FacialStuff.Harmony
 
             float angleChange = Mathf.Abs(weaponAngle - animator.lastWeaponAngle);
 
-
             if (angleChange > 6f && !noTween)
             {
                 // If pawn flips sides, no tween
@@ -471,7 +473,6 @@ namespace FacialStuff.Harmony
 
                 if (!x && !y && !z)
                 {
-
                     FloatTween tween = animator.tween;
                     if (!Find.TickManager.Paused)
                     {
@@ -483,13 +484,10 @@ namespace FacialStuff.Harmony
                     }
                     weaponAngle = tween.CurrentValue;
                 }
-
             }
 
             animator.lastAimAngle = aimAngle;
             animator.lastWeaponAngle = weaponAngle;
-
-
 
             // Now the remaining hands if possible
             if (animator.Props.bipedWithHands && Controller.settings.UseHands)
@@ -500,7 +498,6 @@ namespace FacialStuff.Harmony
                                      weaponAngle,
                                      extensions, animator, pawn, aiming);
             }
-
         }
 
         public static void CalculateHandsAiming(
@@ -518,7 +515,7 @@ namespace FacialStuff.Harmony
 
             animator.FirstHandPosition = compWeaponExtensions.RightHandPosition;
 
-            // Only put the second hand on when aiming or not moving => free left hand for running 
+            // Only put the second hand on when aiming or not moving => free left hand for running
             bool leftOnWeapon = true;// aiming || !animator.IsMoving;
             animator.SecondHandPosition = leftOnWeapon ? compWeaponExtensions.LeftHandPosition : Vector3.zero;
 
@@ -564,7 +561,6 @@ namespace FacialStuff.Harmony
 
             // Swap left and right hand position when flipped
 
-
             animator.WeaponQuat = Quaternion.AngleAxis(weaponAngle, Vector3.up);
         }
 
@@ -609,7 +605,6 @@ namespace FacialStuff.Harmony
                                                      });
             return instructionList;
         }
-
 
         public static IEnumerable<CodeInstruction> DrawEquipmentAiming_Transpiler(
         IEnumerable<CodeInstruction> instructions,
@@ -685,7 +680,6 @@ namespace FacialStuff.Harmony
             return false;
         }
 
-
         public static void CheckAndDrawHands(Thing carriedThing, Vector3 vector, bool flip, Pawn pawn, bool thingBehind)
         {
             if (pawn.RaceProps.Animal)
@@ -715,6 +709,38 @@ namespace FacialStuff.Harmony
             vector.y += compAnim.DrawOffsetY;
 
             compAnim.DrawHands(Quaternion.identity, vector, false, carriedThing, flip);
+        }
+
+        public static void ResolveApparelGraphics_Postfix(PawnGraphicSet __instance)
+        {
+            Pawn pawn = __instance.pawn;
+            // Set up the hair cut graphic
+            if (Controller.settings.MergeHair)
+            {
+                HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
+
+                var wornApparel = pawn.apparel.WornApparel.Where(x => x.def.apparel.LastLayer == ApparelLayer.Overhead).ToList();
+                var coverage = HeadCoverage.None;
+                if (!wornApparel.NullOrEmpty())
+                {
+                    if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)))
+                    {
+                        coverage = HeadCoverage.UpperHead;
+                    }
+                    if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)))
+                    {
+                        coverage = HeadCoverage.FullHead;
+                    }
+                }
+                if (coverage != 0)
+                {
+                    hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi_Four>(
+                                                                       pawn.story.hairDef.texPath,
+                                                                       ShaderDatabase.Cutout,
+                                                                       Vector2.one,
+                                                                       pawn.story.hairColor, coverage);
+                }
+            }
         }
 
         // [HarmonyAfter("net.pardeike.zombieland")]
@@ -759,17 +785,6 @@ namespace FacialStuff.Harmony
             if (!compFace.InitializeCompFace())
             {
                 return;
-            }
-
-            // Set up the hair cut graphic
-            if (Controller.settings.MergeHair)
-            {
-                HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
-                hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi_Four>(
-                                                                       pawn.story.hairDef.texPath,
-                                                                       ShaderDatabase.Cutout,
-                                                                       Vector2.one,
-                                                                       pawn.story.hairColor);
             }
 
             __instance.nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(

@@ -1,5 +1,4 @@
 ﻿using FacialStuff.GraphicsFS;
-using System;
 using UnityEngine;
 
 namespace Verse
@@ -31,6 +30,7 @@ namespace Verse
                 return this.mats[3];
             }
         }
+
         public override Material MatBack
         {
             get
@@ -39,19 +39,22 @@ namespace Verse
             }
         }
 
-
         public override Material MatAt(Rot4 rot, Thing thing = null)
         {
             switch (rot.AsInt)
             {
                 case 0:
                     return this.MatBack;
+
                 case 1:
                     return this.MatSide;
+
                 case 2:
                     return this.MatFront;
+
                 case 3:
                     return this.MatLeft;
+
                 default:
                     return BaseContent.BadMat;
             }
@@ -110,8 +113,6 @@ namespace Verse
                 {
                     array2[3] = FaceTextures.RedTexture;
                 }
-
-
             }
             for (int i = 0; i < 4; i++)
             {
@@ -124,6 +125,5 @@ namespace Verse
                 this.mats[i] = MaterialPool.MatFrom(req2);
             }
         }
-
     }
 }

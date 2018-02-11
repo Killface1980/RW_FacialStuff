@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FacialStuff.Animator;
+﻿using FacialStuff.Animator;
 using FacialStuff.AnimatorWindows;
 using JetBrains.Annotations;
 using RimWorld;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -13,11 +13,6 @@ namespace FacialStuff
 {
     public class HumanBipedDrawer : PawnBodyDrawer
     {
-        #region Public Fields
-
-
-        #endregion Public Fields
-
         #region Protected Fields
 
         protected const float OffsetGroundZ = -0.575f;
@@ -27,7 +22,6 @@ namespace FacialStuff
         #endregion Protected Fields
 
         #region Private Fields
-
 
         //  private PawnFeetTweener feetTweener;
         private float _animatedPercent;
@@ -44,7 +38,6 @@ namespace FacialStuff
 
         public Material RightHandMat =>
         this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic?.HandGraphicRight?.MatSingle);
-
 
         public Material RightHandShadowMat => this.Flasher.GetDamagedMat(this.CompAnimator.PawnBodyGraphic
                                                                             ?.HandGraphicRightShadow?.MatSingle);
@@ -133,7 +126,6 @@ namespace FacialStuff
             return base.BodyBaseAt(graphics, bodyFacing, bodyDrawType, layer);
         }
 
-
         public override bool CarryStuff()
         {
             Pawn pawn = this.Pawn;
@@ -146,7 +138,6 @@ namespace FacialStuff
 
             return base.CarryStuff();
         }
-
 
         public void DoAttackAnimationHandOffsets(ref List<float> weaponAngle, ref Vector3 weaponPosition, bool flipped)
         {
@@ -190,7 +181,6 @@ namespace FacialStuff
             weaponAngle[0] += (flipped ? -1f : 1f) * angle;
             weaponAngle[1] += (flipped ? -1f : 1f) * angle;
         }
-
 
         public override void DrawApparel(Quaternion quat, Vector3 vector, bool renderBody, bool portrait)
         {
@@ -374,7 +364,6 @@ namespace FacialStuff
 
             if (drawLeft)
             {
-
                 // TweenThing leftFoot = TweenThing.FootLeft;
                 // PawnPartsTweener tweener = this.CompAnimator.PartTweener;
                 // if (tweener != null)
@@ -402,12 +391,12 @@ namespace FacialStuff
                 Vector3 position = ground + groundPos.RightJoint + rightFootCycle;
                 // tweener.PartPositions[(int)rightFoot] = position;
                 //     tweener.PreThingPosCalculation(rightFoot, spring: SpringTightness.Stff);
-                    GenDraw.DrawMeshNowOrLater(
-                                               footMeshRight,
-                                               position, // tweener.TweenedPartsPos[(int)rightFoot],
-                                               drawQuat * Quaternion.AngleAxis(footAngleRight, Vector3.up),
-                                               matRight,
-                                               portrait);
+                GenDraw.DrawMeshNowOrLater(
+                                           footMeshRight,
+                                           position, // tweener.TweenedPartsPos[(int)rightFoot],
+                                           drawQuat * Quaternion.AngleAxis(footAngleRight, Vector3.up),
+                                           matRight,
+                                           portrait);
                 // }
             }
 
@@ -448,7 +437,6 @@ namespace FacialStuff
             if (this.Pawn.Dead)
             {
                 return;
-
             }
 
             if (portrait && !this.CompAnimator.AnyOpen())
@@ -514,7 +502,6 @@ namespace FacialStuff
 
             if (poseCycle != null)
             {
-
                 this.DoPoseCycleOffsets(ref rightHand,
                                         ref shoulderAngle,
                                         ref handSwingAngle, poseCycle);
@@ -650,7 +637,6 @@ namespace FacialStuff
 
                 quat *= Quaternion.AngleAxis(angle, Vector3.up);
                 this.CompAnimator.BodyAngle = angle;
-
             }
 
             return quat;
@@ -756,9 +742,7 @@ namespace FacialStuff
             this.CompAnimator.FirstHandPosition = Vector3.zero;
             this.CompAnimator.SecondHandPosition = Vector3.zero;
 
-
             this.CompAnimator.PartTweener?.UpdateTweenerLock(this.CompAnimator.IsMoving, this.CompAnimator.MovedPercent);
-
         }
 
         #endregion Public Methods
@@ -970,15 +954,12 @@ namespace FacialStuff
             SimpleCurve rHandX = pose.HandPositionX;
             SimpleCurve rHandZ = pose.HandPositionZ;
 
-
-
             Rot4 rot = this.BodyFacing;
 
             // Basic values if pawn is carrying stuff
             float x = 0;
             float y = Offsets.YOffset_Behind;
             float z;
-
 
             float percent = this._animatedPercent;
             PoseCycleDef poseCycle = this.CompAnimator.PoseCycle;
