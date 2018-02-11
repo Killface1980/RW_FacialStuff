@@ -15,12 +15,12 @@
     </aimedWeaponPositionOffset>
     <firstHandPosition>
       <x>-0.1245283</x>
-      <y>0.003</y>
+      <y>0.005</y>
       <z>-0.09402516</z>
     </firstHandPosition>
     <secondHandPosition>
       <x>0.1305031</x>
-      <y>-0.003</y>
+      <y>-0.005</y>
       <z>-0.02484277</z>
     </secondHandPosition>
     <defName>WeaponExtensionDef_Gun_ChargeRifle</defName>

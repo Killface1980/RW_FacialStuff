@@ -2,7 +2,7 @@
 <Defs>
   <BodyAnimDef>
     <armLength>0.3</armLength>
-    <extraLegLength>0.075</extraLegLength>
+    <extraLegLength>0.175</extraLegLength>
     <hipOffsets>
       <li>
         <x>0.125</x>

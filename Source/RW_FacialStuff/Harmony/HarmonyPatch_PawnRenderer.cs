@@ -81,33 +81,42 @@ namespace FacialStuff.Harmony
             {
                 if (!_viewRect.Contains(otherPawn.Position)) { continue; }
                 if (otherPawn == pawn) { continue; }
-                if (otherPawn.DrawPos.x < loc.x - 1 &&
-                                               otherPawn.DrawPos.x > loc.x + 1) { continue; }
-                if (otherPawn.DrawPos.z >= loc.z) { continue; }
+                if (otherPawn.DrawPos.x < loc.x - 0.25f)
+                { continue; }
+
+                if (otherPawn.DrawPos.x > loc.x + 0.25f)
+                    { continue; }
+
+                if (otherPawn.DrawPos.z >= loc.z) { continue; } // ignore above
 
                 pawns.Add(otherPawn);
             }
-           // pawns = pawn.Map.mapPawns.AllPawnsSpawned
-           //                .Where(
-           //                       otherPawn => _viewRect.Contains(otherPawn.Position) &&
-           //                       otherPawn != pawn &&
-           //                                    otherPawn.DrawPos.x >= loc.x - 1 &&
-           //                                    otherPawn.DrawPos.x <= loc.x + 1 &&
-           //                                    otherPawn.DrawPos.z <= loc.z).ToList();
+            // pawns = pawn.Map.mapPawns.AllPawnsSpawned
+            //                .Where(
+            //                       otherPawn => _viewRect.Contains(otherPawn.Position) &&
+            //                       otherPawn != pawn &&
+            //                                    otherPawn.DrawPos.x >= loc.x - 1 &&
+            //                                    otherPawn.DrawPos.x <= loc.x + 1 &&
+            //                                    otherPawn.DrawPos.z <= loc.z).ToList();
             //  List<Pawn> leftOfPawn = pawns.Where(other => other.DrawPos.x <= loc.x).ToList();
-
+            bool flag = compAnimator != null;
             if (!pawns.NullOrEmpty())
             {
                 float pawnOffset = Offsets.YOffsetPawns * pawns.Count;
                 loc.y -= pawnOffset;
-            compAnimator.DrawOffsetY = pawnOffset;
+                if (flag)
+                {
+                    compAnimator.DrawOffsetY = pawnOffset;
+                }
                 //   loc.y -= 0.1f * leftOfPawn.Count;
             }
-            else {
-
-            compAnimator.DrawOffsetY = 0f;
+            else
+            {
+                if (flag)
+                {
+                    compAnimator.DrawOffsetY = 0f;
+                }
             }
-
             rootLoc = loc;
 
 
@@ -525,7 +534,7 @@ namespace FacialStuff.Harmony
                                                  renderBody,
                                                  headQuat, hatInFrontOfFace);
 
-                compFace.DrawAlienHeadAddons(portrait, headQuat, overHead);
+                    compFace.DrawAlienHeadAddons(portrait, headQuat, overHead);
                 }
 
             }

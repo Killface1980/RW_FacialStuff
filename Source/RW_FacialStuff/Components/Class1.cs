@@ -29,7 +29,7 @@ namespace FacialStuff.Components
             }
             if (currentPawns.NullOrEmpty()) { return; }
             // top to bottom
-            currentPawns= currentPawns.OrderByDescending(x => x.Position.z).ToList();
+
             for (int i = 0; i < currentPawns.Count -1; i++)
             {
                 var current = currentPawns[i];
