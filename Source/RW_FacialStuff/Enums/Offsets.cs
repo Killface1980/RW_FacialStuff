@@ -9,6 +9,8 @@ namespace FacialStuff
     {
         //// total max with repetitions: LayerSpacing = 0.46875f;
 
+        public const float YOffsetPawns = 0.05f;
+
         private const float SubInterval = 0.00390625f;
         public const float YOffset_PrimaryEquipmentUnder = 0f;
         public const float YOffset_Behind = 0.00390625f;

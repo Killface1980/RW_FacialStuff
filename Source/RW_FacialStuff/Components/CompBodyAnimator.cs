@@ -1,13 +1,13 @@
 ﻿using FacialStuff.Animator;
 using FacialStuff.DefOfs;
 using FacialStuff.GraphicsFS;
+using FacialStuff.Tweener;
 using JetBrains.Annotations;
 using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using TinyTween;
 using UnityEngine;
 using Verse;
 
@@ -478,6 +478,7 @@ namespace FacialStuff
         public Vector3 lastEqPos = Vector3.zero;
         public float lastWeaponAngle;
         public float desiredAimAngle;
+        public float DrawOffsetY;
 
         public float BodyOffsetZ
         {

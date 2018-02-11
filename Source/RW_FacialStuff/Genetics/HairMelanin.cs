@@ -256,7 +256,7 @@ namespace FacialStuff.Genetics
                 return;
             }
 
-            if (pawn.GetFather().GetPawnFace(out fatherPawnFace))
+            if (pawn.GetFather().HasPawnFace())
             {
                 hasFather = true;
             }
@@ -271,7 +271,7 @@ namespace FacialStuff.Genetics
                 return;
             }
 
-            if (pawn.GetMother().GetPawnFace(out motherPawnFace))
+            if (pawn.GetMother().HasPawnFace())
             {
                 hasMother = true;
             }

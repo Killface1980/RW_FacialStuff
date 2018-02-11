@@ -3,8 +3,8 @@
 using System;
 using System.Reflection.Emit;
 using FacialStuff.HairCut;
+using FacialStuff.Tweener;
 using JetBrains.Annotations;
-using TinyTween;
 
 namespace FacialStuff.Harmony
 {
@@ -296,12 +296,12 @@ namespace FacialStuff.Harmony
             }
 
             Stance_Busy busy = pawn.stances.curStance as Stance_Busy;
-            if (busy== null) { return;}
+            if (busy == null) { return; }
 
-          //  if (!busy.verb.IsMeleeAttack)
-          //  {
-          //      return;
-          //  }
+            //  if (!busy.verb.IsMeleeAttack)
+            //  {
+            //      return;
+            //  }
 
             DamageDef damageDef = busy.verb.GetDamageDef();//ThingUtility.PrimaryMeleeWeaponDamageType(primaryEq.parent.def);
             if (damageDef == null)
@@ -330,7 +330,7 @@ namespace FacialStuff.Harmony
                 weaponAngle += flipped ? -animationPhasePercent * totalSwingAngle : animationPhasePercent * totalSwingAngle;
                 noTween = true;
             }
-            
+
 
         }
         //  private static float RecoilMax = -0.15f;
@@ -594,11 +594,15 @@ namespace FacialStuff.Harmony
             instructionList.InsertRange(indexDrawAt, new List<CodeInstruction>
 
                                                      {
-                                                     new CodeInstruction(OpCodes.Ldarg_0),
+                                                     // carriedThing.DrawAt(vector, flip);
+                                                     // carriedThing = ldloc.1
+                                                     // vector = ldloc.2
+                                                     // bool flip = ldloc.s 4
+                                                     new CodeInstruction(OpCodes.Ldarg_0), // this.PawnRenderer
                                                      new CodeInstruction(OpCodes.Ldfld,
                                                                          AccessTools.Field(typeof(PawnRenderer),
-                                                                                           "pawn")),
-                                                     new CodeInstruction(OpCodes.Ldloc_2),
+                                                                                           "pawn")), // pawn
+                                                     new CodeInstruction(OpCodes.Ldloc_3), // flag
                                                      new CodeInstruction(OpCodes.Call,
                                                                          AccessTools.Method(typeof(HarmonyPatchesFS),
                                                                                             nameof(CheckAndDrawHands)))
@@ -682,7 +686,7 @@ namespace FacialStuff.Harmony
         }
 
 
-        public static void CheckAndDrawHands(Thing carriedThing, Vector3 vector, bool flip, Pawn pawn, Vector3 loc)
+        public static void CheckAndDrawHands(Thing carriedThing, Vector3 vector, bool flip, Pawn pawn, bool thingBehind)
         {
             if (pawn.RaceProps.Animal)
             {
@@ -703,9 +707,14 @@ namespace FacialStuff.Harmony
                 return;
             }
 
-            loc.y += pawn.Rotation == Rot4.North ? -0.05f : Offsets.YOffset_Body;
+            // Modify the drawPos to appear behind a pawn if fcing North, in case vanilla didn't
+            if (!thingBehind && pawn.Rotation == Rot4.North)
+            {
+                vector.y -= Offsets.YOffset_CarriedThing * 2;
+            }
+            vector.y += compAnim.DrawOffsetY;
 
-            compAnim.DrawHands(Quaternion.identity, loc, false, carriedThing, flip);
+            compAnim.DrawHands(Quaternion.identity, vector, false, carriedThing, flip);
         }
 
         // [HarmonyAfter("net.pardeike.zombieland")]

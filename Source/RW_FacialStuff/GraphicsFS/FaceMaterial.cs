@@ -45,8 +45,7 @@ namespace FacialStuff.GraphicsFS
         [CanBeNull]
         public Material BeardMatAt(Rot4 facing)
         {
-            if (this._pawn.gender != Gender.Male || this._compFace.PawnFace?.BeardDef == BeardDefOf.Beard_Shaved
-                || this._compFace.BodyStat.Jaw == PartStatus.Missing || this._compFace.BodyStat.Jaw == PartStatus.Artificial)
+            if (CannotShowFaceHair() || this._compFace.PawnFace?.BeardDef == BeardDefOf.Beard_Shaved)
             {
                 return null;
             }
@@ -59,6 +58,12 @@ namespace FacialStuff.GraphicsFS
             }
 
             return material;
+        }
+
+        private bool CannotShowFaceHair()
+        {
+            return this._pawn.gender != Gender.Male 
+                            || this._compFace.BodyStat.Jaw == PartStatus.Missing || this._compFace.BodyStat.Jaw == PartStatus.Artificial;
         }
 
         [CanBeNull]
@@ -184,8 +189,7 @@ namespace FacialStuff.GraphicsFS
         [CanBeNull]
         public Material MoustacheMatAt(Rot4 facing)
         {
-            if (this._pawn.gender != Gender.Male || this._compFace.PawnFace?.MoustacheDef == MoustacheDefOf.Shaved
-                || this._compFace.BodyStat.Jaw != PartStatus.Natural || this._compFace.BodyStat.Jaw!=PartStatus.DisplayOverBeard)
+            if (CannotShowFaceHair() || this._compFace.PawnFace?.MoustacheDef == MoustacheDefOf.Shaved)
             {
                 return null;
             }

@@ -9,8 +9,6 @@ namespace FacialStuff.GraphicsFS
     {
         private readonly Material[] _mats = new Material[4];
 
-        public string GraphicPath => this.path;
-
         public override Material MatBack => this._mats[0];
         public override Material MatSide => this._mats[1];
         public override Material MatFront => this._mats[2];

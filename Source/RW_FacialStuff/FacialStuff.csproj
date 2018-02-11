@@ -61,6 +61,7 @@
       <HintPath>..\..\..\Star-Wars---The-Force\Assemblies\ProjectJedi.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
@@ -81,14 +82,16 @@
     <Compile Include="AI\JobGiver_Possess.cs" />
     <Compile Include="AI\MentalStateWorker_Possessed.cs" />
     <Compile Include="AI\MentalState_Possessed.cs" />
+    <None Include="packages.config" />
     <None Include="WidgetsFS.cs" />
     <None Include="Harmony\Optional\AlienPatches.cs" />
     <None Include="Harmony\Optional\Harmony_Alien.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
     <None Include="Components\CompHumanFace.cs" />
     <None Include="Controller_Animator.cs" />
+    <None Include="Components\Class1.cs" />
     <Compile Include="GraphicsFS\Graphic_Multi_Four.cs" />
-    <Compile Include="Tweener\Class1.cs" />
+    <Compile Include="Tweener\TinyTween.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />
     <None Include="Drawer\CentipedeDrawer.cs" />
@@ -366,7 +369,10 @@
       <Link>Patches\HumanPatchHSK.xml</Link>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\packages\ResharperCodeContractNullability.1.0.8\analyzers\dotnet\cs\CodeContractNullability.dll" />
+    <Analyzer Include="..\packages\ResharperCodeContractNullability.1.0.8\analyzers\dotnet\cs\MsgPack.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

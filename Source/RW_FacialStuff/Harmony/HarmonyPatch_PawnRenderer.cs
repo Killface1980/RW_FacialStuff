@@ -70,24 +70,46 @@ namespace FacialStuff.Harmony
                                                                   BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
-        private static void RecalcRootLocY(ref Vector3 rootLoc, Pawn pawn)
+        private static void RecalcRootLocY(ref Vector3 rootLoc, Pawn pawn, CompBodyAnimator compAnimator)
         {
             Vector3 loc = rootLoc;
-            List<Pawn> pawns = pawn.Map.mapPawns.AllPawnsSpawned
-               .Where(
-                      otherPawn => otherPawn != pawn &&
-                                   otherPawn.DrawPos.x >= loc.x - 1 &&
-                                   otherPawn.DrawPos.x <= loc.x + 1 &&
-                                   otherPawn.DrawPos.z <= loc.z).ToList();
+            CellRect _viewRect = Find.CameraDriver.CurrentViewRect;
+            _viewRect = _viewRect.ExpandedBy(1);
+
+            List<Pawn> pawns = new List<Pawn>();
+            foreach (Pawn otherPawn in pawn.Map.mapPawns.AllPawnsSpawned)
+            {
+                if (!_viewRect.Contains(otherPawn.Position)) { continue; }
+                if (otherPawn == pawn) { continue; }
+                if (otherPawn.DrawPos.x < loc.x - 1 &&
+                                               otherPawn.DrawPos.x > loc.x + 1) { continue; }
+                if (otherPawn.DrawPos.z >= loc.z) { continue; }
+
+                pawns.Add(otherPawn);
+            }
+           // pawns = pawn.Map.mapPawns.AllPawnsSpawned
+           //                .Where(
+           //                       otherPawn => _viewRect.Contains(otherPawn.Position) &&
+           //                       otherPawn != pawn &&
+           //                                    otherPawn.DrawPos.x >= loc.x - 1 &&
+           //                                    otherPawn.DrawPos.x <= loc.x + 1 &&
+           //                                    otherPawn.DrawPos.z <= loc.z).ToList();
             //  List<Pawn> leftOfPawn = pawns.Where(other => other.DrawPos.x <= loc.x).ToList();
 
             if (!pawns.NullOrEmpty())
             {
-                loc.y -= 0.05f * pawns.Count;
+                float pawnOffset = Offsets.YOffsetPawns * pawns.Count;
+                loc.y -= pawnOffset;
+            compAnimator.DrawOffsetY = pawnOffset;
                 //   loc.y -= 0.1f * leftOfPawn.Count;
+            }
+            else {
+
+            compAnimator.DrawOffsetY = 0f;
             }
 
             rootLoc = loc;
+
 
             return;
             //List<Pawn> pawns = pawn.Map.mapPawns.AllPawnsSpawned
@@ -315,7 +337,7 @@ namespace FacialStuff.Harmony
             // Try to move the y position behind while another pawn is standing near
             if (!portrait && pawn.Spawned)
             {
-                RecalcRootLocY(ref rootLoc, pawn);
+                RecalcRootLocY(ref rootLoc, pawn, compAnim);
             }
 
             Vector3 baseDrawLoc = rootLoc;
