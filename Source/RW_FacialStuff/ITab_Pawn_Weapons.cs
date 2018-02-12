@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using FacialStuff.AnimatorWindows;
-using FacialStuff.Defs;
-using FacialStuff.GraphicsFS;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;

@@ -77,12 +77,12 @@ namespace FacialStuff
         }
 
         public override void DrawBasicHead(
-        Quaternion headQuat,
-        RotDrawMode bodyDrawType,
-        bool headStump,
-        bool portrait,
         Vector3 drawLoc,
-        out bool headDrawn)
+            Quaternion headQuat,
+            RotDrawMode bodyDrawType,
+            bool headStump,
+            bool portrait,
+            out bool headDrawn)
         {
             Material headMaterial = this.Graphics.HeadMatAt(this.HeadFacing, bodyDrawType, headStump);
             if (headMaterial != null)
@@ -118,9 +118,7 @@ namespace FacialStuff
             }
         }
 
-        public override void DrawBrows(Quaternion headQuat,
-            bool portrait,
-            Vector3 drawLoc)
+        public override void DrawBrows(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
             Material browMat = this.CompFace.FaceMaterial.BrowMatAt(this.HeadFacing);
             if (browMat != null)
@@ -258,7 +256,7 @@ namespace FacialStuff
             }
         }
 
-        public override void DrawNaturalEyes(Quaternion headQuat, bool portrait, Vector3 drawLoc)
+        public override void DrawNaturalEyes(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
             Mesh eyeMesh = this.CompFace.EyeMeshSet.Mesh.MeshAt(this.HeadFacing);
 
@@ -301,7 +299,7 @@ namespace FacialStuff
             }
         }
 
-        public override void DrawNaturalMouth(Quaternion headQuat, bool portrait, Vector3 drawLoc)
+        public override void DrawNaturalMouth(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
             Material mouthMat = this.CompFace.FaceMaterial.MouthMatAt(this.HeadFacing, portrait);
             if (mouthMat != null)
@@ -319,7 +317,7 @@ namespace FacialStuff
             }
         }
 
-        public override void DrawUnnaturalEyeParts(Quaternion headQuat, bool portrait, Vector3 drawLoc)
+        public override void DrawUnnaturalEyeParts(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
             Mesh headMesh = this.GetPawnMesh(false, portrait);
             if (this.CompFace.BodyStat.EyeLeft == PartStatus.Artificial)
@@ -357,10 +355,10 @@ namespace FacialStuff
         }
 
         public override void DrawWrinkles(
-        Quaternion headQuat,
-        RotDrawMode bodyDrawType,
-        bool portrait,
-         Vector3 drawLoc)
+         Vector3 drawLoc,
+            RotDrawMode bodyDrawType,
+            Quaternion headQuat,
+            bool portrait)
         {
             if (!Controller.settings.UseWrinkles)
             {

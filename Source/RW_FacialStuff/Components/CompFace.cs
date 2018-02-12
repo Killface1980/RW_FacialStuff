@@ -54,7 +54,7 @@ namespace FacialStuff
         #region Public Properties
 
         // public bool IgnoreRenderer;
-        public GraphicVectorMeshSet EyeMeshSet => MeshPoolFs.HumanEyeSet[(int)this.FullHeadType];
+        public GraphicVectorMeshSet EyeMeshSet => MeshPoolFS.HumanEyeSet[(int)this.FullHeadType];
 
         [NotNull]
         public PawnEyeWiggler EyeWiggler { get; set; }
@@ -72,7 +72,7 @@ namespace FacialStuff
         public PawnHeadRotator HeadRotator { get; private set; }
 
         [NotNull]
-        public GraphicVectorMeshSet MouthMeshSet => MeshPoolFs.HumanlikeMouthSet[(int)this.FullHeadType];
+        public GraphicVectorMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
 
         public Faction OriginFaction
         {
@@ -150,11 +150,11 @@ namespace FacialStuff
                     case HeadType.Normal:
                         if (male)
                         {
-                            this._eyeOffset = MeshPoolFs.EyeMaleAverageNormalOffset;
+                            this._eyeOffset = MeshPoolFS.EyeMaleAverageNormalOffset;
                         }
                         else
                         {
-                            this._eyeOffset = MeshPoolFs.EyeFemaleAverageNormalOffset;
+                            this._eyeOffset = MeshPoolFS.EyeFemaleAverageNormalOffset;
                         }
 
                         break;
@@ -162,11 +162,11 @@ namespace FacialStuff
                     case HeadType.Pointy:
                         if (male)
                         {
-                            this._eyeOffset = MeshPoolFs.EyeMaleAveragePointyOffset;
+                            this._eyeOffset = MeshPoolFS.EyeMaleAveragePointyOffset;
                         }
                         else
                         {
-                            this._eyeOffset = MeshPoolFs.EyeFemaleAveragePointyOffset;
+                            this._eyeOffset = MeshPoolFS.EyeFemaleAveragePointyOffset;
                         }
 
                         break;
@@ -174,11 +174,11 @@ namespace FacialStuff
                     case HeadType.Wide:
                         if (male)
                         {
-                            this._eyeOffset = MeshPoolFs.EyeMaleAverageWideOffset;
+                            this._eyeOffset = MeshPoolFS.EyeMaleAverageWideOffset;
                         }
                         else
                         {
-                            this._eyeOffset = MeshPoolFs.EyeFemaleAverageWideOffset;
+                            this._eyeOffset = MeshPoolFS.EyeFemaleAverageWideOffset;
                         }
 
                         break;
@@ -190,19 +190,19 @@ namespace FacialStuff
                 {
                     case HeadType.Normal:
                         this._eyeOffset = male
-                                          ? MeshPoolFs.EyeMaleNarrowNormalOffset
-                                          : MeshPoolFs.EyeFemaleNarrowNormalOffset;
+                                          ? MeshPoolFS.EyeMaleNarrowNormalOffset
+                                          : MeshPoolFS.EyeFemaleNarrowNormalOffset;
                         break;
 
                     case HeadType.Pointy:
                         this._eyeOffset = male
-                                          ? MeshPoolFs.EyeMaleNarrowPointyOffset
-                                          : MeshPoolFs.EyeFemaleNarrowPointyOffset;
+                                          ? MeshPoolFS.EyeMaleNarrowPointyOffset
+                                          : MeshPoolFS.EyeFemaleNarrowPointyOffset;
                         break;
 
                     case HeadType.Wide:
                         this._eyeOffset =
-                        male ? MeshPoolFs.EyeMaleNarrowWideOffset : MeshPoolFs.EyeFemaleNarrowWideOffset;
+                        male ? MeshPoolFS.EyeMaleNarrowWideOffset : MeshPoolFS.EyeFemaleNarrowWideOffset;
                         break;
                 }
             }
@@ -250,11 +250,11 @@ namespace FacialStuff
                     case HeadType.Normal:
                         if (male)
                         {
-                            this._mouthOffset = MeshPoolFs.MouthMaleAverageNormalOffset;
+                            this._mouthOffset = MeshPoolFS.MouthMaleAverageNormalOffset;
                         }
                         else
                         {
-                            this._mouthOffset = MeshPoolFs.MouthFemaleAverageNormalOffset;
+                            this._mouthOffset = MeshPoolFS.MouthFemaleAverageNormalOffset;
                         }
 
                         break;
@@ -262,11 +262,11 @@ namespace FacialStuff
                     case HeadType.Pointy:
                         if (male)
                         {
-                            this._mouthOffset = MeshPoolFs.MouthMaleAveragePointyOffset;
+                            this._mouthOffset = MeshPoolFS.MouthMaleAveragePointyOffset;
                         }
                         else
                         {
-                            this._mouthOffset = MeshPoolFs.MouthFemaleAveragePointyOffset;
+                            this._mouthOffset = MeshPoolFS.MouthFemaleAveragePointyOffset;
                         }
 
                         break;
@@ -274,11 +274,11 @@ namespace FacialStuff
                     case HeadType.Wide:
                         if (male)
                         {
-                            this._mouthOffset = MeshPoolFs.MouthMaleAverageWideOffset;
+                            this._mouthOffset = MeshPoolFS.MouthMaleAverageWideOffset;
                         }
                         else
                         {
-                            this._mouthOffset = MeshPoolFs.MouthFemaleAverageWideOffset;
+                            this._mouthOffset = MeshPoolFS.MouthFemaleAverageWideOffset;
                         }
 
                         break;
@@ -290,19 +290,19 @@ namespace FacialStuff
                 {
                     case HeadType.Normal:
                         this._mouthOffset =
-                        male ? MeshPoolFs.MouthMaleNarrowNormalOffset : MeshPoolFs.MouthFemaleNarrowNormalOffset;
+                        male ? MeshPoolFS.MouthMaleNarrowNormalOffset : MeshPoolFS.MouthFemaleNarrowNormalOffset;
 
                         break;
 
                     case HeadType.Pointy:
                         this._mouthOffset =
-                        male ? MeshPoolFs.MouthMaleNarrowPointyOffset : MeshPoolFs.MouthFemaleNarrowPointyOffset;
+                        male ? MeshPoolFS.MouthMaleNarrowPointyOffset : MeshPoolFS.MouthFemaleNarrowPointyOffset;
 
                         break;
 
                     case HeadType.Wide:
                         this._mouthOffset =
-                        male ? MeshPoolFs.MouthMaleNarrowWideOffset : MeshPoolFs.MouthFemaleNarrowWideOffset;
+                        male ? MeshPoolFS.MouthMaleNarrowWideOffset : MeshPoolFS.MouthFemaleNarrowWideOffset;
 
                         break;
                 }
@@ -327,7 +327,7 @@ namespace FacialStuff
         // Can be called externally
 
 
-        public void DrawAlienHeadAddons(bool portrait, Quaternion headQuat, Vector3 currentLoc)
+        public void DrawAlienHeadAddons(Vector3 headPos, bool portrait, Quaternion headQuat, Vector3 currentLoc)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -338,7 +338,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i].DrawAlienHeadAddons(portrait, headQuat, currentLoc);
+                this.PawnHeadDrawers[i].DrawAlienHeadAddons(headPos, portrait, headQuat, currentLoc);
                 i++;
             }
         }
@@ -358,12 +358,12 @@ namespace FacialStuff
             while (i < count)
             {
                 this.PawnHeadDrawers[i].DrawBasicHead(
-                                                      headQuat,
-                                                      bodyDrawType,
-                                                      headStump,
-                                                      portrait,
                                                       drawLoc,
-                                                      out headDrawn);
+                    headQuat,
+                    bodyDrawType,
+                    headStump,
+                    portrait,
+                    out headDrawn);
                 i++;
             }
         }
@@ -395,7 +395,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawBrows(headQuat, portrait, drawLoc);
+                this.PawnHeadDrawers[i]?.DrawBrows(drawLoc, headQuat, portrait);
                 i++;
             }
         }
@@ -453,7 +453,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawNaturalEyes(headQuat, portrait, drawLoc);
+                this.PawnHeadDrawers[i]?.DrawNaturalEyes(drawLoc, headQuat, portrait);
                 i++;
             }
         }
@@ -469,7 +469,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawNaturalMouth(headQuat, portrait, drawLoc);
+                this.PawnHeadDrawers[i]?.DrawNaturalMouth(drawLoc, headQuat, portrait);
                 i++;
             }
         }
@@ -485,7 +485,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawUnnaturalEyeParts(headQuat, portrait, locFacialY);
+                this.PawnHeadDrawers[i]?.DrawUnnaturalEyeParts(locFacialY, headQuat, portrait);
                 i++;
             }
         }
@@ -501,7 +501,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawWrinkles(headQuat, bodyDrawType, portrait, drawLoc);
+                this.PawnHeadDrawers[i]?.DrawWrinkles(drawLoc, bodyDrawType, headQuat, portrait);
                 i++;
             }
         }

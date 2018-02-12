@@ -38,17 +38,7 @@ namespace FacialStuff.Harmony
         private static bool logY = false;
         private static FieldInfo pawnHeadOverlaysFieldInfo;
 
-        private static void ExtendSearchGrid(IntVec3 searchPos, ref List<IntVec3> cells)
-        {
-            List<IntVec3> allcells = GenAdj.CellsAdjacent8Way(searchPos, Rot4.North, new IntVec2(1, 1)).ToList();
-            foreach (IntVec3 c in allcells)
-            {
-                if (!cells.Contains(c))
-                {
-                    cells.Add(c);
-                }
-            }
-        }
+
 
         private static void GetReflections()
         {
@@ -81,10 +71,10 @@ namespace FacialStuff.Harmony
             {
                 if (!_viewRect.Contains(otherPawn.Position)) { continue; }
                 if (otherPawn == pawn) { continue; }
-                if (otherPawn.DrawPos.x < loc.x - 0.25f)
+                if (otherPawn.DrawPos.x < loc.x - 0.5f)
                 { continue; }
 
-                if (otherPawn.DrawPos.x > loc.x + 0.25f)
+                if (otherPawn.DrawPos.x > loc.x + 0.5f)
                     { continue; }
 
                 if (otherPawn.DrawPos.z >= loc.z) { continue; } // ignore above
@@ -118,67 +108,6 @@ namespace FacialStuff.Harmony
                 }
             }
             rootLoc = loc;
-
-
-            return;
-            //List<Pawn> pawns = pawn.Map.mapPawns.AllPawnsSpawned
-            //    .Where(
-            //        otherPawn => otherPawn != pawn && otherPawn.DrawPos.x >= loc.x - 1
-            //                     && otherPawn.DrawPos.x <= loc.x + 1 && otherPawn.DrawPos.z < loc.z).ToList();
-            //List<Pawn> leftOf = pawns.Where(other => other.DrawPos.x < loc.x).ToList();
-
-            List<IntVec3> allCells = new List<IntVec3> { pawn.Position };
-            List<IntVec3> allCheckedCells = new List<IntVec3>();
-
-            ExtendSearchGrid(pawn.DrawPos.ToIntVec3(), ref allCells);
-
-            List<Pawn> pawnList = new List<Pawn> { pawn };
-            while (true)
-            {
-                List<IntVec3> checkedCells = new List<IntVec3>();
-                List<IntVec3> cells = new List<IntVec3>(allCells);
-
-                bool newFound = false;
-                foreach (IntVec3 c in allCells.Where(x => !allCheckedCells.Contains(x)))
-                {
-                    List<Thing> thingList = c.GetThingList(pawn.Map);
-                    for (int i = 0; i < thingList.Count; i++)
-                    {
-                        if (thingList[i] is Pawn p)
-                        {
-                            if (pawnList.Contains(p))
-                            {
-                                continue;
-                            }
-
-                            pawnList.Add(p);
-                            ExtendSearchGrid(p.DrawPos.ToIntVec3(), ref cells);
-                            newFound = true;
-                        }
-                    }
-
-                    checkedCells.Add(c);
-                }
-
-                if (!newFound)
-                {
-                    break;
-                }
-
-                allCells.AddRange(cells);
-                allCheckedCells.AddRange(checkedCells);
-            }
-
-            if (pawnList.Count > 1)
-            {
-                List<Pawn> below = pawnList.Where(x => x != pawn && x.DrawPos.z <= pawn.DrawPos.z).ToList();
-                float steps = 0.3f / pawnList.Count;
-
-                List<Pawn> leftOf = below.Where(other => other.DrawPos.x < pawn.DrawPos.x).ToList();
-
-                rootLoc.y -= steps * below.Count;
-                rootLoc.y += steps * 0.2f * leftOf.Count;
-            }
         }
 
         private static void RenderAnimalPawn(Pawn pawn,
@@ -534,7 +463,7 @@ namespace FacialStuff.Harmony
                                                  renderBody,
                                                  headQuat, hatInFrontOfFace);
 
-                    compFace.DrawAlienHeadAddons(portrait, headQuat, overHead);
+                    compFace.DrawAlienHeadAddons(headPos, portrait, headQuat, overHead);
                 }
 
             }

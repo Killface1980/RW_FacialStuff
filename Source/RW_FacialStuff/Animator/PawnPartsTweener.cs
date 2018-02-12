@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using FacialStuff.AnimatorWindows;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using Verse;
 using Verse.AI;
 
@@ -100,11 +99,6 @@ namespace FacialStuff.Animator
             {
                 this.ResetTweenedPartPosToRoot(side);
                 return;
-            }
-
-            if (this._pawn.Dead || this._pawn.Downed)
-            {
-                spring = SpringTightness.Soft;
             }
 
             if (this._pawn.carryTracker?.CarriedThing != null && tweenThing <= TweenThing.HandRight)

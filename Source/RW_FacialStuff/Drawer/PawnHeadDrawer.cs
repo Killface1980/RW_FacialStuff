@@ -39,12 +39,12 @@ namespace FacialStuff
         {
         }
 
-        public virtual void DrawAlienHeadAddons(bool portrait, Quaternion headQuat, Vector3 currentLoc)
+        public virtual void DrawAlienHeadAddons(Vector3 headPos, bool portrait, Quaternion headQuat, Vector3 currentLoc)
         {
             // Just for the Aliens
         }
 
-        public virtual void DrawBasicHead(Quaternion headQuat, RotDrawMode bodyDrawType, bool headStump, bool portrait, Vector3 drawLoc, out bool headDrawn)
+        public virtual void DrawBasicHead(Vector3 drawLoc, Quaternion headQuat, RotDrawMode bodyDrawType, bool headStump, bool portrait, out bool headDrawn)
         {
             headDrawn = false;
         }
@@ -53,7 +53,7 @@ namespace FacialStuff
         {
         }
 
-        public virtual void DrawBrows(Quaternion headQuat, bool portrait, Vector3 locFacialY)
+        public virtual void DrawBrows(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
         }
 
@@ -68,19 +68,19 @@ namespace FacialStuff
             headOverlays?.RenderStatusOverlays(bodyLoc, headQuat, this.GetPawnMesh(false, false));
         }
 
-        public virtual void DrawNaturalEyes(Quaternion headQuat, bool portrait, Vector3 drawLoc)
+        public virtual void DrawNaturalEyes(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
         }
 
-        public virtual void DrawNaturalMouth(Quaternion headQuat, bool portrait, Vector3 drawLoc)
+        public virtual void DrawNaturalMouth(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
         }
 
-        public virtual void DrawUnnaturalEyeParts(Quaternion headQuat, bool portrait, Vector3 drawLoc)
+        public virtual void DrawUnnaturalEyeParts(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
         }
 
-        public virtual void DrawWrinkles(Quaternion headQuat, RotDrawMode bodyDrawType, bool portrait, Vector3 drawLoc)
+        public virtual void DrawWrinkles(Vector3 drawLoc, RotDrawMode bodyDrawType, Quaternion headQuat, bool portrait)
         {
         }
 

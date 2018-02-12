@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using Verse;
+﻿using Verse;
 
 namespace FacialStuff
 {

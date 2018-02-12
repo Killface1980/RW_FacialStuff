@@ -346,7 +346,7 @@ namespace FacialStuff.Harmony
         //          curOffset *= RecoilMax / curOffset.magnitude;
         //      }
         //  }
-        public static void DoCalculations(Pawn pawn, Thing eq, ref Vector3 drawLoc, ref float weaponAngle,
+        public static void DoWeaponOffsets(Pawn pawn, Thing eq, ref Vector3 drawLoc, ref float weaponAngle,
                                           float aimAngle)
         {
             if (pawn == null)
@@ -627,7 +627,7 @@ namespace FacialStuff.Harmony
                                                new CodeInstruction(OpCodes.Ldarg_3), // aimAngle
                                                new CodeInstruction(OpCodes.Call,
                                                                    AccessTools.Method(typeof(HarmonyPatchesFS),
-                                                                                      nameof(DoCalculations))),
+                                                                                      nameof(DoWeaponOffsets))),
                                                });
             instructionList[index].labels = labels;
             return instructionList;

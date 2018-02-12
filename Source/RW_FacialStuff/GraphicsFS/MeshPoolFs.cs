@@ -7,7 +7,7 @@ using Verse;
 namespace FacialStuff.GraphicsFS
 {
     [StaticConstructorOnStartup]
-    public static class MeshPoolFs
+    public static class MeshPoolFS
     {
         #region Public Fields
 
@@ -75,7 +75,7 @@ namespace FacialStuff.GraphicsFS
 
         #region Public Constructors
 
-        static MeshPoolFs()
+        static MeshPoolFS()
         {
             EyeVector = new List<Vector2>
                             {
