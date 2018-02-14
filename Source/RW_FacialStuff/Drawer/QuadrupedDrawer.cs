@@ -82,7 +82,7 @@ namespace FacialStuff
             this.GetBipedMesh(out Mesh footMeshRight, out Mesh footMeshLeft);
 #if develop
             {
- }
+            }
 #else
             {
             }
@@ -127,43 +127,30 @@ namespace FacialStuff
             Quaternion drawQuat = this.CompAnimator.IsMoving ? footQuat : bodyQuat;
             Vector3 ground = rootLoc + drawQuat * new Vector3(0, 0, OffsetGroundZ);
 
-            PawnPartsTweener tweener = this.CompAnimator.PartTweener;
-            if (tweener != null)
+            if (matLeft != null)
             {
-                tweener.PartPositions[(int) TweenThing.HandLeft] =
-                ground + jointPositions.LeftJoint + leftFootAnim;
-                tweener.PartPositions[(int) TweenThing.HandRight] =
-                ground + jointPositions.RightJoint +
-                rightFootAnim;
-
-                tweener.PreThingPosCalculation();
-
-                if (matLeft != null)
+                if (this.CompAnimator.BodyStat.FootLeft != PartStatus.Missing)
                 {
-                    if (this.CompAnimator.BodyStat.FootLeft != PartStatus.Missing)
-                    {
-                        GenDraw.DrawMeshNowOrLater(
-                                                   footMeshLeft,
-                                                   tweener.TweenedPartsPos
-                                                   [(int) TweenThing.HandLeft],
-                                                   drawQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
-                                                   matLeft,
-                                                   portrait);
-                    }
+                    GenDraw.DrawMeshNowOrLater(
+                                               footMeshLeft,
+                                               ground + jointPositions.LeftJoint + leftFootAnim,
+                                               drawQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
+                                               matLeft,
+                                               portrait);
                 }
+            }
 
-                if (matRight != null)
+            if (matRight != null)
+            {
+                if (this.CompAnimator.BodyStat.FootRight != PartStatus.Missing)
                 {
-                    if (this.CompAnimator.BodyStat.FootRight != PartStatus.Missing)
-                    {
-                        GenDraw.DrawMeshNowOrLater(
-                                                   footMeshRight,
-                                                   tweener.TweenedPartsPos
-                                                   [(int) TweenThing.HandRight],
-                                                   drawQuat * Quaternion.AngleAxis(footAngleRight, Vector3.up),
-                                                   matRight,
-                                                   portrait);
-                    }
+                    GenDraw.DrawMeshNowOrLater(
+                                               footMeshRight,
+                                               ground + jointPositions.RightJoint +
+            rightFootAnim,
+                                               drawQuat * Quaternion.AngleAxis(footAngleRight, Vector3.up),
+                                               matRight,
+                                               portrait);
                 }
             }
 

@@ -1,6 +1,6 @@
 ﻿using FacialStuff.AnimatorWindows;
+using FacialStuff.Harmony;
 using Verse;
-using Verse.AI;
 
 namespace FacialStuff.Animator
 {
@@ -20,54 +20,6 @@ namespace FacialStuff.Animator
         }
 
         // Verse.PawnTweener
-        public bool IsMoving(out float movedPercent)
-        {
-            movedPercent = 0f;
-
-            if (this._compAnim.AnimatorWalkOpen)
-            {
-                movedPercent = MainTabWindow_BaseAnimator.AnimationPercent;
-                return true;
-            }
-            if (this._compAnim.AnimatorPoseOpen)
-            {
-                return false;
-            }
-
-            Pawn_PathFollower pather = this._pawn.pather;
-            if (pather == null)
-            {
-                return false;
-            }
-
-            if (!pather.Moving)
-            {
-                return false;
-            }
-
-            if (this._pawn.stances.FullBodyBusy)
-            {
-                return false;
-            }
-
-            if (pather.BuildingBlockingNextPathCell() != null)
-            {
-                return false;
-            }
-
-            if (pather.NextCellDoorToManuallyOpen() != null)
-            {
-                return false;
-            }
-
-            if (pather.WillCollideWithPawnOnNextPathCell())
-            {
-                return false;
-            }
-
-            movedPercent = 1f - pather.nextCellCostLeft / pather.nextCellCostTotal;
-            return true;
-        }
 
         public bool IsPosing(out float movedPercent)
         {

@@ -91,6 +91,7 @@
     <None Include="Controller_Animator.cs" />
     <None Include="Components\Class1.cs" />
     <Compile Include="Enums\HeadCoverage.cs" />
+    <Compile Include="GraphicsFS\Class1.cs" />
     <Compile Include="GraphicsFS\Graphic_Multi_Four.cs" />
     <Compile Include="Tweener\TinyTween.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
@@ -113,7 +114,7 @@
     <None Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_BaseAnimator.cs" />
     <None Include="AnimatorWindows\MainTabWindow_PoseAnimator.cs" />
-    <Compile Include="Animator\PawnPartsTweener.cs" />
+    <None Include="Animator\PawnPartsTweener.cs" />
     <None Include="Settings_Animator.cs" />
     <Compile Include="Components\CompBodyAnimator.cs" />
     <Compile Include="Components\CompProperties_BodyAnimator.cs" />
@@ -124,7 +125,6 @@
     <Compile Include="Drawer\HumanBipedDrawer.cs" />
     <Compile Include="Drawer\PawnBodyDrawer.cs" />
     <Compile Include="Drawer\QuadrupedDrawer.cs" />
-    <Compile Include="Enums\HandsToDraw.cs" />
     <Compile Include="Enums\KeyStatus.cs" />
     <None Include="Enums\WalkcycleType.cs" />
     <Compile Include="Enums\RaceOption.cs" />
@@ -196,7 +196,7 @@
     <Compile Include="Genetics\HairMelanin.cs" />
     <None Include="Animator\PawnHeadWiggler.cs" />
     <Compile Include="Animator\PawnEyeWiggler.cs" />
-    <Compile Include="Enums\FullHead.cs" />
+    <Compile Include="Enums\enums.cs" />
     <Compile Include="ITab_Pawn_Face.cs" />
     <Compile Include="Enums\HeadType.cs" />
     <Compile Include="DefOfs\MouthDefOf.cs" />

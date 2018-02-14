@@ -1,5 +1,12 @@
 ﻿namespace FacialStuff
 {
+
+    public enum HandsToDraw
+    {
+        Both = 0,
+        RightHand = 1,
+        LeftHand = 2
+    }
     public enum FullHead : byte
     {
         MaleAverageNormal = 0,
