@@ -63,6 +63,7 @@ namespace FacialStuff.GraphicsFS
         public static Vector2 MouthMaleNarrowPointyOffset = new Vector2(0.11824f, 0.17358f);
 
         public static Vector2 MouthMaleNarrowWideOffset = new Vector2(0.11825f, 0.17623f);
+        public static readonly Mesh plane20Flip;
         public static readonly Mesh plane14Flip;
 
         #endregion Public Fields
@@ -80,6 +81,7 @@ namespace FacialStuff.GraphicsFS
         static MeshPoolFS()
         {
                plane14Flip= MeshMakerPlanesFS.NewPlaneMesh(1.4f, true);
+            plane20Flip = MeshMakerPlanesFS.NewPlaneMesh(2f, true);
 
             EyeVector = new List<Vector2>
                             {

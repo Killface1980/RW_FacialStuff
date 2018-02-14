@@ -578,19 +578,17 @@ namespace FacialStuff
         {
             get
             {
+                if (Controller.settings.UseFeet)
                 {
-                    if (Controller.settings.UseFeet)
+                    WalkCycleDef walkCycle = this.WalkCycle;
+                    if (walkCycle != null)
                     {
-                        WalkCycleDef walkCycle = this.WalkCycle;
-                        if (walkCycle != null)
-                        {
-                            SimpleCurve curve = walkCycle.BodyOffsetZ;
-                            return curve.Evaluate(this.MovedPercent);
-                        }
+                        SimpleCurve curve = walkCycle.BodyOffsetZ;
+                        return curve.Evaluate(this.MovedPercent);
                     }
-
-                    return 0f;
                 }
+
+                return 0f;
             }
         }
 

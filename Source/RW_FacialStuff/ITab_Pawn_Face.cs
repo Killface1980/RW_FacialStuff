@@ -22,7 +22,7 @@ namespace FacialStuff
             this.tutorTag = "Face";
         }
 
-        public override bool IsVisible => this.SelPawn.HasCompFace();
+        public override bool IsVisible => this.SelPawn.HasCompFace() && Controller.settings.Develop;
 
 
         protected override void FillTab()

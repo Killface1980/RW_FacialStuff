@@ -168,7 +168,6 @@ namespace FacialStuff.Harmony
                         "Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count()
                                                                + " patches with harmony.");
 
-#if develop
             foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading.Where(
                                                                                        td => td.category ==
                                                                                              ThingCategory.Pawn &&
@@ -180,24 +179,25 @@ namespace FacialStuff.Harmony
                     def.inspectorTabsResolved = new List<InspectTabBase>();
                 }
 
-                if (def.inspectorTabs.Contains(typeof(ITab_Pawn_Face)))
+                if (def.inspectorTabs.Contains(typeof(ITab_Pawn_Weapons)))
                 {
                     return;
                 }
 
-                def.inspectorTabs.Add(typeof(ITab_Pawn_Face));
                 def.inspectorTabs.Add(typeof(ITab_Pawn_Weapons));
-                def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Face)));
                 def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Weapons)));
+#if develop
+                def.inspectorTabs.Add(typeof(ITab_Pawn_Face));
+                def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Face)));
+#endif
             }
 
-#endif
             CheckAllInjected();
         }
 
-        #endregion Public Constructors
+#endregion Public Constructors
 
-        #region Public Fields
+#region Public Fields
 
         public static List<Thing> PlantMoved = new List<Thing>();
 
@@ -205,20 +205,19 @@ namespace FacialStuff.Harmony
 
         public static float Steps;
 
-        #endregion Public Fields
+#endregion Public Fields
 
-        #region Private Fields
+#region Private Fields
 
         private static readonly FieldInfo pawnField = AccessTools.Field(typeof(Pawn_EquipmentTracker), "pawn");
 
         private static Graphic_Shadow _shadowGraphic;
         private static float angleStanding = 143f;
         private static float angleStandingFlipped = 217f;
-        private static bool useGiantWeapons = false;
 
-        #endregion Private Fields
+#endregion Private Fields
 
-        #region Public Methods
+#region Public Methods
 
         public static void StartPath_Postfix(Pawn_PathFollower __instance)
         {
@@ -276,19 +275,9 @@ namespace FacialStuff.Harmony
             }
         }
 
-        public static bool Aiming(Pawn pawn)
-        {
-            return pawn.stances.curStance is Stance_Busy stanceBusy && !stanceBusy.neverAimWeapon &&
-                   stanceBusy.focusTarg.IsValid;
-        }
 
-        public static bool CarryWeaponOpenly(Pawn pawn)
-        {
-            return pawn.carryTracker?.CarriedThing == null &&
-                   (pawn.Drafted ||
-                    (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon) ||
-                    (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
-        }
+
+
 
         public static void DirtyCache_Postfix(HediffSet __instance)
         {
@@ -388,7 +377,16 @@ namespace FacialStuff.Harmony
             {
                 return;
             }
-            float sizeMod = useGiantWeapons ? 1.4f : 1f;
+            float sizeMod;
+            if (Controller.settings.IReallyLikeBigGuns) { sizeMod = 2.0f; }
+               else if (Controller.settings.ILikeBigGuns)
+            {
+                sizeMod = 1.4f;
+            }
+            else
+            {
+                sizeMod = 1f;
+            }
 
             if ( Find.TickManager.TicksGame == animator.lastPosUpdate )
             {
@@ -433,7 +431,6 @@ namespace FacialStuff.Harmony
                     case TweenState.Stopped:
                         if (noTween || (animator.IsMoving))
                         {
-                            animator.lastPosition[(int)equipment] = drawLoc;
                             break;
                         }
 
@@ -441,11 +438,11 @@ namespace FacialStuff.Harmony
 
 
                         Vector3 start = animator.lastPosition[(int)equipment];
-                        start.y = drawLoc.y;
                         float distance = Vector3.Distance(start, drawLoc);
                         float duration = Mathf.Abs(distance * 50f);
                         if (start != Vector3.zero && duration > 12f)
                         {
+                        start.y = drawLoc.y;
                             eqTween.Start(start, drawLoc, duration, scaleFunc);
                             drawLoc = start;
                         }
@@ -480,7 +477,19 @@ namespace FacialStuff.Harmony
                                      weaponAngle,
                                      extensions, animator, sizeMod);
             }
-            if (useGiantWeapons)
+            if (Controller.settings.IReallyLikeBigGuns)
+            {
+                if (flipped)
+                {
+                    weaponMesh = MeshPoolFS.plane20Flip;
+                }
+                else
+                {
+                    weaponMesh = MeshPool.plane20;
+                }
+            }
+
+              else  if (Controller.settings.ILikeBigGuns)
             {
                 if (flipped)
                 {
@@ -505,7 +514,7 @@ namespace FacialStuff.Harmony
 
             // Use y for the horizontal position. too lazy to add even more vectors
             bool isHorizontal = pawn.Rotation.IsHorizontal;
-            aiming = Aiming(pawn);
+            aiming = pawn.Aiming();
             Vector3 extOffset;
             Vector3 o = extensions.WeaponPositionOffset;
             Vector3 d = extensions.AimedWeaponPositionOffset;
@@ -1014,13 +1023,13 @@ namespace FacialStuff.Harmony
             }
         }
 
-        #endregion Public Methods
+#endregion Public Methods
 
-        #region Private Methods
+#region Private Methods
 
         private static void ChangeAngleForNorth(Pawn pawn, ref float aimAngle)
         {
-            if (CarryWeaponOpenly(pawn) && pawn.Rotation == Rot4.North)
+            if (pawn.CarryWeaponOpenly() && pawn.Rotation == Rot4.North)
             {
                 aimAngle = 217f;
             }
@@ -1082,7 +1091,7 @@ namespace FacialStuff.Harmony
             BackstoryDatabase.AddBackstory(adultMale);
         }
 
-        #endregion Private Methods
+#endregion Private Methods
     }
 
 

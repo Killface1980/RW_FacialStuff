@@ -103,7 +103,6 @@
     <Compile Include="Defs\WeaponExtensionDef.cs" />
     <Compile Include="Drawer\JointLister.cs" />
     <Compile Include="Enums\Offsets.cs" />
-    <Compile Include="Enums\SpringTightness.cs" />
     <Compile Include="Enums\Tween.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.BeardTab.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.FaceStyleTab.cs" />

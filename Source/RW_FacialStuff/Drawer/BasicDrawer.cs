@@ -43,7 +43,7 @@ namespace FacialStuff
             float leftZ = offsets.z;
             float rightZ = offsets.z;
 
-            float offsetY = armed? Offsets.YOffset_HandsFeet : Offsets.YOffset_HandsFeetOver;
+            float offsetY = armed? -Offsets.YOffset_HandsFeet : Offsets.YOffset_HandsFeetOver;
             float leftY = offsetY;
             float rightY = offsetY;
 

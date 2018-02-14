@@ -46,7 +46,7 @@ namespace FacialStuff
 
         #region Public Properties
 
-        public override bool IsVisible => this.SelPawn.HasCompFace();
+        public override bool IsVisible => this.SelPawn.HasCompFace() && Controller.settings.Develop;
 
         public bool leftFront
         {

@@ -476,7 +476,7 @@ namespace FacialStuff
             JointLister shoulperPos = this.GetJointPositions(
                                                              body.shoulderOffsets[rot.AsInt],
                                                              body.shoulderOffsets[Rot4.North.AsInt].x,
-                                                             carrying);
+                                                             carrying, Pawn.CarryWeaponOpenly());
 
             List<float> handSwingAngle = new List<float> { 0f, 0f };
             List<float> shoulderAngle = new List<float> { 0f, 0f };

@@ -40,7 +40,7 @@ namespace FacialStuff
         public const float YOffset_GearOnHead = 0.001f; // FS
 
         public const float YOffset_PostHead = 0.03515625f;
-        public const float YOffset_HandsFeetOver = 0.03734375f; // FS
+        public const float YOffset_HandsFeetOver = 0.03634375f; // FS
         public const float YOffset_CarriedThing = 0.0390625f;
         public const float YOffset_PrimaryEquipmentOver = 0.0390625f;
         public const float YOffset_Status = 0.04296875f;

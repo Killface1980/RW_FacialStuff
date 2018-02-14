@@ -49,7 +49,10 @@ namespace FacialStuff
         private bool _useHands = true;
 
         private bool _useFeet = true;
-
+        private bool iLikeBigGuns = false;
+        private bool iLikeBigHeads = false;
+        private bool iReallyLikeBigGuns;
+        private bool develop;
         #endregion Private Fields
 
         #region Public Properties
@@ -100,7 +103,13 @@ namespace FacialStuff
         public bool UseNastyGrin => this._useNastyGrin;
         public bool UseWeirdHairChoices => this._useWeirdHairChoices;
 
+        public bool ILikeBigGuns => this.iLikeBigGuns;
+        public bool IReallyLikeBigGuns => this.iReallyLikeBigGuns;
+        public bool ILikeBigHeads => this.iLikeBigHeads;
+
         public bool UseWrinkles => this._useWrinkles;
+
+        public bool Develop { get => this.develop;  }
 
         #endregion Public Properties
 
@@ -109,7 +118,7 @@ namespace FacialStuff
         public void DoWindowContents(Rect inRect)
         {
             Rect rect = inRect.ContractedBy(15f);
-            Listing_Standard list = new Listing_Standard(GameFont.Small) { ColumnWidth = (rect.width / 2) - 17f };
+            Listing_Standard list = new Listing_Standard(GameFont.Small) { ColumnWidth = (rect.width / 3) - 17f };
 
             list.Begin(rect);
 
@@ -229,10 +238,10 @@ namespace FacialStuff
             {
                 list.Label("Apparel layers to show:");
                 list.LabelDouble("In a room: ", this.LayerInRoom.ToString());
-                this._layerInRoom = (MaxLayerToShow)list.Slider((float) this._layerInRoom, 0, 2);
+                this._layerInRoom = (MaxLayerToShow)list.Slider((float)this._layerInRoom, 0, 2);
 
                 list.LabelDouble("In private room: ", this.LayerInPrivateRoom.ToString());
-                this._layerInPrivateRoom = (MaxLayerToShow)list.Slider((float) this._layerInPrivateRoom, 0, 2);
+                this._layerInPrivateRoom = (MaxLayerToShow)list.Slider((float)this._layerInPrivateRoom, 0, 2);
             }
 
             list.Gap();
@@ -249,9 +258,9 @@ namespace FacialStuff
                 if (this.HideShellWhileRoofed)
                 {
                     list.LabelDouble("Apparel layers in bed: ", this.LayerInBed.ToString());
-                    this._layerInBed = (MaxLayerToShow)list.Slider((float) this._layerInBed, 0, 2);
+                    this._layerInBed = (MaxLayerToShow)list.Slider((float)this._layerInBed, 0, 2);
                     list.LabelDouble("Apparel layers in owned bed: ", this.LayerInOwnedBed.ToString());
-                    this._layerInOwnedBed = (MaxLayerToShow)list.Slider((float) this._layerInOwnedBed, 0, 2);
+                    this._layerInOwnedBed = (MaxLayerToShow)list.Slider((float)this._layerInOwnedBed, 0, 2);
                 }
             }
 
@@ -263,6 +272,30 @@ namespace FacialStuff
                     ref this._ignoreWhileDrafted,
                     "Settings.IgnoreWhileDraftedTooltip".Translate());
             }
+
+
+            list.NewColumn();
+
+            list.Label("Settings.FunStuffLabel".Translate());
+            list.GapLine();
+
+
+
+            list.Gap();
+            list.CheckboxLabeled("Settings.Develop".Translate(),
+                ref this.develop,
+                "Settings.DevelopTooltip".Translate());
+
+            list.CheckboxLabeled("Settings.ILikeBigGuns".Translate(),
+                ref this.iLikeBigGuns,
+                "Settings.ILikeBigGunsTooltip".Translate());
+
+            list.CheckboxLabeled("Settings.IReallyLikeBigGuns".Translate(),
+                ref this.iReallyLikeBigGuns,
+                "Settings.IReallyLikeBigGunsTooltip".Translate());
+
+
+            //   list.CheckboxLabeled("Settings.ILikeBigHeads".Translate(), ref this.iLikeBigHeads, "Settings.ILikeBigHeadsTooltip".Translate());
 
             // if (list.ButtonText("Reset"))
             // {
@@ -308,6 +341,10 @@ namespace FacialStuff
         public override void ExposeData()
         {
             base.ExposeData();
+
+            Scribe_Values.Look(ref this.develop, "develop", false, true);
+            Scribe_Values.Look(ref this.iLikeBigGuns, "iLikeBigGuns", false, true);
+            Scribe_Values.Look(ref this.iReallyLikeBigGuns, "iReallyLikeBigGuns", false, true);
             Scribe_Values.Look(ref this._hideShellWhileRoofed, "hideShellWhileRoofed", false, true);
             Scribe_Values.Look(ref this._useWrinkles, "useWrinkles", false, true);
             Scribe_Values.Look(ref this._useMouth, "useMouth", false, true);

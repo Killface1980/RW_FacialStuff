@@ -170,8 +170,18 @@ namespace FacialStuff
 
             CheckBody(hediff, anim, leftHand, rightHand, leftFoot, rightFoot);
         }
-
-
+        public static bool Aiming(this Pawn pawn)
+        {
+            return pawn.stances.curStance is Stance_Busy stanceBusy && !stanceBusy.neverAimWeapon &&
+                   stanceBusy.focusTarg.IsValid;
+        }
+        public static bool CarryWeaponOpenly(this Pawn pawn)
+        {
+            return pawn.carryTracker?.CarriedThing == null &&
+                   (pawn.Drafted ||
+                    (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon) ||
+                    (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
+        }
         public static void CheckForAddedOrMissingParts(this Pawn pawn)
         {
             if (!Controller.settings.ShowExtraParts)
