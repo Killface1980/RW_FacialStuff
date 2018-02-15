@@ -593,13 +593,13 @@ namespace FacialStuff
 
         public void InitializePawnDrawer()
         {
-            if (this.Props.drawers.Any())
+            if (this.Props.headDrawers.Any())
             {
                 this.PawnHeadDrawers = new List<PawnHeadDrawer>();
-                for (int i = 0; i < this.Props.drawers.Count; i++)
+                for (int i = 0; i < this.Props.headDrawers.Count; i++)
                 {
                     PawnHeadDrawer thingComp =
-                    (PawnHeadDrawer)Activator.CreateInstance(this.Props.drawers[i].GetType());
+                    (PawnHeadDrawer)Activator.CreateInstance(this.Props.headDrawers[i].GetType());
                     thingComp.CompFace = this;
                     thingComp.Pawn = this.Pawn;
                     this.PawnHeadDrawers.Add(thingComp);

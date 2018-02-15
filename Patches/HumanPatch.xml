@@ -23,9 +23,9 @@
             <!--which hand texture?-->
             <handType>Human</handType>
             <!--custom drawers can be used here-->
-            <drawers>
+            <bodyDrawers>
               <li Class ="FacialStuff.HumanBipedDrawer"/>
-            </drawers>
+            </bodyDrawers>
           </li>
           <li Class = "FacialStuff.CompProperties_Face">
             <!--if false, vanilla heads are used, otherwise the FS blank texture is used-->
@@ -41,10 +41,10 @@
             <!--head rotation / tracking-->
             <canRotateHead>true</canRotateHead>
             <!--the drawer for the head. more than one can be defined-->
-            <drawers>
+            <headDrawers>
               <li Class ="FacialStuff.HumanHeadDrawer"/>
               <!--  <li Class ="FacialStuff.SecondHeadDrawer"/>-->
-            </drawers>
+            </headDrawers>
           </li>
         </value>
       </li>

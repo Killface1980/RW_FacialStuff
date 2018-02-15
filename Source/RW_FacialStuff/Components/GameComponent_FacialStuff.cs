@@ -45,6 +45,7 @@ namespace FacialStuff
 
             this.WeaponCompsNew();
             this.WeaponComps();
+            this.AnimalPawnCompsBodyDefImport();
             this.AnimalPawnComps();
             // BuildWalkCycles();
 
@@ -639,7 +640,7 @@ namespace FacialStuff
                                                                {
                                                                compClass = typeof(CompBodyAnimator)
                                                                };
-                        animator.drawers        = pawnSets.bodyDrawers;
+                        animator.bodyDrawers        = pawnSets.bodyDrawers;
                         animator.handType       = pawnSets.handType;
                         animator.quadruped      = pawnSets.quadruped;
                         animator.bipedWithHands = pawnSets.bipedWithHands;
@@ -650,6 +651,45 @@ namespace FacialStuff
 
             this.LaserLoad();
         }
+
+        private void AnimalPawnCompsBodyDefImport()
+        {
+            // ReSharper disable once PossibleNullReferenceException
+            for (int index = 0; index < DefDatabase<BodyAnimDef>.AllDefsListForReading.Count; index++)
+            {
+                BodyAnimDef def = DefDatabase<BodyAnimDef>.AllDefsListForReading[index];
+                string t = def.thingTarget;
+                if (t.NullOrEmpty())
+                {
+                    continue;
+                }
+
+                ThingDef thingDef = ThingDef.Named(t);
+                if (thingDef == null)
+                {
+                    continue;
+                }
+                //if (DefDatabase<BodyAnimDef>
+                //   .AllDefsListForReading.Any(x => x.defName.Contains(thingDef.defName))) continue;
+                if (thingDef.HasComp(typeof(CompBodyAnimator)))
+                {
+                    continue;
+                }
+
+                CompProperties_BodyAnimator animator = new CompProperties_BodyAnimator
+                {
+                    compClass = typeof(CompBodyAnimator)
+                };
+              //  animator.
+                animator.bodyDrawers = def.bodyDrawers;
+                animator.handType = def.handType;
+                animator.quadruped = def.quadruped;
+                animator.bipedWithHands = def.bipedWithHands;
+                thingDef.comps?.Add(animator);
+            }
+
+        }
+
 
         #endregion Private Methods
     }

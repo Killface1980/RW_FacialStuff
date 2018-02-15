@@ -137,7 +137,21 @@ namespace FacialStuff.AnimatorWindows
             }
         }
 
-        protected BodyAnimDef BodyAnimDef => this.CompAnim.BodyAnim;
+        protected BodyAnimDef BodyAnimDef
+        {
+            get
+            {
+                if (this.CompAnim.BodyAnim.thingTarget.NullOrEmpty())
+                {
+                    this.CompAnim.BodyAnim.thingTarget = Pawn.def.ToString();
+                    this.CompAnim.BodyAnim.bodyDrawers = CompAnim.Props.bodyDrawers;
+                    this.CompAnim.BodyAnim.handType = CompAnim.Props.handType;
+                    this.CompAnim.BodyAnim.quadruped = CompAnim.Props.quadruped;
+                    this.CompAnim.BodyAnim.bipedWithHands = CompAnim.Props.bipedWithHands;
+                }
+                return this.CompAnim.BodyAnim;
+            }
+        }
 
         [CanBeNull]
         protected PawnKeyframe CurrentFrame => PawnKeyframes?[CurrentFrameInt];

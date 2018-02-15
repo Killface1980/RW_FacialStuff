@@ -283,13 +283,13 @@ namespace FacialStuff
 
         public void InitializePawnDrawer()
         {
-            if (this.Props.drawers.Any())
+            if (this.Props.bodyDrawers.Any())
             {
                 this.PawnBodyDrawers = new List<PawnBodyDrawer>();
-                for (int i = 0; i < this.Props.drawers.Count; i++)
+                for (int i = 0; i < this.Props.bodyDrawers.Count; i++)
                 {
                     PawnBodyDrawer thingComp =
-                    (PawnBodyDrawer)Activator.CreateInstance(this.Props.drawers[i].GetType());
+                    (PawnBodyDrawer)Activator.CreateInstance(this.Props.bodyDrawers[i].GetType());
                     thingComp.CompAnimator = this;
                     thingComp.Pawn = this.Pawn;
                     this.PawnBodyDrawers.Add(thingComp);
@@ -439,21 +439,21 @@ namespace FacialStuff
                                        "BodyAnimDef_" + ThingDefOf.Human.defName + "_" + bodyType
                                        };
 
-            bool needsNewBdef = true;
+            bool needsNewDef = true;
             foreach (string name in names)
             {
-                BodyAnimDef newDef = DefDatabase<BodyAnimDef>.GetNamedSilentFail(name);
-                if (newDef == null)
+                BodyAnimDef dbDef = DefDatabase<BodyAnimDef>.GetNamedSilentFail(name);
+                if (dbDef == null)
                 {
                     continue;
                 }
 
-                this.BodyAnim = newDef;
-                needsNewBdef = false;
+                this.BodyAnim = dbDef;
+                needsNewDef = false;
                 break;
             }
 
-            if (needsNewBdef)
+            if (needsNewDef)
             {
                 this.BodyAnim = new BodyAnimDef { defName = defaultName, label = defaultName };
                 DefDatabase<BodyAnimDef>.Add(this.BodyAnim);

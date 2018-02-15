@@ -12,7 +12,7 @@ namespace FacialStuff
     {
         public bool canRotateHead;
 
-        public List<PawnHeadDrawer> drawers = new List<PawnHeadDrawer>();
+        public List<PawnHeadDrawer> headDrawers = new List<PawnHeadDrawer>();
 
         public bool hasBeard;
 

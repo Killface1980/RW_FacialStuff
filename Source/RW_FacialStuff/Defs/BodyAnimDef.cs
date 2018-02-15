@@ -10,6 +10,7 @@
 // ReSharper disable CheckNamespace
 
 using System.Collections.Generic;
+using FacialStuff;
 using JetBrains.Annotations;
 using UnityEngine;
 using Verse;
@@ -20,6 +21,14 @@ namespace RimWorld
     public class BodyAnimDef : Def
     {
         #region Public Fields
+
+        public string thingTarget;
+
+        public List<PawnBodyDrawer> bodyDrawers;
+        public string handType;
+        public bool quadruped;
+        public bool bipedWithHands;
+
 
         public float armLength;
 
