@@ -91,7 +91,7 @@
     <None Include="Controller_Animator.cs" />
     <None Include="Components\Class1.cs" />
     <Compile Include="Enums\HeadCoverage.cs" />
-    <Compile Include="GraphicsFS\Class1.cs" />
+    <None Include="GraphicsFS\MeshMakerPlanesFS.cs" />
     <Compile Include="GraphicsFS\Graphic_Multi_Four.cs" />
     <Compile Include="Tweener\TinyTween.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />

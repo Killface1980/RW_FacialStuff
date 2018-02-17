@@ -10,6 +10,7 @@ namespace FacialStuff
 {
     public class Controller : Mod
     {
+        
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once StyleCop.SA1307
         [NotNull]

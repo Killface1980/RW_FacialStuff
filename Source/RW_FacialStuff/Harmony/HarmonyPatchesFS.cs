@@ -34,7 +34,6 @@ namespace FacialStuff.Harmony
             HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.mod");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            // HarmonyInstance.DEBUG = true;
 
             // harmony.Patch(AccessTools.Method(typeof(PawnRenderer), "RenderPawnInternal", new Type[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) }), null, null, new HarmonyMethod(typeof(Alien), nameof(Alien.RenderPawnInternalTranspiler)));
 
@@ -367,7 +366,7 @@ namespace FacialStuff.Harmony
         //          curOffset *= RecoilMax / curOffset.magnitude;
         //      }
         //  }
-        public static void DoWeaponOffsets(Pawn pawn, Thing eq, ref Vector3 drawLoc, ref float weaponAngle, float aimAngle, ref Mesh weaponMesh)
+        public static void DoWeaponOffsets(Pawn pawn, Thing eq, ref Vector3 drawLoc, ref float weaponAngle, ref Mesh weaponMesh)
         {
             CompProperties_WeaponExtensions extensions = eq.def.GetCompProperties<CompProperties_WeaponExtensions>();
 
@@ -377,16 +376,16 @@ namespace FacialStuff.Harmony
             {
                 return;
             }
-            float sizeMod;
-            if (Controller.settings.IReallyLikeBigGuns) { sizeMod = 2.0f; }
-               else if (Controller.settings.ILikeBigGuns)
-            {
-                sizeMod = 1.4f;
-            }
-            else
-            {
-                sizeMod = 1f;
-            }
+            float sizeMod = 1f;
+          //  if (Controller.settings.IReallyLikeBigGuns) { sizeMod = 2.0f; }
+          //     else if (Controller.settings.ILikeBigGuns)
+          //  {
+          //      sizeMod = 1.4f;
+          //  }
+          //  else
+          //  {
+          //      sizeMod = 1f;
+          //  }
 
             if ( Find.TickManager.TicksGame == animator.lastPosUpdate )
             {
@@ -477,30 +476,6 @@ namespace FacialStuff.Harmony
                                      weaponAngle,
                                      extensions, animator, sizeMod);
             }
-            if (Controller.settings.IReallyLikeBigGuns)
-            {
-                if (flipped)
-                {
-                    weaponMesh = MeshPoolFS.plane20Flip;
-                }
-                else
-                {
-                    weaponMesh = MeshPool.plane20;
-                }
-            }
-
-              else  if (Controller.settings.ILikeBigGuns)
-            {
-                if (flipped)
-                {
-                    weaponMesh = MeshPoolFS.plane14Flip;
-                }
-                else
-                {
-                    weaponMesh = MeshPool.plane14;
-                }
-            }
-
         }
 
         private static void CalculatePositionsWeapon(Pawn pawn, ref float weaponAngle, CompProperties_WeaponExtensions extensions, out Vector3 weaponPosOffset, out bool aiming, bool flipped)
@@ -787,8 +762,8 @@ namespace FacialStuff.Harmony
                                                new CodeInstruction(OpCodes.Ldarg_1), // Thing
                                                new CodeInstruction(OpCodes.Ldarga,   2), // drawLoc
                                                new CodeInstruction(OpCodes.Ldloca_S, 1), // weaponAngle
-                                               new CodeInstruction(OpCodes.Ldarg_3), // aimAngle
-                                               new CodeInstruction(OpCodes.Ldloca_S, 0), // Mesh
+                                            //   new CodeInstruction(OpCodes.Ldarg_3), // aimAngle
+                                               new CodeInstruction(OpCodes.Ldloca_S, 0), // Mesh, loaded as ref to not trigger I Love Big Guns
                                                new CodeInstruction(OpCodes.Call,
                                                                    AccessTools.Method(typeof(HarmonyPatchesFS),
                                                                                       nameof(DoWeaponOffsets))),

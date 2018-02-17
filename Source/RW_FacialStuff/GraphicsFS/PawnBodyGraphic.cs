@@ -64,8 +64,17 @@ namespace FacialStuff.GraphicsFS
 
         private void InitializeGraphicsFeet()
         {
-            string texNameFoot = STR_Feet + this.CompAni.Props.handType + STR_Foot;
+            string texNameFoot;
+            if (this._pawn.RaceProps.Humanlike)
+            {
 
+            texNameFoot = STR_Feet + this.CompAni.Props.handType + STR_Foot;
+            }
+            else
+            {
+                texNameFoot = "Hands/" + this.CompAni.Props.handType + STR_Foot;
+
+            }
             Color skinColor;
             if (this._pawn.story == null)
             {

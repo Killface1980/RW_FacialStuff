@@ -49,9 +49,6 @@ namespace FacialStuff
         private bool _useHands = true;
 
         private bool _useFeet = true;
-        private bool iLikeBigGuns = false;
-        private bool iLikeBigHeads = false;
-        private bool iReallyLikeBigGuns;
         private bool develop;
         #endregion Private Fields
 
@@ -103,9 +100,6 @@ namespace FacialStuff
         public bool UseNastyGrin => this._useNastyGrin;
         public bool UseWeirdHairChoices => this._useWeirdHairChoices;
 
-        public bool ILikeBigGuns => this.iLikeBigGuns;
-        public bool IReallyLikeBigGuns => this.iReallyLikeBigGuns;
-        public bool ILikeBigHeads => this.iLikeBigHeads;
 
         public bool UseWrinkles => this._useWrinkles;
 
@@ -118,7 +112,7 @@ namespace FacialStuff
         public void DoWindowContents(Rect inRect)
         {
             Rect rect = inRect.ContractedBy(15f);
-            Listing_Standard list = new Listing_Standard(GameFont.Small) { ColumnWidth = (rect.width / 3) - 17f };
+            Listing_Standard list = new Listing_Standard(GameFont.Small) { ColumnWidth = (rect.width / 2) - 17f };
 
             list.Begin(rect);
 
@@ -274,9 +268,7 @@ namespace FacialStuff
             }
 
 
-            list.NewColumn();
 
-            list.Label("Settings.FunStuffLabel".Translate());
             list.GapLine();
 
 
@@ -286,13 +278,6 @@ namespace FacialStuff
                 ref this.develop,
                 "Settings.DevelopTooltip".Translate());
 
-            list.CheckboxLabeled("Settings.ILikeBigGuns".Translate(),
-                ref this.iLikeBigGuns,
-                "Settings.ILikeBigGunsTooltip".Translate());
-
-            list.CheckboxLabeled("Settings.IReallyLikeBigGuns".Translate(),
-                ref this.iReallyLikeBigGuns,
-                "Settings.IReallyLikeBigGunsTooltip".Translate());
 
 
             //   list.CheckboxLabeled("Settings.ILikeBigHeads".Translate(), ref this.iLikeBigHeads, "Settings.ILikeBigHeadsTooltip".Translate());
@@ -343,8 +328,6 @@ namespace FacialStuff
             base.ExposeData();
 
             Scribe_Values.Look(ref this.develop, "develop", false, true);
-            Scribe_Values.Look(ref this.iLikeBigGuns, "iLikeBigGuns", false, true);
-            Scribe_Values.Look(ref this.iReallyLikeBigGuns, "iReallyLikeBigGuns", false, true);
             Scribe_Values.Look(ref this._hideShellWhileRoofed, "hideShellWhileRoofed", false, true);
             Scribe_Values.Look(ref this._useWrinkles, "useWrinkles", false, true);
             Scribe_Values.Look(ref this._useMouth, "useMouth", false, true);

@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacialStuff", "RW_FacialStu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlienFaces", "..\..\AlienFaces\Source\AlienFaces.csproj", "{40303C5F-797B-41AD-A128-5EE0016D1D02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompFace", "CompFace\CompFace.csproj", "{757819EB-7358-4469-BDE1-71EDC397FBAA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,14 +31,6 @@ Global
 		{40303C5F-797B-41AD-A128-5EE0016D1D02}.RebuildHeads|Any CPU.Build.0 = Release|Any CPU
 		{40303C5F-797B-41AD-A128-5EE0016D1D02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40303C5F-797B-41AD-A128-5EE0016D1D02}.Release|Any CPU.Build.0 = Release|Any CPU
-		{757819EB-7358-4469-BDE1-71EDC397FBAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{757819EB-7358-4469-BDE1-71EDC397FBAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{757819EB-7358-4469-BDE1-71EDC397FBAA}.NoCCL|Any CPU.ActiveCfg = Release|Any CPU
-		{757819EB-7358-4469-BDE1-71EDC397FBAA}.NoCCL|Any CPU.Build.0 = Release|Any CPU
-		{757819EB-7358-4469-BDE1-71EDC397FBAA}.RebuildHeads|Any CPU.ActiveCfg = Release|Any CPU
-		{757819EB-7358-4469-BDE1-71EDC397FBAA}.RebuildHeads|Any CPU.Build.0 = Release|Any CPU
-		{757819EB-7358-4469-BDE1-71EDC397FBAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{757819EB-7358-4469-BDE1-71EDC397FBAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
