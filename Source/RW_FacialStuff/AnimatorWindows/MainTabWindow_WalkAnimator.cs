@@ -205,6 +205,7 @@ namespace FacialStuff.AnimatorWindows
             IsOpen = true;
             // IsMoving = true;
         }
+
         public override void PostClose()
         {
             base.PostClose();

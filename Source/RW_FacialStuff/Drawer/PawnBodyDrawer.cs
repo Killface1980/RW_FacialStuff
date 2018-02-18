@@ -29,9 +29,6 @@ namespace FacialStuff
 
         #region Public Properties
 
-        [NotNull]
-        public CompBodyAnimator CompAnimator { get; set; }
-
 
         #endregion Public Properties
 

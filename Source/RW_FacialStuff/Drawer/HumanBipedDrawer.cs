@@ -289,7 +289,7 @@ namespace FacialStuff
                 return;
             }
 
-            JointLister groundPos = this.GetJointPositions(
+            JointLister groundPos = this.GetJointPositions(JointType.Hip,
                                                            body.hipOffsets[rot.AsInt],
                                                            body.hipOffsets[Rot4.North.AsInt].x);
 
@@ -473,7 +473,7 @@ namespace FacialStuff
                 return;
             }
 
-            JointLister shoulperPos = this.GetJointPositions(
+            JointLister shoulperPos = this.GetJointPositions(JointType.Shoulder,
                                                              body.shoulderOffsets[rot.AsInt],
                                                              body.shoulderOffsets[Rot4.North.AsInt].x,
                                                              carrying, Pawn.CarryWeaponOpenly());
@@ -542,7 +542,7 @@ namespace FacialStuff
                 Quaternion quat;
                 Vector3 position;
                 bool noTween = false;
-                if (!this.CompAnimator.IsMoving && this.CompAnimator.SecondHandPosition != Vector3.zero)
+                if (!this.CompAnimator.IsMoving && this.CompAnimator.HasLeftHandPosition)
                 {
                     position = this.CompAnimator.SecondHandPosition;
                     quat = this.CompAnimator.WeaponQuat;
@@ -653,8 +653,15 @@ namespace FacialStuff
             return quat;
         }
         public Job lastJob;
-        public virtual void SelectWalkcycle()
+        public virtual void SelectWalkcycle(bool pawnInEditor)
         {
+            if (pawnInEditor )
+            {
+              CompAnimator.SetWalkCycle(MainTabWindow_WalkAnimator.EditorWalkcycle);
+                return;
+            }
+
+
             if (this.Pawn.CurJob != null && this.Pawn.CurJob != lastJob)
             {
                 BodyAnimDef animDef = this.CompAnimator.BodyAnim;
@@ -667,12 +674,12 @@ namespace FacialStuff
                     {
                         if (cycle != null)
                         {
-                            this.CompAnimator.WalkCycle = cycle;
+                            CompAnimator.SetWalkCycle(cycle);
                         }
                     }
                     else
                     {
-                        this.CompAnimator.WalkCycle = animDef.walkCycles.FirstOrDefault().Value;
+                        CompAnimator.SetWalkCycle(animDef.walkCycles.FirstOrDefault().Value);
                     }
                 }
                 lastJob = this.Pawn.CurJob;
@@ -728,10 +735,12 @@ namespace FacialStuff
             }
 
             // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
-            this.SelectWalkcycle();
-            this.SelectPosecycle();
-            if (!Find.TickManager.Paused)
+            bool pawnInEditor = MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn == Pawn;
+            if (!Find.TickManager.Paused || pawnInEditor)
             {
+                this.SelectWalkcycle(pawnInEditor);
+                this.SelectPosecycle();
+
                 this.CompAnimator.FirstHandPosition = Vector3.zero;
                 this.CompAnimator.SecondHandPosition = Vector3.zero;
             }

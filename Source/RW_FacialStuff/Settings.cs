@@ -50,6 +50,8 @@ namespace FacialStuff
 
         private bool _useFeet = true;
         private bool develop;
+        Vector2 scrollPosition;
+        float viewHeight;
         #endregion Private Fields
 
         #region Public Properties
@@ -112,9 +114,17 @@ namespace FacialStuff
         public void DoWindowContents(Rect inRect)
         {
             Rect rect = inRect.ContractedBy(15f);
+
+            Rect rect4 = new Rect(0f, 0f, rect.width - 16f, this.viewHeight);
+
+
+            Widgets.BeginScrollView(rect, ref this.scrollPosition, rect4, true);
+            Rect rect5 = rect4.ContractedBy(4f);
+            rect5.height = 9999f;
+
             Listing_Standard list = new Listing_Standard(GameFont.Small) { ColumnWidth = (rect.width / 2) - 17f };
 
-            list.Begin(rect);
+            list.Begin(rect5);
 
             list.Label("Settings.PawnFeaturesLabel".Translate());
             list.GapLine();
@@ -269,8 +279,8 @@ namespace FacialStuff
 
 
 
-           // list.GapLine();
-           // list.Gap();
+             list.GapLine();
+             list.Gap();
             list.CheckboxLabeled("Settings.Develop".Translate(),
                 ref this.develop,
                 "Settings.DevelopTooltip".Translate());
@@ -291,8 +301,14 @@ namespace FacialStuff
             // "Settings.UseFreeWillTooltip".Translate());
 
             // this.useDNAByFaction = Toggle(this.useDNAByFaction, "Settings.UseDNAByFaction".Translate());
-            list.End();
 
+            if (Event.current.type == EventType.Layout)
+            {
+                this.viewHeight = list.CurHeight;
+            }
+
+            list.End();
+            Widgets.EndScrollView();
             if (GUI.changed)
             {
                 this.Mod.WriteSettings();

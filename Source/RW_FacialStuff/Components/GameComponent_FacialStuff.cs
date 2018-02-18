@@ -15,9 +15,9 @@ namespace FacialStuff
         #region Private Fields
 
         private static readonly List<string> NackbladTex =
-        new List<string> {"nbi_bushy", "nbi_crisis", "nbi_erik", "nbi_guard", "nbi_jr", "nbi_karl", "nbi_olof", "nbi_ruff", "nbi_trimmed" };
+        new List<string> { "nbi_bushy", "nbi_crisis", "nbi_erik", "nbi_guard", "nbi_jr", "nbi_karl", "nbi_olof", "nbi_ruff", "nbi_trimmed" };
 
-        private static readonly List<string> SpoonTex = new List<string> {"SPSBeard", "SPSScot", "SPSViking"};
+        private static readonly List<string> SpoonTex = new List<string> { "SPSBeard", "SPSScot", "SPSViking" };
 
         #endregion Private Fields
 
@@ -45,8 +45,8 @@ namespace FacialStuff
 
             this.WeaponCompsNew();
             this.WeaponComps();
-            this.AnimalPawnCompsBodyDefImport();
-            this.AnimalPawnComps();
+            // todo: use BodyDef instead, target for kickstarting?   this.AnimalPawnCompsBodyDefImport();  
+            this.AnimalPawnCompsImportFromAnimationTargetDefs();
             Controller.SetMainButtons();
             // BuildWalkCycles();
 
@@ -88,23 +88,23 @@ namespace FacialStuff
                     WalkCycleDef cycle = cycles[index];
                     if (cycle != null)
                     {
-                        cycle.BodyAngle         = new SimpleCurve();
+                        cycle.BodyAngle = new SimpleCurve();
                         cycle.BodyAngleVertical = new SimpleCurve();
-                        cycle.BodyOffsetZ       = new SimpleCurve();
+                        cycle.BodyOffsetZ = new SimpleCurve();
 
                         // cycle.BodyOffsetVerticalZ = new SimpleCurve();
-                        cycle.FootAngle     = new SimpleCurve();
+                        cycle.FootAngle = new SimpleCurve();
                         cycle.FootPositionX = new SimpleCurve();
                         cycle.FootPositionZ = new SimpleCurve();
 
                         // cycle.FootPositionVerticalZ = new SimpleCurve();
-                        cycle.HandsSwingAngle           = new SimpleCurve();
-                        cycle.HandsSwingPosVertical     = new SimpleCurve();
+                        cycle.HandsSwingAngle = new SimpleCurve();
+                        cycle.HandsSwingPosVertical = new SimpleCurve();
                         cycle.ShoulderOffsetHorizontalX = new SimpleCurve();
-                        cycle.HipOffsetHorizontalX      = new SimpleCurve();
+                        cycle.HipOffsetHorizontalX = new SimpleCurve();
 
                         // Quadrupeds
-                        cycle.FrontPawAngle     = new SimpleCurve();
+                        cycle.FrontPawAngle = new SimpleCurve();
                         cycle.FrontPawPositionX = new SimpleCurve();
                         cycle.FrontPawPositionZ = new SimpleCurve();
 
@@ -147,21 +147,21 @@ namespace FacialStuff
                     PoseCycleDef cycle = cycles[index];
                     if (cycle != null)
                     {
-                        cycle.BodyAngle                 = new SimpleCurve();
-                        cycle.BodyAngleVertical         = new SimpleCurve();
-                        cycle.BodyOffsetZ               = new SimpleCurve();
-                        cycle.FootAngle                 = new SimpleCurve();
-                        cycle.FootPositionX             = new SimpleCurve();
-                        cycle.FootPositionZ             = new SimpleCurve();
-                        cycle.HandPositionX             = new SimpleCurve();
-                        cycle.HandPositionZ             = new SimpleCurve();
-                        cycle.HandsSwingAngle           = new SimpleCurve();
-                        cycle.HandsSwingPosVertical     = new SimpleCurve();
+                        cycle.BodyAngle = new SimpleCurve();
+                        cycle.BodyAngleVertical = new SimpleCurve();
+                        cycle.BodyOffsetZ = new SimpleCurve();
+                        cycle.FootAngle = new SimpleCurve();
+                        cycle.FootPositionX = new SimpleCurve();
+                        cycle.FootPositionZ = new SimpleCurve();
+                        cycle.HandPositionX = new SimpleCurve();
+                        cycle.HandPositionZ = new SimpleCurve();
+                        cycle.HandsSwingAngle = new SimpleCurve();
+                        cycle.HandsSwingPosVertical = new SimpleCurve();
                         cycle.ShoulderOffsetHorizontalX = new SimpleCurve();
-                        cycle.HipOffsetHorizontalX      = new SimpleCurve();
+                        cycle.HipOffsetHorizontalX = new SimpleCurve();
 
                         // Quadrupeds
-                        cycle.FrontPawAngle     = new SimpleCurve();
+                        cycle.FrontPawAngle = new SimpleCurve();
                         cycle.FrontPawPositionX = new SimpleCurve();
                         cycle.FrontPawPositionZ = new SimpleCurve();
 
@@ -200,17 +200,17 @@ namespace FacialStuff
 
             List<PawnKeyframe> manualKeys = keyframes.Where(x => x.Status == KeyStatus.Manual).ToList();
 
-            float autoFrames = (float) key.KeyIndex / (autoKeys.Count - 1);
+            float autoFrames = (float)key.KeyIndex / (autoKeys.Count - 1);
 
             float frameAt;
 
             // Distribute manual keys
             if (!manualKeys.NullOrEmpty())
             {
-                frameAt = (float) key.KeyIndex / (autoKeys.Count - 1);
-                Log.Message("frameAt "                           + frameAt);
-                float divider = (float) 1 / (autoKeys.Count      - 1);
-                Log.Message("divider "                           + divider);
+                frameAt = (float)key.KeyIndex / (autoKeys.Count - 1);
+                Log.Message("frameAt " + frameAt);
+                float divider = (float)1 / (autoKeys.Count - 1);
+                Log.Message("divider " + divider);
                 float? shift = manualKeys.Find(x => x.KeyIndex == key.KeyIndex)?.Shift;
                 if (shift.HasValue)
                 {
@@ -221,7 +221,7 @@ namespace FacialStuff
             }
             else
             {
-                frameAt = (float) key.KeyIndex / (keyframes.Count - 1);
+                frameAt = (float)key.KeyIndex / (keyframes.Count - 1);
             }
 
             Dictionary<SimpleCurve, float?> dict = new Dictionary<SimpleCurve, float?>
@@ -313,17 +313,17 @@ namespace FacialStuff
 
             List<PawnKeyframe> manualKeys = keyframes.Where(x => x.Status == KeyStatus.Manual).ToList();
 
-            float autoFrames = (float) key.KeyIndex / (autoKeys.Count - 1);
+            float autoFrames = (float)key.KeyIndex / (autoKeys.Count - 1);
 
             float frameAt;
 
             // Distribute manual keys
             if (!manualKeys.NullOrEmpty())
             {
-                frameAt = (float) key.KeyIndex / (autoKeys.Count - 1);
-                Log.Message("frameAt "                           + frameAt);
-                float divider = (float) 1 / (autoKeys.Count      - 1);
-                Log.Message("divider "                           + divider);
+                frameAt = (float)key.KeyIndex / (autoKeys.Count - 1);
+                Log.Message("frameAt " + frameAt);
+                float divider = (float)1 / (autoKeys.Count - 1);
+                Log.Message("divider " + divider);
                 float? shift = manualKeys.Find(x => x.KeyIndex == key.KeyIndex)?.Shift;
                 if (shift.HasValue)
                 {
@@ -334,7 +334,7 @@ namespace FacialStuff
             }
             else
             {
-                frameAt = (float) key.KeyIndex / (keyframes.Count - 1);
+                frameAt = (float)key.KeyIndex / (keyframes.Count - 1);
             }
 
             Dictionary<SimpleCurve, float?> dict = new Dictionary<SimpleCurve, float?>
@@ -419,17 +419,17 @@ namespace FacialStuff
 
         private static void CheckReplaceHairTexPath(HairDef hairDef)
         {
-            string       folder = "Things/Pawn/Humanlike/Hair/";
+            string folder = "Things/Pawn/Humanlike/Hair/";
             List<string> collection;
             if (hairDef.defName.Contains("SPS"))
             {
                 collection = SpoonTex;
-                folder     += "Spoon/";
+                folder += "Spoon/";
             }
             else
             {
                 collection = NackbladTex;
-                folder     += "Nackblad/";
+                folder += "Nackblad/";
             }
 
             for (int index = 0; index < collection.Count; index++)
@@ -477,9 +477,9 @@ namespace FacialStuff
                     CompProperties_WeaponExtensions extensions =
                     new CompProperties_WeaponExtensions
                     {
-                    compClass         = typeof(CompWeaponExtensions),
-                    RightHandPosition = new Vector3(-0.2f, 0.3f, -0.05f),
-                    LeftHandPosition  = new Vector3(0.25f, 0f,   -0.05f)
+                        compClass = typeof(CompWeaponExtensions),
+                        RightHandPosition = new Vector3(-0.2f, 0.3f, -0.05f),
+                        LeftHandPosition = new Vector3(0.25f, 0f, -0.05f)
                     };
                     wepzie.comps.Add(extensions);
                 }
@@ -521,9 +521,9 @@ namespace FacialStuff
 
                             if (weaponExtensions == null)
                             {
-                                weaponExtensions                               =
-                                new CompProperties_WeaponExtensions {compClass = typeof(CompWeaponExtensions)};
-                                flag                                           = true;
+                                weaponExtensions =
+                                new CompProperties_WeaponExtensions { compClass = typeof(CompWeaponExtensions) };
+                                flag = true;
                             }
 
                             if (weaponExtensions.RightHandPosition == Vector3.zero)
@@ -584,12 +584,12 @@ namespace FacialStuff
                 CompProperties_WeaponExtensions weaponExtensions =
                 new CompProperties_WeaponExtensions
                 {
-                compClass                 = typeof(CompWeaponExtensions),
-                AttackAngleOffset         = weaponExtensionDef.attackAngleOffset,
-                WeaponPositionOffset      = weaponExtensionDef.weaponPositionOffset,
-                AimedWeaponPositionOffset = weaponExtensionDef.aimedWeaponPositionOffset,
-                RightHandPosition         = weaponExtensionDef.firstHandPosition,
-                LeftHandPosition          = weaponExtensionDef.secondHandPosition,
+                    compClass = typeof(CompWeaponExtensions),
+                    AttackAngleOffset = weaponExtensionDef.attackAngleOffset,
+                    WeaponPositionOffset = weaponExtensionDef.weaponPositionOffset,
+                    AimedWeaponPositionOffset = weaponExtensionDef.aimedWeaponPositionOffset,
+                    RightHandPosition = weaponExtensionDef.firstHandPosition,
+                    LeftHandPosition = weaponExtensionDef.secondHandPosition,
                 };
 
                 thingDef.comps?.Add(weaponExtensions);
@@ -598,7 +598,7 @@ namespace FacialStuff
             this.LaserLoad();
         }
 
-        private void AnimalPawnComps()
+        private void AnimalPawnCompsImportFromAnimationTargetDefs()
         {
             // ReSharper disable once PossibleNullReferenceException
             for (int index = 0; index < DefDatabase<AnimationTargetDef>.AllDefsListForReading.Count; index++)
@@ -624,7 +624,7 @@ namespace FacialStuff
 
                     for (int j = 0, count = pawnSets.thingTargets.Count; j < count; j++)
                     {
-                        string   t        = pawnSets.thingTargets[j];
+                        string t = pawnSets.thingTargets[j];
                         ThingDef thingDef = ThingDef.Named(t);
                         if (thingDef == null)
                         {
@@ -638,12 +638,12 @@ namespace FacialStuff
                         }
 
                         CompProperties_BodyAnimator animator = new CompProperties_BodyAnimator
-                                                               {
-                                                               compClass = typeof(CompBodyAnimator)
-                                                               };
-                        animator.bodyDrawers        = pawnSets.bodyDrawers;
-                        animator.handType       = pawnSets.handType;
-                        animator.quadruped      = pawnSets.quadruped;
+                        {
+                            compClass = typeof(CompBodyAnimator)
+                        };
+                        animator.bodyDrawers = pawnSets.bodyDrawers;
+                        animator.handType = pawnSets.handType;
+                        animator.quadruped = pawnSets.quadruped;
                         animator.bipedWithHands = pawnSets.bipedWithHands;
                         thingDef.comps?.Add(animator);
                     }
@@ -681,7 +681,7 @@ namespace FacialStuff
                 {
                     compClass = typeof(CompBodyAnimator)
                 };
-              //  animator.
+                //  animator.
                 animator.bodyDrawers = def.bodyDrawers;
                 animator.handType = def.handType;
                 animator.quadruped = def.quadruped;

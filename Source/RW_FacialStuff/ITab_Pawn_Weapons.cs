@@ -10,6 +10,7 @@ namespace FacialStuff
 {
     public class ITab_Pawn_Weapons : ITab
     {
+
         #region Public Fields
 
         public static bool IgnoreRenderer;
@@ -156,15 +157,15 @@ namespace FacialStuff
                               (weaponOffset.z).ToString("N2"));
                 if (horizontal)
                 {
-                    weaponOffset.y = listing.Slider(weaponOffset.y, -1f, 1f);
+                    weaponOffset.y = listing.Slider(weaponOffset.y, -1f, 1f, label:"Horizontal x");
 
                 }
                 else
                 {
-                    weaponOffset.x = listing.Slider(weaponOffset.x, -1f, 1f);
+                    weaponOffset.x = listing.Slider(weaponOffset.x, -1f, 1f, label: "Vertical x");
 
                 }
-                weaponOffset.z = listing.Slider(weaponOffset.z, -1f, 1f);
+                weaponOffset.z = listing.Slider(weaponOffset.z, -1f, 1f, label: "z");
 
                 Vector3 aimedOffset = weaponExtensions.AimedWeaponPositionOffset;
                 listing.Label("OffsetAiming: " +
@@ -173,15 +174,15 @@ namespace FacialStuff
                               (aimedOffset.z).ToString("N2"));
                 if (horizontal)
                 {
-                    aimedOffset.y = listing.Slider(aimedOffset.y, -1f, 1f);
+                    aimedOffset.y = listing.Slider(aimedOffset.y, -1f, 1f, label: "Horizontal x");
 
                 }
                 else
                 {
-                    aimedOffset.x = listing.Slider(aimedOffset.x, -1f, 1f);
+                    aimedOffset.x = listing.Slider(aimedOffset.x, -1f, 1f, label: "Vertical x");
 
                 }
-                aimedOffset.z = listing.Slider(aimedOffset.z, -1f, 1f);
+                aimedOffset.z = listing.Slider(aimedOffset.z, -1f, 1f, label: "z");
 
                 Vector3 rightHandPosition = weaponExtensions.RightHandPosition;
                 listing.Label("RH: " +
@@ -212,7 +213,7 @@ namespace FacialStuff
 
                 if (leftHandPosition != Vector3.zero)
                 {
-                    if (listing.ButtonText("Remove left hand"))
+                    if (listing.ButtonText("Remove left hand position"))
                     {
                         leftHandPosition = Vector3.zero;
                     }
@@ -287,5 +288,6 @@ namespace FacialStuff
         }
 
         #endregion Protected Methods
+
     }
 }

@@ -39,7 +39,7 @@ namespace FacialStuff
         public Vector3 FirstHandPosition;
         public Vector3 SecondHandPosition;
 
-        [CanBeNull] public WalkCycleDef WalkCycle = MainTabWindow_WalkAnimator.IsOpen? MainTabWindow_WalkAnimator.EditorWalkcycle: _walkCycle;
+        [CanBeNull] public WalkCycleDef WalkCycle =>  _walkCycle;
 
         public Quaternion WeaponQuat = new Quaternion();
 
@@ -365,14 +365,13 @@ namespace FacialStuff
                 return;
             }
 
-
-
             if (Find.TickManager.Paused)
             {
-                return;
+                if (!MainTabWindow_WalkAnimator.IsOpen || MainTabWindow_WalkAnimator.Pawn != Pawn)
+                {
+                    return;
+                }
             }
-
-
 
             if (this.Props.bipedWithHands)
             {
@@ -526,6 +525,7 @@ namespace FacialStuff
         public Vector3[] lastPosition = new Vector3[(int)TweenThing.Max];
 
         public FloatTween aimAngleTween = new FloatTween();
+        public bool HasLeftHandPosition => this.SecondHandPosition != Vector3.zero;
 
         public Vector3 lastEqPos = Vector3.zero;
         public float DrawOffsetY;
@@ -568,6 +568,10 @@ namespace FacialStuff
                 i++;
             }
         }
+        public void SetWalkCycle(WalkCycleDef walkCycleDef)
+        {
+            this._walkCycle = walkCycleDef;
+        }
         public float BodyOffsetZ
         {
             get
@@ -594,6 +598,6 @@ namespace FacialStuff
         internal int lastAngleTick;
         float _movedPercent;
         bool _isMoving;
-        private static WalkCycleDef _walkCycle;
+        private  WalkCycleDef _walkCycle;
     }
 }

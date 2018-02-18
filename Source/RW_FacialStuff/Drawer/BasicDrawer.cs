@@ -32,22 +32,36 @@ namespace FacialStuff
 
         #region Protected Methods
 
-        protected JointLister GetJointPositions(Vector3 offsets,
-                                                float   jointWidth,
-                                                bool    carrying          = false, bool armed = false)
+        protected JointLister GetJointPositions(JointType jointType,Vector3 offsets,
+                                                float jointWidth,
+                                                bool carrying = false, bool armed = false)
         {
             Rot4 rot = this.BodyFacing;
-            JointLister joints = new JointLister();
+            JointLister joints = new JointLister
+            {
+                jointType = jointType
+            };
             float leftX = offsets.x;
             float rightX = offsets.x;
             float leftZ = offsets.z;
             float rightZ = offsets.z;
 
-            float offsetY = armed? -Offsets.YOffset_HandsFeet : Offsets.YOffset_HandsFeetOver;
+            float offsetY = Offsets.YOffset_HandsFeetOver;
             float leftY = offsetY;
-            float rightY = offsetY;
 
-            if (carrying)
+            bool offsetsCarrying = false;
+
+            switch (jointType)
+            {
+                case JointType.Shoulder:
+                    offsetY = armed ? -Offsets.YOffset_HandsFeet : Offsets.YOffset_HandsFeetOver;
+                    leftY = CompAnimator.IsMoving ? Offsets.YOffset_HandsFeetOver : offsetY;
+                    if (carrying) { offsetsCarrying = true; }
+                    break;
+            }
+
+            float rightY = offsetY;
+            if (offsetsCarrying)
             {
                 leftX = -jointWidth / 2;
                 rightX = jointWidth / 2;
@@ -81,8 +95,8 @@ namespace FacialStuff
             if (rot == Rot4.North)
             {
                 leftY = rightY = -Offsets.YOffset_Behind;
-               // leftX *= -1;
-               // rightX *= -1;
+                // leftX *= -1;
+                // rightX *= -1;
             }
 
             joints.RightJoint = new Vector3(rightX, rightY, rightZ);
@@ -90,6 +104,9 @@ namespace FacialStuff
 
             return joints;
         }
+        [NotNull]
+        public CompBodyAnimator CompAnimator { get; set; }
+
 
         #endregion Protected Methods
     }

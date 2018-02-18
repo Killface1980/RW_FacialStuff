@@ -19,7 +19,17 @@ namespace FacialStuff.AnimatorWindows
 
         public static bool Develop;
 
+        public override void WindowUpdate()
+        {
+            base.WindowUpdate();
+            if (Pawn == null || CompAnim == null) { return; }
+            CellRect _viewRect = Find.CameraDriver.CurrentViewRect;
 
+            if (_viewRect.Contains(Pawn.Position)) { return; }
+
+            // Execute PostDraw if pawn is not on screen
+            CompAnim.PostDraw();
+        }
 
         public static bool Panic;
 
@@ -92,7 +102,7 @@ namespace FacialStuff.AnimatorWindows
         {
             get
             {
-                return new Vector2(1440f, 980f);
+                return new Vector2((float)UI.screenWidth, (float)UI.screenHeight - 35f);
             }
         }
 
@@ -123,6 +133,8 @@ namespace FacialStuff.AnimatorWindows
                 return _defPath;
             }
         }
+
+
         protected static int LastInd
         {
             get
@@ -433,7 +445,17 @@ namespace FacialStuff.AnimatorWindows
         {
             if (Pawn == null)
             {
-                Pawn = Find.AnyPlayerHomeMap.FreeColonistsForStoryteller.FirstOrDefault();
+                Thing selectedThing = Find.Selector.SingleSelectedThing;
+                if (selectedThing != null && selectedThing is Pawn)
+                {
+                    Pawn = (Pawn)selectedThing;
+                }
+                else
+                {
+                    Pawn = Find.AnyPlayerHomeMap.FreeColonistsForStoryteller.FirstOrDefault();
+
+                }
+
 
                 Pawn?.GetCompAnim(out this.CompAnim);
             }
@@ -699,11 +721,12 @@ namespace FacialStuff.AnimatorWindows
                                      size.y);
 
             Vector3 cameraOffset = new Vector3(0f, 0f, 0.1f);
-         //   RenderTexture image = PortraitsCache.Get(Pawn, size, cameraOffset, this.Zoom);
+            //   RenderTexture image = PortraitsCache.Get(Pawn, size, cameraOffset, this.Zoom);
             {
                 RenderTexture renderTexture = new RenderTexture((int)size.x, (int)size.y, 24);
                 Find.PortraitRenderer.RenderPortrait(Pawn, renderTexture, cameraOffset, this.Zoom);
-            GUI.DrawTexture(position, renderTexture);
+                GUI.DrawTexture(position, renderTexture);
+                renderTexture.Release();
             }
 
 

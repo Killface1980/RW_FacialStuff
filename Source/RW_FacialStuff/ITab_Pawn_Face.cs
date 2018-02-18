@@ -52,18 +52,21 @@ namespace FacialStuff
             GUILayout.BeginArea(rect2);
             GUILayout.BeginVertical();
 
+           // Listing_Standard list = new Listing_Standard();
+           // list.Begin(rect2);
+
             this.SelPawn.GetCompAnim(out CompBodyAnimator _);
             if (compFace.IgnoreRenderer)
             {
-           //     _rotation = GUILayout.SelectionGrid(_rotation, this._psiToolbarStrings, 4);
-           //     if (GUI.changed)
-           //     {
-           //         this.SelPawn.Rotation = new Rot4(_rotation);
-           //     }
-           // }
-           // else
-           // {
-           //     _rotation = this.SelPawn.Rotation.AsInt;
+                _rotation = GUILayout.SelectionGrid(_rotation, this._psiToolbarStrings, 4);
+                if (GUI.changed)
+                {
+                    this.SelPawn.Rotation = new Rot4(_rotation);
+                }
+            }
+            else
+            {
+                _rotation = this.SelPawn.Rotation.AsInt;
             }
 
 

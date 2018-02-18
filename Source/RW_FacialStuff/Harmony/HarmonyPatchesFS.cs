@@ -402,7 +402,7 @@ namespace FacialStuff.Harmony
             //      sizeMod = 1f;
             //  }
 
-            if (Find.TickManager.TicksGame == animator.lastPosUpdate)
+            if (Find.TickManager.TicksGame == animator.lastPosUpdate || MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn != pawn)
             {
                 drawLoc = animator.lastPosition[(int)equipment];
                 weaponAngle = animator.lastWeaponAngle;
@@ -619,10 +619,10 @@ namespace FacialStuff.Harmony
                 return;
             }
             animator.FirstHandPosition = compWeaponExtensions.RightHandPosition;
+            animator.SecondHandPosition = compWeaponExtensions.LeftHandPosition ;
 
             // Only put the second hand on when aiming or not moving => free left hand for running
-            bool leftOnWeapon = true;// aiming || !animator.IsMoving;
-            animator.SecondHandPosition = leftOnWeapon ? compWeaponExtensions.LeftHandPosition : Vector3.zero;
+          //  bool leftOnWeapon = true;// aiming || !animator.IsMoving;
 
             if (animator.FirstHandPosition != Vector3.zero)
             {
@@ -645,7 +645,7 @@ namespace FacialStuff.Harmony
                 weaponPosition + new Vector3(x, y, z).RotatedBy(weaponAngle);
             }
 
-            if (animator.SecondHandPosition != Vector3.zero)
+            if (animator.HasLeftHandPosition)
             {
                 float x2 = animator.SecondHandPosition.x;
                 float y2 = animator.SecondHandPosition.y;

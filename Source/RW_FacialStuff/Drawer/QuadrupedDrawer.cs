@@ -18,7 +18,7 @@ namespace FacialStuff
             // Fix the position, maybe needs new code in GetJointPositions()?
             if (!this.BodyFacing.IsHorizontal)
             {
-                rootLoc.y -= Offsets.YOffset_HandsFeet * 2f - Offsets.YOffset_Behind;
+                rootLoc.y -=  Offsets.YOffset_Behind;
             }
 
             this.DrawFrontPaws(bodyQuat, footQuat, rootLoc, portrait);
@@ -51,7 +51,7 @@ namespace FacialStuff
                 return;
             }
 
-            JointLister jointPositions = this.GetJointPositions(
+            JointLister jointPositions = this.GetJointPositions(JointType.Shoulder,
                                                                 body.shoulderOffsets[rot.AsInt],
                                                                 body.shoulderOffsets[Rot4.North.AsInt].x);
 
