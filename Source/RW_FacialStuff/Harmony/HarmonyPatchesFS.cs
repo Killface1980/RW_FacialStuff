@@ -9,6 +9,7 @@ using System.Reflection.Emit;
 namespace FacialStuff.Harmony
 {
     using FaceEditor;
+    using FacialStuff.AnimatorWindows;
     using Genetics;
     using global::Harmony;
     using GraphicsFS;
@@ -97,15 +98,21 @@ namespace FacialStuff.Harmony
                           new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(HarmonyPatchesFS.RenderPawnAt_Transpiler))
                          );
 
-        //    harmony.Patch(
-        //                  AccessTools.Method(typeof(Pawn_PathFollower), nameof(Pawn_PathFollower.StartPath)),
-        //                  null,
-        //                  new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(StartPath_Postfix)));
-        //
-        //    harmony.Patch(
-        //                  AccessTools.Method(typeof(Pawn_PathFollower), "PatherArrived"),
-        //                  null,
-        //                  new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(PatherArrived_Postfix)));
+            //    harmony.Patch(
+            //                  AccessTools.Method(typeof(Pawn_PathFollower), nameof(Pawn_PathFollower.StartPath)),
+            //                  null,
+            //                  new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(StartPath_Postfix)));
+            //
+            //    harmony.Patch(
+            //                  AccessTools.Method(typeof(Pawn_PathFollower), "PatherArrived"),
+            //                  null,
+            //                  new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(PatherArrived_Postfix)));
+
+          //  harmony.Patch(
+          //    AccessTools.Method(typeof(PortraitsCache), "get_IsAnimated"),
+          //    new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(IsAnimated_Prefix)),
+          //    null);
+
 
             harmony.Patch(
                           AccessTools.Method(typeof(HediffSet), nameof(HediffSet.DirtyCache)),
@@ -185,18 +192,17 @@ namespace FacialStuff.Harmony
 
                 def.inspectorTabs.Add(typeof(ITab_Pawn_Weapons));
                 def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Weapons)));
-#if develop
+
                 def.inspectorTabs.Add(typeof(ITab_Pawn_Face));
                 def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Face)));
-#endif
             }
 
             CheckAllInjected();
         }
 
-#endregion Public Constructors
+        #endregion Public Constructors
 
-#region Public Fields
+        #region Public Fields
 
         public static List<Thing> PlantMoved = new List<Thing>();
 
@@ -204,37 +210,46 @@ namespace FacialStuff.Harmony
 
         public static float Steps;
 
-#endregion Public Fields
+        #endregion Public Fields
 
-#region Private Fields
+        #region Private Fields
 
         private static readonly FieldInfo pawnField = AccessTools.Field(typeof(Pawn_EquipmentTracker), "pawn");
 
         private static Graphic_Shadow _shadowGraphic;
         private static float angleStanding = 143f;
         private static float angleStandingFlipped = 217f;
-
-#endregion Private Fields
-
-#region Public Methods
-
-        public static void StartPath_Postfix(Pawn_PathFollower __instance)
+        public static bool IsAnimated_Prefix(Pawn pawn, ref bool __result)
         {
-            Pawn pawn = (Pawn)AccessTools.Field(typeof(Pawn_PathFollower), "pawn").GetValue(__instance);
-            if (pawn.GetCompAnim(out CompBodyAnimator animator))
+            if (MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn == pawn)
             {
-                animator.IsMoving = true;
+                __result = true;
+                return false;
             }
+            return true;
         }
 
-        public static void PatherArrived_Postfix(Pawn_PathFollower __instance)
-        {
-            Pawn pawn = (Pawn)AccessTools.Field(typeof(Pawn_PathFollower), "pawn").GetValue(__instance);
-            if (pawn.GetCompAnim(out CompBodyAnimator animator))
-            {
-                animator.IsMoving = false;
-            }
-        }
+        #endregion Private Fields
+
+        #region Public Methods
+
+        //   public static void StartPath_Postfix(Pawn_PathFollower __instance)
+        //   {
+        //       Pawn pawn = (Pawn)AccessTools.Field(typeof(Pawn_PathFollower), "pawn").GetValue(__instance);
+        //       if (pawn.GetCompAnim(out CompBodyAnimator animator))
+        //       {
+        //           animator.IsMoving = true;
+        //       }
+        //   }
+        //
+        //   public static void PatherArrived_Postfix(Pawn_PathFollower __instance)
+        //   {
+        //       Pawn pawn = (Pawn)AccessTools.Field(typeof(Pawn_PathFollower), "pawn").GetValue(__instance);
+        //       if (pawn.GetCompAnim(out CompBodyAnimator animator))
+        //       {
+        //           animator.IsMoving = false;
+        //       }
+        //   }
 
         public static void AddFaceEditButton(Page_ConfigureStartingPawns __instance, Rect rect)
         {
@@ -377,20 +392,20 @@ namespace FacialStuff.Harmony
                 return;
             }
             float sizeMod = 1f;
-          //  if (Controller.settings.IReallyLikeBigGuns) { sizeMod = 2.0f; }
-          //     else if (Controller.settings.ILikeBigGuns)
-          //  {
-          //      sizeMod = 1.4f;
-          //  }
-          //  else
-          //  {
-          //      sizeMod = 1f;
-          //  }
+            //  if (Controller.settings.IReallyLikeBigGuns) { sizeMod = 2.0f; }
+            //     else if (Controller.settings.ILikeBigGuns)
+            //  {
+            //      sizeMod = 1.4f;
+            //  }
+            //  else
+            //  {
+            //      sizeMod = 1f;
+            //  }
 
-            if ( Find.TickManager.TicksGame == animator.lastPosUpdate )
+            if (Find.TickManager.TicksGame == animator.lastPosUpdate)
             {
                 drawLoc = animator.lastPosition[(int)equipment];
-               weaponAngle = animator.lastWeaponAngle ;
+                weaponAngle = animator.lastWeaponAngle;
 
             }
             else
@@ -421,7 +436,7 @@ namespace FacialStuff.Harmony
                         {
                             eqTween.Stop(StopBehavior.ForceComplete);
                         }
-                            drawLoc = eqTween.CurrentValue;
+                        drawLoc = eqTween.CurrentValue;
                         break;
 
                     case TweenState.Paused:
@@ -441,7 +456,7 @@ namespace FacialStuff.Harmony
                         float duration = Mathf.Abs(distance * 50f);
                         if (start != Vector3.zero && duration > 12f)
                         {
-                        start.y = drawLoc.y;
+                            start.y = drawLoc.y;
                             eqTween.Start(start, drawLoc, duration, scaleFunc);
                             drawLoc = start;
                         }
@@ -998,9 +1013,9 @@ namespace FacialStuff.Harmony
             }
         }
 
-#endregion Public Methods
+        #endregion Public Methods
 
-#region Private Methods
+        #region Private Methods
 
         private static void ChangeAngleForNorth(Pawn pawn, ref float aimAngle)
         {
@@ -1066,7 +1081,7 @@ namespace FacialStuff.Harmony
             BackstoryDatabase.AddBackstory(adultMale);
         }
 
-#endregion Private Methods
+        #endregion Private Methods
     }
 
 

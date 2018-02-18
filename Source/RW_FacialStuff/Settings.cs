@@ -269,11 +269,8 @@ namespace FacialStuff
 
 
 
-            list.GapLine();
-
-
-
-            list.Gap();
+           // list.GapLine();
+           // list.Gap();
             list.CheckboxLabeled("Settings.Develop".Translate(),
                 ref this.develop,
                 "Settings.DevelopTooltip".Translate());

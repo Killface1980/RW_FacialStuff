@@ -7,52 +7,43 @@ namespace FacialStuff.GraphicsFS
 {
     public class PawnBodyGraphic
     {
-        const string STR_Feet = "Things/Pawn/Humanlike/Feet/";
-        const string STR_Hands = "Things/Pawn/Humanlike/Hands/";
-        const string STR_Foot = "_Foot";
-        const string STR_Hand = "_Hand";
+        #region Public Fields
 
+        public readonly CompBodyAnimator CompAni;
+        public Graphic FootGraphicLeft;
+        public Graphic FootGraphicLeftCol;
+        public Graphic FootGraphicLeftShadow;
+        public Graphic FootGraphicRight;
+        public Graphic FootGraphicRightCol;
+        public Graphic FootGraphicRightShadow;
+        public Graphic FrontPawGraphicLeft;
+        public Graphic FrontPawGraphicLeftCol;
+        public Graphic FrontPawGraphicLeftShadow;
+        public Graphic FrontPawGraphicRight;
+        public Graphic FrontPawGraphicRightCol;
+        public Graphic FrontPawGraphicRightShadow;
+        public Graphic HandGraphicLeft;
+        public Graphic HandGraphicLeftCol;
+        public Graphic HandGraphicLeftShadow;
+        public Graphic HandGraphicRight;
+        public Graphic HandGraphicRightCol;
+        public Graphic HandGraphicRightShadow;
+
+        #endregion Public Fields
+
+        #region Private Fields
+
+        private const string STR_Feet = "Things/Pawn/Humanlike/Feet/";
+        private const string STR_Foot = "_Foot";
+        private const string STR_Hand = "_Hand";
+        private const string STR_Hands = "Things/Pawn/Humanlike/Hands/";
         private readonly Pawn _pawn;
 
         private readonly Color _shadowColor = new Color(0.54f, 0.56f, 0.6f);
 
-        public readonly CompBodyAnimator CompAni;
+        #endregion Private Fields
 
-        public Graphic FootGraphicLeft;
-
-        public Graphic FootGraphicLeftCol;
-
-        public Graphic FootGraphicLeftShadow;
-
-        public Graphic FootGraphicRight;
-
-        public Graphic FootGraphicRightCol;
-
-        public Graphic FootGraphicRightShadow;
-
-        public Graphic FrontPawGraphicLeft;
-
-        public Graphic FrontPawGraphicLeftCol;
-
-        public Graphic FrontPawGraphicLeftShadow;
-
-        public Graphic FrontPawGraphicRight;
-
-        public Graphic FrontPawGraphicRightCol;
-
-        public Graphic FrontPawGraphicRightShadow;
-
-        public Graphic HandGraphicLeft;
-
-        public Graphic HandGraphicLeftCol;
-
-        public Graphic HandGraphicLeftShadow;
-
-        public Graphic HandGraphicRight;
-
-        public Graphic HandGraphicRightCol;
-
-        public Graphic HandGraphicRightShadow;
+        #region Public Constructors
 
         public PawnBodyGraphic(CompBodyAnimator compAni)
         {
@@ -62,18 +53,38 @@ namespace FacialStuff.GraphicsFS
             this.Initialize();
         }
 
+        #endregion Public Constructors
+
+        #region Public Methods
+
+        public void Initialize()
+        {
+            LongEventHandler.ExecuteWhenFinished(
+                                                 () =>
+                                                 {
+                                                     this.InitializeGraphicsHand();
+                                                     this.InitializeGraphicsFeet();
+                                                     if (this.CompAni.Props.quadruped)
+                                                     {
+                                                         this.InitializeGraphicsFrontPaws();
+                                                     }
+                                                 });
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
         private void InitializeGraphicsFeet()
         {
             string texNameFoot;
             if (this._pawn.RaceProps.Humanlike)
             {
-
-            texNameFoot = STR_Feet + this.CompAni.Props.handType + STR_Foot;
+                texNameFoot = STR_Feet + this.CompAni.Props.handType + STR_Foot;
             }
             else
             {
                 texNameFoot = "Hands/" + this.CompAni.Props.handType + STR_Foot;
-
             }
             Color skinColor;
             if (this._pawn.story == null)
@@ -246,7 +257,6 @@ namespace FacialStuff.GraphicsFS
 
             string texNameHand = STR_Hands + this.CompAni.Props.handType + STR_Hand;
 
-
             Color skinColor;
             if (this._pawn.story == null)
             {
@@ -328,18 +338,6 @@ namespace FacialStuff.GraphicsFS
                 skinColor);
         }
 
-        public void Initialize()
-        {
-            LongEventHandler.ExecuteWhenFinished(
-                                                 () =>
-                                                 {
-                                                     this.InitializeGraphicsHand();
-                                                     this.InitializeGraphicsFeet();
-                                                     if (this.CompAni.Props.quadruped)
-                                                     {
-                                                         this.InitializeGraphicsFrontPaws();
-                                                     }
-                                                 });
-        }
+        #endregion Private Methods
     }
 }

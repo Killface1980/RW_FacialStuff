@@ -197,18 +197,21 @@ namespace FacialStuff.AnimatorWindows
             }
 
         }
+        public static bool IsOpen;
 
         public override void PreOpen()
         {
             base.PreOpen();
+            IsOpen = true;
             // IsMoving = true;
         }
-
-        protected override void SetAnimOpen()
+        public override void PostClose()
         {
-            base.SetAnimOpen();
-            this.CompAnim.AnimatorWalkOpen = true;
+            base.PostClose();
+            IsOpen = false;
         }
+
+
 
         public override void DoWindowContents(Rect inRect)
         {
@@ -515,7 +518,7 @@ namespace FacialStuff.AnimatorWindows
 
         protected override void FindRandomPawn()
         {
-            if (this.Pawn == null)
+            if (Pawn == null)
             {
 
                 base.FindRandomPawn();
@@ -525,7 +528,6 @@ namespace FacialStuff.AnimatorWindows
                 {
                     EditorWalkcycle = anim.walkCycles.FirstOrDefault().Value;
                 }
-                this.CompAnim.AnimatorWalkOpen = true;
             }
         }
 

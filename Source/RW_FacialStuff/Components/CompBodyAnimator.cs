@@ -21,7 +21,6 @@ namespace FacialStuff
         #region Public Fields
 
         public bool AnimatorPoseOpen;
-        public bool AnimatorWalkOpen;
 
         [CanBeNull] public BodyAnimDef BodyAnim;
 
@@ -40,7 +39,7 @@ namespace FacialStuff
         public Vector3 FirstHandPosition;
         public Vector3 SecondHandPosition;
 
-        [CanBeNull] public WalkCycleDef WalkCycle = WalkCycleDefOf.Biped_Walk;
+        [CanBeNull] public WalkCycleDef WalkCycle = MainTabWindow_WalkAnimator.IsOpen? MainTabWindow_WalkAnimator.EditorWalkcycle: _walkCycle;
 
         public Quaternion WeaponQuat = new Quaternion();
 
@@ -163,10 +162,7 @@ namespace FacialStuff
             return info?.GetValue(__instance);
         }
 
-        public bool AnyOpen()
-        {
-            return this.AnimatorPoseOpen != this.AnimatorWalkOpen;
-        }
+
 
         public void ApplyBodyWobble(ref Vector3 rootLoc, ref Vector3 footPos, ref Quaternion quat)
         {
@@ -369,10 +365,15 @@ namespace FacialStuff
                 return;
             }
 
+
+
             if (Find.TickManager.Paused)
             {
                 return;
             }
+
+
+
             if (this.Props.bipedWithHands)
             {
                 this.BodyAnimator.AnimatorTick();
@@ -517,11 +518,11 @@ namespace FacialStuff
         }
 
         #endregion Public Methods
-        public float MovedPercent;
+        public float MovedPercent =>  _movedPercent;
         public float BodyAngle;
 
         public float lastAimAngle = 143f;
-      //  public float lastWeaponAngle = 53f;
+        //  public float lastWeaponAngle = 53f;
         public Vector3[] lastPosition = new Vector3[(int)TweenThing.Max];
 
         public FloatTween aimAngleTween = new FloatTween();
@@ -530,31 +531,24 @@ namespace FacialStuff
         public float DrawOffsetY;
         public void CheckMovement()
         {
-
-            if (this.AnimatorWalkOpen)
+            if (MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn == Pawn)
             {
-                IsMoving = true;
-                MovedPercent = MainTabWindow_BaseAnimator.AnimationPercent;
-                return;
-            }
-            if (this.AnimatorPoseOpen)
-            {
-                IsMoving = false;
+                _isMoving = true;
+                _movedPercent = MainTabWindow_WalkAnimator.AnimationPercent;
                 return;
             }
 
             // pawn started pathing
 
-
             Pawn_PathFollower pather = this.Pawn.pather;
             if ((pather != null) && (pather.Moving) && !this.Pawn.stances.FullBodyBusy && (pather.BuildingBlockingNextPathCell() == null) && (pather.NextCellDoorToManuallyOpen() == null) && !pather.WillCollideWithPawnOnNextPathCell())
             {
-                MovedPercent = 1f - pather.nextCellCostLeft / pather.nextCellCostTotal;
-                IsMoving = true;
+                _movedPercent = 1f - pather.nextCellCostLeft / pather.nextCellCostTotal;
+                _isMoving = true;
             }
             else
             {
-                IsMoving = false;
+                _isMoving = false;
             }
 
         }
@@ -593,10 +587,13 @@ namespace FacialStuff
         }
 
 
-        public bool IsMoving;
+        public bool IsMoving =>  _isMoving;
         internal bool MeshFlipped;
         internal float lastWeaponAngle;
         internal int lastPosUpdate;
         internal int lastAngleTick;
+        float _movedPercent;
+        bool _isMoving;
+        private static WalkCycleDef _walkCycle;
     }
 }

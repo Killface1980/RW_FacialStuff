@@ -295,7 +295,7 @@ namespace FacialStuff.Harmony
                     return true;
                 }
 
-                if (compAnim.AnyOpen())
+                if (MainTabWindow_WalkAnimator.IsOpen)
                 {
                     bodyFacing = MainTabWindow_BaseAnimator.BodyRot;
                     headFacing = MainTabWindow_BaseAnimator.HeadRot;
@@ -326,7 +326,7 @@ namespace FacialStuff.Harmony
                 return true;
             }
 
-            if (compAnim.AnyOpen())
+            if (MainTabWindow_WalkAnimator.IsOpen)
             {
                 bodyFacing = MainTabWindow_BaseAnimator.BodyRot;
                 headFacing = MainTabWindow_BaseAnimator.HeadRot;
@@ -340,7 +340,7 @@ namespace FacialStuff.Harmony
             Quaternion headQuat = bodyQuat;
 
             // Rotate head if possible and wobble around
-            if (!portrait || compAnim.AnimatorWalkOpen)
+            if (!portrait || MainTabWindow_WalkAnimator.IsOpen)
             {
                 if (footy)
                 {

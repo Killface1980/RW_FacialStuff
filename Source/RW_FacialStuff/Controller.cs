@@ -41,11 +41,13 @@ namespace FacialStuff
         {
             settings?.Write();
 
+            SetMainButtons();
             if (Current.ProgramState != ProgramState.Playing)
             {
                 return;
             }
-
+            {
+            }
             List<Pawn> allPawns = PawnsFinder.AllMapsWorldAndTemporary_AliveOrDead.ToList();
             for (int i = 0; i < allPawns.Count; i++)
             {
@@ -64,6 +66,13 @@ namespace FacialStuff
             // {
             // Find.ColonistBar.MarkColonistsDirty();
             // }
+        }
+
+        public static void SetMainButtons()
+        {
+            MainButtonDef button = DefDatabase<MainButtonDef>.GetNamedSilentFail("WalkAnimator");
+            //   MainButtonDef button2 = DefDatabase<MainButtonDef>.GetNamedSilentFail("PoseAnimator");
+            button.buttonVisible = settings.Develop;
         }
     }
 }

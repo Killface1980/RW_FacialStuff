@@ -31,7 +31,7 @@ namespace FacialStuff
             float verHeadOffset = VerHeadOffsets[(int)pawn.story.bodyType];
 
             CompBodyAnimator animator = this.CompAnimator;
-            if (animator != null && animator.AnyOpen())
+            if (animator != null && MainTabWindow_PoseAnimator.IsOpen)
             {
                 horHeadOffset += MainTabWindow_WalkAnimator.HorHeadOffset;
                 verHeadOffset += MainTabWindow_WalkAnimator.VerHeadOffset;
@@ -306,11 +306,15 @@ namespace FacialStuff
             {
                 // Mesh meshMouth = __instance.graphics.HairMeshSet.MeshAt(headFacing);
                 Mesh meshMouth = this.CompFace.MouthMeshSet.Mesh.MeshAt(this.HeadFacing);
-#if develop
-                Vector3 mouthOffset = this.CompFace.BaseMouthOffsetAt(this.HeadFacing);
-#else
-                Vector3 mouthOffset = this.CompFace.MouthMeshSet.OffsetAt(this.HeadFacing);
-#endif
+                Vector3 mouthOffset;
+                if (Controller.settings.Develop)
+                {
+                    mouthOffset = this.CompFace.BaseMouthOffsetAtDevelop(this.HeadFacing);
+                }
+                else
+                {
+                    mouthOffset = this.CompFace.MouthMeshSet.OffsetAt(this.HeadFacing);
+                }
 
                 Vector3 mouthLoc = drawLoc + headQuat * mouthOffset;
                 GenDraw.DrawMeshNowOrLater(meshMouth, mouthLoc, headQuat, mouthMat, portrait);
@@ -378,11 +382,12 @@ namespace FacialStuff
 
         public override Vector3 EyeOffset(Rot4 headFacing)
         {
-#if develop
-            return this.CompFace.BaseEyeOffsetAt(headFacing);
-#else
+            if (Controller.settings.Develop)
+            {
+                return this.CompFace.BaseEyeOffsetAt(headFacing);
+            }
+
             return this.CompFace.EyeMeshSet.OffsetAt(headFacing);
-#endif
         }
 
         public override void Initialize()

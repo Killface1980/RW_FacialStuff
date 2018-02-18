@@ -28,12 +28,13 @@ namespace FacialStuff.AnimatorWindows
         [CanBeNull] public static PoseCycleDef EditorPosecycle;
 
         #endregion Private Fields
+        public static bool IsOpen;
 
         #region Public Properties
-        protected override void SetAnimOpen()
+        public override void PostClose()
         {
-            base.SetAnimOpen();
-            this.CompAnim.AnimatorPoseOpen = true;
+            base.PostClose();
+            IsOpen = false;
         }
 
         #endregion Public Properties
@@ -43,6 +44,7 @@ namespace FacialStuff.AnimatorWindows
         public override void PreOpen()
         {
             base.PreOpen();
+            IsOpen = true;
            // IsMoving = false;
         }
 

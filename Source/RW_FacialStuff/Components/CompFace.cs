@@ -239,7 +239,7 @@ namespace FacialStuff
         }
 
         // only for development
-        public Vector3 BaseMouthOffsetAt(Rot4 rotation)
+        public Vector3 BaseMouthOffsetAtDevelop(Rot4 rotation)
         {
             bool male = this.Pawn.gender == Gender.Male;
 

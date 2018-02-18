@@ -112,7 +112,7 @@
     <None Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
     <None Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_BaseAnimator.cs" />
-    <None Include="AnimatorWindows\MainTabWindow_PoseAnimator.cs" />
+    <Compile Include="AnimatorWindows\MainTabWindow_PoseAnimator.cs" />
     <None Include="Animator\PawnPartsTweener.cs" />
     <None Include="Settings_Animator.cs" />
     <Compile Include="Components\CompBodyAnimator.cs" />

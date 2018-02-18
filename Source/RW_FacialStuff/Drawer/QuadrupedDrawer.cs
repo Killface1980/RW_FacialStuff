@@ -10,7 +10,7 @@ namespace FacialStuff
     {
         public override void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
         {
-            if (portrait && !this.CompAnimator.AnyOpen())
+            if (portrait && !MainTabWindow_WalkAnimator.IsOpen || !MainTabWindow_PoseAnimator.IsOpen)
             {
                 return;
             }
@@ -80,14 +80,7 @@ namespace FacialStuff
             }
 
             this.GetBipedMesh(out Mesh footMeshRight, out Mesh footMeshLeft);
-#if develop
-            {
-            }
-#else
-            {
-            }
 
-#endif
             Material matLeft;
 
             Material matRight;

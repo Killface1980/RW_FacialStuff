@@ -273,7 +273,7 @@ namespace FacialStuff
                 return;
             }
 
-            if (portrait && !this.CompAnimator.AnyOpen())
+            if (portrait && !MainTabWindow_WalkAnimator.IsOpen)
             {
                 return;
             }
@@ -440,7 +440,7 @@ namespace FacialStuff
                 return;
             }
 
-            if (portrait && !this.CompAnimator.AnyOpen())
+            if (portrait && !MainTabWindow_WalkAnimator.IsOpen)
             {
                 return;
             }
@@ -557,8 +557,8 @@ namespace FacialStuff
                     quat = bodyQuat * Quaternion.AngleAxis(-handSwingAngle[0], Vector3.up);
                 }
 
-               // TweenThing handLeft = TweenThing.HandLeft;
-               // this.DrawTweenedHand(position, handMeshLeft, matLeft, quat, handLeft, portrait, noTween);
+                // TweenThing handLeft = TweenThing.HandLeft;
+                // this.DrawTweenedHand(position, handMeshLeft, matLeft, quat, handLeft, portrait, noTween);
                 GenDraw.DrawMeshNowOrLater(
                            handMeshLeft, position,
                            quat,
@@ -587,7 +587,7 @@ namespace FacialStuff
                     quat = bodyQuat * Quaternion.AngleAxis(handSwingAngle[1], Vector3.up);
                 }
 
-               // TweenThing handRight = TweenThing.HandRight;
+                // TweenThing handRight = TweenThing.HandRight;
                 // this.DrawTweenedHand(position, handMeshRight, matRight, quat, handRight, portrait, noTween);
                 GenDraw.DrawMeshNowOrLater(
            handMeshRight, position,
@@ -652,17 +652,10 @@ namespace FacialStuff
 
             return quat;
         }
-       public Job lastJob;
+        public Job lastJob;
         public virtual void SelectWalkcycle()
         {
-#if develop
-            if (this.CompAnimator.AnimatorWalkOpen)
-            {
-                this.CompAnimator.WalkCycle = MainTabWindow_WalkAnimator.EditorWalkcycle;
-                return;
-            }
-#endif
-             if (this.Pawn.CurJob != null && this.Pawn.CurJob != lastJob)
+            if (this.Pawn.CurJob != null && this.Pawn.CurJob != lastJob)
             {
                 BodyAnimDef animDef = this.CompAnimator.BodyAnim;
 

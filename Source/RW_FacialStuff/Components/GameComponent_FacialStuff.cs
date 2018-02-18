@@ -47,6 +47,7 @@ namespace FacialStuff
             this.WeaponComps();
             this.AnimalPawnCompsBodyDefImport();
             this.AnimalPawnComps();
+            Controller.SetMainButtons();
             // BuildWalkCycles();
 
             // foreach (BodyAnimDef def in DefDatabase<BodyAnimDef>.AllDefsListForReading)

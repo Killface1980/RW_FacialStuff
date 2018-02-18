@@ -20,7 +20,6 @@ namespace FacialStuff.AnimatorWindows
         public static bool Develop;
 
 
-        public static bool IsOpen;
 
         public static bool Panic;
 
@@ -33,7 +32,7 @@ namespace FacialStuff.AnimatorWindows
         protected CompBodyAnimator CompAnim;
         protected float Zoom = 1f;
         protected bool Loop;
-        protected Pawn Pawn;
+        public static Pawn Pawn;
 
         #endregion Protected Fields
 
@@ -160,11 +159,15 @@ namespace FacialStuff.AnimatorWindows
 
         #region Public Methods
 
+        public override void PreOpen()
+        {
+            base.PreOpen();
+            this.FindRandomPawn();
+            PortraitsCache.SetDirty(Pawn);
+        }
         public override void DoWindowContents(Rect inRect)
         {
-            this.FindRandomPawn();
 
-            PortraitsCache.SetDirty(this.Pawn);
             this.SetKeyframes();
             this._frameLabel = CurrentFrameInt + 1;
 
@@ -279,10 +282,8 @@ namespace FacialStuff.AnimatorWindows
 
         public override void PostClose()
         {
-            this.CompAnim.AnimatorWalkOpen = false;
             this.CompAnim.AnimatorPoseOpen = false;
-            this.Pawn = null;
-            IsOpen = false;
+            Pawn = null;
             base.PostClose();
         }
 
@@ -294,14 +295,14 @@ namespace FacialStuff.AnimatorWindows
 
         protected virtual void DoBasicSettingsMenu(Listing_Standard listing)
         {
-            string label = this.Pawn.LabelCap + " - " + this.Label + " - " + this.BodyAnimDef.LabelCap;
+            string label = Pawn.LabelCap + " - " + this.Label + " - " + this.BodyAnimDef.LabelCap;
 
             listing.Label(label);
 
-            if (listing.ButtonText(this.Pawn.LabelCap))
+            if (listing.ButtonText(Pawn.LabelCap))
             {
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
-                foreach (Pawn current in from bsm in this.Pawn.Map.mapPawns.AllPawnsSpawned
+                foreach (Pawn current in from bsm in Pawn.Map.mapPawns.AllPawnsSpawned
                                          where bsm.GetComp<CompBodyAnimator>() != null
                                          orderby bsm.LabelCap
                                          select bsm)
@@ -312,16 +313,13 @@ namespace FacialStuff.AnimatorWindows
                                                  smLocal.LabelCap,
                                                  delegate
                                                  {
-                                                     this.CompAnim.AnimatorWalkOpen = false;
                                                      this.CompAnim.AnimatorPoseOpen = false;
 
-                                                     this.Pawn = smLocal;
+                                                     Pawn = smLocal;
                                                      smLocal.GetCompAnim(out this.CompAnim);
 
                                                      // editorWalkcycle = this.CompAnim.Props.defaultCycleWalk;
                                                      this.SetCurrentCycle();
-
-                                                     this.SetAnimOpen();
                                                  }));
                 }
 
@@ -378,9 +376,7 @@ namespace FacialStuff.AnimatorWindows
 
         }
 
-        protected virtual void SetAnimOpen()
-        {
-        }
+
 
         public float CurrentShift
         {
@@ -435,14 +431,11 @@ namespace FacialStuff.AnimatorWindows
 
         protected virtual void FindRandomPawn()
         {
-            if (this.Pawn == null)
+            if (Pawn == null)
             {
-                this.Pawn = Find.AnyPlayerHomeMap.FreeColonistsForStoryteller.FirstOrDefault();
+                Pawn = Find.AnyPlayerHomeMap.FreeColonistsForStoryteller.FirstOrDefault();
 
-                this.Pawn?.GetCompAnim(out this.CompAnim);
-
-
-                IsOpen = true;
+                Pawn?.GetCompAnim(out this.CompAnim);
             }
         }
 
@@ -705,12 +698,18 @@ namespace FacialStuff.AnimatorWindows
                                      size.x,
                                      size.y);
 
-            GUI.DrawTexture(position, PortraitsCache.Get(this.Pawn, size, new Vector3(0f, 0f, 0.1f), this.Zoom));
+            Vector3 cameraOffset = new Vector3(0f, 0f, 0.1f);
+         //   RenderTexture image = PortraitsCache.Get(Pawn, size, cameraOffset, this.Zoom);
+            {
+                RenderTexture renderTexture = new RenderTexture((int)size.x, (int)size.y, 24);
+                Find.PortraitRenderer.RenderPortrait(Pawn, renderTexture, cameraOffset, this.Zoom);
+            GUI.DrawTexture(position, renderTexture);
+            }
+
 
             // GUI.DrawTexture(position, PortraitsCache.Get(pawn, size, default(Vector3)));
             Widgets.DrawBox(rect);
         }
-
         private void DrawRotatorBody(float curY, float width)
         {
             float buttWidth = (width - 4 * this.Spacing) / 6;
