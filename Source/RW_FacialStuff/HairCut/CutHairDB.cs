@@ -124,7 +124,7 @@ namespace FacialStuff.HairCut
                 Texture2D temptextureside = graphic.MatSide.mainTexture as Texture2D;
                 Texture2D temptextureback = graphic.MatBack.mainTexture as Texture2D;
 
-                Texture2D temptextureside2 = (graphic as Graphic_Multi_Four).MatLeft.mainTexture as Texture2D;
+                Texture2D temptextureside2 = (graphic as Graphic_Multi_Four)?.MatLeft.mainTexture as Texture2D;
 
                 temptexturefront = FaceTextures.MakeReadable(temptexturefront);
                 temptextureside = FaceTextures.MakeReadable(temptextureside);
@@ -182,7 +182,7 @@ namespace FacialStuff.HairCut
                 graphic.MatFront.mainTexture = temptexturefront;
                 graphic.MatSide.mainTexture = temptextureside;
                 graphic.MatBack.mainTexture = temptextureback;
-                (graphic as Graphic_Multi_Four).MatLeft.mainTexture = temptextureside2;
+                ((Graphic_Multi_Four) graphic).MatLeft.mainTexture = temptextureside2;
 
                 // Object.Destroy(temptexturefront);
                 // Object.Destroy(temptextureside);
@@ -235,7 +235,7 @@ namespace FacialStuff.HairCut
             temptexturefront = graphic.MatFront.mainTexture as Texture2D;
             temptextureside = graphic.MatSide.mainTexture as Texture2D;
             temptextureback = graphic.MatBack.mainTexture as Texture2D;
-            temptextureside2 = (graphic as Graphic_Multi_Four).MatLeft.mainTexture as Texture2D;
+            temptextureside2 = (graphic as Graphic_Multi_Four)?.MatLeft.mainTexture as Texture2D;
 
             temptexturefront = FaceTextures.MakeReadable(temptexturefront);
             temptextureside = FaceTextures.MakeReadable(temptextureside);

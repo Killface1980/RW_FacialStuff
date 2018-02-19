@@ -110,7 +110,7 @@ namespace FacialStuff.GraphicsFS
 
                 // 1 texture= 1 eye, blank for the opposite side
 
-                if (side.Equals("Right"))
+                if (side != null && side.Equals("Right"))
                 {
                     array2[3] = FaceTextures.RedTexture;
                 }
@@ -119,7 +119,7 @@ namespace FacialStuff.GraphicsFS
                     array2[3] = ContentFinder<Texture2D>.Get(sidePath2, false);
                 }
 
-                if (side.Equals("Left"))
+                if (side != null && side.Equals("Left"))
                 {
                     array2[1] = FaceTextures.RedTexture;
                 }

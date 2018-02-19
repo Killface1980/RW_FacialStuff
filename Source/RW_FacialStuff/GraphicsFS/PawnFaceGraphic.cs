@@ -279,7 +279,8 @@ namespace FacialStuff.GraphicsFS
                                                                         Vector2.one,
                                                                         Color.white) as Graphic_Multi_NaturalHeadParts;
                     this._compFace.BodyStat.Jaw = PartStatus.Artificial;
-                    if (this._compFace.TexPathJawAddedPart.Contains(STR_ROMV_Fangs))
+                    string addedPart = this._compFace.TexPathJawAddedPart;
+                    if (addedPart != null && addedPart.Contains(STR_ROMV_Fangs))
                     {
                         this._compFace.BodyStat.Jaw = PartStatus.DisplayOverBeard;
                     }

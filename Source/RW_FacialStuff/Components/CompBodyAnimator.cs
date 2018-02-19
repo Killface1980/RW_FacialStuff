@@ -1,6 +1,5 @@
 ﻿using FacialStuff.Animator;
 using FacialStuff.AnimatorWindows;
-using FacialStuff.DefOfs;
 using FacialStuff.GraphicsFS;
 using FacialStuff.Harmony;
 using FacialStuff.Tweener;
@@ -39,7 +38,7 @@ namespace FacialStuff
         public Vector3 FirstHandPosition;
         public Vector3 SecondHandPosition;
 
-        [CanBeNull] public WalkCycleDef WalkCycle =>  _walkCycle;
+        [CanBeNull] public WalkCycleDef WalkCycle => this._walkCycle;
 
         public Quaternion WeaponQuat = new Quaternion();
 
@@ -367,7 +366,7 @@ namespace FacialStuff
 
             if (Find.TickManager.Paused)
             {
-                if (!MainTabWindow_WalkAnimator.IsOpen || MainTabWindow_WalkAnimator.Pawn != Pawn)
+                if (!MainTabWindow_WalkAnimator.IsOpen || MainTabWindow_BaseAnimator.Pawn != this.Pawn)
                 {
                     return;
                 }
@@ -379,10 +378,10 @@ namespace FacialStuff
             }
 
             // Tweener 
-            Vector3Tween eqTween = Vector3Tweens[(int)HarmonyPatchesFS.equipment];
-            FloatTween angleTween = aimAngleTween;
-            Vector3Tween leftHand = Vector3Tweens[(int)TweenThing.HandLeft];
-            Vector3Tween rightHand = Vector3Tweens[(int)TweenThing.HandRight];
+            Vector3Tween eqTween = this.Vector3Tweens[(int)HarmonyPatchesFS.equipment];
+            FloatTween angleTween = this.aimAngleTween;
+            Vector3Tween leftHand = this.Vector3Tweens[(int)TweenThing.HandLeft];
+            Vector3Tween rightHand = this.Vector3Tweens[(int)TweenThing.HandRight];
             if (leftHand.State == TweenState.Running)
             {
                 leftHand.Update(1f * Find.TickManager.TickRateMultiplier);
@@ -400,11 +399,11 @@ namespace FacialStuff
 
             if (angleTween.State == TweenState.Running)
             {
-                aimAngleTween.Update(3f * Find.TickManager.TickRateMultiplier);
+                this.aimAngleTween.Update(3f * Find.TickManager.TickRateMultiplier);
 
             }
 
-            CheckMovement();
+            this.CheckMovement();
 
         }
 
@@ -417,9 +416,9 @@ namespace FacialStuff
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            for (var i = 0; i < Vector3Tweens.Length; i++)
+            for (var i = 0; i < this.Vector3Tweens.Length; i++)
             {
-                Vector3Tweens[i] = new Vector3Tween();
+                this.Vector3Tweens[i] = new Vector3Tween();
             }
             this.BodyAnimator = new BodyAnimator(this.Pawn, this);
             this.Pawn.CheckForAddedOrMissingParts();
@@ -517,7 +516,7 @@ namespace FacialStuff
         }
 
         #endregion Public Methods
-        public float MovedPercent =>  _movedPercent;
+        public float MovedPercent => this._movedPercent;
         public float BodyAngle;
 
         public float lastAimAngle = 143f;
@@ -531,10 +530,10 @@ namespace FacialStuff
         public float DrawOffsetY;
         public void CheckMovement()
         {
-            if (MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn == Pawn)
+            if (MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_BaseAnimator.Pawn == this.Pawn)
             {
-                _isMoving = true;
-                _movedPercent = MainTabWindow_WalkAnimator.AnimationPercent;
+                this._isMoving = true;
+                this._movedPercent = MainTabWindow_BaseAnimator.AnimationPercent;
                 return;
             }
 
@@ -543,12 +542,12 @@ namespace FacialStuff
             Pawn_PathFollower pather = this.Pawn.pather;
             if ((pather != null) && (pather.Moving) && !this.Pawn.stances.FullBodyBusy && (pather.BuildingBlockingNextPathCell() == null) && (pather.NextCellDoorToManuallyOpen() == null) && !pather.WillCollideWithPawnOnNextPathCell())
             {
-                _movedPercent = 1f - pather.nextCellCostLeft / pather.nextCellCostTotal;
-                _isMoving = true;
+                this._movedPercent = 1f - pather.nextCellCostLeft / pather.nextCellCostTotal;
+                this._isMoving = true;
             }
             else
             {
-                _isMoving = false;
+                this._isMoving = false;
             }
 
         }
@@ -591,7 +590,7 @@ namespace FacialStuff
         }
 
 
-        public bool IsMoving =>  _isMoving;
+        public bool IsMoving => this._isMoving;
         internal bool MeshFlipped;
         internal float lastWeaponAngle;
         internal int lastPosUpdate;

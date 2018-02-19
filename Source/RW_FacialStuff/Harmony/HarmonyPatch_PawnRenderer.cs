@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using FacialStuff.AnimatorWindows;
 using Harmony;
@@ -92,7 +91,7 @@ namespace FacialStuff.Harmony
             bool flag = compAnimator != null;
             if (!pawns.NullOrEmpty())
             {
-                float pawnOffset = Offsets.YOffsetPawns * pawns.Count;
+                float pawnOffset = YOffsetPawns * pawns.Count;
                 loc.y -= pawnOffset;
                 if (flag)
                 {

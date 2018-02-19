@@ -22,13 +22,13 @@ namespace FacialStuff.AnimatorWindows
         public override void WindowUpdate()
         {
             base.WindowUpdate();
-            if (Pawn == null || CompAnim == null) { return; }
+            if (Pawn == null || this.CompAnim == null) { return; }
             CellRect _viewRect = Find.CameraDriver.CurrentViewRect;
 
             if (_viewRect.Contains(Pawn.Position)) { return; }
 
             // Execute PostDraw if pawn is not on screen
-            CompAnim.PostDraw();
+            this.CompAnim.PostDraw();
         }
 
         public static bool Panic;
@@ -152,13 +152,15 @@ namespace FacialStuff.AnimatorWindows
         {
             get
             {
-                if (this.CompAnim.BodyAnim.thingTarget.NullOrEmpty())
+                BodyAnimDef compAnimBodyAnim = this.CompAnim.BodyAnim;
+                if (compAnimBodyAnim != null && compAnimBodyAnim.thingTarget.NullOrEmpty())
                 {
+                    // ReSharper disable once PossibleNullReferenceException
                     this.CompAnim.BodyAnim.thingTarget = Pawn.def.ToString();
-                    this.CompAnim.BodyAnim.bodyDrawers = CompAnim.Props.bodyDrawers;
-                    this.CompAnim.BodyAnim.handType = CompAnim.Props.handType;
-                    this.CompAnim.BodyAnim.quadruped = CompAnim.Props.quadruped;
-                    this.CompAnim.BodyAnim.bipedWithHands = CompAnim.Props.bipedWithHands;
+                    this.CompAnim.BodyAnim.bodyDrawers = this.CompAnim.Props.bodyDrawers;
+                    this.CompAnim.BodyAnim.handType = this.CompAnim.Props.handType;
+                    this.CompAnim.BodyAnim.quadruped = this.CompAnim.Props.quadruped;
+                    this.CompAnim.BodyAnim.bipedWithHands = this.CompAnim.Props.bipedWithHands;
                 }
                 return this.CompAnim.BodyAnim;
             }

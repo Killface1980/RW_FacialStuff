@@ -10,26 +10,26 @@ namespace FacialStuff.GraphicsFS
     {
         private readonly Material[] _mats = new Material[4];
 
-        public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo) => GraphicDatabase.Get<Graphic_Multi>(path,
-                newShader, drawSize,
+        public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo) => GraphicDatabase.Get<Graphic_Multi>(this.path,
+                newShader, this.drawSize,
                 newColor,
-                newColorTwo, data);
+                newColorTwo, this.data);
 
         public override int GetHashCode()
         {
             int seed = 0;
-            seed = Gen.HashCombine(seed, path);
-            seed = Gen.HashCombineStruct(seed, color);
-            return Gen.HashCombineStruct(seed, colorTwo);
+            seed = Gen.HashCombine(seed, this.path);
+            seed = Gen.HashCombineStruct(seed, this.color);
+            return Gen.HashCombineStruct(seed, this.colorTwo);
         }
 
         public override void Init(GraphicRequest req)
         {
-            data = req.graphicData;
-            path = req.path;
-            color = req.color;
-            colorTwo = req.colorTwo;
-            drawSize = req.drawSize;
+            this.data = req.graphicData;
+            this.path = req.path;
+            this.color = req.color;
+            this.colorTwo = req.colorTwo;
+            this.drawSize = req.drawSize;
             Texture2D[] array = new Texture2D[4];
 
             string addedpartName = null;
@@ -129,14 +129,14 @@ namespace FacialStuff.GraphicsFS
                 MaterialRequest req2 = default;
                 req2.mainTex = array[i];
                 req2.shader = req.shader;
-                req2.color = color;
-                req2.colorTwo = colorTwo;
+                req2.color = this.color;
+                req2.colorTwo = this.colorTwo;
 
                 // ReSharper disable once PossibleNullReferenceException
                 req2.mainTex.filterMode = FilterMode.Trilinear;
 
                 // req2.maskTex = array2[i];
-                _mats[i] = MaterialPool.MatFrom(req2);
+                this._mats[i] = MaterialPool.MatFrom(req2);
             }
         }
 
@@ -144,30 +144,30 @@ namespace FacialStuff.GraphicsFS
         {
             switch (rot.AsInt)
             {
-                case 0: return MatBack;
-                case 1: return MatRight;
-                case 2: return MatFront;
-                case 3: return MatLeft;
+                case 0: return this.MatBack;
+                case 1: return this.MatRight;
+                case 2: return this.MatFront;
+                case 3: return this.MatLeft;
                 default: return BaseContent.BadMat;
             }
         }
 
         public override string ToString() => string.Concat(
-                "Multi(initPath=", path,
-                ", color=", color,
-                ", colorTwo=", colorTwo,
+                "Multi(initPath=", this.path,
+                ", color=", this.color,
+                ", colorTwo=", this.colorTwo,
                 ")");
 
-        public string GraphicPath => path;
+        public string GraphicPath => this.path;
 
-        public override Material MatBack => _mats[0];
+        public override Material MatBack => this._mats[0];
 
-        public override Material MatFront => _mats[2];
+        public override Material MatFront => this._mats[2];
 
-        public Material MatLeft => _mats[3];
+        public Material MatLeft => this._mats[3];
 
-        public Material MatRight => _mats[1];
+        public Material MatRight => this._mats[1];
 
-        public override bool ShouldDrawRotated => MatRight == MatBack;
+        public override bool ShouldDrawRotated => this.MatRight == this.MatBack;
     }
 }

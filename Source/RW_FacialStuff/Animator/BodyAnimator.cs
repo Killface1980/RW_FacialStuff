@@ -1,5 +1,4 @@
 ﻿using FacialStuff.AnimatorWindows;
-using FacialStuff.Harmony;
 using Verse;
 
 namespace FacialStuff.Animator

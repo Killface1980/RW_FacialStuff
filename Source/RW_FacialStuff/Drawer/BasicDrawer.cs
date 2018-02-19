@@ -55,7 +55,7 @@ namespace FacialStuff
             {
                 case JointType.Shoulder:
                     offsetY = armed ? -Offsets.YOffset_HandsFeet : Offsets.YOffset_HandsFeetOver;
-                    leftY = CompAnimator.IsMoving ? Offsets.YOffset_HandsFeetOver : offsetY;
+                    leftY = this.CompAnimator.IsMoving ? Offsets.YOffset_HandsFeetOver : offsetY;
                     if (carrying) { offsetsCarrying = true; }
                     break;
             }

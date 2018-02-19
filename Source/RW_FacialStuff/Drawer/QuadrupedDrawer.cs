@@ -1,5 +1,4 @@
-﻿using FacialStuff.Animator;
-using FacialStuff.AnimatorWindows;
+﻿using FacialStuff.AnimatorWindows;
 using RimWorld;
 using UnityEngine;
 using Verse;

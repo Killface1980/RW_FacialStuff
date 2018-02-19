@@ -45,7 +45,7 @@ namespace FacialStuff.GraphicsFS
         [CanBeNull]
         public Material BeardMatAt(Rot4 facing)
         {
-            if (CannotShowFaceHair() || this._compFace.PawnFace?.BeardDef == BeardDefOf.Beard_Shaved)
+            if (this.CannotShowFaceHair() || this._compFace.PawnFace?.BeardDef == BeardDefOf.Beard_Shaved)
             {
                 return null;
             }
@@ -189,7 +189,7 @@ namespace FacialStuff.GraphicsFS
         [CanBeNull]
         public Material MoustacheMatAt(Rot4 facing)
         {
-            if (CannotShowFaceHair() || this._compFace.PawnFace?.MoustacheDef == MoustacheDefOf.Shaved)
+            if (this.CannotShowFaceHair() || this._compFace.PawnFace?.MoustacheDef == MoustacheDefOf.Shaved)
             {
                 return null;
             }

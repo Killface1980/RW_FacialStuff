@@ -476,7 +476,7 @@ namespace FacialStuff
             JointLister shoulperPos = this.GetJointPositions(JointType.Shoulder,
                                                              body.shoulderOffsets[rot.AsInt],
                                                              body.shoulderOffsets[Rot4.North.AsInt].x,
-                                                             carrying, Pawn.CarryWeaponOpenly());
+                                                             carrying, this.Pawn.CarryWeaponOpenly());
 
             List<float> handSwingAngle = new List<float> { 0f, 0f };
             List<float> shoulderAngle = new List<float> { 0f, 0f };
@@ -510,7 +510,7 @@ namespace FacialStuff
 
             this.DoAttackAnimationHandOffsets(ref handSwingAngle, ref rightHand, false);
 
-            GetBipedMesh(out Mesh handMeshRight, out Mesh handMeshLeft);
+            this.GetBipedMesh(out Mesh handMeshRight, out Mesh handMeshLeft);
 
             Material matLeft = this.LeftHandMat;
             Material matRight = this.RightHandMat;
@@ -657,12 +657,12 @@ namespace FacialStuff
         {
             if (pawnInEditor )
             {
-              CompAnimator.SetWalkCycle(MainTabWindow_WalkAnimator.EditorWalkcycle);
+                this.CompAnimator.SetWalkCycle(MainTabWindow_WalkAnimator.EditorWalkcycle);
                 return;
             }
 
 
-            if (this.Pawn.CurJob != null && this.Pawn.CurJob != lastJob)
+            if (this.Pawn.CurJob != null && this.Pawn.CurJob != this.lastJob)
             {
                 BodyAnimDef animDef = this.CompAnimator.BodyAnim;
 
@@ -674,15 +674,16 @@ namespace FacialStuff
                     {
                         if (cycle != null)
                         {
-                            CompAnimator.SetWalkCycle(cycle);
+                            this.CompAnimator.SetWalkCycle(cycle);
                         }
                     }
                     else
                     {
-                        CompAnimator.SetWalkCycle(animDef.walkCycles.FirstOrDefault().Value);
+                        this.CompAnimator.SetWalkCycle(animDef.walkCycles.FirstOrDefault().Value);
                     }
                 }
-                lastJob = this.Pawn.CurJob;
+
+                this.lastJob = this.Pawn.CurJob;
 
             }
         }
@@ -735,7 +736,7 @@ namespace FacialStuff
             }
 
             // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
-            bool pawnInEditor = MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn == Pawn;
+            bool pawnInEditor = MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_BaseAnimator.Pawn == this.Pawn;
             if (!Find.TickManager.Paused || pawnInEditor)
             {
                 this.SelectWalkcycle(pawnInEditor);
@@ -980,14 +981,14 @@ namespace FacialStuff
                                      TweenThing tweenThing,
                                      bool portrait, bool noTween)
         {
-            Vector3Tween tween = CompAnimator.Vector3Tweens[(int)tweenThing];
+            Vector3Tween tween = this.CompAnimator.Vector3Tweens[(int)tweenThing];
 
             if (!Find.TickManager.Paused)
             {
                 switch (tween.State)
                 {
                     case TweenState.Running:
-                        if (noTween || Pawn.Downed || CompAnimator.IsMoving)
+                        if (noTween || this.Pawn.Downed || this.CompAnimator.IsMoving)
                         {
                             tween.Stop(StopBehavior.ForceComplete);
                         }
@@ -996,8 +997,8 @@ namespace FacialStuff
                         break;
                     case TweenState.Stopped:
                         if (noTween) { break; }
-                        if (CompAnimator.IsMoving) { break; }
-                        if (Pawn.Downed) { break; }
+                        if (this.CompAnimator.IsMoving) { break; }
+                        if (this.Pawn.Downed) { break; }
                         Vector3 start = this.CompAnimator.lastPosition[(int)tweenThing];
                         start.y = position.y;
                         float distance = Vector3.Distance(start, position);
@@ -1009,7 +1010,7 @@ namespace FacialStuff
                         break;
                 }
 
-                CompAnimator.lastPosition[(int)tweenThing] = position;
+                this.CompAnimator.lastPosition[(int)tweenThing] = position;
             }
             if (tween.State == TweenState.Running)
             {
