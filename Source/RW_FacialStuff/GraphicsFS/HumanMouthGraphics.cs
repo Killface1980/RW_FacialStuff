@@ -116,7 +116,7 @@ namespace FacialStuff.GraphicsFS
 
         public int GetMouthTextureIndexOfMood(float mood)
         {
-            int __result = 0;
+            int result = 0;
             for (int i = 0; i < this.HumanMouthGraphic.Length; i++)
             {
                 if (mood < this.HumanMouthGraphic[i].Mood)
@@ -124,10 +124,10 @@ namespace FacialStuff.GraphicsFS
                     break;
                 }
 
-                __result = i;
+                result = i;
             }
 
-            return __result;
+            return result;
         }
 
         public struct MouthGraphicData

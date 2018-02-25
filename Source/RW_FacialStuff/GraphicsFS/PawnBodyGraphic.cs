@@ -33,10 +33,8 @@ namespace FacialStuff.GraphicsFS
 
         #region Private Fields
 
-        private const string STR_Feet = "Things/Pawn/Humanlike/Feet/";
         private const string STR_Foot = "_Foot";
         private const string STR_Hand = "_Hand";
-        private const string STR_Hands = "Things/Pawn/Humanlike/Hands/";
         private readonly Pawn _pawn;
 
         private readonly Color _shadowColor = new Color(0.54f, 0.56f, 0.6f);
@@ -80,7 +78,7 @@ namespace FacialStuff.GraphicsFS
             string texNameFoot;
             if (this._pawn.RaceProps.Humanlike)
             {
-                texNameFoot = STR_Feet + this.CompAni.Props.handType + STR_Foot;
+                texNameFoot = StringsFS.PathHumanlike + "Feet/" + this.CompAni.Props.handType + STR_Foot;
             }
             else
             {
@@ -255,7 +253,7 @@ namespace FacialStuff.GraphicsFS
                 return;
             }
 
-            string texNameHand = STR_Hands + this.CompAni.Props.handType + STR_Hand;
+            string texNameHand = StringsFS.PathHumanlike +"Hands/" + this.CompAni.Props.handType + STR_Hand;
 
             Color skinColor;
             if (this._pawn.story == null)

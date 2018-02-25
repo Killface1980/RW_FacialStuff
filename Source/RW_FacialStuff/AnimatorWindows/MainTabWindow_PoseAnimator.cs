@@ -456,7 +456,8 @@ namespace FacialStuff.AnimatorWindows
                 anim.poseCycles.FirstOrDefault();
             }
         }
-        public override void SetKeyframes()
+
+        protected override void SetKeyframes()
         {
             PawnKeyframes = EditorPosecycle?.keyframes;
             this.Label = EditorPosecycle?.LabelCap;

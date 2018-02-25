@@ -288,10 +288,9 @@ namespace FacialStuff.AnimatorWindows
             base.DoWindowContents(inRect);
         }
 
-        public virtual void SetKeyframes()
+        protected virtual void SetKeyframes()
         {
-            PawnKeyframes = new List<PawnKeyframe>();
-            PawnKeyframes.Add(new PawnKeyframe());
+            PawnKeyframes = new List<PawnKeyframe> {new PawnKeyframe()};
         }
 
         public override void PostClose()

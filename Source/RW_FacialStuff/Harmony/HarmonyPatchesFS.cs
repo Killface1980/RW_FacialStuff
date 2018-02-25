@@ -873,8 +873,8 @@ namespace FacialStuff.Harmony
             {
                 HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
 
-                var wornApparel = pawn.apparel.WornApparel.Where(x => x.def.apparel.LastLayer == ApparelLayer.Overhead).ToList();
-                var coverage = HeadCoverage.None;
+                List<Apparel> wornApparel = pawn.apparel.WornApparel.Where(x => x.def.apparel.LastLayer == ApparelLayer.Overhead).ToList();
+                HeadCoverage coverage = HeadCoverage.None;
                 if (!wornApparel.NullOrEmpty())
                 {
                     if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)))

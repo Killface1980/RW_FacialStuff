@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FacialStuff.DefOfs;
+using FacialStuff.Defs;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;
@@ -55,13 +57,13 @@ namespace FacialStuff
             {
                 if (hediff.Part.parts.Contains(leftEye))
                 {
-                    face.TexPathEyeLeftPatch = "Things/Pawn/Humanlike/AddedParts/Eye_" + hediff.def.defName + "_Left" + "_"
+                    face.TexPathEyeLeftPatch = StringsFS.PathHumanlike +"AddedParts/Eye_" + hediff.def.defName + "_Left" + "_"
                                              + face.PawnCrownType;
                 }
 
                 if (hediff.Part.parts.Contains(rightEye))
                 {
-                    face.TexPathEyeRightPatch = "Things/Pawn/Humanlike/AddedParts/Eye_" + hediff.def.defName + "_Right" + "_"
+                    face.TexPathEyeRightPatch = StringsFS.PathHumanlike +"AddedParts/Eye_" + hediff.def.defName + "_Right" + "_"
                                               + face.PawnCrownType;
                 }
             }
@@ -70,7 +72,7 @@ namespace FacialStuff
             {
                 if (hediff.Part.parts.Contains(jaw))
                 {
-                    face.TexPathJawAddedPart = "Things/Pawn/Humanlike/AddedParts/Mouth_" + hediff.def.defName;
+                    face.TexPathJawAddedPart = StringsFS.PathHumanlike +"AddedParts/Mouth_" + hediff.def.defName;
                 }
             }
         }
@@ -88,14 +90,14 @@ namespace FacialStuff
                     if (leftEye != null && hediff.Part == leftEye)
                     {
                         face.BodyStat.EyeLeft = PartStatus.Missing;
-                        face.TexPathEyeLeft = face.EyeTexPath("Missing", Side.Left);
+                        face.TexPathEyeLeft = face.EyeTexPath(Side.Left, EyeDefOf.Missing);
                     }
 
                     // ReSharper disable once InvertIf
                     if (rightEye != null && hediff.Part == rightEye)
                     {
                         face.BodyStat.EyeRight = PartStatus.Missing;
-                        face.TexPathEyeRight = face.EyeTexPath("Missing", Side.Right);
+                        face.TexPathEyeRight = face.EyeTexPath(Side.Right, EyeDefOf.Missing);
                     }
                 }
 

@@ -14,6 +14,7 @@ namespace FacialStuff
 {
     public class CompFace : ThingComp
     {
+
         #region Public Fields
 
         public FacePartStats BodyStat;
@@ -320,7 +321,9 @@ namespace FacialStuff
         [NotNull]
         public string BrowTexPath([NotNull] BrowDef browDef)
         {
-            return "Things/Pawn/Humanlike/Brows/Brow_" + this.Pawn.gender + "_" + browDef.texPath;
+            string browPath = browDef.texBasePath.NullOrEmpty()? StringsFS.PathHumanlike+"Brows/" : browDef.texBasePath;
+            string browTexPath = browPath + "Brow_" + this.Pawn.gender + "_" + browDef.texName;
+            return browTexPath;
         }
 
 
@@ -506,12 +509,6 @@ namespace FacialStuff
             }
         }
 
-        [NotNull]
-        public string EyeClosedTexPath(Side side)
-        {
-            return this.EyeTexPath("Closed", side);
-        }
-
         // TODO: Remove or make usable
         // public void DefineSkinDNA()
         // {
@@ -519,10 +516,15 @@ namespace FacialStuff
         // this.IsSkinDNAoptimized = true;
         // }
         [NotNull]
-        public string EyeTexPath([NotNull] string eyeDefPath, Side side)
+        public string EyeTexPath(Side side, [NotNull] EyeDef eyeDef = null)
         {
+            if (eyeDef == null)
+            {
+                eyeDef = this.PawnFace?.EyeDef;
+            }
             // ReSharper disable once PossibleNullReferenceException
-            string path = "Things/Pawn/Humanlike/Eyes/Eye_" + eyeDefPath + "_" + this.Pawn.gender + "_" + side;
+            string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike +"Eyes/": eyeDef.texBasePath;
+            string path = eyePath + "Eye_" + eyeDef.texName + "_" + this.Pawn.gender + "_" + side;
 
             return path;
         }
@@ -532,10 +534,10 @@ namespace FacialStuff
         {
             if (def == BeardDefOf.Beard_Shaved)
             {
-                return "Things/Pawn/Humanlike/Beards/Beard_Shaved";
+                return StringsFS.PathHumanlike+"Beards/Beard_Shaved";
             }
 
-            return "Things/Pawn/Humanlike/Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;
+            return "Things/Pawn/Humanlike"+"/Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;
         }
 
         [NotNull]

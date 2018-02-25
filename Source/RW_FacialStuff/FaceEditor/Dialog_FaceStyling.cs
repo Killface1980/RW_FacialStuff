@@ -1561,7 +1561,7 @@ namespace FacialStuff.FaceEditor
         private Graphic_Multi_NaturalHeadParts BrowGraphic(BrowDef def)
         {
             Graphic_Multi_NaturalHeadParts __result;
-            if (def.texPath != null)
+            if (def.texBasePath != null)
             {
                 __result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(this.CompFace.BrowTexPath(def),
                                                                                ShaderDatabase.CutoutSkin,
@@ -2336,9 +2336,9 @@ namespace FacialStuff.FaceEditor
         private Graphic_Multi_NaturalEyes LeftEyeGraphic(EyeDef def)
         {
             Graphic_Multi_NaturalEyes __result;
-            if (def.texPath != null)
+            if (def != null)
             {
-                string path = this.CompFace.EyeTexPath(def.texPath, Side.Left);
+                string path = this.CompFace.EyeTexPath(Side.Left, def);
 
                 __result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                                           path,
@@ -2373,12 +2373,12 @@ namespace FacialStuff.FaceEditor
 
         private Graphic_Multi_NaturalEyes RightEyeGraphic(EyeDef def)
         {
-            Graphic_Multi_NaturalEyes __result;
-            if (def.texPath != null)
+            Graphic_Multi_NaturalEyes result;
+            if (def != null)
             {
-                string path = this.CompFace.EyeTexPath(def.texPath, Side.Right);
+                string path = this.CompFace.EyeTexPath(Side.Right, def);
 
-                __result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
+                result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                                           path,
                                                                           ShaderDatabase.CutoutComplex,
                                                                           new Vector2(38f, 38f),
@@ -2387,10 +2387,10 @@ namespace FacialStuff.FaceEditor
             }
             else
             {
-                __result = null;
+                result = null;
             }
 
-            return __result;
+            return result;
         }
 
         private void UpdatePawnColors(object type, object newValue)

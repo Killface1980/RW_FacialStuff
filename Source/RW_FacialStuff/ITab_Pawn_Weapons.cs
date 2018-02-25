@@ -48,7 +48,7 @@ namespace FacialStuff
 
         public override bool IsVisible => this.SelPawn.HasCompFace() && Controller.settings.Develop;
 
-        public bool leftFront
+        public bool LeftFront
         {
             set
             {
@@ -61,7 +61,7 @@ namespace FacialStuff
             }
         }
 
-        public bool rightFront
+        public bool RightFront
         {
             set
             {
@@ -76,19 +76,21 @@ namespace FacialStuff
         {
             set
             {
-                if (weaponExtensions != null)
+                if (weaponExtensions == null)
                 {
-                    if (value)
+                    return;
+                }
+
+                if (value)
+                {
+                    if (weaponExtensions.LeftHandPosition == Vector3.zero)
                     {
-                        if (weaponExtensions.LeftHandPosition == Vector3.zero)
-                        {
-                            this.leftFront = false;
-                        }
+                        this.LeftFront = false;
                     }
-                    else
-                    {
-                        weaponExtensions.LeftHandPosition = Vector3.zero;
-                    }
+                }
+                else
+                {
+                    weaponExtensions.LeftHandPosition = Vector3.zero;
                 }
             }
         }

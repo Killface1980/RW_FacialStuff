@@ -19,6 +19,8 @@ namespace FacialStuff.Defs
 
         public List<ThingDef> forbiddenOnRace = new List<ThingDef>();
 
-        public string texPath;
+        public string texBasePath;
+
+        public string texName;
     }
 }

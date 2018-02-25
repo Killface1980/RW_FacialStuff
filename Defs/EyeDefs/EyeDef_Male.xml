@@ -6,7 +6,8 @@
     <label>Flat</label>
     <hairGender>Male</hairGender>
     <forbiddenOnRace/>
-    <texPath>FL</texPath>
+    <texBasePath></texBasePath> <!-- empty for default path "Things/Pawn/Humanlike/Eyes/"-->
+    <texName>FL</texName> <!-- The eye name. File name of the textures is always "Eye_<texName>_<pawnGender_Left/Right_side"  -->
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -20,7 +21,7 @@
     <label>Round</label>
     <hairGender>Male</hairGender>
     <forbiddenOnRace/>
-    <texPath>RD</texPath>
+    <texName>RD</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -34,7 +35,7 @@
     <label>Oval</label>
     <hairGender>Male</hairGender>
     <forbiddenOnRace/>
-    <texPath>OV</texPath>
+    <texName>OV</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -48,7 +49,7 @@
     <label>Small</label>
     <hairGender>Male</hairGender>
     <forbiddenOnRace/>
-    <texPath>SM</texPath>
+    <texName>SM</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -64,7 +65,7 @@
     <raceList>
       <li>Human</li>
     </raceList>
-    <texPath>Toon</texPath>
+    <texName>Toon</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>

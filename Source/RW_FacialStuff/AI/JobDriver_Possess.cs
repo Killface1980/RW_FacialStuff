@@ -145,7 +145,7 @@ namespace FacialStuff.AI
                                    }
                                };
 
-            toil.AddFinishAction(() => { compFace.HeadRotator.SetUnPossessed(); });
+            toil.AddFinishAction(compFace.HeadRotator.SetUnPossessed);
 
             toil.defaultCompleteMode = ToilCompleteMode.Never;
             return toil;

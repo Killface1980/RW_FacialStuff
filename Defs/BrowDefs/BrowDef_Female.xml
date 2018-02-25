@@ -6,7 +6,7 @@
     <label>Aggro</label>
     <hairGender>Female</hairGender>
     <forbiddenOnRace/>
-    <texPath>Aggro</texPath>
+    <texName>Aggro</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -20,7 +20,7 @@
     <label>Aware</label>
     <hairGender>Female</hairGender>
     <forbiddenOnRace/>
-    <texPath>Aware</texPath>
+    <texName>Aware</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -34,7 +34,7 @@
     <label>Depressed</label>
     <hairGender>Female</hairGender>
     <forbiddenOnRace/>
-    <texPath>Depressed</texPath>
+    <texName>Depressed</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -48,7 +48,7 @@
     <label>Furious</label>
     <hairGender>Female</hairGender>
     <forbiddenOnRace/>
-    <texPath>Furious</texPath>
+    <texName>Furious</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -62,7 +62,7 @@
     <label>Nice</label>
     <hairGender>Female</hairGender>
     <forbiddenOnRace/>
-    <texPath>Nice</texPath>
+    <texName>Nice</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -76,7 +76,7 @@
     <label>Tired</label>
     <hairGender>Female</hairGender>
     <forbiddenOnRace/>
-    <texPath>Tired</texPath>
+    <texName>Tired</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -90,7 +90,7 @@
     <label>Mono</label>
     <hairGender>Female</hairGender>
     <forbiddenOnRace/>
-    <texPath>Mono</texPath>
+    <texName>Mono</texName>
     <hairTags>
       <li>Punk</li>
       <li>Tribal</li>

@@ -46,19 +46,20 @@ namespace FacialStuff.GraphicsFS
 
             HeadsVanillaCustom.Clear();
 
-            HeadsVanillaCustom.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads_blank/Female/Female_Average_Normal"));
-            HeadsVanillaCustom.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads_blank/Female/Female_Average_Pointy"));
-            HeadsVanillaCustom.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads_blank/Female/Female_Average_Wide"));
-            HeadsVanillaCustom.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads_blank/Female/Female_Narrow_Normal"));
-            HeadsVanillaCustom.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads_blank/Female/Female_Narrow_Pointy"));
-            HeadsVanillaCustom.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads_blank/Female/Female_Narrow_Wide"));
+            string thingsPawnHumanlike = StringsFS.PathHumanlike;
+            HeadsVanillaCustom.Add(new HeadGraphicRecord(thingsPawnHumanlike+"Heads_blank/Female/Female_Average_Normal"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecord(thingsPawnHumanlike+"Heads_blank/Female/Female_Average_Pointy"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecord(thingsPawnHumanlike+"Heads_blank/Female/Female_Average_Wide"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecord(thingsPawnHumanlike+"Heads_blank/Female/Female_Narrow_Normal"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecord(thingsPawnHumanlike+"Heads_blank/Female/Female_Narrow_Pointy"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecord(thingsPawnHumanlike+"Heads_blank/Female/Female_Narrow_Wide"));
 
-            HeadsVanillaCustom.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads_blank/Male/Male_Average_Normal"));
-            HeadsVanillaCustom.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads_blank/Male/Male_Average_Pointy"));
-            HeadsVanillaCustom.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads_blank/Male/Male_Average_Wide"));
-            HeadsVanillaCustom.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads_blank/Male/Male_Narrow_Normal"));
-            HeadsVanillaCustom.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads_blank/Male/Male_Narrow_Pointy"));
-            HeadsVanillaCustom.Add(new HeadGraphicRecord("Things/Pawn/Humanlike/Heads_blank/Male/Male_Narrow_Wide"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecord(thingsPawnHumanlike+"Heads_blank/Male/Male_Average_Normal"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecord(thingsPawnHumanlike+"Heads_blank/Male/Male_Average_Pointy"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecord(thingsPawnHumanlike+"Heads_blank/Male/Male_Average_Wide"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecord(thingsPawnHumanlike+"Heads_blank/Male/Male_Narrow_Normal"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecord(thingsPawnHumanlike+"Heads_blank/Male/Male_Narrow_Pointy"));
+            HeadsVanillaCustom.Add(new HeadGraphicRecord(thingsPawnHumanlike + "Heads_blank/Male/Male_Narrow_Wide"));
 
             _skull = new HeadGraphicRecord(SkullPath);
             _stump = new HeadGraphicRecord(StumpPath);

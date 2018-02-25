@@ -416,7 +416,7 @@ namespace FacialStuff
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            for (var i = 0; i < this.Vector3Tweens.Length; i++)
+            for (int i = 0; i < this.Vector3Tweens.Length; i++)
             {
                 this.Vector3Tweens[i] = new Vector3Tween();
             }

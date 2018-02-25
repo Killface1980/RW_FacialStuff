@@ -24,7 +24,8 @@ namespace FacialStuff.AnimatorWindows
         #endregion Public Fields
 
         #region Public Properties
-        public override void SetKeyframes()
+
+        protected override void SetKeyframes()
         {
             PawnKeyframes = EditorWalkcycle.keyframes;
             this.Label = EditorWalkcycle.LabelCap;

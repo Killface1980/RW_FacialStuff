@@ -60,8 +60,8 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
                 this.OriginalCrownType = CrownType.Average;
             }
 
-            AddHeadTypesToList("Things/Pawn/Humanlike/Heads/Male", this._maleHeadTypes);
-            AddHeadTypesToList("Things/Pawn/Humanlike/Heads/Female", this._femaleHeadTypes);
+            AddHeadTypesToList(StringsFS.PathHumanlike +"Heads/Male", this._maleHeadTypes);
+            AddHeadTypesToList(StringsFS.PathHumanlike + "Heads/Female", this._femaleHeadTypes);
 
             this.Gender = gender;
             this.FindIndex(headType);

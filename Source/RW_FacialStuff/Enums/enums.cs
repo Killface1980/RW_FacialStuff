@@ -1,5 +1,10 @@
 ﻿namespace FacialStuff
 {
+    public class StringsFS
+    {
+        public const string PathHumanlike = "Things/Pawn/Humanlike/";
+
+    }
 
     public enum HandsToDraw
     {

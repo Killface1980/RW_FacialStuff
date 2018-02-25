@@ -12,8 +12,7 @@ namespace FacialStuff.GraphicsFS
 {
     public class PawnFaceGraphic
     {
-        const string STR_Eyes_Dead = "Things/Pawn/Humanlike/Eyes/Eyes_Dead";
-        const string STR_Front = "_front";
+        const string STR_Front      = "_front";
         const string STR_ROMV_Fangs = "ROMV_Fangs";
 
         public Graphic BrowGraphic;
@@ -79,12 +78,11 @@ namespace FacialStuff.GraphicsFS
 
                 if (this._compFace.Props.hasEyes)
                 {
-                    EyeDef pawnFaceEyeDef          = this.pawnFace.EyeDef;
-                    this._compFace.TexPathEyeRight = this._compFace.EyeTexPath(pawnFaceEyeDef.texPath, Side.Right);
-                    this._compFace.TexPathEyeLeft  = this._compFace.EyeTexPath(pawnFaceEyeDef.texPath, Side.Left);
-                    this.TexPathEyeLeftClosed      = this._compFace.EyeClosedTexPath(Side.Left);
-                    this.TexPathEyeRightClosed     = this._compFace.EyeClosedTexPath(Side.Right);
-                    this.TexPathBrow = this._compFace.BrowTexPath(this.pawnFace.BrowDef);
+                    this._compFace.TexPathEyeRight = this._compFace.EyeTexPath(Side.Right);
+                    this._compFace.TexPathEyeLeft  = this._compFace.EyeTexPath(Side.Left);
+                    this.TexPathEyeLeftClosed      = this._compFace.EyeTexPath(Side.Left,  EyeDefOf.Closed);
+                    this.TexPathEyeRightClosed     = this._compFace.EyeTexPath(Side.Right, EyeDefOf.Closed);
+                    this.TexPathBrow               = this._compFace.BrowTexPath(this.pawnFace.BrowDef);
 
 
                     this.InitializeGraphicsEyes();
@@ -139,49 +137,50 @@ namespace FacialStuff.GraphicsFS
 
         private void InitializeGraphicsBeard()
         {
-            PawnFace pawnFace = this._compFace.PawnFace;
-            if (pawnFace != null)
+            if (this.pawnFace == null)
             {
-                string mainBeardDefTexPath = this._compFace.GetBeardPath(pawnFace.BeardDef);
-
-                string moustacheDefTexPath = this._compFace.GetMoustachePath(pawnFace.MoustacheDef);
-
-                Color beardColor = pawnFace.BeardColor;
-                Color tacheColor = pawnFace.BeardColor;
-
-                if (pawnFace.MoustacheDef == MoustacheDefOf.Shaved)
-                {
-                    // no error, only use the beard def shaved as texture
-                    tacheColor = Color.white;
-                }
-
-                if (pawnFace.BeardDef == BeardDefOf.Beard_Shaved)
-                {
-                    beardColor = Color.white;
-                }
-
-                if (Controller.settings.SameBeardColor)
-                {
-                    beardColor = tacheColor = this._pawn.story.hairColor;
-                }
-
-                this.MoustacheGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                                                            moustacheDefTexPath,
-                                                                                            ShaderDatabase.Cutout,
-                                                                                            Vector2.one,
-                                                                                            tacheColor);
-
-                this.MainBeardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                                                            mainBeardDefTexPath,
-                                                                                            ShaderDatabase.Cutout,
-                                                                                            Vector2.one,
-                                                                                            beardColor);
+                return;
             }
+
+            string mainBeardDefTexPath = this._compFace.GetBeardPath(this.pawnFace.BeardDef);
+
+            string moustacheDefTexPath = this._compFace.GetMoustachePath(this.pawnFace.MoustacheDef);
+
+            Color beardColor = this.pawnFace.BeardColor;
+            Color tacheColor = this.pawnFace.BeardColor;
+
+            if (this.pawnFace.MoustacheDef == MoustacheDefOf.Shaved)
+            {
+                // no error, only use the beard def shaved as texture
+                tacheColor = Color.white;
+            }
+
+            if (this.pawnFace.BeardDef == BeardDefOf.Beard_Shaved)
+            {
+                beardColor = Color.white;
+            }
+
+            if (Controller.settings.SameBeardColor)
+            {
+                beardColor = tacheColor = this._pawn.story.hairColor;
+            }
+
+            this.MoustacheGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                                                                                        moustacheDefTexPath,
+                                                                                        ShaderDatabase.Cutout,
+                                                                                        Vector2.one,
+                                                                                        tacheColor);
+
+            this.MainBeardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                                                                                        mainBeardDefTexPath,
+                                                                                        ShaderDatabase.Cutout,
+                                                                                        Vector2.one,
+                                                                                        beardColor);
         }
 
         private void InitializeGraphicsBrows()
         {
-            Color color      = this._pawn.story.hairColor;
+            Color color = this._pawn.story.hairColor;
             this.BrowGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(this.TexPathBrow,
                                                                                    ShaderDatabase.CutoutSkin,
                                                                                    Vector2.one,
@@ -247,20 +246,23 @@ namespace FacialStuff.GraphicsFS
             this.EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this._compFace.TexPathEyeRight,
                                                                                   ShaderDatabase.CutoutComplex,
                                                                                   Vector2.one,
-                                                                                  eyeColor) as Graphic_Multi_NaturalEyes;
+                                                                                  eyeColor) as
+                                   Graphic_Multi_NaturalEyes;
 
             this.EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.TexPathEyeLeftClosed,
                                                                                        ShaderDatabase.Cutout,
                                                                                        Vector2.one,
-                                                                                       eyeColor) as Graphic_Multi_NaturalEyes;
+                                                                                       eyeColor) as
+                                        Graphic_Multi_NaturalEyes;
 
             this.EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.TexPathEyeRightClosed,
                                                                                         ShaderDatabase.Cutout,
                                                                                         Vector2.one,
-                                                                                        eyeColor) as Graphic_Multi_NaturalEyes;
+                                                                                        eyeColor) as
+                                         Graphic_Multi_NaturalEyes;
 
             this.DeadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                                                      STR_Eyes_Dead,
+                                                                                      StringsFS.PathHumanlike + "Eyes/Eyes_Dead",
                                                                                       ShaderDatabase.Cutout,
                                                                                       Vector2.one,
                                                                                       Color.black);

@@ -90,6 +90,7 @@
     <None Include="Components\CompHumanFace.cs" />
     <None Include="Controller_Animator.cs" />
     <None Include="Components\Class1.cs" />
+    <Compile Include="DefOfs\EyeDefOf.cs" />
     <Compile Include="Enums\HeadCoverage.cs" />
     <None Include="GraphicsFS\MeshMakerPlanesFS.cs" />
     <Compile Include="GraphicsFS\Graphic_Multi_Four.cs" />
@@ -288,6 +289,9 @@
     </Content>
     <Content Include="..\..\Defs\BrowDefs\BrowDef_Male.xml">
       <Link>Defs\xml\Face\BrowDef_Male.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\EyeDefs\EyeDef_Basic.xml">
+      <Link>Defs\xml\Face\EyeDef_Basic.xml</Link>
     </Content>
     <Content Include="..\..\Defs\EyeDefs\EyeDef_Female.xml">
       <Link>Defs\xml\Face\EyeDef_Female.xml</Link>

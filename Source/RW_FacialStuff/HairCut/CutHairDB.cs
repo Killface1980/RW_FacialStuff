@@ -207,11 +207,9 @@ namespace FacialStuff.HairCut
                     {
                         Graphic graphic = GraphicDatabase.Get<Graphic_Multi_Four>(hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
 
-                        Texture2D temptexturefront, temptextureside, temptextureback, temptextureside2;
+                        SetTempTextures(graphic, out Texture2D temptexturefront, out Texture2D temptextureside, out Texture2D temptextureback, out Texture2D temptextureside2);
 
-                        SetTempTextures(graphic, out temptexturefront, out temptextureside, out temptextureback, out temptextureside2);
-
-                        var upperPath = path + "_Upperhead";
+                        string upperPath = path + "_Upperhead";
 
                         _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack;
                         _maskTexSide = FaceTextures.MaskTexUpperheadSide;
@@ -220,7 +218,7 @@ namespace FacialStuff.HairCut
 
                         SetTempTextures(graphic, out temptexturefront, out temptextureside, out temptextureback, out temptextureside2);
 
-                        var fullPath = path + "_Fullhead";
+                        string fullPath = path + "_Fullhead";
 
                         _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack;
                         _maskTexSide = FaceTextures.MaskTexFullheadSide;

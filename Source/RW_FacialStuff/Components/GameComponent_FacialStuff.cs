@@ -419,7 +419,7 @@ namespace FacialStuff
 
         private static void CheckReplaceHairTexPath(HairDef hairDef)
         {
-            string folder = "Things/Pawn/Humanlike/Hair/";
+            string folder = StringsFS.PathHumanlike+"Hair/";
             List<string> collection;
             if (hairDef.defName.Contains("SPS"))
             {

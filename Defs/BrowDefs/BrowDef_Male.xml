@@ -6,7 +6,8 @@
     <label>Aggro</label>
     <hairGender>Male</hairGender>
     <forbiddenOnRace/>
-    <texPath>Aggro</texPath>
+    <texBasePath></texBasePath><!-- empty for default path "Things/Pawn/Humanlike/Brows/"-->
+    <texName>Aggro</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -20,7 +21,7 @@
     <label>Aware</label>
     <hairGender>Male</hairGender>
     <forbiddenOnRace/>
-    <texPath>Aware</texPath>
+    <texName>Aware</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -34,7 +35,7 @@
     <label>Depressed</label>
     <hairGender>Male</hairGender>
     <forbiddenOnRace/>
-    <texPath>Depressed</texPath>
+    <texName>Depressed</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -48,7 +49,7 @@
     <label>Furious</label>
     <hairGender>Male</hairGender>
     <forbiddenOnRace/>
-    <texPath>Furious</texPath>
+    <texName>Furious</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -62,7 +63,7 @@
     <label>Nice</label>
     <hairGender>Male</hairGender>
     <forbiddenOnRace/>
-    <texPath>Nice</texPath>
+    <texName>Nice</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -76,7 +77,7 @@
     <label>Tired</label>
     <hairGender>Male</hairGender>
     <forbiddenOnRace/>
-    <texPath>Tired</texPath>
+    <texName>Tired</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -90,7 +91,7 @@
     <label>Mono</label>
     <hairGender>Male</hairGender>
     <forbiddenOnRace/>
-    <texPath>Mono</texPath>
+    <texName>Mono</texName>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
