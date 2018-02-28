@@ -1542,12 +1542,12 @@ namespace FacialStuff.FaceEditor
             }
         }
 
-        [NotNull]
+        [CanBeNull]
         private Graphic_Multi_NaturalHeadParts BeardGraphic([NotNull] BeardDef def)
         {
             string path = this.CompFace.GetBeardPath(def);
 
-            Graphic_Multi_NaturalHeadParts __result =
+            Graphic_Multi_NaturalHeadParts graphic =
             GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                                 path,
                                                                 ShaderDatabase.Cutout,
@@ -1555,7 +1555,7 @@ namespace FacialStuff.FaceEditor
                                                                 Color.white,
                                                                 Color.white) as Graphic_Multi_NaturalHeadParts;
 
-            return __result;
+            return graphic;
         }
 
         private Graphic_Multi_NaturalHeadParts BrowGraphic(BrowDef def)

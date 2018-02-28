@@ -63,14 +63,14 @@ namespace FacialStuff.GraphicsFS
             this._compFace = compFace;
             this._pawn     = compFace.Pawn;
 
-            if (this._compFace.Props.hasBeard)
-            {
-                this.InitializeGraphicsBeard();
-            }
-
             this.pawnFace = this._compFace.PawnFace;
             if (this.pawnFace != null)
             {
+                if (this._compFace.Props.hasBeard)
+                {
+                    this.InitializeGraphicsBeard();
+                }
+
                 if (this._compFace.Props.hasWrinkles)
                 {
                     this.InitializeGraphicsWrinkles();
@@ -142,9 +142,9 @@ namespace FacialStuff.GraphicsFS
                 return;
             }
 
-            string mainBeardDefTexPath = this._compFace.GetBeardPath(this.pawnFace.BeardDef);
+            string mainBeardDefTexPath = this._compFace.GetBeardPath();
 
-            string moustacheDefTexPath = this._compFace.GetMoustachePath(this.pawnFace.MoustacheDef);
+            string moustacheDefTexPath = this._compFace.GetMoustachePath();
 
             Color beardColor = this.pawnFace.BeardColor;
             Color tacheColor = this.pawnFace.BeardColor;

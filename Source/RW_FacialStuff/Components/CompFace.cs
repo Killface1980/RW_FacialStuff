@@ -530,19 +530,43 @@ namespace FacialStuff
         }
 
         [NotNull]
-        public string GetBeardPath(BeardDef def)
+        public string GetBeardPath(BeardDef def = null)
         {
+            if (def == null)
+            {
+                if (this.PawnFace?.BeardDef != null)
+                {
+                    def = this.PawnFace?.BeardDef;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+
             if (def == BeardDefOf.Beard_Shaved)
             {
                 return StringsFS.PathHumanlike+"Beards/Beard_Shaved";
             }
 
-            return "Things/Pawn/Humanlike"+"/Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;
+            return StringsFS.PathHumanlike + "Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;
         }
 
         [NotNull]
-        public string GetMoustachePath(MoustacheDef def)
+        public string GetMoustachePath(MoustacheDef def= null)
         {
+            if (def == null)
+            {
+                if (this.PawnFace?.MoustacheDef != null)
+                {
+                    def = this.PawnFace?.MoustacheDef;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+
             if (def == MoustacheDefOf.Shaved)
             {
                 return this.GetBeardPath(BeardDefOf.Beard_Shaved);

@@ -46,7 +46,7 @@ namespace FacialStuff.GraphicsFS
                     + " - Graphic_Multi_NaturalHeadParts");
                 return;
             }
-
+            
             // array[2] = LoadTexture(req.path + "_front");
             // if (array[2] == null)
             // {
@@ -125,7 +125,7 @@ namespace FacialStuff.GraphicsFS
             */
             for (int i = 0; i < 3; i++)
             {
-                MaterialRequest req2 = default(MaterialRequest);
+                MaterialRequest req2 = default;
                 req2.mainTex = array[i];
                 req2.shader = req.shader;
                 req2.color = this.color;

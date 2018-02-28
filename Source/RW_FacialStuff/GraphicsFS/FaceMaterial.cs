@@ -47,6 +47,7 @@ namespace FacialStuff.GraphicsFS
         {
             if (this.CannotShowFaceHair() || this._compFace.PawnFace?.BeardDef == BeardDefOf.Beard_Shaved)
             {
+                
                 return null;
             }
 
@@ -62,8 +63,13 @@ namespace FacialStuff.GraphicsFS
 
         private bool CannotShowFaceHair()
         {
-            return this._pawn.gender != Gender.Male 
-                            || this._compFace.BodyStat.Jaw == PartStatus.Missing || this._compFace.BodyStat.Jaw == PartStatus.Artificial;
+            if (this._pawn.gender           != Gender.Male 
+             || this._compFace.BodyStat.Jaw == PartStatus.Missing || this._compFace.BodyStat.Jaw == PartStatus.Artificial)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         [CanBeNull]
