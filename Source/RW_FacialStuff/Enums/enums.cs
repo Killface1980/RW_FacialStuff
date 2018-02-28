@@ -1,11 +1,29 @@
 ﻿namespace FacialStuff
 {
-    public class StringsFS
+    public static class StringsFS
     {
         public const string PathHumanlike = "Things/Pawn/Humanlike/";
 
     }
+    public struct BodyPartStats
+    {
+        public PartStatus HandLeft;
 
+        public PartStatus HandRight;
+
+        public PartStatus FootLeft;
+
+        public PartStatus FootRight;
+    }
+
+    public struct FacePartStats
+    {
+        public PartStatus EyeLeft;
+
+        public PartStatus EyeRight;
+
+        public PartStatus Jaw;
+    }
     public enum HandsToDraw
     {
         Both = 0,

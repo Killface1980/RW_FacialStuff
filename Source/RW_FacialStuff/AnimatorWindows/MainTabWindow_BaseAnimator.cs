@@ -98,13 +98,7 @@ namespace FacialStuff.AnimatorWindows
 
         public static Rot4 HeadRot { get; private set; } = Rot4.East;
 
-        public override Vector2 InitialSize
-        {
-            get
-            {
-                return new Vector2((float)UI.screenWidth, (float)UI.screenHeight - 35f);
-            }
-        }
+        public override Vector2 InitialSize => new Vector2(UI.screenWidth, UI.screenHeight - 35f);
 
         #endregion Public Properties
 

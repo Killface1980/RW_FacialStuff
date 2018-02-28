@@ -77,13 +77,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 
         #region Public Properties
 
-        public override int Count
-        {
-            get
-            {
-                return this._bodyTypes.Count;
-            }
-        }
+        public override int Count => this._bodyTypes.Count;
 
         public Gender Gender
         {
@@ -113,29 +107,11 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
             }
         }
 
-        public override object SelectedItem
-        {
-            get
-            {
-                return this._bodyTypes[this.Index];
-            }
-        }
+        public override object SelectedItem => this._bodyTypes[this.Index];
 
-        public override object SelectedItem2
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override object SelectedItem2 => null;
 
-        public override string SelectedItemLabel
-        {
-            get
-            {
-                return this._bodyTypes[this.Index].ToString();
-            }
-        }
+        public override string SelectedItemLabel => this._bodyTypes[this.Index].ToString();
 
         #endregion Public Properties
 

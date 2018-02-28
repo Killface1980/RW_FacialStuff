@@ -67,13 +67,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
             this.FindIndex(headType);
         }
 
-        public override int Count
-        {
-            get
-            {
-                return this._headTypes.Count;
-            }
-        }
+        public override int Count => this._headTypes.Count;
 
         public Gender Gender
         {
@@ -109,13 +103,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
             }
         }
 
-        public override object SelectedItem2
-        {
-            get
-            {
-                return this._selectedItem2;
-            }
-        }
+        public override object SelectedItem2 => this._selectedItem2;
 
         public override string SelectedItemLabel
         {

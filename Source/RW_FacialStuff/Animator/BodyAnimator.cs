@@ -8,13 +8,11 @@ namespace FacialStuff.Animator
         // public float cyclePercent = 0;
 
         // public bool Finished;
-        private readonly Pawn _pawn;
 
         private readonly CompBodyAnimator _compAnim;
 
         public BodyAnimator(Pawn p, CompBodyAnimator compAnim)
         {
-            this._pawn          = p;
             this._compAnim = compAnim;
         }
 

@@ -41,37 +41,13 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
             this.Index = currentGender == Gender.Male ? 0 : 1;
         }
 
-        public override int Count
-        {
-            get
-            {
-                return this._genders.Count;
-            }
-        }
+        public override int Count => this._genders.Count;
 
-        public override object SelectedItem
-        {
-            get
-            {
-                return this._genders[this.Index];
-            }
-        }
+        public override object SelectedItem => this._genders[this.Index];
 
-        public override object SelectedItem2
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override object SelectedItem2 => null;
 
-        public override string SelectedItemLabel
-        {
-            get
-            {
-                return this._genders[this.Index].ToString().Translate().CapitalizeFirst();
-            }
-        }
+        public override string SelectedItemLabel => this._genders[this.Index].ToString().Translate().CapitalizeFirst();
 
         public override void ResetToDefault()
         {

@@ -257,8 +257,7 @@ namespace FacialStuff
                                                                               delegate
                                                                               {
                                                                                   ExportWeaponExtensionDefs.Defs cycle =
-                                                                                  new ExportWeaponExtensionDefs.
-                                                                                  Defs(wepDef);
+                                                                                  new ExportWeaponExtensionDefs.Defs(wepDef);
 
                                                                                   DirectXmlSaver.SaveDataObject(
                                                                                                                 cycle,

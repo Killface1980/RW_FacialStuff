@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FacialStuff.DefOfs;
-using FacialStuff.Defs;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;

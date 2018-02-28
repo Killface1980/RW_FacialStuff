@@ -55,13 +55,7 @@ namespace FacialStuff.FaceEditor.UI.Util
             }
         }
 
-        public static float SelectionRowHeight
-        {
-            get
-            {
-                return NavButtonSize.y;
-            }
-        }
+        public static float SelectionRowHeight => NavButtonSize.y;
 
         public static void AddSelectorWidget(
             float left,

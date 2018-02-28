@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+
 // ReSharper disable CheckNamespace
 
 namespace FacialStuff.ExportPoseCycleDefs

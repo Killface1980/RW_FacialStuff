@@ -2,7 +2,7 @@
 {
     public partial class Dialog_FaceStyling
     {
-        public enum FilterTab : byte
+        private enum FilterTab : byte
         {
             Urban,
 

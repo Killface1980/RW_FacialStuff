@@ -589,7 +589,7 @@ namespace FacialStuff
                     WeaponPositionOffset = weaponExtensionDef.weaponPositionOffset,
                     AimedWeaponPositionOffset = weaponExtensionDef.aimedWeaponPositionOffset,
                     RightHandPosition = weaponExtensionDef.firstHandPosition,
-                    LeftHandPosition = weaponExtensionDef.secondHandPosition,
+                    LeftHandPosition = weaponExtensionDef.secondHandPosition
                 };
 
                 thingDef.comps?.Add(weaponExtensions);

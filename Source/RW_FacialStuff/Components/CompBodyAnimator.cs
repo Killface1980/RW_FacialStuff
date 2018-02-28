@@ -1,14 +1,14 @@
-﻿using FacialStuff.Animator;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+using FacialStuff.Animator;
 using FacialStuff.AnimatorWindows;
 using FacialStuff.GraphicsFS;
 using FacialStuff.Harmony;
 using FacialStuff.Tweener;
 using JetBrains.Annotations;
 using RimWorld;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -114,10 +114,7 @@ namespace FacialStuff
 
         public List<PawnBodyDrawer> PawnBodyDrawers { get; private set; }
 
-        public CompProperties_BodyAnimator Props
-        {
-            get { return (CompProperties_BodyAnimator)this.props; }
-        }
+        public CompProperties_BodyAnimator Props => (CompProperties_BodyAnimator)this.props;
 
         public bool HideHat => this.InRoom && Controller.settings.HideHatWhileRoofed;
 

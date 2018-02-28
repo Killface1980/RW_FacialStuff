@@ -63,6 +63,7 @@ namespace FacialStuff.Genetics
             // new SkinColorData(1f, 1f, new Color(0.3882353f, 0.274509817f, 0.141176477f))
         };
 
+        // ReSharper disable once RedundantAssignment
         public static bool GetMelaninCommonalityFactor_Prefix(ref float __result, float melanin)
         {
             int skinDataLeftIndexByWhiteness = GetSkinDataIndexOfMelanin(melanin);

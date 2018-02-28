@@ -82,6 +82,7 @@
     <Compile Include="AI\JobGiver_Possess.cs" />
     <Compile Include="AI\MentalStateWorker_Possessed.cs" />
     <Compile Include="AI\MentalState_Possessed.cs" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="WidgetsFS.cs" />
     <None Include="Harmony\Optional\AlienPatches.cs" />
@@ -127,10 +128,8 @@
     <Compile Include="Drawer\QuadrupedDrawer.cs" />
     <Compile Include="Enums\KeyStatus.cs" />
     <None Include="Enums\WalkcycleType.cs" />
-    <Compile Include="Enums\RaceOption.cs" />
     <Compile Include="GraphicsFS\PawnBodyGraphic.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_WalkAnimator.cs" />
-    <Compile Include="Enums\BodyPartStats.cs" />
     <Compile Include="Components\CompProperties_Face.cs" />
     <Compile Include="Enums\PartStatus.cs" />
     <Compile Include="Defs\PawnKeyframe.cs" />

@@ -150,8 +150,7 @@ namespace FacialStuff.AnimatorWindows
                                                                           delegate
                                                                           {
                                                                               ExportPoseCycleDefs.Defs cycle =
-                                                                              new ExportPoseCycleDefs.
-                                                                              Defs(EditorPosecycle);
+                                                                              new ExportPoseCycleDefs.Defs(EditorPosecycle);
 
                                                                               DirectXmlSaver.SaveDataObject(
                                                                                                             cycle,

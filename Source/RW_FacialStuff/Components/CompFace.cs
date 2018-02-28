@@ -75,10 +75,7 @@ namespace FacialStuff
         [NotNull]
         public GraphicVectorMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
 
-        public Faction OriginFaction
-        {
-            get { return this._factionInt; }
-        }
+        public Faction OriginFaction => this._factionInt;
 
         public virtual CrownType PawnCrownType => this.Pawn?.story.crownType ?? CrownType.Average;
 
@@ -106,10 +103,7 @@ namespace FacialStuff
             }
         }
 
-        public CompProperties_Face Props
-        {
-            get { return (CompProperties_Face)this.props; }
-        }
+        public CompProperties_Face Props => (CompProperties_Face)this.props;
 
         [NotNull]
         public Pawn Pawn => this.parent as Pawn;
@@ -127,15 +121,17 @@ namespace FacialStuff
 
         public void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
         {
-            if (!this.PawnHeadDrawers.NullOrEmpty())
+            if (this.PawnHeadDrawers.NullOrEmpty())
             {
-                int i = 0;
-                int count = this.PawnHeadDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnHeadDrawers[i].ApplyHeadRotation(renderBody, ref headQuat);
-                    i++;
-                }
+                return;
+            }
+
+            int i     = 0;
+            int count = this.PawnHeadDrawers.Count;
+            while (i < count)
+            {
+                this.PawnHeadDrawers[i].ApplyHeadRotation(renderBody, ref headQuat);
+                i++;
             }
         }
 
@@ -144,68 +140,50 @@ namespace FacialStuff
         {
             bool male = this.Pawn.gender == Gender.Male;
 
-            if (this.PawnCrownType == CrownType.Average)
+            switch (this.PawnCrownType)
             {
-                switch (this.PawnHeadType)
-                {
-                    case HeadType.Normal:
-                        if (male)
-                        {
-                            this._eyeOffset = MeshPoolFS.EyeMaleAverageNormalOffset;
-                        }
-                        else
-                        {
-                            this._eyeOffset = MeshPoolFS.EyeFemaleAverageNormalOffset;
-                        }
+                default:
+                    switch (this.PawnHeadType)
+                    {
+                        case HeadType.Normal:
+                            this._eyeOffset = male ? MeshPoolFS.EyeMaleAverageNormalOffset : MeshPoolFS.EyeFemaleAverageNormalOffset;
 
-                        break;
+                            break;
 
-                    case HeadType.Pointy:
-                        if (male)
-                        {
-                            this._eyeOffset = MeshPoolFS.EyeMaleAveragePointyOffset;
-                        }
-                        else
-                        {
-                            this._eyeOffset = MeshPoolFS.EyeFemaleAveragePointyOffset;
-                        }
+                        case HeadType.Pointy:
+                            this._eyeOffset = male ? MeshPoolFS.EyeMaleAveragePointyOffset : MeshPoolFS.EyeFemaleAveragePointyOffset;
 
-                        break;
+                            break;
 
-                    case HeadType.Wide:
-                        if (male)
-                        {
-                            this._eyeOffset = MeshPoolFS.EyeMaleAverageWideOffset;
-                        }
-                        else
-                        {
-                            this._eyeOffset = MeshPoolFS.EyeFemaleAverageWideOffset;
-                        }
+                        case HeadType.Wide:
+                            this._eyeOffset = male ? MeshPoolFS.EyeMaleAverageWideOffset : MeshPoolFS.EyeFemaleAverageWideOffset;
 
-                        break;
-                }
-            }
-            else
-            {
-                switch (this.PawnHeadType)
-                {
-                    case HeadType.Normal:
-                        this._eyeOffset = male
-                                          ? MeshPoolFS.EyeMaleNarrowNormalOffset
-                                          : MeshPoolFS.EyeFemaleNarrowNormalOffset;
-                        break;
+                            break;
+                    }
 
-                    case HeadType.Pointy:
-                        this._eyeOffset = male
-                                          ? MeshPoolFS.EyeMaleNarrowPointyOffset
-                                          : MeshPoolFS.EyeFemaleNarrowPointyOffset;
-                        break;
+                    break;
+                case CrownType.Narrow:
+                    switch (this.PawnHeadType)
+                    {
+                        case HeadType.Normal:
+                            this._eyeOffset = male
+                                              ? MeshPoolFS.EyeMaleNarrowNormalOffset
+                                              : MeshPoolFS.EyeFemaleNarrowNormalOffset;
+                            break;
 
-                    case HeadType.Wide:
-                        this._eyeOffset =
-                        male ? MeshPoolFS.EyeMaleNarrowWideOffset : MeshPoolFS.EyeFemaleNarrowWideOffset;
-                        break;
-                }
+                        case HeadType.Pointy:
+                            this._eyeOffset = male
+                                              ? MeshPoolFS.EyeMaleNarrowPointyOffset
+                                              : MeshPoolFS.EyeFemaleNarrowPointyOffset;
+                            break;
+
+                        case HeadType.Wide:
+                            this._eyeOffset =
+                            male ? MeshPoolFS.EyeMaleNarrowWideOffset : MeshPoolFS.EyeFemaleNarrowWideOffset;
+                            break;
+                    }
+
+                    break;
             }
 
             switch (rotation.AsInt)

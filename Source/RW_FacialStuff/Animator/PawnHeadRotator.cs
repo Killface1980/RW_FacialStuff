@@ -49,10 +49,7 @@ namespace FacialStuff.Animator
 
         #region Public Properties
 
-        public float CurrentMovement
-        {
-            get { return this._motionCurve.Evaluate(this._headRotation); }
-        }
+        public float CurrentMovement => this._motionCurve.Evaluate(this._headRotation);
 
         #endregion Public Properties
 
@@ -197,7 +194,7 @@ namespace FacialStuff.Animator
                                                                       x => x is Pawn,
                                                                       0f,
                                                                       radius,
-                                                                      default(IntVec3),
+                                                                      default,
                                                                       3.40282347E+38f,
                                                                       true);
 

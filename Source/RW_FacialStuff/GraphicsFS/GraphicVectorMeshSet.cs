@@ -5,9 +5,19 @@ namespace FacialStuff.GraphicsFS
 {
     public class GraphicVectorMeshSet
     {
-        public GraphicMeshSet Mesh;
+        #region Public Fields
+
+        public readonly GraphicMeshSet Mesh;
+
+        #endregion Public Fields
+
+        #region Private Fields
 
         private readonly Vector2 _offSet;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public GraphicVectorMeshSet(float size, Vector2 offSet)
         {
@@ -21,6 +31,10 @@ namespace FacialStuff.GraphicsFS
             this._offSet = offSet;
         }
 
+        #endregion Public Constructors
+
+        #region Public Methods
+
         public Vector3 OffsetAt(Rot4 rotation)
         {
             switch (rotation.AsInt)
@@ -31,6 +45,8 @@ namespace FacialStuff.GraphicsFS
                 default: return Vector3.zero;
             }
         }
+
+        #endregion Public Methods
 
         // float z = 1f * Mathf.Cos(num * (this.wheelRotation * 0.1f) % (2 * Mathf.PI));
         // float x = 1f * Mathf.Sin(num * (this.wheelRotation * 0.1f) % (2 * Mathf.PI));

@@ -70,13 +70,7 @@ namespace FacialStuff
 
         public bool HideHatWhileRoofed => this._hideHatWhileRoofed;
 
-        public bool HideShellWhileRoofed
-        {
-            get
-            {
-                return this._hideShellWhileRoofed;
-            }
-        }
+        public bool HideShellWhileRoofed => this._hideShellWhileRoofed;
         public bool IgnoreRenderBody => this._ignoreRenderBody;
         public bool IgnoreWhileDrafted => this._ignoreWhileDrafted;
         public MaxLayerToShow LayerInBed => this._layerInBed;
@@ -105,7 +99,7 @@ namespace FacialStuff
 
         public bool UseWrinkles => this._useWrinkles;
 
-        public bool Develop { get => this.develop;  }
+        public bool Develop => this.develop;
 
         #endregion Public Properties
 

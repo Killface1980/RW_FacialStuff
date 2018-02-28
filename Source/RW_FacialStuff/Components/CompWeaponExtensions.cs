@@ -10,10 +10,7 @@ namespace FacialStuff
     {
         #region Public Fields
 
-        public CompProperties_WeaponExtensions Props
-        {
-            get { return (CompProperties_WeaponExtensions)this.props; }
-        }
+        public CompProperties_WeaponExtensions Props => (CompProperties_WeaponExtensions)this.props;
 
         #endregion Public Fields
     }

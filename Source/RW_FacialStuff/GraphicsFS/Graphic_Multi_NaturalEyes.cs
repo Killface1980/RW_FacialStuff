@@ -135,7 +135,7 @@ namespace FacialStuff.GraphicsFS
 
             for (int i = 0; i < 4; i++)
             {
-                MaterialRequest req2 = default(MaterialRequest);
+                MaterialRequest req2 = default;
                 req2.mainTex = array[i];
                 req2.shader = req.shader;
                 req2.color = this.color;

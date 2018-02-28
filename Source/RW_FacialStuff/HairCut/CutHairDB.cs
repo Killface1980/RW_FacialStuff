@@ -95,7 +95,7 @@ namespace FacialStuff.HairCut
             string oldPath = req.path;
             string name = Path.GetFileNameWithoutExtension(oldPath);
 
-            string newPath = MergedHairPath + name + "_" + coverage.ToString();
+            string newPath = MergedHairPath + name + "_" + coverage;
             req.path = newPath;
 
             if (AllGraphics.TryGetValue(req, out Graphic graphic))

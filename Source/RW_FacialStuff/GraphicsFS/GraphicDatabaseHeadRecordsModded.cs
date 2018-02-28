@@ -28,8 +28,7 @@ namespace FacialStuff.GraphicsFS
 
         #region Public Methods
 
-        private static readonly string[] HeadsFolderPaths = new string[]
-                                                            {
+        private static readonly string[] HeadsFolderPaths = {
                                                             "Things/Pawn/Humanlike/Heads_blank/Male",
                                                             "Things/Pawn/Humanlike/Heads_blank/Female"
                                                             };
@@ -116,10 +115,7 @@ namespace FacialStuff.GraphicsFS
             {
                 this.graphicPath                  = graphicPath;
                 string   fileNameWithoutExtension = Path.GetFileNameWithoutExtension(graphicPath);
-                string[] array                    = fileNameWithoutExtension?.Split(new char[]
-                                                                                   {
-                                                                                   '_'
-                                                                                   });
+                string[] array                    = fileNameWithoutExtension?.Split('_');
                 try
                 {
                     // ReSharper disable once PossibleNullReferenceException

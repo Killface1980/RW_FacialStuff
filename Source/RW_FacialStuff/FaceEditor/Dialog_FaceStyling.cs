@@ -169,8 +169,6 @@ namespace FacialStuff.FaceEditor
 
         private bool _saveChangedOnExit;
 
-        private List<Vector2> _scrollPosition = new List<Vector2>();
-
         private Vector2 _scrollPositionBeard1 = Vector2.zero;
 
         private Vector2 _scrollPositionBeard2 = Vector2.zero;
@@ -603,8 +601,6 @@ namespace FacialStuff.FaceEditor
         public void DrawBeardPicker(Rect rect)
         {
             List<TabRecord> list = new List<TabRecord>();
-
-            List<HairDef> hairDefs = DefDatabase<HairDef>.AllDefsListForReading;
 
             void FullBeards()
             {
@@ -1679,8 +1675,8 @@ namespace FacialStuff.FaceEditor
 
             // Draw selected beard
             GUI.color = this.PawnFace.HasSameBeardColor ? Pawn.story.hairColor : this.NewBeardColor;
-            GUI.DrawTexture(leftRect, this.BeardGraphic(beard).MatFront.mainTexture);
-            GUI.DrawTexture(rightRect, this.BeardGraphic(beard).MatSide.mainTexture);
+            GUI.DrawTexture(leftRect, this.BeardGraphic(beard)?.MatFront.mainTexture);
+            GUI.DrawTexture(rightRect, this.BeardGraphic(beard)?.MatSide.mainTexture);
             GUI.color = Color.white;
 
             Text.Anchor = TextAnchor.UpperCenter;
@@ -1994,8 +1990,8 @@ namespace FacialStuff.FaceEditor
             GUI.DrawTexture(rect1, Pawn.Drawer.renderer.graphics.headGraphic.MatFront.mainTexture);
             GUI.DrawTexture(rect2, Pawn.Drawer.renderer.graphics.headGraphic.MatSide.mainTexture);
             GUI.color = this.PawnFace.HasSameBeardColor ? Pawn.story.hairColor : this.NewBeardColor;
-            GUI.DrawTexture(rect1, this.MoustacheGraphic(moustache).MatFront.mainTexture);
-            GUI.DrawTexture(rect2, this.MoustacheGraphic(moustache).MatSide.mainTexture);
+            GUI.DrawTexture(rect1, this.MoustacheGraphic(moustache)?.MatFront.mainTexture);
+            GUI.DrawTexture(rect2, this.MoustacheGraphic(moustache)?.MatSide.mainTexture);
             GUI.color = Color.white;
 
             Text.Anchor = TextAnchor.UpperCenter;
@@ -2315,10 +2311,10 @@ namespace FacialStuff.FaceEditor
 
         private Graphic HairGraphic(HairDef def)
         {
-            Graphic __result;
+            Graphic graphic;
             if (def.texPath != null)
             {
-                __result = GraphicDatabase.Get<Graphic_Multi>(
+                graphic = GraphicDatabase.Get<Graphic_Multi>(
                                                               def.texPath,
                                                               ShaderDatabase.Cutout,
                                                               new Vector2(38f, 38f),
@@ -2327,10 +2323,10 @@ namespace FacialStuff.FaceEditor
             }
             else
             {
-                __result = null;
+                graphic = null;
             }
 
-            return __result;
+            return graphic;
         }
 
         private Graphic_Multi_NaturalEyes LeftEyeGraphic(EyeDef def)
@@ -2355,30 +2351,37 @@ namespace FacialStuff.FaceEditor
             return __result;
         }
 
-        [NotNull]
+        [CanBeNull]
         private Graphic_Multi_NaturalHeadParts MoustacheGraphic([NotNull] MoustacheDef def)
         {
+            Graphic_Multi_NaturalHeadParts graphic;
             string path = this.CompFace.GetMoustachePath(def);
+            if (path.NullOrEmpty())
+            {
+                graphic= null;
+            }
+            else
+            {
+                
+            graphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                                                                          path,
+                                                                          ShaderDatabase.Cutout,
+                                                                          new Vector2(38f, 38f),
+                                                                          Color.white,
+                                                                          Color.white) as Graphic_Multi_NaturalHeadParts;
 
-            Graphic_Multi_NaturalHeadParts __result =
-            GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                                path,
-                                                                ShaderDatabase.Cutout,
-                                                                new Vector2(38f, 38f),
-                                                                Color.white,
-                                                                Color.white) as Graphic_Multi_NaturalHeadParts;
-
-            return __result;
+            }
+            return graphic;
         }
 
         private Graphic_Multi_NaturalEyes RightEyeGraphic(EyeDef def)
         {
-            Graphic_Multi_NaturalEyes result;
+            Graphic_Multi_NaturalEyes graphic;
             if (def != null)
             {
                 string path = this.CompFace.EyeTexPath(Side.Right, def);
 
-                result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
+                graphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                                                                           path,
                                                                           ShaderDatabase.CutoutComplex,
                                                                           new Vector2(38f, 38f),
@@ -2387,35 +2390,31 @@ namespace FacialStuff.FaceEditor
             }
             else
             {
-                result = null;
+                graphic = null;
             }
 
-            return result;
+            return graphic;
         }
 
         private void UpdatePawnColors(object type, object newValue)
         {
-            if (type == null)
+            switch (type)
             {
-                return;
-            }
-
-            if (type is BeardDef)
-            {
-                this.PawnFace.BeardColor = (Color) newValue;
-            }
-
-            if (type is HairDef)
-            {
-                Pawn.story.hairColor        = (Color) newValue;
-                this.PawnFace.HairColor = (Color) newValue;
+                case null:
+                    return;
+                case BeardDef _:
+                    this.PawnFace.BeardColor = (Color) newValue;
+                    break;
+                case HairDef _:
+                    Pawn.story.hairColor    = (Color) newValue;
+                    this.PawnFace.HairColor = (Color) newValue;
+                    break;
+                case Color _:
+                    Pawn.story.melanin = (float) newValue;
+                    break;
             }
 
             // skin color
-            if (type is Color)
-            {
-                Pawn.story.melanin = (float) newValue;
-            }
 
             this.RerenderPawn = true;
         }
@@ -2423,29 +2422,23 @@ namespace FacialStuff.FaceEditor
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private void UpdatePawnDefs([NotNull] Def newValue)
         {
-            if (newValue is BeardDef)
+            switch (newValue)
             {
-                this.PawnFace.BeardDef = (BeardDef) newValue;
-            }
-
-            if (newValue is MoustacheDef)
-            {
-                this.PawnFace.MoustacheDef = (MoustacheDef) newValue;
-            }
-
-            if (newValue is EyeDef)
-            {
-                this.PawnFace.EyeDef = (EyeDef) newValue;
-            }
-
-            if (newValue is BrowDef)
-            {
-                this.PawnFace.BrowDef = (BrowDef) newValue;
-            }
-
-            if (newValue is HairDef)
-            {
-                Pawn.story.hairDef = (HairDef) newValue;
+                case BeardDef _:
+                    this.PawnFace.BeardDef = (BeardDef) newValue;
+                    break;
+                case MoustacheDef _:
+                    this.PawnFace.MoustacheDef = (MoustacheDef) newValue;
+                    break;
+                case EyeDef _:
+                    this.PawnFace.EyeDef = (EyeDef) newValue;
+                    break;
+                case BrowDef _:
+                    this.PawnFace.BrowDef = (BrowDef) newValue;
+                    break;
+                case HairDef _:
+                    Pawn.story.hairDef = (HairDef) newValue;
+                    break;
             }
 
             this.RerenderPawn = true;

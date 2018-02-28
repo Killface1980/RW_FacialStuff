@@ -9,7 +9,7 @@ using System.Reflection.Emit;
 namespace FacialStuff.Harmony
 {
     using FaceEditor;
-    using FacialStuff.AnimatorWindows;
+    using AnimatorWindows;
     using Genetics;
     using global::Harmony;
     using GraphicsFS;
@@ -66,7 +66,7 @@ namespace FacialStuff.Harmony
                       new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DrawEquipmentAiming_Prefix)),
                       null,
                       new HarmonyMethod(typeof(HarmonyPatchesFS),
-                                        nameof(HarmonyPatchesFS.DrawEquipmentAiming_Transpiler)));
+                                        nameof(DrawEquipmentAiming_Transpiler)));
 
             // harmony.Patch(
             // AccessTools.Method(
@@ -95,7 +95,7 @@ namespace FacialStuff.Harmony
                           // new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(HarmonyPatchesFS.RenderPawnAt)),
                           null,
                           null,
-                          new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(HarmonyPatchesFS.RenderPawnAt_Transpiler))
+                          new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(RenderPawnAt_Transpiler))
                          );
 
             //    harmony.Patch(

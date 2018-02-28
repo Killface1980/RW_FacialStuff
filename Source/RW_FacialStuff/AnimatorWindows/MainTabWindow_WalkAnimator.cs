@@ -187,8 +187,7 @@ namespace FacialStuff.AnimatorWindows
                                                                           delegate
                                                                           {
                                                                               ExportWalkCycleDefs.Defs cycle =
-                                                                              new ExportWalkCycleDefs.
-                                                                              Defs(EditorWalkcycle);
+                                                                              new ExportWalkCycleDefs.Defs(EditorWalkcycle);
 
                                                                               DirectXmlSaver.SaveDataObject(
                                                                                                             cycle,

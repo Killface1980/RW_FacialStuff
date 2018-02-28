@@ -1,8 +1,8 @@
-﻿using FacialStuff.AnimatorWindows;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FacialStuff.AnimatorWindows;
 using FacialStuff.HairCut;
 using RimWorld;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Verse;
 
@@ -121,16 +121,18 @@ namespace FacialStuff
         public override void DrawBrows(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
             Material browMat = this.CompFace.FaceMaterial.BrowMatAt(this.HeadFacing);
-            if (browMat != null)
+            if (browMat == null)
             {
-                Mesh eyeMesh = this.CompFace.EyeMeshSet.Mesh.MeshAt(this.HeadFacing);
-                GenDraw.DrawMeshNowOrLater(
-                                           eyeMesh,
-                                           drawLoc + this.EyeOffset(this.HeadFacing),
-                                           headQuat,
-                                           browMat,
-                                           portrait);
+                return;
             }
+
+            Mesh eyeMesh = this.CompFace.EyeMeshSet.Mesh.MeshAt(this.HeadFacing);
+            GenDraw.DrawMeshNowOrLater(
+                                       eyeMesh,
+                                       drawLoc + this.EyeOffset(this.HeadFacing),
+                                       headQuat,
+                                       browMat,
+                                       portrait);
         }
 
         public override void DrawHairAndHeadGear(Vector3 hairLoc, Vector3 headgearLoc,
@@ -302,23 +304,20 @@ namespace FacialStuff
         public override void DrawNaturalMouth(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
             Material mouthMat = this.CompFace.FaceMaterial.MouthMatAt(this.HeadFacing, portrait);
-            if (mouthMat != null)
+            if (mouthMat == null)
             {
-                // Mesh meshMouth = __instance.graphics.HairMeshSet.MeshAt(headFacing);
-                Mesh meshMouth = this.CompFace.MouthMeshSet.Mesh.MeshAt(this.HeadFacing);
-                Vector3 mouthOffset;
-                if (Controller.settings.Develop)
-                {
-                    mouthOffset = this.CompFace.BaseMouthOffsetAtDevelop(this.HeadFacing);
-                }
-                else
-                {
-                    mouthOffset = this.CompFace.MouthMeshSet.OffsetAt(this.HeadFacing);
-                }
-
-                Vector3 mouthLoc = drawLoc + headQuat * mouthOffset;
-                GenDraw.DrawMeshNowOrLater(meshMouth, mouthLoc, headQuat, mouthMat, portrait);
+                return;
             }
+
+            // Mesh meshMouth = __instance.graphics.HairMeshSet.MeshAt(headFacing);
+            Mesh meshMouth = this.CompFace.MouthMeshSet.Mesh.MeshAt(this.HeadFacing);
+
+            Vector3 mouthOffset = Controller.settings.Develop
+                                  ? this.CompFace.BaseMouthOffsetAtDevelop(this.HeadFacing)
+                                  : this.CompFace.MouthMeshSet.OffsetAt(this.HeadFacing);
+
+            Vector3 mouthLoc = drawLoc + headQuat * mouthOffset;
+            GenDraw.DrawMeshNowOrLater(meshMouth, mouthLoc, headQuat, mouthMat, portrait);
         }
 
         public override void DrawUnnaturalEyeParts(Vector3 drawLoc, Quaternion headQuat, bool portrait)
@@ -382,12 +381,9 @@ namespace FacialStuff
 
         public override Vector3 EyeOffset(Rot4 headFacing)
         {
-            if (Controller.settings.Develop)
-            {
-                return this.CompFace.BaseEyeOffsetAt(headFacing);
-            }
-
-            return this.CompFace.EyeMeshSet.OffsetAt(headFacing);
+            return Controller.settings.Develop
+                   ? this.CompFace.BaseEyeOffsetAt(headFacing)
+                   : this.CompFace.EyeMeshSet.OffsetAt(headFacing);
         }
 
         public override void Initialize()
@@ -419,14 +415,12 @@ namespace FacialStuff
                                                  * walkCycle?.BodyAngle.Evaluate(this.CompAnimator.MovedPercent) ?? 0f,
                                                    Vector3.up);
                 }
-                else
-                {
-                    asQuat *= Quaternion.AngleAxis(
-                                                   (this.BodyFacing == Rot4.South ? 1 : -1)
-                                                 * walkCycle?.BodyAngleVertical
-                                                             .Evaluate(this.CompAnimator.MovedPercent) ?? 0f,
-                                                   Vector3.up);
-                }
+
+                asQuat *= Quaternion.AngleAxis(
+                                               (this.BodyFacing == Rot4.South ? 1 : -1)
+                                             * walkCycle?.BodyAngleVertical
+                                                         .Evaluate(this.CompAnimator.MovedPercent) ?? 0f,
+                                               Vector3.up);
             }
 
             return asQuat;
@@ -439,7 +433,6 @@ namespace FacialStuff
             CompBodyAnimator animator = this.CompAnimator;
             if (animator == null)
             {
-                return;
             }
 
             // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;

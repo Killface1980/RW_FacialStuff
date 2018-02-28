@@ -100,7 +100,7 @@ namespace FacialStuff.Animator
             }
         }
 
-        public int NextBlinkEnd { get; private set; } = -5000;
+        private int NextBlinkEnd { get; set; } = -5000;
 
         #endregion Public Properties
 

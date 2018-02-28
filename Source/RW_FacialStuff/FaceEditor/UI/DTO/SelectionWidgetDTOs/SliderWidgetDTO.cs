@@ -48,10 +48,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 
         public float SelectedValue
         {
-            get
-            {
-                return this._selectedValue;
-            }
+            get => this._selectedValue;
 
             set
             {

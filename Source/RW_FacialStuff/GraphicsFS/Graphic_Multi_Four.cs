@@ -7,37 +7,13 @@ namespace Verse
     {
         private Material[] mats = new Material[4];
 
-        public override Material MatFront
-        {
-            get
-            {
-                return this.mats[2];
-            }
-        }
+        public override Material MatFront => this.mats[2];
 
-        public override Material MatSide
-        {
-            get
-            {
-                return this.mats[1];
-            }
-        }
+        public override Material MatSide => this.mats[1];
 
-        public Material MatLeft
-        {
-            get
-            {
-                return this.mats[3];
-            }
-        }
+        public Material MatLeft => this.mats[3];
 
-        public override Material MatBack
-        {
-            get
-            {
-                return this.mats[0];
-            }
-        }
+        public override Material MatBack => this.mats[0];
 
         public override Material MatAt(Rot4 rot, Thing thing = null)
         {
@@ -71,7 +47,7 @@ namespace Verse
             array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", false);
             if (array[0] == null)
             {
-                Log.Error("Failed to find any texture while constructing " + this.ToString());
+                Log.Error("Failed to find any texture while constructing " + this);
                 return;
             }
             array[1] = ContentFinder<Texture2D>.Get(req.path + "_side", false);
@@ -116,7 +92,7 @@ namespace Verse
             }
             for (int i = 0; i < 4; i++)
             {
-                MaterialRequest req2 = default(MaterialRequest);
+                MaterialRequest req2 = default;
                 req2.mainTex = array[i];
                 req2.shader = req.shader;
                 req2.color = this.color;

@@ -172,46 +172,46 @@ namespace FacialStuff.Tweener
     public class Tween<T> : ITween<T>
         where T : struct
     {
-        private readonly LerpFunc<T> lerpFunc;
+        private readonly LerpFunc<T> _lerpFunc;
 
-        private float currentTime;
-        private float duration;
-        private ScaleFunc scaleFunc;
-        private TweenState state;
+        private float _currentTime;
+        private float _duration;
+        private ScaleFunc _scaleFunc;
+        private TweenState _state;
 
-        private T start;
-        private T end;
-        private T value;
+        private T _start;
+        private T _end;
+        private T _value;
 
         /// <summary>
         /// Gets the current time of the tween.
         /// </summary>
-        public float CurrentTime { get { return this.currentTime; } }
+        public float CurrentTime => this._currentTime;
 
         /// <summary>
         /// Gets the duration of the tween.
         /// </summary>
-        public float Duration { get { return this.duration; } }
+        public float Duration => this._duration;
 
         /// <summary>
         /// Gets the current state of the tween.
         /// </summary>
-        public TweenState State { get { return this.state; } }
+        public TweenState State => this._state;
 
         /// <summary>
         /// Gets the starting value of the tween.
         /// </summary>
-        public T StartValue { get { return this.start; } }
+        public T StartValue => this._start;
 
         /// <summary>
         /// Gets the ending value of the tween.
         /// </summary>
-        public T EndValue { get { return this.end; } }
+        public T EndValue => this._end;
 
         /// <summary>
         /// Gets the current value of the tween.
         /// </summary>
-        public T CurrentValue { get { return this.value; } }
+        public T CurrentValue => this._value;
 
         /// <summary>
         /// Initializes a new Tween with a given lerp function.
@@ -223,8 +223,8 @@ namespace FacialStuff.Tweener
         /// <param name="lerpFunc">The interpolation function for the tween type.</param>
         public Tween(LerpFunc<T> lerpFunc)
         {
-            this.lerpFunc = lerpFunc;
-            this.state = TweenState.Stopped;
+            this._lerpFunc = lerpFunc;
+            this._state = TweenState.Stopped;
         }
 
         /// <summary>
@@ -241,13 +241,13 @@ namespace FacialStuff.Tweener
                 throw new ArgumentException("duration must be greater than 0");
             }
 
-            this.currentTime = 0;
-            this.duration = duration;
-            this.scaleFunc = scaleFunc ?? throw new ArgumentNullException("scaleFunc");
-            this.state = TweenState.Running;
+            this._currentTime = 0;
+            this._duration = duration;
+            this._scaleFunc = scaleFunc ?? throw new ArgumentNullException("scaleFunc");
+            this._state = TweenState.Running;
 
-            this.start = start;
-            this.end = end;
+            this._start = start;
+            this._end = end;
 
             this.UpdateValue();
         }
@@ -257,9 +257,9 @@ namespace FacialStuff.Tweener
         /// </summary>
         public void Pause()
         {
-            if (this.state == TweenState.Running)
+            if (this._state == TweenState.Running)
             {
-                this.state = TweenState.Paused;
+                this._state = TweenState.Paused;
             }
         }
 
@@ -268,9 +268,9 @@ namespace FacialStuff.Tweener
         /// </summary>
         public void Resume()
         {
-            if (this.state == TweenState.Paused)
+            if (this._state == TweenState.Paused)
             {
-                this.state = TweenState.Running;
+                this._state = TweenState.Running;
             }
         }
 
@@ -280,11 +280,11 @@ namespace FacialStuff.Tweener
         /// <param name="stopBehavior">The behavior to use to handle the stop.</param>
         public void Stop(StopBehavior stopBehavior)
         {
-            this.state = TweenState.Stopped;
+            this._state = TweenState.Stopped;
 
             if (stopBehavior == StopBehavior.ForceComplete)
             {
-                this.currentTime = this.duration;
+                this._currentTime = this._duration;
                 this.UpdateValue();
             }
         }
@@ -295,16 +295,16 @@ namespace FacialStuff.Tweener
         /// <param name="elapsedTime">The elapsed time to add to the tween.</param>
         public void Update(float elapsedTime)
         {
-            if (this.state != TweenState.Running)
+            if (this._state != TweenState.Running)
             {
                 return;
             }
 
-            this.currentTime += elapsedTime;
-            if (this.currentTime >= this.duration)
+            this._currentTime += elapsedTime;
+            if (this._currentTime >= this._duration)
             {
-                this.currentTime = this.duration;
-                this.state = TweenState.Stopped;
+                this._currentTime = this._duration;
+                this._state = TweenState.Stopped;
             }
 
             this.UpdateValue();
@@ -316,7 +316,7 @@ namespace FacialStuff.Tweener
         /// </summary>
         private void UpdateValue()
         {
-            this.value = this.lerpFunc(this.start, this.end, this.scaleFunc(this.currentTime / this.duration));
+            this._value = this._lerpFunc(this._start, this._end, this._scaleFunc(this._currentTime / this._duration));
         }
     }
 
@@ -536,11 +536,9 @@ namespace FacialStuff.Tweener
             {
                 return (float)Math.Pow(progress, power) / 2f;
             }
-            else
-            {
-                int sign = power % 2 == 0 ? -1 : 1;
-                return (float)(sign / 2.0 * (Math.Pow(progress - 2, power) + sign * 2));
-            }
+
+            int sign = power                                                  % 2 == 0 ? -1 : 1;
+            return (float)(sign / 2.0 * (Math.Pow(progress - 2, power) + sign * 2));
         }
 
         private static float SineEaseInImpl(float progress)

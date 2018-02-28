@@ -21,16 +21,9 @@ namespace FacialStuff.Harmony.Optional.PrepC
             }
 
             Rect rect = new Rect(panelRect.width - 90f, 9f, 25f, 25f);
-            if (rect.Contains(Event.current.mousePosition))
-            {
-                GUI.color = Color.cyan;
-
-                // GUI.color = new Color(0.97647f, 0.97647f, 0.97647f);
-            }
-            else
-            {
-                GUI.color = new Color(0.623529f, 0.623529f, 0.623529f);
-            }
+            GUI.color = rect.Contains(Event.current.mousePosition)
+                        ? Color.cyan
+                        : new Color(0.623529f, 0.623529f, 0.623529f);
 
             GUI.DrawTexture(rect, ContentFinder<Texture2D>.Get("Buttons/ButtonFace"));
             string tip = "FacialStuffEditor.EditFace".Translate();
