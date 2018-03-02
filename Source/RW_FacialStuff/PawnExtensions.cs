@@ -176,9 +176,9 @@ namespace FacialStuff
             return pawn.stances.curStance is Stance_Busy stanceBusy && !stanceBusy.neverAimWeapon &&
                    stanceBusy.focusTarg.IsValid;
         }
-        public static bool CarryWeaponOpenly(this Pawn pawn)
+        public static bool ShowWeaponOpenly(this Pawn pawn)
         {
-            return pawn.carryTracker?.CarriedThing == null &&
+            return pawn.carryTracker?.CarriedThing == null && pawn.equipment?.Primary !=null &&
                    (pawn.Drafted ||
                     (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon) ||
                     (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
@@ -250,6 +250,7 @@ namespace FacialStuff
                 || (job != null && (job.def == JobDefOf.Flee || job.def == JobDefOf.FleeAndCower));
         }
 
+        [CanBeNull]
         public static CompBodyAnimator GetCompAnim([NotNull] this Pawn pawn)
         {
             return pawn.GetComp<CompBodyAnimator>();
@@ -261,6 +262,7 @@ namespace FacialStuff
             return compAnim != null;
         }
 
+        [CanBeNull]
         public static CompFace GetCompFace([NotNull] this Pawn pawn)
         {
             return pawn.GetComp<CompFace>();

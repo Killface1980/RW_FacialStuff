@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using FacialStuff.Harmony;
+using JetBrains.Annotations;
 using UnityEngine;
 using Verse;
 
@@ -6,14 +7,19 @@ namespace FacialStuff.HairCut
 {
     public class HairCutPawn
     {
-        public Graphic HairCutGraphic;
+        [CanBeNull] public Graphic HairCutGraphic;
 
         public Pawn Pawn;
 
         [CanBeNull]
         public Material HairCutMatAt(Rot4 facing)
         {
-            Material material = this.HairCutGraphic.MatAt(facing);
+            if (this.HairCutGraphic == null)
+            {
+                HarmonyPatchesFS.ResolveApparelGraphics_Postfix(this.Pawn.Drawer.renderer.graphics);
+            }
+
+            Material material = this.HairCutGraphic?.MatAt(facing);
 
             if (material != null)
             {

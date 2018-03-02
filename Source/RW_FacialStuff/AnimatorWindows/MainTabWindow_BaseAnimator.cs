@@ -704,7 +704,7 @@ namespace FacialStuff.AnimatorWindows
             // Portrait
             Rect rect = new Rect(0, 0, inRectWidth, inRectWidth);
 
-            GUI.DrawTexture(rect, FaceTextures.BackgroundAnimTex);
+            this.DrawBackground(rect);
 
             // Draw the pawn's portrait
             Vector2 size = new Vector2(rect.height / 1.4f, rect.height); // 128x180
@@ -728,6 +728,12 @@ namespace FacialStuff.AnimatorWindows
             // GUI.DrawTexture(position, PortraitsCache.Get(pawn, size, default(Vector3)));
             Widgets.DrawBox(rect);
         }
+
+        protected virtual void DrawBackground(Rect rect)
+        {
+            GUI.DrawTexture(rect, FaceTextures.BackgroundAnimTex);
+        }
+
         private void DrawRotatorBody(float curY, float width)
         {
             float buttWidth = (width - 4 * this.Spacing) / 6;

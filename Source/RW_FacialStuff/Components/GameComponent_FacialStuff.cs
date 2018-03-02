@@ -45,7 +45,9 @@ namespace FacialStuff
 
             this.WeaponCompsNew();
             this.WeaponComps();
-            // todo: use BodyDef instead, target for kickstarting?   this.AnimalPawnCompsBodyDefImport();  
+            // todo: use BodyDef instead, target for kickstarting? 
+
+            this.AnimalPawnCompsBodyDefImport();  
             this.AnimalPawnCompsImportFromAnimationTargetDefs();
             Controller.SetMainButtons();
             // BuildWalkCycles();
@@ -601,17 +603,15 @@ namespace FacialStuff
         private void AnimalPawnCompsImportFromAnimationTargetDefs()
         {
             // ReSharper disable once PossibleNullReferenceException
-            for (int index = 0; index < DefDatabase<AnimationTargetDef>.AllDefsListForReading.Count; index++)
+            foreach (AnimationTargetDef def in DefDatabase<AnimationTargetDef>.AllDefsListForReading)
             {
-                AnimationTargetDef def = DefDatabase<AnimationTargetDef>.AllDefsListForReading[index];
                 if (def.CompLoaderTargets.NullOrEmpty())
                 {
                     continue;
                 }
 
-                for (int i = 0; i < def.CompLoaderTargets.Count; i++)
+                foreach (CompLoaderTargets pawnSets in def.CompLoaderTargets)
                 {
-                    CompLoaderTargets pawnSets = def.CompLoaderTargets[i];
                     if (pawnSets == null)
                     {
                         continue;
@@ -622,10 +622,10 @@ namespace FacialStuff
                         continue;
                     }
 
-                    for (int j = 0, count = pawnSets.thingTargets.Count; j < count; j++)
+                    foreach (string target in pawnSets.thingTargets)
                     {
-                        string t = pawnSets.thingTargets[j];
-                        ThingDef thingDef = ThingDef.Named(t);
+                       
+                        ThingDef thingDef = ThingDef.Named(target);
                         if (thingDef == null)
                         {
                             continue;
@@ -638,14 +638,16 @@ namespace FacialStuff
                         }
 
                         CompProperties_BodyAnimator animator = new CompProperties_BodyAnimator
-                        {
-                            compClass = typeof(CompBodyAnimator)
-                        };
-                        animator.bodyDrawers = pawnSets.bodyDrawers;
-                        animator.handType = pawnSets.handType;
-                        animator.quadruped = pawnSets.quadruped;
-                        animator.bipedWithHands = pawnSets.bipedWithHands;
+                                                               {
+                                                               compClass      = typeof(CompBodyAnimator),
+                                                               bodyDrawers    = pawnSets.bodyDrawers,
+                                                               handType       = pawnSets.handType,
+                                                               quadruped      = pawnSets.quadruped,
+                                                               bipedWithHands = pawnSets.bipedWithHands
+                                                               };
                         thingDef.comps?.Add(animator);
+
+
                     }
                 }
             }
@@ -656,16 +658,15 @@ namespace FacialStuff
         private void AnimalPawnCompsBodyDefImport()
         {
             // ReSharper disable once PossibleNullReferenceException
-            for (int index = 0; index < DefDatabase<BodyAnimDef>.AllDefsListForReading.Count; index++)
+            foreach (BodyAnimDef def in DefDatabase<BodyAnimDef>.AllDefsListForReading)
             {
-                BodyAnimDef def = DefDatabase<BodyAnimDef>.AllDefsListForReading[index];
-                string t = def.thingTarget;
-                if (t.NullOrEmpty())
+                string target = def.thingTarget;
+                if (target.NullOrEmpty())
                 {
                     continue;
                 }
 
-                ThingDef thingDef = ThingDef.Named(t);
+                ThingDef thingDef = ThingDef.Named(target);
                 if (thingDef == null)
                 {
                     continue;
@@ -678,17 +679,16 @@ namespace FacialStuff
                 }
 
                 CompProperties_BodyAnimator animator = new CompProperties_BodyAnimator
-                {
-                    compClass = typeof(CompBodyAnimator)
-                };
-                //  animator.
-                animator.bodyDrawers = def.bodyDrawers;
-                animator.handType = def.handType;
-                animator.quadruped = def.quadruped;
-                animator.bipedWithHands = def.bipedWithHands;
+                                                       {
+                                                       compClass      = typeof(CompBodyAnimator),
+                                                       bodyDrawers    = def.bodyDrawers,
+                                                       handType       = def.handType,
+                                                       quadruped      = def.quadruped,
+                                                       bipedWithHands = def.bipedWithHands
+                                                       };
+
                 thingDef.comps?.Add(animator);
             }
-
         }
 
 

@@ -21,7 +21,7 @@ namespace FacialStuff
 
         #region Public Methods
 
-        public virtual Mesh GetPawnMesh(bool wantsBody, bool portrait)
+        protected virtual Mesh GetPawnMesh(bool wantsBody, bool portrait)
         {
             return wantsBody
                        ? MeshPool.humanlikeBodySet?.MeshAt(this.BodyFacing)

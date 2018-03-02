@@ -9,7 +9,7 @@ namespace FacialStuff
     {
         public override void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
         {
-            if (portrait && !MainTabWindow_WalkAnimator.IsOpen || !MainTabWindow_PoseAnimator.IsOpen)
+            if (portrait && !MainTabWindow_WalkAnimator.IsOpen)
             {
                 return;
             }
@@ -17,12 +17,13 @@ namespace FacialStuff
             // Fix the position, maybe needs new code in GetJointPositions()?
             if (!this.BodyFacing.IsHorizontal)
             {
-                rootLoc.y -=  Offsets.YOffset_Behind;
+         //       rootLoc.y -=  Offsets.YOffset_Behind;
             }
+            rootLoc.y += this.BodyFacing == Rot4.South ? -Offsets.YOffset_HandsFeetOver : 0;
 
             this.DrawFrontPaws(bodyQuat, footQuat, rootLoc, portrait);
 
-            rootLoc.y += this.BodyFacing == Rot4.North ? Offsets.YOffset_Behind : -Offsets.YOffset_Behind;
+         //   rootLoc.y += this.BodyFacing == Rot4.North ? Offsets.YOffset_Behind : -Offsets.YOffset_Behind;
 
             base.DrawFeet(bodyQuat, footQuat, rootLoc, portrait);
         }
@@ -33,7 +34,7 @@ namespace FacialStuff
            // base.DrawHands(bodyQuat, drawPos, portrait, carrying, drawSide);
         }
 
-        public virtual void DrawFrontPaws(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
+        protected virtual void DrawFrontPaws(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
         {
             if (!this.CompAnimator.Props.quadruped)
             {

@@ -27,7 +27,7 @@ namespace FacialStuff
 
 
         public float JitterMax = 0.35f;
-        public Vector3Tween[] Vector3Tweens = new Vector3Tween[(int)TweenThing.Max];
+        public readonly Vector3Tween[] Vector3Tweens = new Vector3Tween[(int)TweenThing.Max];
 
         //   [CanBeNull] public PawnPartsTweener PartTweener;
 
@@ -376,7 +376,7 @@ namespace FacialStuff
 
             // Tweener 
             Vector3Tween eqTween = this.Vector3Tweens[(int)HarmonyPatchesFS.equipment];
-            FloatTween angleTween = this.aimAngleTween;
+            FloatTween angleTween = this.AimAngleTween;
             Vector3Tween leftHand = this.Vector3Tweens[(int)TweenThing.HandLeft];
             Vector3Tween rightHand = this.Vector3Tweens[(int)TweenThing.HandRight];
             if (leftHand.State == TweenState.Running)
@@ -396,7 +396,7 @@ namespace FacialStuff
 
             if (angleTween.State == TweenState.Running)
             {
-                this.aimAngleTween.Update(3f * Find.TickManager.TickRateMultiplier);
+                this.AimAngleTween.Update(3f * Find.TickManager.TickRateMultiplier);
 
             }
 
@@ -516,14 +516,14 @@ namespace FacialStuff
         public float MovedPercent => this._movedPercent;
         public float BodyAngle;
 
-        public float lastAimAngle = 143f;
+        public float LastAimAngle = 143f;
         //  public float lastWeaponAngle = 53f;
-        public Vector3[] lastPosition = new Vector3[(int)TweenThing.Max];
+        public readonly Vector3[] LastPosition = new Vector3[(int)TweenThing.Max];
 
-        public FloatTween aimAngleTween = new FloatTween();
+        public readonly FloatTween AimAngleTween = new FloatTween();
         public bool HasLeftHandPosition => this.SecondHandPosition != Vector3.zero;
 
-        public Vector3 lastEqPos = Vector3.zero;
+        public Vector3 LastEqPos = Vector3.zero;
         public float DrawOffsetY;
         public void CheckMovement()
         {
@@ -589,9 +589,9 @@ namespace FacialStuff
 
         public bool IsMoving => this._isMoving;
         internal bool MeshFlipped;
-        internal float lastWeaponAngle;
-        internal int lastPosUpdate;
-        internal int lastAngleTick;
+        internal float LastWeaponAngle;
+        internal readonly int[] LastPosUpdate = new int[(int)TweenThing.Max];
+        internal int LastAngleTick;
         float _movedPercent;
         bool _isMoving;
         private  WalkCycleDef _walkCycle;

@@ -218,9 +218,29 @@ namespace FacialStuff
             if (renderBody || Controller.settings.IgnoreRenderBody)
             {
                 Vector3 bodyLoc = rootLoc;
+                bodyLoc.x += this.CompAnimator.BodyAnim?.offCenterX ?? 0f;
                 bodyLoc.y += Offsets.YOffset_Body;
 
-                Mesh bodyMesh = this.GetPawnMesh(true, portrait);
+                if (bodyDrawType == RotDrawMode.Dessicated &&
+                    !this.Pawn.RaceProps.Humanlike
+                 && this.Pawn.Drawer.renderer.graphics.dessicatedGraphic != null && !portrait)
+                {
+                    this.Pawn.Drawer.renderer.graphics.dessicatedGraphic.Draw(bodyLoc, this.BodyFacing, this.Pawn);
+                }
+                else
+                {
+
+
+
+                Mesh bodyMesh;
+                if (this.Pawn.RaceProps.Humanlike)
+                {
+                    bodyMesh = this.GetPawnMesh(true, portrait);
+                }
+                else
+                {
+                    bodyMesh = this.Pawn.Drawer.renderer.graphics.nakedGraphic.MeshAt(this.BodyFacing);
+                }
 
                 List<Material> bodyBaseAt = null;
                 bool           flag       = true;
@@ -263,6 +283,7 @@ namespace FacialStuff
                     drawLoc.y += Offsets.YOffset_Wounds;
 
                     woundDrawer?.RenderOverBody(drawLoc, bodyMesh, quat, portrait);
+                }
                 }
             }
         }
@@ -478,7 +499,7 @@ namespace FacialStuff
             JointLister shoulperPos = this.GetJointPositions(JointType.Shoulder,
                                                              body.shoulderOffsets[rot.AsInt],
                                                              body.shoulderOffsets[Rot4.North.AsInt].x,
-                                                             carrying, this.Pawn.CarryWeaponOpenly());
+                                                             carrying, this.Pawn.ShowWeaponOpenly());
 
             List<float>  handSwingAngle = new List<float> {0f, 0f};
             List<float>  shoulderAngle  = new List<float> {0f, 0f};
@@ -559,13 +580,13 @@ namespace FacialStuff
                     quat     = bodyQuat * Quaternion.AngleAxis(-handSwingAngle[0], Vector3.up);
                 }
 
-                // TweenThing handLeft = TweenThing.HandLeft;
-                // this.DrawTweenedHand(position, handMeshLeft, matLeft, quat, handLeft, portrait, noTween);
-                GenDraw.DrawMeshNowOrLater(
-                                           handMeshLeft, position,
-                                           quat,
-                                           matLeft,
-                                           portrait);
+                 TweenThing handLeft = TweenThing.HandLeft;
+                 this.DrawTweenedHand(position, handMeshLeft, matLeft, quat, handLeft, portrait, noTween);
+                //GenDraw.DrawMeshNowOrLater(
+                //                           handMeshLeft, position,
+                //                           quat,
+                //                           matLeft,
+                //                           portrait);
             }
 
             if (drawRight)
@@ -589,13 +610,13 @@ namespace FacialStuff
                     quat     = bodyQuat * Quaternion.AngleAxis(handSwingAngle[1], Vector3.up);
                 }
 
-                // TweenThing handRight = TweenThing.HandRight;
-                // this.DrawTweenedHand(position, handMeshRight, matRight, quat, handRight, portrait, noTween);
-                GenDraw.DrawMeshNowOrLater(
-                                           handMeshRight, position,
-                                           quat,
-                                           matRight,
-                                           portrait);
+                 TweenThing handRight = TweenThing.HandRight;
+                 this.DrawTweenedHand(position, handMeshRight, matRight, quat, handRight, portrait, noTween);
+               // GenDraw.DrawMeshNowOrLater(
+               //                            handMeshRight, position,
+               //                            quat,
+               //                            matRight,
+               //                            portrait);
             }
 
             if (MainTabWindow_BaseAnimator.Develop)
@@ -810,8 +831,8 @@ namespace FacialStuff
             }
             else
             {
-                rightFoot.z = offsetZ.Evaluate(percent);
-                leftFoot.z  = offsetZ.Evaluate(flot);
+                rightFoot.z = offsetX.Evaluate(percent);
+                leftFoot.z  = offsetX.Evaluate(flot);
                 offsetJoint = 0;
             }
 
@@ -986,57 +1007,66 @@ namespace FacialStuff
                                      TweenThing tweenThing,
                                      bool       portrait, bool noTween)
         {
-            Vector3Tween tween = this.CompAnimator.Vector3Tweens[(int) tweenThing];
-
-            if (!Find.TickManager.Paused)
+            if (!MainTabWindow_WalkAnimator.IsOpen)
             {
+
+            if (Find.TickManager.TicksGame == this.CompAnimator.LastPosUpdate[(int)tweenThing] || MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_BaseAnimator.Pawn != this.Pawn)
+            {
+                position = this.CompAnimator.LastPosition[(int)tweenThing];
+
+            }
+            else
+            {
+                if (Pawn.pather.MovedRecently(5))
+                {
+                        noTween = true;
+                }
+                this.CompAnimator.LastPosUpdate[(int)tweenThing] = Find.TickManager.TicksGame;
+
+
+                Vector3Tween tween = this.CompAnimator.Vector3Tweens[(int)tweenThing];
+
+
                 switch (tween.State)
                 {
                     case TweenState.Running:
-                        if (noTween || this.Pawn.Downed || this.CompAnimator.IsMoving)
+                        if (noTween || this.CompAnimator.IsMoving)
                         {
                             tween.Stop(StopBehavior.ForceComplete);
                         }
-
+                        position = tween.CurrentValue;
                         break;
+
                     case TweenState.Paused:
                         break;
+
                     case TweenState.Stopped:
-                        if (noTween)
+                        if (noTween || (this.CompAnimator.IsMoving))
                         {
                             break;
                         }
 
-                        if (this.CompAnimator.IsMoving)
-                        {
-                            break;
-                        }
+                        ScaleFunc scaleFunc = ScaleFuncs.SineEaseOut;
 
-                        if (this.Pawn.Downed)
-                        {
-                            break;
-                        }
 
-                        Vector3 start = this.CompAnimator.lastPosition[(int) tweenThing];
-                        start.y = position.y;
+                        Vector3 start = this.CompAnimator.LastPosition[(int)tweenThing];
                         float distance = Vector3.Distance(start, position);
-                        float duration = Mathf.Abs(distance * 100f);
+                        float duration = Mathf.Abs(distance * 50f);
                         if (start != Vector3.zero && duration > 12f)
                         {
-                            tween.Start(start, position, duration, ScaleFuncs.CubicEaseOut);
+                            start.y = position.y;
+                            tween.Start(start, position, duration, scaleFunc);
+                            position = start;
                         }
-
                         break;
                 }
 
-                this.CompAnimator.lastPosition[(int) tweenThing] = position;
-            }
+                {
+                    this.CompAnimator.LastPosition[(int)tweenThing] = position;
 
-            if (tween.State == TweenState.Running)
-            {
-                position = tween.CurrentValue;
+                }
             }
-
+            }
 
             //  tweener.PreThingPosCalculation(tweenThing, noTween);
 

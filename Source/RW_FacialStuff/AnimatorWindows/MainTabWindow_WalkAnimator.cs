@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using FacialStuff.DefOfs;
 using FacialStuff.Defs;
+using FacialStuff.GraphicsFS;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
@@ -60,6 +61,43 @@ namespace FacialStuff.AnimatorWindows
             }
         }
 
+        protected override void DrawBackground(Rect rect)
+        {
+            GUI.BeginGroup(rect);
+            var percent = AnimationPercent;
+            float width= rect.width;
+            float zero = rect.x;
+
+            float moved = (width*AnimationPercent);
+            Rect rect1;
+            Rect rect2;
+            if (BodyRot == Rot4.East)
+            {
+                rect1 = new Rect(rect) { x  = rect.x - moved };
+                rect2 = new Rect(rect1) { x = rect1.xMax };
+            }
+            else if (BodyRot == Rot4.West)
+                        {
+                            rect1 = new Rect(rect) { x  = rect.x + moved };
+                            rect2 = new Rect(rect1) { x = rect1.xMin-width };
+            }
+            else if (BodyRot == Rot4.North)
+            {
+                rect1 = new Rect(rect) { y  = rect.y + moved };
+                rect2 = new Rect(rect1) { y = rect1.yMin-width };
+            }
+            else
+            {
+                rect1 = new Rect(rect) { y  = rect.y     - moved };
+                rect2 = new Rect(rect1) { y = rect1.yMax };
+
+            }
+
+            GUI.DrawTexture(rect1, FaceTextures.BackgroundAnimTex);
+            GUI.DrawTexture(rect2, FaceTextures.BackgroundAnimTex);
+            GUI.EndGroup();
+
+        }
         // public static float horHeadOffset;
         protected override void DoBasicSettingsMenu(Listing_Standard listing)
         {

@@ -27,48 +27,36 @@ namespace FacialStuff.Harmony
         // Verse.Altitudes
         public const float LayerSpacing = 0.46875f;
 
-        private static MethodInfo _drawEquipmentMethodInfo;
+        private static readonly Type _pawnRendererType = typeof(PawnRenderer);
 
-        private static Type _pawnRendererType;
+        private static readonly MethodInfo DrawEquipmentMethodInfo= _pawnRendererType.GetMethod(
+        "DrawEquipment",
+        BindingFlags.NonPublic | BindingFlags.Instance);
+
 
         // private static FieldInfo PawnFieldInfo;
-        private static FieldInfo _woundOverlayFieldInfo;
+        private static readonly FieldInfo WoundOverlayFieldInfo = _pawnRendererType.GetField(
+                                                                                     "woundOverlays",
+                                                                                     BindingFlags.NonPublic | BindingFlags.Instance);
 
-        private static bool logY = false;
-        private static FieldInfo pawnHeadOverlaysFieldInfo;
+        private static bool _logY = false;
+        private static readonly FieldInfo PawnHeadOverlaysFieldInfo = _pawnRendererType.GetField(
+                                                                                        "statusOverlays",
+                                                                                        BindingFlags.NonPublic | BindingFlags.Instance);
 
 
 
-        private static void GetReflections()
-        {
-            if (_pawnRendererType != null)
-            {
-                return;
-            }
-
-            _pawnRendererType = typeof(PawnRenderer);
-            _drawEquipmentMethodInfo = _pawnRendererType.GetMethod(
-                                                                 "DrawEquipment",
-                                                                 BindingFlags.NonPublic | BindingFlags.Instance);
-            // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
-            _woundOverlayFieldInfo = _pawnRendererType.GetField(
-                                                              "woundOverlays",
-                                                              BindingFlags.NonPublic | BindingFlags.Instance);
-            pawnHeadOverlaysFieldInfo = _pawnRendererType.GetField(
-                                                                  "statusOverlays",
-                                                                  BindingFlags.NonPublic | BindingFlags.Instance);
-        }
 
         private static void RecalcRootLocY(ref Vector3 rootLoc, Pawn pawn, CompBodyAnimator compAnimator)
         {
             Vector3 loc = rootLoc;
-            CellRect _viewRect = Find.CameraDriver.CurrentViewRect;
-            _viewRect = _viewRect.ExpandedBy(1);
+            CellRect viewRect = Find.CameraDriver.CurrentViewRect;
+            viewRect = viewRect.ExpandedBy(1);
 
             List<Pawn> pawns = new List<Pawn>();
             foreach (Pawn otherPawn in pawn.Map.mapPawns.AllPawnsSpawned)
             {
-                if (!_viewRect.Contains(otherPawn.Position)) { continue; }
+                if (!viewRect.Contains(otherPawn.Position)) { continue; }
                 if (otherPawn == pawn) { continue; }
                 if (otherPawn.DrawPos.x < loc.x - 0.5f)
                 { continue; }
@@ -109,78 +97,6 @@ namespace FacialStuff.Harmony
             rootLoc = loc;
         }
 
-        private static void RenderAnimalPawn(Pawn pawn,
-                                             PawnGraphicSet graphics,
-                                             Vector3 rootLoc,
-                                             Quaternion quat,
-                                             bool renderBody,
-                                             Rot4 bodyFacing,
-                                             RotDrawMode bodyDrawType,
-                                             bool portrait,
-                                             PawnWoundDrawer woundDrawer,
-                                             CompBodyAnimator compAnim,
-                                             Vector3 footPos, Quaternion footQuat)
-        {
-            Mesh mesh = null;
-            Vector3 loc = rootLoc;
-            if (renderBody)
-            {
-                loc.x += compAnim.BodyAnim?.offCenterX ?? 0f;
-                loc.y += YOffset_Body;
-                if (bodyDrawType == RotDrawMode.Dessicated &&
-                    !pawn.RaceProps.Humanlike
-                 && graphics.dessicatedGraphic != null && !portrait)
-                {
-                    graphics.dessicatedGraphic.Draw(loc, bodyFacing, pawn);
-                }
-                else
-                {
-                    if (pawn.RaceProps.Humanlike)
-                    {
-                        mesh = MeshPool.humanlikeBodySet.MeshAt(bodyFacing);
-                    }
-                    else
-                    {
-                        mesh = graphics.nakedGraphic.MeshAt(bodyFacing);
-                    }
-
-                    List<Material> list = graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
-                    for (int i = 0; i < list.Count; i++)
-                    {
-                        Material damagedMat = graphics.flasher.GetDamagedMat(list[i]);
-                        GenDraw.DrawMeshNowOrLater(mesh, loc, quat, damagedMat, portrait);
-                        loc.y += YOffset_Behind;
-                    }
-
-                    if (bodyDrawType == RotDrawMode.Fresh)
-                    {
-                        Vector3 drawLoc = rootLoc;
-                        drawLoc.y += YOffset_Wounds;
-                        woundDrawer.RenderOverBody(drawLoc, mesh, quat, portrait);
-                    }
-                }
-            }
-
-            Vector3 vector = rootLoc;
-            if (bodyFacing != Rot4.North)
-            {
-                vector.y += YOffset_Shell;
-            }
-            else
-            {
-                vector.y += YOffset_Head;
-            }
-
-            if (!portrait && pawn.RaceProps.Animal && pawn.inventory != null && pawn.inventory.innerContainer.Count > 0
-             && graphics.packGraphic != null)
-            {
-                Graphics.DrawMesh(mesh, vector, quat, graphics.packGraphic.MatAt(bodyFacing), 0);
-            }
-
-            footPos.y = loc.y;
-            compAnim.DrawHands(quat, footPos, portrait);
-            compAnim.DrawFeet(quat, footQuat, footPos, portrait);
-        }
 
         /// <summary>
         ///     Simple Circle to Circle intersection test.
@@ -244,8 +160,6 @@ namespace FacialStuff.Harmony
                                   bool portrait,
                                   bool headStump)
         {
-            GetReflections();
-
             // Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
             PawnGraphicSet graphics = __instance.graphics;
 
@@ -255,9 +169,29 @@ namespace FacialStuff.Harmony
             {
                 graphics.ResolveAllGraphics();
             }
-            bool footy = pawn.GetCompAnim(out CompBodyAnimator compAnim) && Controller.settings.UseFeet;
+            CompFace compFace = pawn.GetCompFace();
+            bool     hasFace  = compFace != null;
 
-            PawnWoundDrawer woundDrawer = (PawnWoundDrawer)_woundOverlayFieldInfo?.GetValue(__instance);
+            // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
+            if (hasFace)
+            {
+                if (compFace.IsChild || compFace.Deactivated)
+                {
+                    return true;
+                }
+
+            }
+
+            CompBodyAnimator compAnim = pawn.GetCompAnim();
+            bool footy = compAnim!=null && Controller.settings.UseFeet;
+
+            // No face, no animator, return
+            if (!hasFace && compAnim == null)
+            {
+                return true;
+            }
+
+            PawnWoundDrawer woundDrawer = (PawnWoundDrawer)WoundOverlayFieldInfo?.GetValue(__instance);
 
             // if (Patches2.Plants)
             // {
@@ -287,43 +221,6 @@ namespace FacialStuff.Harmony
             Quaternion bodyQuat = quat;
             Quaternion footQuat = bodyQuat;
 
-            if (!pawn.GetCompFace(out CompFace compFace))
-            {
-                if (!footy)
-                {
-                    return true;
-                }
-
-                if (MainTabWindow_WalkAnimator.IsOpen)
-                {
-                    bodyFacing = MainTabWindow_BaseAnimator.BodyRot;
-                    headFacing = MainTabWindow_BaseAnimator.HeadRot;
-                }
-
-                compAnim.TickDrawers(bodyFacing, graphics);
-                compAnim.ApplyBodyWobble(ref baseDrawLoc, ref footPos, ref bodyQuat);
-
-                RenderAnimalPawn(
-                                   pawn,
-                                   graphics,
-                                   baseDrawLoc,
-                                   bodyQuat,
-                                   renderBody,
-                                   bodyFacing,
-                                   bodyDrawType,
-                                   portrait,
-                                   woundDrawer,
-                                   compAnim,
-                                   footPos, footQuat);
-
-                return false;
-            }
-
-            // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
-            if (compFace.IsChild || compFace.Deactivated)
-            {
-                return true;
-            }
 
             if (MainTabWindow_WalkAnimator.IsOpen)
             {
@@ -331,9 +228,9 @@ namespace FacialStuff.Harmony
                 headFacing = MainTabWindow_BaseAnimator.HeadRot;
             }
 
-            compFace.TickDrawers(bodyFacing, headFacing, graphics);
+            compFace?.TickDrawers(bodyFacing, headFacing, graphics);
 
-            compAnim.TickDrawers(bodyFacing, graphics);
+            compAnim?.TickDrawers(bodyFacing, graphics);
 
             // Use the basic quat
             Quaternion headQuat = bodyQuat;
@@ -348,14 +245,14 @@ namespace FacialStuff.Harmony
 
                 // Reset the quat as it has been changed
                 headQuat = bodyQuat;
-                compFace.ApplyHeadRotation(renderBody, ref headQuat);
+                compFace?.ApplyHeadRotation(renderBody, ref headQuat);
             }
 
             // Regular FacePawn rendering 14+ years
 
             // Render body
             // if (renderBody)
-            compAnim.DrawBody(baseDrawLoc, bodyQuat, bodyDrawType, woundDrawer, renderBody, portrait);
+            compAnim?.DrawBody(baseDrawLoc, bodyQuat, bodyDrawType, woundDrawer, renderBody, portrait);
 
             Vector3 bodyPos = baseDrawLoc;
             Vector3 headPos = baseDrawLoc;
@@ -374,73 +271,95 @@ namespace FacialStuff.Harmony
             {
                 // Rendererd pawn faces
 
-                Vector3 b = bodyQuat * compFace.BaseHeadOffsetAt(portrait);
+                Vector3 offsetAt;
+                if (!hasFace)
+                {
+                    offsetAt = __instance.BaseHeadOffsetAt(bodyFacing);
+                }
+                else
+                {
+                    offsetAt = compFace.BaseHeadOffsetAt(portrait);
+                }
+
+                Vector3 b = bodyQuat * offsetAt;
                 Vector3 headDrawLoc = headPos + b;
 
-
-                compFace.DrawBasicHead(out bool headDrawn, bodyDrawType, portrait, headStump, headDrawLoc, headQuat);
-
-                if (headDrawn)
+                if (!hasFace)
                 {
-                    if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
+                    Material material = graphics.HeadMatAt(headFacing, bodyDrawType, headStump);
+                    if (material != null)
                     {
-                        if (compFace.Props.hasWrinkles)
-                        {
-                            Vector3 wrinkleLoc = headDrawLoc;
-                            wrinkleLoc.y += YOffset_Wrinkles;
-                            compFace.DrawWrinkles(bodyDrawType, wrinkleLoc, headQuat, portrait);
-                        }
-
-                        if (compFace.Props.hasEyes)
-                        {
-                            Vector3 eyeLoc = headDrawLoc;
-                            eyeLoc.y += YOffset_Eyes;
-
-                            compFace.DrawNaturalEyes(eyeLoc, portrait, headQuat);
-
-                            Vector3 browLoc = headDrawLoc;
-                            browLoc.y += YOffset_Brows;
-                            // the brow above
-                            compFace.DrawBrows(browLoc, headQuat, portrait);
-
-                            // and now the added eye parts
-                            Vector3 unnaturalEyeLoc = headDrawLoc;
-                            unnaturalEyeLoc.y += YOffset_UnnaturalEyes;
-                            compFace.DrawUnnaturalEyeParts(unnaturalEyeLoc, headQuat, portrait);
-                        }
-
-                        // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
-                        if (compFace.Props.hasBeard)
-                        {
-                            Vector3 beardLoc = headDrawLoc;
-                            Vector3 tacheLoc = headDrawLoc;
-
-                            beardLoc.y += (((headFacing == Rot4.North)) ? YOffset_Behind : YOffset_Beard);
-                            tacheLoc.y += (((headFacing == Rot4.North)) ? YOffset_Behind : YOffset_Tache);
-
-                            compFace.DrawBeardAndTache(beardLoc, tacheLoc, portrait, headQuat);
-                        }
-
-                        if (compFace.Props.hasMouth)
-                        {
-                            Vector3 mouthLoc = headDrawLoc;
-                            mouthLoc.y += YOffset_Mouth;
-                            compFace.DrawNaturalMouth(mouthLoc, portrait, headQuat);
-                        }
-                        // Deactivated, looks kinda crappy ATM
-                        // if (pawn.Dead)
-                        // {
-                        // Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, bodyDrawType);
-                        // if (deadEyeMat != null)
-                        // {
-                        // GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, deadEyeMat, portrait);
-                        // locFacialY.y += YOffsetInterval_OnFace;
-                        // }
-
-                        // }
-                        // else
+                        Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
+                        GenDraw.DrawMeshNowOrLater(mesh2, headDrawLoc, quat, material, portrait);
                     }
                 }
+                else
+                {
+                    compFace.DrawBasicHead(out bool headDrawn, bodyDrawType, portrait, headStump, headDrawLoc, headQuat);
+                    if (headDrawn)
+                    {
+                        if (bodyDrawType != RotDrawMode.Dessicated && !headStump)
+                        {
+                            if (compFace.Props.hasWrinkles)
+                            {
+                                Vector3 wrinkleLoc = headDrawLoc;
+                                wrinkleLoc.y += YOffset_Wrinkles;
+                                compFace.DrawWrinkles(bodyDrawType, wrinkleLoc, headQuat, portrait);
+                            }
+
+                            if (compFace.Props.hasEyes)
+                            {
+                                Vector3 eyeLoc = headDrawLoc;
+                                eyeLoc.y += YOffset_Eyes;
+
+                                compFace.DrawNaturalEyes(eyeLoc, portrait, headQuat);
+
+                                Vector3 browLoc = headDrawLoc;
+                                browLoc.y += YOffset_Brows;
+                                // the brow above
+                                compFace.DrawBrows(browLoc, headQuat, portrait);
+
+                                // and now the added eye parts
+                                Vector3 unnaturalEyeLoc = headDrawLoc;
+                                unnaturalEyeLoc.y += YOffset_UnnaturalEyes;
+                                compFace.DrawUnnaturalEyeParts(unnaturalEyeLoc, headQuat, portrait);
+                            }
+
+                            // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
+                            if (compFace.Props.hasBeard)
+                            {
+                                Vector3 beardLoc = headDrawLoc;
+                                Vector3 tacheLoc = headDrawLoc;
+
+                                beardLoc.y += (((headFacing == Rot4.North)) ? YOffset_Behind : YOffset_Beard);
+                                tacheLoc.y += (((headFacing == Rot4.North)) ? YOffset_Behind : YOffset_Tache);
+
+                                compFace.DrawBeardAndTache(beardLoc, tacheLoc, portrait, headQuat);
+                            }
+
+                            if (compFace.Props.hasMouth)
+                            {
+                                Vector3 mouthLoc = headDrawLoc;
+                                mouthLoc.y += YOffset_Mouth;
+                                compFace.DrawNaturalMouth(mouthLoc, portrait, headQuat);
+                            }
+                            // Deactivated, looks kinda crappy ATM
+                            // if (pawn.Dead)
+                            // {
+                            // Material deadEyeMat = faceComp.DeadEyeMatAt(headFacing, bodyDrawType);
+                            // if (deadEyeMat != null)
+                            // {
+                            // GenDraw.DrawMeshNowOrLater(mesh2, locFacialY, headQuat, deadEyeMat, portrait);
+                            // locFacialY.y += YOffsetInterval_OnFace;
+                            // }
+
+                            // }
+                            // else
+                        }
+                    }
+
+                }
+
 
                 if (!headStump)
                 {
@@ -456,46 +375,22 @@ namespace FacialStuff.Harmony
                     headgearLoc.y += YOffset_GearOnHead;
                     hatInFrontOfFace.y += ((!(headFacing == Rot4.North)) ? YOffset_PostHead : YOffset_Behind);
 
-                    compFace.DrawHairAndHeadGear(hairLoc, headgearLoc,
+                    compFace?.DrawHairAndHeadGear(hairLoc, headgearLoc,
                                                  bodyDrawType,
                                                  portrait,
                                                  renderBody,
                                                  headQuat, hatInFrontOfFace);
 
-                    compFace.DrawAlienHeadAddons(headPos, portrait, headQuat, overHead);
+                    compFace?.DrawAlienHeadAddons(headPos, portrait, headQuat, overHead);
                 }
 
             }
-
-            compAnim.DrawApparel(bodyQuat, bodyPos, portrait, renderBody);
-
-            compAnim.DrawAlienBodyAddons(bodyQuat, bodyPos, portrait, renderBody, bodyFacing);
-
-            // No wobble for equipment, looks funnier - nah!
-            // Vector3 equipPos = rootLoc;
-            // equipPos.y = drawPos.y;
-
-            //compAnim.DrawEquipment(drawPos, portrait);
 
             if (!portrait)
             {
                 //   Traverse.Create(__instance).Method("DrawEquipment", rootLoc).GetValue();
 
-                _drawEquipmentMethodInfo?.Invoke(__instance, new object[] { baseDrawLoc });
-            }
-
-            bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
-            Vector3 handPos = bodyPos;
-            if (showHands)
-            {
-                // Reset the position for the hands
-                handPos.y = baseDrawLoc.y;
-                compAnim.DrawHands(bodyQuat, handPos, portrait);
-            }
-
-            if (footy)
-            {
-                compAnim?.DrawFeet(bodyQuat, footQuat, footPos, portrait);
+                DrawEquipmentMethodInfo?.Invoke(__instance, new object[] { baseDrawLoc });
             }
 
             if (!portrait)
@@ -512,12 +407,47 @@ namespace FacialStuff.Harmony
                 Vector3 bodyLoc = baseDrawLoc;
                 bodyLoc.y += YOffset_Status;
 
-                PawnHeadOverlays headOverlays = (PawnHeadOverlays)pawnHeadOverlaysFieldInfo?.GetValue(__instance);
+                PawnHeadOverlays headOverlays = (PawnHeadOverlays)PawnHeadOverlaysFieldInfo?.GetValue(__instance);
                 if (headOverlays != null)
                 {
-                    compFace.DrawHeadOverlays(headOverlays, bodyLoc, headQuat);
+                    compFace?.DrawHeadOverlays(headOverlays, bodyLoc, headQuat);
                 }
             }
+
+
+            compAnim?.DrawApparel(bodyQuat, bodyPos, portrait, renderBody);
+
+            compAnim?.DrawAlienBodyAddons(bodyQuat, bodyPos, portrait, renderBody, bodyFacing);
+
+            if (!portrait && pawn.RaceProps.Animal && pawn.inventory != null && pawn.inventory.innerContainer.Count > 0
+             && graphics.packGraphic                                 != null)
+            {
+                var mesh = graphics.nakedGraphic.MeshAt(bodyFacing);
+                Graphics.DrawMesh(mesh, bodyPos, quat, graphics.packGraphic.MatAt(bodyFacing), 0);
+            }
+
+            // No wobble for equipment, looks funnier - nah!
+            // Vector3 equipPos = rootLoc;
+            // equipPos.y = drawPos.y;
+
+            //compAnim.DrawEquipment(drawPos, portrait);
+
+
+
+            bool showHands =  Controller.settings.UseHands;
+            Vector3 handPos = bodyPos;
+            if (showHands)
+            {
+                // Reset the position for the hands
+                handPos.y = baseDrawLoc.y;
+                compAnim.DrawHands(bodyQuat, handPos, portrait);
+            }
+
+            if (footy)
+            {
+                compAnim?.DrawFeet(bodyQuat, footQuat, footPos, portrait);
+            }
+
             return false;
         }
     }

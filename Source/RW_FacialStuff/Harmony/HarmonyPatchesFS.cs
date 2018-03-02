@@ -402,16 +402,16 @@ namespace FacialStuff.Harmony
             //      sizeMod = 1f;
             //  }
 
-            if (Find.TickManager.TicksGame == animator.lastPosUpdate || MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn != pawn)
+            if (Find.TickManager.TicksGame == animator.LastPosUpdate[(int)equipment] || MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn != pawn)
             {
-                drawLoc = animator.lastPosition[(int)equipment];
-                weaponAngle = animator.lastWeaponAngle;
+                drawLoc = animator.LastPosition[(int)equipment];
+                weaponAngle = animator.LastWeaponAngle;
 
             }
             else
             {
 
-                animator.lastPosUpdate = Find.TickManager.TicksGame;
+                animator.LastPosUpdate[(int)equipment] = Find.TickManager.TicksGame;
 
                 CalculatePositionsWeapon(pawn,
                     ref weaponAngle,
@@ -428,6 +428,11 @@ namespace FacialStuff.Harmony
 
                 Vector3Tween eqTween = animator.Vector3Tweens[(int)equipment];
 
+                if (pawn.pather.MovedRecently(5))
+                {
+                    noTween = true;
+
+                }
 
                 switch (eqTween.State)
                 {
@@ -451,7 +456,7 @@ namespace FacialStuff.Harmony
                         ScaleFunc scaleFunc = ScaleFuncs.SineEaseOut;
 
 
-                        Vector3 start = animator.lastPosition[(int)equipment];
+                        Vector3 start = animator.LastPosition[(int)equipment];
                         float distance = Vector3.Distance(start, drawLoc);
                         float duration = Mathf.Abs(distance * 50f);
                         if (start != Vector3.zero && duration > 12f)
@@ -476,8 +481,8 @@ namespace FacialStuff.Harmony
                 // }
                 // else
                 {
-                    animator.lastPosition[(int)equipment] = drawLoc;
-                    animator.lastWeaponAngle = weaponAngle;
+                    animator.LastPosition[(int)equipment] = drawLoc;
+                    animator.LastWeaponAngle = weaponAngle;
                     animator.MeshFlipped = flipped;
                 }
             }
@@ -686,19 +691,19 @@ namespace FacialStuff.Harmony
             if (!pawn.GetCompAnim(out CompBodyAnimator animator))
             { return; }
 
-            if (Find.TickManager.TicksGame == animator.lastAngleTick)
+            if (Find.TickManager.TicksGame == animator.LastAngleTick)
             {
-                aimAngle = animator.lastAimAngle;
+                aimAngle = animator.LastAimAngle;
                 return;
             }
-            animator.lastAngleTick = Find.TickManager.TicksGame;
+            animator.LastAngleTick = Find.TickManager.TicksGame;
 
             float angleChange;
 
-            float startAngle = animator.lastAimAngle;
+            float startAngle = animator.LastAimAngle;
             float endAngle = aimAngle;
 
-            FloatTween tween = animator.aimAngleTween;
+            FloatTween tween = animator.AimAngleTween;
             switch (tween.State)
             {
                 case TweenState.Running:
@@ -712,11 +717,11 @@ namespace FacialStuff.Harmony
             if (Mathf.Abs(angleChange) > 6f)
             {
                 // no tween for flipping
-                bool x = Mathf.Abs(animator.lastAimAngle - angleStanding) < 3f &&
+                bool x = Mathf.Abs(animator.LastAimAngle - angleStanding) < 3f &&
                          Mathf.Abs(aimAngle - angleStandingFlipped) < 3f;
-                bool y = Mathf.Abs(animator.lastAimAngle - angleStandingFlipped) < 3f &&
+                bool y = Mathf.Abs(animator.LastAimAngle - angleStandingFlipped) < 3f &&
                          Mathf.Abs(aimAngle - angleStanding) < 3f;
-                bool z = Math.Abs(Mathf.Abs(aimAngle - animator.lastAimAngle) - 180f) < 12f;
+                bool z = Math.Abs(Mathf.Abs(aimAngle - animator.LastAimAngle) - 180f) < 12f;
 
                 if (!x && !y && !z)
                 {
@@ -726,7 +731,7 @@ namespace FacialStuff.Harmony
                     aimAngle = startAngle;
                 }
             }
-            animator.lastAimAngle = aimAngle;
+            animator.LastAimAngle = aimAngle;
 
         }
 
@@ -1019,7 +1024,7 @@ namespace FacialStuff.Harmony
 
         private static void ChangeAngleForNorth(Pawn pawn, ref float aimAngle)
         {
-            if (pawn.CarryWeaponOpenly() && pawn.Rotation == Rot4.North)
+            if (pawn.ShowWeaponOpenly() && pawn.Rotation == Rot4.North)
             {
                 aimAngle = 217f;
             }
