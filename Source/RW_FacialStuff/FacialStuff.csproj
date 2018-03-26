@@ -136,7 +136,6 @@
     <Compile Include="DefOfs\WalkCycleDefOf.cs" />
     <Compile Include="Defs\WalkCycleDef.cs" />
     <Compile Include="Enums\MaxLayerToShow.cs" />
-    <Compile Include="Defs\HandDef.cs" />
     <Compile Include="Components\CompWeaponExtensions.cs" />
     <Compile Include="Components\CompProperties_WeaponExtensions.cs" />
     <Compile Include="Drawer\PawnHeadDrawer.cs" />

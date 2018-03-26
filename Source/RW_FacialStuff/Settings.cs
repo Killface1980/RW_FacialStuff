@@ -45,10 +45,12 @@ namespace FacialStuff
 
         public bool UseHands => this._useHands;
         public bool UseFeet => this._useFeet;
+        public bool UsePawns => this._usePawns;
 
         private bool _useHands = true;
 
         private bool _useFeet = true;
+        private bool _usePawns = true;
         private bool develop;
         Vector2 scrollPosition;
         float viewHeight;
@@ -113,10 +115,11 @@ namespace FacialStuff
 
 
             Widgets.BeginScrollView(rect, ref this.scrollPosition, rect4, true);
-            Rect rect5 = rect4.ContractedBy(4f);
+            Rect rect5 = rect4;
+            rect5.width -= 20f;
             rect5.height = 9999f;
 
-            Listing_Standard list = new Listing_Standard(GameFont.Small) { ColumnWidth = (rect.width / 2) - 17f };
+            Listing_Standard list = new Listing_Standard(GameFont.Small) { ColumnWidth = (rect5.width / 2) -15f };
 
             list.Begin(rect5);
 
@@ -180,6 +183,11 @@ namespace FacialStuff
                 "Settings.UseFeet".Translate(),
                 ref this._useFeet,
                 "Settings.UseFeetTooltip".Translate());
+            list.CheckboxLabeled(
+                                 "Settings.UsePawns".Translate(),
+                                 ref this._usePawns,
+                                 "Settings.UsePawnsTooltip".Translate());
+
 
             list.Gap();
             list.Label("Settings.EditorLabel".Translate());

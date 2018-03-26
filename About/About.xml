@@ -5,7 +5,8 @@
   <url></url>
   <targetVersion>0.18.0</targetVersion>
   <description>This mod aims to provide more visual individuality for your colonists
-- hands and feet, partially animated
+- hands and feet, animated (also for animals, unfinished)
+- smooth weapon animations and changed offsets
 - 30+ different beards for males, some of them combinable
 - edited vanilla hair styles with 10 steps of hair loss
 - new eyes and brows for both sexes
@@ -21,19 +22,24 @@
 - fully compatible with Children &amp; Pregnancy, Vampires, Werewolves and Prepare Carefully
 - all features can be disabled in the mod options menu
 
-- Walk cycle editor, disabled by default. Check out the MainButtons.xml for activation (intended for modders)
+For modders:
+- Walk cycle editor. Check out the develop mode in the mod options
+- A tab for positioning the hands on weapons, also activated with the dev mode.
 
 + hair textures with beards from the &apos;Spoonshortage&apos;s Rimworld Hairstyles 1.2&apos; and &apos;Nackblad Inc Rimhair 1.1&apos; mods are replaced by shaved versions
   This mod contains no hair packs itself any more. Please subscribe to what you like.
 
 Patches the PawnRenderer via Harmony and returns &apos;false&apos; thus being incompatible to mods doing the same.
-    Look out for the FS "Alien Faces" addon if you're using erdelf's Humanoid Alien Framework.
+Look out for the FS "Alien Faces" addon if you're using erdelf's Humanoid Alien Framework.
 
-    Initial Face Editor code adapted from "Clutter" by mrofa (available at the Ludeon forums)
-    Hands based on "Clutter Weapon Hands" by mrofa.
-    Body, gender and head changer code adapted from Change Dresser by Kiame Vivacity
-    Prepare Carefully saving / loading code adapted from Psychology by {WOBBLY} The Word-Mule
-    Inspiration for the new renderer and all of its benefits by {WOBBLY} The Word-Mule and ChJees
-    Special thanks to DoctorVanGogh and erdelf for help with transpilers, NotFood for the new Dresser patch and pardeike for Harmony and help with transpilers
+Unfortunately no hands on lightsabers, as the OversizedWeapons prefixes the required method.
+
+Thanks and Credits:
+Initial Face Editor code adapted from "Clutter" by mrofa (available at the Ludeon forums)
+Hands based on "Clutter Weapon Hands" by mrofa.
+Body, gender and head changer code adapted from Change Dresser by Kiame Vivacity
+Prepare Carefully saving / loading code adapted from Psychology by {WOBBLY} The Word-Mule
+Inspiration for the new renderer and all of its benefits by {WOBBLY} The Word-Mule and ChJees
+Special thanks to DoctorVanGogh and erdelf for help with transpilers, NotFood for the new Dresser patch and Brrains for Harmony and help with transpilers
   </description>
 </ModMetaData>

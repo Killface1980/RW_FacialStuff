@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
+	<Settings.Develop>Aktiviere Entwickler-Modus</Settings.Develop>
+	<Settings.DevelopTooltip>Fügt den Animator sowie ein paar Tabs für Entwickler hinzu. Bitte nur aktivieren wenn du weißt was du tust ;)</Settings.DevelopTooltip>
   <Settings.VisibilityHeadgearLabel>Sichtbarkeit von Bekleidung</Settings.VisibilityHeadgearLabel>
   <Settings.PawnFeaturesLabel>Facial Features</Settings.PawnFeaturesLabel>
   <Settings.EditorLabel>Editor Einstellungen</Settings.EditorLabel>
@@ -13,7 +15,7 @@
   <Settings.MergeHairTooltip>Macht Haar sichtbar.</Settings.MergeHairTooltip>
 
   <Settings.IgnoreRenderBody>Ignoriere Körperdarstellung</Settings.IgnoreRenderBody>
-  <Settings.IgnoreRenderBodyTooltip>Normalerweise werden Körper in Betten incht dargestellt. Wenn die Option aktiviert ist, wird der gesamte Körper angezeigt. Weitere Optionen verfügbar.</Settings.IgnoreRenderBodyTooltip>
+  <Settings.IgnoreRenderBodyTooltip>Normalerweise werden Körper in Betten nicht dargestellt. Wenn die Option aktiviert ist, wird der gesamte Körper angezeigt. Weitere Optionen verfügbar.</Settings.IgnoreRenderBodyTooltip>
  
   <Settings.IgnoreWhileDrafted>Ignoriere die obigen Einstellungen für Krieger mit gezückter Waffe.</Settings.IgnoreWhileDrafted>
   <Settings.IgnoreWhileDraftedTooltip></Settings.IgnoreWhileDraftedTooltip>
@@ -23,8 +25,10 @@
   <Settings.UseHandsTooltip>Zeige Hände wenn Waffen gezückt sind. Momentan nur für Vanilla-Waffen.</Settings.UseHandsTooltip>
   <Settings.UseFeet>Zeige Füsse</Settings.UseFeet>
   <Settings.UseFeetTooltip>Zeige animierte Füsse.</Settings.UseFeetTooltip>
-  
-  <Settings.FilterHats>Ignoriere Brillen</Settings.FilterHats>
+	<Settings.UsePawns>Animiere Tiere</Settings.UsePawns>
+	<Settings.UsePawnsTooltip>Zeige Tierpfoten \n(momentan unvollendet)</Settings.UsePawnsTooltip>
+
+	<Settings.FilterHats>Ignoriere Brillen</Settings.FilterHats>
   <Settings.FilterHatsTooltip>Sachen für die Augen sind in Räumen nicht sichtbar.</Settings.FilterHatsTooltip>
 
   <Settings.HideHatWhileRoofed>Zeige Hüte nur draußen</Settings.HideHatWhileRoofed>

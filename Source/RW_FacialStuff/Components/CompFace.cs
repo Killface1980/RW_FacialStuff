@@ -339,7 +339,7 @@ namespace FacialStuff
             while (i < count)
             {
                 this.PawnHeadDrawers[i].DrawBasicHead(
-                                                      drawLoc,
+                    drawLoc,
                     headQuat,
                     bodyDrawType,
                     headStump,

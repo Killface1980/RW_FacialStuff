@@ -60,12 +60,11 @@ namespace FacialStuff.GraphicsFS
             LongEventHandler.ExecuteWhenFinished(
                                                  () =>
                                                  {
-                                                     this.InitializeGraphicsHand();
                                                      this.InitializeGraphicsFeet();
-                                                     if (this.CompAni.Props.quadruped)
-                                                     {
+
+                                                         this.InitializeGraphicsHand();
+
                                                          this.InitializeGraphicsFrontPaws();
-                                                     }
                                                  });
         }
 
@@ -82,7 +81,7 @@ namespace FacialStuff.GraphicsFS
             }
             else
             {
-                texNameFoot = "Hands/" + this.CompAni.Props.handType + STR_Foot;
+                texNameFoot = "Paws/" + this.CompAni.Props.handType + STR_Foot;
             }
             Color skinColor;
             if (this._pawn.story == null)
@@ -165,18 +164,23 @@ namespace FacialStuff.GraphicsFS
 
         private void InitializeGraphicsFrontPaws()
         {
-            string texNameFoot = "Hands/" + this.CompAni.Props.handType + STR_Foot;
+            if (!this.CompAni.Props.quadruped)
+            {
+                return;
+
+            }
+            string texNameFoot = "Paws/" + this.CompAni.Props.handType + STR_Foot;
 
             Color skinColor;
-            if (this._pawn.story == null)
+            if (this._pawn.story != null)
+            {
+                skinColor = this._pawn.story.SkinColor;
+            }
+            else
             {
                 PawnKindLifeStage curKindLifeStage = this._pawn.ageTracker.CurKindLifeStage;
 
                 skinColor = curKindLifeStage.bodyGraphicData.color;
-            }
-            else
-            {
-                skinColor = this._pawn.story.SkinColor;
             }
 
             Color rightColorFoot = Color.cyan;
@@ -253,18 +257,19 @@ namespace FacialStuff.GraphicsFS
                 return;
             }
 
-            string texNameHand = StringsFS.PathHumanlike +"Hands/" + this.CompAni.Props.handType + STR_Hand;
-
+            string texNameHand;
             Color skinColor;
             if (this._pawn.story == null)
             {
                 PawnKindLifeStage curKindLifeStage = this._pawn.ageTracker.CurKindLifeStage;
 
                 skinColor = curKindLifeStage.bodyGraphicData.color;
+            texNameHand = "Paws/" + this.CompAni.Props.handType + STR_Hand;
             }
             else
             {
                 skinColor = this._pawn.story.SkinColor;
+            texNameHand = StringsFS.PathHumanlike + "Hands/" + this.CompAni.Props.handType + STR_Hand;
             }
 
             Color rightColorHand = Color.cyan;

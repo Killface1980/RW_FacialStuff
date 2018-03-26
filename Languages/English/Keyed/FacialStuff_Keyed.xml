@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
+
+	<Settings.Develop>Enable developer mode</Settings.Develop>
+	<Settings.DevelopTooltip>Adds the animator and some tabs meant for modders. Please only activate if you know what you're doing ;)</Settings.DevelopTooltip>
   <Settings.VisibilityHeadgearLabel>Visibility Of Apparel</Settings.VisibilityHeadgearLabel>
   <Settings.PawnFeaturesLabel>Facial Features</Settings.PawnFeaturesLabel>
   <Settings.EditorLabel>Editor Settings</Settings.EditorLabel>
@@ -23,7 +26,8 @@
   <Settings.UseHandsTooltip>Shows hands while pawn is drafted. Vanilla weapons only ATM.</Settings.UseHandsTooltip>
   <Settings.UseFeet>Show Feet</Settings.UseFeet>
   <Settings.UseFeetTooltip>Show animated feet.</Settings.UseFeetTooltip>
-
+	<Settings.UsePawns>Animate animals</Settings.UsePawns>
+	<Settings.UsePawnsTooltip>Show pawns on animals \n(currently unfinished)</Settings.UsePawnsTooltip>
   <Settings.FilterHats>Ignore goggles</Settings.FilterHats>
   <Settings.FilterHatsTooltip>Extra head gear like goggles is not visible on pawns while indoors.</Settings.FilterHatsTooltip>
 

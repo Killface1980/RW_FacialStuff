@@ -165,10 +165,17 @@ namespace FacialStuff.Harmony
 
             Pawn pawn = graphics.pawn;
 
+            if (pawn.RaceProps.Animal && !Controller.settings.UsePawns)
+            {
+                return true;
+
+            }
+
             if (!graphics.AllResolved)
             {
                 graphics.ResolveAllGraphics();
             }
+
             CompFace compFace = pawn.GetCompFace();
             bool     hasFace  = compFace != null;
 
@@ -256,16 +263,17 @@ namespace FacialStuff.Harmony
 
             Vector3 bodyPos = baseDrawLoc;
             Vector3 headPos = baseDrawLoc;
-            if (bodyFacing != Rot4.North)
-            {
-                headPos.y += YOffset_Head;
-                bodyPos.y += YOffset_Shell;
-            }
-            else
+            if (bodyFacing == Rot4.North)
             {
                 headPos.y += YOffset_Shell;
                 bodyPos.y += YOffset_Head;
             }
+            else
+            {
+                headPos.y += YOffset_Head;
+                bodyPos.y += YOffset_Shell;
+            }
+
 
             if (graphics.headGraphic != null)
             {
@@ -331,8 +339,8 @@ namespace FacialStuff.Harmony
                                 Vector3 beardLoc = headDrawLoc;
                                 Vector3 tacheLoc = headDrawLoc;
 
-                                beardLoc.y += (((headFacing == Rot4.North)) ? YOffset_Behind : YOffset_Beard);
-                                tacheLoc.y += (((headFacing == Rot4.North)) ? YOffset_Behind : YOffset_Tache);
+                                beardLoc.y += headFacing == Rot4.North ? -YOffset_Head : YOffset_Beard;
+                                tacheLoc.y += (((headFacing == Rot4.North)) ? -YOffset_Head : YOffset_Tache);
 
                                 compFace.DrawBeardAndTache(beardLoc, tacheLoc, portrait, headQuat);
                             }
@@ -440,7 +448,7 @@ namespace FacialStuff.Harmony
             {
                 // Reset the position for the hands
                 handPos.y = baseDrawLoc.y;
-                compAnim.DrawHands(bodyQuat, handPos, portrait);
+                compAnim?.DrawHands(bodyQuat, handPos, portrait);
             }
 
             if (footy)

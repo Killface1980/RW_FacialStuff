@@ -44,9 +44,8 @@ namespace FacialStuff
             }
 
             this.WeaponCompsNew();
-            this.WeaponComps();
-            // todo: use BodyDef instead, target for kickstarting? 
 
+            // todo: use BodyDef instead, target for kickstarting? 
             this.AnimalPawnCompsBodyDefImport();  
             this.AnimalPawnCompsImportFromAnimationTargetDefs();
             Controller.SetMainButtons();
@@ -83,53 +82,58 @@ namespace FacialStuff
                 cycles = DefDatabase<WalkCycleDef>.AllDefsListForReading;
             }
 
-            if (cycles != null)
+            if (cycles == null)
             {
-                for (int index = 0; index < cycles.Count; index++)
+                return;
+            }
+
+            for (int index = 0; index < cycles.Count; index++)
+            {
+                WalkCycleDef cycle = cycles[index];
+                if (cycle != null)
                 {
-                    WalkCycleDef cycle = cycles[index];
-                    if (cycle != null)
+                    cycle.BodyAngle         = new SimpleCurve();
+                    cycle.BodyAngleVertical = new SimpleCurve();
+                    cycle.BodyOffsetZ       = new SimpleCurve();
+
+                    // cycle.BodyOffsetVerticalZ = new SimpleCurve();
+                    cycle.FootAngle     = new SimpleCurve();
+                    cycle.FootPositionX = new SimpleCurve();
+                    cycle.FootPositionZ = new SimpleCurve();
+
+                    // cycle.FootPositionVerticalZ = new SimpleCurve();
+                    cycle.HandsSwingAngle           = new SimpleCurve();
+                    cycle.HandsSwingPosVertical     = new SimpleCurve();
+                    cycle.ShoulderOffsetHorizontalX = new SimpleCurve();
+                    cycle.HipOffsetHorizontalX      = new SimpleCurve();
+
+                    // Quadrupeds
+                    cycle.FrontPawAngle     = new SimpleCurve();
+                    cycle.FrontPawPositionX = new SimpleCurve();
+                    cycle.FrontPawPositionZ = new SimpleCurve();
+
+                    // cycle.FrontPawPositionVerticalZ = new SimpleCurve();
+                    if (cycle.keyframes.NullOrEmpty())
                     {
-                        cycle.BodyAngle = new SimpleCurve();
-                        cycle.BodyAngleVertical = new SimpleCurve();
-                        cycle.BodyOffsetZ = new SimpleCurve();
-
-                        // cycle.BodyOffsetVerticalZ = new SimpleCurve();
-                        cycle.FootAngle = new SimpleCurve();
-                        cycle.FootPositionX = new SimpleCurve();
-                        cycle.FootPositionZ = new SimpleCurve();
-
-                        // cycle.FootPositionVerticalZ = new SimpleCurve();
-                        cycle.HandsSwingAngle = new SimpleCurve();
-                        cycle.HandsSwingPosVertical = new SimpleCurve();
-                        cycle.ShoulderOffsetHorizontalX = new SimpleCurve();
-                        cycle.HipOffsetHorizontalX = new SimpleCurve();
-
-                        // Quadrupeds
-                        cycle.FrontPawAngle = new SimpleCurve();
-                        cycle.FrontPawPositionX = new SimpleCurve();
-                        cycle.FrontPawPositionZ = new SimpleCurve();
-
-                        // cycle.FrontPawPositionVerticalZ = new SimpleCurve();
-                        if (cycle.keyframes.NullOrEmpty())
+                        cycle.keyframes = new List<PawnKeyframe>();
+                        for (int i = 0; i < 9; i++)
                         {
-                            cycle.keyframes = new List<PawnKeyframe>();
-                            for (int i = 0; i < 9; i++)
-                            {
-                                cycle.keyframes.Add(new PawnKeyframe(i));
-                            }
+                            cycle.keyframes.Add(new PawnKeyframe(i));
                         }
+                    }
 
-                        // Log.Message(cycle.defName + " has " + cycle.animation.Count);
-                        foreach (PawnKeyframe key in cycle.keyframes)
-                        {
-                            BuildAnimationKeys(key, cycle);
-                        }
+                    // Log.Message(cycle.defName + " has " + cycle.animation.Count);
+                    foreach (PawnKeyframe key in cycle.keyframes)
+                    {
+                        BuildAnimationKeys(key, cycle);
                     }
                 }
             }
         }
-
+        /// <summary>
+        /// Pose cycles, currently disabled; needs more work
+        /// </summary>
+        /// <param name="defToRebuild"></param>
         public static void BuildPoseCycles([CanBeNull] PoseCycleDef defToRebuild = null)
         {
             List<PoseCycleDef> cycles = new List<PoseCycleDef>();
@@ -486,84 +490,6 @@ namespace FacialStuff
                     wepzie.comps.Add(extensions);
                 }
             }
-        }
-
-        private void WeaponComps()
-        {
-            // ReSharper disable once PossibleNullReferenceException
-            for (int index = 0; index < DefDatabase<HandDef>.AllDefsListForReading.Count; index++)
-            {
-                HandDef handDef = DefDatabase<HandDef>.AllDefsListForReading[index];
-                if (handDef.CompLoaderTargets.NullOrEmpty())
-                {
-                    continue;
-                }
-
-                for (int i = 0; i < handDef.CompLoaderTargets.Count; i++)
-                {
-                    CompLoaderTargets wepSets = handDef.CompLoaderTargets[i];
-                    if (wepSets == null)
-                    {
-                        continue;
-                    }
-
-                    if (wepSets.thingTargets.NullOrEmpty())
-                    {
-                        continue;
-                    }
-
-                    foreach (string t in wepSets.thingTargets)
-                    {
-                        ThingDef thingDef = ThingDef.Named(t);
-                        if (thingDef != null)
-                        {
-                            CompProperties_WeaponExtensions weaponExtensions =
-                            thingDef.GetCompProperties<CompProperties_WeaponExtensions>();
-                            bool flag = false;
-
-                            if (weaponExtensions == null)
-                            {
-                                weaponExtensions =
-                                new CompProperties_WeaponExtensions { compClass = typeof(CompWeaponExtensions) };
-                                flag = true;
-                            }
-
-                            if (weaponExtensions.RightHandPosition == Vector3.zero)
-                            {
-                                weaponExtensions.RightHandPosition = wepSets.firstHandPosition;
-                            }
-
-                            if (weaponExtensions.LeftHandPosition == Vector3.zero)
-                            {
-                                weaponExtensions.LeftHandPosition = wepSets.secondHandPosition;
-                            }
-
-                            if (!weaponExtensions.AttackAngleOffset.HasValue)
-                            {
-                                weaponExtensions.AttackAngleOffset = wepSets.attackAngleOffset;
-                            }
-
-                            if (weaponExtensions.WeaponPositionOffset == Vector3.zero)
-                            {
-                                weaponExtensions.WeaponPositionOffset = wepSets.weaponPositionOffset;
-                            }
-
-                            if (weaponExtensions.AimedWeaponPositionOffset == Vector3.zero)
-                            {
-                                weaponExtensions.AimedWeaponPositionOffset = wepSets.aimedWeaponPositionOffset;
-                            }
-
-                            if (flag)
-                            {
-                                thingDef.comps?.Add(weaponExtensions);
-
-                            }
-                        }
-                    }
-                }
-            }
-
-            this.LaserLoad();
         }
 
         private void WeaponCompsNew()
