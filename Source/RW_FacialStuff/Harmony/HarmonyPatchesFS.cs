@@ -337,10 +337,10 @@ namespace FacialStuff.Harmony
             Stance_Busy busy = pawn.stances.curStance as Stance_Busy;
             if (busy == null) { return; }
 
-            //  if (!busy.verb.IsMeleeAttack)
-            //  {
-            //      return;
-            //  }
+              if (busy.verb == null || !busy.verb.IsMeleeAttack)
+              {
+                  return;
+              }
 
             DamageDef damageDef = busy.verb.GetDamageDef();//ThingUtility.PrimaryMeleeWeaponDamageType(primaryEq.parent.def);
             if (damageDef == null)
