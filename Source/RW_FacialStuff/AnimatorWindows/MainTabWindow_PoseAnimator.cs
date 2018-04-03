@@ -1,10 +1,10 @@
-﻿using System;
+﻿using FacialStuff.Defs;
+using JetBrains.Annotations;
+using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using FacialStuff.Defs;
-using JetBrains.Annotations;
-using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -13,7 +13,6 @@ namespace FacialStuff.AnimatorWindows
 {
     public class MainTabWindow_PoseAnimator : MainTabWindow_BaseAnimator
     {
-
         #region Public Fields
 
         public static bool Equipment;
@@ -28,9 +27,11 @@ namespace FacialStuff.AnimatorWindows
         [CanBeNull] public static PoseCycleDef EditorPosecycle;
 
         #endregion Private Fields
+
         public static bool IsOpen;
 
         #region Public Properties
+
         public override void PostClose()
         {
             base.PostClose();
@@ -45,7 +46,7 @@ namespace FacialStuff.AnimatorWindows
         {
             base.PreOpen();
             IsOpen = true;
-           // IsMoving = false;
+            // IsMoving = false;
         }
 
         #endregion Private Properties
@@ -115,7 +116,6 @@ namespace FacialStuff.AnimatorWindows
                 Find.WindowStack.Add(new FloatMenu(list));
             }
 
-
             listing.Gap();
             string configFolder = DefPath;
             if (listing.ButtonText("Export BodyDef"))
@@ -158,7 +158,6 @@ namespace FacialStuff.AnimatorWindows
                                                                           },
                                                                           true));
             }
-
         }
 
         public override void DoWindowContents(Rect inRect)
@@ -169,12 +168,13 @@ namespace FacialStuff.AnimatorWindows
                 GameComponent_FacialStuff.BuildPoseCycles();
             }
         }
+
         protected override void BuildEditorCycle()
         {
             base.BuildEditorCycle();
             GameComponent_FacialStuff.BuildPoseCycles(EditorPosecycle);
-
         }
+
         protected override void DrawBodySettingsEditor(Rot4 rotation)
         {
             Rect sliderRect = new Rect(0, 0, this.SliderWidth, 40f);
@@ -248,9 +248,9 @@ namespace FacialStuff.AnimatorWindows
                 return;
             }
 
-            Rect leftController  = keyframes.LeftHalf();
+            Rect leftController = keyframes.LeftHalf();
             Rect rightController = keyframes.RightHalf();
-            leftController.xMax  -= this.Spacing;
+            leftController.xMax -= this.Spacing;
 
             rightController.xMin += this.Spacing;
             {
@@ -269,7 +269,7 @@ namespace FacialStuff.AnimatorWindows
                 // }
                 // keysFloats.Add(frames[i].KeyIndex, footPositionX.Value);
                 // }
-                List<int>          framesAt;
+                List<int> framesAt;
                 List<PawnKeyframe> frames = PawnKeyframes;
                 PoseCycleDef cycleDef = EditorPosecycle;
                 {
@@ -337,7 +337,6 @@ namespace FacialStuff.AnimatorWindows
                     // Quadruped
                 }
 
-
                 GUI.EndGroup();
 
                 GUI.BeginGroup(rightController);
@@ -359,8 +358,6 @@ namespace FacialStuff.AnimatorWindows
                                   cycleDef.HandsSwingAngle,
                                   "HandSwing",
                                   framesAt);
-
-
                 }
 
                 if (rotation.IsHorizontal)
@@ -412,7 +409,6 @@ namespace FacialStuff.AnimatorWindows
                 }
                 else
                 {
-
                     framesAt = (from keyframe in frames
                                 where keyframe.BodyAngleVertical.HasValue
                                 select keyframe.KeyIndex).ToList();
@@ -470,7 +466,7 @@ namespace FacialStuff.AnimatorWindows
             {
                 EditorPosecycle = anim.poseCycles.FirstOrDefault();
             }
-                this.CompAnim.AnimatorPoseOpen = true;
+            this.CompAnim.AnimatorPoseOpen = true;
         }
 
         #endregion Public Methods

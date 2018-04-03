@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using FacialStuff.DefOfs;
+﻿using FacialStuff.DefOfs;
 using FacialStuff.Defs;
 using FacialStuff.GraphicsFS;
 using JetBrains.Annotations;
 using RimWorld;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -15,7 +15,6 @@ namespace FacialStuff.AnimatorWindows
 {
     public class MainTabWindow_WalkAnimator : MainTabWindow_BaseAnimator
     {
-
         #region Public Fields
 
         public static bool Equipment;
@@ -31,15 +30,16 @@ namespace FacialStuff.AnimatorWindows
             PawnKeyframes = EditorWalkcycle.keyframes;
             this.Label = EditorWalkcycle.LabelCap;
         }
+
         [NotNull]
         public static WalkCycleDef EditorWalkcycle { get; private set; } = WalkCycleDefOf.Biped_Walk;
-
 
         #endregion Public Properties
 
         #region Private Properties
 
         // public static float verHeadOffset;
+
         #endregion Private Properties
 
         #region Public Methods
@@ -48,7 +48,6 @@ namespace FacialStuff.AnimatorWindows
         {
             base.BuildEditorCycle();
             GameComponent_FacialStuff.BuildWalkCycles(EditorWalkcycle);
-
         }
 
         protected override void SetCurrentCycle()
@@ -65,44 +64,42 @@ namespace FacialStuff.AnimatorWindows
         {
             GUI.BeginGroup(rect);
             var percent = AnimationPercent;
-            float width= rect.width;
+            float width = rect.width;
             float zero = rect.x;
 
-            float moved = (width*AnimationPercent);
+            float moved = (width * AnimationPercent);
             Rect rect1;
             Rect rect2;
             if (BodyRot == Rot4.East)
             {
-                rect1 = new Rect(rect) { x  = rect.x - moved };
+                rect1 = new Rect(rect) { x = rect.x - moved };
                 rect2 = new Rect(rect1) { x = rect1.xMax };
             }
             else if (BodyRot == Rot4.West)
-                        {
-                            rect1 = new Rect(rect) { x  = rect.x + moved };
-                            rect2 = new Rect(rect1) { x = rect1.xMin-width };
+            {
+                rect1 = new Rect(rect) { x = rect.x + moved };
+                rect2 = new Rect(rect1) { x = rect1.xMin - width };
             }
             else if (BodyRot == Rot4.North)
             {
-                rect1 = new Rect(rect) { y  = rect.y + moved };
-                rect2 = new Rect(rect1) { y = rect1.yMin-width };
+                rect1 = new Rect(rect) { y = rect.y + moved };
+                rect2 = new Rect(rect1) { y = rect1.yMin - width };
             }
             else
             {
-                rect1 = new Rect(rect) { y  = rect.y     - moved };
+                rect1 = new Rect(rect) { y = rect.y - moved };
                 rect2 = new Rect(rect1) { y = rect1.yMax };
-
             }
 
             GUI.DrawTexture(rect1, FaceTextures.BackgroundAnimTex);
             GUI.DrawTexture(rect2, FaceTextures.BackgroundAnimTex);
             GUI.EndGroup();
-
         }
+
         // public static float horHeadOffset;
         protected override void DoBasicSettingsMenu(Listing_Standard listing)
         {
             base.DoBasicSettingsMenu(listing);
-
 
             //  listing.CheckboxLabeled("Moving", ref IsMoving);
 
@@ -113,7 +110,6 @@ namespace FacialStuff.AnimatorWindows
             // verHeadOffset = listing_Standard.Slider(verHeadOffset, -1f, 1f);
             listing.Label(this.BodyAnimDef.offCenterX.ToString("N2"));
             this.BodyAnimDef.offCenterX = listing.Slider(this.BodyAnimDef.offCenterX, -0.2f, 0.2f);
-
 
             if (listing.ButtonText(EditorWalkcycle.LabelCap))
             {
@@ -189,8 +185,6 @@ namespace FacialStuff.AnimatorWindows
                 Find.WindowStack.Add(new FloatMenu(list));
             }
 
-
-
             listing.Gap();
             string configFolder = DefPath;
             if (listing.ButtonText("Export BodyDef"))
@@ -233,8 +227,8 @@ namespace FacialStuff.AnimatorWindows
                                                                           },
                                                                           true));
             }
-
         }
+
         public static bool IsOpen;
 
         public override void PreOpen()
@@ -249,8 +243,6 @@ namespace FacialStuff.AnimatorWindows
             base.PostClose();
             IsOpen = false;
         }
-
-
 
         public override void DoWindowContents(Rect inRect)
         {
@@ -438,8 +430,6 @@ namespace FacialStuff.AnimatorWindows
                                   walkcycle.HandsSwingAngle,
                                   "HandSwing",
                                   framesAt);
-
-
                 }
 
                 if (rotation.IsHorizontal)
@@ -559,7 +549,6 @@ namespace FacialStuff.AnimatorWindows
         {
             if (Pawn == null)
             {
-
                 base.FindRandomPawn();
 
                 BodyAnimDef anim = this.CompAnim.BodyAnim;

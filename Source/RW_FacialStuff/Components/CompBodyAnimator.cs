@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using FacialStuff.Animator;
+﻿using FacialStuff.Animator;
 using FacialStuff.AnimatorWindows;
 using FacialStuff.GraphicsFS;
 using FacialStuff.Harmony;
 using FacialStuff.Tweener;
 using JetBrains.Annotations;
 using RimWorld;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -24,7 +24,6 @@ namespace FacialStuff
         [CanBeNull] public BodyAnimDef BodyAnim;
 
         public BodyPartStats BodyStat;
-
 
         public float JitterMax = 0.35f;
         public readonly Vector3Tween[] Vector3Tweens = new Vector3Tween[(int)TweenThing.Max];
@@ -51,7 +50,6 @@ namespace FacialStuff
         [NotNull] private readonly List<Material> _cachedNakedMatsBodyBase = new List<Material>();
 
         private readonly List<Material> _cachedSkinMatsBodyBase = new List<Material>();
-
 
         private int _cachedNakedMatsBodyBaseHash = -1;
         private int _cachedSkinMatsBodyBaseHash = -1;
@@ -158,8 +156,6 @@ namespace FacialStuff
             return info?.GetValue(__instance);
         }
 
-
-
         public void ApplyBodyWobble(ref Vector3 rootLoc, ref Vector3 footPos, ref Quaternion quat)
         {
             if (this.PawnBodyDrawers == null)
@@ -198,6 +194,7 @@ namespace FacialStuff
                 i++;
             }
         }
+
         // public override string CompInspectStringExtra()
         // {
         //     string extra = this.Pawn.DrawPos.ToString();
@@ -337,10 +334,10 @@ namespace FacialStuff
 
             return this._cachedNakedMatsBodyBase;
         }
+
 #if develop
         public override string CompInspectStringExtra()
         {
-
             // var tween = Vector3Tweens[(int)TweenThing.Equipment];
             // var log = tween.State + " =>"+  tween.StartValue + " - " + tween.EndValue + " / " + tween.CurrentTime + " / " + tween.CurrentValue;
             // return log;
@@ -351,6 +348,7 @@ namespace FacialStuff
             return base.CompInspectStringExtra();
         }
 #endif
+
         public override void PostDraw()
         {
             base.PostDraw();
@@ -374,7 +372,7 @@ namespace FacialStuff
                 this.BodyAnimator.AnimatorTick();
             }
 
-            // Tweener 
+            // Tweener
             Vector3Tween eqTween = this.Vector3Tweens[(int)HarmonyPatchesFS.equipment];
             FloatTween angleTween = this.AimAngleTween;
             Vector3Tween leftHand = this.Vector3Tweens[(int)TweenThing.HandLeft];
@@ -382,12 +380,10 @@ namespace FacialStuff
             if (leftHand.State == TweenState.Running)
             {
                 leftHand.Update(1f * Find.TickManager.TickRateMultiplier);
-
             }
             if (rightHand.State == TweenState.Running)
             {
                 rightHand.Update(1f * Find.TickManager.TickRateMultiplier);
-
             }
             if (eqTween.State == TweenState.Running)
             {
@@ -397,11 +393,9 @@ namespace FacialStuff
             if (angleTween.State == TweenState.Running)
             {
                 this.AimAngleTween.Update(3f * Find.TickManager.TickRateMultiplier);
-
             }
 
             this.CheckMovement();
-
         }
 
         public override void PostExposeData()
@@ -513,10 +507,12 @@ namespace FacialStuff
         }
 
         #endregion Public Methods
+
         public float MovedPercent => this._movedPercent;
         public float BodyAngle;
 
         public float LastAimAngle = 143f;
+
         //  public float lastWeaponAngle = 53f;
         public readonly Vector3[] LastPosition = new Vector3[(int)TweenThing.Max];
 
@@ -525,6 +521,7 @@ namespace FacialStuff
 
         public Vector3 LastEqPos = Vector3.zero;
         public float DrawOffsetY;
+
         public void CheckMovement()
         {
             if (MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_BaseAnimator.Pawn == this.Pawn)
@@ -546,7 +543,6 @@ namespace FacialStuff
             {
                 this._isMoving = false;
             }
-
         }
 
         public void DrawAlienBodyAddons(Quaternion quat, Vector3 vector, bool portrait, bool renderBody, Rot4 rotation)
@@ -564,10 +560,12 @@ namespace FacialStuff
                 i++;
             }
         }
+
         public void SetWalkCycle(WalkCycleDef walkCycleDef)
         {
             this._walkCycle = walkCycleDef;
         }
+
         public float BodyOffsetZ
         {
             get
@@ -586,14 +584,13 @@ namespace FacialStuff
             }
         }
 
-
         public bool IsMoving => this._isMoving;
         internal bool MeshFlipped;
         internal float LastWeaponAngle;
         internal readonly int[] LastPosUpdate = new int[(int)TweenThing.Max];
         internal int LastAngleTick;
-        float _movedPercent;
-        bool _isMoving;
-        private  WalkCycleDef _walkCycle;
+        private float _movedPercent;
+        private bool _isMoving;
+        private WalkCycleDef _walkCycle;
     }
 }

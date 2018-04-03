@@ -5,8 +5,8 @@
 // ReSharper disable InconsistentNaming
 // ReSharper disable CollectionNeverUpdated.Global
 
-using System.Collections.Generic;
 using RimWorld;
+using System.Collections.Generic;
 using Verse;
 
 namespace FacialStuff.Defs

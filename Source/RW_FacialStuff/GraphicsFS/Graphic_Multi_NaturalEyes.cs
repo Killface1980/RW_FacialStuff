@@ -12,7 +12,7 @@ namespace FacialStuff.GraphicsFS
         public override Material MatBack => this._mats[0];
         public override Material MatSide => this._mats[1];
         public override Material MatFront => this._mats[2];
-        public Material MatLeft => this._mats[3];
+        public override Material MatLeft => this._mats[3];
 
 
         public override void Init(GraphicRequest req)

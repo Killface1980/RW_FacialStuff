@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using JetBrains.Annotations;
+using RimWorld;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using JetBrains.Annotations;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -10,7 +10,6 @@ namespace FacialStuff
 {
     public class Controller : Mod
     {
-        
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once StyleCop.SA1307
         [NotNull]

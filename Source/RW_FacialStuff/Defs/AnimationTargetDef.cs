@@ -4,21 +4,19 @@
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 // ReSharper disable UnassignedField.Global
 
-using System.Collections.Generic;
 using JetBrains.Annotations;
+using System.Collections.Generic;
 using Verse;
 
 namespace FacialStuff.Defs
 {
     public class AnimationTargetDef : ThingDef
     {
-
         #region Public Fields
 
         [NotNull]
         public List<CompLoaderTargets> CompLoaderTargets = new List<CompLoaderTargets>();
 
         #endregion Public Fields
-
     }
 }

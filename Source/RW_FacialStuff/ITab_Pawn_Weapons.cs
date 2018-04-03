@@ -18,7 +18,6 @@ namespace FacialStuff
 
         #region Private Fields
 
-        private static int _rotation = 2;
         [CanBeNull] private static CompProperties_WeaponExtensions weaponExtensions;
 
         private readonly string[] _psiToolbarStrings =

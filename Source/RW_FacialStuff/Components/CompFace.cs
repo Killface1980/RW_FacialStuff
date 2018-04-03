@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using FacialStuff.Animator;
+﻿using FacialStuff.Animator;
 using FacialStuff.DefOfs;
 using FacialStuff.Defs;
 using FacialStuff.GraphicsFS;
 using FacialStuff.Utilities;
 using JetBrains.Annotations;
 using RimWorld;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -14,7 +14,6 @@ namespace FacialStuff
 {
     public class CompFace : ThingComp
     {
-
         #region Public Fields
 
         public FacePartStats BodyStat;
@@ -126,7 +125,7 @@ namespace FacialStuff
                 return;
             }
 
-            int i     = 0;
+            int i = 0;
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
@@ -162,6 +161,7 @@ namespace FacialStuff
                     }
 
                     break;
+
                 case CrownType.Narrow:
                     switch (this.PawnHeadType)
                     {
@@ -299,14 +299,12 @@ namespace FacialStuff
         [NotNull]
         public string BrowTexPath([NotNull] BrowDef browDef)
         {
-            string browPath = browDef.texBasePath.NullOrEmpty()? StringsFS.PathHumanlike+"Brows/" : browDef.texBasePath;
+            string browPath = browDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Brows/" : browDef.texBasePath;
             string browTexPath = browPath + "Brow_" + this.Pawn.gender + "_" + browDef.texName;
             return browTexPath;
         }
 
-
         // Can be called externally
-
 
         public void DrawAlienHeadAddons(Vector3 headPos, bool portrait, Quaternion headQuat, Vector3 currentLoc)
         {
@@ -323,7 +321,6 @@ namespace FacialStuff
                 i++;
             }
         }
-
 
         public void DrawBasicHead(out bool headDrawn, RotDrawMode bodyDrawType, bool portrait, bool headStump,
                                   Vector3 drawLoc, Quaternion headQuat)
@@ -382,7 +379,7 @@ namespace FacialStuff
         }
 
         public void DrawHairAndHeadGear(Vector3 hairLoc, Vector3 headgearLoc, RotDrawMode bodyDrawType,
-                                        bool    portrait, bool          renderBody, Quaternion headQuat,
+                                        bool portrait, bool renderBody, Quaternion headQuat,
                                         Vector3 hatInFrontOfFace)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
@@ -501,7 +498,7 @@ namespace FacialStuff
                 eyeDef = this.PawnFace?.EyeDef;
             }
             // ReSharper disable once PossibleNullReferenceException
-            string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike +"Eyes/": eyeDef.texBasePath;
+            string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : eyeDef.texBasePath;
             string path = eyePath + "Eye_" + eyeDef.texName + "_" + this.Pawn.gender + "_" + side;
 
             return path;
@@ -524,14 +521,14 @@ namespace FacialStuff
 
             if (def == BeardDefOf.Beard_Shaved)
             {
-                return StringsFS.PathHumanlike+"Beards/Beard_Shaved";
+                return StringsFS.PathHumanlike + "Beards/Beard_Shaved";
             }
 
             return StringsFS.PathHumanlike + "Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;
         }
 
         [NotNull]
-        public string GetMoustachePath(MoustacheDef def= null)
+        public string GetMoustachePath(MoustacheDef def = null)
         {
             if (def == null)
             {

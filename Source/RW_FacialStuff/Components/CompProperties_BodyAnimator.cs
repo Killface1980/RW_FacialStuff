@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -24,12 +24,12 @@ namespace FacialStuff
 
         [NotNull] public List<PawnBodyDrawer> bodyDrawers = new List<PawnBodyDrawer>();
 
-        public string  handType = "Human";
+        public string handType = "Human";
         public Vector3 hipOffset;
         public Vector3 shoulderOffset;
 
-        public bool    bipedWithHands;
-        public bool    quadruped;
+        public bool bipedWithHands;
+        public bool quadruped;
 
         #endregion Public Fields
     }

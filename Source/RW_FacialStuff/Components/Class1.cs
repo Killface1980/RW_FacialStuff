@@ -9,12 +9,10 @@ namespace FacialStuff.Components
 {
     class Class1 : MapComponent
     {
-
         public static Dictionary<Pawn, float> pawnPositionOffset = new Dictionary<Pawn, float>();
 
         public Class1(Map map) : base(map)
         {
-
         }
 
         private static void ExtendGrid(ref List<IntVec3> grid, IntVec3 sourcePos)
@@ -62,7 +60,7 @@ namespace FacialStuff.Components
             int maxZ = currentPawns.Max(x => x.Position.z);
             //  Log.Message(minX + " - " + maxX + " - " + minZ + " - " + maxZ);
             Dictionary<IntVec3, List<Pawn>> pawnsOn = new Dictionary<IntVec3, List<Pawn>>();
-                    var checkedGrid = new List<IntVec3>();
+            var checkedGrid = new List<IntVec3>();
             int currentZ = maxZ;
             while (currentZ > minZ)
             {
@@ -90,28 +88,24 @@ namespace FacialStuff.Components
                         continue;
                     }
 
-
                     checkedGrid.Add(currentCell);
                     pawnsOn.Add(currentCell, pawnsOnCell);
                     checkedPawns.AddRange(pawnsOnCell);
                 }
-
             }
 
-           // string log = "FS values: ";
+            // string log = "FS values: ";
             foreach (KeyValuePair<IntVec3, List<Pawn>> x in pawnsOn)
             {
                 IntVec3 y = x.Key;
                 List<Pawn> z = x.Value;
-        //        log += "\n vector at: " + y;
+                //        log += "\n vector at: " + y;
                 foreach (Pawn p in z)
                 {
-          //          log += "\n" + p.LabelCap + " - " + p.Position;
+                    //          log += "\n" + p.LabelCap + " - " + p.Position;
                 }
             }
-        //    Log.Message(log);
-
-
+            //    Log.Message(log);
         }
     }
 }

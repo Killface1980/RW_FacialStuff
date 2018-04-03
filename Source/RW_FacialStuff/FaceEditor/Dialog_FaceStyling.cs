@@ -1318,8 +1318,7 @@ namespace FacialStuff.FaceEditor
                                                                                       HairGender.FemaleUsually);
                     BrowDefs.SortBy(i => i.LabelCap);
                 }
-
-                if (Pawn.gender == Gender.Male)
+                else
                 {
                     BrowDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
                                                                                   x =>
@@ -1493,7 +1492,7 @@ namespace FacialStuff.FaceEditor
         {
             switch (Pawn.gender)
             {
-                case Gender.Male:
+                default:
                     HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                                                                                   x =>
                                                                                       x.hairTags
@@ -1556,20 +1555,15 @@ namespace FacialStuff.FaceEditor
 
         private Graphic_Multi_NaturalHeadParts BrowGraphic(BrowDef def)
         {
-            Graphic_Multi_NaturalHeadParts __result;
-            if (def.texBasePath != null)
-            {
-                __result = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(this.CompFace.BrowTexPath(def),
-                                                                               ShaderDatabase.CutoutSkin,
-                                                                               new Vector2(38f, 38f),
-                                                                               Color.white,
-                                                                               Color.white) as
-                           Graphic_Multi_NaturalHeadParts;
-            }
-            else
-            {
-                __result = null;
-            }
+            Graphic_Multi_NaturalHeadParts __result =
+            GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(this.CompFace.BrowTexPath(def),
+                                                                ShaderDatabase.CutoutSkin,
+                                                                new Vector2(38f, 38f),
+                                                                Color.white,
+                                                                Color.white) as
+            Graphic_Multi_NaturalHeadParts;
+            
+ 
 
             return __result;
         }

@@ -9,12 +9,6 @@ namespace FacialStuff.Animator
 {
     public class PawnPartsTweener
     {
-
-        #region Public Fields
-
-
-        #endregion Public Fields
-
         #region Private Fields
 
         private const float SoftSpringTightness = 0.05f;
@@ -48,11 +42,7 @@ namespace FacialStuff.Animator
 
         #endregion Public Constructors
 
-        #region Public Properties
 
-
-
-        #endregion Public Properties
 
         #region Public Methods
         /*
@@ -117,7 +107,6 @@ namespace FacialStuff.Animator
         }
         */
 
-
         public void ResetTweenedAngle()
         {
             this.TweenedWeaponAngle = this.TweenedAngleRoot();
@@ -149,8 +138,8 @@ namespace FacialStuff.Animator
             {
                 this._startPos = this._pawn.Position;
                 this._starting = true;
-                this._moving   = false;
-                this._ended    = false;
+                this._moving = false;
+                this._ended = false;
             }
 
             // close the lock at 20 %, end start sequence
@@ -161,7 +150,7 @@ namespace FacialStuff.Animator
                 if (this._lockProgress >= 1f)
                 {
                     this._starting = false;
-                    this._moving   = true;
+                    this._moving = true;
                 }
             }
 
@@ -176,7 +165,7 @@ namespace FacialStuff.Animator
                 if (this._lockProgress <= 0.1f)
                 {
                     this._moving = false;
-                    this._ended  = true;
+                    this._ended = true;
                 }
             }
 
@@ -191,20 +180,20 @@ namespace FacialStuff.Animator
 
         #region Internal Methods
 
-      //  internal void PreThingPosCalculation()
-      //  {
-      //      this.PreThingPosCalculation(TweenThing.HandLeft);
-      //      this.PreThingPosCalculation(TweenThing.HandRight);
-      //  }
+        //  internal void PreThingPosCalculation()
+        //  {
+        //      this.PreThingPosCalculation(TweenThing.HandLeft);
+        //      this.PreThingPosCalculation(TweenThing.HandRight);
+        //  }
 
         #endregion Internal Methods
 
         #region Private Methods
 
-      //  private Vector3 TweenedPartPosRoot(int side)
-      //  {
-      //      return this.PartPositions[side];
-      //  }
+        //  private Vector3 TweenedPartPosRoot(int side)
+        //  {
+        //      return this.PartPositions[side];
+        //  }
 
         private float TweenedAngleRoot()
         {
@@ -215,7 +204,6 @@ namespace FacialStuff.Animator
 
         public void WeaponAngleCalculation()
         {
-
             if (MainTabWindow_BaseAnimator.IsOpen || ITab_Pawn_Weapons.IgnoreRenderer)
             {
                 this.ResetTweenedAngle();

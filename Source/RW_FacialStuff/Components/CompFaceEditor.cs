@@ -51,10 +51,10 @@ namespace FacialStuff
                                                    DefDatabase<JobDef>.GetNamed("FaceStyleChanger"),
                                                    styler,
                                                    styler.InteractionCell)
-                                                   {
-                                                       locomotionUrgency = LocomotionUrgency
+                        {
+                            locomotionUrgency = LocomotionUrgency
                                                            .Sprint
-                                                   };
+                        };
                         if (!selPawn.jobs.TryTakeOrderedJob(FaceStyleChanger))
                         {
                             // This is used to force go job, it will work even when drafted
@@ -68,6 +68,5 @@ namespace FacialStuff
 
             return list;
         }
-
     }
 }

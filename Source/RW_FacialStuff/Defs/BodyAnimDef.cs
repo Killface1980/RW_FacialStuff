@@ -9,9 +9,9 @@
 // ReSharper disable StyleCop.SA1310
 // ReSharper disable CheckNamespace
 
-using System.Collections.Generic;
 using FacialStuff;
 using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -29,7 +29,6 @@ namespace RimWorld
         public bool quadruped;
         public bool bipedWithHands;
 
-
         public float armLength;
 
         public float extraLegLength;
@@ -41,13 +40,14 @@ namespace RimWorld
         public List<Vector3> shoulderOffsets =
             new List<Vector3> { Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero };
 
-        [NotNull] public Dictionary<LocomotionUrgency, WalkCycleDef> walkCycles =
+        [NotNull]
+        public Dictionary<LocomotionUrgency, WalkCycleDef> walkCycles =
             new Dictionary<LocomotionUrgency, WalkCycleDef>();
 
-        public string WalkCycleType ="Undefined";
+        public string WalkCycleType = "Undefined";
 
         [NotNull]
-        public List< PoseCycleDef> poseCycles =new List<PoseCycleDef>();
+        public List<PoseCycleDef> poseCycles = new List<PoseCycleDef>();
 
         public string PoseCycleType;
 

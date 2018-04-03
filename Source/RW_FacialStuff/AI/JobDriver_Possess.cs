@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using RimWorld;
+﻿using RimWorld;
+using System.Collections.Generic;
 using Verse;
 using Verse.AI;
 using Verse.Sound;
@@ -11,12 +11,12 @@ namespace FacialStuff.AI
     {
         private readonly TargetIndex TargetInd = TargetIndex.A;
 
-        private int         ticksLeft;
-/*
-        private TargetIndex VomitInd = TargetIndex.B;
-*/
+        private int ticksLeft;
+        /*
+                private TargetIndex VomitInd = TargetIndex.B;
+        */
 
-        private Pawn Target => (Pawn) (Thing) this.pawn.CurJob.GetTarget(this.TargetInd);
+        private Pawn Target => (Pawn)(Thing)this.pawn.CurJob.GetTarget(this.TargetInd);
 
         public override bool TryMakePreToilReservations()
         {
@@ -33,7 +33,7 @@ namespace FacialStuff.AI
             yield return this.InsultingSpreeDelayToil();
             yield return Toils_Interpersonal.WaitToBeAbleToInteract(this.pawn);
 
-            Toil finalgoto        = Toils_Interpersonal.GotoInteractablePosition(this.TargetInd);
+            Toil finalgoto = Toils_Interpersonal.GotoInteractablePosition(this.TargetInd);
             finalgoto.socialMode = RandomSocialMode.Off;
             yield return finalgoto;
 
@@ -50,8 +50,8 @@ namespace FacialStuff.AI
             toil.initAction = delegate
                               {
                                   // this.ticksLeft = Rand.Range(300, 900);
-                                  this.ticksLeft    = Rand.Range(450, 1200);
-                                  int     num2 = 0;
+                                  this.ticksLeft = Rand.Range(450, 1200);
+                                  int num2 = 0;
                                   IntVec3 c;
                                   while (true)
                                   {
@@ -93,10 +93,10 @@ namespace FacialStuff.AI
                               };
 
             int accellerator = 25;
-            toil.tickAction  = delegate
-                               {
-                                   if (this.ticksLeft % 60 == 0)
-                                   {
+            toil.tickAction = delegate
+                              {
+                                  if (this.ticksLeft % 60 == 0)
+                                  {
                                        // MoteMaker.ThrowFireGlow(this.pawn.Position, this.pawn.Map, 0.1f);
                                    }
 
@@ -105,45 +105,45 @@ namespace FacialStuff.AI
                                    // MoteMaker.ThrowHeatGlow(this.pawn.Position, this.pawn.Map, 0.3f);
                                    // }
                                    if (this.ticksLeft % accellerator == 0)
-                                   {
-                                       compFace.HeadRotator.RotateRandomly();
+                                  {
+                                      compFace.HeadRotator.RotateRandomly();
 
                                        // MoteMaker.ThrowSmoke(this.pawn.Position.ToVector3(), this.pawn.Map, 0.2f);
                                        if (accellerator > 20)
-                                       {
-                                           accellerator--;
-                                       }
-                                       else if (accellerator < 37)
-                                       {
-                                           accellerator++;
-                                       }
-                                   }
+                                      {
+                                          accellerator--;
+                                      }
+                                      else if (accellerator < 37)
+                                      {
+                                          accellerator++;
+                                      }
+                                  }
 
-                                   if (this.ticksLeft % 150 == 149)
-                                   {
-                                       DefDatabase<SoundDef>.GetNamed("Pawn_Cat_Angry")
-                                          .PlayOneShot(new TargetInfo(this.pawn.Position, this.pawn.Map));
-                                       FilthMaker.MakeFilth(this.job.targetA.Cell, this.Map,
-                                                            ThingDefOf.FilthVomit, this.pawn.LabelIndefinite());
-                                       if (this.pawn.needs.food.CurLevelPercentage > 0.10000000149011612)
-                                       {
-                                           this.pawn.needs.food.CurLevel -= (float) (this.pawn.needs.food.MaxLevel * 0.02);
-                                       }
-                                   }
+                                  if (this.ticksLeft % 150 == 149)
+                                  {
+                                      DefDatabase<SoundDef>.GetNamed("Pawn_Cat_Angry")
+                                         .PlayOneShot(new TargetInfo(this.pawn.Position, this.pawn.Map));
+                                      FilthMaker.MakeFilth(this.job.targetA.Cell, this.Map,
+                                                           ThingDefOf.FilthVomit, this.pawn.LabelIndefinite());
+                                      if (this.pawn.needs.food.CurLevelPercentage > 0.10000000149011612)
+                                      {
+                                          this.pawn.needs.food.CurLevel -= (float)(this.pawn.needs.food.MaxLevel * 0.02);
+                                      }
+                                  }
 
-                                   if (this.ticksLeft % 50 == 0)
-                                   {
-                                       FilthMaker.MakeFilth(this.pawn.Position.RandomAdjacentCell8Way(), this.Map,
-                                                            ThingDefOf.FilthVomit, this.pawn.LabelIndefinite());
-                                   }
+                                  if (this.ticksLeft % 50 == 0)
+                                  {
+                                      FilthMaker.MakeFilth(this.pawn.Position.RandomAdjacentCell8Way(), this.Map,
+                                                           ThingDefOf.FilthVomit, this.pawn.LabelIndefinite());
+                                  }
 
-                                   this.ticksLeft--;
-                                   if (this.ticksLeft <= 0)
-                                   {
-                                       this.ReadyForNextToil();
-                                       TaleRecorder.RecordTale(TaleDefOf.Vomited, this.pawn);
-                                   }
-                               };
+                                  this.ticksLeft--;
+                                  if (this.ticksLeft <= 0)
+                                  {
+                                      this.ReadyForNextToil();
+                                      TaleRecorder.RecordTale(TaleDefOf.Vomited, this.pawn);
+                                  }
+                              };
 
             toil.AddFinishAction(compFace.HeadRotator.SetUnPossessed);
 
@@ -165,12 +165,12 @@ namespace FacialStuff.AI
             }
 
             Toil toil = new Toil
-                       {
-                           initAction          = Action,
-                           tickAction          = Action,
-                           socialMode          = RandomSocialMode.Off,
-                           defaultCompleteMode = ToilCompleteMode.Never
-                       };
+            {
+                initAction = Action,
+                tickAction = Action,
+                socialMode = RandomSocialMode.Off,
+                defaultCompleteMode = ToilCompleteMode.Never
+            };
             return toil;
         }
 

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using FacialStuff.Defs;
+﻿using FacialStuff.Defs;
 using FacialStuff.HairCut;
 using JetBrains.Annotations;
 using RimWorld;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 using Verse;
 
@@ -45,8 +45,8 @@ namespace FacialStuff
 
             this.WeaponCompsNew();
 
-            // todo: use BodyDef instead, target for kickstarting? 
-            this.AnimalPawnCompsBodyDefImport();  
+            // todo: use BodyDef instead, target for kickstarting?
+            this.AnimalPawnCompsBodyDefImport();
             this.AnimalPawnCompsImportFromAnimationTargetDefs();
             Controller.SetMainButtons();
             // BuildWalkCycles();
@@ -92,23 +92,23 @@ namespace FacialStuff
                 WalkCycleDef cycle = cycles[index];
                 if (cycle != null)
                 {
-                    cycle.BodyAngle         = new SimpleCurve();
+                    cycle.BodyAngle = new SimpleCurve();
                     cycle.BodyAngleVertical = new SimpleCurve();
-                    cycle.BodyOffsetZ       = new SimpleCurve();
+                    cycle.BodyOffsetZ = new SimpleCurve();
 
                     // cycle.BodyOffsetVerticalZ = new SimpleCurve();
-                    cycle.FootAngle     = new SimpleCurve();
+                    cycle.FootAngle = new SimpleCurve();
                     cycle.FootPositionX = new SimpleCurve();
                     cycle.FootPositionZ = new SimpleCurve();
 
                     // cycle.FootPositionVerticalZ = new SimpleCurve();
-                    cycle.HandsSwingAngle           = new SimpleCurve();
-                    cycle.HandsSwingPosVertical     = new SimpleCurve();
+                    cycle.HandsSwingAngle = new SimpleCurve();
+                    cycle.HandsSwingPosVertical = new SimpleCurve();
                     cycle.ShoulderOffsetHorizontalX = new SimpleCurve();
-                    cycle.HipOffsetHorizontalX      = new SimpleCurve();
+                    cycle.HipOffsetHorizontalX = new SimpleCurve();
 
                     // Quadrupeds
-                    cycle.FrontPawAngle     = new SimpleCurve();
+                    cycle.FrontPawAngle = new SimpleCurve();
                     cycle.FrontPawPositionX = new SimpleCurve();
                     cycle.FrontPawPositionZ = new SimpleCurve();
 
@@ -130,6 +130,7 @@ namespace FacialStuff
                 }
             }
         }
+
         /// <summary>
         /// Pose cycles, currently disabled; needs more work
         /// </summary>
@@ -425,7 +426,7 @@ namespace FacialStuff
 
         private static void CheckReplaceHairTexPath(HairDef hairDef)
         {
-            string folder = StringsFS.PathHumanlike+"Hair/";
+            string folder = StringsFS.PathHumanlike + "Hair/";
             List<string> collection;
             if (hairDef.defName.Contains("SPS"))
             {
@@ -550,7 +551,6 @@ namespace FacialStuff
 
                     foreach (string target in pawnSets.thingTargets)
                     {
-                       
                         ThingDef thingDef = ThingDef.Named(target);
                         if (thingDef == null)
                         {
@@ -564,16 +564,14 @@ namespace FacialStuff
                         }
 
                         CompProperties_BodyAnimator animator = new CompProperties_BodyAnimator
-                                                               {
-                                                               compClass      = typeof(CompBodyAnimator),
-                                                               bodyDrawers    = pawnSets.bodyDrawers,
-                                                               handType       = pawnSets.handType,
-                                                               quadruped      = pawnSets.quadruped,
-                                                               bipedWithHands = pawnSets.bipedWithHands
-                                                               };
+                        {
+                            compClass = typeof(CompBodyAnimator),
+                            bodyDrawers = pawnSets.bodyDrawers,
+                            handType = pawnSets.handType,
+                            quadruped = pawnSets.quadruped,
+                            bipedWithHands = pawnSets.bipedWithHands
+                        };
                         thingDef.comps?.Add(animator);
-
-
                     }
                 }
             }
@@ -605,18 +603,17 @@ namespace FacialStuff
                 }
 
                 CompProperties_BodyAnimator animator = new CompProperties_BodyAnimator
-                                                       {
-                                                       compClass      = typeof(CompBodyAnimator),
-                                                       bodyDrawers    = def.bodyDrawers,
-                                                       handType       = def.handType,
-                                                       quadruped      = def.quadruped,
-                                                       bipedWithHands = def.bipedWithHands
-                                                       };
+                {
+                    compClass = typeof(CompBodyAnimator),
+                    bodyDrawers = def.bodyDrawers,
+                    handType = def.handType,
+                    quadruped = def.quadruped,
+                    bipedWithHands = def.bipedWithHands
+                };
 
                 thingDef.comps?.Add(animator);
             }
         }
-
 
         #endregion Private Methods
     }

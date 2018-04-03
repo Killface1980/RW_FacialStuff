@@ -11,7 +11,7 @@ namespace Verse
 
         public override Material MatSide => this.mats[1];
 
-        public Material MatLeft => this.mats[3];
+        public virtual Material MatLeft => this.mats[3];
 
         public override Material MatBack => this.mats[0];
 

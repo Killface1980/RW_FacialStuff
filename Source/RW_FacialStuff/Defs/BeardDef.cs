@@ -8,9 +8,9 @@
 
 // ReSharper disable StyleCop.SA1310
 
-using System.Collections.Generic;
 using JetBrains.Annotations;
 using RimWorld;
+using System.Collections.Generic;
 using Verse;
 
 namespace FacialStuff.Defs
@@ -28,6 +28,6 @@ namespace FacialStuff.Defs
         public List<ThingDef> forbiddenOnRace = new List<ThingDef>();
 
         [NotNull]
-        public string texPath= string.Empty;
+        public string texPath = string.Empty;
     }
 }

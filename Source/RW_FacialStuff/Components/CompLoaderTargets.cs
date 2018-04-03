@@ -3,6 +3,7 @@
 // ReSharper disable StyleCop.SA1401
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 using JetBrains.Annotations;
+
 // ReSharper disable UnassignedField.Global
 
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace FacialStuff
     {
         #region Public Fields
 
-        public Vector3 firstHandPosition  = Vector3.zero;
+        public Vector3 firstHandPosition = Vector3.zero;
         public Vector3 secondHandPosition = Vector3.zero;
 
         [NotNull] public List<string> thingTargets = new List<string>();
@@ -22,7 +23,7 @@ namespace FacialStuff
         public float? attackAngleOffset;
 
         public Vector3 weaponPositionOffset = Vector3.zero;
-        public Vector3 aimedWeaponPositionOffset; 
+        public Vector3 aimedWeaponPositionOffset;
 
         // Animals
         public string handType;

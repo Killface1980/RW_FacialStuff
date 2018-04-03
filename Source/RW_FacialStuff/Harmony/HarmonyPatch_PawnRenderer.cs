@@ -29,7 +29,7 @@ namespace FacialStuff.Harmony
 
         private static readonly Type _pawnRendererType = typeof(PawnRenderer);
 
-        private static readonly MethodInfo DrawEquipmentMethodInfo= _pawnRendererType.GetMethod(
+        private static readonly MethodInfo DrawEquipmentMethodInfo = _pawnRendererType.GetMethod(
         "DrawEquipment",
         BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -62,7 +62,7 @@ namespace FacialStuff.Harmony
                 { continue; }
 
                 if (otherPawn.DrawPos.x > loc.x + 0.5f)
-                    { continue; }
+                { continue; }
 
                 if (otherPawn.DrawPos.z >= loc.z) { continue; } // ignore above
 
@@ -165,7 +165,7 @@ namespace FacialStuff.Harmony
 
             Pawn pawn = graphics.pawn;
 
-            if (pawn.RaceProps.Animal && !Controller.settings.UsePawns)
+            if (!pawn.RaceProps.Humanlike && !Controller.settings.UsePawns)
             {
                 return true;
 
@@ -177,7 +177,7 @@ namespace FacialStuff.Harmony
             }
 
             CompFace compFace = pawn.GetCompFace();
-            bool     hasFace  = compFace != null;
+            bool hasFace = compFace != null;
 
             // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
             if (hasFace)
@@ -190,7 +190,7 @@ namespace FacialStuff.Harmony
             }
 
             CompBodyAnimator compAnim = pawn.GetCompAnim();
-            bool footy = compAnim!=null && Controller.settings.UseFeet;
+            bool showFeet = compAnim != null && Controller.settings.UseFeet;
 
             // No face, no animator, return
             if (!hasFace && compAnim == null)
@@ -245,7 +245,7 @@ namespace FacialStuff.Harmony
             // Rotate head if possible and wobble around
             if (!portrait || MainTabWindow_WalkAnimator.IsOpen)
             {
-                if (footy)
+                if (showFeet)
                 {
                     compAnim.ApplyBodyWobble(ref baseDrawLoc, ref footPos, ref bodyQuat);
                 }
@@ -279,15 +279,9 @@ namespace FacialStuff.Harmony
             {
                 // Rendererd pawn faces
 
-                Vector3 offsetAt;
-                if (!hasFace)
-                {
-                    offsetAt = __instance.BaseHeadOffsetAt(bodyFacing);
-                }
-                else
-                {
-                    offsetAt = compFace.BaseHeadOffsetAt(portrait);
-                }
+                Vector3 offsetAt = !hasFace
+                                   ? __instance.BaseHeadOffsetAt(bodyFacing)
+                                   : compFace.BaseHeadOffsetAt(portrait);
 
                 Vector3 b = bodyQuat * offsetAt;
                 Vector3 headDrawLoc = headPos + b;
@@ -428,9 +422,9 @@ namespace FacialStuff.Harmony
             compAnim?.DrawAlienBodyAddons(bodyQuat, bodyPos, portrait, renderBody, bodyFacing);
 
             if (!portrait && pawn.RaceProps.Animal && pawn.inventory != null && pawn.inventory.innerContainer.Count > 0
-             && graphics.packGraphic                                 != null)
+             && graphics.packGraphic != null)
             {
-                var mesh = graphics.nakedGraphic.MeshAt(bodyFacing);
+                Mesh mesh = graphics.nakedGraphic.MeshAt(bodyFacing);
                 Graphics.DrawMesh(mesh, bodyPos, quat, graphics.packGraphic.MatAt(bodyFacing), 0);
             }
 
@@ -442,18 +436,21 @@ namespace FacialStuff.Harmony
 
 
 
-            bool showHands =  Controller.settings.UseHands;
+            bool showHands = Controller.settings.UseHands;
             Vector3 handPos = bodyPos;
-            if (showHands)
+            if (renderBody || Controller.settings.IgnoreRenderBody)
             {
-                // Reset the position for the hands
-                handPos.y = baseDrawLoc.y;
-                compAnim?.DrawHands(bodyQuat, handPos, portrait);
-            }
+                if (showHands)
+                {
+                    // Reset the position for the hands
+                    handPos.y = baseDrawLoc.y;
+                    compAnim?.DrawHands(bodyQuat, handPos, portrait);
+                }
 
-            if (footy)
-            {
-                compAnim?.DrawFeet(bodyQuat, footQuat, footPos, portrait);
+                if (showFeet)
+                {
+                    compAnim.DrawFeet(bodyQuat, footQuat, footPos, portrait);
+                }
             }
 
             return false;

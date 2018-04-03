@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FacialStuff.Defs;
+﻿using FacialStuff.Defs;
 using FacialStuff.GraphicsFS;
 using JetBrains.Annotations;
 using RimWorld;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Verse;
 
@@ -12,7 +12,6 @@ namespace FacialStuff.AnimatorWindows
 {
     public class MainTabWindow_BaseAnimator : MainTabWindow
     {
-
         #region Public Fields
 
         public static bool Colored;
@@ -128,7 +127,6 @@ namespace FacialStuff.AnimatorWindows
             }
         }
 
-
         protected static int LastInd
         {
             get
@@ -173,9 +171,9 @@ namespace FacialStuff.AnimatorWindows
             this.FindRandomPawn();
             PortraitsCache.SetDirty(Pawn);
         }
+
         public override void DoWindowContents(Rect inRect)
         {
-
             this.SetKeyframes();
             this._frameLabel = CurrentFrameInt + 1;
 
@@ -284,7 +282,7 @@ namespace FacialStuff.AnimatorWindows
 
         protected virtual void SetKeyframes()
         {
-            PawnKeyframes = new List<PawnKeyframe> {new PawnKeyframe()};
+            PawnKeyframes = new List<PawnKeyframe> { new PawnKeyframe() };
         }
 
         public override void PostClose()
@@ -380,10 +378,7 @@ namespace FacialStuff.AnimatorWindows
                     this.CurrentShift = shift;
                 }
             }
-
         }
-
-
 
         public float CurrentShift
         {
@@ -425,7 +420,6 @@ namespace FacialStuff.AnimatorWindows
 
         protected virtual void SetCurrentCycle()
         {
-
         }
 
         protected virtual void DrawBodySettingsEditor(Rot4 rotation)
@@ -448,9 +442,7 @@ namespace FacialStuff.AnimatorWindows
                 else
                 {
                     Pawn = Find.AnyPlayerHomeMap.FreeColonistsForStoryteller.FirstOrDefault();
-
                 }
-
 
                 Pawn?.GetCompAnim(out this.CompAnim);
             }
@@ -724,7 +716,6 @@ namespace FacialStuff.AnimatorWindows
                 renderTexture.Release();
             }
 
-
             // GUI.DrawTexture(position, PortraitsCache.Get(pawn, size, default(Vector3)));
             Widgets.DrawBox(rect);
         }
@@ -865,6 +856,5 @@ namespace FacialStuff.AnimatorWindows
         }
 
         #endregion Private Methods
-
     }
 }

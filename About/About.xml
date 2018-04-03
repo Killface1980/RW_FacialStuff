@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Facial Stuff 0.18.5</name>
+  <name>Facial Stuff 0.18.5.2</name>
   <author>Killface</author>
   <url></url>
   <targetVersion>0.18.0</targetVersion>
@@ -24,10 +24,10 @@
 
 For modders:
 - Walk cycle editor. Check out the develop mode in the mod options
-- A tab for positioning the hands on weapons, also activated with the dev mode.
+- A tab for positioning the hands on weapons, also activated with the dev mode; can export directly to xml.
 
 + hair textures with beards from the &apos;Spoonshortage&apos;s Rimworld Hairstyles 1.2&apos; and &apos;Nackblad Inc Rimhair 1.1&apos; mods are replaced by shaved versions
-  This mod contains no hair packs itself any more. Please subscribe to what you like.
+  This mod contains no hair packs itself any more. Please subscribe to the hair mods of your liking.
 
 Patches the PawnRenderer via Harmony and returns &apos;false&apos; thus being incompatible to mods doing the same.
 Look out for the FS "Alien Faces" addon if you're using erdelf's Humanoid Alien Framework.
@@ -40,6 +40,7 @@ Hands based on "Clutter Weapon Hands" by mrofa.
 Body, gender and head changer code adapted from Change Dresser by Kiame Vivacity
 Prepare Carefully saving / loading code adapted from Psychology by {WOBBLY} The Word-Mule
 Inspiration for the new renderer and all of its benefits by {WOBBLY} The Word-Mule and ChJees
-Special thanks to DoctorVanGogh and erdelf for help with transpilers, NotFood for the new Dresser patch and Brrainz for Harmony and help with transpilers
+Special thanks to DoctorVanGogh and erdelf for help with transpilers, NotFood for the new Dresser patch 
+and Brrainz for Harmony and help with transpilers
   </description>
 </ModMetaData>

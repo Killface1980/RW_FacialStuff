@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using System.Collections.Generic;
 using Verse;
 using Verse.AI;
 
@@ -26,14 +26,14 @@ namespace FacialStuff.Animator
 
         private bool _clockwise;
         private Rot4 _currentRot = Rot4.Random;
-        private int  _headRotation;
+        private int _headRotation;
 
         private int _nextRotationEnd = -5000;
 
-        private bool              _possessed;
+        private bool _possessed;
         private RotationDirection _rotationMod;
 
-        private int   _rotCount;
+        private int _rotCount;
         private Thing _target;
 
         #endregion Private Fields
@@ -69,7 +69,7 @@ namespace FacialStuff.Animator
             this._possessed = true;
             if (this._rotCount < 1)
             {
-                this._rotCount  = Rand.Range(12, 28);
+                this._rotCount = Rand.Range(12, 28);
                 this._clockwise = !this._clockwise;
             }
 
@@ -84,7 +84,7 @@ namespace FacialStuff.Animator
                 return this._currentRot;
             }
 
-            Rot4 rot  = headFacing;
+            Rot4 rot = headFacing;
             bool flag = false;
             if (renderBody)
             {
@@ -153,7 +153,7 @@ namespace FacialStuff.Animator
         // Verse.AI.GenAI
         private bool EnemyIsNear([NotNull] Pawn p, float radius)
         {
-            bool enemy  = false;
+            bool enemy = false;
             this._target = null;
 
             if (!p.Spawned)
@@ -172,7 +172,7 @@ namespace FacialStuff.Animator
                         continue;
                     }
 
-                    if (!p.Position.InHorDistOf(((Thing) attackTarget).Position, radius))
+                    if (!p.Position.InHorDistOf(((Thing)attackTarget).Position, radius))
                     {
                         continue;
                     }
@@ -187,7 +187,7 @@ namespace FacialStuff.Animator
                 return false;
             }
 
-            Thing thing = (Thing) AttackTargetFinder.BestAttackTarget(
+            Thing thing = (Thing)AttackTargetFinder.BestAttackTarget(
                                                                       p,
                                                                       TargetScanFlags.NeedReachable |
                                                                       TargetScanFlags.NeedThreat,
@@ -225,7 +225,7 @@ namespace FacialStuff.Animator
                 // }
                 // }
                 float angle = (this._target.Position - this._pawn.Position).ToVector3().AngleFlat();
-                Rot4  rot   = Pawn_RotationTracker.RotFromAngleBiased(angle);
+                Rot4 rot = Pawn_RotationTracker.RotFromAngleBiased(angle);
                 if (rot != this._pawn.Rotation.Opposite)
                 {
                     int rotty = this._pawn.Rotation.AsInt - rot.AsInt;
@@ -259,7 +259,6 @@ namespace FacialStuff.Animator
         // RimWorld.JobDriver_StandAndBeSociallyActive
         private void FindClosestTarget()
         {
-
             // Watch out for enemies
             Job job = this._pawn.CurJob;
             if (job == null || !job.targetA.IsValid)
@@ -302,14 +301,13 @@ namespace FacialStuff.Animator
             }
 
             this._target = null;
-
         }
 
         private void SetNextRotation(int tickManagerTicksGame)
         {
             float blinkDuration = Rand.Range(120f, 240f);
 
-            this._nextRotationEnd = (int) (tickManagerTicksGame + blinkDuration);
+            this._nextRotationEnd = (int)(tickManagerTicksGame + blinkDuration);
         }
 
         private void TrackHead()
