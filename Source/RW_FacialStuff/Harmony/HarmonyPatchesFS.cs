@@ -312,8 +312,8 @@ namespace FacialStuff.Harmony
                 return;
             }
 
-            pawn.CheckForAddedOrMissingParts();
-            if (!compFace.Deactivated)
+
+            if (!compFace.Deactivated && pawn.CheckForAddedOrMissingParts())
             {
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
                 PortraitsCache.SetDirty(pawn);

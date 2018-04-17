@@ -8,10 +8,36 @@ using Verse.AI;
 
 namespace FacialStuff
 {
+    public class BodyProps
+    {
+        public BodyPartRecord _rightFoot;
+        public BodyPartRecord _leftFoot;
+        public BodyPartRecord _rightHand;
+        public BodyPartRecord _leftHand;
+        public BodyPartRecord _rightEye;
+        public BodyPartRecord _leftEye;
+        public CompBodyAnimator _anim;
+        public CompFace _face;
+        public Hediff _hediff;
+
+        public BodyProps(Hediff hediff, CompFace face, CompBodyAnimator anim, BodyPartRecord leftEye, BodyPartRecord rightEye, BodyPartRecord leftHand, BodyPartRecord rightHand, BodyPartRecord leftFoot, BodyPartRecord rightFoot)
+        {
+            this._hediff = hediff;
+            this._face = face;
+            this._anim = anim;
+            this._leftEye = leftEye;
+            this._rightEye = rightEye;
+            this._leftHand = leftHand;
+            this._rightHand = rightHand;
+            this._leftFoot = leftFoot;
+            this._rightFoot = rightFoot;
+        }
+    }
+
     public static class PawnExtensions
     {
 
-        private static void CheckBody(Hediff hediff, CompBodyAnimator anim, BodyPartRecord leftHand,
+        private static void CheckBodyForAddedParts(Hediff hediff, CompBodyAnimator anim, BodyPartRecord leftHand,
                                       BodyPartRecord rightHand, BodyPartRecord leftFoot, BodyPartRecord rightFoot)
         {
             if (anim == null)
@@ -43,84 +69,80 @@ namespace FacialStuff
             }
         }
 
-        private static void CheckFace(Hediff hediff, CompFace face, BodyPartRecord leftEye,
+        private static void CheckFaceForAddedParts(Hediff hediff, CompFace face, BodyPartRecord leftEye,
                                       BodyPartRecord rightEye,
                                       BodyPartRecord jaw)
         {
-            if (face == null)
-            {
-                return;
-            }
-
             if (face.Props.hasEyes)
             {
-                if (hediff.Part.parts.Contains(leftEye))
+                if (hediff.Part ==leftEye)
                 {
                     face.TexPathEyeLeftPatch = StringsFS.PathHumanlike +"AddedParts/Eye_" + hediff.def.defName + "_Left" + "_"
                                              + face.PawnCrownType;
                 }
 
-                if (hediff.Part.parts.Contains(rightEye))
+                if (hediff.Part == rightEye)
                 {
                     face.TexPathEyeRightPatch = StringsFS.PathHumanlike +"AddedParts/Eye_" + hediff.def.defName + "_Right" + "_"
                                               + face.PawnCrownType;
+                    face.BodyStat.EyeRight = PartStatus.Artificial;
+
                 }
             }
 
             if (face.Props.hasMouth)
             {
-                if (hediff.Part.parts.Contains(jaw))
+                if (hediff.Part==jaw)
                 {
-                    face.TexPathJawAddedPart = StringsFS.PathHumanlike +"AddedParts/Mouth_" + hediff.def.defName;
+                    face.BodyStat.Jaw = PartStatus.Artificial;
+                   face.TexPathJawAddedPart = StringsFS.PathHumanlike +"AddedParts/Mouth_" + hediff.def.defName;
                 }
             }
         }
 
-        private static void CheckMissingParts(Hediff hediff, CompFace face, CompBodyAnimator anim,
-                                              BodyPartRecord leftEye,
-                                              BodyPartRecord rightEye, BodyPartRecord leftHand,
-                                              BodyPartRecord rightHand,
-                                              BodyPartRecord leftFoot, BodyPartRecord rightFoot)
+        private static void CheckMissingParts(BodyProps bodyProps)
         {
-            if (hediff.def == HediffDefOf.MissingBodyPart)
-            {
-                if (face != null && face.Props.hasEyes)
-                {
-                    if (leftEye != null && hediff.Part == leftEye)
-                    {
-                        face.BodyStat.EyeLeft = PartStatus.Missing;
-                        face.TexPathEyeLeft = face.EyeTexPath(Side.Left, EyeDefOf.Missing);
-                    }
+            Hediff hediff = bodyProps._hediff;
 
-                    // ReSharper disable once InvertIf
-                    if (rightEye != null && hediff.Part == rightEye)
-                    {
-                        face.BodyStat.EyeRight = PartStatus.Missing;
-                        face.TexPathEyeRight = face.EyeTexPath(Side.Right, EyeDefOf.Missing);
-                    }
+            if (hediff.def != HediffDefOf.MissingBodyPart)
+            {
+                return;
+            }
+
+            if (bodyProps._face != null && bodyProps._face.Props.hasEyes)
+            {
+                if (hediff.Part == bodyProps._leftEye)
+                {
+                    bodyProps._face.BodyStat.EyeLeft = PartStatus.Missing;
                 }
 
-                if (anim != null && anim.Props.bipedWithHands)
+                // ReSharper disable once InvertIf
+                if (hediff.Part == bodyProps._rightEye)
                 {
-                    if (hediff.Part == leftHand)
-                    {
-                        anim.BodyStat.HandLeft = PartStatus.Missing;
-                    }
+                    bodyProps._face.BodyStat.EyeRight = PartStatus.Missing;
+                }
+            }
 
-                    if (hediff.Part == rightHand)
-                    {
-                        anim.BodyStat.HandRight = PartStatus.Missing;
-                    }
+            if (bodyProps._anim != null && bodyProps._anim.Props.bipedWithHands)
+            {
+                if (hediff.Part == bodyProps._leftHand)
+                {
+                    bodyProps._anim.BodyStat.HandLeft = PartStatus.Missing;
+                }
 
-                    if (hediff.Part == leftFoot)
-                    {
-                        anim.BodyStat.FootLeft = PartStatus.Missing;
-                    }
+                if (hediff.Part == bodyProps._rightHand)
+                {
+                    bodyProps._anim.BodyStat.HandRight = PartStatus.Missing;
+                }
 
-                    if (hediff.Part == rightFoot)
-                    {
-                        anim.BodyStat.FootRight = PartStatus.Missing;
-                    }
+                if (hediff.Part == bodyProps._leftFoot)
+                {
+                    bodyProps._anim.BodyStat.FootLeft = PartStatus.Missing;
+                }
+
+                if (hediff.Part == bodyProps._rightFoot)
+                {
+                    bodyProps._anim.BodyStat.FootRight = PartStatus.Missing;
                 }
             }
         }
@@ -130,6 +152,7 @@ namespace FacialStuff
         {
             if (body.NullOrEmpty() || hediff.def == null)
             {
+            Log.Message("Body list or hediff.def is null or empty");
                 return;
             }
 
@@ -154,28 +177,37 @@ namespace FacialStuff
 
 
             // Missing parts first, hands and feet can be replaced by arms/legs
-            CheckMissingParts(hediff, face, anim, leftEye, rightEye, leftHand, rightHand, leftFoot, rightFoot);
+          //  Log.Message("Checking missing parts.");
+            CheckMissingParts(new BodyProps(hediff, face, anim, leftEye, rightEye, leftHand, rightHand, leftFoot,
+                                            rightFoot));
 
             AddedBodyPartProps addedPartProps = hediff.def?.addedPartProps;
             if (addedPartProps == null)
             {
+        //    Log.Message("No added parts found.");
                 return;
             }
 
-            if (hediff.def?.defName == null || hediff.Part.parts.NullOrEmpty())
+            if (hediff.def?.defName == null)
             {
                 return;
             }
 
-            CheckFace(hediff, face, leftEye, rightEye, jaw);
+          //  Log.Message("Checking face for added parts.");
 
-            CheckBody(hediff, anim, leftHand, rightHand, leftFoot, rightFoot);
+            CheckFaceForAddedParts(hediff, face, leftEye, rightEye, jaw);
+
+          //  Log.Message("Checking body for added parts.");
+
+            CheckBodyForAddedParts(hediff, anim, leftHand, rightHand, leftFoot, rightFoot);
         }
+
         public static bool Aiming(this Pawn pawn)
         {
             return pawn.stances.curStance is Stance_Busy stanceBusy && !stanceBusy.neverAimWeapon &&
                    stanceBusy.focusTarg.IsValid;
         }
+
         public static bool ShowWeaponOpenly(this Pawn pawn)
         {
             return pawn.carryTracker?.CarriedThing == null && pawn.equipment?.Primary !=null &&
@@ -183,17 +215,29 @@ namespace FacialStuff
                     (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon) ||
                     (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
         }
-        public static void CheckForAddedOrMissingParts(this Pawn pawn)
+
+        public static bool CheckForAddedOrMissingParts(this Pawn pawn)
         {
+           // if (!pawn.RaceProps.Humanlike)
+           // {
+           //     return;
+           // }
+
+         //   string log = "Checking for parts on " + pawn.LabelShort + " ...";
+
             if (!Controller.settings.ShowExtraParts)
             {
-                return;
+          //      log += "\n" + "No extra parts in options, return";
+          //      Log.Message(log);
+                return false;
             }
 
             // no head => no face
             if (!pawn.health.hediffSet.HasHead)
             {
-                return;
+          //      log += "\n" + "No head, return";
+          //      Log.Message(log);
+                return false;
             }
 
             // Reset the stats
@@ -215,32 +259,39 @@ namespace FacialStuff
             List<BodyPartRecord> allParts = pawn.RaceProps?.body?.AllParts;
             if (allParts.NullOrEmpty())
             {
-                return;
+           //     log += "\n" + "All parts null or empty, return";
+           //     Log.Message(log);
+                return false;
             }
 
-            List<BodyPartRecord> body = allParts;
             List<Hediff> hediffs = pawn.health?.hediffSet?.hediffs;
 
-            if (hediffs.NullOrEmpty() || body.NullOrEmpty())
+            if (hediffs.NullOrEmpty())
             {
                 // || hediffs.Any(x => x.def == HediffDefOf.MissingBodyPart && x.Part.def == BodyPartDefOf.Head))
-                return;
+           //     log += "\n" + "Hediffs null or empty, return";
+           //     Log.Message(log);
+                return false;
             }
 
             // ReSharper disable once AssignNullToNotNullAttribute
             foreach (Hediff diff in hediffs.Where(
-                                                  diff => diff?.def?.defName != null &&
+                                                  diff => !diff.def.defName.NullOrEmpty() &&
                                                           diff.def == HediffDefOf.MissingBodyPart))
             {
-                CheckPart(body, diff, face, anim);
+           // Log.Message("Checking missing part "+diff.def.defName);
+                CheckPart(allParts, diff, face, anim);
             }
 
             foreach (Hediff diff in hediffs.Where(
-                                                  diff => diff?.def?.defName != null &&
+                                                  diff => !diff.def.defName.NullOrEmpty() &&
                                                           diff.def.addedPartProps != null))
             {
-                CheckPart(body, diff, face, anim);
+          //  Log.Message("Checking added part on " + pawn + "--"+diff.def.defName);
+                CheckPart(allParts, diff, face, anim);
             }
+
+            return true;
         }
 
         public static bool Fleeing(this Pawn pawn)

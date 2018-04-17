@@ -2,7 +2,7 @@
 <Patch>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>Core SK</li>
+      <li>Core_SK</li>
     </mods>
     <success>Always</success>
     <match Class="PatchOperationSequence">

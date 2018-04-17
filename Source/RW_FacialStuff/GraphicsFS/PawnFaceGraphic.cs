@@ -45,7 +45,7 @@ namespace FacialStuff.GraphicsFS
 
         public string TexPathBrow;
 
-        [NotNull] public readonly string TexPathEyeLeftClosed;
+        [NotNull] public string TexPathEyeLeftClosed;
 
         public string TexPathEyeRightClosed;
 
@@ -76,24 +76,33 @@ namespace FacialStuff.GraphicsFS
                     this.InitializeGraphicsWrinkles();
                 }
 
-                if (this._compFace.Props.hasEyes)
-                {
-                    this._compFace.TexPathEyeRight = this._compFace.EyeTexPath(Side.Right);
-                    this._compFace.TexPathEyeLeft  = this._compFace.EyeTexPath(Side.Left);
-                    this.TexPathEyeLeftClosed      = this._compFace.EyeTexPath(Side.Left,  EyeDefOf.Closed);
-                    this.TexPathEyeRightClosed     = this._compFace.EyeTexPath(Side.Right, EyeDefOf.Closed);
-                    this.TexPathBrow               = this._compFace.BrowTexPath(this.pawnFace.BrowDef);
-
-
-                    this.InitializeGraphicsEyes();
-                    this.InitializeGraphicsBrows();
-                }
+                this.MakeEyes();
             }
 
             if (this._compFace.Props.hasMouth)
             {
                 this.Mouthgraphic = new HumanMouthGraphics(this._pawn);
                 this.InitializeGraphicsMouth();
+            }
+        }
+
+        public void MakeEyes()
+        {
+            if (this._compFace.Props.hasEyes)
+            {
+                this._compFace.TexPathEyeRight = _compFace.BodyStat.EyeRight == PartStatus.Missing
+                                                 ? this._compFace.EyeTexPath(Side.Right, EyeDefOf.Closed)
+                                                 : this._compFace.EyeTexPath(Side.Right);
+                this._compFace.TexPathEyeLeft = _compFace.BodyStat.EyeLeft == PartStatus.Missing
+                                                ? this._compFace.EyeTexPath(Side.Left, EyeDefOf.Missing)
+                                                : this._compFace.EyeTexPath(Side.Left);
+                this.TexPathEyeLeftClosed  = this._compFace.EyeTexPath(Side.Left,  EyeDefOf.Closed);
+                this.TexPathEyeRightClosed = this._compFace.EyeTexPath(Side.Right, EyeDefOf.Closed);
+                this.TexPathBrow           = this._compFace.BrowTexPath(this.pawnFace.BrowDef);
+
+
+                this.InitializeGraphicsEyes();
+                this.InitializeGraphicsBrows();
             }
         }
 
@@ -225,8 +234,7 @@ namespace FacialStuff.GraphicsFS
                 }
                 else
                 {
-                    Log.Message(
-                                "Facial Stuff: No texture for added part: " + this._compFace.TexPathEyeRightPatch
+                    Log.Message("Facial Stuff: No texture for added part: " + this._compFace.TexPathEyeRightPatch
                                                                             + " - Graphic_Multi_AddedHeadParts");
                 }
             }
@@ -246,20 +254,17 @@ namespace FacialStuff.GraphicsFS
             this.EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this._compFace.TexPathEyeRight,
                                                                                   ShaderDatabase.CutoutComplex,
                                                                                   Vector2.one,
-                                                                                  eyeColor) as
-                                   Graphic_Multi_NaturalEyes;
+                                                                                  eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.TexPathEyeLeftClosed,
                                                                                        ShaderDatabase.Cutout,
                                                                                        Vector2.one,
-                                                                                       eyeColor) as
-                                        Graphic_Multi_NaturalEyes;
+                                                                                       eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this.TexPathEyeRightClosed,
                                                                                         ShaderDatabase.Cutout,
                                                                                         Vector2.one,
-                                                                                        eyeColor) as
-                                         Graphic_Multi_NaturalEyes;
+                                                                                        eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.DeadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
                                                                                       StringsFS.PathHumanlike + "Eyes/Eyes_Dead",
