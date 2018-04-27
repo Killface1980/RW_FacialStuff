@@ -165,7 +165,7 @@ namespace FacialStuff.Harmony
 
             Pawn pawn = graphics.pawn;
 
-            if (!pawn.RaceProps.Humanlike && !Controller.settings.UsePawns)
+            if (!pawn.RaceProps.Humanlike && !Controller.settings.UsePaws)
             {
                 return true;
 

@@ -88,22 +88,24 @@ namespace FacialStuff.GraphicsFS
 
         public void MakeEyes()
         {
-            if (this._compFace.Props.hasEyes)
+            if (!this._compFace.Props.hasEyes)
             {
-                this._compFace.TexPathEyeRight = _compFace.BodyStat.EyeRight == PartStatus.Missing
-                                                 ? this._compFace.EyeTexPath(Side.Right, EyeDefOf.Closed)
-                                                 : this._compFace.EyeTexPath(Side.Right);
-                this._compFace.TexPathEyeLeft = _compFace.BodyStat.EyeLeft == PartStatus.Missing
-                                                ? this._compFace.EyeTexPath(Side.Left, EyeDefOf.Missing)
-                                                : this._compFace.EyeTexPath(Side.Left);
-                this.TexPathEyeLeftClosed  = this._compFace.EyeTexPath(Side.Left,  EyeDefOf.Closed);
-                this.TexPathEyeRightClosed = this._compFace.EyeTexPath(Side.Right, EyeDefOf.Closed);
-                this.TexPathBrow           = this._compFace.BrowTexPath(this.pawnFace.BrowDef);
-
-
-                this.InitializeGraphicsEyes();
-                this.InitializeGraphicsBrows();
+                return;
             }
+
+            this._compFace.TexPathEyeRight = this._compFace.BodyStat.EyeRight == PartStatus.Missing
+                                             ? this._compFace.EyeTexPath(Side.Right, EyeDefOf.Closed)
+                                             : this._compFace.EyeTexPath(Side.Right);
+            this._compFace.TexPathEyeLeft = this._compFace.BodyStat.EyeLeft == PartStatus.Missing
+                                            ? this._compFace.EyeTexPath(Side.Left, EyeDefOf.Missing)
+                                            : this._compFace.EyeTexPath(Side.Left);
+            this.TexPathEyeLeftClosed  = this._compFace.EyeTexPath(Side.Left,  EyeDefOf.Closed);
+            this.TexPathEyeRightClosed = this._compFace.EyeTexPath(Side.Right, EyeDefOf.Closed);
+            this.TexPathBrow           = this._compFace.BrowTexPath(this.pawnFace.BrowDef);
+
+
+            this.InitializeGraphicsEyes();
+            this.InitializeGraphicsBrows();
         }
 
         public void SetMouthAccordingToMoodLevel()

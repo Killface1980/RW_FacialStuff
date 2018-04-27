@@ -82,7 +82,6 @@
     <Compile Include="AI\JobGiver_Possess.cs" />
     <Compile Include="AI\MentalStateWorker_Possessed.cs" />
     <Compile Include="AI\MentalState_Possessed.cs" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="WidgetsFS.cs" />
     <None Include="Harmony\Optional\AlienPatches.cs" />

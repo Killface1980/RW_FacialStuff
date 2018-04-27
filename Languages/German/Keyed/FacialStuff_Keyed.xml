@@ -25,8 +25,8 @@
   <Settings.UseHandsTooltip>Zeige Hände wenn Waffen gezückt sind. Momentan nur für Vanilla-Waffen.</Settings.UseHandsTooltip>
   <Settings.UseFeet>Zeige Füsse</Settings.UseFeet>
   <Settings.UseFeetTooltip>Zeige animierte Füsse.</Settings.UseFeetTooltip>
-	<Settings.UsePawns>Animiere Tiere</Settings.UsePawns>
-	<Settings.UsePawnsTooltip>Zeige Tierpfoten \n(momentan unvollendet)</Settings.UsePawnsTooltip>
+	<Settings.UsePaws>Animiere Tiere</Settings.UsePaws>
+	<Settings.UsePawsTooltip>Zeige Tierpfoten \n(momentan unvollendet)</Settings.UsePawsTooltip>
 
 	<Settings.FilterHats>Ignoriere Brillen</Settings.FilterHats>
   <Settings.FilterHatsTooltip>Sachen für die Augen sind in Räumen nicht sichtbar.</Settings.FilterHatsTooltip>

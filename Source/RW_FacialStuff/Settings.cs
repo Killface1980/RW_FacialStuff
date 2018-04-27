@@ -45,12 +45,12 @@ namespace FacialStuff
 
         public bool UseHands => this._useHands;
         public bool UseFeet => this._useFeet;
-        public bool UsePawns => this._usePawns;
+        public bool UsePaws => this._usePaws;
 
         private bool _useHands = true;
 
-        private bool _useFeet = true;
-        private bool _usePawns = true;
+        private bool _useFeet = !Controller.SKisActive;
+        private bool _usePaws = false;
         private bool develop;
         Vector2 scrollPosition;
         float viewHeight;
@@ -184,9 +184,9 @@ namespace FacialStuff
                 ref this._useFeet,
                 "Settings.UseFeetTooltip".Translate());
             list.CheckboxLabeled(
-                                 "Settings.UsePawns".Translate(),
-                                 ref this._usePawns,
-                                 "Settings.UsePawnsTooltip".Translate());
+                                 "Settings.UsePaws".Translate(),
+                                 ref this._usePaws,
+                                 "Settings.UsePawsTooltip".Translate());
 
 
             list.Gap();

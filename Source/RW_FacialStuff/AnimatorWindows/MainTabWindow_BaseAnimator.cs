@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using RimWorld;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using Verse;
@@ -126,6 +127,8 @@ namespace FacialStuff.AnimatorWindows
                 return _defPath;
             }
         }
+
+
 
         protected static int LastInd
         {

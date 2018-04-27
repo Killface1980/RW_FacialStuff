@@ -2,6 +2,7 @@
 using RimWorld;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using Verse;
@@ -18,6 +19,34 @@ namespace FacialStuff
             "SA1401:FieldsMustBePrivate",
             Justification = "Reviewed. Suppression is OK here.")]
         public static Settings settings;
+
+        private static bool? skActive;
+
+        public static bool SKisActive
+        {
+            get
+            {
+                if (skActive.HasValue)
+                {
+                    return skActive.Value;
+                }
+
+                ModMetaData mod = ModLister.AllInstalledMods.FirstOrDefault(
+                                                                            x => x?.Name != null && x.Active &&
+                                                                                 x.Name
+                                                                                  .StartsWith("Facial Stuff"));
+                if (mod != null)
+                {
+                    skActive = File.Exists(mod.RootDir + "/HardCore.SK");
+                }
+                else
+                {
+                    skActive = false;
+                }
+
+                return skActive.Value;
+            }
+        }
 
         public Controller(ModContentPack content)
             : base(content)
