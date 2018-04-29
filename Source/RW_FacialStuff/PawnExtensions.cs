@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using FacialStuff.DefOfs;
 using JetBrains.Annotations;
@@ -75,15 +76,15 @@ namespace FacialStuff
         {
             if (face.Props.hasEyes)
             {
-                if (hediff.Part ==leftEye)
+                if (hediff.Part == leftEye)
                 {
-                    face.TexPathEyeLeftPatch = StringsFS.PathHumanlike +"AddedParts/Eye_" + hediff.def.defName + "_Left" + "_"
+                    face.TexPathEyeLeftPatch = StringsFS.PathHumanlike + "AddedParts/Eye_" + hediff.def.defName + "_Left" + "_"
                                              + face.PawnCrownType;
                 }
 
                 if (hediff.Part == rightEye)
                 {
-                    face.TexPathEyeRightPatch = StringsFS.PathHumanlike +"AddedParts/Eye_" + hediff.def.defName + "_Right" + "_"
+                    face.TexPathEyeRightPatch = StringsFS.PathHumanlike + "AddedParts/Eye_" + hediff.def.defName + "_Right" + "_"
                                               + face.PawnCrownType;
                     face.BodyStat.EyeRight = PartStatus.Artificial;
 
@@ -92,10 +93,10 @@ namespace FacialStuff
 
             if (face.Props.hasMouth)
             {
-                if (hediff.Part==jaw)
+                if (hediff.Part == jaw)
                 {
                     face.BodyStat.Jaw = PartStatus.Artificial;
-                   face.TexPathJawAddedPart = StringsFS.PathHumanlike +"AddedParts/Mouth_" + hediff.def.defName;
+                    face.TexPathJawAddedPart = StringsFS.PathHumanlike + "AddedParts/Mouth_" + hediff.def.defName;
                 }
             }
         }
@@ -116,7 +117,6 @@ namespace FacialStuff
                     bodyProps._face.BodyStat.EyeLeft = PartStatus.Missing;
                 }
 
-                // ReSharper disable once InvertIf
                 if (hediff.Part == bodyProps._rightEye)
                 {
                     bodyProps._face.BodyStat.EyeRight = PartStatus.Missing;
@@ -148,11 +148,11 @@ namespace FacialStuff
         }
 
         private static void CheckPart(List<BodyPartRecord> body, Hediff hediff, [CanBeNull] CompFace face,
-                                      [CanBeNull]                                           CompBodyAnimator anim)
+                                      [CanBeNull]                                           CompBodyAnimator anim, bool missing)
         {
             if (body.NullOrEmpty() || hediff.def == null)
             {
-            Log.Message("Body list or hediff.def is null or empty");
+                Log.Message("Body list or hediff.def is null or empty");
                 return;
             }
 
@@ -175,16 +175,19 @@ namespace FacialStuff
             BodyPartRecord leftFoot = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("LeftFoot"));
             BodyPartRecord rightFoot = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("RightFoot"));
 
+            if (missing)
+            {
+                CheckMissingParts(new BodyProps(hediff, face, anim, leftEye, rightEye, leftHand, rightHand, leftFoot,
+                                                rightFoot));
+                return;
+            }
 
             // Missing parts first, hands and feet can be replaced by arms/legs
-          //  Log.Message("Checking missing parts.");
-            CheckMissingParts(new BodyProps(hediff, face, anim, leftEye, rightEye, leftHand, rightHand, leftFoot,
-                                            rightFoot));
-
+            //  Log.Message("Checking missing parts.");
             AddedBodyPartProps addedPartProps = hediff.def?.addedPartProps;
             if (addedPartProps == null)
             {
-        //    Log.Message("No added parts found.");
+                //    Log.Message("No added parts found.");
                 return;
             }
 
@@ -193,11 +196,11 @@ namespace FacialStuff
                 return;
             }
 
-          //  Log.Message("Checking face for added parts.");
+            //  Log.Message("Checking face for added parts.");
 
             CheckFaceForAddedParts(hediff, face, leftEye, rightEye, jaw);
 
-          //  Log.Message("Checking body for added parts.");
+            //  Log.Message("Checking body for added parts.");
 
             CheckBodyForAddedParts(hediff, anim, leftHand, rightHand, leftFoot, rightFoot);
         }
@@ -210,7 +213,7 @@ namespace FacialStuff
 
         public static bool ShowWeaponOpenly(this Pawn pawn)
         {
-            return pawn.carryTracker?.CarriedThing == null && pawn.equipment?.Primary !=null &&
+            return pawn.carryTracker?.CarriedThing == null && pawn.equipment?.Primary != null &&
                    (pawn.Drafted ||
                     (pawn.CurJob != null && pawn.CurJob.def.alwaysShowWeapon) ||
                     (pawn.mindState.duty != null && pawn.mindState.duty.def.alwaysShowWeapon));
@@ -218,25 +221,25 @@ namespace FacialStuff
 
         public static bool CheckForAddedOrMissingParts(this Pawn pawn)
         {
-           // if (!pawn.RaceProps.Humanlike)
-           // {
-           //     return;
-           // }
+            // if (!pawn.RaceProps.Humanlike)
+            // {
+            //     return;
+            // }
 
-         //   string log = "Checking for parts on " + pawn.LabelShort + " ...";
+            //   string log = "Checking for parts on " + pawn.LabelShort + " ...";
 
             if (!Controller.settings.ShowExtraParts)
             {
-          //      log += "\n" + "No extra parts in options, return";
-          //      Log.Message(log);
+                //      log += "\n" + "No extra parts in options, return";
+                //      Log.Message(log);
                 return false;
             }
 
             // no head => no face
             if (!pawn.health.hediffSet.HasHead)
             {
-          //      log += "\n" + "No head, return";
-          //      Log.Message(log);
+                //      log += "\n" + "No head, return";
+                //      Log.Message(log);
                 return false;
             }
 
@@ -259,36 +262,31 @@ namespace FacialStuff
             List<BodyPartRecord> allParts = pawn.RaceProps?.body?.AllParts;
             if (allParts.NullOrEmpty())
             {
-           //     log += "\n" + "All parts null or empty, return";
-           //     Log.Message(log);
+                //     log += "\n" + "All parts null or empty, return";
+                //     Log.Message(log);
                 return false;
             }
 
-            List<Hediff> hediffs = pawn.health?.hediffSet?.hediffs;
+            List<Hediff> hediffs = pawn.health?.hediffSet?.hediffs.Where(x => !x.def.defName.NullOrEmpty()).ToList();
 
             if (hediffs.NullOrEmpty())
             {
                 // || hediffs.Any(x => x.def == HediffDefOf.MissingBodyPart && x.Part.def == BodyPartDefOf.Head))
-           //     log += "\n" + "Hediffs null or empty, return";
-           //     Log.Message(log);
+                //     log += "\n" + "Hediffs null or empty, return";
+                //     Log.Message(log);
                 return false;
             }
 
-            // ReSharper disable once AssignNullToNotNullAttribute
-            foreach (Hediff diff in hediffs.Where(
-                                                  diff => !diff.def.defName.NullOrEmpty() &&
-                                                          diff.def == HediffDefOf.MissingBodyPart))
+            foreach (Hediff diff in hediffs.Where(diff => diff.def == HediffDefOf.MissingBodyPart))
             {
-           // Log.Message("Checking missing part "+diff.def.defName);
-                CheckPart(allParts, diff, face, anim);
+                // Log.Message("Checking missing part "+diff.def.defName);
+                CheckPart(allParts, diff, face, anim, true);
             }
 
-            foreach (Hediff diff in hediffs.Where(
-                                                  diff => !diff.def.defName.NullOrEmpty() &&
-                                                          diff.def.addedPartProps != null))
+            foreach (Hediff diff in hediffs.Where(diff => diff.def.addedPartProps != null))
             {
-          //  Log.Message("Checking added part on " + pawn + "--"+diff.def.defName);
-                CheckPart(allParts, diff, face, anim);
+                //  Log.Message("Checking added part on " + pawn + "--"+diff.def.defName);
+                CheckPart(allParts, diff, face, anim, false);
             }
 
             return true;

@@ -11,6 +11,9 @@ namespace FacialStuff
 {
     public class Controller : Mod
     {
+        private const string modName = "Facial Stuff";
+        public const string HardCoreSkFile = "/HardCore.SK";
+
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once StyleCop.SA1307
         [NotNull]
@@ -34,15 +37,8 @@ namespace FacialStuff
                 ModMetaData mod = ModLister.AllInstalledMods.FirstOrDefault(
                                                                             x => x?.Name != null && x.Active &&
                                                                                  x.Name
-                                                                                  .StartsWith("Facial Stuff"));
-                if (mod != null)
-                {
-                    skActive = File.Exists(mod.RootDir + "/HardCore.SK");
-                }
-                else
-                {
-                    skActive = false;
-                }
+                                                                                  .StartsWith(modName));
+                skActive = mod != null && File.Exists(mod.RootDir + HardCoreSkFile);
 
                 return skActive.Value;
             }
@@ -61,7 +57,7 @@ namespace FacialStuff
 
         public override string SettingsCategory()
         {
-            return "Facial Stuff";
+            return modName;
         }
 
         // ReSharper disable once MissingXmlDoc
