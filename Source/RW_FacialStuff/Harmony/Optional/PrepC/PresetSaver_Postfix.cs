@@ -36,7 +36,7 @@ namespace FacialStuff.Harmony.Optional.PrepC
                             typeof(PresetSaver_Postfix),
                             nameof(AddFaceToDictionary),
                             new[] { typeof(CustomPawn) }));
-                    yield return last;
+                    yield return new CodeInstruction(last.opcode, last.operand);
                 }
 
                 yield return itr;
