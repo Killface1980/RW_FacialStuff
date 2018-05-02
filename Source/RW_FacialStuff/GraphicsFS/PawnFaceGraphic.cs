@@ -202,9 +202,8 @@ namespace FacialStuff.GraphicsFS
         {
             if (!this._compFace.TexPathEyeLeftPatch.NullOrEmpty())
             {
-                bool flag = !ContentFinder<Texture2D>.Get(this._compFace.TexPathEyeLeftPatch + STR_Front, false)
-                                                     .NullOrBad();
-                if (flag)
+                bool leftTexExists = this.EyePatchLeftTexExists();
+                if (leftTexExists)
                 {
                     this.EyeLeftPatchGraphic =
                     GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(this._compFace.TexPathEyeLeftPatch,
@@ -223,9 +222,8 @@ namespace FacialStuff.GraphicsFS
 
             if (!this._compFace.TexPathEyeRightPatch.NullOrEmpty())
             {
-                bool flag2 = !ContentFinder<Texture2D>.Get(this._compFace.TexPathEyeRightPatch + STR_Front, false)
-                                                      .NullOrBad();
-                if (flag2)
+                bool rightTexExists = this.EyePatchRightTexExists();
+                if (rightTexExists)
                 {
                     this.EyeRightPatchGraphic =
                     GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(this._compFace.TexPathEyeRightPatch,
@@ -240,6 +238,18 @@ namespace FacialStuff.GraphicsFS
                                                                             + " - Graphic_Multi_AddedHeadParts");
                 }
             }
+        }
+
+        public bool EyePatchRightTexExists()
+        {
+            return !ContentFinder<Texture2D>.Get(this._compFace.TexPathEyeRightPatch + STR_Front, false)
+                                            .NullOrBad();
+        }
+
+        public bool EyePatchLeftTexExists()
+        {
+            return !ContentFinder<Texture2D>.Get(this._compFace.TexPathEyeLeftPatch + STR_Front, false)
+                                            .NullOrBad();
         }
 
         private void InitializeGraphicsEyes()
@@ -302,6 +312,7 @@ namespace FacialStuff.GraphicsFS
                 Log.Message(
                             "Facial Stuff: No texture for added part: " + this._compFace.TexPathJawAddedPart
                                                                         + " - Graphic_Multi_NaturalHeadParts. This is not an error, just an info.");
+
             }
 
             this.MouthGraphic = this.Mouthgraphic.HumanMouthGraphic[this._pawn.Dead || this._pawn.Downed ? 2 : 3]

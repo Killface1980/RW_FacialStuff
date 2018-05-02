@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FacialStuff.AnimatorWindows;
+using FacialStuff.GraphicsFS;
 using FacialStuff.HairCut;
 using RimWorld;
 using UnityEngine;
@@ -206,11 +207,11 @@ namespace FacialStuff
                         headgearGraphics = headgearGraphics
                                           .Where(
                                                  x =>
-                                                     !x.sourceApparel.def.apparel.bodyPartGroups
-                                                       .Contains(BodyPartGroupDefOf.FullHead)
-                                                  && !x.sourceApparel.def.apparel.bodyPartGroups.Contains(
-                                                                                                          BodyPartGroupDefOf
-                                                                                                         .UpperHead))
+                                                 !x.sourceApparel.def.apparel.bodyPartGroups
+                                                   .Contains(BodyPartGroupDefOf.FullHead)
+                                              && !x.sourceApparel.def.apparel.bodyPartGroups.Contains(
+                                                                                                      BodyPartGroupDefOf
+                                                                                                     .UpperHead))
                                           .ToList();
                     }
                     else
@@ -262,8 +263,12 @@ namespace FacialStuff
         {
             Mesh eyeMesh = this.CompFace.EyeMeshSet.Mesh.MeshAt(this.HeadFacing);
 
+            PawnFaceGraphic faceGraphic = this.CompFace.PawnFaceGraphic;
             // natural eyes
-            if (this.CompFace.BodyStat.EyeLeft != PartStatus.Artificial)
+            PartStatus eyeLeft = this.CompFace.BodyStat.EyeLeft;
+            if (faceGraphic != null && (eyeLeft == PartStatus.Natural ||
+                                        eyeLeft == PartStatus.Artificial &&
+                                        !faceGraphic.EyePatchLeftTexExists()))
             {
                 Material leftEyeMat = this.CompFace.FaceMaterial.EyeLeftMatAt(this.HeadFacing, portrait);
                 if (leftEyeMat != null)
@@ -281,7 +286,10 @@ namespace FacialStuff
                 }
             }
 
-            if (this.CompFace.BodyStat.EyeRight != PartStatus.Artificial)
+            PartStatus eyeRight = this.CompFace.BodyStat.EyeRight;
+            if (faceGraphic != null && (eyeRight == PartStatus.Natural ||
+                                        eyeRight == PartStatus.Artificial &&
+                                        !faceGraphic.EyePatchRightTexExists()))
             {
                 Material rightEyeMat = this.CompFace.FaceMaterial.EyeRightMatAt(this.HeadFacing, portrait);
 
