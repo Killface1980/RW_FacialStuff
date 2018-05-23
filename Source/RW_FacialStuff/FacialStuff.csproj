@@ -38,6 +38,9 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="%24HugsLibChecker">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\973091113\Assemblies\$HugsLibChecker.dll</HintPath>
+    </Reference>
     <Reference Include="0Harmony">
       <HintPath>..\..\..\..\..\..\workshop\content\294100\818773962\Assemblies\0Harmony.dll</HintPath>
     </Reference>

@@ -531,6 +531,11 @@ namespace FacialStuff
                 return;
             }
 
+            if (this.IsRider)
+            {
+                this._isMoving = false;
+                return;
+            }
             // pawn started pathing
 
             Pawn_PathFollower pather = this.Pawn.pather;
@@ -544,6 +549,8 @@ namespace FacialStuff
                 this._isMoving = false;
             }
         }
+
+        public bool IsRider { get; set; }
 
         public void DrawAlienBodyAddons(Quaternion quat, Vector3 vector, bool portrait, bool renderBody, Rot4 rotation)
         {

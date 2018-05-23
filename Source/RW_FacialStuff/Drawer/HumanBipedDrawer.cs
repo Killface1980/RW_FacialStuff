@@ -78,9 +78,16 @@ namespace FacialStuff
                     vector3 = quat * vector3;
                     vector4 = quat * vector4;
                 }
-
-                rootLoc += vector3;
+                if (!this.CompAnimator.IsRider)
+                {
+                    rootLoc += vector3;
+                }
+                else
+                {
+                    footPos -= vector3;
+                }
                 footPos += vector4;
+
             }
 
             base.ApplyBodyWobble(ref rootLoc, ref footPos, ref quat);

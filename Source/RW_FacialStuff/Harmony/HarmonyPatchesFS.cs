@@ -36,6 +36,14 @@ namespace FacialStuff.Harmony
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
 
+           // if (ModsConfig.ActiveModsInLoadOrder.Any(x => x.Name.Contains("Giddy")))
+           // {
+           //     harmony.Patch(
+           //                   AccessTools.Method(typeof(Pawn), "DrawAt"),
+           //                   new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DrawAtGiddy)),
+           //                   null);
+           // }
+
             // harmony.Patch(AccessTools.Method(typeof(PawnRenderer), "RenderPawnInternal", new Type[] { typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode), typeof(bool), typeof(bool) }), null, null, new HarmonyMethod(typeof(Alien), nameof(Alien.RenderPawnInternalTranspiler)));
 
             // harmony.Patch(
@@ -57,16 +65,16 @@ namespace FacialStuff.Harmony
                           new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(ResolveAllGraphics_Postfix)));
 
             harmony.Patch(
-                     AccessTools.Method(typeof(PawnGraphicSet), nameof(PawnGraphicSet.ResolveApparelGraphics)),
-                     null,
-                     new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(ResolveApparelGraphics_Postfix)));
+                          AccessTools.Method(typeof(PawnGraphicSet), nameof(PawnGraphicSet.ResolveApparelGraphics)),
+                          null,
+                          new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(ResolveApparelGraphics_Postfix)));
 
             harmony.Patch(
-                      AccessTools.Method(typeof(PawnRenderer), nameof(PawnRenderer.DrawEquipmentAiming)),
-                      new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DrawEquipmentAiming_Prefix)),
-                      null,
-                      new HarmonyMethod(typeof(HarmonyPatchesFS),
-                                        nameof(DrawEquipmentAiming_Transpiler)));
+                          AccessTools.Method(typeof(PawnRenderer), nameof(PawnRenderer.DrawEquipmentAiming)),
+                          new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DrawEquipmentAiming_Prefix)),
+                          null,
+                          new HarmonyMethod(typeof(HarmonyPatchesFS),
+                                            nameof(DrawEquipmentAiming_Transpiler)));
 
             // harmony.Patch(
             // AccessTools.Method(
@@ -91,7 +99,8 @@ namespace FacialStuff.Harmony
 
             harmony.Patch(
                           AccessTools.Method(typeof(PawnRenderer), nameof(PawnRenderer.RenderPawnAt),
-                                             new[] { typeof(Vector3), typeof(RotDrawMode), typeof(bool) }),
+                                             new[] {typeof(Vector3), typeof(RotDrawMode), typeof(bool)}),
+
                           // new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(HarmonyPatchesFS.RenderPawnAt)),
                           null,
                           null,
@@ -108,10 +117,10 @@ namespace FacialStuff.Harmony
             //                  null,
             //                  new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(PatherArrived_Postfix)));
 
-          //  harmony.Patch(
-          //    AccessTools.Method(typeof(PortraitsCache), "get_IsAnimated"),
-          //    new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(IsAnimated_Prefix)),
-          //    null);
+            //  harmony.Patch(
+            //    AccessTools.Method(typeof(PortraitsCache), "get_IsAnimated"),
+            //    new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(IsAnimated_Prefix)),
+            //    null);
 
 
             harmony.Patch(
@@ -181,7 +190,7 @@ namespace FacialStuff.Harmony
             {
                 if (def.inspectorTabs == null || def.inspectorTabs.Count == 0)
                 {
-                    def.inspectorTabs = new List<Type>();
+                    def.inspectorTabs         = new List<Type>();
                     def.inspectorTabsResolved = new List<InspectTabBase>();
                 }
 
@@ -217,8 +226,9 @@ namespace FacialStuff.Harmony
         private static readonly FieldInfo pawnField = AccessTools.Field(typeof(Pawn_EquipmentTracker), "pawn");
 
         private static Graphic_Shadow _shadowGraphic;
-        private static float angleStanding = 143f;
-        private static float angleStandingFlipped = 217f;
+        private static float          angleStanding        = 143f;
+        private static float          angleStandingFlipped = 217f;
+
         public static bool IsAnimated_Prefix(Pawn pawn, ref bool __result)
         {
             if (MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn == pawn)
@@ -226,6 +236,30 @@ namespace FacialStuff.Harmony
                 __result = true;
                 return false;
             }
+
+            return true;
+        }
+
+        private static bool DrawAtGiddy(Pawn __instance)
+        {
+          //  ExtendedDataStorage extendedDataStorage = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
+          //  bool                flag                = extendedDataStorage == null;
+          //  if (!flag)
+          //  {
+          //      ExtendedPawnData extendedDataFor = extendedDataStorage.GetExtendedDataFor(__instance);
+          //      if (extendedDataFor != null&&extendedDataFor.mount != null)
+          //      {
+          //
+          //      }
+          //          CompBodyAnimator animator = extendedDataFor.mount.GetCompAnim();
+          //          if (animator != null)
+          //          {
+          //              animator.IsRider = flag2;
+          //              Debug.Log("FS: Pawn "+ __instance +" is rider?" + animator.IsRider);
+          //              
+          //      }
+          //  }
+
             return true;
         }
 
@@ -256,7 +290,7 @@ namespace FacialStuff.Harmony
             FieldInfo PawnFieldInfo =
             typeof(Page_ConfigureStartingPawns).GetField("curPawn", BindingFlags.NonPublic | BindingFlags.Instance);
 
-            Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
+            Pawn pawn = (Pawn) PawnFieldInfo?.GetValue(__instance);
 
             if (!pawn.GetCompFace(out CompFace compFace))
             {
@@ -290,9 +324,6 @@ namespace FacialStuff.Harmony
         }
 
 
-
-
-
         public static void DirtyCache_Postfix(HediffSet __instance)
         {
             if (Current.ProgramState != ProgramState.Playing)
@@ -322,12 +353,14 @@ namespace FacialStuff.Harmony
             pawn.GetCompAnim()?.PawnBodyGraphic?.Initialize();
         }
 
-        public static void DoAttackAnimationOffsetsWeapons(Pawn pawn, ref float weaponAngle,
-                                                    ref Vector3 weaponPosition,
-                                                    bool flipped, CompBodyAnimator animator, out bool noTween)
+        public static void DoAttackAnimationOffsetsWeapons(Pawn        pawn, ref float weaponAngle,
+                                                           ref Vector3 weaponPosition,
+                                                           bool        flipped, CompBodyAnimator animator,
+                                                           out bool    noTween)
         {
             CompEquippable primaryEq = pawn.equipment?.PrimaryEq;
             noTween = false;
+
             // DamageDef damageDef = primaryEq?.PrimaryVerb?.verbProps?.meleeDamageDef;
             if (primaryEq?.parent?.def == null)
             {
@@ -335,25 +368,29 @@ namespace FacialStuff.Harmony
             }
 
             Stance_Busy busy = pawn.stances.curStance as Stance_Busy;
-            if (busy == null) { return; }
+            if (busy == null)
+            {
+                return;
+            }
 
-              if (busy.verb == null || !busy.verb.IsMeleeAttack)
-              {
-                  return;
-              }
+            if (busy.verb == null || !busy.verb.IsMeleeAttack)
+            {
+                return;
+            }
 
-            DamageDef damageDef = busy.verb.GetDamageDef();//ThingUtility.PrimaryMeleeWeaponDamageType(primaryEq.parent.def);
+            DamageDef
+            damageDef = busy.verb.GetDamageDef(); //ThingUtility.PrimaryMeleeWeaponDamageType(primaryEq.parent.def);
             if (damageDef == null)
             {
                 return;
             }
 
             // total weapon angle change during animation sequence
-            int totalSwingAngle = 0;
-            Vector3 currentOffset = animator.Jitterer.CurrentOffset;
+            int     totalSwingAngle = 0;
+            Vector3 currentOffset   = animator.Jitterer.CurrentOffset;
 
-            float jitterMax = animator.JitterMax;
-            float magnitude = currentOffset.magnitude;
+            float jitterMax             = animator.JitterMax;
+            float magnitude             = currentOffset.magnitude;
             float animationPhasePercent = magnitude / jitterMax;
 
             if (damageDef == DamageDefOf.Stab)
@@ -364,9 +401,11 @@ namespace FacialStuff.Harmony
             }
             else if (damageDef == DamageDefOf.Blunt || damageDef == DamageDefOf.Cut)
             {
-                totalSwingAngle = 120;
-                weaponPosition += currentOffset + new Vector3(0, 0, Mathf.Sin(magnitude * Mathf.PI / jitterMax) / 10);
-                weaponAngle += flipped ? -animationPhasePercent * totalSwingAngle : animationPhasePercent * totalSwingAngle;
+                totalSwingAngle =  120;
+                weaponPosition  += currentOffset + new Vector3(0, 0, Mathf.Sin(magnitude * Mathf.PI / jitterMax) / 10);
+                weaponAngle += flipped
+                               ? -animationPhasePercent * totalSwingAngle
+                               : animationPhasePercent  * totalSwingAngle;
                 noTween = true;
             }
         }
@@ -381,7 +420,8 @@ namespace FacialStuff.Harmony
         //          curOffset *= RecoilMax / curOffset.magnitude;
         //      }
         //  }
-        public static void DoWeaponOffsets(Pawn pawn, Thing eq, ref Vector3 drawLoc, ref float weaponAngle, ref Mesh weaponMesh)
+        public static void DoWeaponOffsets(Pawn     pawn, Thing eq, ref Vector3 drawLoc, ref float weaponAngle,
+                                           ref Mesh weaponMesh)
         {
             CompProperties_WeaponExtensions extensions = eq.def.GetCompProperties<CompProperties_WeaponExtensions>();
 
@@ -391,7 +431,9 @@ namespace FacialStuff.Harmony
             {
                 return;
             }
+
             float sizeMod = 1f;
+
             //  if (Controller.settings.IReallyLikeBigGuns) { sizeMod = 2.0f; }
             //     else if (Controller.settings.ILikeBigGuns)
             //  {
@@ -402,36 +444,35 @@ namespace FacialStuff.Harmony
             //      sizeMod = 1f;
             //  }
 
-            if (Find.TickManager.TicksGame == animator.LastPosUpdate[(int)equipment] || MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn != pawn)
+            if (Find.TickManager.TicksGame == animator.LastPosUpdate[(int) equipment] ||
+                MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn != pawn)
             {
-                drawLoc = animator.LastPosition[(int)equipment];
+                drawLoc     = animator.LastPosition[(int) equipment];
                 weaponAngle = animator.LastWeaponAngle;
-
             }
             else
             {
-
-                animator.LastPosUpdate[(int)equipment] = Find.TickManager.TicksGame;
+                animator.LastPosUpdate[(int) equipment] = Find.TickManager.TicksGame;
 
                 CalculatePositionsWeapon(pawn,
-                    ref weaponAngle,
-                    extensions,
-                    out Vector3 weaponPosOffset,
-                    out bool aiming,
-                     flipped);
+                                         ref weaponAngle,
+                                         extensions,
+                                         out Vector3 weaponPosOffset,
+                                         out bool aiming,
+                                         flipped);
 
                 // weapon angle and position offsets based on current attack keyframes sequence
 
-                DoAttackAnimationOffsetsWeapons(pawn, ref weaponAngle, ref weaponPosOffset, flipped, animator, out bool noTween);
+                DoAttackAnimationOffsetsWeapons(pawn, ref weaponAngle, ref weaponPosOffset, flipped, animator,
+                                                out bool noTween);
 
                 drawLoc += weaponPosOffset * sizeMod;
 
-                Vector3Tween eqTween = animator.Vector3Tweens[(int)equipment];
+                Vector3Tween eqTween = animator.Vector3Tweens[(int) equipment];
 
                 if (pawn.pather.MovedRecently(5))
                 {
                     noTween = true;
-
                 }
 
                 switch (eqTween.State)
@@ -441,6 +482,7 @@ namespace FacialStuff.Harmony
                         {
                             eqTween.Stop(StopBehavior.ForceComplete);
                         }
+
                         drawLoc = eqTween.CurrentValue;
                         break;
 
@@ -456,15 +498,16 @@ namespace FacialStuff.Harmony
                         ScaleFunc scaleFunc = ScaleFuncs.SineEaseOut;
 
 
-                        Vector3 start = animator.LastPosition[(int)equipment];
-                        float distance = Vector3.Distance(start, drawLoc);
-                        float duration = Mathf.Abs(distance * 50f);
+                        Vector3 start    = animator.LastPosition[(int) equipment];
+                        float   distance = Vector3.Distance(start, drawLoc);
+                        float   duration = Mathf.Abs(distance * 50f);
                         if (start != Vector3.zero && duration > 12f)
                         {
                             start.y = drawLoc.y;
                             eqTween.Start(start, drawLoc, duration, scaleFunc);
                             drawLoc = start;
                         }
+
                         break;
                 }
 
@@ -481,9 +524,9 @@ namespace FacialStuff.Harmony
                 // }
                 // else
                 {
-                    animator.LastPosition[(int)equipment] = drawLoc;
-                    animator.LastWeaponAngle = weaponAngle;
-                    animator.MeshFlipped = flipped;
+                    animator.LastPosition[(int) equipment] = drawLoc;
+                    animator.LastWeaponAngle               = weaponAngle;
+                    animator.MeshFlipped                   = flipped;
                 }
             }
 
@@ -491,14 +534,17 @@ namespace FacialStuff.Harmony
             if (animator.Props.bipedWithHands && Controller.settings.UseHands)
             {
                 SetPositionsForHandsOnWeapons(
-                                     drawLoc,
-                                     flipped,
-                                     weaponAngle,
-                                     extensions, animator, sizeMod);
+                                              drawLoc,
+                                              flipped,
+                                              weaponAngle,
+                                              extensions, animator, sizeMod);
             }
         }
 
-        private static void CalculatePositionsWeapon(Pawn pawn, ref float weaponAngle, CompProperties_WeaponExtensions extensions, out Vector3 weaponPosOffset, out bool aiming, bool flipped)
+        private static void CalculatePositionsWeapon(Pawn                            pawn, ref float weaponAngle,
+                                                     CompProperties_WeaponExtensions extensions,
+                                                     out Vector3                     weaponPosOffset, out bool aiming,
+                                                     bool                            flipped)
         {
             weaponPosOffset = Vector3.zero;
             if (pawn.Rotation == Rot4.West || pawn.Rotation == Rot4.North)
@@ -554,7 +600,6 @@ namespace FacialStuff.Harmony
 
                 weaponPosOffset += extOffset;
             }
-
         }
 
         // If the return value is positive, then rotate to the left. Else,
@@ -574,28 +619,29 @@ namespace FacialStuff.Harmony
             }
 
             // Do not rotate if from == to.
-            if (from == to ||
-               from == 0 && to == 360 ||
-               from == 360 && to == 0)
+            if (from == to               ||
+                from == 0   && to == 360 ||
+                from == 360 && to == 0)
             {
                 return 0;
             }
 
             // Pre-calculate left and right.
-            float left = (360 - from) + to;
-            float right = from - to;
+            float left  = (360 - from) + to;
+            float right = from         - to;
+
             // If from < to, re-calculate left and right.
             if (from < to)
             {
                 if (to > 0)
                 {
-                    left = to - from;
+                    left  = to         - from;
                     right = (360 - to) + from;
                 }
                 else
                 {
-                    left = (360 - to) + from;
-                    right = to - from;
+                    left  = (360 - to) + from;
+                    right = to         - from;
                 }
             }
 
@@ -613,21 +659,26 @@ namespace FacialStuff.Harmony
             {
                 return true;
             }
+
             return false; // right
         }
 
-        public static void SetPositionsForHandsOnWeapons(Vector3 weaponPosition, bool flipped, float weaponAngle, [CanBeNull] CompProperties_WeaponExtensions compWeaponExtensions, CompBodyAnimator animator, float sizeMod)
+        public static void SetPositionsForHandsOnWeapons(Vector3 weaponPosition, bool flipped, float weaponAngle,
+                                                         [CanBeNull]
+                                                         CompProperties_WeaponExtensions compWeaponExtensions,
+                                                         CompBodyAnimator animator, float sizeMod)
         {
             // Prepare everything for DrawHands, but don't draw
             if (compWeaponExtensions == null)
             {
                 return;
             }
-            animator.FirstHandPosition = compWeaponExtensions.RightHandPosition;
-            animator.SecondHandPosition = compWeaponExtensions.LeftHandPosition ;
+
+            animator.FirstHandPosition  = compWeaponExtensions.RightHandPosition;
+            animator.SecondHandPosition = compWeaponExtensions.LeftHandPosition;
 
             // Only put the second hand on when aiming or not moving => free left hand for running
-          //  bool leftOnWeapon = true;// aiming || !animator.IsMoving;
+            //  bool leftOnWeapon = true;// aiming || !animator.IsMoving;
 
             if (animator.FirstHandPosition != Vector3.zero)
             {
@@ -660,8 +711,10 @@ namespace FacialStuff.Harmony
                     x2 *= -1f;
                     y2 *= -1f;
                 }
+
                 x2 *= sizeMod;
                 z2 *= sizeMod;
+
                 //if (pawn.Rotation == Rot4.North)
                 //{
                 //    y2 *= -1f;
@@ -677,7 +730,7 @@ namespace FacialStuff.Harmony
         }
 
         public static void DrawEquipmentAiming_Prefix(PawnRenderer __instance, Thing eq, Vector3 drawLoc,
-                                                      ref float aimAngle)
+                                                      ref float    aimAngle)
         {
             Pawn pawn = __instance.graphics.pawn;
 
@@ -689,27 +742,30 @@ namespace FacialStuff.Harmony
             }
 
             if (!pawn.GetCompAnim(out CompBodyAnimator animator))
-            { return; }
+            {
+                return;
+            }
 
             if (Find.TickManager.TicksGame == animator.LastAngleTick)
             {
                 aimAngle = animator.LastAimAngle;
                 return;
             }
+
             animator.LastAngleTick = Find.TickManager.TicksGame;
 
             float angleChange;
 
             float startAngle = animator.LastAimAngle;
-            float endAngle = aimAngle;
+            float endAngle   = aimAngle;
 
             FloatTween tween = animator.AimAngleTween;
             switch (tween.State)
             {
                 case TweenState.Running:
                     startAngle = tween.EndValue;
-                    endAngle = aimAngle;
-                    aimAngle = tween.CurrentValue;
+                    endAngle   = aimAngle;
+                    aimAngle   = tween.CurrentValue;
                     break;
             }
 
@@ -717,22 +773,23 @@ namespace FacialStuff.Harmony
             if (Mathf.Abs(angleChange) > 6f)
             {
                 // no tween for flipping
-                bool x = Mathf.Abs(animator.LastAimAngle - angleStanding) < 3f &&
-                         Mathf.Abs(aimAngle - angleStandingFlipped) < 3f;
+                bool x = Mathf.Abs(animator.LastAimAngle - angleStanding)        < 3f &&
+                         Mathf.Abs(aimAngle              - angleStandingFlipped) < 3f;
                 bool y = Mathf.Abs(animator.LastAimAngle - angleStandingFlipped) < 3f &&
-                         Mathf.Abs(aimAngle - angleStanding) < 3f;
+                         Mathf.Abs(aimAngle              - angleStanding)        < 3f;
                 bool z = Math.Abs(Mathf.Abs(aimAngle - animator.LastAimAngle) - 180f) < 12f;
 
                 if (!x && !y && !z)
                 {
                     //     if (Math.Abs(aimAngleTween.EndValue - weaponAngle) > 6f)
 
-                    tween.Start(startAngle, startAngle + angleChange, Mathf.Abs(angleChange), ScaleFuncs.QuinticEaseOut);
+                    tween.Start(startAngle, startAngle + angleChange, Mathf.Abs(angleChange),
+                                ScaleFuncs.QuinticEaseOut);
                     aimAngle = startAngle;
                 }
             }
-            animator.LastAimAngle = aimAngle;
 
+            animator.LastAimAngle = aimAngle;
         }
 
         public static IEnumerable<CodeInstruction> RenderPawnAt_Transpiler(
@@ -756,7 +813,7 @@ namespace FacialStuff.Harmony
                                                      new CodeInstruction(OpCodes.Ldfld,
                                                                          AccessTools.Field(typeof(PawnRenderer),
                                                                                            "pawn")), // pawn
-                                                     new CodeInstruction(OpCodes.Ldloc_3), // flag
+                                                     new CodeInstruction(OpCodes.Ldloc_3),           // flag
                                                      new CodeInstruction(OpCodes.Call,
                                                                          AccessTools.Method(typeof(HarmonyPatchesFS),
                                                                                             nameof(CheckAndDrawHands)))
@@ -766,11 +823,11 @@ namespace FacialStuff.Harmony
 
         public static IEnumerable<CodeInstruction> DrawEquipmentAiming_Transpiler(
         IEnumerable<CodeInstruction> instructions,
-        ILGenerator ilGen)
+        ILGenerator                  ilGen)
         {
             List<CodeInstruction> instructionList = instructions.ToList();
 
-            int index = instructionList.FindIndex(x => x.opcode == OpCodes.Ldloc_0);
+            int         index  = instructionList.FindIndex(x => x.opcode == OpCodes.Ldloc_0);
             List<Label> labels = instructionList[index].labels;
             instructionList[index].labels = new List<Label>();
             instructionList.InsertRange(index, new List<CodeInstruction>
@@ -778,12 +835,14 @@ namespace FacialStuff.Harmony
                                                // DoCalculations(Pawn pawn, Thing eq, ref Vector3 drawLoc, ref float weaponAngle, float aimAngle)
                                                new CodeInstruction(OpCodes.Ldarg_0),
                                                new CodeInstruction(OpCodes.Ldfld,
-                                                                   AccessTools.Field(typeof(PawnRenderer), "pawn")), // pawn
-                                               new CodeInstruction(OpCodes.Ldarg_1), // Thing
-                                               new CodeInstruction(OpCodes.Ldarga,   2), // drawLoc
-                                               new CodeInstruction(OpCodes.Ldloca_S, 1), // weaponAngle
-                                            //   new CodeInstruction(OpCodes.Ldarg_3), // aimAngle
-                                               new CodeInstruction(OpCodes.Ldloca_S, 0), // Mesh, loaded as ref to not trigger I Love Big Guns
+                                                                   AccessTools.Field(typeof(PawnRenderer),
+                                                                                     "pawn")), // pawn
+                                               new CodeInstruction(OpCodes.Ldarg_1),           // Thing
+                                               new CodeInstruction(OpCodes.Ldarga,   2),       // drawLoc
+                                               new CodeInstruction(OpCodes.Ldloca_S, 1),       // weaponAngle
+                                               //   new CodeInstruction(OpCodes.Ldarg_3), // aimAngle
+                                               new CodeInstruction(OpCodes.Ldloca_S,
+                                                                   0), // Mesh, loaded as ref to not trigger I Love Big Guns
                                                new CodeInstruction(OpCodes.Call,
                                                                    AccessTools.Method(typeof(HarmonyPatchesFS),
                                                                                       nameof(DoWeaponOffsets))),
@@ -824,7 +883,7 @@ namespace FacialStuff.Harmony
 
             if (pawn.def == ThingDefOf.Human)
             {
-                List<string> vanillatags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
+                List<string> vanillatags = new List<string> {"Urban", "Rural", "Punk", "Tribal"};
                 if (!hairTags.Any(x => vanillatags.Contains(x)))
                 {
                     hairTags.AddRange(vanillatags);
@@ -865,6 +924,7 @@ namespace FacialStuff.Harmony
             {
                 vector.y -= Offsets.YOffset_CarriedThing * 2;
             }
+
             vector.y += compAnim.DrawOffsetY;
 
             compAnim.DrawHands(Quaternion.identity, vector, false, carriedThing, flip);
@@ -873,12 +933,14 @@ namespace FacialStuff.Harmony
         public static void ResolveApparelGraphics_Postfix(PawnGraphicSet __instance)
         {
             Pawn pawn = __instance.pawn;
+
             // Set up the hair cut graphic
             if (Controller.settings.MergeHair)
             {
                 HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
 
-                List<Apparel> wornApparel = pawn.apparel.WornApparel.Where(x => x.def.apparel.LastLayer == ApparelLayer.Overhead).ToList();
+                List<Apparel> wornApparel = pawn.apparel.WornApparel
+                                                .Where(x => x.def.apparel.LastLayer == ApparelLayer.Overhead).ToList();
                 HeadCoverage coverage = HeadCoverage.None;
                 if (!wornApparel.NullOrEmpty())
                 {
@@ -886,18 +948,20 @@ namespace FacialStuff.Harmony
                     {
                         coverage = HeadCoverage.UpperHead;
                     }
+
                     if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)))
                     {
                         coverage = HeadCoverage.FullHead;
                     }
                 }
+
                 if (coverage != 0)
                 {
                     hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi_Four>(
-                                                                       pawn.story.hairDef.texPath,
-                                                                       ShaderDatabase.Cutout,
-                                                                       Vector2.one,
-                                                                       pawn.story.hairColor, coverage);
+                                                                                pawn.story.hairDef.texPath,
+                                                                                ShaderDatabase.Cutout,
+                                                                                Vector2.one,
+                                                                                pawn.story.hairColor, coverage);
                 }
             }
         }
@@ -968,10 +1032,10 @@ namespace FacialStuff.Harmony
                                                              rotColor);
 
             __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi_Four>(
-                                                                        pawn.story.hairDef.texPath,
-                                                                        ShaderDatabase.CutoutComplex,
-                                                                        Vector2.one,
-                                                                        pawn.story.hairColor);
+                                                                             pawn.story.hairDef.texPath,
+                                                                             ShaderDatabase.CutoutComplex,
+                                                                             Vector2.one,
+                                                                             pawn.story.hairColor);
             PortraitsCache.SetDirty(pawn);
         }
 
@@ -986,7 +1050,7 @@ namespace FacialStuff.Harmony
             // typeof(Pawn_InteractionsTracker).GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
             //PawnFieldInfo?.GetValue(__instance);
 
-            Pawn pawn = (Pawn)AccessTools.Field(typeof(Pawn_InteractionsTracker), "pawn").GetValue(__instance);
+            Pawn pawn = (Pawn) AccessTools.Field(typeof(Pawn_InteractionsTracker), "pawn").GetValue(__instance);
             if (pawn == null || recipient == null)
             {
                 return;
@@ -1035,50 +1099,50 @@ namespace FacialStuff.Harmony
             // Thanks to all modders out there for providing help and support.
             // This is just for me.
             Backstory childMe = new Backstory
-            {
-                bodyTypeMale = BodyType.Male,
-                bodyTypeFemale = BodyType.Female,
-                slot = BackstorySlot.Childhood,
-                baseDesc =
+                                {
+                                bodyTypeMale   = BodyType.Male,
+                                bodyTypeFemale = BodyType.Female,
+                                slot           = BackstorySlot.Childhood,
+                                baseDesc =
                                 "NAME never believed what was common sense and always doubted other people. HECAP later went on inflating toads with HIS sushi stick. It was there HE earned HIS nickname.",
-                requiredWorkTags = WorkTags.Violent,
-                shuffleable = false
-            };
+                                requiredWorkTags = WorkTags.Violent,
+                                shuffleable      = false
+                                };
             childMe.SetTitle("Lost child");
             childMe.SetTitleShort("Seeker");
             childMe.skillGains.Add("Shooting", 4);
             childMe.skillGains.Add("Medicine", 2);
-            childMe.skillGains.Add("Social", 1);
+            childMe.skillGains.Add("Social",   1);
             childMe.PostLoad();
             childMe.ResolveReferences();
 
             Backstory adultMale = new Backstory
-            {
-                bodyTypeMale = BodyType.Male,
-                bodyTypeFemale = BodyType.Female,
-                slot = BackstorySlot.Adulthood,
-                baseDesc =
+                                  {
+                                  bodyTypeMale   = BodyType.Male,
+                                  bodyTypeFemale = BodyType.Female,
+                                  slot           = BackstorySlot.Adulthood,
+                                  baseDesc =
                                   "HECAP tells no one about his past. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
-                shuffleable = false,
-                spawnCategories = new List<string>()
-            };
-            adultMale.spawnCategories.AddRange(new[] { "Civil", "Raider", "Slave", "Trader", "Traveler" });
+                                  shuffleable     = false,
+                                  spawnCategories = new List<string>()
+                                  };
+            adultMale.spawnCategories.AddRange(new[] {"Civil", "Raider", "Slave", "Trader", "Traveler"});
             adultMale.SetTitle("Lone gunman");
             adultMale.SetTitleShort("Gunman");
             adultMale.skillGains.Add("Shooting", 4);
             adultMale.skillGains.Add("Medicine", 3);
-            adultMale.skillGains.Add("Cooking", 2);
-            adultMale.skillGains.Add("Social", 1);
+            adultMale.skillGains.Add("Cooking",  2);
+            adultMale.skillGains.Add("Social",   1);
             adultMale.PostLoad();
             adultMale.ResolveReferences();
 
             PawnBio me = new PawnBio
-            {
-                childhood = childMe,
-                adulthood = adultMale,
-                gender = GenderPossibility.Male,
-                name = NameTriple.FromString("Gator 'Killface' Stinkwater")
-            };
+                         {
+                         childhood = childMe,
+                         adulthood = adultMale,
+                         gender    = GenderPossibility.Male,
+                         name      = NameTriple.FromString("Gator 'Killface' Stinkwater")
+                         };
             me.PostLoad();
             SolidBioDatabase.allBios.Add(me);
             BackstoryDatabase.AddBackstory(childMe);
@@ -1088,6 +1152,4 @@ namespace FacialStuff.Harmony
 
         #endregion Private Methods
     }
-
-
 }

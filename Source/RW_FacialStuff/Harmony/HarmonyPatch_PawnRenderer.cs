@@ -213,7 +213,7 @@ namespace FacialStuff.Harmony
             // }
 
             // Try to move the y position behind while another pawn is standing near
-            if (!portrait && pawn.Spawned)
+            if (compAnim != null && (!portrait && pawn.Spawned && !compAnim.IsRider))
             {
                 RecalcRootLocY(ref rootLoc, pawn, compAnim);
             }
