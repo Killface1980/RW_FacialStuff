@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using FacialStuff.AnimatorWindows;
@@ -10,6 +10,21 @@ using static FacialStuff.Offsets;
 
 namespace FacialStuff.Harmony
 {
+	[HarmonyPatch(typeof(Pawn_DrawTracker))]
+	[HarmonyPatch("DrawPos", PropertyMethod.Getter)]
+	public static class DrawPos_Patch
+    {
+        public static bool offsetEnabled = false;
+        public static Vector3 offset = Vector3.zero;
+
+        public static void Postfix(ref Vector3 __result)
+        {
+            if (offsetEnabled)
+            {
+                __result = offset;
+            }
+        }
+    }
 
     // ReSharper disable once InconsistentNaming
     [HarmonyPatch(
@@ -402,7 +417,10 @@ namespace FacialStuff.Harmony
                     List<Apparel> wornApparel = pawn.apparel.WornApparel;
                     foreach (Apparel ap in wornApparel)
                     {
-                        ap.DrawWornExtras();
+                        DrawPos_Patch.offset = baseDrawLoc;
+						DrawPos_Patch.offsetEnabled = true;
+						ap.DrawWornExtras();
+						DrawPos_Patch.offsetEnabled = false;
                     }
                 }
 
