@@ -14,7 +14,7 @@ namespace FacialStuff.FaceEditor
 
         private static readonly string ErrorMessage = "FaceStyling job called on building with a troubled youth and serious issues.";
 
-        public override bool TryMakePreToilReservations()
+        public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             return this.pawn.Reserve(this.job.targetA, this.job);
         }

@@ -52,7 +52,7 @@ namespace FacialStuff.HairCut
             where T : Graphic, new()
         {
                         // Added second 'color' to get a separate graphic
-            GraphicRequest req = new GraphicRequest(typeof(T), path, shader, drawSize, color, color, null, 0);
+            GraphicRequest req = new GraphicRequest(typeof(T), path, shader, drawSize, color, color, null, 0, new List<ShaderParameter>());
             return GetInner<T>(req, coverage);
         }
 
@@ -111,20 +111,20 @@ namespace FacialStuff.HairCut
             {
                 graphic.Init(req);
 
-                // graphic.MatFront.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_front");
-                // graphic.MatSide.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_side");
-                // graphic.MatBack.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_back");
+                // graphic.MatSouth.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_front");
+                // graphic.MatEast.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_side");
+                // graphic.MatNorth.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_back");
             }
             else
             {
                 req.path = oldPath;
                 graphic.Init(req);
 
-                Texture2D temptexturefront = graphic.MatFront.mainTexture as Texture2D;
-                Texture2D temptextureside = graphic.MatSide.mainTexture as Texture2D;
-                Texture2D temptextureback = graphic.MatBack.mainTexture as Texture2D;
+                Texture2D temptexturefront = graphic.MatSouth.mainTexture as Texture2D;
+                Texture2D temptextureside = graphic.MatEast.mainTexture as Texture2D;
+                Texture2D temptextureback = graphic.MatNorth.mainTexture as Texture2D;
 
-                Texture2D temptextureside2 = (graphic as Graphic_Multi_Four)?.MatLeft.mainTexture as Texture2D;
+                Texture2D temptextureside2 = (graphic as Graphic_Multi_Four)?.MatWest.mainTexture as Texture2D;
 
                 temptexturefront = FaceTextures.MakeReadable(temptexturefront);
                 temptextureside = FaceTextures.MakeReadable(temptextureside);
@@ -179,10 +179,10 @@ namespace FacialStuff.HairCut
                 temptextureback.Apply(false, true);
                 temptextureside2.Apply(false, true);
 
-                graphic.MatFront.mainTexture = temptexturefront;
-                graphic.MatSide.mainTexture = temptextureside;
-                graphic.MatBack.mainTexture = temptextureback;
-                ((Graphic_Multi_Four) graphic).MatLeft.mainTexture = temptextureside2;
+                graphic.MatSouth.mainTexture = temptexturefront;
+                graphic.MatEast.mainTexture = temptextureside;
+                graphic.MatNorth.mainTexture = temptextureback;
+                ((Graphic_Multi_Four) graphic).MatWest.mainTexture = temptextureside2;
 
                 // Object.Destroy(temptexturefront);
                 // Object.Destroy(temptextureside);
@@ -230,10 +230,10 @@ namespace FacialStuff.HairCut
 
         private static void SetTempTextures(Graphic graphic, out Texture2D temptexturefront, out Texture2D temptextureside, out Texture2D temptextureback, out Texture2D temptextureside2)
         {
-            temptexturefront = graphic.MatFront.mainTexture as Texture2D;
-            temptextureside = graphic.MatSide.mainTexture as Texture2D;
-            temptextureback = graphic.MatBack.mainTexture as Texture2D;
-            temptextureside2 = (graphic as Graphic_Multi_Four)?.MatLeft.mainTexture as Texture2D;
+            temptexturefront = graphic.MatSouth.mainTexture as Texture2D;
+            temptextureside = graphic.MatEast.mainTexture as Texture2D;
+            temptextureback = graphic.MatNorth.mainTexture as Texture2D;
+            temptextureside2 = (graphic as Graphic_Multi_Four)?.MatWest.mainTexture as Texture2D;
 
             temptexturefront = FaceTextures.MakeReadable(temptexturefront);
             temptextureside = FaceTextures.MakeReadable(temptextureside);

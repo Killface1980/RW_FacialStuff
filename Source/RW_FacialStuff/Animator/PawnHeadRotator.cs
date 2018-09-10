@@ -167,7 +167,7 @@ namespace FacialStuff.Animator
                 // ReSharper disable once PossibleNullReferenceException
                 foreach (IAttackTarget attackTarget in potentialTargetsFor)
                 {
-                    if (attackTarget == null || attackTarget.ThreatDisabled())
+                    if (attackTarget == null || attackTarget.ThreatDisabled(p))
                     {
                         continue;
                     }

@@ -123,7 +123,7 @@ namespace FacialStuff.FaceEditor
 
         private readonly Color _originalBeardColor;
 
-        private readonly BodyType _originalBodyType;
+        private readonly BodyTypeDef _originalBodyType;
 
         private readonly BrowDef _originalBrow;
 
@@ -295,7 +295,7 @@ namespace FacialStuff.FaceEditor
 
             // this.absorbInputAroundWindow = false;
             this.closeOnClickedOutside   = false;
-            this.closeOnEscapeKey        = true;
+            this.closeOnCancel        = true;
             this.doCloseButton           = false;
             this.doCloseX                = true;
             this.absorbInputAroundWindow = true;
@@ -1062,12 +1062,12 @@ namespace FacialStuff.FaceEditor
 
             // Rect rect3 = new Rect(rect2.xMax, rect.y, rect.height, rect.height);
             GUI.color = Pawn.story.SkinColor;
-            GUI.DrawTexture(rect1, Pawn.Drawer.renderer.graphics.headGraphic.MatFront.mainTexture);
-            GUI.DrawTexture(rect2, Pawn.Drawer.renderer.graphics.headGraphic.MatSide.mainTexture);
+            GUI.DrawTexture(rect1, Pawn.Drawer.renderer.graphics.headGraphic.MatSouth.mainTexture);
+            GUI.DrawTexture(rect2, Pawn.Drawer.renderer.graphics.headGraphic.MatEast.mainTexture);
 
             GUI.color = Pawn.story.hairColor;
-            GUI.DrawTexture(rect1, this.HairGraphic(hair).MatFront.mainTexture);
-            GUI.DrawTexture(rect2, this.HairGraphic(hair).MatSide.mainTexture);
+            GUI.DrawTexture(rect1, this.HairGraphic(hair).MatSouth.mainTexture);
+            GUI.DrawTexture(rect2, this.HairGraphic(hair).MatEast.mainTexture);
 
             GUI.color = Color.white;
 
@@ -1176,7 +1176,7 @@ namespace FacialStuff.FaceEditor
         public virtual void DrawUI(Rect rect)
         {
             GUI.BeginGroup(rect);
-            string  pawnName = Pawn.NameStringShort;
+            string  pawnName = Pawn.LabelShort;
             Vector2 vector   = Text.CalcSize(pawnName);
 
             Rect pawnRect  = AddPortraitWidget(0f, TitleHeight);
@@ -1460,7 +1460,7 @@ namespace FacialStuff.FaceEditor
 
             if (sender is BodyTypeSelectionDto)
             {
-                Pawn.story.bodyType = (BodyType) value;
+                Pawn.story.bodyType = (BodyTypeDef) value;
             }
             else if (sender is GenderSelectionDto)
             {
@@ -1655,22 +1655,22 @@ namespace FacialStuff.FaceEditor
             Rect rightRect = new Rect(leftRect.xMax + offset, rect.y, rect.height, rect.height);
 
             GUI.color = Pawn.story.SkinColor;
-            GUI.DrawTexture(leftRect,  Pawn.Drawer.renderer.graphics.headGraphic.MatFront.mainTexture);
-            GUI.DrawTexture(rightRect, Pawn.Drawer.renderer.graphics.headGraphic.MatSide.mainTexture);
+            GUI.DrawTexture(leftRect,  Pawn.Drawer.renderer.graphics.headGraphic.MatSouth.mainTexture);
+            GUI.DrawTexture(rightRect, Pawn.Drawer.renderer.graphics.headGraphic.MatEast.mainTexture);
 
             // Draw hair if mouse is over
             GUI.color = Pawn.story.hairColor;
 
             // if (Mouse.IsOver(leftRect) || Mouse.IsOver(rightRect))
             // {
-            // GUI.DrawTexture(leftRect, pawn.Drawer.renderer.graphics.hairGraphic.MatFront.mainTexture);
-            // GUI.DrawTexture(rightRect, pawn.Drawer.renderer.graphics.hairGraphic.MatSide.mainTexture);
+            // GUI.DrawTexture(leftRect, pawn.Drawer.renderer.graphics.hairGraphic.MatSouth.mainTexture);
+            // GUI.DrawTexture(rightRect, pawn.Drawer.renderer.graphics.hairGraphic.MatEast.mainTexture);
             // }
 
             // Draw selected beard
             GUI.color = this.PawnFace.HasSameBeardColor ? Pawn.story.hairColor : this.NewBeardColor;
-            GUI.DrawTexture(leftRect, this.BeardGraphic(beard)?.MatFront.mainTexture);
-            GUI.DrawTexture(rightRect, this.BeardGraphic(beard)?.MatSide.mainTexture);
+            GUI.DrawTexture(leftRect, this.BeardGraphic(beard)?.MatSouth.mainTexture);
+            GUI.DrawTexture(rightRect, this.BeardGraphic(beard)?.MatEast.mainTexture);
             GUI.color = Color.white;
 
             Text.Anchor = TextAnchor.UpperCenter;
@@ -1708,7 +1708,7 @@ namespace FacialStuff.FaceEditor
             }
 
             GUI.color = Color.black;
-            GUI.DrawTexture(rect, this.BrowGraphic(brow).MatFront.mainTexture);
+            GUI.DrawTexture(rect, this.BrowGraphic(brow).MatSouth.mainTexture);
             GUI.color = Color.white;
 
             Text.Anchor = TextAnchor.UpperCenter;
@@ -1745,8 +1745,8 @@ namespace FacialStuff.FaceEditor
                 }
             }
 
-            GUI.DrawTexture(rect, this.RightEyeGraphic(eye).MatFront.mainTexture);
-            GUI.DrawTexture(rect, this.LeftEyeGraphic(eye).MatFront.mainTexture);
+            GUI.DrawTexture(rect, this.RightEyeGraphic(eye).MatSouth.mainTexture);
+            GUI.DrawTexture(rect, this.LeftEyeGraphic(eye).MatSouth.mainTexture);
 
             Text.Anchor = TextAnchor.UpperCenter;
             Widgets.Label(rect, text);
@@ -1981,11 +1981,11 @@ namespace FacialStuff.FaceEditor
             Rect rect2 = new Rect(rect1.xMax + offset, rect.y, rect.height, rect.height);
 
             GUI.color = Pawn.story.SkinColor;
-            GUI.DrawTexture(rect1, Pawn.Drawer.renderer.graphics.headGraphic.MatFront.mainTexture);
-            GUI.DrawTexture(rect2, Pawn.Drawer.renderer.graphics.headGraphic.MatSide.mainTexture);
+            GUI.DrawTexture(rect1, Pawn.Drawer.renderer.graphics.headGraphic.MatSouth.mainTexture);
+            GUI.DrawTexture(rect2, Pawn.Drawer.renderer.graphics.headGraphic.MatEast.mainTexture);
             GUI.color = this.PawnFace.HasSameBeardColor ? Pawn.story.hairColor : this.NewBeardColor;
-            GUI.DrawTexture(rect1, this.MoustacheGraphic(moustache)?.MatFront.mainTexture);
-            GUI.DrawTexture(rect2, this.MoustacheGraphic(moustache)?.MatSide.mainTexture);
+            GUI.DrawTexture(rect1, this.MoustacheGraphic(moustache)?.MatSouth.mainTexture);
+            GUI.DrawTexture(rect2, this.MoustacheGraphic(moustache)?.MatEast.mainTexture);
             GUI.color = Color.white;
 
             Text.Anchor = TextAnchor.UpperCenter;
@@ -2186,7 +2186,7 @@ namespace FacialStuff.FaceEditor
                 source.GetGraphic(Pawn.story.SkinColor);
             }
 
-            // string str = "Naked_" + bodyType.ToString();
+            // string str = "Naked_" + BodyTypeDefOf.ToString();
             // string path = "Things/Pawn/Humanlike/Bodies/" + str;
             // return GraphicDatabase.Get<Graphic_Multi>(path, shader, Vector2.one, skinColor);
             List<TabRecord> list = new List<TabRecord>();

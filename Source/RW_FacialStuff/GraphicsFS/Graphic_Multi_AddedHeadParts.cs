@@ -146,10 +146,10 @@ namespace FacialStuff.GraphicsFS
         {
             switch (rot.AsInt)
             {
-                case 0: return this.MatBack;
-                case 1: return this.MatRight;
-                case 2: return this.MatFront;
-                case 3: return this.MatLeft;
+                case 0: return this.MatNorth;
+                case 1: return this.MatEast;
+                case 2: return this.MatSouth;
+                case 3: return this.MatWest;
                 default: return BaseContent.BadMat;
             }
         }
@@ -162,14 +162,14 @@ namespace FacialStuff.GraphicsFS
 
         public string GraphicPath => this.path;
 
-        public override Material MatBack => this._mats[0];
+        public override Material MatNorth => this._mats[0];
 
-        public override Material MatFront => this._mats[2];
+        public override Material MatSouth => this._mats[2];
 
-        public Material MatLeft => this._mats[3];
+        public override Material MatWest => this._mats[3];
 
-        public Material MatRight => this._mats[1];
+        public override Material MatEast => this._mats[1];
 
-        public override bool ShouldDrawRotated => this.MatRight == this.MatBack;
+        public override bool ShouldDrawRotated => this.MatEast == this.MatNorth;
     }
 }

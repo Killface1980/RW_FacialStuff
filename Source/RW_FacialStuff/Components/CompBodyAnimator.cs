@@ -320,11 +320,11 @@ namespace FacialStuff
 
                 for (int i = 0; i < graphics.apparelGraphics.Count; i++)
                 {
-                    ApparelLayer lastLayer = graphics.apparelGraphics[i].sourceApparel.def.apparel.LastLayer;
+                    ApparelLayerDef lastLayer = graphics.apparelGraphics[i].sourceApparel.def.apparel.LastLayer;
 
                     if (this.Pawn.Dead)
                     {
-                        if (lastLayer != ApparelLayer.Shell && lastLayer != ApparelLayer.Overhead)
+                        if (lastLayer != ApparelLayerDefOf.Shell && lastLayer != ApparelLayerDefOf.Overhead)
                         {
                             this._cachedNakedMatsBodyBase.Add(graphics.apparelGraphics[i].graphic.MatAt(facing));
                         }
@@ -415,7 +415,7 @@ namespace FacialStuff
             this.Pawn.CheckForAddedOrMissingParts();
             this.PawnBodyGraphic = new PawnBodyGraphic(this);
 
-            BodyType bodyType = BodyType.Undefined;
+            BodyTypeDef bodyType = BodyTypeDefOf.Male;
 
             if (this.Pawn.story?.bodyType != null)
             {
@@ -493,10 +493,10 @@ namespace FacialStuff
 
                 for (int i = 0; i < graphics.apparelGraphics.Count; i++)
                 {
-                    ApparelLayer lastLayer = graphics.apparelGraphics[i].sourceApparel.def.apparel.LastLayer;
+                    ApparelLayerDef lastLayer = graphics.apparelGraphics[i].sourceApparel.def.apparel.LastLayer;
 
-                    // if (lastLayer != ApparelLayer.Shell && lastLayer != ApparelLayer.Overhead)
-                    if (lastLayer == ApparelLayer.OnSkin)
+                    // if (lastLayer != ApparelLayerDefOf.Shell && lastLayer != ApparelLayerDefOf.Overhead)
+                    if (lastLayer == ApparelLayerDefOf.OnSkin)
                     {
                         this._cachedSkinMatsBodyBase.Add(graphics.apparelGraphics[i].graphic.MatAt(facing));
                     }

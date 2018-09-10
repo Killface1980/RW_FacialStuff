@@ -16,15 +16,15 @@ namespace FacialStuff.GraphicsFS
 
         public string GraphicPath => this.path;
 
-        public override Material MatBack => this._mats[0];
+        public override Material MatNorth => this._mats[0];
 
-        public override Material MatFront => this._mats[2];
+        public override Material MatSouth => this._mats[2];
 
-        public override Material MatSide => this._mats[1];
+        public override Material MatEast => this._mats[1];
 
         public override Material MatSingle => this._mats[2];
 
-        public override bool ShouldDrawRotated => this.MatSide == this.MatBack;
+        public override bool ShouldDrawRotated => this.MatEast == this.MatNorth;
 
         public override void Init(GraphicRequest req)
         {

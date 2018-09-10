@@ -28,8 +28,9 @@ namespace FacialStuff
         public override void BaseHeadOffsetAt(ref Vector3 offset, bool portrait)
         {
             Pawn pawn = this.Pawn;
-            float horHeadOffset = HorHeadOffsets[(int)pawn.story.bodyType];
-            float verHeadOffset = VerHeadOffsets[(int)pawn.story.bodyType];
+            Vector2 headOffset = pawn.story.bodyType.headOffset;
+            float horHeadOffset = headOffset.x;
+            float verHeadOffset = headOffset.y;
 
             CompBodyAnimator animator = this.CompAnimator;
             if (animator != null && MainTabWindow_PoseAnimator.IsOpen)
@@ -148,7 +149,7 @@ namespace FacialStuff
             if (!apparelGraphics.NullOrEmpty())
             {
                 headgearGraphics = apparelGraphics
-                                  .Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayer.Overhead).ToList();
+                                  .Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayerDefOf.Overhead).ToList();
             }
 
             CompBodyAnimator animator = this.CompAnimator;

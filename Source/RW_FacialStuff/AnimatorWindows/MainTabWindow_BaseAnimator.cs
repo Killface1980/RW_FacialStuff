@@ -444,7 +444,7 @@ namespace FacialStuff.AnimatorWindows
                 }
                 else
                 {
-                    Pawn = Find.AnyPlayerHomeMap.FreeColonistsForStoryteller.FirstOrDefault();
+                    Pawn = Find.AnyPlayerHomeMap.PlayerPawnsForStoryteller.FirstOrDefault();
                 }
 
                 Pawn?.GetCompAnim(out this.CompAnim);

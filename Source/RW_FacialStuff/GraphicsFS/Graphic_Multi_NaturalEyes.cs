@@ -9,10 +9,10 @@ namespace FacialStuff.GraphicsFS
     {
         private readonly Material[] _mats = new Material[4];
 
-        public override Material MatBack => this._mats[0];
-        public override Material MatSide => this._mats[1];
-        public override Material MatFront => this._mats[2];
-        public override Material MatLeft => this._mats[3];
+        public override Material MatNorth => this._mats[0];
+        public override Material MatEast => this._mats[1];
+        public override Material MatSouth => this._mats[2];
+        public override Material MatWest => this._mats[3];
 
 
         public override void Init(GraphicRequest req)
@@ -152,10 +152,10 @@ namespace FacialStuff.GraphicsFS
         {
             switch (rot.AsInt)
             {
-                case 0: return this.MatBack;
-                case 1: return this.MatSide;
-                case 2: return this.MatFront;
-                case 3: return this.MatLeft;
+                case 0: return this.MatNorth;
+                case 1: return this.MatEast;
+                case 2: return this.MatSouth;
+                case 3: return this.MatWest;
                 default: return BaseContent.BadMat;
             }
         }

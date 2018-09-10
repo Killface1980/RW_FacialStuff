@@ -76,7 +76,7 @@ namespace FacialStuff.Harmony.Optional
                                                         : ba.offsets.side;
 
                         // Log.Message("front: " + (offset == ba.offsets.front).ToString() + "\nback: " + (offset == ba.offsets.back).ToString() + "\nside :" + (offset == ba.offsets.side).ToString());
-                        Vector2 bodyOffset = offset?.bodyTypes?.FirstOrDefault(to => to.bodyType == pawn.story.bodyType)
+                        Vector2 bodyOffset = offset?.bodyTypes?.FirstOrDefault(to => to.BodyTypeDef == pawn.story.bodyType)
                                                  ?.offset ?? Vector2.zero;
                         Vector2 crownOffset =
                             offset?.crownTypes?.FirstOrDefault(to => to.crownType == alienComp.crownType)?.offset

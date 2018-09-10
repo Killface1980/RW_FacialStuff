@@ -160,7 +160,7 @@ namespace FacialStuff.Utilities
                         // Gender roles don't really matter any more
                         case TechLevel.Spacer:
                         case TechLevel.Ultra:
-                        case TechLevel.Transcendent:
+                        case TechLevel.Archotech:
                             switch (pawn.gender)
                             {
                                 case Gender.Male:

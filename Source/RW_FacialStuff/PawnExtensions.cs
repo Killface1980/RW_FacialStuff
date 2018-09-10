@@ -161,19 +161,18 @@ namespace FacialStuff
                 return;
             }
 
-            BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.LeftEye);
-            BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.RightEye);
+            BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.Eye && x.customLabel.Contains("left"));
+            BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.Eye && x.customLabel.Contains("right"));
             BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
 
 
-            BodyPartRecord leftArm = body.Find(x => x.def == BodyPartDefOf.LeftArm);
-            BodyPartRecord rightArm = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("RightShoulder"));
-            BodyPartRecord leftHand = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("LeftShoulder"));
-            BodyPartRecord rightHand = body.Find(x => x.def == BodyPartDefOf.RightHand);
-            BodyPartRecord leftLeg = body.Find(x => x.def == BodyPartDefOf.LeftLeg);
-            BodyPartRecord rightLeg = body.Find(x => x.def == BodyPartDefOf.RightLeg);
-            BodyPartRecord leftFoot = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("LeftFoot"));
-            BodyPartRecord rightFoot = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("RightFoot"));
+            //BodyPartRecord leftArm = body.Find(x => x.def == BodyPartDefOf.LeftArm);
+            //BodyPartRecord rightArm = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("RightShoulder"));
+            BodyPartRecord leftHand = body.Find(x => x.def == BodyPartDefOf.Hand && x.customLabel.Contains("left"));
+            BodyPartRecord rightHand = body.Find(x => x.def == BodyPartDefOf.Hand && x.customLabel.Contains("right"));
+
+            BodyPartRecord leftFoot = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("Foot") && x.customLabel.Contains("left"));
+            BodyPartRecord rightFoot = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("Foot") && x.customLabel.Contains("right"));
 
             if (missing)
             {

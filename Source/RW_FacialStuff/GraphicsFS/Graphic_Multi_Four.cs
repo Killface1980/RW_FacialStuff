@@ -7,29 +7,29 @@ namespace Verse
     {
         private Material[] mats = new Material[4];
 
-        public override Material MatFront => this.mats[2];
+        public override Material MatSouth => this.mats[2];
 
-        public override Material MatSide => this.mats[1];
+        public override Material MatEast => this.mats[1];
 
-        public virtual Material MatLeft => this.mats[3];
+        public override Material MatWest => this.mats[3];
 
-        public override Material MatBack => this.mats[0];
+        public override Material MatNorth => this.mats[0];
 
         public override Material MatAt(Rot4 rot, Thing thing = null)
         {
             switch (rot.AsInt)
             {
                 case 0:
-                    return this.MatBack;
+                    return this.MatNorth;
 
                 case 1:
-                    return this.MatSide;
+                    return this.MatEast;
 
                 case 2:
-                    return this.MatFront;
+                    return this.MatSouth;
 
                 case 3:
-                    return this.MatLeft;
+                    return this.MatWest;
 
                 default:
                     return BaseContent.BadMat;

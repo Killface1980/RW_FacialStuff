@@ -32,7 +32,7 @@ namespace FacialStuff.Harmony.Optional.PrepC
             // ReSharper disable once InvertIf
             if (Widgets.ButtonInvisible(rect))
             {
-                SoundDefOf.TickLow.PlayOneShotOnCamera();
+                SoundDefOf.Tick_Low.PlayOneShotOnCamera();
                 HarmonyPatchesFS.OpenStylingWindow(pawn);
             }
         }

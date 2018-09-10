@@ -407,7 +407,7 @@ namespace FacialStuff
                             localOut.label,
                             delegate
                                 {
-                                    foreach (Pawn pawn in Find.VisibleMap.mapPawns.AllPawnsSpawned.Where(
+                                    foreach (Pawn pawn in Find.CurrentMap.mapPawns.AllPawnsSpawned.Where(
                                         x => x.HasCompFace()))
                                     {
                                         Color color = Color.white;

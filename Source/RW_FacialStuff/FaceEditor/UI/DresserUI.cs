@@ -280,7 +280,7 @@ namespace FacialStuffEditor.UI
 
                 if (sender is BodyTypeSelectionDTO)
                 {
-                    pawn.story.bodyType = (BodyType)value;
+                    pawn.story.BodyTypeDef = (BodyType)value;
                 }
                 else if (sender is GenderSelectionDTO)
                 {

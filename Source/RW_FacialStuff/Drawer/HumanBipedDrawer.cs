@@ -197,7 +197,7 @@ namespace FacialStuff
             {
                 foreach (ApparelGraphicRecord apparelGraphicRecord in this.Graphics.apparelGraphics)
                 {
-                    if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer != ApparelLayer.Shell)
+                    if (apparelGraphicRecord.sourceApparel.def.apparel.LastLayer != ApparelLayerDefOf.Shell)
                     {
                         continue;
                     }

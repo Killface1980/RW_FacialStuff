@@ -318,7 +318,7 @@ namespace FacialStuff.Harmony
             // ReSharper disable once InvertIf
             if (Widgets.ButtonInvisible(rect2, false))
             {
-                SoundDefOf.TickLow.PlayOneShotOnCamera(null);
+                SoundDefOf.Tick_Low.PlayOneShotOnCamera(null);
                 OpenStylingWindow(pawn);
             }
         }
@@ -940,7 +940,7 @@ namespace FacialStuff.Harmony
                 HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
 
                 List<Apparel> wornApparel = pawn.apparel.WornApparel
-                                                .Where(x => x.def.apparel.LastLayer == ApparelLayer.Overhead).ToList();
+                                                .Where(x => x.def.apparel.LastLayer == ApparelLayerDefOf.Overhead).ToList();
                 HeadCoverage coverage = HeadCoverage.None;
                 if (!wornApparel.NullOrEmpty())
                 {
@@ -1010,11 +1010,7 @@ namespace FacialStuff.Harmony
                 return;
             }
 
-            __instance.nakedGraphic = GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
-                                                                                       pawn.story.bodyType,
-                                                                                       ShaderDatabase.CutoutSkin,
-                                                                                       pawn.story.SkinColor);
-
+            __instance.nakedGraphic = GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.bodyType.bodyNakedGraphicPath, ShaderDatabase.CutoutSkin, Vector2.one, __instance.pawn.story.SkinColor);
             if (compFace.Props.needsBlankHumanHead)
             {
                 __instance.headGraphic =
@@ -1026,10 +1022,8 @@ namespace FacialStuff.Harmony
             }
 
             __instance.rottingGraphic =
-            GraphicGetter_NakedHumanlike.GetNakedBodyGraphic(
-                                                             pawn.story.bodyType,
-                                                             ShaderDatabase.CutoutSkin,
-                                                             rotColor);
+           GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.bodyType.bodyNakedGraphicPath, ShaderDatabase.CutoutSkin, Vector2.one, rotColor);
+
 
             __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi_Four>(
                                                                              pawn.story.hairDef.texPath,
@@ -1098,56 +1092,56 @@ namespace FacialStuff.Harmony
         {
             // Thanks to all modders out there for providing help and support.
             // This is just for me.
-            Backstory childMe = new Backstory
-                                {
-                                bodyTypeMale   = BodyType.Male,
-                                bodyTypeFemale = BodyType.Female,
-                                slot           = BackstorySlot.Childhood,
-                                baseDesc =
-                                "NAME never believed what was common sense and always doubted other people. HECAP later went on inflating toads with HIS sushi stick. It was there HE earned HIS nickname.",
-                                requiredWorkTags = WorkTags.Violent,
-                                shuffleable      = false
-                                };
-            childMe.SetTitle("Lost child");
-            childMe.SetTitleShort("Seeker");
-            childMe.skillGains.Add("Shooting", 4);
-            childMe.skillGains.Add("Medicine", 2);
-            childMe.skillGains.Add("Social",   1);
-            childMe.PostLoad();
-            childMe.ResolveReferences();
-
-            Backstory adultMale = new Backstory
-                                  {
-                                  bodyTypeMale   = BodyType.Male,
-                                  bodyTypeFemale = BodyType.Female,
-                                  slot           = BackstorySlot.Adulthood,
-                                  baseDesc =
-                                  "HECAP tells no one about his past. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
-                                  shuffleable     = false,
-                                  spawnCategories = new List<string>()
-                                  };
-            adultMale.spawnCategories.AddRange(new[] {"Civil", "Raider", "Slave", "Trader", "Traveler"});
-            adultMale.SetTitle("Lone gunman");
-            adultMale.SetTitleShort("Gunman");
-            adultMale.skillGains.Add("Shooting", 4);
-            adultMale.skillGains.Add("Medicine", 3);
-            adultMale.skillGains.Add("Cooking",  2);
-            adultMale.skillGains.Add("Social",   1);
-            adultMale.PostLoad();
-            adultMale.ResolveReferences();
-
-            PawnBio me = new PawnBio
-                         {
-                         childhood = childMe,
-                         adulthood = adultMale,
-                         gender    = GenderPossibility.Male,
-                         name      = NameTriple.FromString("Gator 'Killface' Stinkwater")
-                         };
-            me.PostLoad();
-            SolidBioDatabase.allBios.Add(me);
-            BackstoryDatabase.AddBackstory(childMe);
-
-            BackstoryDatabase.AddBackstory(adultMale);
+        ///    Backstory childMe = new Backstory
+        ///                        {
+        ///                        bodyTypeMale   = BodyTypeDefOf.Male,
+        ///                        bodyTypeFemale = BodyTypeDefOf.Female,
+        ///                        slot           = BackstorySlot.Childhood,
+        ///                        baseDesc =
+        ///                        "NAME never believed what was common sense and always doubted other people. HECAP later went on inflating toads with HIS sushi stick. It was there HE earned HIS nickname.",
+        ///                        requiredWorkTags = WorkTags.Violent,
+        ///                        shuffleable      = false
+        ///                        };
+        ///    childMe.SetTitle("Lost child");
+        ///    childMe.SetTitleShort("Seeker");
+        ///    childMe.skillGainsResolved.Add("Shooting", 4);
+        ///    childMe.skillGainsResolved.Add("Social",   1);
+        ///    childMe.skillGainsResolved.Add("Medicine", 2);
+        ///    childMe.PostLoad();
+        ///    childMe.ResolveReferences();
+        ///
+        ///    Backstory adultMale = new Backstory
+        ///                          {
+        ///                          bodyTypeMale   = BodyTypeDefOf.Male,
+        ///                          bodyTypeFemale = BodyTypeDefOf.Female,
+        ///                          slot           = BackstorySlot.Adulthood,
+        ///                          baseDesc =
+        ///                          "HECAP tells no one about his past. HECAP doesn't like doctors, thus HECAP prefers to tend his wounds himself.",
+        ///                          shuffleable     = false,
+        ///                          spawnCategories = new List<string>()
+        ///                          };
+        ///    adultMale.spawnCategories.AddRange(new[] {"Civil", "Raider", "Slave", "Trader", "Traveler"});
+        ///    adultMale.SetTitle("Lone gunman");
+        ///    adultMale.SetTitleShort("Gunman");
+        ///    adultMale.skillGains.Add("Shooting", 4);
+        ///    adultMale.skillGains.Add("Medicine", 3);
+        ///    adultMale.skillGains.Add("Cooking",  2);
+        ///    adultMale.skillGains.Add("Social",   1);
+        ///    adultMale.PostLoad();
+        ///    adultMale.ResolveReferences();
+        ///
+        ///    PawnBio me = new PawnBio
+        ///                 {
+        ///                 childhood = childMe,
+        ///                 adulthood = adultMale,
+        ///                 gender    = GenderPossibility.Male,
+        ///                 name      = NameTriple.FromString("Gator 'Killface' Stinkwater")
+        ///                 };
+        ///    me.PostLoad();
+        ///    SolidBioDatabase.allBios.Add(me);
+        ///    BackstoryDatabase.AddBackstory(childMe);
+        ///
+        ///    BackstoryDatabase.AddBackstory(adultMale);
         }
 
         #endregion Private Methods
