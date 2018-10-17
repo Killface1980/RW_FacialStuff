@@ -12,7 +12,7 @@ namespace FacialStuff.GraphicsFS
 {
     public class PawnFaceGraphic
     {
-        const string STR_Front      = "_front";
+        const string STR_Front      = "_south";
         const string STR_ROMV_Fangs = "ROMV_Fangs";
 
         public Graphic BrowGraphic;

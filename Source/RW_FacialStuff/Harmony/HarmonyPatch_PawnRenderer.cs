@@ -32,7 +32,7 @@ namespace FacialStuff.Harmony
         "RenderPawnInternal",
         new[]
         {
-            typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode),
+            typeof(Vector3), typeof(float), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode),
             typeof(bool), typeof(bool)
         })]
     [HarmonyBefore("com.showhair.rimworld.mod")]
@@ -167,7 +167,7 @@ namespace FacialStuff.Harmony
 
         public static bool Prefix(PawnRenderer __instance,
                                   ref Vector3 rootLoc,
-                                  Quaternion quat,
+                                  float angle,
                                   bool renderBody,
                                   Rot4 bodyFacing,
                                   Rot4 headFacing,
@@ -237,7 +237,7 @@ namespace FacialStuff.Harmony
             // Let's save the basic location for later
             Vector3 footPos = baseDrawLoc;
 
-
+            Quaternion quat = Quaternion.AngleAxis(angle, Vector3.up);
 
             // No face => must be animal, simplify it
             Quaternion bodyQuat = quat;

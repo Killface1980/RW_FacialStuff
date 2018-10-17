@@ -343,7 +343,7 @@ namespace FacialStuff
             // return log;
             //  return MoveState.ToString() + " - " + MovedPercent;
 
-            return  lastAimAngle.ToString() ;
+            return  LastAimAngle.ToString() ;
 
             return base.CompInspectStringExtra();
         }

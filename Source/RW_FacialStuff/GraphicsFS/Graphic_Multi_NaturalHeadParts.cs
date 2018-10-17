@@ -35,42 +35,42 @@ namespace FacialStuff.GraphicsFS
             this.drawSize = req.drawSize;
             Texture2D[] array = new Texture2D[3];
 
-            if (ContentFinder<Texture2D>.Get(req.path + "_front", false))
+            if (ContentFinder<Texture2D>.Get(req.path + "_south", false))
             {
-                array[2] = ContentFinder<Texture2D>.Get(req.path + "_front");
+                array[2] = ContentFinder<Texture2D>.Get(req.path + "_south");
             }
             else
             {
                 Log.Message(
-                    "Facial Stuff: Failed to get front texture at " + req.path + "_front"
+                    "Facial Stuff: Failed to get front texture at " + req.path + "_south"
                     + " - Graphic_Multi_NaturalHeadParts");
                 return;
             }
             
-            // array[2] = LoadTexture(req.path + "_front");
+            // array[2] = LoadTexture(req.path + "_south");
             // if (array[2] == null)
             // {
             // Log.Error("FacialStuff: Failed to find any texture while constructing " + ToString());
             // return;
             // }
-            if (ContentFinder<Texture2D>.Get(req.path + "_side", false))
+            if (ContentFinder<Texture2D>.Get(req.path + "_east", false))
             {
-                array[1] = ContentFinder<Texture2D>.Get(req.path + "_side");
+                array[1] = ContentFinder<Texture2D>.Get(req.path + "_east");
             }
 
             // if (array[1] == null)
             // {
-            // array[1] = LoadTexture(req.path + "_side");
+            // array[1] = LoadTexture(req.path + "_east");
 
             // }
 
-            // if (File.Exists(GraphicDatabaseHeadRecordsModded.modpath + req.path + "_back.png"))
-            // array[0] = LoadTexture(req.path + "_back");
+            // if (File.Exists(GraphicDatabaseHeadRecordsModded.modpath + req.path + "_north.png"))
+            // array[0] = LoadTexture(req.path + "_north");
             // else
             // array[0] = BlankTexture();
-            if (ContentFinder<Texture2D>.Get(req.path + "_back", false))
+            if (ContentFinder<Texture2D>.Get(req.path + "_north", false))
             {
-                array[0] = ContentFinder<Texture2D>.Get(req.path + "_back");
+                array[0] = ContentFinder<Texture2D>.Get(req.path + "_north");
             }
             else
             {
@@ -87,15 +87,15 @@ namespace FacialStuff.GraphicsFS
             // Texture2D[] array2 = new Texture2D[3];
             // if (req.shader.SupportsMaskTex())
             // {
-            // array2[0] = LoadTexture(req.path + "_backm");
+            // array2[0] = LoadTexture(req.path + "_northm");
             // if (array2[0] != null)
             // {
-            // array2[1] = LoadTexture(req.path + "_sidem");
+            // array2[1] = LoadTexture(req.path + "_eastm");
             // if (array2[1] == null)
             // {
             // array2[1] = array2[0];
             // }
-            // array2[2] = LoadTexture(req.path + "_frontm");
+            // array2[2] = LoadTexture(req.path + "_southm");
             // if (array2[2] == null)
             // {
             // array2[2] = array2[0];
@@ -107,15 +107,15 @@ namespace FacialStuff.GraphicsFS
             Texture2D[] array2 = new Texture2D[3];
             if (req.shader.SupportsMaskTex())
             {
-                array2[0] = ContentFinder<Texture2D>.Get(req.path + "_backm", false);
+                array2[0] = ContentFinder<Texture2D>.Get(req.path + "_northm", false);
                 if (array2[0] != null)
                 {
-                    array2[1] = ContentFinder<Texture2D>.Get(req.path + "_sidem", false);
+                    array2[1] = ContentFinder<Texture2D>.Get(req.path + "_eastm", false);
                     if (array2[1] == null)
                     {
                         array2[1] = array2[0];
                     }
-                    array2[2] = ContentFinder<Texture2D>.Get(req.path + "_frontm", false);
+                    array2[2] = ContentFinder<Texture2D>.Get(req.path + "_southm", false);
                     if (array2[2] == null)
                     {
                         array2[2] = array2[0];

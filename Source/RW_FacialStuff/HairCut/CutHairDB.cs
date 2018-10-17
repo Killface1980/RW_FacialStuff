@@ -107,13 +107,13 @@ namespace FacialStuff.HairCut
             graphic = Activator.CreateInstance<T>();
 
             // // Check if textures already present and readable, else create
-            if (ContentFinder<Texture2D>.Get(req.path + "_back", false) != null)
+            if (ContentFinder<Texture2D>.Get(req.path + "_north", false) != null)
             {
                 graphic.Init(req);
 
-                // graphic.MatSouth.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_front");
-                // graphic.MatEast.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_side");
-                // graphic.MatNorth.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_back");
+                // graphic.MatSouth.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_south");
+                // graphic.MatEast.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_east");
+                // graphic.MatNorth.mainTexture = ContentFinder<Texture2D>.Get(newPath + "_north");
             }
             else
             {
@@ -155,14 +155,14 @@ namespace FacialStuff.HairCut
 
                 req.path = newPath;
 
-                // if (!name.NullOrEmpty() && !File.Exists(req.path + "_front.png"))
+                // if (!name.NullOrEmpty() && !File.Exists(req.path + "_south.png"))
                 // {
                 // byte[] bytes = temptexturefront.EncodeToPNG();
-                // File.WriteAllBytes(req.path + "_front.png", bytes);
+                // File.WriteAllBytes(req.path + "_south.png", bytes);
                 // byte[] bytes2 = temptextureside.EncodeToPNG();
-                // File.WriteAllBytes(req.path + "_side.png", bytes2);
+                // File.WriteAllBytes(req.path + "_east.png", bytes2);
                 // byte[] bytes3 = temptextureback.EncodeToPNG();
-                // File.WriteAllBytes(req.path + "_back.png", bytes3);
+                // File.WriteAllBytes(req.path + "_north.png", bytes3);
                 // }
                 temptexturefront.Compress(true);
                 temptextureside.Compress(true);
@@ -200,7 +200,7 @@ namespace FacialStuff.HairCut
             string name)
         {
             string path = MergedHairPath + name;
-            if (!name.NullOrEmpty() && !File.Exists(path + "_Upperhead_front.png"))
+            if (!name.NullOrEmpty() && !File.Exists(path + "_Upperhead_south.png"))
             {
                 LongEventHandler.ExecuteWhenFinished(
                     delegate
@@ -253,13 +253,13 @@ namespace FacialStuff.HairCut
 
 
             byte[] bytes = temptexturefront.EncodeToPNG();
-            File.WriteAllBytes(exportPath + "_front.png", bytes);
+            File.WriteAllBytes(exportPath + "_south.png", bytes);
             byte[] bytes2 = temptextureside.EncodeToPNG();
-            File.WriteAllBytes(exportPath + "_side.png", bytes2);
+            File.WriteAllBytes(exportPath + "_east.png", bytes2);
             byte[] bytes3 = temptextureback.EncodeToPNG();
-            File.WriteAllBytes(exportPath + "_back.png", bytes3);
+            File.WriteAllBytes(exportPath + "_north.png", bytes3);
             byte[] bytes4 = temptextureside2.EncodeToPNG();
-            File.WriteAllBytes(exportPath + "_side2.png", bytes2);
+            File.WriteAllBytes(exportPath + "_east2.png", bytes2);
         }
     }
 }

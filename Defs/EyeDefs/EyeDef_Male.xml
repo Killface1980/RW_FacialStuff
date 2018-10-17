@@ -7,7 +7,7 @@
     <hairGender>Male</hairGender>
     <forbiddenOnRace/>
     <texBasePath></texBasePath> <!-- empty for default path "Things/Pawn/Humanlike/Eyes/"-->
-    <texName>FL</texName> <!-- The eye name. File name of the textures is always "Eye_<texName>_<pawnGender_Left/Right_side"  -->
+    <texName>FL</texName> <!-- The eye name. File name of the textures is always "Eye_<texName>_<pawnGender_Left/Right_east"  -->
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>

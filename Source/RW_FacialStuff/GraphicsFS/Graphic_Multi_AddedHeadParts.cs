@@ -51,28 +51,28 @@ namespace FacialStuff.GraphicsFS
                 Log.Error("Parse error with head graphic at " + req.path + ": " + ex.Message);
             }
 
-            if (ContentFinder<Texture2D>.Get(req.path + "_front", false))
+            if (ContentFinder<Texture2D>.Get(req.path + "_south", false))
             {
-                array[2] = ContentFinder<Texture2D>.Get(req.path + "_front");
+                array[2] = ContentFinder<Texture2D>.Get(req.path + "_south");
             }
             else
             {
                 Log.Message(
-                    "Facial Stuff: Failed to get front texture at " + req.path + "_front"
+                    "Facial Stuff: Failed to get front texture at " + req.path + "_south"
                     + " - Graphic_Multi_AddedHeadParts");
                 return;
 
                 // array[2] = MaskTextures.BlankTexture();
             }
 
-            Texture2D sideTex = ContentFinder<Texture2D>.Get(part +"_"+ addedpartName + "_" + crowntype + "_side", false);
-            Texture2D side2Tex = ContentFinder<Texture2D>.Get(part + "_"+addedpartName + "_" + crowntype + "_side2", false);
-            Texture2D backTex = ContentFinder<Texture2D>.Get(req.path + "_back", false);
+            Texture2D sideTex = ContentFinder<Texture2D>.Get(part +"_"+ addedpartName + "_" + crowntype + "_east", false);
+            Texture2D side2Tex = ContentFinder<Texture2D>.Get(part + "_"+addedpartName + "_" + crowntype + "_east2", false);
+            Texture2D backTex = ContentFinder<Texture2D>.Get(req.path + "_north", false);
 
             if (sideTex.NullOrBad())
             {
                 Log.Message(
-                    "Facial Stuff: No texture found at " +part +"_"+ addedpartName + "_" + crowntype + "_side"
+                    "Facial Stuff: No texture found at " +part +"_"+ addedpartName + "_" + crowntype + "_east"
                     + " - Graphic_Multi_AddedHeadParts. This message is just a note, no error.");
                 array[3] = FaceTextures.BlankTexture;
             }
