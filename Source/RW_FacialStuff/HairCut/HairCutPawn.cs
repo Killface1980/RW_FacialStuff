@@ -16,7 +16,10 @@ namespace FacialStuff.HairCut
         {
             if (this.HairCutGraphic == null)
             {
+#if !DEBUG
                 HarmonyPatchesFS.ResolveApparelGraphics_Postfix(this.Pawn.Drawer.renderer.graphics);
+
+#endif
             }
 
             Material material = this.HairCutGraphic?.MatAt(facing);

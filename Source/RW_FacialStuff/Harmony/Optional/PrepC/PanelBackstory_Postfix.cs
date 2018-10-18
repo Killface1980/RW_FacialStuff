@@ -33,7 +33,9 @@ namespace FacialStuff.Harmony.Optional.PrepC
             if (Widgets.ButtonInvisible(rect))
             {
                 SoundDefOf.Tick_Low.PlayOneShotOnCamera();
+#if !DEBUG
                 HarmonyPatchesFS.OpenStylingWindow(pawn);
+#endif
             }
         }
     }

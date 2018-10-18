@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using FacialStuff.AnimatorWindows;
+#if !DEBUG
 using Harmony;
+#endif
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -10,7 +12,9 @@ using static FacialStuff.Offsets;
 
 namespace FacialStuff.Harmony
 {
-	[HarmonyPatch(typeof(Pawn_DrawTracker))]
+#if !DEBUG
+
+    [HarmonyPatch(typeof(Pawn_DrawTracker))]
 	[HarmonyPatch("DrawPos", PropertyMethod.Getter)]
 	public static class DrawPos_Patch
     {
@@ -27,12 +31,15 @@ namespace FacialStuff.Harmony
     }
 
     // ReSharper disable once InconsistentNaming
+    // private void RenderPawnInternal(Vector3 rootLoc, float angle, bool renderBody, Rot4 bodyFacing, Rot4 headFacing, 
+    // RotDrawMode bodyDrawType, bool portrait, bool headStump)
+
     [HarmonyPatch(
         typeof(PawnRenderer),
         "RenderPawnInternal",
         new[]
         {
-            typeof(Vector3), typeof(Quaternion), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode),
+            typeof(Vector3), typeof(float), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode),
             typeof(bool), typeof(bool)
         })]
     [HarmonyBefore("com.showhair.rimworld.mod")]
@@ -54,7 +61,9 @@ namespace FacialStuff.Harmony
                                                                                      "woundOverlays",
                                                                                      BindingFlags.NonPublic | BindingFlags.Instance);
 
+/*
         private static bool _logY = false;
+*/
         private static readonly FieldInfo PawnHeadOverlaysFieldInfo = _pawnRendererType.GetField(
                                                                                         "statusOverlays",
                                                                                         BindingFlags.NonPublic | BindingFlags.Instance);
@@ -167,7 +176,7 @@ namespace FacialStuff.Harmony
 
         public static bool Prefix(PawnRenderer __instance,
                                   ref Vector3 rootLoc,
-                                  Quaternion quat,
+                                  float angle,
                                   bool renderBody,
                                   Rot4 bodyFacing,
                                   Rot4 headFacing,
@@ -240,6 +249,7 @@ namespace FacialStuff.Harmony
 
 
             // No face => must be animal, simplify it
+            Quaternion quat = Quaternion.AngleAxis(angle, Vector3.up);
             Quaternion bodyQuat = quat;
             Quaternion footQuat = bodyQuat;
 
@@ -649,4 +659,6 @@ namespace FacialStuff.Harmony
         }
     }
     */
+
+#endif
 }

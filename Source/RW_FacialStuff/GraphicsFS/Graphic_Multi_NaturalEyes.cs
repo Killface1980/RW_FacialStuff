@@ -43,21 +43,21 @@ namespace FacialStuff.GraphicsFS
                 Log.Error("Parse error with head graphic at " + req.path + ": " + ex.Message);
             }
 
-            if (ContentFinder<Texture2D>.Get(req.path + "_front"))
+            if (ContentFinder<Texture2D>.Get(req.path + "_south"))
             {
-                array[2] = ContentFinder<Texture2D>.Get(req.path + "_front");
+                array[2] = ContentFinder<Texture2D>.Get(req.path + "_south");
             }
             else
             {
                 Log.Message(
-                            "Facial Stuff: Failed to get front texture at " + req.path + "_front"
+                            "Facial Stuff: Failed to get front texture at " + req.path + "_south"
                           + " - Graphic_Multi_NaturalEyes");
                 return;
 
                 // array[2] = MaskTextures.BlankTexture();
             }
 
-            string sidePath = Path.GetDirectoryName(req.path) + "/Eye_" + eyeType + "_" + gender + "_side";
+            string sidePath = Path.GetDirectoryName(req.path) + "/Eye_" + eyeType + "_" + gender + "_east";
 
             // 1 texture= 1 eye, blank for the opposite side
             if (ContentFinder<Texture2D>.Get(sidePath))
@@ -87,9 +87,9 @@ namespace FacialStuff.GraphicsFS
                 array[3] = FaceTextures.BlankTexture;
             }
 
-            if (ContentFinder<Texture2D>.Get(req.path + "_back", false))
+            if (ContentFinder<Texture2D>.Get(req.path + "_north", false))
             {
-                array[0] = ContentFinder<Texture2D>.Get(req.path + "_back");
+                array[0] = ContentFinder<Texture2D>.Get(req.path + "_north");
             }
             else
             {
@@ -100,13 +100,13 @@ namespace FacialStuff.GraphicsFS
             if (req.shader.SupportsMaskTex())
             {
                 array2[0] = FaceTextures.RedTexture;
-                array2[2] = ContentFinder<Texture2D>.Get(req.path + "_frontm", false);
+                array2[2] = ContentFinder<Texture2D>.Get(req.path + "_southm", false);
                 if (array2[2] == null)
                 {
                     array2[2] = FaceTextures.RedTexture;
                 }
 
-                string sidePath2 = Path.GetDirectoryName(req.path) + "/Eye_" + eyeType + "_" + gender + "_sidem";
+                string sidePath2 = Path.GetDirectoryName(req.path) + "/Eye_" + eyeType + "_" + gender + "_eastm";
 
                 // 1 texture= 1 eye, blank for the opposite side
 

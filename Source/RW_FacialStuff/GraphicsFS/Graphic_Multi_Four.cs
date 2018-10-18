@@ -44,23 +44,23 @@ namespace Verse
             this.colorTwo = req.colorTwo;
             this.drawSize = req.drawSize;
             Texture2D[] array = new Texture2D[4];
-            array[0] = ContentFinder<Texture2D>.Get(req.path + "_back", false);
+            array[0] = ContentFinder<Texture2D>.Get(req.path + "_north", false);
             if (array[0] == null)
             {
                 Log.Error("Failed to find any texture while constructing " + this);
                 return;
             }
-            array[1] = ContentFinder<Texture2D>.Get(req.path + "_side", false);
+            array[1] = ContentFinder<Texture2D>.Get(req.path + "_east", false);
             if (array[1] == null)
             {
                 array[1] = array[0];
             }
-            array[2] = ContentFinder<Texture2D>.Get(req.path + "_front", false);
+            array[2] = ContentFinder<Texture2D>.Get(req.path + "_south", false);
             if (array[2] == null)
             {
                 array[2] = array[0];
             }
-            array[3] = ContentFinder<Texture2D>.Get(req.path + "_side2", false);
+            array[3] = ContentFinder<Texture2D>.Get(req.path + "_west", false);
             if (array[3] == null)
             {
                 array[3] = array[1];
@@ -69,22 +69,22 @@ namespace Verse
             Texture2D[] array2 = new Texture2D[4];
             if (req.shader.SupportsMaskTex())
             {
-                array2[0] = ContentFinder<Texture2D>.Get(req.path + "_backm", false);
+                array2[0] = ContentFinder<Texture2D>.Get(req.path + "_northm", false);
                 if (array2[0] == null)
                 {
                     array2[0] = FaceTextures.RedTexture;
                 }
-                array2[1] = ContentFinder<Texture2D>.Get(req.path + "_sidem", false);
+                array2[1] = ContentFinder<Texture2D>.Get(req.path + "_eastm", false);
                 if (array2[1] == null)
                 {
                     array2[1] = FaceTextures.RedTexture;
                 }
-                array2[2] = ContentFinder<Texture2D>.Get(req.path + "_frontm", false);
+                array2[2] = ContentFinder<Texture2D>.Get(req.path + "_southm", false);
                 if (array2[2] == null)
                 {
                     array2[2] = FaceTextures.RedTexture;
                 }
-                array2[3] = ContentFinder<Texture2D>.Get(req.path + "_side2m", false);
+                array2[3] = ContentFinder<Texture2D>.Get(req.path + "_westm", false);
                 if (array2[3] == null)
                 {
                     array2[3] = FaceTextures.RedTexture;

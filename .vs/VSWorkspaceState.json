@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Source",
+    "\\Source\\RW_FacialStuff",
+    "\\Source\\RW_FacialStuff\\HairCut"
   ],
+  "SelectedNode": "\\Source\\RW_FacialStuff\\HairCut\\HairCutPawn.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -12,7 +12,7 @@ namespace FacialStuff.GraphicsFS
 {
     public class PawnFaceGraphic
     {
-        const string STR_Front      = "_front";
+        const string STR_south      = "_south";
         const string STR_ROMV_Fangs = "ROMV_Fangs";
 
         public Graphic BrowGraphic;
@@ -242,13 +242,13 @@ namespace FacialStuff.GraphicsFS
 
         public bool EyePatchRightTexExists()
         {
-            return !ContentFinder<Texture2D>.Get(this._compFace.TexPathEyeRightPatch + STR_Front, false)
+            return !ContentFinder<Texture2D>.Get(this._compFace.TexPathEyeRightPatch + STR_south, false)
                                             .NullOrBad();
         }
 
         public bool EyePatchLeftTexExists()
         {
-            return !ContentFinder<Texture2D>.Get(this._compFace.TexPathEyeLeftPatch + STR_Front, false)
+            return !ContentFinder<Texture2D>.Get(this._compFace.TexPathEyeLeftPatch + STR_south, false)
                                             .NullOrBad();
         }
 
@@ -289,7 +289,7 @@ namespace FacialStuff.GraphicsFS
         {
             if (!this._compFace.TexPathJawAddedPart.NullOrEmpty())
             {
-                bool flag = ContentFinder<Texture2D>.Get(this._compFace.TexPathJawAddedPart + STR_Front, false) != null;
+                bool flag = ContentFinder<Texture2D>.Get(this._compFace.TexPathJawAddedPart + STR_south, false) != null;
                 if (flag)
                 {
                     this.JawGraphic =

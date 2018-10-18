@@ -335,7 +335,6 @@ namespace FacialStuff
             return this._cachedNakedMatsBodyBase;
         }
 
-#if develop
         public override string CompInspectStringExtra()
         {
             // var tween = Vector3Tweens[(int)TweenThing.Equipment];
@@ -343,11 +342,10 @@ namespace FacialStuff
             // return log;
             //  return MoveState.ToString() + " - " + MovedPercent;
 
-            return  lastAimAngle.ToString() ;
+          //  return  lastAimAngle.ToString() ;
 
             return base.CompInspectStringExtra();
         }
-#endif
 
         public override void PostDraw()
         {
@@ -373,7 +371,12 @@ namespace FacialStuff
             }
 
             // Tweener
+#if !DEBUG
             Vector3Tween eqTween = this.Vector3Tweens[(int)HarmonyPatchesFS.equipment];
+#else
+            Vector3Tween eqTween = new Vector3Tween();
+
+#endif
             FloatTween angleTween = this.AimAngleTween;
             Vector3Tween leftHand = this.Vector3Tweens[(int)TweenThing.HandLeft];
             Vector3Tween rightHand = this.Vector3Tweens[(int)TweenThing.HandRight];
@@ -506,7 +509,7 @@ namespace FacialStuff
             return this._cachedSkinMatsBodyBase;
         }
 
-        #endregion Public Methods
+#endregion Public Methods
 
         public float MovedPercent => this._movedPercent;
         public float BodyAngle;

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FacialStuff</RootNamespace>
     <AssemblyName>FacialStuff</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -18,7 +18,7 @@
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Assemblies\</OutputPath>
-    <DefineConstants>develop</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
@@ -36,60 +36,31 @@
     <Prefer32Bit>false</Prefer32Bit>
     <CodeAnalysisRuleSet>FacialStuff.ruleset</CodeAnalysisRuleSet>
     <LangVersion>latest</LangVersion>
+    <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\818773962\Assemblies\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="AbilityUser">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\AbilityUser.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Assemblies\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="CompActivatableEffect">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\CompActivatableEffect.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="EdBPrepareCarefully">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\735106432\Assemblies\EdBPrepareCarefully.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ProjectJedi">
-      <HintPath>..\..\..\Star-Wars---The-Force\Assemblies\ProjectJedi.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="UnityEngine">
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Vampire">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\1187010034\Assemblies\Vampire.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Werewolf">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\1115882219\Assemblies\Werewolf.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\JobDriver_Possess.cs" />
     <Compile Include="AI\JobGiver_Possess.cs" />
     <Compile Include="AI\MentalStateWorker_Possessed.cs" />
     <Compile Include="AI\MentalState_Possessed.cs" />
-    <None Include="packages.config" />
     <None Include="WidgetsFS.cs" />
-    <None Include="Harmony\Optional\AlienPatches.cs" />
-    <None Include="Harmony\Optional\Harmony_Alien.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
     <None Include="Components\CompHumanFace.cs" />
     <None Include="Controller_Animator.cs" />
@@ -98,6 +69,20 @@
     <Compile Include="Enums\HeadCoverage.cs" />
     <None Include="GraphicsFS\MeshMakerPlanesFS.cs" />
     <Compile Include="GraphicsFS\Graphic_Multi_Four.cs" />
+    <Compile Include="Harmony\HarmonyPatchesFS.cs" />
+    <Compile Include="Harmony\HarmonyPatch_PawnRenderer.cs" />
+    <None Include="Harmony\Optional\Harmony_EdBPrepareCarefully.cs" />
+    <None Include="Harmony\Optional\Harmony_Vampire.cs" />
+    <None Include="Harmony\Optional\Harmony_Werewolf.cs" />
+    <None Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
+    <None Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
+    <None Include="Harmony\Optional\PrepC\PanelBackstory_Postfix.cs" />
+    <None Include="Harmony\Optional\PrepC\PresetLoader_Postfix.cs" />
+    <None Include="Harmony\Optional\PrepC\PresetSaver_Postfix.cs" />
+    <None Include="Harmony\Optional\PrepC\SaveRecordFaceV3.cs" />
+    <None Include="Harmony\Optional\PrepC\SaveRecordPawnV3_Postfix.cs" />
+    <None Include="Harmony\Optional\Vampire_Patches.cs" />
+    <None Include="Harmony\Optional\Werewolf_Patches.cs" />
     <Compile Include="Tweener\TinyTween.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />
@@ -114,8 +99,6 @@
     <Compile Include="FaceEditor\Dialog_FaceStyling.FilterTab.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.GenderTab.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.SpecialTab.cs" />
-    <None Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
-    <None Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_BaseAnimator.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_PoseAnimator.cs" />
     <None Include="Animator\PawnPartsTweener.cs" />
@@ -145,8 +128,6 @@
     <Compile Include="FaceEditor\UI\Util\SelectionChangeListener.cs" />
     <Compile Include="FaceEditor\UI\Util\UpdatePawnListener.cs" />
     <Compile Include="Components\GameComponent_FacialStuff.cs" />
-    <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
-    <Compile Include="Harmony\Optional\Vampire_Patches.cs" />
     <Compile Include="Drawer\HumanHeadDrawer.cs" />
     <Compile Include="ITab_Pawn_Weapons.cs" />
     <Compile Include="Utilities\CrownTypeChecker.cs" />
@@ -183,14 +164,6 @@
     <Compile Include="FaceEditor\UI\Util\WidgetUtil.cs" />
     <Compile Include="Genetics\HairColorRequest.cs" />
     <Compile Include="Genetics\HairDNA.cs" />
-    <Compile Include="Harmony\Optional\Harmony_EdBPrepareCarefully.cs" />
-    <Compile Include="Harmony\Optional\Harmony_Werewolf.cs" />
-    <Compile Include="Harmony\Optional\PrepC\PanelBackstory_Postfix.cs" />
-    <Compile Include="Harmony\Optional\PrepC\PresetSaver_Postfix.cs" />
-    <Compile Include="Harmony\Optional\PrepC\PresetLoader_Postfix.cs" />
-    <Compile Include="Harmony\Optional\PrepC\SaveRecordFaceV3.cs" />
-    <Compile Include="Harmony\Optional\PrepC\SaveRecordPawnV3_Postfix.cs" />
-    <Compile Include="Harmony\Optional\Werewolf_Patches.cs" />
     <Compile Include="GraphicsFS\HumanMouthGraphics.cs" />
     <Compile Include="PawnFace.cs" />
     <Compile Include="Settings.cs" />
@@ -206,7 +179,6 @@
     <Compile Include="GraphicsFS\Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="GraphicsFS\Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="GraphicsFS\MeshPoolFs.cs" />
-    <Compile Include="Harmony\HarmonyPatch_PawnRenderer.cs" />
     <Compile Include="Components\CompFace.cs" />
     <Compile Include="FaceEditor\ColorPicker\ColorWrapper.cs" />
     <Compile Include="FaceEditor\ColorPicker\Dialog_ColorPicker.cs" />
@@ -220,7 +192,6 @@
     <Compile Include="Controller.cs" />
     <Compile Include="Genetics\PawnSkinColors_FS.cs" />
     <Compile Include="Utilities\PawnFaceMaker.cs" />
-    <Compile Include="Harmony\HarmonyPatchesFS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -373,10 +344,6 @@
     <Content Include="..\..\Patches\HumanPatchHSK.xml">
       <Link>Patches\HumanPatchHSK.xml</Link>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\ResharperCodeContractNullability.1.0.8\analyzers\dotnet\cs\CodeContractNullability.dll" />
-    <Analyzer Include="..\packages\ResharperCodeContractNullability.1.0.8\analyzers\dotnet\cs\MsgPack.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

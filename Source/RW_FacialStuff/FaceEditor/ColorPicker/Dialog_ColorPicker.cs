@@ -10,6 +10,8 @@ namespace FacialStuff.FaceEditor.ColorPicker
 
     public class Dialog_ColorPicker : Window
     {
+        #region Public Fields
+
         public int alphaBGBlockSize = 10;
 
         // the color we're going to pass out if requested
@@ -32,6 +34,10 @@ namespace FacialStuff.FaceEditor.ColorPicker
         public Color tempColor = Color.white;
 
         public Vector2 windowSize = Vector2.zero;
+
+        #endregion Public Fields
+
+        #region Private Fields
 
         private readonly bool _autoApply;
 
@@ -73,6 +79,10 @@ namespace FacialStuff.FaceEditor.ColorPicker
 
         private float _V = 1f;
 
+        #endregion Private Fields
+
+        #region Public Constructors
+
         /// <summary>
         ///     Call with a ColorWrapper object containing the color to be changed, with an optional callback which is called when
         ///     Apply or OK are clicked.
@@ -98,6 +108,10 @@ namespace FacialStuff.FaceEditor.ColorPicker
             this.Notify_RGBUpdated();
         }
 
+        #endregion Public Constructors
+
+        #region Private Enums
+
         private enum Controls
         {
             colorPicker,
@@ -108,6 +122,10 @@ namespace FacialStuff.FaceEditor.ColorPicker
 
             none
         }
+
+        #endregion Private Enums
+
+        #region Public Properties
 
         public float A
         {
@@ -230,6 +248,10 @@ namespace FacialStuff.FaceEditor.ColorPicker
                 this.SetWindowSize(this.windowSize);
             }
         }
+
+        #endregion Public Properties
+
+        #region Public Methods
 
         public void Apply()
         {
@@ -545,6 +567,10 @@ namespace FacialStuff.FaceEditor.ColorPicker
             this.windowRect.height = size.y;
         }
 
+        #endregion Public Methods
+
+        #region Private Methods
+
         private void CreateColorPickerBG()
         {
             if (this._colorPickerBG == null)
@@ -590,5 +616,7 @@ namespace FacialStuff.FaceEditor.ColorPicker
 
             this._huePickerBG.Apply();
         }
+
+        #endregion Private Methods
     }
 }

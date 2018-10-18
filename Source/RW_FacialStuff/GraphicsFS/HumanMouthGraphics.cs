@@ -1,5 +1,7 @@
 ﻿using FacialStuff.DefOfs;
+#if !DEBUG
 using Harmony;
+#endif
 using JetBrains.Annotations;
 using UnityEngine;
 using Verse;
@@ -93,7 +95,10 @@ namespace FacialStuff.GraphicsFS
                                              };
                 if (flag)
                 {
+#if !DEBUG
+
                     this.HumanMouthGraphic.Add(new MouthGraphicData(minor + 4 * part, mouthGraphicGrin));
+#endif
                 }
             }
             else
@@ -109,7 +114,10 @@ namespace FacialStuff.GraphicsFS
                                              };
                 if (flag)
                 {
+#if !DEBUG
+
                     this.HumanMouthGraphic.Add(new MouthGraphicData(0.95f, mouthGraphicGrin));
+#endif
                 }
             }
         }
@@ -132,15 +140,15 @@ namespace FacialStuff.GraphicsFS
 
         public struct MouthGraphicData
         {
-            #region Public Fields
+#region Public Fields
 
             public readonly Graphic_Multi_NaturalHeadParts Graphic;
 
             public readonly float Mood;
 
-            #endregion Public Fields
+#endregion Public Fields
 
-            #region Public Constructors
+#region Public Constructors
 
             public MouthGraphicData(float mood, Graphic_Multi_NaturalHeadParts graphic)
             {
@@ -148,7 +156,7 @@ namespace FacialStuff.GraphicsFS
                 this.Graphic = graphic;
             }
 
-            #endregion Public Constructors
+#endregion Public Constructors
         }
     }
 }
