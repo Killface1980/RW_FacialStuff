@@ -44,7 +44,7 @@
           <li Class ="FacialStuff.QuadrupedDrawer"/>
         </bodyDrawers>
         <thingTargets>
-          <li>Mechanoid_Centipede</li>
+          <li>Mech_Centipede</li>
         </thingTargets>
       </li>
       <li>
@@ -54,7 +54,17 @@
           <li Class="FacialStuff.HumanBipedDrawer" />
         </bodyDrawers>
         <thingTargets>
-          <li>Mechanoid_Scyther</li>
+          <li>Mech_Scyther</li>
+        </thingTargets>
+      </li>
+      <li>
+        <handType>Scyther</handType>
+        <bipedWithHands>true</bipedWithHands>
+        <bodyDrawers>
+          <li Class="FacialStuff.HumanBipedDrawer" />
+        </bodyDrawers>
+        <thingTargets>
+          <li>Mech_Lancer</li>
         </thingTargets>
       </li>
 
