@@ -43,15 +43,36 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Assemblies\0Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="AbilityUser">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\AbilityUser.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CompActivatableEffect">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\CompActivatableEffect.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="EdBPrepareCarefully">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\735106432\Assemblies\EdBPrepareCarefully.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.XML" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Vampire">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\1187010034\Assemblies\Vampire.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Werewolf">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\1115882219\Assemblies\Werewolf.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -68,21 +89,21 @@
     <Compile Include="DefOfs\EyeDefOf.cs" />
     <Compile Include="Enums\HeadCoverage.cs" />
     <None Include="GraphicsFS\MeshMakerPlanesFS.cs" />
-    <Compile Include="GraphicsFS\Graphic_Multi_Four.cs" />
+    <None Include="GraphicsFS\Graphic_Multi_Four.cs" />
     <Compile Include="Harmony\HarmonyPatchesFS.cs" />
     <Compile Include="Harmony\HarmonyPatch_PawnRenderer.cs" />
-    <None Include="Harmony\Optional\Harmony_EdBPrepareCarefully.cs" />
-    <None Include="Harmony\Optional\Harmony_Vampire.cs" />
-    <None Include="Harmony\Optional\Harmony_Werewolf.cs" />
+    <Compile Include="Harmony\Optional\Harmony_EdBPrepareCarefully.cs" />
+    <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
+    <Compile Include="Harmony\Optional\Harmony_Werewolf.cs" />
     <None Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
     <None Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
-    <None Include="Harmony\Optional\PrepC\PanelBackstory_Postfix.cs" />
-    <None Include="Harmony\Optional\PrepC\PresetLoader_Postfix.cs" />
-    <None Include="Harmony\Optional\PrepC\PresetSaver_Postfix.cs" />
-    <None Include="Harmony\Optional\PrepC\SaveRecordFaceV3.cs" />
-    <None Include="Harmony\Optional\PrepC\SaveRecordPawnV3_Postfix.cs" />
-    <None Include="Harmony\Optional\Vampire_Patches.cs" />
-    <None Include="Harmony\Optional\Werewolf_Patches.cs" />
+    <Compile Include="Harmony\Optional\PrepC\PanelBackstory_Postfix.cs" />
+    <Compile Include="Harmony\Optional\PrepC\PresetLoader_Postfix.cs" />
+    <Compile Include="Harmony\Optional\PrepC\PresetSaver_Postfix.cs" />
+    <Compile Include="Harmony\Optional\PrepC\SaveRecordFaceV3.cs" />
+    <Compile Include="Harmony\Optional\PrepC\SaveRecordPawnV3_Postfix.cs" />
+    <Compile Include="Harmony\Optional\Vampire_Patches.cs" />
+    <Compile Include="Harmony\Optional\Werewolf_Patches.cs" />
     <Compile Include="Tweener\TinyTween.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />

@@ -12,7 +12,7 @@ namespace FacialStuff.GraphicsFS
     // class taken from vanilla, base is Graphic_Multi; needed for adding stuff AFTER game has loaded
     public class Graphic_Multi_NaturalHeadParts : Graphic_Multi
     {
-        private readonly Material[] _mats = new Material[3];
+        private readonly Material[] _mats = new Material[4];
 
         public string GraphicPath => this.path;
 
@@ -22,9 +22,10 @@ namespace FacialStuff.GraphicsFS
 
         public override Material MatEast => this._mats[1];
 
+        public override Material MatWest => this._mats[3];
+
         public override Material MatSingle => this._mats[2];
 
-        public override bool ShouldDrawRotated => this.MatEast == this.MatNorth;
 
         public override void Init(GraphicRequest req)
         {
@@ -33,7 +34,7 @@ namespace FacialStuff.GraphicsFS
             this.color = req.color;
             this.colorTwo = req.colorTwo;
             this.drawSize = req.drawSize;
-            Texture2D[] array = new Texture2D[3];
+            Texture2D[] array = new Texture2D[this._mats.Length];
 
             if (ContentFinder<Texture2D>.Get(req.path + "_south", false))
             {
@@ -56,6 +57,14 @@ namespace FacialStuff.GraphicsFS
             if (ContentFinder<Texture2D>.Get(req.path + "_east", false))
             {
                 array[1] = ContentFinder<Texture2D>.Get(req.path + "_east");
+            }
+            if (ContentFinder<Texture2D>.Get(req.path + "_west", false))
+            {
+                array[3] = ContentFinder<Texture2D>.Get(req.path + "_west");
+            }
+            else
+            {
+                array[3] = array[1];
             }
 
             // if (array[1] == null)
@@ -123,7 +132,7 @@ namespace FacialStuff.GraphicsFS
                 }
             }
             */
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 MaterialRequest req2 = default;
                 req2.mainTex = array[i];

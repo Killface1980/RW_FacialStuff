@@ -124,7 +124,7 @@ namespace FacialStuff.HairCut
                 Texture2D temptextureside = graphic.MatEast.mainTexture as Texture2D;
                 Texture2D temptextureback = graphic.MatNorth.mainTexture as Texture2D;
 
-                Texture2D temptextureside2 = (graphic as Graphic_Multi_Four)?.MatWest.mainTexture as Texture2D;
+                Texture2D temptextureside2 = (graphic as Graphic_Multi)?.MatWest.mainTexture as Texture2D;
 
                 temptexturefront = FaceTextures.MakeReadable(temptexturefront);
                 temptextureside = FaceTextures.MakeReadable(temptextureside);
@@ -182,7 +182,7 @@ namespace FacialStuff.HairCut
                 graphic.MatSouth.mainTexture = temptexturefront;
                 graphic.MatEast.mainTexture = temptextureside;
                 graphic.MatNorth.mainTexture = temptextureback;
-                ((Graphic_Multi_Four) graphic).MatWest.mainTexture = temptextureside2;
+                ((Graphic_Multi) graphic).MatWest.mainTexture = temptextureside2;
 
                 // Object.Destroy(temptexturefront);
                 // Object.Destroy(temptextureside);
@@ -205,7 +205,7 @@ namespace FacialStuff.HairCut
                 LongEventHandler.ExecuteWhenFinished(
                     delegate
                     {
-                        Graphic graphic = GraphicDatabase.Get<Graphic_Multi_Four>(hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
+                        Graphic graphic = GraphicDatabase.Get<Graphic_Multi>(hairDef.texPath, ShaderDatabase.Cutout, Vector2.one, Color.white);
 
                         SetTempTextures(graphic, out Texture2D temptexturefront, out Texture2D temptextureside, out Texture2D temptextureback, out Texture2D temptextureside2);
 
@@ -233,7 +233,7 @@ namespace FacialStuff.HairCut
             temptexturefront = graphic.MatSouth.mainTexture as Texture2D;
             temptextureside = graphic.MatEast.mainTexture as Texture2D;
             temptextureback = graphic.MatNorth.mainTexture as Texture2D;
-            temptextureside2 = (graphic as Graphic_Multi_Four)?.MatWest.mainTexture as Texture2D;
+            temptextureside2 = (graphic as Graphic_Multi)?.MatWest.mainTexture as Texture2D;
 
             temptexturefront = FaceTextures.MakeReadable(temptexturefront);
             temptextureside = FaceTextures.MakeReadable(temptextureside);

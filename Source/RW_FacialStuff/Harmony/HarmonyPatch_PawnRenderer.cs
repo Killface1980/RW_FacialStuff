@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using FacialStuff.AnimatorWindows;
-#if !DEBUG
 using Harmony;
-#endif
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -12,7 +10,6 @@ using static FacialStuff.Offsets;
 
 namespace FacialStuff.Harmony
 {
-#if !DEBUG
 
     [HarmonyPatch(typeof(Pawn_DrawTracker))]
 	[HarmonyPatch("DrawPos", PropertyMethod.Getter)]
@@ -358,8 +355,8 @@ namespace FacialStuff.Harmony
                                 Vector3 beardLoc = headDrawLoc;
                                 Vector3 tacheLoc = headDrawLoc;
 
-                                beardLoc.y += headFacing == Rot4.North ? -YOffset_Head : YOffset_Beard;
-                                tacheLoc.y += (((headFacing == Rot4.North)) ? -YOffset_Head : YOffset_Tache);
+                                beardLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Beard : YOffset_Beard;
+                                tacheLoc.y += headFacing == Rot4.North ? -YOffset_Head- YOffset_Tache : YOffset_Tache;
 
                                 compFace.DrawBeardAndTache(beardLoc, tacheLoc, portrait, headQuat);
                             }
@@ -484,8 +481,8 @@ namespace FacialStuff.Harmony
             return false;
         }
     }
-
     /*
+    
     [HarmonyPatch(
         typeof(PawnRenderer),
         "RenderPawnAt",
@@ -530,7 +527,7 @@ namespace FacialStuff.Harmony
             }
             if (pawn.GetPosture() == PawnPosture.Standing)
             {
-                __instance.RenderPawnInternal(drawLoc, Quaternion.identity, true, bodyDrawType, headStump);
+                __instance.RenderPawnInternal(drawLoc, 0f, true, bodyDrawType, headStump);
                 if (pawn.carryTracker != null)
                 {
                     Thing carriedThing = pawn.carryTracker.CarriedThing;
@@ -579,14 +576,14 @@ namespace FacialStuff.Harmony
                 Rot4 rot = __instance.LayingFacing();
                 Building_Bed building_Bed = pawn.CurrentBed();
                 bool renderBody;
-                Quaternion quat;
+                float angle;
                 Vector3 rootLoc;
                 if (building_Bed != null && pawn.RaceProps.Humanlike)
                 {
                     renderBody = building_Bed.def.building.bed_showSleeperBody;
                     Rot4 rotation = building_Bed.Rotation;
                     rotation.AsInt += 2;
-                    quat = rotation.AsQuat;
+                    angle = rotation.AsAngle;
                     AltitudeLayer altLayer = (AltitudeLayer)Mathf.Max((int)building_Bed.def.altitudeLayer, 15);
                     Vector3 vector2 = pawn.Position.ToVector3ShiftedWithAltitude(altLayer);
                     Vector3 vector3 = vector2;
@@ -606,11 +603,11 @@ namespace FacialStuff.Harmony
                     }
                     if (pawn.Downed || pawn.Dead)
                     {
-                        quat = Quaternion.AngleAxis(__instance.wiggler.downedAngle, Vector3.up);
+                        angle = __instance.wiggler.downedAngle;
                     }
                     else if (pawn.RaceProps.Humanlike)
                     {
-                        quat = rot.AsQuat;
+                        angle = rot.AsAngle;
                     }
                     else
                     {
@@ -627,10 +624,10 @@ namespace FacialStuff.Harmony
                         {
                             rot2 = Rot4.West;
                         }
-                        quat = rot2.AsQuat;
+                        angle = rot2.AsAngle;
                     }
                 }
-                __instance.RenderPawnInternal(rootLoc, quat, renderBody, rot, rot, bodyDrawType, false, headStump);
+                __instance.RenderPawnInternal(rootLoc, angle, renderBody, rot, rot, bodyDrawType, false, headStump);
             }
             if (pawn.Spawned && !pawn.Dead)
             {
@@ -659,6 +656,4 @@ namespace FacialStuff.Harmony
         }
     }
     */
-
-#endif
 }

@@ -119,42 +119,42 @@ namespace FacialStuff.GraphicsFS
             Color rightFootShadowColor = rightFootColor * this._shadowColor;
             Color leftFootShadowColor = leftFootColor * this._shadowColor;
 
-            this.FootGraphicRight = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.FootGraphicRight = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 rightFootColor,
                 skinColor);
 
-            this.FootGraphicLeft = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.FootGraphicLeft = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 leftFootColor,
                 skinColor);
 
-            this.FootGraphicRightShadow = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.FootGraphicRightShadow = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 rightFootShadowColor,
                 skinColor);
 
-            this.FootGraphicLeftShadow = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.FootGraphicLeftShadow = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 leftFootShadowColor,
                 skinColor);
 
-            this.FootGraphicRightCol = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.FootGraphicRightCol = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 rightColorFoot,
                 skinColor);
 
-            this.FootGraphicLeftCol = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.FootGraphicLeftCol = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
@@ -207,42 +207,42 @@ namespace FacialStuff.GraphicsFS
             Color rightFootColorShadow = rightFootColor * this._shadowColor;
             Color leftFootColorShadow = leftFootColor * this._shadowColor;
 
-            this.FrontPawGraphicRight = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.FrontPawGraphicRight = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 rightFootColor,
                 skinColor);
 
-            this.FrontPawGraphicLeft = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.FrontPawGraphicLeft = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 leftFootColor,
                 skinColor);
 
-            this.FrontPawGraphicRightShadow = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.FrontPawGraphicRightShadow = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 rightFootColorShadow,
                 skinColor);
 
-            this.FrontPawGraphicLeftShadow = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.FrontPawGraphicLeftShadow = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 leftFootColorShadow,
                 skinColor);
 
-            this.FrontPawGraphicRightCol = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.FrontPawGraphicRightCol = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 rightColorFoot,
                 skinColor);
 
-            this.FrontPawGraphicLeftCol = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.FrontPawGraphicLeftCol = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
@@ -297,28 +297,28 @@ namespace FacialStuff.GraphicsFS
             Color leftHandColorShadow = leftHandColor * this._shadowColor;
             Color rightHandColorShadow = rightHandColor * this._shadowColor;
 
-            this.HandGraphicRight = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.HandGraphicRight = GraphicDatabase.Get<Graphic_Multi>(
                 texNameHand,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 rightHandColor,
                 skinColor);
 
-            this.HandGraphicLeft = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.HandGraphicLeft = GraphicDatabase.Get<Graphic_Multi>(
                 texNameHand,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 leftHandColor,
                 skinColor);
 
-            this.HandGraphicRightShadow = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.HandGraphicRightShadow = GraphicDatabase.Get<Graphic_Multi>(
                 texNameHand,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 rightHandColorShadow,
                 skinColor);
 
-            this.HandGraphicLeftShadow = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.HandGraphicLeftShadow = GraphicDatabase.Get<Graphic_Multi>(
                 texNameHand,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
@@ -326,14 +326,14 @@ namespace FacialStuff.GraphicsFS
                 skinColor);
 
             // for development
-            this.HandGraphicRightCol = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.HandGraphicRightCol = GraphicDatabase.Get<Graphic_Multi>(
                 texNameHand,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),
                 rightColorHand,
                 skinColor);
 
-            this.HandGraphicLeftCol = GraphicDatabase.Get<Graphic_Multi_Four>(
+            this.HandGraphicLeftCol = GraphicDatabase.Get<Graphic_Multi>(
                 texNameHand,
                 ShaderDatabase.CutoutSkin,
                 new Vector2(1f, 1f),

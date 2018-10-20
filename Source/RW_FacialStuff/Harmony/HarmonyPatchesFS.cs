@@ -890,7 +890,7 @@ namespace FacialStuff.Harmony
 
                 if (coverage != 0)
                 {
-                    hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi_Four>(
+                    hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi>(
                                                                                 pawn.story.hairDef.texPath,
                                                                                 ShaderDatabase.Cutout,
                                                                                 Vector2.one,
@@ -957,9 +957,9 @@ namespace FacialStuff.Harmony
             __instance.rottingGraphic =
            GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.bodyType.bodyNakedGraphicPath, ShaderDatabase.CutoutSkin, Vector2.one, rotColor);
 
-            __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi_Four>(
+            __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(
                                                                              pawn.story.hairDef.texPath,
-                                                                             ShaderDatabase.CutoutComplex,
+                                                                             ShaderDatabase.Cutout,
                                                                              Vector2.one,
                                                                              pawn.story.hairColor);
             PortraitsCache.SetDirty(pawn);

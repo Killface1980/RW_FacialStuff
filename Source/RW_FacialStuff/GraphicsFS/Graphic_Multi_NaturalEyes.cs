@@ -5,7 +5,7 @@ using Verse;
 
 namespace FacialStuff.GraphicsFS
 {
-    public class Graphic_Multi_NaturalEyes : Graphic_Multi_Four
+    public class Graphic_Multi_NaturalEyes : Graphic_Multi
     {
         private readonly Material[] _mats = new Material[4];
 
