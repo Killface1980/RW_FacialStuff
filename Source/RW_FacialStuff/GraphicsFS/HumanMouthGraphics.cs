@@ -1,7 +1,5 @@
 ﻿using FacialStuff.DefOfs;
-#if !DEBUG
 using Harmony;
-#endif
 using JetBrains.Annotations;
 using UnityEngine;
 using Verse;
@@ -95,10 +93,8 @@ namespace FacialStuff.GraphicsFS
                                              };
                 if (flag)
                 {
-#if !DEBUG
 
                     this.HumanMouthGraphic.Add(new MouthGraphicData(minor + 4 * part, mouthGraphicGrin));
-#endif
                 }
             }
             else
@@ -114,10 +110,8 @@ namespace FacialStuff.GraphicsFS
                                              };
                 if (flag)
                 {
-#if !DEBUG
 
                     this.HumanMouthGraphic.Add(new MouthGraphicData(0.95f, mouthGraphicGrin));
-#endif
                 }
             }
         }

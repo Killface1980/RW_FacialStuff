@@ -371,12 +371,8 @@ namespace FacialStuff
             }
 
             // Tweener
-#if !DEBUG
             Vector3Tween eqTween = this.Vector3Tweens[(int)HarmonyPatchesFS.equipment];
-#else
-            Vector3Tween eqTween = new Vector3Tween();
 
-#endif
             FloatTween angleTween = this.AimAngleTween;
             Vector3Tween leftHand = this.Vector3Tweens[(int)TweenThing.HandLeft];
             Vector3Tween rightHand = this.Vector3Tweens[(int)TweenThing.HandRight];

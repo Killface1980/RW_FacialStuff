@@ -41,10 +41,9 @@ namespace FacialStuff.FaceEditor
                                             if (actor != null
                                                 && actor.Position == this.TargetA.Thing.InteractionCell)
                                             {
-#if !DEBUG
                                                 
                                                 HarmonyPatchesFS.OpenStylingWindow(actor);
-#endif
+
                                             }
                                         }
                                         else
