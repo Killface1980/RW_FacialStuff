@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+	<Settings.Develop>Ativa o modo desenvolvedor</Settings.Develop>
+	<Settings.DevelopTooltip>Adiciona o animador e algumas abas para desenvolvedores de mod. Por favor, apenas ative se souber o que está fazendo. ;)</Settings.DevelopTooltip>
+  <Settings.VisibilityHeadgearLabel>Visibilidade de vestimentas</Settings.VisibilityHeadgearLabel>
+  <Settings.PawnFeaturesLabel>Recursos faciais</Settings.PawnFeaturesLabel>
+  <Settings.EditorLabel>Configurações do editor</Settings.EditorLabel>
+  <Settings.ExperimentalLabel>Experimental</Settings.ExperimentalLabel>
+  
+  <Settings.UseWrinkles>Adiciona rugas aos colonistas</Settings.UseWrinkles>
+  <Settings.UseWrinklesTooltip>Rugas para peões mais velhos</Settings.UseWrinklesTooltip>
+  <Settings.UseMouth>Adiciona bocas aos colonistas</Settings.UseMouth>
+  <Settings.UseMouthTooltip>Bocas animadas para que os peões demonstrem seus sentimentos.</Settings.UseMouthTooltip>
+	<Settings.MergeHair>Mostrar cabelo sob o chapéu</Settings.MergeHair>
+  <Settings.MergeHairTooltip>Mostra uma textura modificada de cabelo por baixo dos chapéus usados.</Settings.MergeHairTooltip>
+
+  <Settings.IgnoreRenderBody>Ignorar renderização do corpo</Settings.IgnoreRenderBody>
+  <Settings.IgnoreRenderBodyTooltip>Geralmente os corpos não são renderizados na cama. Com esta opção ativa, o corpo todo do peão é desenhado. Opções adicionais disponíveis.</Settings.IgnoreRenderBodyTooltip>
+
+  <Settings.IgnoreWhileDrafted>Ignore as configurações acima para um peão alistado.</Settings.IgnoreWhileDrafted>
+  <Settings.IgnoreWhileDraftedTooltip></Settings.IgnoreWhileDraftedTooltip>
+  
+  <Settings.HandsFeetLabel>Mãos e pés</Settings.HandsFeetLabel>
+  <Settings.UseHands>Mostrar mãos</Settings.UseHands>
+  <Settings.UseHandsTooltip>Mostrar mãos enquanto o peão estiver alistado. Apenas armas originais no momento.</Settings.UseHandsTooltip>
+  <Settings.UseFeet>Mostrar pés</Settings.UseFeet>
+  <Settings.UseFeetTooltip>Mostrar pés animados.</Settings.UseFeetTooltip>
+	<Settings.UsePaws>Animar animais</Settings.UsePaws>
+	<Settings.UsePawsTooltip>Mostrar patas nos animais \n(ainda incompleto)</Settings.UsePawsTooltip>
+  <Settings.FilterHats>Ignore óculos</Settings.FilterHats>
+  <Settings.FilterHatsTooltip>Equipamentos extras de cabeça, como óculos, não serão visíveis quando o peão estiver no interior.</Settings.FilterHatsTooltip>
+
+  <Settings.HideHatWhileRoofed>Chapéus exibidos apenas no exterior</Settings.HideHatWhileRoofed>
+  <Settings.HideHatWhileRoofedTooltip>Chapéus não serão visíveis em peões que estejam no interior.</Settings.HideHatWhileRoofedTooltip>
+  <Settings.HideShellWhileRoofed>Roupas da camada externa serão exibidas apenas no lado de fora</Settings.HideShellWhileRoofed>
+  <Settings.HideShellWhileRoofedTooltip>Equipamentos da camada externa não serão visíveis em peões que estejam no interior.</Settings.HideShellWhileRoofedTooltip>
+  <Settings.SameBeardColor>Sempre usar a mesma cor para cabelo e barba</Settings.SameBeardColor>
+  <Settings.SameBeardColorTooltip>Com está opção ativa, novos peões sempre terão a mesma cor para o cabelo e barba. (Padrão: desativado)</Settings.SameBeardColorTooltip>
+	<Settings.HideHatInBed>Não mostrar chapéus na cama</Settings.HideHatInBed>
+  <Settings.HideHatInBedTooltip>Chapéus não são visíveis se os corpos não forem exibidos.</Settings.HideHatInBedTooltip>
+  <Settings.Apply>Salvar e aplicar configurações.</Settings.Apply>
+
+  <Settings.ShowExtraParts>Mostrar partes extras</Settings.ShowExtraParts>
+  <Settings.ShowExtraPartsTooltip>Mostrar partes removidas ou adicionadas da cabeça</Settings.ShowExtraPartsTooltip>
+  <Settings.UseWeirdHairChoices>Estilos de cabelos fantasiosos</Settings.UseWeirdHairChoices>
+  <Settings.UseWeirdHairChoicesTooltip>Adiciona cabelos 'estranhos' parecidos com os originais. Quanto mais avançada uma facção, as escolhas de cabelos provavelmente terão mais cabelos progressivos, de cores não naturais e de gênero neutro.</Settings.UseWeirdHairChoicesTooltip>
+  <Settings.UseHairDNA>Usar DNA de cabelo</Settings.UseHairDNA>
+  <Settings.UseHairDNATooltip>Ative este mod para manter as cores de cabelos consistentes ao longo dos laços familiares.</Settings.UseHairDNATooltip>
+  <Settings.MakeThemBlink>Ativar animação de olhos</Settings.MakeThemBlink>
+  <Settings.MakeThemBlinkTooltip>Colonos não vão mais encarar você.</Settings.MakeThemBlinkTooltip>
+  <Settings.UseCaching>Exportar cortes de cabelo em cache</Settings.UseCaching>
+  <Settings.UseCachingTooltip>Exporta texturas de cortes de cabelos para a pasta do mod em formato PNG. Por favor, desative se algo der errado. Desativado por padrão. </Settings.UseCachingTooltip>
+  <Settings.UseHeadRotator>Ativar rotação de cabeça</Settings.UseHeadRotator>
+  <Settings.UseHeadRotatorTooltip>Permite que os peões se olhem quando interagirem socialmente ou estiverem curiosos.</Settings.UseHeadRotatorTooltip>
+  <Settings.UseNastyGrin>Usar sorriso maroto</Settings.UseNastyGrin>
+  <Settings.UseNastyGrinTooltip>Adiciona um sorriso maroto ao peão quando extremamente feliz.</Settings.UseNastyGrinTooltip>
+
+  <FacialStuffEditor.CannotUseNoFacePawn>{0} não pode usar isso. Apenas humanos.</FacialStuffEditor.CannotUseNoFacePawn>
+  <FacialStuffEditor.CannotUseShouldNotRender>{0} não pode usar isso. Muito fofinho.</FacialStuffEditor.CannotUseShouldNotRender>
+  <FacialStuffEditor.FaceStylerTitle>Estilizador facial</FacialStuffEditor.FaceStylerTitle>
+  <FacialStuffEditor.Accept>Aceitar e salvar</FacialStuffEditor.Accept>
+  <FacialStuffEditor.EditFace>Edita a aparência de colonos</FacialStuffEditor.EditFace>
+  <FacialStuffEditor.MelaninLevel>Melanina</FacialStuffEditor.MelaninLevel>
+
+  <FacialStuffEditor.Cuticula>Cutícula</FacialStuffEditor.Cuticula>
+  <FacialStuffEditor.Greyness>Grisalhesa</FacialStuffEditor.Greyness>
+  <FacialStuffEditor.Eumelanin>Eumelanina</FacialStuffEditor.Eumelanin>
+  <FacialStuffEditor.Pheomelanin>Feomelanina</FacialStuffEditor.Pheomelanin>
+  <FacialStuffEditor.Wrinkles>Rugas</FacialStuffEditor.Wrinkles>
+
+  <FacialStuffEditor.SkinSettings>Ajustes de pele</FacialStuffEditor.SkinSettings>
+  <FacialStuffEditor.HairSettings>Ajustes de cabelo</FacialStuffEditor.HairSettings>
+
+  <!-- Dresser -->
+
+  <!-- Common Strings -->
+  <FacialStuffEditor.Save>Salvar</FacialStuffEditor.Save>
+  <FacialStuffEditor.Reset>Resetar</FacialStuffEditor.Reset>
+
+  <!-- Dresser UI -->
+  <FacialStuffEditor.BodyType>Tipo de corpo</FacialStuffEditor.BodyType>
+  <FacialStuffEditor.HeadType>Tipo de cabeça</FacialStuffEditor.HeadType>
+  <FacialStuffEditor.SkinColor>Cor da pele</FacialStuffEditor.SkinColor>
+  <FacialStuffEditor.Gender>Gênero</FacialStuffEditor.Gender>
+  <FacialStuffEditor.HairStyle>Estilo de cabelo</FacialStuffEditor.HairStyle>
+  <FacialStuffEditor.AgeBiological>Idade biológica</FacialStuffEditor.AgeBiological>
+  <FacialStuffEditor.AgeChronological>Idade cronológica</FacialStuffEditor.AgeChronological>
+  <FacialStuffEditor.Urban>Urbano</FacialStuffEditor.Urban>
+  <FacialStuffEditor.Rural>Rural</FacialStuffEditor.Rural>
+  <FacialStuffEditor.Punk>Punk</FacialStuffEditor.Punk>
+  <FacialStuffEditor.Tribal>Tribal</FacialStuffEditor.Tribal>
+
+  <!-- Help Text -->
+  <FacialStuffEditor.GenderChangeWarning>Mudar estes valores pode ter efeitos adversos.\nUse por seu próprio risco.</FacialStuffEditor.GenderChangeWarning>
+  <!-- Mod Settings -->
+  <FacialStuffEditor.ShowBodyChange>Permitir mudança no corpo</FacialStuffEditor.ShowBodyChange>
+  <FacialStuffEditor.ShowGenderChange>Permitir mudança no gênero</FacialStuffEditor.ShowGenderChange>
+
+  <FacialStuffEditor.Any>qualquer</FacialStuffEditor.Any>
+  <FacialStuffEditor.All>todos</FacialStuffEditor.All>
+  <FacialStuffEditor.Original>Original</FacialStuffEditor.Original>
+  <FacialStuffEditor.Hair>Cabelo</FacialStuffEditor.Hair>
+  <FacialStuffEditor.Beard>Barba</FacialStuffEditor.Beard>
+  <FacialStuffEditor.Eye>Olhos</FacialStuffEditor.Eye>
+  <FacialStuffEditor.Brow>Sobrancelhas</FacialStuffEditor.Brow>
+  <FacialStuffEditor.TypeSelector>Seletor de tipo</FacialStuffEditor.TypeSelector>
+  <FacialStuffEditor.DrawMouth>Exibir boca se apropriado</FacialStuffEditor.DrawMouth>
+  <FacialStuffEditor.SameColor>Usar mesma cor para cabelo + barba</FacialStuffEditor.SameColor>
+  <FacialStuffEditor.SameColorTip>Se desativado, a cor da barba apenas poderá ser escolhida manualmente após clicar em uma barba.</FacialStuffEditor.SameColorTip>
+
+  <FacialStuffEditor.FullBeards>Barbas completas</FacialStuffEditor.FullBeards>
+  <FacialStuffEditor.Combinable>combinável</FacialStuffEditor.Combinable>
+  
+</LanguageData>

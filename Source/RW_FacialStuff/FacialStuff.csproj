@@ -231,6 +231,7 @@
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Cat_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_Cat_Undefined.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Deer_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_Deer_Undefined.xml</Link>
@@ -261,12 +262,6 @@
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_LabradorRetriever_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_LabradorRetriever_Undefined.xml</Link>
-    </Content>
-    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Mechanoid_Centipede_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Mechanoid_Centipede_Undefined.xml</Link>
-    </Content>
-    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Mechanoid_Scyther_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Mechanoid_Scyther_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Tortoise_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_Tortoise_Undefined.xml</Link>
@@ -350,6 +345,12 @@
     <Content Include="..\..\Languages\German\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\German\FacialStuff_Keyed.xml</Link>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Languages\PortugueseBrazilian\Keyed\FacialStuff_Keyed.xml">
+      <Link>Languages\PortugueseBrazilian\FacialStuff_Keyed.xml</Link>
+    </Content>
+    <Content Include="..\..\Languages\Spanish\Keyed\FacialStuff_Keyed.xml">
+      <Link>Languages\Spanish\FacialStuff_Keyed.xml</Link>
     </Content>
     <Content Include="..\..\Patches\EditorPatches.xml">
       <Link>Patches\EditorPatches.xml</Link>

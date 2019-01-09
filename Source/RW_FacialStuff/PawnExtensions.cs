@@ -74,6 +74,12 @@ namespace FacialStuff
                                       BodyPartRecord rightEye,
                                       BodyPartRecord jaw)
         {
+            if (!face.Pawn.RaceProps.Humanlike || hediff.Part == null)
+            {
+                return;
+
+            }
+
             if (face.Props.hasEyes)
             {
                 if (hediff.Part == leftEye)
@@ -196,8 +202,10 @@ namespace FacialStuff
             }
 
             //  Log.Message("Checking face for added parts.");
-
-            CheckFaceForAddedParts(hediff, face, leftEye, rightEye, jaw);
+            if (anim != null && anim.Pawn.RaceProps.Humanlike && face != null)
+            {
+                CheckFaceForAddedParts(hediff, face, leftEye, rightEye, jaw);
+            }
 
             //  Log.Message("Checking body for added parts.");
 
