@@ -30,18 +30,21 @@ For modders:
   This mod contains no hair packs itself any more. Please subscribe to the hair mods of your liking.
 
 Patches the PawnRenderer via Harmony and returns &apos;false&apos; thus being incompatible to mods doing the same.
-    Look out for the FS "Alien Faces" addon if you're using erdelf's Humanoid Alien Framework. 
+    Look out for the FS "Alien Faces" addon if you're using erdelf's Humanoid Alien Framework.
 
     Unfortunately no hands on lightsabers, as the OversizedWeapons prefixes the required method.
 
     Thanks and Credits:
+    Korean translation by LazyRichard
     Portuguese Brazilian translation by PredatorianBR
     Spanish translation by 53N4
+    ----------------------------
     Initial Face Editor code adapted from "Clutter" by mrofa (available at the Ludeon forums)
     Hands based on "Clutter Weapon Hands" by mrofa.
     Body, gender and head changer code adapted from Change Dresser by Kiame Vivacity
     Prepare Carefully saving / loading code adapted from Psychology by {WOBBLY} The Word-Mule
     Inspiration for the new renderer and all of its benefits by {WOBBLY} The Word-Mule and ChJees
+    ----------------------------
     Special thanks to DoctorVanGogh and erdelf for help with transpilers, NotFood for the new Dresser patch
     and Brrainz for Harmony and help with transpilers
   </description>

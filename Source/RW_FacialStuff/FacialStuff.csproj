@@ -41,38 +41,42 @@
   <ItemGroup>
     <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Assemblies\0Harmony.dll</HintPath>
+      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\932008009\Assemblies\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="AbilityUser">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\AbilityUser.dll</HintPath>
+      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\932008009\Assemblies\AbilityUser.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CompActivatableEffect">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\CompActivatableEffect.dll</HintPath>
+      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\932008009\Assemblies\CompActivatableEffect.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="EdBPrepareCarefully">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\735106432\Assemblies\EdBPrepareCarefully.dll</HintPath>
+      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\735106432\Assemblies\EdBPrepareCarefully.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.XML" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="Vampire">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\1187010034\Assemblies\Vampire.dll</HintPath>
+      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\1187010034\Assemblies\Vampire.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Werewolf">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\1115882219\Assemblies\Werewolf.dll</HintPath>
+      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\1115882219\Assemblies\Werewolf.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -349,6 +353,9 @@
     <Content Include="..\..\Languages\PortugueseBrazilian\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\PortugueseBrazilian\FacialStuff_Keyed.xml</Link>
     </Content>
+    <Content Include="..\..\Languages\SpanishLatin\Keyed\FacialStuff_Keyed.xml">
+      <Link>Languages\SpanishLatin\FacialStuff_Keyed.xml</Link>
+    </Content>
     <Content Include="..\..\Languages\Spanish\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\Spanish\FacialStuff_Keyed.xml</Link>
     </Content>
@@ -367,6 +374,7 @@
       <Link>Patches\HumanPatchHSK.xml</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
