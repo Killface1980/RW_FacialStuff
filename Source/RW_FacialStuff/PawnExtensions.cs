@@ -41,6 +41,8 @@ namespace FacialStuff
         private static void CheckBodyForAddedParts(Hediff hediff, CompBodyAnimator anim, BodyPartRecord leftHand,
                                       BodyPartRecord rightHand, BodyPartRecord leftFoot, BodyPartRecord rightFoot)
         {
+            Log.Message("Checking wether the colonist is ok or not");
+
             if (anim == null)
             {
                 return;
@@ -48,6 +50,8 @@ namespace FacialStuff
 
             if (anim.Props.bipedWithHands)
             {
+                Log.Message("We've got one with hands");
+
                 if (hediff.Part.parts.Contains(leftHand))
                 {
                     anim.BodyStat.HandLeft = PartStatus.Artificial;

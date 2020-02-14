@@ -41,42 +41,38 @@
   <ItemGroup>
     <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\932008009\Assemblies\0Harmony.dll</HintPath>
+      <HintPath>..\..\Assemblies\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="AbilityUser">
-      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\932008009\Assemblies\AbilityUser.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\AbilityUser.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818322128\Source\RW_FacialStuff\Source-DLLs\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CompActivatableEffect">
-      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\932008009\Assemblies\CompActivatableEffect.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\CompActivatableEffect.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="EdBPrepareCarefully">
-      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\735106432\Assemblies\EdBPrepareCarefully.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\735106432\Assemblies\EdBPrepareCarefully.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.XML" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818322128\Source\RW_FacialStuff\Source-DLLs\UnityEngine.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="Vampire">
-      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\1187010034\Assemblies\Vampire.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\1187010034\Assemblies\Vampire.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Werewolf">
-      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\1115882219\Assemblies\Werewolf.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\1115882219\Assemblies\Werewolf.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -96,18 +92,6 @@
     <None Include="GraphicsFS\Graphic_Multi_Four.cs" />
     <Compile Include="Harmony\HarmonyPatchesFS.cs" />
     <Compile Include="Harmony\HarmonyPatch_PawnRenderer.cs" />
-    <Compile Include="Harmony\Optional\Harmony_EdBPrepareCarefully.cs" />
-    <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
-    <Compile Include="Harmony\Optional\Harmony_Werewolf.cs" />
-    <None Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
-    <None Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
-    <Compile Include="Harmony\Optional\PrepC\PanelBackstory_Postfix.cs" />
-    <Compile Include="Harmony\Optional\PrepC\PresetLoader_Postfix.cs" />
-    <Compile Include="Harmony\Optional\PrepC\PresetSaver_Postfix.cs" />
-    <Compile Include="Harmony\Optional\PrepC\SaveRecordFaceV3.cs" />
-    <Compile Include="Harmony\Optional\PrepC\SaveRecordPawnV3_Postfix.cs" />
-    <Compile Include="Harmony\Optional\Vampire_Patches.cs" />
-    <Compile Include="Harmony\Optional\Werewolf_Patches.cs" />
     <Compile Include="Tweener\TinyTween.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />
@@ -353,9 +337,6 @@
     <Content Include="..\..\Languages\PortugueseBrazilian\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\PortugueseBrazilian\FacialStuff_Keyed.xml</Link>
     </Content>
-    <Content Include="..\..\Languages\SpanishLatin\Keyed\FacialStuff_Keyed.xml">
-      <Link>Languages\SpanishLatin\FacialStuff_Keyed.xml</Link>
-    </Content>
     <Content Include="..\..\Languages\Spanish\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\Spanish\FacialStuff_Keyed.xml</Link>
     </Content>
@@ -374,7 +355,6 @@
       <Link>Patches\HumanPatchHSK.xml</Link>
     </Content>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
