@@ -9,14 +9,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FacialStuff</RootNamespace>
     <AssemblyName>FacialStuff</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>..\..\Assemblies\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -38,44 +38,6 @@
     <LangVersion>latest</LangVersion>
     <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Assemblies\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="AbilityUser">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\AbilityUser.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818322128\Source\RW_FacialStuff\Source-DLLs\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="CompActivatableEffect">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\CompActivatableEffect.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="EdBPrepareCarefully">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\735106432\Assemblies\EdBPrepareCarefully.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.XML" />
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818322128\Source\RW_FacialStuff\Source-DLLs\UnityEngine.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Vampire">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\1187010034\Assemblies\Vampire.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Werewolf">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\1115882219\Assemblies\Werewolf.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\JobDriver_Possess.cs" />
     <Compile Include="AI\JobGiver_Possess.cs" />
@@ -205,7 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\About\About.xml">
-      <Link>About.xml</Link>
+      <Link>About\About.xml</Link>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\BeardDefs\BeardDef.xml">
@@ -354,6 +316,115 @@
     <Content Include="..\..\Patches\HumanPatchHSK.xml">
       <Link>Patches\HumanPatchHSK.xml</Link>
     </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\Unity.TextMeshPro.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.AccessibilityModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.AIModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.AndroidJNIModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.AnimationModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.ARModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.AssetBundleModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.AudioModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.ClothModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.ClusterInputModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.ClusterRendererModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CrashReportingModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.DirectorModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.DSPGraphModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.FileSystemHttpModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.GameCenterModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.GridModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.HotReloadModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.ImageConversionModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.InputLegacyModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.InputModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.JSONSerializeModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.LocalizationModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.ParticleSystemModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.PerformanceReportingModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.Physics2DModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.PhysicsModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.ProfilerModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.ScreenCaptureModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.SharedInternalsModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.SpriteMaskModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.SpriteShapeModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.StreamingModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.SubstanceModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TerrainModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TerrainPhysicsModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextCoreModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TilemapModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TLSModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UI.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UIElementsModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UIModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UmbraModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UNETModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UnityAnalyticsModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UnityConnectModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UnityTestProtocolModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UnityWebRequestAssetBundleModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UnityWebRequestAudioModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UnityWebRequestModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UnityWebRequestTextureModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.VehiclesModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.VFXModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.VideoModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.VRModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.WindModule.dll" />
+    <Analyzer Include="..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.XRModule.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony, Version=2.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\..\Users\aless\Desktop\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.InputModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextCoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

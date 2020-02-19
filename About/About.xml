@@ -1,10 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Facial Stuff 1.0.1</name>
+  <name>Facial Stuff 1.0.2</name>
   <author>Killface, fixed by Pao</author>
   <url></url>
-  <supportedVersions><li>1.0</li></supportedVersions>
-  <description>This mod aims to provide more visual individuality for your colonists
+  <supportedVersions>
+    <li>1.0</li>
+    <li>1.1</li>
+  </supportedVersions>
+  <description>
+    Version 1.0.2 is Rimworld 1.1 compatible
+    This mod aims to provide more visual individuality for your colonists
 - hands and feet, animated (also for animals, unfinished)
 - smooth weapon animations and changed offsets
 - 30+ different beards for males, some of them combinable

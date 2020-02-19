@@ -1,7 +1,7 @@
 ﻿using FacialStuff.Animator;
 using FacialStuff.AnimatorWindows;
 using FacialStuff.GraphicsFS;
-using FacialStuff.Harmony;
+using FacialStuff.HarmonyLib;
 using FacialStuff.Tweener;
 using JetBrains.Annotations;
 using RimWorld;
@@ -538,7 +538,7 @@ namespace FacialStuff
             // pawn started pathing
 
             Pawn_PathFollower pather = this.Pawn.pather;
-            if ((pather != null) && (pather.Moving) && !this.Pawn.stances.FullBodyBusy && (pather.BuildingBlockingNextPathCell() == null) && (pather.NextCellDoorToManuallyOpen() == null) && !pather.WillCollideWithPawnOnNextPathCell())
+            if ((pather != null) && (pather.Moving) && !this.Pawn.stances.FullBodyBusy && (pather.BuildingBlockingNextPathCell() == null) && (pather.NextCellDoorToWaitForOrManuallyOpen() == null) && !pather.WillCollideWithPawnOnNextPathCell())
             {
                 this._movedPercent = 1f - pather.nextCellCostLeft / pather.nextCellCostTotal;
                 this._isMoving = true;

@@ -63,7 +63,7 @@ namespace FacialStuff.Genetics
             // new SkinColorData(1f, 1f, new Color(0.3882353f, 0.274509817f, 0.141176477f))
         };
 
-        //ReSharper disable once RedundantAssignment
+        // ReSharper disable once RedundantAssignment
         public static bool GetMelaninCommonalityFactor_Prefix(ref float __result, float melanin)
         {
             int skinDataLeftIndexByWhiteness = GetSkinDataIndexOfMelanin(melanin);
@@ -133,8 +133,6 @@ namespace FacialStuff.Genetics
 
                 __result = i;
             }
-            //string tester = __result.ToString();
-            //Log.Message(tester);
 
             return __result;
         }
@@ -194,6 +192,16 @@ namespace FacialStuff.Genetics
             return false;
         }
 
+        private static float GetSkinCommonalityFactor(int skinDataIndex)
+        {
+            float num = 0f;
+            for (int i = 0; i < SkinColors.Length; i++)
+            {
+                num = Mathf.Max(num, GetTotalAreaWhereClosestToSelector(i));
+            }
+
+            return GetTotalAreaWhereClosestToSelector(skinDataIndex) / num;
+        }
 
         private static float GetTotalAreaWhereClosestToSelector(int skinDataIndex)
         {
@@ -217,19 +225,6 @@ namespace FacialStuff.Genetics
             }
 
             return num;
-        }
-
-
-        //made it public just to make it work
-        public static float GetSkinCommonalityFactor(int skinDataIndex)
-        {
-            float num = 0f;
-            for (int i = 0; i < SkinColors.Length; i++)
-            {
-                num = Mathf.Max(num, GetTotalAreaWhereClosestToSelector(i));
-            }
-
-            return GetTotalAreaWhereClosestToSelector(skinDataIndex) / num;
         }
 
         public struct SkinColorData

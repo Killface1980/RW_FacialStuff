@@ -1,4 +1,4 @@
-﻿using FacialStuff.HarmonyLib;
+﻿using FacialStuff.Harmony;
 using JetBrains.Annotations;
 using UnityEngine;
 using Verse;
@@ -16,8 +16,7 @@ namespace FacialStuff.HairCut
         {
             if (this.HairCutGraphic == null)
             {
-                //This is kinda horrible...
-                ResolveApparelGraphics_Patch.Postfix(this.Pawn.Drawer.renderer.graphics);
+                HarmonyPatchesFS.ResolveApparelGraphics_Postfix(this.Pawn.Drawer.renderer.graphics);
 
             }
 

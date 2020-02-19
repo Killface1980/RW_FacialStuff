@@ -498,10 +498,11 @@ namespace FacialStuff
             {
                 eyeDef = this.PawnFace?.EyeDef;
             }
-            // ReSharper disable once PossibleNullReferenceException
-            string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : eyeDef.texBasePath;
-            string path = eyePath + "Eye_" + eyeDef.texName + "_" + this.Pawn.gender + "_" + side;
+            //ReSharper disable once PossibleNullReferenceException
+            string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes" : eyeDef.texBasePath;
+            string path = eyePath + "/" + "Eye_" + eyeDef.texName + "_" + this.Pawn.gender + "_" + side;
 
+            Log.Message("New eye found: " + path);
             return path;
         }
 

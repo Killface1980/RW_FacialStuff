@@ -1,11 +1,7 @@
 ﻿using FacialStuff.DefOfs;
+using Harmony;
 using JetBrains.Annotations;
 using UnityEngine;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
 using Verse;
 
 namespace FacialStuff.GraphicsFS
@@ -98,7 +94,7 @@ namespace FacialStuff.GraphicsFS
                 if (flag)
                 {
 
-                    this.HumanMouthGraphic.Append(new MouthGraphicData(minor + 4 * part, mouthGraphicGrin));
+                    this.HumanMouthGraphic.Add(new MouthGraphicData(minor + 4 * part, mouthGraphicGrin));
                 }
             }
             else
@@ -115,7 +111,7 @@ namespace FacialStuff.GraphicsFS
                 if (flag)
                 {
 
-                    this.HumanMouthGraphic.Append(new MouthGraphicData(0.95f, mouthGraphicGrin));
+                    this.HumanMouthGraphic.Add(new MouthGraphicData(0.95f, mouthGraphicGrin));
                 }
             }
         }
@@ -154,10 +150,7 @@ namespace FacialStuff.GraphicsFS
                 this.Graphic = graphic;
             }
 
-            #endregion Public Constructors
-            #region Private Methods
-
-            #endregion Private Methods
+#endregion Public Constructors
         }
     }
 }

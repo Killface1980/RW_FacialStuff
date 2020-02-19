@@ -150,7 +150,7 @@ namespace FacialStuff
         public void DoAttackAnimationHandOffsets(ref List<float> weaponAngle, ref Vector3 weaponPosition, bool flipped)
         {
             Pawn pawn = this.Pawn;
-            if (pawn.story != null && pawn.story.WorkTagIsDisabled(WorkTags.Violent))
+            if (pawn.story != null && pawn.WorkTagIsDisabled(WorkTags.Violent))
             {
                 return;
             }
