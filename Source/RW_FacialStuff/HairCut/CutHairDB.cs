@@ -11,7 +11,7 @@ using Verse;
 namespace FacialStuff.HairCut
 {
     // ReSharper disable once InconsistentNaming
-    //[StaticConstructorOnStartup]
+    [StaticConstructorOnStartup]
     public static class CutHairDB
     {
         const string STR_MergedHair = "/Textures/MergedHair/";

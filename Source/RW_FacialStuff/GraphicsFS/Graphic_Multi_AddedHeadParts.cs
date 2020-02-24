@@ -128,6 +128,7 @@ namespace FacialStuff.GraphicsFS
                     Log.Message("Array = null at: " + i);
                 }
 
+
                 MaterialRequest req2 = default;
                 req2.mainTex = array[i];
                 req2.shader = req.shader;

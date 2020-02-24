@@ -18,7 +18,7 @@ namespace FacialStuff.GraphicsFS
         public override void Init(GraphicRequest req)
         {
             this.data = req.graphicData;
-            this.path = req.path;
+            this.path = "Things/Pawn/Humanlike/Eyes/";
             this.color = req.color;
             this.colorTwo = req.colorTwo;
             this.drawSize = req.drawSize;
@@ -43,9 +43,13 @@ namespace FacialStuff.GraphicsFS
                 Log.Error("Parse error with head graphic at " + req.path + ": " + ex.Message);
             }
 
-            if (ContentFinder<Texture2D>.Get(req.path + "_south"))
+            string eyeStringBase = this.path + "Eye_" + eyeType + "_" + gender + "_" + side;
+            string eyeSouth = eyeStringBase + "_south";
+            Log.Warning(eyeSouth);
+
+            if (ContentFinder<Texture2D>.Get(eyeSouth))
             {
-                array[2] = ContentFinder<Texture2D>.Get(req.path + "_south");
+                array[2] = ContentFinder<Texture2D>.Get(eyeSouth);
             }
             else
             {
@@ -57,11 +61,14 @@ namespace FacialStuff.GraphicsFS
                 // array[2] = MaskTextures.BlankTexture();
             }
 
-            string sidePath = Path.GetDirectoryName(req.path) + "/Eye_" + eyeType + "_" + gender + "_east";
+            string eyeEast = eyeStringBase + "_east";
+            Log.Warning(eyeEast);
 
             // 1 texture= 1 eye, blank for the opposite side
-            if (ContentFinder<Texture2D>.Get(sidePath))
+            if (ContentFinder<Texture2D>.Get(eyeEast))
             {
+
+
                 // ReSharper disable once PossibleNullReferenceException
                 if (side.Equals("Right"))
                 {
@@ -69,7 +76,7 @@ namespace FacialStuff.GraphicsFS
                 }
                 else
                 {
-                    array[3] = ContentFinder<Texture2D>.Get(sidePath);
+                    array[3] = ContentFinder<Texture2D>.Get(eyeEast);
                 }
 
                 if (side.Equals("Left"))
@@ -78,35 +85,37 @@ namespace FacialStuff.GraphicsFS
                 }
                 else
                 {
-                    array[1] = ContentFinder<Texture2D>.Get(sidePath);
+                    array[1] = ContentFinder<Texture2D>.Get(eyeEast);
                 }
             }
             else
             {
-                Log.Message("Facial Stuff: No texture found at " + sidePath + " - Graphic_Multi_NaturalEyes");
+                Log.Message("Facial Stuff: No texture found at " + eyeEast + " - Graphic_Multi_NaturalEyes");
                 array[3] = FaceTextures.BlankTexture;
             }
 
-            if (ContentFinder<Texture2D>.Get(req.path + "_north", false))
+            string eyeNorth = eyeStringBase + "_north";
+            if (ContentFinder<Texture2D>.Get(eyeNorth, false))
             {
-                array[0] = ContentFinder<Texture2D>.Get(req.path + "_north");
+                array[0] = ContentFinder<Texture2D>.Get(eyeNorth);
             }
             else
             {
                 array[0] = FaceTextures.BlankTexture;
             }
 
+            string eyeSouthm = eyeStringBase + "_southm";
             Texture2D[] array2 = new Texture2D[4];
             if (req.shader.SupportsMaskTex())
             {
                 array2[0] = FaceTextures.RedTexture;
-                array2[2] = ContentFinder<Texture2D>.Get(req.path + "_southm", false);
+                array2[2] = ContentFinder<Texture2D>.Get(eyeSouthm, false);
                 if (array2[2] == null)
                 {
                     array2[2] = FaceTextures.RedTexture;
                 }
 
-                string sidePath2 = Path.GetDirectoryName(req.path) + "/Eye_" + eyeType + "_" + gender + "_eastm";
+                string eyeEastm = eyeStringBase + "_eastm";
 
                 // 1 texture= 1 eye, blank for the opposite side
 
@@ -116,7 +125,7 @@ namespace FacialStuff.GraphicsFS
                 }
                 else
                 {
-                    array2[3] = ContentFinder<Texture2D>.Get(sidePath2, false);
+                    array2[3] = ContentFinder<Texture2D>.Get(eyeEastm, false);
                 }
 
                 if (side != null && side.Equals("Left"))
@@ -125,9 +134,9 @@ namespace FacialStuff.GraphicsFS
                 }
                 else
                 {
-                    array2[1] = ContentFinder<Texture2D>.Get(sidePath2, false);
+                    array2[1] = ContentFinder<Texture2D>.Get(eyeEastm, false);
                 }
-                if (array2[1]== null) { array2[1] = FaceTextures.RedTexture; }
+                if (array2[1] == null) { array2[1] = FaceTextures.RedTexture; }
                 if (array2[3] == null) { array2[3] = FaceTextures.RedTexture; }
 
 
@@ -147,6 +156,7 @@ namespace FacialStuff.GraphicsFS
                 this._mats[i] = MaterialPool.MatFrom(req2);
             }
         }
+
 
         public override Material MatAt(Rot4 rot, Thing thing = null)
         {
