@@ -103,6 +103,7 @@ namespace FacialStuff.GraphicsFS
             this.TexPathEyeRightClosed = this._compFace.EyeTexPath(Side.Right, EyeDefOf.Closed);
             this.TexPathBrow           = this._compFace.BrowTexPath(this.pawnFace.BrowDef);
 
+
             this.InitializeGraphicsEyes();
             this.InitializeGraphicsBrows();
         }
@@ -254,7 +255,6 @@ namespace FacialStuff.GraphicsFS
         private void InitializeGraphicsEyes()
         {
             this.InitializeGraphicsEyePatches();
-            Log.Message("Initializing eyes");
 
             Color eyeColor = Color.white;
 

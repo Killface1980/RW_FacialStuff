@@ -12,7 +12,7 @@ namespace FacialStuff.HairCut
 {
     // ReSharper disable once InconsistentNaming
     [StaticConstructorOnStartup]
-    public static class CutHairDB
+    public static class PawnElementsDB
     {
         const string STR_MergedHair = "/Textures/MergedHair/";
         private static readonly Dictionary<GraphicRequest, Graphic> AllGraphics =

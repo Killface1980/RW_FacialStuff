@@ -187,7 +187,7 @@ namespace FacialStuff
                     else if (Controller.settings.MergeHair) // && !apCoversFullHead)
                     {
                         // If not, display the hair cut
-                        HairCutPawn hairPawn = CutHairDB.GetHairCache(this.Pawn);
+                        HairCutPawn hairPawn = PawnElementsDB.GetHairCache(this.Pawn);
                         Material hairCutMat = hairPawn.HairCutMatAt(this.HeadFacing);
                         if (hairCutMat != null)
                         {

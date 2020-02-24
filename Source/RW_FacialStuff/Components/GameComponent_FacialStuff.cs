@@ -39,7 +39,7 @@ namespace FacialStuff
                 if (Controller.settings.UseCaching)
                 {
                     string name = Path.GetFileNameWithoutExtension(hairDef.texPath);
-                    CutHairDB.ExportHairCut(hairDef, name);
+                    PawnElementsDB.ExportHairCut(hairDef, name);
                 }
             }
 

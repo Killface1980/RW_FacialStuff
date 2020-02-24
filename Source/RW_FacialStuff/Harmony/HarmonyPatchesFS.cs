@@ -31,39 +31,40 @@ namespace FacialStuff.HarmonyLib
         static HarmonyPatchesFS()
         {
             var harmony = new Harmony("rimworld.facialstuff.mod");
+            Harmony.DEBUG = true;
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
 
 
 
-            //Log.Message(
-            //            "Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count()
-            //                                                   + " patches with harmony.");
+            Log.Message(
+                        "Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count()
+                                                               + " patches with harmony.");
 
-            //foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading.Where(
-            //                                                                           td => td.category ==
-            //                                                                                 ThingCategory.Pawn &&
-            //                                                                                 td.race.Humanlike))
-            //{
-            //    if (def.inspectorTabs == null || def.inspectorTabs.Count == 0)
-            //    {
-            //        def.inspectorTabs = new List<Type>();
-            //        def.inspectorTabsResolved = new List<InspectTabBase>();
-            //    }
+            foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading.Where(
+                                                                                       td => td.category ==
+                                                                                             ThingCategory.Pawn &&
+                                                                                             td.race.Humanlike))
+            {
+                if (def.inspectorTabs == null || def.inspectorTabs.Count == 0)
+                {
+                    def.inspectorTabs = new List<Type>();
+                    def.inspectorTabsResolved = new List<InspectTabBase>();
+                }
 
-            //    if (def.inspectorTabs.Contains(typeof(ITab_Pawn_Weapons)))
-            //    {
-            //        return;
-            //    }
+                if (def.inspectorTabs.Contains(typeof(ITab_Pawn_Weapons)))
+                {
+                    return;
+                }
 
-            //    def.inspectorTabs.Add(typeof(ITab_Pawn_Weapons));
-            //    def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Weapons)));
+                def.inspectorTabs.Add(typeof(ITab_Pawn_Weapons));
+                def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Weapons)));
 
-            //    def.inspectorTabs.Add(typeof(ITab_Pawn_Face));
-            //    def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Face)));
-            //}
+                def.inspectorTabs.Add(typeof(ITab_Pawn_Face));
+                def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Face)));
+            }
 
-            //CheckAllInjected();
+            CheckAllInjected();
         }
 
         #endregion Public Constructors
@@ -725,7 +726,7 @@ namespace FacialStuff.HarmonyLib
             // Set up the hair cut graphic
             if (Controller.settings.MergeHair)
             {
-                HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
+                HairCutPawn hairPawn = PawnElementsDB.GetHairCache(pawn);
 
                 List<Apparel> wornApparel = pawn.apparel.WornApparel
                                                 .Where(x => x.def.apparel.LastLayer == ApparelLayerDefOf.Overhead).ToList();
@@ -745,7 +746,7 @@ namespace FacialStuff.HarmonyLib
 
                 if (coverage != 0)
                 {
-                    hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi>(
+                    hairPawn.HairCutGraphic = PawnElementsDB.Get<Graphic_Multi>(
                                                                                 pawn.story.hairDef.texPath,
                                                                                 ShaderDatabase.Cutout,
                                                                                 Vector2.one,

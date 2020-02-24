@@ -498,14 +498,11 @@ namespace FacialStuff
             {
                 eyeDef = this.PawnFace?.EyeDef;
             }
-            Log.Warning(eyeDef.defName);
             //ReSharper disable once PossibleNullReferenceException
-            //Probably made for different species. Kinda useless right now
+            string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes" : eyeDef.texBasePath;
+            string path = eyePath + "/" + "Eye_" + eyeDef.texName + "_" + this.Pawn.gender + "_" + side;
 
-            string eyePath = "Things/Pawn/Humanlike/Eyes/";  //eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : eyeDef.texBasePath;
-            string path = eyePath + "Eye_" + eyeDef.texName + "_" + this.Pawn.gender + "_" + side;
-
-            Log.Message("Path generated for eye: " + path);
+            //Log.Message("New eye found: " + path);
             return path;
         }
 
