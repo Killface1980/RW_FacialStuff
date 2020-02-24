@@ -261,6 +261,7 @@ namespace FacialStuff.HarmonyLib
             // Now the remaining hands if possible
             if (animator.Props.bipedWithHands && Controller.settings.UseHands)
             {
+                Log.Message("Trying to set hands position");
                 SetPositionsForHandsOnWeapons(
                                               drawLoc,
                                               flipped,
@@ -407,37 +408,6 @@ namespace FacialStuff.HarmonyLib
             // Swap left and right hand position when flipped
 
             animator.WeaponQuat = Quaternion.AngleAxis(weaponAngle, Vector3.up);
-        }
-
-
-        public static IEnumerable<CodeInstruction> DrawEquipmentAiming_Transpiler(
-        IEnumerable<CodeInstruction> instructions,
-        ILGenerator ilGen)
-        {
-            List<CodeInstruction> instructionList = instructions.ToList();
-
-            int index = instructionList.FindIndex(x => x.opcode == OpCodes.Ldloc_0);
-            List<Label> labels = instructionList[index].labels;
-            instructionList[index].labels = new List<Label>();
-            instructionList.InsertRange(index, new List<CodeInstruction>
-                                               {
-                                               // DoCalculations(Pawn pawn, Thing eq, ref Vector3 drawLoc, ref float weaponAngle, float aimAngle)
-                                               new CodeInstruction(OpCodes.Ldarg_0),
-                                               new CodeInstruction(OpCodes.Ldfld,
-                                                                   AccessTools.Field(typeof(PawnRenderer),
-                                                                                     "pawn")), // pawn
-                                               new CodeInstruction(OpCodes.Ldarg_1),           // Thing
-                                               new CodeInstruction(OpCodes.Ldarga,   2),       // drawLoc
-                                               new CodeInstruction(OpCodes.Ldloca_S, 1),       // weaponAngle
-                                               //   new CodeInstruction(OpCodes.Ldarg_3), // aimAngle
-                                               new CodeInstruction(OpCodes.Ldloca_S,
-                                                                   0), // Mesh, loaded as ref to not trigger I Love Big Guns
-                                               new CodeInstruction(OpCodes.Call,
-                                                                   AccessTools.Method(typeof(HarmonyPatchesFS),
-                                                                                      nameof(DoWeaponOffsets))),
-                                               });
-            instructionList[index].labels = labels;
-            return instructionList;
         }
 
 
@@ -825,6 +795,34 @@ namespace FacialStuff.HarmonyLib
             }
 
             animator.LastAimAngle = aimAngle;
+        }
+
+        static IEnumerable<CodeInstruction> Transpiler( IEnumerable<CodeInstruction> instructions, ILGenerator ilGen)
+        {
+            List<CodeInstruction> instructionList = instructions.ToList();
+
+            int index = instructionList.FindIndex(x => x.opcode == OpCodes.Ldloc_0);
+            List<Label> labels = instructionList[index].labels;
+            instructionList[index].labels = new List<Label>();
+            instructionList.InsertRange(index, new List<CodeInstruction>
+                                               {
+                                               // DoCalculations(Pawn pawn, Thing eq, ref Vector3 drawLoc, ref float weaponAngle, float aimAngle)
+                                               new CodeInstruction(OpCodes.Ldarg_0),
+                                               new CodeInstruction(OpCodes.Ldfld,
+                                                                   AccessTools.Field(typeof(PawnRenderer),
+                                                                                     "pawn")), // pawn
+                                               new CodeInstruction(OpCodes.Ldarg_1),           // Thing
+                                               new CodeInstruction(OpCodes.Ldarga,   2),       // drawLoc
+                                               new CodeInstruction(OpCodes.Ldloca_S, 1),       // weaponAngle
+                                               //   new CodeInstruction(OpCodes.Ldarg_3), // aimAngle
+                                               new CodeInstruction(OpCodes.Ldloca_S,
+                                                                   0), // Mesh, loaded as ref to not trigger I Love Big Guns
+                                               new CodeInstruction(OpCodes.Call,
+                                                                   AccessTools.Method(typeof(HarmonyPatchesFS),
+                                                                                      nameof(HarmonyPatchesFS.DoWeaponOffsets))),
+                                               });
+            instructionList[index].labels = labels;
+            return instructionList;
         }
 
 
