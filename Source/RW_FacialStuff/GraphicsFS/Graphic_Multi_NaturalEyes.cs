@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using UnityEngine;
 using Verse;
@@ -18,7 +18,7 @@ namespace FacialStuff.GraphicsFS
         public override void Init(GraphicRequest req)
         {
             this.data = req.graphicData;
-            this.path = "Things/Pawn/Humanlike/Eyes/";
+            this.path = req.path;
             this.color = req.color;
             this.colorTwo = req.colorTwo;
             this.drawSize = req.drawSize;
@@ -43,13 +43,9 @@ namespace FacialStuff.GraphicsFS
                 Log.Error("Parse error with head graphic at " + req.path + ": " + ex.Message);
             }
 
-            string eyeStringBase = this.path + "Eye_" + eyeType + "_" + gender + "_" + side;
-            string eyeSouth = eyeStringBase + "_south";
-            Log.Warning(eyeSouth);
-
-            if (ContentFinder<Texture2D>.Get(eyeSouth))
+            if (ContentFinder<Texture2D>.Get(req.path + "_south"))
             {
-                array[2] = ContentFinder<Texture2D>.Get(eyeSouth);
+                array[2] = ContentFinder<Texture2D>.Get(req.path + "_south");
             }
             else
             {
@@ -61,61 +57,57 @@ namespace FacialStuff.GraphicsFS
                 // array[2] = MaskTextures.BlankTexture();
             }
 
-            string eyeEast = eyeStringBase + "_east";
-            Log.Warning(eyeEast);
+            string sidePath = Path.GetDirectoryName(req.path).Replace(@"\",@"/") + "/Eye_" + eyeType + "_" + gender + "_east";
+  
 
+            //string sidePath = "Things/Pawn/Humanlike/Eyes/Eye_" + eyeType + "_" + gender + "_east";
             // 1 texture= 1 eye, blank for the opposite side
-            if (ContentFinder<Texture2D>.Get(eyeEast))
+            //Log.Warning(sidePath);
+            if (ContentFinder<Texture2D>.Get(sidePath))
             {
+                switch (side)
+                {
+                    case "Right":
+                        array[1] = ContentFinder<Texture2D>.Get(sidePath);
+                        array[3] = FaceTextures.BlankTexture;
+                        break;
+                    case "Left":
+                        array[1] = FaceTextures.BlankTexture;
+                        array[3] = ContentFinder<Texture2D>.Get(sidePath);
 
+                        break;
+                    default:
+                        Log.Warning("sidePath for east eye didn't find anything");
+                        break;
 
-                // ReSharper disable once PossibleNullReferenceException
-                if (side.Equals("Right"))
-                {
-                    array[3] = FaceTextures.BlankTexture;
-                }
-                else
-                {
-                    array[3] = ContentFinder<Texture2D>.Get(eyeEast);
-                }
-
-                if (side.Equals("Left"))
-                {
-                    array[1] = FaceTextures.BlankTexture;
-                }
-                else
-                {
-                    array[1] = ContentFinder<Texture2D>.Get(eyeEast);
                 }
             }
             else
             {
-                Log.Message("Facial Stuff: No texture found at " + eyeEast + " - Graphic_Multi_NaturalEyes");
+                Log.Message("Facial Stuff: No texture found at " + sidePath + " - Graphic_Multi_NaturalEyes");
                 array[3] = FaceTextures.BlankTexture;
             }
 
-            string eyeNorth = eyeStringBase + "_north";
-            if (ContentFinder<Texture2D>.Get(eyeNorth, false))
+            if (ContentFinder<Texture2D>.Get(req.path + "_north", false))
             {
-                array[0] = ContentFinder<Texture2D>.Get(eyeNorth);
+                array[0] = ContentFinder<Texture2D>.Get(req.path + "_north");
             }
             else
             {
                 array[0] = FaceTextures.BlankTexture;
             }
 
-            string eyeSouthm = eyeStringBase + "_southm";
             Texture2D[] array2 = new Texture2D[4];
             if (req.shader.SupportsMaskTex())
             {
                 array2[0] = FaceTextures.RedTexture;
-                array2[2] = ContentFinder<Texture2D>.Get(eyeSouthm, false);
+                array2[2] = ContentFinder<Texture2D>.Get(req.path + "_southm", false);
                 if (array2[2] == null)
                 {
                     array2[2] = FaceTextures.RedTexture;
                 }
 
-                string eyeEastm = eyeStringBase + "_eastm";
+                string sidePath2 = Path.GetDirectoryName(req.path) + "/Eye_" + eyeType + "_" + gender + "_eastm";
 
                 // 1 texture= 1 eye, blank for the opposite side
 
@@ -125,7 +117,7 @@ namespace FacialStuff.GraphicsFS
                 }
                 else
                 {
-                    array2[3] = ContentFinder<Texture2D>.Get(eyeEastm, false);
+                    array2[3] = ContentFinder<Texture2D>.Get(sidePath2, false);
                 }
 
                 if (side != null && side.Equals("Left"))
@@ -134,9 +126,9 @@ namespace FacialStuff.GraphicsFS
                 }
                 else
                 {
-                    array2[1] = ContentFinder<Texture2D>.Get(eyeEastm, false);
+                    array2[1] = ContentFinder<Texture2D>.Get(sidePath2, false);
                 }
-                if (array2[1] == null) { array2[1] = FaceTextures.RedTexture; }
+                if (array2[1]== null) { array2[1] = FaceTextures.RedTexture; }
                 if (array2[3] == null) { array2[3] = FaceTextures.RedTexture; }
 
 
@@ -156,7 +148,6 @@ namespace FacialStuff.GraphicsFS
                 this._mats[i] = MaterialPool.MatFrom(req2);
             }
         }
-
 
         public override Material MatAt(Rot4 rot, Thing thing = null)
         {
