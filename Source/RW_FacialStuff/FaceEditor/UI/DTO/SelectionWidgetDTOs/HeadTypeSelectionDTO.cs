@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Verse;
 
@@ -138,7 +139,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             foreach (string current in GraphicDatabaseUtility.GraphicNamesInFolder(source))
             {
-                string item = source + "/" + current;
+                string item = source + Path.DirectorySeparatorChar + current;
                 list.Add(item);
             }
         }

@@ -10,9 +10,8 @@ using static FacialStuff.Offsets;
 
 namespace FacialStuff.Harmony
 {
-
-    [HarmonyPatch(typeof(Pawn_DrawTracker))]
-	[HarmonyPatch("DrawPos")]
+    // Not working, no idea what it is for.
+    //[HarmonyPatch(typeof(Pawn_DrawTracker), nameof(Pawn_DrawTracker.DrawPos), MethodType.Getter)]
 	public static class DrawPos_Patch
     {
         public static bool offsetEnabled = false;

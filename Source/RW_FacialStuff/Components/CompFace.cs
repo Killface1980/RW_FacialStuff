@@ -502,7 +502,7 @@ namespace FacialStuff
             string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : eyeDef.texBasePath;
             string path = eyePath + "Eye_" + eyeDef.texName + "_" + this.Pawn.gender + "_" + side;
 
-            return path;
+            return path.Replace(@"\", @"/");
         }
 
         [NotNull]

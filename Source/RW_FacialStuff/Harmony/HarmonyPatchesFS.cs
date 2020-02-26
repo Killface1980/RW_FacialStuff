@@ -33,6 +33,7 @@ namespace FacialStuff.Harmony
         static HarmonyPatchesFS()
         {
             var harmony = new HarmonyLib.Harmony("rimworld.facialstuff.mod");
+            // HarmonyLib.Harmony.DEBUG = true;
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
 
