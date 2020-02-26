@@ -1,4 +1,5 @@
 ﻿using FacialStuff.AnimatorWindows;
+using FacialStuff.Harmony;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -9,7 +10,7 @@ namespace FacialStuff
     {
         public override void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
         {
-            if (portrait && !MainTabWindow_WalkAnimator.IsOpen)
+            if (portrait && !HarmonyPatchesFS.AnimatorIsOpen())
             {
                 return;
             }

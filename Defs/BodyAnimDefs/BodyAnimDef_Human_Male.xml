@@ -1,24 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <BodyAnimDef>
-    <thingTarget>Deer</thingTarget>
-    <bodyDrawers>
-      <li Class="FacialStuff.QuadrupedDrawer">
-        <Graphics IsNull="True" />
-        <BodyFacing>
-          <rotInt>0</rotInt>
-        </BodyFacing>
-        <HeadFacing>
-          <rotInt>0</rotInt>
-        </HeadFacing>
-        <Flasher IsNull="True" />
-        <lastJob IsNull="True" />
-        <HandMesh />
-      </li>
-    </bodyDrawers>
-    <handType>Animal</handType>
-    <quadruped>True</quadruped>
-    <bipedWithHands>False</bipedWithHands>
     <armLength>0.35</armLength>
     <extraLegLength>0.15</extraLegLength>
     <hipOffsets>
@@ -28,7 +10,7 @@
         <z>0</z>
       </li>
       <li>
-        <x>-0.525</x>
+        <x>-0.15</x>
         <y>0.025</y>
         <z>0</z>
       </li>
@@ -38,7 +20,7 @@
         <z>0</z>
       </li>
       <li>
-        <x>0.525</x>
+        <x>0.15</x>
         <y>-0.025</y>
         <z>0</z>
       </li>
@@ -68,11 +50,23 @@
     </shoulderOffsets>
     <walkCycles>
       <li>
+        <key>Amble</key>
+        <value>Biped_Amble</value>
+      </li>
+      <li>
+        <key>Jog</key>
+        <value>Biped_Jog</value>
+      </li>
+      <li>
+        <key>Sprint</key>
+        <value>Biped_Sprint</value>
+      </li>
+      <li>
         <key>Walk</key>
-        <value>Quadruped_Walk</value>
+        <value>Biped_Walk</value>
       </li>
     </walkCycles>
-    <WalkCycleType>Quadruped</WalkCycleType>
+    <WalkCycleType>Biped</WalkCycleType>
     <poseCycles />
     <PoseCycleType IsNull="True" />
     <defName>BodyAnimDef_Human_Male</defName>

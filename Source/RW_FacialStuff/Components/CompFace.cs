@@ -198,7 +198,7 @@ namespace FacialStuff
 
         // public Vector3 RightHandPosition;
         // public Vector3 LeftHandPosition;
-        public Vector3 BaseHeadOffsetAt(bool portrait)
+        public Vector3 BaseHeadOffsetAt(bool portrait, Pawn pawn)
         {
             Vector3 offset = Vector3.zero;
 
@@ -211,7 +211,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i].BaseHeadOffsetAt(ref offset, portrait);
+                this.PawnHeadDrawers[i].BaseHeadOffsetAt(ref offset, portrait, pawn);
                 i++;
             }
 

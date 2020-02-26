@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using FacialStuff.AnimatorWindows;
-using Harmony;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -12,7 +12,7 @@ namespace FacialStuff.Harmony
 {
 
     [HarmonyPatch(typeof(Pawn_DrawTracker))]
-	[HarmonyPatch("DrawPos", PropertyMethod.Getter)]
+	[HarmonyPatch("DrawPos")]
 	public static class DrawPos_Patch
     {
         public static bool offsetEnabled = false;
@@ -37,7 +37,7 @@ namespace FacialStuff.Harmony
         new[]
         {
             typeof(Vector3), typeof(float), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode),
-            typeof(bool), typeof(bool)
+            typeof(bool), typeof(bool), typeof(bool)
         })]
     [HarmonyBefore("com.showhair.rimworld.mod")]
     public static class HarmonyPatch_PawnRenderer
@@ -179,7 +179,8 @@ namespace FacialStuff.Harmony
                                   Rot4 headFacing,
                                   RotDrawMode bodyDrawType,
                                   bool portrait,
-                                  bool headStump)
+                                  bool headStump, 
+                                  bool invisible)
         {
             // Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
             PawnGraphicSet graphics = __instance.graphics;
@@ -251,7 +252,7 @@ namespace FacialStuff.Harmony
             Quaternion footQuat = bodyQuat;
 
 
-            if (MainTabWindow_WalkAnimator.IsOpen)
+            if (HarmonyPatchesFS.AnimatorIsOpen())
             {
                 bodyFacing = MainTabWindow_BaseAnimator.BodyRot;
                 headFacing = MainTabWindow_BaseAnimator.HeadRot;
@@ -265,7 +266,7 @@ namespace FacialStuff.Harmony
             Quaternion headQuat = bodyQuat;
 
             // Rotate head if possible and wobble around
-            if (!portrait || MainTabWindow_WalkAnimator.IsOpen)
+            if (!portrait || HarmonyPatchesFS.AnimatorIsOpen())
             {
                 if (showFeet)
                 {
@@ -303,7 +304,7 @@ namespace FacialStuff.Harmony
 
                 Vector3 offsetAt = !hasFace
                                    ? __instance.BaseHeadOffsetAt(bodyFacing)
-                                   : compFace.BaseHeadOffsetAt(portrait);
+                                   : compFace.BaseHeadOffsetAt(portrait, pawn);
 
                 Vector3 b = bodyQuat * offsetAt;
                 Vector3 headDrawLoc = headPos + b;
@@ -444,7 +445,7 @@ namespace FacialStuff.Harmony
 
             compAnim?.DrawApparel(bodyQuat, bodyPos, portrait, renderBody);
 
-            compAnim?.DrawAlienBodyAddons(bodyQuat, bodyPos, portrait, renderBody, bodyFacing);
+            compAnim?.DrawAlienBodyAddons(bodyQuat, bodyPos, portrait, renderBody, bodyFacing, invisible);
 
             if (!portrait && pawn.RaceProps.Animal && pawn.inventory != null && pawn.inventory.innerContainer.Count > 0
              && graphics.packGraphic != null)

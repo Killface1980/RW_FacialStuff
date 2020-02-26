@@ -1,5 +1,5 @@
 ﻿using System;
-using Harmony;
+using HarmonyLib;
 using Vampire;
 using Verse;
 
@@ -10,7 +10,7 @@ namespace FacialStuff.Harmony.Optional
     {
         static Harmony_Vampire()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.vampire_patch");
+            HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("rimworld.facialstuff.vampire_patch");
 
             try
             {

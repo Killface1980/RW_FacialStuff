@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using FacialStuff;
-using Harmony;
+using HarmonyLib;
 using UnityEngine;
 using Verse;
 
@@ -16,7 +16,7 @@ namespace LightSabers
 
         static Harmony_JecsTools()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.jecstools_patch");
+            var harmony = new Harmony("rimworld.facialstuff.jecstools_patch");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             if (!modCheck)

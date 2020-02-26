@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using FacialStuff.DefOfs;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;
@@ -167,18 +165,18 @@ namespace FacialStuff
                 return;
             }
 
-            BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.Eye && x.customLabel.Contains("left"));
-            BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.Eye && x.customLabel.Contains("right"));
+            BodyPartRecord leftEye = body.Find(x => x.customLabel == "left eye");
+            BodyPartRecord rightEye = body.Find(x => x.customLabel == "right eye");
             BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
 
 
             //BodyPartRecord leftArm = body.Find(x => x.def == BodyPartDefOf.LeftArm);
             //BodyPartRecord rightArm = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("RightShoulder"));
-            BodyPartRecord leftHand = body.Find(x => x.def == BodyPartDefOf.Hand && x.customLabel.Contains("left"));
-            BodyPartRecord rightHand = body.Find(x => x.def == BodyPartDefOf.Hand && x.customLabel.Contains("right"));
+            BodyPartRecord leftHand = body.Find(x => x.customLabel == "left hand");
+            BodyPartRecord rightHand = body.Find(x => x.customLabel == "right hand");
 
-            BodyPartRecord leftFoot = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("Foot") && x.customLabel.Contains("left"));
-            BodyPartRecord rightFoot = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("Foot") && x.customLabel.Contains("right"));
+            BodyPartRecord leftFoot = body.Find(x => x.customLabel == "left foot");
+            BodyPartRecord rightFoot = body.Find(x => x.customLabel == "right foot");
 
             if (missing)
             {

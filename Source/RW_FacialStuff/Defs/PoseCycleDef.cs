@@ -75,7 +75,7 @@ namespace RimWorld
         [NotNull]
         public SimpleCurve HipOffsetHorizontalX = new SimpleCurve();
 
-        public LocomotionUrgency locomotionUrgency = LocomotionUrgency.None;
+        public PawnPosture pawnPosture = PawnPosture.Standing;
         public string PoseCycleType;
 
         #endregion Public Fields

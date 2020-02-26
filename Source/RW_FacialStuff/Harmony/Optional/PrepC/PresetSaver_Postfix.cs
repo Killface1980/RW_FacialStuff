@@ -1,5 +1,7 @@
 ﻿// ReSharper disable All
 
+using HarmonyLib;
+
 namespace FacialStuff.Harmony.Optional.PrepC
 {
     using System.Collections.Generic;
@@ -7,7 +9,6 @@ namespace FacialStuff.Harmony.Optional.PrepC
 
     using EdB.PrepareCarefully;
 
-    using global::Harmony;
 
     public static class PresetSaver_Postfix
     {

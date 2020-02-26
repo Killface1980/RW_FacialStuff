@@ -1,7 +1,7 @@
 ﻿using System;
 using EdB.PrepareCarefully;
 using FacialStuff.Harmony.Optional.PrepC;
-using Harmony;
+using HarmonyLib;
 using Verse;
 
 namespace FacialStuff.Harmony.Optional
@@ -12,7 +12,7 @@ namespace FacialStuff.Harmony.Optional
     {
         static Harmony_EdBPrepareCarefully()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.prepare_carefully_patch");
+            HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("rimworld.facialstuff.prepare_carefully_patch");
             try
             {
                 ((Action)(() =>

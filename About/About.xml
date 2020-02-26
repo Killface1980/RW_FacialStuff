@@ -1,9 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Facial Stuff 1.0</name>
+  <name>Facial Stuff 1.1</name>
   <author>Killface</author>
   <url></url>
-  <targetVersion>1.0.2059</targetVersion>
+  <supportedVersions>
+    <li>1.0</li>
+    <li>1.1</li>
+  </supportedVersions>
+  <packageId>killface.facialstuff</packageId>
   <description>This mod aims to provide more visual individuality for your colonists
 - hands and feet, animated (also for animals, unfinished)
 - smooth weapon animations and changed offsets

@@ -196,22 +196,19 @@ namespace FacialStuff.FaceEditor
             Columns        = 12;
             EntrySize      = ListWidth / Columns;
             NameBackground = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0.3f));
-            HairDefs       = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
-                                                                                x => x.hairTags
-                                                                                      .SharesElementWith(VanillaHairTags));
+
+            HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                x => x.hairTags
+                    .SharesElementWith(VanillaHairTags)).OrderBy(i => i.LabelCap).ToList();
 
             _eyeDefs      = DefDatabase<EyeDef>.AllDefsListForReading;
             FullBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType == BeardType.FullBeard)
-                                                 .ToList();
+                .OrderBy(i => i.LabelCap).ToList();
             LowerBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType != BeardType.FullBeard)
-                                                  .ToList();
-            MoustacheDefs = DefDatabase<MoustacheDef>.AllDefsListForReading;
+                .OrderBy(i => i.LabelCap).ToList();
+            MoustacheDefs = DefDatabase<MoustacheDef>.AllDefsListForReading.Where(x => x != null).OrderBy(i => i.LabelCap).ToList();
 
             BrowDefs = DefDatabase<BrowDef>.AllDefsListForReading;
-            FullBeardDefs.SortBy(i => i.LabelCap);
-            LowerBeardDefs.SortBy(i => i.LabelCap);
-            MoustacheDefs.SortBy(i => i.LabelCap);
-            HairDefs.SortBy(i => i.LabelCap);
         }
 
         public Dialog_FaceStyling(CompFace face)
@@ -318,8 +315,8 @@ namespace FacialStuff.FaceEditor
             set
             {
                 _currentFilter   = value;
-                FilteredHairDefs = _hairDefs.FindAll(x => x.hairTags.SharesElementWith(_currentFilter));
-                FilteredHairDefs.SortBy(i => i.LabelCap);
+                FilteredHairDefs = _hairDefs.FindAll(x => x.hairTags.SharesElementWith(_currentFilter))
+                    .OrderBy(i => i.LabelCap).ToList();
             }
         }
 
@@ -330,8 +327,8 @@ namespace FacialStuff.FaceEditor
             set
             {
                 _hairDefs        = value;
-                FilteredHairDefs = _hairDefs.FindAll(x => x.hairTags.SharesElementWith(CurrentFilter));
-                FilteredHairDefs.SortBy(i => i.LabelCap);
+                FilteredHairDefs = _hairDefs.FindAll(x => x.hairTags.SharesElementWith(CurrentFilter))
+                    .OrderBy(i => i.LabelCap).ToList();
             }
         }
 
@@ -862,8 +859,7 @@ namespace FacialStuff.FaceEditor
                                                                                                                   x.hairGender ==
                                                                                                                   HairGender
                                                                                                                  .FemaleUsually
-                                                                                                                 ));
-                                               HairDefs.SortBy(i => i.LabelCap);
+                                                                                                                 )).OrderBy(i => i.LabelCap).ToList();
                                                this.genderTab = GenderTab.Female;
                                            }, this.genderTab == GenderTab.Female);
             list.Add(item);
@@ -873,18 +869,17 @@ namespace FacialStuff.FaceEditor
                                             delegate
                                             {
                                                 HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
-                                                                                                              x =>
-                                                                                                                  x.hairTags
-                                                                                                                   .SharesElementWith(VanillaHairTags)
-                                                                                                                &&
-                                                                                                                  (x.hairGender ==
-                                                                                                                   HairGender
-                                                                                                                  .Male ||
-                                                                                                                   x.hairGender ==
-                                                                                                                   HairGender
-                                                                                                                  .MaleUsually
-                                                                                                                  ));
-                                                HairDefs.SortBy(i => i.LabelCap);
+                                                    x =>
+                                                        x.hairTags
+                                                            .SharesElementWith(VanillaHairTags)
+                                                        &&
+                                                        (x.hairGender ==
+                                                         HairGender
+                                                             .Male ||
+                                                         x.hairGender ==
+                                                         HairGender
+                                                             .MaleUsually
+                                                        )).OrderBy(i => i.LabelCap).ToList();
                                                 this.genderTab = GenderTab.Male;
                                             }, this.genderTab == GenderTab.Male);
             list.Add(item2);
@@ -899,8 +894,7 @@ namespace FacialStuff.FaceEditor
                                                                                                                    .SharesElementWith(VanillaHairTags) &&
                                                                                                                   x.hairGender ==
                                                                                                                   HairGender
-                                                                                                                 .Any);
-                                                HairDefs.SortBy(i => i.LabelCap);
+                                                                                                                 .Any).OrderBy(i => i.LabelCap).ToList();
                                                 this.genderTab = GenderTab.Any;
                                             }, this.genderTab == GenderTab.Any);
             list.Add(item3);
@@ -912,8 +906,7 @@ namespace FacialStuff.FaceEditor
                                                 HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                                                                                                               x => x
                                                                                                                   .hairTags
-                                                                                                                  .SharesElementWith(VanillaHairTags));
-                                                HairDefs.SortBy(i => i.LabelCap);
+                                                                                                                  .SharesElementWith(VanillaHairTags)).OrderBy(i => i.LabelCap).ToList();
                                                 this.genderTab = GenderTab.All;
                                             }, this.genderTab == GenderTab.All);
 
@@ -1315,8 +1308,7 @@ namespace FacialStuff.FaceEditor
                                                                                       x.hairGender ==
                                                                                       HairGender.Female ||
                                                                                       x.hairGender ==
-                                                                                      HairGender.FemaleUsually);
-                    BrowDefs.SortBy(i => i.LabelCap);
+                                                                                      HairGender.FemaleUsually).OrderBy(i => i.LabelCap).ToList();
                 }
                 else
                 {
@@ -1324,8 +1316,7 @@ namespace FacialStuff.FaceEditor
                                                                                   x =>
                                                                                       x.hairGender == HairGender.Male ||
                                                                                       x.hairGender ==
-                                                                                      HairGender.MaleUsually);
-                    BrowDefs.SortBy(i => i.LabelCap);
+                                                                                      HairGender.MaleUsually).OrderBy(i => i.LabelCap).ToList();
                 }
 
                 this.DrawBrowPicker(listRect);
@@ -1383,9 +1374,9 @@ namespace FacialStuff.FaceEditor
         public override void PostOpen()
         {
             FillDefs();
-            _hairDefs.SortBy(i => i.LabelCap);
-            _eyeDefs.SortBy(i => i.LabelCap);
-            BrowDefs.SortBy(i => i.LabelCap);
+            _hairDefs = _hairDefs.OrderBy(i => i.LabelCap).ToList();
+            _eyeDefs=_eyeDefs.OrderBy(i => i.LabelCap).ToList();
+            BrowDefs=BrowDefs.OrderBy(i => i.LabelCap).ToList();
         }
 
         public override void PreClose()
@@ -2205,8 +2196,7 @@ namespace FacialStuff.FaceEditor
                                                                                                                         x.hairGender ==
                                                                                                                         HairGender
                                                                                                                        .FemaleUsually
-                                                                                                                       ));
-                                                     HairDefs.SortBy(i => i.LabelCap);
+                                                                                                                       )).OrderBy(i => i.LabelCap).ToList();
                                                      this._specialTab = SpecialTab.Head;
                                                  }, this._specialTab == SpecialTab.Head);
             list.Add(item);
@@ -2226,8 +2216,7 @@ namespace FacialStuff.FaceEditor
                                                                                                                    x.hairGender ==
                                                                                                                    HairGender
                                                                                                                   .MaleUsually
-                                                                                                                  ));
-                                                HairDefs.SortBy(i => i.LabelCap);
+                                                                                                                  )).OrderBy(i => i.LabelCap).ToList();
                                                 this._specialTab = SpecialTab.Body;
                                             }, this._specialTab == SpecialTab.Body);
             list.Add(item2);
@@ -2242,8 +2231,7 @@ namespace FacialStuff.FaceEditor
                                                                                                                    .SharesElementWith(VanillaHairTags) &&
                                                                                                                   x.hairGender ==
                                                                                                                   HairGender
-                                                                                                                 .Any);
-                                                HairDefs.SortBy(i => i.LabelCap);
+                                                                                                                 .Any).OrderBy(i => i.LabelCap).ToList();
                                                 this.genderTab = GenderTab.Any;
                                             }, this._specialTab == SpecialTab.Head);
 

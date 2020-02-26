@@ -3,6 +3,7 @@ using System.Linq;
 using FacialStuff.AnimatorWindows;
 using FacialStuff.GraphicsFS;
 using FacialStuff.HairCut;
+using FacialStuff.Harmony;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -25,7 +26,7 @@ namespace FacialStuff
             }
         }
 
-        public override void BaseHeadOffsetAt(ref Vector3 offset, bool portrait)
+        public override void BaseHeadOffsetAt(ref Vector3 offset, bool portrait, Pawn pawn1)
         {
             Pawn pawn = this.Pawn;
             Vector2 headOffset = pawn.story.bodyType.headOffset;
@@ -33,7 +34,7 @@ namespace FacialStuff
             float verHeadOffset = headOffset.y;
 
             CompBodyAnimator animator = this.CompAnimator;
-            if (animator != null && MainTabWindow_PoseAnimator.IsOpen)
+            if (animator != null && HarmonyPatchesFS.AnimatorIsOpen())
             {
                 horHeadOffset += MainTabWindow_WalkAnimator.HorHeadOffset;
                 verHeadOffset += MainTabWindow_WalkAnimator.VerHeadOffset;
@@ -149,7 +150,10 @@ namespace FacialStuff
             if (!apparelGraphics.NullOrEmpty())
             {
                 headgearGraphics = apparelGraphics
-                                  .Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayerDefOf.Overhead).ToList();
+                                  .Where(x => x.sourceApparel.def.apparel.LastLayer == ApparelLayerDefOf.Overhead ||
+                                              x.sourceApparel.def.apparel.LastLayer == DefDatabase<ApparelLayerDef>.GetNamedSilentFail("OnHead") ||
+                                              x.sourceApparel.def.apparel.LastLayer == DefDatabase<ApparelLayerDef>.GetNamedSilentFail("StrappedHead") ||
+                                              x.sourceApparel.def.apparel.LastLayer == DefDatabase<ApparelLayerDef>.GetNamedSilentFail("MiddleHead")).ToList();
             }
 
             CompBodyAnimator animator = this.CompAnimator;
@@ -179,7 +183,7 @@ namespace FacialStuff
                                            && !x.sourceApparel.def.apparel.hatRenderedFrontOfFace);
 
                     if (this.CompFace.Props.hasOrganicHair || noRenderBed || filterHeadgear
-                     || !apCoversFullHead && !apCoversUpperHead && noRenderGoggles)
+                     || (!apCoversFullHead && !apCoversUpperHead && noRenderGoggles))
                     {
                         Material mat = this.Graphics.HairMatAt(this.HeadFacing);
                         GenDraw.DrawMeshNowOrLater(hairMesh, hairLoc, headQuat, mat, portrait);

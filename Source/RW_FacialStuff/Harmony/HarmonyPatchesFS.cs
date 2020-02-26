@@ -2,10 +2,11 @@
 
 using FacialStuff.HairCut;
 using FacialStuff.Tweener;
-using Harmony;
+using HarmonyLib;
 using JetBrains.Annotations;
 using System;
 using System.Reflection.Emit;
+using HarmonyLib;
 
 namespace FacialStuff.Harmony
 {
@@ -31,7 +32,7 @@ namespace FacialStuff.Harmony
 
         static HarmonyPatchesFS()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.mod");
+            var harmony = new HarmonyLib.Harmony("rimworld.facialstuff.mod");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
 
@@ -59,7 +60,7 @@ namespace FacialStuff.Harmony
             
                harmony.Patch(
                              AccessTools.Method(typeof(PawnRenderer), nameof(PawnRenderer.RenderPawnAt),
-                                                new[] { typeof(Vector3), typeof(RotDrawMode), typeof(bool) }),
+                                                new[] { typeof(Vector3), typeof(RotDrawMode), typeof(bool), typeof(bool) }),
             
                              // new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(HarmonyPatchesFS.RenderPawnAt)),
                              null,
@@ -169,13 +170,18 @@ namespace FacialStuff.Harmony
 
         public static bool IsAnimated_Prefix(Pawn pawn, ref bool __result)
         {
-            if (MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn == pawn)
+            if (AnimatorIsOpen() && MainTabWindow_WalkAnimator.Pawn == pawn)
             {
                 __result = true;
                 return false;
             }
 
             return true;
+        }
+
+        public static bool AnimatorIsOpen()
+        {
+            return MainTabWindow_WalkAnimator.IsOpen;// || MainTabWindow_PoseAnimator.IsOpen;
         }
 
         private static bool DrawAtGiddy(Pawn __instance)
@@ -380,8 +386,7 @@ namespace FacialStuff.Harmony
             //      sizeMod = 1f;
             //  }
 
-            if (Find.TickManager.TicksGame == animator.LastPosUpdate[(int)equipment] ||
-                MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn != pawn)
+            if (Find.TickManager.TicksGame == animator.LastPosUpdate[(int)equipment] || AnimatorIsOpen() && MainTabWindow_WalkAnimator.Pawn != pawn)
             {
                 drawLoc = animator.LastPosition[(int)equipment];
                 weaponAngle = animator.LastWeaponAngle;
@@ -475,6 +480,8 @@ namespace FacialStuff.Harmony
             }
         }
 
+ 
+
         private static void CalculatePositionsWeapon(Pawn pawn, ref float weaponAngle,
                                                      CompProperties_WeaponExtensions extensions,
                                                      out Vector3 weaponPosOffset, out bool aiming,
@@ -541,9 +548,9 @@ namespace FacialStuff.Harmony
         {
             // If from or to is a negative, we have to recalculate them.
             // For an example, if from = -45 then from(-45) + 360 = 315.
-            if (from < 0)
+            if (@from < 0)
             {
-                from += 360;
+                @from += 360;
             }
 
             if (to < 0)
@@ -552,29 +559,29 @@ namespace FacialStuff.Harmony
             }
 
             // Do not rotate if from == to.
-            if (from == to ||
-                from == 0 && to == 360 ||
-                from == 360 && to == 0)
+            if (@from == to ||
+                @from == 0 && to == 360 ||
+                @from == 360 && to == 0)
             {
                 return 0;
             }
 
             // Pre-calculate left and right.
-            float left = (360 - from) + to;
-            float right = from - to;
+            float left = (360 - @from) + to;
+            float right = @from - to;
 
             // If from < to, re-calculate left and right.
-            if (from < to)
+            if (@from < to)
             {
                 if (to > 0)
                 {
-                    left = to - from;
-                    right = (360 - to) + from;
+                    left = to - @from;
+                    right = (360 - to) + @from;
                 }
                 else
                 {
-                    left = (360 - to) + from;
-                    right = to - from;
+                    left = (360 - to) + @from;
+                    right = to - @from;
                 }
             }
 
@@ -588,7 +595,7 @@ namespace FacialStuff.Harmony
         private static bool CalcShortestRotDirection(float from, float to)
         {
             // If the value is positive, return true (left).
-            if (CalcShortestRot(from, to) >= 0)
+            if (CalcShortestRot(@from, to) >= 0)
             {
                 return true;
             }
@@ -736,8 +743,7 @@ namespace FacialStuff.Harmony
 
             instructionList.RemoveAt(indexDrawAt);
             instructionList.InsertRange(indexDrawAt, new List<CodeInstruction>
-
-                                                     {
+            {
                                                      // carriedThing.DrawAt(vector, flip);
                                                      // carriedThing = ldloc.1
                                                      // vector = ldloc.2
@@ -764,7 +770,7 @@ namespace FacialStuff.Harmony
             List<Label> labels = instructionList[index].labels;
             instructionList[index].labels = new List<Label>();
             instructionList.InsertRange(index, new List<CodeInstruction>
-                                               {
+            {
                                                // DoCalculations(Pawn pawn, Thing eq, ref Vector3 drawLoc, ref float weaponAngle, float aimAngle)
                                                new CodeInstruction(OpCodes.Ldarg_0),
                                                new CodeInstruction(OpCodes.Ldfld,
@@ -852,7 +858,7 @@ namespace FacialStuff.Harmony
                 return;
             }
 
-            // Modify the drawPos to appear behind a pawn if fcing North, in case vanilla didn't
+            // Modify the drawPos to appear behind a pawn if facing North, in case vanilla didn't
             if (!thingBehind && pawn.Rotation == Rot4.North)
             {
                 vector.y -= Offsets.YOffset_CarriedThing * 2;

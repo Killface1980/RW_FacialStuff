@@ -1,5 +1,5 @@
 ﻿using System;
-using Harmony;
+using HarmonyLib;
 using Verse;
 using Werewolf;
 
@@ -10,7 +10,7 @@ namespace FacialStuff.Harmony.Optional
     {
         static Harmony_Werewolf()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.werewolf_patch");
+            HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("rimworld.facialstuff.werewolf_patch");
 
             try
             {

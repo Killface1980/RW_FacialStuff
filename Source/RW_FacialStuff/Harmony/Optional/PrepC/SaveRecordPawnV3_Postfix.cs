@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EdB.PrepareCarefully;
-using Harmony;
+using HarmonyLib;
 using Verse;
 
 namespace FacialStuff.Harmony.Optional.PrepC
