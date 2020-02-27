@@ -85,7 +85,6 @@ namespace FacialStuff.Genetics
         bool           ignoreRelative = false)
         {
             Color beardColor;
-
             SetInitialHairMelaninLevels(pawn, out HairColorRequest hair, ignoreRelative);
 
             // Log.Message(
@@ -93,18 +92,26 @@ namespace FacialStuff.Genetics
             // + mother?.pheoMelanin + father?.euMelanin + father?.pheoMelanin);
 
             // Aging
-            float ageFloat            = pawn.ageTracker.AgeBiologicalYearsFloat / 100;
-            float agingBeginGreyFloat = Rand.Range(0.35f, 0.5f);
-
-            agingBeginGreyFloat += pawn.story.melanin * 0.1f + hair.EuMelanin * 0.05f + hair.PheoMelanin * 0.05f;
-
-            float greySpan = Rand.Range(0.07f, 0.2f);
-
-            greySpan += hair.EuMelanin     * 0.15f;
-            greySpan += pawn.story.melanin * 0.25f;
-            if (ageFloat > agingBeginGreyFloat)
+            if (pawn.ageTracker != null)
             {
-                hair.Greyness = Mathf.InverseLerp(agingBeginGreyFloat, agingBeginGreyFloat + greySpan, ageFloat);
+                float ageFloat            = pawn.ageTracker.AgeBiologicalYearsFloat / 100;
+                float agingBeginGreyFloat = Rand.Range(0.35f, 0.5f);
+
+                if (pawn.story != null)
+                {
+                    agingBeginGreyFloat +=
+                        pawn.story.melanin * 0.1f + hair.EuMelanin * 0.05f + hair.PheoMelanin * 0.05f;
+
+                    float greySpan = Rand.Range(0.07f, 0.2f);
+
+                    greySpan += hair.EuMelanin * 0.15f;
+                    greySpan += pawn.story.melanin * 0.25f;
+                    if (ageFloat > agingBeginGreyFloat)
+                    {
+                        hair.Greyness =
+                            Mathf.InverseLerp(agingBeginGreyFloat, agingBeginGreyFloat + greySpan, ageFloat);
+                    }
+                }
             }
 
             // Soften the greyness
@@ -127,14 +134,14 @@ namespace FacialStuff.Genetics
             float limit        = 0.98f;
             if (pawn.GetCompFace(out CompFace compFace))
             {
-                Faction faction = compFace.OriginFaction;
-                if (faction.def.techLevel > TechLevel.Industrial)
+                Faction faction = compFace.OriginFaction ?? Faction.OfPlayer;
+                if (faction?.def != null && (faction.def.techLevel > TechLevel.Industrial))
                 {
                     limit *= pawn.gender == Gender.Female ? 0.7f : 0.9f;
 
                     float       techMod = (faction.def.techLevel - TechLevel.Industrial) / 5f;
                     SimpleCurve ageCure = new SimpleCurve {{0.1f, 1f}, {0.25f, 1f - techMod}, {0.6f, 0.9f}};
-                    limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
+                    if (pawn.ageTracker != null) limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
                 }
             }
 
@@ -142,7 +149,7 @@ namespace FacialStuff.Genetics
             // {
             // limit *= 0.2f;
             // }
-            if (factionColor > limit && pawn.ageTracker.AgeBiologicalYearsFloat > 16)
+            if (pawn.ageTracker != null && (factionColor > limit && pawn.ageTracker.AgeBiologicalYearsFloat > 16))
             {
                 Color color2 = ArtificialHairColors.RandomElement();
 

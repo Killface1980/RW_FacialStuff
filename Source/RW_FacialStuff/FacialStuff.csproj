@@ -42,24 +42,12 @@
     <Reference Include="0Harmony, Version=2.0.0.5, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lib.Harmony.2.0.0.5\lib\net472\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="AbilityUser">
-      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\932008009\Assemblies\AbilityUser.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="CompActivatableEffect">
-      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\932008009\Assemblies\CompActivatableEffect.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="EdBPrepareCarefully">
-      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\735106432\Assemblies\EdBPrepareCarefully.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\735106432\1.1\Assemblies\EdBPrepareCarefully.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -87,24 +75,8 @@
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.InputModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.InputModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Vampire">
-      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\1187010034\Assemblies\Vampire.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Werewolf">
-      <HintPath>D:\SteamLibrary\steamapps\workshop\content\294100\1115882219\Assemblies\Werewolf.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -126,17 +98,20 @@
     <Compile Include="Harmony\HarmonyPatchesFS.cs" />
     <Compile Include="Harmony\HarmonyPatch_PawnRenderer.cs" />
     <Compile Include="Harmony\Optional\Harmony_EdBPrepareCarefully.cs" />
-    <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
-    <Compile Include="Harmony\Optional\Harmony_Werewolf.cs" />
+    <None Include="Harmony\Optional\Harmony_Vampire.cs" />
+    <None Include="Harmony\Optional\Harmony_Werewolf.cs" />
     <None Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
     <None Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
     <Compile Include="Harmony\Optional\PrepC\PanelBackstory_Postfix.cs" />
-    <Compile Include="Harmony\Optional\PrepC\PresetLoader_Postfix.cs" />
+    <Compile Include="Harmony\Optional\PrepC\PresetLoaderV4_Postfix.cs" />
+    <None Include="Harmony\Optional\PrepC\PresetLoaderV3_Postfix.cs" />
     <Compile Include="Harmony\Optional\PrepC\PresetSaver_Postfix.cs" />
-    <Compile Include="Harmony\Optional\PrepC\SaveRecordFaceV3.cs" />
-    <Compile Include="Harmony\Optional\PrepC\SaveRecordPawnV3_Postfix.cs" />
-    <Compile Include="Harmony\Optional\Vampire_Patches.cs" />
-    <Compile Include="Harmony\Optional\Werewolf_Patches.cs" />
+    <Compile Include="Harmony\Optional\PrepC\SaveRecordFaceV4.cs" />
+    <None Include="Harmony\Optional\PrepC\SaveRecordFaceV3.cs" />
+    <Compile Include="Harmony\Optional\PrepC\SaveRecordPawnV4_Postfix.cs" />
+    <None Include="Harmony\Optional\PrepC\SaveRecordPawnV3_Postfix.cs" />
+    <None Include="Harmony\Optional\Vampire_Patches.cs" />
+    <None Include="Harmony\Optional\Werewolf_Patches.cs" />
     <Compile Include="Tweener\TinyTween.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />

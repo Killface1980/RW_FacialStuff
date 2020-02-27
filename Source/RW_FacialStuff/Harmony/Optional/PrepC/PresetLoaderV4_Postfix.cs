@@ -6,12 +6,12 @@ using Verse;
 
 namespace FacialStuff.Harmony.Optional.PrepC
 {
-    public static class PresetLoader_Postfix
+    public static class PresetLoaderV4_Postfix
     {
         [HarmonyPostfix]
-        public static void LoadFace(ref CustomPawn __result, SaveRecordPawnV3 record)
+        public static void LoadFace(ref CustomPawn __result, SaveRecordPawnV4 record)
         {
-            if (!SaveRecordPawnV3_Postfix.LoadedPawns.Keys.Contains(record))
+            if (!SaveRecordPawnV4_Postfix.LoadedPawns.Keys.Contains(record))
             {
                 return;
             }
@@ -22,7 +22,7 @@ namespace FacialStuff.Harmony.Optional.PrepC
                 return;
             }
 
-            PawnFace pawnFace = SaveRecordPawnV3_Postfix.LoadedPawns[record].Face;
+            PawnFace pawnFace = SaveRecordPawnV4_Postfix.LoadedPawns[record].Face;
             if (pawn.GetCompFace(out CompFace compFace))
             {
                 if (pawnFace == null)

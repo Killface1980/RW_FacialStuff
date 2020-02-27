@@ -30,11 +30,11 @@ namespace FacialStuff.Harmony.Optional
 
                             harmony.Patch(
                                 AccessTools.Method(
-                                    typeof(PresetLoaderVersion3),
+                                    typeof(PresetLoaderVersion4),
                                     "LoadPawn",
-                                    new[] { typeof(SaveRecordPawnV3) }),
+                                    new[] { typeof(SaveRecordPawnV4) }),
                                 null,
-                                new HarmonyMethod(typeof(PresetLoader_Postfix), nameof(PresetLoader_Postfix.LoadFace)));
+                                new HarmonyMethod(typeof(PresetLoaderV4_Postfix), nameof(PresetLoaderV4_Postfix.LoadFace)));
 
                             harmony.Patch(
                                 AccessTools.Method(
@@ -64,8 +64,17 @@ namespace FacialStuff.Harmony.Optional
                                     nameof(SaveRecordPawnV3.ExposeData)),
                                 null,
                                 new HarmonyMethod(
-                                    typeof(SaveRecordPawnV3_Postfix),
-                                    nameof(SaveRecordPawnV3_Postfix.ExposeFaceData)));
+                                    typeof(SaveRecordPawnV4_Postfix),
+                                    nameof(SaveRecordPawnV4_Postfix.ExposeFaceData)));
+                           
+                            harmony.Patch(
+                                AccessTools.Method(
+                                    typeof(SaveRecordPawnV4),
+                                    nameof(SaveRecordPawnV4.ExposeData)),
+                                null,
+                                new HarmonyMethod(
+                                    typeof(SaveRecordPawnV4_Postfix),
+                                    nameof(SaveRecordPawnV4_Postfix.ExposeFaceData)));
                         }
 
                         // harmony.Patch(

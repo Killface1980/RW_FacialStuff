@@ -14,22 +14,23 @@ namespace FacialStuff.Harmony.Optional.PrepC
     {
         public static void AddFaceToDictionary(CustomPawn pawn)
         {
-            if (SaveRecordPawnV3_Postfix.SavedPawns.ContainsKey(pawn.Id))
+            if (SaveRecordPawnV4_Postfix.SavedPawns.ContainsKey(pawn.Id))
             {
-                SaveRecordPawnV3_Postfix.SavedPawns.Remove(pawn.Id);
+                SaveRecordPawnV4_Postfix.SavedPawns.Remove(pawn.Id);
             }
 
-            SaveRecordPawnV3_Postfix.SavedPawns.Add(pawn.Id, pawn);
+            SaveRecordPawnV4_Postfix.SavedPawns.Add(pawn.Id, pawn);
         }
 
         [HarmonyTranspiler]
         public static IEnumerable<CodeInstruction> SavePawnRef(IEnumerable<CodeInstruction> instrs, ILGenerator gen)
         {
+
             CodeInstruction last = null;
             foreach (CodeInstruction itr in instrs)
             {
                 if (last != null && itr.opcode == OpCodes.Newobj && itr.operand
-                    == AccessTools.Constructor(typeof(SaveRecordPawnV3), new[] { typeof(CustomPawn) }))
+                    == AccessTools.Constructor(typeof(SaveRecordPawnV4), new[] { typeof(CustomPawn) }))
                 {
                     yield return new CodeInstruction(
                         OpCodes.Call,
@@ -37,7 +38,9 @@ namespace FacialStuff.Harmony.Optional.PrepC
                             typeof(PresetSaver_Postfix),
                             nameof(AddFaceToDictionary),
                             new[] { typeof(CustomPawn) }));
-                    yield return new CodeInstruction(last.opcode, last.operand);
+                    if (last.opcode == OpCodes.Call)
+                        yield return new CodeInstruction(OpCodes.Ldloca_S, 2);
+                    yield return last;
                 }
 
                 yield return itr;
