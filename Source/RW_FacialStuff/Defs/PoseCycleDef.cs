@@ -10,7 +10,6 @@ using FacialStuff.Defs;
 using JetBrains.Annotations;
 using System.Collections.Generic;
 using Verse;
-using Verse.AI;
 
 namespace RimWorld
 {
