@@ -6,6 +6,7 @@ using HarmonyLib;
 using JetBrains.Annotations;
 using System;
 using System.Reflection.Emit;
+using FacialStuff.Defs;
 using HarmonyLib;
 
 namespace FacialStuff.Harmony
@@ -146,9 +147,46 @@ namespace FacialStuff.Harmony
                 def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Face)));
             }
 
+            var beardyHairList =
+                DefDatabase<HairDef>.AllDefsListForReading.Where(x => x.IsVHEhair()).ToList();
+            for (int i = beardyHairList.Count() - 1; i >= 0; i--)
+            {
+                var beardy = beardyHairList[i];
+                if (beardy.label.Contains("shaven")) continue;
+                BeardDef beardDef = new BeardDef 
+                {
+                    defName = beardy.defName,
+                    label = "_VHE_" + beardy.label,
+                    hairGender = beardy.hairGender,
+                    texPath = beardy.texPath.Replace("Things/Pawn/Humanlike/Beards/", ""),
+                    hairTags = beardy.hairTags,
+                    beardType = BeardType.FullBeard
+                };
+                if (beardDef.label.Contains("stubble") || beardDef.label.Contains("goatee") || beardDef.label.Contains("lincoln"))
+                {
+                    beardDef.drawMouth = true;
+                }
+                DefDatabase<BeardDef>.Add(beardDef);
+
+            }
+            Dialog_FaceStyling.FullBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType == BeardType.FullBeard)
+                .ToList();
+            Dialog_FaceStyling.LowerBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType != BeardType.FullBeard)
+                .ToList();
+            Dialog_FaceStyling.MoustacheDefs = DefDatabase<MoustacheDef>.AllDefsListForReading;
+
             CheckAllInjected();
         }
 
+        public static bool IsVHEhair(this Def def)
+        {
+            if (def.defName.StartsWith("VHE_Beard"))
+            {
+                return true;
+            }
+
+            return false;
+        }
         #endregion Public Constructors
 
         #region Public Fields
@@ -831,7 +869,7 @@ namespace FacialStuff.Harmony
             }
 
             IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
-                                          where hair.hairTags.SharesElementWith(hairTags)
+                                          where hair.hairTags.SharesElementWith(hairTags) && !hair.IsVHEhair()
                                           select hair;
 
             __result = source.RandomElementByWeight(hair => PawnFaceMaker.HairChoiceLikelihoodFor(hair, pawn));

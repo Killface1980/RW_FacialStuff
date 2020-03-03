@@ -11,6 +11,7 @@ using FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs;
 using FacialStuff.FaceEditor.UI.Util;
 using FacialStuff.Genetics;
 using FacialStuff.GraphicsFS;
+using FacialStuff.Harmony;
 using FacialStuff.Utilities;
 using JetBrains.Annotations;
 using RimWorld;
@@ -19,7 +20,6 @@ using Verse;
 
 namespace FacialStuff.FaceEditor
 {
-    [StaticConstructorOnStartup]
 
     // ReSharper disable once InconsistentNaming
     public partial class Dialog_FaceStyling : Window
@@ -75,9 +75,9 @@ namespace FacialStuff.FaceEditor
 
         private static readonly Color DarkBackground = new Color(0.12f, 0.12f, 0.12f);
 
-        private static readonly List<BeardDef> FullBeardDefs;
+        public static List<BeardDef> FullBeardDefs;
 
-        private static readonly List<BeardDef> LowerBeardDefs;
+        public static List<BeardDef> LowerBeardDefs;
 
         // private FacePreset SelectedFacePreset
         // {
@@ -88,7 +88,7 @@ namespace FacialStuff.FaceEditor
         // _selFacePresetInt = value;
         // }
         // }
-        private static readonly List<MoustacheDef> MoustacheDefs;
+        public static List<MoustacheDef> MoustacheDefs;
 
         private static readonly long TicksPerYear = 3600000L;
 
@@ -198,7 +198,7 @@ namespace FacialStuff.FaceEditor
             NameBackground = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0.3f));
             HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                                                                                 x => x.hairTags
-                                                                                      .SharesElementWith(VanillaHairTags));
+                                                                                      .SharesElementWith(VanillaHairTags) && !x.IsVHEhair());
 
             _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
             FullBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType == BeardType.FullBeard)
@@ -863,7 +863,7 @@ namespace FacialStuff.FaceEditor
                                                                                                                  .Female ||
                                                                                                                   x.hairGender ==
                                                                                                                   HairGender
-                                                                                                                 .FemaleUsually
+                                                                                                                 .FemaleUsually && !x.IsVHEhair()
                                                                                                                  ));
                                                HairDefs.SortBy(i => i.LabelCap.ToString());
                                                this.genderTab = GenderTab.Female;
@@ -884,7 +884,7 @@ namespace FacialStuff.FaceEditor
                                                                                                                   .Male ||
                                                                                                                    x.hairGender ==
                                                                                                                    HairGender
-                                                                                                                  .MaleUsually
+                                                                                                                  .MaleUsually && !x.IsVHEhair()
                                                                                                                   ));
                                                 HairDefs.SortBy(i => i.LabelCap.ToString());
                                                 this.genderTab = GenderTab.Male;
@@ -901,7 +901,7 @@ namespace FacialStuff.FaceEditor
                                                                                                                    .SharesElementWith(VanillaHairTags) &&
                                                                                                                   x.hairGender ==
                                                                                                                   HairGender
-                                                                                                                 .Any);
+                                                                                                                 .Any && !x.IsVHEhair());
                                                 HairDefs.SortBy(i => i.LabelCap.ToString());
                                                 this.genderTab = GenderTab.Any;
                                             }, this.genderTab == GenderTab.Any);
@@ -914,7 +914,7 @@ namespace FacialStuff.FaceEditor
                                                 HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                                                                                                               x => x
                                                                                                                   .hairTags
-                                                                                                                  .SharesElementWith(VanillaHairTags));
+                                                                                                                  .SharesElementWith(VanillaHairTags) && !x.IsVHEhair());
                                                 HairDefs.SortBy(i => i.LabelCap.ToString());
                                                 this.genderTab = GenderTab.All;
                                             }, this.genderTab == GenderTab.All);
@@ -1502,7 +1502,7 @@ namespace FacialStuff.FaceEditor
                                                                                    && (x.hairGender ==
                                                                                        HairGender.Male ||
                                                                                        x.hairGender ==
-                                                                                       HairGender.MaleUsually));
+                                                                                       HairGender.MaleUsually && !x.IsVHEhair()));
                     _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
                                                                                  x => x.hairGender == HairGender.Male ||
                                                                                       x.hairGender ==
@@ -1522,7 +1522,7 @@ namespace FacialStuff.FaceEditor
                                                                                    && (x.hairGender ==
                                                                                        HairGender.Female ||
                                                                                        x.hairGender ==
-                                                                                       HairGender.FemaleUsually));
+                                                                                       HairGender.FemaleUsually && !x.IsVHEhair()));
                     _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
                                                                                  x =>
                                                                                      x.hairGender ==
@@ -2206,7 +2206,7 @@ namespace FacialStuff.FaceEditor
                                                                                                                        .Female ||
                                                                                                                         x.hairGender ==
                                                                                                                         HairGender
-                                                                                                                       .FemaleUsually
+                                                                                                                       .FemaleUsually && !x.IsVHEhair()
                                                                                                                        ));
                                                      HairDefs.SortBy(i => i.LabelCap.ToString());
                                                      this._specialTab = SpecialTab.Head;
@@ -2227,7 +2227,7 @@ namespace FacialStuff.FaceEditor
                                                                                                                   .Male ||
                                                                                                                    x.hairGender ==
                                                                                                                    HairGender
-                                                                                                                  .MaleUsually
+                                                                                                                  .MaleUsually && !x.IsVHEhair()
                                                                                                                   ));
                                                 HairDefs.SortBy(i => i.LabelCap.ToString());
                                                 this._specialTab = SpecialTab.Body;
@@ -2244,7 +2244,7 @@ namespace FacialStuff.FaceEditor
                                                                                                                    .SharesElementWith(VanillaHairTags) &&
                                                                                                                   x.hairGender ==
                                                                                                                   HairGender
-                                                                                                                 .Any);
+                                                                                                                 .Any && !x.IsVHEhair());
                                                 HairDefs.SortBy(i => i.LabelCap.ToString());
                                                 this.genderTab = GenderTab.Any;
                                             }, this._specialTab == SpecialTab.Head);

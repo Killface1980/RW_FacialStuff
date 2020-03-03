@@ -366,13 +366,14 @@ namespace FacialStuff.Utilities
         {
             if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
             {
-                return 30f;
+                return 20f;
             }
 
             switch (beard.hairGender)
             {
                 case HairGender.Male: return 70f;
                 case HairGender.MaleUsually: return 50f;
+                default: return 30f;
             }
 
             Log.Error(string.Concat("Unknown beard likelihood for ", beard, " with ", pawn));

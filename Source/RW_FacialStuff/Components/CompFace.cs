@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 using RimWorld;
 using System;
 using System.Collections.Generic;
-
+using FacialStuff.Harmony;
 using UnityEngine;
 using Verse;
 
@@ -523,6 +523,11 @@ namespace FacialStuff
             if (def == BeardDefOf.Beard_Shaved)
             {
                 return StringsFS.PathHumanlike + "Beards/Beard_Shaved";
+            }
+
+            if (def.IsVHEhair())
+            {
+                return StringsFS.PathHumanlike + "Beards/" + def.texPath;
             }
 
             return StringsFS.PathHumanlike + "Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;

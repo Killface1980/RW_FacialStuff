@@ -158,9 +158,11 @@ namespace FacialStuff
 
             CompBodyAnimator animator = this.CompAnimator;
 
-            bool noRenderRoofed = animator != null && animator.HideHat;
-            bool noRenderBed = Controller.settings.HideHatInBed && !renderBody;
             bool noRenderGoggles = Controller.settings.FilterHats;
+
+            bool showRoyalHeadgear = Pawn.royalty?.MostSeniorTitle != null && Controller.settings.ShowRoyalHeadgear;
+            bool noRenderRoofed = animator != null && animator.HideHat && !showRoyalHeadgear;
+            bool noRenderBed = Controller.settings.HideHatInBed && !renderBody && !showRoyalHeadgear;
 
             if (!headgearGraphics.NullOrEmpty())
             {
@@ -226,7 +228,7 @@ namespace FacialStuff
                     }
                 }
 
-                if (noRenderBed)
+                if (noRenderBed && !showRoyalHeadgear)
                 {
                     headgearGraphics?.Clear();
                 }
