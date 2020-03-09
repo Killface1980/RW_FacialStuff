@@ -60,6 +60,10 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
@@ -92,6 +96,8 @@
     <None Include="Components\CompHumanFace.cs" />
     <None Include="Controller_Animator.cs" />
     <None Include="Components\Class1.cs" />
+    <Compile Include="Animator\FS_Skeleton.cs" />
+    <Compile Include="Components\CompSkeleton.cs" />
     <Compile Include="DefOfs\EyeDefOf.cs" />
     <Compile Include="Enums\HeadCoverage.cs" />
     <None Include="GraphicsFS\MeshMakerPlanesFS.cs" />

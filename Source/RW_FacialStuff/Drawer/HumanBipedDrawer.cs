@@ -298,7 +298,7 @@ namespace FacialStuff
 
         public override void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
         {
-            if (this.Pawn.Dead || this.Pawn.Downed)
+            if (ShouldBeIgnored())
             {
                 return;
             }
@@ -498,7 +498,7 @@ namespace FacialStuff
                                        bool portrait,
                                        Thing carriedThing = null, bool flip = false)
         {
-            if (this.Pawn.Dead || this.Pawn.Downed)
+            if (ShouldBeIgnored())
             {
                 return;
             }
@@ -1052,7 +1052,11 @@ namespace FacialStuff
             {
                 return;
             }
-            if (!this.Pawn.Downed || !this.Pawn.Dead)
+
+            if (ShouldBeIgnored())
+            {
+                return;
+            }
             {
                 if (!HarmonyPatchesFS.AnimatorIsOpen() &&
                     Find.TickManager.TicksGame == this.CompAnimator.LastPosUpdate[(int) tweenThing] ||
@@ -1067,10 +1071,10 @@ namespace FacialStuff
                         noTween = true;
                     }
 
-                    this.CompAnimator.LastPosUpdate[(int)tweenThing] = Find.TickManager.TicksGame;
+                    this.CompAnimator.LastPosUpdate[(int) tweenThing] = Find.TickManager.TicksGame;
 
 
-                    Vector3Tween tween = this.CompAnimator.Vector3Tweens[(int)tweenThing];
+                    Vector3Tween tween = this.CompAnimator.Vector3Tweens[(int) tweenThing];
 
 
                     switch (tween.State)
@@ -1096,7 +1100,7 @@ namespace FacialStuff
                             ScaleFunc scaleFunc = ScaleFuncs.SineEaseOut;
 
 
-                            Vector3 start = this.CompAnimator.LastPosition[(int)tweenThing];
+                            Vector3 start = this.CompAnimator.LastPosition[(int) tweenThing];
                             float distance = Vector3.Distance(start, position);
                             float duration = Mathf.Abs(distance * 50f);
                             if (start != Vector3.zero && duration > 12f)
@@ -1109,7 +1113,7 @@ namespace FacialStuff
                             break;
                     }
 
-                    this.CompAnimator.LastPosition[(int)tweenThing] = position;
+                    this.CompAnimator.LastPosition[(int) tweenThing] = position;
                 }
             }
 
@@ -1120,6 +1124,11 @@ namespace FacialStuff
                                        quat,
                                        material,
                                        portrait);
+        }
+
+        public bool ShouldBeIgnored()
+        {
+            return this.Pawn.Dead || this.Pawn.Downed || this.Pawn.InContainerEnclosed;
         }
 
         #endregion Private Methods

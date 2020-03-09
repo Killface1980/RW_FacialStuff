@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using FacialStuff.AnimatorWindows;
+﻿using FacialStuff.AnimatorWindows;
 using FacialStuff.GraphicsFS;
 using FacialStuff.HairCut;
 using FacialStuff.Harmony;
 using RimWorld;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Verse;
 
@@ -12,7 +12,6 @@ namespace FacialStuff
 {
     public class HumanHeadDrawer : PawnHeadDrawer
     {
-
         #region Public Methods
 
         public override void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
@@ -273,46 +272,60 @@ namespace FacialStuff
             PawnFaceGraphic faceGraphic = this.CompFace.PawnFaceGraphic;
             // natural eyes
             PartStatus eyeLeft = this.CompFace.BodyStat.EyeLeft;
-            if (faceGraphic != null && (eyeLeft == PartStatus.Natural ||
-                                        eyeLeft == PartStatus.Artificial &&
-                                        !faceGraphic.EyePatchLeftTexExists()))
+            if (faceGraphic == null)
             {
-                Material leftEyeMat = this.CompFace.FaceMaterial.EyeLeftMatAt(this.HeadFacing, portrait);
-                if (leftEyeMat != null)
-                {
-                    Vector3 left = drawLoc;
-                    drawLoc.y += Offsets.YOffset_LeftPart;
-
-                    GenDraw.DrawMeshNowOrLater(
-                                               eyeMesh,
-                                               left + this.EyeOffset(this.HeadFacing) +
-                                               this.CompFace.EyeWiggler.EyeMoveL,
-                                               headQuat,
-                                               leftEyeMat,
-                                               portrait);
-                }
+                return;
             }
+            Material leftEyeMat = null;
+
+            if (eyeLeft == PartStatus.Natural ||
+                eyeLeft == PartStatus.Artificial &&
+                !faceGraphic.EyePatchLeftTexExists())
+            {
+                leftEyeMat = this.CompFace.FaceMaterial.EyeLeftMatAt(this.HeadFacing, portrait);
+            }
+            else if (eyeLeft == PartStatus.Missing)
+            {
+                leftEyeMat = this.CompFace.FaceMaterial.EyeLeftMissingMatAt(this.HeadFacing, portrait);
+            }
+            if (leftEyeMat != null)
+            {
+                Vector3 left = drawLoc;
+                drawLoc.y += Offsets.YOffset_LeftPart;
+
+                GenDraw.DrawMeshNowOrLater(
+                    eyeMesh,
+                    left + this.EyeOffset(this.HeadFacing) +
+                    this.CompFace.EyeWiggler.EyeMoveL,
+                    headQuat,
+                    leftEyeMat,
+                    portrait);
+            }
+            Material rightEyeMat = null;
 
             PartStatus eyeRight = this.CompFace.BodyStat.EyeRight;
-            if (faceGraphic != null && (eyeRight == PartStatus.Natural ||
-                                        eyeRight == PartStatus.Artificial &&
-                                        !faceGraphic.EyePatchRightTexExists()))
+            if (eyeRight == PartStatus.Natural ||
+            eyeRight == PartStatus.Artificial &&
+            !faceGraphic.EyePatchRightTexExists())
             {
-                Material rightEyeMat = this.CompFace.FaceMaterial.EyeRightMatAt(this.HeadFacing, portrait);
+                rightEyeMat = this.CompFace.FaceMaterial.EyeRightMatAt(this.HeadFacing, portrait);
+            }
+            else if (eyeRight == PartStatus.Missing)
+            {
+                rightEyeMat = this.CompFace.FaceMaterial.EyeRightMissingMatAt(this.HeadFacing, portrait);
+            }
+            if (rightEyeMat != null)
+            {
+                Vector3 right = drawLoc;
+                right.y += Offsets.YOffset_RightPart;
 
-                if (rightEyeMat != null)
-                {
-                    Vector3 right = drawLoc;
-                    right.y += Offsets.YOffset_RightPart;
-
-                    GenDraw.DrawMeshNowOrLater(
-                                               eyeMesh,
-                                               right + this.EyeOffset(this.HeadFacing) +
-                                               this.CompFace.EyeWiggler.EyeMoveR,
-                                               headQuat,
-                                               rightEyeMat,
-                                               portrait);
-                }
+                GenDraw.DrawMeshNowOrLater(
+                    eyeMesh,
+                    right + this.EyeOffset(this.HeadFacing) +
+                    this.CompFace.EyeWiggler.EyeMoveR,
+                    headQuat,
+                    rightEyeMat,
+                    portrait);
             }
         }
 
@@ -430,12 +443,14 @@ namespace FacialStuff
                                                  * walkCycle?.BodyAngle.Evaluate(this.CompAnimator.MovedPercent) ?? 0f,
                                                    Vector3.up);
                 }
-
-                asQuat *= Quaternion.AngleAxis(
+                else
+                {
+                    asQuat *= Quaternion.AngleAxis(
                                                (this.BodyFacing == Rot4.South ? 1 : -1)
                                              * walkCycle?.BodyAngleVertical
                                                          .Evaluate(this.CompAnimator.MovedPercent) ?? 0f,
                                                Vector3.up);
+                }
             }
 
             return asQuat;
@@ -443,6 +458,8 @@ namespace FacialStuff
 
         public override void Tick(Rot4 bodyFacing, Rot4 headFacing, PawnGraphicSet graphics)
         {
+            // Do I need this? Seems pretty emtpy by now
+
             base.Tick(bodyFacing, headFacing, graphics);
 
             CompBodyAnimator animator = this.CompAnimator;
@@ -454,6 +471,5 @@ namespace FacialStuff
         }
 
         #endregion Public Methods
-
     }
 }

@@ -770,41 +770,41 @@ namespace FacialStuff.AnimatorWindows
         private void DrawRotatorHead(float curY, float width)
         {
             float buttWidth = (width - 4 * this.Spacing) / 6;
-            Rect butt = new Rect(0f, curY, buttWidth, 32f);
+            Rect button = new Rect(0f, curY, buttWidth, 32f);
 
             Rot4 rotation = Rot4.East;
 
-            if (Widgets.ButtonText(butt, rotation.ToStringHuman()))
+            if (Widgets.ButtonText(button, rotation.ToStringHuman()))
             {
                 HeadRot = rotation;
             }
 
-            butt.x += butt.width + this.Spacing;
+            button.x += button.width + this.Spacing;
             rotation = Rot4.West;
 
-            if (Widgets.ButtonText(butt, rotation.ToStringHuman()))
+            if (Widgets.ButtonText(button, rotation.ToStringHuman()))
             {
                 HeadRot = rotation;
             }
 
-            butt.x += butt.width + this.Spacing;
+            button.x += button.width + this.Spacing;
             rotation = Rot4.North;
-            if (Widgets.ButtonText(butt, rotation.ToStringHuman()))
+            if (Widgets.ButtonText(button, rotation.ToStringHuman()))
             {
                 HeadRot = rotation;
             }
 
-            butt.x += butt.width + this.Spacing;
+            button.x += button.width + this.Spacing;
             rotation = Rot4.South;
-            if (Widgets.ButtonText(butt, rotation.ToStringHuman()))
+            if (Widgets.ButtonText(button, rotation.ToStringHuman()))
             {
                 HeadRot = rotation;
             }
 
-            butt.x += butt.width + this.Spacing;
+            button.x += button.width + this.Spacing;
 
-            butt.width *= 2;
-            Widgets.CheckboxLabeled(butt, "Panic", ref Panic);
+            button.width *= 2;
+            Widgets.CheckboxLabeled(button, "Panic", ref Panic);
         }
 
         private void DrawTimelineButtons(float width, int count)

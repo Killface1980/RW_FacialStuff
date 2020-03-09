@@ -16,6 +16,11 @@ namespace FacialStuff
 
             List<FloatMenuOption> list = new List<FloatMenuOption>();
             {
+                if (selPawn.GetCompFace().IsChild)
+                {
+                    FloatMenuOption item = new FloatMenuOption("Pawn must be older than 14.".Translate(), null);
+                    return new List<FloatMenuOption> { item };
+                }
                 if (!selPawn.CanReserve(styler))
                 {
                     FloatMenuOption item = new FloatMenuOption("CannotUseReserved".Translate(), null);

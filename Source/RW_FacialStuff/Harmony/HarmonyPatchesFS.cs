@@ -148,8 +148,8 @@ namespace FacialStuff.Harmony
             }
 
             var beardyHairList =
-                DefDatabase<HairDef>.AllDefsListForReading.Where(x => x.IsVHEhair()).ToList();
-            for (int i = beardyHairList.Count() - 1; i >= 0; i--)
+                DefDatabase<HairDef>.AllDefsListForReading.Where(x => x.IsBeardNotHair()).ToList();
+            for (int i = 0; i < beardyHairList.Count(); i++)
             {
                 var beardy = beardyHairList[i];
                 if (beardy.label.Contains("shaven")) continue;
@@ -178,7 +178,7 @@ namespace FacialStuff.Harmony
             CheckAllInjected();
         }
 
-        public static bool IsVHEhair(this Def def)
+        public static bool IsBeardNotHair(this Def def)
         {
             if (def.defName.StartsWith("VHE_Beard"))
             {
@@ -869,7 +869,7 @@ namespace FacialStuff.Harmony
             }
 
             IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
-                                          where hair.hairTags.SharesElementWith(hairTags) && !hair.IsVHEhair()
+                                          where hair.hairTags.SharesElementWith(hairTags) && !hair.IsBeardNotHair()
                                           select hair;
 
             __result = source.RandomElementByWeight(hair => PawnFaceMaker.HairChoiceLikelihoodFor(hair, pawn));

@@ -29,8 +29,10 @@ namespace FacialStuff
 
         [CanBeNull] public string TexPathEyeLeft;
         [CanBeNull] public string TexPathEyeLeftPatch;
+        [CanBeNull] public string TexPathEyeLeftMissing;
         [CanBeNull] public string TexPathEyeRight;
         [CanBeNull] public string TexPathEyeRightPatch;
+        [CanBeNull] public string TexPathEyeRightMissing;
         [CanBeNull] public string TexPathJawAddedPart;
 
         #endregion Public Fields
@@ -525,7 +527,7 @@ namespace FacialStuff
                 return StringsFS.PathHumanlike + "Beards/Beard_Shaved";
             }
 
-            if (def.IsVHEhair())
+            if (def.IsBeardNotHair())
             {
                 return StringsFS.PathHumanlike + "Beards/" + def.texPath;
             }
@@ -629,16 +631,16 @@ namespace FacialStuff
         {
             base.PostDraw();
 
-            // Children & Pregnancy || Werewolves transformed
-            if (this.Pawn.Map == null || !this.Pawn.Spawned || this.Pawn.Dead || this.IsChild || this.Deactivated)
-            {
-                return;
-            }
-
             if (Find.TickManager.Paused)
             {
                 return;
             }
+            // Children & Pregnancy || Werewolves transformed
+            if (this.Pawn.Map == null || Pawn.InContainerEnclosed || !this.Pawn.Spawned || this.Pawn.Dead || this.IsChild || this.Deactivated)
+            {
+                return;
+            }
+
 
             // CellRect viewRect = Find.CameraDriver.CurrentViewRect;
             // viewRect = viewRect.ExpandedBy(5);
@@ -663,7 +665,7 @@ namespace FacialStuff
 
             if (this.Props.hasMouth)
             {
-                if (Find.TickManager.TicksGame % 30 == 0)
+                if (Find.TickManager.TicksGame % 90 == 0)
                 {
                     this.PawnFaceGraphic?.SetMouthAccordingToMoodLevel();
                 }

@@ -285,7 +285,7 @@ namespace FacialStuff.Animator
                     {
                         Thing thing = intVec.GetThingList(this._pawn.Map)?.Find(x => x is Pawn);
 
-                        if (!(thing is Pawn otherPawn) || otherPawn == this._pawn || otherPawn.Dead || otherPawn.Downed)
+                        if (!(thing is Pawn otherPawn) || otherPawn == this._pawn) // || otherPawn.Dead || otherPawn.Downed)
                         {
                             continue;
                         }

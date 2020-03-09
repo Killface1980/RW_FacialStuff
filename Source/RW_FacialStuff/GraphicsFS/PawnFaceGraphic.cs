@@ -57,6 +57,8 @@ namespace FacialStuff.GraphicsFS
 
         private          float    _mood = 0.5f;
         private readonly PawnFace pawnFace;
+        public Graphic_Multi_NaturalEyes EyeLeftMissingGraphic;
+        public Graphic_Multi_NaturalEyes EyeRightMissingGraphic;
 
         public PawnFaceGraphic(CompFace compFace)
         {
@@ -93,12 +95,10 @@ namespace FacialStuff.GraphicsFS
                 return;
             }
 
-            this._compFace.TexPathEyeRight = this._compFace.BodyStat.EyeRight == PartStatus.Missing
-                                             ? this._compFace.EyeTexPath(Side.Right, EyeDefOf.Closed)
-                                             : this._compFace.EyeTexPath(Side.Right);
-            this._compFace.TexPathEyeLeft = this._compFace.BodyStat.EyeLeft == PartStatus.Missing
-                                            ? this._compFace.EyeTexPath(Side.Left, EyeDefOf.Missing)
-                                            : this._compFace.EyeTexPath(Side.Left);
+            this._compFace.TexPathEyeRight = this._compFace.EyeTexPath(Side.Right);
+            this._compFace.TexPathEyeLeft = this._compFace.EyeTexPath(Side.Left);
+            this._compFace.TexPathEyeRightMissing = this._compFace.EyeTexPath(Side.Right, EyeDefOf.Missing);
+            this._compFace.TexPathEyeLeftMissing = this._compFace.EyeTexPath(Side.Left, EyeDefOf.Missing);
             this.TexPathEyeLeftClosed  = this._compFace.EyeTexPath(Side.Left,  EyeDefOf.Closed);
             this.TexPathEyeRightClosed = this._compFace.EyeTexPath(Side.Right, EyeDefOf.Closed);
             this.TexPathBrow           = this._compFace.BrowTexPath(this.pawnFace.BrowDef);
@@ -264,6 +264,16 @@ namespace FacialStuff.GraphicsFS
                                                                                  eyeColor) as Graphic_Multi_NaturalEyes;
 
             this.EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this._compFace.TexPathEyeRight,
+                                                                                  ShaderDatabase.CutoutComplex,
+                                                                                  Vector2.one,
+                                                                                  eyeColor) as Graphic_Multi_NaturalEyes;
+
+            this.EyeLeftMissingGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this._compFace.TexPathEyeLeftMissing,
+                                                                                 ShaderDatabase.CutoutComplex,
+                                                                                 Vector2.one,
+                                                                                 eyeColor) as Graphic_Multi_NaturalEyes;
+
+            this.EyeRightMissingGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(this._compFace.TexPathEyeRightMissing,
                                                                                   ShaderDatabase.CutoutComplex,
                                                                                   Vector2.one,
                                                                                   eyeColor) as Graphic_Multi_NaturalEyes;

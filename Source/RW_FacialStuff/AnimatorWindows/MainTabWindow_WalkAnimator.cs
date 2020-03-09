@@ -378,7 +378,7 @@ namespace FacialStuff.AnimatorWindows
                                      framesAt);
 
                     framesAt = (from keyframe in frames where keyframe.FootAngle.HasValue select keyframe.KeyIndex)
-                   .ToList();
+                        .ToList();
 
                     this.SetAngle(
                                   ref this.CurrentFrame.FootAngle,
@@ -388,8 +388,8 @@ namespace FacialStuff.AnimatorWindows
                                   framesAt);
 
                     framesAt = (from keyframe in frames
-                                where keyframe.HipOffsetHorizontalX.HasValue
-                                select keyframe.KeyIndex).ToList();
+                        where keyframe.HipOffsetHorizontalX.HasValue
+                        select keyframe.KeyIndex).ToList();
 
                     this.SetPosition(
                                      ref this.CurrentFrame.HipOffsetHorizontalX,

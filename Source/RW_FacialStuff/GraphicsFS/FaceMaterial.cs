@@ -180,6 +180,42 @@ namespace FacialStuff.GraphicsFS
         }
 
         [CanBeNull]
+        public Material EyeRightMissingMatAt(Rot4 facing, bool portrait)
+        {
+            if (facing == Rot4.West)
+            {
+                return null;
+            }
+
+            Material material = this._pawnFaceGraphic.EyeRightMissingGraphic?.MatAt(facing);
+
+            if (material != null)
+            {
+                material = this.Flasher.GetDamagedMat(material);
+            }
+
+            return material;
+        }     
+        [CanBeNull]
+        public Material EyeLeftMissingMatAt(Rot4 facing, bool portrait)
+        {
+            if (facing == Rot4.West)
+            {
+                return null;
+            }
+
+            Material material = this._pawnFaceGraphic.EyeLeftMissingGraphic?.MatAt(facing);
+
+            if (material != null)
+            {
+                material = this.Flasher.GetDamagedMat(material);
+            }
+
+            return material;
+        }
+
+
+        [CanBeNull]
         public Material EyeRightPatchMatAt(Rot4 facing)
         {
             Material material = this._pawnFaceGraphic.EyeRightPatchGraphic?.MatAt(facing);
