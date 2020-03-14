@@ -13,6 +13,8 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -182,7 +184,7 @@
     <Compile Include="FaceEditor\Dialog_FaceStyling.cs" />
     <None Include="FaceEditor\UI\DresserUI.cs" />
     <Compile Include="FaceEditor\UI\DTO\DresserDTO.cs" />
-    <Compile Include="FaceEditor\UI\DTO\DresserDtoFactory.cs" />
+    <None Include="FaceEditor\UI\DTO\DresserDtoFactory.cs" />
     <Compile Include="FaceEditor\UI\DTO\SelectionWidgetDTOs\ASelectionWidgetDTO.cs" />
     <Compile Include="FaceEditor\UI\DTO\SelectionWidgetDTOs\BodyTypeSelectionDTO.cs" />
     <Compile Include="FaceEditor\UI\DTO\SelectionWidgetDTOs\GenderSelectionDTO.cs" />

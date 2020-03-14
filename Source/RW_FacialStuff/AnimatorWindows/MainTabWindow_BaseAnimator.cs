@@ -18,8 +18,6 @@ namespace FacialStuff.AnimatorWindows
 
         public static bool Develop;
 
-
-
         public override void WindowUpdate()
         {
             base.WindowUpdate();
@@ -144,17 +142,22 @@ namespace FacialStuff.AnimatorWindows
             }
         }
 
-        protected void GetBodyAnimDef()
+        protected BodyAnimDef BodyAnimDef
         {
-            if (CompAnim.BodyAnim == null)
+            get
             {
-                CompAnim.BodyAnim = new BodyAnimDef();
+                BodyAnimDef compAnimBodyAnim = this.CompAnim.BodyAnim;
+                if (compAnimBodyAnim != null && compAnimBodyAnim.thingTarget.NullOrEmpty())
+                {
+                    // ReSharper disable once PossibleNullReferenceException
+                    this.CompAnim.BodyAnim.thingTarget = Pawn.def.ToString();
+                    this.CompAnim.BodyAnim.bodyDrawers = this.CompAnim.Props.bodyDrawers;
+                    this.CompAnim.BodyAnim.handType = this.CompAnim.Props.handType;
+                    this.CompAnim.BodyAnim.quadruped = this.CompAnim.Props.quadruped;
+                    this.CompAnim.BodyAnim.bipedWithHands = this.CompAnim.Props.bipedWithHands;
+                }
+                return this.CompAnim.BodyAnim;
             }
-            CompAnim.BodyAnim.thingTarget = Pawn.def.ToString();
-            CompAnim.BodyAnim.bodyDrawers = this.CompAnim.Props.bodyDrawers;
-            CompAnim.BodyAnim.handType = this.CompAnim.Props.handType;
-            CompAnim.BodyAnim.quadruped = this.CompAnim.Props.quadruped;
-            CompAnim.BodyAnim.bipedWithHands = this.CompAnim.Props.bipedWithHands;
         }
 
         [CanBeNull]
@@ -286,9 +289,8 @@ namespace FacialStuff.AnimatorWindows
 
         public override void PostClose()
         {
-            this.CompAnim.AnimatorPoseOpen = false;
-            Pawn = null;
             base.PostClose();
+            this.CompAnim.AnimatorPoseOpen = false;
         }
 
         #endregion Public Methods
@@ -299,8 +301,7 @@ namespace FacialStuff.AnimatorWindows
 
         protected virtual void DoBasicSettingsMenu(Listing_Standard listing)
         {
-            GetBodyAnimDef();
-            string label = Pawn.LabelCap + " - " + this.Label + " - " + CompAnim.BodyAnim.LabelCap;
+            string label = Pawn.LabelCap + " - " + this.Label + " - " + this.BodyAnimDef.LabelCap;
 
             listing.Label(label);
 
@@ -308,7 +309,7 @@ namespace FacialStuff.AnimatorWindows
             {
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
                 foreach (Pawn current in from bsm in Pawn.Map.mapPawns.AllPawnsSpawned
-                                         where bsm.GetComp<CompBodyAnimator>() != null
+                                         where bsm.HasCompAnimator()
                                          orderby bsm.LabelCap
                                          select bsm)
                 {
@@ -334,8 +335,6 @@ namespace FacialStuff.AnimatorWindows
 
             listing.CheckboxLabeled("Develop", ref Develop);
             listing.CheckboxLabeled("Colored", ref Colored);
-
-
 
             if (listing.ButtonText("Add 1 keyframe: "))
             {
@@ -434,20 +433,17 @@ namespace FacialStuff.AnimatorWindows
 
         protected virtual void FindRandomPawn()
         {
-            if (Pawn == null)
-            {
-                Thing selectedThing = Find.Selector.SingleSelectedThing;
-                if (selectedThing != null && selectedThing is Pawn)
+            Thing selectedThing = Find.Selector.SingleSelectedThing;
+                if (selectedThing != null && selectedThing is Pawn pawn && pawn.HasCompAnimator())
                 {
-                    Pawn = (Pawn)selectedThing;
+                    Pawn = pawn;
                 }
                 else
                 {
-                    Pawn = Find.AnyPlayerHomeMap.PlayerPawnsForStoryteller.FirstOrDefault();
+                    Pawn = Find.AnyPlayerHomeMap.PlayerPawnsForStoryteller.FirstOrDefault(x => x.HasCompAnimator());
                 }
 
                 Pawn?.GetCompAnim(out this.CompAnim);
-            }
         }
 
         protected void ReIndexKeyframes()
@@ -770,41 +766,41 @@ namespace FacialStuff.AnimatorWindows
         private void DrawRotatorHead(float curY, float width)
         {
             float buttWidth = (width - 4 * this.Spacing) / 6;
-            Rect button = new Rect(0f, curY, buttWidth, 32f);
+            Rect butt = new Rect(0f, curY, buttWidth, 32f);
 
             Rot4 rotation = Rot4.East;
 
-            if (Widgets.ButtonText(button, rotation.ToStringHuman()))
+            if (Widgets.ButtonText(butt, rotation.ToStringHuman()))
             {
                 HeadRot = rotation;
             }
 
-            button.x += button.width + this.Spacing;
+            butt.x += butt.width + this.Spacing;
             rotation = Rot4.West;
 
-            if (Widgets.ButtonText(button, rotation.ToStringHuman()))
+            if (Widgets.ButtonText(butt, rotation.ToStringHuman()))
             {
                 HeadRot = rotation;
             }
 
-            button.x += button.width + this.Spacing;
+            butt.x += butt.width + this.Spacing;
             rotation = Rot4.North;
-            if (Widgets.ButtonText(button, rotation.ToStringHuman()))
+            if (Widgets.ButtonText(butt, rotation.ToStringHuman()))
             {
                 HeadRot = rotation;
             }
 
-            button.x += button.width + this.Spacing;
+            butt.x += butt.width + this.Spacing;
             rotation = Rot4.South;
-            if (Widgets.ButtonText(button, rotation.ToStringHuman()))
+            if (Widgets.ButtonText(butt, rotation.ToStringHuman()))
             {
                 HeadRot = rotation;
             }
 
-            button.x += button.width + this.Spacing;
+            butt.x += butt.width + this.Spacing;
 
-            button.width *= 2;
-            Widgets.CheckboxLabeled(button, "Panic", ref Panic);
+            butt.width *= 2;
+            Widgets.CheckboxLabeled(butt, "Panic", ref Panic);
         }
 
         private void DrawTimelineButtons(float width, int count)

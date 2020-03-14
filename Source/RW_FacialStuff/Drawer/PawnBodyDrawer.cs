@@ -70,7 +70,7 @@ namespace FacialStuff
         }
 
         public virtual void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, Thing carriedThing = null,
-                                      bool       flip = false)
+            bool flip = false)
         {
 
         }

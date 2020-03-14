@@ -22,7 +22,7 @@ namespace RimWorld
     {
         #region Public Fields
 
-        public string thingTarget;
+        public string thingTarget = null;
 
         public List<PawnBodyDrawer> bodyDrawers;
         public string handType;

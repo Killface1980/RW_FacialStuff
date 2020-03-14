@@ -7,7 +7,6 @@ using JetBrains.Annotations;
 using System;
 using System.Reflection.Emit;
 using FacialStuff.Defs;
-using HarmonyLib;
 
 namespace FacialStuff.Harmony
 {
@@ -33,7 +32,7 @@ namespace FacialStuff.Harmony
 
         static HarmonyPatchesFS()
         {
-            var harmony = new HarmonyLib.Harmony("rimworld.facialstuff.mod");
+            HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("rimworld.facialstuff.mod");
             // HarmonyLib.Harmony.DEBUG = true;
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
@@ -147,11 +146,11 @@ namespace FacialStuff.Harmony
                 def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Face)));
             }
 
-            var beardyHairList =
+            List<HairDef> beardyHairList =
                 DefDatabase<HairDef>.AllDefsListForReading.Where(x => x.IsBeardNotHair()).ToList();
             for (int i = 0; i < beardyHairList.Count(); i++)
             {
-                var beardy = beardyHairList[i];
+                HairDef beardy = beardyHairList[i];
                 if (beardy.label.Contains("shaven")) continue;
                 BeardDef beardDef = new BeardDef 
                 {
@@ -876,36 +875,36 @@ namespace FacialStuff.Harmony
             return false;
         }
 
-        public static void CheckAndDrawHands(Thing carriedThing, Vector3 vector, bool flip, Pawn pawn, bool thingBehind)
+        public static void CheckAndDrawHands(Thing carriedThing, Vector3 thingVector3, bool flip, Pawn pawn, bool thingBehind)
         {
             if (pawn.RaceProps.Animal)
             {
-                carriedThing.DrawAt(vector, flip);
+                carriedThing.DrawAt(thingVector3, flip);
                 return;
             }
 
             if (!pawn.GetCompAnim(out CompBodyAnimator compAnim))
             {
-                carriedThing.DrawAt(vector, flip);
+                carriedThing.DrawAt(thingVector3, flip);
                 return;
             }
 
             bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
             if (!showHands)
             {
-                carriedThing.DrawAt(vector, flip);
+                carriedThing.DrawAt(thingVector3, flip);
                 return;
             }
 
             // Modify the drawPos to appear behind a pawn if facing North, in case vanilla didn't
             if (!thingBehind && pawn.Rotation == Rot4.North)
             {
-                vector.y -= Offsets.YOffset_CarriedThing * 2;
+                thingVector3.y -= Offsets.YOffset_CarriedThing * 2;
             }
 
-            vector.y += compAnim.DrawOffsetY;
+            thingVector3.y += compAnim.DrawOffsetY;
 
-            compAnim.DrawHands(Quaternion.identity, vector, false, carriedThing, flip);
+            compAnim.DrawHands(Quaternion.identity, thingVector3, false, carriedThing, flip);
         }
 
         public static void ResolveApparelGraphics_Postfix(PawnGraphicSet __instance)

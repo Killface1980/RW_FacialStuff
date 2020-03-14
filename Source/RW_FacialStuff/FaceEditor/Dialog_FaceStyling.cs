@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
-using FacialStuff.DefOfs;
+﻿using FacialStuff.DefOfs;
 using FacialStuff.Defs;
 using FacialStuff.FaceEditor.ColorPicker;
 using FacialStuff.FaceEditor.UI.DTO;
@@ -15,6 +10,11 @@ using FacialStuff.Harmony;
 using FacialStuff.Utilities;
 using JetBrains.Annotations;
 using RimWorld;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -22,7 +22,7 @@ namespace FacialStuff.FaceEditor
 {
 
     // ReSharper disable once InconsistentNaming
-        [StaticConstructorOnStartup]
+    [StaticConstructorOnStartup]
     public partial class Dialog_FaceStyling : Window
     {
         #region Public Fields
@@ -1104,22 +1104,28 @@ namespace FacialStuff.FaceEditor
         {
             float editorLeft = rect.x;
             float editorTop = 30f + WidgetUtil.SelectionRowHeight;
-            float editorWidth = 325f;
+            const float editorWidth = 325f;
 
             float top = editorTop + 64f;
 
-            WidgetUtil.AddSelectorWidget(
-                                         editorLeft,
-                                         top,
-                                         editorWidth,
-                                         "FacialStuffEditor.BodyType".Translate() + ":", this.DresserDto.BodyTypeSelectionDto);
+            BodyTypeSelectionDto dresserDtoBodyTypeSelectionDto = this.DresserDto.BodyTypeSelectionDto;
+            if (dresserDtoBodyTypeSelectionDto != null)
+            {
+                WidgetUtil.AddSelectorWidget(
+                    editorLeft,
+                    top,
+                    editorWidth,
+                    "FacialStuffEditor.BodyType".Translate() + ":", dresserDtoBodyTypeSelectionDto);
+            }
 
             top += WidgetUtil.SelectionRowHeight + 20f;
-            WidgetUtil.AddSelectorWidget(
-                                         editorLeft,
-                                         top,
-                                         editorWidth,
-                                         "FacialStuffEditor.HeadType".Translate() + ":", this.DresserDto.HeadTypeSelectionDto);
+            HeadTypeSelectionDto dresserDtoHeadTypeSelectionDto = this.DresserDto.HeadTypeSelectionDto;
+            if (dresserDtoHeadTypeSelectionDto != null)
+                WidgetUtil.AddSelectorWidget(
+                    editorLeft,
+                    top,
+                    editorWidth,
+                    "FacialStuffEditor.HeadType".Translate() + ":", dresserDtoHeadTypeSelectionDto);
 
             top += WidgetUtil.SelectionRowHeight + 20f;
 
@@ -1131,11 +1137,13 @@ namespace FacialStuff.FaceEditor
 
                 top += 64f + 20f;
 
-                WidgetUtil.AddSelectorWidget(
-                                             editorLeft,
-                                             top,
-                                             editorWidth,
-                                             "FacialStuffEditor.Gender".Translate() + ":", this.DresserDto.GenderSelectionDto);
+                GenderSelectionDto dresserDtoGenderSelectionDto = this.DresserDto.GenderSelectionDto;
+                if (dresserDtoGenderSelectionDto != null)
+                    WidgetUtil.AddSelectorWidget(
+                        editorLeft,
+                        top,
+                        editorWidth,
+                        "FacialStuffEditor.Gender".Translate() + ":", dresserDtoGenderSelectionDto);
 
                 // top += WidgetUtil.SelectionRowHeight + 5;
                 // long ageBio = pawn.ageTracker.AgeBiologicalTicks;

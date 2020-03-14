@@ -65,7 +65,7 @@ namespace FacialStuff
 
         public BodyAnimator BodyAnimator { get; private set; }
 
-        public bool HideShellLayer => this.InRoom && Controller.settings.HideShellWhileRoofed;
+        public bool HideShellLayer => this.InRoom && Controller.settings.HideShellWhileRoofed && (Pawn.IsColonistPlayerControlled && Pawn.Faction.IsPlayer);
 
         public bool InPrivateRoom
         {
@@ -114,7 +114,7 @@ namespace FacialStuff
 
         public CompProperties_BodyAnimator Props => (CompProperties_BodyAnimator)this.props;
 
-        public bool HideHat => this.InRoom && Controller.settings.HideHatWhileRoofed;
+        public bool HideHat => this.InRoom && Controller.settings.HideHatWhileRoofed && (Pawn.IsColonistPlayerControlled && Pawn.Faction.IsPlayer);
 
         #endregion Public Properties
 

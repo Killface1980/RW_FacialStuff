@@ -197,7 +197,10 @@ namespace FacialStuff
             list.Label("Settings.EditorLabel".Translate());
             list.GapLine();
             list.CheckboxLabeled("FacialStuffEditor.ShowBodyChange".Translate(), ref this._showBodyChange);
-            list.CheckboxLabeled("FacialStuffEditor.ShowGenderChange".Translate(), ref this._showGenderAgeChange);
+            if (this.ShowBodyChange)
+            {
+                list.CheckboxLabeled("FacialStuffEditor.ShowGenderChange".Translate(), ref this._showGenderAgeChange);
+            }
 
             list.Gap();
             list.Label("Settings.ExperimentalLabel".Translate());

@@ -75,7 +75,7 @@ namespace FacialStuff.AnimatorWindows
                 CompAnim.BodyAnim.poseCycles.Clear();
 
                 foreach (PoseCycleDef posecycle in (from bsm in DefDatabase<PoseCycleDef>.AllDefs
-                                                    orderby bsm.LabelCap
+                                                    orderby bsm.label
                                                     select bsm)
                                                   .TakeWhile(current => CompAnim.BodyAnim.PoseCycleType != "None")
                                                   .Where(current => current.PoseCycleType ==

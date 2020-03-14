@@ -149,14 +149,14 @@ namespace FacialStuff.GraphicsFS
 
         public override Material MatAt(Rot4 rot, Thing thing = null)
         {
-            switch (rot.AsInt)
+            return rot.AsInt switch
             {
-                case 0: return this.MatNorth;
-                case 1: return this.MatEast;
-                case 2: return this.MatSouth;
-                case 3: return this.MatWest;
-                default: return BaseContent.BadMat;
-            }
+                0 => this.MatNorth,
+                1 => this.MatEast,
+                2 => this.MatSouth,
+                3 => this.MatWest,
+                _ => BaseContent.BadMat
+            };
         }
     }
 }

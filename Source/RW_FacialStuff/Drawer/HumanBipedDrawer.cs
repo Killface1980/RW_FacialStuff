@@ -237,9 +237,6 @@ namespace FacialStuff
                 }
                 else
                 {
-
-
-
                     Mesh bodyMesh;
                     if (this.Pawn.RaceProps.Humanlike)
                     {
@@ -254,7 +251,7 @@ namespace FacialStuff
                     bool flag = true;
                     if (!portrait && Controller.settings.HideShellWhileRoofed)
                     {
-                        if (this.CompAnimator.InRoom)
+                        if (this.CompAnimator.InRoom && (Pawn.IsColonistPlayerControlled && Pawn.Faction.IsPlayer))
                         {
                             MaxLayerToShow layer;
                             if (this.CompAnimator.InPrivateRoom)
@@ -521,14 +518,26 @@ namespace FacialStuff
                 return;
             }
 
+            BodyAnimDef body = this.CompAnimator.BodyAnim;
 
             if (carrying)
             {
                 this.ApplyEquipmentWobble(ref drawPos);
-                carriedThing.DrawAt(drawPos, flip);
+
+                Vector3 handVector = drawPos;
+
+                // Arms too far away from body
+                while (Vector3.Distance(Pawn.DrawPos, handVector) > body.armLength)
+                {
+                    float step = 0.025f;
+                    handVector = Vector3.MoveTowards(handVector, Pawn.DrawPos, step);
+                }
+
+                carriedThing.DrawAt(drawPos, flip); 
+                handVector.y = drawPos.y;
+                drawPos = handVector;
             }
 
-            BodyAnimDef body = this.CompAnimator.BodyAnim;
 
             Rot4 rot = this.BodyFacing;
 
@@ -549,7 +558,7 @@ namespace FacialStuff
             WalkCycleDef walkCycle = this.CompAnimator.WalkCycle;
             PoseCycleDef poseCycle = this.CompAnimator.PoseCycle;
 
-            if (walkCycle != null)
+            if (walkCycle != null && !carrying)
             {
                 float offsetJoint = walkCycle.ShoulderOffsetHorizontalX.Evaluate(this.CompAnimator.MovedPercent);
 
@@ -586,6 +595,7 @@ namespace FacialStuff
             }
             else if (carriedThing == null)
             {
+                // Should draw shadow if inner side of the palm is facing to camera?
                 switch (rot.AsInt)
                 {
                     case 1:
@@ -872,8 +882,8 @@ namespace FacialStuff
             }
             else
             {
-                rightFoot.z = offsetX.Evaluate(percent);
-                leftFoot.z = offsetX.Evaluate(flot);
+                rightFoot.z = offsetZ.Evaluate(percent);
+                leftFoot.z = offsetZ.Evaluate(flot);
                 offsetJoint = 0;
             }
 
@@ -1048,7 +1058,7 @@ namespace FacialStuff
                                      TweenThing tweenThing,
                                      bool portrait, bool noTween)
         {
-            if (position == Vector3.zero || handsMesh == null || material == null || quat == null || tweenThing == null)
+            if (position == Vector3.zero || handsMesh == null || material == null)
             {
                 return;
             }
@@ -1057,64 +1067,64 @@ namespace FacialStuff
             {
                 return;
             }
+
+            if (!HarmonyPatchesFS.AnimatorIsOpen() &&
+                Find.TickManager.TicksGame == this.CompAnimator.LastPosUpdate[(int) tweenThing] ||
+                HarmonyPatchesFS.AnimatorIsOpen() && MainTabWindow_BaseAnimator.Pawn != this.Pawn)
             {
-                if (!HarmonyPatchesFS.AnimatorIsOpen() &&
-                    Find.TickManager.TicksGame == this.CompAnimator.LastPosUpdate[(int) tweenThing] ||
-                    HarmonyPatchesFS.AnimatorIsOpen() && MainTabWindow_BaseAnimator.Pawn != this.Pawn)
+                position = this.CompAnimator.LastPosition[(int) tweenThing];
+            }
+            else
+            {
+                Pawn_PathFollower pawnPathFollower = this.Pawn.pather;
+                if (pawnPathFollower != null && pawnPathFollower.MovedRecently(5))
                 {
-                    position = this.CompAnimator.LastPosition[(int) tweenThing];
+                    noTween = true;
                 }
-                else
+
+                this.CompAnimator.LastPosUpdate[(int) tweenThing] = Find.TickManager.TicksGame;
+
+
+                Vector3Tween tween = this.CompAnimator.Vector3Tweens[(int) tweenThing];
+
+
+                switch (tween.State)
                 {
-                    if (this.Pawn.pather.MovedRecently(5))
-                    {
-                        noTween = true;
-                    }
+                    case TweenState.Running:
+                        if (noTween || this.CompAnimator.IsMoving)
+                        {
+                            tween.Stop(StopBehavior.ForceComplete);
+                        }
 
-                    this.CompAnimator.LastPosUpdate[(int) tweenThing] = Find.TickManager.TicksGame;
+                        position = tween.CurrentValue;
+                        break;
 
+                    case TweenState.Paused:
+                        break;
 
-                    Vector3Tween tween = this.CompAnimator.Vector3Tweens[(int) tweenThing];
-
-
-                    switch (tween.State)
-                    {
-                        case TweenState.Running:
-                            if (noTween || this.CompAnimator.IsMoving)
-                            {
-                                tween.Stop(StopBehavior.ForceComplete);
-                            }
-
-                            position = tween.CurrentValue;
+                    case TweenState.Stopped:
+                        if (noTween || (this.CompAnimator.IsMoving))
+                        {
                             break;
+                        }
 
-                        case TweenState.Paused:
-                            break;
-
-                        case TweenState.Stopped:
-                            if (noTween || (this.CompAnimator.IsMoving))
-                            {
-                                break;
-                            }
-
-                            ScaleFunc scaleFunc = ScaleFuncs.SineEaseOut;
+                        ScaleFunc scaleFunc = ScaleFuncs.SineEaseOut;
 
 
-                            Vector3 start = this.CompAnimator.LastPosition[(int) tweenThing];
-                            float distance = Vector3.Distance(start, position);
-                            float duration = Mathf.Abs(distance * 50f);
-                            if (start != Vector3.zero && duration > 12f)
-                            {
-                                start.y = position.y;
-                                tween.Start(start, position, duration, scaleFunc);
-                                position = start;
-                            }
+                        Vector3 start = this.CompAnimator.LastPosition[(int) tweenThing];
+                        float distance = Vector3.Distance(start, position);
+                        float duration = Mathf.Abs(distance * 50f);
+                        if (start != Vector3.zero && duration > 12f)
+                        {
+                            start.y = position.y;
+                            tween.Start(start, position, duration, scaleFunc);
+                            position = start;
+                        }
 
-                            break;
-                    }
-
-                    this.CompAnimator.LastPosition[(int) tweenThing] = position;
+                        break;
                 }
+
+                this.CompAnimator.LastPosition[(int) tweenThing] = position;
             }
 
             //  tweener.PreThingPosCalculation(tweenThing, noTween);
@@ -1128,7 +1138,7 @@ namespace FacialStuff
 
         public bool ShouldBeIgnored()
         {
-            return this.Pawn.Dead || this.Pawn.Downed || this.Pawn.InContainerEnclosed;
+            return this.Pawn.Dead || !this.Pawn.Spawned || this.Pawn.InContainerEnclosed;
         }
 
         #endregion Private Methods

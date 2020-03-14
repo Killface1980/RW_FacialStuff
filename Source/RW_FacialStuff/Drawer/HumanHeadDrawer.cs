@@ -5,6 +5,7 @@ using FacialStuff.Harmony;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
+using FacialStuff.Animator;
 using UnityEngine;
 using Verse;
 
@@ -16,13 +17,18 @@ namespace FacialStuff
 
         public override void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
         {
-            if (this.CompFace.Props.canRotateHead && Controller.settings.UseHeadRotator)
-            {
-                this.HeadFacing = this.CompFace.HeadRotator.Rotation(this.HeadFacing, renderBody);
-                headQuat *= this.QuatHead(this.HeadFacing);
+            CompProperties_Face compFaceProps = this.CompFace.Props;
+            if (compFaceProps == null) return;
+            
+            PawnHeadRotator compFaceHeadRotator = this.CompFace.HeadRotator;
+            if (compFaceHeadRotator == null) return;
+            
+            if (!Controller.settings.UseHeadRotator || !compFaceProps.canRotateHead) return;
 
-                // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
-            }
+            this.HeadFacing = compFaceHeadRotator.Rotation(this.HeadFacing, renderBody);
+            headQuat *= this.QuatHead(this.HeadFacing);
+
+            // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
         }
 
         public override void BaseHeadOffsetAt(ref Vector3 offset, bool portrait, Pawn pawn1)
@@ -105,7 +111,10 @@ namespace FacialStuff
         public override void DrawBeardAndTache(Vector3 beardLoc, Vector3 tacheLoc, Quaternion headQuat, bool portrait)
         {
             Mesh headMesh = this.GetPawnMesh(false, portrait);
-
+            if (CompFace.PawnFace.BeardDef.IsBeardNotHair())
+            {
+                headMesh = this.GetPawnHairMesh(portrait);
+            }
             Material beardMat = this.CompFace.FaceMaterial.BeardMatAt(this.HeadFacing);
             Material moustacheMatAt = this.CompFace.FaceMaterial.MoustacheMatAt(this.HeadFacing);
 
@@ -160,7 +169,7 @@ namespace FacialStuff
             bool noRenderGoggles = Controller.settings.FilterHats;
 
             bool showRoyalHeadgear = Pawn.royalty?.MostSeniorTitle != null && Controller.settings.ShowRoyalHeadgear;
-            bool noRenderRoofed = animator != null && animator.HideHat && !showRoyalHeadgear;
+            bool noRenderRoofed = animator != null && animator.HideHat && (Pawn.IsColonistPlayerControlled && Pawn.Faction.IsPlayer) && !showRoyalHeadgear;
             bool noRenderBed = Controller.settings.HideHatInBed && !renderBody && !showRoyalHeadgear;
 
             if (!headgearGraphics.NullOrEmpty())
@@ -211,14 +220,14 @@ namespace FacialStuff
                     if (noRenderGoggles)
                     {
                         headgearGraphics = headgearGraphics
-                                          .Where(
-                                                 x =>
-                                                 !x.sourceApparel.def.apparel.bodyPartGroups
-                                                   .Contains(BodyPartGroupDefOf.FullHead)
-                                              && !x.sourceApparel.def.apparel.bodyPartGroups.Contains(
-                                                                                                      BodyPartGroupDefOf
-                                                                                                     .UpperHead))
-                                          .ToList();
+                            .Where(
+                                x =>
+                                    !x.sourceApparel.def.apparel.bodyPartGroups
+                                        .Contains(BodyPartGroupDefOf.FullHead)
+                                    && !x.sourceApparel.def.apparel.bodyPartGroups.Contains(
+                                        BodyPartGroupDefOf
+                                            .UpperHead))
+                            .ToList();
                     }
                     else
                     {

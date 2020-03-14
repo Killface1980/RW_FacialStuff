@@ -30,7 +30,7 @@ namespace FacialStuff
         }
 
         public override void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, Thing carriedThing = null,
-                                       bool       flip = false)
+            bool flip = false)
         {
            // base.DrawHands(bodyQuat, drawPos, portrait, carrying, drawSide);
         }
