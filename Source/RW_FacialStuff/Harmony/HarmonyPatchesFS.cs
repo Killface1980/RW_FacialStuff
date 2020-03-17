@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 using System;
 using System.Reflection.Emit;
 using FacialStuff.Defs;
+using Verse.AI;
 
 namespace FacialStuff.Harmony
 {
@@ -219,7 +220,7 @@ namespace FacialStuff.Harmony
 
         public static bool AnimatorIsOpen()
         {
-            return MainTabWindow_WalkAnimator.IsOpen;// || MainTabWindow_PoseAnimator.IsOpen;
+            return Find.WindowStack.IsOpen(typeof(MainTabWindow_WalkAnimator));// MainTabWindow_WalkAnimator.IsOpen;// || MainTabWindow_PoseAnimator.IsOpen;
         }
 
         private static bool DrawAtGiddy(Pawn __instance)
@@ -1032,7 +1033,7 @@ namespace FacialStuff.Harmony
                 {
                     if (compFace.Props.canRotateHead)
                     {
-                        if (compFace.HeadRotator != null && !compFace.IsChild)
+                        if (compFace.HeadRotator != null && !compFace.IsChild && pawn.CanSee(recipient))
                         {
                             compFace.HeadRotator.LookAtPawn(recipient);
                         }
@@ -1041,7 +1042,7 @@ namespace FacialStuff.Harmony
 
                 if (recipient.GetCompFace(out CompFace recipientFace))
                 {
-                    if (recipientFace.Props.canRotateHead)
+                    if (recipientFace.Props.canRotateHead && recipient.CanSee(pawn))
                     {
                         if (recipientFace.HeadRotator != null && !recipientFace.IsChild)
                         {

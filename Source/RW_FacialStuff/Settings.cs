@@ -356,6 +356,8 @@ namespace FacialStuff
             Scribe_Values.Look(ref this._useMouth, "useMouth", false, true);
             Scribe_Values.Look(ref this._useHands, "useHands");
             Scribe_Values.Look(ref this._useFeet, "useFeet");
+            Scribe_Values.Look(ref this._usePaws, "_usePaws");
+            Scribe_Values.Look(ref this.showRoyalHeadgear, "showRoyalHeadgear");
             Scribe_Values.Look(ref this._mergeHair, "mergeHair", false, true);
             Scribe_Values.Look(ref this._hideHatWhileRoofed, "hideHatWhileRoofed", false, true);
             Scribe_Values.Look(ref this._hideHatInBed, "hideHatInBed", false, true);

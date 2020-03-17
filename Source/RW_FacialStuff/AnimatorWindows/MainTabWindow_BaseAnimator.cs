@@ -319,13 +319,10 @@ namespace FacialStuff.AnimatorWindows
                                                  smLocal.LabelCap,
                                                  delegate
                                                  {
-                                                     this.CompAnim.AnimatorPoseOpen = false;
-
-                                                     Pawn = smLocal;
-                                                     smLocal.GetCompAnim(out this.CompAnim);
-
-                                                     // editorWalkcycle = this.CompAnim.Props.defaultCycleWalk;
-                                                     this.SetCurrentCycle();
+                                                     Find.Selector.Deselect(Pawn);
+                                                     Find.WindowStack.WindowOfType<MainTabWindow_WalkAnimator>().Close(false);
+                                                     Find.Selector.Select(smLocal, false);
+                                                     Find.MainTabsRoot.ToggleTab(DefDatabase<MainButtonDef>.GetNamed("WalkAnimator"));
                                                  }));
                 }
 
@@ -664,6 +661,7 @@ namespace FacialStuff.AnimatorWindows
 
         private static void SynchronizeFrames(PawnKeyframe sourceFrame, PawnKeyframe targetFrame)
         {
+            targetFrame.HeadOffsetZ = sourceFrame.HeadOffsetZ;
             targetFrame.BodyAngle = sourceFrame.BodyAngle;
             targetFrame.BodyAngleVertical = sourceFrame.BodyAngleVertical;
 

@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -269,6 +270,12 @@ namespace FacialStuff.Animator
                 }
             }
 
+            if (job.def == JobDefOf.SpectateCeremony)
+            {
+                _target = null;
+                return;
+            }
+
             float rand = Rand.Value;
 
             // Look at each other
@@ -290,12 +297,11 @@ namespace FacialStuff.Animator
                             continue;
                         }
 
-                        if (GenSight.LineOfSight(position, intVec, this._pawn.Map))
-                        {
-                            // Log.Message(this.pawn + " will look at random pawn " + thing);
-                            this._target = otherPawn;
-                            return;
-                        }
+                        if (!_pawn.CanSee(otherPawn)) continue;
+
+                        // Log.Message(this.pawn + " will look at random pawn " + thing);
+                        this._target = otherPawn;
+                        return;
                     }
                 }
             }

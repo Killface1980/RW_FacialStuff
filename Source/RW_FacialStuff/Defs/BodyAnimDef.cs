@@ -35,6 +35,8 @@ namespace RimWorld
 
         public List<Vector3> hipOffsets = new List<Vector3> { Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero };
 
+        public Vector2 headOffset = Vector2.zero;
+
         public float offCenterX;
 
         public List<Vector3> shoulderOffsets =

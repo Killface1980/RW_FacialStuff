@@ -574,6 +574,44 @@ namespace FacialStuff
             this._walkCycle = walkCycleDef;
         }
 
+        public float HeadffsetZ
+        {
+            get
+            {
+                if (Controller.settings.UseFeet)
+                {
+                    WalkCycleDef walkCycle = this.WalkCycle;
+                    if (walkCycle != null)
+                    {
+                        SimpleCurve curve = walkCycle.HeadOffsetZ;
+                        if (curve.PointsCount > 0)
+                        return curve.Evaluate(this.MovedPercent);
+                    }
+                }
+
+                return 0f;
+            }
+        }
+
+        public float HeadAngleX
+        {
+            get
+            {
+                if (Controller.settings.UseFeet)
+                {
+                    WalkCycleDef walkCycle = this.WalkCycle;
+                    if (walkCycle != null)
+                    {
+                        SimpleCurve curve = walkCycle.HeadAngleX;
+                        if (curve.PointsCount > 0)
+                            return curve.Evaluate(this.MovedPercent);
+                    }
+                }
+
+                return 0f;
+            }
+        }
+
         public float BodyOffsetZ
         {
             get
@@ -584,6 +622,7 @@ namespace FacialStuff
                     if (walkCycle != null)
                     {
                         SimpleCurve curve = walkCycle.BodyOffsetZ;
+                        if (curve.PointsCount > 0)
                         return curve.Evaluate(this.MovedPercent);
                     }
                 }

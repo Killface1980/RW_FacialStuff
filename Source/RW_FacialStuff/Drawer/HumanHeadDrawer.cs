@@ -28,6 +28,7 @@ namespace FacialStuff
             this.HeadFacing = compFaceHeadRotator.Rotation(this.HeadFacing, renderBody);
             headQuat *= this.QuatHead(this.HeadFacing);
 
+
             // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
         }
 
@@ -39,10 +40,10 @@ namespace FacialStuff
             float verHeadOffset = headOffset.y;
 
             CompBodyAnimator animator = this.CompAnimator;
-            if (animator != null && HarmonyPatchesFS.AnimatorIsOpen())
+            if (animator.BodyAnim != null)
             {
-                horHeadOffset += MainTabWindow_WalkAnimator.HorHeadOffset;
-                verHeadOffset += MainTabWindow_WalkAnimator.VerHeadOffset;
+                horHeadOffset += animator.BodyAnim.headOffset.x;
+                verHeadOffset += animator.BodyAnim.headOffset.y;
             }
 
             switch (this.BodyFacing.AsInt)
@@ -69,16 +70,15 @@ namespace FacialStuff
                     return;
             }
 
-            if (!portrait)
+            if (!portrait || HarmonyPatchesFS.AnimatorIsOpen())
             {
                 CompBodyAnimator bodyAnimator = this.CompAnimator;
-                if (bodyAnimator != null && bodyAnimator.IsMoving)
+                if (bodyAnimator != null && (bodyAnimator.IsMoving || HarmonyPatchesFS.AnimatorIsOpen()))
                 {
                     // Let's try a slightly stiffy head
-                    CompBodyAnimator compAnimator = this.CompAnimator;
-                    if (compAnimator != null)
                     {
-                        offset.z -= 0.25f * compAnimator.BodyOffsetZ;
+                        offset.z -= 0.25f * bodyAnimator.BodyOffsetZ;
+                        offset.z += bodyAnimator.HeadffsetZ;
                     }
                 }
             }
@@ -431,17 +431,35 @@ namespace FacialStuff
 
         public override Quaternion QuatHead(Rot4 rotation)
         {
-            float num = 1f;
+            CompBodyAnimator animator = this.CompAnimator;
+
             Quaternion asQuat = rotation.AsQuat;
-            float x =
-            1f * Mathf.Sin(num * (this.CompFace.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
-            float z =
-            1f * Mathf.Cos(num * (this.CompFace.HeadRotator.CurrentMovement * 0.1f) % (2 * Mathf.PI));
-            asQuat.SetLookRotation(new Vector3(x, 0f, z), Vector3.up);
+
+            if (animator != null)
+            {
+                float headRotatorCurrentMovement;
+                if ((animator.IsMoving || HarmonyPatchesFS.AnimatorIsOpen()) && rotation.IsHorizontal)
+                {
+                    headRotatorCurrentMovement = animator.HeadAngleX;
+                }
+                else
+                {
+                    headRotatorCurrentMovement = this.CompFace.HeadRotator.CurrentMovement;
+                }
+                float num = 1f;
+
+                float x =
+                    1f * Mathf.Sin(num * (headRotatorCurrentMovement * 0.1f) % (2 * Mathf.PI));
+                float z =
+                    1f * Mathf.Cos(num * (headRotatorCurrentMovement * 0.1f) % (2 * Mathf.PI));
+                asQuat.SetLookRotation(new Vector3(x, 0f, z), Vector3.up);
+
+            }
+
+
             return asQuat;
 
             // remove the body rotation
-            CompBodyAnimator animator = this.CompAnimator;
             if (animator != null && (animator.IsMoving && Controller.settings.UseFeet))
             {
                 WalkCycleDef walkCycle = this.CompAnimator?.WalkCycle;

@@ -33,6 +33,12 @@ namespace RimWorld
         public SimpleCurve BodyAngleVertical = new SimpleCurve();
 
         [NotNull]
+        public SimpleCurve HeadAngleX = new SimpleCurve();
+
+        [NotNull]
+        public SimpleCurve HeadOffsetZ = new SimpleCurve();
+
+        [NotNull]
         public SimpleCurve BodyOffsetZ = new SimpleCurve();
 
         [NotNull]

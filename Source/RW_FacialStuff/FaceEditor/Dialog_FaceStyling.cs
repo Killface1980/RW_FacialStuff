@@ -70,9 +70,9 @@ namespace FacialStuff.FaceEditor
         public bool SkinPage = true;
         public FaceStyleTab Tab;
 
-        #endregion Public Fields
+#endregion Public Fields
 
-        #region Private Fields
+#region Private Fields
 
         private static readonly Color DarkBackground = new Color(0.12f, 0.12f, 0.12f);
 
@@ -178,14 +178,15 @@ namespace FacialStuff.FaceEditor
 
         private Vector2 _scrollPositionEye = Vector2.zero;
 
+#if legacy
         private SpecialTab _specialTab;
-
+#endif
         private Vector2 _swatchSize = new Vector2(14, 14);
         public PawnFace PawnFace => this._pawnFace;
 
-        #endregion Private Fields
+#endregion Private Fields
 
-        #region Public Constructors
+#region Public Constructors
         static Dialog_FaceStyling()
         {
             // _previewSize = 100f;
@@ -305,13 +306,13 @@ namespace FacialStuff.FaceEditor
             this.RerenderPawn = true;
         }
 
-        #endregion Public Constructors
+#endregion Public Constructors
 
-        #region Private Enums
+#region Private Enums
 
-        #endregion Private Enums
+#endregion Private Enums
 
-        #region Public Properties
+#region Public Properties
 
         public static List<string> CurrentFilter
         {
@@ -395,9 +396,9 @@ namespace FacialStuff.FaceEditor
             }
         }
 
-        #endregion Public Properties
+#endregion Public Properties
 
-        #region Private Properties
+#region Private Properties
 
         private BeardDef NewBeard
         {
@@ -452,9 +453,9 @@ namespace FacialStuff.FaceEditor
 
         private readonly PawnFace _pawnFace;
 
-        #endregion Private Properties
+#endregion Private Properties
 
-        #region Public Methods
+#region Public Methods
 
         public static Rect AddPortraitWidget(float left, float top)
         {
@@ -1369,7 +1370,7 @@ namespace FacialStuff.FaceEditor
             this._reInit = true;
             this.PawnFace.HasSameBeardColor = Rand.Value > 0.3f;
             this.NewHair = PawnHairChooser.RandomHairDefFor(Pawn, Faction.OfPlayer.def);
-            Pawn.story.melanin = PawnSkinColors.RandomMelanin(Pawn.Faction);
+            // Pawn.story.melanin = PawnSkinColors.RandomMelanin(Pawn.Faction);
             this.PawnFace.GenerateHairDNA(Pawn, true);
             this.NewHairColor = this.PawnFace.HairColor;
             this.NewBeardColor = this.PawnFace.BeardColor;
@@ -1498,9 +1499,9 @@ namespace FacialStuff.FaceEditor
             this.RerenderPawn = true;
         }
 
-        #endregion Public Methods
+#endregion Public Methods
 
-        #region Private Methods
+#region Private Methods
 
         // ReSharper disable once MethodTooLong
         private static void FillDefs()
@@ -1836,27 +1837,27 @@ namespace FacialStuff.FaceEditor
             // Widgets.HorizontalSlider(set, this.compFace.PawnFace.EuMelanin, 0f, 1f);
             // set.y += 30f;
             euMelanin = Widgets.HorizontalSlider(
-                                                 set,
-                                                 euMelanin,
-                                                 0,
-                                                 1f,
-                                                 false,
-                                                 "FacialStuffEditor.Eumelanin".Translate(),
-                                                 "0",
-                                                 "1");
+                set,
+                euMelanin,
+                0,
+                1f,
+                false,
+                "FacialStuffEditor.Eumelanin".Translate(),
+                "0",
+                "1");
 
             set.x += set.width + col;
 
             float grey = this.PawnFace.Greyness;
             grey = Widgets.HorizontalSlider(
-                                                  set,
-                                                  grey,
-                                                  HairMelanin.GreyRange.min,
-                                                  HairMelanin.GreyRange.max,
-                                                  false,
-                                                  "FacialStuffEditor.Greyness".Translate(),
-                                                  "0",
-                                                  "1");
+                set,
+                grey,
+                HairMelanin.GreyRange.min,
+                HairMelanin.GreyRange.max,
+                false,
+                "FacialStuffEditor.Greyness".Translate(),
+                "0",
+                "1");
 
             /*
             Baldness bald = this.compFace.PawnFace.Baldness;
@@ -2041,8 +2042,8 @@ namespace FacialStuff.FaceEditor
                 // If the swatch is selected, draw a heavier border around it.
                 // bool isThisSwatchSelected = i == currentSwatchIndex;
                 bool isThisSwatchSelected = this.NewMelanin >= PawnSkinColors_FS.SkinColors[i].melanin
-                                         && this.NewMelanin
-                                          < PawnSkinColors_FS.SkinColors[Mathf.Min(colorCount - 1, i + 1)].melanin;
+                                            && this.NewMelanin
+                                            < PawnSkinColors_FS.SkinColors[Mathf.Min(colorCount - 1, i + 1)].melanin;
                 if (isThisSwatchSelected)
                 {
                     this.DrawColorSelected(swatchRect);
@@ -2080,20 +2081,20 @@ namespace FacialStuff.FaceEditor
             }
 
             Rect melaninSlider = new Rect(
-                                          0,
-                                          swatchRect.yMax + MarginFS / 2,
-                                          contractedBy.width,
-                                          WidgetUtil.SelectionRowHeight);
+                0,
+                swatchRect.yMax + MarginFS / 2,
+                contractedBy.width,
+                WidgetUtil.SelectionRowHeight);
             float melly = this.NewMelanin;
             melly = Widgets.HorizontalSlider(
-                                                   melaninSlider,
-                                                   melly,
-                                                   0f,
-                                                   0.999f,
-                                                   false,
-                                                   "FacialStuffEditor.MelaninLevel".Translate(),
-                                                   "0",
-                                                   "1");
+                melaninSlider,
+                melly,
+                0f,
+                0.999f,
+                false,
+                "FacialStuffEditor.MelaninLevel".Translate(),
+                "0",
+                "1");
 
             // Draw the current color box.
             Rect currentColorRect = new Rect(0, melaninSlider.yMax + MarginFS, 20, 20);
@@ -2121,10 +2122,10 @@ namespace FacialStuff.FaceEditor
 
             // Draw the slider.
             Rect detailRect = new Rect(
-                                       currentColorRect.x + 35f,
-                                       currentColorRect.y + MarginFS / 2,
-                                       contractedBy.width - 35f,
-                                       WidgetUtil.SelectionRowHeight);
+                currentColorRect.x + 35f,
+                currentColorRect.y + MarginFS / 2,
+                contractedBy.width - 35f,
+                WidgetUtil.SelectionRowHeight);
 
             float newValue = Widgets.HorizontalSlider(detailRect, t, minValue, 1);
             if (newValue < minValue)
@@ -2162,22 +2163,22 @@ namespace FacialStuff.FaceEditor
                 if (Controller.settings.UseWrinkles)
                 {
                     Rect wrinkleRect = new Rect(
-                                                contractedBy.x,
-                                                detailRect.yMax,
-                                                contractedBy.width,
-                                                WidgetUtil.SelectionRowHeight);
+                        contractedBy.x,
+                        detailRect.yMax,
+                        contractedBy.width,
+                        WidgetUtil.SelectionRowHeight);
 
                     float wrinkle = this.PawnFace.WrinkleIntensity;
 
                     wrinkle = Widgets.HorizontalSlider(
-                                                       wrinkleRect,
-                                                       wrinkle,
-                                                       0f,
-                                                       1f,
-                                                       false,
-                                                       "FacialStuffEditor.Wrinkles".Translate(),
-                                                       "0",
-                                                       "1");
+                        wrinkleRect,
+                        wrinkle,
+                        0f,
+                        1f,
+                        false,
+                        "FacialStuffEditor.Wrinkles".Translate(),
+                        "0",
+                        "1");
 
                     if (GUI.changed)
                     {
@@ -2192,6 +2193,7 @@ namespace FacialStuff.FaceEditor
 
             GUI.EndGroup();
         }
+#if legacy
 
         private void DrawSpecialPicker(Rect rect)
         {
@@ -2206,24 +2208,24 @@ namespace FacialStuff.FaceEditor
             // return GraphicDatabase.Get<Graphic_Multi>(path, shader, Vector2.one, skinColor);
             List<TabRecord> list = new List<TabRecord>();
             TabRecord item = new TabRecord(
-                                                 "HeadType".Translate(),
-                                                 delegate
-                                                 {
-                                                     HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
-                                                                                                                   x =>
-                                                                                                                       x.hairTags
-                                                                                                                        .SharesElementWith(VanillaHairTags)
-                                                                                                                     &&
-                                                                                                                       (x.hairGender ==
-                                                                                                                        HairGender
-                                                                                                                       .Female ||
-                                                                                                                        x.hairGender ==
-                                                                                                                        HairGender
-                                                                                                                       .FemaleUsually && !x.IsBeardNotHair()
-                                                                                                                       ));
-                                                     HairDefs.SortBy(i => i.LabelCap.ToString());
-                                                     this._specialTab = SpecialTab.Head;
-                                                 }, this._specialTab == SpecialTab.Head);
+                "HeadType".Translate(),
+                delegate
+                {
+                    HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
+                        x =>
+                            x.hairTags
+                                .SharesElementWith(VanillaHairTags)
+                            &&
+                            (x.hairGender ==
+                             HairGender
+                                 .Female ||
+                             x.hairGender ==
+                             HairGender
+                                 .FemaleUsually && !x.IsBeardNotHair()
+                            ));
+                    HairDefs.SortBy(i => i.LabelCap.ToString());
+                    this._specialTab = SpecialTab.Head;
+                }, this._specialTab == SpecialTab.Head);
             list.Add(item);
 
             TabRecord item2 = new TabRecord(
@@ -2317,7 +2319,7 @@ namespace FacialStuff.FaceEditor
             GUI.EndGroup();
             Widgets.EndScrollView();
         }
-
+#endif
         private Graphic HairGraphic(HairDef def)
         {
             Graphic graphic;
@@ -2346,11 +2348,11 @@ namespace FacialStuff.FaceEditor
                 string path = this.CompFace.EyeTexPath(Side.Left, def);
 
                 __result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-                                                                          path,
-                                                                          ShaderDatabase.CutoutComplex,
-                                                                          new Vector2(38f, 38f),
-                                                                          Color.white,
-                                                                          Color.white) as Graphic_Multi_NaturalEyes;
+                    path,
+                    ShaderDatabase.CutoutComplex,
+                    new Vector2(38f, 38f),
+                    Color.white,
+                    Color.white) as Graphic_Multi_NaturalEyes;
             }
             else
             {
@@ -2373,11 +2375,11 @@ namespace FacialStuff.FaceEditor
             {
 
                 graphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                                              path,
-                                                                              ShaderDatabase.Cutout,
-                                                                              new Vector2(38f, 38f),
-                                                                              Color.white,
-                                                                              Color.white) as Graphic_Multi_NaturalHeadParts;
+                    path,
+                    ShaderDatabase.Cutout,
+                    new Vector2(38f, 38f),
+                    Color.white,
+                    Color.white) as Graphic_Multi_NaturalHeadParts;
 
             }
             return graphic;
@@ -2391,11 +2393,11 @@ namespace FacialStuff.FaceEditor
                 string path = this.CompFace.EyeTexPath(Side.Right, def);
 
                 graphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-                                                                          path,
-                                                                          ShaderDatabase.CutoutComplex,
-                                                                          new Vector2(38f, 38f),
-                                                                          Color.white,
-                                                                          Color.white) as Graphic_Multi_NaturalEyes;
+                    path,
+                    ShaderDatabase.CutoutComplex,
+                    new Vector2(38f, 38f),
+                    Color.white,
+                    Color.white) as Graphic_Multi_NaturalEyes;
             }
             else
             {
@@ -2453,7 +2455,7 @@ namespace FacialStuff.FaceEditor
             this.RerenderPawn = true;
         }
 
-        #endregion Private Methods
+#endregion Private Methods
 
         // private void CheckSelectedFacePresetHasName()
         // }
