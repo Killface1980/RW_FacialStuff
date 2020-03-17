@@ -319,8 +319,8 @@ namespace FacialStuff.AnimatorWindows
                                                  smLocal.LabelCap,
                                                  delegate
                                                  {
-                                                     Find.Selector.Deselect(Pawn);
                                                      Find.WindowStack.WindowOfType<MainTabWindow_WalkAnimator>().Close(false);
+                                                     Find.Selector.ClearSelection();
                                                      Find.Selector.Select(smLocal, false);
                                                      Find.MainTabsRoot.ToggleTab(DefDatabase<MainButtonDef>.GetNamed("WalkAnimator"));
                                                  }));
@@ -661,7 +661,6 @@ namespace FacialStuff.AnimatorWindows
 
         private static void SynchronizeFrames(PawnKeyframe sourceFrame, PawnKeyframe targetFrame)
         {
-            targetFrame.HeadOffsetZ = sourceFrame.HeadOffsetZ;
             targetFrame.BodyAngle = sourceFrame.BodyAngle;
             targetFrame.BodyAngleVertical = sourceFrame.BodyAngleVertical;
 

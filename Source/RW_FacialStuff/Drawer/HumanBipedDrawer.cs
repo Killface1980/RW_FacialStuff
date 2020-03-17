@@ -251,7 +251,7 @@ namespace FacialStuff
                     bool flag = true;
                     if (!portrait && Controller.settings.HideShellWhileRoofed)
                     {
-                        if (this.CompAnimator.InRoom && (Pawn.IsColonistPlayerControlled && Pawn.Faction.IsPlayer))
+                        if (this.CompAnimator.InRoom && CompAnimator.HideShellLayer)
                         {
                             MaxLayerToShow layer;
                             if (this.CompAnimator.InPrivateRoom)

@@ -2,21 +2,6 @@
 <Defs>
   <BodyAnimDef>
     <thingTarget>Human</thingTarget>
-    <bodyDrawers>
-      <li Class="FacialStuff.HumanBipedDrawer">
-        <Graphics IsNull="True" />
-        <BodyFacing>
-          <rotInt>0</rotInt>
-        </BodyFacing>
-        <HeadFacing>
-          <rotInt>0</rotInt>
-        </HeadFacing>
-        <Flasher IsNull="True" />
-        <_animatedPercent>0</_animatedPercent>
-        <lastJob IsNull="True" />
-        <HandMesh />
-      </li>
-    </bodyDrawers>
     <handType>Human</handType>
     <quadruped>False</quadruped>
     <bipedWithHands>True</bipedWithHands>
@@ -94,6 +79,5 @@
     <PoseCycleType></PoseCycleType>
     <defName>BodyAnimDef_Human_Hulk</defName>
     <label>BodyAnimDef_Human_Hulk</label>
-    <descriptionHyperlinks IsNull="True" />
   </BodyAnimDef>
 </Defs>

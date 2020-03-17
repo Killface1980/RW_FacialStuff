@@ -2,20 +2,6 @@
 <Defs>
   <BodyAnimDef>
     <thingTarget>Tortoise</thingTarget>
-    <bodyDrawers>
-      <li Class="FacialStuff.QuadrupedDrawer">
-        <Graphics IsNull="True" />
-        <BodyFacing>
-          <rotInt>0</rotInt>
-        </BodyFacing>
-        <HeadFacing>
-          <rotInt>0</rotInt>
-        </HeadFacing>
-        <Flasher IsNull="True" />
-        <lastJob IsNull="True" />
-        <HandMesh />
-      </li>
-    </bodyDrawers>
     <handType>WildBoar</handType>
     <quadruped>True</quadruped>
     <bipedWithHands>False</bipedWithHands>
@@ -93,6 +79,5 @@
     <PoseCycleType></PoseCycleType>
     <defName>BodyAnimDef_Human_Male</defName>
     <label>BodyAnimDef_Human_Male</label>
-    <descriptionHyperlinks IsNull="True" />
   </BodyAnimDef>
 </Defs>

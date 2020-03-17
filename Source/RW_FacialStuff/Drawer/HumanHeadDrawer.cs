@@ -169,7 +169,7 @@ namespace FacialStuff
             bool noRenderGoggles = Controller.settings.FilterHats;
 
             bool showRoyalHeadgear = Pawn.royalty?.MostSeniorTitle != null && Controller.settings.ShowRoyalHeadgear;
-            bool noRenderRoofed = animator != null && animator.HideHat && (Pawn.IsColonistPlayerControlled && Pawn.Faction.IsPlayer) && !showRoyalHeadgear;
+            bool noRenderRoofed = animator != null && animator.HideHat && !showRoyalHeadgear;
             bool noRenderBed = Controller.settings.HideHatInBed && !renderBody && !showRoyalHeadgear;
 
             if (!headgearGraphics.NullOrEmpty())

@@ -93,7 +93,9 @@ namespace FacialStuff
                 WalkCycleDef cycle = cycles[index];
                 if (cycle != null)
                 {
+                    cycle.HeadAngleX = new SimpleCurve();
                     cycle.HeadOffsetZ = new SimpleCurve();
+
                     cycle.BodyAngle = new SimpleCurve();
                     cycle.BodyAngleVertical = new SimpleCurve();
                     cycle.BodyOffsetZ = new SimpleCurve();
@@ -231,6 +233,8 @@ namespace FacialStuff
 
             Dictionary<SimpleCurve, float?> dict = new Dictionary<SimpleCurve, float?>
             {
+                {cycle.HeadAngleX, key.HeadAngleX },
+                {cycle.HeadOffsetZ, key.HeadOffsetZ },
                 {
                     cycle.ShoulderOffsetHorizontalX,
                     key.ShoulderOffsetHorizontalX
@@ -238,10 +242,6 @@ namespace FacialStuff
                 {
                     cycle.HipOffsetHorizontalX,
                     key.HipOffsetHorizontalX
-                },
-                {
-                    cycle.HeadOffsetZ,
-                    key.HeadOffsetZ
                 },
                 {
                     cycle.BodyAngleVertical,
@@ -342,10 +342,6 @@ namespace FacialStuff
                 {
                     cycle.HipOffsetHorizontalX,
                     key.HipOffsetHorizontalX
-                },
-                {
-                    cycle.HeadOffestZ,
-                    key.HeadOffsetZ
                 },
                 {
                     cycle.BodyAngle,

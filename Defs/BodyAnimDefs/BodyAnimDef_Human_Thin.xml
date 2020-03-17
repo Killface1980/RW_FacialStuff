@@ -2,21 +2,6 @@
 <Defs>
   <BodyAnimDef>
     <thingTarget>Human</thingTarget>
-    <bodyDrawers>
-      <li Class="FacialStuff.HumanBipedDrawer">
-        <Graphics IsNull="True" />
-        <BodyFacing>
-          <rotInt>0</rotInt>
-        </BodyFacing>
-        <HeadFacing>
-          <rotInt>0</rotInt>
-        </HeadFacing>
-        <Flasher IsNull="True" />
-        <_animatedPercent>0</_animatedPercent>
-        <lastJob IsNull="True" />
-        <HandMesh />
-      </li>
-    </bodyDrawers>
     <handType>Human</handType>
     <quadruped>False</quadruped>
     <bipedWithHands>True</bipedWithHands>
@@ -45,8 +30,8 @@
       </li>
     </hipOffsets>
     <headOffset>
-      <x>0.15</x>
-      <y>0.075</y>
+      <x>0.05</x>
+      <y>0.05</y>
     </headOffset>
     <offCenterX>0</offCenterX>
     <shoulderOffsets>
@@ -94,6 +79,5 @@
     <PoseCycleType></PoseCycleType>
     <defName>BodyAnimDef_Human_Thin</defName>
     <label>BodyAnimDef_Human_Thin</label>
-    <descriptionHyperlinks IsNull="True" />
   </BodyAnimDef>
 </Defs>
