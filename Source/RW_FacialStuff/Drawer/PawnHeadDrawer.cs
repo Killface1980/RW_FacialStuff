@@ -31,7 +31,7 @@ namespace FacialStuff
         {
         }
 
-        public virtual void BaseHeadOffsetAt(ref Vector3 offset, bool portrait)
+        public virtual void BaseHeadOffsetAt(ref Vector3 offset, bool portrait, Pawn pawn)
         {
         }
 

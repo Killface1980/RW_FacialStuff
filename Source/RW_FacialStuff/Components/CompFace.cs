@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 using RimWorld;
 using System;
 using System.Collections.Generic;
-
+using FacialStuff.Harmony;
 using UnityEngine;
 using Verse;
 
@@ -198,7 +198,7 @@ namespace FacialStuff
 
         // public Vector3 RightHandPosition;
         // public Vector3 LeftHandPosition;
-        public Vector3 BaseHeadOffsetAt(bool portrait)
+        public Vector3 BaseHeadOffsetAt(bool portrait, Pawn pawn)
         {
             Vector3 offset = Vector3.zero;
 
@@ -211,7 +211,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i].BaseHeadOffsetAt(ref offset, portrait);
+                this.PawnHeadDrawers[i].BaseHeadOffsetAt(ref offset, portrait, pawn);
                 i++;
             }
 
@@ -498,12 +498,11 @@ namespace FacialStuff
             {
                 eyeDef = this.PawnFace?.EyeDef;
             }
-            //ReSharper disable once PossibleNullReferenceException
-            string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes" : eyeDef.texBasePath;
-            string path = eyePath + "/" + "Eye_" + eyeDef.texName + "_" + this.Pawn.gender + "_" + side;
+            // ReSharper disable once PossibleNullReferenceException
+            string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : eyeDef.texBasePath;
+            string path = eyePath + "Eye_" + eyeDef.texName + "_" + this.Pawn.gender + "_" + side;
 
-            //Log.Message("New eye found: " + path);
-            return path;
+            return path.Replace(@"\", @"/");
         }
 
         [NotNull]
@@ -524,6 +523,11 @@ namespace FacialStuff
             if (def == BeardDefOf.Beard_Shaved)
             {
                 return StringsFS.PathHumanlike + "Beards/Beard_Shaved";
+            }
+
+            if (def.IsVHEhair())
+            {
+                return StringsFS.PathHumanlike + "Beards/" + def.texPath;
             }
 
             return StringsFS.PathHumanlike + "Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;

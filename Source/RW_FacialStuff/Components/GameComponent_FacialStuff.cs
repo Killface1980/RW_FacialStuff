@@ -39,7 +39,7 @@ namespace FacialStuff
                 if (Controller.settings.UseCaching)
                 {
                     string name = Path.GetFileNameWithoutExtension(hairDef.texPath);
-                    PawnElementsDB.ExportHairCut(hairDef, name);
+                    CutHairDB.ExportHairCut(hairDef, name);
                 }
             }
 
@@ -215,15 +215,11 @@ namespace FacialStuff
             if (!manualKeys.NullOrEmpty())
             {
                 frameAt = (float)key.KeyIndex / (autoKeys.Count - 1);
-                Log.Message("frameAt " + frameAt);
                 float divider = (float)1 / (autoKeys.Count - 1);
-                Log.Message("divider " + divider);
                 float? shift = manualKeys.Find(x => x.KeyIndex == key.KeyIndex)?.Shift;
                 if (shift.HasValue)
                 {
-                    Log.Message("Shift " + shift);
                     frameAt += divider * shift.Value;
-                    Log.Message("new frameAt " + frameAt);
                 }
             }
             else

@@ -49,7 +49,7 @@ namespace RimWorld
         [NotNull]
         public List<PoseCycleDef> poseCycles = new List<PoseCycleDef>();
 
-        public string PoseCycleType;
+        public string PoseCycleType = "Undefined";
 
         #endregion Public Fields
 

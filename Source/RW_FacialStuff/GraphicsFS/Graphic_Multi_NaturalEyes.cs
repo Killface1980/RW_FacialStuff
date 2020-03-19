@@ -56,31 +56,29 @@ namespace FacialStuff.GraphicsFS
 
                 // array[2] = MaskTextures.BlankTexture();
             }
+            string sidePath = Path.GetDirectoryName(req.path).Replace(@"\", @"/") + "/" + "Eye_" + eyeType + "_" + gender + "_east";
 
-            string sidePath = Path.GetDirectoryName(req.path).Replace(@"\",@"/") + "/Eye_" + eyeType + "_" + gender + "_east";
-  
 
-            //string sidePath = "Things/Pawn/Humanlike/Eyes/Eye_" + eyeType + "_" + gender + "_east";
             // 1 texture= 1 eye, blank for the opposite side
-            //Log.Warning(sidePath);
             if (ContentFinder<Texture2D>.Get(sidePath))
             {
                 switch (side)
-                {
-                    case "Right":
-                        array[1] = ContentFinder<Texture2D>.Get(sidePath);
-                        array[3] = FaceTextures.BlankTexture;
-                        break;
-                    case "Left":
-                        array[1] = FaceTextures.BlankTexture;
-                        array[3] = ContentFinder<Texture2D>.Get(sidePath);
-
-                        break;
-                    default:
-                        Log.Warning("sidePath for east eye didn't find anything");
-                        break;
+                { 
+                case "Right":
+                array[1] = ContentFinder<Texture2D>.Get(sidePath);
+                array[3] = FaceTextures.BlankTexture;
+                break;
+                case "Left":
+                array[1] = FaceTextures.BlankTexture;
+                array[3] = ContentFinder<Texture2D>.Get(sidePath);
+                break;
+                default:
+                    Log.Message("Facial Stuff: No side defined" + sidePath + " - Graphic_Multi_NaturalEyes");
+                break;
 
                 }
+                // ReSharper disable once PossibleNullReferenceException
+
             }
             else
             {

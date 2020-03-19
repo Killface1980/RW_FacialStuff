@@ -52,6 +52,9 @@ namespace FacialStuff
         private bool _useFeet = !Controller.SKisActive;
         private bool _usePaws = false;
         private bool develop;
+
+        private bool showRoyalHeadgear = true;
+
         Vector2 scrollPosition;
         float viewHeight;
         #endregion Private Fields
@@ -102,6 +105,7 @@ namespace FacialStuff
         public bool UseWrinkles => this._useWrinkles;
 
         public bool Develop => this.develop;
+        public bool ShowRoyalHeadgear => this.showRoyalHeadgear;
 
         #endregion Public Properties
 
@@ -218,13 +222,14 @@ namespace FacialStuff
                 ref this._hideHatWhileRoofed,
                 "Settings.HideHatWhileRoofedTooltip".Translate());
 
-            if (!this.HideHatWhileRoofed)
-            {
+                list.CheckboxLabeled(
+                    "Settings.ShowRoyalHeadgear".Translate(),
+                    ref this.showRoyalHeadgear,
+                    "Settings.ShowRoyalHeadgearTooltip".Translate());
                 list.CheckboxLabeled(
                     "Settings.HideHatInBed".Translate(),
                     ref this._hideHatInBed,
                     "Settings.HideHatInBedTooltip".Translate());
-            }
 
             list.CheckboxLabeled(
                 "Settings.FilterHats".Translate(),

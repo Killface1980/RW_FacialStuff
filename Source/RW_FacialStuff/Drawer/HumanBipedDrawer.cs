@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FacialStuff.Animator;
 using FacialStuff.AnimatorWindows;
+using FacialStuff.Harmony;
 using FacialStuff.Tweener;
 using JetBrains.Annotations;
 using RimWorld;
@@ -150,7 +151,7 @@ namespace FacialStuff
         public void DoAttackAnimationHandOffsets(ref List<float> weaponAngle, ref Vector3 weaponPosition, bool flipped)
         {
             Pawn pawn = this.Pawn;
-            if (pawn.story != null && pawn.WorkTagIsDisabled(WorkTags.Violent))
+            if (pawn.story != null && ((pawn.story.DisabledWorkTagsBackstoryAndTraits & WorkTags.Violent) != 0))
             {
                 return;
             }
@@ -322,7 +323,7 @@ namespace FacialStuff
                 }
             }
 
-            if (portrait && !MainTabWindow_WalkAnimator.IsOpen)
+            if (portrait && !HarmonyPatchesFS.AnimatorIsOpen())
             {
                 return;
             }
@@ -474,6 +475,18 @@ namespace FacialStuff
                                            centerMat,
                                            portrait);
 
+                Material hipMat = GraphicDatabase
+                    .Get<Graphic_Single>("Hands/Human_Hand_dev", ShaderDatabase.Transparent, Vector2.one,
+                        Color.blue).MatSingle;
+
+                GenDraw.DrawMeshNowOrLater(
+                    footMeshLeft,
+                    groundPos.LeftJoint +
+                    new Vector3(offsetJoint, -0.301f, 0),
+                    drawQuat * Quaternion.AngleAxis(0, Vector3.up),
+                    centerMat,
+                    portrait);
+
                 // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z),
                 // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
                 // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z2),
@@ -490,7 +503,7 @@ namespace FacialStuff
                 return;
             }
 
-            if (portrait && !MainTabWindow_WalkAnimator.IsOpen)
+            if (portrait && !HarmonyPatchesFS.AnimatorIsOpen())
             {
                 return;
             }
@@ -745,7 +758,7 @@ namespace FacialStuff
             return;
             if (this.CompAnimator.AnimatorPoseOpen)
             {
-                //  this.CompAnimator.PoseCycle = MainTabWindow_PoseAnimator.EditorPosecycle;
+                //  this.CompAnimator.PoseCycle = MainTabWindow_PoseAnimator.EditorPoseCycle;
             }
 
             if (this.Pawn.CurJob != null)
@@ -789,7 +802,7 @@ namespace FacialStuff
             }
 
             // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
-            bool pawnInEditor = MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_BaseAnimator.Pawn == this.Pawn;
+            bool pawnInEditor = HarmonyPatchesFS.AnimatorIsOpen() && MainTabWindow_BaseAnimator.Pawn == this.Pawn;
             if (!Find.TickManager.Paused || pawnInEditor)
             {
                 this.SelectWalkcycle(pawnInEditor);
@@ -1035,11 +1048,15 @@ namespace FacialStuff
                                      TweenThing tweenThing,
                                      bool portrait, bool noTween)
         {
+            if (position == Vector3.zero || handsMesh == null || material == null || quat == null || tweenThing == null)
+            {
+                return;
+            }
             if (!this.Pawn.Downed || !this.Pawn.Dead)
             {
-                if (!MainTabWindow_WalkAnimator.IsOpen &&
+                if (!HarmonyPatchesFS.AnimatorIsOpen() &&
                     Find.TickManager.TicksGame == this.CompAnimator.LastPosUpdate[(int) tweenThing] ||
-                    MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_BaseAnimator.Pawn != this.Pawn)
+                    HarmonyPatchesFS.AnimatorIsOpen() && MainTabWindow_BaseAnimator.Pawn != this.Pawn)
                 {
                     position = this.CompAnimator.LastPosition[(int) tweenThing];
                 }

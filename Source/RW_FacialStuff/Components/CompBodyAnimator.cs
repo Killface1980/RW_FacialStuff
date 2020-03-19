@@ -1,7 +1,7 @@
 ﻿using FacialStuff.Animator;
 using FacialStuff.AnimatorWindows;
 using FacialStuff.GraphicsFS;
-using FacialStuff.HarmonyLib;
+using FacialStuff.Harmony;
 using FacialStuff.Tweener;
 using JetBrains.Annotations;
 using RimWorld;
@@ -359,7 +359,7 @@ namespace FacialStuff
 
             if (Find.TickManager.Paused)
             {
-                if (!MainTabWindow_WalkAnimator.IsOpen || MainTabWindow_BaseAnimator.Pawn != this.Pawn)
+                if (!HarmonyPatchesFS.AnimatorIsOpen() || MainTabWindow_BaseAnimator.Pawn != this.Pawn)
                 {
                     return;
                 }
@@ -376,6 +376,7 @@ namespace FacialStuff
             FloatTween angleTween = this.AimAngleTween;
             Vector3Tween leftHand = this.Vector3Tweens[(int)TweenThing.HandLeft];
             Vector3Tween rightHand = this.Vector3Tweens[(int)TweenThing.HandRight];
+
             if (leftHand.State == TweenState.Running)
             {
                 leftHand.Update(1f * Find.TickManager.TickRateMultiplier);
@@ -523,7 +524,7 @@ namespace FacialStuff
 
         public void CheckMovement()
         {
-            if (MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_BaseAnimator.Pawn == this.Pawn)
+            if (HarmonyPatchesFS.AnimatorIsOpen() && MainTabWindow_BaseAnimator.Pawn == this.Pawn)
             {
                 this._isMoving = true;
                 this._movedPercent = MainTabWindow_BaseAnimator.AnimationPercent;
@@ -551,7 +552,8 @@ namespace FacialStuff
 
         public bool IsRider { get; set; }
 
-        public void DrawAlienBodyAddons(Quaternion quat, Vector3 vector, bool portrait, bool renderBody, Rot4 rotation)
+        public void DrawAlienBodyAddons(Quaternion quat, Vector3 vector, bool portrait, bool renderBody, Rot4 rotation,
+            bool invisible)
         {
             if (this.PawnBodyDrawers.NullOrEmpty())
             {
@@ -562,7 +564,7 @@ namespace FacialStuff
             int count = this.PawnBodyDrawers.Count;
             while (i < count)
             {
-                this.PawnBodyDrawers[i].DrawAlienBodyAddons(portrait, vector, quat, renderBody, rotation);
+                this.PawnBodyDrawers[i].DrawAlienBodyAddons(portrait, vector, quat, renderBody, rotation, invisible);
                 i++;
             }
         }
