@@ -5,6 +5,7 @@ using RimWorld;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using FacialStuff.Harmony;
 using UnityEngine;
 using Verse;
 
@@ -43,6 +44,12 @@ namespace FacialStuff
                 }
             }
 
+            // Fix for VHE hair on existing pawns.
+            foreach (Pawn pawn in PawnsFinder.AllMaps.FindAll(x =>
+                x.kindDef?.RaceProps != null && x.kindDef.RaceProps.Humanlike == true).Where(pawn => pawn.story?.hairDef != null && pawn.story.hairDef.IsBeardNotHair()))
+            {
+                PawnHairChooser.RandomHairDefFor(pawn, pawn.Faction.def);
+            }
             this.WeaponCompsNew();
 
             // todo: use BodyDef instead, target for kickstarting?
@@ -70,6 +77,7 @@ namespace FacialStuff
 
         #region Public Methods
         protected UnityEngine.Animator animator;
+
 
         public static void BuildWalkCycles([CanBeNull] WalkCycleDef defToRebuild = null)
         {
@@ -552,7 +560,7 @@ namespace FacialStuff
                             continue;
                         }
 
-                        CompProperties_BodyAnimator animator = new CompProperties_BodyAnimator
+                        CompProperties_BodyAnimator bodyAnimator = new CompProperties_BodyAnimator
                         {
                             compClass = typeof(CompBodyAnimator),
                             bodyDrawers = pawnSets.bodyDrawers,
@@ -560,7 +568,7 @@ namespace FacialStuff
                             quadruped = pawnSets.quadruped,
                             bipedWithHands = pawnSets.bipedWithHands
                         };
-                        thingDef.comps?.Add(animator);
+                        thingDef.comps?.Add(bodyAnimator);
                     }
                 }
             }
@@ -591,7 +599,7 @@ namespace FacialStuff
                     continue;
                 }
 
-                CompProperties_BodyAnimator animator = new CompProperties_BodyAnimator
+                CompProperties_BodyAnimator bodyAnimator = new CompProperties_BodyAnimator
                 {
                     compClass = typeof(CompBodyAnimator),
                     bodyDrawers = def.bodyDrawers,
@@ -600,7 +608,7 @@ namespace FacialStuff
                     bipedWithHands = def.bipedWithHands
                 };
 
-                thingDef.comps?.Add(animator);
+                thingDef.comps?.Add(bodyAnimator);
             }
         }
 

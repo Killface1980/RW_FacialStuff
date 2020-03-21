@@ -22,11 +22,18 @@ namespace FacialStuff
             }
             rootLoc.y += this.BodyFacing == Rot4.South ? -Offsets.YOffset_HandsFeetOver : 0;
 
-            this.DrawFrontPaws(bodyQuat, footQuat, rootLoc, portrait);
+            var frontPawLoc = rootLoc;
+            var rearPawLoc = rootLoc;
 
-         //   rootLoc.y += this.BodyFacing == Rot4.North ? Offsets.YOffset_Behind : -Offsets.YOffset_Behind;
+            if (!BodyFacing.IsHorizontal)
+            {
+                frontPawLoc.y += (BodyFacing == Rot4.North ? Offsets.YOffset_Behind : -Offsets.YOffset_Behind);
+            }
 
-            base.DrawFeet(bodyQuat, footQuat, rootLoc, portrait);
+                this.DrawFrontPaws(bodyQuat, footQuat, frontPawLoc, portrait);
+
+
+            base.DrawFeet(bodyQuat, footQuat, rearPawLoc, portrait);
         }
 
         public override void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, Thing carriedThing = null,

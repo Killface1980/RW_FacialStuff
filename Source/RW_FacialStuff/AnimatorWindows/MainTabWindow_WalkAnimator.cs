@@ -17,23 +17,22 @@ namespace FacialStuff.AnimatorWindows
     {
         #region Public Fields
 
-        public static bool Equipment;
-        public static float HorHeadOffset;
-        public static float VerHeadOffset;
+        public  bool Equipment;
+        public  float HorHeadOffset;
+        public  float VerHeadOffset;
 
         #endregion Public Fields
 
         #region Public Properties
+
+        [NotNull]
+        public WalkCycleDef EditorWalkcycle { get; private set; } = WalkCycleDefOf.Biped_Walk;
 
         protected override void SetKeyframes()
         {
             PawnKeyframes = EditorWalkcycle.keyframes;
             this.Label = EditorWalkcycle.LabelCap;
         }
-
-        [NotNull]
-        public static WalkCycleDef EditorWalkcycle { get; private set; } = WalkCycleDefOf.Biped_Walk;
-
         #endregion Public Properties
 
         #region Private Properties
@@ -44,74 +43,53 @@ namespace FacialStuff.AnimatorWindows
 
         #region Public Methods
 
+        private string filePathBodyanim
+        {
+            get
+            {
+                return DefPath + "/BodyAnimDefs/" + this.BodyAnimDef.defName + ".xml";
+            }
+        }
+
+        private string pathWalkcycles
+        {
+            get
+            {
+                return DefPath + "/WalkCycleDefs/" + EditorWalkcycle.defName + ".xml";
+
+            }
+        }
+
+        public override void DoWindowContents(Rect inRect)
+        {
+            base.DoWindowContents(inRect);
+            if (GUI.changed)
+            {
+                if (!this.Loop)
+                {
+                    GameComponent_FacialStuff.BuildWalkCycles();
+                }
+            }
+        }
+
+        public override void PostClose()
+        {
+            base.PostClose();
+        }
+
+        public override void PreOpen()
+        {
+            base.PreOpen();
+            // IsMoving = true;
+        }
+
         protected override void BuildEditorCycle()
         {
             base.BuildEditorCycle();
             GameComponent_FacialStuff.BuildWalkCycles(EditorWalkcycle);
         }
 
-        protected override void SetCurrentCycle()
-        {
-            BodyAnimDef anim = this.CompAnim.BodyAnim;
-            if (anim != null && anim.walkCycles.Any())
-            {
-                EditorWalkcycle =
-                anim.walkCycles.FirstOrDefault().Value;
-            }
-        }
-
-        protected override void DrawBackground(Rect rect)
-        {
-            GUI.BeginGroup(rect);
-            var percent = AnimationPercent;
-            float width = rect.width;
-            float zero = rect.x;
-
-            float moved = (width * AnimationPercent);
-            Rect rect1;
-            Rect rect2;
-            if (BodyRot == Rot4.East)
-            {
-                rect1 = new Rect(rect) { x = rect.x - moved };
-                rect2 = new Rect(rect1) { x = rect1.xMax };
-            }
-            else if (BodyRot == Rot4.West)
-            {
-                rect1 = new Rect(rect) { x = rect.x + moved };
-                rect2 = new Rect(rect1) { x = rect1.xMin - width };
-            }
-            else if (BodyRot == Rot4.North)
-            {
-                rect1 = new Rect(rect) { y = rect.y + moved };
-                rect2 = new Rect(rect1) { y = rect1.yMin - width };
-            }
-            else
-            {
-                rect1 = new Rect(rect) { y = rect.y - moved };
-                rect2 = new Rect(rect1) { y = rect1.yMax };
-            }
-
-            GUI.DrawTexture(rect1, FaceTextures.BackgroundAnimTex);
-            GUI.DrawTexture(rect2, FaceTextures.BackgroundAnimTex);
-            GUI.EndGroup();
-        }
-        private string filePathBodyanim { get
-            {
-                return DefPath + "/BodyAnimDefs/" + this.BodyAnimDef.defName + ".xml";
-            }
-        }
-                
-
-                private string pathWalkcycles
-                {
-                    get
-                    {
-                        return DefPath + "/WalkCycleDefs/" + EditorWalkcycle.defName + ".xml";
-
-            }
-                }
-
-                // public static float horHeadOffset;
+        // public static float horHeadOffset;
         protected override void DoBasicSettingsMenu(Listing_Standard listing)
         {
             base.DoBasicSettingsMenu(listing);
@@ -238,28 +216,40 @@ namespace FacialStuff.AnimatorWindows
             }
         }
 
-
-        public override void PreOpen()
+        protected override void DrawBackground(Rect rect)
         {
-            base.PreOpen();
-            // IsMoving = true;
-        }
+            GUI.BeginGroup(rect);
+            var percent = AnimationPercent;
+            float width = rect.width;
+            float zero = rect.x;
 
-        public override void PostClose()
-        {
-            base.PostClose();
-        }
-
-        public override void DoWindowContents(Rect inRect)
-        {
-            base.DoWindowContents(inRect);
-            if (GUI.changed)
+            float moved = (width * AnimationPercent);
+            Rect rect1;
+            Rect rect2;
+            if (BodyRot == Rot4.East)
             {
-                if (!this.Loop)
-                {
-                    GameComponent_FacialStuff.BuildWalkCycles();
-                }
+                rect1 = new Rect(rect) { x = rect.x - moved };
+                rect2 = new Rect(rect1) { x = rect1.xMax };
             }
+            else if (BodyRot == Rot4.West)
+            {
+                rect1 = new Rect(rect) { x = rect.x + moved };
+                rect2 = new Rect(rect1) { x = rect1.xMin - width };
+            }
+            else if (BodyRot == Rot4.North)
+            {
+                rect1 = new Rect(rect) { y = rect.y + moved };
+                rect2 = new Rect(rect1) { y = rect1.yMin - width };
+            }
+            else
+            {
+                rect1 = new Rect(rect) { y = rect.y - moved };
+                rect2 = new Rect(rect1) { y = rect1.yMax };
+            }
+
+            GUI.DrawTexture(rect1, FaceTextures.BackgroundAnimTex);
+            GUI.DrawTexture(rect2, FaceTextures.BackgroundAnimTex);
+            GUI.EndGroup();
         }
 
         protected override void DrawBodySettingsEditor(Rot4 rotation)
@@ -430,7 +420,7 @@ namespace FacialStuff.AnimatorWindows
                 editorRect.x = 0f;
                 editorRect.y = 0f;
 
-                if (this.CompAnim.Props.bipedWithHands)
+                if (this.CompAnim.BodyAnim.bipedWithHands)
                 {
                     this.SetAngleShoulder(ref walkcycle.shoulderAngle, ref editorRect, "ShoulderAngle");
 
@@ -448,7 +438,7 @@ namespace FacialStuff.AnimatorWindows
 
                 if (rotation.IsHorizontal)
                 {
-                    if (this.CompAnim.Props.quadruped)
+                    if (this.CompAnim.BodyAnim.quadruped)
                     {
                         framesAt = (from keyframe in frames
                                     where keyframe.FrontPawPositionX.HasValue
@@ -496,7 +486,7 @@ namespace FacialStuff.AnimatorWindows
                 }
                 else
                 {
-                    if (this.CompAnim.Props.bipedWithHands)
+                    if (this.CompAnim.BodyAnim.bipedWithHands)
                     {
                         // framesAt = (from keyframe in frames
                         // where keyframe.HandsSwingPosVertical.HasValue
@@ -595,6 +585,15 @@ namespace FacialStuff.AnimatorWindows
             }
         }
 
+        protected override void SetCurrentCycle()
+        {
+            BodyAnimDef anim = this.CompAnim.BodyAnim;
+            if (anim != null && anim.walkCycles.Any())
+            {
+                EditorWalkcycle =
+                anim.walkCycles.FirstOrDefault().Value;
+            }
+        }
         #endregion Public Methods
 
         #region Private Methods

@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <BodyAnimDef>
-    <thingTarget>Tortoise</thingTarget>
-    <handType>WildBoar</handType>
-    <quadruped>True</quadruped>
-    <bipedWithHands>False</bipedWithHands>
+    <thingTarget>Human</thingTarget>
+    <handType>Human</handType>
+    <quadruped>False</quadruped>
+    <bipedWithHands>True</bipedWithHands>
     <armLength>0.35</armLength>
     <extraLegLength>0.15</extraLegLength>
     <hipOffsets>
@@ -76,7 +76,7 @@
     </walkCycles>
     <WalkCycleType>Biped</WalkCycleType>
     <poseCycles />
-    <PoseCycleType></PoseCycleType>
+    <PoseCycleType IsNull="True" />
     <defName>BodyAnimDef_Human_Male</defName>
     <label>BodyAnimDef_Human_Male</label>
   </BodyAnimDef>

@@ -106,11 +106,9 @@
     <None Include="GraphicsFS\Graphic_Multi_Four.cs" />
     <Compile Include="Harmony\HarmonyPatchesFS.cs" />
     <Compile Include="Harmony\HarmonyPatch_PawnRenderer.cs" />
-    <None Include="Harmony\Optional\Harmony_Vampire.cs" />
     <None Include="Harmony\Optional\Harmony_Werewolf.cs" />
     <None Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
     <None Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
-    <None Include="Harmony\Optional\Vampire_Patches.cs" />
     <None Include="Harmony\Optional\Werewolf_Patches.cs" />
     <Compile Include="Tweener\TinyTween.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
@@ -243,6 +241,9 @@
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Deer_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_Deer_Undefined.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Donkey_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Donkey_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Elk_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_Elk_Undefined.xml</Link>

@@ -187,6 +187,7 @@ namespace FacialStuff.Harmony
 
             return false;
         }
+
         #endregion Public Constructors
 
         #region Public Fields
@@ -207,6 +208,11 @@ namespace FacialStuff.Harmony
         private static float angleStanding = 143f;
         private static float angleStandingFlipped = 217f;
 
+        public static bool AnimatorIsOpen()
+        {
+            return Find.WindowStack.IsOpen(typeof(MainTabWindow_WalkAnimator));// MainTabWindow_WalkAnimator.IsOpen;// || MainTabWindow_PoseAnimator.IsOpen;
+        }
+
         public static bool IsAnimated_Prefix(Pawn pawn, ref bool __result)
         {
             if (AnimatorIsOpen() && MainTabWindow_WalkAnimator.Pawn == pawn)
@@ -217,12 +223,6 @@ namespace FacialStuff.Harmony
 
             return true;
         }
-
-        public static bool AnimatorIsOpen()
-        {
-            return Find.WindowStack.IsOpen(typeof(MainTabWindow_WalkAnimator));// MainTabWindow_WalkAnimator.IsOpen;// || MainTabWindow_PoseAnimator.IsOpen;
-        }
-
         private static bool DrawAtGiddy(Pawn __instance)
         {
             //  ExtendedDataStorage extendedDataStorage = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
@@ -304,6 +304,38 @@ namespace FacialStuff.Harmony
                 SoundDefOf.Tick_Low.PlayOneShotOnCamera(null);
                 OpenStylingWindow(pawn);
             }
+        }
+
+        public static void CheckAndDrawHands(Thing carriedThing, Vector3 thingVector3, bool flip, Pawn pawn, bool thingBehind)
+        {
+            if (pawn.RaceProps.Animal)
+            {
+                carriedThing.DrawAt(thingVector3, flip);
+                return;
+            }
+
+            if (!pawn.GetCompAnim(out CompBodyAnimator compAnim))
+            {
+                carriedThing.DrawAt(thingVector3, flip);
+                return;
+            }
+
+            bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
+            if (!showHands)
+            {
+                carriedThing.DrawAt(thingVector3, flip);
+                return;
+            }
+
+            // Modify the drawPos to appear behind a pawn if facing North, in case vanilla didn't
+            if (!thingBehind && pawn.Rotation == Rot4.North)
+            {
+                thingVector3.y -= Offsets.YOffset_CarriedThing * 2;
+            }
+
+            thingVector3.y += compAnim.DrawOffsetY;
+
+            compAnim.DrawHands(Quaternion.identity, thingVector3, false, carriedThing, flip);
         }
 
         public static void DirtyCache_Postfix(HediffSet __instance)
@@ -519,194 +551,7 @@ namespace FacialStuff.Harmony
             }
         }
 
- 
 
-        private static void CalculatePositionsWeapon(Pawn pawn, ref float weaponAngle,
-                                                     CompProperties_WeaponExtensions extensions,
-                                                     out Vector3 weaponPosOffset, out bool aiming,
-                                                     bool flipped)
-        {
-            weaponPosOffset = Vector3.zero;
-            if (pawn.Rotation == Rot4.West || pawn.Rotation == Rot4.North)
-            {
-                weaponPosOffset.y = -Offsets.YOffset_Head - Offsets.YOffset_CarriedThing;
-            }
-
-            // Use y for the horizontal position. too lazy to add even more vectors
-            bool isHorizontal = pawn.Rotation.IsHorizontal;
-            aiming = pawn.Aiming();
-            Vector3 extOffset;
-            Vector3 o = extensions.WeaponPositionOffset;
-            Vector3 d = extensions.AimedWeaponPositionOffset;
-            if (isHorizontal)
-            {
-                extOffset = new Vector3(o.y, 0, o.z);
-                if (aiming)
-                {
-                    extOffset += new Vector3(d.y, 0, d.z);
-                }
-            }
-            else
-            {
-                extOffset = new Vector3(o.x, 0, o.z);
-                if (aiming)
-                {
-                    extOffset += new Vector3(d.x, 0, d.z);
-                }
-            }
-
-            if (flipped)
-            {
-                if (aiming)
-                {
-                    weaponAngle -= extensions?.AttackAngleOffset ?? 0;
-                }
-
-                weaponPosOffset += extOffset;
-
-                // flip x position offset
-                if (pawn.Rotation != Rot4.South)
-                {
-                    weaponPosOffset.x *= -1;
-                }
-            }
-            else
-            {
-                if (aiming)
-                {
-                    weaponAngle += extensions?.AttackAngleOffset ?? 0;
-                }
-
-                weaponPosOffset += extOffset;
-            }
-        }
-
-        // If the return value is positive, then rotate to the left. Else,
-        // rotate to the right.
-        private static float CalcShortestRot(float from, float to)
-        {
-            // If from or to is a negative, we have to recalculate them.
-            // For an example, if from = -45 then from(-45) + 360 = 315.
-            if (@from < 0)
-            {
-                @from += 360;
-            }
-
-            if (to < 0)
-            {
-                to += 360;
-            }
-
-            // Do not rotate if from == to.
-            if (@from == to ||
-                @from == 0 && to == 360 ||
-                @from == 360 && to == 0)
-            {
-                return 0;
-            }
-
-            // Pre-calculate left and right.
-            float left = (360 - @from) + to;
-            float right = @from - to;
-
-            // If from < to, re-calculate left and right.
-            if (@from < to)
-            {
-                if (to > 0)
-                {
-                    left = to - @from;
-                    right = (360 - to) + @from;
-                }
-                else
-                {
-                    left = (360 - to) + @from;
-                    right = to - @from;
-                }
-            }
-
-            // Determine the shortest direction.
-            return ((left <= right) ? left : (right * -1));
-        }
-
-        // Call CalcShortestRot and check its return value.
-        // If CalcShortestRot returns a positive value, then this function
-        // will return true for left. Else, false for right.
-        private static bool CalcShortestRotDirection(float from, float to)
-        {
-            // If the value is positive, return true (left).
-            if (CalcShortestRot(@from, to) >= 0)
-            {
-                return true;
-            }
-
-            return false; // right
-        }
-
-        public static void SetPositionsForHandsOnWeapons(Vector3 weaponPosition, bool flipped, float weaponAngle,
-                                                         [CanBeNull]
-                                                         CompProperties_WeaponExtensions compWeaponExtensions,
-                                                         CompBodyAnimator animator, float sizeMod)
-        {
-            // Prepare everything for DrawHands, but don't draw
-            if (compWeaponExtensions == null)
-            {
-                return;
-            }
-
-            animator.FirstHandPosition = compWeaponExtensions.RightHandPosition;
-            animator.SecondHandPosition = compWeaponExtensions.LeftHandPosition;
-
-            // Only put the second hand on when aiming or not moving => free left hand for running
-            //  bool leftOnWeapon = true;// aiming || !animator.IsMoving;
-
-            if (animator.FirstHandPosition != Vector3.zero)
-            {
-                float x = animator.FirstHandPosition.x;
-                float y = animator.FirstHandPosition.y;
-                float z = animator.FirstHandPosition.z;
-                if (flipped)
-                {
-                    x *= -1f;
-                    y *= -1f;
-                }
-
-                //if (pawn.Rotation == Rot4.North)
-                //{
-                //    y *= -1f;
-                //}
-                x *= sizeMod;
-                z *= sizeMod;
-                animator.FirstHandPosition =
-                weaponPosition + new Vector3(x, y, z).RotatedBy(weaponAngle);
-            }
-
-            if (animator.HasLeftHandPosition)
-            {
-                float x2 = animator.SecondHandPosition.x;
-                float y2 = animator.SecondHandPosition.y;
-                float z2 = animator.SecondHandPosition.z;
-                if (flipped)
-                {
-                    x2 *= -1f;
-                    y2 *= -1f;
-                }
-
-                x2 *= sizeMod;
-                z2 *= sizeMod;
-
-                //if (pawn.Rotation == Rot4.North)
-                //{
-                //    y2 *= -1f;
-                //}
-
-                animator.SecondHandPosition =
-                weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle);
-            }
-
-            // Swap left and right hand position when flipped
-
-            animator.WeaponQuat = Quaternion.AngleAxis(weaponAngle, Vector3.up);
-        }
 
         public static void DrawEquipmentAiming_Prefix(PawnRenderer __instance, Thing eq, Vector3 drawLoc,
                                                       ref float aimAngle)
@@ -769,34 +614,6 @@ namespace FacialStuff.Harmony
             }
 
             animator.LastAimAngle = aimAngle;
-        }
-
-        public static IEnumerable<CodeInstruction> RenderPawnAt_Transpiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator ilGen)
-        {
-            List<CodeInstruction> instructionList = instructions.ToList();
-
-            MethodInfo drawAtMethod = AccessTools.Method(typeof(Thing), nameof(Thing.DrawAt));
-
-            int indexDrawAt = instructionList.FindIndex(x => x.opcode == OpCodes.Callvirt && x.operand == drawAtMethod);
-
-            instructionList.RemoveAt(indexDrawAt);
-            instructionList.InsertRange(indexDrawAt, new List<CodeInstruction>
-            {
-                                                     // carriedThing.DrawAt(vector, flip);
-                                                     // carriedThing = ldloc.1
-                                                     // vector = ldloc.2
-                                                     // bool flip = ldloc.s 4
-                                                     new CodeInstruction(OpCodes.Ldarg_0), // this.PawnRenderer
-                                                     new CodeInstruction(OpCodes.Ldfld,
-                                                                         AccessTools.Field(typeof(PawnRenderer),
-                                                                                           "pawn")), // pawn
-                                                     new CodeInstruction(OpCodes.Ldloc_3),           // flag
-                                                     new CodeInstruction(OpCodes.Call,
-                                                                         AccessTools.Method(typeof(HarmonyPatchesFS),
-                                                                                            nameof(CheckAndDrawHands)))
-                                                     });
-            return instructionList;
         }
 
         public static IEnumerable<CodeInstruction> DrawEquipmentAiming_Transpiler(
@@ -876,72 +693,32 @@ namespace FacialStuff.Harmony
             return false;
         }
 
-        public static void CheckAndDrawHands(Thing carriedThing, Vector3 thingVector3, bool flip, Pawn pawn, bool thingBehind)
+        public static IEnumerable<CodeInstruction> RenderPawnAt_Transpiler(
+        IEnumerable<CodeInstruction> instructions, ILGenerator ilGen)
         {
-            if (pawn.RaceProps.Animal)
+            List<CodeInstruction> instructionList = instructions.ToList();
+
+            MethodInfo drawAtMethod = AccessTools.Method(typeof(Thing), nameof(Thing.DrawAt));
+
+            int indexDrawAt = instructionList.FindIndex(x => x.opcode == OpCodes.Callvirt && x.operand == drawAtMethod);
+
+            instructionList.RemoveAt(indexDrawAt);
+            instructionList.InsertRange(indexDrawAt, new List<CodeInstruction>
             {
-                carriedThing.DrawAt(thingVector3, flip);
-                return;
-            }
-
-            if (!pawn.GetCompAnim(out CompBodyAnimator compAnim))
-            {
-                carriedThing.DrawAt(thingVector3, flip);
-                return;
-            }
-
-            bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
-            if (!showHands)
-            {
-                carriedThing.DrawAt(thingVector3, flip);
-                return;
-            }
-
-            // Modify the drawPos to appear behind a pawn if facing North, in case vanilla didn't
-            if (!thingBehind && pawn.Rotation == Rot4.North)
-            {
-                thingVector3.y -= Offsets.YOffset_CarriedThing * 2;
-            }
-
-            thingVector3.y += compAnim.DrawOffsetY;
-
-            compAnim.DrawHands(Quaternion.identity, thingVector3, false, carriedThing, flip);
-        }
-
-        public static void ResolveApparelGraphics_Postfix(PawnGraphicSet __instance)
-        {
-            Pawn pawn = __instance.pawn;
-
-            // Set up the hair cut graphic
-            if (Controller.settings.MergeHair)
-            {
-                HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
-
-                List<Apparel> wornApparel = pawn.apparel.WornApparel
-                                                .Where(x => x.def.apparel.LastLayer == ApparelLayerDefOf.Overhead).ToList();
-                HeadCoverage coverage = HeadCoverage.None;
-                if (!wornApparel.NullOrEmpty())
-                {
-                    if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)))
-                    {
-                        coverage = HeadCoverage.UpperHead;
-                    }
-
-                    if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)))
-                    {
-                        coverage = HeadCoverage.FullHead;
-                    }
-                }
-
-                if (coverage != 0)
-                {
-                    hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi>(
-                                                                                pawn.story.hairDef.texPath,
-                                                                                ShaderDatabase.Cutout,
-                                                                                Vector2.one,
-                                                                                pawn.story.hairColor, coverage);
-                }
-            }
+                                                     // carriedThing.DrawAt(vector, flip);
+                                                     // carriedThing = ldloc.1
+                                                     // vector = ldloc.2
+                                                     // bool flip = ldloc.s 4
+                                                     new CodeInstruction(OpCodes.Ldarg_0), // this.PawnRenderer
+                                                     new CodeInstruction(OpCodes.Ldfld,
+                                                                         AccessTools.Field(typeof(PawnRenderer),
+                                                                                           "pawn")), // pawn
+                                                     new CodeInstruction(OpCodes.Ldloc_3),           // flag
+                                                     new CodeInstruction(OpCodes.Call,
+                                                                         AccessTools.Method(typeof(HarmonyPatchesFS),
+                                                                                            nameof(CheckAndDrawHands)))
+                                                     });
+            return instructionList;
         }
 
         // [HarmonyAfter("net.pardeike.zombieland")]
@@ -1010,6 +787,108 @@ namespace FacialStuff.Harmony
             PortraitsCache.SetDirty(pawn);
         }
 
+        public static void ResolveApparelGraphics_Postfix(PawnGraphicSet __instance)
+        {
+            Pawn pawn = __instance.pawn;
+
+            // Set up the hair cut graphic
+            if (Controller.settings.MergeHair)
+            {
+                HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
+
+                List<Apparel> wornApparel = pawn.apparel.WornApparel
+                                                .Where(x => x.def.apparel.LastLayer == ApparelLayerDefOf.Overhead).ToList();
+                HeadCoverage coverage = HeadCoverage.None;
+                if (!wornApparel.NullOrEmpty())
+                {
+                    if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)))
+                    {
+                        coverage = HeadCoverage.UpperHead;
+                    }
+
+                    if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)))
+                    {
+                        coverage = HeadCoverage.FullHead;
+                    }
+                }
+
+                if (coverage != 0)
+                {
+                    hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi>(
+                                                                                pawn.story.hairDef.texPath,
+                                                                                ShaderDatabase.Cutout,
+                                                                                Vector2.one,
+                                                                                pawn.story.hairColor, coverage);
+                }
+            }
+        }
+
+        public static void SetPositionsForHandsOnWeapons(Vector3 weaponPosition, bool flipped, float weaponAngle,
+                                                         [CanBeNull]
+                                                         CompProperties_WeaponExtensions compWeaponExtensions,
+                                                         CompBodyAnimator animator, float sizeMod)
+        {
+            // Prepare everything for DrawHands, but don't draw
+            if (compWeaponExtensions == null)
+            {
+                return;
+            }
+
+            animator.FirstHandPosition = compWeaponExtensions.RightHandPosition;
+            animator.SecondHandPosition = compWeaponExtensions.LeftHandPosition;
+
+            // Only put the second hand on when aiming or not moving => free left hand for running
+            //  bool leftOnWeapon = true;// aiming || !animator.IsMoving;
+
+            if (animator.FirstHandPosition != Vector3.zero)
+            {
+                float x = animator.FirstHandPosition.x;
+                float y = animator.FirstHandPosition.y;
+                float z = animator.FirstHandPosition.z;
+                if (flipped)
+                {
+                    x *= -1f;
+                    y *= -1f;
+                }
+
+                //if (pawn.Rotation == Rot4.North)
+                //{
+                //    y *= -1f;
+                //}
+                x *= sizeMod;
+                z *= sizeMod;
+                animator.FirstHandPosition =
+                weaponPosition + new Vector3(x, y, z).RotatedBy(weaponAngle);
+            }
+
+            if (animator.HasLeftHandPosition)
+            {
+                float x2 = animator.SecondHandPosition.x;
+                float y2 = animator.SecondHandPosition.y;
+                float z2 = animator.SecondHandPosition.z;
+                if (flipped)
+                {
+                    x2 *= -1f;
+                    y2 *= -1f;
+                }
+
+                x2 *= sizeMod;
+                z2 *= sizeMod;
+
+                //if (pawn.Rotation == Rot4.North)
+                //{
+                //    y2 *= -1f;
+                //}
+
+                animator.SecondHandPosition =
+                weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle);
+            }
+
+            // Swap left and right hand position when flipped
+
+            animator.WeaponQuat = Quaternion.AngleAxis(weaponAngle, Vector3.up);
+        }
+
         public static void TryInteractWith_Postfix(Pawn_InteractionsTracker __instance, bool __result, Pawn recipient)
         {
             if (__instance == null)
@@ -1053,6 +932,126 @@ namespace FacialStuff.Harmony
             }
         }
 
+        // If the return value is positive, then rotate to the left. Else,
+        // rotate to the right.
+        private static float CalcShortestRot(float from, float to)
+        {
+            // If from or to is a negative, we have to recalculate them.
+            // For an example, if from = -45 then from(-45) + 360 = 315.
+            if (@from < 0)
+            {
+                @from += 360;
+            }
+
+            if (to < 0)
+            {
+                to += 360;
+            }
+
+            // Do not rotate if from == to.
+            if (@from == to ||
+                @from == 0 && to == 360 ||
+                @from == 360 && to == 0)
+            {
+                return 0;
+            }
+
+            // Pre-calculate left and right.
+            float left = (360 - @from) + to;
+            float right = @from - to;
+
+            // If from < to, re-calculate left and right.
+            if (@from < to)
+            {
+                if (to > 0)
+                {
+                    left = to - @from;
+                    right = (360 - to) + @from;
+                }
+                else
+                {
+                    left = (360 - to) + @from;
+                    right = to - @from;
+                }
+            }
+
+            // Determine the shortest direction.
+            return ((left <= right) ? left : (right * -1));
+        }
+
+        // Call CalcShortestRot and check its return value.
+        // If CalcShortestRot returns a positive value, then this function
+        // will return true for left. Else, false for right.
+        private static bool CalcShortestRotDirection(float from, float to)
+        {
+            // If the value is positive, return true (left).
+            if (CalcShortestRot(@from, to) >= 0)
+            {
+                return true;
+            }
+
+            return false; // right
+        }
+
+        private static void CalculatePositionsWeapon(Pawn pawn, ref float weaponAngle,
+                                                                                                                                             CompProperties_WeaponExtensions extensions,
+                                                     out Vector3 weaponPosOffset, out bool aiming,
+                                                     bool flipped)
+        {
+            weaponPosOffset = Vector3.zero;
+            if (pawn.Rotation == Rot4.West || pawn.Rotation == Rot4.North)
+            {
+                weaponPosOffset.y = -Offsets.YOffset_Head - Offsets.YOffset_CarriedThing;
+            }
+
+            // Use y for the horizontal position. too lazy to add even more vectors
+            bool isHorizontal = pawn.Rotation.IsHorizontal;
+            aiming = pawn.Aiming();
+            Vector3 extOffset;
+            Vector3 o = extensions.WeaponPositionOffset;
+            Vector3 d = extensions.AimedWeaponPositionOffset;
+            if (isHorizontal)
+            {
+                extOffset = new Vector3(o.y, 0, o.z);
+                if (aiming)
+                {
+                    extOffset += new Vector3(d.y, 0, d.z);
+                }
+            }
+            else
+            {
+                extOffset = new Vector3(o.x, 0, o.z);
+                if (aiming)
+                {
+                    extOffset += new Vector3(d.x, 0, d.z);
+                }
+            }
+
+            if (flipped)
+            {
+                if (aiming)
+                {
+                    weaponAngle -= extensions?.AttackAngleOffset ?? 0;
+                }
+
+                weaponPosOffset += extOffset;
+
+                // flip x position offset
+                if (pawn.Rotation != Rot4.South)
+                {
+                    weaponPosOffset.x *= -1;
+                }
+            }
+            else
+            {
+                if (aiming)
+                {
+                    weaponAngle += extensions?.AttackAngleOffset ?? 0;
+                }
+
+                weaponPosOffset += extOffset;
+            }
+        }
         #endregion Public Methods
 
         #region Private Methods

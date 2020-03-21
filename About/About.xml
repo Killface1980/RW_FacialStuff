@@ -9,6 +9,7 @@
   </supportedVersions>
   <packageId>killface.facialstuff</packageId>
   <loadAfter>
+    <li>rimofmadness.vampires</li>
     <li>brrainz.harmony</li>
   </loadAfter>
   <modDependencies>

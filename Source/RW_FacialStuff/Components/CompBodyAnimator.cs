@@ -19,8 +19,6 @@ namespace FacialStuff
     {
         #region Public Fields
 
-        public bool AnimatorPoseOpen;
-
         [CanBeNull] public BodyAnimDef BodyAnim;
 
         public BodyPartStats BodyStat;
@@ -258,15 +256,13 @@ namespace FacialStuff
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public void DrawHands(Quaternion bodyQuat, Vector3 rootLoc, bool portrait, Thing carriedThing = null, bool flip = false)
         {
-            if (!this.PawnBodyDrawers.NullOrEmpty())
+            if (this.PawnBodyDrawers.NullOrEmpty()) return;
+            int i = 0;
+            int count = this.PawnBodyDrawers.Count;
+            while (i < count)
             {
-                int i = 0;
-                int count = this.PawnBodyDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnBodyDrawers[i].DrawHands(bodyQuat, rootLoc, portrait, carriedThing, flip);
-                    i++;
-                }
+                this.PawnBodyDrawers[i].DrawHands(bodyQuat, rootLoc, portrait, carriedThing, flip);
+                i++;
             }
         }
 
@@ -288,8 +284,10 @@ namespace FacialStuff
             else
             {
                 this.PawnBodyDrawers = new List<PawnBodyDrawer>();
-
-                PawnBodyDrawer thingComp = (PawnBodyDrawer)Activator.CreateInstance(typeof(HumanBipedDrawer));
+                bool isQuaduped = Pawn.GetCompAnim().BodyAnim.quadruped;
+                PawnBodyDrawer thingComp = isQuaduped
+                    ? (PawnBodyDrawer) Activator.CreateInstance(typeof(QuadrupedDrawer))
+                    : (PawnBodyDrawer) Activator.CreateInstance(typeof(HumanBipedDrawer));
                 thingComp.CompAnimator = this;
                 thingComp.Pawn = this.Pawn;
                 this.PawnBodyDrawers.Add(thingComp);
@@ -415,18 +413,18 @@ namespace FacialStuff
             this.Pawn.CheckForAddedOrMissingParts();
             this.PawnBodyGraphic = new PawnBodyGraphic(this);
 
-            BodyTypeDef bodyType = BodyTypeDefOf.Male;
+            string bodyType = "Undefined";
 
             if (this.Pawn.story?.bodyType != null)
             {
-                bodyType = this.Pawn.story.bodyType;
+                bodyType = this.Pawn.story.bodyType.ToString();
             }
 
             string defaultName = "BodyAnimDef_" + this.Pawn.def.defName + "_" + bodyType;
             List<string> names = new List<string>
                                        {
                                        defaultName,
-                                       "BodyAnimDef_" + ThingDefOf.Human.defName + "_" + bodyType
+                                       // "BodyAnimDef_" + ThingDefOf.Human.defName + "_" + bodyType
                                        };
 
             bool needsNewDef = true;
@@ -458,15 +456,13 @@ namespace FacialStuff
                 this._initialized = true;
             }
 
-            if (!this.PawnBodyDrawers.NullOrEmpty())
+            if (this.PawnBodyDrawers.NullOrEmpty()) return;
+            int i = 0;
+            int count = this.PawnBodyDrawers.Count;
+            while (i < count)
             {
-                int i = 0;
-                int count = this.PawnBodyDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnBodyDrawers[i].Tick(bodyFacing, graphics);
-                    i++;
-                }
+                this.PawnBodyDrawers[i].Tick(bodyFacing, graphics);
+                i++;
             }
         }
 
@@ -500,6 +496,21 @@ namespace FacialStuff
                     {
                         this._cachedSkinMatsBodyBase.Add(graphics.apparelGraphics[i].graphic.MatAt(facing));
                     }
+                }
+                // One more time to get at least one pieces of cloth
+                if (_cachedSkinMatsBodyBase.Count < 1)
+                {
+                    for (int i = 0; i < graphics.apparelGraphics.Count; i++)
+                    {
+                        ApparelLayerDef lastLayer = graphics.apparelGraphics[i].sourceApparel.def.apparel.LastLayer;
+
+                        // if (lastLayer != ApparelLayerDefOf.Shell && lastLayer != ApparelLayerDefOf.Overhead)
+                        if (lastLayer == ApparelLayerDefOf.Middle)
+                        {
+                            this._cachedSkinMatsBodyBase.Add(graphics.apparelGraphics[i].graphic.MatAt(facing));
+                        }
+                    }
+
                 }
             }
 

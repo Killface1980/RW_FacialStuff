@@ -1,4 +1,5 @@
 ﻿using FacialStuff.AnimatorWindows;
+using FacialStuff.Harmony;
 using Verse;
 
 namespace FacialStuff.Animator
@@ -22,7 +23,7 @@ namespace FacialStuff.Animator
         {
             movedPercent = 0f;
 
-            if (this._compAnim.AnimatorPoseOpen)
+            if (HarmonyPatchesFS.AnimatorIsOpen())
             {
                 movedPercent = MainTabWindow_BaseAnimator.AnimationPercent;
                 return true;

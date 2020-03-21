@@ -18,6 +18,8 @@ namespace FacialStuff.AnimatorWindows
 
         public static bool Develop;
 
+        public static bool Panic;
+
         public override void WindowUpdate()
         {
             base.WindowUpdate();
@@ -29,24 +31,21 @@ namespace FacialStuff.AnimatorWindows
             // Execute PostDraw if pawn is not on screen
             this.CompAnim.PostDraw();
         }
-
-        public static bool Panic;
-
         #endregion Public Fields
 
         #region Protected Fields
 
+        public static Pawn Pawn;
         protected readonly float SliderWidth = 420f;
         protected readonly float Spacing = 12f;
         protected CompBodyAnimator CompAnim;
-        protected float Zoom = 1f;
         protected bool Loop;
-        public static Pawn Pawn;
-
+        protected float Zoom = 1f;
         #endregion Protected Fields
 
         #region Private Fields
 
+        [CanBeNull] protected static List<PawnKeyframe> PawnKeyframes;
         private static readonly Color AddColor = new Color(0.25f, 1f, 0.25f);
 
         private static readonly Color RemoveColor = new Color(1f, 0.25f, 0.25f);
@@ -62,9 +61,6 @@ namespace FacialStuff.AnimatorWindows
         private static string _defPath;
 
         private static Vector2 _portraitSize = new Vector2(320f, 320f);
-
-        [CanBeNull] protected static List<PawnKeyframe> PawnKeyframes;
-
         private readonly float _defaultHeight = 36f;
         private readonly float _widthLabel = 150f;
         private int _frameLabel = 1;
@@ -103,8 +99,6 @@ namespace FacialStuff.AnimatorWindows
 
         #region Protected Properties
 
-        protected static int CurrentFrameInt { get; set; }
-
         public static string DefPath
         {
             get
@@ -127,8 +121,7 @@ namespace FacialStuff.AnimatorWindows
             }
         }
 
-
-
+        protected static int CurrentFrameInt { get; set; }
         protected static int LastInd
         {
             get
@@ -166,13 +159,6 @@ namespace FacialStuff.AnimatorWindows
         #endregion Protected Properties
 
         #region Public Methods
-
-        public override void PreOpen()
-        {
-            base.PreOpen();
-            this.FindRandomPawn();
-            PortraitsCache.SetDirty(Pawn);
-        }
 
         public override void DoWindowContents(Rect inRect)
         {
@@ -282,22 +268,66 @@ namespace FacialStuff.AnimatorWindows
             base.DoWindowContents(inRect);
         }
 
+        public override void PostClose()
+        {
+            CompAnim = null;
+            Pawn = null;
+            base.PostClose();
+        }
+
+        public override void PreOpen()
+        {
+            base.PreOpen();
+            this.FindRandomPawn();
+            PortraitsCache.SetDirty(Pawn);
+        }
         protected virtual void SetKeyframes()
         {
             PawnKeyframes = new List<PawnKeyframe> { new PawnKeyframe() };
         }
-
-        public override void PostClose()
-        {
-            base.PostClose();
-            this.CompAnim.AnimatorPoseOpen = false;
-        }
-
         #endregion Public Methods
 
         #region Protected Methods
 
         public string Label;
+
+        public float CurrentShift
+        {
+            get
+            {
+                PawnKeyframe currentFrame = this.CurrentFrame;
+                if (currentFrame != null)
+                {
+                    return currentFrame.Shift;
+                }
+
+                return 0f;
+            }
+
+            set
+            {
+                if (this.CurrentFrame == null)
+                {
+                    return;
+                }
+
+                if (Math.Abs(value) < 0.05f)
+                {
+                    this.CurrentFrame.Status = KeyStatus.Automatic;
+                }
+                else
+                {
+                    this.CurrentFrame.Status = KeyStatus.Manual;
+                }
+
+                this.CurrentFrame.Shift = value;
+                this.BuildEditorCycle();
+            }
+        }
+
+        protected virtual void BuildEditorCycle()
+        {
+        }
 
         protected virtual void DoBasicSettingsMenu(Listing_Standard listing)
         {
@@ -377,49 +407,6 @@ namespace FacialStuff.AnimatorWindows
                 }
             }
         }
-
-        public float CurrentShift
-        {
-            get
-            {
-                PawnKeyframe currentFrame = this.CurrentFrame;
-                if (currentFrame != null)
-                {
-                    return currentFrame.Shift;
-                }
-
-                return 0f;
-            }
-
-            set
-            {
-                if (this.CurrentFrame == null)
-                {
-                    return;
-                }
-
-                if (Math.Abs(value) < 0.05f)
-                {
-                    this.CurrentFrame.Status = KeyStatus.Automatic;
-                }
-                else
-                {
-                    this.CurrentFrame.Status = KeyStatus.Manual;
-                }
-
-                this.CurrentFrame.Shift = value;
-                this.BuildEditorCycle();
-            }
-        }
-
-        protected virtual void BuildEditorCycle()
-        {
-        }
-
-        protected virtual void SetCurrentCycle()
-        {
-        }
-
         protected virtual void DrawBodySettingsEditor(Rot4 rotation)
         {
         }
@@ -431,16 +418,16 @@ namespace FacialStuff.AnimatorWindows
         protected virtual void FindRandomPawn()
         {
             Thing selectedThing = Find.Selector.SingleSelectedThing;
-                if (selectedThing != null && selectedThing is Pawn pawn && pawn.HasCompAnimator())
-                {
-                    Pawn = pawn;
-                }
-                else
-                {
-                    Pawn = Find.AnyPlayerHomeMap.PlayerPawnsForStoryteller.FirstOrDefault(x => x.HasCompAnimator());
-                }
+            if (selectedThing != null && selectedThing is Pawn pawn && pawn.HasCompAnimator())
+            {
+                Pawn = pawn;
+            }
+            else
+            {
+                Pawn = Find.AnyPlayerHomeMap.PlayerPawnsForStoryteller.FirstOrDefault(x => x.HasCompAnimator());
+            }
 
-                Pawn?.GetCompAnim(out this.CompAnim);
+            Pawn?.GetCompAnim(out this.CompAnim);
         }
 
         protected void ReIndexKeyframes()
@@ -526,6 +513,9 @@ namespace FacialStuff.AnimatorWindows
             editorRect.y += editorRect.height;
         }
 
+        protected virtual void SetCurrentCycle()
+        {
+        }
         protected void SetNewVector(Rot4 rotation, Vector3 newOffset, List<Vector3> offset, bool front)
         {
             newOffset.y = (front ? 1 : -1) * 0.025f;
@@ -624,6 +614,13 @@ namespace FacialStuff.AnimatorWindows
 
         #region Private Methods
 
+        public float lastTime = 0f;
+
+        protected virtual void DrawBackground(Rect rect)
+        {
+            GUI.DrawTexture(rect, FaceTextures.BackgroundAnimTex);
+        }
+
         private static void DoActiveKeyframeButtons(List<int> framesAt, ref Rect buttonRect)
         {
             if (!framesAt.NullOrEmpty())
@@ -714,12 +711,6 @@ namespace FacialStuff.AnimatorWindows
             // GUI.DrawTexture(position, PortraitsCache.Get(pawn, size, default(Vector3)));
             Widgets.DrawBox(rect);
         }
-
-        protected virtual void DrawBackground(Rect rect)
-        {
-            GUI.DrawTexture(rect, FaceTextures.BackgroundAnimTex);
-        }
-
         private void DrawRotatorBody(float curY, float width)
         {
             float buttWidth = (width - 4 * this.Spacing) / 6;
@@ -829,9 +820,6 @@ namespace FacialStuff.AnimatorWindows
                 buttonRect.x += buttonRect.width + this.Spacing;
             }
         }
-
-        public float lastTime = 0f;
-
         private void DrawTimelineSlider(int count, float width)
         {
             Rect timeline = new Rect(0f, 0f, width, 40f);

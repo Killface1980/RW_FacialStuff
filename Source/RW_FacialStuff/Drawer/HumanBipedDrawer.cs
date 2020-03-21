@@ -733,7 +733,7 @@ namespace FacialStuff
         {
             if (pawnInEditor)
             {
-                this.CompAnimator.SetWalkCycle(MainTabWindow_WalkAnimator.EditorWalkcycle);
+                this.CompAnimator.SetWalkCycle(Find.WindowStack.WindowOfType<MainTabWindow_WalkAnimator>().EditorWalkcycle);
                 return;
             }
 
@@ -766,7 +766,7 @@ namespace FacialStuff
         public virtual void SelectPosecycle()
         {
             return;
-            if (this.CompAnimator.AnimatorPoseOpen)
+            if (HarmonyPatchesFS.AnimatorIsOpen())
             {
                 //  this.CompAnimator.PoseCycle = MainTabWindow_PoseAnimator.EditorPoseCycle;
             }
@@ -1024,7 +1024,7 @@ namespace FacialStuff
                                         ref List<float> shoulderAngle,
                                         ref List<float> handSwingAngle, PoseCycleDef pose)
         {
-            if (!this.CompAnimator.AnimatorPoseOpen)
+            if (!HarmonyPatchesFS.AnimatorIsOpen())
             {
                 return;
             }
