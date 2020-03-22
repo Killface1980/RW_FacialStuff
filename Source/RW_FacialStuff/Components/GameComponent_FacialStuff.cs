@@ -565,6 +565,8 @@ namespace FacialStuff
                             compClass = typeof(CompBodyAnimator),
                             bodyDrawers = pawnSets.bodyDrawers,
                             handType = pawnSets.handType,
+                            // footType = pawnSets.footType,
+                            // pawType = pawnSets.pawType,
                             quadruped = pawnSets.quadruped,
                             bipedWithHands = pawnSets.bipedWithHands
                         };
@@ -604,6 +606,8 @@ namespace FacialStuff
                     compClass = typeof(CompBodyAnimator),
                     bodyDrawers = def.bodyDrawers,
                     handType = def.handType,
+                    // footType = def.footType,
+                    // pawType = def.pawType,
                     quadruped = def.quadruped,
                     bipedWithHands = def.bipedWithHands
                 };

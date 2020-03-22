@@ -21,10 +21,16 @@ namespace FacialStuff
 
         [CanBeNull] public PawnFaceGraphic PawnFaceGraphic;
 
-        public bool Deactivated;
-        public bool IgnoreRenderer;
         public bool IsAsleep;
-        public bool IsChild;
+
+        public bool IsChild
+        {
+            get
+            {
+                return Pawn.RaceProps.Humanlike && Pawn.ageTracker.CurLifeStage.bodySizeFactor < 1f; 
+
+            }
+        }
         public bool NeedsStyling = true;
 
         [CanBeNull] public string TexPathEyeLeft;
@@ -636,7 +642,7 @@ namespace FacialStuff
                 return;
             }
             // Children & Pregnancy || Werewolves transformed
-            if (this.Pawn.Map == null || Pawn.InContainerEnclosed || !this.Pawn.Spawned || this.Pawn.Dead || this.IsChild || this.Deactivated)
+            if (this.Pawn.Map == null || Pawn.InContainerEnclosed || !this.Pawn.Spawned || this.Pawn.Dead || this.IsChild || this.Pawn.GetCompAnim().Deactivated)
             {
                 return;
             }
@@ -687,10 +693,9 @@ namespace FacialStuff
             Scribe_Deep.Look(ref this._pawnFace, "pawnFace");
 
             // Scribe_References.Look(ref this.pawn, "pawn");
-            Scribe_Values.Look(ref this.IsChild, "isChild");
+            //Scribe_Values.Look(ref this.IsChild, "isChild");
 
             // Scribe_References.Look(ref this.theRoom, "theRoom");
-            Scribe_Values.Look(ref this.Deactivated, "dontrender");
 
             // Scribe_Values.Look(ref this.roofed, "roofed");
             Scribe_Values.Look(ref this._factionMelanin, "factionMelanin");

@@ -21,6 +21,7 @@ namespace FacialStuff
                     FloatMenuOption item = new FloatMenuOption("Pawn must be older than 14.".Translate(), null);
                     return new List<FloatMenuOption> { item };
                 }
+                
                 if (!selPawn.CanReserve(styler))
                 {
                     FloatMenuOption item = new FloatMenuOption("CannotUseReserved".Translate(), null);
@@ -41,7 +42,7 @@ namespace FacialStuff
                     return new List<FloatMenuOption> { item3 };
                 }
 
-                if (selPawn.GetCompFace(out CompFace compFace) && compFace.Deactivated)
+                if (selPawn.GetCompFace(out CompFace compFace) && selPawn.GetCompAnim().Deactivated)
                 {
                     FloatMenuOption item4 = new FloatMenuOption(
                         "FacialStuffEditor.CannotUseShouldNotRender".Translate(selPawn),

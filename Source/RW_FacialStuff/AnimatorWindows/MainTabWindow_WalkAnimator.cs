@@ -545,7 +545,7 @@ namespace FacialStuff.AnimatorWindows
                     ref editorRect,
                     walkcycle.HeadAngleX,
                     "HeadAngleX",
-                    framesAt);
+                    framesAt, 3f);
 
                 framesAt = (from keyframe in frames where keyframe.HeadOffsetZ.HasValue select keyframe.KeyIndex)
                     .ToList();

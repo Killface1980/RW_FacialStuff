@@ -100,7 +100,9 @@
     <None Include="Components\Class1.cs" />
     <Compile Include="Animator\FS_Skeleton.cs" />
     <Compile Include="Components\CompSkeleton.cs" />
+    <Compile Include="DefOfs\ExtremityDefOf.cs" />
     <Compile Include="DefOfs\EyeDefOf.cs" />
+    <Compile Include="Defs\ExtremityDef.cs" />
     <Compile Include="Enums\HeadCoverage.cs" />
     <None Include="GraphicsFS\MeshMakerPlanesFS.cs" />
     <None Include="GraphicsFS\Graphic_Multi_Four.cs" />
@@ -229,6 +231,9 @@
     <Content Include="..\..\Defs\BeardDefs\BeardDef.xml">
       <Link>Defs\xml\Face\BeardDef.xml</Link>
     </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Boomalope_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Boomalope_Undefined.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Boomrat_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_Boomrat_Undefined.xml</Link>
     </Content>
@@ -272,6 +277,12 @@
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_LabradorRetriever_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_LabradorRetriever_Undefined.xml</Link>
     </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Mech_Centipede_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Mech_Centipede_Undefined.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Mech_Scyther_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDef_Mech_Scyther_Undefined.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Tortoise_Undefined.xml">
       <Link>Defs\xml\Generated\BodyAnimDef_Tortoise_Undefined.xml</Link>
     </Content>
@@ -286,6 +297,9 @@
     </Content>
     <Content Include="..\..\Defs\BrowDefs\BrowDef_Male.xml">
       <Link>Defs\xml\Face\BrowDef_Male.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\ExtremityDefs\ExtremityDef_Default.xml">
+      <Link>Defs\xml\ExtremityDef_Default.xml</Link>
     </Content>
     <Content Include="..\..\Defs\EyeDefs\EyeDef_Basic.xml">
       <Link>Defs\xml\Face\EyeDef_Basic.xml</Link>

@@ -357,7 +357,7 @@ namespace FacialStuff.Harmony
                 return;
             }
 
-            if (!compFace.Deactivated && pawn.CheckForAddedOrMissingParts())
+            if (!pawn.GetCompAnim().Deactivated && pawn.CheckForAddedOrMissingParts())
             {
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
                 PortraitsCache.SetDirty(pawn);
@@ -738,11 +738,11 @@ namespace FacialStuff.Harmony
             {
                 return;
             }
-
-            compFace.IsChild = pawn.ageTracker.AgeBiologicalYearsFloat < 14;
+            
+            // compFace.IsChild = pawn.ageTracker.AgeBiologicalYearsFloat < 14;
 
             // Return if child
-            if (compFace.IsChild || compFace.Deactivated)
+            if (compFace.IsChild || pawn.GetCompAnim().Deactivated)
             {
                 return;
             }
@@ -768,12 +768,26 @@ namespace FacialStuff.Harmony
             __instance.nakedGraphic = GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.bodyType.bodyNakedGraphicPath, ShaderDatabase.CutoutSkin, Vector2.one, __instance.pawn.story.SkinColor);
             if (compFace.Props.needsBlankHumanHead)
             {
-                __instance.headGraphic =
-                GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn,
-                                                                    pawn.story.SkinColor);
-                __instance.desiccatedHeadGraphic =
-                GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
-                __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
+                if (!compFace.IsChild)
+                {
+                    __instance.headGraphic =
+                        GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn,
+                            pawn.story.SkinColor);
+                    __instance.desiccatedHeadGraphic =
+                        GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
+                    __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
+                }
+                else
+                {
+                    __instance.headGraphic =
+                        GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,
+                            pawn.story.SkinColor);
+                    __instance.desiccatedHeadGraphic =
+                        GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,
+                            rotColor);
+                    __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecords.GetStump(rotColor);
+
+                }
             }
 
             __instance.rottingGraphic =
@@ -912,7 +926,7 @@ namespace FacialStuff.Harmony
                 {
                     if (compFace.Props.canRotateHead)
                     {
-                        if (compFace.HeadRotator != null && !compFace.IsChild && pawn.CanSee(recipient))
+                        if (compFace.HeadRotator != null && pawn.CanSee(recipient))
                         {
                             compFace.HeadRotator.LookAtPawn(recipient);
                         }
@@ -923,7 +937,7 @@ namespace FacialStuff.Harmony
                 {
                     if (recipientFace.Props.canRotateHead && recipient.CanSee(pawn))
                     {
-                        if (recipientFace.HeadRotator != null && !recipientFace.IsChild)
+                        if (recipientFace.HeadRotator != null)
                         {
                             recipientFace.HeadRotator.LookAtPawn(pawn);
                         }

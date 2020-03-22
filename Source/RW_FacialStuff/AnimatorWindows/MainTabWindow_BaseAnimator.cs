@@ -146,6 +146,8 @@ namespace FacialStuff.AnimatorWindows
                     this.CompAnim.BodyAnim.thingTarget = Pawn.def.ToString();
                     this.CompAnim.BodyAnim.bodyDrawers = this.CompAnim.Props.bodyDrawers;
                     this.CompAnim.BodyAnim.handType = this.CompAnim.Props.handType;
+                    //this.CompAnim.BodyAnim.footType = this.CompAnim.Props.footType;
+                    //this.CompAnim.BodyAnim.pawType = this.CompAnim.Props.pawType;
                     this.CompAnim.BodyAnim.quadruped = this.CompAnim.Props.quadruped;
                     this.CompAnim.BodyAnim.bipedWithHands = this.CompAnim.Props.bipedWithHands;
                 }
@@ -553,7 +555,7 @@ namespace FacialStuff.AnimatorWindows
         ref Rect editorRect,
         SimpleCurve thisFrame,
         string label,
-        List<int> framesAt)
+        List<int> framesAt, float sliderFactor = 1f)
         {
             Rect sliderRect = new Rect(editorRect.x, editorRect.y, this.SliderWidth, this._defaultHeight);
             Rect buttonRect = new Rect(
@@ -561,8 +563,8 @@ namespace FacialStuff.AnimatorWindows
                                        editorRect.y,
                                        editorRect.width - this.SliderWidth - this.Spacing, this._defaultHeight);
 
-            float leftValue = -0.8f;
-            float rightValue = 0.8f;
+            float leftValue = -0.8f * sliderFactor;
+            float rightValue = 0.8f * sliderFactor;
 
             DoActiveKeyframeButtons(framesAt, ref buttonRect);
 

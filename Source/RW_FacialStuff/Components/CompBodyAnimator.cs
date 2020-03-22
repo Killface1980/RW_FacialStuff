@@ -18,6 +18,8 @@ namespace FacialStuff
     public class CompBodyAnimator : ThingComp
     {
         #region Public Fields
+        public bool Deactivated;
+        public bool IgnoreRenderer;
 
         [CanBeNull] public BodyAnimDef BodyAnim;
 
@@ -350,7 +352,7 @@ namespace FacialStuff
             base.PostDraw();
 
             // Children & Pregnancy || Werewolves transformed
-            if (this.Pawn.Map == null || !this.Pawn.Spawned || this.Pawn.Dead)
+            if (this.Pawn.Map == null || !this.Pawn.Spawned || this.Pawn.Dead || this.Pawn.GetCompAnim().Deactivated)
             {
                 return;
             }
@@ -400,6 +402,7 @@ namespace FacialStuff
         {
             base.PostExposeData();
             Scribe_Values.Look(ref this._lastRoomCheck, "lastRoomCheck");
+            // Scribe_Values.Look(ref this.PawnBodyGraphic, "PawnBodyGraphic");
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
