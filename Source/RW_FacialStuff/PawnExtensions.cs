@@ -36,8 +36,8 @@ namespace FacialStuff
     public static class PawnExtensions
     {
 
-        private static void CheckBodyForAddedParts(Hediff hediff, CompBodyAnimator anim, BodyPartRecord leftHand,
-                                      BodyPartRecord rightHand, BodyPartRecord leftFoot, BodyPartRecord rightFoot)
+        private static void CheckBodyForAddedParts(Hediff hediff, CompBodyAnimator anim, BodyPartRecord leftHand, BodyPartRecord leftArm,
+                                      BodyPartRecord rightHand, BodyPartRecord rightArm, BodyPartRecord leftFoot, BodyPartRecord leftLeg, BodyPartRecord rightFoot, BodyPartRecord rightLeg)
         {
             if (anim == null)
             {
@@ -46,23 +46,23 @@ namespace FacialStuff
 
             if (anim.Props.bipedWithHands)
             {
-                if (hediff.Part.parts.Contains(leftHand))
+                if (hediff.Part.parts.Contains(leftHand) || hediff.Part.parts.Contains(leftArm))
                 {
                     anim.BodyStat.HandLeft = PartStatus.Artificial;
                 }
 
-                if (hediff.Part.parts.Contains(rightHand))
+                if (hediff.Part.parts.Contains(rightHand) || hediff.Part.parts.Contains(rightArm))
                 {
                     anim.BodyStat.HandRight = PartStatus.Artificial;
                 }
             }
 
-            if (hediff.Part.parts.Contains(leftFoot))
+            if (hediff.Part.parts.Contains(leftFoot) || hediff.Part.parts.Contains(leftLeg))
             {
                 anim.BodyStat.FootLeft = PartStatus.Artificial;
             }
 
-            if (hediff.Part.parts.Contains(rightFoot))
+            if (hediff.Part.parts.Contains(rightFoot) || hediff.Part.parts.Contains(rightLeg))
             {
                 anim.BodyStat.FootRight = PartStatus.Artificial;
             }
@@ -178,6 +178,12 @@ namespace FacialStuff
             BodyPartRecord leftFoot = body.Find(x => x.customLabel == "left foot");
             BodyPartRecord rightFoot = body.Find(x => x.customLabel == "right foot");
 
+            BodyPartRecord leftArm = body.Find(x => x.customLabel == "left hand");
+            BodyPartRecord rightArm = body.Find(x => x.customLabel == "right hand");
+
+            BodyPartRecord leftLeg = body.Find(x => x.customLabel == "left foot");
+            BodyPartRecord rightLeg = body.Find(x => x.customLabel == "right foot");
+
             if (missing)
             {
                 CheckMissingParts(new BodyProps(hediff, face, anim, leftEye, rightEye, leftHand, rightHand, leftFoot,
@@ -207,7 +213,8 @@ namespace FacialStuff
 
             //  Log.Message("Checking body for added parts.");
 
-            CheckBodyForAddedParts(hediff, anim, leftHand, rightHand, leftFoot, rightFoot);
+            CheckBodyForAddedParts(hediff, anim, leftHand, leftArm, rightHand, rightArm, leftFoot, leftLeg, rightFoot,
+                rightLeg);
         }
 
         public static bool Aiming(this Pawn pawn)

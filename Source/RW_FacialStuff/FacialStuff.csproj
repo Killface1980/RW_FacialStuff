@@ -100,9 +100,9 @@
     <None Include="Components\Class1.cs" />
     <Compile Include="Animator\FS_Skeleton.cs" />
     <Compile Include="Components\CompSkeleton.cs" />
-    <Compile Include="DefOfs\ExtremityDefOf.cs" />
+    <None Include="DefOfs\ExtremityDefOf.cs" />
     <Compile Include="DefOfs\EyeDefOf.cs" />
-    <Compile Include="Defs\ExtremityDef.cs" />
+    <None Include="Defs\ExtremityDef.cs" />
     <Compile Include="Enums\HeadCoverage.cs" />
     <None Include="GraphicsFS\MeshMakerPlanesFS.cs" />
     <None Include="GraphicsFS\Graphic_Multi_Four.cs" />

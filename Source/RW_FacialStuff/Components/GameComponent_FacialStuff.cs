@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FacialStuff.Harmony;
+using FacialStuff.Utilities;
 using UnityEngine;
 using Verse;
 
