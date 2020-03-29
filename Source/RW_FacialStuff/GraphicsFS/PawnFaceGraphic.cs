@@ -1,5 +1,6 @@
 ﻿// ReSharper disable StyleCop.SA1401
 
+using System;
 using FacialStuff.Animator;
 using FacialStuff.DefOfs;
 using FacialStuff.Defs;
@@ -22,14 +23,20 @@ namespace FacialStuff.GraphicsFS
         public Graphic_Multi_NaturalEyes EyeLeftClosedGraphic;
 
         public Graphic_Multi_NaturalEyes EyeLeftGraphic;
+        public Graphic_Multi_NaturalEars EarLeftGraphic;
 
         public Graphic_Multi_AddedHeadParts EyeLeftPatchGraphic;
 
         public Graphic_Multi_NaturalEyes EyeRightClosedGraphic;
 
+        public Graphic_Multi_NaturalEars EarLeftPatchGraphic;
+
+
         public Graphic_Multi_NaturalEyes EyeRightGraphic;
+        public Graphic_Multi_NaturalEars EarRightGraphic;
 
         public Graphic_Multi_AddedHeadParts EyeRightPatchGraphic;
+        public Graphic_Multi_AddedHeadParts EarRightPatchGraphic;
 
         public Graphic_Multi_NaturalHeadParts JawGraphic;
 
@@ -60,6 +67,9 @@ namespace FacialStuff.GraphicsFS
         public Graphic_Multi_NaturalEyes EyeLeftMissingGraphic;
         public Graphic_Multi_NaturalEyes EyeRightMissingGraphic;
 
+        public Graphic_Multi_NaturalEars EarLeftMissingGraphic;
+        public Graphic_Multi_NaturalEars EarRightMissingGraphic;
+
         public PawnFaceGraphic(CompFace compFace)
         {
             this._compFace = compFace;
@@ -79,6 +89,7 @@ namespace FacialStuff.GraphicsFS
                 }
 
                 this.MakeEyes();
+                this.MakeEars();
             }
 
             if (this._compFace.Props.hasMouth)
@@ -106,6 +117,21 @@ namespace FacialStuff.GraphicsFS
 
             this.InitializeGraphicsEyes();
             this.InitializeGraphicsBrows();
+        }
+        public void MakeEars()
+        {
+            if (!this._compFace.Props.hasEars)
+            {
+                return;
+            }
+
+            this._compFace.TexPathEarRight = this._compFace.EarTexPath(Side.Right);
+            this._compFace.TexPathEarLeft = this._compFace.EarTexPath(Side.Left);
+            this._compFace.TexPathEarRightMissing = this._compFace.EarTexPath(Side.Right, EarDefOf.Missing);
+            this._compFace.TexPathEarLeftMissing = this._compFace.EarTexPath(Side.Left, EarDefOf.Missing);
+
+
+            this.InitializeGraphicsEars();
         }
 
         public void SetMouthAccordingToMoodLevel()
@@ -251,6 +277,17 @@ namespace FacialStuff.GraphicsFS
             return !ContentFinder<Texture2D>.Get(this._compFace.TexPathEyeLeftPatch + STR_south, false)
                                             .NullOrBad();
         }
+        public bool EarPatchRightTexExists()
+        {
+            return !ContentFinder<Texture2D>.Get(this._compFace.TexPathEarRightPatch + STR_south, false)
+                                            .NullOrBad();
+        }
+
+        public bool EarPatchLeftTexExists()
+        {
+            return !ContentFinder<Texture2D>.Get(this._compFace.TexPathEarLeftPatch + STR_south, false)
+                                            .NullOrBad();
+        }
 
         private void InitializeGraphicsEyes()
         {
@@ -293,6 +330,34 @@ namespace FacialStuff.GraphicsFS
                                                                                       ShaderDatabase.Cutout,
                                                                                       Vector2.one,
                                                                                       Color.black);
+        }
+        private void InitializeGraphicsEars()
+        {
+            // this.InitializeGraphicsEyePatches();
+
+            Color earColor =_pawn.story.SkinColor;
+
+            this.EarLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(this._compFace.TexPathEarLeft,
+                                                                                 ShaderDatabase.CutoutComplex,
+                                                                                 Vector2.one,
+                                                                                 earColor) as Graphic_Multi_NaturalEars;
+
+            this.EarRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(this._compFace.TexPathEarRight,
+                                                                                  ShaderDatabase.CutoutComplex,
+                                                                                  Vector2.one,
+                                                                                  earColor) as Graphic_Multi_NaturalEars;
+            if (false)
+            {
+                this.EarLeftMissingGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(this._compFace.TexPathEarLeftMissing,
+                    ShaderDatabase.CutoutComplex,
+                    Vector2.one,
+                    earColor) as Graphic_Multi_NaturalEars;
+
+                this.EarRightMissingGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(this._compFace.TexPathEarRightMissing,
+                    ShaderDatabase.CutoutComplex,
+                    Vector2.one,
+                    earColor) as Graphic_Multi_NaturalEars;
+            }
         }
 
         private void InitializeGraphicsMouth()

@@ -105,7 +105,7 @@ namespace FacialStuff
 
         public JitterHandler Jitterer
             => GetHiddenValue(typeof(Pawn_DrawTracker), this.Pawn.Drawer, "jitterer", _infoJitterer) as
-               JitterHandler;
+                JitterHandler;
 
         [NotNull]
         public Pawn Pawn => this.parent as Pawn;
@@ -256,14 +256,14 @@ namespace FacialStuff
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public void DrawHands(Quaternion bodyQuat, Vector3 rootLoc, bool portrait, Thing carriedThing = null, bool flip = false)
+        public void DrawHands(Quaternion bodyQuat, Vector3 rootLoc, bool portrait, Thing carriedThing = null, bool flip = false, float factor = 1f)
         {
             if (this.PawnBodyDrawers.NullOrEmpty()) return;
             int i = 0;
             int count = this.PawnBodyDrawers.Count;
             while (i < count)
             {
-                this.PawnBodyDrawers[i].DrawHands(bodyQuat, rootLoc, portrait, carriedThing, flip);
+                this.PawnBodyDrawers[i].DrawHands(bodyQuat, rootLoc, portrait, carriedThing, flip, factor);
                 i++;
             }
         }

@@ -19,6 +19,8 @@ namespace FacialStuff
 
         public bool hasEyes;
 
+        public bool hasEars;
+
         public bool hasMouth;
 
         public bool hasOrganicHair;

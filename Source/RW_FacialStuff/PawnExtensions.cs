@@ -15,6 +15,8 @@ namespace FacialStuff
         public BodyPartRecord _leftHand;
         public BodyPartRecord _rightEye;
         public BodyPartRecord _leftEye;
+        public BodyPartRecord _rightEar;
+        public BodyPartRecord _leftEar;
         public CompBodyAnimator _anim;
         public CompFace _face;
         public Hediff _hediff;
@@ -114,16 +116,31 @@ namespace FacialStuff
                 return;
             }
 
-            if (bodyProps._face != null && bodyProps._face.Props.hasEyes)
+            if (bodyProps._face != null)
             {
-                if (hediff.Part == bodyProps._leftEye)
+                if (bodyProps._face.Props.hasEyes)
                 {
-                    bodyProps._face.BodyStat.EyeLeft = PartStatus.Missing;
-                }
+                    if (hediff.Part == bodyProps._leftEye)
+                    {
+                        bodyProps._face.BodyStat.EyeLeft = PartStatus.Missing;
+                    }
 
-                if (hediff.Part == bodyProps._rightEye)
+                    if (hediff.Part == bodyProps._rightEye)
+                    {
+                        bodyProps._face.BodyStat.EyeRight = PartStatus.Missing;
+                    }
+                }
+                if (bodyProps._face.Props.hasEars)
                 {
-                    bodyProps._face.BodyStat.EyeRight = PartStatus.Missing;
+                    if (hediff.Part == bodyProps._leftEar)
+                    {
+                        bodyProps._face.BodyStat.EarLeft = PartStatus.Missing;
+                    }
+
+                    if (hediff.Part == bodyProps._rightEar)
+                    {
+                        bodyProps._face.BodyStat.EarRight = PartStatus.Missing;
+                    }
                 }
             }
 
@@ -260,6 +277,8 @@ namespace FacialStuff
             {
                 face.BodyStat.EyeLeft = PartStatus.Natural;
                 face.BodyStat.EyeRight = PartStatus.Natural;
+                face.BodyStat.EarLeft = PartStatus.Natural;
+                face.BodyStat.EarRight = PartStatus.Natural;
                 face.BodyStat.Jaw = PartStatus.Natural;
             }
 

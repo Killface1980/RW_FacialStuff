@@ -5,6 +5,7 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FacialStuff.Animator;
 using UnityEngine;
 using Verse;
 
@@ -689,6 +690,38 @@ namespace FacialStuff.AnimatorWindows
         {
             // Portrait
             Rect rect = new Rect(0, 0, inRectWidth, inRectWidth);
+
+            if (false)
+            {
+
+            var skeleton = new FS_Skeleton {joints = new List<FS_Joint>()};
+            FS_Joint head = new FS_Joint {color = Color.red};
+            FS_Joint neck = new FS_Joint {color = Color.cyan};
+            FS_Joint hipCenter = new FS_Joint { color = Color.cyan };
+
+            FS_Joint leftShoulder = new FS_Joint();
+            FS_Joint leftElbow = new FS_Joint();
+            FS_Joint leftWrist = new FS_Joint();
+            FS_Joint leftHand = new FS_Joint();
+
+            FS_Joint rightShoulder = new FS_Joint();
+            FS_Joint rightElbow = new FS_Joint();
+            FS_Joint rightWrist = new FS_Joint();
+            FS_Joint rightHand = new FS_Joint();
+
+            FS_Joint leftHip = new FS_Joint();
+            FS_Joint leftKnee = new FS_Joint();
+            FS_Joint leftAnkle = new FS_Joint();
+            FS_Joint leftFoot = new FS_Joint();
+      
+            FS_Joint rightHip = new FS_Joint();
+            FS_Joint rightKnee = new FS_Joint();
+            FS_Joint rightAnkle = new FS_Joint();
+            FS_Joint rightFoot = new FS_Joint();
+
+
+            skeleton.joints.Add(head);
+            }
 
             this.DrawBackground(rect);
 

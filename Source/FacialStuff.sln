@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FS PrepC Patch", "..\..\RW_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RW_FS_Vampire Patch", "..\..\RW_FS_Vampire Patch\Source\RW_FS_Vampire Patch.csproj", "{4E455B24-2D22-40CB-B26C-87D615003B2E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FS_CSL Patch", "..\..\RW_FS_CSL Patch\Source\RW_FS_CSL Patch\FS_CSL Patch.csproj", "{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,14 @@ Global
 		{4E455B24-2D22-40CB-B26C-87D615003B2E}.RebuildHeads|Any CPU.Build.0 = Release|Any CPU
 		{4E455B24-2D22-40CB-B26C-87D615003B2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E455B24-2D22-40CB-B26C-87D615003B2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.NoCCL|Any CPU.ActiveCfg = Release|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.NoCCL|Any CPU.Build.0 = Release|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.RebuildHeads|Any CPU.ActiveCfg = Release|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.RebuildHeads|Any CPU.Build.0 = Release|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

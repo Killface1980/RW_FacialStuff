@@ -229,6 +229,104 @@ namespace FacialStuff.GraphicsFS
         }
 
         [CanBeNull]
+        public Material EarLeftMatAt(Rot4 facing, bool portrait)
+        {
+            if (facing == Rot4.East)
+            {
+                return null;
+            }
+
+            Material material = this._pawnFaceGraphic.EarLeftGraphic?.MatAt(facing);
+
+            if (material != null)
+            {
+                material = this.Flasher.GetDamagedMat(material);
+            }
+
+            return material;
+        }
+
+        [CanBeNull]
+        public Material EarLeftPatchMatAt(Rot4 facing)
+        {
+            Material material = this._pawnFaceGraphic.EarLeftPatchGraphic?.MatAt(facing);
+
+            if (material != null)
+            {
+                material = this.Flasher.GetDamagedMat(material);
+            }
+
+            return material;
+        }
+
+        [CanBeNull]
+        public Material EarRightMatAt(Rot4 facing, bool portrait)
+        {
+            if (facing == Rot4.West)
+            {
+                return null;
+            }
+
+            Material material = this._pawnFaceGraphic.EarRightGraphic?.MatAt(facing);
+
+            if (material != null)
+            {
+                material = this.Flasher.GetDamagedMat(material);
+            }
+
+            return material;
+        }
+
+        [CanBeNull]
+        public Material EarRightMissingMatAt(Rot4 facing, bool portrait)
+        {
+            if (facing == Rot4.West)
+            {
+                return null;
+            }
+
+            Material material = this._pawnFaceGraphic.EarRightMissingGraphic?.MatAt(facing);
+
+            if (material != null)
+            {
+                material = this.Flasher.GetDamagedMat(material);
+            }
+
+            return material;
+        }     
+        [CanBeNull]
+        public Material EarLeftMissingMatAt(Rot4 facing, bool portrait)
+        {
+            if (facing == Rot4.West)
+            {
+                return null;
+            }
+
+            Material material = this._pawnFaceGraphic.EarLeftMissingGraphic?.MatAt(facing);
+
+            if (material != null)
+            {
+                material = this.Flasher.GetDamagedMat(material);
+            }
+
+            return material;
+        }
+
+
+        [CanBeNull]
+        public Material EarRightPatchMatAt(Rot4 facing)
+        {
+            Material material = this._pawnFaceGraphic.EarRightPatchGraphic?.MatAt(facing);
+
+            if (material != null)
+            {
+                material = this.Flasher.GetDamagedMat(material);
+            }
+
+            return material;
+        }
+
+        [CanBeNull]
         public Material MoustacheMatAt(Rot4 facing)
         {
             if (this.CannotShowFaceHair() || this._compFace.PawnFace?.MoustacheDef == MoustacheDefOf.Shaved)

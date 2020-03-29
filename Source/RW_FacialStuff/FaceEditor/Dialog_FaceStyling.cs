@@ -100,6 +100,7 @@ namespace FacialStuff.FaceEditor
         private static List<string> _currentFilter = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
 
         private static List<EyeDef> _eyeDefs;
+        private static List<EarDef> _earDefs;
 
         private static List<HairDef> _hairDefs;
 
@@ -131,6 +132,7 @@ namespace FacialStuff.FaceEditor
         private readonly CrownType _originalCrownType;
 
         private readonly EyeDef _originalEye;
+        private readonly EarDef _originalEar;
 
         private readonly HairDef _originalHair;
 
@@ -153,6 +155,7 @@ namespace FacialStuff.FaceEditor
         private BrowDef _newBrow;
 
         private EyeDef _newEye;
+        private EarDef _newEar;
 
         private HairDef _newHair;
 
@@ -202,6 +205,7 @@ namespace FacialStuff.FaceEditor
                                                                                       .SharesElementWith(VanillaHairTags) && !x.IsBeardNotHair());
 
             _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
+            _earDefs = DefDatabase<EarDef>.AllDefsListForReading;
             FullBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType == BeardType.FullBeard)
                                                  .ToList();
             LowerBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType != BeardType.FullBeard)
@@ -435,6 +439,17 @@ namespace FacialStuff.FaceEditor
             set
             {
                 this._newEye = value;
+
+                this.UpdatePawnDefs(value);
+            }
+        }
+        private EarDef NewEar
+        {
+            get => this._newEar;
+
+            set
+            {
+                this._newEar = value;
 
                 this.UpdatePawnDefs(value);
             }
@@ -1383,6 +1398,8 @@ namespace FacialStuff.FaceEditor
 
             this.NewEye = PawnFaceMaker.RandomEyeDefFor(Pawn,
                 Faction.OfPlayer.def);
+            this.NewEar = PawnFaceMaker.RandomEarDefFor(Pawn,
+                Faction.OfPlayer.def);
             this.NewBrow = PawnFaceMaker.RandomBrowDefFor(Pawn, Faction.OfPlayer.def);
 
             this._reInit = false;
@@ -1521,6 +1538,10 @@ namespace FacialStuff.FaceEditor
                                                                                  x => x.hairGender == HairGender.Male ||
                                                                                       x.hairGender ==
                                                                                       HairGender.MaleUsually);
+                    _earDefs = DefDatabase<EarDef>.AllDefsListForReading.FindAll(
+                                                                                 x => x.hairGender == HairGender.Male ||
+                                                                                      x.hairGender ==
+                                                                                      HairGender.MaleUsually);
                     BrowDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
                                                                                   x =>
                                                                                       x.hairGender == HairGender.Male ||
@@ -1538,6 +1559,12 @@ namespace FacialStuff.FaceEditor
                                                                                        x.hairGender ==
                                                                                        HairGender.FemaleUsually && !x.IsBeardNotHair()));
                     _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
+                                                                                 x =>
+                                                                                     x.hairGender ==
+                                                                                     HairGender.Female ||
+                                                                                     x.hairGender ==
+                                                                                     HairGender.FemaleUsually);
+                    _earDefs = DefDatabase<EarDef>.AllDefsListForReading.FindAll(
                                                                                  x =>
                                                                                      x.hairGender ==
                                                                                      HairGender.Female ||
@@ -1774,6 +1801,43 @@ namespace FacialStuff.FaceEditor
             if (Widgets.ButtonInvisible(rect))
             {
                 this.NewEye = eye;
+                this.RemoveColorPicker();
+            }
+        }
+
+        private void DrawEarPickerCell(EarDef ear, Rect rect)
+        {
+            Widgets.DrawBoxSolid(rect, DarkBackground);
+
+            string text = ear.LabelCap;
+            Widgets.DrawHighlightIfMouseover(rect);
+            if (ear == this.NewEar)
+            {
+                Widgets.DrawHighlightSelected(rect);
+                text += "\n(selected)";
+            }
+            else
+            {
+                if (ear == this._originalEar)
+                {
+                    Widgets.DrawAltRect(rect);
+                    text += "\n(original)";
+                }
+            }
+
+            GUI.DrawTexture(rect, this.RightEarGraphic(ear).MatSouth.mainTexture);
+            GUI.DrawTexture(rect, this.LeftEarGraphic(ear).MatSouth.mainTexture);
+
+            Text.Anchor = TextAnchor.UpperCenter;
+            Widgets.Label(rect, text);
+            Text.Anchor = TextAnchor.UpperLeft;
+
+            TooltipHandler.TipRegion(rect, text);
+
+            // ReSharper disable once InvertIf
+            if (Widgets.ButtonInvisible(rect))
+            {
+                this.NewEar = ear;
                 this.RemoveColorPicker();
             }
         }
@@ -2362,6 +2426,28 @@ namespace FacialStuff.FaceEditor
             return __result;
         }
 
+        private Graphic_Multi_NaturalEars LeftEarGraphic(EarDef def)
+        {
+            Graphic_Multi_NaturalEars __result;
+            if (def != null)
+            {
+                string path = this.CompFace.EarTexPath(Side.Left, def);
+
+                __result = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(
+                    path,
+                    ShaderDatabase.CutoutComplex,
+                    new Vector2(38f, 38f),
+                    Color.white,
+                    Color.white) as Graphic_Multi_NaturalEars;
+            }
+            else
+            {
+                __result = null;
+            }
+
+            return __result;
+        }
+
         [CanBeNull]
         private Graphic_Multi_NaturalHeadParts MoustacheGraphic([NotNull] MoustacheDef def)
         {
@@ -2391,6 +2477,28 @@ namespace FacialStuff.FaceEditor
             if (def != null)
             {
                 string path = this.CompFace.EyeTexPath(Side.Right, def);
+
+                graphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
+                    path,
+                    ShaderDatabase.CutoutComplex,
+                    new Vector2(38f, 38f),
+                    Color.white,
+                    Color.white) as Graphic_Multi_NaturalEyes;
+            }
+            else
+            {
+                graphic = null;
+            }
+
+            return graphic;
+        }
+
+        private Graphic_Multi_NaturalEyes RightEarGraphic(EarDef def)
+        {
+            Graphic_Multi_NaturalEyes graphic;
+            if (def != null)
+            {
+                string path = this.CompFace.EarTexPath(Side.Right, def);
 
                 graphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                     path,
@@ -2443,6 +2551,9 @@ namespace FacialStuff.FaceEditor
                     break;
                 case EyeDef _:
                     this.PawnFace.EyeDef = (EyeDef)newValue;
+                    break;
+                case EarDef _:
+                    this.PawnFace.EarDef = (EarDef)newValue;
                     break;
                 case BrowDef _:
                     this.PawnFace.BrowDef = (BrowDef)newValue;

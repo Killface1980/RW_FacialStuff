@@ -260,9 +260,17 @@ namespace FacialStuff.Animator
         // RimWorld.JobDriver_StandAndBeSociallyActive
         private void FindClosestTarget()
         {
+            if (!_pawn.Spawned)
+            {
+                return;
+            }
             // Watch out for enemies
             Job job = this._pawn.CurJob;
-            if (job == null || !job.targetA.IsValid)
+            if (job == null)
+            {
+                    return;
+            }
+            else if (!job.targetA.IsValid)
             {
                 if (this.EnemyIsNear(this._pawn, 40f))
                 {
@@ -292,11 +300,11 @@ namespace FacialStuff.Animator
                     {
                         Thing thing = intVec.GetThingList(this._pawn.Map)?.Find(x => x is Pawn);
 
-                        if (!(thing is Pawn otherPawn) || otherPawn == this._pawn) // || otherPawn.Dead || otherPawn.Downed)
+                        if (!(thing is Pawn otherPawn) || otherPawn == this._pawn || !otherPawn.Spawned) // || otherPawn.Dead || otherPawn.Downed)
                         {
                             continue;
                         }
-
+                        
                         if (!_pawn.CanSee(otherPawn)) continue;
 
                         // Log.Message(this.pawn + " will look at random pawn " + thing);

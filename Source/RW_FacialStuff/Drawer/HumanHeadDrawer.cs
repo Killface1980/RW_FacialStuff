@@ -26,6 +26,12 @@ namespace FacialStuff
             if (!Controller.settings.UseHeadRotator || !compFaceProps.canRotateHead) return;
 
             this.HeadFacing = compFaceHeadRotator.Rotation(this.HeadFacing, renderBody);
+
+            // Todo: make it more natural
+            if (Pawn.CurJob != null)
+            {
+                if (Pawn.CurJobDef != JobDefOf.Wait) return;
+            }
             headQuat *= this.QuatHead(this.HeadFacing);
 
 
@@ -337,6 +343,67 @@ namespace FacialStuff
                     portrait);
             }
         }
+        public override void DrawNaturalEars(Vector3 drawLoc, Quaternion headQuat, bool portrait)
+        {
+            Mesh earMesh = this.CompFace.EyeMeshSet.Mesh.MeshAt(this.HeadFacing);
+
+            PawnFaceGraphic faceGraphic = this.CompFace.PawnFaceGraphic;
+            // natural eyes
+            PartStatus earLeft = this.CompFace.BodyStat.EarLeft;
+            if (faceGraphic == null)
+            {
+                return;
+            }
+            Material earLeftMatAt = null;
+
+            if (earLeft == PartStatus.Natural ||
+                earLeft == PartStatus.Artificial &&
+                !faceGraphic.EarPatchLeftTexExists())
+            {
+                earLeftMatAt = this.CompFace.FaceMaterial.EarLeftMatAt(this.HeadFacing, portrait);
+            }
+            else if (earLeft == PartStatus.Missing)
+            {
+                earLeftMatAt = this.CompFace.FaceMaterial.EarLeftMissingMatAt(this.HeadFacing, portrait);
+            }
+            if (earLeftMatAt != null)
+            {
+                Vector3 left = drawLoc;
+                drawLoc.y += Offsets.YOffset_LeftPart;
+
+                GenDraw.DrawMeshNowOrLater(
+                    earMesh,
+                    left + this.EarOffset(this.HeadFacing),
+                    headQuat,
+                    earLeftMatAt,
+                    portrait);
+            }
+            Material earRightMatAt = null;
+
+            PartStatus earRight = this.CompFace.BodyStat.EarRight;
+            if (earRight == PartStatus.Natural ||
+            earRight == PartStatus.Artificial &&
+            !faceGraphic.EarPatchRightTexExists())
+            {
+                earRightMatAt = this.CompFace.FaceMaterial.EarRightMatAt(this.HeadFacing, portrait);
+            }
+            else if (earRight == PartStatus.Missing)
+            {
+                earRightMatAt = this.CompFace.FaceMaterial.EarRightMissingMatAt(this.HeadFacing, portrait);
+            }
+            if (earRightMatAt != null)
+            {
+                Vector3 right = drawLoc;
+                right.y += Offsets.YOffset_RightPart;
+
+                GenDraw.DrawMeshNowOrLater(
+                    earMesh,
+                    right + this.EarOffset(this.HeadFacing),
+                    headQuat,
+                    earRightMatAt,
+                    portrait);
+            }
+        }
 
         public override void DrawNaturalMouth(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
@@ -393,6 +460,42 @@ namespace FacialStuff
                 }
             }
         }
+        public override void DrawUnnaturalEarParts(Vector3 drawLoc, Quaternion headQuat, bool portrait)
+        {
+            Mesh headMesh = this.GetPawnMesh(false, portrait);
+            if (this.CompFace.BodyStat.EarLeft == PartStatus.Artificial)
+            {
+                Material leftBionicMat = this.CompFace.FaceMaterial.EarLeftPatchMatAt(this.HeadFacing);
+                if (leftBionicMat != null)
+                {
+                    Vector3 left = drawLoc;
+                    left.y += Offsets.YOffset_LeftPart;
+                    GenDraw.DrawMeshNowOrLater(
+                                               headMesh,
+                                               left + this.EarOffset(this.HeadFacing),
+                                               headQuat,
+                                               leftBionicMat,
+                                               portrait);
+                }
+            }
+
+            if (this.CompFace.BodyStat.EarRight == PartStatus.Artificial)
+            {
+                Material rightBionicMat = this.CompFace.FaceMaterial.EarRightPatchMatAt(this.HeadFacing);
+
+                if (rightBionicMat != null)
+                {
+                    Vector3 right = drawLoc;
+                    right.y += Offsets.YOffset_RightPart;
+                    GenDraw.DrawMeshNowOrLater(
+                                               headMesh,
+                                               right + this.EarOffset(this.HeadFacing),
+                                               headQuat,
+                                               rightBionicMat,
+                                               portrait);
+                }
+            }
+        }
 
         public override void DrawWrinkles(
          Vector3 drawLoc,
@@ -417,6 +520,13 @@ namespace FacialStuff
         }
 
         public override Vector3 EyeOffset(Rot4 headFacing)
+        {
+            return Controller.settings.Develop
+                   ? this.CompFace.BaseEyeOffsetAt(headFacing)
+                   : this.CompFace.EyeMeshSet.OffsetAt(headFacing);
+        }
+
+        public override Vector3 EarOffset(Rot4 headFacing)
         {
             return Controller.settings.Develop
                    ? this.CompFace.BaseEyeOffsetAt(headFacing)

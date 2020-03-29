@@ -21,7 +21,7 @@ namespace RimWorld
     public class BodyAnimDef : Def
     {
         #region Public Fields
-
+        public List<DefHyperlink> descriptionHyperlinks = new List<DefHyperlink>();
         public string thingTarget = null;
 
         public List<PawnBodyDrawer> bodyDrawers;

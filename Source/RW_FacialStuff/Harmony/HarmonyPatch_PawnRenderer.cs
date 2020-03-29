@@ -348,6 +348,18 @@ namespace FacialStuff.Harmony
                                 unnaturalEyeLoc.y += YOffset_UnnaturalEyes;
                                 compFace.DrawUnnaturalEyeParts(unnaturalEyeLoc, headQuat, portrait);
                             }
+                            if (compFace.Props.hasEars && Controller.settings.Develop)
+                            {
+                                Vector3 earLor = headDrawLoc;
+                                earLor.y += YOffset_Eyes;
+
+                                compFace.DrawNaturalEars(earLor, portrait, headQuat);
+
+                                // and now the added ear parts
+                                Vector3 drawLoc = headDrawLoc;
+                                drawLoc.y += YOffset_UnnaturalEyes;
+                                compFace.DrawUnnaturalEarParts(drawLoc, headQuat, portrait);
+                            }
 
                             // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
                             if (compFace.Props.hasBeard)

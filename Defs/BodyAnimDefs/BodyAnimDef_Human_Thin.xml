@@ -5,7 +5,7 @@
     <handType>Human</handType>
     <quadruped>False</quadruped>
     <bipedWithHands>True</bipedWithHands>
-    <armLength>0.3</armLength>
+    <armLength>0.425</armLength>
     <extraLegLength>0.175</extraLegLength>
     <hipOffsets>
       <li>
@@ -14,7 +14,7 @@
         <z>0</z>
       </li>
       <li>
-        <x>-0.125</x>
+        <x>-0.175</x>
         <y>0.025</y>
         <z>0</z>
       </li>
@@ -24,11 +24,15 @@
         <z>0</z>
       </li>
       <li>
-        <x>0.125</x>
+        <x>0.175</x>
         <y>-0.025</y>
         <z>0</z>
       </li>
     </hipOffsets>
+    <headOffset>
+      <x>0</x>
+      <y>0</y>
+    </headOffset>
     <offCenterX>0</offCenterX>
     <shoulderOffsets>
       <li>
@@ -37,7 +41,7 @@
         <z>0</z>
       </li>
       <li>
-        <x>0</x>
+        <x>-0.025</x>
         <y>0.025</y>
         <z>0</z>
       </li>
@@ -47,7 +51,7 @@
         <z>0</z>
       </li>
       <li>
-        <x>0</x>
+        <x>0.025</x>
         <y>-0.025</y>
         <z>0</z>
       </li>

@@ -98,14 +98,18 @@
     <None Include="Components\CompHumanFace.cs" />
     <None Include="Controller_Animator.cs" />
     <None Include="Components\Class1.cs" />
-    <Compile Include="Animator\FS_Skeleton.cs" />
-    <Compile Include="Components\CompSkeleton.cs" />
+    <Compile Include="Components\Skeletoon\CompPropertiesSkeleton.cs" />
+    <Compile Include="Components\Skeletoon\FS_Skeleton.cs" />
+    <Compile Include="Components\Skeletoon\CompSkeleton.cs" />
     <None Include="DefOfs\ExtremityDefOf.cs" />
+    <Compile Include="DefOfs\EarDefOf.cs" />
     <Compile Include="DefOfs\EyeDefOf.cs" />
     <None Include="Defs\ExtremityDef.cs" />
+    <Compile Include="Defs\EarDef.cs" />
     <Compile Include="Enums\HeadCoverage.cs" />
     <None Include="GraphicsFS\MeshMakerPlanesFS.cs" />
     <None Include="GraphicsFS\Graphic_Multi_Four.cs" />
+    <Compile Include="GraphicsFS\Graphic_Multi_NaturalEyes - Kopieren.cs" />
     <Compile Include="Harmony\HarmonyPatchesFS.cs" />
     <Compile Include="Harmony\HarmonyPatch_PawnRenderer.cs" />
     <None Include="Harmony\Optional\Harmony_Werewolf.cs" />
@@ -232,71 +236,74 @@
       <Link>Defs\xml\Face\BeardDef.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Boomalope_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Boomalope_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Boomalope_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Boomrat_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Boomrat_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Boomrat_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Caribou_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Caribou_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Caribou_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Cat_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Cat_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Cat_Undefined.xml</Link>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Deer_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Deer_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Deer_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Donkey_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Donkey_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Donkey_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Elk_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Elk_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Elk_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Fat.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Human_Fat.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Human_Fat.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Female.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Human_Female.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Human_Female.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Hulk.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Human_Hulk.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Human_Hulk.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Male.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Human_Male.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Human_Male.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Thin.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Human_Thin.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Human_Thin.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Husky_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Husky_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Husky_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Ibex_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Ibex_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Ibex_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_LabradorRetriever_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_LabradorRetriever_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_LabradorRetriever_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Mech_Centipede_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Mech_Centipede_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Mech_Centipede_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Mech_Scyther_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Mech_Scyther_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Mech_Scyther_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Tortoise_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Tortoise_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Tortoise_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_WildBoar_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_WildBoar_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_WildBoar_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_YorkshireTerrier_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_YorkshireTerrier_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_YorkshireTerrier_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BrowDefs\BrowDef_Female.xml">
       <Link>Defs\xml\Face\BrowDef_Female.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BrowDefs\BrowDef_Male.xml">
       <Link>Defs\xml\Face\BrowDef_Male.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\EarDefs\EarDef_Default.xml">
+      <Link>Defs\EarDef_Default.xml</Link>
     </Content>
     <Content Include="..\..\Defs\ExtremityDefs\ExtremityDef_Default.xml">
       <Link>Defs\xml\ExtremityDef_Default.xml</Link>
@@ -354,6 +361,108 @@
     </Content>
     <Content Include="..\..\Defs\WalkCycleDefs\Quadruped_Walk.xml">
       <Link>Defs\xml\Generated\WCycles\Quadruped_Walk.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Beer.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Beer.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Bow_Great.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Bow_Great.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Bow_Recurve.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Bow_Recurve.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Bow_Short.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Bow_Short.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_ElephantTusk.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_ElephantTusk.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_AssaultRifle.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_AssaultRifle.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_Autopistol.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_Autopistol.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_BoltActionRifle.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_BoltActionRifle.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_ChainShotgun.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_ChainShotgun.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_ChargeRifle.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_ChargeRifle.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_DoomsdayRocket.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_DoomsdayRocket.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_HeavySMG.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_HeavySMG.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_IncendiaryLauncher.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_IncendiaryLauncher.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_LMG.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_LMG.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_MachinePistol.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_MachinePistol.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_Minigun.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_Minigun.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_PumpShotgun.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_PumpShotgun.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_RailgunMKI.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_RailgunMKI.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_Revolver.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_Revolver.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_SniperRifle.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_SniperRifle.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_TripleRocket.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_TripleRocket.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Club.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Club.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Gladius.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Gladius.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Ikwa.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Ikwa.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Knife.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Knife.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_LongSword.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_LongSword.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Mace.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Mace.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Spear.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Spear.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Pila.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Pila.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_ThrumboHorn.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_ThrumboHorn.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Weapon_GrenadeEMP.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Weapon_GrenadeEMP.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Weapon_GrenadeFrag.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Weapon_GrenadeFrag.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Weapon_GrenadeMolotov.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Weapon_GrenadeMolotov.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_WoodLog.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_WoodLog.xml</Link>
     </Content>
     <Content Include="..\..\Defs\WrinkleDefs\WrinkleDef.xml">
       <Link>Defs\xml\Face\WrinkleDef.xml</Link>

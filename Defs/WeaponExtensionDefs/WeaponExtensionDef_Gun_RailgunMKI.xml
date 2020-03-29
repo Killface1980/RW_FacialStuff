@@ -25,6 +25,5 @@
     </secondHandPosition>
     <defName>WeaponExtensionDef_Gun_RailgunMKI</defName>
     <label>WeaponExtensionDef_Gun_RailgunMKI</label>
-    <descriptionHyperlinks IsNull="True" />
   </WeaponExtensionDef>
 </Defs>

@@ -293,7 +293,7 @@ namespace FacialStuff
             }
         }
 
-        public override void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
+        public override void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait, float factor = 1f)
         {
             if (ShouldBeIgnored())
             {
@@ -358,7 +358,7 @@ namespace FacialStuff
                                         ref offsetJoint,
                                         cycle.FootPositionX,
                                         cycle.FootPositionZ,
-                                        cycle.FootAngle);
+                                        cycle.FootAngle, factor);
             }
 
             this.GetBipedMesh(out Mesh footMeshRight, out Mesh footMeshLeft);
@@ -407,7 +407,7 @@ namespace FacialStuff
             groundPos.RightJoint = drawQuat * groundPos.RightJoint;
             leftFootCycle = drawQuat * leftFootCycle;
             rightFootCycle = drawQuat * rightFootCycle;
-            Vector3 ground = rootLoc + drawQuat * new Vector3(0, 0, OffsetGroundZ);
+            Vector3 ground = rootLoc + drawQuat * new Vector3(0, 0, OffsetGroundZ) * factor;
 
             if (drawLeft)
             {
@@ -415,7 +415,7 @@ namespace FacialStuff
                 // PawnPartsTweener tweener = this.CompAnimator.PartTweener;
                 // if (tweener != null)
                 {
-                    Vector3 position = ground + groundPos.LeftJoint + leftFootCycle;
+                    Vector3 position = ground + (groundPos.LeftJoint + leftFootCycle) * factor;
 
                     // tweener.PartPositions[(int)leftFoot] = position;
                     // tweener.PreThingPosCalculation(leftFoot, spring: SpringTightness.Stff);
@@ -435,7 +435,7 @@ namespace FacialStuff
                 // PawnPartsTweener tweener = this.CompAnimator.PartTweener;
                 // if (tweener != null)
                 // {
-                Vector3 position = ground + groundPos.RightJoint + rightFootCycle;
+                Vector3 position = ground + (groundPos.RightJoint + rightFootCycle) * factor;
 
                 // tweener.PartPositions[(int)rightFoot] = position;
                 //     tweener.PreThingPosCalculation(rightFoot, spring: SpringTightness.Stff);
@@ -481,7 +481,7 @@ namespace FacialStuff
                     groundPos.LeftJoint +
                     new Vector3(offsetJoint, -0.301f, 0),
                     drawQuat * Quaternion.AngleAxis(0, Vector3.up),
-                    centerMat,
+                    hipMat,
                     portrait);
 
                 // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z),
@@ -493,7 +493,7 @@ namespace FacialStuff
 
         public override void DrawHands(Quaternion bodyQuat, Vector3 drawPos,
                                        bool portrait,
-                                       Thing carriedThing = null, bool flip = false)
+                                       Thing carriedThing = null, bool flip = false, float factor = 1f)
         {
             if (ShouldBeIgnored())
             {
@@ -627,7 +627,7 @@ namespace FacialStuff
                     shoulperPos.LeftJoint = bodyQuat * shoulperPos.LeftJoint;
                     leftHand = bodyQuat * leftHand.RotatedBy(-handSwingAngle[0] - shoulderAngle[0]);
 
-                    position = drawPos + shoulperPos.LeftJoint + leftHand;
+                    position = drawPos + (shoulperPos.LeftJoint + leftHand) * factor;
                     quat = bodyQuat * Quaternion.AngleAxis(-handSwingAngle[0], Vector3.up);
                 }
 
@@ -654,10 +654,9 @@ namespace FacialStuff
                 else
                 {
                     shoulperPos.RightJoint = bodyQuat * shoulperPos.RightJoint;
-                    rightHand =
-                    bodyQuat * rightHand.RotatedBy(handSwingAngle[1] - shoulderAngle[1]);
+                    rightHand = bodyQuat * rightHand.RotatedBy(handSwingAngle[1] - shoulderAngle[1]);
 
-                    position = drawPos + shoulperPos.RightJoint + rightHand;
+                    position = drawPos + (shoulperPos.RightJoint + rightHand) * factor;
                     quat = bodyQuat * Quaternion.AngleAxis(handSwingAngle[1], Vector3.up);
                 }
 
@@ -834,7 +833,7 @@ namespace FacialStuff
                                           ref float offsetJoint,
                                           SimpleCurve offsetX,
                                           SimpleCurve offsetZ,
-                                          SimpleCurve angle)
+                                          SimpleCurve angle, float factor = 1f)
         {
             rightFoot = Vector3.zero;
             leftFoot = Vector3.zero;
@@ -888,11 +887,10 @@ namespace FacialStuff
             }
 
             // smaller steps for smaller pawns
-            float bodySize = this.Pawn.def.race.baseBodySize;
-            if (Math.Abs(bodySize - 1f) > 0.05f)
+            if (factor < 1f)
             {
                 SimpleCurve curve = new SimpleCurve { new CurvePoint(0f, 0.5f), new CurvePoint(1f, 1f) };
-                float mod = curve.Evaluate(bodySize);
+                float mod = curve.Evaluate(factor);
                 rightFoot.x *= mod;
                 rightFoot.z *= mod;
                 leftFoot.x *= mod;

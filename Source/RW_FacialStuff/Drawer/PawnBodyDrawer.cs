@@ -65,12 +65,12 @@ namespace FacialStuff
         {
             // Just for the Aliens
         }
-        public virtual void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
+        public virtual void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait, float factor = 1f)
         {
         }
 
         public virtual void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, Thing carriedThing = null,
-            bool flip = false)
+            bool flip = false, float factor = 1f)
         {
 
         }

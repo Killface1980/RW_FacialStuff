@@ -9,8 +9,8 @@ namespace FacialStuff.GraphicsFS
     {
         private readonly Material[] _mats = new Material[4];
 
-        public override Material MatNorth => this._mats[0];
         public override Material MatEast => this._mats[1];
+        public override Material MatNorth => this._mats[0];
         public override Material MatSouth => this._mats[2];
         public override Material MatWest => this._mats[3];
 
@@ -56,7 +56,8 @@ namespace FacialStuff.GraphicsFS
 
                 // array[2] = MaskTextures.BlankTexture();
             }
-            string sidePath = Path.GetDirectoryName(req.path).Replace(@"\", @"/") + "/" + "Eye_" + eyeType + "_" + gender + "_east";
+
+            string sidePath = Path.GetDirectoryName(req.path).Replace(@"\", @"/") + "/" + GetPartType() + eyeType + "_" + gender + "_east";
 
 
             // 1 texture= 1 eye, blank for the opposite side
@@ -145,6 +146,11 @@ namespace FacialStuff.GraphicsFS
                 // req2.mainTex.filterMode = FilterMode.Trilinear;
                 this._mats[i] = MaterialPool.MatFrom(req2);
             }
+        }
+
+        public virtual string GetPartType()
+        {
+            return "Eye_";
         }
 
         public override Material MatAt(Rot4 rot, Thing thing = null)

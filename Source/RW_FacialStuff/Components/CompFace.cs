@@ -27,7 +27,8 @@ namespace FacialStuff
         {
             get
             {
-                return Pawn.RaceProps.Humanlike && Pawn.ageTracker.CurLifeStage.bodySizeFactor < 1f; 
+                return LoadedModManager.RunningModsListForReading.Any(x => x.PackageId == "Dylan.CSL") &&
+                       Pawn.RaceProps.Humanlike && Pawn.ageTracker.CurLifeStage.bodySizeFactor < 1f;
 
             }
         }
@@ -39,6 +40,14 @@ namespace FacialStuff
         [CanBeNull] public string TexPathEyeRight;
         [CanBeNull] public string TexPathEyeRightPatch;
         [CanBeNull] public string TexPathEyeRightMissing;
+
+        [CanBeNull] public string TexPathEarLeft;
+        [CanBeNull] public string TexPathEarLeftPatch;
+        [CanBeNull] public string TexPathEarLeftMissing;
+        [CanBeNull] public string TexPathEarRight;
+        [CanBeNull] public string TexPathEarRightPatch;
+        [CanBeNull] public string TexPathEarRightMissing;
+        
         [CanBeNull] public string TexPathJawAddedPart;
 
         #endregion Public Fields
@@ -444,6 +453,21 @@ namespace FacialStuff
                 i++;
             }
         }
+        public void DrawNaturalEars(Vector3 drawLoc, bool portrait, Quaternion headQuat)
+        {
+            if (this.PawnHeadDrawers.NullOrEmpty())
+            {
+                return;
+            }
+
+            int i = 0;
+            int count = this.PawnHeadDrawers.Count;
+            while (i < count)
+            {
+                this.PawnHeadDrawers[i]?.DrawNaturalEars(drawLoc, headQuat, portrait);
+                i++;
+            }
+        }
 
         public void DrawNaturalMouth(Vector3 drawLoc, bool portrait, Quaternion headQuat)
         {
@@ -473,6 +497,21 @@ namespace FacialStuff
             while (i < count)
             {
                 this.PawnHeadDrawers[i]?.DrawUnnaturalEyeParts(locFacialY, headQuat, portrait);
+                i++;
+            }
+        }
+        public void DrawUnnaturalEarParts(Vector3 locFacialY, Quaternion headQuat, bool portrait)
+        {
+            if (this.PawnHeadDrawers.NullOrEmpty())
+            {
+                return;
+            }
+
+            int i = 0;
+            int count = this.PawnHeadDrawers.Count;
+            while (i < count)
+            {
+                this.PawnHeadDrawers[i]?.DrawUnnaturalEarParts(locFacialY, headQuat, portrait);
                 i++;
             }
         }
@@ -509,6 +548,21 @@ namespace FacialStuff
             // ReSharper disable once PossibleNullReferenceException
             string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : eyeDef.texBasePath;
             string path = eyePath + "Eye_" + eyeDef.texName + "_" + this.Pawn.gender + "_" + side;
+
+            return path.Replace(@"\", @"/");
+        }
+    
+        // }
+        [NotNull]
+        public string EarTexPath(Side side, [NotNull] EarDef ear = null)
+        {
+            if (ear == null)
+            {
+                ear = this.PawnFace?.EarDef;
+            }
+            // ReSharper disable once PossibleNullReferenceException
+            string earPath = ear.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Ears/" : ear.texBasePath;
+            string path = earPath + "Ear_" + ear.texName + "_" + this.Pawn.gender + "_" + side;
 
             return path.Replace(@"\", @"/");
         }

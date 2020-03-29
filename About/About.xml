@@ -12,6 +12,9 @@
     <li>rimofmadness.vampires</li>
     <li>brrainz.harmony</li>
   </loadAfter>
+  <loadBefore>
+    <li>EdB.PrepareCarefully</li>
+  </loadBefore>
   <modDependencies>
     <li>
       <packageId>brrainz.harmony</packageId>

@@ -32,22 +32,6 @@ namespace FacialStuff.AnimatorWindows
 
         #region Public Properties
 
-        public override void PostClose()
-        {
-            base.PostClose();
-            IsOpen = false;
-        }
-
-        #endregion Public Properties
-
-        #region Private Properties
-
-        public override void PreOpen()
-        {
-            base.PreOpen();
-            IsOpen = true;
-            // IsMoving = false;
-        }
 
         #endregion Private Properties
 

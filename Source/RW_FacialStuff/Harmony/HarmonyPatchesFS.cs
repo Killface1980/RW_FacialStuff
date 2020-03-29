@@ -334,8 +334,9 @@ namespace FacialStuff.Harmony
             }
 
             thingVector3.y += compAnim.DrawOffsetY;
+            float factor = pawn.GetCompAnim().PawnBodyGraphic.Factor;
 
-            compAnim.DrawHands(Quaternion.identity, thingVector3, false, carriedThing, flip);
+            compAnim.DrawHands(Quaternion.identity, thingVector3, false, carriedThing, flip, factor);
         }
 
         public static void DirtyCache_Postfix(HediffSet __instance)
