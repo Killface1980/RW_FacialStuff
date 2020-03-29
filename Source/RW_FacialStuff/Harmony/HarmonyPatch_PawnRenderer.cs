@@ -203,7 +203,7 @@ namespace FacialStuff.Harmony
             // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
             if (hasFace)
             {
-                if (compFace.IsChild || pawn.GetCompAnim().Deactivated)
+                if (pawn.IsChild() || pawn.GetCompAnim().Deactivated)
                 {
                     return true;
                 }

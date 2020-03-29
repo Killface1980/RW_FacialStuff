@@ -334,7 +334,7 @@ namespace FacialStuff.Harmony
             }
 
             thingVector3.y += compAnim.DrawOffsetY;
-            float factor = pawn.GetCompAnim().PawnBodyGraphic.Factor;
+            float factor = pawn.GetBodysizeScaling();
 
             compAnim.DrawHands(Quaternion.identity, thingVector3, false, carriedThing, flip, factor);
         }
@@ -693,6 +693,54 @@ namespace FacialStuff.Harmony
             __result = source.RandomElementByWeight(hair => PawnFaceMaker.HairChoiceLikelihoodFor(hair, pawn));
             return false;
         }
+        public static bool IsChild(this Pawn pawn)
+        {
+            
+                return LoadedModManager.RunningModsListForReading.Any(x => x.PackageId == "dylan.csl") &&
+                       pawn.RaceProps.Humanlike && pawn.ageTracker.CurLifeStage.bodySizeFactor < 1f;
+
+            
+        }
+        // From CSL mod
+        public static float GetBodysizeScaling(this Pawn pawn)
+        {
+            float bodySizeFactor = pawn.ageTracker.CurLifeStage.bodySizeFactor;
+            float num = bodySizeFactor;
+            float num2 = 1f;
+            try
+            {
+                int curLifeStageIndex = pawn.ageTracker.CurLifeStageIndex;
+                int num3 = pawn.RaceProps.lifeStageAges.Count - 1;
+                LifeStageAge val = pawn.RaceProps.lifeStageAges[curLifeStageIndex];
+                if (num3 == curLifeStageIndex && curLifeStageIndex != 0 && bodySizeFactor != 1f)
+                {
+                    LifeStageAge val2 = pawn.RaceProps.lifeStageAges[curLifeStageIndex - 1];
+                    num = val2.def.bodySizeFactor + (float)Math.Round((val.def.bodySizeFactor - val2.def.bodySizeFactor) / (val.minAge - val2.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val2.minAge), 2);
+                }
+                else if (num3 == curLifeStageIndex)
+                {
+                    num = bodySizeFactor;
+                }
+                else if (curLifeStageIndex == 0)
+                {
+                    LifeStageAge val3 = pawn.RaceProps.lifeStageAges[curLifeStageIndex + 1];
+                    num = val.def.bodySizeFactor + (float)Math.Round((val3.def.bodySizeFactor - val.def.bodySizeFactor) / (val3.minAge - val.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val.minAge), 2);
+                }
+                else
+                {
+                    LifeStageAge val3 = pawn.RaceProps.lifeStageAges[curLifeStageIndex + 1];
+                    num = val.def.bodySizeFactor + (float)Math.Round((val3.def.bodySizeFactor - val.def.bodySizeFactor) / (val3.minAge - val.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val.minAge), 2);
+                }
+                if (pawn.RaceProps.baseBodySize > 0f)
+                {
+                    num2 = pawn.RaceProps.baseBodySize;
+                }
+            }
+            catch
+            {
+            }
+            return num * num2;
+        }
 
         public static IEnumerable<CodeInstruction> RenderPawnAt_Transpiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator ilGen)
@@ -739,11 +787,11 @@ namespace FacialStuff.Harmony
             {
                 return;
             }
-            
+
             // compFace.IsChild = pawn.ageTracker.AgeBiologicalYearsFloat < 14;
 
             // Return if child
-            if (compFace.IsChild || pawn.GetCompAnim().Deactivated)
+            if (pawn.IsChild() || pawn.GetCompAnim().Deactivated)
             {
                 return;
             }
@@ -769,7 +817,7 @@ namespace FacialStuff.Harmony
             __instance.nakedGraphic = GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.bodyType.bodyNakedGraphicPath, ShaderDatabase.CutoutSkin, Vector2.one, __instance.pawn.story.SkinColor);
             if (compFace.Props.needsBlankHumanHead)
             {
-                if (!compFace.IsChild)
+                // if (!compFace.IsChild)
                 {
                     __instance.headGraphic =
                         GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn,
@@ -778,17 +826,16 @@ namespace FacialStuff.Harmony
                         GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
                     __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
                 }
-                else
-                {
-                    __instance.headGraphic =
-                        GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,
-                            pawn.story.SkinColor);
-                    __instance.desiccatedHeadGraphic =
-                        GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,
-                            rotColor);
-                    __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecords.GetStump(rotColor);
-
-                }
+               // else
+               // {
+               //     __instance.headGraphic =
+               //         GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,
+               //             pawn.story.SkinColor);
+               //     __instance.desiccatedHeadGraphic =
+               //         GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,
+               //             rotColor);
+               //     __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecords.GetStump(rotColor);
+               // }
             }
 
             __instance.rottingGraphic =

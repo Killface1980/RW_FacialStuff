@@ -320,7 +320,7 @@ namespace FacialStuff
                 }
             }
 
-            if (portrait && !HarmonyPatchesFS.AnimatorIsOpen())
+            if (portrait && !HarmonyPatchesFS.AnimatorIsOpen() && !Pawn.IsChild())
             {
                 return;
             }
@@ -500,7 +500,7 @@ namespace FacialStuff
                 return;
             }
 
-            if (portrait && !HarmonyPatchesFS.AnimatorIsOpen())
+            if (portrait && !HarmonyPatchesFS.AnimatorIsOpen() && !Pawn.IsChild())
             {
                 return;
             }
@@ -527,7 +527,7 @@ namespace FacialStuff
                 Vector3 handVector = drawPos;
 
                 // Arms too far away from body
-                while (Vector3.Distance(Pawn.DrawPos, handVector) > body.armLength)
+                while (Vector3.Distance(Pawn.DrawPos, handVector) > body.armLength * factor)
                 {
                     float step = 0.025f;
                     handVector = Vector3.MoveTowards(handVector, Pawn.DrawPos, step);
@@ -562,8 +562,9 @@ namespace FacialStuff
             {
                 float offsetJoint = walkCycle.ShoulderOffsetHorizontalX.Evaluate(this.CompAnimator.MovedPercent);
 
+                // Children's arms are way too long
                 this.DoWalkCycleOffsets(
-                                        body.armLength,
+                                        body.armLength * (factor < 1f ? factor * 0.75f : 1f),
                                         ref rightHand,
                                         ref leftHand,
                                         ref shoulderAngle,

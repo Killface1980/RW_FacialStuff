@@ -23,15 +23,7 @@ namespace FacialStuff
 
         public bool IsAsleep;
 
-        public bool IsChild
-        {
-            get
-            {
-                return LoadedModManager.RunningModsListForReading.Any(x => x.PackageId == "Dylan.CSL") &&
-                       Pawn.RaceProps.Humanlike && Pawn.ageTracker.CurLifeStage.bodySizeFactor < 1f;
 
-            }
-        }
         public bool NeedsStyling = true;
 
         [CanBeNull] public string TexPathEyeLeft;
@@ -696,7 +688,7 @@ namespace FacialStuff
                 return;
             }
             // Children & Pregnancy || Werewolves transformed
-            if (this.Pawn.Map == null || Pawn.InContainerEnclosed || !this.Pawn.Spawned || this.Pawn.Dead || this.IsChild || this.Pawn.GetCompAnim().Deactivated)
+            if (this.Pawn.Map == null || Pawn.InContainerEnclosed || !this.Pawn.Spawned || this.Pawn.Dead || Pawn.IsChild() || this.Pawn.GetCompAnim().Deactivated)
             {
                 return;
             }

@@ -2,6 +2,7 @@
 
 namespace FacialStuff
 {
+    using FacialStuff.Harmony;
     using System;
     using System.Collections.Generic;
 
@@ -16,9 +17,9 @@ namespace FacialStuff
 
             List<FloatMenuOption> list = new List<FloatMenuOption>();
             {
-                if (selPawn.GetCompFace().IsChild)
+                if (selPawn.IsChild())
                 {
-                    FloatMenuOption item = new FloatMenuOption("Pawn must be older than 14.".Translate(), null);
+                    FloatMenuOption item = new FloatMenuOption("Pawn must be at least 18 with CSL activated.", null);
                     return new List<FloatMenuOption> { item };
                 }
                 

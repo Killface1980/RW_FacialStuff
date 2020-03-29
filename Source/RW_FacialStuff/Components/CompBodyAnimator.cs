@@ -241,7 +241,7 @@ namespace FacialStuff
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait)
+        public void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait, float factor = 1f)
         {
             if (!this.PawnBodyDrawers.NullOrEmpty())
             {
@@ -249,7 +249,7 @@ namespace FacialStuff
                 int count = this.PawnBodyDrawers.Count;
                 while (i < count)
                 {
-                    this.PawnBodyDrawers[i].DrawFeet(bodyQuat, footQuat, rootLoc, portrait);
+                    this.PawnBodyDrawers[i].DrawFeet(bodyQuat, footQuat, rootLoc, portrait, factor);
                     i++;
                 }
             }
@@ -346,7 +346,8 @@ namespace FacialStuff
 
             return base.CompInspectStringExtra();
         }
-
+        private bool initialized = false;
+        //ToDO: Move this and the Face PostDraw to Postfix // Verse.Pawn_DrawTracker.DrawTrackerTick()
         public override void PostDraw()
         {
             base.PostDraw();
@@ -361,7 +362,7 @@ namespace FacialStuff
             {
                 if (!HarmonyPatchesFS.AnimatorIsOpen() || MainTabWindow_BaseAnimator.Pawn != this.Pawn)
                 {
-                    return;
+                    if (!Pawn.IsChild()) return;
                 }
             }
 
@@ -369,6 +370,9 @@ namespace FacialStuff
             {
                 this.BodyAnimator.AnimatorTick();
             }
+
+            if (!Find.TickManager.Paused || !initialized)
+            {
 
             // Tweener
             Vector3Tween eqTween = this.Vector3Tweens[(int)HarmonyPatchesFS.equipment];
@@ -396,6 +400,22 @@ namespace FacialStuff
             }
 
             this.CheckMovement();
+
+                if (Pawn.IsChild())
+                    TickDrawers(Pawn.Rotation, new PawnGraphicSet(Pawn));
+            initialized = true;
+            }
+
+            if (Pawn.IsChild())
+            {
+                float angle = Pawn.Drawer.renderer.BodyAngle();
+                Quaternion bodyQuat = Quaternion.AngleAxis(angle, Vector3.up);
+                Vector3 rootLoc = Pawn.Drawer.DrawPos;
+                if (Controller.settings.UseHands)
+                    DrawHands(bodyQuat, rootLoc, false, null, false, Pawn.GetBodysizeScaling());
+                if (Controller.settings.UseFeet)
+                    DrawFeet(bodyQuat, bodyQuat, rootLoc, false);
+            }
         }
 
         public override void PostExposeData()

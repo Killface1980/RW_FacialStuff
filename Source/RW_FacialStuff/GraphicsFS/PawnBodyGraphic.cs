@@ -1,5 +1,7 @@
 ﻿// ReSharper disable StyleCop.SA1401
 
+using FacialStuff.Harmony;
+using System;
 using System.Linq;
 using UnityEngine;
 using Verse;
@@ -120,7 +122,7 @@ namespace FacialStuff.GraphicsFS
             Color rightFootShadowColor = rightFootColor * this._shadowColor;
             Color leftFootShadowColor = leftFootColor * this._shadowColor;
 
-            float factor = Factor;
+            float factor = this._pawn.GetBodysizeScaling();
 
             Vector2 drawSize = new Vector2(factor, factor);
 
@@ -165,27 +167,6 @@ namespace FacialStuff.GraphicsFS
                 drawSize,
                 leftColorFoot,
                 skinColor);
-        }
-
-        public float Factor { 
-            get 
-        {
-
-            float factor = 1f;
-            if (_pawn.kindDef.lifeStages.Any())
-            {
-                float maxSize = 1f;
-                foreach (PawnKindLifeStage lifeStage in _pawn.kindDef.lifeStages)
-                {
-                    maxSize = Mathf.Max(maxSize, lifeStage.bodyGraphicData.drawSize.x);
-                }
-
-                float sizePaws = _pawn.ageTracker.CurKindLifeStage.bodyGraphicData.drawSize.x;
-                factor = sizePaws / maxSize;
-            }
-
-            return factor;
-        }
         }
 
         private void InitializeGraphicsFrontPaws()
@@ -233,7 +214,7 @@ namespace FacialStuff.GraphicsFS
             Color rightFootColorShadow = rightFootColor * this._shadowColor;
             Color leftFootColorShadow = leftFootColor * this._shadowColor;
 
-            float factor = Factor;
+            float factor = _pawn.GetBodysizeScaling();
 
             Vector2 drawSize = new Vector2(factor, factor);
             this.FrontPawGraphicRight = GraphicDatabase.Get<Graphic_Multi>(
@@ -326,7 +307,7 @@ namespace FacialStuff.GraphicsFS
 
             Color leftHandColorShadow = leftHandColor * this._shadowColor;
             Color rightHandColorShadow = rightHandColor * this._shadowColor;
-            float factor = Factor;
+            float factor = _pawn.GetBodysizeScaling();
 
             Vector2 drawSize = new Vector2(factor, factor);
             this.HandGraphicRight = GraphicDatabase.Get<Graphic_Multi>(

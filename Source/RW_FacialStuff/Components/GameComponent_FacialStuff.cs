@@ -496,8 +496,16 @@ namespace FacialStuff
             // ReSharper disable once PossibleNullReferenceException
             foreach (WeaponExtensionDef weaponExtensionDef in DefDatabase<WeaponExtensionDef>.AllDefsListForReading)
             {
-                ThingDef thingDef = ThingDef.Named(weaponExtensionDef.weapon);
+                ThingDef thingDef;
+                try
+                {
+                    thingDef = ThingDef.Named(weaponExtensionDef.weapon);
 
+                }
+                catch
+                {
+                    continue;
+                }
                 if (thingDef == null)
                 {
                     continue;
