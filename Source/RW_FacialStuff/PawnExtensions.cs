@@ -195,8 +195,8 @@ namespace FacialStuff
             BodyPartRecord leftFoot = body.Find(x => x.customLabel == "left foot");
             BodyPartRecord rightFoot = body.Find(x => x.customLabel == "right foot");
 
-            BodyPartRecord leftArm = body.Find(x => x.customLabel == "left hand");
-            BodyPartRecord rightArm = body.Find(x => x.customLabel == "right hand");
+            BodyPartRecord leftArm = body.Find(x => x.customLabel == "left arm");
+            BodyPartRecord rightArm = body.Find(x => x.customLabel == "right arm");
 
             BodyPartRecord leftLeg = body.Find(x => x.customLabel == "left foot");
             BodyPartRecord rightLeg = body.Find(x => x.customLabel == "right foot");
