@@ -37,7 +37,7 @@ namespace FacialStuff
 
             Rect checkbox = new Rect(rect.x, rect.y, rect.width, 24f);
 
-            Widgets.CheckboxLabeled(checkbox, "Ignore renderer", ref SelPawn.GetCompAnim().IgnoreRenderer);
+            Widgets.CheckboxLabeled(checkbox, "Ignore renderer", ref this.SelPawn.GetCompAnim().IgnoreRenderer);
 
             Rect pawnRect = new Rect(rect.x, checkbox.yMax, rect.width, 24f);
 
@@ -56,7 +56,7 @@ namespace FacialStuff
            // list.Begin(rect2);
 
             this.SelPawn.GetCompAnim(out CompBodyAnimator _);
-            if (SelPawn.GetCompAnim().IgnoreRenderer)
+            if (this.SelPawn.GetCompAnim().IgnoreRenderer)
             {
                 _rotation = GUILayout.SelectionGrid(_rotation, this._psiToolbarStrings, 4);
                 if (GUI.changed)

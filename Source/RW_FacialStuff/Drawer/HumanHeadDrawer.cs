@@ -28,9 +28,9 @@ namespace FacialStuff
             this.HeadFacing = compFaceHeadRotator.Rotation(this.HeadFacing, renderBody);
 
             // Todo: make it more natural
-            if (Pawn.CurJob != null)
+            if (this.Pawn.CurJob != null)
             {
-                if (Pawn.CurJobDef != JobDefOf.Wait) return;
+                if (this.Pawn.CurJobDef != JobDefOf.Wait) return;
             }
             headQuat *= this.QuatHead(this.HeadFacing);
 
@@ -117,7 +117,7 @@ namespace FacialStuff
         public override void DrawBeardAndTache(Vector3 beardLoc, Vector3 tacheLoc, Quaternion headQuat, bool portrait)
         {
             Mesh headMesh = this.GetPawnMesh(false, portrait);
-            if (CompFace.PawnFace.BeardDef.IsBeardNotHair())
+            if (this.CompFace.PawnFace.BeardDef.IsBeardNotHair())
             {
                 headMesh = this.GetPawnHairMesh(portrait);
             }
@@ -174,7 +174,7 @@ namespace FacialStuff
 
             bool noRenderGoggles = Controller.settings.FilterHats;
 
-            bool showRoyalHeadgear = Pawn.royalty?.MostSeniorTitle != null && Controller.settings.ShowRoyalHeadgear;
+            bool showRoyalHeadgear = this.Pawn.royalty?.MostSeniorTitle != null && Controller.settings.ShowRoyalHeadgear;
             bool noRenderRoofed = animator != null && animator.HideHat && !showRoyalHeadgear;
             bool noRenderBed = Controller.settings.HideHatInBed && !renderBody && !showRoyalHeadgear;
 

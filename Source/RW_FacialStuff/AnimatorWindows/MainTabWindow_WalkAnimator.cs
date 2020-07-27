@@ -30,8 +30,8 @@ namespace FacialStuff.AnimatorWindows
 
         protected override void SetKeyframes()
         {
-            PawnKeyframes = EditorWalkcycle.keyframes;
-            this.Label = EditorWalkcycle.LabelCap;
+            PawnKeyframes = this.EditorWalkcycle.keyframes;
+            this.Label = this.EditorWalkcycle.LabelCap;
         }
         #endregion Public Properties
 
@@ -55,7 +55,7 @@ namespace FacialStuff.AnimatorWindows
         {
             get
             {
-                return DefPath + "/WalkCycleDefs/" + EditorWalkcycle.defName + ".xml";
+                return DefPath + "/WalkCycleDefs/" + this.EditorWalkcycle.defName + ".xml";
 
             }
         }
@@ -86,7 +86,7 @@ namespace FacialStuff.AnimatorWindows
         protected override void BuildEditorCycle()
         {
             base.BuildEditorCycle();
-            GameComponent_FacialStuff.BuildWalkCycles(EditorWalkcycle);
+            GameComponent_FacialStuff.BuildWalkCycles(this.EditorWalkcycle);
         }
 
         // public static float horHeadOffset;
@@ -128,7 +128,7 @@ namespace FacialStuff.AnimatorWindows
                 Find.WindowStack.Add(new FloatMenu(list));
             }
 
-            if (listing.ButtonText(EditorWalkcycle.LabelCap))
+            if (listing.ButtonText(this.EditorWalkcycle.LabelCap))
             {
                 List<string> exists = new List<string>();
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
@@ -139,7 +139,7 @@ namespace FacialStuff.AnimatorWindows
                                                   .Where(current => current.WalkCycleType ==
                                                                     this.BodyAnimDef.WalkCycleType))
                 {
-                    list.Add(new FloatMenuOption(walkcycle.LabelCap, delegate { EditorWalkcycle = walkcycle; }));
+                    list.Add(new FloatMenuOption(walkcycle.LabelCap, delegate { this.EditorWalkcycle = walkcycle; }));
                     exists.Add(walkcycle.locomotionUrgency.ToString());
                     this.BodyAnimDef.walkCycles.Add(walkcycle.locomotionUrgency, walkcycle);
                 }
@@ -167,7 +167,7 @@ namespace FacialStuff.AnimatorWindows
                                                      newCycle.locomotionUrgency = myenum;
                                                      newCycle.WalkCycleType = this.BodyAnimDef.WalkCycleType;
                                                      GameComponent_FacialStuff.BuildWalkCycles(newCycle);
-                                                     EditorWalkcycle = newCycle;
+                                                     this.EditorWalkcycle = newCycle;
 
                                                      this.BodyAnimDef.walkCycles.Add(myenum, newCycle);
                                                  }));
@@ -182,7 +182,7 @@ namespace FacialStuff.AnimatorWindows
                 Find.WindowStack.Add(
                     Dialog_MessageBox.CreateConfirmation(
                         "Confirm overwriting " +
-                        filePathBodyanim,
+                        this.filePathBodyanim,
                         delegate
                         {
                             ExportAnimDefs.Defs animDef =
@@ -190,7 +190,7 @@ namespace FacialStuff.AnimatorWindows
 
                             DirectXmlSaver.SaveDataObject(
                                 animDef,
-                                filePathBodyanim);
+                                this.filePathBodyanim);
                         },
                         true));
 
@@ -202,15 +202,15 @@ namespace FacialStuff.AnimatorWindows
 
                 Find.WindowStack.Add(
                     Dialog_MessageBox.CreateConfirmation(
-                        "Confirm overwriting " + pathWalkcycles,
+                        "Confirm overwriting " + this.pathWalkcycles,
                         delegate
                         {
                             ExportWalkCycleDefs.Defs cycle =
-                                new ExportWalkCycleDefs.Defs(EditorWalkcycle);
+                                new ExportWalkCycleDefs.Defs(this.EditorWalkcycle);
 
                             DirectXmlSaver.SaveDataObject(
                                 cycle,
-                                pathWalkcycles);
+                                this.pathWalkcycles);
                         },
                         true));
             }
@@ -260,7 +260,7 @@ namespace FacialStuff.AnimatorWindows
             // this.DrawBodyStats("hipOffsetVerticalFromCenter",
             // ref bodyAnimDef.hipOffsetVerticalFromCenter, ref sliderRect);
 
-            Vector2 headOffset = BodyAnimDef.headOffset;
+            Vector2 headOffset = this.BodyAnimDef.headOffset;
             this.DrawBodyStats("headOffsetX", ref headOffset.x, ref sliderRect);
             this.DrawBodyStats("headOffsetY", ref headOffset.y, ref sliderRect);
 
@@ -315,7 +315,7 @@ namespace FacialStuff.AnimatorWindows
 
             if (GUI.changed)
             {
-                BodyAnimDef.headOffset = headOffset;
+                this.BodyAnimDef.headOffset = headOffset;
                 this.SetNewVector(rotation, shoulderOffset, this.BodyAnimDef.shoulderOffsets, front);
                 this.SetNewVector(rotation, hipOffset, this.BodyAnimDef.hipOffsets, hipFront);
             }
@@ -355,7 +355,7 @@ namespace FacialStuff.AnimatorWindows
                 // }
                 List<int> framesAt;
                 List<PawnKeyframe> frames = PawnKeyframes;
-                WalkCycleDef walkcycle = EditorWalkcycle;
+                WalkCycleDef walkcycle = this.EditorWalkcycle;
                 {
                     framesAt = (from keyframe in frames where keyframe.FootPositionX.HasValue select keyframe.KeyIndex)
                    .ToList();
@@ -580,7 +580,7 @@ namespace FacialStuff.AnimatorWindows
                 BodyAnimDef anim = this.CompAnim.BodyAnim;
                 if (anim != null && anim.walkCycles.Any())
                 {
-                    EditorWalkcycle = anim.walkCycles.FirstOrDefault().Value;
+                    this.EditorWalkcycle = anim.walkCycles.FirstOrDefault().Value;
                 }
             }
         }
@@ -590,7 +590,7 @@ namespace FacialStuff.AnimatorWindows
             BodyAnimDef anim = this.CompAnim.BodyAnim;
             if (anim != null && anim.walkCycles.Any())
             {
-                EditorWalkcycle =
+                this.EditorWalkcycle =
                 anim.walkCycles.FirstOrDefault().Value;
             }
         }

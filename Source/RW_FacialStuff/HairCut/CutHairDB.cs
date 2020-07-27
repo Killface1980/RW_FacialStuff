@@ -20,9 +20,6 @@ namespace FacialStuff.HairCut
 
         private static readonly List<HairCutPawn> PawnHairCache = new List<HairCutPawn>();
 
-        private static Texture2D _maskTexFrontBack;
-
-        private static Texture2D _maskTexSide;
 
         private static string _mergedHairPath;
 
@@ -133,15 +130,35 @@ namespace FacialStuff.HairCut
                 temptextureside2 = FaceTextures.MakeReadable(temptextureside2);
 
                     // new mask textures 
+                Texture2D _maskTexFrontBack;
+                Texture2D _maskTexSide;
+
                 if (coverage == HeadCoverage.UpperHead)
                 {
-                    _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack;
-                    _maskTexSide = FaceTextures.MaskTexUpperheadSide;
+                    if (temptexturefront.width == 256)
+                    {
+                        _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack256;
+                        _maskTexSide = FaceTextures.MaskTexUpperheadSide256;
+                    }
+                    else
+                    {
+                        _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack;
+                        _maskTexSide = FaceTextures.MaskTexUpperheadSide;
+                    }
                 }
                 else
                 {
-                    _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack;
-                    _maskTexSide = FaceTextures.MaskTexFullheadSide;
+                    if (temptexturefront.width == 256)
+                    {
+                        _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack256;
+                        _maskTexSide = FaceTextures.MaskTexFullheadSide256;
+
+                    }
+                    else
+                    {
+                        _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack;
+                        _maskTexSide = FaceTextures.MaskTexFullheadSide;
+                    }
                 }
 
 
@@ -209,21 +226,44 @@ namespace FacialStuff.HairCut
 
                         SetTempTextures(graphic, out Texture2D temptexturefront, out Texture2D temptextureside, out Texture2D temptextureback, out Texture2D temptextureside2);
 
+                        Texture2D _maskTexFrontBack;
+                        Texture2D _maskTexSide;
+
                         string upperPath = path + "_Upperhead";
+                        
+                            if (temptexturefront.width == 256)
+                            {
+                                _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack256;
+                                _maskTexSide = FaceTextures.MaskTexUpperheadSide256;
+                            }
+                            else
+                            {
+                                _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack;
+                                _maskTexSide = FaceTextures.MaskTexUpperheadSide;
+                            }
+                        
 
-                        _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack;
-                        _maskTexSide = FaceTextures.MaskTexUpperheadSide;
-
-                        CutOutHair(upperPath, ref temptexturefront, ref temptextureside, ref temptextureback, ref temptextureside2);
+                        CutOutHair(_maskTexFrontBack, _maskTexSide, upperPath, ref temptexturefront, ref temptextureside, ref temptextureback, ref temptextureside2);
 
                         SetTempTextures(graphic, out temptexturefront, out temptextureside, out temptextureback, out temptextureside2);
 
                         string fullPath = path + "_Fullhead";
 
-                        _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack;
-                        _maskTexSide = FaceTextures.MaskTexFullheadSide;
+                            if (temptexturefront.width == 256)
+                            {
+                                _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack256;
+                                _maskTexSide = FaceTextures.MaskTexFullheadSide256;
 
-                        CutOutHair(fullPath, ref temptexturefront, ref temptextureside, ref temptextureback, ref temptextureside2);
+                            }
+                            else
+                            {
+                                _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack;
+                                _maskTexSide = FaceTextures.MaskTexFullheadSide;
+                            }
+                        
+
+
+                        CutOutHair(_maskTexFrontBack, _maskTexSide, fullPath, ref temptexturefront, ref temptextureside, ref temptextureback, ref temptextureside2);
                     });
             }
         }
@@ -241,8 +281,9 @@ namespace FacialStuff.HairCut
             temptextureside2 = FaceTextures.MakeReadable(temptextureside2);
         }
 
-        private static void CutOutHair(string exportPath, ref Texture2D temptexturefront, ref Texture2D temptextureside, ref Texture2D temptextureback, ref Texture2D temptextureside2)
+        private static void CutOutHair(Texture2D _maskTexFrontBack, Texture2D _maskTexSide, string exportPath, ref Texture2D temptexturefront, ref Texture2D temptextureside, ref Texture2D temptextureback, ref Texture2D temptextureside2)
         {
+
             CutOutHair(ref temptexturefront, _maskTexFrontBack);
 
             CutOutHair(ref temptextureside, _maskTexSide);

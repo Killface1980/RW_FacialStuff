@@ -214,7 +214,7 @@ namespace FacialStuff.GraphicsFS
             Color rightFootColorShadow = rightFootColor * this._shadowColor;
             Color leftFootColorShadow = leftFootColor * this._shadowColor;
 
-            float factor = _pawn.GetBodysizeScaling();
+            float factor = this._pawn.GetBodysizeScaling();
 
             Vector2 drawSize = new Vector2(factor, factor);
             this.FrontPawGraphicRight = GraphicDatabase.Get<Graphic_Multi>(
@@ -307,7 +307,7 @@ namespace FacialStuff.GraphicsFS
 
             Color leftHandColorShadow = leftHandColor * this._shadowColor;
             Color rightHandColorShadow = rightHandColor * this._shadowColor;
-            float factor = _pawn.GetBodysizeScaling();
+            float factor = this._pawn.GetBodysizeScaling();
 
             Vector2 drawSize = new Vector2(factor, factor);
             this.HandGraphicRight = GraphicDatabase.Get<Graphic_Multi>(

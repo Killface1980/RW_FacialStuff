@@ -335,7 +335,7 @@ namespace FacialStuff.GraphicsFS
         {
             // this.InitializeGraphicsEyePatches();
 
-            Color earColor =_pawn.story.SkinColor;
+            Color earColor = this._pawn.story.SkinColor;
 
             this.EarLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(this._compFace.TexPathEarLeft,
                                                                                  ShaderDatabase.CutoutComplex,

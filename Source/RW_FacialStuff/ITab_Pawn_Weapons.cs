@@ -121,10 +121,10 @@ namespace FacialStuff
             this.SelPawn.GetCompAnim(out CompBodyAnimator _);
 
 
-            listing.CheckboxLabeled("Ignore renderer", ref pawn.GetCompAnim().IgnoreRenderer);
+            listing.CheckboxLabeled("Ignore renderer", ref this.pawn.GetCompAnim().IgnoreRenderer);
             if (GUI.changed)
             {
-                IgnoreRenderer = pawn.GetCompAnim().IgnoreRenderer;
+                IgnoreRenderer = this.pawn.GetCompAnim().IgnoreRenderer;
             }
 
             ThingWithComps primary = this.SelPawn.equipment?.Primary;

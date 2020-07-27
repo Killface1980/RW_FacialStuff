@@ -251,7 +251,7 @@ namespace FacialStuff
                     bool flag = true;
                     if (!portrait && Controller.settings.HideShellWhileRoofed)
                     {
-                        if (this.CompAnimator.InRoom && CompAnimator.HideShellLayer)
+                        if (this.CompAnimator.InRoom && this.CompAnimator.HideShellLayer)
                         {
                             MaxLayerToShow layer;
                             if (this.CompAnimator.InPrivateRoom)
@@ -295,7 +295,7 @@ namespace FacialStuff
 
         public override void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait, float factor = 1f)
         {
-            if (ShouldBeIgnored())
+            if (this.ShouldBeIgnored())
             {
                 return;
             }
@@ -320,7 +320,7 @@ namespace FacialStuff
                 }
             }
 
-            if (portrait && !HarmonyPatchesFS.AnimatorIsOpen() && !Pawn.IsChild())
+            if (portrait && !HarmonyPatchesFS.AnimatorIsOpen() && !this.Pawn.IsChild())
             {
                 return;
             }
@@ -495,12 +495,12 @@ namespace FacialStuff
                                        bool portrait,
                                        Thing carriedThing = null, bool flip = false, float factor = 1f)
         {
-            if (ShouldBeIgnored())
+            if (this.ShouldBeIgnored())
             {
                 return;
             }
 
-            if (portrait && !HarmonyPatchesFS.AnimatorIsOpen() && !Pawn.IsChild())
+            if (portrait && !HarmonyPatchesFS.AnimatorIsOpen() && !this.Pawn.IsChild())
             {
                 return;
             }
@@ -527,10 +527,10 @@ namespace FacialStuff
                 Vector3 handVector = drawPos;
 
                 // Arms too far away from body
-                while (Vector3.Distance(Pawn.DrawPos, handVector) > body.armLength * factor)
+                while (Vector3.Distance(this.Pawn.DrawPos, handVector) > body.armLength * factor)
                 {
                     float step = 0.025f;
-                    handVector = Vector3.MoveTowards(handVector, Pawn.DrawPos, step);
+                    handVector = Vector3.MoveTowards(handVector, this.Pawn.DrawPos, step);
                 }
 
                 carriedThing.DrawAt(drawPos, flip); 
@@ -1062,7 +1062,7 @@ namespace FacialStuff
                 return;
             }
 
-            if (ShouldBeIgnored())
+            if (this.ShouldBeIgnored())
             {
                 return;
             }

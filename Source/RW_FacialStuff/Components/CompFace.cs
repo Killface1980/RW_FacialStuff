@@ -688,7 +688,7 @@ namespace FacialStuff
                 return;
             }
             // Children & Pregnancy || Werewolves transformed
-            if (this.Pawn.Map == null || Pawn.InContainerEnclosed || !this.Pawn.Spawned || this.Pawn.Dead || Pawn.IsChild() || this.Pawn.GetCompAnim().Deactivated)
+            if (this.Pawn.Map == null || this.Pawn.InContainerEnclosed || !this.Pawn.Spawned || this.Pawn.Dead || this.Pawn.IsChild() || this.Pawn.GetCompAnim().Deactivated)
             {
                 return;
             }

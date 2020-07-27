@@ -16,11 +16,11 @@ namespace FacialStuff
                 return;
             }
 
-            if (Pawn.kindDef.lifeStages.Any())
+            if (this.Pawn.kindDef.lifeStages.Any())
             {
 
-            Vector2 maxSize = Pawn.kindDef.lifeStages.Last().bodyGraphicData.drawSize;
-            Vector2 sizePaws = Pawn.ageTracker.CurKindLifeStage.bodyGraphicData.drawSize;
+            Vector2 maxSize = this.Pawn.kindDef.lifeStages.Last().bodyGraphicData.drawSize;
+            Vector2 sizePaws = this.Pawn.ageTracker.CurKindLifeStage.bodyGraphicData.drawSize;
             factor = sizePaws.x / maxSize.x;
             }
 
@@ -34,9 +34,9 @@ namespace FacialStuff
             var frontPawLoc = rootLoc;
             var rearPawLoc = rootLoc;
 
-            if (!BodyFacing.IsHorizontal)
+            if (!this.BodyFacing.IsHorizontal)
             {
-                frontPawLoc.y += (BodyFacing == Rot4.North ? Offsets.YOffset_Behind : -Offsets.YOffset_Behind);
+                frontPawLoc.y += (this.BodyFacing == Rot4.North ? Offsets.YOffset_Behind : -Offsets.YOffset_Behind);
             }
 
             this.DrawFrontPaws(bodyQuat, footQuat, frontPawLoc, portrait, factor);

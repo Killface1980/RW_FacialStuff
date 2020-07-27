@@ -273,7 +273,7 @@ namespace FacialStuff.AnimatorWindows
 
         public override void PostClose()
         {
-            CompAnim = null;
+            this.CompAnim = null;
             Pawn = null;
             base.PostClose();
         }
@@ -862,10 +862,10 @@ namespace FacialStuff.AnimatorWindows
             if (this.Loop)
             {
 
-                AnimationPercent = Time.realtimeSinceStartup - lastTime;
+                AnimationPercent = Time.realtimeSinceStartup - this.lastTime;
                 if (AnimationPercent >= 1f)
                 {
-                    lastTime = Time.realtimeSinceStartup;
+                    this.lastTime = Time.realtimeSinceStartup;
                     AnimationPercent = 0f;
                 }
 

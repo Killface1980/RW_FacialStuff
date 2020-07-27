@@ -704,6 +704,7 @@ namespace FacialStuff.Harmony
         // From CSL mod
         public static float GetBodysizeScaling(this Pawn pawn)
         {
+            
             float bodySizeFactor = pawn.ageTracker.CurLifeStage.bodySizeFactor;
             float num = bodySizeFactor;
             float num2 = 1f;
@@ -860,19 +861,23 @@ namespace FacialStuff.Harmony
 
                 List<Apparel> wornApparel = pawn.apparel.WornApparel
                                                 .Where(x => x.def.apparel.LastLayer == ApparelLayerDefOf.Overhead).ToList();
-                HeadCoverage coverage = HeadCoverage.None;
-                if (!wornApparel.NullOrEmpty())
-                {
-                    if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)))
-                    {
-                        coverage = HeadCoverage.UpperHead;
-                    }
+               
+                HeadCoverage coverage = HeadCoverage.FullHead;
 
-                    if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)))
-                    {
-                        coverage = HeadCoverage.FullHead;
-                    }
-                }
+                //ToDo: Deactivated for now, needs more refinement ---needs clarification 2020-07-27
+
+                  if (!wornApparel.NullOrEmpty())
+                  {
+                      if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)))
+                      {
+                          coverage = HeadCoverage.UpperHead;
+                      }
+                  
+                      if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)))
+                      {
+                          coverage = HeadCoverage.FullHead;
+                      }
+                  }
 
                 if (coverage != 0)
                 {

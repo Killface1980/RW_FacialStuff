@@ -18,6 +18,7 @@ namespace FacialStuff
     public class CompBodyAnimator : ThingComp
     {
         #region Public Fields
+
         public bool Deactivated;
         public bool IgnoreRenderer;
 
@@ -65,7 +66,7 @@ namespace FacialStuff
 
         public BodyAnimator BodyAnimator { get; private set; }
 
-        public bool HideShellLayer => this.InRoom && Controller.settings.HideShellWhileRoofed && (Pawn.IsColonistPlayerControlled && Pawn.Faction.IsPlayer && !Pawn.HasExtraHomeFaction());
+        public bool HideShellLayer => this.InRoom && Controller.settings.HideShellWhileRoofed && (this.Pawn.IsColonistPlayerControlled && this.Pawn.Faction.IsPlayer && !this.Pawn.HasExtraHomeFaction());
 
         public bool InPrivateRoom
         {
@@ -114,7 +115,7 @@ namespace FacialStuff
 
         public CompProperties_BodyAnimator Props => (CompProperties_BodyAnimator)this.props;
 
-        public bool HideHat => this.InRoom && Controller.settings.HideHatWhileRoofed && (Pawn.IsColonistPlayerControlled && Pawn.Faction.IsPlayer && !Pawn.HasExtraHomeFaction());
+        public bool HideHat => this.InRoom && Controller.settings.HideHatWhileRoofed && (this.Pawn.IsColonistPlayerControlled && this.Pawn.Faction.IsPlayer && !this.Pawn.HasExtraHomeFaction());
 
         #endregion Public Properties
 
@@ -286,10 +287,10 @@ namespace FacialStuff
             else
             {
                 this.PawnBodyDrawers = new List<PawnBodyDrawer>();
-                bool isQuaduped = Pawn.GetCompAnim().BodyAnim.quadruped;
+                bool isQuaduped = this.Pawn.GetCompAnim().BodyAnim.quadruped;
                 PawnBodyDrawer thingComp = isQuaduped
-                    ? (PawnBodyDrawer) Activator.CreateInstance(typeof(QuadrupedDrawer))
-                    : (PawnBodyDrawer) Activator.CreateInstance(typeof(HumanBipedDrawer));
+                    ? (PawnBodyDrawer)Activator.CreateInstance(typeof(QuadrupedDrawer))
+                    : (PawnBodyDrawer)Activator.CreateInstance(typeof(HumanBipedDrawer));
                 thingComp.CompAnimator = this;
                 thingComp.Pawn = this.Pawn;
                 this.PawnBodyDrawers.Add(thingComp);
@@ -342,11 +343,11 @@ namespace FacialStuff
             // return log;
             //  return MoveState.ToString() + " - " + MovedPercent;
 
-          //  return  lastAimAngle.ToString() ;
+            //  return  lastAimAngle.ToString() ;
 
             return base.CompInspectStringExtra();
         }
-        private bool initialized = false;
+
         //ToDO: Move this and the Face PostDraw to Postfix // Verse.Pawn_DrawTracker.DrawTrackerTick()
         public override void PostDraw()
         {
@@ -358,63 +359,61 @@ namespace FacialStuff
                 return;
             }
 
-            if (Find.TickManager.Paused)
-            {
-                if (!HarmonyPatchesFS.AnimatorIsOpen() || MainTabWindow_BaseAnimator.Pawn != this.Pawn)
-                {
-                    if (!Pawn.IsChild()) return;
-                }
-            }
+            //if (Find.TickManager.Paused)
+            //{
+            //    if (!HarmonyPatchesFS.AnimatorIsOpen() || MainTabWindow_BaseAnimator.Pawn != this.Pawn)
+            //    {
+            //        if (!Pawn.IsChild()) return;
+            //    }
+            //}
 
             if (this.Props.bipedWithHands)
             {
                 this.BodyAnimator.AnimatorTick();
             }
 
-            if (!Find.TickManager.Paused || !initialized)
+                // Tweener
+                Vector3Tween eqTween = this.Vector3Tweens[(int)HarmonyPatchesFS.equipment];
+
+                FloatTween angleTween = this.AimAngleTween;
+                Vector3Tween leftHand = this.Vector3Tweens[(int)TweenThing.HandLeft];
+                Vector3Tween rightHand = this.Vector3Tweens[(int)TweenThing.HandRight];
+                if (!Find.TickManager.Paused)
+                {
+                    if (leftHand.State == TweenState.Running)
+                    {
+                        leftHand.Update(1f * Find.TickManager.TickRateMultiplier);
+                    }
+                    if (rightHand.State == TweenState.Running)
+                    {
+                        rightHand.Update(1f * Find.TickManager.TickRateMultiplier);
+                    }
+                    if (eqTween.State == TweenState.Running)
+                    {
+                        eqTween.Update(1f * Find.TickManager.TickRateMultiplier);
+                    }
+
+                    if (angleTween.State == TweenState.Running)
+                    {
+                        this.AimAngleTween.Update(3f * Find.TickManager.TickRateMultiplier);
+                    }
+
+                    this.CheckMovement();
+
+                    if (this.Pawn.IsChild())
+                    this.TickDrawers(this.Pawn.Rotation, new PawnGraphicSet(this.Pawn));
+                }
+            
+
+            if (this.Pawn.IsChild())
             {
-
-            // Tweener
-            Vector3Tween eqTween = this.Vector3Tweens[(int)HarmonyPatchesFS.equipment];
-
-            FloatTween angleTween = this.AimAngleTween;
-            Vector3Tween leftHand = this.Vector3Tweens[(int)TweenThing.HandLeft];
-            Vector3Tween rightHand = this.Vector3Tweens[(int)TweenThing.HandRight];
-
-            if (leftHand.State == TweenState.Running)
-            {
-                leftHand.Update(1f * Find.TickManager.TickRateMultiplier);
-            }
-            if (rightHand.State == TweenState.Running)
-            {
-                rightHand.Update(1f * Find.TickManager.TickRateMultiplier);
-            }
-            if (eqTween.State == TweenState.Running)
-            {
-                eqTween.Update(1f * Find.TickManager.TickRateMultiplier);
-            }
-
-            if (angleTween.State == TweenState.Running)
-            {
-                this.AimAngleTween.Update(3f * Find.TickManager.TickRateMultiplier);
-            }
-
-            this.CheckMovement();
-
-                if (Pawn.IsChild())
-                    TickDrawers(Pawn.Rotation, new PawnGraphicSet(Pawn));
-            initialized = true;
-            }
-
-            if (Pawn.IsChild())
-            {
-                float angle = Pawn.Drawer.renderer.BodyAngle();
+                float angle = this.Pawn.Drawer.renderer.BodyAngle();
                 Quaternion bodyQuat = Quaternion.AngleAxis(angle, Vector3.up);
-                Vector3 rootLoc = Pawn.Drawer.DrawPos;
+                Vector3 rootLoc = this.Pawn.Drawer.DrawPos;
                 if (Controller.settings.UseHands)
-                    DrawHands(bodyQuat, rootLoc, false, null, false, Pawn.GetBodysizeScaling());
+                    this.DrawHands(bodyQuat, rootLoc, false, null, false, this.Pawn.GetBodysizeScaling());
                 if (Controller.settings.UseFeet)
-                    DrawFeet(bodyQuat, bodyQuat, rootLoc, false);
+                    this.DrawFeet(bodyQuat, bodyQuat, rootLoc, false);
             }
         }
 
@@ -521,7 +520,7 @@ namespace FacialStuff
                     }
                 }
                 // One more time to get at least one pieces of cloth
-                if (_cachedSkinMatsBodyBase.Count < 1)
+                if (this._cachedSkinMatsBodyBase.Count < 1)
                 {
                     for (int i = 0; i < graphics.apparelGraphics.Count; i++)
                     {
@@ -533,14 +532,13 @@ namespace FacialStuff
                             this._cachedSkinMatsBodyBase.Add(graphics.apparelGraphics[i].graphic.MatAt(facing));
                         }
                     }
-
                 }
             }
 
             return this._cachedSkinMatsBodyBase;
         }
 
-#endregion Public Methods
+        #endregion Public Methods
 
         public float MovedPercent => this._movedPercent;
         public float BodyAngle;
@@ -619,7 +617,7 @@ namespace FacialStuff
                     {
                         SimpleCurve curve = walkCycle.HeadOffsetZ;
                         if (curve.PointsCount > 0)
-                        return curve.Evaluate(this.MovedPercent);
+                            return curve.Evaluate(this.MovedPercent);
                     }
                 }
 
@@ -657,7 +655,7 @@ namespace FacialStuff
                     {
                         SimpleCurve curve = walkCycle.BodyOffsetZ;
                         if (curve.PointsCount > 0)
-                        return curve.Evaluate(this.MovedPercent);
+                            return curve.Evaluate(this.MovedPercent);
                     }
                 }
 

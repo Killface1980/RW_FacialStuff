@@ -260,7 +260,7 @@ namespace FacialStuff.Animator
         // RimWorld.JobDriver_StandAndBeSociallyActive
         private void FindClosestTarget()
         {
-            if (!_pawn.Spawned)
+            if (!this._pawn.Spawned)
             {
                 return;
             }
@@ -280,7 +280,7 @@ namespace FacialStuff.Animator
 
             if (job.def == JobDefOf.SpectateCeremony)
             {
-                _target = null;
+                this._target = null;
                 return;
             }
 
@@ -305,7 +305,7 @@ namespace FacialStuff.Animator
                             continue;
                         }
                         
-                        if (!_pawn.CanSee(otherPawn)) continue;
+                        if (!this._pawn.CanSee(otherPawn)) continue;
 
                         // Log.Message(this.pawn + " will look at random pawn " + thing);
                         this._target = otherPawn;
