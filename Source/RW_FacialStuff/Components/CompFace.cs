@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 using RimWorld;
 using System;
 using System.Collections.Generic;
+using FacialStuff.Harmony;
 using UnityEngine;
 using Verse;
 
@@ -20,16 +21,25 @@ namespace FacialStuff
 
         [CanBeNull] public PawnFaceGraphic PawnFaceGraphic;
 
-        public bool Deactivated;
-        public bool IgnoreRenderer;
         public bool IsAsleep;
-        public bool IsChild;
+
+
         public bool NeedsStyling = true;
 
         [CanBeNull] public string TexPathEyeLeft;
         [CanBeNull] public string TexPathEyeLeftPatch;
+        [CanBeNull] public string TexPathEyeLeftMissing;
         [CanBeNull] public string TexPathEyeRight;
         [CanBeNull] public string TexPathEyeRightPatch;
+        [CanBeNull] public string TexPathEyeRightMissing;
+
+        [CanBeNull] public string TexPathEarLeft;
+        [CanBeNull] public string TexPathEarLeftPatch;
+        [CanBeNull] public string TexPathEarLeftMissing;
+        [CanBeNull] public string TexPathEarRight;
+        [CanBeNull] public string TexPathEarRightPatch;
+        [CanBeNull] public string TexPathEarRightMissing;
+        
         [CanBeNull] public string TexPathJawAddedPart;
 
         #endregion Public Fields
@@ -197,7 +207,7 @@ namespace FacialStuff
 
         // public Vector3 RightHandPosition;
         // public Vector3 LeftHandPosition;
-        public Vector3 BaseHeadOffsetAt(bool portrait)
+        public Vector3 BaseHeadOffsetAt(bool portrait, Pawn pawn)
         {
             Vector3 offset = Vector3.zero;
 
@@ -210,7 +220,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i].BaseHeadOffsetAt(ref offset, portrait);
+                this.PawnHeadDrawers[i].BaseHeadOffsetAt(ref offset, portrait, pawn);
                 i++;
             }
 
@@ -435,6 +445,21 @@ namespace FacialStuff
                 i++;
             }
         }
+        public void DrawNaturalEars(Vector3 drawLoc, bool portrait, Quaternion headQuat)
+        {
+            if (this.PawnHeadDrawers.NullOrEmpty())
+            {
+                return;
+            }
+
+            int i = 0;
+            int count = this.PawnHeadDrawers.Count;
+            while (i < count)
+            {
+                this.PawnHeadDrawers[i]?.DrawNaturalEars(drawLoc, headQuat, portrait);
+                i++;
+            }
+        }
 
         public void DrawNaturalMouth(Vector3 drawLoc, bool portrait, Quaternion headQuat)
         {
@@ -464,6 +489,21 @@ namespace FacialStuff
             while (i < count)
             {
                 this.PawnHeadDrawers[i]?.DrawUnnaturalEyeParts(locFacialY, headQuat, portrait);
+                i++;
+            }
+        }
+        public void DrawUnnaturalEarParts(Vector3 locFacialY, Quaternion headQuat, bool portrait)
+        {
+            if (this.PawnHeadDrawers.NullOrEmpty())
+            {
+                return;
+            }
+
+            int i = 0;
+            int count = this.PawnHeadDrawers.Count;
+            while (i < count)
+            {
+                this.PawnHeadDrawers[i]?.DrawUnnaturalEarParts(locFacialY, headQuat, portrait);
                 i++;
             }
         }
@@ -501,7 +541,22 @@ namespace FacialStuff
             string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : eyeDef.texBasePath;
             string path = eyePath + "Eye_" + eyeDef.texName + "_" + this.Pawn.gender + "_" + side;
 
-            return path;
+            return path.Replace(@"\", @"/");
+        }
+    
+        // }
+        [NotNull]
+        public string EarTexPath(Side side, [NotNull] EarDef ear = null)
+        {
+            if (ear == null)
+            {
+                ear = this.PawnFace?.EarDef;
+            }
+            // ReSharper disable once PossibleNullReferenceException
+            string earPath = ear.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Ears/" : ear.texBasePath;
+            string path = earPath + "Ear_" + ear.texName + "_" + this.Pawn.gender + "_" + side;
+
+            return path.Replace(@"\", @"/");
         }
 
         [NotNull]
@@ -522,6 +577,11 @@ namespace FacialStuff
             if (def == BeardDefOf.Beard_Shaved)
             {
                 return StringsFS.PathHumanlike + "Beards/Beard_Shaved";
+            }
+
+            if (def.IsBeardNotHair())
+            {
+                return StringsFS.PathHumanlike + "Beards/" + def.texPath;
             }
 
             return StringsFS.PathHumanlike + "Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;
@@ -623,16 +683,16 @@ namespace FacialStuff
         {
             base.PostDraw();
 
-            // Children & Pregnancy || Werewolves transformed
-            if (this.Pawn.Map == null || !this.Pawn.Spawned || this.Pawn.Dead || this.IsChild || this.Deactivated)
-            {
-                return;
-            }
-
             if (Find.TickManager.Paused)
             {
                 return;
             }
+            // Children & Pregnancy || Werewolves transformed
+            if (this.Pawn.Map == null || Pawn.InContainerEnclosed || !this.Pawn.Spawned || this.Pawn.Dead || Pawn.IsChild() || this.Pawn.GetCompAnim().Deactivated)
+            {
+                return;
+            }
+
 
             // CellRect viewRect = Find.CameraDriver.CurrentViewRect;
             // viewRect = viewRect.ExpandedBy(5);
@@ -657,7 +717,7 @@ namespace FacialStuff
 
             if (this.Props.hasMouth)
             {
-                if (Find.TickManager.TicksGame % 30 == 0)
+                if (Find.TickManager.TicksGame % 90 == 0)
                 {
                     this.PawnFaceGraphic?.SetMouthAccordingToMoodLevel();
                 }
@@ -679,10 +739,9 @@ namespace FacialStuff
             Scribe_Deep.Look(ref this._pawnFace, "pawnFace");
 
             // Scribe_References.Look(ref this.pawn, "pawn");
-            Scribe_Values.Look(ref this.IsChild, "isChild");
+            //Scribe_Values.Look(ref this.IsChild, "isChild");
 
             // Scribe_References.Look(ref this.theRoom, "theRoom");
-            Scribe_Values.Look(ref this.Deactivated, "dontrender");
 
             // Scribe_Values.Look(ref this.roofed, "roofed");
             Scribe_Values.Look(ref this._factionMelanin, "factionMelanin");

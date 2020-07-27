@@ -37,13 +37,13 @@ namespace FacialStuff.GraphicsFS
 
         public Vector3 OffsetAt(Rot4 rotation)
         {
-            switch (rotation.AsInt)
+            return rotation.AsInt switch
             {
-                case 1: return new Vector3(this._offSet.x, 0f, -this._offSet.y);
-                case 2: return new Vector3(0f, 0f, -this._offSet.y);
-                case 3: return new Vector3(-this._offSet.x, 0f, -this._offSet.y);
-                default: return Vector3.zero;
-            }
+                1 => new Vector3(this._offSet.x, 0f, -this._offSet.y),
+                2 => new Vector3(0f, 0f, -this._offSet.y),
+                3 => new Vector3(-this._offSet.x, 0f, -this._offSet.y),
+                _ => Vector3.zero
+            };
         }
 
         #endregion Public Methods

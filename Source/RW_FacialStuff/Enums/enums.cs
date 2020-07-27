@@ -22,6 +22,10 @@
 
         public PartStatus EyeRight;
 
+        public PartStatus EarLeft;
+
+        public PartStatus EarRight;
+
         public PartStatus Jaw;
     }
     public enum HandsToDraw

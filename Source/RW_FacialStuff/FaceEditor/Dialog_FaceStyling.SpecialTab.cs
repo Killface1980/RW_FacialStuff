@@ -1,4 +1,5 @@
-﻿namespace FacialStuff.FaceEditor
+﻿#if legacy
+namespace FacialStuff.FaceEditor
 {
     public partial class Dialog_FaceStyling
     {
@@ -15,5 +16,6 @@
 
         #endregion Private Methods
 
+    }
 }
-}
+#endif

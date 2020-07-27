@@ -21,8 +21,8 @@ namespace RimWorld
     public class BodyAnimDef : Def
     {
         #region Public Fields
-
-        public string thingTarget;
+        public List<DefHyperlink> descriptionHyperlinks = new List<DefHyperlink>();
+        public string thingTarget = null;
 
         public List<PawnBodyDrawer> bodyDrawers;
         public string handType;
@@ -34,6 +34,8 @@ namespace RimWorld
         public float extraLegLength;
 
         public List<Vector3> hipOffsets = new List<Vector3> { Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero };
+
+        public Vector2 headOffset = Vector2.zero;
 
         public float offCenterX;
 
@@ -49,7 +51,7 @@ namespace RimWorld
         [NotNull]
         public List<PoseCycleDef> poseCycles = new List<PoseCycleDef>();
 
-        public string PoseCycleType;
+        public string PoseCycleType = "Undefined";
 
         #endregion Public Fields
 

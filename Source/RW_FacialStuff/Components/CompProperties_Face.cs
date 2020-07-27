@@ -4,6 +4,7 @@
 // ReSharper disable InconsistentNaming
 
 using System.Collections.Generic;
+
 using Verse;
 
 namespace FacialStuff
@@ -17,6 +18,8 @@ namespace FacialStuff
         public bool hasBeard;
 
         public bool hasEyes;
+
+        public bool hasEars;
 
         public bool hasMouth;
 

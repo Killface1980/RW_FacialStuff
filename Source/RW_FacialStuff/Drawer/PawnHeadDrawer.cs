@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using UnityEngine;
 using Verse;
 
@@ -32,7 +31,7 @@ namespace FacialStuff
         {
         }
 
-        public virtual void BaseHeadOffsetAt(ref Vector3 offset, bool portrait)
+        public virtual void BaseHeadOffsetAt(ref Vector3 offset, bool portrait, Pawn pawn)
         {
         }
 
@@ -68,6 +67,9 @@ namespace FacialStuff
         public virtual void DrawNaturalEyes(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
         }
+        public virtual void DrawNaturalEars(Vector3 drawLoc, Quaternion headQuat, bool portrait)
+        {
+        }
 
         public virtual void DrawNaturalMouth(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
@@ -82,6 +84,10 @@ namespace FacialStuff
         }
 
         public virtual Vector3 EyeOffset(Rot4 headFacing)
+        {
+            return Vector3.zero;
+        }
+        public virtual Vector3 EarOffset(Rot4 headFacing)
         {
             return Vector3.zero;
         }
@@ -108,5 +114,10 @@ namespace FacialStuff
         }
 
         #endregion Public Methods
+
+        public virtual void DrawUnnaturalEarParts(Vector3 drawLoc, Quaternion headQuat, bool portrait)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

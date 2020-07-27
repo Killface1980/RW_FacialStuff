@@ -17,23 +17,22 @@ namespace FacialStuff.AnimatorWindows
     {
         #region Public Fields
 
-        public static bool Equipment;
-        public static float HorHeadOffset;
-        public static float VerHeadOffset;
+        public  bool Equipment;
+        public  float HorHeadOffset;
+        public  float VerHeadOffset;
 
         #endregion Public Fields
 
         #region Public Properties
+
+        [NotNull]
+        public WalkCycleDef EditorWalkcycle { get; private set; } = WalkCycleDefOf.Biped_Walk;
 
         protected override void SetKeyframes()
         {
             PawnKeyframes = EditorWalkcycle.keyframes;
             this.Label = EditorWalkcycle.LabelCap;
         }
-
-        [NotNull]
-        public static WalkCycleDef EditorWalkcycle { get; private set; } = WalkCycleDefOf.Biped_Walk;
-
         #endregion Public Properties
 
         #region Private Properties
@@ -44,56 +43,50 @@ namespace FacialStuff.AnimatorWindows
 
         #region Public Methods
 
+        private string filePathBodyanim
+        {
+            get
+            {
+                return DefPath + "/BodyAnimDefs/" + this.BodyAnimDef.defName + ".xml";
+            }
+        }
+
+        private string pathWalkcycles
+        {
+            get
+            {
+                return DefPath + "/WalkCycleDefs/" + EditorWalkcycle.defName + ".xml";
+
+            }
+        }
+
+        public override void DoWindowContents(Rect inRect)
+        {
+            base.DoWindowContents(inRect);
+            if (GUI.changed)
+            {
+                if (!this.Loop)
+                {
+                    GameComponent_FacialStuff.BuildWalkCycles();
+                }
+            }
+        }
+
+        public override void PostClose()
+        {
+            base.PostClose();
+        }
+
+        public override void PreOpen()
+        {
+            base.PreOpen();
+            // IsMoving = true;
+        }
+
         protected override void BuildEditorCycle()
         {
             base.BuildEditorCycle();
             GameComponent_FacialStuff.BuildWalkCycles(EditorWalkcycle);
-        }
-
-        protected override void SetCurrentCycle()
-        {
-            BodyAnimDef anim = this.CompAnim.BodyAnim;
-            if (anim != null && anim.walkCycles.Any())
-            {
-                EditorWalkcycle =
-                anim.walkCycles.FirstOrDefault().Value;
-            }
-        }
-
-        protected override void DrawBackground(Rect rect)
-        {
-            GUI.BeginGroup(rect);
-            var percent = AnimationPercent;
-            float width = rect.width;
-            float zero = rect.x;
-
-            float moved = (width * AnimationPercent);
-            Rect rect1;
-            Rect rect2;
-            if (BodyRot == Rot4.East)
-            {
-                rect1 = new Rect(rect) { x = rect.x - moved };
-                rect2 = new Rect(rect1) { x = rect1.xMax };
-            }
-            else if (BodyRot == Rot4.West)
-            {
-                rect1 = new Rect(rect) { x = rect.x + moved };
-                rect2 = new Rect(rect1) { x = rect1.xMin - width };
-            }
-            else if (BodyRot == Rot4.North)
-            {
-                rect1 = new Rect(rect) { y = rect.y + moved };
-                rect2 = new Rect(rect1) { y = rect1.yMin - width };
-            }
-            else
-            {
-                rect1 = new Rect(rect) { y = rect.y - moved };
-                rect2 = new Rect(rect1) { y = rect1.yMax };
-            }
-
-            GUI.DrawTexture(rect1, FaceTextures.BackgroundAnimTex);
-            GUI.DrawTexture(rect2, FaceTextures.BackgroundAnimTex);
-            GUI.EndGroup();
         }
 
         // public static float horHeadOffset;
@@ -111,15 +104,37 @@ namespace FacialStuff.AnimatorWindows
             listing.Label(this.BodyAnimDef.offCenterX.ToString("N2"));
             this.BodyAnimDef.offCenterX = listing.Slider(this.BodyAnimDef.offCenterX, -0.2f, 0.2f);
 
+            if (listing.ButtonText("This pawn is using: " + this.BodyAnimDef.WalkCycleType))
+            {
+                List<FloatMenuOption> list = new List<FloatMenuOption>();
+
+                List<WalkCycleDef> listy = DefDatabase<WalkCycleDef>.AllDefsListForReading;
+
+                List<string> stringsy = new List<string>();
+
+                foreach (WalkCycleDef cycleDef in listy)
+                {
+                    if (!stringsy.Contains(cycleDef.WalkCycleType))
+                    {
+                        stringsy.Add(cycleDef.WalkCycleType);
+                    }
+                }
+
+                foreach (string s in stringsy)
+                {
+                    list.Add(new FloatMenuOption(s, delegate { this.BodyAnimDef.WalkCycleType = s; }));
+                }
+
+                Find.WindowStack.Add(new FloatMenu(list));
+            }
+
             if (listing.ButtonText(EditorWalkcycle.LabelCap))
             {
                 List<string> exists = new List<string>();
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
                 this.BodyAnimDef.walkCycles.Clear();
 
-                foreach (WalkCycleDef walkcycle in (from bsm in DefDatabase<WalkCycleDef>.AllDefs
-                                                    orderby bsm.LabelCap
-                                                    select bsm)
+                foreach (WalkCycleDef walkcycle in (DefDatabase<WalkCycleDef>.AllDefs.OrderBy(bsm => bsm.label))
                                                   .TakeWhile(current => this.BodyAnimDef.WalkCycleType != "None")
                                                   .Where(current => current.WalkCycleType ==
                                                                     this.BodyAnimDef.WalkCycleType))
@@ -161,99 +176,80 @@ namespace FacialStuff.AnimatorWindows
                 Find.WindowStack.Add(new FloatMenu(list));
             }
 
-            if (listing.ButtonText("This pawn is using: " + this.BodyAnimDef.WalkCycleType))
-            {
-                List<FloatMenuOption> list = new List<FloatMenuOption>();
-
-                List<WalkCycleDef> listy = DefDatabase<WalkCycleDef>.AllDefsListForReading;
-
-                List<string> stringsy = new List<string>();
-
-                foreach (WalkCycleDef cycleDef in listy)
-                {
-                    if (!stringsy.Contains(cycleDef.WalkCycleType))
-                    {
-                        stringsy.Add(cycleDef.WalkCycleType);
-                    }
-                }
-
-                foreach (string s in stringsy)
-                {
-                    list.Add(new FloatMenuOption(s, delegate { this.BodyAnimDef.WalkCycleType = s; }));
-                }
-
-                Find.WindowStack.Add(new FloatMenu(list));
-            }
-
             listing.Gap();
-            string configFolder = DefPath;
             if (listing.ButtonText("Export BodyDef"))
             {
-                string filePath = configFolder + "/BodyAnimDefs/" + this.BodyAnimDef.defName + ".xml";
-
                 Find.WindowStack.Add(
-                                     Dialog_MessageBox.CreateConfirmation(
-                                                                          "Confirm overwriting " +
-                                                                          filePath,
-                                                                          delegate
-                                                                          {
-                                                                              ExportAnimDefs.Defs animDef =
-                                                                              new ExportAnimDefs.Defs(this.BodyAnimDef);
+                    Dialog_MessageBox.CreateConfirmation(
+                        "Confirm overwriting " +
+                        filePathBodyanim,
+                        delegate
+                        {
+                            ExportAnimDefs.Defs animDef =
+                                new ExportAnimDefs.Defs(this.BodyAnimDef);
 
-                                                                              DirectXmlSaver.SaveDataObject(
-                                                                                                            animDef,
-                                                                                                            filePath);
-                                                                          },
-                                                                          true));
+                            DirectXmlSaver.SaveDataObject(
+                                animDef,
+                                filePathBodyanim);
+                        },
+                        true));
 
                 // BodyAnimDef animDef = this.bodyAnimDef;
             }
 
             if (listing.ButtonText("Export WalkCycle"))
             {
-                string path = configFolder + "/WalkCycleDefs/" + EditorWalkcycle.defName + ".xml";
 
                 Find.WindowStack.Add(
-                                     Dialog_MessageBox.CreateConfirmation(
-                                                                          "Confirm overwriting " + path,
-                                                                          delegate
-                                                                          {
-                                                                              ExportWalkCycleDefs.Defs cycle =
-                                                                              new ExportWalkCycleDefs.Defs(EditorWalkcycle);
+                    Dialog_MessageBox.CreateConfirmation(
+                        "Confirm overwriting " + pathWalkcycles,
+                        delegate
+                        {
+                            ExportWalkCycleDefs.Defs cycle =
+                                new ExportWalkCycleDefs.Defs(EditorWalkcycle);
 
-                                                                              DirectXmlSaver.SaveDataObject(
-                                                                                                            cycle,
-                                                                                                            path);
-                                                                          },
-                                                                          true));
+                            DirectXmlSaver.SaveDataObject(
+                                cycle,
+                                pathWalkcycles);
+                        },
+                        true));
             }
         }
 
-        public static bool IsOpen;
-
-        public override void PreOpen()
+        protected override void DrawBackground(Rect rect)
         {
-            base.PreOpen();
-            IsOpen = true;
-            // IsMoving = true;
-        }
+            GUI.BeginGroup(rect);
+            var percent = AnimationPercent;
+            float width = rect.width;
+            float zero = rect.x;
 
-        public override void PostClose()
-        {
-            base.PostClose();
-            IsOpen = false;
-        }
-
-        public override void DoWindowContents(Rect inRect)
-        {
-            base.DoWindowContents(inRect);
-            if (GUI.changed)
+            float moved = (width * AnimationPercent);
+            Rect rect1;
+            Rect rect2;
+            if (BodyRot == Rot4.East)
             {
-                if (!this.Loop)
-                {
-                    GameComponent_FacialStuff.BuildWalkCycles();
-                }
+                rect1 = new Rect(rect) { x = rect.x - moved };
+                rect2 = new Rect(rect1) { x = rect1.xMax };
             }
+            else if (BodyRot == Rot4.West)
+            {
+                rect1 = new Rect(rect) { x = rect.x + moved };
+                rect2 = new Rect(rect1) { x = rect1.xMin - width };
+            }
+            else if (BodyRot == Rot4.North)
+            {
+                rect1 = new Rect(rect) { y = rect.y + moved };
+                rect2 = new Rect(rect1) { y = rect1.yMin - width };
+            }
+            else
+            {
+                rect1 = new Rect(rect) { y = rect.y - moved };
+                rect2 = new Rect(rect1) { y = rect1.yMax };
+            }
+
+            GUI.DrawTexture(rect1, FaceTextures.BackgroundAnimTex);
+            GUI.DrawTexture(rect2, FaceTextures.BackgroundAnimTex);
+            GUI.EndGroup();
         }
 
         protected override void DrawBodySettingsEditor(Rot4 rotation)
@@ -263,6 +259,12 @@ namespace FacialStuff.AnimatorWindows
             // this.DrawBodyStats("legLength", ref bodyAnimDef.legLength, ref sliderRect);
             // this.DrawBodyStats("hipOffsetVerticalFromCenter",
             // ref bodyAnimDef.hipOffsetVerticalFromCenter, ref sliderRect);
+
+            Vector2 headOffset = BodyAnimDef.headOffset;
+            this.DrawBodyStats("headOffsetX", ref headOffset.x, ref sliderRect);
+            this.DrawBodyStats("headOffsetY", ref headOffset.y, ref sliderRect);
+
+
             Vector3 shoulderOffset = this.BodyAnimDef.shoulderOffsets[rotation.AsInt];
 
             if (shoulderOffset.y == 0f)
@@ -313,6 +315,7 @@ namespace FacialStuff.AnimatorWindows
 
             if (GUI.changed)
             {
+                BodyAnimDef.headOffset = headOffset;
                 this.SetNewVector(rotation, shoulderOffset, this.BodyAnimDef.shoulderOffsets, front);
                 this.SetNewVector(rotation, hipOffset, this.BodyAnimDef.hipOffsets, hipFront);
             }
@@ -356,6 +359,7 @@ namespace FacialStuff.AnimatorWindows
                 {
                     framesAt = (from keyframe in frames where keyframe.FootPositionX.HasValue select keyframe.KeyIndex)
                    .ToList();
+
 
                     this.SetPosition(
                                      ref this.CurrentFrame.FootPositionX,
@@ -416,7 +420,7 @@ namespace FacialStuff.AnimatorWindows
                 editorRect.x = 0f;
                 editorRect.y = 0f;
 
-                if (this.CompAnim.Props.bipedWithHands)
+                if (this.CompAnim.BodyAnim.bipedWithHands)
                 {
                     this.SetAngleShoulder(ref walkcycle.shoulderAngle, ref editorRect, "ShoulderAngle");
 
@@ -434,7 +438,7 @@ namespace FacialStuff.AnimatorWindows
 
                 if (rotation.IsHorizontal)
                 {
-                    if (this.CompAnim.Props.quadruped)
+                    if (this.CompAnim.BodyAnim.quadruped)
                     {
                         framesAt = (from keyframe in frames
                                     where keyframe.FrontPawPositionX.HasValue
@@ -469,8 +473,9 @@ namespace FacialStuff.AnimatorWindows
                                       framesAt);
                     }
 
+
                     framesAt = (from keyframe in frames where keyframe.BodyAngle.HasValue select keyframe.KeyIndex)
-                   .ToList();
+                        .ToList();
 
                     this.SetAngle(
                                   ref this.CurrentFrame.BodyAngle,
@@ -481,7 +486,7 @@ namespace FacialStuff.AnimatorWindows
                 }
                 else
                 {
-                    if (this.CompAnim.Props.bipedWithHands)
+                    if (this.CompAnim.BodyAnim.bipedWithHands)
                     {
                         // framesAt = (from keyframe in frames
                         // where keyframe.HandsSwingPosVertical.HasValue
@@ -531,6 +536,27 @@ namespace FacialStuff.AnimatorWindows
                                  walkcycle.ShoulderOffsetHorizontalX,
                                  "ShoulderOffsetHorizontalX",
                                  framesAt);
+
+                framesAt = (from keyframe in frames where keyframe.HeadAngleX.HasValue select keyframe.KeyIndex)
+                    .ToList();
+
+                this.SetPosition(
+                    ref this.CurrentFrame.HeadAngleX,
+                    ref editorRect,
+                    walkcycle.HeadAngleX,
+                    "HeadAngleX",
+                    framesAt, 3f);
+
+                framesAt = (from keyframe in frames where keyframe.HeadOffsetZ.HasValue select keyframe.KeyIndex)
+                    .ToList();
+
+                this.SetPosition(
+                    ref this.CurrentFrame.HeadOffsetZ,
+                    ref editorRect,
+                    walkcycle.HeadOffsetZ,
+                    "HeadOffsetZ",
+                    framesAt);
+
                 framesAt =
                 (from keyframe in frames where keyframe.BodyOffsetZ.HasValue select keyframe.KeyIndex).ToList();
 
@@ -547,7 +573,7 @@ namespace FacialStuff.AnimatorWindows
 
         protected override void FindRandomPawn()
         {
-            if (Pawn == null)
+            //if (Pawn == null)
             {
                 base.FindRandomPawn();
 
@@ -559,6 +585,15 @@ namespace FacialStuff.AnimatorWindows
             }
         }
 
+        protected override void SetCurrentCycle()
+        {
+            BodyAnimDef anim = this.CompAnim.BodyAnim;
+            if (anim != null && anim.walkCycles.Any())
+            {
+                EditorWalkcycle =
+                anim.walkCycles.FirstOrDefault().Value;
+            }
+        }
         #endregion Public Methods
 
         #region Private Methods

@@ -1,9 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Facial Stuff 1.0</name>
+  <name>Facial Stuff 1.1</name>
   <author>Killface</author>
   <url></url>
-  <targetVersion>1.0.2059</targetVersion>
+  <supportedVersions>
+    <li>1.0</li>
+    <li>1.1</li>
+  </supportedVersions>
+  <packageId>killface.facialstuff</packageId>
+  <loadAfter>
+    <li>rimofmadness.vampires</li>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+  <loadBefore>
+    <li>EdB.PrepareCarefully</li>
+  </loadBefore>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+
   <description>This mod aims to provide more visual individuality for your colonists
 - hands and feet, animated (also for animals, unfinished)
 - smooth weapon animations and changed offsets
@@ -30,17 +50,22 @@ For modders:
   This mod contains no hair packs itself any more. Please subscribe to the hair mods of your liking.
 
 Patches the PawnRenderer via Harmony and returns &apos;false&apos; thus being incompatible to mods doing the same.
-Look out for the FS "Alien Faces" addon if you're using erdelf's Humanoid Alien Framework.
+    Look out for the FS "Alien Faces" addon if you're using erdelf's Humanoid Alien Framework.
 
-Unfortunately no hands on lightsabers, as the OversizedWeapons prefixes the required method.
+    Unfortunately no hands on lightsabers, as the OversizedWeapons prefixes the required method.
 
-Thanks and Credits:
-Initial Face Editor code adapted from "Clutter" by mrofa (available at the Ludeon forums)
-Hands based on "Clutter Weapon Hands" by mrofa.
-Body, gender and head changer code adapted from Change Dresser by Kiame Vivacity
-Prepare Carefully saving / loading code adapted from Psychology by {WOBBLY} The Word-Mule
-Inspiration for the new renderer and all of its benefits by {WOBBLY} The Word-Mule and ChJees
-Special thanks to DoctorVanGogh and erdelf for help with transpilers, NotFood for the new Dresser patch 
-and Brrainz for Harmony and help with transpilers
+    Thanks and Credits:
+    Korean translation by LazyRichard
+    Portuguese Brazilian translation by PredatorianBR
+    Spanish translation by 53N4
+    ----------------------------
+    Initial Face Editor code adapted from "Clutter" by mrofa (available at the Ludeon forums)
+    Hands based on "Clutter Weapon Hands" by mrofa.
+    Body, gender and head changer code adapted from Change Dresser by Kiame Vivacity
+    Prepare Carefully saving / loading code adapted from Psychology by {WOBBLY} The Word-Mule
+    Inspiration for the new renderer and all of its benefits by {WOBBLY} The Word-Mule and ChJees
+    ----------------------------
+    Special thanks to DoctorVanGogh and erdelf for help with transpilers, NotFood for the new Dresser patch
+    and Brrainz for Harmony and help with transpilers
   </description>
 </ModMetaData>

@@ -5,7 +5,7 @@
     <defName>PawnAnimatorSettingsVanilla</defName>
     <label>Animation comp loader</label>
     <thingClass>Thing</thingClass>
-  <!-- Use this file to add the initial component to animals. FS Prefers the BodyAnimDefs  -->
+  <!-- Use this file to add the initial component to animals. FS prefers the BodyAnimDefs  -->
     <CompLoaderTargets>
       <li>
         <handType>Animal</handType>
@@ -22,6 +22,7 @@
           <li>Boomalope</li>
           <li>Deer</li>
           <li>Ibex</li>
+          <li>Donkey</li>
         </thingTargets>
       </li>
       <li>

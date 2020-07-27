@@ -38,6 +38,8 @@
             <hasWrinkles>true</hasWrinkles>
             <!--eyes?-->
             <hasEyes>true</hasEyes>
+            <!--ears?-->
+            <hasEars>true</hasEars>
             <!--head rotation / tracking-->
             <canRotateHead>true</canRotateHead>
             <!--the drawer for the head. more than one can be defined-->

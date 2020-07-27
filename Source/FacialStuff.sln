@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacialStuff", "RW_FacialStuff\FacialStuff.csproj", "{F3DA945B-AB1B-492C-9C59-A17E61362AA5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlienFaces", "..\..\AlienFaces\Source\AlienFaces.csproj", "{40303C5F-797B-41AD-A128-5EE0016D1D02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FS PrepC Patch", "..\..\RW_FS_PrepC Patch\Source\FS PrepC Patch\FS PrepC Patch.csproj", "{B81C4A50-FEE6-4277-AA73-5616B3DDC96B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RW_FS_Vampire Patch", "..\..\RW_FS_Vampire Patch\Source\RW_FS_Vampire Patch.csproj", "{4E455B24-2D22-40CB-B26C-87D615003B2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FS_CSL Patch", "..\..\RW_FS_CSL Patch\Source\RW_FS_CSL Patch\FS_CSL Patch.csproj", "{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +37,30 @@ Global
 		{40303C5F-797B-41AD-A128-5EE0016D1D02}.RebuildHeads|Any CPU.Build.0 = Release|Any CPU
 		{40303C5F-797B-41AD-A128-5EE0016D1D02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40303C5F-797B-41AD-A128-5EE0016D1D02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B81C4A50-FEE6-4277-AA73-5616B3DDC96B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B81C4A50-FEE6-4277-AA73-5616B3DDC96B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B81C4A50-FEE6-4277-AA73-5616B3DDC96B}.NoCCL|Any CPU.ActiveCfg = Release|Any CPU
+		{B81C4A50-FEE6-4277-AA73-5616B3DDC96B}.NoCCL|Any CPU.Build.0 = Release|Any CPU
+		{B81C4A50-FEE6-4277-AA73-5616B3DDC96B}.RebuildHeads|Any CPU.ActiveCfg = Release|Any CPU
+		{B81C4A50-FEE6-4277-AA73-5616B3DDC96B}.RebuildHeads|Any CPU.Build.0 = Release|Any CPU
+		{B81C4A50-FEE6-4277-AA73-5616B3DDC96B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B81C4A50-FEE6-4277-AA73-5616B3DDC96B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E455B24-2D22-40CB-B26C-87D615003B2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E455B24-2D22-40CB-B26C-87D615003B2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E455B24-2D22-40CB-B26C-87D615003B2E}.NoCCL|Any CPU.ActiveCfg = Release|Any CPU
+		{4E455B24-2D22-40CB-B26C-87D615003B2E}.NoCCL|Any CPU.Build.0 = Release|Any CPU
+		{4E455B24-2D22-40CB-B26C-87D615003B2E}.RebuildHeads|Any CPU.ActiveCfg = Release|Any CPU
+		{4E455B24-2D22-40CB-B26C-87D615003B2E}.RebuildHeads|Any CPU.Build.0 = Release|Any CPU
+		{4E455B24-2D22-40CB-B26C-87D615003B2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E455B24-2D22-40CB-B26C-87D615003B2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.NoCCL|Any CPU.ActiveCfg = Release|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.NoCCL|Any CPU.Build.0 = Release|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.RebuildHeads|Any CPU.ActiveCfg = Release|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.RebuildHeads|Any CPU.Build.0 = Release|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{689AB0A1-19D3-4DD8-ADDE-FDC9A2FFA223}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

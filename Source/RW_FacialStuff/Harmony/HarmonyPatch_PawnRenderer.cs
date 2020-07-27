@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using FacialStuff.AnimatorWindows;
-using Harmony;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -10,9 +10,8 @@ using static FacialStuff.Offsets;
 
 namespace FacialStuff.Harmony
 {
-
-    [HarmonyPatch(typeof(Pawn_DrawTracker))]
-	[HarmonyPatch("DrawPos", PropertyMethod.Getter)]
+    // Not working, no idea what it is for.
+    //[HarmonyPatch(typeof(Pawn_DrawTracker), nameof(Pawn_DrawTracker.DrawPos), MethodType.Getter)]
 	public static class DrawPos_Patch
     {
         public static bool offsetEnabled = false;
@@ -37,7 +36,7 @@ namespace FacialStuff.Harmony
         new[]
         {
             typeof(Vector3), typeof(float), typeof(bool), typeof(Rot4), typeof(Rot4), typeof(RotDrawMode),
-            typeof(bool), typeof(bool)
+            typeof(bool), typeof(bool), typeof(bool)
         })]
     [HarmonyBefore("com.showhair.rimworld.mod")]
     public static class HarmonyPatch_PawnRenderer
@@ -179,7 +178,8 @@ namespace FacialStuff.Harmony
                                   Rot4 headFacing,
                                   RotDrawMode bodyDrawType,
                                   bool portrait,
-                                  bool headStump)
+                                  bool headStump, 
+                                  bool invisible)
         {
             // Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
             PawnGraphicSet graphics = __instance.graphics;
@@ -203,7 +203,7 @@ namespace FacialStuff.Harmony
             // Let vanilla do the job if no FacePawn or pawn not a teenager or any other known mod accessing the renderer
             if (hasFace)
             {
-                if (compFace.IsChild || compFace.Deactivated)
+                if (pawn.IsChild() || pawn.GetCompAnim().Deactivated)
                 {
                     return true;
                 }
@@ -251,7 +251,7 @@ namespace FacialStuff.Harmony
             Quaternion footQuat = bodyQuat;
 
 
-            if (MainTabWindow_WalkAnimator.IsOpen)
+            if (HarmonyPatchesFS.AnimatorIsOpen())
             {
                 bodyFacing = MainTabWindow_BaseAnimator.BodyRot;
                 headFacing = MainTabWindow_BaseAnimator.HeadRot;
@@ -265,7 +265,7 @@ namespace FacialStuff.Harmony
             Quaternion headQuat = bodyQuat;
 
             // Rotate head if possible and wobble around
-            if (!portrait || MainTabWindow_WalkAnimator.IsOpen)
+            if (!portrait || HarmonyPatchesFS.AnimatorIsOpen())
             {
                 if (showFeet)
                 {
@@ -303,7 +303,7 @@ namespace FacialStuff.Harmony
 
                 Vector3 offsetAt = !hasFace
                                    ? __instance.BaseHeadOffsetAt(bodyFacing)
-                                   : compFace.BaseHeadOffsetAt(portrait);
+                                   : compFace.BaseHeadOffsetAt(portrait, pawn);
 
                 Vector3 b = bodyQuat * offsetAt;
                 Vector3 headDrawLoc = headPos + b;
@@ -347,6 +347,18 @@ namespace FacialStuff.Harmony
                                 Vector3 unnaturalEyeLoc = headDrawLoc;
                                 unnaturalEyeLoc.y += YOffset_UnnaturalEyes;
                                 compFace.DrawUnnaturalEyeParts(unnaturalEyeLoc, headQuat, portrait);
+                            }
+                            if (compFace.Props.hasEars && Controller.settings.Develop)
+                            {
+                                Vector3 earLor = headDrawLoc;
+                                earLor.y += YOffset_Eyes;
+
+                                compFace.DrawNaturalEars(earLor, portrait, headQuat);
+
+                                // and now the added ear parts
+                                Vector3 drawLoc = headDrawLoc;
+                                drawLoc.y += YOffset_UnnaturalEyes;
+                                compFace.DrawUnnaturalEarParts(drawLoc, headQuat, portrait);
                             }
 
                             // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
@@ -444,7 +456,7 @@ namespace FacialStuff.Harmony
 
             compAnim?.DrawApparel(bodyQuat, bodyPos, portrait, renderBody);
 
-            compAnim?.DrawAlienBodyAddons(bodyQuat, bodyPos, portrait, renderBody, bodyFacing);
+            compAnim?.DrawAlienBodyAddons(bodyQuat, bodyPos, portrait, renderBody, bodyFacing, invisible);
 
             if (!portrait && pawn.RaceProps.Animal && pawn.inventory != null && pawn.inventory.innerContainer.Count > 0
              && graphics.packGraphic != null)
@@ -480,7 +492,46 @@ namespace FacialStuff.Harmony
 
             return false;
         }
+    private static float GetBodysizeScaling(float bodySizeFactor, Pawn pawn)
+    {
+    float num = bodySizeFactor;
+    float num2 = 1f;
+        try
+    {
+        int curLifeStageIndex = pawn.ageTracker.CurLifeStageIndex;
+        int num3 = pawn.RaceProps.lifeStageAges.Count - 1;
+        LifeStageAge val = pawn.RaceProps.lifeStageAges[curLifeStageIndex];
+        if (num3 == curLifeStageIndex && curLifeStageIndex != 0 && bodySizeFactor != 1f)
+        {
+            LifeStageAge val2 = pawn.RaceProps.lifeStageAges[curLifeStageIndex - 1];
+            num = val2.def.bodySizeFactor + (float)Math.Round((val.def.bodySizeFactor - val2.def.bodySizeFactor) / (val.minAge - val2.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val2.minAge), 2);
+        }
+        else if (num3 == curLifeStageIndex)
+        {
+            num = bodySizeFactor;
+        }
+        else if (curLifeStageIndex == 0)
+        {
+            LifeStageAge val3 = pawn.RaceProps.lifeStageAges[curLifeStageIndex + 1];
+            num = val.def.bodySizeFactor + (float)Math.Round((val3.def.bodySizeFactor - val.def.bodySizeFactor) / (val3.minAge - val.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val.minAge), 2);
+        }
+        else
+        {
+            LifeStageAge val3 = pawn.RaceProps.lifeStageAges[curLifeStageIndex + 1];
+            num = val.def.bodySizeFactor + (float)Math.Round((val3.def.bodySizeFactor - val.def.bodySizeFactor) / (val3.minAge - val.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val.minAge), 2);
+        }
+        if (pawn.RaceProps.baseBodySize > 0f)
+        {
+            num2 = pawn.RaceProps.baseBodySize;
+        }
     }
+    catch
+    {
+    }
+    return num * num2;
+    }
+    }
+
     /*
     
     [HarmonyPatch(

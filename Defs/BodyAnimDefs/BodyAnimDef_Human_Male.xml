@@ -1,7 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <BodyAnimDef>
+    <thingTarget>Human</thingTarget>
+    <handType>Human</handType>
+    <quadruped>False</quadruped>
+    <bipedWithHands>True</bipedWithHands>
     <armLength>0.35</armLength>
+    <extraLegLength>0.15</extraLegLength>
+    <hipOffsets>
+      <li>
+        <x>0.15</x>
+        <y>-0.025</y>
+        <z>0</z>
+      </li>
+      <li>
+        <x>-0.15</x>
+        <y>0.025</y>
+        <z>0</z>
+      </li>
+      <li>
+        <x>-0.15</x>
+        <y>0.025</y>
+        <z>0</z>
+      </li>
+      <li>
+        <x>0.15</x>
+        <y>-0.025</y>
+        <z>0</z>
+      </li>
+    </hipOffsets>
+    <offCenterX>0</offCenterX>
+    <shoulderOffsets>
+      <li>
+        <x>0.3</x>
+        <y>-0.025</y>
+        <z>0.025</z>
+      </li>
+      <li>
+        <x>0.125</x>
+        <y>0.025</y>
+        <z>0</z>
+      </li>
+      <li>
+        <x>-0.3</x>
+        <y>0.025</y>
+        <z>0</z>
+      </li>
+      <li>
+        <x>-0.125</x>
+        <y>-0.025</y>
+        <z>0</z>
+      </li>
+    </shoulderOffsets>
     <walkCycles>
       <li>
         <key>Amble</key>
@@ -20,52 +70,9 @@
         <value>Biped_Walk</value>
       </li>
     </walkCycles>
-    <extraLegLength>0.15</extraLegLength>
     <WalkCycleType>Biped</WalkCycleType>
-    <shoulderOffsets>
-      <li>
-        <x>0.3</x>
-        <y>-0.025</y>
-        <z>0.025</z>
-      </li>
-      <li>
-        <x>-0.05</x>
-        <y>0.025</y>
-        <z>0</z>
-      </li>
-      <li>
-        <x>-0.3</x>
-        <y>0.025</y>
-        <z>0</z>
-      </li>
-      <li>
-        <x>0.05</x>
-        <y>-0.025</y>
-        <z>0</z>
-      </li>
-    </shoulderOffsets>
-    <hipOffsets>
-      <li>
-        <x>0.15</x>
-        <y>-0.025</y>
-        <z>0</z>
-      </li>
-      <li>
-        <x>-0.05</x>
-        <y>0.025</y>
-        <z>0</z>
-      </li>
-      <li>
-        <x>-0.15</x>
-        <y>0.025</y>
-        <z>0</z>
-      </li>
-      <li>
-        <x>0.05</x>
-        <y>-0.025</y>
-        <z>0</z>
-      </li>
-    </hipOffsets>
+    <poseCycles />
+    <PoseCycleType IsNull="True" />
     <defName>BodyAnimDef_Human_Male</defName>
     <label>BodyAnimDef_Human_Male</label>
   </BodyAnimDef>

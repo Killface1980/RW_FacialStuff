@@ -1,18 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
-	<Settings.Develop>Habilitar el modo de desarrollador</Settings.Develop>
-	<Settings.DevelopTooltip>Añade la animación y algunas pestañas destinadas a los modders. Por favor, actívalo sólo si sabes lo que estás haciendo ;)</Settings.DevelopTooltip>
+
+  <Settings.Develop>Habilitar el modo de desarrollador</Settings.Develop>
+  <Settings.DevelopTooltip>Añade la animación y algunas pestañas destinadas a los modders. Por favor, actívalo sólo si sabes lo que estás haciendo ;)</Settings.DevelopTooltip>
   <Settings.VisibilityHeadgearLabel>Visibilidad de la ropa</Settings.VisibilityHeadgearLabel>
   <Settings.PawnFeaturesLabel>Rasgos faciales</Settings.PawnFeaturesLabel>
   <Settings.EditorLabel>Configuración del editor</Settings.EditorLabel>
   <Settings.ExperimentalLabel>Experimental</Settings.ExperimentalLabel>
-  
   <Settings.UseWrinkles>Agregar arrugas a los colonos</Settings.UseWrinkles>
   <Settings.UseWrinklesTooltip>Arrugas para colonos ancianos</Settings.UseWrinklesTooltip>
   <Settings.UseMouth>Añadir bocas a los colonos</Settings.UseMouth>
   <Settings.UseMouthTooltip>Bocas animadas para que los colonos muestren sus sentimientos.</Settings.UseMouthTooltip>
-	<Settings.MergeHair>Mostrar el cabello debajo del sombrero</Settings.MergeHair>
+
+  <Settings.MergeHair>Mostrar el cabello debajo del sombrero</Settings.MergeHair>
   <Settings.MergeHairTooltip>Muestra una textura de cabello modificada bajo los sombreros puestos.</Settings.MergeHairTooltip>
 
   <Settings.IgnoreRenderBody>Ignorar el renderizado del cuerpo</Settings.IgnoreRenderBody>
@@ -20,14 +21,15 @@
 
   <Settings.IgnoreWhileDrafted>Ignorar configuraciones anteriores en colonos reclutados.</Settings.IgnoreWhileDrafted>
   <Settings.IgnoreWhileDraftedTooltip></Settings.IgnoreWhileDraftedTooltip>
-  
+
   <Settings.HandsFeetLabel>Manos y pies</Settings.HandsFeetLabel>
   <Settings.UseHands>Mostrar las manos</Settings.UseHands>
   <Settings.UseHandsTooltip>Muestra las manos mientras el colono es reclutado. Armas de Vanilla sólo en ATM.</Settings.UseHandsTooltip>
   <Settings.UseFeet>Mostrar Pies</Settings.UseFeet>
   <Settings.UseFeetTooltip>Mostrar pies animados.</Settings.UseFeetTooltip>
-	<Settings.UsePaws>Animar animales</Settings.UsePaws>
-	<Settings.UsePawsTooltip>Mostrar patas en animales \n(actualmente inacabado)</Settings.UsePawsTooltip>
+
+  <Settings.UsePaws>Animar animales</Settings.UsePaws>
+  <Settings.UsePawsTooltip>Mostrar patas en animales \n(actualmente inacabado)</Settings.UsePawsTooltip>
   <Settings.FilterHats>Ignorar las gafas</Settings.FilterHats>
   <Settings.FilterHatsTooltip>El equipo extra como las gafas no son visibles en los colonos mientras están en interiores.</Settings.FilterHatsTooltip>
 
@@ -37,7 +39,8 @@
   <Settings.HideShellWhileRoofedTooltip>El equipo acorazado no es visible en los peones mientras está en el interior.</Settings.HideShellWhileRoofedTooltip>
   <Settings.SameBeardColor>Usar siempre el mismo color para el pelo y la barba</Settings.SameBeardColor>
   <Settings.SameBeardColorTooltip>Con esta opción activada, los nuevos colonos siempre compartirán el mismo color para el cabello y la barba. (Estándar: apagado)</Settings.SameBeardColorTooltip>
-	<Settings.HideHatInBed>No mostrar sombreros en la cama</Settings.HideHatInBed>
+
+  <Settings.HideHatInBed>No mostrar sombreros en la cama</Settings.HideHatInBed>
   <Settings.HideHatInBedTooltip>Los sombreros no son visibles si el cuerpo no está dibujado.</Settings.HideHatInBedTooltip>
   <Settings.Apply>Guardar y aplicar los cambios.</Settings.Apply>
 
@@ -111,5 +114,5 @@
 
   <FacialStuffEditor.FullBeards>barba completa</FacialStuffEditor.FullBeards>
   <FacialStuffEditor.Combinable>combinables</FacialStuffEditor.Combinable>
-  
+
 </LanguageData>

@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using FacialStuff.DefOfs;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;
@@ -17,6 +15,8 @@ namespace FacialStuff
         public BodyPartRecord _leftHand;
         public BodyPartRecord _rightEye;
         public BodyPartRecord _leftEye;
+        public BodyPartRecord _rightEar;
+        public BodyPartRecord _leftEar;
         public CompBodyAnimator _anim;
         public CompFace _face;
         public Hediff _hediff;
@@ -38,8 +38,8 @@ namespace FacialStuff
     public static class PawnExtensions
     {
 
-        private static void CheckBodyForAddedParts(Hediff hediff, CompBodyAnimator anim, BodyPartRecord leftHand,
-                                      BodyPartRecord rightHand, BodyPartRecord leftFoot, BodyPartRecord rightFoot)
+        private static void CheckBodyForAddedParts(Hediff hediff, CompBodyAnimator anim, BodyPartRecord leftHand, BodyPartRecord leftArm,
+                                      BodyPartRecord rightHand, BodyPartRecord rightArm, BodyPartRecord leftFoot, BodyPartRecord leftLeg, BodyPartRecord rightFoot, BodyPartRecord rightLeg)
         {
             if (anim == null)
             {
@@ -48,23 +48,23 @@ namespace FacialStuff
 
             if (anim.Props.bipedWithHands)
             {
-                if (hediff.Part.parts.Contains(leftHand))
+                if (hediff.Part.parts.Contains(leftHand) || hediff.Part.parts.Contains(leftArm))
                 {
                     anim.BodyStat.HandLeft = PartStatus.Artificial;
                 }
 
-                if (hediff.Part.parts.Contains(rightHand))
+                if (hediff.Part.parts.Contains(rightHand) || hediff.Part.parts.Contains(rightArm))
                 {
                     anim.BodyStat.HandRight = PartStatus.Artificial;
                 }
             }
 
-            if (hediff.Part.parts.Contains(leftFoot))
+            if (hediff.Part.parts.Contains(leftFoot) || hediff.Part.parts.Contains(leftLeg))
             {
                 anim.BodyStat.FootLeft = PartStatus.Artificial;
             }
 
-            if (hediff.Part.parts.Contains(rightFoot))
+            if (hediff.Part.parts.Contains(rightFoot) || hediff.Part.parts.Contains(rightLeg))
             {
                 anim.BodyStat.FootRight = PartStatus.Artificial;
             }
@@ -74,6 +74,12 @@ namespace FacialStuff
                                       BodyPartRecord rightEye,
                                       BodyPartRecord jaw)
         {
+            if (!face.Pawn.RaceProps.Humanlike || hediff.Part == null)
+            {
+                return;
+
+            }
+
             if (face.Props.hasEyes)
             {
                 if (hediff.Part == leftEye)
@@ -110,16 +116,31 @@ namespace FacialStuff
                 return;
             }
 
-            if (bodyProps._face != null && bodyProps._face.Props.hasEyes)
+            if (bodyProps._face != null)
             {
-                if (hediff.Part == bodyProps._leftEye)
+                if (bodyProps._face.Props.hasEyes)
                 {
-                    bodyProps._face.BodyStat.EyeLeft = PartStatus.Missing;
-                }
+                    if (hediff.Part == bodyProps._leftEye)
+                    {
+                        bodyProps._face.BodyStat.EyeLeft = PartStatus.Missing;
+                    }
 
-                if (hediff.Part == bodyProps._rightEye)
+                    if (hediff.Part == bodyProps._rightEye)
+                    {
+                        bodyProps._face.BodyStat.EyeRight = PartStatus.Missing;
+                    }
+                }
+                if (bodyProps._face.Props.hasEars)
                 {
-                    bodyProps._face.BodyStat.EyeRight = PartStatus.Missing;
+                    if (hediff.Part == bodyProps._leftEar)
+                    {
+                        bodyProps._face.BodyStat.EarLeft = PartStatus.Missing;
+                    }
+
+                    if (hediff.Part == bodyProps._rightEar)
+                    {
+                        bodyProps._face.BodyStat.EarRight = PartStatus.Missing;
+                    }
                 }
             }
 
@@ -161,18 +182,24 @@ namespace FacialStuff
                 return;
             }
 
-            BodyPartRecord leftEye = body.Find(x => x.def == BodyPartDefOf.Eye && x.customLabel.Contains("left"));
-            BodyPartRecord rightEye = body.Find(x => x.def == BodyPartDefOf.Eye && x.customLabel.Contains("right"));
+            BodyPartRecord leftEye = body.Find(x => x.customLabel == "left eye");
+            BodyPartRecord rightEye = body.Find(x => x.customLabel == "right eye");
             BodyPartRecord jaw = body.Find(x => x.def == BodyPartDefOf.Jaw);
 
 
             //BodyPartRecord leftArm = body.Find(x => x.def == BodyPartDefOf.LeftArm);
             //BodyPartRecord rightArm = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("RightShoulder"));
-            BodyPartRecord leftHand = body.Find(x => x.def == BodyPartDefOf.Hand && x.customLabel.Contains("left"));
-            BodyPartRecord rightHand = body.Find(x => x.def == BodyPartDefOf.Hand && x.customLabel.Contains("right"));
+            BodyPartRecord leftHand = body.Find(x => x.customLabel == "left hand");
+            BodyPartRecord rightHand = body.Find(x => x.customLabel == "right hand");
 
-            BodyPartRecord leftFoot = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("Foot") && x.customLabel.Contains("left"));
-            BodyPartRecord rightFoot = body.Find(x => x.def == DefDatabase<BodyPartDef>.GetNamed("Foot") && x.customLabel.Contains("right"));
+            BodyPartRecord leftFoot = body.Find(x => x.customLabel == "left foot");
+            BodyPartRecord rightFoot = body.Find(x => x.customLabel == "right foot");
+
+            BodyPartRecord leftArm = body.Find(x => x.customLabel == "left arm");
+            BodyPartRecord rightArm = body.Find(x => x.customLabel == "right arm");
+
+            BodyPartRecord leftLeg = body.Find(x => x.customLabel == "left foot");
+            BodyPartRecord rightLeg = body.Find(x => x.customLabel == "right foot");
 
             if (missing)
             {
@@ -196,12 +223,15 @@ namespace FacialStuff
             }
 
             //  Log.Message("Checking face for added parts.");
-
-            CheckFaceForAddedParts(hediff, face, leftEye, rightEye, jaw);
+            if (anim != null && anim.Pawn.RaceProps.Humanlike && face != null)
+            {
+                CheckFaceForAddedParts(hediff, face, leftEye, rightEye, jaw);
+            }
 
             //  Log.Message("Checking body for added parts.");
 
-            CheckBodyForAddedParts(hediff, anim, leftHand, rightHand, leftFoot, rightFoot);
+            CheckBodyForAddedParts(hediff, anim, leftHand, leftArm, rightHand, rightArm, leftFoot, leftLeg, rightFoot,
+                rightLeg);
         }
 
         public static bool Aiming(this Pawn pawn)
@@ -247,6 +277,8 @@ namespace FacialStuff
             {
                 face.BodyStat.EyeLeft = PartStatus.Natural;
                 face.BodyStat.EyeRight = PartStatus.Natural;
+                face.BodyStat.EarLeft = PartStatus.Natural;
+                face.BodyStat.EarRight = PartStatus.Natural;
                 face.BodyStat.Jaw = PartStatus.Natural;
             }
 

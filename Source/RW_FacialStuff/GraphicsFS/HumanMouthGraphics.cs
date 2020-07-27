@@ -1,5 +1,5 @@
-﻿using FacialStuff.DefOfs;
-using Harmony;
+﻿using System.Collections.Generic;
+using FacialStuff.DefOfs;
 using JetBrains.Annotations;
 using UnityEngine;
 using Verse;
@@ -9,7 +9,7 @@ namespace FacialStuff.GraphicsFS
     [StaticConstructorOnStartup]
     public class HumanMouthGraphics
     {
-        public MouthGraphicData[] HumanMouthGraphic;
+        public List<MouthGraphicData> HumanMouthGraphic;
 
         public Graphic_Multi_NaturalHeadParts MouthGraphicCrying;
 
@@ -82,7 +82,7 @@ namespace FacialStuff.GraphicsFS
                 float extreme = p.mindState.mentalBreaker.BreakThresholdExtreme;
                 float part = (1f - minor) / (flag ? 5 : 4);
 
-                this.HumanMouthGraphic = new[]
+                this.HumanMouthGraphic = new List<MouthGraphicData>
                                              {
                                                  new MouthGraphicData(0f, mouthGraphic06),
                                                  new MouthGraphicData(extreme, mouthGraphic05),
@@ -99,7 +99,7 @@ namespace FacialStuff.GraphicsFS
             }
             else
             {
-                this.HumanMouthGraphic = new[]
+                this.HumanMouthGraphic = new List<MouthGraphicData>
                                              {
                                                  new MouthGraphicData(0f, mouthGraphic06),
                                                  new MouthGraphicData(0.25f, mouthGraphic05),
@@ -119,7 +119,7 @@ namespace FacialStuff.GraphicsFS
         public int GetMouthTextureIndexOfMood(float mood)
         {
             int result = 0;
-            for (int i = 0; i < this.HumanMouthGraphic.Length; i++)
+            for (int i = 0; i < this.HumanMouthGraphic.Count; i++)
             {
                 if (mood < this.HumanMouthGraphic[i].Mood)
                 {

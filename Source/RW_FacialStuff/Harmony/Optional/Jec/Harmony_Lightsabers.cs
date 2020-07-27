@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using FacialStuff;
-using Harmony;
+using HarmonyLib;
 using ProjectJedi;
 using UnityEngine;
 using Verse;
@@ -19,7 +19,7 @@ namespace LightSabers
 
         static Harmony_Lightsabers()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.jecstools_lightsabers");
+            var harmony = new Harmony("rimworld.facialstuff.jecstools_lightsabers");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             if (!modCheck)
@@ -75,14 +75,5 @@ namespace LightSabers
             HediffComp_Shield shield = shieldHediff?.TryGetComp<HediffComp_Shield>();
             shield?.DrawWornExtras();
         }
-
-        /// <summary>
-        ///     Adds another "layer" to the equipment aiming if they have a
-        ///     weapon with a CompActivatableEffect.
-        /// </summary>
-        /// <param name="__instance"></param>
-        /// <param name="eq"></param>
-        /// <param name="drawLoc"></param>
-        /// <param name="aimAngle"></param>
     }
 }

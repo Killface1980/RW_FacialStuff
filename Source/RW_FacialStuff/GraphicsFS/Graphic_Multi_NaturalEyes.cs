@@ -9,8 +9,8 @@ namespace FacialStuff.GraphicsFS
     {
         private readonly Material[] _mats = new Material[4];
 
-        public override Material MatNorth => this._mats[0];
         public override Material MatEast => this._mats[1];
+        public override Material MatNorth => this._mats[0];
         public override Material MatSouth => this._mats[2];
         public override Material MatWest => this._mats[3];
 
@@ -57,29 +57,29 @@ namespace FacialStuff.GraphicsFS
                 // array[2] = MaskTextures.BlankTexture();
             }
 
-            string sidePath = Path.GetDirectoryName(req.path) + "/Eye_" + eyeType + "_" + gender + "_east";
+            string sidePath = Path.GetDirectoryName(req.path).Replace(@"\", @"/") + "/" + GetPartType() + eyeType + "_" + gender + "_east";
+
 
             // 1 texture= 1 eye, blank for the opposite side
             if (ContentFinder<Texture2D>.Get(sidePath))
             {
-                // ReSharper disable once PossibleNullReferenceException
-                if (side.Equals("Right"))
-                {
-                    array[3] = FaceTextures.BlankTexture;
-                }
-                else
-                {
-                    array[3] = ContentFinder<Texture2D>.Get(sidePath);
-                }
+                switch (side)
+                { 
+                case "Right":
+                array[1] = ContentFinder<Texture2D>.Get(sidePath);
+                array[3] = FaceTextures.BlankTexture;
+                break;
+                case "Left":
+                array[1] = FaceTextures.BlankTexture;
+                array[3] = ContentFinder<Texture2D>.Get(sidePath);
+                break;
+                default:
+                    Log.Message("Facial Stuff: No side defined" + sidePath + " - Graphic_Multi_NaturalEyes");
+                break;
 
-                if (side.Equals("Left"))
-                {
-                    array[1] = FaceTextures.BlankTexture;
                 }
-                else
-                {
-                    array[1] = ContentFinder<Texture2D>.Get(sidePath);
-                }
+                // ReSharper disable once PossibleNullReferenceException
+
             }
             else
             {
@@ -148,16 +148,21 @@ namespace FacialStuff.GraphicsFS
             }
         }
 
+        public virtual string GetPartType()
+        {
+            return "Eye_";
+        }
+
         public override Material MatAt(Rot4 rot, Thing thing = null)
         {
-            switch (rot.AsInt)
+            return rot.AsInt switch
             {
-                case 0: return this.MatNorth;
-                case 1: return this.MatEast;
-                case 2: return this.MatSouth;
-                case 3: return this.MatWest;
-                default: return BaseContent.BadMat;
-            }
+                0 => this.MatNorth,
+                1 => this.MatEast,
+                2 => this.MatSouth,
+                3 => this.MatWest,
+                _ => BaseContent.BadMat
+            };
         }
     }
 }

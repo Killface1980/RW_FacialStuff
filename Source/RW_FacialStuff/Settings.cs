@@ -52,6 +52,9 @@ namespace FacialStuff
         private bool _useFeet = !Controller.SKisActive;
         private bool _usePaws = false;
         private bool develop;
+
+        private bool showRoyalHeadgear = true;
+
         Vector2 scrollPosition;
         float viewHeight;
         #endregion Private Fields
@@ -102,6 +105,7 @@ namespace FacialStuff
         public bool UseWrinkles => this._useWrinkles;
 
         public bool Develop => this.develop;
+        public bool ShowRoyalHeadgear => this.showRoyalHeadgear;
 
         #endregion Public Properties
 
@@ -193,7 +197,10 @@ namespace FacialStuff
             list.Label("Settings.EditorLabel".Translate());
             list.GapLine();
             list.CheckboxLabeled("FacialStuffEditor.ShowBodyChange".Translate(), ref this._showBodyChange);
-            list.CheckboxLabeled("FacialStuffEditor.ShowGenderChange".Translate(), ref this._showGenderAgeChange);
+            if (this.ShowBodyChange)
+            {
+                list.CheckboxLabeled("FacialStuffEditor.ShowGenderChange".Translate(), ref this._showGenderAgeChange);
+            }
 
             list.Gap();
             list.Label("Settings.ExperimentalLabel".Translate());
@@ -218,13 +225,14 @@ namespace FacialStuff
                 ref this._hideHatWhileRoofed,
                 "Settings.HideHatWhileRoofedTooltip".Translate());
 
-            if (!this.HideHatWhileRoofed)
-            {
+                list.CheckboxLabeled(
+                    "Settings.ShowRoyalHeadgear".Translate(),
+                    ref this.showRoyalHeadgear,
+                    "Settings.ShowRoyalHeadgearTooltip".Translate());
                 list.CheckboxLabeled(
                     "Settings.HideHatInBed".Translate(),
                     ref this._hideHatInBed,
                     "Settings.HideHatInBedTooltip".Translate());
-            }
 
             list.CheckboxLabeled(
                 "Settings.FilterHats".Translate(),
@@ -348,6 +356,8 @@ namespace FacialStuff
             Scribe_Values.Look(ref this._useMouth, "useMouth", false, true);
             Scribe_Values.Look(ref this._useHands, "useHands");
             Scribe_Values.Look(ref this._useFeet, "useFeet");
+            Scribe_Values.Look(ref this._usePaws, "_usePaws");
+            Scribe_Values.Look(ref this.showRoyalHeadgear, "showRoyalHeadgear");
             Scribe_Values.Look(ref this._mergeHair, "mergeHair", false, true);
             Scribe_Values.Look(ref this._hideHatWhileRoofed, "hideHatWhileRoofed", false, true);
             Scribe_Values.Look(ref this._hideHatInBed, "hideHatInBed", false, true);

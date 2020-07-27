@@ -24,7 +24,7 @@ namespace FacialStuff.AnimatorWindows
 
         #region Private Fields
 
-        [CanBeNull] public static PoseCycleDef EditorPosecycle;
+        [CanBeNull] public static PoseCycleDef EditorPoseCycle;
 
         #endregion Private Fields
 
@@ -32,22 +32,6 @@ namespace FacialStuff.AnimatorWindows
 
         #region Public Properties
 
-        public override void PostClose()
-        {
-            base.PostClose();
-            IsOpen = false;
-        }
-
-        #endregion Public Properties
-
-        #region Private Properties
-
-        public override void PreOpen()
-        {
-            base.PreOpen();
-            IsOpen = true;
-            // IsMoving = false;
-        }
 
         #endregion Private Properties
 
@@ -58,37 +42,39 @@ namespace FacialStuff.AnimatorWindows
         {
             base.DoBasicSettingsMenu(listing);
 
+            GetBodyAnimDef();
+
             // listing_Standard.CheckboxLabeled("Equipment", ref Equipment);
 
             // listing_Standard.Label(horHeadOffset.ToString("N2") + " - " + verHeadOffset.ToString("N2"));
             // horHeadOffset = listing_Standard.Slider(horHeadOffset, -1f, 1f);
             // verHeadOffset = listing_Standard.Slider(verHeadOffset, -1f, 1f);
-            listing.Label(this.BodyAnimDef.offCenterX.ToString("N2"));
-            this.BodyAnimDef.offCenterX = listing.Slider(this.BodyAnimDef.offCenterX, -0.2f, 0.2f);
+            listing.Label(CompAnim.BodyAnim.offCenterX.ToString("N2"));
+            CompAnim.BodyAnim.offCenterX = listing.Slider(CompAnim.BodyAnim.offCenterX, -0.2f, 0.2f);
 
-            if (listing.ButtonText(EditorPosecycle?.LabelCap))
+            if (listing.ButtonText(EditorPoseCycle?.LabelCap))
             {
                 List<string> exists = new List<string>();
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
-                this.BodyAnimDef.poseCycles.Clear();
+                CompAnim.BodyAnim.poseCycles.Clear();
 
                 foreach (PoseCycleDef posecycle in (from bsm in DefDatabase<PoseCycleDef>.AllDefs
-                                                    orderby bsm.LabelCap
+                                                    orderby bsm.label
                                                     select bsm)
-                                                  .TakeWhile(current => this.BodyAnimDef.PoseCycleType != "None")
+                                                  .TakeWhile(current => CompAnim.BodyAnim.PoseCycleType != "None")
                                                   .Where(current => current.PoseCycleType ==
-                                                                    this.BodyAnimDef.PoseCycleType))
+                                                                    CompAnim.BodyAnim.PoseCycleType))
                 {
-                    list.Add(new FloatMenuOption(posecycle.LabelCap, delegate { EditorPosecycle = posecycle; }));
-                    exists.Add(posecycle.locomotionUrgency.ToString());
-                    this.BodyAnimDef.poseCycles.Add(posecycle);
+                    list.Add(new FloatMenuOption(posecycle.LabelCap, delegate { EditorPoseCycle = posecycle; }));
+                    exists.Add(posecycle.pawnPosture.ToString());
+                    CompAnim.BodyAnim.poseCycles.Add(posecycle);
                 }
 
-                string[] names = Enum.GetNames(typeof(LocomotionUrgency));
+                string[] names = Enum.GetNames(typeof(PawnPosture));
                 for (int index = 0; index < names.Length; index++)
                 {
                     string name = names[index];
-                    LocomotionUrgency myenum = (LocomotionUrgency)Enum.ToObject(typeof(LocomotionUrgency), index);
+                    PawnPosture myenum = (PawnPosture)Enum.ToObject(typeof(PawnPosture), index);
 
                     if (exists.Contains(myenum.ToString()))
                     {
@@ -97,19 +83,19 @@ namespace FacialStuff.AnimatorWindows
 
                     list.Add(
                              new FloatMenuOption(
-                                                 "Add new " + this.BodyAnimDef.PoseCycleType + "_" + myenum,
+                                                 "Add new " + CompAnim.BodyAnim.PoseCycleType + "_" + myenum,
                                                  delegate
                                                  {
                                                      PoseCycleDef newCycle = new PoseCycleDef();
                                                      newCycle.defName =
                                                      newCycle.label =
-                                                     this.BodyAnimDef.PoseCycleType + "_" + name;
-                                                     newCycle.locomotionUrgency = myenum;
-                                                     newCycle.PoseCycleType = this.BodyAnimDef.PoseCycleType;
+                                                     CompAnim.BodyAnim.PoseCycleType + "_" + name;
+                                                     newCycle.pawnPosture = myenum;
+                                                     newCycle.PoseCycleType = CompAnim.BodyAnim.PoseCycleType;
                                                      GameComponent_FacialStuff.BuildPoseCycles(newCycle);
-                                                     EditorPosecycle = newCycle;
+                                                     EditorPoseCycle = newCycle;
 
-                                                     this.BodyAnimDef.poseCycles.Add(newCycle);
+                                                     CompAnim.BodyAnim.poseCycles.Add(newCycle);
                                                  }));
                 }
 
@@ -120,7 +106,7 @@ namespace FacialStuff.AnimatorWindows
             string configFolder = DefPath;
             if (listing.ButtonText("Export BodyDef"))
             {
-                string filePath = configFolder + "/BodyAnimDefs/" + this.BodyAnimDef.defName + ".xml";
+                string filePath = configFolder + "/BodyAnimDefs/" + CompAnim.BodyAnim.defName + ".xml";
 
                 Find.WindowStack.Add(
                                      Dialog_MessageBox.CreateConfirmation(
@@ -129,7 +115,7 @@ namespace FacialStuff.AnimatorWindows
                                                                           delegate
                                                                           {
                                                                               ExportAnimDefs.Defs animDef =
-                                                                              new ExportAnimDefs.Defs(this.BodyAnimDef);
+                                                                              new ExportAnimDefs.Defs(CompAnim.BodyAnim);
 
                                                                               DirectXmlSaver.SaveDataObject(
                                                                                                             animDef,
@@ -142,7 +128,7 @@ namespace FacialStuff.AnimatorWindows
 
             if (listing.ButtonText("Export PoseCycle"))
             {
-                string path = configFolder + "/PoseCycleDefs/" + EditorPosecycle?.defName + ".xml";
+                string path = configFolder + "/PoseCycleDefs/" + EditorPoseCycle?.defName + ".xml";
 
                 Find.WindowStack.Add(
                                      Dialog_MessageBox.CreateConfirmation(
@@ -150,7 +136,7 @@ namespace FacialStuff.AnimatorWindows
                                                                           delegate
                                                                           {
                                                                               ExportPoseCycleDefs.Defs cycle =
-                                                                              new ExportPoseCycleDefs.Defs(EditorPosecycle);
+                                                                              new ExportPoseCycleDefs.Defs(EditorPoseCycle);
 
                                                                               DirectXmlSaver.SaveDataObject(
                                                                                                             cycle,
@@ -172,7 +158,7 @@ namespace FacialStuff.AnimatorWindows
         protected override void BuildEditorCycle()
         {
             base.BuildEditorCycle();
-            GameComponent_FacialStuff.BuildPoseCycles(EditorPosecycle);
+            GameComponent_FacialStuff.BuildPoseCycles(EditorPoseCycle);
         }
 
         protected override void DrawBodySettingsEditor(Rot4 rotation)
@@ -182,7 +168,9 @@ namespace FacialStuff.AnimatorWindows
             // this.DrawBodyStats("legLength", ref bodyAnimDef.legLength, ref sliderRect);
             // this.DrawBodyStats("hipOffsetVerticalFromCenter",
             // ref bodyAnimDef.hipOffsetVerticalFromCenter, ref sliderRect);
-            Vector3 shoulderOffset = this.BodyAnimDef.shoulderOffsets[rotation.AsInt];
+            GetBodyAnimDef();
+
+            Vector3 shoulderOffset = CompAnim.BodyAnim.shoulderOffsets[rotation.AsInt];
 
             if (shoulderOffset.y == 0f)
             {
@@ -207,7 +195,7 @@ namespace FacialStuff.AnimatorWindows
             this.DrawBodyStats("shoulderOffsetZ", ref shoulderOffset.z, ref sliderRect);
             // this.DrawBodyStats("shoulderFront",   ref front,            ref sliderRect);
 
-            Vector3 hipOffset = this.BodyAnimDef.hipOffsets[rotation.AsInt];
+            Vector3 hipOffset = CompAnim.BodyAnim.hipOffsets[rotation.AsInt];
             if (hipOffset.y == 0f)
             {
                 if (rotation == Rot4.West)
@@ -232,12 +220,12 @@ namespace FacialStuff.AnimatorWindows
 
             if (GUI.changed)
             {
-                this.SetNewVector(rotation, shoulderOffset, this.BodyAnimDef.shoulderOffsets, front);
-                this.SetNewVector(rotation, hipOffset, this.BodyAnimDef.hipOffsets, hipFront);
+                this.SetNewVector(rotation, shoulderOffset, CompAnim.BodyAnim.shoulderOffsets, front);
+                this.SetNewVector(rotation, hipOffset, CompAnim.BodyAnim.hipOffsets, hipFront);
             }
 
-            this.DrawBodyStats("armLength", ref this.BodyAnimDef.armLength, ref sliderRect);
-            this.DrawBodyStats("extraLegLength", ref this.BodyAnimDef.extraLegLength, ref sliderRect);
+            this.DrawBodyStats("armLength", ref CompAnim.BodyAnim.armLength, ref sliderRect);
+            this.DrawBodyStats("extraLegLength", ref CompAnim.BodyAnim.extraLegLength, ref sliderRect);
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
@@ -271,7 +259,7 @@ namespace FacialStuff.AnimatorWindows
                 // }
                 List<int> framesAt;
                 List<PawnKeyframe> frames = PawnKeyframes;
-                PoseCycleDef cycleDef = EditorPosecycle;
+                PoseCycleDef cycleDef = EditorPoseCycle;
                 {
                     framesAt = (from keyframe in frames where keyframe.HandPositionX.HasValue select keyframe.KeyIndex)
                    .ToList();
@@ -447,24 +435,24 @@ namespace FacialStuff.AnimatorWindows
             BodyAnimDef anim = this.CompAnim.BodyAnim;
             if (anim != null && anim.poseCycles.Any())
             {
-                EditorPosecycle =
+                EditorPoseCycle =
                 anim.poseCycles.FirstOrDefault();
             }
         }
 
         protected override void SetKeyframes()
         {
-            PawnKeyframes = EditorPosecycle?.keyframes;
-            this.Label = EditorPosecycle?.LabelCap;
+            PawnKeyframes = EditorPoseCycle?.keyframes;
+            this.Label = EditorPoseCycle?.LabelCap;
         }
 
         protected override void FindRandomPawn()
         {
             base.FindRandomPawn();
             BodyAnimDef anim = this.CompAnim.BodyAnim;
-            if (anim != null && anim.walkCycles.Any())
+            if (anim != null && anim.poseCycles.Any())
             {
-                EditorPosecycle = anim.poseCycles.FirstOrDefault();
+                EditorPoseCycle = anim.poseCycles.FirstOrDefault();
             }
             this.CompAnim.AnimatorPoseOpen = true;
         }

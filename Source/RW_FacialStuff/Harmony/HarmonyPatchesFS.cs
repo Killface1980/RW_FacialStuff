@@ -2,10 +2,12 @@
 
 using FacialStuff.HairCut;
 using FacialStuff.Tweener;
-using Harmony;
+using HarmonyLib;
 using JetBrains.Annotations;
 using System;
 using System.Reflection.Emit;
+using FacialStuff.Defs;
+using Verse.AI;
 
 namespace FacialStuff.Harmony
 {
@@ -31,7 +33,8 @@ namespace FacialStuff.Harmony
 
         static HarmonyPatchesFS()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create("rimworld.facialstuff.mod");
+            HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("rimworld.facialstuff.mod");
+            // HarmonyLib.Harmony.DEBUG = true;
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
 
@@ -59,7 +62,7 @@ namespace FacialStuff.Harmony
             
                harmony.Patch(
                              AccessTools.Method(typeof(PawnRenderer), nameof(PawnRenderer.RenderPawnAt),
-                                                new[] { typeof(Vector3), typeof(RotDrawMode), typeof(bool) }),
+                                                new[] { typeof(Vector3), typeof(RotDrawMode), typeof(bool), typeof(bool) }),
             
                              // new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(HarmonyPatchesFS.RenderPawnAt)),
                              null,
@@ -144,7 +147,45 @@ namespace FacialStuff.Harmony
                 def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Face)));
             }
 
+            List<HairDef> beardyHairList =
+                DefDatabase<HairDef>.AllDefsListForReading.Where(x => x.IsBeardNotHair()).ToList();
+            for (int i = 0; i < beardyHairList.Count(); i++)
+            {
+                HairDef beardy = beardyHairList[i];
+                if (beardy.label.Contains("shaven")) continue;
+                BeardDef beardDef = new BeardDef 
+                {
+                    defName = beardy.defName,
+                    label = "_VHE_" + beardy.label,
+                    hairGender = beardy.hairGender,
+                    texPath = beardy.texPath.Replace("Things/Pawn/Humanlike/Beards/", ""),
+                    hairTags = beardy.hairTags,
+                    beardType = BeardType.FullBeard
+                };
+                if (beardDef.label.Contains("stubble") || beardDef.label.Contains("goatee") || beardDef.label.Contains("lincoln"))
+                {
+                    beardDef.drawMouth = true;
+                }
+                DefDatabase<BeardDef>.Add(beardDef);
+
+            }
+            Dialog_FaceStyling.FullBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType == BeardType.FullBeard)
+                .ToList();
+            Dialog_FaceStyling.LowerBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType != BeardType.FullBeard)
+                .ToList();
+            Dialog_FaceStyling.MoustacheDefs = DefDatabase<MoustacheDef>.AllDefsListForReading;
+
             CheckAllInjected();
+        }
+
+        public static bool IsBeardNotHair(this Def def)
+        {
+            if (def.defName.StartsWith("VHE_Beard"))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         #endregion Public Constructors
@@ -167,9 +208,14 @@ namespace FacialStuff.Harmony
         private static float angleStanding = 143f;
         private static float angleStandingFlipped = 217f;
 
+        public static bool AnimatorIsOpen()
+        {
+            return Find.WindowStack.IsOpen(typeof(MainTabWindow_WalkAnimator));// MainTabWindow_WalkAnimator.IsOpen;// || MainTabWindow_PoseAnimator.IsOpen;
+        }
+
         public static bool IsAnimated_Prefix(Pawn pawn, ref bool __result)
         {
-            if (MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn == pawn)
+            if (AnimatorIsOpen() && MainTabWindow_WalkAnimator.Pawn == pawn)
             {
                 __result = true;
                 return false;
@@ -177,7 +223,6 @@ namespace FacialStuff.Harmony
 
             return true;
         }
-
         private static bool DrawAtGiddy(Pawn __instance)
         {
             //  ExtendedDataStorage extendedDataStorage = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
@@ -261,6 +306,39 @@ namespace FacialStuff.Harmony
             }
         }
 
+        public static void CheckAndDrawHands(Thing carriedThing, Vector3 thingVector3, bool flip, Pawn pawn, bool thingBehind)
+        {
+            if (pawn.RaceProps.Animal)
+            {
+                carriedThing.DrawAt(thingVector3, flip);
+                return;
+            }
+
+            if (!pawn.GetCompAnim(out CompBodyAnimator compAnim))
+            {
+                carriedThing.DrawAt(thingVector3, flip);
+                return;
+            }
+
+            bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
+            if (!showHands)
+            {
+                carriedThing.DrawAt(thingVector3, flip);
+                return;
+            }
+
+            // Modify the drawPos to appear behind a pawn if facing North, in case vanilla didn't
+            if (!thingBehind && pawn.Rotation == Rot4.North)
+            {
+                thingVector3.y -= Offsets.YOffset_CarriedThing * 2;
+            }
+
+            thingVector3.y += compAnim.DrawOffsetY;
+            float factor = pawn.GetBodysizeScaling();
+
+            compAnim.DrawHands(Quaternion.identity, thingVector3, false, carriedThing, flip, factor);
+        }
+
         public static void DirtyCache_Postfix(HediffSet __instance)
         {
             if (Current.ProgramState != ProgramState.Playing)
@@ -280,7 +358,7 @@ namespace FacialStuff.Harmony
                 return;
             }
 
-            if (!compFace.Deactivated && pawn.CheckForAddedOrMissingParts())
+            if (!pawn.GetCompAnim().Deactivated && pawn.CheckForAddedOrMissingParts())
             {
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
                 PortraitsCache.SetDirty(pawn);
@@ -380,8 +458,7 @@ namespace FacialStuff.Harmony
             //      sizeMod = 1f;
             //  }
 
-            if (Find.TickManager.TicksGame == animator.LastPosUpdate[(int)equipment] ||
-                MainTabWindow_WalkAnimator.IsOpen && MainTabWindow_WalkAnimator.Pawn != pawn)
+            if (Find.TickManager.TicksGame == animator.LastPosUpdate[(int)equipment] || AnimatorIsOpen() && MainTabWindow_WalkAnimator.Pawn != pawn)
             {
                 drawLoc = animator.LastPosition[(int)equipment];
                 weaponAngle = animator.LastWeaponAngle;
@@ -475,125 +552,337 @@ namespace FacialStuff.Harmony
             }
         }
 
-        private static void CalculatePositionsWeapon(Pawn pawn, ref float weaponAngle,
-                                                     CompProperties_WeaponExtensions extensions,
-                                                     out Vector3 weaponPosOffset, out bool aiming,
-                                                     bool flipped)
+
+
+        public static void DrawEquipmentAiming_Prefix(PawnRenderer __instance, Thing eq, Vector3 drawLoc,
+                                                      ref float aimAngle)
         {
-            weaponPosOffset = Vector3.zero;
-            if (pawn.Rotation == Rot4.West || pawn.Rotation == Rot4.North)
+            Pawn pawn = __instance.graphics.pawn;
+
+            // Flip the angle for north
+
+            if (pawn.Rotation == Rot4.North && aimAngle == angleStanding)
             {
-                weaponPosOffset.y = -Offsets.YOffset_Head - Offsets.YOffset_CarriedThing;
+                aimAngle = angleStandingFlipped;
             }
 
-            // Use y for the horizontal position. too lazy to add even more vectors
-            bool isHorizontal = pawn.Rotation.IsHorizontal;
-            aiming = pawn.Aiming();
-            Vector3 extOffset;
-            Vector3 o = extensions.WeaponPositionOffset;
-            Vector3 d = extensions.AimedWeaponPositionOffset;
-            if (isHorizontal)
+            if (!pawn.GetCompAnim(out CompBodyAnimator animator))
             {
-                extOffset = new Vector3(o.y, 0, o.z);
-                if (aiming)
-                {
-                    extOffset += new Vector3(d.y, 0, d.z);
-                }
+                return;
             }
-            else
+
+            if (Find.TickManager.TicksGame == animator.LastAngleTick)
             {
-                extOffset = new Vector3(o.x, 0, o.z);
-                if (aiming)
+                aimAngle = animator.LastAimAngle;
+                return;
+            }
+
+            animator.LastAngleTick = Find.TickManager.TicksGame;
+
+            float angleChange;
+
+            float startAngle = animator.LastAimAngle;
+            float endAngle = aimAngle;
+
+            FloatTween tween = animator.AimAngleTween;
+            switch (tween.State)
+            {
+                case TweenState.Running:
+                    startAngle = tween.EndValue;
+                    endAngle = aimAngle;
+                    aimAngle = tween.CurrentValue;
+                    break;
+            }
+
+            angleChange = CalcShortestRot(startAngle, endAngle);
+            if (Mathf.Abs(angleChange) > 6f)
+            {
+                // no tween for flipping
+                bool x = Mathf.Abs(animator.LastAimAngle - angleStanding) < 3f &&
+                         Mathf.Abs(aimAngle - angleStandingFlipped) < 3f;
+                bool y = Mathf.Abs(animator.LastAimAngle - angleStandingFlipped) < 3f &&
+                         Mathf.Abs(aimAngle - angleStanding) < 3f;
+                bool z = Math.Abs(Mathf.Abs(aimAngle - animator.LastAimAngle) - 180f) < 12f;
+
+                if (!x && !y && !z)
                 {
-                    extOffset += new Vector3(d.x, 0, d.z);
+                    //     if (Math.Abs(aimAngleTween.EndValue - weaponAngle) > 6f)
+
+                    tween.Start(startAngle, startAngle + angleChange, Mathf.Abs(angleChange),
+                                ScaleFuncs.QuinticEaseOut);
+                    aimAngle = startAngle;
                 }
             }
 
-            if (flipped)
-            {
-                if (aiming)
-                {
-                    weaponAngle -= extensions?.AttackAngleOffset ?? 0;
-                }
-
-                weaponPosOffset += extOffset;
-
-                // flip x position offset
-                if (pawn.Rotation != Rot4.South)
-                {
-                    weaponPosOffset.x *= -1;
-                }
-            }
-            else
-            {
-                if (aiming)
-                {
-                    weaponAngle += extensions?.AttackAngleOffset ?? 0;
-                }
-
-                weaponPosOffset += extOffset;
-            }
+            animator.LastAimAngle = aimAngle;
         }
 
-        // If the return value is positive, then rotate to the left. Else,
-        // rotate to the right.
-        private static float CalcShortestRot(float from, float to)
+        public static IEnumerable<CodeInstruction> DrawEquipmentAiming_Transpiler(
+        IEnumerable<CodeInstruction> instructions,
+        ILGenerator ilGen)
         {
-            // If from or to is a negative, we have to recalculate them.
-            // For an example, if from = -45 then from(-45) + 360 = 315.
-            if (from < 0)
+            List<CodeInstruction> instructionList = instructions.ToList();
+
+            int index = instructionList.FindIndex(x => x.opcode == OpCodes.Ldloc_0);
+            List<Label> labels = instructionList[index].labels;
+            instructionList[index].labels = new List<Label>();
+            instructionList.InsertRange(index, new List<CodeInstruction>
             {
-                from += 360;
-            }
-
-            if (to < 0)
-            {
-                to += 360;
-            }
-
-            // Do not rotate if from == to.
-            if (from == to ||
-                from == 0 && to == 360 ||
-                from == 360 && to == 0)
-            {
-                return 0;
-            }
-
-            // Pre-calculate left and right.
-            float left = (360 - from) + to;
-            float right = from - to;
-
-            // If from < to, re-calculate left and right.
-            if (from < to)
-            {
-                if (to > 0)
-                {
-                    left = to - from;
-                    right = (360 - to) + from;
-                }
-                else
-                {
-                    left = (360 - to) + from;
-                    right = to - from;
-                }
-            }
-
-            // Determine the shortest direction.
-            return ((left <= right) ? left : (right * -1));
+                                               // DoCalculations(Pawn pawn, Thing eq, ref Vector3 drawLoc, ref float weaponAngle, float aimAngle)
+                                               new CodeInstruction(OpCodes.Ldarg_0),
+                                               new CodeInstruction(OpCodes.Ldfld,
+                                                                   AccessTools.Field(typeof(PawnRenderer),
+                                                                                     "pawn")), // pawn
+                                               new CodeInstruction(OpCodes.Ldarg_1),           // Thing
+                                               new CodeInstruction(OpCodes.Ldarga,   2),       // drawLoc
+                                               new CodeInstruction(OpCodes.Ldloca_S, 1),       // weaponAngle
+                                               //   new CodeInstruction(OpCodes.Ldarg_3), // aimAngle
+                                               new CodeInstruction(OpCodes.Ldloca_S,
+                                                                   0), // Mesh, loaded as ref to not trigger I Love Big Guns
+                                               new CodeInstruction(OpCodes.Call,
+                                                                   AccessTools.Method(typeof(HarmonyPatchesFS),
+                                                                                      nameof(DoWeaponOffsets))),
+                                               });
+            instructionList[index].labels = labels;
+            return instructionList;
         }
 
-        // Call CalcShortestRot and check its return value.
-        // If CalcShortestRot returns a positive value, then this function
-        // will return true for left. Else, false for right.
-        private static bool CalcShortestRotDirection(float from, float to)
+        public static void OpenStylingWindow(Pawn pawn)
         {
-            // If the value is positive, return true (left).
-            if (CalcShortestRot(from, to) >= 0)
+            pawn.GetCompFace(out CompFace face);
+            Find.WindowStack.Add(new Dialog_FaceStyling(face));
+        }
+
+        public static bool RandomHairDefFor_PreFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
+        {
+            //  Log.Message("1 - " + pawn);
+            if (!pawn.GetCompFace(out CompFace compFace))
             {
                 return true;
             }
 
-            return false; // right
+            //   Log.Message("2 - " + pawn.def.defName);
+
+            if (compFace.Props.useAlienRacesHairTags)
+            {
+                return true;
+            }
+
+            FactionDef faction = factionType;
+
+            if (faction == null)
+            {
+                faction = FactionDefOf.PlayerColony;
+            }
+
+            List<string> hairTags = faction.hairTags;
+
+            if (pawn.def == ThingDefOf.Human)
+            {
+                List<string> vanillatags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
+                if (!hairTags.Any(x => vanillatags.Contains(x)))
+                {
+                    hairTags.AddRange(vanillatags);
+                }
+            }
+
+            IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
+                                          where hair.hairTags.SharesElementWith(hairTags) && !hair.IsBeardNotHair()
+                                          select hair;
+
+            __result = source.RandomElementByWeight(hair => PawnFaceMaker.HairChoiceLikelihoodFor(hair, pawn));
+            return false;
+        }
+        public static bool IsChild(this Pawn pawn)
+        {
+            
+                return LoadedModManager.RunningModsListForReading.Any(x => x.PackageId == "dylan.csl") &&
+                       pawn.RaceProps.Humanlike && pawn.ageTracker.CurLifeStage.bodySizeFactor < 1f;
+
+            
+        }
+        // From CSL mod
+        public static float GetBodysizeScaling(this Pawn pawn)
+        {
+            float bodySizeFactor = pawn.ageTracker.CurLifeStage.bodySizeFactor;
+            float num = bodySizeFactor;
+            float num2 = 1f;
+            try
+            {
+                int curLifeStageIndex = pawn.ageTracker.CurLifeStageIndex;
+                int num3 = pawn.RaceProps.lifeStageAges.Count - 1;
+                LifeStageAge val = pawn.RaceProps.lifeStageAges[curLifeStageIndex];
+                if (num3 == curLifeStageIndex && curLifeStageIndex != 0 && bodySizeFactor != 1f)
+                {
+                    LifeStageAge val2 = pawn.RaceProps.lifeStageAges[curLifeStageIndex - 1];
+                    num = val2.def.bodySizeFactor + (float)Math.Round((val.def.bodySizeFactor - val2.def.bodySizeFactor) / (val.minAge - val2.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val2.minAge), 2);
+                }
+                else if (num3 == curLifeStageIndex)
+                {
+                    num = bodySizeFactor;
+                }
+                else if (curLifeStageIndex == 0)
+                {
+                    LifeStageAge val3 = pawn.RaceProps.lifeStageAges[curLifeStageIndex + 1];
+                    num = val.def.bodySizeFactor + (float)Math.Round((val3.def.bodySizeFactor - val.def.bodySizeFactor) / (val3.minAge - val.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val.minAge), 2);
+                }
+                else
+                {
+                    LifeStageAge val3 = pawn.RaceProps.lifeStageAges[curLifeStageIndex + 1];
+                    num = val.def.bodySizeFactor + (float)Math.Round((val3.def.bodySizeFactor - val.def.bodySizeFactor) / (val3.minAge - val.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val.minAge), 2);
+                }
+                if (pawn.RaceProps.baseBodySize > 0f)
+                {
+                    num2 = pawn.RaceProps.baseBodySize;
+                }
+            }
+            catch
+            {
+            }
+            return num * num2;
+        }
+
+        public static IEnumerable<CodeInstruction> RenderPawnAt_Transpiler(
+        IEnumerable<CodeInstruction> instructions, ILGenerator ilGen)
+        {
+            List<CodeInstruction> instructionList = instructions.ToList();
+
+            MethodInfo drawAtMethod = AccessTools.Method(typeof(Thing), nameof(Thing.DrawAt));
+
+            int indexDrawAt = instructionList.FindIndex(x => x.opcode == OpCodes.Callvirt && x.operand == drawAtMethod);
+
+            instructionList.RemoveAt(indexDrawAt);
+            instructionList.InsertRange(indexDrawAt, new List<CodeInstruction>
+            {
+                                                     // carriedThing.DrawAt(vector, flip);
+                                                     // carriedThing = ldloc.1
+                                                     // vector = ldloc.2
+                                                     // bool flip = ldloc.s 4
+                                                     new CodeInstruction(OpCodes.Ldarg_0), // this.PawnRenderer
+                                                     new CodeInstruction(OpCodes.Ldfld,
+                                                                         AccessTools.Field(typeof(PawnRenderer),
+                                                                                           "pawn")), // pawn
+                                                     new CodeInstruction(OpCodes.Ldloc_3),           // flag
+                                                     new CodeInstruction(OpCodes.Call,
+                                                                         AccessTools.Method(typeof(HarmonyPatchesFS),
+                                                                                            nameof(CheckAndDrawHands)))
+                                                     });
+            return instructionList;
+        }
+
+        // [HarmonyAfter("net.pardeike.zombieland")]
+        public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)
+        {
+            Pawn pawn = __instance.pawn;
+            if (pawn == null)
+            {
+                return;
+            }
+
+            pawn.CheckForAddedOrMissingParts();
+            pawn.GetCompAnim()?.PawnBodyGraphic?.Initialize();
+
+            // Check if race has face, else return
+            if (!pawn.GetCompFace(out CompFace compFace))
+            {
+                return;
+            }
+
+            // compFace.IsChild = pawn.ageTracker.AgeBiologicalYearsFloat < 14;
+
+            // Return if child
+            if (pawn.IsChild() || pawn.GetCompAnim().Deactivated)
+            {
+                return;
+            }
+
+            __instance.ClearCache();
+            pawn.GetComp<CompBodyAnimator>()?.ClearCache();
+
+            GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
+
+            // Need: get the traditional habitat of a faction => not suitable, as factions are scattered around the globe
+            // if (!faceComp.IsSkinDNAoptimized)
+            // {
+            // faceComp.DefineSkinDNA();
+            // }
+
+            // Custom rotting color, mixed with skin tone
+            Color rotColor = pawn.story.SkinColor * FaceTextures.SkinRottingMultiplyColor;
+            if (!compFace.InitializeCompFace())
+            {
+                return;
+            }
+
+            __instance.nakedGraphic = GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.bodyType.bodyNakedGraphicPath, ShaderDatabase.CutoutSkin, Vector2.one, __instance.pawn.story.SkinColor);
+            if (compFace.Props.needsBlankHumanHead)
+            {
+                // if (!compFace.IsChild)
+                {
+                    __instance.headGraphic =
+                        GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn,
+                            pawn.story.SkinColor);
+                    __instance.desiccatedHeadGraphic =
+                        GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
+                    __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
+                }
+               // else
+               // {
+               //     __instance.headGraphic =
+               //         GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,
+               //             pawn.story.SkinColor);
+               //     __instance.desiccatedHeadGraphic =
+               //         GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,
+               //             rotColor);
+               //     __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecords.GetStump(rotColor);
+               // }
+            }
+
+            __instance.rottingGraphic =
+           GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.bodyType.bodyNakedGraphicPath, ShaderDatabase.CutoutSkin, Vector2.one, rotColor);
+
+            __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(
+                                                                             pawn.story.hairDef.texPath,
+                                                                             ShaderDatabase.Cutout,
+                                                                             Vector2.one,
+                                                                             pawn.story.hairColor);
+            PortraitsCache.SetDirty(pawn);
+        }
+
+        public static void ResolveApparelGraphics_Postfix(PawnGraphicSet __instance)
+        {
+            Pawn pawn = __instance.pawn;
+
+            // Set up the hair cut graphic
+            if (Controller.settings.MergeHair)
+            {
+                HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
+
+                List<Apparel> wornApparel = pawn.apparel.WornApparel
+                                                .Where(x => x.def.apparel.LastLayer == ApparelLayerDefOf.Overhead).ToList();
+                HeadCoverage coverage = HeadCoverage.None;
+                if (!wornApparel.NullOrEmpty())
+                {
+                    if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)))
+                    {
+                        coverage = HeadCoverage.UpperHead;
+                    }
+
+                    if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)))
+                    {
+                        coverage = HeadCoverage.FullHead;
+                    }
+                }
+
+                if (coverage != 0)
+                {
+                    hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi>(
+                                                                                pawn.story.hairDef.texPath,
+                                                                                ShaderDatabase.Cutout,
+                                                                                Vector2.one,
+                                                                                pawn.story.hairColor, coverage);
+                }
+            }
         }
 
         public static void SetPositionsForHandsOnWeapons(Vector3 weaponPosition, bool flipped, float weaponAngle,
@@ -662,309 +951,6 @@ namespace FacialStuff.Harmony
             animator.WeaponQuat = Quaternion.AngleAxis(weaponAngle, Vector3.up);
         }
 
-        public static void DrawEquipmentAiming_Prefix(PawnRenderer __instance, Thing eq, Vector3 drawLoc,
-                                                      ref float aimAngle)
-        {
-            Pawn pawn = __instance.graphics.pawn;
-
-            // Flip the angle for north
-
-            if (pawn.Rotation == Rot4.North && aimAngle == angleStanding)
-            {
-                aimAngle = angleStandingFlipped;
-            }
-
-            if (!pawn.GetCompAnim(out CompBodyAnimator animator))
-            {
-                return;
-            }
-
-            if (Find.TickManager.TicksGame == animator.LastAngleTick)
-            {
-                aimAngle = animator.LastAimAngle;
-                return;
-            }
-
-            animator.LastAngleTick = Find.TickManager.TicksGame;
-
-            float angleChange;
-
-            float startAngle = animator.LastAimAngle;
-            float endAngle = aimAngle;
-
-            FloatTween tween = animator.AimAngleTween;
-            switch (tween.State)
-            {
-                case TweenState.Running:
-                    startAngle = tween.EndValue;
-                    endAngle = aimAngle;
-                    aimAngle = tween.CurrentValue;
-                    break;
-            }
-
-            angleChange = CalcShortestRot(startAngle, endAngle);
-            if (Mathf.Abs(angleChange) > 6f)
-            {
-                // no tween for flipping
-                bool x = Mathf.Abs(animator.LastAimAngle - angleStanding) < 3f &&
-                         Mathf.Abs(aimAngle - angleStandingFlipped) < 3f;
-                bool y = Mathf.Abs(animator.LastAimAngle - angleStandingFlipped) < 3f &&
-                         Mathf.Abs(aimAngle - angleStanding) < 3f;
-                bool z = Math.Abs(Mathf.Abs(aimAngle - animator.LastAimAngle) - 180f) < 12f;
-
-                if (!x && !y && !z)
-                {
-                    //     if (Math.Abs(aimAngleTween.EndValue - weaponAngle) > 6f)
-
-                    tween.Start(startAngle, startAngle + angleChange, Mathf.Abs(angleChange),
-                                ScaleFuncs.QuinticEaseOut);
-                    aimAngle = startAngle;
-                }
-            }
-
-            animator.LastAimAngle = aimAngle;
-        }
-
-        public static IEnumerable<CodeInstruction> RenderPawnAt_Transpiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator ilGen)
-        {
-            List<CodeInstruction> instructionList = instructions.ToList();
-
-            MethodInfo drawAtMethod = AccessTools.Method(typeof(Thing), nameof(Thing.DrawAt));
-
-            int indexDrawAt = instructionList.FindIndex(x => x.opcode == OpCodes.Callvirt && x.operand == drawAtMethod);
-
-            instructionList.RemoveAt(indexDrawAt);
-            instructionList.InsertRange(indexDrawAt, new List<CodeInstruction>
-
-                                                     {
-                                                     // carriedThing.DrawAt(vector, flip);
-                                                     // carriedThing = ldloc.1
-                                                     // vector = ldloc.2
-                                                     // bool flip = ldloc.s 4
-                                                     new CodeInstruction(OpCodes.Ldarg_0), // this.PawnRenderer
-                                                     new CodeInstruction(OpCodes.Ldfld,
-                                                                         AccessTools.Field(typeof(PawnRenderer),
-                                                                                           "pawn")), // pawn
-                                                     new CodeInstruction(OpCodes.Ldloc_3),           // flag
-                                                     new CodeInstruction(OpCodes.Call,
-                                                                         AccessTools.Method(typeof(HarmonyPatchesFS),
-                                                                                            nameof(CheckAndDrawHands)))
-                                                     });
-            return instructionList;
-        }
-
-        public static IEnumerable<CodeInstruction> DrawEquipmentAiming_Transpiler(
-        IEnumerable<CodeInstruction> instructions,
-        ILGenerator ilGen)
-        {
-            List<CodeInstruction> instructionList = instructions.ToList();
-
-            int index = instructionList.FindIndex(x => x.opcode == OpCodes.Ldloc_0);
-            List<Label> labels = instructionList[index].labels;
-            instructionList[index].labels = new List<Label>();
-            instructionList.InsertRange(index, new List<CodeInstruction>
-                                               {
-                                               // DoCalculations(Pawn pawn, Thing eq, ref Vector3 drawLoc, ref float weaponAngle, float aimAngle)
-                                               new CodeInstruction(OpCodes.Ldarg_0),
-                                               new CodeInstruction(OpCodes.Ldfld,
-                                                                   AccessTools.Field(typeof(PawnRenderer),
-                                                                                     "pawn")), // pawn
-                                               new CodeInstruction(OpCodes.Ldarg_1),           // Thing
-                                               new CodeInstruction(OpCodes.Ldarga,   2),       // drawLoc
-                                               new CodeInstruction(OpCodes.Ldloca_S, 1),       // weaponAngle
-                                               //   new CodeInstruction(OpCodes.Ldarg_3), // aimAngle
-                                               new CodeInstruction(OpCodes.Ldloca_S,
-                                                                   0), // Mesh, loaded as ref to not trigger I Love Big Guns
-                                               new CodeInstruction(OpCodes.Call,
-                                                                   AccessTools.Method(typeof(HarmonyPatchesFS),
-                                                                                      nameof(DoWeaponOffsets))),
-                                               });
-            instructionList[index].labels = labels;
-            return instructionList;
-        }
-
-        public static void OpenStylingWindow(Pawn pawn)
-        {
-            pawn.GetCompFace(out CompFace face);
-            Find.WindowStack.Add(new Dialog_FaceStyling(face));
-        }
-
-        public static bool RandomHairDefFor_PreFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
-        {
-            //  Log.Message("1 - " + pawn);
-            if (!pawn.GetCompFace(out CompFace compFace))
-            {
-                return true;
-            }
-
-            //   Log.Message("2 - " + pawn.def.defName);
-
-            if (compFace.Props.useAlienRacesHairTags)
-            {
-                return true;
-            }
-
-            FactionDef faction = factionType;
-
-            if (faction == null)
-            {
-                faction = FactionDefOf.PlayerColony;
-            }
-
-            List<string> hairTags = faction.hairTags;
-
-            if (pawn.def == ThingDefOf.Human)
-            {
-                List<string> vanillatags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
-                if (!hairTags.Any(x => vanillatags.Contains(x)))
-                {
-                    hairTags.AddRange(vanillatags);
-                }
-            }
-
-            IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
-                                          where hair.hairTags.SharesElementWith(hairTags)
-                                          select hair;
-
-            __result = source.RandomElementByWeight(hair => PawnFaceMaker.HairChoiceLikelihoodFor(hair, pawn));
-            return false;
-        }
-
-        public static void CheckAndDrawHands(Thing carriedThing, Vector3 vector, bool flip, Pawn pawn, bool thingBehind)
-        {
-            if (pawn.RaceProps.Animal)
-            {
-                carriedThing.DrawAt(vector, flip);
-                return;
-            }
-
-            if (!pawn.GetCompAnim(out CompBodyAnimator compAnim))
-            {
-                carriedThing.DrawAt(vector, flip);
-                return;
-            }
-
-            bool showHands = compAnim.Props.bipedWithHands && Controller.settings.UseHands;
-            if (!showHands)
-            {
-                carriedThing.DrawAt(vector, flip);
-                return;
-            }
-
-            // Modify the drawPos to appear behind a pawn if fcing North, in case vanilla didn't
-            if (!thingBehind && pawn.Rotation == Rot4.North)
-            {
-                vector.y -= Offsets.YOffset_CarriedThing * 2;
-            }
-
-            vector.y += compAnim.DrawOffsetY;
-
-            compAnim.DrawHands(Quaternion.identity, vector, false, carriedThing, flip);
-        }
-
-        public static void ResolveApparelGraphics_Postfix(PawnGraphicSet __instance)
-        {
-            Pawn pawn = __instance.pawn;
-
-            // Set up the hair cut graphic
-            if (Controller.settings.MergeHair)
-            {
-                HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
-
-                List<Apparel> wornApparel = pawn.apparel.WornApparel
-                                                .Where(x => x.def.apparel.LastLayer == ApparelLayerDefOf.Overhead).ToList();
-                HeadCoverage coverage = HeadCoverage.None;
-                if (!wornApparel.NullOrEmpty())
-                {
-                    if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)))
-                    {
-                        coverage = HeadCoverage.UpperHead;
-                    }
-
-                    if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)))
-                    {
-                        coverage = HeadCoverage.FullHead;
-                    }
-                }
-
-                if (coverage != 0)
-                {
-                    hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi>(
-                                                                                pawn.story.hairDef.texPath,
-                                                                                ShaderDatabase.Cutout,
-                                                                                Vector2.one,
-                                                                                pawn.story.hairColor, coverage);
-                }
-            }
-        }
-
-        // [HarmonyAfter("net.pardeike.zombieland")]
-        public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)
-        {
-            Pawn pawn = __instance.pawn;
-            if (pawn == null)
-            {
-                return;
-            }
-
-            pawn.CheckForAddedOrMissingParts();
-            pawn.GetCompAnim()?.PawnBodyGraphic?.Initialize();
-
-            // Check if race has face, else return
-            if (!pawn.GetCompFace(out CompFace compFace))
-            {
-                return;
-            }
-
-            compFace.IsChild = pawn.ageTracker.AgeBiologicalYearsFloat < 14;
-
-            // Return if child
-            if (compFace.IsChild || compFace.Deactivated)
-            {
-                return;
-            }
-
-            __instance.ClearCache();
-            pawn.GetComp<CompBodyAnimator>()?.ClearCache();
-
-            GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
-
-            // Need: get the traditional habitat of a faction => not suitable, as factions are scattered around the globe
-            // if (!faceComp.IsSkinDNAoptimized)
-            // {
-            // faceComp.DefineSkinDNA();
-            // }
-
-            // Custom rotting color, mixed with skin tone
-            Color rotColor = pawn.story.SkinColor * FaceTextures.SkinRottingMultiplyColor;
-            if (!compFace.InitializeCompFace())
-            {
-                return;
-            }
-
-            __instance.nakedGraphic = GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.bodyType.bodyNakedGraphicPath, ShaderDatabase.CutoutSkin, Vector2.one, __instance.pawn.story.SkinColor);
-            if (compFace.Props.needsBlankHumanHead)
-            {
-                __instance.headGraphic =
-                GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn,
-                                                                    pawn.story.SkinColor);
-                __instance.desiccatedHeadGraphic =
-                GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
-                __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
-            }
-
-            __instance.rottingGraphic =
-           GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.bodyType.bodyNakedGraphicPath, ShaderDatabase.CutoutSkin, Vector2.one, rotColor);
-
-            __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(
-                                                                             pawn.story.hairDef.texPath,
-                                                                             ShaderDatabase.Cutout,
-                                                                             Vector2.one,
-                                                                             pawn.story.hairColor);
-            PortraitsCache.SetDirty(pawn);
-        }
-
         public static void TryInteractWith_Postfix(Pawn_InteractionsTracker __instance, bool __result, Pawn recipient)
         {
             if (__instance == null)
@@ -988,7 +974,7 @@ namespace FacialStuff.Harmony
                 {
                     if (compFace.Props.canRotateHead)
                     {
-                        if (compFace.HeadRotator != null && !compFace.IsChild)
+                        if (compFace.HeadRotator != null && pawn.CanSee(recipient))
                         {
                             compFace.HeadRotator.LookAtPawn(recipient);
                         }
@@ -997,9 +983,9 @@ namespace FacialStuff.Harmony
 
                 if (recipient.GetCompFace(out CompFace recipientFace))
                 {
-                    if (recipientFace.Props.canRotateHead)
+                    if (recipientFace.Props.canRotateHead && recipient.CanSee(pawn))
                     {
-                        if (recipientFace.HeadRotator != null && !recipientFace.IsChild)
+                        if (recipientFace.HeadRotator != null)
                         {
                             recipientFace.HeadRotator.LookAtPawn(pawn);
                         }
@@ -1008,6 +994,126 @@ namespace FacialStuff.Harmony
             }
         }
 
+        // If the return value is positive, then rotate to the left. Else,
+        // rotate to the right.
+        private static float CalcShortestRot(float from, float to)
+        {
+            // If from or to is a negative, we have to recalculate them.
+            // For an example, if from = -45 then from(-45) + 360 = 315.
+            if (@from < 0)
+            {
+                @from += 360;
+            }
+
+            if (to < 0)
+            {
+                to += 360;
+            }
+
+            // Do not rotate if from == to.
+            if (@from == to ||
+                @from == 0 && to == 360 ||
+                @from == 360 && to == 0)
+            {
+                return 0;
+            }
+
+            // Pre-calculate left and right.
+            float left = (360 - @from) + to;
+            float right = @from - to;
+
+            // If from < to, re-calculate left and right.
+            if (@from < to)
+            {
+                if (to > 0)
+                {
+                    left = to - @from;
+                    right = (360 - to) + @from;
+                }
+                else
+                {
+                    left = (360 - to) + @from;
+                    right = to - @from;
+                }
+            }
+
+            // Determine the shortest direction.
+            return ((left <= right) ? left : (right * -1));
+        }
+
+        // Call CalcShortestRot and check its return value.
+        // If CalcShortestRot returns a positive value, then this function
+        // will return true for left. Else, false for right.
+        private static bool CalcShortestRotDirection(float from, float to)
+        {
+            // If the value is positive, return true (left).
+            if (CalcShortestRot(@from, to) >= 0)
+            {
+                return true;
+            }
+
+            return false; // right
+        }
+
+        private static void CalculatePositionsWeapon(Pawn pawn, ref float weaponAngle,
+                                                                                                                                             CompProperties_WeaponExtensions extensions,
+                                                     out Vector3 weaponPosOffset, out bool aiming,
+                                                     bool flipped)
+        {
+            weaponPosOffset = Vector3.zero;
+            if (pawn.Rotation == Rot4.West || pawn.Rotation == Rot4.North)
+            {
+                weaponPosOffset.y = -Offsets.YOffset_Head - Offsets.YOffset_CarriedThing;
+            }
+
+            // Use y for the horizontal position. too lazy to add even more vectors
+            bool isHorizontal = pawn.Rotation.IsHorizontal;
+            aiming = pawn.Aiming();
+            Vector3 extOffset;
+            Vector3 o = extensions.WeaponPositionOffset;
+            Vector3 d = extensions.AimedWeaponPositionOffset;
+            if (isHorizontal)
+            {
+                extOffset = new Vector3(o.y, 0, o.z);
+                if (aiming)
+                {
+                    extOffset += new Vector3(d.y, 0, d.z);
+                }
+            }
+            else
+            {
+                extOffset = new Vector3(o.x, 0, o.z);
+                if (aiming)
+                {
+                    extOffset += new Vector3(d.x, 0, d.z);
+                }
+            }
+
+            if (flipped)
+            {
+                if (aiming)
+                {
+                    weaponAngle -= extensions?.AttackAngleOffset ?? 0;
+                }
+
+                weaponPosOffset += extOffset;
+
+                // flip x position offset
+                if (pawn.Rotation != Rot4.South)
+                {
+                    weaponPosOffset.x *= -1;
+                }
+            }
+            else
+            {
+                if (aiming)
+                {
+                    weaponAngle += extensions?.AttackAngleOffset ?? 0;
+                }
+
+                weaponPosOffset += extOffset;
+            }
+        }
         #endregion Public Methods
 
         #region Private Methods

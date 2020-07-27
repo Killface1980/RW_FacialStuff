@@ -123,7 +123,7 @@ namespace FacialStuff.AI
                                   {
                                       DefDatabase<SoundDef>.GetNamed("Pawn_Cat_Angry")
                                          .PlayOneShot(new TargetInfo(this.pawn.Position, this.pawn.Map));
-                                      FilthMaker.MakeFilth(this.job.targetA.Cell, this.Map,
+                                      FilthMaker.TryMakeFilth(this.job.targetA.Cell, this.Map,
                                                            ThingDefOf.Filth_Vomit, this.pawn.LabelIndefinite());
                                       if (this.pawn.needs.food.CurLevelPercentage > 0.10000000149011612)
                                       {
@@ -133,7 +133,7 @@ namespace FacialStuff.AI
 
                                   if (this.ticksLeft % 50 == 0)
                                   {
-                                      FilthMaker.MakeFilth(this.pawn.Position.RandomAdjacentCell8Way(), this.Map,
+                                      FilthMaker.TryMakeFilth(this.pawn.Position.RandomAdjacentCell8Way(), this.Map,
                                                            ThingDefOf.Filth_Vomit, this.pawn.LabelIndefinite());
                                   }
 

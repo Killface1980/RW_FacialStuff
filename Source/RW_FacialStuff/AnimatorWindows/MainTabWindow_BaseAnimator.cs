@@ -4,8 +4,8 @@ using JetBrains.Annotations;
 using RimWorld;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using FacialStuff.Animator;
 using UnityEngine;
 using Verse;
 
@@ -19,6 +19,8 @@ namespace FacialStuff.AnimatorWindows
 
         public static bool Develop;
 
+        public static bool Panic;
+
         public override void WindowUpdate()
         {
             base.WindowUpdate();
@@ -30,24 +32,21 @@ namespace FacialStuff.AnimatorWindows
             // Execute PostDraw if pawn is not on screen
             this.CompAnim.PostDraw();
         }
-
-        public static bool Panic;
-
         #endregion Public Fields
 
         #region Protected Fields
 
+        public static Pawn Pawn;
         protected readonly float SliderWidth = 420f;
         protected readonly float Spacing = 12f;
         protected CompBodyAnimator CompAnim;
-        protected float Zoom = 1f;
         protected bool Loop;
-        public static Pawn Pawn;
-
+        protected float Zoom = 1f;
         #endregion Protected Fields
 
         #region Private Fields
 
+        [CanBeNull] protected static List<PawnKeyframe> PawnKeyframes;
         private static readonly Color AddColor = new Color(0.25f, 1f, 0.25f);
 
         private static readonly Color RemoveColor = new Color(1f, 0.25f, 0.25f);
@@ -63,9 +62,6 @@ namespace FacialStuff.AnimatorWindows
         private static string _defPath;
 
         private static Vector2 _portraitSize = new Vector2(320f, 320f);
-
-        [CanBeNull] protected static List<PawnKeyframe> PawnKeyframes;
-
         private readonly float _defaultHeight = 36f;
         private readonly float _widthLabel = 150f;
         private int _frameLabel = 1;
@@ -104,8 +100,6 @@ namespace FacialStuff.AnimatorWindows
 
         #region Protected Properties
 
-        protected static int CurrentFrameInt { get; set; }
-
         public static string DefPath
         {
             get
@@ -128,8 +122,7 @@ namespace FacialStuff.AnimatorWindows
             }
         }
 
-
-
+        protected static int CurrentFrameInt { get; set; }
         protected static int LastInd
         {
             get
@@ -154,6 +147,8 @@ namespace FacialStuff.AnimatorWindows
                     this.CompAnim.BodyAnim.thingTarget = Pawn.def.ToString();
                     this.CompAnim.BodyAnim.bodyDrawers = this.CompAnim.Props.bodyDrawers;
                     this.CompAnim.BodyAnim.handType = this.CompAnim.Props.handType;
+                    //this.CompAnim.BodyAnim.footType = this.CompAnim.Props.footType;
+                    //this.CompAnim.BodyAnim.pawType = this.CompAnim.Props.pawType;
                     this.CompAnim.BodyAnim.quadruped = this.CompAnim.Props.quadruped;
                     this.CompAnim.BodyAnim.bipedWithHands = this.CompAnim.Props.bipedWithHands;
                 }
@@ -167,13 +162,6 @@ namespace FacialStuff.AnimatorWindows
         #endregion Protected Properties
 
         #region Public Methods
-
-        public override void PreOpen()
-        {
-            base.PreOpen();
-            this.FindRandomPawn();
-            PortraitsCache.SetDirty(Pawn);
-        }
 
         public override void DoWindowContents(Rect inRect)
         {
@@ -283,23 +271,66 @@ namespace FacialStuff.AnimatorWindows
             base.DoWindowContents(inRect);
         }
 
-        protected virtual void SetKeyframes()
-        {
-            PawnKeyframes = new List<PawnKeyframe> { new PawnKeyframe() };
-        }
-
         public override void PostClose()
         {
-            this.CompAnim.AnimatorPoseOpen = false;
+            CompAnim = null;
             Pawn = null;
             base.PostClose();
         }
 
+        public override void PreOpen()
+        {
+            base.PreOpen();
+            this.FindRandomPawn();
+            PortraitsCache.SetDirty(Pawn);
+        }
+        protected virtual void SetKeyframes()
+        {
+            PawnKeyframes = new List<PawnKeyframe> { new PawnKeyframe() };
+        }
         #endregion Public Methods
 
         #region Protected Methods
 
         public string Label;
+
+        public float CurrentShift
+        {
+            get
+            {
+                PawnKeyframe currentFrame = this.CurrentFrame;
+                if (currentFrame != null)
+                {
+                    return currentFrame.Shift;
+                }
+
+                return 0f;
+            }
+
+            set
+            {
+                if (this.CurrentFrame == null)
+                {
+                    return;
+                }
+
+                if (Math.Abs(value) < 0.05f)
+                {
+                    this.CurrentFrame.Status = KeyStatus.Automatic;
+                }
+                else
+                {
+                    this.CurrentFrame.Status = KeyStatus.Manual;
+                }
+
+                this.CurrentFrame.Shift = value;
+                this.BuildEditorCycle();
+            }
+        }
+
+        protected virtual void BuildEditorCycle()
+        {
+        }
 
         protected virtual void DoBasicSettingsMenu(Listing_Standard listing)
         {
@@ -311,7 +342,7 @@ namespace FacialStuff.AnimatorWindows
             {
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
                 foreach (Pawn current in from bsm in Pawn.Map.mapPawns.AllPawnsSpawned
-                                         where bsm.GetComp<CompBodyAnimator>() != null
+                                         where bsm.HasCompAnimator()
                                          orderby bsm.LabelCap
                                          select bsm)
                 {
@@ -321,13 +352,10 @@ namespace FacialStuff.AnimatorWindows
                                                  smLocal.LabelCap,
                                                  delegate
                                                  {
-                                                     this.CompAnim.AnimatorPoseOpen = false;
-
-                                                     Pawn = smLocal;
-                                                     smLocal.GetCompAnim(out this.CompAnim);
-
-                                                     // editorWalkcycle = this.CompAnim.Props.defaultCycleWalk;
-                                                     this.SetCurrentCycle();
+                                                     Find.WindowStack.WindowOfType<MainTabWindow_WalkAnimator>().Close(false);
+                                                     Find.Selector.ClearSelection();
+                                                     Find.Selector.Select(smLocal, false);
+                                                     Find.MainTabsRoot.ToggleTab(DefDatabase<MainButtonDef>.GetNamed("WalkAnimator"));
                                                  }));
                 }
 
@@ -382,49 +410,6 @@ namespace FacialStuff.AnimatorWindows
                 }
             }
         }
-
-        public float CurrentShift
-        {
-            get
-            {
-                PawnKeyframe currentFrame = this.CurrentFrame;
-                if (currentFrame != null)
-                {
-                    return currentFrame.Shift;
-                }
-
-                return 0f;
-            }
-
-            set
-            {
-                if (this.CurrentFrame == null)
-                {
-                    return;
-                }
-
-                if (Math.Abs(value) < 0.05f)
-                {
-                    this.CurrentFrame.Status = KeyStatus.Automatic;
-                }
-                else
-                {
-                    this.CurrentFrame.Status = KeyStatus.Manual;
-                }
-
-                this.CurrentFrame.Shift = value;
-                this.BuildEditorCycle();
-            }
-        }
-
-        protected virtual void BuildEditorCycle()
-        {
-        }
-
-        protected virtual void SetCurrentCycle()
-        {
-        }
-
         protected virtual void DrawBodySettingsEditor(Rot4 rotation)
         {
         }
@@ -435,20 +420,17 @@ namespace FacialStuff.AnimatorWindows
 
         protected virtual void FindRandomPawn()
         {
-            if (Pawn == null)
+            Thing selectedThing = Find.Selector.SingleSelectedThing;
+            if (selectedThing != null && selectedThing is Pawn pawn && pawn.HasCompAnimator())
             {
-                Thing selectedThing = Find.Selector.SingleSelectedThing;
-                if (selectedThing != null && selectedThing is Pawn)
-                {
-                    Pawn = (Pawn)selectedThing;
-                }
-                else
-                {
-                    Pawn = Find.AnyPlayerHomeMap.PlayerPawnsForStoryteller.FirstOrDefault();
-                }
-
-                Pawn?.GetCompAnim(out this.CompAnim);
+                Pawn = pawn;
             }
+            else
+            {
+                Pawn = Find.AnyPlayerHomeMap.PlayerPawnsForStoryteller.FirstOrDefault(x => x.HasCompAnimator());
+            }
+
+            Pawn?.GetCompAnim(out this.CompAnim);
         }
 
         protected void ReIndexKeyframes()
@@ -534,6 +516,9 @@ namespace FacialStuff.AnimatorWindows
             editorRect.y += editorRect.height;
         }
 
+        protected virtual void SetCurrentCycle()
+        {
+        }
         protected void SetNewVector(Rot4 rotation, Vector3 newOffset, List<Vector3> offset, bool front)
         {
             newOffset.y = (front ? 1 : -1) * 0.025f;
@@ -571,7 +556,7 @@ namespace FacialStuff.AnimatorWindows
         ref Rect editorRect,
         SimpleCurve thisFrame,
         string label,
-        List<int> framesAt)
+        List<int> framesAt, float sliderFactor = 1f)
         {
             Rect sliderRect = new Rect(editorRect.x, editorRect.y, this.SliderWidth, this._defaultHeight);
             Rect buttonRect = new Rect(
@@ -579,8 +564,8 @@ namespace FacialStuff.AnimatorWindows
                                        editorRect.y,
                                        editorRect.width - this.SliderWidth - this.Spacing, this._defaultHeight);
 
-            float leftValue = -0.8f;
-            float rightValue = 0.8f;
+            float leftValue = -0.8f * sliderFactor;
+            float rightValue = 0.8f * sliderFactor;
 
             DoActiveKeyframeButtons(framesAt, ref buttonRect);
 
@@ -631,6 +616,13 @@ namespace FacialStuff.AnimatorWindows
         #endregion Protected Methods
 
         #region Private Methods
+
+        public float lastTime = 0f;
+
+        protected virtual void DrawBackground(Rect rect)
+        {
+            GUI.DrawTexture(rect, FaceTextures.BackgroundAnimTex);
+        }
 
         private static void DoActiveKeyframeButtons(List<int> framesAt, ref Rect buttonRect)
         {
@@ -699,6 +691,38 @@ namespace FacialStuff.AnimatorWindows
             // Portrait
             Rect rect = new Rect(0, 0, inRectWidth, inRectWidth);
 
+            if (false)
+            {
+
+            var skeleton = new FS_Skeleton {joints = new List<FS_Joint>()};
+            FS_Joint head = new FS_Joint {color = Color.red};
+            FS_Joint neck = new FS_Joint {color = Color.cyan};
+            FS_Joint hipCenter = new FS_Joint { color = Color.cyan };
+
+            FS_Joint leftShoulder = new FS_Joint();
+            FS_Joint leftElbow = new FS_Joint();
+            FS_Joint leftWrist = new FS_Joint();
+            FS_Joint leftHand = new FS_Joint();
+
+            FS_Joint rightShoulder = new FS_Joint();
+            FS_Joint rightElbow = new FS_Joint();
+            FS_Joint rightWrist = new FS_Joint();
+            FS_Joint rightHand = new FS_Joint();
+
+            FS_Joint leftHip = new FS_Joint();
+            FS_Joint leftKnee = new FS_Joint();
+            FS_Joint leftAnkle = new FS_Joint();
+            FS_Joint leftFoot = new FS_Joint();
+      
+            FS_Joint rightHip = new FS_Joint();
+            FS_Joint rightKnee = new FS_Joint();
+            FS_Joint rightAnkle = new FS_Joint();
+            FS_Joint rightFoot = new FS_Joint();
+
+
+            skeleton.joints.Add(head);
+            }
+
             this.DrawBackground(rect);
 
             // Draw the pawn's portrait
@@ -722,12 +746,6 @@ namespace FacialStuff.AnimatorWindows
             // GUI.DrawTexture(position, PortraitsCache.Get(pawn, size, default(Vector3)));
             Widgets.DrawBox(rect);
         }
-
-        protected virtual void DrawBackground(Rect rect)
-        {
-            GUI.DrawTexture(rect, FaceTextures.BackgroundAnimTex);
-        }
-
         private void DrawRotatorBody(float curY, float width)
         {
             float buttWidth = (width - 4 * this.Spacing) / 6;
@@ -837,18 +855,20 @@ namespace FacialStuff.AnimatorWindows
                 buttonRect.x += buttonRect.width + this.Spacing;
             }
         }
-
         private void DrawTimelineSlider(int count, float width)
         {
             Rect timeline = new Rect(0f, 0f, width, 40f);
             string label = "Current frame: " + this._frameLabel;
             if (this.Loop)
             {
-                AnimationPercent += 0.01f;
-                if (AnimationPercent > 1f)
+
+                AnimationPercent = Time.realtimeSinceStartup - lastTime;
+                if (AnimationPercent >= 1f)
                 {
+                    lastTime = Time.realtimeSinceStartup;
                     AnimationPercent = 0f;
                 }
+
 
                 Widgets.HorizontalSlider(timeline, AnimationPercent, 0f, 1f, false, label);
             }
@@ -856,6 +876,7 @@ namespace FacialStuff.AnimatorWindows
             {
                 _animSlider = Widgets.HorizontalSlider(timeline, AnimationPercent, 0f, 1f, false, label);
             }
+
         }
 
         #endregion Private Methods

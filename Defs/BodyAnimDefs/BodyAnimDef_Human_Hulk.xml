@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <BodyAnimDef>
+    <thingTarget>Human</thingTarget>
+    <handType>Human</handType>
+    <quadruped>False</quadruped>
+    <bipedWithHands>True</bipedWithHands>
     <armLength>0.45</armLength>
     <extraLegLength>0.35</extraLegLength>
     <hipOffsets>

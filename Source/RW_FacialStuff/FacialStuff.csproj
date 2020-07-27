@@ -9,15 +9,17 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FacialStuff</RootNamespace>
     <AssemblyName>FacialStuff</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Assemblies\</OutputPath>
+    <OutputPath>..\..\1.1\Assemblies\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -39,40 +41,49 @@
     <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Assemblies\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="AbilityUser">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\AbilityUser.dll</HintPath>
+    <Reference Include="0Harmony, Version=2.0.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.2.0.0.5\lib\net472\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="CompActivatableEffect">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\932008009\Assemblies\CompActivatableEffect.dll</HintPath>
+      <HintPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="EdBPrepareCarefully">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\735106432\Assemblies\EdBPrepareCarefully.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\735106432\1.1\Assemblies\EdBPrepareCarefully.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
     <Reference Include="System.XML" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Vampire">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\1187010034\Assemblies\Vampire.dll</HintPath>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Werewolf">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\1115882219\Assemblies\Werewolf.dll</HintPath>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -81,29 +92,30 @@
     <Compile Include="AI\JobGiver_Possess.cs" />
     <Compile Include="AI\MentalStateWorker_Possessed.cs" />
     <Compile Include="AI\MentalState_Possessed.cs" />
+    <None Include="packages.config" />
     <None Include="WidgetsFS.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
     <None Include="Components\CompHumanFace.cs" />
     <None Include="Controller_Animator.cs" />
     <None Include="Components\Class1.cs" />
+    <Compile Include="Components\Skeletoon\CompPropertiesSkeleton.cs" />
+    <Compile Include="Components\Skeletoon\FS_Skeleton.cs" />
+    <Compile Include="Components\Skeletoon\CompSkeleton.cs" />
+    <None Include="DefOfs\ExtremityDefOf.cs" />
+    <Compile Include="DefOfs\EarDefOf.cs" />
     <Compile Include="DefOfs\EyeDefOf.cs" />
+    <None Include="Defs\ExtremityDef.cs" />
+    <Compile Include="Defs\EarDef.cs" />
     <Compile Include="Enums\HeadCoverage.cs" />
     <None Include="GraphicsFS\MeshMakerPlanesFS.cs" />
     <None Include="GraphicsFS\Graphic_Multi_Four.cs" />
+    <Compile Include="GraphicsFS\Graphic_Multi_NaturalEyes - Kopieren.cs" />
     <Compile Include="Harmony\HarmonyPatchesFS.cs" />
     <Compile Include="Harmony\HarmonyPatch_PawnRenderer.cs" />
-    <Compile Include="Harmony\Optional\Harmony_EdBPrepareCarefully.cs" />
-    <Compile Include="Harmony\Optional\Harmony_Vampire.cs" />
-    <Compile Include="Harmony\Optional\Harmony_Werewolf.cs" />
+    <None Include="Harmony\Optional\Harmony_Werewolf.cs" />
     <None Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
     <None Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
-    <Compile Include="Harmony\Optional\PrepC\PanelBackstory_Postfix.cs" />
-    <Compile Include="Harmony\Optional\PrepC\PresetLoader_Postfix.cs" />
-    <Compile Include="Harmony\Optional\PrepC\PresetSaver_Postfix.cs" />
-    <Compile Include="Harmony\Optional\PrepC\SaveRecordFaceV3.cs" />
-    <Compile Include="Harmony\Optional\PrepC\SaveRecordPawnV3_Postfix.cs" />
-    <Compile Include="Harmony\Optional\Vampire_Patches.cs" />
-    <Compile Include="Harmony\Optional\Werewolf_Patches.cs" />
+    <None Include="Harmony\Optional\Werewolf_Patches.cs" />
     <Compile Include="Tweener\TinyTween.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />
@@ -119,9 +131,9 @@
     <Compile Include="FaceEditor\Dialog_FaceStyling.FaceStyleTab.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.FilterTab.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.GenderTab.cs" />
-    <Compile Include="FaceEditor\Dialog_FaceStyling.SpecialTab.cs" />
+    <None Include="FaceEditor\Dialog_FaceStyling.SpecialTab.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_BaseAnimator.cs" />
-    <Compile Include="AnimatorWindows\MainTabWindow_PoseAnimator.cs" />
+    <None Include="AnimatorWindows\MainTabWindow_PoseAnimator.cs" />
     <None Include="Animator\PawnPartsTweener.cs" />
     <None Include="Settings_Animator.cs" />
     <Compile Include="Components\CompBodyAnimator.cs" />
@@ -176,7 +188,7 @@
     <Compile Include="FaceEditor\Dialog_FaceStyling.cs" />
     <None Include="FaceEditor\UI\DresserUI.cs" />
     <Compile Include="FaceEditor\UI\DTO\DresserDTO.cs" />
-    <Compile Include="FaceEditor\UI\DTO\DresserDtoFactory.cs" />
+    <None Include="FaceEditor\UI\DTO\DresserDtoFactory.cs" />
     <Compile Include="FaceEditor\UI\DTO\SelectionWidgetDTOs\ASelectionWidgetDTO.cs" />
     <Compile Include="FaceEditor\UI\DTO\SelectionWidgetDTOs\BodyTypeSelectionDTO.cs" />
     <Compile Include="FaceEditor\UI\DTO\SelectionWidgetDTOs\GenderSelectionDTO.cs" />
@@ -223,65 +235,78 @@
     <Content Include="..\..\Defs\BeardDefs\BeardDef.xml">
       <Link>Defs\xml\Face\BeardDef.xml</Link>
     </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Boomalope_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Boomalope_Undefined.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Boomrat_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Boomrat_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Boomrat_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Caribou_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Caribou_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Caribou_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Cat_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Cat_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Cat_Undefined.xml</Link>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Deer_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Deer_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Deer_Undefined.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Donkey_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Donkey_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Elk_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Elk_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Elk_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Fat.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Human_Fat.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Human_Fat.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Female.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Human_Female.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Human_Female.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Hulk.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Human_Hulk.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Human_Hulk.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Male.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Human_Male.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Human_Male.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Human_Thin.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Human_Thin.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Human_Thin.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Husky_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Husky_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Husky_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Ibex_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Ibex_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Ibex_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_LabradorRetriever_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_LabradorRetriever_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_LabradorRetriever_Undefined.xml</Link>
     </Content>
-    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Mechanoid_Centipede_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Mechanoid_Centipede_Undefined.xml</Link>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Mech_Centipede_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Mech_Centipede_Undefined.xml</Link>
     </Content>
-    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Mechanoid_Scyther_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Mechanoid_Scyther_Undefined.xml</Link>
+    <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Mech_Scyther_Undefined.xml">
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Mech_Scyther_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_Tortoise_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_Tortoise_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_Tortoise_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_WildBoar_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_WildBoar_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_WildBoar_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BodyAnimDefs\BodyAnimDef_YorkshireTerrier_Undefined.xml">
-      <Link>Defs\xml\Generated\BodyAnimDef_YorkshireTerrier_Undefined.xml</Link>
+      <Link>Defs\xml\Generated\BodyAnimDefs\BodyAnimDef_YorkshireTerrier_Undefined.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BrowDefs\BrowDef_Female.xml">
       <Link>Defs\xml\Face\BrowDef_Female.xml</Link>
     </Content>
     <Content Include="..\..\Defs\BrowDefs\BrowDef_Male.xml">
       <Link>Defs\xml\Face\BrowDef_Male.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\EarDefs\EarDef_Default.xml">
+      <Link>Defs\EarDef_Default.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\ExtremityDefs\ExtremityDef_Default.xml">
+      <Link>Defs\xml\ExtremityDef_Default.xml</Link>
     </Content>
     <Content Include="..\..\Defs\EyeDefs\EyeDef_Basic.xml">
       <Link>Defs\xml\Face\EyeDef_Basic.xml</Link>
@@ -337,6 +362,108 @@
     <Content Include="..\..\Defs\WalkCycleDefs\Quadruped_Walk.xml">
       <Link>Defs\xml\Generated\WCycles\Quadruped_Walk.xml</Link>
     </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Beer.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Beer.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Bow_Great.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Bow_Great.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Bow_Recurve.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Bow_Recurve.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Bow_Short.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Bow_Short.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_ElephantTusk.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_ElephantTusk.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_AssaultRifle.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_AssaultRifle.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_Autopistol.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_Autopistol.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_BoltActionRifle.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_BoltActionRifle.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_ChainShotgun.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_ChainShotgun.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_ChargeRifle.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_ChargeRifle.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_DoomsdayRocket.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_DoomsdayRocket.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_HeavySMG.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_HeavySMG.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_IncendiaryLauncher.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_IncendiaryLauncher.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_LMG.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_LMG.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_MachinePistol.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_MachinePistol.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_Minigun.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_Minigun.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_PumpShotgun.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_PumpShotgun.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_RailgunMKI.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_RailgunMKI.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_Revolver.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_Revolver.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_SniperRifle.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_SniperRifle.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Gun_TripleRocket.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Gun_TripleRocket.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Club.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Club.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Gladius.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Gladius.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Ikwa.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Ikwa.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Knife.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Knife.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_LongSword.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_LongSword.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Mace.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Mace.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Spear.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_MeleeWeapon_Spear.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Pila.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Pila.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_ThrumboHorn.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_ThrumboHorn.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Weapon_GrenadeEMP.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Weapon_GrenadeEMP.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Weapon_GrenadeFrag.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Weapon_GrenadeFrag.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_Weapon_GrenadeMolotov.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_Weapon_GrenadeMolotov.xml</Link>
+    </Content>
+    <Content Include="..\..\Defs\WeaponExtensionDefs\WeaponExtensionDef_WoodLog.xml">
+      <Link>Defs\xml\Generated\WeaponExtensionDefs\WeaponExtensionDef_WoodLog.xml</Link>
+    </Content>
     <Content Include="..\..\Defs\WrinkleDefs\WrinkleDef.xml">
       <Link>Defs\xml\Face\WrinkleDef.xml</Link>
     </Content>
@@ -350,6 +477,15 @@
     <Content Include="..\..\Languages\German\Keyed\FacialStuff_Keyed.xml">
       <Link>Languages\German\FacialStuff_Keyed.xml</Link>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Languages\PortugueseBrazilian\Keyed\FacialStuff_Keyed.xml">
+      <Link>Languages\PortugueseBrazilian\FacialStuff_Keyed.xml</Link>
+    </Content>
+    <Content Include="..\..\Languages\SpanishLatin\Keyed\FacialStuff_Keyed.xml">
+      <Link>Languages\SpanishLatin\FacialStuff_Keyed.xml</Link>
+    </Content>
+    <Content Include="..\..\Languages\Spanish\Keyed\FacialStuff_Keyed.xml">
+      <Link>Languages\Spanish\FacialStuff_Keyed.xml</Link>
     </Content>
     <Content Include="..\..\Patches\EditorPatches.xml">
       <Link>Patches\EditorPatches.xml</Link>
@@ -366,6 +502,7 @@
       <Link>Patches\HumanPatchHSK.xml</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

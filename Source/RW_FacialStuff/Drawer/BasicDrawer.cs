@@ -104,6 +104,7 @@ namespace FacialStuff
 
             return joints;
         }
+
         [NotNull]
         public CompBodyAnimator CompAnimator { get; set; }
 

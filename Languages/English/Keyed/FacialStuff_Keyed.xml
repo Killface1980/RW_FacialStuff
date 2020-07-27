@@ -111,5 +111,9 @@
 
   <FacialStuffEditor.FullBeards>full beards</FacialStuffEditor.FullBeards>
   <FacialStuffEditor.Combinable>combinable</FacialStuffEditor.Combinable>
-  
+
+  <FacialStuffEditor.ShowRoyalHeadgear>Ignores the setting above for royals</FacialStuffEditor.ShowRoyalHeadgear>
+  <FacialStuffEditor.ShowRoyalHeadgearTooltip>Activate if you want to see you leader's headgear always indoors.</FacialStuffEditor.ShowRoyalHeadgearTooltip>
+
+
 </LanguageData>

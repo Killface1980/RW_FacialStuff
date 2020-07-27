@@ -1,10 +1,12 @@
 {
   "ExpandedNodes": [
     "",
+    "\\Assemblies",
     "\\Source",
     "\\Source\\RW_FacialStuff",
-    "\\Source\\RW_FacialStuff\\HairCut"
+    "\\Source\\RW_FacialStuff\\HairCut",
+    "\\Source\\RW_FacialStuff\\Utilities"
   ],
-  "SelectedNode": "\\Source\\RW_FacialStuff\\HairCut\\HairCutPawn.cs",
+  "SelectedNode": "\\Source\\RW_FacialStuff\\HairCut\\CutHairDB.cs",
   "PreviewInSolutionExplorer": false
 }

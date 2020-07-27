@@ -361,18 +361,38 @@ namespace FacialStuff.Utilities
 
             // Log.Message("Chosen eyes: " + chosenEyes);
         }
+        public static EarDef RandomEarDefFor(Pawn pawn, FactionDef factionType)
+        {
+            // Log.Message("Selecting eyes.");
+            IEnumerable<EarDef> source = from ear in DefDatabase<EarDef>.AllDefs
+
+                                             // where eye.forbiddenOnRace.Contains(pawn.def)
+                                         where ear.hairTags.SharesElementWith(factionType.hairTags)
+                                         select ear;
+
+            if (!source.Any())
+            {
+                // Log.Message("No eyes found, defaulting.");
+                source = from eye in DefDatabase<EarDef>.AllDefs select eye;
+            }
+
+            return source.RandomElementByWeight(eye => EarChoiceLikelihoodFor(eye, pawn));
+
+            // Log.Message("Chosen eyes: " + chosenEyes);
+        }
 
         private static float BeardChoiceLikelihoodFor([NotNull] BeardDef beard, Pawn pawn)
         {
             if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
             {
-                return 30f;
+                return 20f;
             }
 
             switch (beard.hairGender)
             {
                 case HairGender.Male: return 70f;
                 case HairGender.MaleUsually: return 50f;
+                default: return 30f;
             }
 
             Log.Error(string.Concat("Unknown beard likelihood for ", beard, " with ", pawn));
@@ -499,6 +519,41 @@ namespace FacialStuff.Utilities
             return 0f;
         }
 
+        private static float EarChoiceLikelihoodFor(EarDef ear, [NotNull] Pawn pawn)
+        {
+            if (pawn.gender == Gender.None)
+            {
+                return 100f;
+            }
+
+            if (pawn.gender == Gender.Male)
+            {
+                switch (ear.hairGender)
+                {
+                    case HairGender.Male: return 70f;
+                    case HairGender.MaleUsually: return 30f;
+                    case HairGender.Any: return 60f;
+                    case HairGender.FemaleUsually: return 5f;
+                    case HairGender.Female: return 1f;
+                }
+            }
+
+            if (pawn.gender == Gender.Female)
+            {
+                switch (ear.hairGender)
+                {
+                    case HairGender.Female: return 70f;
+                    case HairGender.FemaleUsually: return 30f;
+                    case HairGender.Any: return 60f;
+                    case HairGender.MaleUsually: return 5f;
+                    case HairGender.Male: return 1f;
+                }
+            }
+
+            Log.Error(string.Concat("Unknown ear likelihood for ", ear, " with ", pawn));
+            return 0f;
+        }
+
         private static MoustacheDef MoustacheRoulette(Pawn pawn, FactionDef factionType)
         {
             IEnumerable<MoustacheDef> source = from moustache in DefDatabase<MoustacheDef>.AllDefs
@@ -536,5 +591,6 @@ namespace FacialStuff.Utilities
             Log.Error(string.Concat("Unknown tache likelihood for ", tache, " with ", pawn));
             return 0f;
         }
+
     }
 }

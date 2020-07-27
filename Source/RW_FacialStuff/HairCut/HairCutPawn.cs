@@ -22,7 +22,7 @@ namespace FacialStuff.HairCut
 
             Material material = this.HairCutGraphic?.MatAt(facing);
 
-            if (material != null)
+            if (!material.NullOrBad())
             {
                 material = this.Pawn.Drawer.renderer.graphics.flasher.GetDamagedMat(material);
             }

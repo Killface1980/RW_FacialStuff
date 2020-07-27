@@ -5,6 +5,8 @@ using RimWorld;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using FacialStuff.Harmony;
+using FacialStuff.Utilities;
 using UnityEngine;
 using Verse;
 
@@ -43,6 +45,12 @@ namespace FacialStuff
                 }
             }
 
+            // Fix for VHE hair on existing pawns.
+            foreach (Pawn pawn in PawnsFinder.AllMaps.FindAll(x =>
+                x.kindDef?.RaceProps != null && x.kindDef.RaceProps.Humanlike == true).Where(pawn => pawn.story?.hairDef != null && pawn.story.hairDef.IsBeardNotHair()))
+            {
+                PawnHairChooser.RandomHairDefFor(pawn, pawn.Faction.def);
+            }
             this.WeaponCompsNew();
 
             // todo: use BodyDef instead, target for kickstarting?
@@ -69,6 +77,8 @@ namespace FacialStuff
         #endregion Public Constructors
 
         #region Public Methods
+        protected UnityEngine.Animator animator;
+
 
         public static void BuildWalkCycles([CanBeNull] WalkCycleDef defToRebuild = null)
         {
@@ -92,6 +102,9 @@ namespace FacialStuff
                 WalkCycleDef cycle = cycles[index];
                 if (cycle != null)
                 {
+                    cycle.HeadAngleX = new SimpleCurve();
+                    cycle.HeadOffsetZ = new SimpleCurve();
+
                     cycle.BodyAngle = new SimpleCurve();
                     cycle.BodyAngleVertical = new SimpleCurve();
                     cycle.BodyOffsetZ = new SimpleCurve();
@@ -215,15 +228,11 @@ namespace FacialStuff
             if (!manualKeys.NullOrEmpty())
             {
                 frameAt = (float)key.KeyIndex / (autoKeys.Count - 1);
-                Log.Message("frameAt " + frameAt);
                 float divider = (float)1 / (autoKeys.Count - 1);
-                Log.Message("divider " + divider);
                 float? shift = manualKeys.Find(x => x.KeyIndex == key.KeyIndex)?.Shift;
                 if (shift.HasValue)
                 {
-                    Log.Message("Shift " + shift);
                     frameAt += divider * shift.Value;
-                    Log.Message("new frameAt " + frameAt);
                 }
             }
             else
@@ -232,79 +241,68 @@ namespace FacialStuff
             }
 
             Dictionary<SimpleCurve, float?> dict = new Dictionary<SimpleCurve, float?>
-                                                   {
-                                                   {
-                                                   cycle
-                                                  .ShoulderOffsetHorizontalX,
-                                                   key
-                                                  .ShoulderOffsetHorizontalX
-                                                   },
-                                                   {
-                                                   cycle
-                                                  .HipOffsetHorizontalX,
-                                                   key
-                                                  .HipOffsetHorizontalX
-                                                   },
-                                                   {
-                                                   cycle.BodyAngle,
-                                                   key.BodyAngle
-                                                   },
-                                                   {
-                                                   cycle
-                                                  .BodyAngleVertical,
-                                                   key.BodyAngleVertical
-                                                   },
-                                                   {
-                                                   cycle.BodyOffsetZ,
-                                                   key.BodyOffsetZ
-                                                   },
-                                                   {
-                                                   cycle.FootAngle,
-                                                   key.FootAngle
-                                                   },
-                                                   {
-                                                   cycle.FootPositionX,
-                                                   key.FootPositionX
-                                                   },
-                                                   {
-                                                   cycle.FootPositionZ,
-                                                   key.FootPositionZ
-                                                   },
-                                                   {
-                                                   cycle
-                                                  .HandsSwingAngle,
-                                                   key.HandsSwingAngle
-                                                   },
-                                                   {
-                                                   cycle
-                                                  .HandsSwingPosVertical,
-                                                   key.HandsSwingAngle
-                                                   },
-                                                   {
-                                                   cycle.FrontPawAngle,
-                                                   key.FrontPawAngle
-                                                   },
-                                                   {
-                                                   cycle
-                                                  .FrontPawPositionX,
-                                                   key.FrontPawPositionX
-                                                   },
-                                                   {
-                                                   cycle
-                                                  .FrontPawPositionZ,
-                                                   key.FrontPawPositionZ
-                                                   }
+            {
+                {cycle.HeadAngleX, key.HeadAngleX },
+                {cycle.HeadOffsetZ, key.HeadOffsetZ },
+                {
+                    cycle.ShoulderOffsetHorizontalX,
+                    key.ShoulderOffsetHorizontalX
+                },
+                {
+                    cycle.HipOffsetHorizontalX,
+                    key.HipOffsetHorizontalX
+                },
+                {
+                    cycle.BodyAngleVertical,
+                    key.BodyAngleVertical
+                },
+                {
+                    cycle.BodyOffsetZ,
+                    key.BodyOffsetZ
+                },
+                {
+                    cycle.FootAngle,
+                    key.FootAngle
+                },
+                {
+                    cycle.FootPositionX,
+                    key.FootPositionX
+                },
+                {
+                    cycle.FootPositionZ,
+                    key.FootPositionZ
+                },
+                {
+                    cycle.HandsSwingAngle,
+                    key.HandsSwingAngle
+                },
+                {
+                    cycle.HandsSwingPosVertical,
+                    key.HandsSwingAngle
+                },
+                {
+                    cycle.FrontPawAngle,
+                    key.FrontPawAngle
+                },
+                {
+                    cycle.FrontPawPositionX,
+                    key.FrontPawPositionX
+                },
+                {
+                    cycle.FrontPawPositionZ,
+                    key.FrontPawPositionZ
+                }
 
-                                                   // { cycle.BodyOffsetVerticalZ, key.BodyOffsetVerticalZ },
+                // { cycle.BodyOffsetVerticalZ, key.BodyOffsetVerticalZ },
 
-                                                   // { cycle.FootPositionVerticalZ, key.FootPositionVerticalZ },
+                // { cycle.FootPositionVerticalZ, key.FootPositionVerticalZ },
 
-                                                   // { cycle.HandsSwingPosVertical, key.HandsSwingPosVertical },
-                                                   // {
-                                                   // cycle.FrontPawPositionVerticalZ,
-                                                   // key.FrontPawPositionVerticalZ
-                                                   // }
-                                                   };
+                // { cycle.HandsSwingPosVertical, key.HandsSwingPosVertical },
+                // {
+                // cycle.FrontPawPositionVerticalZ,
+                // key.FrontPawPositionVerticalZ
+                // }
+            };
 
             foreach (KeyValuePair<SimpleCurve, float?> pair in dict)
             {
@@ -345,78 +343,78 @@ namespace FacialStuff
             }
 
             Dictionary<SimpleCurve, float?> dict = new Dictionary<SimpleCurve, float?>
-                                                   {
-                                                   {
-                                                   cycle.ShoulderOffsetHorizontalX,
-                                                   key.ShoulderOffsetHorizontalX
-                                                   },
-                                                   {
-                                                   cycle.HipOffsetHorizontalX,
-                                                   key.HipOffsetHorizontalX
-                                                   },
-                                                   {
-                                                   cycle.BodyAngle,
-                                                   key.BodyAngle
-                                                   },
-                                                   {
-                                                   cycle.BodyAngleVertical,
-                                                   key.BodyAngleVertical
-                                                   },
-                                                   {
-                                                   cycle.BodyOffsetZ,
-                                                   key.BodyOffsetZ
-                                                   },
-                                                   {
-                                                   cycle.FootAngle,
-                                                   key.FootAngle
-                                                   },
-                                                   {
-                                                   cycle.FootPositionX,
-                                                   key.FootPositionX
-                                                   },
-                                                   {
-                                                   cycle.FootPositionZ,
-                                                   key.FootPositionZ
-                                                   },
-                                                   {
-                                                   cycle.HandPositionX,
-                                                   key.HandPositionX
-                                                   },
-                                                   {
-                                                   cycle.HandPositionZ,
-                                                   key.HandPositionZ
-                                                   },
-                                                   {
-                                                   cycle.HandsSwingAngle,
-                                                   key.HandsSwingAngle
-                                                   },
-                                                   {
-                                                   cycle.HandsSwingPosVertical,
-                                                   key.HandsSwingAngle
-                                                   },
-                                                   {
-                                                   cycle.FrontPawAngle,
-                                                   key.FrontPawAngle
-                                                   },
-                                                   {
-                                                   cycle.FrontPawPositionX,
-                                                   key.FrontPawPositionX
-                                                   },
-                                                   {
-                                                   cycle.FrontPawPositionZ,
-                                                   key.FrontPawPositionZ
-                                                   }
+            {
+                {
+                    cycle.ShoulderOffsetHorizontalX,
+                    key.ShoulderOffsetHorizontalX
+                },
+                {
+                    cycle.HipOffsetHorizontalX,
+                    key.HipOffsetHorizontalX
+                },
+                {
+                    cycle.BodyAngle,
+                    key.BodyAngle
+                },
+                {
+                    cycle.BodyAngleVertical,
+                    key.BodyAngleVertical
+                },
+                {
+                    cycle.BodyOffsetZ,
+                    key.BodyOffsetZ
+                },
+                {
+                    cycle.FootAngle,
+                    key.FootAngle
+                },
+                {
+                    cycle.FootPositionX,
+                    key.FootPositionX
+                },
+                {
+                    cycle.FootPositionZ,
+                    key.FootPositionZ
+                },
+                {
+                    cycle.HandPositionX,
+                    key.HandPositionX
+                },
+                {
+                    cycle.HandPositionZ,
+                    key.HandPositionZ
+                },
+                {
+                    cycle.HandsSwingAngle,
+                    key.HandsSwingAngle
+                },
+                {
+                    cycle.HandsSwingPosVertical,
+                    key.HandsSwingAngle
+                },
+                {
+                    cycle.FrontPawAngle,
+                    key.FrontPawAngle
+                },
+                {
+                    cycle.FrontPawPositionX,
+                    key.FrontPawPositionX
+                },
+                {
+                    cycle.FrontPawPositionZ,
+                    key.FrontPawPositionZ
+                }
 
-                                                   // { cycle.BodyOffsetVerticalZ, key.BodyOffsetVerticalZ },
+                // { cycle.BodyOffsetVerticalZ, key.BodyOffsetVerticalZ },
 
-                                                   // { cycle.FootPositionVerticalZ, key.FootPositionVerticalZ },
+                // { cycle.FootPositionVerticalZ, key.FootPositionVerticalZ },
 
-                                                   // { cycle.HandsSwingPosVertical, key.HandsSwingPosVertical },
-                                                   // {
-                                                   // cycle.FrontPawPositionVerticalZ,
-                                                   // key.FrontPawPositionVerticalZ
-                                                   // }
-                                                   };
+                // { cycle.HandsSwingPosVertical, key.HandsSwingPosVertical },
+                // {
+                // cycle.FrontPawPositionVerticalZ,
+                // key.FrontPawPositionVerticalZ
+                // }
+            };
 
             foreach (KeyValuePair<SimpleCurve, float?> pair in dict)
             {
@@ -498,8 +496,16 @@ namespace FacialStuff
             // ReSharper disable once PossibleNullReferenceException
             foreach (WeaponExtensionDef weaponExtensionDef in DefDatabase<WeaponExtensionDef>.AllDefsListForReading)
             {
-                ThingDef thingDef = ThingDef.Named(weaponExtensionDef.weapon);
+                ThingDef thingDef;
+                try
+                {
+                    thingDef = ThingDef.Named(weaponExtensionDef.weapon);
 
+                }
+                catch
+                {
+                    continue;
+                }
                 if (thingDef == null)
                 {
                     continue;
@@ -563,15 +569,17 @@ namespace FacialStuff
                             continue;
                         }
 
-                        CompProperties_BodyAnimator animator = new CompProperties_BodyAnimator
+                        CompProperties_BodyAnimator bodyAnimator = new CompProperties_BodyAnimator
                         {
                             compClass = typeof(CompBodyAnimator),
                             bodyDrawers = pawnSets.bodyDrawers,
                             handType = pawnSets.handType,
+                            // footType = pawnSets.footType,
+                            // pawType = pawnSets.pawType,
                             quadruped = pawnSets.quadruped,
                             bipedWithHands = pawnSets.bipedWithHands
                         };
-                        thingDef.comps?.Add(animator);
+                        thingDef.comps?.Add(bodyAnimator);
                     }
                 }
             }
@@ -602,16 +610,18 @@ namespace FacialStuff
                     continue;
                 }
 
-                CompProperties_BodyAnimator animator = new CompProperties_BodyAnimator
+                CompProperties_BodyAnimator bodyAnimator = new CompProperties_BodyAnimator
                 {
                     compClass = typeof(CompBodyAnimator),
                     bodyDrawers = def.bodyDrawers,
                     handType = def.handType,
+                    // footType = def.footType,
+                    // pawType = def.pawType,
                     quadruped = def.quadruped,
                     bipedWithHands = def.bipedWithHands
                 };
 
-                thingDef.comps?.Add(animator);
+                thingDef.comps?.Add(bodyAnimator);
             }
         }
 

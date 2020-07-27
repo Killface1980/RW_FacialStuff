@@ -2,6 +2,8 @@
 // ReSharper disable InconsistentNaming
 // ReSharper disable StyleCop.SA1401
 // ReSharper disable FieldCanBeMadeReadOnly.Global
+
+
 using JetBrains.Annotations;
 
 // ReSharper disable UnassignedField.Global

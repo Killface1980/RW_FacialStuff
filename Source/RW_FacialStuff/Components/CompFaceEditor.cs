@@ -2,6 +2,7 @@
 
 namespace FacialStuff
 {
+    using FacialStuff.Harmony;
     using System;
     using System.Collections.Generic;
 
@@ -16,6 +17,12 @@ namespace FacialStuff
 
             List<FloatMenuOption> list = new List<FloatMenuOption>();
             {
+                if (selPawn.IsChild())
+                {
+                    FloatMenuOption item = new FloatMenuOption("Pawn must be at least 18 with CSL activated.", null);
+                    return new List<FloatMenuOption> { item };
+                }
+                
                 if (!selPawn.CanReserve(styler))
                 {
                     FloatMenuOption item = new FloatMenuOption("CannotUseReserved".Translate(), null);
@@ -36,7 +43,7 @@ namespace FacialStuff
                     return new List<FloatMenuOption> { item3 };
                 }
 
-                if (selPawn.GetCompFace(out CompFace compFace) && compFace.Deactivated)
+                if (selPawn.GetCompFace(out CompFace compFace) && selPawn.GetCompAnim().Deactivated)
                 {
                     FloatMenuOption item4 = new FloatMenuOption(
                         "FacialStuffEditor.CannotUseShouldNotRender".Translate(selPawn),

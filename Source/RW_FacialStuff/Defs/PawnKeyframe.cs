@@ -5,6 +5,8 @@ namespace FacialStuff.Defs
     {
         #region Public Fields
 
+        public float? HeadAngleX;
+        public float? HeadOffsetZ;
         public float? BodyAngle;
         public float? BodyAngleVertical;
 

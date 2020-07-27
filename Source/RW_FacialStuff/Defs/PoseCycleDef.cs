@@ -10,7 +10,6 @@ using FacialStuff.Defs;
 using JetBrains.Annotations;
 using System.Collections.Generic;
 using Verse;
-using Verse.AI;
 
 namespace RimWorld
 {
@@ -18,6 +17,7 @@ namespace RimWorld
     {
         #region Public Fields
 
+        public List<DefHyperlink> descriptionHyperlinks = new List<DefHyperlink>();
         [NotNull]
         public string WalkCycleType;
 
@@ -75,7 +75,7 @@ namespace RimWorld
         [NotNull]
         public SimpleCurve HipOffsetHorizontalX = new SimpleCurve();
 
-        public LocomotionUrgency locomotionUrgency = LocomotionUrgency.None;
+        public PawnPosture pawnPosture = PawnPosture.Standing;
         public string PoseCycleType;
 
         #endregion Public Fields
