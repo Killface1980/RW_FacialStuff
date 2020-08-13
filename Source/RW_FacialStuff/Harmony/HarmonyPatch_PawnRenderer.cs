@@ -492,44 +492,45 @@ namespace FacialStuff.Harmony
 
             return false;
         }
-    private static float GetBodysizeScaling(float bodySizeFactor, Pawn pawn)
-    {
-    float num = bodySizeFactor;
-    float num2 = 1f;
-        try
-    {
-        int curLifeStageIndex = pawn.ageTracker.CurLifeStageIndex;
-        int num3 = pawn.RaceProps.lifeStageAges.Count - 1;
-        LifeStageAge val = pawn.RaceProps.lifeStageAges[curLifeStageIndex];
-        if (num3 == curLifeStageIndex && curLifeStageIndex != 0 && bodySizeFactor != 1f)
+
+        private static float GetBodysizeScaling(float bodySizeFactor, Pawn pawn)
         {
-            LifeStageAge val2 = pawn.RaceProps.lifeStageAges[curLifeStageIndex - 1];
-            num = val2.def.bodySizeFactor + (float)Math.Round((val.def.bodySizeFactor - val2.def.bodySizeFactor) / (val.minAge - val2.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val2.minAge), 2);
-        }
-        else if (num3 == curLifeStageIndex)
+        float num = bodySizeFactor;
+        float num2 = 1f;
+            try
         {
-            num = bodySizeFactor;
+            int curLifeStageIndex = pawn.ageTracker.CurLifeStageIndex;
+            int num3 = pawn.RaceProps.lifeStageAges.Count - 1;
+            LifeStageAge val = pawn.RaceProps.lifeStageAges[curLifeStageIndex];
+            if (num3 == curLifeStageIndex && curLifeStageIndex != 0 && bodySizeFactor != 1f)
+            {
+                LifeStageAge val2 = pawn.RaceProps.lifeStageAges[curLifeStageIndex - 1];
+                num = val2.def.bodySizeFactor + (float)Math.Round((val.def.bodySizeFactor - val2.def.bodySizeFactor) / (val.minAge - val2.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val2.minAge), 2);
+            }
+            else if (num3 == curLifeStageIndex)
+            {
+                num = bodySizeFactor;
+            }
+            else if (curLifeStageIndex == 0)
+            {
+                LifeStageAge val3 = pawn.RaceProps.lifeStageAges[curLifeStageIndex + 1];
+                num = val.def.bodySizeFactor + (float)Math.Round((val3.def.bodySizeFactor - val.def.bodySizeFactor) / (val3.minAge - val.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val.minAge), 2);
+            }
+            else
+            {
+                LifeStageAge val3 = pawn.RaceProps.lifeStageAges[curLifeStageIndex + 1];
+                num = val.def.bodySizeFactor + (float)Math.Round((val3.def.bodySizeFactor - val.def.bodySizeFactor) / (val3.minAge - val.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val.minAge), 2);
+            }
+            if (pawn.RaceProps.baseBodySize > 0f)
+            {
+                num2 = pawn.RaceProps.baseBodySize;
+            }
         }
-        else if (curLifeStageIndex == 0)
+        catch
         {
-            LifeStageAge val3 = pawn.RaceProps.lifeStageAges[curLifeStageIndex + 1];
-            num = val.def.bodySizeFactor + (float)Math.Round((val3.def.bodySizeFactor - val.def.bodySizeFactor) / (val3.minAge - val.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val.minAge), 2);
         }
-        else
-        {
-            LifeStageAge val3 = pawn.RaceProps.lifeStageAges[curLifeStageIndex + 1];
-            num = val.def.bodySizeFactor + (float)Math.Round((val3.def.bodySizeFactor - val.def.bodySizeFactor) / (val3.minAge - val.minAge) * (pawn.ageTracker.AgeBiologicalYearsFloat - val.minAge), 2);
+        return num * num2;
         }
-        if (pawn.RaceProps.baseBodySize > 0f)
-        {
-            num2 = pawn.RaceProps.baseBodySize;
-        }
-    }
-    catch
-    {
-    }
-    return num * num2;
-    }
     }
 
     /*
