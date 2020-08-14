@@ -97,10 +97,7 @@
     <Compile Include="Animator\BodyAnimator.cs" />
     <None Include="Components\CompHumanFace.cs" />
     <None Include="Controller_Animator.cs" />
-    <None Include="Components\Class1.cs" />
-    <Compile Include="Components\Skeletoon\CompPropertiesSkeleton.cs" />
     <Compile Include="Components\Skeletoon\FS_Skeleton.cs" />
-    <Compile Include="Components\Skeletoon\CompSkeleton.cs" />
     <None Include="DefOfs\ExtremityDefOf.cs" />
     <Compile Include="DefOfs\EarDefOf.cs" />
     <Compile Include="DefOfs\EyeDefOf.cs" />
@@ -112,10 +109,6 @@
     <Compile Include="GraphicsFS\Graphic_Multi_NaturalEyes - Kopieren.cs" />
     <Compile Include="Harmony\HarmonyPatchesFS.cs" />
     <Compile Include="Harmony\HarmonyPatch_PawnRenderer.cs" />
-    <None Include="Harmony\Optional\Harmony_Werewolf.cs" />
-    <None Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
-    <None Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
-    <None Include="Harmony\Optional\Werewolf_Patches.cs" />
     <Compile Include="Tweener\TinyTween.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />
