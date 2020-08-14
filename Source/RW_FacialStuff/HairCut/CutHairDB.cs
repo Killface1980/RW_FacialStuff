@@ -48,7 +48,7 @@ namespace FacialStuff.HairCut
         public static Graphic Get<T>(string path, Shader shader, Vector2 drawSize, Color color, HeadCoverage coverage)
             where T : Graphic, new()
         {
-                        // Added second 'color' to get a separate graphic
+            // Added second 'color' to get a separate graphic
             GraphicRequest req = new GraphicRequest(typeof(T), path, shader, drawSize, color, color, null, 0, new List<ShaderParameter>());
             return GetInner<T>(req, coverage);
         }
@@ -74,7 +74,7 @@ namespace FacialStuff.HairCut
             {
                 for (int y = 0; y < hairTex.height; y++)
                 {
-                    Color maskColor = maskTex.GetPixel(x, y);
+                    Color maskColor = maskTex.GetPixelBilinear((float)x / hairTex.width, (float)y / hairTex.height);
                     Color hairColor = hairTex.GetPixel(x, y);
 
                     Color finalColor1 = hairColor * maskColor;
