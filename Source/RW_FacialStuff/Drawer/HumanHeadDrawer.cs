@@ -52,7 +52,7 @@ namespace FacialStuff
                 verHeadOffset += animator.BodyAnim.headOffset.y;
             }
 
-            switch (this.BodyFacing.AsInt)
+            switch(this.HeadFacing.AsInt)
             {
                 case 0:
                     offset = new Vector3(0f, 0f, verHeadOffset);
