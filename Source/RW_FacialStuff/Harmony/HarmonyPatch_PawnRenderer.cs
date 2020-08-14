@@ -310,7 +310,7 @@ namespace FacialStuff.Harmony
 
                 if (!hasFace)
                 {
-                    Material material = graphics.HeadMatAt(headFacing, bodyDrawType, headStump);
+                    Material material = graphics.HeadMatAt_NewTemp(headFacing, bodyDrawType, headStump);
                     if (material != null)
                     {
                         Mesh mesh2 = MeshPool.humanlikeHeadSet.MeshAt(headFacing);

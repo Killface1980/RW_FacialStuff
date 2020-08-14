@@ -98,7 +98,7 @@ namespace FacialStuff
             bool portrait,
             out bool headDrawn)
         {
-            Material headMaterial = this.Graphics.HeadMatAt(this.HeadFacing, bodyDrawType, headStump);
+            Material headMaterial = this.Graphics.HeadMatAt_NewTemp(this.HeadFacing, bodyDrawType, headStump);
             if (headMaterial != null)
             {
                 GenDraw.DrawMeshNowOrLater(this.GetPawnMesh(false, portrait),
