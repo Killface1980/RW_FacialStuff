@@ -119,59 +119,6 @@ namespace FacialStuff.Harmony
             rootLoc = loc;
         }
 
-
-        /// <summary>
-        ///     Simple Circle to Circle intersection test.
-        /// </summary>
-        /// <param name="x0">Circle 0 X-position</param>
-        /// <param name="y0">Circle 0 Y-position</param>
-        /// <param name="radius0">Circle 0 Radius</param>
-        /// <param name="x1">Circle 1 X-position</param>
-        /// <param name="y1">Circle 1 Y-position</param>
-        /// <param name="radius1">Circle 1 Radius</param>
-        /// <returns>True if a intersection occured. False if not.</returns>
-        public static bool CircleIntersectionTest(float x0, float y0, float radius0, float x1, float y1, float radius1)
-        {
-            float radiusSum = radius0 * radius0 + radius1 * radius1;
-            float distance = (x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0);
-
-            // Intersection occured.
-            if (distance <= radiusSum)
-            {
-                return true;
-            }
-
-            // No intersection.
-            return false;
-        }
-
-        /// <summary>
-        ///     Gets all Pawns inside the supplied radius. If any.
-        /// </summary>
-        /// <param name="center">Radius center.</param>
-        /// <param name="map">Map to look in.</param>
-        /// <param name="radius">The radius from the center.</param>
-        /// <param name="targetPredicate">Optional predicate on each candidate.</param>
-        /// <returns>Matching Pawns inside the Radius.</returns>
-        public static IEnumerable<Pawn> GetPawnsInsideRadius(LocalTargetInfo center, Map map, float radius,
-                                                             Predicate<Pawn> targetPredicate)
-        {
-            //With no predicate, just grab everything.
-            if (targetPredicate == null)
-            {
-                targetPredicate = thing => true;
-            }
-
-            foreach (Pawn pawn in map.listerThings.ThingsInGroup(ThingRequestGroup.Pawn))
-            {
-                if (CircleIntersectionTest(pawn.Position.x, pawn.Position.y, 1f, center.Cell.x, center.Cell.y, radius)
-                 && targetPredicate(pawn))
-                {
-                    yield return pawn;
-                }
-            }
-        }
-
         // Original Facial Stuff's method of prefixing RenderPawnInternal and completely bypassing the original routine had 
         // compatibility issues with CombatExtended which modifies the existing routine.
         // Therefore, using a transpiler instead of prefix may be a better option.
@@ -430,7 +377,7 @@ namespace FacialStuff.Harmony
             {
                 // Rendererd pawn faces
 
-                Vector3 offsetAt = !hasFace
+                /*Vector3 offsetAt = !hasFace
                                    ? __instance.BaseHeadOffsetAt(bodyFacing)
                                    : compFace.BaseHeadOffsetAt(portrait, pawn);
 
@@ -547,7 +494,7 @@ namespace FacialStuff.Harmony
                                                  headQuat, hatInFrontOfFace);
 
                     compFace?.DrawAlienHeadAddons(headPos, portrait, headQuat, overHead);
-                }
+                }*/
 
             }
 
@@ -661,180 +608,4 @@ namespace FacialStuff.Harmony
         return num * num2;
         }
     }
-
-    /*
-    
-    [HarmonyPatch(
-        typeof(PawnRenderer),
-        "RenderPawnAt",
-        new[]
-            {
-                typeof(Vector3), typeof( RotDrawMode), typeof(bool)
-            })]
-    [HarmonyBefore("com.showhair.rimworld.mod")]
-    public static class HarmonyPatch_RenderPawnAt
-    {
-
-
-        public const float YOffset_Head = 0.02734375f;
-
-        private const float YOffset_OnHead = 0.03125f;
-
-
-        private const float YOffset_Shell = 0.0234375f;
-
-        private const float YOffset_Status = 0.04296875f;
-
-        public const float YOffset_Wounds = 0.01953125f;
-
-        public const float YOffsetInterval_Clothes = 0.00390625f;
-
-
-        private static FieldInfo PawnHeadOverlaysFieldInfo;
-
-        private static Type PawnRendererType;
-
-        // private static FieldInfo PawnFieldInfo;
-        private static FieldInfo WoundOverlayFieldInfo;
-
-        public static bool Prefix(
-            PawnRenderer __instance, Vector3 drawLoc, RotDrawMode bodyDrawType, bool headStump)
-        {
-            GetReflections();
-            Pawn pawn = __instance.graphics.pawn;
-            if (!__instance.graphics.AllResolved)
-            {
-                __instance.graphics.ResolveAllGraphics();
-            }
-            if (pawn.GetPosture() == PawnPosture.Standing)
-            {
-                __instance.RenderPawnInternal(drawLoc, 0f, true, bodyDrawType, headStump);
-                if (pawn.carryTracker != null)
-                {
-                    Thing carriedThing = pawn.carryTracker.CarriedThing;
-                    if (carriedThing != null)
-                    {
-                        Vector3 vector = drawLoc;
-                        bool flag = false;
-                        bool flip = false;
-                        if (pawn.CurJob == null || !pawn.jobs.curDriver.ModifyCarriedThingDrawPos(ref vector, ref flag, ref flip))
-                        {
-                            if (carriedThing is Pawn || carriedThing is Corpse)
-                            {
-                                vector += new Vector3(0.44f, 0f, 0f);
-                            }
-                            else
-                            {
-                                vector += new Vector3(0.18f, 0f, 0.05f);
-                            }
-                        }
-                        if (flag)
-                        {
-                            vector.y -= 0.0390625f;
-                        }
-                        else
-                        {
-                            vector.y += 0.0390625f;
-                        }
-                        carriedThing.DrawAt(vector, flip);
-                    }
-                }
-                if (pawn.def.race.specialShadowData != null)
-                {
-                    if (__instance.shadowGraphic == null)
-                    {
-                        __instance.shadowGraphic = new Graphic_Shadow(pawn.def.race.specialShadowData);
-                    }
-                    __instance.shadowGraphic.Draw(drawLoc, Rot4.North, pawn, 0f);
-                }
-                if (__instance.graphics.nakedGraphic != null && __instance.graphics.nakedGraphic.ShadowGraphic != null)
-                {
-                    __instance.graphics.nakedGraphic.ShadowGraphic.Draw(drawLoc, Rot4.North, pawn, 0f);
-                }
-            }
-            else
-            {
-                Rot4 rot = __instance.LayingFacing();
-                Building_Bed building_Bed = pawn.CurrentBed();
-                bool renderBody;
-                float angle;
-                Vector3 rootLoc;
-                if (building_Bed != null && pawn.RaceProps.Humanlike)
-                {
-                    renderBody = building_Bed.def.building.bed_showSleeperBody;
-                    Rot4 rotation = building_Bed.Rotation;
-                    rotation.AsInt += 2;
-                    angle = rotation.AsAngle;
-                    AltitudeLayer altLayer = (AltitudeLayer)Mathf.Max((int)building_Bed.def.altitudeLayer, 15);
-                    Vector3 vector2 = pawn.Position.ToVector3ShiftedWithAltitude(altLayer);
-                    Vector3 vector3 = vector2;
-                    vector3.y += 0.02734375f;
-                    float d = -__instance.BaseHeadOffsetAt(Rot4.South).z;
-                    Vector3 a = rotation.FacingCell.ToVector3();
-                    rootLoc = vector2 + a * d;
-                    rootLoc.y += 0.0078125f;
-                }
-                else
-                {
-                    renderBody = true;
-                    rootLoc = drawLoc;
-                    if (!pawn.Dead && pawn.CarriedBy == null)
-                    {
-                        rootLoc.y = Altitudes.AltitudeFor(AltitudeLayer.LayingPawn) + 0.0078125f;
-                    }
-                    if (pawn.Downed || pawn.Dead)
-                    {
-                        angle = __instance.wiggler.downedAngle;
-                    }
-                    else if (pawn.RaceProps.Humanlike)
-                    {
-                        angle = rot.AsAngle;
-                    }
-                    else
-                    {
-                        Rot4 rot2 = Rot4.West;
-                        int num = pawn.thingIDNumber % 2;
-                        if (num != 0)
-                        {
-                            if (num == 1)
-                            {
-                                rot2 = Rot4.East;
-                            }
-                        }
-                        else
-                        {
-                            rot2 = Rot4.West;
-                        }
-                        angle = rot2.AsAngle;
-                    }
-                }
-                __instance.RenderPawnInternal(rootLoc, angle, renderBody, rot, rot, bodyDrawType, false, headStump);
-            }
-            if (pawn.Spawned && !pawn.Dead)
-            {
-                pawn.stances.StanceTrackerDraw();
-                pawn.pather.PatherDraw();
-            }
-            __instance.DrawDebug();
-        }
-
-        private static void GetReflections()
-        {
-            if (PawnRendererType != null)
-            {
-                return;
-            }
-
-            PawnRendererType = typeof(PawnRenderer);
-
-            // PawnFieldInfo = PawnRendererType.GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
-            WoundOverlayFieldInfo = PawnRendererType.GetField(
-                "woundOverlays",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-            PawnHeadOverlaysFieldInfo = PawnRendererType.GetField(
-                "statusOverlays",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-        }
-    }
-    */
 }
