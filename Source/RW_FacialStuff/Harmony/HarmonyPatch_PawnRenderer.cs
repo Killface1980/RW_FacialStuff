@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using FacialStuff.AnimatorWindows;
@@ -185,8 +186,9 @@ namespace FacialStuff.Harmony
                 // In PawnRenderer.RenderPawnInternal from version 1.2.7528
                 // Before running the transpiler
                 ...
-                if (graphics.headGraphic != null)
+                if(graphics.headGraphic != null)
                 {
+                    Vector3 b = quaternion * BaseHeadOffsetAt(headFacing);
                     Material material = graphics.HeadMatAt_NewTemp(headFacing, bodyDrawType, headStump, portrait);
                     if (material != null)
                     {
@@ -197,12 +199,13 @@ namespace FacialStuff.Harmony
                 // After running the transpiler
 
                 ...
-                if (graphics.headGraphic != null)
+                if(graphics.headGraphic != null)
                 {
-                    if(!TryRenderFacialStuffFace(this))
+                    Vector3 b = quaternion * BaseHeadOffsetAt(headFacing);
+                    if(!HarmonyPatch_PawnRenderer.TryRenderFacialStuffFace(this, bodyDrawType, portrait, headStump, bodyFacing, headFacing, a, quaternion))
                     {
                         Material material = graphics.HeadMatAt_NewTemp(headFacing, bodyDrawType, headStump, portrait);
-                        if (material != null)
+                        if(material != null)
                         {
                             GenDraw.DrawMeshNowOrLater(MeshPool.humanlikeHeadSet.MeshAt(headFacing), a + b, quaternion, material, portrait);
                         }
@@ -244,17 +247,17 @@ namespace FacialStuff.Harmony
                         yield return new CodeInstruction(OpCodes.Ldarg_0);
                         // 2nd argument - RotDrawMode bodyDrawType
                         yield return new CodeInstruction(OpCodes.Ldarg_S, 6);
-                        // 3rd argument - bool headStump
-                        yield return new CodeInstruction(OpCodes.Ldarg_S, 8);
-                        // 4th argument - bool portrait
+                        // 3rd argument - bool portrait
                         yield return new CodeInstruction(OpCodes.Ldarg_S, 7);
+                        // 4th argument - bool headStump
+                        yield return new CodeInstruction(OpCodes.Ldarg_S, 8);
                         // 5th argument - Rot4 bodyFacing
                         yield return new CodeInstruction(OpCodes.Ldarg_S, 4);
                         // 6th argument - Rot4 headFacing
                         yield return new CodeInstruction(OpCodes.Ldarg_S, 5);
-                        // 7th argument - Vec3 headPos. This is the same as the local variable "a" in ILSpy decompilation
+                        // 7th argument - Vec3 headPos ("a")
                         yield return new CodeInstruction(OpCodes.Ldloc_3);
-                        // 8th argument - Quaternion bodyQuat
+                        // 8th argument - Quaternion bodyQuat ("quaternion")
                         yield return new CodeInstruction(OpCodes.Ldloc_0);
                         // Call TryRenderFacialStuffFace using the given arguments
                         yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatch_PawnRenderer), nameof(TryRenderFacialStuffFace)));
@@ -276,9 +279,9 @@ namespace FacialStuff.Harmony
         // Render Facial Stuff face if applicable. Returns true if Facial Stuff face was rendered, return false if vanilla behavior is desired.
         public static bool TryRenderFacialStuffFace(
             PawnRenderer pawnRenderer, 
-            RotDrawMode bodyDrawType, 
+            RotDrawMode bodyDrawType,
+            bool portrait,
             bool headStump, 
-            bool portrait, 
             Rot4 bodyFacing,
             Rot4 headFacing, 
             Vector3 headPos, 
@@ -288,77 +291,10 @@ namespace FacialStuff.Harmony
             Pawn pawn = graphics.pawn;
             CompFace compFace = pawn.GetCompFace();
 
-            if(compFace != null && !pawn.IsChild() && !pawn.GetCompAnim().Deactivated)
+            if(compFace != null)
             {
                 compFace.TickDrawers(bodyFacing, headFacing, graphics);
-                Vector3 headBaseOffset = compFace.BaseHeadOffsetAt(portrait, pawn);
-                Vector3 headPosOffset = bodyQuat * headBaseOffset;
-                Vector3 headDrawLoc = headPos + headPosOffset;
-                // headQuat is modified by body animation originally, but body anim is disabled for now
-                Quaternion headQuat = bodyQuat;
-                compFace.DrawBasicHead(out bool headDrawn, bodyDrawType, portrait, headStump, headDrawLoc, headQuat);
-                if(headDrawn)
-                {
-                    if(bodyDrawType != RotDrawMode.Dessicated && !headStump)
-                    {
-                        if(compFace.Props.hasWrinkles)
-                        {
-                            Vector3 wrinkleLoc = headDrawLoc;
-                            wrinkleLoc.y += YOffset_Wrinkles;
-                            compFace.DrawWrinkles(bodyDrawType, wrinkleLoc, headQuat, portrait);
-                        }
-
-                        if(compFace.Props.hasEyes)
-                        {
-                            Vector3 eyeLoc = headDrawLoc;
-                            eyeLoc.y += YOffset_Eyes;
-
-                            compFace.DrawNaturalEyes(eyeLoc, portrait, headQuat);
-
-                            Vector3 browLoc = headDrawLoc;
-                            browLoc.y += YOffset_Brows;
-                            // the brow above
-                            compFace.DrawBrows(browLoc, headQuat, portrait);
-
-                            // and now the added eye parts
-                            Vector3 unnaturalEyeLoc = headDrawLoc;
-                            unnaturalEyeLoc.y += YOffset_UnnaturalEyes;
-                            compFace.DrawUnnaturalEyeParts(unnaturalEyeLoc, headQuat, portrait);
-                        }
-                        if(compFace.Props.hasEars && Controller.settings.Develop)
-                        {
-                            Vector3 earLor = headDrawLoc;
-                            earLor.y += YOffset_Eyes;
-
-                            compFace.DrawNaturalEars(earLor, portrait, headQuat);
-
-                            // and now the added ear parts
-                            Vector3 drawLoc = headDrawLoc;
-                            drawLoc.y += YOffset_UnnaturalEyes;
-                            compFace.DrawUnnaturalEarParts(drawLoc, headQuat, portrait);
-                        }
-
-                        // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
-                        if(compFace.Props.hasBeard)
-                        {
-                            Vector3 beardLoc = headDrawLoc;
-                            Vector3 tacheLoc = headDrawLoc;
-
-                            beardLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Beard : YOffset_Beard;
-                            tacheLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Tache : YOffset_Tache;
-
-                            compFace.DrawBeardAndTache(beardLoc, tacheLoc, portrait, headQuat);
-                        }
-
-                        if(compFace.Props.hasMouth)
-                        {
-                            Vector3 mouthLoc = headDrawLoc;
-                            mouthLoc.y += YOffset_Mouth;
-                            compFace.DrawNaturalMouth(mouthLoc, portrait, headQuat);
-                        }
-                    }
-                }
-                return true;
+                return compFace.DrawHead(bodyDrawType, portrait, headStump, bodyFacing, headFacing, headPos, bodyQuat);
             }
             return false;
         }

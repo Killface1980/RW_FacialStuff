@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using FacialStuff.Harmony;
 using UnityEngine;
 using Verse;
+using static FacialStuff.Offsets;
 
 namespace FacialStuff
 {
@@ -127,6 +128,122 @@ namespace FacialStuff
         #endregion Private Properties
 
         #region Public Methods
+                
+        // Return true if head was drawn. False if not.
+        public bool DrawHead(
+            RotDrawMode bodyDrawType, 
+            bool portrait, 
+            bool headStump,
+            Rot4 bodyFacing, 
+            Rot4 headFacing,
+            Vector3 headPos,
+            Quaternion bodyQuat)
+        {
+            if(!PawnHeadDrawers.Any() || Pawn.IsChild() || Pawn.GetCompAnim().Deactivated)
+			{
+                return false;
+			}
+            // TODO: Not sure why BaseHeadoffsetAt needs to pass Pawn. Investigate
+            Vector3 headBaseOffset = BaseHeadOffsetAt(portrait, Pawn);
+            Vector3 headPosOffset = bodyQuat * headBaseOffset;
+            Vector3 headDrawLoc = headPos + headPosOffset;
+            // headQuat is modified by body animation originally, but body anim is disabled for now
+            Quaternion headQuat = bodyQuat;
+            bool headDrawn = false;
+            // Draw head
+            foreach(var headDrawer in PawnHeadDrawers)
+            {
+                headDrawer.DrawBasicHead(
+                    headDrawLoc,
+                    headQuat,
+                    bodyDrawType,
+                    headStump,
+                    portrait,
+                    out bool headDrawnTemp);
+                headDrawn |= headDrawnTemp;
+            }
+            if(headDrawn)
+            {
+                if(bodyDrawType != RotDrawMode.Dessicated && !headStump)
+                {
+                    if(Props.hasWrinkles)
+                    {
+                        Vector3 wrinkleLoc = headDrawLoc;
+                        wrinkleLoc.y += YOffset_Wrinkles;
+                        // Draw wrinkles
+                        foreach(var headDrawer in PawnHeadDrawers)
+                        {
+                            headDrawer.DrawWrinkles(wrinkleLoc, bodyDrawType, headQuat, portrait);
+                        }
+                    }
+                    if(Props.hasEyes)
+                    {
+                        Vector3 eyeLoc = headDrawLoc;
+                        eyeLoc.y += YOffset_Eyes;
+                        // Draw natural eyes
+                        foreach(var headDrawer in PawnHeadDrawers)
+                        {
+                            headDrawer.DrawNaturalEyes(eyeLoc, headQuat, portrait);
+                        }
+                        Vector3 browLoc = headDrawLoc;
+                        browLoc.y += YOffset_Brows;
+                        // Draw brows above eyes
+                        foreach(var headDrawer in PawnHeadDrawers)
+                        {
+                            headDrawer.DrawBrows(browLoc, headQuat, portrait);
+                        }
+                        // Draw added eye parts on top of natural eyes
+                        Vector3 unnaturalEyeLoc = headDrawLoc;
+                        unnaturalEyeLoc.y += YOffset_UnnaturalEyes;
+                        foreach(var headDrawer in PawnHeadDrawers)
+                        {
+                            headDrawer.DrawUnnaturalEyeParts(unnaturalEyeLoc, headQuat, portrait);
+                        }
+                    }
+                    if(Props.hasEars && Controller.settings.Develop)
+                    {
+                        Vector3 earLoc = headDrawLoc;
+                        earLoc.y += YOffset_Eyes;
+                        // Draw natural ears
+                        foreach(var headDrawer in PawnHeadDrawers)
+                        {
+                            headDrawer.DrawNaturalEyes(earLoc, headQuat, portrait);
+                        }
+                        // Draw added ears on top of natural ears
+                        Vector3 addedEarLoc = headDrawLoc;
+                        addedEarLoc.y += YOffset_UnnaturalEyes;
+                        foreach(var headDrawer in PawnHeadDrawers)
+                        {
+                            headDrawer.DrawUnnaturalEarParts(addedEarLoc, headQuat, portrait);
+                        }
+                    }
+                    // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
+                    if(Props.hasBeard)
+                    {
+                        Vector3 beardLoc = headDrawLoc;
+                        Vector3 tacheLoc = headDrawLoc;
+                        beardLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Beard : YOffset_Beard;
+                        tacheLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Tache : YOffset_Tache;
+                        // Draw beard and mustache
+                        foreach(var headDrawer in PawnHeadDrawers)
+                        {
+                            headDrawer.DrawBeardAndTache(beardLoc, tacheLoc, headQuat, portrait);
+                        }
+                    }
+                    if(Props.hasMouth)
+                    {
+                        Vector3 mouthLoc = headDrawLoc;
+                        mouthLoc.y += YOffset_Mouth;
+                        // Draw natural mouth
+                        foreach(var headDrawer in PawnHeadDrawers)
+                        {
+                            headDrawer.DrawNaturalMouth(mouthLoc, headQuat, portrait);
+                        }
+                    }
+                }
+            }
+            return headDrawn;
+        }
 
         public void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
         {
@@ -332,62 +449,6 @@ namespace FacialStuff
             }
         }
 
-        public void DrawBasicHead(out bool headDrawn, RotDrawMode bodyDrawType, bool portrait, bool headStump,
-                                  Vector3 drawLoc, Quaternion headQuat)
-        {
-            headDrawn = false;
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i].DrawBasicHead(
-                    drawLoc,
-                    headQuat,
-                    bodyDrawType,
-                    headStump,
-                    portrait,
-                    out headDrawn);
-                i++;
-            }
-        }
-
-        public void DrawBeardAndTache(Vector3 beardLoc, Vector3 tacheLoc, bool portrait, Quaternion headQuat)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i].DrawBeardAndTache(beardLoc, tacheLoc, headQuat, portrait);
-                i++;
-            }
-        }
-
-        public void DrawBrows(Vector3 drawLoc, Quaternion headQuat, bool portrait)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i]?.DrawBrows(drawLoc, headQuat, portrait);
-                i++;
-            }
-        }
-
         public void DrawHairAndHeadGear(Vector3 hairLoc, Vector3 headgearLoc, RotDrawMode bodyDrawType,
                                         bool portrait, bool renderBody, Quaternion headQuat,
                                         Vector3 hatInFrontOfFace)
@@ -405,7 +466,7 @@ namespace FacialStuff
                 i++;
             }
         }
-
+        
         // public void SetFaceRender(bool portrait, Quaternion headQuat, Rot4 headFacing, bool renderBody, PawnGraphicSet graphics)
         // {
         // this.portrait = portrait;
@@ -429,101 +490,7 @@ namespace FacialStuff
                 i++;
             }
         }
-
-        public void DrawNaturalEyes(Vector3 drawLoc, bool portrait, Quaternion headQuat)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i]?.DrawNaturalEyes(drawLoc, headQuat, portrait);
-                i++;
-            }
-        }
-        public void DrawNaturalEars(Vector3 drawLoc, bool portrait, Quaternion headQuat)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i]?.DrawNaturalEars(drawLoc, headQuat, portrait);
-                i++;
-            }
-        }
-
-        public void DrawNaturalMouth(Vector3 drawLoc, bool portrait, Quaternion headQuat)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i]?.DrawNaturalMouth(drawLoc, headQuat, portrait);
-                i++;
-            }
-        }
-
-        public void DrawUnnaturalEyeParts(Vector3 locFacialY, Quaternion headQuat, bool portrait)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i]?.DrawUnnaturalEyeParts(locFacialY, headQuat, portrait);
-                i++;
-            }
-        }
-        public void DrawUnnaturalEarParts(Vector3 locFacialY, Quaternion headQuat, bool portrait)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i]?.DrawUnnaturalEarParts(locFacialY, headQuat, portrait);
-                i++;
-            }
-        }
-
-        public void DrawWrinkles(RotDrawMode bodyDrawType, Vector3 drawLoc, Quaternion headQuat, bool portrait)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i]?.DrawWrinkles(drawLoc, bodyDrawType, headQuat, portrait);
-                i++;
-            }
-        }
-
+                
         // TODO: Remove or make usable
         // public void DefineSkinDNA()
         // {
