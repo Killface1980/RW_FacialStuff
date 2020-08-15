@@ -17,16 +17,6 @@
       <li Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName = "Human"]/comps</xpath>
         <value>
-          <li Class = "FacialStuff.CompProperties_BodyAnimator">
-            <!--needed for everything with hands-->
-            <bipedWithHands>true</bipedWithHands>
-            <!--which hand texture?-->
-            <handType>Human</handType>
-            <!--custom drawers can be used here-->
-            <bodyDrawers>
-              <li Class ="FacialStuff.HumanBipedDrawer"/>
-            </bodyDrawers>
-          </li>
           <li Class = "FacialStuff.CompProperties_Face">
             <!--if false, vanilla heads are used, otherwise the FS blank texture is used-->
             <needsBlankHumanHead>true</needsBlankHumanHead>
