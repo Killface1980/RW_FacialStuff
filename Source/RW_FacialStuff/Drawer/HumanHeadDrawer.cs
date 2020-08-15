@@ -42,36 +42,33 @@ namespace FacialStuff
         {
             Pawn pawn = this.Pawn;
             Vector2 headOffset = pawn.story.bodyType.headOffset;
-            float horHeadOffset = headOffset.x;
-            float verHeadOffset = headOffset.y;
 
             CompBodyAnimator animator = this.CompAnimator;
             if (animator.BodyAnim != null)
             {
-                horHeadOffset += animator.BodyAnim.headOffset.x;
-                verHeadOffset += animator.BodyAnim.headOffset.y;
+                headOffset += animator.BodyAnim.headOffset;
             }
 
             switch(this.HeadFacing.AsInt)
             {
                 case 0:
-                    offset = new Vector3(0f, 0f, verHeadOffset);
+                    offset = new Vector3(0f, 0f, headOffset.y);
                     break;
 
                 case 1:
-                    offset = new Vector3(horHeadOffset, 0f, verHeadOffset);
+                    offset = new Vector3(headOffset.x, 0f, headOffset.y);
                     break;
 
                 case 2:
-                    offset = new Vector3(0f, 0f, verHeadOffset);
+                    offset = new Vector3(0f, 0f, headOffset.y);
                     break;
 
                 case 3:
-                    offset = new Vector3(-horHeadOffset, 0f, verHeadOffset);
+                    offset = new Vector3(-headOffset.x, 0f, headOffset.y);
                     break;
 
                 default:
-                    Log.Error("BaseHeadOffsetAt error in " + pawn);
+                    Log.Error("Facial Stuff: BaseHeadOffsetAt error in " + pawn);
                     offset = Vector3.zero;
                     return;
             }
@@ -180,7 +177,8 @@ namespace FacialStuff
 
             if (!headgearGraphics.NullOrEmpty())
             {
-                bool filterHeadgear = portrait && Prefs.HatsOnlyOnMap || !portrait && noRenderRoofed;
+                // If true, forced to not render hat even though wearing it
+                bool filterHeadgear = (portrait && Prefs.HatsOnlyOnMap) || (!portrait && noRenderRoofed);
 
                 // Draw regular hair if appparel or environment allows it (FS feature)
                 if (bodyDrawType != RotDrawMode.Dessicated)
@@ -254,6 +252,7 @@ namespace FacialStuff
                     return;
                 }
 
+                // Render headwears
                 for (int index = 0; index < headgearGraphics?.Count; index++)
                 {
                     ApparelGraphicRecord headgearGraphic = headgearGraphics[index];
