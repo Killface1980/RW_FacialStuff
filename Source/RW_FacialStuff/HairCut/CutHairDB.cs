@@ -135,30 +135,13 @@ namespace FacialStuff.HairCut
 
                 if (coverage == HeadCoverage.UpperHead)
                 {
-                    if (temptexturefront.width == 256)
-                    {
-                        _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack256;
-                        _maskTexSide = FaceTextures.MaskTexUpperheadSide256;
-                    }
-                    else
-                    {
-                        _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack;
-                        _maskTexSide = FaceTextures.MaskTexUpperheadSide;
-                    }
+                    _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack;
+                    _maskTexSide = FaceTextures.MaskTexUpperheadSide;
                 }
                 else
                 {
-                    if (temptexturefront.width == 256)
-                    {
-                        _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack256;
-                        _maskTexSide = FaceTextures.MaskTexFullheadSide256;
-
-                    }
-                    else
-                    {
-                        _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack;
-                        _maskTexSide = FaceTextures.MaskTexFullheadSide;
-                    }
+                    _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack;
+                    _maskTexSide = FaceTextures.MaskTexFullheadSide;
                 }
 
 
@@ -231,16 +214,8 @@ namespace FacialStuff.HairCut
 
                         string upperPath = path + "_Upperhead";
                         
-                            if (temptexturefront.width == 256)
-                            {
-                                _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack256;
-                                _maskTexSide = FaceTextures.MaskTexUpperheadSide256;
-                            }
-                            else
-                            {
-                                _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack;
-                                _maskTexSide = FaceTextures.MaskTexUpperheadSide;
-                            }
+                        _maskTexFrontBack = FaceTextures.MaskTexUppherheadFrontBack;
+                        _maskTexSide = FaceTextures.MaskTexUpperheadSide;
                         
 
                         CutOutHair(_maskTexFrontBack, _maskTexSide, upperPath, ref temptexturefront, ref temptextureside, ref temptextureback, ref temptextureside2);
@@ -249,17 +224,8 @@ namespace FacialStuff.HairCut
 
                         string fullPath = path + "_Fullhead";
 
-                            if (temptexturefront.width == 256)
-                            {
-                                _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack256;
-                                _maskTexSide = FaceTextures.MaskTexFullheadSide256;
-
-                            }
-                            else
-                            {
-                                _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack;
-                                _maskTexSide = FaceTextures.MaskTexFullheadSide;
-                            }
+                        _maskTexFrontBack = FaceTextures.MaskTexFullheadFrontBack;
+                        _maskTexSide = FaceTextures.MaskTexFullheadSide;
                         
 
 
