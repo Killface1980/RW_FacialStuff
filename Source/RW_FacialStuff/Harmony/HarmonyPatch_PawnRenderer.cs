@@ -124,11 +124,10 @@ namespace FacialStuff.Harmony
         // Therefore, using a transpiler instead of prefix may be a better option.
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
-            IEnumerator<CodeInstruction> instEnumerator = instructions.GetEnumerator();
-            while(instEnumerator.MoveNext())
+            List<CodeInstruction> instList = instructions.ToList();
+            for(int i = 0; i < instList.Count; ++i)
             {
-                CodeInstruction code = instEnumerator.Current;
-
+                var code = instList[i];
                 /*
                 // In PawnRenderer.RenderPawnInternal from version 1.2.7528
                 // Before running the transpiler
@@ -167,15 +166,13 @@ namespace FacialStuff.Harmony
                     yield return code;
 
                     // Need to find the label to branch to. Upcoming Brfalse.S instruction (should be 12 instructions away 
-                    // from the Stloc.S 11 instruction) has the label we want. Since IEnumerable can't be arbitrarily accessed 
-                    // using index, store the instructions up to the upcoming Brfalse.S instruction in a temporary list instead.
-                    List<CodeInstruction> tempCodes = new List<CodeInstruction>();
-                    Label label = il.DefineLabel();
+                    // from the Stloc.S 11 instruction) has the label we want.
+                    Label label = new Label();
                     bool foundLabel = false;
-                    while(instEnumerator.MoveNext())
-                    {
-                        CodeInstruction tempCode = instEnumerator.Current;
-                        tempCodes.Add(tempCode);
+                    int j = i;
+                    while(++j < instList.Count)
+					{
+                        CodeInstruction tempCode = instList[j];
                         // Next Brfalse.S instruction has the label we want
                         if(tempCode.opcode == OpCodes.Brfalse_S)
                         {
@@ -211,12 +208,7 @@ namespace FacialStuff.Harmony
                         // If TryRenderFacialStuffFace returns true, skip the vanilla routine for rendering face
                         yield return new CodeInstruction(OpCodes.Brtrue_S, label);
                     }
-                    // Emit the original codes between Stloc.S and Brfalse.S instruction
-                    foreach(CodeInstruction tempCode in tempCodes)
-                    {
-                        yield return tempCode;
-                    }
-                    Log.Message("Facial Stuff: Successfully patched RenderPawnInternal");
+                    // Continue because Stloc.S 11 instruction has already been emitted.
                     continue;
                 }
                 yield return code;
