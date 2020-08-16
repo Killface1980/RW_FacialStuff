@@ -137,24 +137,18 @@ namespace FacialStuff
             Rot4 bodyFacing, 
             Rot4 headFacing,
             Vector3 headPos,
-            Quaternion bodyQuat)
+            Quaternion headQuat)
         {
             if(!PawnHeadDrawers.Any() || Pawn.IsChild() || Pawn.GetCompAnim().Deactivated)
 			{
                 return false;
 			}
-            // TODO: Not sure why BaseHeadoffsetAt needs to pass Pawn. Investigate
-            Vector3 headBaseOffset = BaseHeadOffsetAt(portrait, Pawn);
-            Vector3 headPosOffset = bodyQuat * headBaseOffset;
-            Vector3 headDrawLoc = headPos + headPosOffset;
-            // headQuat is modified by body animation originally, but body anim is disabled for now
-            Quaternion headQuat = bodyQuat;
             bool headDrawn = false;
             // Draw head
             foreach(var headDrawer in PawnHeadDrawers)
             {
                 headDrawer.DrawBasicHead(
-                    headDrawLoc,
+                    headPos,
                     headQuat,
                     bodyDrawType,
                     headStump,
@@ -168,7 +162,7 @@ namespace FacialStuff
                 {
                     if(Props.hasWrinkles)
                     {
-                        Vector3 wrinkleLoc = headDrawLoc;
+                        Vector3 wrinkleLoc = headPos;
                         wrinkleLoc.y += YOffset_Wrinkles;
                         // Draw wrinkles
                         foreach(var headDrawer in PawnHeadDrawers)
@@ -178,14 +172,14 @@ namespace FacialStuff
                     }
                     if(Props.hasEyes)
                     {
-                        Vector3 eyeLoc = headDrawLoc;
+                        Vector3 eyeLoc = headPos;
                         eyeLoc.y += YOffset_Eyes;
                         // Draw natural eyes
                         foreach(var headDrawer in PawnHeadDrawers)
                         {
                             headDrawer.DrawNaturalEyes(eyeLoc, headQuat, portrait);
                         }
-                        Vector3 browLoc = headDrawLoc;
+                        Vector3 browLoc = headPos;
                         browLoc.y += YOffset_Brows;
                         // Draw brows above eyes
                         foreach(var headDrawer in PawnHeadDrawers)
@@ -193,7 +187,7 @@ namespace FacialStuff
                             headDrawer.DrawBrows(browLoc, headQuat, portrait);
                         }
                         // Draw added eye parts on top of natural eyes
-                        Vector3 unnaturalEyeLoc = headDrawLoc;
+                        Vector3 unnaturalEyeLoc = headPos;
                         unnaturalEyeLoc.y += YOffset_UnnaturalEyes;
                         foreach(var headDrawer in PawnHeadDrawers)
                         {
@@ -202,7 +196,7 @@ namespace FacialStuff
                     }
                     if(Props.hasEars && Controller.settings.Develop)
                     {
-                        Vector3 earLoc = headDrawLoc;
+                        Vector3 earLoc = headPos;
                         earLoc.y += YOffset_Eyes;
                         // Draw natural ears
                         foreach(var headDrawer in PawnHeadDrawers)
@@ -210,7 +204,7 @@ namespace FacialStuff
                             headDrawer.DrawNaturalEyes(earLoc, headQuat, portrait);
                         }
                         // Draw added ears on top of natural ears
-                        Vector3 addedEarLoc = headDrawLoc;
+                        Vector3 addedEarLoc = headPos;
                         addedEarLoc.y += YOffset_UnnaturalEyes;
                         foreach(var headDrawer in PawnHeadDrawers)
                         {
@@ -220,8 +214,8 @@ namespace FacialStuff
                     // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
                     if(Props.hasBeard)
                     {
-                        Vector3 beardLoc = headDrawLoc;
-                        Vector3 tacheLoc = headDrawLoc;
+                        Vector3 beardLoc = headPos;
+                        Vector3 tacheLoc = headPos;
                         beardLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Beard : YOffset_Beard;
                         tacheLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Tache : YOffset_Tache;
                         // Draw beard and mustache
@@ -232,7 +226,7 @@ namespace FacialStuff
                     }
                     if(Props.hasMouth)
                     {
-                        Vector3 mouthLoc = headDrawLoc;
+                        Vector3 mouthLoc = headPos;
                         mouthLoc.y += YOffset_Mouth;
                         // Draw natural mouth
                         foreach(var headDrawer in PawnHeadDrawers)

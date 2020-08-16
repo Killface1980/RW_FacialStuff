@@ -342,7 +342,16 @@ namespace FacialStuff.Harmony
             if(compFace != null)
             {
                 compFace.TickDrawers(bodyFacing, headFacing, graphics);
-                return compFace.DrawHead(bodyDrawType, portrait, headStump, bodyFacing, headFacing, headPos, bodyQuat);
+
+                // TODO: Not sure why BaseHeadoffsetAt needs to pass Pawn. Investigate
+                Vector3 headBaseOffset = compFace.BaseHeadOffsetAt(portrait, null);
+                Vector3 headPosOffset = bodyQuat * headBaseOffset;
+                Vector3 headDrawLoc = headPos + headPosOffset;
+                // headQuat is modified by body animation originally, but body anim is disabled for now
+                Quaternion headQuat = bodyQuat;
+
+                bool headDrawn = compFace.DrawHead(bodyDrawType, portrait, headStump, bodyFacing, headFacing, headDrawLoc, headQuat);
+                return headDrawn;
             }
             return false;
         }
