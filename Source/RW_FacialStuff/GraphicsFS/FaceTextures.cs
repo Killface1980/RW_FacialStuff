@@ -24,13 +24,13 @@ namespace FacialStuff.GraphicsFS
         private static Texture2D _maskTexNarrowFrontBack;
         static FaceTextures()
         {
-            MaskTexUppherheadFrontBack = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Upperhead_south"));
+            MaskTexUppherheadFrontBack = MakeReadable(ContentFinder<Texture2D>.Get("HairMask/Mask_UpperHead_FrontBack"));
 
-            MaskTexUpperheadSide = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Upperhead_east"));
+            MaskTexUpperheadSide = MakeReadable(ContentFinder<Texture2D>.Get("HairMask/Mask_UpperHead_Side"));
 
-            MaskTexFullheadFrontBack = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Fullhead_south"));
+            MaskTexFullheadFrontBack = MakeReadable(ContentFinder<Texture2D>.Get("HairMask/Mask_FullHead_FrontBack"));
 
-            MaskTexFullheadSide = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Fullhead_east"));
+            MaskTexFullheadSide = MakeReadable(ContentFinder<Texture2D>.Get("HairMask/Mask_FullHead_Side"));
             
             BlankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
 

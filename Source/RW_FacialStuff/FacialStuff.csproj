@@ -106,9 +106,11 @@
     <Compile Include="Enums\HeadCoverage.cs" />
     <None Include="GraphicsFS\MeshMakerPlanesFS.cs" />
     <None Include="GraphicsFS\Graphic_Multi_Four.cs" />
+    <Compile Include="GraphicsFS\Graphic_Hair.cs" />
     <Compile Include="GraphicsFS\Graphic_Multi_NaturalEyes - Kopieren.cs" />
     <Compile Include="Harmony\HarmonyPatchesFS.cs" />
     <Compile Include="Harmony\HarmonyPatch_PawnRenderer.cs" />
+    <Compile Include="Harmony\HarmonyPatch_ShaderUtility.cs" />
     <Compile Include="Tweener\TinyTween.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />

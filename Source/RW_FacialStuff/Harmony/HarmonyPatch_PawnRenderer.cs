@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using FacialStuff.AnimatorWindows;
+using FacialStuff.GraphicsFS;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -122,16 +123,14 @@ namespace FacialStuff.Harmony
         // Original Facial Stuff's method of prefixing RenderPawnInternal and completely bypassing the original routine had 
         // compatibility issues with CombatExtended which modifies the existing routine.
         // Therefore, using a transpiler instead of prefix may be a better option.
+        // PawnRenderer.RenderPawnInternal from version 1.2.7528
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
-            bool drawHairMatchFound = false;
-            var hairLocVar = il.DeclareLocal(typeof(Vector3));
             List<CodeInstruction> instList = instructions.ToList();
             for(int i = 0; i < instList.Count; ++i)
             {
                 var code = instList[i];
                 /*
-                // In PawnRenderer.RenderPawnInternal from version 1.2.7528
                 // Before running the transpiler
                 ...
                 if(graphics.headGraphic != null)
@@ -206,7 +205,7 @@ namespace FacialStuff.Harmony
                         // 8th argument - Quaternion bodyQuat ("quaternion")
                         yield return new CodeInstruction(OpCodes.Ldloc_0);
                         // Call TryRenderFacialStuffFace using the given arguments
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatch_PawnRenderer), nameof(TryRenderFacialStuffFace)));
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatch_PawnRenderer), nameof(TryRenderFacialStuffHead)));
                         // If TryRenderFacialStuffFace returns true, skip the vanilla routine for rendering face
                         yield return new CodeInstruction(OpCodes.Brtrue_S, label);
                     }
@@ -214,118 +213,12 @@ namespace FacialStuff.Harmony
                     continue;
                 }
 
-                /*
-                // In PawnRenderer.RenderPawnInternal from version 1.2.7528
-                // Before running the transpiler
-                ...
-                Vector3 loc2 = rootLoc + b;
-                loc2.y += 3f / 98f;
-		        bool flag = false;
-		        if (!portrait || !Prefs.HatsOnlyOnMap)
-                {
-                ...
-
-                // After running the transpiler
-                ...
-                Vector3 loc2 = rootLoc + b;
-                Vector3 hairLoc = loc2; // Create a new local variable
-                loc2.y += 3f / 98f;
-		        bool flag = false;
-		        if (!portrait || !Prefs.HatsOnlyOnMap)
-                {
-                ...
-                */
-                // There is only one Stloc.S 13 instruction in the method.
-                if(code.opcode == OpCodes.Stloc_S && ((LocalBuilder)code.operand).LocalIndex == 13)
-				{
-                    // Duplicate the return value from rootLoc + b because the following Stloc.S 13 instruction
-                    // needs the value also
-                    yield return new CodeInstruction(OpCodes.Dup);
-                    yield return new CodeInstruction(OpCodes.Stloc_S, hairLocVar);
-                }
-
-                /*
-                // In PawnRenderer.RenderPawnInternal from version 1.2.7528
-                // Before running the transpiler
-                ...
-                if (!flag && bodyDrawType != RotDrawMode.Dessicated && !headStump)
-		        {
-			        GenDraw.DrawMeshNowOrLater(graphics.HairMeshSet.MeshAt(headFacing), mat: graphics.HairMatAt_NewTemp(headFacing, portrait), loc: loc2, quat: quaternion, drawNow: portrait);
-		        }
-                ...
-
-                // After running the transpiler
-                ...
-                if (!flag && bodyDrawType != RotDrawMode.Dessicated && !headStump)
-		        {
-			        GenDraw.DrawMeshNowOrLater(graphics.HairMeshSet.MeshAt(headFacing), mat: graphics.HairMatAt_NewTemp(headFacing, portrait), loc: loc2, quat: quaternion, drawNow: portrait);
-		        }
-                HarmonyPatch_PawnRenderer.DrawCoveredHair(this, flag, bodyDrawType, portrait, headStump, headFacing, hairLoc, quaternion);
-                ...
-                */
-                // There are two Ldarg.3 instructions in the method. Second instruction is the one we want for injecting method call
-                if(code.opcode == OpCodes.Ldarg_3)
-				{
-                    int j = i;
-                    while(++j < instList.Count)
-					{
-                        var tempCode = instList[j];
-                        if(tempCode.opcode == OpCodes.Ldarg_3)
-						{
-                            // Current Ldarg_3 instruction is not the second ldarg.3 instruction.
-                            break;
-						}
-                        // Stloc.S 21 instructions follow the second Ldarg_3 instruction, but not the first.
-                        else if(tempCode.opcode == OpCodes.Stloc_S && ((LocalBuilder)tempCode.operand).LocalIndex == 21)
-						{
-                            drawHairMatchFound = true;
-                            break;
-						}
-					}
-                    if(drawHairMatchFound)
-					{
-                        // if(!flag && bodyDrawType != RotDrawMode.Dessicated && !headStump) needs to jump to 
-                        // the beginning of newly added instructions when the condition isn't met.
-                        // Otherwise the instructions will be inside the if block, not outside.
-                        List<Label> tempLabels = new List<Label>();
-                        code.labels.ForEach(lbl => tempLabels.Add(lbl));
-                        code.labels.Clear();
-                        // 1st argument - PawnRenderer instance ("this")
-                        var ldarg0Inst = new CodeInstruction(OpCodes.Ldarg_0);
-                        //  Copy over the labels to the new instruction
-                        tempLabels.ForEach(lbl => ldarg0Inst.labels.Add(lbl));
-                        yield return ldarg0Inst;
-                        // 2nd argument - bool hideHair ("flag")
-                        //  Combat Extended's transpiler searches for Ldloc.S 14 instruction but the instruction added by this transpiler
-                        //  comes after the Ldloc.S 14 instruction that Combat Extended looks for. Therefore this shouldn't be a problem.
-                        yield return new CodeInstruction(OpCodes.Ldloc_S, 14);
-                        // 3rd argument - RotDrawMode bodyDrawType
-                        yield return new CodeInstruction(OpCodes.Ldarg_S, 6);
-                        // 4th argument - bool portrait
-                        yield return new CodeInstruction(OpCodes.Ldarg_S, 7);
-                        // 5th argument - bool headStump
-                        yield return new CodeInstruction(OpCodes.Ldarg_S, 8);
-                        // 6th argument - Rot4 headFacing
-                        yield return new CodeInstruction(OpCodes.Ldarg_S, 5);
-                        // 7th argument - Vector3 hairLoc
-                        yield return new CodeInstruction(OpCodes.Ldloc_S, hairLocVar);
-                        // 8th argument - Quaternion bodyQuat ("quaternion")
-                        yield return new CodeInstruction(OpCodes.Ldloc_0);
-                        // Call DrawCoveredHair() using the given arguments
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatch_PawnRenderer), nameof(TryDrawCoveredHair)));
-                    }
-                }
-
                 yield return code;
             }
-            if(!drawHairMatchFound)
-			{
-                Log.Error("Facial Stuff: Failed to inject TryDrawCoveredHair method call.");
-			}
         }
 
-        // Render Facial Stuff face if applicable. Returns true if Facial Stuff face was rendered, return false if vanilla behavior is desired.
-        public static bool TryRenderFacialStuffFace(
+        // Render Facial Stuff head if applicable. Returns true if Facial Stuff head was rendered, return false if vanilla behavior is desired.
+        public static bool TryRenderFacialStuffHead(
             PawnRenderer pawnRenderer, 
             RotDrawMode bodyDrawType,
             bool portrait,
@@ -351,35 +244,63 @@ namespace FacialStuff.Harmony
                 Quaternion headQuat = bodyQuat;
 
                 bool headDrawn = compFace.DrawHead(bodyDrawType, portrait, headStump, bodyFacing, headFacing, headDrawLoc, headQuat);
+                if(headDrawn)
+				{
+                    // Check if hair is covered by headwear. 
+                    List<ApparelGraphicRecord> apparelGraphics = graphics.apparelGraphics;
+                    bool hairCovered = false;
+                    for(int j = 0; j < apparelGraphics.Count; j++)
+                    {
+                        if(apparelGraphics[j].sourceApparel.def.apparel.LastLayer == ApparelLayerDefOf.Overhead)
+                        {
+                            // If ApparelProperties.hatRenderedFrontOfFace is true, it does not count as covering the hair
+                            if(!apparelGraphics[j].sourceApparel.def.apparel.hatRenderedFrontOfFace)
+                            {
+                                hairCovered = true;
+                                break;
+                            }
+                        }
+                    }
+                    // If hair is covered by headwear, then render the masked hair texture.
+                    // Vanilla hair rendering code at RenderPawnInternal won't be called if this is true, because
+                    // hairCovered variable works the same as the local variable "flag" ("hideHair") in RenderPawnInternal 
+                    if(hairCovered)
+					{
+                        Vector3 hairDrawLoc = headDrawLoc;
+                        // Constant is "YOffsetIntervalClothes". Adding this will ensure that hair is above the head 
+                        // and apparel regardless of the head's orientation, but also ensure that it remains below headwear.
+                        hairDrawLoc.y += 0.00306122447f;
+                        Graphic_Hair hairGraphic = graphics.hairGraphic as Graphic_Hair;
+                        if(hairGraphic != null)
+						{
+                            // Copied from PawnGraphicSet.HairMatAt_NewTemp
+                            Material hairBasemat = hairGraphic.MatAt(headFacing, Graphic_Hair.HeadMaskCoverage.UpperHead);
+                            /*if(!portrait && pawn.IsInvisible())
+                            {
+                                // TODO need to create invisible mat shader
+                                baseMat = InvisibilityMatPool.GetInvisibleMat(baseMat);
+                            }
+                            // TODO may need to create damaged mat shader
+                            graphics.flasher.GetDamagedMat(baseMat);*/
+                            var maskTex = hairBasemat.GetMaskTexture();
+                            GenDraw.DrawMeshNowOrLater(
+                                graphics.HairMeshSet.MeshAt(headFacing),
+                                mat: hairBasemat,
+                                loc: hairDrawLoc,
+                                quat: headQuat,
+                                drawNow: portrait);
+                        }
+                        else
+						{
+                            Log.Warning("Facial Stuff: " + pawn.Name + " has CompFace but doesn't have valid hair graphic of Graphic_Hair class");
+						}
+                    }
+                }
                 return headDrawn;
             }
             return false;
         }
         
-        public static void TryDrawCoveredHair(
-            PawnRenderer pawnRenderer, 
-            bool hideHair, 
-            RotDrawMode bodyDrawType, 
-            bool portrait, 
-            bool headStump, 
-            Rot4 headFacing, 
-            Vector3 hairLoc, 
-            Quaternion bodyQuat)
-		{
-            CompFace compFace = pawnRenderer.graphics.pawn.GetCompFace();
-            if(compFace != null && hideHair && bodyDrawType != RotDrawMode.Dessicated && !headStump)
-			{
-                // Draw masked hair if headwear "hides" the hair
-                HairCut.HairCutPawn hairPawn = HairCut.CutHairDB.GetHairCache(pawnRenderer.graphics.pawn);
-                Material hairCutMat = hairPawn.HairCutMatAt(headFacing);
-                Mesh hairMesh = pawnRenderer.graphics.HairMeshSet.MeshAt(headFacing);
-                if(hairCutMat != null)
-                {
-                    GenDraw.DrawMeshNowOrLater(hairMesh, hairLoc, bodyQuat, hairCutMat, portrait);
-                }
-            }
-		}
-
         public static bool DoNotUseThisPrefix(PawnRenderer __instance,
                                   ref Vector3 rootLoc,
                                   float angle,
