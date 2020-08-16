@@ -274,7 +274,7 @@ namespace FacialStuff.Harmony
                         if(hairGraphic != null)
 						{
                             // Copied from PawnGraphicSet.HairMatAt_NewTemp
-                            Material hairBasemat = hairGraphic.MatAt(headFacing, Graphic_Hair.HeadMaskCoverage.UpperHead);
+                            Material hairBasemat = hairGraphic.MatAt(headFacing, HeadCoverage.UpperHead);
                             /*if(!portrait && pawn.IsInvisible())
                             {
                                 // TODO need to create invisible mat shader

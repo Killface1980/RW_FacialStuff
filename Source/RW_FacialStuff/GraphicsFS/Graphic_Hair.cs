@@ -22,8 +22,6 @@ namespace FacialStuff.GraphicsFS
 	[StaticConstructorOnStartup]
 	class Graphic_Hair : Graphic
 	{
-		public enum HeadMaskCoverage { None = 0, UpperHead = 1, FullHead = 2};
-
 		#region Static Members
 		
 		private static Shader hairShader;
@@ -86,7 +84,7 @@ namespace FacialStuff.GraphicsFS
 		#region Private Variables
 
 		//private static string _maskedHairBaseDir;
-		private Material[,] hairMat = new Material[4, Enum.GetNames(typeof(HeadMaskCoverage)).Length];
+		private Material[,] hairMat = new Material[4, Enum.GetNames(typeof(HeadCoverage)).Length];
 		private bool westFlipped;
 		private bool eastFlipped;
 		private float drawRotatedExtraAngleOffset;
@@ -184,12 +182,12 @@ namespace FacialStuff.GraphicsFS
 					defaultHairTex[3] = defaultHairTex[0];
 				}
 			}
-			foreach(var headCoverage in Enum.GetValues(typeof(HeadMaskCoverage)).Cast<HeadMaskCoverage>())
+			foreach(var headCoverage in Enum.GetValues(typeof(HeadCoverage)).Cast<HeadCoverage>())
 			{
 				Texture2D[] maskTex = new Texture2D[4];
 				// Don't need to have mask texture for full hair. If matReq.maskTex is null, the mask will default 
 				// to white texture which will do nothing.
-				if(headCoverage != HeadMaskCoverage.None)
+				if(headCoverage != HeadCoverage.None)
 				{
 					maskTex[0] = ContentFinder<Texture2D>.Get("HairMask/Mask_" + headCoverage + "_FrontBack");
 					maskTex[1] = ContentFinder<Texture2D>.Get("HairMask/Mask_" + headCoverage + "_Side");
@@ -203,14 +201,14 @@ namespace FacialStuff.GraphicsFS
 					matReq.shader = req.shader;
 					matReq.color = color;
 					matReq.colorTwo = colorTwo;
-					matReq.maskTex = headCoverage != HeadMaskCoverage.None ? maskTex[i] : null;
+					matReq.maskTex = headCoverage != HeadCoverage.None ? maskTex[i] : null;
 					matReq.shaderParameters = req.shaderParameters;
 					hairMat[i, (int)headCoverage] = MaterialPool.MatFrom(matReq);
 				}
 			}
 		}
 		
-		public Material MatAt(Rot4 rot, HeadMaskCoverage coverage)
+		public Material MatAt(Rot4 rot, HeadCoverage coverage)
 		{
 			int rotation = rot.AsInt;
 			if(rotation >= 0 && rotation <= 3)
