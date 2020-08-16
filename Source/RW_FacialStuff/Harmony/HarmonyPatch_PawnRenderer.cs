@@ -292,7 +292,9 @@ namespace FacialStuff.Harmony
                         }
                         else
 						{
-                            Log.Warning("Facial Stuff: " + pawn.Name + " has CompFace but doesn't have valid hair graphic of Graphic_Hair class");
+                            Log.ErrorOnce(
+                                "Facial Stuff: " + pawn.Name + " has CompFace but doesn't have valid hair graphic of Graphic_Hair class", 
+                                "FacialStuff_CompFaceNoValidHair".GetHashCode());
 						}
                     }
                 }
