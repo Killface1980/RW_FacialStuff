@@ -20,7 +20,8 @@ namespace FacialStuff.Harmony
     using System.Linq;
     using System.Reflection;
     using UnityEngine;
-    using Utilities;
+	using UnityEngine.TestTools;
+	using Utilities;
     using Verse;
     using Verse.Sound;
 
@@ -853,40 +854,26 @@ namespace FacialStuff.Harmony
         public static void ResolveApparelGraphics_Postfix(PawnGraphicSet __instance)
         {
             Pawn pawn = __instance.pawn;
-
+            CompFace compFace = pawn.GetCompFace();
             // Set up the hair cut graphic
-            if (Controller.settings.MergeHair)
+            if(Controller.settings.MergeHair && compFace != null)
             {
-                HairCutPawn hairPawn = CutHairDB.GetHairCache(pawn);
-
-                List<Apparel> wornApparel = pawn.apparel.WornApparel
-                                                .Where(x => x.def.apparel.LastLayer == ApparelLayerDefOf.Overhead).ToList();
-               
-                HeadCoverage coverage = HeadCoverage.FullHead;
-
-                //ToDo: Deactivated for now, needs more refinement ---needs clarification 2020-07-27
-
-                  if (!wornApparel.NullOrEmpty())
-                  {
-                      if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)))
-                      {
-                          coverage = HeadCoverage.UpperHead;
-                      }
-                  
-                      if (wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)))
-                      {
-                          coverage = HeadCoverage.FullHead;
-                      }
-                  }
-
-                if (coverage != 0)
-                {
-                    hairPawn.HairCutGraphic = CutHairDB.Get<Graphic_Multi>(
-                                                                                pawn.story.hairDef.texPath,
-                                                                                ShaderDatabase.Cutout,
-                                                                                Vector2.one,
-                                                                                pawn.story.hairColor, coverage);
+                HeadCoverage coverage = HeadCoverage.None;
+                var wornApparel = pawn.apparel.WornApparel.Where(
+                    x => x.def.apparel.LastLayer == ApparelLayerDefOf.Overhead).ToList();
+                if(!wornApparel.NullOrEmpty())
+				{
+                    // Full head coverage has precedence over upper head coverage
+                    if(wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)))
+                    {
+                        coverage = HeadCoverage.FullHead;
+                    }
+                    else if(wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)))
+                    {
+                        coverage = HeadCoverage.UpperHead;
+                    }
                 }
+                compFace.CurrentHeadCoverage = coverage;
             }
         }
 

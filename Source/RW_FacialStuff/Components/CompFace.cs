@@ -112,11 +112,13 @@ namespace FacialStuff
                 return HeadType.Normal;
             }
         }
-
+        
         public CompProperties_Face Props => (CompProperties_Face)this.props;
 
         [NotNull]
         public Pawn Pawn => this.parent as Pawn;
+
+        public HeadCoverage CurrentHeadCoverage { get; set; }
 
         #endregion Public Properties
 
