@@ -243,62 +243,7 @@ namespace FacialStuff.Harmony
                 // headQuat is modified by body animation originally, but body anim is disabled for now
                 Quaternion headQuat = bodyQuat;
 
-                bool headDrawn = compFace.DrawHead(bodyDrawType, portrait, headStump, bodyFacing, headFacing, headDrawLoc, headQuat);
-                if(headDrawn)
-				{
-                    // Check if hair is covered by headwear. 
-                    List<ApparelGraphicRecord> apparelGraphics = graphics.apparelGraphics;
-                    bool hairCovered = false;
-                    for(int j = 0; j < apparelGraphics.Count; j++)
-                    {
-                        if(apparelGraphics[j].sourceApparel.def.apparel.LastLayer == ApparelLayerDefOf.Overhead)
-                        {
-                            // If ApparelProperties.hatRenderedFrontOfFace is true, it does not count as covering the hair
-                            if(!apparelGraphics[j].sourceApparel.def.apparel.hatRenderedFrontOfFace)
-                            {
-                                hairCovered = true;
-                                break;
-                            }
-                        }
-                    }
-                    // If hair is covered by headwear, then render the masked hair texture.
-                    // Vanilla hair rendering code at RenderPawnInternal won't be called if this is true, because
-                    // hairCovered variable works the same as the local variable "flag" ("hideHair") in RenderPawnInternal 
-                    if(hairCovered)
-					{
-                        Vector3 hairDrawLoc = headDrawLoc;
-                        // Constant is "YOffsetIntervalClothes". Adding this will ensure that hair is above the head 
-                        // and apparel regardless of the head's orientation, but also ensure that it remains below headwear.
-                        hairDrawLoc.y += 0.00306122447f;
-                        Graphic_Hair hairGraphic = graphics.hairGraphic as Graphic_Hair;
-                        if(hairGraphic != null)
-						{
-                            // Copied from PawnGraphicSet.HairMatAt_NewTemp
-                            Material hairBasemat = hairGraphic.MatAt(headFacing, HeadCoverage.UpperHead);
-                            /*if(!portrait && pawn.IsInvisible())
-                            {
-                                // TODO need to create invisible mat shader
-                                baseMat = InvisibilityMatPool.GetInvisibleMat(baseMat);
-                            }
-                            // TODO may need to create damaged mat shader
-                            graphics.flasher.GetDamagedMat(baseMat);*/
-                            var maskTex = hairBasemat.GetMaskTexture();
-                            GenDraw.DrawMeshNowOrLater(
-                                graphics.HairMeshSet.MeshAt(headFacing),
-                                mat: hairBasemat,
-                                loc: hairDrawLoc,
-                                quat: headQuat,
-                                drawNow: portrait);
-                        }
-                        else
-						{
-                            Log.ErrorOnce(
-                                "Facial Stuff: " + pawn.Name + " has CompFace but doesn't have valid hair graphic of Graphic_Hair class", 
-                                "FacialStuff_CompFaceNoValidHair".GetHashCode());
-						}
-                    }
-                }
-                return headDrawn;
+                return compFace.DrawHead(bodyDrawType, portrait, headStump, bodyFacing, headFacing, headDrawLoc, headQuat);
             }
             return false;
         }

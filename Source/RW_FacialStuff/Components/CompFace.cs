@@ -236,9 +236,54 @@ namespace FacialStuff
                             headDrawer.DrawNaturalMouth(mouthLoc, headQuat, portrait);
                         }
                     }
+                    // When CurrentHeadCoverage == HeadCoverage.None, let the vanilla routine draw the hair
+                    if(CurrentHeadCoverage != HeadCoverage.None)
+					{
+                        DrawHairBasedOnCoverage(headFacing, headPos, headQuat, portrait);
+                    }
                 }
             }
             return headDrawn;
+        }
+
+        // Draw hair using different cutout masks based on head coverage
+        public void DrawHairBasedOnCoverage(
+            Rot4 headFacing, 
+            Vector3 headDrawLoc, 
+            Quaternion headQuat, 
+            bool portrait)
+		{
+            PawnGraphicSet graphics = Pawn.Drawer.renderer.graphics;
+            Vector3 hairDrawLoc = headDrawLoc;
+            // Constant is "YOffsetIntervalClothes". Adding this will ensure that hair is above the head 
+            // and apparel regardless of the head's orientation, but also ensure that it remains below headwear.
+            // Kind of arbitrary, but at least it works.
+            hairDrawLoc.y += 0.00306122447f;
+            Graphic_Hair hairGraphic = graphics.hairGraphic as Graphic_Hair;
+            if(hairGraphic != null)
+            {
+                // Copied from PawnGraphicSet.HairMatAt_NewTemp
+                Material hairBasemat = hairGraphic.MatAt(headFacing, CurrentHeadCoverage);
+                /*if(!portrait && pawn.IsInvisible())
+                {
+                    // TODO need to create invisible mat shader
+                    baseMat = InvisibilityMatPool.GetInvisibleMat(baseMat);
+                }
+                // TODO may need to create damaged mat shader
+                graphics.flasher.GetDamagedMat(baseMat);*/
+                var maskTex = hairBasemat.GetMaskTexture();
+                GenDraw.DrawMeshNowOrLater(
+                    graphics.HairMeshSet.MeshAt(headFacing),
+                    mat: hairBasemat,
+                    loc: hairDrawLoc,
+                    quat: headQuat,
+                    drawNow: portrait);
+            } else
+            {
+                Log.ErrorOnce(
+                    "Facial Stuff: " + Pawn.Name + " has CompFace but doesn't have valid hair graphic of Graphic_Hair class",
+                    "FacialStuff_CompFaceNoValidHair".GetHashCode());
+            }
         }
 
         public void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
@@ -445,7 +490,7 @@ namespace FacialStuff
             }
         }
 
-        public void DrawHairAndHeadGear(Vector3 hairLoc, Vector3 headgearLoc, RotDrawMode bodyDrawType,
+        /*public void DrawHairAndHeadGear(RotDrawMode bodyDrawType, Vector3 hairLoc, Vector3 headgearLoc,
                                         bool portrait, bool renderBody, Quaternion headQuat,
                                         Vector3 hatInFrontOfFace)
         {
@@ -461,7 +506,7 @@ namespace FacialStuff
                 this.PawnHeadDrawers[i]?.DrawHairAndHeadGear(hairLoc, headgearLoc, bodyDrawType, headQuat, renderBody, portrait, hatInFrontOfFace);
                 i++;
             }
-        }
+        }*/
         
         // public void SetFaceRender(bool portrait, Quaternion headQuat, Rot4 headFacing, bool renderBody, PawnGraphicSet graphics)
         // {
