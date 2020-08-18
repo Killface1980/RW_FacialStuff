@@ -126,10 +126,47 @@ namespace FacialStuff.Harmony
         // PawnRenderer.RenderPawnInternal from version 1.2.7528
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
+            int bodyPatchState = 0;
             List<CodeInstruction> instList = instructions.ToList();
             for(int i = 0; i < instList.Count; ++i)
             {
                 var code = instList[i];
+
+                /*
+                // Before running the transpiler
+                ...
+                Quaternion quaternion = Quaternion.AngleAxis(angle, Vector3.up);
+                Mesh mesh = null;
+                if (renderBody)
+                {
+                ...
+
+                // After running the transpiler
+                ...
+                Quaternion quaternion = Quaternion.AngleAxis(angle, Vector3.up);
+                Mesh mesh = null;
+                TryUpdateCompBody(PawnRenderer pawnRenderer, Rot4 bodyFacing, Vector3 rootLoc, ref Quaternion bodyQuat, bool portrait);
+                if (renderBody)
+                {
+                ...
+                */
+                if(code.opcode == OpCodes.Ldarg_3 && bodyPatchState == 0)
+                {
+                    // 1st argument - PawnRenderer instance ("this")
+                    yield return new CodeInstruction(OpCodes.Ldarg_0);
+                    // 2nd argument - Rot4 bodyFacing
+                    yield return new CodeInstruction(OpCodes.Ldarg_S, 4);
+                    // 3rd argument - ref Vector4 rootLoc
+                    yield return new CodeInstruction(OpCodes.Ldarga_S, 1);
+                    // 4th argument - ref Quaternion quaternion ("bodyQuat")
+                    yield return new CodeInstruction(OpCodes.Ldloca_S, 0);
+                    // 5th argument - bool portrait
+                    yield return new CodeInstruction(OpCodes.Ldarg_S, 7);
+                    // Call TryUpdateCompBody using the given arguments
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatch_PawnRenderer), nameof(TryUpdateCompBody)));
+                    bodyPatchState = 1;
+                }
+                
                 /*
                 // Before running the transpiler
                 ...
@@ -212,8 +249,49 @@ namespace FacialStuff.Harmony
                     // Continue because Stloc.S 11 instruction has already been emitted.
                     continue;
                 }
-
+                
                 yield return code;
+            }
+        }
+
+        public static void TryUpdateCompBody(
+            PawnRenderer pawnRenderer, 
+            Rot4 bodyFacing, 
+            ref Vector3 rootLoc, 
+            ref Quaternion bodyQuat, 
+            bool portrait)
+        {
+            PawnGraphicSet graphics = pawnRenderer.graphics;
+            CompBodyAnimator compAnim = graphics.pawn.GetCompAnim();
+            if(compAnim != null)
+			{
+                compAnim.TickDrawers(bodyFacing, graphics);
+                Quaternion footQuat = bodyQuat;
+                Vector3 footPos = rootLoc;
+                if(Controller.settings.UseFeet)
+                {
+                    compAnim.ApplyBodyWobble(ref rootLoc, ref footPos, ref bodyQuat);
+                }
+                // Reset the quat as it has been changed
+                Quaternion headQuat = bodyQuat;
+                CompFace compFace = graphics.pawn.GetCompFace();
+                compFace?.ApplyHeadRotation(true, ref headQuat);
+
+                bool showHands = Controller.settings.UseHands;
+                Vector3 handPos = rootLoc;
+                if(true || Controller.settings.IgnoreRenderBody)
+                {
+                    if(showHands)
+                    {
+                        // Reset the position for the hands
+                        handPos.y = rootLoc.y;
+                        compAnim?.DrawHands(bodyQuat, handPos, portrait);
+                    }
+                    if(Controller.settings.UseFeet)
+                    {
+                        compAnim.DrawFeet(bodyQuat, footQuat, footPos, portrait);
+                    }
+                }
             }
         }
 
