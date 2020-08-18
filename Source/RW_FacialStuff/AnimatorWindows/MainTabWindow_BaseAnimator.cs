@@ -691,7 +691,7 @@ namespace FacialStuff.AnimatorWindows
             // Portrait
             Rect rect = new Rect(0, 0, inRectWidth, inRectWidth);
 
-            if (false)
+            /*if (false)
             {
 
             var skeleton = new FS_Skeleton {joints = new List<FS_Joint>()};
@@ -721,7 +721,7 @@ namespace FacialStuff.AnimatorWindows
 
 
             skeleton.joints.Add(head);
-            }
+            }*/
 
             this.DrawBackground(rect);
 

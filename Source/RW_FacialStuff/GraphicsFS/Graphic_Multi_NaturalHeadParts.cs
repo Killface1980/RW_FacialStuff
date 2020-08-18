@@ -13,9 +13,7 @@ namespace FacialStuff.GraphicsFS
     public class Graphic_Multi_NaturalHeadParts : Graphic_Multi
     {
         private readonly Material[] _mats = new Material[4];
-
-        public string GraphicPath => this.path;
-
+        
         public override Material MatNorth => this._mats[0];
 
         public override Material MatSouth => this._mats[2];

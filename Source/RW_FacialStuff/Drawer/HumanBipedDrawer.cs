@@ -131,8 +131,6 @@ namespace FacialStuff
                 case MaxLayerToShow.OnSkin: return this.CompAnimator?.UnderwearMatsBodyBaseAt(bodyFacing, bodyDrawType);
                 default: return graphics.MatsBodyBaseAt(bodyFacing, bodyDrawType);
             }
-
-            return base.BodyBaseAt(graphics, bodyFacing, bodyDrawType, layer);
         }
 
         public override bool CarryStuff()
@@ -766,7 +764,7 @@ namespace FacialStuff
         public virtual void SelectPosecycle()
         {
             return;
-            if (HarmonyPatchesFS.AnimatorIsOpen())
+            /*if (HarmonyPatchesFS.AnimatorIsOpen())
             {
                 //  this.CompAnimator.PoseCycle = MainTabWindow_PoseAnimator.EditorPoseCycle;
             }
@@ -798,7 +796,7 @@ namespace FacialStuff
                 // this.walkCycle = WalkCycleDefOf.Biped_Sprint;
                 // break;
                 // }
-            }
+            }*/
         }
 
         public override void Tick(Rot4 bodyFacing, PawnGraphicSet graphics)
@@ -1036,7 +1034,7 @@ namespace FacialStuff
 
             // Basic values if pawn is carrying stuff
             float x = 0;
-            float y = Offsets.YOffset_Behind;
+            // float y = Offsets.YOffset_Behind;
             float z;
 
             float percent = this._animatedPercent;

@@ -205,7 +205,7 @@ namespace FacialStuff.Harmony
 
         private static readonly FieldInfo pawnField = AccessTools.Field(typeof(Pawn_EquipmentTracker), "pawn");
 
-        private static Graphic_Shadow _shadowGraphic;
+        // private static Graphic_Shadow _shadowGraphic;
         private static float angleStanding = 143f;
         private static float angleStandingFlipped = 217f;
 
@@ -751,7 +751,7 @@ namespace FacialStuff.Harmony
 
             MethodInfo drawAtMethod = AccessTools.Method(typeof(Thing), nameof(Thing.DrawAt));
 
-            int indexDrawAt = instructionList.FindIndex(x => x.opcode == OpCodes.Callvirt && x.operand == drawAtMethod);
+            int indexDrawAt = instructionList.FindIndex(x => x.opcode == OpCodes.Callvirt && (MethodInfo)x.operand == drawAtMethod);
 
             instructionList.RemoveAt(indexDrawAt);
             instructionList.InsertRange(indexDrawAt, new List<CodeInstruction>

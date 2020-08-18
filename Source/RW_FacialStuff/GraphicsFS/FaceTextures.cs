@@ -21,7 +21,7 @@ namespace FacialStuff.GraphicsFS
         private static Texture2D _maskTexAverageSide;
 */
 
-        private static Texture2D _maskTexNarrowFrontBack;
+        // private static Texture2D _maskTexNarrowFrontBack;
         static FaceTextures()
         {
             MaskTexUppherheadFrontBack = MakeReadable(ContentFinder<Texture2D>.Get("HairMask/Mask_UpperHead_FrontBack"));

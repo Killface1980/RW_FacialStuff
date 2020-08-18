@@ -14,7 +14,7 @@ namespace FacialStuff
 
         private static int _rotation = 2;
 
-        private Pawn _pawn;
+        // private Pawn _pawn;
 
         public ITab_Pawn_Face()
         {

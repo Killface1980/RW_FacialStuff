@@ -346,7 +346,7 @@ namespace FacialStuff.GraphicsFS
                                                                                   ShaderDatabase.CutoutComplex,
                                                                                   Vector2.one,
                                                                                   earColor) as Graphic_Multi_NaturalEars;
-            if (false)
+            /*if (false)
             {
                 this.EarLeftMissingGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(this._compFace.TexPathEarLeftMissing,
                     ShaderDatabase.CutoutComplex,
@@ -357,7 +357,7 @@ namespace FacialStuff.GraphicsFS
                     ShaderDatabase.CutoutComplex,
                     Vector2.one,
                     earColor) as Graphic_Multi_NaturalEars;
-            }
+            }*/
         }
 
         private void InitializeGraphicsMouth()

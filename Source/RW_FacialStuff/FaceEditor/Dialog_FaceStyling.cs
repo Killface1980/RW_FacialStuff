@@ -91,7 +91,7 @@ namespace FacialStuff.FaceEditor
         // }
         public static List<MoustacheDef> MoustacheDefs;
 
-        private static readonly long TicksPerYear = 3600000L;
+        // private static readonly long TicksPerYear = 3600000L;
 
         private static readonly List<string> VanillaHairTags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
 
@@ -108,7 +108,7 @@ namespace FacialStuff.FaceEditor
 
         private static Vector2 _portraitSize = new Vector2(203f, 203f);
 
-        private static float _previewSize = 220f;
+        // private static float _previewSize = 220f;
         private readonly ColorWrapper _colourWrapper;
 
         private readonly bool _gear;
@@ -550,6 +550,7 @@ namespace FacialStuff.FaceEditor
             }
             catch (Exception ex)
             {
+                Log.Error("Facial Stuff: exception in DoWindowContents: " + ex.Message);
             }
 
             List<TabRecord> list = new List<TabRecord>();

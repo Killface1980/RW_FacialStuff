@@ -394,9 +394,6 @@ namespace FacialStuff.Utilities
                 case HairGender.MaleUsually: return 50f;
                 default: return 30f;
             }
-
-            Log.Error(string.Concat("Unknown beard likelihood for ", beard, " with ", pawn));
-            return 0f;
         }
 
         private static void BeardRoulette(

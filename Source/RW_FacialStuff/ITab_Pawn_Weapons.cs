@@ -23,8 +23,8 @@ namespace FacialStuff
         private readonly string[] _psiToolbarStrings =
         {"North", "East", "South", "West"};
 
-        private bool _leftFront;
-        private bool _rightFront = true;
+        // private bool _leftFront;
+        // private bool _rightFront = true;
 
         private bool _useSecondHand =
         weaponExtensions?.RightHandPosition != Vector3.zero;

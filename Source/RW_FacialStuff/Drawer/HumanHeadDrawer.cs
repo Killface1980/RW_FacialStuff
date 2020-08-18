@@ -199,7 +199,7 @@ namespace FacialStuff
                     if (this.CompFace.Props.hasOrganicHair || noRenderBed || filterHeadgear
                      || (!apCoversFullHead && !apCoversUpperHead && noRenderGoggles))
                     {
-                        Material mat = this.Graphics.HairMatAt(this.HeadFacing);
+                        Material mat = this.Graphics.HairMatAt_NewTemp(this.HeadFacing);
                         GenDraw.DrawMeshNowOrLater(hairMesh, hairLoc, headQuat, mat, portrait);
                     }
                     else if (Controller.settings.MergeHair) // && !apCoversFullHead)
@@ -273,7 +273,7 @@ namespace FacialStuff
                 // Draw regular hair if no hat worn
                 if (bodyDrawType != RotDrawMode.Dessicated)
                 {
-                    Material hairMat = this.Graphics.HairMatAt(this.HeadFacing);
+                    Material hairMat = this.Graphics.HairMatAt_NewTemp(this.HeadFacing);
                     GenDraw.DrawMeshNowOrLater(hairMesh, hairLoc, headQuat, hairMat, portrait);
                 }
             }
@@ -569,7 +569,7 @@ namespace FacialStuff
             return asQuat;
 
             // remove the body rotation
-            if (animator != null && (animator.IsMoving && Controller.settings.UseFeet))
+            /*if (animator != null && (animator.IsMoving && Controller.settings.UseFeet))
             {
                 WalkCycleDef walkCycle = this.CompAnimator?.WalkCycle;
                 if (this.BodyFacing.IsHorizontal)
@@ -589,7 +589,7 @@ namespace FacialStuff
                 }
             }
 
-            return asQuat;
+            return asQuat;*/
         }
 
         public override void Tick(Rot4 bodyFacing, Rot4 headFacing, PawnGraphicSet graphics)
