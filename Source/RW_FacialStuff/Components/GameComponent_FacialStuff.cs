@@ -37,12 +37,6 @@ namespace FacialStuff
             {
                 HairDef hairDef = DefDatabase<HairDef>.AllDefsListForReading[i];
                 CheckReplaceHairTexPath(hairDef);
-
-                if (Controller.settings.UseCaching)
-                {
-                    string name = Path.GetFileNameWithoutExtension(hairDef.texPath);
-                    CutHairDB.ExportHairCut(hairDef, name);
-                }
             }
 
             // Fix for VHE hair on existing pawns.
