@@ -224,51 +224,11 @@ namespace FacialStuff.Harmony
 
             return true;
         }
-        private static bool DrawAtGiddy(Pawn __instance)
-        {
-            //  ExtendedDataStorage extendedDataStorage = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
-            //  bool                flag                = extendedDataStorage == null;
-            //  if (!flag)
-            //  {
-            //      ExtendedPawnData extendedDataFor = extendedDataStorage.GetExtendedDataFor(__instance);
-            //      if (extendedDataFor != null&&extendedDataFor.mount != null)
-            //      {
-            //
-            //      }
-            //          CompBodyAnimator animator = extendedDataFor.mount.GetCompAnim();
-            //          if (animator != null)
-            //          {
-            //              animator.IsRider = flag2;
-            //              Debug.Log("FS: Pawn "+ __instance +" is rider?" + animator.IsRider);
-            //
-            //      }
-            //  }
-
-            return true;
-        }
-
+        
         #endregion Private Fields
 
         #region Public Methods
-
-        //   public static void StartPath_Postfix(Pawn_PathFollower __instance)
-        //   {
-        //       Pawn pawn = (Pawn)AccessTools.Field(typeof(Pawn_PathFollower), "pawn").GetValue(__instance);
-        //       if (pawn.GetCompAnim(out CompBodyAnimator animator))
-        //       {
-        //           animator.IsMoving = true;
-        //       }
-        //   }
-        //
-        //   public static void PatherArrived_Postfix(Pawn_PathFollower __instance)
-        //   {
-        //       Pawn pawn = (Pawn)AccessTools.Field(typeof(Pawn_PathFollower), "pawn").GetValue(__instance);
-        //       if (pawn.GetCompAnim(out CompBodyAnimator animator))
-        //       {
-        //           animator.IsMoving = false;
-        //       }
-        //   }
-
+        
         public static void AddFaceEditButton(Page_ConfigureStartingPawns __instance, Rect rect)
         {
             FieldInfo PawnFieldInfo =
@@ -446,7 +406,7 @@ namespace FacialStuff.Harmony
             {
                 return;
             }
-
+            
             float sizeMod = 1f;
 
             //  if (Controller.settings.IReallyLikeBigGuns) { sizeMod = 2.0f; }
@@ -481,7 +441,6 @@ namespace FacialStuff.Harmony
                                                 out bool noTween);
 
                 drawLoc += weaponPosOffset * sizeMod;
-
                 Vector3Tween eqTween = animator.Vector3Tweens[(int)equipment];
 
                 if (pawn.pather.MovedRecently(5))
@@ -619,8 +578,8 @@ namespace FacialStuff.Harmony
         }
 
         public static IEnumerable<CodeInstruction> DrawEquipmentAiming_Transpiler(
-        IEnumerable<CodeInstruction> instructions,
-        ILGenerator ilGen)
+            IEnumerable<CodeInstruction> instructions,
+            ILGenerator ilGen)
         {
             List<CodeInstruction> instructionList = instructions.ToList();
 
@@ -629,21 +588,16 @@ namespace FacialStuff.Harmony
             instructionList[index].labels = new List<Label>();
             instructionList.InsertRange(index, new List<CodeInstruction>
             {
-                                               // DoCalculations(Pawn pawn, Thing eq, ref Vector3 drawLoc, ref float weaponAngle, float aimAngle)
-                                               new CodeInstruction(OpCodes.Ldarg_0),
-                                               new CodeInstruction(OpCodes.Ldfld,
-                                                                   AccessTools.Field(typeof(PawnRenderer),
-                                                                                     "pawn")), // pawn
-                                               new CodeInstruction(OpCodes.Ldarg_1),           // Thing
-                                               new CodeInstruction(OpCodes.Ldarga,   2),       // drawLoc
-                                               new CodeInstruction(OpCodes.Ldloca_S, 1),       // weaponAngle
-                                               //   new CodeInstruction(OpCodes.Ldarg_3), // aimAngle
-                                               new CodeInstruction(OpCodes.Ldloca_S,
-                                                                   0), // Mesh, loaded as ref to not trigger I Love Big Guns
-                                               new CodeInstruction(OpCodes.Call,
-                                                                   AccessTools.Method(typeof(HarmonyPatchesFS),
-                                                                                      nameof(DoWeaponOffsets))),
-                                               });
+                // DoCalculations(Pawn pawn, Thing eq, ref Vector3 drawLoc, ref float weaponAngle, float aimAngle)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(PawnRenderer), "pawn")), // pawn
+                new CodeInstruction(OpCodes.Ldarg_1), // Thing
+                new CodeInstruction(OpCodes.Ldarga, 2), // drawLoc
+                new CodeInstruction(OpCodes.Ldloca_S, 1), // weaponAngle
+                //   new CodeInstruction(OpCodes.Ldarg_3), // aimAngle
+                new CodeInstruction(OpCodes.Ldloca_S, 0), // Mesh, loaded as ref to not trigger I Love Big Guns
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatchesFS), nameof(DoWeaponOffsets))),
+            });
             instructionList[index].labels = labels;
             return instructionList;
         }
@@ -756,19 +710,15 @@ namespace FacialStuff.Harmony
             instructionList.RemoveAt(indexDrawAt);
             instructionList.InsertRange(indexDrawAt, new List<CodeInstruction>
             {
-                                                     // carriedThing.DrawAt(vector, flip);
-                                                     // carriedThing = ldloc.1
-                                                     // vector = ldloc.2
-                                                     // bool flip = ldloc.s 4
-                                                     new CodeInstruction(OpCodes.Ldarg_0), // this.PawnRenderer
-                                                     new CodeInstruction(OpCodes.Ldfld,
-                                                                         AccessTools.Field(typeof(PawnRenderer),
-                                                                                           "pawn")), // pawn
-                                                     new CodeInstruction(OpCodes.Ldloc_3),           // flag
-                                                     new CodeInstruction(OpCodes.Call,
-                                                                         AccessTools.Method(typeof(HarmonyPatchesFS),
-                                                                                            nameof(CheckAndDrawHands)))
-                                                     });
+                // carriedThing.DrawAt(vector, flip);
+                // carriedThing = ldloc.1
+                // vector = ldloc.2
+                // bool flip = ldloc.s 4
+                new CodeInstruction(OpCodes.Ldarg_0), // this.PawnRenderer
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(PawnRenderer), "pawn")), // pawn
+                new CodeInstruction(OpCodes.Ldloc_3), // flag
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatchesFS), nameof(CheckAndDrawHands)))
+            });
             return instructionList;
         }
 
@@ -776,7 +726,7 @@ namespace FacialStuff.Harmony
         public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)
         {
             Pawn pawn = __instance.pawn;
-            if (pawn == null)
+            if(pawn == null)
             {
                 return;
             }
@@ -785,15 +735,13 @@ namespace FacialStuff.Harmony
             pawn.GetCompAnim()?.PawnBodyGraphic?.Initialize();
 
             // Check if race has face, else return
-            if (!pawn.GetCompFace(out CompFace compFace))
+            if(!pawn.GetCompFace(out CompFace compFace))
             {
                 return;
             }
-
-            // compFace.IsChild = pawn.ageTracker.AgeBiologicalYearsFloat < 14;
-
+            
             // Return if child
-            if (pawn.IsChild() || pawn.GetCompAnim().Deactivated)
+            if(pawn.IsChild() || pawn.GetCompAnim().Deactivated)
             {
                 return;
             }
@@ -802,42 +750,23 @@ namespace FacialStuff.Harmony
             pawn.GetComp<CompBodyAnimator>()?.ClearCache();
 
             GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
-
-            // Need: get the traditional habitat of a faction => not suitable, as factions are scattered around the globe
-            // if (!faceComp.IsSkinDNAoptimized)
-            // {
-            // faceComp.DefineSkinDNA();
-            // }
-
+            
             // Custom rotting color, mixed with skin tone
             Color rotColor = pawn.story.SkinColor * FaceTextures.SkinRottingMultiplyColor;
-            if (!compFace.InitializeCompFace())
+            if(!compFace.InitializeCompFace())
             {
                 return;
             }
 
             __instance.nakedGraphic = GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.bodyType.bodyNakedGraphicPath, ShaderDatabase.CutoutSkin, Vector2.one, __instance.pawn.story.SkinColor);
-            if (compFace.Props.needsBlankHumanHead)
+            if(compFace.Props.needsBlankHumanHead)
             {
-                // if (!compFace.IsChild)
-                {
-                    __instance.headGraphic =
-                        GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn,
-                            pawn.story.SkinColor);
-                    __instance.desiccatedHeadGraphic =
-                        GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
-                    __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
-                }
-               // else
-               // {
-               //     __instance.headGraphic =
-               //         GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,
-               //             pawn.story.SkinColor);
-               //     __instance.desiccatedHeadGraphic =
-               //         GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,
-               //             rotColor);
-               //     __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecords.GetStump(rotColor);
-               // }
+                __instance.headGraphic =
+                    GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn,
+                        pawn.story.SkinColor);
+                __instance.desiccatedHeadGraphic =
+                    GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
+                __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
             }
 
             __instance.rottingGraphic =
@@ -855,7 +784,7 @@ namespace FacialStuff.Harmony
         {
             Pawn pawn = __instance.pawn;
             CompFace compFace = pawn.GetCompFace();
-            // Set up the hair cut graphic
+            // Update head coverage status
             if(Controller.settings.MergeHair && compFace != null)
             {
                 HeadCoverage coverage = HeadCoverage.None;

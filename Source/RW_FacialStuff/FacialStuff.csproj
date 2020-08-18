@@ -95,7 +95,6 @@
     <None Include="packages.config" />
     <None Include="WidgetsFS.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
-    <None Include="Components\CompHumanFace.cs" />
     <None Include="Controller_Animator.cs" />
     <Compile Include="Components\Skeletoon\FS_Skeleton.cs" />
     <None Include="DefOfs\ExtremityDefOf.cs" />

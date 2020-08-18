@@ -12,13 +12,6 @@ using Verse.Noise;
 
 namespace FacialStuff.GraphicsFS
 {
-	// This class is a wrapper for the actual hair graphics. It extends Verse.Graphic class so it can be assigned to 
-	// PawnGraphicSet.hairGraphic variable directly.
-	// Unlike typical Verse.Graphic class which is agnostic towards the pawn for which it is rendered, this class has a CompFace
-	// member variable. Therfore, instances of this class are unique for every Pawn and should be assigned only to the Pawn it is 
-	// associated with. This also means that it should NEVER be stored in GraphicDatabase because GraphicDatabase can't tell
-	// what Pawn is associated with what Graphic. The reason that this class needs to have reference to a Pawn is because
-	// it needs to choose between default and masked hair textures depending on what hat the Pawn is wearing.
 	[StaticConstructorOnStartup]
 	class Graphic_Hair : Graphic
 	{
