@@ -264,13 +264,19 @@ namespace FacialStuff
             {
                 // Copied from PawnGraphicSet.HairMatAt_NewTemp
                 Material hairBasemat = hairGraphic.MatAt(headFacing, CurrentHeadCoverage);
-                /*if(!portrait && pawn.IsInvisible())
+                if(!portrait && Pawn.IsInvisible())
                 {
-                    // TODO need to create invisible mat shader
-                    baseMat = InvisibilityMatPool.GetInvisibleMat(baseMat);
+                    // Invisibility shader ignores the mask texture used in this mod's custom hair shader, which
+                    // cuts out the parts of hair that are poking through headwear.
+                    // However, decompiling vanilla invisibility shader and writing an equivalent shader for this mod's
+                    // custom shader is rather difficult. The only downside of using the vanilla invisibility shader
+                    // is the graphical artifacts, so fixing it will be a low priority task.
+                    hairBasemat = InvisibilityMatPool.GetInvisibleMat(hairBasemat);
                 }
-                // TODO may need to create damaged mat shader
-                graphics.flasher.GetDamagedMat(baseMat);*/
+                // Similar to the invisibility shader, a separate damaged mat shader needs to be written for this
+                // mod's custom hair shader. However, the effect is so subtle that taking time to decompile the vanilla
+                // shader and writing a custom shader isn't worth the time.
+                // graphics.flasher.GetDamagedMat(baseMat);
                 var maskTex = hairBasemat.GetMaskTexture();
                 GenDraw.DrawMeshNowOrLater(
                     graphics.HairMeshSet.MeshAt(headFacing),
