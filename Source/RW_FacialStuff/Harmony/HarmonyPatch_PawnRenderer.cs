@@ -124,7 +124,6 @@ namespace FacialStuff.Harmony
         {
             public CompFace compFace;
             public CompBodyAnimator compAnim;
-            public Quaternion bodyQuat;
             public Quaternion headQuat;
             public Vector3 footPos;
         }
@@ -294,7 +293,7 @@ namespace FacialStuff.Harmony
 		            return;
 	            }
 	            DrawEquipment(rootLoc);
-                TryRenderHandAndFoot(ref extraLocalVar, rootLoc, renderBody);
+                TryRenderHandAndFoot(ref extraLocalVar, rootLoc, bodyQuat, renderBody);
 	            if (pawn.apparel != null)
                 ...
                 */
@@ -307,7 +306,9 @@ namespace FacialStuff.Harmony
                     yield return new CodeInstruction(OpCodes.Ldloca_S, extraLocalVar);
                     // 2nd argument - Vector3 rootLoc
                     yield return new CodeInstruction(OpCodes.Ldarg_1);
-                    // 3rd argument - bool renderBody
+                    // 3rd argument - Quaternion bodyQuat ("quaternion")
+                    yield return new CodeInstruction(OpCodes.Ldloc_0);
+                    // 4th argument - bool renderBody
                     yield return new CodeInstruction(OpCodes.Ldarg_3);
                     // Call TryRenderHandAndFoot() function
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatch_PawnRenderer), nameof(TryRenderHandAndFoot)));
@@ -360,7 +361,6 @@ namespace FacialStuff.Harmony
                 {
                     Vector3 footPos = rootLoc;
                     compAnim.ApplyBodyWobble(ref rootLoc, ref footPos, ref bodyQuat);
-                    extraLocalVar.bodyQuat = bodyQuat;
                     extraLocalVar.footPos = footPos;
                 }
             }
@@ -399,24 +399,24 @@ namespace FacialStuff.Harmony
             return false;
         }
 
-        public static void TryRenderHandAndFoot(ref ExtraLocalVar extraLocalVar, Vector3 rootLoc, bool renderBody)
+        public static void TryRenderHandAndFoot(ref ExtraLocalVar extraLocalVar, Vector3 rootLoc, Quaternion bodyQuat, bool renderBody)
         {
             CompBodyAnimator compAnim = extraLocalVar.compAnim;
             if(compAnim != null)
             {
                 Vector3 handPos = rootLoc;
-                Quaternion footQuat = extraLocalVar.bodyQuat;
+                Quaternion footQuat = bodyQuat;
                 if(renderBody || Controller.settings.IgnoreRenderBody)
                 {
                     if(Controller.settings.UseHands)
                     {
                         // Reset the position for the hands
                         handPos.y = rootLoc.y;
-                        compAnim.DrawHands(extraLocalVar.bodyQuat, handPos, false);
+                        compAnim.DrawHands(bodyQuat, handPos, false);
                     }
                     if(Controller.settings.UseFeet)
                     {
-                        compAnim.DrawFeet(extraLocalVar.bodyQuat, footQuat, extraLocalVar.footPos, false);
+                        compAnim.DrawFeet(bodyQuat, footQuat, extraLocalVar.footPos, false);
                     }
                 }
             }
