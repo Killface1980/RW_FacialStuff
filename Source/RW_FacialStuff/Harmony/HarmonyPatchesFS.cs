@@ -1,6 +1,5 @@
 ﻿// ReSharper disable All
 
-using FacialStuff.HairCut;
 using FacialStuff.Tweener;
 using HarmonyLib;
 using JetBrains.Annotations;

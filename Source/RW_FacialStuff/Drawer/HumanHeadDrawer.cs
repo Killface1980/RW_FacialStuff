@@ -1,6 +1,5 @@
 ﻿using FacialStuff.AnimatorWindows;
 using FacialStuff.GraphicsFS;
-using FacialStuff.HairCut;
 using FacialStuff.Harmony;
 using RimWorld;
 using System.Collections.Generic;

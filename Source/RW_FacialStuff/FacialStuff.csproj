@@ -201,7 +201,6 @@
     <Compile Include="Enums\HeadType.cs" />
     <Compile Include="DefOfs\MouthDefOf.cs" />
     <Compile Include="GraphicsFS\FaceTextures.cs" />
-    <Compile Include="HairCut\HairCutPawn.cs" />
     <Compile Include="GraphicsFS\Graphic_Multi_NaturalEyes.cs" />
     <Compile Include="GraphicsFS\Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="GraphicsFS\MeshPoolFs.cs" />

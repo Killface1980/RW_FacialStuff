@@ -1,5 +1,4 @@
 ﻿using FacialStuff.Defs;
-using FacialStuff.HairCut;
 using JetBrains.Annotations;
 using RimWorld;
 using System.Collections.Generic;
