@@ -120,11 +120,32 @@ namespace FacialStuff.Harmony
             rootLoc = loc;
         }
 
+        public struct ExtraLocalVar
+        {
+            public CompFace compFace;
+            public CompBodyAnimator compAnim;
+            public Quaternion bodyQuat;
+            public Quaternion headQuat;
+            public Vector3 footPos;
+        }
+        
         // PawnRenderer.RenderPawnInternal from version 1.2.7528
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
             int bodyPatchState = 0;
             int headPatchState = 0;
+            int handPatchState = 0;
+
+            // Declare ExtraLocalVar
+            LocalBuilder extraLocalVar = il.DeclareLocal(typeof(ExtraLocalVar));
+            yield return new CodeInstruction(OpCodes.Ldloca_S, extraLocalVar);
+            yield return new CodeInstruction(OpCodes.Initobj, typeof(ExtraLocalVar));
+            // Push function arguments for InitializeExtraLocals()
+            yield return new CodeInstruction(OpCodes.Ldloca_S, extraLocalVar);
+            yield return new CodeInstruction(OpCodes.Ldarg_0);
+            // Call InitializeExtraLocals() function
+            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatch_PawnRenderer), nameof(InitializeExtraLocals)));
+
             List<CodeInstruction> instList = instructions.ToList();
             for(int i = 0; i < instList.Count; ++i)
             {
@@ -143,25 +164,29 @@ namespace FacialStuff.Harmony
                 ...
                 Quaternion quaternion = Quaternion.AngleAxis(angle, Vector3.up);
                 Mesh mesh = null;
-                TryUpdateCompBody(PawnRenderer pawnRenderer, Rot4 bodyFacing, Vector3 rootLoc, ref Quaternion bodyQuat, bool portrait);
+                TryUpdateCompBody(ref ExtraLocalVar extraLocalVar, PawnRenderer pawnRenderer, Rot4 bodyFacing, Vector3 rootLoc, ref Quaternion bodyQuat, bool portrait);
                 if (renderBody)
                 {
                 ...
                 */
                 if(code.opcode == OpCodes.Ldarg_3 && bodyPatchState == 0)
                 {
-                    // 1st argument - PawnRenderer instance ("this")
+                    // 1st argument - ExtraLocalVar extraLocalVar
+                    yield return new CodeInstruction(OpCodes.Ldloca_S, extraLocalVar);
+                    // 2nd argument - PawnRenderer instance ("this")
                     yield return new CodeInstruction(OpCodes.Ldarg_0);
-                    // 2nd argument - Rot4 bodyFacing
+                    // 3rd argument - Rot4 bodyFacing
                     yield return new CodeInstruction(OpCodes.Ldarg_S, 4);
-                    // 3rd argument - ref Vector4 rootLoc
+                    // 4th argument - Rot4 headFacing
+                    yield return new CodeInstruction(OpCodes.Ldarg_S, 5);
+                    // 5th argument - ref Vector4 rootLoc
                     yield return new CodeInstruction(OpCodes.Ldarga_S, 1);
-                    // 4th argument - ref Quaternion quaternion ("bodyQuat")
+                    // 6th argument - ref Quaternion quaternion ("bodyQuat")
                     yield return new CodeInstruction(OpCodes.Ldloca_S, 0);
-                    // 5th argument - bool portrait
+                    // 7th argument - bool portrait
                     yield return new CodeInstruction(OpCodes.Ldarg_S, 7);
                     // Call TryUpdateCompBody using the given arguments
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatch_PawnRenderer), nameof(TryUpdateCompBody)));
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatch_PawnRenderer), nameof(TryUpdateBodyOrientation)));
                     bodyPatchState = 1;
                 }
                 
@@ -223,21 +248,23 @@ namespace FacialStuff.Harmony
                     } else
                     {
                         // Insert the following codes after the Stloc.S 11 instructon
-                        // 1st argument - PawnRenderer instance ("this")
+                        // 1st argument - ExtraLocalVar extraLocalVar
+                        yield return new CodeInstruction(OpCodes.Ldloca_S, extraLocalVar);
+                        // 2nd argument - PawnRenderer instance ("this")
                         yield return new CodeInstruction(OpCodes.Ldarg_0);
-                        // 2nd argument - RotDrawMode bodyDrawType
+                        // 3rd argument - RotDrawMode bodyDrawType
                         yield return new CodeInstruction(OpCodes.Ldarg_S, 6);
-                        // 3rd argument - bool portrait
+                        // 4th argument - bool portrait
                         yield return new CodeInstruction(OpCodes.Ldarg_S, 7);
-                        // 4th argument - bool headStump
+                        // 5th argument - bool headStump
                         yield return new CodeInstruction(OpCodes.Ldarg_S, 8);
-                        // 5th argument - Rot4 bodyFacing
+                        // 6th argument - Rot4 bodyFacing
                         yield return new CodeInstruction(OpCodes.Ldarg_S, 4);
-                        // 6th argument - Rot4 headFacing
+                        // 7th argument - Rot4 headFacing
                         yield return new CodeInstruction(OpCodes.Ldarg_S, 5);
-                        // 7th argument - Vec3 headPos ("a")
+                        // 8th argument - Vec3 headPos ("a")
                         yield return new CodeInstruction(OpCodes.Ldloc_3);
-                        // 8th argument - Quaternion bodyQuat ("quaternion")
+                        // 9th argument - Quaternion bodyQuat ("quaternion")
                         yield return new CodeInstruction(OpCodes.Ldloc_0);
                         // Call TryRenderFacialStuffFace using the given arguments
                         yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatch_PawnRenderer), nameof(TryRenderFacialStuffHead)));
@@ -248,6 +275,48 @@ namespace FacialStuff.Harmony
                     // Continue because Stloc.S 11 instruction has already been emitted.
                     continue;
                 }
+
+                /*
+                // Before running the transpiler
+                ...
+                if (portrait)
+	            {
+		            return;
+	            }
+	            DrawEquipment(rootLoc);
+	            if (pawn.apparel != null)
+                ...
+
+                // After running the transpiler
+                ...
+                if (portrait)
+	            {
+		            return;
+	            }
+	            DrawEquipment(rootLoc);
+                TryRenderHandAndFoot(ref extraLocalVar, rootLoc, renderBody);
+	            if (pawn.apparel != null)
+                ...
+                */
+                // Hand and feet positions are also modified in RenderPawnInternal.DrawEquipment. Therefore hand and feet need to be rendered after that.
+                if(code.opcode == OpCodes.Call && ((MethodInfo)code.operand).Name.Equals("DrawEquipment") && handPatchState == 0)
+				{
+                    // Emit CallVirt DrawEquipment instruction. The newly added codes need to come after DrawEquipment().
+                    yield return code;
+                    // 1st argument - ExtraLocalVar extraLocalVar
+                    yield return new CodeInstruction(OpCodes.Ldloca_S, extraLocalVar);
+                    // 2nd argument - Vector3 rootLoc
+                    yield return new CodeInstruction(OpCodes.Ldarg_1);
+                    // 3rd argument - bool renderBody
+                    yield return new CodeInstruction(OpCodes.Ldarg_3);
+                    // Call TryRenderHandAndFoot() function
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatch_PawnRenderer), nameof(TryRenderHandAndFoot)));
+
+                    handPatchState = 1;
+                    // CallVirt DrawEquipment instruction has already been emitted, so continue without emitting the same code again.
+                    continue;
+				}
+
                 yield return code;
             }
             if(bodyPatchState != 1)
@@ -258,51 +327,55 @@ namespace FacialStuff.Harmony
             {
                 Log.Warning("Facial Stuff: code for rendering head wasn't injected");
             }
+            if(handPatchState != 1)
+			{
+                Log.Warning("Facial Stuff: code for rendering hand and feet wasn't injected");
+			}
         }
 
-        public static void TryUpdateCompBody(
+        public static void InitializeExtraLocals(ref ExtraLocalVar extraLocalVar, PawnRenderer pawnRenderer)
+		{
+            Pawn pawn = pawnRenderer.graphics.pawn;
+            extraLocalVar.compFace = pawn.GetCompFace();
+            extraLocalVar.compAnim = pawn.GetCompAnim();
+		}
+
+        public static void TryUpdateBodyOrientation(
+            ref ExtraLocalVar extraLocalVar,
             PawnRenderer pawnRenderer, 
-            Rot4 bodyFacing, 
+            Rot4 bodyFacing,
+            Rot4 headFacing,
             ref Vector3 rootLoc, 
             ref Quaternion bodyQuat, 
             bool portrait)
         {
             PawnGraphicSet graphics = pawnRenderer.graphics;
-            CompBodyAnimator compAnim = graphics.pawn.GetCompAnim();
+            CompBodyAnimator compAnim = extraLocalVar.compAnim;
+            CompFace compFace = extraLocalVar.compFace;
+
             if(compAnim != null)
 			{
                 compAnim.TickDrawers(bodyFacing, graphics);
-                Quaternion footQuat = bodyQuat;
-                Vector3 footPos = rootLoc;
                 if(Controller.settings.UseFeet)
                 {
+                    Vector3 footPos = rootLoc;
                     compAnim.ApplyBodyWobble(ref rootLoc, ref footPos, ref bodyQuat);
+                    extraLocalVar.bodyQuat = bodyQuat;
+                    extraLocalVar.footPos = footPos;
                 }
-                // Reset the quat as it has been changed
+            }
+            if(compFace != null)
+			{
+                compFace.TickDrawers(bodyFacing, headFacing, graphics);
                 Quaternion headQuat = bodyQuat;
-                CompFace compFace = graphics.pawn.GetCompFace();
-                compFace?.ApplyHeadRotation(true, ref headQuat);
-
-                bool showHands = Controller.settings.UseHands;
-                Vector3 handPos = rootLoc;
-                if(true || Controller.settings.IgnoreRenderBody)
-                {
-                    if(showHands)
-                    {
-                        // Reset the position for the hands
-                        handPos.y = rootLoc.y;
-                        compAnim?.DrawHands(bodyQuat, handPos, portrait);
-                    }
-                    if(Controller.settings.UseFeet)
-                    {
-                        compAnim.DrawFeet(bodyQuat, footQuat, footPos, portrait);
-                    }
-                }
+                extraLocalVar.compFace.ApplyHeadRotation(true /* TODO: renderBody */, ref headQuat);
+                extraLocalVar.headQuat = headQuat;
             }
         }
 
         // Render Facial Stuff head if applicable. Returns true if Facial Stuff head was rendered, return false if vanilla behavior is desired.
         public static bool TryRenderFacialStuffHead(
+            ref ExtraLocalVar extraLocalVar,
             PawnRenderer pawnRenderer, 
             RotDrawMode bodyDrawType,
             bool portrait,
@@ -313,23 +386,40 @@ namespace FacialStuff.Harmony
             Quaternion bodyQuat)
         {
             PawnGraphicSet graphics = pawnRenderer.graphics;
-            Pawn pawn = graphics.pawn;
-            CompFace compFace = pawn.GetCompFace();
-
+            CompFace compFace = extraLocalVar.compFace;
             if(compFace != null)
             {
-                compFace.TickDrawers(bodyFacing, headFacing, graphics);
-
                 // TODO: Not sure why BaseHeadoffsetAt needs to pass Pawn. Investigate
                 Vector3 headBaseOffset = compFace.BaseHeadOffsetAt(portrait, null);
                 Vector3 headPosOffset = bodyQuat * headBaseOffset;
                 Vector3 headDrawLoc = headPos + headPosOffset;
-                // headQuat is modified by body animation originally, but body anim is disabled for now
-                Quaternion headQuat = bodyQuat;
-
+                Quaternion headQuat = extraLocalVar.headQuat;
                 return compFace.DrawHead(bodyDrawType, portrait, headStump, bodyFacing, headFacing, headDrawLoc, headQuat);
             }
             return false;
+        }
+
+        public static void TryRenderHandAndFoot(ref ExtraLocalVar extraLocalVar, Vector3 rootLoc, bool renderBody)
+        {
+            CompBodyAnimator compAnim = extraLocalVar.compAnim;
+            if(compAnim != null)
+            {
+                Vector3 handPos = rootLoc;
+                Quaternion footQuat = extraLocalVar.bodyQuat;
+                if(renderBody || Controller.settings.IgnoreRenderBody)
+                {
+                    if(Controller.settings.UseHands)
+                    {
+                        // Reset the position for the hands
+                        handPos.y = rootLoc.y;
+                        compAnim.DrawHands(extraLocalVar.bodyQuat, handPos, false);
+                    }
+                    if(Controller.settings.UseFeet)
+                    {
+                        compAnim.DrawFeet(extraLocalVar.bodyQuat, footQuat, extraLocalVar.footPos, false);
+                    }
+                }
+            }
         }
         
         public static bool DoNotUseThisPrefix(PawnRenderer __instance,
@@ -419,7 +509,7 @@ namespace FacialStuff.Harmony
                 headFacing = MainTabWindow_BaseAnimator.HeadRot;
             }
 
-            compFace?.TickDrawers(bodyFacing, headFacing, graphics);
+            /* compFace?.TickDrawers(bodyFacing, headFacing, graphics);
 
             compAnim?.TickDrawers(bodyFacing, graphics);
 
@@ -463,7 +553,7 @@ namespace FacialStuff.Harmony
             {
                 // Rendererd pawn faces
 
-                /*Vector3 offsetAt = !hasFace
+                Vector3 offsetAt = !hasFace
                                    ? __instance.BaseHeadOffsetAt(bodyFacing)
                                    : compFace.BaseHeadOffsetAt(portrait, pawn);
 
@@ -580,7 +670,7 @@ namespace FacialStuff.Harmony
                                                  headQuat, hatInFrontOfFace);
 
                     compFace?.DrawAlienHeadAddons(headPos, portrait, headQuat, overHead);
-                }*/
+                }
 
             }
 
@@ -625,7 +715,7 @@ namespace FacialStuff.Harmony
             {
                 Mesh mesh = graphics.nakedGraphic.MeshAt(bodyFacing);
                 Graphics.DrawMesh(mesh, bodyPos, quat, graphics.packGraphic.MatAt(bodyFacing), 0);
-            }
+            }*/
 
             // No wobble for equipment, looks funnier - nah!
             // Vector3 equipPos = rootLoc;
@@ -635,7 +725,7 @@ namespace FacialStuff.Harmony
 
 
 
-            bool showHands = Controller.settings.UseHands;
+            /*bool showHands = Controller.settings.UseHands;
             Vector3 handPos = bodyPos;
             if (renderBody || Controller.settings.IgnoreRenderBody)
             {
@@ -650,7 +740,7 @@ namespace FacialStuff.Harmony
                 {
                     compAnim.DrawFeet(bodyQuat, footQuat, footPos, portrait);
                 }
-            }
+            }*/
 
             return false;
         }
