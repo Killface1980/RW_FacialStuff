@@ -120,13 +120,11 @@ namespace FacialStuff.Harmony
             rootLoc = loc;
         }
 
-        // Original Facial Stuff's method of prefixing RenderPawnInternal and completely bypassing the original routine had 
-        // compatibility issues with CombatExtended which modifies the existing routine.
-        // Therefore, using a transpiler instead of prefix may be a better option.
         // PawnRenderer.RenderPawnInternal from version 1.2.7528
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
             int bodyPatchState = 0;
+            int headPatchState = 0;
             List<CodeInstruction> instList = instructions.ToList();
             for(int i = 0; i < instList.Count; ++i)
             {
@@ -197,7 +195,7 @@ namespace FacialStuff.Harmony
                 ...
                 */
                 // There is only one Stloc.S 11 instruction in the method
-                if(code.opcode == OpCodes.Stloc_S && ((LocalBuilder)code.operand).LocalIndex == 11)
+                if(code.opcode == OpCodes.Stloc_S && ((LocalBuilder)code.operand).LocalIndex == 11 && headPatchState == 0)
                 {                   
                     // Emit Stloc.S 11. Injecting a call instruction right before Stloc.S 11 will cause IL compiler to fail
                     // because there is a returned value from op_Multiply() on top of the stack.
@@ -245,12 +243,20 @@ namespace FacialStuff.Harmony
                         yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatch_PawnRenderer), nameof(TryRenderFacialStuffHead)));
                         // If TryRenderFacialStuffFace returns true, skip the vanilla routine for rendering face
                         yield return new CodeInstruction(OpCodes.Brtrue_S, label);
+                        headPatchState = 1;
                     }
                     // Continue because Stloc.S 11 instruction has already been emitted.
                     continue;
                 }
-                
                 yield return code;
+            }
+            if(bodyPatchState != 1)
+            {
+                Log.Warning("Facial Stuff: code for body animation wasn't injected");
+            }
+            if(headPatchState != 1)
+            {
+                Log.Warning("Facial Stuff: code for rendering head wasn't injected");
             }
         }
 
