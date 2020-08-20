@@ -11,6 +11,7 @@ using FacialStuff.Harmony;
 using UnityEngine;
 using Verse;
 using static FacialStuff.Offsets;
+using FacialStuff.AI;
 
 namespace FacialStuff
 {
@@ -79,9 +80,9 @@ namespace FacialStuff
         }
 
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
-
-        public PawnHeadRotator HeadRotator { get; private set; }
-
+        
+        public PawnHeadRotationAI HeadRotationAI { get; private set; }
+        
         [NotNull]
         public GraphicVectorMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
 
@@ -291,28 +292,11 @@ namespace FacialStuff
                     "FacialStuff_CompFaceNoValidHair".GetHashCode());
             }
         }
-
-        public void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i].ApplyHeadRotation(renderBody, ref headQuat);
-                i++;
-            }
-        }
-
+        
         // only for development
         public Vector3 BaseEyeOffsetAt(Rot4 rotation)
         {
             bool male = this.Pawn.gender == Gender.Male;
-
             switch (this.PawnCrownType)
             {
                 default:
@@ -522,7 +506,7 @@ namespace FacialStuff
         // this.graphics = graphics;
         // this.renderBody = renderBody;
         // }
-        public void DrawHeadOverlays(PawnHeadOverlays headOverlays, Vector3 bodyLoc, Quaternion headQuat)
+        /*public void DrawHeadOverlays(PawnHeadOverlays headOverlays, Vector3 bodyLoc, Quaternion headQuat)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -536,7 +520,7 @@ namespace FacialStuff
                 this.PawnHeadDrawers[i]?.DrawHeadOverlays(headOverlays, bodyLoc, headQuat);
                 i++;
             }
-        }
+        }*/
                 
         // TODO: Remove or make usable
         // public void DefineSkinDNA()
@@ -659,8 +643,7 @@ namespace FacialStuff
             this.PawnFaceGraphic = new PawnFaceGraphic(this);
             this.FaceMaterial = new FaceMaterial(this, this.PawnFaceGraphic);
 
-            // this.isMasochist = this.pawn.story.traits.HasTrait(TraitDef.Named("Masochist"));
-            this.HeadRotator = new PawnHeadRotator(this.Pawn);
+            HeadRotationAI = new PawnHeadRotationAI(Pawn);
 
             // this.headWiggler = new PawnHeadWiggler(this.pawn);
             return true;
@@ -723,12 +706,7 @@ namespace FacialStuff
             {
                 this.IsAsleep = !this.Pawn.Awake();
             }
-
-            if (!this.IsAsleep)
-            {
-                this.HeadRotator.RotatorTick();
-            }
-
+            
             if (this.Props.hasMouth)
             {
                 if (Find.TickManager.TicksGame % 90 == 0)
@@ -780,7 +758,8 @@ namespace FacialStuff
             this._pawnFace = importedFace;
         }
 
-        public void TickDrawers(Rot4 bodyFacing, Rot4 headFacing, PawnGraphicSet graphics)
+        
+        public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics)
         {
             if (!this._initialized)
             {
@@ -788,6 +767,9 @@ namespace FacialStuff
                 this._initialized = true;
             }
 
+            HeadRotationAI.Tick(bodyFacing, IsAsleep);
+            headFacing = HeadRotationAI.CurrentRotation;
+                        
             if (!this.PawnHeadDrawers.NullOrEmpty())
             {
                 int i = 0;

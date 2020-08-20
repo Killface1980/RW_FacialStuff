@@ -882,33 +882,34 @@ namespace FacialStuff.Harmony
             // typeof(Pawn_InteractionsTracker).GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
             //PawnFieldInfo?.GetValue(__instance);
 
+            // TODO: do not use reflection to get Pawn instance
             Pawn pawn = (Pawn)AccessTools.Field(typeof(Pawn_InteractionsTracker), "pawn").GetValue(__instance);
-            if (pawn == null || recipient == null)
+            if(pawn == null || recipient == null)
             {
                 return;
             }
 
-            if (__result)
+            if(__result)
             {
-                if (pawn.GetCompFace(out CompFace compFace))
+                // If pawn can't see recipient, recipient can't see pawn
+                if(!pawn.CanSee(recipient))
+				{
+                    return;
+				}
+                if(pawn.GetCompFace(out CompFace compFace))
                 {
-                    if (compFace.Props.canRotateHead)
+                    if(compFace.Props.canRotateHead)
                     {
-                        if (compFace.HeadRotator != null && pawn.CanSee(recipient))
-                        {
-                            compFace.HeadRotator.LookAtPawn(recipient);
-                        }
+                        // compFace.HeadRotator.LookAtPawn(recipient);
+                        compFace.HeadRotationAI.SetTarget(recipient, AI.PawnHeadRotationAI.TargetMode.SocialRecipient);
                     }
                 }
-
-                if (recipient.GetCompFace(out CompFace recipientFace))
+                if(recipient.GetCompFace(out CompFace recipientFace))
                 {
-                    if (recipientFace.Props.canRotateHead && recipient.CanSee(pawn))
+                    if(recipientFace.Props.canRotateHead)
                     {
-                        if (recipientFace.HeadRotator != null)
-                        {
-                            recipientFace.HeadRotator.LookAtPawn(pawn);
-                        }
+                        // recipientFace.HeadRotator.LookAtPawn(pawn);
+                        recipientFace.HeadRotationAI.SetTarget(pawn, AI.PawnHeadRotationAI.TargetMode.SocialInitiator);                            
                     }
                 }
             }

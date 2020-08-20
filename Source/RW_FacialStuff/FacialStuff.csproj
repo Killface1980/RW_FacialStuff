@@ -94,6 +94,7 @@
     <Compile Include="AI\MentalState_Possessed.cs" />
     <None Include="packages.config" />
     <None Include="WidgetsFS.cs" />
+    <Compile Include="AI\PawnHeadRotationAI.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
     <None Include="Controller_Animator.cs" />
     <Compile Include="Components\Skeletoon\FS_Skeleton.cs" />
@@ -175,7 +176,6 @@
     <Compile Include="Enums\BeardType.cs" />
     <Compile Include="PawnExtensions.cs" />
     <None Include="newStuff\JoyGiver_ChangeAppearance.cs" />
-    <Compile Include="Animator\PawnHeadRotator.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="GraphicsFS\PawnFaceGraphic.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.cs" />

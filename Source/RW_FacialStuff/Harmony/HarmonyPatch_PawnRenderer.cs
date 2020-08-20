@@ -176,8 +176,8 @@ namespace FacialStuff.Harmony
                     yield return new CodeInstruction(OpCodes.Ldarg_0);
                     // 3rd argument - Rot4 bodyFacing
                     yield return new CodeInstruction(OpCodes.Ldarg_S, 4);
-                    // 4th argument - Rot4 headFacing
-                    yield return new CodeInstruction(OpCodes.Ldarg_S, 5);
+                    // 4th argument - ref Rot4 headFacing
+                    yield return new CodeInstruction(OpCodes.Ldarga_S, 5);
                     // 5th argument - ref Vector4 rootLoc
                     yield return new CodeInstruction(OpCodes.Ldarga_S, 1);
                     // 6th argument - ref Quaternion quaternion ("bodyQuat")
@@ -345,7 +345,7 @@ namespace FacialStuff.Harmony
             ref ExtraLocalVar extraLocalVar,
             PawnRenderer pawnRenderer, 
             Rot4 bodyFacing,
-            Rot4 headFacing,
+            ref Rot4 headFacing,
             ref Vector3 rootLoc, 
             ref Quaternion bodyQuat, 
             bool portrait)
@@ -366,10 +366,7 @@ namespace FacialStuff.Harmony
             }
             if(compFace != null)
 			{
-                compFace.TickDrawers(bodyFacing, headFacing, graphics);
-                Quaternion headQuat = bodyQuat;
-                extraLocalVar.compFace.ApplyHeadRotation(true /* TODO: renderBody */, ref headQuat);
-                extraLocalVar.headQuat = headQuat;
+                compFace.TickDrawers(bodyFacing, ref headFacing, graphics);
             }
         }
 
@@ -393,8 +390,7 @@ namespace FacialStuff.Harmony
                 Vector3 headBaseOffset = compFace.BaseHeadOffsetAt(portrait, null);
                 Vector3 headPosOffset = bodyQuat * headBaseOffset;
                 Vector3 headDrawLoc = headPos + headPosOffset;
-                Quaternion headQuat = extraLocalVar.headQuat;
-                return compFace.DrawHead(bodyDrawType, portrait, headStump, bodyFacing, headFacing, headDrawLoc, headQuat);
+                return compFace.DrawHead(bodyDrawType, portrait, headStump, bodyFacing, headFacing, headDrawLoc, bodyQuat);
             }
             return false;
         }

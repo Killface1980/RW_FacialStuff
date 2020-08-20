@@ -13,30 +13,7 @@ namespace FacialStuff
     public class HumanHeadDrawer : PawnHeadDrawer
     {
         #region Public Methods
-
-        public override void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
-        {
-            CompProperties_Face compFaceProps = this.CompFace.Props;
-            if (compFaceProps == null) return;
-            
-            PawnHeadRotator compFaceHeadRotator = this.CompFace.HeadRotator;
-            if (compFaceHeadRotator == null) return;
-            
-            if (!Controller.settings.UseHeadRotator || !compFaceProps.canRotateHead) return;
-
-            this.HeadFacing = compFaceHeadRotator.Rotation(this.HeadFacing, renderBody);
-
-            // Todo: make it more natural
-            if (this.Pawn.CurJob != null)
-            {
-                if (this.Pawn.CurJobDef != JobDefOf.Wait) return;
-            }
-            headQuat *= this.QuatHead(this.HeadFacing);
-
-
-            // * Quaternion.AngleAxis(faceComp.headWiggler.downedAngle, Vector3.up);
-        }
-
+        
         public override void BaseHeadOffsetAt(ref Vector3 offset, bool portrait, Pawn pawn1)
         {
             Pawn pawn = this.Pawn;
@@ -405,60 +382,6 @@ namespace FacialStuff
         {
             base.Initialize();
             this.CompAnimator = this.Pawn.GetComp<CompBodyAnimator>();
-        }
-
-        public override Quaternion QuatHead(Rot4 rotation)
-        {
-            CompBodyAnimator animator = this.CompAnimator;
-
-            Quaternion asQuat = rotation.AsQuat;
-
-            if (animator != null)
-            {
-                float headRotatorCurrentMovement;
-                if ((animator.IsMoving || HarmonyPatchesFS.AnimatorIsOpen()) && rotation.IsHorizontal)
-                {
-                    headRotatorCurrentMovement = animator.HeadAngleX;
-                }
-                else
-                {
-                    headRotatorCurrentMovement = this.CompFace.HeadRotator.CurrentMovement;
-                }
-                float num = 1f;
-
-                float x =
-                    1f * Mathf.Sin(num * (headRotatorCurrentMovement * 0.1f) % (2 * Mathf.PI));
-                float z =
-                    1f * Mathf.Cos(num * (headRotatorCurrentMovement * 0.1f) % (2 * Mathf.PI));
-                asQuat.SetLookRotation(new Vector3(x, 0f, z), Vector3.up);
-
-            }
-
-
-            return asQuat;
-
-            // remove the body rotation
-            /*if (animator != null && (animator.IsMoving && Controller.settings.UseFeet))
-            {
-                WalkCycleDef walkCycle = this.CompAnimator?.WalkCycle;
-                if (this.BodyFacing.IsHorizontal)
-                {
-                    asQuat *= Quaternion.AngleAxis(
-                                                   (this.BodyFacing == Rot4.West ? 1 : -1)
-                                                 * walkCycle?.BodyAngle.Evaluate(this.CompAnimator.MovedPercent) ?? 0f,
-                                                   Vector3.up);
-                }
-                else
-                {
-                    asQuat *= Quaternion.AngleAxis(
-                                               (this.BodyFacing == Rot4.South ? 1 : -1)
-                                             * walkCycle?.BodyAngleVertical
-                                                         .Evaluate(this.CompAnimator.MovedPercent) ?? 0f,
-                                               Vector3.up);
-                }
-            }
-
-            return asQuat;*/
         }
 
         public override void Tick(Rot4 bodyFacing, Rot4 headFacing, PawnGraphicSet graphics)
