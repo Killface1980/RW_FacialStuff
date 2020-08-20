@@ -60,7 +60,7 @@ namespace FacialStuff
 
         // must be null, always initialize with pawn
         private PawnFace _pawnFace;
-
+                        
         #endregion Private Fields
 
         #region Public Properties
@@ -91,7 +91,18 @@ namespace FacialStuff
         public virtual CrownType PawnCrownType => this.Pawn?.story.crownType ?? CrownType.Average;
 
         [CanBeNull]
-        public PawnFace PawnFace => this._pawnFace;
+        public PawnFace PawnFace 
+        {
+            get
+			{
+                return _pawnFace;
+            }
+
+            set
+			{
+                _pawnFace = value;
+			}
+        }
 
         public HeadType PawnHeadType
         {
@@ -128,12 +139,12 @@ namespace FacialStuff
         [NotNull]
         private List<PawnHeadDrawer> PawnHeadDrawers { get; set; }
 
-        #endregion Private Properties
+		#endregion Private Properties
 
-        #region Public Methods
-                
-        // Return true if head was drawn. False if not.
-        public bool DrawHead(
+		#region Public Methods
+        
+		// Return true if head was drawn. False if not.
+		public bool DrawHead(
             RotDrawMode bodyDrawType, 
             bool portrait, 
             bool headStump,
@@ -616,32 +627,32 @@ namespace FacialStuff
         /// </returns>
         public virtual bool InitializeCompFace()
         {
-            if (this.OriginFaction == null)
+            if(_factionInt == null)
             {
-                this._factionInt = this.Pawn.Faction ?? Faction.OfPlayer;
+                _factionInt = Pawn.Faction ?? Faction.OfPlayer;
             }
 
-            if (this.PawnFace == null)
+            if(PawnFace == null)
             {
-                this.SetPawnFace(new PawnFace(this, this.OriginFaction?.def));
+                PawnFace = new PawnFace(this, OriginFaction?.def);
             }
 
             // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
-            if (this.PawnFace?.EyeDef == null || this.PawnFace.BrowDef == null || this.PawnFace.BeardDef == null)
+            if(PawnFace?.EyeDef == null || PawnFace.BrowDef == null || PawnFace.BeardDef == null)
             {
-                this.SetPawnFace(new PawnFace(this, Faction.OfPlayer.def));
+                PawnFace = new PawnFace(this, Faction.OfPlayer.def);
             }
 
             // Only for the crowntype ...
-            CrownTypeChecker.SetHeadOffsets(this.Pawn, this);
+            CrownTypeChecker.SetHeadOffsets(Pawn, this);
 
-            if (this.Props.hasEyes)
+            if(Props.hasEyes)
             {
-                this.EyeWiggler = new PawnEyeWiggler(this);
+                EyeWiggler = new PawnEyeWiggler(this);
             }
 
-            this.PawnFaceGraphic = new PawnFaceGraphic(this);
-            this.FaceMaterial = new FaceMaterial(this, this.PawnFaceGraphic);
+            PawnFaceGraphic = new PawnFaceGraphic(this);
+            FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
 
             HeadRotationAI = new PawnHeadRotationAI(Pawn);
 
@@ -690,13 +701,6 @@ namespace FacialStuff
                 return;
             }
 
-
-            // CellRect viewRect = Find.CameraDriver.CurrentViewRect;
-            // viewRect = viewRect.ExpandedBy(5);
-            // if (!viewRect.Contains(this.pawn.Position))
-            // {
-            // return;
-            // }
             if (this.Props.hasEyes)
             {
                 this.EyeWiggler.WigglerTick();
@@ -752,12 +756,6 @@ namespace FacialStuff
             // this.factionInt = Find.FactionManager.AllFactions.FirstOrDefault((Faction fa) => fa.GetUniqueLoadID() == facID);
             // }
         }
-
-        public void SetPawnFace([NotNull] PawnFace importedFace)
-        {
-            this._pawnFace = importedFace;
-        }
-
         
         public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics)
         {
