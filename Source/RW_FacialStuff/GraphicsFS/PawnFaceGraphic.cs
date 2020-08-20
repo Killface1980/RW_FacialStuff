@@ -4,6 +4,7 @@ using System;
 using FacialStuff.Animator;
 using FacialStuff.DefOfs;
 using FacialStuff.Defs;
+using FacialStuff.Harmony;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
@@ -17,50 +18,31 @@ namespace FacialStuff.GraphicsFS
 		const string STR_ROMV_Fangs = "ROMV_Fangs";
 
 		public Graphic BrowGraphic;
-
 		public Graphic DeadEyeGraphic;
-
-		public Graphic_Multi_NaturalEyes EyeLeftClosedGraphic;
-
-		public Graphic_Multi_NaturalEyes EyeLeftGraphic;
-		public Graphic_Multi_NaturalEars EarLeftGraphic;
-
-		public Graphic_Multi_AddedHeadParts EyeLeftPatchGraphic;
-
 		public Graphic_Multi_NaturalEyes EyeRightClosedGraphic;
-
+		public Graphic_Multi_NaturalEyes EyeLeftClosedGraphic;
+		public Graphic_Multi_NaturalEyes EyeRightGraphic;
+		public Graphic_Multi_NaturalEyes EyeLeftGraphic;
+		public Graphic_Multi_AddedHeadParts EyeRightPatchGraphic;
+		public Graphic_Multi_AddedHeadParts EyeLeftPatchGraphic;
+		
+		public Graphic_Multi_NaturalEars EarRightGraphic;
+		public Graphic_Multi_NaturalEars EarLeftGraphic;
+		public Graphic_Multi_AddedHeadParts EarRightPatchGraphic;
 		public Graphic_Multi_NaturalEars EarLeftPatchGraphic;
 
-
-		public Graphic_Multi_NaturalEyes EyeRightGraphic;
-		public Graphic_Multi_NaturalEars EarRightGraphic;
-
-		public Graphic_Multi_AddedHeadParts EyeRightPatchGraphic;
-		public Graphic_Multi_AddedHeadParts EarRightPatchGraphic;
-
 		public Graphic_Multi_NaturalHeadParts JawGraphic;
-
 		public Graphic MainBeardGraphic;
-
 		public Graphic MoustacheGraphic;
-
 		public HumanMouthGraphics Mouthgraphic;
-
 		public Graphic_Multi_NaturalHeadParts MouthGraphic;
 
 		public Graphic RottingWrinkleGraphic;
 
-		public string TexPathBrow;
-
-		[NotNull] public string TexPathEyeLeftClosed;
-
-		public string TexPathEyeRightClosed;
-
 		public Graphic WrinkleGraphic;
 
-		[NotNull] private readonly CompFace _compFace;
-
-		[NotNull] private readonly Pawn _pawn;
+		private readonly CompFace _compFace;
+		private readonly Pawn _pawn;
 
 		private float _mood = 0.5f;
 		private readonly PawnFace pawnFace;
@@ -70,68 +52,57 @@ namespace FacialStuff.GraphicsFS
 		public Graphic_Multi_NaturalEars EarLeftMissingGraphic;
 		public Graphic_Multi_NaturalEars EarRightMissingGraphic;
 
+		public string texPathBrow;
+		
+		public string texPathEyeLeft;
+		public string texPathEyeLeftPatch;
+		public string texPathEyeLeftMissing;
+		public string texPathEyeLeftClosed;
+		public string texPathEyeRight;
+		public string texPathEyeRightPatch;
+		public string texPathEyeRightMissing;
+		public string texPathEyeRightClosed;
+		
+		public string texPathEarLeft;
+		public string texPathEarLeftPatch;
+		public string texPathEarLeftMissing;
+		public string texPathEarRight;
+		public string texPathEarRightPatch;
+		public string texPathEarRightMissing;
+
+		public string texPathJawAddedPart;
+
 		public PawnFaceGraphic(CompFace compFace)
 		{
 			_compFace = compFace;
 			_pawn = compFace.Pawn;
 
-			pawnFace = _compFace.PawnFace;
+			pawnFace = compFace.PawnFace;
 			if(pawnFace != null)
 			{
-				if(_compFace.Props.hasBeard)
+				if(compFace.Props.hasBeard)
 				{
-					InitializeGraphicsBeard();
+					InitializeGraphicsBeard(compFace);
 				}
-
-				if(_compFace.Props.hasWrinkles)
+				if(compFace.Props.hasWrinkles)
 				{
-					InitializeGraphicsWrinkles();
+					InitializeGraphicsWrinkles(compFace);
 				}
-
-				MakeEyes();
-				MakeEars();
+				if(compFace.Props.hasEyes)
+				{
+					MakeEyes(pawnFace);
+				}
+				if(!compFace.Props.hasEars)
+				{
+					MakeEars(pawnFace);
+				}
 			}
 
-			if(_compFace.Props.hasMouth)
+			if(compFace.Props.hasMouth)
 			{
 				Mouthgraphic = new HumanMouthGraphics(_pawn);
-				InitializeGraphicsMouth();
+				InitializeGraphicsMouth(compFace);
 			}
-		}
-
-		public void MakeEyes()
-		{
-			if(!_compFace.Props.hasEyes)
-			{
-				return;
-			}
-
-			_compFace.TexPathEyeRight = _compFace.EyeTexPath(Side.Right);
-			_compFace.TexPathEyeLeft = _compFace.EyeTexPath(Side.Left);
-			_compFace.TexPathEyeRightMissing = _compFace.EyeTexPath(Side.Right, EyeDefOf.Missing);
-			_compFace.TexPathEyeLeftMissing = _compFace.EyeTexPath(Side.Left, EyeDefOf.Missing);
-			TexPathEyeLeftClosed = _compFace.EyeTexPath(Side.Left, EyeDefOf.Closed);
-			TexPathEyeRightClosed = _compFace.EyeTexPath(Side.Right, EyeDefOf.Closed);
-			TexPathBrow = _compFace.BrowTexPath(pawnFace.BrowDef);
-
-
-			InitializeGraphicsEyes();
-			InitializeGraphicsBrows();
-		}
-		public void MakeEars()
-		{
-			if(!_compFace.Props.hasEars)
-			{
-				return;
-			}
-
-			_compFace.TexPathEarRight = _compFace.EarTexPath(Side.Right);
-			_compFace.TexPathEarLeft = _compFace.EarTexPath(Side.Left);
-			_compFace.TexPathEarRightMissing = _compFace.EarTexPath(Side.Right, EarDefOf.Missing);
-			_compFace.TexPathEarLeftMissing = _compFace.EarTexPath(Side.Left, EarDefOf.Missing);
-
-
-			this.InitializeGraphicsEars();
 		}
 
 		public void SetMouthAccordingToMoodLevel()
@@ -171,17 +142,41 @@ namespace FacialStuff.GraphicsFS
 
 			MouthGraphic = Mouthgraphic.HumanMouthGraphic[indexOfMood].Graphic;
 		}
+		
+		public void MakeEyes(PawnFace pawnFace)
+		{
+			texPathEyeRight = EyeTexPath(Side.Right, pawnFace.EyeDef);
+			texPathEyeLeft = EyeTexPath(Side.Left, pawnFace.EyeDef);
+			texPathEyeRightMissing = EyeTexPath(Side.Right, EyeDefOf.Missing);
+			texPathEyeLeftMissing = EyeTexPath(Side.Left, EyeDefOf.Missing);
+			texPathEyeLeftClosed = EyeTexPath(Side.Left, EyeDefOf.Closed);
+			texPathEyeRightClosed = EyeTexPath(Side.Right, EyeDefOf.Closed);
+			texPathBrow = BrowTexPath(pawnFace.BrowDef);
 
-		private void InitializeGraphicsBeard()
+			InitializeGraphicsEyes();
+			InitializeGraphicsBrows();
+		}
+
+		public void MakeEars(PawnFace pawnFace)
+		{
+			texPathEarRight = EarTexPath(Side.Right, pawnFace.EarDef);
+			texPathEarLeft = EarTexPath(Side.Left, pawnFace.EarDef);
+			texPathEarRightMissing = EarTexPath(Side.Right, EarDefOf.Missing);
+			texPathEarLeftMissing = EarTexPath(Side.Left, EarDefOf.Missing);
+
+			this.InitializeGraphicsEars();
+		}
+		
+		private void InitializeGraphicsBeard(CompFace compFace)
 		{
 			if(pawnFace == null)
 			{
 				return;
 			}
 
-			string mainBeardDefTexPath = _compFace.GetBeardPath();
+			string mainBeardDefTexPath = GetBeardPath();
 
-			string moustacheDefTexPath = _compFace.GetMoustachePath();
+			string moustacheDefTexPath = GetMoustachePath();
 
 			Color beardColor = pawnFace.BeardColor;
 			Color tacheColor = pawnFace.BeardColor;
@@ -215,11 +210,79 @@ namespace FacialStuff.GraphicsFS
 				beardColor);
 		}
 
+		public string EyeTexPath(Side side, EyeDef eyeDef)
+		{
+			string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : eyeDef.texBasePath;
+			string path = eyePath + "Eye_" + eyeDef.texName + "_" + _pawn.gender + "_" + side;
+			return path.Replace(@"\", @"/");
+		}
+
+		public string EarTexPath(Side side, EarDef ear)
+		{
+			string earPath = ear.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Ears/" : ear.texBasePath;
+			string path = earPath + "Ear_" + ear.texName + "_" + _pawn.gender + "_" + side;
+			return path.Replace(@"\", @"/");
+		}
+
+		public string BrowTexPath(BrowDef browDef)
+		{
+			string browPath = browDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Brows/" : browDef.texBasePath;
+			string browTexPath = browPath + "Brow_" + _pawn.gender + "_" + browDef.texName;
+			return browTexPath;
+		}
+
+		public string GetBeardPath(BeardDef def = null)
+		{
+			if(def == null)
+			{
+				if(_compFace.PawnFace?.BeardDef != null)
+				{
+					def = _compFace.PawnFace?.BeardDef;
+				} else
+				{
+					return string.Empty;
+				}
+			}
+
+			if(def == BeardDefOf.Beard_Shaved)
+			{
+				return StringsFS.PathHumanlike + "Beards/Beard_Shaved";
+			}
+
+			if(def.IsBeardNotHair())
+			{
+				return StringsFS.PathHumanlike + "Beards/" + def.texPath;
+			}
+
+			return StringsFS.PathHumanlike + "Beards/Beard_" + _compFace.PawnHeadType + "_" + def.texPath + "_" + _compFace.PawnCrownType;
+		}
+
+		public string GetMoustachePath(MoustacheDef def = null)
+		{
+			if(def == null)
+			{
+				if(_compFace.PawnFace?.MoustacheDef != null)
+				{
+					def = _compFace.PawnFace?.MoustacheDef;
+				} else
+				{
+					return string.Empty;
+				}
+			}
+
+			if(def == MoustacheDefOf.Shaved)
+			{
+				return this.GetBeardPath(BeardDefOf.Beard_Shaved);
+			}
+
+			return def.texPath + "_" + _compFace.PawnCrownType;
+		}
+		
 		private void InitializeGraphicsBrows()
 		{
 			Color color = _pawn.story.hairColor;
 			BrowGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-				TexPathBrow,
+				texPathBrow,
 				ShaderDatabase.CutoutSkin,
 				Vector2.one,
 				color);
@@ -227,13 +290,13 @@ namespace FacialStuff.GraphicsFS
 
 		private void InitializeGraphicsEyePatches()
 		{
-			if(!this._compFace.TexPathEyeLeftPatch.NullOrEmpty())
+			if(!texPathEyeLeftPatch.NullOrEmpty())
 			{
 				bool leftTexExists = EyePatchLeftTexExists();
 				if(leftTexExists)
 				{
 					EyeLeftPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
-						_compFace.TexPathEyeLeftPatch,
+						texPathEyeLeftPatch,
 						ShaderDatabase.Transparent,
 						Vector2.one,
 						Color.white) as Graphic_Multi_AddedHeadParts;
@@ -242,18 +305,18 @@ namespace FacialStuff.GraphicsFS
 				{
 					Log.Message(
 						"Facial Stuff: No texture for added part: " +
-						_compFace.TexPathEyeLeftPatch +
+						texPathEyeLeftPatch +
 						" - Graphic_Multi_AddedHeadParts");
 				}
 			}
 
-			if(!this._compFace.TexPathEyeRightPatch.NullOrEmpty())
+			if(!texPathEyeRightPatch.NullOrEmpty())
 			{
 				bool rightTexExists = EyePatchRightTexExists();
 				if(rightTexExists)
 				{
 					EyeRightPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
-						_compFace.TexPathEyeRightPatch,
+						texPathEyeRightPatch,
 						ShaderDatabase.Transparent,
 						Vector2.one,
 						Color.white) as Graphic_Multi_AddedHeadParts;
@@ -262,7 +325,7 @@ namespace FacialStuff.GraphicsFS
 				{
 					Log.Message(
 						"Facial Stuff: No texture for added part: " +
-						_compFace.TexPathEyeRightPatch +
+						texPathEyeRightPatch +
 						" - Graphic_Multi_AddedHeadParts");
 				}
 			}
@@ -271,24 +334,25 @@ namespace FacialStuff.GraphicsFS
 		public bool EyePatchRightTexExists()
 		{
 			return !ContentFinder<Texture2D>.Get(
-				_compFace.TexPathEyeRightPatch + STR_south, false).NullOrBad();
+				texPathEyeRightPatch + STR_south, false).NullOrBad();
 		}
 
 		public bool EyePatchLeftTexExists()
 		{
 			return !ContentFinder<Texture2D>.Get(
-				_compFace.TexPathEyeLeftPatch + STR_south, false).NullOrBad();
+				texPathEyeLeftPatch + STR_south, false).NullOrBad();
 		}
+		
 		public bool EarPatchRightTexExists()
 		{
 			return !ContentFinder<Texture2D>.Get(
-				_compFace.TexPathEarRightPatch + STR_south, false).NullOrBad();
+				texPathEarRightPatch + STR_south, false).NullOrBad();
 		}
 
 		public bool EarPatchLeftTexExists()
 		{
 			return !ContentFinder<Texture2D>.Get(
-				_compFace.TexPathEarLeftPatch + STR_south, false).NullOrBad();
+				texPathEarLeftPatch + STR_south, false).NullOrBad();
 		}
 
 		private void InitializeGraphicsEyes()
@@ -298,37 +362,37 @@ namespace FacialStuff.GraphicsFS
 			Color eyeColor = Color.white;
 
 			EyeLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				_compFace.TexPathEyeLeft,
+				texPathEyeLeft,
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				eyeColor) as Graphic_Multi_NaturalEyes;
 
 			EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				_compFace.TexPathEyeRight,
+				texPathEyeRight,
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				eyeColor) as Graphic_Multi_NaturalEyes;
 
 			EyeLeftMissingGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				_compFace.TexPathEyeLeftMissing,
+				texPathEyeLeftMissing,
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				eyeColor) as Graphic_Multi_NaturalEyes;
 
 			EyeRightMissingGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				_compFace.TexPathEyeRightMissing,
+				texPathEyeRightMissing,
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				eyeColor) as Graphic_Multi_NaturalEyes;
 
 			EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				TexPathEyeLeftClosed,
+				texPathEyeLeftClosed,
 				ShaderDatabase.Cutout,
 				Vector2.one,
 				eyeColor) as Graphic_Multi_NaturalEyes;
 
 			EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				TexPathEyeRightClosed,
+				texPathEyeRightClosed,
 				ShaderDatabase.Cutout,
 				Vector2.one,
 				eyeColor) as Graphic_Multi_NaturalEyes;
@@ -346,36 +410,36 @@ namespace FacialStuff.GraphicsFS
 			Color earColor = _pawn.story.SkinColor;
 
 			EarLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(
-				_compFace.TexPathEarLeft,
+				texPathEarLeft,
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				earColor) as Graphic_Multi_NaturalEars;
 
 			EarRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(
-				_compFace.TexPathEarRight,
+				texPathEarRight,
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				earColor) as Graphic_Multi_NaturalEars;
 		}
 
-		private void InitializeGraphicsMouth()
+		private void InitializeGraphicsMouth(CompFace compFace)
 		{
-			if(!_compFace.TexPathJawAddedPart.NullOrEmpty())
+			if(!texPathJawAddedPart.NullOrEmpty())
 			{
-				bool flag = ContentFinder<Texture2D>.Get(_compFace.TexPathJawAddedPart + STR_south, false) != null;
+				bool flag = ContentFinder<Texture2D>.Get(texPathJawAddedPart + STR_south, false) != null;
 				if(flag)
 				{
 					JawGraphic =
 					GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-						_compFace.TexPathJawAddedPart,
+						texPathJawAddedPart,
 						ShaderDatabase.CutoutSkin,
 						Vector2.one,
 						Color.white) as Graphic_Multi_NaturalHeadParts;
-					_compFace.BodyStat.Jaw = PartStatus.Artificial;
-					string addedPart = _compFace.TexPathJawAddedPart;
+					compFace.BodyStat.Jaw = PartStatus.Artificial;
+					string addedPart = texPathJawAddedPart;
 					if(addedPart != null && addedPart.Contains(STR_ROMV_Fangs))
 					{
-						_compFace.BodyStat.Jaw = PartStatus.DisplayOverBeard;
+						compFace.BodyStat.Jaw = PartStatus.DisplayOverBeard;
 					}
 
 					// all done, return
@@ -385,7 +449,7 @@ namespace FacialStuff.GraphicsFS
 				// texture for added/extra part not found, log and default
 				Log.Message(
 					"Facial Stuff: No texture for added part: " +
-					_compFace.TexPathJawAddedPart +
+					texPathJawAddedPart +
 					" - Graphic_Multi_NaturalHeadParts. This is not an error, just an info.");
 
 			}
@@ -393,7 +457,7 @@ namespace FacialStuff.GraphicsFS
 			MouthGraphic = Mouthgraphic.HumanMouthGraphic[_pawn.Dead || _pawn.Downed ? 2 : 3].Graphic;
 		}
 
-		private void InitializeGraphicsWrinkles()
+		private void InitializeGraphicsWrinkles(CompFace compFace)
 		{
 			Color wrinkleColor = _pawn.story.SkinColor * new Color(0.1f, 0.1f, 0.1f);
 
@@ -403,13 +467,13 @@ namespace FacialStuff.GraphicsFS
 				WrinkleDef pawnFaceWrinkleDef = pawnFace.WrinkleDef;
 
 				WrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-					pawnFaceWrinkleDef.texPath + "_" + _compFace.PawnCrownType + "_" + _compFace.PawnHeadType,
+					pawnFaceWrinkleDef.texPath + "_" + compFace.PawnCrownType + "_" + compFace.PawnHeadType,
 					ShaderDatabase.Transparent,
 					Vector2.one,
 					wrinkleColor);
 
 				RottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-					pawnFaceWrinkleDef.texPath + "_" + _compFace.PawnCrownType + "_" + _compFace.PawnHeadType,
+					pawnFaceWrinkleDef.texPath + "_" + compFace.PawnCrownType + "_" + compFace.PawnHeadType,
 					ShaderDatabase.Transparent,
 					Vector2.one,
 					wrinkleColor * FaceTextures.SkinRottingMultiplyColor);

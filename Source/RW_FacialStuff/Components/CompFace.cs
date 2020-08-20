@@ -27,23 +27,7 @@ namespace FacialStuff
 
 
         public bool NeedsStyling = true;
-
-        [CanBeNull] public string TexPathEyeLeft;
-        [CanBeNull] public string TexPathEyeLeftPatch;
-        [CanBeNull] public string TexPathEyeLeftMissing;
-        [CanBeNull] public string TexPathEyeRight;
-        [CanBeNull] public string TexPathEyeRightPatch;
-        [CanBeNull] public string TexPathEyeRightMissing;
-
-        [CanBeNull] public string TexPathEarLeft;
-        [CanBeNull] public string TexPathEarLeftPatch;
-        [CanBeNull] public string TexPathEarLeftMissing;
-        [CanBeNull] public string TexPathEarRight;
-        [CanBeNull] public string TexPathEarRightPatch;
-        [CanBeNull] public string TexPathEarRightMissing;
         
-        [CanBeNull] public string TexPathJawAddedPart;
-
         #endregion Public Fields
 
         #region Private Fields
@@ -464,15 +448,7 @@ namespace FacialStuff
                 default: return Vector3.zero;
             }
         }
-
-        [NotNull]
-        public string BrowTexPath([NotNull] BrowDef browDef)
-        {
-            string browPath = browDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Brows/" : browDef.texBasePath;
-            string browTexPath = browPath + "Brow_" + this.Pawn.gender + "_" + browDef.texName;
-            return browTexPath;
-        }
-
+        
         // Can be called externally
 
         public void DrawAlienHeadAddons(Vector3 headPos, bool portrait, Quaternion headQuat, Vector3 currentLoc)
@@ -490,135 +466,7 @@ namespace FacialStuff
                 i++;
             }
         }
-
-        /*public void DrawHairAndHeadGear(RotDrawMode bodyDrawType, Vector3 hairLoc, Vector3 headgearLoc,
-                                        bool portrait, bool renderBody, Quaternion headQuat,
-                                        Vector3 hatInFrontOfFace)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i]?.DrawHairAndHeadGear(hairLoc, headgearLoc, bodyDrawType, headQuat, renderBody, portrait, hatInFrontOfFace);
-                i++;
-            }
-        }*/
         
-        // public void SetFaceRender(bool portrait, Quaternion headQuat, Rot4 headFacing, bool renderBody, PawnGraphicSet graphics)
-        // {
-        // this.portrait = portrait;
-        // this.headQuat = headQuat;
-        // this.headFacing = headFacing;
-        // this.graphics = graphics;
-        // this.renderBody = renderBody;
-        // }
-        /*public void DrawHeadOverlays(PawnHeadOverlays headOverlays, Vector3 bodyLoc, Quaternion headQuat)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i]?.DrawHeadOverlays(headOverlays, bodyLoc, headQuat);
-                i++;
-            }
-        }*/
-                
-        // TODO: Remove or make usable
-        // public void DefineSkinDNA()
-        // {
-        // HairMelanin.SkinGenetics(this.pawn, this, out this.factionMelanin);
-        // this.IsSkinDNAoptimized = true;
-        // }
-        [NotNull]
-        public string EyeTexPath(Side side, [NotNull] EyeDef eyeDef = null)
-        {
-            if (eyeDef == null)
-            {
-                eyeDef = this.PawnFace?.EyeDef;
-            }
-            // ReSharper disable once PossibleNullReferenceException
-            string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : eyeDef.texBasePath;
-            string path = eyePath + "Eye_" + eyeDef.texName + "_" + this.Pawn.gender + "_" + side;
-
-            return path.Replace(@"\", @"/");
-        }
-    
-        // }
-        [NotNull]
-        public string EarTexPath(Side side, [NotNull] EarDef ear = null)
-        {
-            if (ear == null)
-            {
-                ear = this.PawnFace?.EarDef;
-            }
-            // ReSharper disable once PossibleNullReferenceException
-            string earPath = ear.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Ears/" : ear.texBasePath;
-            string path = earPath + "Ear_" + ear.texName + "_" + this.Pawn.gender + "_" + side;
-
-            return path.Replace(@"\", @"/");
-        }
-
-        [NotNull]
-        public string GetBeardPath(BeardDef def = null)
-        {
-            if (def == null)
-            {
-                if (this.PawnFace?.BeardDef != null)
-                {
-                    def = this.PawnFace?.BeardDef;
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            }
-
-            if (def == BeardDefOf.Beard_Shaved)
-            {
-                return StringsFS.PathHumanlike + "Beards/Beard_Shaved";
-            }
-
-            if (def.IsBeardNotHair())
-            {
-                return StringsFS.PathHumanlike + "Beards/" + def.texPath;
-            }
-
-            return StringsFS.PathHumanlike + "Beards/Beard_" + this.PawnHeadType + "_" + def.texPath + "_" + this.PawnCrownType;
-        }
-
-        [NotNull]
-        public string GetMoustachePath(MoustacheDef def = null)
-        {
-            if (def == null)
-            {
-                if (this.PawnFace?.MoustacheDef != null)
-                {
-                    def = this.PawnFace?.MoustacheDef;
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            }
-
-            if (def == MoustacheDefOf.Shaved)
-            {
-                return this.GetBeardPath(BeardDefOf.Beard_Shaved);
-            }
-
-            return def.texPath + "_" + this.PawnCrownType;
-        }
-
         /// <summary>
         /// Basic pawn initialization.
         /// </summary>
@@ -719,7 +567,7 @@ namespace FacialStuff
                 }
             }
         }
-
+        
         public override void PostExposeData()
         {
             base.PostExposeData();

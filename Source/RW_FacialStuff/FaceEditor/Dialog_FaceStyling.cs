@@ -1584,7 +1584,7 @@ namespace FacialStuff.FaceEditor
         [CanBeNull]
         private Graphic_Multi_NaturalHeadParts BeardGraphic([NotNull] BeardDef def)
         {
-            string path = this.CompFace.GetBeardPath(def);
+            string path = CompFace.PawnFaceGraphic.GetBeardPath(def);
 
             Graphic_Multi_NaturalHeadParts graphic =
             GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
@@ -1600,15 +1600,13 @@ namespace FacialStuff.FaceEditor
         private Graphic_Multi_NaturalHeadParts BrowGraphic(BrowDef def)
         {
             Graphic_Multi_NaturalHeadParts __result =
-            GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(this.CompFace.BrowTexPath(def),
-                                                                ShaderDatabase.CutoutSkin,
-                                                                new Vector2(38f, 38f),
-                                                                Color.white,
-                                                                Color.white) as
-            Graphic_Multi_NaturalHeadParts;
-
-
-
+            GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                CompFace.PawnFaceGraphic.BrowTexPath(def),
+                ShaderDatabase.CutoutSkin,
+                new Vector2(38f, 38f),
+                Color.white,
+                Color.white) as Graphic_Multi_NaturalHeadParts;
+            
             return __result;
         }
 
@@ -2410,7 +2408,7 @@ namespace FacialStuff.FaceEditor
             Graphic_Multi_NaturalEyes __result;
             if (def != null)
             {
-                string path = this.CompFace.EyeTexPath(Side.Left, def);
+                string path = CompFace.PawnFaceGraphic.EyeTexPath(Side.Left, def);
 
                 __result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                     path,
@@ -2432,7 +2430,7 @@ namespace FacialStuff.FaceEditor
             Graphic_Multi_NaturalEars __result;
             if (def != null)
             {
-                string path = this.CompFace.EarTexPath(Side.Left, def);
+                string path = CompFace.PawnFaceGraphic.EarTexPath(Side.Left, def);
 
                 __result = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(
                     path,
@@ -2453,7 +2451,7 @@ namespace FacialStuff.FaceEditor
         private Graphic_Multi_NaturalHeadParts MoustacheGraphic([NotNull] MoustacheDef def)
         {
             Graphic_Multi_NaturalHeadParts graphic;
-            string path = this.CompFace.GetMoustachePath(def);
+            string path = CompFace.PawnFaceGraphic.GetMoustachePath(def);
             if (path.NullOrEmpty())
             {
                 graphic = null;
@@ -2477,7 +2475,7 @@ namespace FacialStuff.FaceEditor
             Graphic_Multi_NaturalEyes graphic;
             if (def != null)
             {
-                string path = this.CompFace.EyeTexPath(Side.Right, def);
+                string path = CompFace.PawnFaceGraphic.EyeTexPath(Side.Right, def);
 
                 graphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                     path,
@@ -2499,7 +2497,7 @@ namespace FacialStuff.FaceEditor
             Graphic_Multi_NaturalEyes graphic;
             if (def != null)
             {
-                string path = this.CompFace.EarTexPath(Side.Right, def);
+                string path = CompFace.PawnFaceGraphic.EarTexPath(Side.Right, def);
 
                 graphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
                     path,

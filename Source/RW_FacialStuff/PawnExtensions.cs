@@ -84,13 +84,13 @@ namespace FacialStuff
             {
                 if (hediff.Part == leftEye)
                 {
-                    face.TexPathEyeLeftPatch = StringsFS.PathHumanlike + "AddedParts/Eye_" + hediff.def.defName + "_Left" + "_"
+                    face.PawnFaceGraphic.texPathEyeLeftPatch = StringsFS.PathHumanlike + "AddedParts/Eye_" + hediff.def.defName + "_Left" + "_"
                                              + face.PawnCrownType;
                 }
 
                 if (hediff.Part == rightEye)
                 {
-                    face.TexPathEyeRightPatch = StringsFS.PathHumanlike + "AddedParts/Eye_" + hediff.def.defName + "_Right" + "_"
+                    face.PawnFaceGraphic.texPathEyeRightPatch = StringsFS.PathHumanlike + "AddedParts/Eye_" + hediff.def.defName + "_Right" + "_"
                                               + face.PawnCrownType;
                     face.BodyStat.EyeRight = PartStatus.Artificial;
 
@@ -102,7 +102,7 @@ namespace FacialStuff
                 if (hediff.Part == jaw)
                 {
                     face.BodyStat.Jaw = PartStatus.Artificial;
-                    face.TexPathJawAddedPart = StringsFS.PathHumanlike + "AddedParts/Mouth_" + hediff.def.defName;
+                    face.PawnFaceGraphic.texPathJawAddedPart = StringsFS.PathHumanlike + "AddedParts/Mouth_" + hediff.def.defName;
                 }
             }
         }
