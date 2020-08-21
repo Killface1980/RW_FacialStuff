@@ -7,11 +7,7 @@
     <reportString>Going to the styling station.</reportString>
   </JobDef>
 
-  <JobDef>
-    <defName>Possess</defName>
-    <driverClass>FacialStuff.AI.JobDriver_Possess</driverClass>
-    <reportString>haunting TargetA.</reportString>
-  </JobDef>  <!-- 
+  <!-- 
   <JobDef>
     <defName>ChangeAppearance</defName>
     <driverClass>FacialStuff.FaceStyling_Bench.Job_FaceStylingJoy</driverClass>
