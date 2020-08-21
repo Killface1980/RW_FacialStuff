@@ -297,7 +297,38 @@ namespace FacialStuff
             }
             InitializePawnDrawer();
         }
-        
+
+        public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics)
+        {
+            if(Find.TickManager.TicksGame % 180 == 0)
+            {
+                IsAsleep = !Pawn.Awake();
+            }
+
+            bool canUpdatePawn =
+                Pawn.Map != null ||
+                !Pawn.InContainerEnclosed ||
+                Pawn.Spawned ||
+                !Pawn.Dead ||
+                !Find.TickManager.Paused;
+            HeadRotationAI.Tick(canUpdatePawn, bodyFacing, IsAsleep);
+            FacialExpressionAI.Tick(canUpdatePawn, this);
+            headFacing = HeadRotationAI.CurrentRotation;
+            PawnFaceGraphic.MouthGraphic =
+                PawnFaceGraphic.Mouthgraphic.HumanMouthGraphic[FacialExpressionAI.MouthGraphicIndex].Graphic;
+
+            if(!this.PawnHeadDrawers.NullOrEmpty())
+            {
+                int i = 0;
+                int count = this.PawnHeadDrawers.Count;
+                while(i < count)
+                {
+                    this.PawnHeadDrawers[i].Tick(bodyFacing, headFacing, graphics);
+                    i++;
+                }
+            }
+        }
+
         // only for development
         public Vector3 BaseEyeOffsetAt(Rot4 rotation)
         {
@@ -528,27 +559,7 @@ namespace FacialStuff
                 thingComp.Initialize();
             }
         }
-
-        public override void PostDraw()
-        {
-            base.PostDraw();
-
-            if (Find.TickManager.Paused)
-            {
-                return;
-            }
-            // Children & Pregnancy || Werewolves transformed
-            if (Pawn.Map == null || Pawn.InContainerEnclosed || !Pawn.Spawned || Pawn.Dead || Pawn.IsChild() || Pawn.GetCompAnim().Deactivated)
-            {
-                return;
-            }
-            
-            if (Find.TickManager.TicksGame % 180 == 0)
-            {
-                IsAsleep = !Pawn.Awake();
-            }
-        }
-                
+                        
         public override void PostExposeData()
         {
             base.PostExposeData();
@@ -584,31 +595,6 @@ namespace FacialStuff
             // {
             // this.factionInt = Find.FactionManager.AllFactions.FirstOrDefault((Faction fa) => fa.GetUniqueLoadID() == facID);
             // }
-        }
-        
-        public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics)
-        {
-            bool canUpdatePawn = 
-                Pawn.Map != null || 
-                !Pawn.InContainerEnclosed || 
-                Pawn.Spawned || 
-                !Pawn.Dead || 
-                !Find.TickManager.Paused;
-            HeadRotationAI.Tick(canUpdatePawn, bodyFacing, IsAsleep);
-            FacialExpressionAI.Tick(canUpdatePawn, this);
-            headFacing = HeadRotationAI.CurrentRotation;
-            PawnFaceGraphic.MouthGraphic =
-                PawnFaceGraphic.Mouthgraphic.HumanMouthGraphic[FacialExpressionAI.MouthGraphicIndex].Graphic;
-            if (!this.PawnHeadDrawers.NullOrEmpty())
-            {
-                int i = 0;
-                int count = this.PawnHeadDrawers.Count;
-                while (i < count)
-                {
-                    this.PawnHeadDrawers[i].Tick(bodyFacing, headFacing, graphics);
-                    i++;
-                }
-            }
         }
 
         #endregion Public Methods
