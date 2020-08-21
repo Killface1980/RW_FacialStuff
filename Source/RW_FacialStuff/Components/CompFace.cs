@@ -37,24 +37,19 @@ namespace FacialStuff
         private Faction _factionInt;
 
         private float _factionMelanin;
-
-        private bool _initialized;
-
+        
         private Vector2 _mouthOffset = Vector2.zero;
 
         // must be null, always initialize with pawn
         private PawnFace _pawnFace;
-                        
+                
         #endregion Private Fields
 
         #region Public Properties
 
         // public bool IgnoreRenderer;
         public GraphicVectorMeshSet EyeMeshSet => MeshPoolFS.HumanEyeSet[(int)this.FullHeadType];
-
-        [NotNull]
-        public PawnEyeWiggler EyeWiggler { get; set; }
-
+        
         public FaceMaterial FaceMaterial { get; set; }
 
         public float FactionMelanin
@@ -66,7 +61,8 @@ namespace FacialStuff
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
         
         public PawnHeadRotationAI HeadRotationAI { get; private set; }
-        
+        public PawnFacialExpressionAI FacialExpressionAI { get; private set; }
+
         [NotNull]
         public GraphicVectorMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
 
@@ -287,6 +283,20 @@ namespace FacialStuff
                     "FacialStuff_CompFaceNoValidHair".GetHashCode());
             }
         }
+
+        public override void Initialize(CompProperties props)
+        {
+            base.Initialize(props);
+            if(HeadRotationAI == null) 
+            {
+                HeadRotationAI = new PawnHeadRotationAI(Pawn);
+            }
+            if(FacialExpressionAI == null) 
+            {
+                FacialExpressionAI = new PawnFacialExpressionAI(Pawn);
+            }
+            InitializePawnDrawer();
+        }
         
         // only for development
         public Vector3 BaseEyeOffsetAt(Rot4 rotation)
@@ -467,13 +477,7 @@ namespace FacialStuff
             }
         }
         
-        /// <summary>
-        /// Basic pawn initialization.
-        /// </summary>
-        /// <returns>
-        /// Success if all initialized.
-        /// </returns>
-        public virtual bool InitializeCompFace()
+        public bool InitializeCompFace()
         {
             if(_factionInt == null)
             {
@@ -493,44 +497,34 @@ namespace FacialStuff
 
             // Only for the crowntype ...
             CrownTypeChecker.SetHeadOffsets(Pawn, this);
-
-            if(Props.hasEyes)
-            {
-                EyeWiggler = new PawnEyeWiggler(this);
-            }
-
             PawnFaceGraphic = new PawnFaceGraphic(this);
             FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
-
-            HeadRotationAI = new PawnHeadRotationAI(Pawn);
-
-            // this.headWiggler = new PawnHeadWiggler(this.pawn);
             return true;
         }
 
         public void InitializePawnDrawer()
         {
-            if (this.Props.headDrawers.Any())
+            if(Props.headDrawers.Any())
             {
-                this.PawnHeadDrawers = new List<PawnHeadDrawer>();
-                for (int i = 0; i < this.Props.headDrawers.Count; i++)
+                PawnHeadDrawers = new List<PawnHeadDrawer>();
+                for(int i = 0; i < Props.headDrawers.Count; i++)
                 {
                     PawnHeadDrawer thingComp =
-                    (PawnHeadDrawer)Activator.CreateInstance(this.Props.headDrawers[i].GetType());
+                        (PawnHeadDrawer)Activator.CreateInstance(Props.headDrawers[i].GetType());
                     thingComp.CompFace = this;
-                    thingComp.Pawn = this.Pawn;
-                    this.PawnHeadDrawers.Add(thingComp);
+                    thingComp.Pawn = Pawn;
+                    PawnHeadDrawers.Add(thingComp);
                     thingComp.Initialize();
                 }
             }
             else
             {
-                this.PawnHeadDrawers = new List<PawnHeadDrawer>();
+                PawnHeadDrawers = new List<PawnHeadDrawer>();
                 PawnHeadDrawer thingComp =
-                (PawnHeadDrawer)Activator.CreateInstance(typeof(HumanHeadDrawer));
+                    (PawnHeadDrawer)Activator.CreateInstance(typeof(HumanHeadDrawer));
                 thingComp.CompFace = this;
-                thingComp.Pawn = this.Pawn;
-                this.PawnHeadDrawers.Add(thingComp);
+                thingComp.Pawn = Pawn;
+                PawnHeadDrawers.Add(thingComp);
                 thingComp.Initialize();
             }
         }
@@ -544,30 +538,17 @@ namespace FacialStuff
                 return;
             }
             // Children & Pregnancy || Werewolves transformed
-            if (this.Pawn.Map == null || this.Pawn.InContainerEnclosed || !this.Pawn.Spawned || this.Pawn.Dead || this.Pawn.IsChild() || this.Pawn.GetCompAnim().Deactivated)
+            if (Pawn.Map == null || Pawn.InContainerEnclosed || !Pawn.Spawned || Pawn.Dead || Pawn.IsChild() || Pawn.GetCompAnim().Deactivated)
             {
                 return;
             }
-
-            if (this.Props.hasEyes)
-            {
-                this.EyeWiggler.WigglerTick();
-            }
-
+            
             if (Find.TickManager.TicksGame % 180 == 0)
             {
-                this.IsAsleep = !this.Pawn.Awake();
-            }
-            
-            if (this.Props.hasMouth)
-            {
-                if (Find.TickManager.TicksGame % 90 == 0)
-                {
-                    this.PawnFaceGraphic?.SetMouthAccordingToMoodLevel();
-                }
+                IsAsleep = !Pawn.Awake();
             }
         }
-        
+                
         public override void PostExposeData()
         {
             base.PostExposeData();
@@ -607,15 +588,17 @@ namespace FacialStuff
         
         public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics)
         {
-            if (!this._initialized)
-            {
-                this.InitializePawnDrawer();
-                this._initialized = true;
-            }
-
-            HeadRotationAI.Tick(bodyFacing, IsAsleep);
+            bool canUpdatePawn = 
+                Pawn.Map != null || 
+                !Pawn.InContainerEnclosed || 
+                Pawn.Spawned || 
+                !Pawn.Dead || 
+                !Find.TickManager.Paused;
+            HeadRotationAI.Tick(canUpdatePawn, bodyFacing, IsAsleep);
+            FacialExpressionAI.Tick(canUpdatePawn, this);
             headFacing = HeadRotationAI.CurrentRotation;
-                        
+            PawnFaceGraphic.MouthGraphic =
+                PawnFaceGraphic.Mouthgraphic.HumanMouthGraphic[FacialExpressionAI.MouthGraphicIndex].Graphic;
             if (!this.PawnHeadDrawers.NullOrEmpty())
             {
                 int i = 0;

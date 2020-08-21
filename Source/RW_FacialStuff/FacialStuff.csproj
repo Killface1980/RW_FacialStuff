@@ -94,6 +94,7 @@
     <Compile Include="AI\MentalState_Possessed.cs" />
     <None Include="packages.config" />
     <None Include="WidgetsFS.cs" />
+    <Compile Include="AI\PawnFacialExpressionAI.cs" />
     <Compile Include="AI\PawnHeadRotationAI.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
     <None Include="Controller_Animator.cs" />
@@ -195,7 +196,6 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
     <None Include="Animator\PawnHeadWiggler.cs" />
-    <Compile Include="Animator\PawnEyeWiggler.cs" />
     <Compile Include="Enums\enums.cs" />
     <Compile Include="ITab_Pawn_Face.cs" />
     <Compile Include="Enums\HeadType.cs" />

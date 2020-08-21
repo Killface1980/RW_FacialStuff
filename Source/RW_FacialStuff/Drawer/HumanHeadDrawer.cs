@@ -155,8 +155,7 @@ namespace FacialStuff
 
                 GenDraw.DrawMeshNowOrLater(
                     eyeMesh,
-                    left + this.EyeOffset(this.HeadFacing) +
-                    this.CompFace.EyeWiggler.EyeMoveL,
+                    left + this.EyeOffset(this.HeadFacing),
                     headQuat,
                     leftEyeMat,
                     portrait);
@@ -181,8 +180,7 @@ namespace FacialStuff
 
                 GenDraw.DrawMeshNowOrLater(
                     eyeMesh,
-                    right + this.EyeOffset(this.HeadFacing) +
-                    this.CompFace.EyeWiggler.EyeMoveR,
+                    right + this.EyeOffset(this.HeadFacing),
                     headQuat,
                     rightEyeMat,
                     portrait);

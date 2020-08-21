@@ -122,7 +122,7 @@ namespace FacialStuff.GraphicsFS
             {
                 if (Controller.settings.MakeThemBlink && this._compFace.BodyStat.EyeLeft == PartStatus.Natural)
                 {
-                    if (this._compFace.IsAsleep || this._compFace.EyeWiggler.EyeLeftBlinkNow)
+                    if (this._compFace.IsAsleep || !this._compFace.FacialExpressionAI.EyeOpen)
                     {
                         material = this._pawnFaceGraphic.EyeLeftClosedGraphic.MatAt(facing);
                     }
@@ -164,7 +164,7 @@ namespace FacialStuff.GraphicsFS
             {
                 if (Controller.settings.MakeThemBlink && this._compFace.BodyStat.EyeRight == PartStatus.Natural)
                 {
-                    if (this._compFace.IsAsleep || this._compFace.EyeWiggler.EyeRightBlinkNow)
+                    if (this._compFace.IsAsleep || !this._compFace.FacialExpressionAI.EyeOpen)
                     {
                         material = this._pawnFaceGraphic.EyeRightClosedGraphic?.MatAt(facing);
                     }
