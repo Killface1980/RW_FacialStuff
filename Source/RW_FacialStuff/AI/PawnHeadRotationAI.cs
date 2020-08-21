@@ -15,15 +15,17 @@ namespace FacialStuff.AI
 
 			// No particular target to look at 
 			None = 0,
+			// Ocassionally turn head when sleeping. No target
+			Sleep = 1,
 			// Look at someone nearby (can be disabled in settings)
-			RandomStare = 1,
+			RandomStare = 2,
 			// Target is a social interaction initiator. This means this instance is a recipient, which
 			// has delay of kSocialInteractionRecipientDelayTick before looking at the initiator.
-			SocialInitiator = 2,
+			SocialInitiator = 3,
 			// Target is a social interaction recipient
-			SocialRecipient = 3,
+			SocialRecipient = 4,
 			// Look at the aimed Thing
-			Aim = 4
+			Aim = 5
 		}
 
 		#region Constants
@@ -31,7 +33,7 @@ namespace FacialStuff.AI
 		// The amount of ticks needed for the recipient of social interaction to wait before moving its head
 		private const int kSocialInteractionRecipientDelayTick = 30;
 		// How long the social interaction lasts
-		private const int kSocialInteractionDurationTick = 180;
+		private const int kSocialInteractionDurationTick = 300;
 		// The speed that pawn can rotate head. Unit in deg/tick ( = degrees per 1/60 of second)
 		private const float kHeadRotationRate = 10;
 
@@ -77,13 +79,8 @@ namespace FacialStuff.AI
 			}
 		}
 		
-		public void Tick(Rot4 bodyRot, bool isAsleep)
+		public void Tick(bool canUpdatePawn, Rot4 bodyRot, bool isAsleep)
 		{
-			// Tick() gets called even when game is paused.
-			if(Find.TickManager.Paused)
-			{
-				return;
-			}
 			if(!bodyRot.IsValid)
 			{
 				Log.Warning(
@@ -96,7 +93,7 @@ namespace FacialStuff.AI
 				Log.Warning("Facial Stuff: tried to update head rotation when pawn is null");
 				return;
 			}
-			if(_pawn.Dead)
+			if(!canUpdatePawn)
 			{
 				ResetHeadTarget(bodyRot);
 				return;

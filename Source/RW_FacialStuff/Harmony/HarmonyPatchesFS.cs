@@ -729,7 +729,7 @@ namespace FacialStuff.Harmony
             {
                 return;
             }
-
+            
             pawn.CheckForAddedOrMissingParts();
             pawn.GetCompAnim()?.PawnBodyGraphic?.Initialize();
 
@@ -900,7 +900,6 @@ namespace FacialStuff.Harmony
                 {
                     if(compFace.Props.canRotateHead)
                     {
-                        // compFace.HeadRotator.LookAtPawn(recipient);
                         compFace.HeadRotationAI.SetTarget(recipient, AI.PawnHeadRotationAI.TargetMode.SocialRecipient);
                     }
                 }
@@ -908,7 +907,6 @@ namespace FacialStuff.Harmony
                 {
                     if(recipientFace.Props.canRotateHead)
                     {
-                        // recipientFace.HeadRotator.LookAtPawn(pawn);
                         recipientFace.HeadRotationAI.SetTarget(pawn, AI.PawnHeadRotationAI.TargetMode.SocialInitiator);                            
                     }
                 }

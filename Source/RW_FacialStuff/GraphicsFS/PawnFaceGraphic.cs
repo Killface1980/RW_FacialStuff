@@ -44,7 +44,6 @@ namespace FacialStuff.GraphicsFS
 		private readonly CompFace _compFace;
 		private readonly Pawn _pawn;
 
-		private float _mood = 0.5f;
 		private readonly PawnFace pawnFace;
 		public Graphic_Multi_NaturalEyes EyeLeftMissingGraphic;
 		public Graphic_Multi_NaturalEyes EyeRightMissingGraphic;
@@ -54,19 +53,11 @@ namespace FacialStuff.GraphicsFS
 
 		public string texPathBrow;
 		
-		public string texPathEyeLeft;
 		public string texPathEyeLeftPatch;
-		public string texPathEyeLeftMissing;
-		public string texPathEyeLeftClosed;
-		public string texPathEyeRight;
 		public string texPathEyeRightPatch;
-		public string texPathEyeRightMissing;
-		public string texPathEyeRightClosed;
 		
-		public string texPathEarLeft;
 		public string texPathEarLeftPatch;
 		public string texPathEarLeftMissing;
-		public string texPathEarRight;
 		public string texPathEarRightPatch;
 		public string texPathEarRightMissing;
 
@@ -92,10 +83,11 @@ namespace FacialStuff.GraphicsFS
 				{
 					MakeEyes(pawnFace);
 				}
-				if(!compFace.Props.hasEars)
+				// TODO: ear is disabled for now
+				/*if(!compFace.Props.hasEars)
 				{
 					MakeEars(pawnFace);
-				}
+				}*/
 			}
 
 			if(compFace.Props.hasMouth)
@@ -104,53 +96,9 @@ namespace FacialStuff.GraphicsFS
 				InitializeGraphicsMouth(compFace);
 			}
 		}
-
-		public void SetMouthAccordingToMoodLevel()
-		{
-			if(_pawn == null)
-			{
-				return;
-			}
-
-			if(!Controller.settings.UseMouth || _compFace.BodyStat.Jaw != PartStatus.Natural)
-			{
-				return;
-			}
-
-			if(_pawn.Fleeing() || _pawn.IsBurning())
-			{
-				MouthGraphic = Mouthgraphic.MouthGraphicCrying;
-				return;
-			}
-
-			if(_pawn.health.InPainShock && !_compFace.IsAsleep)
-			{
-				PawnEyeWiggler eyeWiggler = _compFace.EyeWiggler;
-				if(eyeWiggler == null || eyeWiggler.EyeRightBlinkNow && eyeWiggler.EyeLeftBlinkNow)
-				{
-					MouthGraphic = Mouthgraphic.MouthGraphicCrying;
-					return;
-				}
-			}
-
-			if(_pawn.needs?.mood?.thoughts != null)
-			{
-				_mood = _pawn.needs.mood.CurInstantLevel;
-			}
-
-			int indexOfMood = Mouthgraphic.GetMouthTextureIndexOfMood(this._mood);
-
-			MouthGraphic = Mouthgraphic.HumanMouthGraphic[indexOfMood].Graphic;
-		}
-		
+				
 		public void MakeEyes(PawnFace pawnFace)
 		{
-			texPathEyeRight = EyeTexPath(Side.Right, pawnFace.EyeDef);
-			texPathEyeLeft = EyeTexPath(Side.Left, pawnFace.EyeDef);
-			texPathEyeRightMissing = EyeTexPath(Side.Right, EyeDefOf.Missing);
-			texPathEyeLeftMissing = EyeTexPath(Side.Left, EyeDefOf.Missing);
-			texPathEyeLeftClosed = EyeTexPath(Side.Left, EyeDefOf.Closed);
-			texPathEyeRightClosed = EyeTexPath(Side.Right, EyeDefOf.Closed);
 			texPathBrow = BrowTexPath(pawnFace.BrowDef);
 
 			InitializeGraphicsEyes();
@@ -159,8 +107,6 @@ namespace FacialStuff.GraphicsFS
 
 		public void MakeEars(PawnFace pawnFace)
 		{
-			texPathEarRight = EarTexPath(Side.Right, pawnFace.EarDef);
-			texPathEarLeft = EarTexPath(Side.Left, pawnFace.EarDef);
 			texPathEarRightMissing = EarTexPath(Side.Right, EarDefOf.Missing);
 			texPathEarLeftMissing = EarTexPath(Side.Left, EarDefOf.Missing);
 
@@ -362,37 +308,37 @@ namespace FacialStuff.GraphicsFS
 			Color eyeColor = Color.white;
 
 			EyeLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				texPathEyeLeft,
+				EyeTexPath(Side.Left, pawnFace.EyeDef),
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				eyeColor) as Graphic_Multi_NaturalEyes;
 
 			EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				texPathEyeRight,
+				EyeTexPath(Side.Right, pawnFace.EyeDef),
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				eyeColor) as Graphic_Multi_NaturalEyes;
 
 			EyeLeftMissingGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				texPathEyeLeftMissing,
+				EyeTexPath(Side.Left, EyeDefOf.Missing),
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				eyeColor) as Graphic_Multi_NaturalEyes;
 
 			EyeRightMissingGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				texPathEyeRightMissing,
+				EyeTexPath(Side.Right, EyeDefOf.Missing),
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				eyeColor) as Graphic_Multi_NaturalEyes;
 
 			EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				texPathEyeLeftClosed,
+				EyeTexPath(Side.Left, EyeDefOf.Closed),
 				ShaderDatabase.Cutout,
 				Vector2.one,
 				eyeColor) as Graphic_Multi_NaturalEyes;
 
 			EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				texPathEyeRightClosed,
+				EyeTexPath(Side.Right, EyeDefOf.Closed),
 				ShaderDatabase.Cutout,
 				Vector2.one,
 				eyeColor) as Graphic_Multi_NaturalEyes;
@@ -410,13 +356,13 @@ namespace FacialStuff.GraphicsFS
 			Color earColor = _pawn.story.SkinColor;
 
 			EarLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(
-				texPathEarLeft,
+				EarTexPath(Side.Left, pawnFace.EarDef),
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				earColor) as Graphic_Multi_NaturalEars;
 
 			EarRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(
-				texPathEarRight,
+				EarTexPath(Side.Right, pawnFace.EarDef),
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				earColor) as Graphic_Multi_NaturalEars;

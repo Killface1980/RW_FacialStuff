@@ -195,7 +195,6 @@
     <Compile Include="PawnFace.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
-    <None Include="Animator\PawnHeadWiggler.cs" />
     <Compile Include="Enums\enums.cs" />
     <Compile Include="ITab_Pawn_Face.cs" />
     <Compile Include="Enums\HeadType.cs" />
