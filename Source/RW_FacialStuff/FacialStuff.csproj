@@ -88,8 +88,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\MentalStateWorker_Possessed.cs" />
-    <Compile Include="AI\MentalState_Possessed.cs" />
     <None Include="packages.config" />
     <None Include="WidgetsFS.cs" />
     <Compile Include="AI\PawnFacialExpressionAI.cs" />
