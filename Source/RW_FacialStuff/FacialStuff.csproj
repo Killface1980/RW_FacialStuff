@@ -161,7 +161,6 @@
     <None Include="FaceEditor\Job_FaceStylingJoy.cs" />
     <Compile Include="Components\CompFaceEditor.cs" />
     <Compile Include="GraphicsFS\FaceMaterial.cs" />
-    <Compile Include="GraphicsFS\GraphicVectorMeshSet.cs" />
     <None Include="FacialStuff.ruleset" />
     <None Include="OldStuff\IncidentWorker_FacialStuffUpdateNote.cs" />
     <Compile Include="DefOfs\BeardDefOf.cs" />

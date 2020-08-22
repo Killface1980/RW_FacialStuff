@@ -116,7 +116,7 @@ namespace FacialStuff
                 return;
             }
 
-            Mesh eyeMesh = this.CompFace.EyeMeshSet.Mesh.MeshAt(this.HeadFacing);
+            Mesh eyeMesh = this.CompFace.EyeMeshSet.MeshAt(this.HeadFacing);
             GenDraw.DrawMeshNowOrLater(
                                        eyeMesh,
                                        drawLoc + this.EyeOffset(this.HeadFacing),
@@ -127,7 +127,7 @@ namespace FacialStuff
 
         public override void DrawNaturalEyes(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
-            Mesh eyeMesh = this.CompFace.EyeMeshSet.Mesh.MeshAt(this.HeadFacing);
+            Mesh eyeMesh = this.CompFace.EyeMeshSet.MeshAt(this.HeadFacing);
 
             PawnFaceGraphic faceGraphic = this.CompFace.PawnFaceGraphic;
             // natural eyes
@@ -188,7 +188,7 @@ namespace FacialStuff
         }
         public override void DrawNaturalEars(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
-            Mesh earMesh = this.CompFace.EyeMeshSet.Mesh.MeshAt(this.HeadFacing);
+            Mesh earMesh = this.CompFace.EyeMeshSet.MeshAt(this.HeadFacing);
 
             PawnFaceGraphic faceGraphic = this.CompFace.PawnFaceGraphic;
             // natural eyes
@@ -250,19 +250,14 @@ namespace FacialStuff
 
         public override void DrawNaturalMouth(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
-            Material mouthMat = this.CompFace.FaceMaterial.MouthMatAt(this.HeadFacing, portrait);
+            Material mouthMat = CompFace.FaceMaterial.MouthMatAt(HeadFacing, portrait);
             if (mouthMat == null)
             {
                 return;
             }
 
-            // Mesh meshMouth = __instance.graphics.HairMeshSet.MeshAt(headFacing);
-            Mesh meshMouth = this.CompFace.MouthMeshSet.Mesh.MeshAt(this.HeadFacing);
-
-            Vector3 mouthOffset = Controller.settings.Develop
-                                  ? this.CompFace.BaseMouthOffsetAtDevelop(this.HeadFacing)
-                                  : this.CompFace.MouthMeshSet.OffsetAt(this.HeadFacing);
-
+            Mesh meshMouth = CompFace.MouthMeshSet.MeshAt(HeadFacing);
+            Vector3 mouthOffset = CompFace.BaseMouthOffsetAtDevelop(HeadFacing);
             Vector3 mouthLoc = drawLoc + headQuat * mouthOffset;
             GenDraw.DrawMeshNowOrLater(meshMouth, mouthLoc, headQuat, mouthMat, portrait);
         }
@@ -364,16 +359,12 @@ namespace FacialStuff
 
         public override Vector3 EyeOffset(Rot4 headFacing)
         {
-            return Controller.settings.Develop
-                   ? this.CompFace.BaseEyeOffsetAt(headFacing)
-                   : this.CompFace.EyeMeshSet.OffsetAt(headFacing);
+            return CompFace.BaseEyeOffsetAt(headFacing);
         }
 
         public override Vector3 EarOffset(Rot4 headFacing)
         {
-            return Controller.settings.Develop
-                   ? this.CompFace.BaseEyeOffsetAt(headFacing)
-                   : this.CompFace.EyeMeshSet.OffsetAt(headFacing);
+            return CompFace.BaseEyeOffsetAt(headFacing);
         }
 
         public override void Initialize()

@@ -31,15 +31,11 @@ namespace FacialStuff
         #endregion Public Fields
 
         #region Private Fields
-
-        private Vector2 _eyeOffset = Vector2.zero;
-
+        
         private Faction _factionInt;
 
         private float _factionMelanin;
         
-        private Vector2 _mouthOffset = Vector2.zero;
-
         // must be null, always initialize with pawn
         private PawnFace _pawnFace;
                 
@@ -48,7 +44,7 @@ namespace FacialStuff
         #region Public Properties
 
         // public bool IgnoreRenderer;
-        public GraphicVectorMeshSet EyeMeshSet => MeshPoolFS.HumanEyeSet[(int)this.FullHeadType];
+        public GraphicMeshSet EyeMeshSet => MeshPoolFS.HumanEyeSet[(int)this.FullHeadType];
         
         public FaceMaterial FaceMaterial { get; set; }
 
@@ -64,7 +60,7 @@ namespace FacialStuff
         public PawnFacialExpressionAI FacialExpressionAI { get; private set; }
 
         [NotNull]
-        public GraphicVectorMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
+        public GraphicMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
 
         public Faction OriginFaction => this._factionInt;
 
@@ -329,68 +325,18 @@ namespace FacialStuff
             }
         }
 
-        // only for development
         public Vector3 BaseEyeOffsetAt(Rot4 rotation)
         {
-            bool male = this.Pawn.gender == Gender.Male;
-            switch (this.PawnCrownType)
-            {
-                default:
-                    switch (this.PawnHeadType)
-                    {
-                        case HeadType.Normal:
-                            this._eyeOffset = male ? MeshPoolFS.EyeMaleAverageNormalOffset : MeshPoolFS.EyeFemaleAverageNormalOffset;
-
-                            break;
-
-                        case HeadType.Pointy:
-                            this._eyeOffset = male ? MeshPoolFS.EyeMaleAveragePointyOffset : MeshPoolFS.EyeFemaleAveragePointyOffset;
-
-                            break;
-
-                        case HeadType.Wide:
-                            this._eyeOffset = male ? MeshPoolFS.EyeMaleAverageWideOffset : MeshPoolFS.EyeFemaleAverageWideOffset;
-
-                            break;
-                    }
-
-                    break;
-
-                case CrownType.Narrow:
-                    switch (this.PawnHeadType)
-                    {
-                        case HeadType.Normal:
-                            this._eyeOffset = male
-                                              ? MeshPoolFS.EyeMaleNarrowNormalOffset
-                                              : MeshPoolFS.EyeFemaleNarrowNormalOffset;
-                            break;
-
-                        case HeadType.Pointy:
-                            this._eyeOffset = male
-                                              ? MeshPoolFS.EyeMaleNarrowPointyOffset
-                                              : MeshPoolFS.EyeFemaleNarrowPointyOffset;
-                            break;
-
-                        case HeadType.Wide:
-                            this._eyeOffset =
-                            male ? MeshPoolFS.EyeMaleNarrowWideOffset : MeshPoolFS.EyeFemaleNarrowWideOffset;
-                            break;
-                    }
-
-                    break;
-            }
-
+            Vector3 eyeOffset = MeshPoolFS.eyeOffsetsHeadtype[(int)FullHeadType];
             switch (rotation.AsInt)
             {
-                case 1: return new Vector3(this._eyeOffset.x, 0f, -this._eyeOffset.y);
-                case 2: return new Vector3(0, 0f, -this._eyeOffset.y);
-                case 3: return new Vector3(-this._eyeOffset.x, 0f, -this._eyeOffset.y);
+                case 1: return new Vector3(eyeOffset.x, 0f, -eyeOffset.y);
+                case 2: return new Vector3(0, 0f, -eyeOffset.y);
+                case 3: return new Vector3(-eyeOffset.x, 0f, -eyeOffset.y);
                 default: return Vector3.zero;
             }
         }
 
-        // public Vector3 RightHandPosition;
-        // public Vector3 LeftHandPosition;
         public Vector3 BaseHeadOffsetAt(bool portrait, Pawn pawn)
         {
             Vector3 offset = Vector3.zero;
@@ -411,81 +357,14 @@ namespace FacialStuff
             return offset;
         }
 
-        // only for development
         public Vector3 BaseMouthOffsetAtDevelop(Rot4 rotation)
         {
-            bool male = this.Pawn.gender == Gender.Male;
-
-            if (this.PawnCrownType == CrownType.Average)
+            Vector3 mouthOffset = MeshPoolFS.mouthOffsetsHeadType[(int)FullHeadType];
+            switch(rotation.AsInt)
             {
-                switch (this.PawnHeadType)
-                {
-                    case HeadType.Normal:
-                        if (male)
-                        {
-                            this._mouthOffset = MeshPoolFS.MouthMaleAverageNormalOffset;
-                        }
-                        else
-                        {
-                            this._mouthOffset = MeshPoolFS.MouthFemaleAverageNormalOffset;
-                        }
-
-                        break;
-
-                    case HeadType.Pointy:
-                        if (male)
-                        {
-                            this._mouthOffset = MeshPoolFS.MouthMaleAveragePointyOffset;
-                        }
-                        else
-                        {
-                            this._mouthOffset = MeshPoolFS.MouthFemaleAveragePointyOffset;
-                        }
-
-                        break;
-
-                    case HeadType.Wide:
-                        if (male)
-                        {
-                            this._mouthOffset = MeshPoolFS.MouthMaleAverageWideOffset;
-                        }
-                        else
-                        {
-                            this._mouthOffset = MeshPoolFS.MouthFemaleAverageWideOffset;
-                        }
-
-                        break;
-                }
-            }
-            else
-            {
-                switch (this.PawnHeadType)
-                {
-                    case HeadType.Normal:
-                        this._mouthOffset =
-                        male ? MeshPoolFS.MouthMaleNarrowNormalOffset : MeshPoolFS.MouthFemaleNarrowNormalOffset;
-
-                        break;
-
-                    case HeadType.Pointy:
-                        this._mouthOffset =
-                        male ? MeshPoolFS.MouthMaleNarrowPointyOffset : MeshPoolFS.MouthFemaleNarrowPointyOffset;
-
-                        break;
-
-                    case HeadType.Wide:
-                        this._mouthOffset =
-                        male ? MeshPoolFS.MouthMaleNarrowWideOffset : MeshPoolFS.MouthFemaleNarrowWideOffset;
-
-                        break;
-                }
-            }
-
-            switch (rotation.AsInt)
-            {
-                case 1: return new Vector3(this._mouthOffset.x, 0f, -this._mouthOffset.y);
-                case 2: return new Vector3(0, 0f, -this._mouthOffset.y);
-                case 3: return new Vector3(-this._mouthOffset.x, 0f, -this._mouthOffset.y);
+                case 1: return new Vector3(mouthOffset.x, 0f, -mouthOffset.y);
+                case 2: return new Vector3(0, 0f, -mouthOffset.y);
+                case 3: return new Vector3(-mouthOffset.x, 0f, -mouthOffset.y);
                 default: return Vector3.zero;
             }
         }

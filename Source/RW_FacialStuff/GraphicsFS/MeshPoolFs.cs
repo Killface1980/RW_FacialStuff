@@ -11,34 +11,43 @@ namespace FacialStuff.GraphicsFS
     {
         #region Public Fields
 
-        public static readonly GraphicVectorMeshSet[] HumanEyeSet       = new GraphicVectorMeshSet[12];
-        public static readonly GraphicVectorMeshSet[] HumanlikeMouthSet = new GraphicVectorMeshSet[12];
+        public static readonly GraphicMeshSet[] HumanEyeSet       = new GraphicMeshSet[12];
+        public static readonly GraphicMeshSet[] HumanlikeMouthSet = new GraphicMeshSet[12];
 
-        public static Vector2 EyeFemaleAverageNormalOffset = new Vector2(-0.01006f, 0f);
-        public static Vector2 EyeFemaleAveragePointyOffset = new Vector2(-0.01258f, 0f);
-        public static Vector2 EyeFemaleAverageWideOffset   = new Vector2(-0.01835f, 0f);
-        public static Vector2 EyeFemaleNarrowNormalOffset  = new Vector2(-0.02264f, 0f);
-        public static Vector2 EyeFemaleNarrowPointyOffset  = new Vector2(-0.01256f, 0f);
-        public static Vector2 EyeFemaleNarrowWideOffset    = new Vector2(-0.01509f, 0f);
-        public static Vector2 EyeMaleAverageNormalOffset   = new Vector2(0f,        0f);
-        public static Vector2 EyeMaleAveragePointyOffset   = new Vector2(-0.01256f, 0f);
-        public static Vector2 EyeMaleAverageWideOffset     = new Vector2(0f,        0f);
-        public static Vector2 EyeMaleNarrowNormalOffset    = new Vector2(-0.02516f, 0f);
-        public static Vector2 EyeMaleNarrowPointyOffset    = new Vector2(-0.02516f, 0f);
-        public static Vector2 EyeMaleNarrowWideOffset      = new Vector2(-0.02516f, 0f);
+        public static List<Vector2> eyeOffsetsHeadtype =
+            new List<Vector2>
+            {
+                new Vector2(0f, 0f),        // MaleAverageNormalOffset
+                new Vector2(-0.01256f, 0f), // MaleAveragePointyOffset
+                new Vector2(0f, 0f),        // MaleAverageWideOffset
+                new Vector2(-0.02516f, 0f), // MaleNarrowNormalOffset
+                new Vector2(-0.02516f, 0f), // MaleNarrowPointyOffset
+                new Vector2(-0.02516f, 0f), // MaleNarrowWideOffset
+                new Vector2(-0.01006f, 0f), // FemaleAverageNormalOffset
+                new Vector2(-0.01258f, 0f), // FemaleAveragePointyOffset
+                new Vector2(-0.01835f, 0f), // FemaleAverageWideOffset
+                new Vector2(-0.02264f, 0f), // FemaleNarrowNormalOffset
+                new Vector2(-0.01256f, 0f), // FemaleNarrowPointyOffset
+                new Vector2(-0.01509f, 0f), // FemaleNarrowWideOffset
+            };
 
-        public static Vector2 MouthFemaleAverageNormalOffset = new Vector2(0.14331f, 0.13585f);
-        public static Vector2 MouthFemaleAveragePointyOffset = new Vector2(0.16100f, 0.13836f);
-        public static Vector2 MouthFemaleAverageWideOffset   = new Vector2(0.16604f, 0.13962f);
-        public static Vector2 MouthFemaleNarrowNormalOffset  = new Vector2(0.12956f, 0.15346f);
-        public static Vector2 MouthFemaleNarrowPointyOffset  = new Vector2(0.12328f, 0.16604f);
-        public static Vector2 MouthFemaleNarrowWideOffset    = new Vector2(0.12075f, 0.16101f);
-        public static Vector2 MouthMaleAverageNormalOffset   = new Vector2(0.18491f, 0.15724f);
-        public static Vector2 MouthMaleAveragePointyOffset   = new Vector2(0.19874f, 0.15346f);
-        public static Vector2 MouthMaleAverageWideOffset     = new Vector2(0.21636f, 0.14843f);
-        public static Vector2 MouthMaleNarrowNormalOffset    = new Vector2(0.12810f, 0.17610f);
-        public static Vector2 MouthMaleNarrowPointyOffset    = new Vector2(0.11824f, 0.17358f);
-        public static Vector2 MouthMaleNarrowWideOffset      = new Vector2(0.11825f, 0.17623f);
+        public static List<Vector2> mouthOffsetsHeadType =
+            new List<Vector2>
+            {
+                new Vector2(0.18491f, 0.15724f), // MaleAverageNormalOffset
+                new Vector2(0.19874f, 0.15346f), // MaleAveragePointyOffset
+                new Vector2(0.21636f, 0.14843f), // MaleAverageWideOffset
+                new Vector2(0.12810f, 0.17610f), // MaleNarrowNormalOffset
+                new Vector2(0.11824f, 0.17358f), // MaleNarrowPointyOffset
+                new Vector2(0.11825f, 0.17623f), // MaleNarrowWideOffset
+                new Vector2(0.14331f, 0.13585f), // FemaleAverageNormalOffset
+                new Vector2(0.16100f, 0.13836f), // FemaleAveragePointyOffset
+                new Vector2(0.16604f, 0.13962f), // FemaleAverageWideOffset
+                new Vector2(0.12956f, 0.15346f), // FemaleNarrowNormalOffset
+                new Vector2(0.12328f, 0.16604f), // FemaleNarrowPointyOffset
+                new Vector2(0.12075f, 0.16101f) // FemaleNarrowWideOffset
+            };
+
 
         #endregion Public Fields
 
@@ -53,159 +62,113 @@ namespace FacialStuff.GraphicsFS
 
         static MeshPoolFS()
         {
-            List<Vector2> eyeVector = 
-                new List<Vector2>
-                {
-                    EyeMaleAverageNormalOffset,   // 0
-                    EyeMaleAveragePointyOffset,   // 1
-                    EyeMaleAverageWideOffset,     // 2
-                    EyeMaleNarrowNormalOffset,    // 3
-                    EyeMaleNarrowPointyOffset,    // 4
-                    EyeMaleNarrowWideOffset,      // 5
-                    EyeFemaleAverageNormalOffset, // 6
-                    EyeFemaleAveragePointyOffset, // 7
-                    EyeFemaleAverageWideOffset,   // 8
-                    EyeFemaleNarrowNormalOffset,  // 9
-                    EyeFemaleNarrowPointyOffset,  // 10
-                    EyeFemaleNarrowWideOffset     // 11
-                };
-
-            List<Vector2> mouthVector = 
-                new List<Vector2>
-                {
-                    MouthMaleAverageNormalOffset,
-                    MouthMaleAveragePointyOffset,
-                    MouthMaleAverageWideOffset,
-                    MouthMaleNarrowNormalOffset,
-                    MouthMaleNarrowPointyOffset,
-                    MouthMaleNarrowWideOffset,
-                    MouthFemaleAverageNormalOffset,
-                    MouthFemaleAveragePointyOffset,
-                    MouthFemaleAverageWideOffset,
-                    MouthFemaleNarrowNormalOffset,
-                    MouthFemaleNarrowPointyOffset,
-                    MouthFemaleNarrowWideOffset
-                };
-
             HumanlikeMouthSet[(int) FullHead.MaleAverageNormal] = 
-                new GraphicVectorMeshSet(
-                    HumanlikeHeadAverageWidth,
-                    mouthVector[(int) FullHead.MaleAverageNormal]);
+                new GraphicMeshSet(HumanlikeHeadAverageWidth);
 
             HumanlikeMouthSet[(int) FullHead.MaleAveragePointy] = 
-                new GraphicVectorMeshSet(
-                    0.7f,
-                    HumanlikeHeadAverageWidth,
-                    mouthVector[(int) FullHead.MaleAveragePointy]);
+                new GraphicMeshSet(0.7f, HumanlikeHeadAverageWidth);
 
             HumanlikeMouthSet[(int) FullHead.MaleAverageWide] = 
-                new GraphicVectorMeshSet(
-                    HumanlikeHeadAverageWidth,
-                    mouthVector[(int) FullHead.MaleAverageWide]);
+                new GraphicMeshSet(HumanlikeHeadAverageWidth);
 
             HumanlikeMouthSet[(int) FullHead.MaleNarrowNormal] = 
-                new GraphicVectorMeshSet(
-                    0.6f,
-                    HumanlikeHeadAverageWidth,
-                    mouthVector[(int) FullHead.MaleNarrowNormal]);
+                new GraphicMeshSet(0.6f, HumanlikeHeadAverageWidth);
 
             HumanlikeMouthSet[(int) FullHead.MaleNarrowPointy] = 
-                new GraphicVectorMeshSet(
+                new GraphicMeshSet(
                     0.55f,
-                    HumanlikeHeadAverageWidth,
-                    mouthVector[(int) FullHead.MaleNarrowPointy]);
+                    HumanlikeHeadAverageWidth);
 
 			HumanlikeMouthSet[(int)FullHead.MaleNarrowWide] = 
-                new GraphicVectorMeshSet(
+                new GraphicMeshSet(
 					HumanlikeHeadNarrowWidth,
-					HumanlikeHeadAverageWidth,
-					mouthVector[(int)FullHead.MaleNarrowWide]);
+					HumanlikeHeadAverageWidth);
 
 			HumanlikeMouthSet[(int)FullHead.FemaleAverageNormal] = 
-                new GraphicVectorMeshSet(
+                new GraphicMeshSet(
 				    0.7f,
-				    HumanlikeHeadAverageWidth,
-				    mouthVector[(int)FullHead.FemaleAverageNormal]);
+				    HumanlikeHeadAverageWidth);
 
 			HumanlikeMouthSet[(int)FullHead.FemaleAveragePointy] = 
-                new GraphicVectorMeshSet(
+                new GraphicMeshSet(
 					HumanlikeHeadNarrowWidth,
-					HumanlikeHeadAverageWidth,
-					mouthVector[(int)FullHead.FemaleAveragePointy]);
+					HumanlikeHeadAverageWidth);
 
 			HumanlikeMouthSet[(int)FullHead.FemaleAverageWide] = 
-                new GraphicVectorMeshSet(
+                new GraphicMeshSet(
 					0.7f,
-					HumanlikeHeadAverageWidth,
-					mouthVector[(int)FullHead.FemaleAverageWide]);
+					HumanlikeHeadAverageWidth);
 
 			HumanlikeMouthSet[(int)FullHead.FemaleNarrowNormal] = 
-                new GraphicVectorMeshSet(
+                new GraphicMeshSet(
 					0.5f,
-					HumanlikeHeadAverageWidth,
-					mouthVector[(int)FullHead.FemaleNarrowNormal]);
+					HumanlikeHeadAverageWidth);
 
 			HumanlikeMouthSet[(int)FullHead.FemaleNarrowPointy] = 
-                new GraphicVectorMeshSet(
+                new GraphicMeshSet(
 					0.5f,
-					HumanlikeHeadAverageWidth,
-					mouthVector[(int)FullHead.FemaleNarrowPointy]);
+					HumanlikeHeadAverageWidth);
 
 			HumanlikeMouthSet[(int)FullHead.FemaleNarrowWide] = 
-                new GraphicVectorMeshSet(
+                new GraphicMeshSet(
 					0.6f,
-					HumanlikeHeadAverageWidth,
-					mouthVector[(int)FullHead.FemaleNarrowWide]);
+					HumanlikeHeadAverageWidth);
 
-			HumanEyeSet[(int)FullHead.MaleAverageNormal] = new GraphicVectorMeshSet(
-																					 HumanlikeHeadAverageWidth,
-																					 eyeVector[(int)FullHead.MaleAverageNormal]);
+			HumanEyeSet[(int)FullHead.MaleAverageNormal] = 
+                new GraphicMeshSet(
+					HumanlikeHeadAverageWidth);
 
-			HumanEyeSet[(int)FullHead.MaleAveragePointy] = new GraphicVectorMeshSet(
-																					 HumanlikeHeadAverageWidth,
-																					 eyeVector[(int)FullHead.MaleAveragePointy]);
+			HumanEyeSet[(int)FullHead.MaleAveragePointy] = 
+                new GraphicMeshSet(
+					HumanlikeHeadAverageWidth);
 
-			HumanEyeSet[(int)FullHead.MaleAverageWide] = new GraphicVectorMeshSet(
-																				   HumanlikeHeadAverageWidth,
-																				   eyeVector[(int)FullHead.MaleAverageWide]);
+			HumanEyeSet[(int)FullHead.MaleAverageWide] = 
+                new GraphicMeshSet(
+					HumanlikeHeadAverageWidth);
 
-			HumanEyeSet[(int)FullHead.MaleNarrowNormal] = new GraphicVectorMeshSet(
-																					HumanlikeHeadNarrowWidth,
-																					HumanlikeHeadAverageWidth,
-																					eyeVector[(int)FullHead.MaleNarrowNormal]);
-			HumanEyeSet[(int)FullHead.MaleNarrowPointy] = new GraphicVectorMeshSet(
-																					HumanlikeHeadNarrowWidth,
-																					HumanlikeHeadAverageWidth,
-																					eyeVector[(int)FullHead.MaleNarrowPointy]);
-			HumanEyeSet[(int)FullHead.MaleNarrowWide] = new GraphicVectorMeshSet(
-																				  HumanlikeHeadNarrowWidth,
-																				  HumanlikeHeadAverageWidth,
-																				  eyeVector[(int)FullHead.MaleNarrowWide]);
+			HumanEyeSet[(int)FullHead.MaleNarrowNormal] = 
+                new GraphicMeshSet(
+					HumanlikeHeadNarrowWidth,
+					HumanlikeHeadAverageWidth);
+			HumanEyeSet[(int)FullHead.MaleNarrowPointy] = 
+                new GraphicMeshSet(
+					HumanlikeHeadNarrowWidth,
+					HumanlikeHeadAverageWidth);
+			HumanEyeSet[(int)FullHead.MaleNarrowWide] = 
+                new GraphicMeshSet(
+					HumanlikeHeadNarrowWidth,
+					HumanlikeHeadAverageWidth);
 
-			HumanEyeSet[(int)FullHead.FemaleAverageNormal] = new GraphicVectorMeshSet(
-																					   HumanlikeHeadAverageWidth,
-																					   eyeVector[(int)FullHead.FemaleAverageNormal]);
-			HumanEyeSet[(int)FullHead.FemaleAveragePointy] = new GraphicVectorMeshSet(
-																					   HumanlikeHeadAverageWidth,
-																					   eyeVector[(int)FullHead.FemaleAveragePointy]);
-			HumanEyeSet[(int)FullHead.FemaleAverageWide] = new GraphicVectorMeshSet(
-																					 HumanlikeHeadAverageWidth,
-																					 eyeVector[(int)FullHead.FemaleAverageWide]);
+			HumanEyeSet[(int)FullHead.FemaleAverageNormal] = 
+                new GraphicMeshSet(
+					HumanlikeHeadAverageWidth);
+			HumanEyeSet[(int)FullHead.FemaleAveragePointy] = 
+                new GraphicMeshSet(
+					HumanlikeHeadAverageWidth);
+			HumanEyeSet[(int)FullHead.FemaleAverageWide] = 
+                new GraphicMeshSet(HumanlikeHeadAverageWidth);
 
-			HumanEyeSet[(int)FullHead.FemaleNarrowNormal] = new GraphicVectorMeshSet(
-																					  HumanlikeHeadNarrowWidth,
-																					  HumanlikeHeadAverageWidth,
-																					  eyeVector[(int)FullHead.FemaleNarrowNormal]);
-			HumanEyeSet[(int)FullHead.FemaleNarrowPointy] = new GraphicVectorMeshSet(
-																					  HumanlikeHeadNarrowWidth,
-																					  HumanlikeHeadAverageWidth,
-																					  eyeVector[(int)FullHead.FemaleNarrowPointy]);
-			HumanEyeSet[(int)FullHead.FemaleNarrowWide] = new GraphicVectorMeshSet(
-																					HumanlikeHeadNarrowWidth,
-																					HumanlikeHeadAverageWidth,
-																					eyeVector[(int)FullHead.FemaleNarrowWide]);
+			HumanEyeSet[(int)FullHead.FemaleNarrowNormal] = 
+                new GraphicMeshSet(
+					HumanlikeHeadNarrowWidth,
+					HumanlikeHeadAverageWidth);
+			HumanEyeSet[(int)FullHead.FemaleNarrowPointy] = 
+                new GraphicMeshSet(
+					HumanlikeHeadNarrowWidth);
+			HumanEyeSet[(int)FullHead.FemaleNarrowWide] = 
+                new GraphicMeshSet(
+					HumanlikeHeadNarrowWidth,
+					HumanlikeHeadAverageWidth);
 		}
 
         #endregion Public Constructors
+
+        public static FullHead GetFullHeadType(Gender gender, CrownType crownType, HeadType headType)
+		{
+            int genderVal = ((int)gender - 1) * 6;
+            int crownVal = ((int)crownType - 1) * 3;
+            int headTypeVal = (int)headType;
+            return (FullHead)(genderVal + crownVal + headTypeVal);
+		}
     }
 }
