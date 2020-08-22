@@ -294,7 +294,7 @@ namespace FacialStuff
             InitializePawnDrawer();
         }
 
-        public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics)
+        public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics, bool portrait)
         {
             if(Find.TickManager.TicksGame % 180 == 0)
             {
@@ -309,7 +309,10 @@ namespace FacialStuff
                 !Find.TickManager.Paused;
             HeadRotationAI.Tick(canUpdatePawn, bodyFacing, IsAsleep);
             FacialExpressionAI.Tick(canUpdatePawn, this);
-            headFacing = HeadRotationAI.CurrentRotation;
+            if(!portrait)
+			{
+                headFacing = HeadRotationAI.CurrentRotation;
+            }
             PawnFaceGraphic.MouthGraphic =
                 PawnFaceGraphic.Mouthgraphic.HumanMouthGraphic[FacialExpressionAI.MouthGraphicIndex].Graphic;
 

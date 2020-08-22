@@ -366,7 +366,7 @@ namespace FacialStuff.Harmony
             }
             if(compFace != null)
 			{
-                compFace.TickDrawers(bodyFacing, ref headFacing, graphics);
+                compFace.TickDrawers(bodyFacing, ref headFacing, graphics, portrait);
             }
         }
 
