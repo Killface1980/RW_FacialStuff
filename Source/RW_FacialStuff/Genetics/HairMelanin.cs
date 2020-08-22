@@ -174,7 +174,7 @@ namespace FacialStuff.Genetics
             return dna;
         }
 
-        public static Color GetCurrentHairColor(this PawnFace face)
+        public static Color GetCurrentHairColor(this FaceData face)
         {
             HairColorRequest colorRequest = new HairColorRequest(face.PheoMelanin, face.EuMelanin, face.Greyness);
 
@@ -213,7 +213,7 @@ namespace FacialStuff.Genetics
             pawn.relations.FamilyByBlood.FirstOrDefault(
                                                         x => x.HasPawnFace());
 
-            if (relPawn == null || !relPawn.GetPawnFace(out PawnFace pawnFace))
+            if (relPawn == null || !relPawn.GetPawnFace(out FaceData pawnFace))
             {
                 return false;
             }
@@ -254,18 +254,18 @@ namespace FacialStuff.Genetics
         }
 
         [CanBeNull]
-        private static PawnFace GetFatherFace(Pawn pawn)
+        private static FaceData GetFatherFace(Pawn pawn)
         {
-            PawnFace face   = null;
+            FaceData face   = null;
             Pawn     father = pawn.GetFather();
             father?.GetPawnFace(out face);
             return face;
         }
 
         [CanBeNull]
-        private static PawnFace GetMotherFace([NotNull] Pawn pawn)
+        private static FaceData GetMotherFace([NotNull] Pawn pawn)
         {
-            PawnFace face   = null;
+            FaceData face   = null;
             Pawn     mother = pawn.GetMother();
             mother?.GetPawnFace(out face);
             return face;
@@ -280,9 +280,9 @@ namespace FacialStuff.Genetics
             bool flag = false;
             if (!ignoreRelative)
             {
-                PawnFace motherPawnFace = GetMotherFace(pawn);
+                FaceData motherPawnFace = GetMotherFace(pawn);
                 bool     hasMother      = motherPawnFace != null;
-                PawnFace fatherPawnFace = GetFatherFace(pawn);
+                FaceData fatherPawnFace = GetFatherFace(pawn);
                 bool     hasFather      = fatherPawnFace != null;
 
                 if (hasMother && hasFather)

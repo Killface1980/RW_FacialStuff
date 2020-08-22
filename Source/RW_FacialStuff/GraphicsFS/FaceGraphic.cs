@@ -12,7 +12,7 @@ using Verse;
 
 namespace FacialStuff.GraphicsFS
 {
-	public class PawnFaceGraphic
+	public class FaceGraphic
 	{
 		const string STR_south = "_south";
 		const string STR_ROMV_Fangs = "ROMV_Fangs";
@@ -44,7 +44,7 @@ namespace FacialStuff.GraphicsFS
 		private readonly CompFace _compFace;
 		private readonly Pawn _pawn;
 
-		private readonly PawnFace pawnFace;
+		private readonly FaceData pawnFace;
 		public Graphic_Multi_NaturalEyes EyeLeftMissingGraphic;
 		public Graphic_Multi_NaturalEyes EyeRightMissingGraphic;
 
@@ -63,7 +63,7 @@ namespace FacialStuff.GraphicsFS
 
 		public string texPathJawAddedPart;
 
-		public PawnFaceGraphic(CompFace compFace)
+		public FaceGraphic(CompFace compFace)
 		{
 			_compFace = compFace;
 			_pawn = compFace.Pawn;
@@ -97,7 +97,7 @@ namespace FacialStuff.GraphicsFS
 			}
 		}
 				
-		public void MakeEyes(PawnFace pawnFace)
+		public void MakeEyes(FaceData pawnFace)
 		{
 			texPathBrow = BrowTexPath(pawnFace.BrowDef);
 
@@ -105,7 +105,7 @@ namespace FacialStuff.GraphicsFS
 			InitializeGraphicsBrows();
 		}
 
-		public void MakeEars(PawnFace pawnFace)
+		public void MakeEars(FaceData pawnFace)
 		{
 			texPathEarRightMissing = EarTexPath(Side.Right, EarDefOf.Missing);
 			texPathEarLeftMissing = EarTexPath(Side.Left, EarDefOf.Missing);

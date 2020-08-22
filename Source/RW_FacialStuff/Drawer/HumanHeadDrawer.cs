@@ -129,7 +129,7 @@ namespace FacialStuff
         {
             Mesh eyeMesh = this.CompFace.EyeMeshSet.MeshAt(this.HeadFacing);
 
-            PawnFaceGraphic faceGraphic = this.CompFace.PawnFaceGraphic;
+            FaceGraphic faceGraphic = this.CompFace.PawnFaceGraphic;
             // natural eyes
             PartStatus eyeLeft = this.CompFace.BodyStat.EyeLeft;
             if (faceGraphic == null)
@@ -190,7 +190,7 @@ namespace FacialStuff
         {
             Mesh earMesh = this.CompFace.EyeMeshSet.MeshAt(this.HeadFacing);
 
-            PawnFaceGraphic faceGraphic = this.CompFace.PawnFaceGraphic;
+            FaceGraphic faceGraphic = this.CompFace.PawnFaceGraphic;
             // natural eyes
             PartStatus earLeft = this.CompFace.BodyStat.EarLeft;
             if (faceGraphic == null)

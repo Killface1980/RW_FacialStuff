@@ -10,7 +10,7 @@ using Verse;
 
 namespace FacialStuff
 {
-    public class PawnFace : IExposable
+    public class FaceData : IExposable
     {
         #region Private Fields
 
@@ -25,10 +25,6 @@ namespace FacialStuff
         // public float Cuticula;
         private bool _drawMouth = true;
 
-        [SuppressMessage(
-            "StyleCop.CSharp.NamingRules",
-            "SA1305:FieldNamesMustNotUseHungarianNotation",
-            Justification = "Reviewed. Suppression is OK here.")]
         private float _euMelanin;
 
         [CanBeNull]
@@ -53,7 +49,7 @@ namespace FacialStuff
 
         #region Public Constructors
 
-        public PawnFace([NotNull] CompFace face, FactionDef pawnFactionDef, bool newPawn = true)
+        public FaceData([NotNull] CompFace face, FactionDef pawnFactionDef, bool newPawn = true)
         {
             Pawn pawn = face.Pawn;
             this.DrawMouth = true;
@@ -61,7 +57,7 @@ namespace FacialStuff
             {
                 pawnFactionDef = FactionDefOf.PlayerColony;
             }
-
+            
             this.EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, pawnFactionDef);
             this.EarDef = PawnFaceMaker.RandomEarDefFor(pawn, pawnFactionDef);
             this.BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, pawnFactionDef);
@@ -81,7 +77,7 @@ namespace FacialStuff
         }
 
         // public Baldness Baldness;
-        public PawnFace()
+        public FaceData()
         {
             // for RW to not bug out
         }

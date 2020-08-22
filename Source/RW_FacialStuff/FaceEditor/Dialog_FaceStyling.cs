@@ -185,7 +185,7 @@ namespace FacialStuff.FaceEditor
         private SpecialTab _specialTab;
 #endif
         private Vector2 _swatchSize = new Vector2(14, 14);
-        public PawnFace PawnFace => this._pawnFace;
+        public FaceData PawnFace => this._pawnFace;
 
 #endregion Private Fields
 
@@ -466,7 +466,7 @@ namespace FacialStuff.FaceEditor
             }
         }
 
-        private readonly PawnFace _pawnFace;
+        private readonly FaceData _pawnFace;
 
 #endregion Private Properties
 

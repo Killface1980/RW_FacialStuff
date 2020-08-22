@@ -21,7 +21,7 @@ namespace FacialStuff.GraphicsFS
         private readonly CompFace _compFace;
 
         [NotNull]
-        private readonly PawnFaceGraphic _pawnFaceGraphic;
+        private readonly FaceGraphic _pawnFaceGraphic;
 
         private readonly Pawn _pawn;
 
@@ -29,7 +29,7 @@ namespace FacialStuff.GraphicsFS
 
         #region Public Constructors
 
-        public FaceMaterial([NotNull] CompFace compFace, [NotNull] PawnFaceGraphic pawnFaceGraphic)
+        public FaceMaterial([NotNull] CompFace compFace, [NotNull] FaceGraphic pawnFaceGraphic)
         {
             this._compFace = compFace;
             this._pawnFaceGraphic = pawnFaceGraphic;

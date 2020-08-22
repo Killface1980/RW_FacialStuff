@@ -21,7 +21,7 @@ namespace FacialStuff
 
         public FacePartStats BodyStat;
 
-        [CanBeNull] public PawnFaceGraphic PawnFaceGraphic;
+        [CanBeNull] public FaceGraphic PawnFaceGraphic;
 
         public bool IsAsleep;
 
@@ -37,7 +37,7 @@ namespace FacialStuff
         private float _factionMelanin;
         
         // must be null, always initialize with pawn
-        private PawnFace _pawnFace;
+        private FaceData _pawnFace;
                 
         #endregion Private Fields
 
@@ -67,7 +67,7 @@ namespace FacialStuff
         public virtual CrownType PawnCrownType => this.Pawn?.story.crownType ?? CrownType.Average;
 
         [CanBeNull]
-        public PawnFace PawnFace 
+        public FaceData PawnFace
         {
             get
 			{
@@ -399,18 +399,18 @@ namespace FacialStuff
 
             if(PawnFace == null)
             {
-                PawnFace = new PawnFace(this, OriginFaction?.def);
+                PawnFace = new FaceData(this, OriginFaction?.def);
             }
 
             // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
             if(PawnFace?.EyeDef == null || PawnFace.BrowDef == null || PawnFace.BeardDef == null)
             {
-                PawnFace = new PawnFace(this, Faction.OfPlayer.def);
+                PawnFace = new FaceData(this, Faction.OfPlayer.def);
             }
 
             // Only for the crowntype ...
             CrownTypeChecker.SetHeadOffsets(Pawn, this);
-            PawnFaceGraphic = new PawnFaceGraphic(this);
+            PawnFaceGraphic = new FaceGraphic(this);
             FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
             return true;
         }

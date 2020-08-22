@@ -353,7 +353,7 @@ namespace FacialStuff
             return compFace != null;
         }
 
-        public static bool GetPawnFace([NotNull] this Pawn pawn, [CanBeNull] out PawnFace pawnFace)
+        public static bool GetPawnFace([NotNull] this Pawn pawn, [CanBeNull] out FaceData pawnFace)
         {
             pawnFace = null;
 
@@ -362,7 +362,7 @@ namespace FacialStuff
                 return false;
             }
 
-            PawnFace face = compFace.PawnFace;
+            FaceData face = compFace.PawnFace;
             if (face != null)
             {
                 pawnFace = face;
@@ -386,7 +386,7 @@ namespace FacialStuff
         {
             if (pawn.GetCompFace(out CompFace compFace))
             {
-                PawnFace face = compFace.PawnFace;
+                FaceData face = compFace.PawnFace;
                 return face != null;
             }
 

@@ -103,10 +103,8 @@
     <None Include="Defs\ExtremityDef.cs" />
     <Compile Include="Defs\EarDef.cs" />
     <Compile Include="Enums\HeadCoverage.cs" />
-    <None Include="GraphicsFS\MeshMakerPlanesFS.cs" />
-    <None Include="GraphicsFS\Graphic_Multi_Four.cs" />
     <Compile Include="GraphicsFS\Graphic_Hair.cs" />
-    <Compile Include="GraphicsFS\Graphic_Multi_NaturalEyes - Kopieren.cs" />
+    <Compile Include="GraphicsFS\Graphic_Multi_NaturalEars.cs" />
     <Compile Include="Harmony\HarmonyPatchesFS.cs" />
     <Compile Include="Harmony\HarmonyPatch_PawnRenderer.cs" />
     <Compile Include="Harmony\HarmonyPatch_ShaderUtility.cs" />
@@ -175,7 +173,7 @@
     <Compile Include="PawnExtensions.cs" />
     <None Include="newStuff\JoyGiver_ChangeAppearance.cs" />
     <Compile Include="Enums\Side.cs" />
-    <Compile Include="GraphicsFS\PawnFaceGraphic.cs" />
+    <Compile Include="GraphicsFS\FaceGraphic.cs" />
     <Compile Include="FaceEditor\Dialog_FaceStyling.cs" />
     <None Include="FaceEditor\UI\DresserUI.cs" />
     <Compile Include="FaceEditor\UI\DTO\DresserDTO.cs" />
@@ -189,7 +187,7 @@
     <Compile Include="Genetics\HairColorRequest.cs" />
     <Compile Include="Genetics\HairDNA.cs" />
     <Compile Include="GraphicsFS\HumanMouthGraphics.cs" />
-    <Compile Include="PawnFace.cs" />
+    <Compile Include="FaceData.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
     <Compile Include="Enums\enums.cs" />
