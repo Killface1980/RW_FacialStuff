@@ -302,10 +302,10 @@ namespace FacialStuff
             }
 
             bool canUpdatePawn =
-                Pawn.Map != null ||
-                !Pawn.InContainerEnclosed ||
-                Pawn.Spawned ||
-                !Pawn.Dead ||
+                Pawn.Map != null &&
+                !Pawn.InContainerEnclosed &&
+                Pawn.Spawned &&
+                !Pawn.Dead &&
                 !Find.TickManager.Paused;
             HeadRotationAI.Tick(canUpdatePawn, bodyFacing, IsAsleep);
             FacialExpressionAI.Tick(canUpdatePawn, this);
