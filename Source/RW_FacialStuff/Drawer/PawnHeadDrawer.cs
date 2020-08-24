@@ -74,16 +74,7 @@ namespace FacialStuff
         public virtual void DrawWrinkles(Vector3 drawLoc, RotDrawMode bodyDrawType, Quaternion headQuat, bool portrait)
         {
         }
-
-        public virtual Vector3 EyeOffset(Rot4 headFacing)
-        {
-            return Vector3.zero;
-        }
-        public virtual Vector3 EarOffset(Rot4 headFacing)
-        {
-            return Vector3.zero;
-        }
-
+        
         public virtual Mesh GetPawnHairMesh(bool portrait)
         {
             return this.Graphics.HairMeshSet.MeshAt(this.HeadFacing);

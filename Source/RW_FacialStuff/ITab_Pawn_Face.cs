@@ -70,11 +70,9 @@ namespace FacialStuff
             }
 
             FullHead fullHead = MeshPoolFS.GetFullHeadType(SelPawn.gender, compFace.PawnCrownType, compFace.PawnHeadType);
-            GUILayout.Label("Eye" + fullHead.ToString() + "Offset: " + MeshPoolFS.eyeOffsetsHeadtype[(int)fullHead].ToString("N5"));
-            Vector3 eyeOffset = MeshPoolFS.eyeOffsetsHeadtype[(int)fullHead];
-            eyeOffset.x = GUILayout.HorizontalSlider(eyeOffset.x, -0.2f, 0.2f);
-            eyeOffset.y = GUILayout.HorizontalSlider(eyeOffset.y, -0.2f, 0.2f);
-            MeshPoolFS.eyeOffsetsHeadtype[(int)fullHead] = eyeOffset;
+            GUILayout.Label("Eye" + fullHead.ToString() + "Offset: NOT USED");
+            float x = GUILayout.HorizontalSlider(0f, -0.2f, 0.2f);
+            float y = GUILayout.HorizontalSlider(0f, -0.2f, 0.2f);
 
             GUILayout.Label("Mouth" + fullHead.ToString() + "Offset: " + MeshPoolFS.mouthOffsetsHeadType[(int)fullHead].ToString("N5"));
             Vector3 mouthOffset = MeshPoolFS.mouthOffsetsHeadType[(int)fullHead];

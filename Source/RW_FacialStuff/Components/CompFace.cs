@@ -328,19 +328,6 @@ namespace FacialStuff
             }
         }
 
-        public Vector3 BaseEyeOffsetAt(Rot4 rotation)
-        {
-            Vector3 eyeOffset = MeshPoolFS.eyeOffsetsHeadtype[(int)FullHeadType];
-            switch (rotation.AsInt)
-            {
-                case 1: return new Vector3(eyeOffset.x, 0f, -eyeOffset.y);
-                case 2: return new Vector3(0, 0f, -eyeOffset.y);
-                case 3: return new Vector3(-eyeOffset.x, 0f, -eyeOffset.y);
-                default: return Vector3.zero;
-            }
-        }
-
-
         public Vector3 BaseMouthOffsetAtDevelop(Rot4 rotation)
         {
             Vector3 mouthOffset = MeshPoolFS.mouthOffsetsHeadType[(int)FullHeadType];

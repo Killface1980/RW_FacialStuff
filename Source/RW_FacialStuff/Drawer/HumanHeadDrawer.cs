@@ -167,7 +167,7 @@ namespace FacialStuff
 
                 GenDraw.DrawMeshNowOrLater(
                     earMesh,
-                    left + this.EarOffset(this.HeadFacing),
+                    left,
                     headQuat,
                     earLeftMatAt,
                     portrait);
@@ -192,7 +192,7 @@ namespace FacialStuff
 
                 GenDraw.DrawMeshNowOrLater(
                     earMesh,
-                    right + this.EarOffset(this.HeadFacing),
+                    right,
                     headQuat,
                     earRightMatAt,
                     portrait);
@@ -225,7 +225,7 @@ namespace FacialStuff
                     left.y += Offsets.YOffset_LeftPart;
                     GenDraw.DrawMeshNowOrLater(
                                                headMesh,
-                                               left + this.EyeOffset(this.HeadFacing),
+                                               left,
                                                headQuat,
                                                leftBionicMat,
                                                portrait);
@@ -242,7 +242,7 @@ namespace FacialStuff
                     right.y += Offsets.YOffset_RightPart;
                     GenDraw.DrawMeshNowOrLater(
                                                headMesh,
-                                               right + this.EyeOffset(this.HeadFacing),
+                                               right,
                                                headQuat,
                                                rightBionicMat,
                                                portrait);
@@ -261,7 +261,7 @@ namespace FacialStuff
                     left.y += Offsets.YOffset_LeftPart;
                     GenDraw.DrawMeshNowOrLater(
                                                headMesh,
-                                               left + this.EarOffset(this.HeadFacing),
+                                               left,
                                                headQuat,
                                                leftBionicMat,
                                                portrait);
@@ -278,7 +278,7 @@ namespace FacialStuff
                     right.y += Offsets.YOffset_RightPart;
                     GenDraw.DrawMeshNowOrLater(
                                                headMesh,
-                                               right + this.EarOffset(this.HeadFacing),
+                                               right,
                                                headQuat,
                                                rightBionicMat,
                                                portrait);
@@ -307,17 +307,7 @@ namespace FacialStuff
             Mesh headMesh = this.GetPawnMesh(false, portrait);
             GenDraw.DrawMeshNowOrLater(headMesh, drawLoc, headQuat, wrinkleMat, portrait);
         }
-
-        public override Vector3 EyeOffset(Rot4 headFacing)
-        {
-            return CompFace.BaseEyeOffsetAt(headFacing);
-        }
-
-        public override Vector3 EarOffset(Rot4 headFacing)
-        {
-            return CompFace.BaseEyeOffsetAt(headFacing);
-        }
-
+        
         public override void Initialize()
         {
             base.Initialize();

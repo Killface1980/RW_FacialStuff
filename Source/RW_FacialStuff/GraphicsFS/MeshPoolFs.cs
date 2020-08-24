@@ -13,24 +13,7 @@ namespace FacialStuff.GraphicsFS
 
         public static readonly GraphicMeshSet[] HumanEyeSet       = new GraphicMeshSet[12];
         public static readonly GraphicMeshSet[] HumanlikeMouthSet = new GraphicMeshSet[12];
-
-        public static List<Vector2> eyeOffsetsHeadtype =
-            new List<Vector2>
-            {
-                new Vector2(0f, 0f),        // MaleAverageNormalOffset
-                new Vector2(-0.01256f, 0f), // MaleAveragePointyOffset
-                new Vector2(0f, 0f),        // MaleAverageWideOffset
-                new Vector2(-0.02516f, 0f), // MaleNarrowNormalOffset
-                new Vector2(-0.02516f, 0f), // MaleNarrowPointyOffset
-                new Vector2(-0.02516f, 0f), // MaleNarrowWideOffset
-                new Vector2(-0.01006f, 0f), // FemaleAverageNormalOffset
-                new Vector2(-0.01258f, 0f), // FemaleAveragePointyOffset
-                new Vector2(-0.01835f, 0f), // FemaleAverageWideOffset
-                new Vector2(-0.02264f, 0f), // FemaleNarrowNormalOffset
-                new Vector2(-0.01256f, 0f), // FemaleNarrowPointyOffset
-                new Vector2(-0.01509f, 0f), // FemaleNarrowWideOffset
-            };
-
+        
         public static List<Vector2> mouthOffsetsHeadType =
             new List<Vector2>
             {
