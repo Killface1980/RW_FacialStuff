@@ -342,16 +342,6 @@ namespace FacialStuff
                     thingComp.Initialize();
                 }
             }
-            else
-            {
-                PawnHeadDrawers = new List<PawnHeadDrawer>();
-                PawnHeadDrawer thingComp =
-                    (PawnHeadDrawer)Activator.CreateInstance(typeof(HumanHeadDrawer));
-                thingComp.CompFace = this;
-                thingComp.Pawn = Pawn;
-                PawnHeadDrawers.Add(thingComp);
-                thingComp.Initialize();
-            }
         }
                         
         public override void PostExposeData()
