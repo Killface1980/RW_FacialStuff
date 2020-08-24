@@ -362,7 +362,7 @@ namespace FacialStuff
                 return false;
             }
 
-            FaceData face = compFace.PawnFace;
+            FaceData face = compFace.FaceData;
             if (face != null)
             {
                 pawnFace = face;
@@ -386,7 +386,7 @@ namespace FacialStuff
         {
             if (pawn.GetCompFace(out CompFace compFace))
             {
-                FaceData face = compFace.PawnFace;
+                FaceData face = compFace.FaceData;
                 return face != null;
             }
 

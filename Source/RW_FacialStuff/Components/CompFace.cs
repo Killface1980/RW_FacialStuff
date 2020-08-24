@@ -17,66 +17,37 @@ namespace FacialStuff
 {
     public class CompFace : ThingComp
     {
-        #region Public Fields
-
         public FacePartStats BodyStat;
-
-        [CanBeNull] public FaceGraphic PawnFaceGraphic;
-
+        public FaceGraphic PawnFaceGraphic;
         public bool IsAsleep;
-
-
-        public bool NeedsStyling = true;
         
-        #endregion Public Fields
+        private Faction _originFactionInt;
+        private FaceData _faceData;
 
-        #region Private Fields
-        
-        private Faction _factionInt;
+        public bool Initialized { get; private set; }
 
-        private float _factionMelanin;
-        
-        // must be null, always initialize with pawn
-        private FaceData _pawnFace;
-                
-        #endregion Private Fields
-
-        #region Public Properties
-
-        // public bool IgnoreRenderer;
-        public GraphicMeshSet EyeMeshSet => MeshPoolFS.HumanEyeSet[(int)this.FullHeadType];
-        
         public FaceMaterial FaceMaterial { get; set; }
-
-        public float FactionMelanin
-        {
-            get => this._factionMelanin;
-            set => this._factionMelanin = value;
-        }
-
+        
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
         
         public PawnHeadRotationAI HeadRotationAI { get; private set; }
+        
         public PawnFacialExpressionAI FacialExpressionAI { get; private set; }
+                
+        public Faction OriginFaction => _originFactionInt;
+        
+        public virtual CrownType PawnCrownType => Pawn?.story.crownType ?? CrownType.Average;
 
-        [NotNull]
-        public GraphicMeshSet MouthMeshSet => MeshPoolFS.HumanlikeMouthSet[(int)this.FullHeadType];
-
-        public Faction OriginFaction => this._factionInt;
-
-        public virtual CrownType PawnCrownType => this.Pawn?.story.crownType ?? CrownType.Average;
-
-        [CanBeNull]
-        public FaceData PawnFace
+        public FaceData FaceData
         {
             get
 			{
-                return _pawnFace;
+                return _faceData;
             }
 
             set
 			{
-                _pawnFace = value;
+                _faceData = value;
 			}
         }
 
@@ -84,14 +55,14 @@ namespace FacialStuff
         {
             get
             {
-                if (this.Pawn.story?.HeadGraphicPath != null)
+                if(Pawn.story?.HeadGraphicPath != null)
                 {
-                    if (this.Pawn.story.HeadGraphicPath.Contains("Pointy"))
+                    if(Pawn.story.HeadGraphicPath.Contains("Pointy"))
                     {
                         return HeadType.Pointy;
                     }
 
-                    if (this.Pawn.story.HeadGraphicPath.Contains("Wide"))
+                    if(Pawn.story.HeadGraphicPath.Contains("Wide"))
                     {
                         return HeadType.Wide;
                     }
@@ -100,25 +71,15 @@ namespace FacialStuff
                 return HeadType.Normal;
             }
         }
-        
-        public CompProperties_Face Props => (CompProperties_Face)this.props;
 
-        [NotNull]
+        public CompProperties_Face Props => (CompProperties_Face)this.props;
+        
         public Pawn Pawn => this.parent as Pawn;
 
         public HeadCoverage CurrentHeadCoverage { get; set; }
 
-        #endregion Public Properties
-
-        #region Private Properties
-
-        [NotNull]
         private List<PawnHeadDrawer> PawnHeadDrawers { get; set; }
-
-		#endregion Private Properties
-
-		#region Public Methods
-        
+                
 		// Return true if head was drawn. False if not.
 		public bool DrawHead(
             RotDrawMode bodyDrawType, 
@@ -294,6 +255,28 @@ namespace FacialStuff
             InitializePawnDrawer();
         }
 
+        // Faction data isn't available during ThingComp.Initialize(). Initialize faction-related members here.
+        public void InitializeFace()
+        {
+            if(_originFactionInt == null)
+            {
+                _originFactionInt = Pawn.Faction ?? Faction.OfPlayer;
+            }
+            if(FaceData == null)
+            {
+                FaceData = new FaceData(this, OriginFaction?.def);
+            }
+            // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
+            if(FaceData?.EyeDef == null || FaceData.BrowDef == null || FaceData.BeardDef == null)
+            {
+                FaceData = new FaceData(this, Faction.OfPlayer.def);
+            }
+            FullHeadType = MeshPoolFS.GetFullHeadType(Pawn.gender, PawnCrownType, PawnHeadType);
+            PawnFaceGraphic = new FaceGraphic(this);
+            FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
+            Initialized = true;
+        }
+        
         public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics, bool portrait)
         {
             if(Find.TickManager.TicksGame % 180 == 0)
@@ -328,8 +311,6 @@ namespace FacialStuff
             }
         }
         
-        // Can be called externally
-
         public void DrawAlienHeadAddons(Vector3 headPos, bool portrait, Quaternion headQuat, Vector3 currentLoc)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
@@ -346,29 +327,6 @@ namespace FacialStuff
             }
         }
         
-        public bool InitializeCompFace()
-        {
-            if(_factionInt == null)
-            {
-                _factionInt = Pawn.Faction ?? Faction.OfPlayer;
-            }
-
-            if(PawnFace == null)
-            {
-                PawnFace = new FaceData(this, OriginFaction?.def);
-            }
-
-            // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
-            if(PawnFace?.EyeDef == null || PawnFace.BrowDef == null || PawnFace.BeardDef == null)
-            {
-                PawnFace = new FaceData(this, Faction.OfPlayer.def);
-            }
-            FullHeadType = MeshPoolFS.GetFullHeadType(Pawn.gender, PawnCrownType, PawnHeadType);
-            PawnFaceGraphic = new FaceGraphic(this);
-            FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
-            return true;
-        }
-
         public void InitializePawnDrawer()
         {
             if(Props.headDrawers.Any())
@@ -400,39 +358,8 @@ namespace FacialStuff
         {
             base.PostExposeData();
 
-            Scribe_References.Look(ref this._factionInt, "pawnFaction");
-
-            // Scribe_Values.Look(ref this.pawnFace.MelaninOrg, "MelaninOrg");
-
-            // Log.Message(
-            // "Facial Stuff updated pawn " + this.parent.Label + "-" + face.BeardDef + "-" + face.EyeDef);
-
-            // Force ResolveAllGraphics
-            Scribe_Deep.Look(ref this._pawnFace, "pawnFace");
-
-            // Scribe_References.Look(ref this.pawn, "pawn");
-            //Scribe_Values.Look(ref this.IsChild, "isChild");
-
-            // Scribe_References.Look(ref this.theRoom, "theRoom");
-
-            // Scribe_Values.Look(ref this.roofed, "roofed");
-            Scribe_Values.Look(ref this._factionMelanin, "factionMelanin");
-
-            // Faction needs to be saved like in Thing.ExposeData
-            // string facID = (this.factionInt == null) ? "null" : this.factionInt.GetUniqueLoadID();
-            // Scribe_Values.Look(ref facID, "pawnFaction", "null", false);
-            // if (Scribe.mode != LoadSaveMode.LoadingVars && Scribe.mode != LoadSaveMode.ResolvingCrossRefs && Scribe.mode != LoadSaveMode.PostLoadInit)
-            // return;
-            // if (facID == "null")
-            // {
-            // this.factionInt = null;
-            // }
-            // else if (Find.World != null && Find.FactionManager != null)
-            // {
-            // this.factionInt = Find.FactionManager.AllFactions.FirstOrDefault((Faction fa) => fa.GetUniqueLoadID() == facID);
-            // }
+            Scribe_References.Look(ref this._originFactionInt, "pawnFaction");
+            Scribe_Deep.Look(ref this._faceData, "pawnFace");
         }
-
-        #endregion Public Methods
     }
 }

@@ -19,10 +19,10 @@ namespace FacialStuff.GraphicsFS
 
 		public Graphic BrowGraphic;
 		public Graphic DeadEyeGraphic;
-		public Graphic_Multi_NaturalEyes EyeRightClosedGraphic;
-		public Graphic_Multi_NaturalEyes EyeLeftClosedGraphic;
-		public Graphic_Multi_NaturalEyes EyeRightGraphic;
-		public Graphic_Multi_NaturalEyes EyeLeftGraphic;
+		//public Graphic_FaceMirror EyeRightClosedGraphic;
+		//public Graphic_FaceMirror EyeLeftClosedGraphic;
+		private Graphic_FaceMirror[] _eyeGraphics = new Graphic_FaceMirror[2];
+		private Graphic_FaceMirror[] _eyeClosedGraphics = new Graphic_FaceMirror[2];
 		public Graphic_Multi_AddedHeadParts EyeRightPatchGraphic;
 		public Graphic_Multi_AddedHeadParts EyeLeftPatchGraphic;
 		
@@ -45,8 +45,8 @@ namespace FacialStuff.GraphicsFS
 		private readonly Pawn _pawn;
 
 		private readonly FaceData pawnFace;
-		public Graphic_Multi_NaturalEyes EyeLeftMissingGraphic;
-		public Graphic_Multi_NaturalEyes EyeRightMissingGraphic;
+		public Graphic_FaceMirror EyeLeftMissingGraphic;
+		public Graphic_FaceMirror EyeRightMissingGraphic;
 
 		public Graphic_Multi_NaturalEars EarLeftMissingGraphic;
 		public Graphic_Multi_NaturalEars EarRightMissingGraphic;
@@ -68,7 +68,7 @@ namespace FacialStuff.GraphicsFS
 			_compFace = compFace;
 			_pawn = compFace.Pawn;
 
-			pawnFace = compFace.PawnFace;
+			pawnFace = compFace.FaceData;
 			if(pawnFace != null)
 			{
 				if(compFace.Props.hasBeard)
@@ -156,10 +156,10 @@ namespace FacialStuff.GraphicsFS
 				beardColor);
 		}
 
-		public string EyeTexPath(Side side, EyeDef eyeDef)
+		public string EyeTexPath(EyeDef eyeDef)
 		{
 			string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : eyeDef.texBasePath;
-			string path = eyePath + "Eye_" + eyeDef.texName + "_" + _pawn.gender + "_" + side;
+			string path = eyePath + "Eye_" + eyeDef.texName + "_" + _pawn.gender;
 			return path.Replace(@"\", @"/");
 		}
 
@@ -181,9 +181,9 @@ namespace FacialStuff.GraphicsFS
 		{
 			if(def == null)
 			{
-				if(_compFace.PawnFace?.BeardDef != null)
+				if(_compFace.FaceData?.BeardDef != null)
 				{
-					def = _compFace.PawnFace?.BeardDef;
+					def = _compFace.FaceData?.BeardDef;
 				} else
 				{
 					return string.Empty;
@@ -207,9 +207,9 @@ namespace FacialStuff.GraphicsFS
 		{
 			if(def == null)
 			{
-				if(_compFace.PawnFace?.MoustacheDef != null)
+				if(_compFace.FaceData?.MoustacheDef != null)
 				{
-					def = _compFace.PawnFace?.MoustacheDef;
+					def = _compFace.FaceData?.MoustacheDef;
 				} else
 				{
 					return string.Empty;
@@ -301,47 +301,58 @@ namespace FacialStuff.GraphicsFS
 				texPathEarLeftPatch + STR_south, false).NullOrBad();
 		}
 
+		public Graphic_FaceMirror GetEyeGraphic(int partIdx)
+		{
+			// TODO: error handling
+			return _eyeGraphics[partIdx];
+		}
+
+		public Graphic_FaceMirror GetEyeClosedGraphics(int partIdx)
+		{
+			// TODO: error handling
+			return _eyeClosedGraphics[partIdx];
+		}
+
 		private void InitializeGraphicsEyes()
 		{
 			InitializeGraphicsEyePatches();
-
 			Color eyeColor = Color.white;
 
-			EyeLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				EyeTexPath(Side.Left, pawnFace.EyeDef),
+			_eyeGraphics[0] = GraphicDatabase.Get<Graphic_FaceMirror>(
+				EyeTexPath(pawnFace.EyeDef),
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
-				eyeColor) as Graphic_Multi_NaturalEyes;
+				eyeColor) as Graphic_FaceMirror;
 
-			EyeRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				EyeTexPath(Side.Right, pawnFace.EyeDef),
+			_eyeGraphics[1] = GraphicDatabase.Get<Graphic_FaceMirror>(
+				EyeTexPath(pawnFace.EyeDef),
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
-				eyeColor) as Graphic_Multi_NaturalEyes;
-
-			EyeLeftMissingGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				EyeTexPath(Side.Left, EyeDefOf.Missing),
-				ShaderDatabase.CutoutComplex,
-				Vector2.one,
-				eyeColor) as Graphic_Multi_NaturalEyes;
-
-			EyeRightMissingGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				EyeTexPath(Side.Right, EyeDefOf.Missing),
-				ShaderDatabase.CutoutComplex,
-				Vector2.one,
-				eyeColor) as Graphic_Multi_NaturalEyes;
-
-			EyeLeftClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				EyeTexPath(Side.Left, EyeDefOf.Closed),
+				eyeColor) as Graphic_FaceMirror;
+			
+			_eyeClosedGraphics[0] = GraphicDatabase.Get<Graphic_FaceMirror>(
+				EyeTexPath(EyeDefOf.Closed),
 				ShaderDatabase.Cutout,
 				Vector2.one,
-				eyeColor) as Graphic_Multi_NaturalEyes;
+				eyeColor) as Graphic_FaceMirror;
 
-			EyeRightClosedGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-				EyeTexPath(Side.Right, EyeDefOf.Closed),
+			_eyeClosedGraphics[1] = GraphicDatabase.Get<Graphic_FaceMirror>(
+				EyeTexPath(EyeDefOf.Closed),
 				ShaderDatabase.Cutout,
 				Vector2.one,
-				eyeColor) as Graphic_Multi_NaturalEyes;
+				eyeColor) as Graphic_FaceMirror;
+
+			EyeLeftMissingGraphic = GraphicDatabase.Get<Graphic_FaceMirror>(
+				EyeTexPath(EyeDefOf.Missing),
+				ShaderDatabase.CutoutComplex,
+				Vector2.one,
+				eyeColor) as Graphic_FaceMirror;
+
+			EyeRightMissingGraphic = GraphicDatabase.Get<Graphic_FaceMirror>(
+				EyeTexPath(EyeDefOf.Missing),
+				ShaderDatabase.CutoutComplex,
+				Vector2.one,
+				eyeColor) as Graphic_FaceMirror;
 
 			DeadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
 				StringsFS.PathHumanlike + "Eyes/Eyes_Dead",

@@ -192,9 +192,9 @@
     <Compile Include="Enums\HeadType.cs" />
     <Compile Include="DefOfs\MouthDefOf.cs" />
     <Compile Include="GraphicsFS\FaceTextures.cs" />
-    <Compile Include="GraphicsFS\Graphic_Multi_NaturalEyes.cs" />
+    <Compile Include="GraphicsFS\Graphic_FaceMirror.cs" />
     <Compile Include="GraphicsFS\Graphic_Multi_AddedHeadParts.cs" />
-    <Compile Include="GraphicsFS\MeshPoolFs.cs" />
+    <Compile Include="GraphicsFS\MeshPoolFS.cs" />
     <Compile Include="Components\CompFace.cs" />
     <Compile Include="FaceEditor\ColorPicker\ColorWrapper.cs" />
     <Compile Include="FaceEditor\ColorPicker\Dialog_ColorPicker.cs" />

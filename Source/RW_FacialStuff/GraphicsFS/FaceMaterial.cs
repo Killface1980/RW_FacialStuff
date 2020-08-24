@@ -45,7 +45,7 @@ namespace FacialStuff.GraphicsFS
         [CanBeNull]
         public Material BeardMatAt(Rot4 facing)
         {
-            if (this.CannotShowFaceHair() || this._compFace.PawnFace?.BeardDef == BeardDefOf.Beard_Shaved)
+            if (this.CannotShowFaceHair() || this._compFace.FaceData?.BeardDef == BeardDefOf.Beard_Shaved)
             {
                 
                 return null;
@@ -107,36 +107,7 @@ namespace FacialStuff.GraphicsFS
 
             return material;
         }
-
-        [CanBeNull]
-        public Material EyeLeftMatAt(Rot4 facing, bool portrait)
-        {
-            if (facing == Rot4.East)
-            {
-                return null;
-            }
-
-            Material material = this._pawnFaceGraphic.EyeLeftGraphic?.MatAt(facing);
-
-            if (!portrait)
-            {
-                if (Controller.settings.MakeThemBlink && this._compFace.BodyStat.EyeLeft == PartStatus.Natural)
-                {
-                    if (this._compFace.IsAsleep || !this._compFace.FacialExpressionAI.EyeOpen)
-                    {
-                        material = this._pawnFaceGraphic.EyeLeftClosedGraphic.MatAt(facing);
-                    }
-                }
-            }
-
-            if (material != null)
-            {
-                material = this.Flasher.GetDamagedMat(material);
-            }
-
-            return material;
-        }
-
+        
         [CanBeNull]
         public Material EyeLeftPatchMatAt(Rot4 facing)
         {
@@ -151,36 +122,28 @@ namespace FacialStuff.GraphicsFS
         }
 
         [CanBeNull]
-        public Material EyeRightMatAt(Rot4 facing, bool portrait)
+        public Material EyeMatAt(Rot4 facing, int partIdx, PartStatus eyeStatus, bool portrait)
         {
-            if (facing == Rot4.West)
-            {
-                return null;
-            }
-
-            Material material = this._pawnFaceGraphic.EyeRightGraphic?.MatAt(facing);
-
-            if (!portrait)
+            Material material = _pawnFaceGraphic.GetEyeGraphic(partIdx).MatAt(facing);
+            if(!portrait)
             {
                 if(eyeStatus == PartStatus.Natural)
                 {
                     if(!this._compFace.FacialExpressionAI.EyeOpen)
                     {
-                        material = this._pawnFaceGraphic.EyeRightClosedGraphic?.MatAt(facing);
+                        material = this._pawnFaceGraphic.GetEyeClosedGraphics(partIdx).MatAt(facing);
                     }
                 }
             }
-
-            if (material != null)
+            if(material != null)
             {
                 material = this.Flasher.GetDamagedMat(material);
             }
-
             return material;
         }
 
         [CanBeNull]
-        public Material EyeRightMissingMatAt(Rot4 facing, bool portrait)
+        public Material EyeMissingMatAt(Rot4 facing, bool portrait)
         {
             if (facing == Rot4.West)
             {
@@ -196,24 +159,6 @@ namespace FacialStuff.GraphicsFS
 
             return material;
         }     
-        [CanBeNull]
-        public Material EyeLeftMissingMatAt(Rot4 facing, bool portrait)
-        {
-            if (facing == Rot4.West)
-            {
-                return null;
-            }
-
-            Material material = this._pawnFaceGraphic.EyeLeftMissingGraphic?.MatAt(facing);
-
-            if (material != null)
-            {
-                material = this.Flasher.GetDamagedMat(material);
-            }
-
-            return material;
-        }
-
 
         [CanBeNull]
         public Material EyeRightPatchMatAt(Rot4 facing)
@@ -329,7 +274,7 @@ namespace FacialStuff.GraphicsFS
         [CanBeNull]
         public Material MoustacheMatAt(Rot4 facing)
         {
-            if (this.CannotShowFaceHair() || this._compFace.PawnFace?.MoustacheDef == MoustacheDefOf.Shaved)
+            if (this.CannotShowFaceHair() || this._compFace.FaceData?.MoustacheDef == MoustacheDefOf.Shaved)
             {
                 return null;
             }
@@ -360,7 +305,7 @@ namespace FacialStuff.GraphicsFS
                     return null;
                 }
 
-                if (this._compFace.PawnFace == null || !this._compFace.PawnFace.DrawMouth)
+                if (this._compFace.FaceData == null || !this._compFace.FaceData.DrawMouth)
                 {
                     return null;
                 }
@@ -372,7 +317,7 @@ namespace FacialStuff.GraphicsFS
 
                 if (this._pawn.gender == Gender.Male)
                 {
-                    if (!this._compFace.PawnFace.BeardDef.drawMouth || this._compFace.PawnFace.MoustacheDef != MoustacheDefOf.Shaved)
+                    if (!this._compFace.FaceData.BeardDef.drawMouth || this._compFace.FaceData.MoustacheDef != MoustacheDefOf.Shaved)
                     {
                         return null;
                     }

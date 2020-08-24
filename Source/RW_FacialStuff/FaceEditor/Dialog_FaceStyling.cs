@@ -230,7 +230,7 @@ namespace FacialStuff.FaceEditor
             this._gear = Controller.settings.FilterHats;
             Prefs.HatsOnlyOnMap = true;
             Controller.settings.FilterHats = false;
-            this._pawnFace = this.CompFace.PawnFace;
+            this._pawnFace = this.CompFace.FaceData;
 
             if (this.PawnFace == null)
             {
@@ -2403,19 +2403,19 @@ namespace FacialStuff.FaceEditor
             return graphic;
         }
 
-        private Graphic_Multi_NaturalEyes LeftEyeGraphic(EyeDef def)
+        private Graphic_FaceMirror LeftEyeGraphic(EyeDef def)
         {
-            Graphic_Multi_NaturalEyes __result;
+            Graphic_FaceMirror __result;
             if (def != null)
             {
-                string path = CompFace.PawnFaceGraphic.EyeTexPath(Side.Left, def);
+                string path = CompFace.PawnFaceGraphic.EyeTexPath(def);
 
-                __result = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
+                __result = GraphicDatabase.Get<Graphic_FaceMirror>(
                     path,
                     ShaderDatabase.CutoutComplex,
                     new Vector2(38f, 38f),
                     Color.white,
-                    Color.white) as Graphic_Multi_NaturalEyes;
+                    Color.white) as Graphic_FaceMirror;
             }
             else
             {
@@ -2470,19 +2470,19 @@ namespace FacialStuff.FaceEditor
             return graphic;
         }
 
-        private Graphic_Multi_NaturalEyes RightEyeGraphic(EyeDef def)
+        private Graphic_FaceMirror RightEyeGraphic(EyeDef def)
         {
-            Graphic_Multi_NaturalEyes graphic;
+            Graphic_FaceMirror graphic;
             if (def != null)
             {
-                string path = CompFace.PawnFaceGraphic.EyeTexPath(Side.Right, def);
+                string path = CompFace.PawnFaceGraphic.EyeTexPath(def);
 
-                graphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
+                graphic = GraphicDatabase.Get<Graphic_FaceMirror>(
                     path,
                     ShaderDatabase.CutoutComplex,
                     new Vector2(38f, 38f),
                     Color.white,
-                    Color.white) as Graphic_Multi_NaturalEyes;
+                    Color.white) as Graphic_FaceMirror;
             }
             else
             {
@@ -2492,19 +2492,19 @@ namespace FacialStuff.FaceEditor
             return graphic;
         }
 
-        private Graphic_Multi_NaturalEyes RightEarGraphic(EarDef def)
+        private Graphic_FaceMirror RightEarGraphic(EarDef def)
         {
-            Graphic_Multi_NaturalEyes graphic;
+            Graphic_FaceMirror graphic;
             if (def != null)
             {
                 string path = CompFace.PawnFaceGraphic.EarTexPath(Side.Right, def);
 
-                graphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
+                graphic = GraphicDatabase.Get<Graphic_FaceMirror>(
                     path,
                     ShaderDatabase.CutoutComplex,
                     new Vector2(38f, 38f),
                     Color.white,
-                    Color.white) as Graphic_Multi_NaturalEyes;
+                    Color.white) as Graphic_FaceMirror;
             }
             else
             {

@@ -11,7 +11,7 @@ namespace FacialStuff.GraphicsFS
     {
         #region Public Fields
 
-        public static readonly GraphicMeshSet[] HumanEyeSet       = new GraphicMeshSet[12];
+        private static GraphicMeshSet[,] HumanEyeSet = new GraphicMeshSet[3, 2];
         public static readonly GraphicMeshSet[] HumanlikeMouthSet = new GraphicMeshSet[12];
         
         public static List<Vector2> mouthOffsetsHeadType =
@@ -96,55 +96,35 @@ namespace FacialStuff.GraphicsFS
                 new GraphicMeshSet(
 					0.6f,
 					HumanlikeHeadAverageWidth);
+            
 
-			HumanEyeSet[(int)FullHead.MaleAverageNormal] = 
+            HumanEyeSet[1, 0] =
                 new GraphicMeshSet(
-					HumanlikeHeadAverageWidth);
+                    HumanlikeHeadAverageWidth);
 
-			HumanEyeSet[(int)FullHead.MaleAveragePointy] = 
+            HumanEyeSet[2, 0] =
                 new GraphicMeshSet(
-					HumanlikeHeadAverageWidth);
+                    HumanlikeHeadNarrowWidth,
+                    HumanlikeHeadAverageWidth);
+            for(int i = 1; i < HumanEyeSet.GetLength(0); ++i)
+            {
+                // This behavor might change in the future, so it may be wise to manually create mirrored mesh instead
+                HumanEyeSet[i, 1] = new GraphicMeshSet(
+                    HumanEyeSet[i, 0].MeshAt(Rot4.West),
+                    HumanEyeSet[i, 0].MeshAt(Rot4.West));
+            }
 
-			HumanEyeSet[(int)FullHead.MaleAverageWide] = 
-                new GraphicMeshSet(
-					HumanlikeHeadAverageWidth);
-
-			HumanEyeSet[(int)FullHead.MaleNarrowNormal] = 
-                new GraphicMeshSet(
-					HumanlikeHeadNarrowWidth,
-					HumanlikeHeadAverageWidth);
-			HumanEyeSet[(int)FullHead.MaleNarrowPointy] = 
-                new GraphicMeshSet(
-					HumanlikeHeadNarrowWidth,
-					HumanlikeHeadAverageWidth);
-			HumanEyeSet[(int)FullHead.MaleNarrowWide] = 
-                new GraphicMeshSet(
-					HumanlikeHeadNarrowWidth,
-					HumanlikeHeadAverageWidth);
-
-			HumanEyeSet[(int)FullHead.FemaleAverageNormal] = 
-                new GraphicMeshSet(
-					HumanlikeHeadAverageWidth);
-			HumanEyeSet[(int)FullHead.FemaleAveragePointy] = 
-                new GraphicMeshSet(
-					HumanlikeHeadAverageWidth);
-			HumanEyeSet[(int)FullHead.FemaleAverageWide] = 
-                new GraphicMeshSet(HumanlikeHeadAverageWidth);
-
-			HumanEyeSet[(int)FullHead.FemaleNarrowNormal] = 
-                new GraphicMeshSet(
-					HumanlikeHeadNarrowWidth,
-					HumanlikeHeadAverageWidth);
-			HumanEyeSet[(int)FullHead.FemaleNarrowPointy] = 
-                new GraphicMeshSet(
-					HumanlikeHeadNarrowWidth);
-			HumanEyeSet[(int)FullHead.FemaleNarrowWide] = 
-                new GraphicMeshSet(
-					HumanlikeHeadNarrowWidth,
-					HumanlikeHeadAverageWidth);
-		}
+            // For Undefined CrownType
+            HumanEyeSet[0, 0] = HumanEyeSet[1, 0];
+            HumanEyeSet[0, 1] = HumanEyeSet[1, 1];
+        }
 
         #endregion Public Constructors
+
+        public static Mesh GetFaceMesh(CrownType crownType, Rot4 headFacing, bool mirrored)
+		{
+            return HumanEyeSet[(int)crownType, mirrored ? 1 : 0].MeshAt(headFacing);
+        }
 
         public static FullHead GetFullHeadType(Gender gender, CrownType crownType, HeadType headType)
 		{
