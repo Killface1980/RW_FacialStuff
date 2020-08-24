@@ -202,7 +202,6 @@
     <Compile Include="FaceEditor\Job_FaceStyling.cs" />
     <None Include="FaceEditor\Preset.cs" />
     <None Include="FaceEditor\PresetDatabase.cs" />
-    <Compile Include="GraphicsFS\GraphicDatabaseHeadRecordsModded.cs" />
     <Compile Include="GraphicsFS\Graphic_Multi_NaturalHeadParts.cs" />
     <Compile Include="Utilities\DialogUtility.cs" />
     <Compile Include="Controller.cs" />

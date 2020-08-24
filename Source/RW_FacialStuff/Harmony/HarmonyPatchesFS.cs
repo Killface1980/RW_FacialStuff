@@ -74,15 +74,7 @@ namespace FacialStuff.Harmony
                              AccessTools.Method(typeof(HediffSet), nameof(HediffSet.DirtyCache)),
                              null,
                              new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DirtyCache_Postfix)));
-            
-               harmony.Patch(
-                             AccessTools.Method(typeof(GraphicDatabaseHeadRecords),
-                                                nameof(GraphicDatabaseHeadRecords.Reset)),
-                             null,
-                             new HarmonyMethod(
-                                               typeof(GraphicDatabaseHeadRecordsModded),
-                                               nameof(GraphicDatabaseHeadRecordsModded.Reset)));
-            
+                            
                harmony.Patch(
                              AccessTools.Method(typeof(PawnHairChooser), nameof(PawnHairChooser.RandomHairDefFor)),
                              new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(RandomHairDefFor_PreFix)),
@@ -729,6 +721,12 @@ namespace FacialStuff.Harmony
             {
                 return;
             }
+
+            // Return if child
+            if(pawn.IsChild() || pawn.GetCompAnim().Deactivated)
+            {
+                return;
+            }
             
             pawn.CheckForAddedOrMissingParts();
             pawn.GetCompAnim()?.PawnBodyGraphic?.Initialize();
@@ -739,38 +737,14 @@ namespace FacialStuff.Harmony
                 return;
             }
             
-            // Return if child
-            if(pawn.IsChild() || pawn.GetCompAnim().Deactivated)
-            {
-                return;
-            }
-
             __instance.ClearCache();
             pawn.GetComp<CompBodyAnimator>()?.ClearCache();
 
-            GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
+            if(!compFace.Initialized)
+            {
+                compFace.InitializeFace();
+            }
             
-            // Custom rotting color, mixed with skin tone
-            Color rotColor = pawn.story.SkinColor * FaceTextures.SkinRottingMultiplyColor;
-            if(!compFace.InitializeCompFace())
-            {
-                return;
-            }
-
-            __instance.nakedGraphic = GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.bodyType.bodyNakedGraphicPath, ShaderDatabase.CutoutSkin, Vector2.one, __instance.pawn.story.SkinColor);
-            if(compFace.Props.needsBlankHumanHead)
-            {
-                __instance.headGraphic =
-                    GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn,
-                        pawn.story.SkinColor);
-                __instance.desiccatedHeadGraphic =
-                    GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
-                __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
-            }
-
-            __instance.rottingGraphic =
-           GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.bodyType.bodyNakedGraphicPath, ShaderDatabase.CutoutSkin, Vector2.one, rotColor);
-
            __instance.hairGraphic = GraphicDatabase.Get<Graphic_Hair>(
                 pawn.story.hairDef.texPath,
                 Graphic_Hair.HairShader,
