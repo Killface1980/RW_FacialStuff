@@ -719,19 +719,18 @@ namespace FacialStuff.Harmony
             if(pawn == null)
             {
                 return;
-            }
-
-            // Return if child
-            if(pawn.IsChild() || pawn.GetCompAnim().Deactivated)
-            {
-                return;
-            }
-            
+            }            
             pawn.CheckForAddedOrMissingParts();
             pawn.GetCompAnim()?.PawnBodyGraphic?.Initialize();
 
             // Check if race has face, else return
             if(!pawn.GetCompFace(out CompFace compFace))
+            {
+                return;
+            }
+
+            // Return if child
+            if(pawn.IsChild() || pawn.GetCompAnim().Deactivated)
             {
                 return;
             }
