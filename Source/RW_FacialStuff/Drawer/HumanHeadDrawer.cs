@@ -206,9 +206,23 @@ namespace FacialStuff
             {
                 return;
             }
-
-            Mesh meshMouth = CompFace.MouthMeshSet.MeshAt(HeadFacing);
-            Vector3 mouthOffset = CompFace.BaseMouthOffsetAtDevelop(HeadFacing);
+            Mesh meshMouth = MeshPoolFS.HumanlikeMouthSet[(int)CompFace.FullHeadType].MeshAt(HeadFacing);
+            Vector3 mouthOffset = MeshPoolFS.mouthOffsetsHeadType[(int)CompFace.FullHeadType];
+            switch(HeadFacing.AsInt)
+            {
+                case 1: 
+                    mouthOffset = new Vector3(mouthOffset.x, 0f, -mouthOffset.y);
+                    break;
+                case 2: 
+                    mouthOffset = new Vector3(0, 0f, -mouthOffset.y);
+                    break;
+                case 3: 
+                    mouthOffset = new Vector3(-mouthOffset.x, 0f, -mouthOffset.y);
+                    break;
+                default: 
+                    mouthOffset = Vector3.zero;
+                    break;
+            }
             Vector3 mouthLoc = drawLoc + headQuat * mouthOffset;
             GenDraw.DrawMeshNowOrLater(meshMouth, mouthLoc, headQuat, mouthMat, portrait);
         }

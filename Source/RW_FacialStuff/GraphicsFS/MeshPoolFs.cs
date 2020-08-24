@@ -57,7 +57,7 @@ namespace FacialStuff.GraphicsFS
             HumanlikeMouthSet[(int) FullHead.MaleNarrowNormal] = 
                 new GraphicMeshSet(0.6f, HumanlikeHeadAverageWidth);
 
-            HumanlikeMouthSet[(int) FullHead.MaleNarrowPointy] = 
+            HumanlikeMouthSet[(int)FullHead.MaleNarrowPointy] = 
                 new GraphicMeshSet(
                     0.55f,
                     HumanlikeHeadAverageWidth);
