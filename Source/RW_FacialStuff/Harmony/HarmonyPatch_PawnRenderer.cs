@@ -414,8 +414,6 @@ namespace FacialStuff.Harmony
                 {
                     if(Controller.settings.UseHands)
                     {
-                        // Reset the position for the hands
-                        handPos.y = rootLoc.y;
                         compAnim.DrawHands(bodyQuat, handPos, false);
                     }
                     if(Controller.settings.UseFeet)

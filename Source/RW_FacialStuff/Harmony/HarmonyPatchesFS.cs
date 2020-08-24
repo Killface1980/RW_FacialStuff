@@ -713,7 +713,6 @@ namespace FacialStuff.Harmony
             return instructionList;
         }
 
-        // [HarmonyAfter("net.pardeike.zombieland")]
         public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)
         {
             Pawn pawn = __instance.pawn;
@@ -851,11 +850,7 @@ namespace FacialStuff.Harmony
             {
                 return;
             }
-
-            // FieldInfo PawnFieldInfo =
-            // typeof(Pawn_InteractionsTracker).GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
-            //PawnFieldInfo?.GetValue(__instance);
-
+            
             // TODO: do not use reflection to get Pawn instance
             Pawn pawn = (Pawn)AccessTools.Field(typeof(Pawn_InteractionsTracker), "pawn").GetValue(__instance);
             if(pawn == null || recipient == null)

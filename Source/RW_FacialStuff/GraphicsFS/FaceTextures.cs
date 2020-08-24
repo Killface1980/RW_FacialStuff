@@ -14,7 +14,6 @@ namespace FacialStuff.GraphicsFS
         public static readonly Texture2D MaskTexFullheadSide;
         public static readonly Texture2D MaskTexUpperheadSide;
         public static readonly Texture2D MaskTexUppherheadFrontBack;
-        public static readonly Texture2D RedTexture;
         public static readonly Color SkinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
 
 /*
@@ -33,10 +32,7 @@ namespace FacialStuff.GraphicsFS
             MaskTexFullheadSide = MakeReadable(ContentFinder<Texture2D>.Get("HairMask/Mask_FullHead_Side"));
             
             BlankTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
-
-            // The RedTexture is used as a mask texture, in case hair/eyes have no mask on their own
-            RedTexture = new Texture2D(128, 128, TextureFormat.ARGB32, false);
-
+            
             for (int x = 0; x < BlankTexture.width; x++)
             {
                 for (int y = 0; y < BlankTexture.height; y++)
@@ -44,22 +40,9 @@ namespace FacialStuff.GraphicsFS
                     BlankTexture.SetPixel(x, y, Color.clear);
                 }
             }
-            for (int x = 0; x < RedTexture.width; x++)
-            {
-                for (int y = 0; y < RedTexture.height; y++)
-                {
-                    RedTexture.SetPixel(x, y, Color.red);
-                }
-            }
-
             BlankTexture.name = "Blank";
-            RedTexture.name = "Red";
-
             BlankTexture.Compress(false);
             BlankTexture.Apply(false, true);
-
-            RedTexture.Compress(false);
-            RedTexture.Apply(false, true);
         }
 
         public static Texture2D MakeReadable(Texture2D texture)

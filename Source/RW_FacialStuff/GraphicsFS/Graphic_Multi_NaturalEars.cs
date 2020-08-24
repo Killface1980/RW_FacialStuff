@@ -8,9 +8,6 @@ namespace FacialStuff.GraphicsFS
 {
     public class Graphic_Multi_NaturalEars : Graphic_FaceMirror
     {
-        public override string GetPartType()
-        {
-            return "Ear_";
-        }
+
     }
 }
