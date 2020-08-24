@@ -153,7 +153,6 @@
     <Compile Include="Components\GameComponent_FacialStuff.cs" />
     <Compile Include="Drawer\HumanHeadDrawer.cs" />
     <Compile Include="ITab_Pawn_Weapons.cs" />
-    <Compile Include="Utilities\CrownTypeChecker.cs" />
     <None Include="FaceEditor\Job_FaceStylingJoy.cs" />
     <Compile Include="Components\CompFaceEditor.cs" />
     <Compile Include="GraphicsFS\FaceMaterial.cs" />

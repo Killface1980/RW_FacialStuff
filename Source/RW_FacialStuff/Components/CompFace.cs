@@ -407,9 +407,7 @@ namespace FacialStuff
             {
                 PawnFace = new FaceData(this, Faction.OfPlayer.def);
             }
-
-            // Only for the crowntype ...
-            CrownTypeChecker.SetHeadOffsets(Pawn, this);
+            FullHeadType = MeshPoolFS.GetFullHeadType(Pawn.gender, PawnCrownType, PawnHeadType);
             PawnFaceGraphic = new FaceGraphic(this);
             FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
             return true;
