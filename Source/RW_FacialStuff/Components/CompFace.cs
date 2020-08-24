@@ -340,25 +340,6 @@ namespace FacialStuff
             }
         }
 
-        public Vector3 BaseHeadOffsetAt(bool portrait, Pawn pawn)
-        {
-            Vector3 offset = Vector3.zero;
-
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return offset;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i].BaseHeadOffsetAt(ref offset, portrait, pawn);
-                i++;
-            }
-
-            return offset;
-        }
 
         public Vector3 BaseMouthOffsetAtDevelop(Rot4 rotation)
         {

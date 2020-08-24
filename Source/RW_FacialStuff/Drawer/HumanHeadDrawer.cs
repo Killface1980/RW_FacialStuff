@@ -13,55 +13,6 @@ namespace FacialStuff
     public class HumanHeadDrawer : PawnHeadDrawer
     {
         #region Public Methods
-        
-        public override void BaseHeadOffsetAt(ref Vector3 offset, bool portrait, Pawn pawn1)
-        {
-            Pawn pawn = this.Pawn;
-            Vector2 headOffset = pawn.story.bodyType.headOffset;
-
-            CompBodyAnimator animator = this.CompAnimator;
-            if (animator.BodyAnim != null)
-            {
-                headOffset += animator.BodyAnim.headOffset;
-            }
-
-            switch(this.HeadFacing.AsInt)
-            {
-                case 0:
-                    offset = new Vector3(0f, 0f, headOffset.y);
-                    break;
-
-                case 1:
-                    offset = new Vector3(headOffset.x, 0f, headOffset.y);
-                    break;
-
-                case 2:
-                    offset = new Vector3(0f, 0f, headOffset.y);
-                    break;
-
-                case 3:
-                    offset = new Vector3(-headOffset.x, 0f, headOffset.y);
-                    break;
-
-                default:
-                    Log.Error("Facial Stuff: BaseHeadOffsetAt error in " + pawn);
-                    offset = Vector3.zero;
-                    return;
-            }
-
-            if (!portrait || HarmonyPatchesFS.AnimatorIsOpen())
-            {
-                CompBodyAnimator bodyAnimator = this.CompAnimator;
-                if (bodyAnimator != null && (bodyAnimator.IsMoving || HarmonyPatchesFS.AnimatorIsOpen()))
-                {
-                    // Let's try a slightly stiffy head
-                    {
-                        offset.z -= 0.25f * bodyAnimator.BodyOffsetZ;
-                        offset.z += bodyAnimator.HeadffsetZ;
-                    }
-                }
-            }
-        }
 
         public override void DrawBasicHead(
         Vector3 drawLoc,

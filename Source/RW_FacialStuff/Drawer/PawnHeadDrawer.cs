@@ -26,15 +26,7 @@ namespace FacialStuff
         #endregion Public Properties
 
         #region Public Methods
-
-        public virtual void ApplyHeadRotation(bool renderBody, ref Quaternion headQuat)
-        {
-        }
-
-        public virtual void BaseHeadOffsetAt(ref Vector3 offset, bool portrait, Pawn pawn)
-        {
-        }
-
+                
         public virtual void DrawAlienHeadAddons(Vector3 headPos, bool portrait, Quaternion headQuat, Vector3 currentLoc)
         {
             // Just for the Aliens

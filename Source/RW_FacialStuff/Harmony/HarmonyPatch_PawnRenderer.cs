@@ -126,6 +126,7 @@ namespace FacialStuff.Harmony
             public CompBodyAnimator compAnim;
             public Quaternion headQuat;
             public Vector3 footPos;
+            public Vector3 headOffsetBodyWobble;
         }
         
         // PawnRenderer.RenderPawnInternal from version 1.2.7528
@@ -363,6 +364,14 @@ namespace FacialStuff.Harmony
                     compAnim.ApplyBodyWobble(ref rootLoc, ref footPos, ref bodyQuat);
                     extraLocalVar.footPos = footPos;
                 }
+                if(compAnim.BodyAnim != null)
+				{
+                    extraLocalVar.headOffsetBodyWobble = compAnim.BodyAnim.headOffset;
+                }
+                else
+				{
+                    extraLocalVar.headOffsetBodyWobble = Vector3.zero;
+                }
             }
             if(compFace != null)
 			{
@@ -386,8 +395,7 @@ namespace FacialStuff.Harmony
             CompFace compFace = extraLocalVar.compFace;
             if(compFace != null)
             {
-                // TODO: Not sure why BaseHeadoffsetAt needs to pass Pawn. Investigate
-                Vector3 headBaseOffset = compFace.BaseHeadOffsetAt(portrait, null);
+                Vector3 headBaseOffset = pawnRenderer.BaseHeadOffsetAt(headFacing) + extraLocalVar.headOffsetBodyWobble;
                 Vector3 headPosOffset = bodyQuat * headBaseOffset;
                 Vector3 headDrawLoc = headPos + headPosOffset;
                 return compFace.DrawHead(bodyDrawType, portrait, headStump, bodyFacing, headFacing, headDrawLoc, bodyQuat);
