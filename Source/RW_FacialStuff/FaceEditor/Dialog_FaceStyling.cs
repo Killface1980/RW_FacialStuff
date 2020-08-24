@@ -2425,19 +2425,19 @@ namespace FacialStuff.FaceEditor
             return __result;
         }
 
-        private Graphic_Multi_NaturalEars LeftEarGraphic(EarDef def)
+        private Graphic_FaceMirror LeftEarGraphic(EarDef def)
         {
-            Graphic_Multi_NaturalEars __result;
+            Graphic_FaceMirror __result;
             if (def != null)
             {
                 string path = CompFace.PawnFaceGraphic.EarTexPath(Side.Left, def);
 
-                __result = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(
+                __result = GraphicDatabase.Get<Graphic_FaceMirror>(
                     path,
                     ShaderDatabase.CutoutComplex,
                     new Vector2(38f, 38f),
                     Color.white,
-                    Color.white) as Graphic_Multi_NaturalEars;
+                    Color.white) as Graphic_FaceMirror;
             }
             else
             {

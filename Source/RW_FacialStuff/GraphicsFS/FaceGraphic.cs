@@ -26,10 +26,10 @@ namespace FacialStuff.GraphicsFS
 		public Graphic_Multi_AddedHeadParts EyeRightPatchGraphic;
 		public Graphic_Multi_AddedHeadParts EyeLeftPatchGraphic;
 		
-		public Graphic_Multi_NaturalEars EarRightGraphic;
-		public Graphic_Multi_NaturalEars EarLeftGraphic;
+		public Graphic_FaceMirror EarRightGraphic;
+		public Graphic_FaceMirror EarLeftGraphic;
 		public Graphic_Multi_AddedHeadParts EarRightPatchGraphic;
-		public Graphic_Multi_NaturalEars EarLeftPatchGraphic;
+		public Graphic_FaceMirror EarLeftPatchGraphic;
 
 		public Graphic_Multi_NaturalHeadParts JawGraphic;
 		public Graphic MainBeardGraphic;
@@ -48,8 +48,8 @@ namespace FacialStuff.GraphicsFS
 		public Graphic_FaceMirror EyeLeftMissingGraphic;
 		public Graphic_FaceMirror EyeRightMissingGraphic;
 
-		public Graphic_Multi_NaturalEars EarLeftMissingGraphic;
-		public Graphic_Multi_NaturalEars EarRightMissingGraphic;
+		public Graphic_FaceMirror EarLeftMissingGraphic;
+		public Graphic_FaceMirror EarRightMissingGraphic;
 
 		public string texPathBrow;
 		
@@ -366,17 +366,17 @@ namespace FacialStuff.GraphicsFS
 
 			Color earColor = _pawn.story.SkinColor;
 
-			EarLeftGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(
+			EarLeftGraphic = GraphicDatabase.Get<Graphic_FaceMirror>(
 				EarTexPath(Side.Left, pawnFace.EarDef),
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
-				earColor) as Graphic_Multi_NaturalEars;
+				earColor) as Graphic_FaceMirror;
 
-			EarRightGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(
+			EarRightGraphic = GraphicDatabase.Get<Graphic_FaceMirror>(
 				EarTexPath(Side.Right, pawnFace.EarDef),
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
-				earColor) as Graphic_Multi_NaturalEars;
+				earColor) as Graphic_FaceMirror;
 		}
 
 		private void InitializeGraphicsMouth(CompFace compFace)
