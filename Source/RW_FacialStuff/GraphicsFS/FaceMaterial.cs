@@ -162,9 +162,9 @@ namespace FacialStuff.GraphicsFS
 
             if (!portrait)
             {
-                if (Controller.settings.MakeThemBlink && this._compFace.BodyStat.EyeRight == PartStatus.Natural)
+                if(eyeStatus == PartStatus.Natural)
                 {
-                    if (this._compFace.IsAsleep || !this._compFace.FacialExpressionAI.EyeOpen)
+                    if(!this._compFace.FacialExpressionAI.EyeOpen)
                     {
                         material = this._pawnFaceGraphic.EyeRightClosedGraphic?.MatAt(facing);
                     }

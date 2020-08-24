@@ -17,6 +17,8 @@ namespace FacialStuff.AI
             public const int kOpenRandomMaxOffset = 30;
             
             public bool isOpen;
+            // If true, eye will be forced to close regardless of blinking interval.
+            public bool closeOverride;
             public int ticksSinceLastState;
             public int ticksUntilNextState;
         }
@@ -30,7 +32,15 @@ namespace FacialStuff.AI
         private MouthState _mouthState;
 
         public int MouthGraphicIndex { get; private set; }
-        public bool EyeOpen => _eyeState.isOpen;
+        public bool EyeOpen
+        {
+            get
+            {
+                return 
+                    !_eyeState.closeOverride && 
+                    _eyeState.isOpen;
+            }
+        }
 
 		public PawnFacialExpressionAI(Pawn pawn)
 		{
@@ -38,31 +48,32 @@ namespace FacialStuff.AI
             _mouthState.mood = 0.5f;
             _mouthState.ticksSinceLastUpdate = 0;
             _eyeState.isOpen = true;
+            _eyeState.closeOverride = false;
             _eyeState.ticksSinceLastState = 0;
             _eyeState.ticksUntilNextState = CalculateEyeOpenDuration(1f);
         }
 
-		public void Tick(bool canUpdatePawn, CompFace compFace)
+		public void Tick(bool canUpdatePawn, CompFace compFace, bool isAsleep)
 		{
 			if(!canUpdatePawn)
 			{
 				return;
 			}
-            EyeTick();
+            EyeTick(isAsleep);
             MouthTick(compFace);
             ++_mouthState.ticksSinceLastUpdate;
             ++_eyeState.ticksSinceLastState;
         }
 
-        private void EyeTick()
+        private void EyeTick(bool isAsleep)
 		{
+            bool inComa = false;
             float consciousness = _pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
             if(consciousness < PawnCapacityDefOf.Consciousness.minForCapable)
 			{
-                // In a state of coma
-                _eyeState.isOpen = false;
-                return;
+                inComa = true;
 			}
+            _eyeState.closeOverride = isAsleep || inComa;
             if(_eyeState.ticksSinceLastState >= _eyeState.ticksUntilNextState)
 			{
                 _eyeState.ticksSinceLastState = 0;
@@ -70,7 +81,15 @@ namespace FacialStuff.AI
                     _eyeState.isOpen ? 
                         EyeState.kCloseDuration :
                         CalculateEyeOpenDuration(consciousness);
-                _eyeState.isOpen = !_eyeState.isOpen;
+                if(Controller.settings.MakeThemBlink)
+			    {
+                    _eyeState.isOpen = !_eyeState.isOpen;
+                }
+                else
+				{
+                    _eyeState.isOpen = true;
+				}
+                
             }
 		}
 

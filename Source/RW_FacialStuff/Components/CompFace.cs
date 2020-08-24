@@ -308,7 +308,7 @@ namespace FacialStuff
                 !Pawn.Dead &&
                 !Find.TickManager.Paused;
             HeadRotationAI.Tick(canUpdatePawn, bodyFacing, IsAsleep);
-            FacialExpressionAI.Tick(canUpdatePawn, this);
+            FacialExpressionAI.Tick(canUpdatePawn, this, IsAsleep);
             if(!portrait)
 			{
                 headFacing = HeadRotationAI.CurrentRotation;
