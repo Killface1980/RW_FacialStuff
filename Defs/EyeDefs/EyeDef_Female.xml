@@ -3,11 +3,12 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_FL</defName>
-    <label>Flat</label>
+	<texCollection>Human</texCollection>
     <hairGender>Female</hairGender>
-    <forbiddenOnRace/>
     <texBasePath></texBasePath><!-- empty for default path "Things/Pawn/Humanlike/Eyes/"-->
-    <texName>FL</texName>
+    <texName>FFL</texName>
+	<closedEyeDef>Closed</closedEyeDef>
+	<missingEyeDef>Missing</missingEyeDef>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -18,10 +19,11 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_RD</defName>
-    <label>Round</label>
+	<texCollection>Human</texCollection>
     <hairGender>Female</hairGender>
-    <forbiddenOnRace/>
-    <texName>RD</texName>
+    <texName>FRD</texName>
+	<closedEyeDef>Closed</closedEyeDef>
+	<missingEyeDef>Missing</missingEyeDef>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -32,10 +34,11 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_OV</defName>
-    <label>Oval</label>
+	<texCollection>Human</texCollection>
     <hairGender>Female</hairGender>
-    <forbiddenOnRace/>
-    <texName>OV</texName>
+    <texName>FOV</texName>
+	<closedEyeDef>Closed</closedEyeDef>
+	<missingEyeDef>Missing</missingEyeDef>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -46,10 +49,11 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_SM</defName>
-    <label>Small</label>
+	<texCollection>Human</texCollection>
     <hairGender>Female</hairGender>
-    <forbiddenOnRace/>
-    <texName>SM</texName>
+    <texName>FSM</texName>
+	<closedEyeDef>Closed</closedEyeDef>
+	<missingEyeDef>Missing</missingEyeDef>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>

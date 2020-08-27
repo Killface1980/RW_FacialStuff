@@ -79,7 +79,7 @@ namespace FacialStuff.AI
 			}
 		}
 		
-		public void Tick(bool canUpdatePawn, Rot4 bodyRot, bool isAsleep)
+		public void Tick(bool canUpdatePawn, Rot4 bodyRot, ref PawnState pawnState)
 		{
 			if(!bodyRot.IsValid)
 			{
@@ -98,7 +98,7 @@ namespace FacialStuff.AI
 				ResetHeadTarget(bodyRot);
 				return;
 			}
-			if(TickTargetMode(bodyRot, isAsleep) && Mathf.Abs(_curAngle - _targetAngle) > 0.1f)
+			if(TickTargetMode(bodyRot, ref pawnState) && Mathf.Abs(_curAngle - _targetAngle) > 0.1f)
 			{
 				float targetAngle = _targetAngle;
 				float curAngle = _curAngle;
@@ -160,7 +160,7 @@ namespace FacialStuff.AI
 			*/
 		}
 
-		public bool TickTargetMode(Rot4 bodyRot, bool isAsleep)
+		public bool TickTargetMode(Rot4 bodyRot, ref PawnState pawnState)
 		{
 			// If pawn is aiming at something, set aim target mode.
 			if(_pawn.stances.curStance is Stance_Busy stance && !stance.neverAimWeapon && stance.focusTarg.HasThing)
@@ -174,7 +174,7 @@ namespace FacialStuff.AI
 			}
 
 			// Do not rotate head when sleeping.
-			if(isAsleep)
+			if(pawnState.sleeping)
 			{
 				_curTargetMode = TargetMode.None;
 			}

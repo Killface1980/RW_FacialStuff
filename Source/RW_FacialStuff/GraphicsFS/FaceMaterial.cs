@@ -1,5 +1,6 @@
 using FacialStuff.DefOfs;
 using JetBrains.Annotations;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -121,26 +122,20 @@ namespace FacialStuff.GraphicsFS
             return material;
         }
 
-        [CanBeNull]
-        public Material EyeMatAt(Rot4 facing, int partIdx, PartStatus eyeStatus, bool portrait)
+        /*[CanBeNull]
+        public Material EyeMatAt(Rot4 facing, int partIdx, PartStatus eyeStatus, EyeState eyeState, bool portrait)
         {
-            Material material = _pawnFaceGraphic.GetEyeGraphic(partIdx).MatAt(facing);
-            if(!portrait)
-            {
-                if(eyeStatus == PartStatus.Natural)
-                {
-                    if(!this._compFace.FacialExpressionAI.EyeOpen)
-                    {
-                        material = this._pawnFaceGraphic.GetEyeClosedGraphics(partIdx).MatAt(facing);
-                    }
-                }
-            }
+            if(portrait && eyeState == EyeState.Closed)
+			{
+                eyeState = EyeState.Open;
+			}
+            Material material = _pawnFaceGraphic.GetEyeGraphic(partIdx, eyeState).MatAt(facing);            
             if(material != null)
             {
                 material = this.Flasher.GetDamagedMat(material);
             }
             return material;
-        }
+        }*/
 
         [CanBeNull]
         public Material EyeMissingMatAt(Rot4 facing, bool portrait)
@@ -172,105 +167,7 @@ namespace FacialStuff.GraphicsFS
 
             return material;
         }
-
-        [CanBeNull]
-        public Material EarLeftMatAt(Rot4 facing, bool portrait)
-        {
-            if (facing == Rot4.East)
-            {
-                return null;
-            }
-
-            Material material = this._pawnFaceGraphic.EarLeftGraphic?.MatAt(facing);
-
-            if (material != null)
-            {
-                material = this.Flasher.GetDamagedMat(material);
-            }
-
-            return material;
-        }
-
-        [CanBeNull]
-        public Material EarLeftPatchMatAt(Rot4 facing)
-        {
-            Material material = this._pawnFaceGraphic.EarLeftPatchGraphic?.MatAt(facing);
-
-            if (material != null)
-            {
-                material = this.Flasher.GetDamagedMat(material);
-            }
-
-            return material;
-        }
-
-        [CanBeNull]
-        public Material EarRightMatAt(Rot4 facing, bool portrait)
-        {
-            if (facing == Rot4.West)
-            {
-                return null;
-            }
-
-            Material material = this._pawnFaceGraphic.EarRightGraphic?.MatAt(facing);
-
-            if (material != null)
-            {
-                material = this.Flasher.GetDamagedMat(material);
-            }
-
-            return material;
-        }
-
-        [CanBeNull]
-        public Material EarRightMissingMatAt(Rot4 facing, bool portrait)
-        {
-            if (facing == Rot4.West)
-            {
-                return null;
-            }
-
-            Material material = this._pawnFaceGraphic.EarRightMissingGraphic?.MatAt(facing);
-
-            if (material != null)
-            {
-                material = this.Flasher.GetDamagedMat(material);
-            }
-
-            return material;
-        }     
-        [CanBeNull]
-        public Material EarLeftMissingMatAt(Rot4 facing, bool portrait)
-        {
-            if (facing == Rot4.West)
-            {
-                return null;
-            }
-
-            Material material = this._pawnFaceGraphic.EarLeftMissingGraphic?.MatAt(facing);
-
-            if (material != null)
-            {
-                material = this.Flasher.GetDamagedMat(material);
-            }
-
-            return material;
-        }
-
-
-        [CanBeNull]
-        public Material EarRightPatchMatAt(Rot4 facing)
-        {
-            Material material = this._pawnFaceGraphic.EarRightPatchGraphic?.MatAt(facing);
-
-            if (material != null)
-            {
-                material = this.Flasher.GetDamagedMat(material);
-            }
-
-            return material;
-        }
-
+        
         [CanBeNull]
         public Material MoustacheMatAt(Rot4 facing)
         {

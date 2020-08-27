@@ -2,12 +2,21 @@
 <Defs>
 
   <FacialStuff.Defs.EyeDef>
+  	<!-- 
+	Texture name is built like so:
+	[texCollection]_[texName]_[direction].png
+	-->
     <defName>Eye_Male_Average_FL</defName>
-    <label>Flat</label>
+	<!-- 
+	texCollection is used to limit eye types for each races. Whether the race can use the 
+	texCollection is specified in CompProperties_Face.
+	-->
+	<texCollection>Human</texCollection>
     <hairGender>Male</hairGender>
-    <forbiddenOnRace/>
     <texBasePath></texBasePath> <!-- empty for default path "Things/Pawn/Humanlike/Eyes/"-->
-    <texName>FL</texName> <!-- The eye name. File name of the textures is always "Eye_<texName>_<pawnGender_Left/Right_east"  -->
+    <texName>MFL</texName> <!-- The eye name. File name of the textures is always "Eye_<texName>_<pawnGender_Left/Right_east"  -->
+	<closedEyeDef>Closed</closedEyeDef>
+	<missingEyeDef>Missing</missingEyeDef>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -18,10 +27,11 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_RD</defName>
-    <label>Round</label>
+	<texCollection>Human</texCollection>
     <hairGender>Male</hairGender>
-    <forbiddenOnRace/>
-    <texName>RD</texName>
+    <texName>MRD</texName>
+	<closedEyeDef>Closed</closedEyeDef>
+	<missingEyeDef>Missing</missingEyeDef>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -32,10 +42,11 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_OV</defName>
-    <label>Oval</label>
+	<texCollection>Human</texCollection>
     <hairGender>Male</hairGender>
-    <forbiddenOnRace/>
-    <texName>OV</texName>
+    <texName>MOV</texName>
+	<closedEyeDef>Closed</closedEyeDef>
+	<missingEyeDef>Missing</missingEyeDef>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>
@@ -46,10 +57,11 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_SM</defName>
-    <label>Small</label>
+	<texCollection>Human</texCollection>
     <hairGender>Male</hairGender>
-    <forbiddenOnRace/>
-    <texName>SM</texName>
+    <texName>MSM</texName>
+	<closedEyeDef>Closed</closedEyeDef>
+	<missingEyeDef>Missing</missingEyeDef>
     <hairTags>
       <li>Urban</li>
       <li>Rural</li>

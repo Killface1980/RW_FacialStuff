@@ -7,6 +7,7 @@ using System.Linq;
 using FacialStuff.Animator;
 using UnityEngine;
 using Verse;
+using FacialStuff.Defs;
 
 namespace FacialStuff
 {
@@ -83,104 +84,31 @@ namespace FacialStuff
             {
                 return;
             }
-            if(HeadFacing == Rot4.North)
+            for(int partIdx = 0; partIdx < CompFace.PartStatusTracker.EyeCount; ++partIdx)
 			{
-                return;
+                PerEyeDef perEyeDef = CompFace.Props.perEyeDefs[partIdx];
+                bool shouldDraw = (perEyeDef.drawDirBitFlag & (1 << HeadFacing.AsInt)) != 0;
+                if(shouldDraw)
+				{
+                    Mesh eyeMesh = MeshPoolFS.GetFaceMesh(CompFace.PawnCrownType, HeadFacing, perEyeDef.drawMirrored);
+                    Material eyeMat = faceGraphic.EyeMatAt(
+                        partIdx, 
+                        HeadFacing, 
+                        portrait, 
+                        CompFace.FacialExpressionAI.IsEyeOpen(partIdx),
+                        CompFace.PartStatusTracker.GetEyePartLevel(partIdx));
+                    if(eyeMat != null)
+                    {
+                        drawLoc.y += Offsets.YOffset_LeftPart;
+                        GenDraw.DrawMeshNowOrLater(
+                            eyeMesh,
+                            drawLoc,
+                            headQuat,
+                            eyeMat,
+                            portrait);
+                    }
+                }
 			}
-            if(HeadFacing != Rot4.East)
-            {
-                // Draw left eye
-                DrawEye(faceGraphic, drawLoc, headQuat, portrait, true, 0, CompFace.BodyStat.EyeLeft, Offsets.YOffset_LeftPart);
-            }
-            if(HeadFacing != Rot4.West)
-			{
-                // Draw right eye
-                DrawEye(faceGraphic, drawLoc, headQuat, portrait, false, 1, CompFace.BodyStat.EyeRight, Offsets.YOffset_RightPart);
-            }
-        }
-
-        private void DrawEye(FaceGraphic faceGraphic, Vector3 drawLoc, Quaternion headQuat, bool portrait, bool mirrored, int partIdx, PartStatus eyeStatus, float offset)
-		{
-            Mesh eyeMesh = MeshPoolFS.GetFaceMesh(CompFace.PawnCrownType, HeadFacing, mirrored);
-            Material eyeMat = null;
-            if(eyeStatus == PartStatus.Natural || eyeStatus == PartStatus.Artificial && !faceGraphic.EyePatchRightTexExists())
-            {
-                eyeMat = this.CompFace.FaceMaterial.EyeMatAt(HeadFacing, partIdx, eyeStatus, portrait);
-            } else if(eyeStatus == PartStatus.Missing)
-            {
-                eyeMat = this.CompFace.FaceMaterial.EyeMissingMatAt(HeadFacing, portrait);
-            }
-            if(eyeMat != null)
-            {
-                drawLoc.y += offset;
-                GenDraw.DrawMeshNowOrLater(
-                    eyeMesh,
-                    drawLoc,
-                    headQuat,
-                    eyeMat,
-                    portrait);
-            }
-        }
-
-        public override void DrawNaturalEars(Vector3 drawLoc, Quaternion headQuat, bool portrait)
-        {
-            Mesh earMesh = MeshPoolFS.GetFaceMesh(CompFace.PawnCrownType, HeadFacing, false);
-            FaceGraphic faceGraphic = this.CompFace.PawnFaceGraphic;
-            // natural eyes
-            PartStatus earLeft = this.CompFace.BodyStat.EarLeft;
-            if (faceGraphic == null)
-            {
-                return;
-            }
-            Material earLeftMatAt = null;
-
-            if (earLeft == PartStatus.Natural ||
-                earLeft == PartStatus.Artificial &&
-                !faceGraphic.EarPatchLeftTexExists())
-            {
-                earLeftMatAt = this.CompFace.FaceMaterial.EarLeftMatAt(this.HeadFacing, portrait);
-            }
-            else if (earLeft == PartStatus.Missing)
-            {
-                earLeftMatAt = this.CompFace.FaceMaterial.EarLeftMissingMatAt(this.HeadFacing, portrait);
-            }
-            if (earLeftMatAt != null)
-            {
-                Vector3 left = drawLoc;
-                drawLoc.y += Offsets.YOffset_LeftPart;
-
-                GenDraw.DrawMeshNowOrLater(
-                    earMesh,
-                    left,
-                    headQuat,
-                    earLeftMatAt,
-                    portrait);
-            }
-            Material earRightMatAt = null;
-
-            PartStatus earRight = this.CompFace.BodyStat.EarRight;
-            if (earRight == PartStatus.Natural ||
-            earRight == PartStatus.Artificial &&
-            !faceGraphic.EarPatchRightTexExists())
-            {
-                earRightMatAt = this.CompFace.FaceMaterial.EarRightMatAt(this.HeadFacing, portrait);
-            }
-            else if (earRight == PartStatus.Missing)
-            {
-                earRightMatAt = this.CompFace.FaceMaterial.EarRightMissingMatAt(this.HeadFacing, portrait);
-            }
-            if (earRightMatAt != null)
-            {
-                Vector3 right = drawLoc;
-                right.y += Offsets.YOffset_RightPart;
-
-                GenDraw.DrawMeshNowOrLater(
-                    earMesh,
-                    right,
-                    headQuat,
-                    earRightMatAt,
-                    portrait);
-            }
         }
 
         public override void DrawNaturalMouth(Vector3 drawLoc, Quaternion headQuat, bool portrait)
@@ -247,43 +175,7 @@ namespace FacialStuff
                 }
             }
         }
-        public override void DrawUnnaturalEarParts(Vector3 drawLoc, Quaternion headQuat, bool portrait)
-        {
-            Mesh headMesh = this.GetPawnMesh(false, portrait);
-            if (this.CompFace.BodyStat.EarLeft == PartStatus.Artificial)
-            {
-                Material leftBionicMat = this.CompFace.FaceMaterial.EarLeftPatchMatAt(this.HeadFacing);
-                if (leftBionicMat != null)
-                {
-                    Vector3 left = drawLoc;
-                    left.y += Offsets.YOffset_LeftPart;
-                    GenDraw.DrawMeshNowOrLater(
-                                               headMesh,
-                                               left,
-                                               headQuat,
-                                               leftBionicMat,
-                                               portrait);
-                }
-            }
-
-            if (this.CompFace.BodyStat.EarRight == PartStatus.Artificial)
-            {
-                Material rightBionicMat = this.CompFace.FaceMaterial.EarRightPatchMatAt(this.HeadFacing);
-
-                if (rightBionicMat != null)
-                {
-                    Vector3 right = drawLoc;
-                    right.y += Offsets.YOffset_RightPart;
-                    GenDraw.DrawMeshNowOrLater(
-                                               headMesh,
-                                               right,
-                                               headQuat,
-                                               rightBionicMat,
-                                               portrait);
-                }
-            }
-        }
-
+        
         public override void DrawWrinkles(
          Vector3 drawLoc,
             RotDrawMode bodyDrawType,

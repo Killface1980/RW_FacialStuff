@@ -36,12 +36,26 @@
             <hasBeard>true</hasBeard>
             <!--race can have wrinkles?-->
             <hasWrinkles>true</hasWrinkles>
-            <!--eyes?-->
-            <hasEyes>true</hasEyes>
-            <!--ears?-->
-            <hasEars>true</hasEars>
             <!--head rotation / tracking-->
             <canRotateHead>true</canRotateHead>
+			
+			<useTexCollection>
+				<li>Human</li>
+			</useTexCollection>
+			
+			<!--
+			The number of members declared in this list must be the same as the number of eye BodyPartRecords declared in the race's BodyDef.
+			An eye BodyPartRecord should have BodyPartGroupDef of "Eyes".
+			The order of the PerEyeDef declared in this list matches the order of eye BodyPatRecords declared in the race's BodyDef.
+			-->
+			<perEyeDefs>
+				<!-- The following PerEyeDefs are declared in Defs/EyeDefs/PerEyeDef_Human.xml -->
+				<!-- Left eye is declared first in human BodyDef, so this corresponds to the left eye -->
+				<li>HumanLeftEye</li>
+				<!-- Right eye is declared after the left eye in human BodyDef, so this corresponds to the right eye -->
+				<li>HumanRightEye</li>
+				<!-- More list members should be added if the race has more eyes -->
+			</perEyeDefs>
             <!--the drawer for the head. more than one can be defined-->
             <headDrawers>
               <li Class ="FacialStuff.HumanHeadDrawer"/>

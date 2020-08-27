@@ -3,6 +3,7 @@
 // ReSharper disable StyleCop.SA1401
 // ReSharper disable InconsistentNaming
 
+using FacialStuff.Defs;
 using System.Collections.Generic;
 
 using Verse;
@@ -16,11 +17,7 @@ namespace FacialStuff
         public List<PawnHeadDrawer> headDrawers = new List<PawnHeadDrawer>();
 
         public bool hasBeard;
-
-        public bool hasEyes;
-
-        public bool hasEars;
-
+        
         public bool hasMouth;
 
         public bool hasOrganicHair;
@@ -30,7 +27,11 @@ namespace FacialStuff
         public bool useAlienRacesHairTags;
 
         public bool needsBlankHumanHead;
+        
+        public List<string> useTexCollection;
 
+        public List<PerEyeDef> perEyeDefs;
+        
         public CompProperties_Face()
         {
             this.compClass = typeof(CompFace);

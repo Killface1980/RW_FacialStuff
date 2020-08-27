@@ -569,7 +569,7 @@ namespace FacialStuff.FaceEditor
                 }
             }
 
-            if (this.CompFace.Props.hasEyes)
+            if (this.CompFace.Props.perEyeDefs.Count > 0)
             {
                 TabRecord item3 = new TabRecord(
                                                 "FacialStuffEditor.Eye".Translate(), this.SetTabFaceStyle(FaceStyleTab.Eye), this.Tab == FaceStyleTab.Eye);
@@ -1397,8 +1397,10 @@ namespace FacialStuff.FaceEditor
             this.NewBeard = beard;
             this.NewMoustache = tache;
 
-            this.NewEye = PawnFaceMaker.RandomEyeDefFor(Pawn,
-                Faction.OfPlayer.def);
+            this.NewEye = PawnFaceMaker.RandomEyeDefFor(
+                Pawn,
+                Faction.OfPlayer.def,
+                CompFace.Props);
             this.NewEar = PawnFaceMaker.RandomEarDefFor(Pawn,
                 Faction.OfPlayer.def);
             this.NewBrow = PawnFaceMaker.RandomBrowDefFor(Pawn, Faction.OfPlayer.def);
@@ -2408,7 +2410,7 @@ namespace FacialStuff.FaceEditor
             Graphic_FaceMirror __result;
             if (def != null)
             {
-                string path = CompFace.PawnFaceGraphic.EyeTexPath(def);
+                string path = CompFace.PawnFaceGraphic.EyeTexturePath(def);
 
                 __result = GraphicDatabase.Get<Graphic_FaceMirror>(
                     path,
@@ -2475,7 +2477,7 @@ namespace FacialStuff.FaceEditor
             Graphic_FaceMirror graphic;
             if (def != null)
             {
-                string path = CompFace.PawnFaceGraphic.EyeTexPath(def);
+                string path = CompFace.PawnFaceGraphic.EyeTexturePath(def);
 
                 graphic = GraphicDatabase.Get<Graphic_FaceMirror>(
                     path,

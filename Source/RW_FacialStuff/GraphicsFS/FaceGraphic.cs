@@ -15,22 +15,14 @@ namespace FacialStuff.GraphicsFS
 	public class FaceGraphic
 	{
 		const string STR_south = "_south";
-		const string STR_ROMV_Fangs = "ROMV_Fangs";
 
 		public Graphic BrowGraphic;
 		public Graphic DeadEyeGraphic;
-		//public Graphic_FaceMirror EyeRightClosedGraphic;
-		//public Graphic_FaceMirror EyeLeftClosedGraphic;
-		private Graphic_FaceMirror[] _eyeGraphics = new Graphic_FaceMirror[2];
+		private Graphic_FaceMirror[,] _eyeGraphics = new Graphic_FaceMirror[2, 3];
 		private Graphic_FaceMirror[] _eyeClosedGraphics = new Graphic_FaceMirror[2];
 		public Graphic_Multi_AddedHeadParts EyeRightPatchGraphic;
 		public Graphic_Multi_AddedHeadParts EyeLeftPatchGraphic;
 		
-		public Graphic_FaceMirror EarRightGraphic;
-		public Graphic_FaceMirror EarLeftGraphic;
-		public Graphic_Multi_AddedHeadParts EarRightPatchGraphic;
-		public Graphic_FaceMirror EarLeftPatchGraphic;
-
 		public Graphic_Multi_NaturalHeadParts JawGraphic;
 		public Graphic MainBeardGraphic;
 		public Graphic MoustacheGraphic;
@@ -63,11 +55,12 @@ namespace FacialStuff.GraphicsFS
 
 		public string texPathJawAddedPart;
 
-		public FaceGraphic(CompFace compFace)
+		public FaceGraphic(CompFace compFace, int eyeCount)
 		{
 			_compFace = compFace;
 			_pawn = compFace.Pawn;
-
+			_eyeGraphics = new Graphic_FaceMirror[eyeCount, Enum.GetNames(typeof(BodyPartLevel)).Length];
+			_eyeClosedGraphics = new Graphic_FaceMirror[eyeCount];
 			pawnFace = compFace.FaceData;
 			if(pawnFace != null)
 			{
@@ -79,17 +72,11 @@ namespace FacialStuff.GraphicsFS
 				{
 					InitializeGraphicsWrinkles(compFace);
 				}
-				if(compFace.Props.hasEyes)
+				if(compFace.Props.perEyeDefs.Count > 0)
 				{
 					MakeEyes(pawnFace);
 				}
-				// TODO: ear is disabled for now
-				/*if(!compFace.Props.hasEars)
-				{
-					MakeEars(pawnFace);
-				}*/
 			}
-
 			if(compFace.Props.hasMouth)
 			{
 				Mouthgraphic = new HumanMouthGraphics(_pawn);
@@ -104,15 +91,7 @@ namespace FacialStuff.GraphicsFS
 			InitializeGraphicsEyes();
 			InitializeGraphicsBrows();
 		}
-
-		public void MakeEars(FaceData pawnFace)
-		{
-			texPathEarRightMissing = EarTexPath(Side.Right, EarDefOf.Missing);
-			texPathEarLeftMissing = EarTexPath(Side.Left, EarDefOf.Missing);
-
-			this.InitializeGraphicsEars();
-		}
-		
+				
 		private void InitializeGraphicsBeard(CompFace compFace)
 		{
 			if(pawnFace == null)
@@ -155,14 +134,7 @@ namespace FacialStuff.GraphicsFS
 				Vector2.one,
 				beardColor);
 		}
-
-		public string EyeTexPath(EyeDef eyeDef)
-		{
-			string eyePath = eyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : eyeDef.texBasePath;
-			string path = eyePath + "Eye_" + eyeDef.texName + "_" + _pawn.gender;
-			return path.Replace(@"\", @"/");
-		}
-
+		
 		public string EarTexPath(Side side, EarDef ear)
 		{
 			string earPath = ear.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Ears/" : ear.texBasePath;
@@ -233,122 +205,103 @@ namespace FacialStuff.GraphicsFS
 				Vector2.one,
 				color);
 		}
-
-		private void InitializeGraphicsEyePatches()
+				
+		public Material EyeMatAt(int partIdx, Rot4 headFacing, bool portrait, bool eyeOpen, BodyPartLevel partLevel)
 		{
-			if(!texPathEyeLeftPatch.NullOrEmpty())
+			// TODO: get damaged mat
+			Graphic eyeGraphic = null;
+			if(eyeOpen || portrait)
 			{
-				bool leftTexExists = EyePatchLeftTexExists();
-				if(leftTexExists)
-				{
-					EyeLeftPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
-						texPathEyeLeftPatch,
-						ShaderDatabase.Transparent,
-						Vector2.one,
-						Color.white) as Graphic_Multi_AddedHeadParts;
-					_compFace.BodyStat.EyeLeft = PartStatus.Artificial;
-				} else
-				{
-					Log.Message(
-						"Facial Stuff: No texture for added part: " +
-						texPathEyeLeftPatch +
-						" - Graphic_Multi_AddedHeadParts");
-				}
+				eyeGraphic = _eyeGraphics[partIdx, (int)partLevel];
 			}
-
-			if(!texPathEyeRightPatch.NullOrEmpty())
+			else
 			{
-				bool rightTexExists = EyePatchRightTexExists();
-				if(rightTexExists)
-				{
-					EyeRightPatchGraphic = GraphicDatabase.Get<Graphic_Multi_AddedHeadParts>(
-						texPathEyeRightPatch,
-						ShaderDatabase.Transparent,
-						Vector2.one,
-						Color.white) as Graphic_Multi_AddedHeadParts;
-					_compFace.BodyStat.EyeRight = PartStatus.Artificial;
-				} else
-				{
-					Log.Message(
-						"Facial Stuff: No texture for added part: " +
-						texPathEyeRightPatch +
-						" - Graphic_Multi_AddedHeadParts");
-				}
+				eyeGraphic = _eyeClosedGraphics[partIdx];
 			}
-		}
-
-		public bool EyePatchRightTexExists()
-		{
-			return !ContentFinder<Texture2D>.Get(
-				texPathEyeRightPatch + STR_south, false).NullOrBad();
-		}
-
-		public bool EyePatchLeftTexExists()
-		{
-			return !ContentFinder<Texture2D>.Get(
-				texPathEyeLeftPatch + STR_south, false).NullOrBad();
+			return eyeGraphic?.MatAt(headFacing);
 		}
 		
-		public bool EarPatchRightTexExists()
+		public string EyeTexturePath(EyeDef eyeDef)
 		{
-			return !ContentFinder<Texture2D>.Get(
-				texPathEarRightPatch + STR_south, false).NullOrBad();
-		}
-
-		public bool EarPatchLeftTexExists()
-		{
-			return !ContentFinder<Texture2D>.Get(
-				texPathEarLeftPatch + STR_south, false).NullOrBad();
-		}
-
-		public Graphic_FaceMirror GetEyeGraphic(int partIdx)
-		{
-			// TODO: error handling
-			return _eyeGraphics[partIdx];
-		}
-
-		public Graphic_FaceMirror GetEyeClosedGraphics(int partIdx)
-		{
-			// TODO: error handling
-			return _eyeClosedGraphics[partIdx];
+			string texBasePath = pawnFace.EyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : pawnFace.EyeDef.texBasePath;
+			string texFileName = eyeDef.texCollection + "_" + eyeDef.texName;
+			return texBasePath + texFileName;
 		}
 
 		private void InitializeGraphicsEyes()
 		{
-			InitializeGraphicsEyePatches();
 			Color eyeColor = Color.white;
+			var compProps = _compFace.Props;
+			Array.Clear(_eyeGraphics, 0, _eyeGraphics.Length);
 
-			_eyeGraphics[0] = GraphicDatabase.Get<Graphic_FaceMirror>(
-				EyeTexPath(pawnFace.EyeDef),
+			// compProps.perEyeDefs.Count indicates how many eyes the race has.
+			// Open eye graphics
+			for(int i = 0; i < compProps.perEyeDefs.Count; ++i)
+			{
+				string texPath = EyeTexturePath(pawnFace.EyeDef);
+				_eyeGraphics[i, (int)BodyPartLevel.Natural] = GraphicDatabase.Get<Graphic_FaceMirror>(
+					texPath,
+					ShaderDatabase.CutoutComplex,
+					Vector2.one,
+					eyeColor) as Graphic_FaceMirror;
+			}
+			// Closed eye graphics
+			for(int i = 0; i < compProps.perEyeDefs.Count; ++i)
+			{
+				if(pawnFace.EyeDef.closedEyeDef != null)
+				{
+					string texPath = EyeTexturePath(pawnFace.EyeDef.closedEyeDef);
+					_eyeClosedGraphics[i] = GraphicDatabase.Get<Graphic_FaceMirror>(
+						texPath,
+						ShaderDatabase.CutoutComplex,
+						Vector2.one,
+						eyeColor) as Graphic_FaceMirror;
+				}
+			}
+			// Missing eye part graphics
+			for(int i = 0; i < compProps.perEyeDefs.Count; ++i)
+			{
+				if(pawnFace.EyeDef.missingEyeDef != null)
+				{
+					string texPath = EyeTexturePath(pawnFace.EyeDef.missingEyeDef);
+					_eyeGraphics[i, (int)BodyPartLevel.Removed] = GraphicDatabase.Get<Graphic_FaceMirror>(
+						texPath,
+						ShaderDatabase.CutoutComplex,
+						Vector2.one,
+						eyeColor) as Graphic_FaceMirror;
+				}
+			}
+			/*_eyeGraphics[0, (int)EyeState.Open] = GraphicDatabase.Get<Graphic_FaceMirror>(
+				eyePath,
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				eyeColor) as Graphic_FaceMirror;
 
-			_eyeGraphics[1] = GraphicDatabase.Get<Graphic_FaceMirror>(
-				EyeTexPath(pawnFace.EyeDef),
+			_eyeGraphics[1, (int)EyeState.Open] = GraphicDatabase.Get<Graphic_FaceMirror>(
+				eyePath,
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				eyeColor) as Graphic_FaceMirror;
 			
-			_eyeClosedGraphics[0] = GraphicDatabase.Get<Graphic_FaceMirror>(
+			_eyeGraphics[0, (int)EyeState.Closed] = GraphicDatabase.Get<Graphic_FaceMirror>(
 				EyeTexPath(EyeDefOf.Closed),
 				ShaderDatabase.Cutout,
 				Vector2.one,
 				eyeColor) as Graphic_FaceMirror;
 
-			_eyeClosedGraphics[1] = GraphicDatabase.Get<Graphic_FaceMirror>(
+			_eyeGraphics[1, (int)EyeState.Closed] = GraphicDatabase.Get<Graphic_FaceMirror>(
 				EyeTexPath(EyeDefOf.Closed),
 				ShaderDatabase.Cutout,
 				Vector2.one,
 				eyeColor) as Graphic_FaceMirror;
 
-			EyeLeftMissingGraphic = GraphicDatabase.Get<Graphic_FaceMirror>(
+			_eyeGraphics[0, (int)EyeState.Missing] = GraphicDatabase.Get<Graphic_FaceMirror>(
 				EyeTexPath(EyeDefOf.Missing),
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
 				eyeColor) as Graphic_FaceMirror;
 
-			EyeRightMissingGraphic = GraphicDatabase.Get<Graphic_FaceMirror>(
+			_eyeGraphics[1, (int)EyeState.Missing] = GraphicDatabase.Get<Graphic_FaceMirror>(
 				EyeTexPath(EyeDefOf.Missing),
 				ShaderDatabase.CutoutComplex,
 				Vector2.one,
@@ -358,27 +311,9 @@ namespace FacialStuff.GraphicsFS
 				StringsFS.PathHumanlike + "Eyes/Eyes_Dead",
 				ShaderDatabase.Cutout,
 				Vector2.one,
-				Color.black);
+				Color.black);*/
 		}
-		private void InitializeGraphicsEars()
-		{
-			// this.InitializeGraphicsEyePatches();
-
-			Color earColor = _pawn.story.SkinColor;
-
-			EarLeftGraphic = GraphicDatabase.Get<Graphic_FaceMirror>(
-				EarTexPath(Side.Left, pawnFace.EarDef),
-				ShaderDatabase.CutoutComplex,
-				Vector2.one,
-				earColor) as Graphic_FaceMirror;
-
-			EarRightGraphic = GraphicDatabase.Get<Graphic_FaceMirror>(
-				EarTexPath(Side.Right, pawnFace.EarDef),
-				ShaderDatabase.CutoutComplex,
-				Vector2.one,
-				earColor) as Graphic_FaceMirror;
-		}
-
+		
 		private void InitializeGraphicsMouth(CompFace compFace)
 		{
 			if(!texPathJawAddedPart.NullOrEmpty())
@@ -392,13 +327,7 @@ namespace FacialStuff.GraphicsFS
 						ShaderDatabase.CutoutSkin,
 						Vector2.one,
 						Color.white) as Graphic_Multi_NaturalHeadParts;
-					compFace.BodyStat.Jaw = PartStatus.Artificial;
-					string addedPart = texPathJawAddedPart;
-					if(addedPart != null && addedPart.Contains(STR_ROMV_Fangs))
-					{
-						compFace.BodyStat.Jaw = PartStatus.DisplayOverBeard;
-					}
-
+					compFace.BodyStat.Jaw = PartStatus.Artificial;					
 					// all done, return
 					return;
 				}

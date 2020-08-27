@@ -342,25 +342,23 @@ namespace FacialStuff.Utilities
             return source.RandomElementByWeight(brow => BrowChoiceLikelihoodFor(brow, pawn));
         }
 
-        public static EyeDef RandomEyeDefFor(Pawn pawn, FactionDef factionType)
+        public static EyeDef RandomEyeDefFor(Pawn pawn, FactionDef factionType, CompProperties_Face faceProp)
         {
-            // Log.Message("Selecting eyes.");
-            IEnumerable<EyeDef> source = from eye in DefDatabase<EyeDef>.AllDefs
+            IEnumerable<EyeDef> source = 
+                from eyeDef in DefDatabase<EyeDef>.AllDefs
+                where
+                    eyeDef.hairTags.SharesElementWith(factionType.hairTags) &&
+                    !eyeDef.texCollection.NullOrEmpty() &&
+                    faceProp.useTexCollection.Contains(eyeDef.texCollection)
+                select eyeDef;
 
-                                             // where eye.forbiddenOnRace.Contains(pawn.def)
-                                         where eye.hairTags.SharesElementWith(factionType.hairTags)
-                                         select eye;
-
-            if (!source.Any())
+            if(!source.Any())
             {
-                // Log.Message("No eyes found, defaulting.");
                 source = from eye in DefDatabase<EyeDef>.AllDefs select eye;
             }
-
             return source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
-
-            // Log.Message("Chosen eyes: " + chosenEyes);
         }
+
         public static EarDef RandomEarDefFor(Pawn pawn, FactionDef factionType)
         {
             // Log.Message("Selecting eyes.");

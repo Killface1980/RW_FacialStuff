@@ -58,7 +58,7 @@ namespace FacialStuff
                 pawnFactionDef = FactionDefOf.PlayerColony;
             }
             
-            this.EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, pawnFactionDef);
+            this.EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, pawnFactionDef, face.Props);
             this.EarDef = PawnFaceMaker.RandomEarDefFor(pawn, pawnFactionDef);
             this.BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, pawnFactionDef);
 

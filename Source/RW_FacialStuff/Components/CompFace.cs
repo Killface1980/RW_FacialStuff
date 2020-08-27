@@ -30,6 +30,8 @@ namespace FacialStuff
         
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
         
+        public PartStatusTracker PartStatusTracker { get; private set; }
+
         public PawnHeadRotationAI HeadRotationAI { get; private set; }
         
         public PawnFacialExpressionAI FacialExpressionAI { get; private set; }
@@ -121,7 +123,7 @@ namespace FacialStuff
                             headDrawer.DrawWrinkles(wrinkleLoc, bodyDrawType, headQuat, portrait);
                         }
                     }
-                    if(Props.hasEyes)
+                    if(Props.perEyeDefs.Count > 0)
                     {
                         Vector3 eyeLoc = headPos;
                         eyeLoc.y += YOffset_Eyes;
@@ -143,23 +145,6 @@ namespace FacialStuff
                         foreach(var headDrawer in PawnHeadDrawers)
                         {
                             headDrawer.DrawUnnaturalEyeParts(unnaturalEyeLoc, headQuat, portrait);
-                        }
-                    }
-                    if(Props.hasEars && Controller.settings.Develop)
-                    {
-                        Vector3 earLoc = headPos;
-                        earLoc.y += YOffset_Eyes;
-                        // Draw natural ears
-                        foreach(var headDrawer in PawnHeadDrawers)
-                        {
-                            headDrawer.DrawNaturalEyes(earLoc, headQuat, portrait);
-                        }
-                        // Draw added ears on top of natural ears
-                        Vector3 addedEarLoc = headPos;
-                        addedEarLoc.y += YOffset_UnnaturalEyes;
-                        foreach(var headDrawer in PawnHeadDrawers)
-                        {
-                            headDrawer.DrawUnnaturalEarParts(addedEarLoc, headQuat, portrait);
                         }
                     }
                     // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
@@ -244,15 +229,26 @@ namespace FacialStuff
         public override void Initialize(CompProperties props)
         {
             base.Initialize(props);
-            if(HeadRotationAI == null) 
-            {
-                HeadRotationAI = new PawnHeadRotationAI(Pawn);
-            }
-            if(FacialExpressionAI == null) 
-            {
-                FacialExpressionAI = new PawnFacialExpressionAI(Pawn);
-            }
-            InitializePawnDrawer();
+            try
+			{
+                if(HeadRotationAI == null)
+                {
+                    HeadRotationAI = new PawnHeadRotationAI(Pawn);
+                }
+                if(FacialExpressionAI == null)
+                {
+                    FacialExpressionAI = new PawnFacialExpressionAI(Pawn, Props);
+                }
+                if(PartStatusTracker == null)
+                {
+                    PartStatusTracker = new PartStatusTracker(Pawn.RaceProps.body);
+                }
+                InitializePawnDrawer();
+            } 
+            catch(Exception e)
+			{
+                Log.Message("Facial Stuff: error while initializing CompFace: " + e.Message);
+			}
         }
 
         // Faction data isn't available during ThingComp.Initialize(). Initialize faction-related members here.
@@ -272,7 +268,7 @@ namespace FacialStuff
                 FaceData = new FaceData(this, Faction.OfPlayer.def);
             }
             FullHeadType = MeshPoolFS.GetFullHeadType(Pawn.gender, PawnCrownType, PawnHeadType);
-            PawnFaceGraphic = new FaceGraphic(this);
+            PawnFaceGraphic = new FaceGraphic(this, Props.perEyeDefs.Count);
             FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
             Initialized = true;
         }
@@ -284,14 +280,21 @@ namespace FacialStuff
                 IsAsleep = !Pawn.Awake();
             }
 
+            PawnState pawnState = new PawnState();
+            pawnState.sleeping = IsAsleep;
+            pawnState.aiming = Pawn.Aiming();
+            pawnState.inPainShock = Pawn.health.InPainShock;
+            pawnState.fleeing = Pawn.Fleeing();
+            pawnState.burning = Pawn.IsBurning();
+
             bool canUpdatePawn =
                 Pawn.Map != null &&
                 !Pawn.InContainerEnclosed &&
                 Pawn.Spawned &&
                 !Pawn.Dead &&
                 !Find.TickManager.Paused;
-            HeadRotationAI.Tick(canUpdatePawn, bodyFacing, IsAsleep);
-            FacialExpressionAI.Tick(canUpdatePawn, this, IsAsleep);
+            HeadRotationAI.Tick(canUpdatePawn, bodyFacing, ref pawnState);
+            FacialExpressionAI.Tick(canUpdatePawn, this, ref pawnState);
             if(!portrait)
 			{
                 headFacing = HeadRotationAI.CurrentRotation;

@@ -1,5 +1,11 @@
 ﻿namespace FacialStuff
 {
+	public enum MouthState
+	{ 
+        Mood = 0,
+        Crying = 1
+    }
+
     public static class StringsFS
     {
         public const string PathHumanlike = "Things/Pawn/Humanlike/";

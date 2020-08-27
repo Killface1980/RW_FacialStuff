@@ -1,6 +1,7 @@
 ﻿using FacialStuff.Animator;
 using FacialStuff.GraphicsFS;
 using RimWorld;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -8,92 +9,130 @@ namespace FacialStuff.AI
 {
 	public class PawnFacialExpressionAI
 	{
-		private Pawn _pawn;
-        
-        private struct EyeState
+		#region Inner Types
+
+        // State variables for all of eyes combined
+		private struct EyeVars
 		{
             public const int kCloseDuration = 10;
             public const int kOpenAverageDuration = 120;
             public const int kOpenRandomMaxOffset = 30;
             
-            public bool isOpen;
-            // If true, eye will be forced to close regardless of blinking interval.
-            public bool closeOverride;
+            public bool blinkOpen;
             public int ticksSinceLastState;
             public int ticksUntilNextState;
         }
-        private EyeState _eyeState;
 
-		private struct MouthState
+        // State variables for individual eyes
+		private class PerEyeVars
+		{ 
+            public bool open;
+            public bool closeWhileAiming;
+            public bool canBlink;
+        }
+        
+		private struct MouthVars
 		{
             public float mood;
+            public MouthState state;
             public int ticksSinceLastUpdate;
         }
-        private MouthState _mouthState;
+        
+		#endregion
 
-        public int MouthGraphicIndex { get; private set; }
-        public bool EyeOpen
-        {
-            get
-            {
-                return 
-                    !_eyeState.closeOverride && 
-                    _eyeState.isOpen;
-            }
-        }
+		#region Private Member Variables
 
-		public PawnFacialExpressionAI(Pawn pawn)
+		private Pawn _pawn;
+        private MouthVars _mouth;
+        private EyeVars _eye;
+        private List<PerEyeVars> _perEye;
+        private CompProperties_Face _faceProp;
+
+		#endregion
+
+		#region Public Properties
+
+		public int MouthGraphicIndex { get; private set; }
+        
+		#endregion
+        
+		public PawnFacialExpressionAI(Pawn pawn, CompProperties_Face faceProp)
 		{
 			_pawn = pawn;
-            _mouthState.mood = 0.5f;
-            _mouthState.ticksSinceLastUpdate = 0;
-            _eyeState.isOpen = true;
-            _eyeState.closeOverride = false;
-            _eyeState.ticksSinceLastState = 0;
-            _eyeState.ticksUntilNextState = CalculateEyeOpenDuration(1f);
+            _mouth.mood = 0.5f;
+            _mouth.state = MouthState.Mood;
+            _mouth.ticksSinceLastUpdate = 0;
+            _eye.blinkOpen = true;
+            _eye.ticksSinceLastState = 0;
+            _eye.ticksUntilNextState = CalculateEyeOpenDuration(1f);
+            _perEye = new List<PerEyeVars>(faceProp.perEyeDefs.Count);
+            for(int i = 0; i < faceProp.perEyeDefs.Count; ++i)
+			{
+                PerEyeVars perEyeVar = new PerEyeVars();
+                perEyeVar.canBlink = faceProp.perEyeDefs[i].canBlink;
+                perEyeVar.closeWhileAiming = faceProp.perEyeDefs[i].closeWhileAiming;
+                _perEye.Add(perEyeVar);
+            }
+            _faceProp = faceProp;
         }
 
-		public void Tick(bool canUpdatePawn, CompFace compFace, bool isAsleep)
+		public void Tick(bool canUpdatePawn, CompFace compFace, ref PawnState pawnState)
 		{
 			if(!canUpdatePawn)
 			{
 				return;
 			}
-            EyeTick(isAsleep);
-            MouthTick(compFace);
-            ++_mouthState.ticksSinceLastUpdate;
-            ++_eyeState.ticksSinceLastState;
+            EyeTick(ref pawnState);
+            MouthTick(compFace, ref pawnState);
+            ++_mouth.ticksSinceLastUpdate;
+            ++_eye.ticksSinceLastState;
         }
 
-        private void EyeTick(bool isAsleep)
+        private void EyeTick(ref PawnState pawnState)
 		{
+            // Check for any cases where eye should be closed forcefully.
             bool inComa = false;
             float consciousness = _pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
             if(consciousness < PawnCapacityDefOf.Consciousness.minForCapable)
 			{
                 inComa = true;
 			}
-            _eyeState.closeOverride = isAsleep || inComa;
-            if(_eyeState.ticksSinceLastState >= _eyeState.ticksUntilNextState)
+            bool closeOverride = pawnState.sleeping || inComa;
+
+            // Eye blinking update
+            if(_eye.ticksSinceLastState >= _eye.ticksUntilNextState)
 			{
-                _eyeState.ticksSinceLastState = 0;
-                _eyeState.ticksUntilNextState = 
-                    _eyeState.isOpen ? 
-                        EyeState.kCloseDuration :
+                _eye.ticksSinceLastState = 0;
+                _eye.ticksUntilNextState = 
+                    _eye.blinkOpen ? 
+                        EyeVars.kCloseDuration :
                         CalculateEyeOpenDuration(consciousness);
-                if(Controller.settings.MakeThemBlink)
-			    {
-                    _eyeState.isOpen = !_eyeState.isOpen;
+                _eye.blinkOpen = !_eye.blinkOpen;
+            }
+
+            for(int i = 0; i < _perEye.Count; ++i)
+            {
+                bool eyeOpen = true;
+                if(pawnState.aiming)
+                {
+                    eyeOpen = !_perEye[i].closeWhileAiming;
+                } else
+                {
+                    eyeOpen = _eye.blinkOpen
+                        // If the eye can't blink, then override blinkOpen to true by OR'ing.
+                        || !_perEye[i].canBlink 
+                        || !Controller.settings.MakeThemBlink;
                 }
-                else
-				{
-                    _eyeState.isOpen = true;
-				}
-                
+                _perEye[i].open = eyeOpen && !closeOverride;
             }
 		}
 
-        private void MouthTick(CompFace compFace)
+        public bool IsEyeOpen(int eyeIdx)
+        {
+            return _perEye[eyeIdx].open;
+        }
+
+        private void MouthTick(CompFace compFace, ref PawnState pawnState)
 		{
             if(_mouthState.ticksSinceLastUpdate >= 90)
             {
@@ -127,11 +166,11 @@ namespace FacialStuff.AI
         {
             int offset = 0;
             consciousness = Mathf.Clamp(consciousness, 0f, 1f);
-            offset = (int)(1f - consciousness) * EyeState.kOpenAverageDuration;
+            offset = (int)(1f - consciousness) * EyeVars.kOpenAverageDuration;
             return
-                EyeState.kOpenAverageDuration +
-                UnityEngine.Random.Range(0, EyeState.kOpenRandomMaxOffset * 2) -
-                EyeState.kOpenRandomMaxOffset +
+                EyeVars.kOpenAverageDuration +
+                UnityEngine.Random.Range(0, EyeVars.kOpenRandomMaxOffset * 2) -
+                EyeVars.kOpenRandomMaxOffset +
                 offset;
         }
     }
