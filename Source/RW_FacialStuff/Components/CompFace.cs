@@ -293,8 +293,8 @@ namespace FacialStuff
                 Pawn.Spawned &&
                 !Pawn.Dead &&
                 !Find.TickManager.Paused;
-            HeadRotationAI.Tick(canUpdatePawn, bodyFacing, ref pawnState);
-            FacialExpressionAI.Tick(canUpdatePawn, this, ref pawnState);
+            HeadRotationAI.Tick(canUpdatePawn, bodyFacing, pawnState);
+            FacialExpressionAI.Tick(canUpdatePawn, this, pawnState);
             if(!portrait)
 			{
                 headFacing = HeadRotationAI.CurrentRotation;

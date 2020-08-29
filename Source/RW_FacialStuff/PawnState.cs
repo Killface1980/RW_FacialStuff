@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FacialStuff
 {
-	public struct PawnState
+	public class PawnState
 	{
 		public bool sleeping;
 		public bool aiming;

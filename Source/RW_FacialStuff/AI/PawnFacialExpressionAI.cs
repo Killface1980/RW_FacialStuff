@@ -76,19 +76,19 @@ namespace FacialStuff.AI
             _faceProp = faceProp;
         }
 
-		public void Tick(bool canUpdatePawn, CompFace compFace, ref PawnState pawnState)
+		public void Tick(bool canUpdatePawn, CompFace compFace, PawnState pawnState)
 		{
 			if(!canUpdatePawn)
 			{
 				return;
 			}
-            EyeTick(ref pawnState);
-            MouthTick(compFace, ref pawnState);
+            EyeTick(pawnState);
+            MouthTick(compFace, pawnState);
             ++_mouth.ticksSinceLastUpdate;
             ++_eye.ticksSinceLastState;
         }
 
-        private void EyeTick(ref PawnState pawnState)
+        private void EyeTick(PawnState pawnState)
 		{
             // Check for any cases where eye should be closed forcefully.
             bool inComa = false;
@@ -132,7 +132,7 @@ namespace FacialStuff.AI
             return _perEye[eyeIdx].open;
         }
 
-        private void MouthTick(CompFace compFace, ref PawnState pawnState)
+        private void MouthTick(CompFace compFace, PawnState pawnState)
 		{
             if(_mouthState.ticksSinceLastUpdate >= 90)
             {
