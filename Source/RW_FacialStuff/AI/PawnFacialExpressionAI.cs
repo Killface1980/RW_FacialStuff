@@ -25,9 +25,6 @@ namespace FacialStuff.AI
 		private class PerEyeVars
 		{ 
             public bool open;
-            public bool canBlink;
-            public bool closeWhileAiming;
-            public bool closeWhileSleeping;
         }
         
 		private struct MouthVars
@@ -68,9 +65,6 @@ namespace FacialStuff.AI
             for(int i = 0; i < faceProp.perEyeDefs.Count; ++i)
 			{
                 PerEyeVars perEyeVar = new PerEyeVars();
-                perEyeVar.canBlink = faceProp.perEyeDefs[i].canBlink;
-                perEyeVar.closeWhileAiming = faceProp.perEyeDefs[i].closeWhileAiming;
-                perEyeVar.closeWhileSleeping = faceProp.perEyeDefs[i].closeWhileSleeping;
                 _perEye.Add(perEyeVar);
             }
             _faceProp = faceProp;
@@ -82,13 +76,13 @@ namespace FacialStuff.AI
 			{
 				return;
 			}
-            EyeTick(pawnState);
+            EyeTick(compFace.Props, pawnState);
             MouthTick(compFace, pawnState);
             ++_mouth.ticksSinceLastUpdate;
             ++_eye.ticksSinceLastState;
         }
 
-        private void EyeTick(PawnState pawnState)
+        private void EyeTick(CompProperties_Face faceProp, PawnState pawnState)
 		{
             // Check for any cases where eye should be closed forcefully.
             bool inComa = false;
@@ -112,15 +106,15 @@ namespace FacialStuff.AI
 
             for(int i = 0; i < _perEye.Count; ++i)
             {
-                bool eyeAimingOpen = !(_perEye[i].closeWhileAiming && pawnState.aiming);
+                bool eyeAimingOpen = !(faceProp.perEyeDefs[i].closeWhileAiming && pawnState.aiming);
                 bool eyeBlinkOpen = 
                     _eye.blinkOpen
                     // If the eye can't blink, then override eyeBlinkOpen to true by OR'ing.
-                    || !(_perEye[i].canBlink && Controller.settings.MakeThemBlink);
+                    || !(faceProp.perEyeDefs[i].canBlink && Controller.settings.MakeThemBlink);
                 _perEye[i].open = 
                     eyeBlinkOpen &&
                     eyeAimingOpen &&
-                    !(_perEye[i].closeWhileSleeping && pawnState.sleeping) && 
+                    !(faceProp.perEyeDefs[i].closeWhileSleeping && pawnState.sleeping) && 
                     !closeOverride;
             }
 		}
