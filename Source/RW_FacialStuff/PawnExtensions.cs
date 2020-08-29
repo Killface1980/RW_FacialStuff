@@ -170,8 +170,11 @@ namespace FacialStuff
 
         public static bool Aiming(this Pawn pawn)
         {
-            return pawn.stances.curStance is Stance_Busy stanceBusy && !stanceBusy.neverAimWeapon &&
-                   stanceBusy.focusTarg.IsValid;
+            return 
+                pawn.stances != null && 
+                pawn.stances.curStance is Stance_Busy stanceBusy && 
+                !stanceBusy.neverAimWeapon &&
+                stanceBusy.focusTarg.IsValid;
         }
 
         public static bool ShowWeaponOpenly(this Pawn pawn)
