@@ -2,7 +2,7 @@
 
 namespace FacialStuff.Defs
 {
-	public class PerEyeDef : Def
+	public class PerEyeBehavior
 	{
 		public bool drawMirrored;
 

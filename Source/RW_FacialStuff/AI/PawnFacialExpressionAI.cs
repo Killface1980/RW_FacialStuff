@@ -55,8 +55,8 @@ namespace FacialStuff.AI
             _eye.blinkOpen = true;
             _eye.ticksSinceLastState = 0;
             _eye.ticksUntilNextState = CalculateEyeOpenDuration(1f);
-            _perEye = new List<PerEyeVars>(faceProp.perEyeDefs.Count);
-            for(int i = 0; i < faceProp.perEyeDefs.Count; ++i)
+            _perEye = new List<PerEyeVars>(faceProp.perEyeBehaviors.Count);
+            for(int i = 0; i < faceProp.perEyeBehaviors.Count; ++i)
 			{
                 PerEyeVars perEyeVar = new PerEyeVars();
                 _perEye.Add(perEyeVar);
@@ -100,15 +100,15 @@ namespace FacialStuff.AI
 
             for(int i = 0; i < _perEye.Count; ++i)
             {
-                bool eyeAimingOpen = !(faceProp.perEyeDefs[i].closeWhileAiming && pawnState.aiming);
+                bool eyeAimingOpen = !(faceProp.perEyeBehaviors[i].closeWhileAiming && pawnState.aiming);
                 bool eyeBlinkOpen = 
                     _eye.blinkOpen
                     // If the eye can't blink, then override eyeBlinkOpen to true by OR'ing.
-                    || !(faceProp.perEyeDefs[i].canBlink && Controller.settings.MakeThemBlink);
+                    || !(faceProp.perEyeBehaviors[i].canBlink && Controller.settings.MakeThemBlink);
                 _perEye[i].open = 
                     eyeBlinkOpen &&
                     eyeAimingOpen &&
-                    !(faceProp.perEyeDefs[i].closeWhileSleeping && pawnState.sleeping) && 
+                    !(faceProp.perEyeBehaviors[i].closeWhileSleeping && pawnState.sleeping) && 
                     !closeOverride;
             }
 		}

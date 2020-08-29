@@ -86,11 +86,11 @@ namespace FacialStuff
             }
             for(int partIdx = 0; partIdx < CompFace.PartStatusTracker.EyeCount; ++partIdx)
 			{
-                PerEyeDef perEyeDef = CompFace.Props.perEyeDefs[partIdx];
-                bool shouldDraw = (perEyeDef.drawDirBitFlag & (1 << HeadFacing.AsInt)) != 0;
+                PerEyeBehavior perEyeBehavior = CompFace.Props.perEyeBehaviors[partIdx];
+                bool shouldDraw = (perEyeBehavior.drawDirBitFlag & (1 << HeadFacing.AsInt)) != 0;
                 if(shouldDraw)
 				{
-                    Mesh eyeMesh = MeshPoolFS.GetFaceMesh(CompFace.PawnCrownType, HeadFacing, perEyeDef.drawMirrored);
+                    Mesh eyeMesh = MeshPoolFS.GetFaceMesh(CompFace.PawnCrownType, HeadFacing, perEyeBehavior.drawMirrored);
                     Material eyeMat = faceGraphic.EyeMatAt(
                         partIdx, 
                         HeadFacing, 

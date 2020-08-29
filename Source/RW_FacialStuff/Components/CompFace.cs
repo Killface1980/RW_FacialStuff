@@ -123,7 +123,7 @@ namespace FacialStuff
                             headDrawer.DrawWrinkles(wrinkleLoc, bodyDrawType, headQuat, portrait);
                         }
                     }
-                    if(Props.perEyeDefs.Count > 0)
+                    if(Props.perEyeBehaviors.Count > 0)
                     {
                         Vector3 eyeLoc = headPos;
                         eyeLoc.y += YOffset_Eyes;
@@ -268,7 +268,7 @@ namespace FacialStuff
                 FaceData = new FaceData(this, Faction.OfPlayer.def);
             }
             FullHeadType = MeshPoolFS.GetFullHeadType(Pawn.gender, PawnCrownType, PawnHeadType);
-            PawnFaceGraphic = new FaceGraphic(this, Props.perEyeDefs.Count);
+            PawnFaceGraphic = new FaceGraphic(this, Props.perEyeBehaviors.Count);
             FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
             Initialized = true;
         }

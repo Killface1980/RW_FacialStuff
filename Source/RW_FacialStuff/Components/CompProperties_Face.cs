@@ -30,7 +30,7 @@ namespace FacialStuff
         
         public List<string> useTexCollection;
 
-        public List<PerEyeDef> perEyeDefs;
+        public List<PerEyeBehavior> perEyeBehaviors = new List<PerEyeBehavior>();
         
         public CompProperties_Face()
         {

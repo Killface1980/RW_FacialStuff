@@ -71,7 +71,7 @@ namespace FacialStuff.GraphicsFS
 				{
 					InitializeGraphicsWrinkles(compFace);
 				}
-				if(compFace.Props.perEyeDefs.Count > 0)
+				if(compFace.Props.perEyeBehaviors.Count > 0)
 				{
 					MakeEyes(pawnFace);
 				}
@@ -235,7 +235,7 @@ namespace FacialStuff.GraphicsFS
 
 			// compProps.perEyeDefs.Count indicates how many eyes the race has.
 			// Open eye graphics
-			for(int i = 0; i < compProps.perEyeDefs.Count; ++i)
+			for(int i = 0; i < compProps.perEyeBehaviors.Count; ++i)
 			{
 				string texPath = EyeTexturePath(pawnFace.EyeDef);
 				_eyeGraphics[i, (int)BodyPartLevel.Natural] = GraphicDatabase.Get<Graphic_FaceMirror>(
@@ -245,7 +245,7 @@ namespace FacialStuff.GraphicsFS
 					eyeColor) as Graphic_FaceMirror;
 			}
 			// Closed eye graphics
-			for(int i = 0; i < compProps.perEyeDefs.Count; ++i)
+			for(int i = 0; i < compProps.perEyeBehaviors.Count; ++i)
 			{
 				if(pawnFace.EyeDef.closedEyeDef != null)
 				{
@@ -258,7 +258,7 @@ namespace FacialStuff.GraphicsFS
 				}
 			}
 			// Missing eye part graphics
-			for(int i = 0; i < compProps.perEyeDefs.Count; ++i)
+			for(int i = 0; i < compProps.perEyeBehaviors.Count; ++i)
 			{
 				if(pawnFace.EyeDef.missingEyeDef != null)
 				{
