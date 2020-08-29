@@ -1,6 +1,4 @@
-﻿using FacialStuff.Animator;
-using FacialStuff.GraphicsFS;
-using RimWorld;
+﻿using RimWorld;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
@@ -27,8 +25,9 @@ namespace FacialStuff.AI
 		private class PerEyeVars
 		{ 
             public bool open;
-            public bool closeWhileAiming;
             public bool canBlink;
+            public bool closeWhileAiming;
+            public bool closeWhileSleeping;
         }
         
 		private struct MouthVars
@@ -71,6 +70,7 @@ namespace FacialStuff.AI
                 PerEyeVars perEyeVar = new PerEyeVars();
                 perEyeVar.canBlink = faceProp.perEyeDefs[i].canBlink;
                 perEyeVar.closeWhileAiming = faceProp.perEyeDefs[i].closeWhileAiming;
+                perEyeVar.closeWhileSleeping = faceProp.perEyeDefs[i].closeWhileSleeping;
                 _perEye.Add(perEyeVar);
             }
             _faceProp = faceProp;
@@ -97,7 +97,7 @@ namespace FacialStuff.AI
 			{
                 inComa = true;
 			}
-            bool closeOverride = pawnState.sleeping || inComa;
+            bool closeOverride = inComa;
 
             // Eye blinking update
             if(_eye.ticksSinceLastState >= _eye.ticksUntilNextState)
@@ -112,18 +112,16 @@ namespace FacialStuff.AI
 
             for(int i = 0; i < _perEye.Count; ++i)
             {
-                bool eyeOpen = true;
-                if(pawnState.aiming)
-                {
-                    eyeOpen = !_perEye[i].closeWhileAiming;
-                } else
-                {
-                    eyeOpen = _eye.blinkOpen
-                        // If the eye can't blink, then override blinkOpen to true by OR'ing.
-                        || !_perEye[i].canBlink 
-                        || !Controller.settings.MakeThemBlink;
-                }
-                _perEye[i].open = eyeOpen && !closeOverride;
+                bool eyeAimingOpen = !(_perEye[i].closeWhileAiming && pawnState.aiming);
+                bool eyeBlinkOpen = 
+                    _eye.blinkOpen
+                    // If the eye can't blink, then override eyeBlinkOpen to true by OR'ing.
+                    || !(_perEye[i].canBlink && Controller.settings.MakeThemBlink);
+                _perEye[i].open = 
+                    eyeBlinkOpen &&
+                    eyeAimingOpen &&
+                    !(_perEye[i].closeWhileSleeping && pawnState.sleeping) && 
+                    !closeOverride;
             }
 		}
 
