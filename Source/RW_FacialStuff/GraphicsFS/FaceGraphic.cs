@@ -26,8 +26,7 @@ namespace FacialStuff.GraphicsFS
 		public Graphic_Multi_NaturalHeadParts JawGraphic;
 		public Graphic MainBeardGraphic;
 		public Graphic MoustacheGraphic;
-		public HumanMouthGraphics Mouthgraphic;
-		public Graphic_Multi_NaturalHeadParts MouthGraphic;
+		private HumanMouthGraphics Mouthgraphic;
 
 		public Graphic RottingWrinkleGraphic;
 
@@ -273,33 +272,32 @@ namespace FacialStuff.GraphicsFS
 			}
 		}
 		
+		public Material MouthMatAt(Rot4 headFacing, bool portrait, MouthState mouthState, float mood)
+		{
+			Graphic mouthGraphic = null;
+			if(portrait)
+			{
+				mouthGraphic = Mouthgraphic.HumanMouthGraphic[3].Graphic;
+			}
+			else
+			{
+				switch(mouthState)
+				{
+					case MouthState.Mood:
+						mouthGraphic = Mouthgraphic.HumanMouthGraphic[Mouthgraphic.GetMouthTextureIndexOfMood(mood)].Graphic;
+						break;
+
+					case MouthState.Crying:
+						mouthGraphic = Mouthgraphic.MouthGraphicCrying;
+						break;
+				}
+			}
+			return mouthGraphic?.MatAt(headFacing);
+		}
+
 		private void InitializeGraphicsMouth(CompFace compFace)
 		{
-			if(!texPathJawAddedPart.NullOrEmpty())
-			{
-				bool flag = ContentFinder<Texture2D>.Get(texPathJawAddedPart + STR_south, false) != null;
-				if(flag)
-				{
-					JawGraphic =
-					GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-						texPathJawAddedPart,
-						ShaderDatabase.CutoutSkin,
-						Vector2.one,
-						Color.white) as Graphic_Multi_NaturalHeadParts;
-					compFace.BodyStat.Jaw = PartStatus.Artificial;					
-					// all done, return
-					return;
-				}
 
-				// texture for added/extra part not found, log and default
-				Log.Message(
-					"Facial Stuff: No texture for added part: " +
-					texPathJawAddedPart +
-					" - Graphic_Multi_NaturalHeadParts. This is not an error, just an info.");
-
-			}
-
-			MouthGraphic = Mouthgraphic.HumanMouthGraphic[_pawn.Dead || _pawn.Downed ? 2 : 3].Graphic;
 		}
 
 		private void InitializeGraphicsWrinkles(CompFace compFace)

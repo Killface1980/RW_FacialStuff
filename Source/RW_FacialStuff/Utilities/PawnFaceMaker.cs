@@ -239,7 +239,7 @@ namespace FacialStuff.Utilities
             [NotNull] out BeardDef mainBeard,
             [NotNull] out MoustacheDef moustache)
         {
-            if (!face.Props.hasBeard)
+            if (!face.Props.hasBeard || face.Pawn.gender != Gender.Male)
             {
                 mainBeard = BeardDefOf.Beard_Shaved;
                 moustache = MoustacheDefOf.Shaved;

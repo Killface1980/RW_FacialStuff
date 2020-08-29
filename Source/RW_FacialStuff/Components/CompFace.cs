@@ -160,7 +160,7 @@ namespace FacialStuff
                             headDrawer.DrawBeardAndTache(beardLoc, tacheLoc, headQuat, portrait);
                         }
                     }
-                    if(Props.hasMouth)
+                    if(Props.hasMouth && FaceData.BeardDef.drawMouth && Controller.settings.UseMouth)
                     {
                         Vector3 mouthLoc = headPos;
                         mouthLoc.y += YOffset_Mouth;
@@ -299,8 +299,6 @@ namespace FacialStuff
 			{
                 headFacing = HeadRotationAI.CurrentRotation;
             }
-            PawnFaceGraphic.MouthGraphic =
-                PawnFaceGraphic.Mouthgraphic.HumanMouthGraphic[FacialExpressionAI.MouthGraphicIndex].Graphic;
 
             if(!this.PawnHeadDrawers.NullOrEmpty())
             {

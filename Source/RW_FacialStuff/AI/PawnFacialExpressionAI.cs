@@ -45,13 +45,7 @@ namespace FacialStuff.AI
         private CompProperties_Face _faceProp;
 
 		#endregion
-
-		#region Public Properties
-
-		public int MouthGraphicIndex { get; private set; }
-        
-		#endregion
-        
+                
 		public PawnFacialExpressionAI(Pawn pawn, CompProperties_Face faceProp)
 		{
 			_pawn = pawn;
@@ -126,33 +120,26 @@ namespace FacialStuff.AI
 
         private void MouthTick(CompFace compFace, PawnState pawnState)
 		{
-            if(_mouthState.ticksSinceLastUpdate >= 90)
+            if(_mouth.ticksSinceLastUpdate >= 90)
             {
-                if(!Controller.settings.UseMouth || compFace.BodyStat.Jaw != PartStatus.Natural)
+                if(pawnState.fleeing || pawnState.burning || (pawnState.inPainShock && !pawnState.sleeping))
                 {
-                    return;
-                }
-                if(_pawn.Fleeing() || _pawn.IsBurning())
-                {
-                    compFace.PawnFaceGraphic.MouthGraphic = compFace.PawnFaceGraphic.Mouthgraphic.MouthGraphicCrying;
-                    return;
-                }
-                if(_pawn.health.InPainShock && !compFace.IsAsleep)
-                {
-                    if(!EyeOpen)
-                    {
-                        compFace.PawnFaceGraphic.MouthGraphic = compFace.PawnFaceGraphic.Mouthgraphic.MouthGraphicCrying;
-                        return;
-                    }
+                    _mouth.state = MouthState.Crying;
                 }
                 if(_pawn.needs?.mood?.thoughts != null)
                 {
-                    _mouthState.mood = _pawn.needs.mood.CurInstantLevel;
+                    _mouth.mood = _pawn.needs.mood.CurInstantLevel;
+                    _mouth.state = MouthState.Mood;
                 }
-                MouthGraphicIndex = compFace.PawnFaceGraphic.Mouthgraphic.GetMouthTextureIndexOfMood(_mouthState.mood);
-                _mouthState.ticksSinceLastUpdate = 0;
+                _mouth.ticksSinceLastUpdate = 0;
             }
         }
+        
+        public MouthState GetMouthState(ref float mood)
+		{
+            mood = _mouth.mood;
+            return _mouth.state;
+		}
 
         private static int CalculateEyeOpenDuration(float consciousness)
         {

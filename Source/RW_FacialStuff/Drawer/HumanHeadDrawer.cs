@@ -113,23 +113,25 @@ namespace FacialStuff
 
         public override void DrawNaturalMouth(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
-            Material mouthMat = CompFace.FaceMaterial.MouthMatAt(HeadFacing, portrait);
+            float mouthMood = 0;
+            MouthState mouthState = CompFace.FacialExpressionAI.GetMouthState(ref mouthMood);
+            Material mouthMat = CompFace.PawnFaceGraphic.MouthMatAt(HeadFacing, portrait, mouthState, mouthMood);
             if (mouthMat == null)
             {
                 return;
             }
-            Mesh meshMouth = MeshPoolFS.HumanlikeMouthSet[(int)CompFace.FullHeadType].MeshAt(HeadFacing);
+            Mesh meshMouth = MeshPoolFS.GetFaceMesh(CompFace.PawnCrownType, HeadFacing, false);
             Vector3 mouthOffset = MeshPoolFS.mouthOffsetsHeadType[(int)CompFace.FullHeadType];
             switch(HeadFacing.AsInt)
             {
                 case 1: 
-                    mouthOffset = new Vector3(mouthOffset.x, 0f, -mouthOffset.y);
+                    mouthOffset = new Vector3(mouthOffset.x, 0f, mouthOffset.y);
                     break;
                 case 2: 
-                    mouthOffset = new Vector3(0, 0f, -mouthOffset.y);
+                    mouthOffset = new Vector3(0, 0f, mouthOffset.y);
                     break;
                 case 3: 
-                    mouthOffset = new Vector3(-mouthOffset.x, 0f, -mouthOffset.y);
+                    mouthOffset = new Vector3(-mouthOffset.x, 0f, mouthOffset.y);
                     break;
                 default: 
                     mouthOffset = Vector3.zero;

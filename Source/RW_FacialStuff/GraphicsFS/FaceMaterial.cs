@@ -170,67 +170,7 @@ namespace FacialStuff.GraphicsFS
 
             return material;
         }
-
-        [CanBeNull]
-        public Material MouthMatAt(Rot4 facing, bool portrait)
-        {
-            Material material = null;
-
-            if (this._compFace.BodyStat.Jaw != PartStatus.Natural && Controller.settings.ShowExtraParts)
-            {
-                material = this._pawnFaceGraphic.JawGraphic?.MatAt(facing);
-            }
-            else
-            {
-                if (!Controller.settings.UseMouth)
-                {
-                    return null;
-                }
-
-                if (this._compFace.FaceData == null || !this._compFace.FaceData.DrawMouth)
-                {
-                    return null;
-                }
-
-                if (!this._compFace.Props.hasMouth)
-                {
-                    return null;
-                }
-
-                if (this._pawn.gender == Gender.Male)
-                {
-                    if (!this._compFace.FaceData.BeardDef.drawMouth || this._compFace.FaceData.MoustacheDef != MoustacheDefOf.Shaved)
-                    {
-                        return null;
-                    }
-                }
-
-                if (portrait)
-                {
-                    material = this._pawnFaceGraphic.Mouthgraphic.HumanMouthGraphic[3].Graphic.MatAt(facing);
-                }
-                else
-                {
-                    material = this._pawnFaceGraphic.MouthGraphic?.MatAt(facing);
-
-                    // if (bodyCondition == RotDrawMode.Fresh)
-                    // {
-                    // material = this.PawnGraphic.JawGraphic?.MatAt(facing);
-                    // }
-                    // else if (bodyCondition == RotDrawMode.Rotting)
-                    // {
-                    // }
-                }
-            }
-
-            if (material != null)
-            {
-                material = this.Flasher.GetDamagedMat(material);
-            }
-
-            return material;
-        }
-
+        
         [CanBeNull]
         public Material WrinkleMatAt(Rot4 facing, RotDrawMode bodyCondition)
         {

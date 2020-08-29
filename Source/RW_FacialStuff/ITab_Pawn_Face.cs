@@ -85,7 +85,8 @@ namespace FacialStuff
             if (GUILayout.Button("Mouth"))
             {
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
-                foreach (MouthDef current in DefDatabase<MouthDef>.AllDefs)
+                // TODO: don't know what this is for. disable because I'm removing PawnFaceGraphic.MouthGraphic member variable
+                /*foreach (MouthDef current in DefDatabase<MouthDef>.AllDefs)
                 {
                     MouthDef localOut = current;
                     list.Add(
@@ -111,7 +112,7 @@ namespace FacialStuff
                                         }
                                     }
                                 }));
-                }
+                }*/
 
                 Find.WindowStack.Add(new FloatMenu(list));
             }
