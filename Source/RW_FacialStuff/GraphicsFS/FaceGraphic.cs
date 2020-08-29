@@ -271,47 +271,6 @@ namespace FacialStuff.GraphicsFS
 						eyeColor) as Graphic_FaceMirror;
 				}
 			}
-			/*_eyeGraphics[0, (int)EyeState.Open] = GraphicDatabase.Get<Graphic_FaceMirror>(
-				eyePath,
-				ShaderDatabase.CutoutComplex,
-				Vector2.one,
-				eyeColor) as Graphic_FaceMirror;
-
-			_eyeGraphics[1, (int)EyeState.Open] = GraphicDatabase.Get<Graphic_FaceMirror>(
-				eyePath,
-				ShaderDatabase.CutoutComplex,
-				Vector2.one,
-				eyeColor) as Graphic_FaceMirror;
-			
-			_eyeGraphics[0, (int)EyeState.Closed] = GraphicDatabase.Get<Graphic_FaceMirror>(
-				EyeTexPath(EyeDefOf.Closed),
-				ShaderDatabase.Cutout,
-				Vector2.one,
-				eyeColor) as Graphic_FaceMirror;
-
-			_eyeGraphics[1, (int)EyeState.Closed] = GraphicDatabase.Get<Graphic_FaceMirror>(
-				EyeTexPath(EyeDefOf.Closed),
-				ShaderDatabase.Cutout,
-				Vector2.one,
-				eyeColor) as Graphic_FaceMirror;
-
-			_eyeGraphics[0, (int)EyeState.Missing] = GraphicDatabase.Get<Graphic_FaceMirror>(
-				EyeTexPath(EyeDefOf.Missing),
-				ShaderDatabase.CutoutComplex,
-				Vector2.one,
-				eyeColor) as Graphic_FaceMirror;
-
-			_eyeGraphics[1, (int)EyeState.Missing] = GraphicDatabase.Get<Graphic_FaceMirror>(
-				EyeTexPath(EyeDefOf.Missing),
-				ShaderDatabase.CutoutComplex,
-				Vector2.one,
-				eyeColor) as Graphic_FaceMirror;
-
-			DeadEyeGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-				StringsFS.PathHumanlike + "Eyes/Eyes_Dead",
-				ShaderDatabase.Cutout,
-				Vector2.one,
-				Color.black);*/
 		}
 		
 		private void InitializeGraphicsMouth(CompFace compFace)

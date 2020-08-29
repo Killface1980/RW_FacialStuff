@@ -121,22 +121,7 @@ namespace FacialStuff.GraphicsFS
 
             return material;
         }
-
-        /*[CanBeNull]
-        public Material EyeMatAt(Rot4 facing, int partIdx, PartStatus eyeStatus, EyeState eyeState, bool portrait)
-        {
-            if(portrait && eyeState == EyeState.Closed)
-			{
-                eyeState = EyeState.Open;
-			}
-            Material material = _pawnFaceGraphic.GetEyeGraphic(partIdx, eyeState).MatAt(facing);            
-            if(material != null)
-            {
-                material = this.Flasher.GetDamagedMat(material);
-            }
-            return material;
-        }*/
-
+        
         [CanBeNull]
         public Material EyeMissingMatAt(Rot4 facing, bool portrait)
         {

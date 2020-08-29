@@ -257,8 +257,6 @@ namespace FacialStuff.Utilities
             }
 
             IEnumerable<BeardDef> source = from beard in DefDatabase<BeardDef>.AllDefs
-
-                                           // where !beard.forbiddenOnRace.Contains(pawn.def)
                                            where beard.beardType == type
                                            select beard;
 
@@ -404,8 +402,6 @@ namespace FacialStuff.Utilities
             IEnumerable<BeardDef> source;
             {
                 source = from beard in DefDatabase<BeardDef>.AllDefs
-
-                         // where !beard.forbiddenOnRace.Contains(pawn.def)
                          where beard.hairTags.SharesElementWith(factionType.hairTags)
                          select beard;
             }
