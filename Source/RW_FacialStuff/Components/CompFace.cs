@@ -25,11 +25,14 @@ namespace FacialStuff
         private FaceData _faceData;
         
         private IMouthBehavior.Params _cachedMouthParam = new IMouthBehavior.Params();
-        
+        private List<IEyeBehavior.Params> _cachedEyeParam;
+
         public bool Initialized { get; private set; }
-        
 
         public IMouthBehavior MouthBehavior { get; private set; }
+
+        public IEyeBehavior EyeBehavior { get; private set; }
+
         public FaceMaterial FaceMaterial { get; set; }
         
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
@@ -37,9 +40,7 @@ namespace FacialStuff
         public PartStatusTracker PartStatusTracker { get; private set; }
 
         public PawnHeadRotationAI HeadRotationAI { get; private set; }
-        
-        public PawnFacialExpressionAI FacialExpressionAI { get; private set; }
-                
+                        
         public Faction OriginFaction => _originFactionInt;
         
         public virtual CrownType PawnCrownType => Pawn?.story.crownType ?? CrownType.Average;
@@ -127,15 +128,13 @@ namespace FacialStuff
                             headDrawer.DrawWrinkles(wrinkleLoc, bodyDrawType, headQuat, portrait);
                         }
                     }
-                    if(Props.perEyeBehaviors.Count > 0)
+                    if(EyeBehavior.NumEyes > 0)
                     {
                         Vector3 eyeLoc = headPos;
                         eyeLoc.y += YOffset_Eyes;
                         // Draw natural eyes
-                        foreach(var headDrawer in PawnHeadDrawers)
-                        {
-                            headDrawer.DrawNaturalEyes(eyeLoc, headQuat, portrait);
-                        }
+                        DrawEyes(eyeLoc, headFacing, headQuat, portrait);
+
                         Vector3 browLoc = headPos;
                         browLoc.y += YOffset_Brows;
                         // Draw brows above eyes
@@ -170,7 +169,9 @@ namespace FacialStuff
                         FaceData.BeardDef.drawMouth && 
                         Controller.settings.UseMouth)
                     {
-                        DrawMouth(headPos, headFacing, headQuat, portrait);
+                        Vector3 mouthLoc = headPos;
+                        mouthLoc.y += YOffset_Mouth;
+                        DrawMouth(mouthLoc, headFacing, headQuat, portrait);
                     }
                     // When CurrentHeadCoverage == HeadCoverage.None, let the vanilla routine draw the hair
                     if(CurrentHeadCoverage != HeadCoverage.None)
@@ -228,6 +229,39 @@ namespace FacialStuff
             }
         }
 
+        public void DrawEyes(Vector3 headPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
+		{
+            Vector3 drawLoc = headPos;
+            FaceGraphic faceGraphic = PawnFaceGraphic;
+            if(faceGraphic == null)
+            {
+                return;
+            }
+            for(int partIdx = 0; partIdx < EyeBehavior.NumEyes; ++partIdx)
+            {
+                if(_cachedEyeParam[partIdx].render)
+                {
+                    Mesh eyeMesh = MeshPoolFS.GetFaceMesh(PawnCrownType, headFacing, _cachedEyeParam[partIdx].mirror);
+                    Material eyeMat = faceGraphic.EyeMatAt(
+                        partIdx,
+                        headFacing,
+                        portrait,
+                        _cachedEyeParam[partIdx].openEye,
+                        PartStatusTracker.GetEyePartLevel(partIdx));
+                    if(eyeMat != null)
+                    {
+                        drawLoc.y += Offsets.YOffset_LeftPart;
+                        GenDraw.DrawMeshNowOrLater(
+                            eyeMesh,
+                            drawLoc,
+                            headQuat,
+                            eyeMat,
+                            portrait);
+                    }
+                }
+            }
+        }
+
         public void DrawMouth(Vector3 headPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
 		{
             Vector3 mouthLoc = headPos;
@@ -272,10 +306,6 @@ namespace FacialStuff
                 {
                     HeadRotationAI = new PawnHeadRotationAI(Pawn);
                 }
-                if(FacialExpressionAI == null)
-                {
-                    FacialExpressionAI = new PawnFacialExpressionAI(Pawn, Props);
-                }
                 if(PartStatusTracker == null)
                 {
                     PartStatusTracker = new PartStatusTracker(Pawn.RaceProps.body);
@@ -300,9 +330,15 @@ namespace FacialStuff
                 FaceData = new FaceData(this, OriginFaction?.def);
             }
             MouthBehavior = (IMouthBehavior)Props.mouthBehavior.Clone();
+            EyeBehavior = (IEyeBehavior)Props.eyeBehavior.Clone();
             MouthBehavior.InitializeTextureIndex(FaceData.MouthSetDef.texNames.AsReadOnly());
+            _cachedEyeParam = new List<IEyeBehavior.Params>(EyeBehavior.NumEyes);
+            for(int i = 0; i < EyeBehavior.NumEyes; ++i)
+			{
+                _cachedEyeParam.Add(new IEyeBehavior.Params()); 
+			}
             FullHeadType = MeshPoolFS.GetFullHeadType(Pawn.gender, PawnCrownType, PawnHeadType);
-            PawnFaceGraphic = new FaceGraphic(this, Props.perEyeBehaviors.Count);
+            PawnFaceGraphic = new FaceGraphic(this, EyeBehavior.NumEyes);
             FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
             Initialized = true;
         }
@@ -328,11 +364,15 @@ namespace FacialStuff
                 Pawn.Spawned &&
                 !Find.TickManager.Paused;
             HeadRotationAI.Tick(canUpdatePawn, bodyFacing, pawnState);
-            FacialExpressionAI.Tick(canUpdatePawn, this, pawnState);
             if(canUpdatePawn)
             {
                 _cachedMouthParam.Reset();
-                Props.mouthBehavior.Update(Pawn, headFacing, pawnState, _cachedMouthParam);
+                foreach(var eyeParam in _cachedEyeParam)
+				{
+                    eyeParam.Reset();
+				}
+                MouthBehavior.Update(Pawn, headFacing, pawnState, _cachedMouthParam);
+                EyeBehavior.Update(Pawn, headFacing, pawnState, _cachedEyeParam);
             }
 
             if(!portrait)

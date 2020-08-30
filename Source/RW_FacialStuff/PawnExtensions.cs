@@ -81,7 +81,7 @@ namespace FacialStuff
 
             if (bodyProps._face != null)
             {
-                if (bodyProps._face.Props.perEyeBehaviors.Count > 0)
+                if (bodyProps._face.EyeBehavior.NumEyes > 0)
                 {
                     if (hediff.Part == bodyProps._leftEye)
                     {

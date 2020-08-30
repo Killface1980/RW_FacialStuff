@@ -29,11 +29,11 @@ namespace FacialStuff
         public bool needsBlankHumanHead;
         
         public List<string> useTexCollection;
-
-        public List<PerEyeBehavior> perEyeBehaviors = new List<PerEyeBehavior>();
-
+        
         public IMouthBehavior mouthBehavior;
         
+        public IEyeBehavior eyeBehavior;
+
         public CompProperties_Face()
         {
             this.compClass = typeof(CompFace);

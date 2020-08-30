@@ -569,7 +569,7 @@ namespace FacialStuff.FaceEditor
                 }
             }
 
-            if (this.CompFace.Props.perEyeBehaviors.Count > 0)
+            if (this.CompFace.EyeBehavior.NumEyes > 0)
             {
                 TabRecord item3 = new TabRecord(
                                                 "FacialStuffEditor.Eye".Translate(), this.SetTabFaceStyle(FaceStyleTab.Eye), this.Tab == FaceStyleTab.Eye);

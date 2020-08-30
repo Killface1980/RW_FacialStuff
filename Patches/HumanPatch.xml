@@ -43,44 +43,19 @@
 				<li>Human</li>
 			</useTexCollection>
 			
-			<!--
-			The number of members declared in this list must be the same as the number of eye BodyPartRecords declared in the race's BodyDef.
-			An eye BodyPartRecord should have BodyPartGroupDef of "Eyes".
-			The order of the PerEyeDef declared in this list matches the order of eye BodyPatRecords declared in the race's BodyDef.
+			<!-- 
+			Since this class is defined within CompProperties, it will be only instantiated once and shared 
+			among multiple CompFace instances. However, this behavior is not desired - there need to be 
+			separate instances of the behavior class for each CompFace instance. Therefore, during initialization
+			the instance will be cloned so each instance can have its own member variable for the CompFace
+			that it is associated with. Same goes for other behavior classes. Doing so also allows configurable member 
+			variables like the following.
 			-->
-			<perEyeBehaviors>
-				<!-- The following PerEyeDefs are declared in Defs/EyeDefs/PerEyeDef_Human.xml -->
-				<!-- Left eye is declared first in human BodyDef, so this corresponds to the left eye -->
-				<li>
-					<!-- 
-					If the texture of the eye should be mirrored horizontally. 
-					For example, left eye can be rendered by mirroring right eye's texture.
-					-->
-					<drawMirrored>true</drawMirrored>
-					<!-- Whether the eye can blink -->
-					<canBlink>true</canBlink>
-					<!-- Whether the eye should be closed when aiming -->
-					<closeWhileAiming>true</closeWhileAiming>
-					<!-- Whether the eye should be closed when sleeping -->
-					<closeWhileSleeping>true</closeWhileSleeping>
-					<!-- 
-					Whether the eye should be drawn for each direction. Bit set to 1 enables drawing. 
-					Bit 0 is north, bit 1 is east, bit 2 is south, bit 3 is west. 
-					-->
-					<!-- Draw when facing south and west (0b1100) -->
-					<drawDirBitFlag>12</drawDirBitFlag>
-				</li>
-				<!-- Right eye is declared after the left eye in human BodyDef, so this corresponds to the right eye -->
-				<li>
-					<drawMirrored>false</drawMirrored>
-					<canBlink>true</canBlink>
-					<closeWhileAiming>false</closeWhileAiming>
-					<closeWhileSleeping>true</closeWhileSleeping>
-					<!-- Draw when facing east and south (0b0110) -->
-					<drawDirBitFlag>6</drawDirBitFlag>
-				</li>
-				<!-- More list members should be added if the race has more eyes -->
-			</perEyeBehaviors>
+			<eyeBehavior Class = "FacialStuff.AI.HumanEyeBehavior">
+				<blinkCloseTicks>10</blinkCloseTicks>
+				<blinkOpenAverageTicks>120</blinkOpenAverageTicks>
+				<blinkOpenMaxRandOffsetTicks>30</blinkOpenMaxRandOffsetTicks>
+			</eyeBehavior>
 			
 			<!-- 
 			This determines what mouth texture is displayed under what circumstances 

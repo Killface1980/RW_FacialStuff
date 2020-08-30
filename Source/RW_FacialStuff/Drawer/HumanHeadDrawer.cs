@@ -79,36 +79,6 @@ namespace FacialStuff
 
         public override void DrawNaturalEyes(Vector3 drawLoc, Quaternion headQuat, bool portrait)
         {
-            FaceGraphic faceGraphic = CompFace.PawnFaceGraphic;
-            if(faceGraphic == null)
-            {
-                return;
-            }
-            for(int partIdx = 0; partIdx < CompFace.PartStatusTracker.EyeCount; ++partIdx)
-			{
-                PerEyeBehavior perEyeBehavior = CompFace.Props.perEyeBehaviors[partIdx];
-                bool shouldDraw = (perEyeBehavior.drawDirBitFlag & (1 << HeadFacing.AsInt)) != 0;
-                if(shouldDraw)
-				{
-                    Mesh eyeMesh = MeshPoolFS.GetFaceMesh(CompFace.PawnCrownType, HeadFacing, perEyeBehavior.drawMirrored);
-                    Material eyeMat = faceGraphic.EyeMatAt(
-                        partIdx, 
-                        HeadFacing, 
-                        portrait, 
-                        CompFace.FacialExpressionAI.IsEyeOpen(partIdx),
-                        CompFace.PartStatusTracker.GetEyePartLevel(partIdx));
-                    if(eyeMat != null)
-                    {
-                        drawLoc.y += Offsets.YOffset_LeftPart;
-                        GenDraw.DrawMeshNowOrLater(
-                            eyeMesh,
-                            drawLoc,
-                            headQuat,
-                            eyeMat,
-                            portrait);
-                    }
-                }
-			}
         }
 
         public override void DrawNaturalMouth(Vector3 drawLoc, Quaternion headQuat, bool portrait)
