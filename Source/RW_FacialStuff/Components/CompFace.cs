@@ -281,6 +281,7 @@ namespace FacialStuff
             }
 
             PawnState pawnState = new PawnState();
+            pawnState.alive = !Pawn.Dead;
             pawnState.sleeping = IsAsleep;
             pawnState.aiming = Pawn.Aiming();
             pawnState.inPainShock = Pawn.health.InPainShock;
