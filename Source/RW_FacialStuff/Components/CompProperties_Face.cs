@@ -31,6 +31,8 @@ namespace FacialStuff
         public List<string> useTexCollection;
 
         public List<PerEyeBehavior> perEyeBehaviors = new List<PerEyeBehavior>();
+
+        public IMouthBehavior mouthBehavior;
         
         public CompProperties_Face()
         {

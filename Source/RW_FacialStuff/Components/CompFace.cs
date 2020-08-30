@@ -24,8 +24,11 @@ namespace FacialStuff
         private Faction _originFactionInt;
         private FaceData _faceData;
 
-        public bool Initialized { get; private set; }
+        private bool _drawMouth;
+        private int _mouthTextureIdx;
 
+        public bool Initialized { get; private set; }
+        
         public FaceMaterial FaceMaterial { get; set; }
         
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
@@ -77,7 +80,7 @@ namespace FacialStuff
         public CompProperties_Face Props => (CompProperties_Face)this.props;
         
         public Pawn Pawn => this.parent as Pawn;
-
+        
         public HeadCoverage CurrentHeadCoverage { get; set; }
 
         private List<PawnHeadDrawer> PawnHeadDrawers { get; set; }
@@ -160,15 +163,9 @@ namespace FacialStuff
                             headDrawer.DrawBeardAndTache(beardLoc, tacheLoc, headQuat, portrait);
                         }
                     }
-                    if(Props.hasMouth && FaceData.BeardDef.drawMouth && Controller.settings.UseMouth)
+                    if(Props.hasMouth && _drawMouth && _mouthTextureIdx >= 0 && FaceData.BeardDef.drawMouth && Controller.settings.UseMouth)
                     {
-                        Vector3 mouthLoc = headPos;
-                        mouthLoc.y += YOffset_Mouth;
-                        // Draw natural mouth
-                        foreach(var headDrawer in PawnHeadDrawers)
-                        {
-                            headDrawer.DrawNaturalMouth(mouthLoc, headQuat, portrait);
-                        }
+                        DrawMouth(headPos, headFacing, headQuat, portrait);
                     }
                     // When CurrentHeadCoverage == HeadCoverage.None, let the vanilla routine draw the hair
                     if(CurrentHeadCoverage != HeadCoverage.None)
@@ -226,6 +223,36 @@ namespace FacialStuff
             }
         }
 
+        public void DrawMouth(Vector3 headPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
+		{
+            Vector3 mouthLoc = headPos;
+            mouthLoc.y += YOffset_Mouth;
+            Material mouthMat = PawnFaceGraphic.MouthMatAt(headFacing, _mouthTextureIdx);
+            if(mouthMat == null)
+            {
+                return;
+            }
+            Mesh meshMouth = MeshPoolFS.GetFaceMesh(PawnCrownType, headFacing, false);
+            Vector3 mouthOffset = MeshPoolFS.mouthOffsetsHeadType[(int)FullHeadType];
+            switch(headFacing.AsInt)
+            {
+                case 1:
+                    mouthOffset = new Vector3(mouthOffset.x, 0f, mouthOffset.y);
+                    break;
+                case 2:
+                    mouthOffset = new Vector3(0, 0f, mouthOffset.y);
+                    break;
+                case 3:
+                    mouthOffset = new Vector3(-mouthOffset.x, 0f, mouthOffset.y);
+                    break;
+                default:
+                    mouthOffset = Vector3.zero;
+                    break;
+            }
+            mouthLoc += headQuat * mouthOffset;
+            GenDraw.DrawMeshNowOrLater(meshMouth, mouthLoc, headQuat, mouthMat, portrait);
+        }
+
         public override void Initialize(CompProperties props)
         {
             base.Initialize(props);
@@ -262,11 +289,7 @@ namespace FacialStuff
             {
                 FaceData = new FaceData(this, OriginFaction?.def);
             }
-            // Fix for PrepC for pre-FS pawns, also sometimes the brows are not defined?!?
-            if(FaceData?.EyeDef == null || FaceData.BrowDef == null || FaceData.BeardDef == null)
-            {
-                FaceData = new FaceData(this, Faction.OfPlayer.def);
-            }
+            Props.mouthBehavior.InitializeTextureIndex(FaceData.MouthSetDef.texNames.AsReadOnly());
             FullHeadType = MeshPoolFS.GetFullHeadType(Pawn.gender, PawnCrownType, PawnHeadType);
             PawnFaceGraphic = new FaceGraphic(this, Props.perEyeBehaviors.Count);
             FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
@@ -296,6 +319,9 @@ namespace FacialStuff
                 !Find.TickManager.Paused;
             HeadRotationAI.Tick(canUpdatePawn, bodyFacing, pawnState);
             FacialExpressionAI.Tick(canUpdatePawn, this, pawnState);
+            _mouthTextureIdx = -1;
+            Props.mouthBehavior.Update(Pawn, headFacing, pawnState, out _drawMouth, ref _mouthTextureIdx);
+
             if(!portrait)
 			{
                 headFacing = HeadRotationAI.CurrentRotation;

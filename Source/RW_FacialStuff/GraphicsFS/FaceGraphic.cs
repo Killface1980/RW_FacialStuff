@@ -78,8 +78,7 @@ namespace FacialStuff.GraphicsFS
 			}
 			if(compFace.Props.hasMouth)
 			{
-				Mouthgraphic = new HumanMouthGraphics(_pawn);
-				InitializeGraphicsMouth(compFace);
+				Mouthgraphic = new HumanMouthGraphics(pawnFace.MouthSetDef);
 			}
 		}
 				
@@ -272,34 +271,11 @@ namespace FacialStuff.GraphicsFS
 			}
 		}
 		
-		public Material MouthMatAt(Rot4 headFacing, bool portrait, MouthState mouthState, float mood)
+		public Material MouthMatAt(Rot4 headFacing, int textureIdx)
 		{
-			Graphic mouthGraphic = null;
-			if(portrait)
-			{
-				mouthGraphic = Mouthgraphic.HumanMouthGraphic[3].Graphic;
-			}
-			else
-			{
-				switch(mouthState)
-				{
-					case MouthState.Mood:
-						mouthGraphic = Mouthgraphic.HumanMouthGraphic[Mouthgraphic.GetMouthTextureIndexOfMood(mood)].Graphic;
-						break;
-
-					case MouthState.Crying:
-						mouthGraphic = Mouthgraphic.MouthGraphicCrying;
-						break;
-				}
-			}
-			return mouthGraphic?.MatAt(headFacing);
+			return Mouthgraphic.HumanMouthGraphic[textureIdx].MatAt(headFacing);
 		}
-
-		private void InitializeGraphicsMouth(CompFace compFace)
-		{
-
-		}
-
+		
 		private void InitializeGraphicsWrinkles(CompFace compFace)
 		{
 			Color wrinkleColor = _pawn.story.SkinColor * new Color(0.1f, 0.1f, 0.1f);

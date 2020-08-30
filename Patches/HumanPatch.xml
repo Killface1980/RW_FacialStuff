@@ -81,6 +81,15 @@
 				</li>
 				<!-- More list members should be added if the race has more eyes -->
 			</perEyeBehaviors>
+			
+			<!-- 
+			This determines what mouth texture is displayed under what circumstances 
+			Look at FacialStuff.AI.HumanMouth to see how it is implemented.
+			-->
+			<mouthBehavior Class = "FacialStuff.AI.HumanMouth">
+				<!-- Set public member variables if needed -->
+			</mouthBehavior>
+			
             <!--the drawer for the head. more than one can be defined-->
             <headDrawers>
               <li Class ="FacialStuff.HumanHeadDrawer"/>

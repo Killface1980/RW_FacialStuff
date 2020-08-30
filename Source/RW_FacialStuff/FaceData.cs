@@ -31,6 +31,7 @@ namespace FacialStuff
         private EyeDef _eyeDef;
         private EarDef _earDef;
 
+
         private float _greyness;
 
         private Color _hairColor;
@@ -47,6 +48,8 @@ namespace FacialStuff
 
         #endregion Private Fields
 
+        public MouthSetDef MouthSetDef { get; private set; }
+
         #region Public Constructors
 
         public FaceData([NotNull] CompFace face, FactionDef pawnFactionDef, bool newPawn = true)
@@ -61,6 +64,7 @@ namespace FacialStuff
             this.EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, pawnFactionDef, face.Props);
             this.EarDef = PawnFaceMaker.RandomEarDefFor(pawn, pawnFactionDef);
             this.BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, pawnFactionDef);
+            MouthSetDef = PawnFaceMaker.RandomMouthDefFor(pawn, face.Props, pawnFactionDef);
 
             this.WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn);
 

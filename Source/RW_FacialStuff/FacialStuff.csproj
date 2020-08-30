@@ -90,10 +90,13 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="WidgetsFS.cs" />
+    <Compile Include="AI\HumanMouth.cs" />
     <Compile Include="AI\PawnFacialExpressionAI.cs" />
     <Compile Include="AI\PawnHeadRotationAI.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
     <None Include="Controller_Animator.cs" />
+    <Compile Include="Defs\MouthSetDef.cs" />
+    <Compile Include="IMouthBehavior.cs" />
     <Compile Include="PartStatusTracker.cs" />
     <Compile Include="Components\Skeletoon\FS_Skeleton.cs" />
     <None Include="DefOfs\ExtremityDefOf.cs" />
@@ -166,7 +169,6 @@
     <Compile Include="Defs\BeardDef.cs" />
     <Compile Include="Defs\BrowDef.cs" />
     <Compile Include="Defs\EyeDef.cs" />
-    <Compile Include="Defs\MouthDef.cs" />
     <Compile Include="Defs\WrinkleDef.cs" />
     <Compile Include="Enums\BeardType.cs" />
     <Compile Include="PawnExtensions.cs" />
@@ -192,7 +194,6 @@
     <Compile Include="Enums\enums.cs" />
     <Compile Include="ITab_Pawn_Face.cs" />
     <Compile Include="Enums\HeadType.cs" />
-    <Compile Include="DefOfs\MouthDefOf.cs" />
     <Compile Include="GraphicsFS\FaceTextures.cs" />
     <Compile Include="GraphicsFS\Graphic_FaceMirror.cs" />
     <Compile Include="GraphicsFS\Graphic_Multi_AddedHeadParts.cs" />

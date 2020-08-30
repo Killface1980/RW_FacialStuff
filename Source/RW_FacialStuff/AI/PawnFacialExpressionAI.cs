@@ -26,20 +26,12 @@ namespace FacialStuff.AI
 		{ 
             public bool open;
         }
-        
-		private struct MouthVars
-		{
-            public float mood;
-            public MouthState state;
-            public int ticksSinceLastUpdate;
-        }
-        
+                
 		#endregion
 
 		#region Private Member Variables
 
 		private Pawn _pawn;
-        private MouthVars _mouth;
         private EyeVars _eye;
         private List<PerEyeVars> _perEye;
         private CompProperties_Face _faceProp;
@@ -49,9 +41,6 @@ namespace FacialStuff.AI
 		public PawnFacialExpressionAI(Pawn pawn, CompProperties_Face faceProp)
 		{
 			_pawn = pawn;
-            _mouth.mood = 0.5f;
-            _mouth.state = MouthState.Mood;
-            _mouth.ticksSinceLastUpdate = 0;
             _eye.blinkOpen = true;
             _eye.ticksSinceLastState = 0;
             _eye.ticksUntilNextState = CalculateEyeOpenDuration(1f);
@@ -71,8 +60,6 @@ namespace FacialStuff.AI
 				return;
 			}
             EyeTick(compFace.Props, pawnState);
-            MouthTick(compFace, pawnState);
-            ++_mouth.ticksSinceLastUpdate;
             ++_eye.ticksSinceLastState;
         }
 
@@ -117,30 +104,7 @@ namespace FacialStuff.AI
         {
             return _perEye[eyeIdx].open;
         }
-
-        private void MouthTick(CompFace compFace, PawnState pawnState)
-		{
-            if(_mouth.ticksSinceLastUpdate >= 90)
-            {
-                if(pawnState.fleeing || pawnState.burning || (pawnState.inPainShock && !pawnState.sleeping))
-                {
-                    _mouth.state = MouthState.Crying;
-                }
-                if(_pawn.needs?.mood?.thoughts != null)
-                {
-                    _mouth.mood = _pawn.needs.mood.CurInstantLevel;
-                    _mouth.state = MouthState.Mood;
-                }
-                _mouth.ticksSinceLastUpdate = 0;
-            }
-        }
-        
-        public MouthState GetMouthState(ref float mood)
-		{
-            mood = _mouth.mood;
-            return _mouth.state;
-		}
-
+                
         private static int CalculateEyeOpenDuration(float consciousness)
         {
             int offset = 0;
