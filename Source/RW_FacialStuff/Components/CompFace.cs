@@ -334,6 +334,9 @@ namespace FacialStuff
             {
                 PartStatusTracker = new PartStatusTracker(Pawn.RaceProps.body);
             }
+            HeadBehavior = (IHeadBehavior)Props.headBehavior.Clone();
+            MouthBehavior = (IMouthBehavior)Props.mouthBehavior.Clone();
+            EyeBehavior = (IEyeBehavior)Props.eyeBehavior.Clone();
         }
 
         // Faction data isn't available during ThingComp.Initialize(). Initialize faction-related members here.
@@ -348,9 +351,6 @@ namespace FacialStuff
                 FaceData = new FaceData(this, OriginFaction?.def);
             }
 
-            HeadBehavior = (IHeadBehavior)Props.headBehavior.Clone();
-            MouthBehavior = (IMouthBehavior)Props.mouthBehavior.Clone();
-            EyeBehavior = (IEyeBehavior)Props.eyeBehavior.Clone();
             MouthBehavior.InitializeTextureIndex(FaceData.MouthSetDef.texNames.AsReadOnly());
             _cachedEyeParam = new List<IEyeBehavior.Params>(EyeBehavior.NumEyes);
             for(int i = 0; i < EyeBehavior.NumEyes; ++i)
