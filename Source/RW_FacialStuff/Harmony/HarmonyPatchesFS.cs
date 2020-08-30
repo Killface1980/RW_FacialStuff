@@ -601,15 +601,7 @@ namespace FacialStuff.Harmony
 
         public static bool RandomHairDefFor_PreFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
         {
-            //  Log.Message("1 - " + pawn);
             if (!pawn.GetCompFace(out CompFace compFace))
-            {
-                return true;
-            }
-
-            //   Log.Message("2 - " + pawn.def.defName);
-
-            if (compFace.Props.useAlienRacesHairTags)
             {
                 return true;
             }

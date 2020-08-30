@@ -398,7 +398,7 @@ namespace FacialStuff.Harmony
                 Vector3 headBaseOffset = pawnRenderer.BaseHeadOffsetAt(headFacing) + extraLocalVar.headOffsetBodyWobble;
                 Vector3 headPosOffset = bodyQuat * headBaseOffset;
                 Vector3 headDrawLoc = headPos + headPosOffset;
-                return compFace.DrawHead(bodyDrawType, portrait, headStump, bodyFacing, headFacing, headDrawLoc, bodyQuat);
+                return compFace.DrawHead(graphics, bodyDrawType, portrait, headStump, bodyFacing, headFacing, headDrawLoc, bodyQuat);
             }
             return false;
         }

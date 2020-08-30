@@ -1,12 +1,8 @@
-﻿// ReSharper disable StyleCop.SA1401
-
-using System;
-using FacialStuff.Animator;
+﻿using System;
+using System.Collections.Generic;
 using FacialStuff.DefOfs;
 using FacialStuff.Defs;
 using FacialStuff.Harmony;
-using JetBrains.Annotations;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -14,45 +10,19 @@ namespace FacialStuff.GraphicsFS
 {
 	public class FaceGraphic
 	{
-		const string STR_south = "_south";
-
 		public Graphic BrowGraphic;
-		public Graphic DeadEyeGraphic;
-		private Graphic_FaceMirror[,] _eyeGraphics = new Graphic_FaceMirror[2, 3];
-		private Graphic_FaceMirror[] _eyeClosedGraphics = new Graphic_FaceMirror[2];
-		public Graphic_Multi_AddedHeadParts EyeRightPatchGraphic;
-		public Graphic_Multi_AddedHeadParts EyeLeftPatchGraphic;
-		
-		public Graphic_Multi_NaturalHeadParts JawGraphic;
-		public Graphic MainBeardGraphic;
-		public Graphic MoustacheGraphic;
-		private HumanMouthGraphics Mouthgraphic;
-
-		public Graphic RottingWrinkleGraphic;
-
-		public Graphic WrinkleGraphic;
-
+		private Graphic_FaceMirror[,] _eyeGraphics;
+		private Graphic_FaceMirror[] _eyeClosedGraphics;
+		private List<Graphic_Multi> _mouthGraphics;
+		public Graphic_Multi JawGraphic;
+		public Graphic_Multi MainBeardGraphic;
+		public Graphic_Multi MoustacheGraphic;
+		public Graphic_Multi RottingWrinkleGraphic;
+		public Graphic_Multi WrinkleGraphic;
+				
 		private readonly CompFace _compFace;
 		private readonly Pawn _pawn;
-
-		private readonly FaceData pawnFace;
-		public Graphic_FaceMirror EyeLeftMissingGraphic;
-		public Graphic_FaceMirror EyeRightMissingGraphic;
-
-		public Graphic_FaceMirror EarLeftMissingGraphic;
-		public Graphic_FaceMirror EarRightMissingGraphic;
-
-		public string texPathBrow;
-		
-		public string texPathEyeLeftPatch;
-		public string texPathEyeRightPatch;
-		
-		public string texPathEarLeftPatch;
-		public string texPathEarLeftMissing;
-		public string texPathEarRightPatch;
-		public string texPathEarRightMissing;
-
-		public string texPathJawAddedPart;
+		private readonly FaceData _pawnFace;
 
 		public FaceGraphic(CompFace compFace, int eyeCount)
 		{
@@ -60,8 +30,8 @@ namespace FacialStuff.GraphicsFS
 			_pawn = compFace.Pawn;
 			_eyeGraphics = new Graphic_FaceMirror[eyeCount, Enum.GetNames(typeof(BodyPartLevel)).Length];
 			_eyeClosedGraphics = new Graphic_FaceMirror[eyeCount];
-			pawnFace = compFace.FaceData;
-			if(pawnFace != null)
+			_pawnFace = compFace.FaceData;
+			if(_pawnFace != null)
 			{
 				if(compFace.Props.hasBeard)
 				{
@@ -71,66 +41,68 @@ namespace FacialStuff.GraphicsFS
 				{
 					InitializeGraphicsWrinkles(compFace);
 				}
-				if(_compFace.EyeBehavior.NumEyes > 0)
+				if(compFace.EyeBehavior.NumEyes > 0)
 				{
-					MakeEyes(pawnFace);
+					InitializeGraphicsEyes();
+					InitializeGraphicsBrows();
 				}
 			}
 			if(compFace.Props.hasMouth)
 			{
-				Mouthgraphic = new HumanMouthGraphics(pawnFace.MouthSetDef);
+				Color color = Color.white;
+				_mouthGraphics = new List<Graphic_Multi>(_pawnFace.MouthSetDef.texNames.Count);
+				for(int i = 0; i < _pawnFace.MouthSetDef.texNames.Count; ++i)
+				{
+					_mouthGraphics.Add(
+						GraphicDatabase.Get<Graphic_Multi>(
+							_pawnFace.MouthSetDef.texBasePath +
+								_pawnFace.MouthSetDef.texCollection + "_" +
+								_pawnFace.MouthSetDef.texSetName + "_" +
+								_pawnFace.MouthSetDef.texNames[i],
+							ShaderDatabase.CutoutSkin,
+							Vector2.one,
+							color) as Graphic_Multi);
+				}
 			}
 		}
-				
-		public void MakeEyes(FaceData pawnFace)
-		{
-			texPathBrow = BrowTexPath(pawnFace.BrowDef);
-
-			InitializeGraphicsEyes();
-			InitializeGraphicsBrows();
-		}
-				
+						
 		private void InitializeGraphicsBeard(CompFace compFace)
 		{
-			if(pawnFace == null)
+			if(_pawnFace == null)
 			{
 				return;
 			}
 
 			string mainBeardDefTexPath = GetBeardPath();
-
 			string moustacheDefTexPath = GetMoustachePath();
+			Color beardColor = _pawnFace.BeardColor;
+			Color tacheColor = _pawnFace.BeardColor;
 
-			Color beardColor = pawnFace.BeardColor;
-			Color tacheColor = pawnFace.BeardColor;
-
-			if(pawnFace.MoustacheDef == MoustacheDefOf.Shaved)
+			if(_pawnFace.MoustacheDef == MoustacheDefOf.Shaved)
 			{
 				// no error, only use the beard def shaved as texture
 				tacheColor = Color.white;
 			}
-
-			if(pawnFace.BeardDef == BeardDefOf.Beard_Shaved)
+			if(_pawnFace.BeardDef == BeardDefOf.Beard_Shaved)
 			{
 				beardColor = Color.white;
 			}
-
 			if(Controller.settings.SameBeardColor)
 			{
-				beardColor = tacheColor = _pawn.story.hairColor;
+				beardColor = tacheColor = compFace.Pawn.story.hairColor;
 			}
 
-			MoustacheGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+			MoustacheGraphic = GraphicDatabase.Get<Graphic_Multi>(
 				moustacheDefTexPath,
 				ShaderDatabase.Cutout,
 				Vector2.one,
-				tacheColor);
+				tacheColor) as Graphic_Multi;
 
-			MainBeardGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+			MainBeardGraphic = GraphicDatabase.Get<Graphic_Multi>(
 				mainBeardDefTexPath,
 				ShaderDatabase.Cutout,
 				Vector2.one,
-				beardColor);
+				beardColor) as Graphic_Multi;
 		}
 		
 		public string EarTexPath(Side side, EarDef ear)
@@ -197,11 +169,11 @@ namespace FacialStuff.GraphicsFS
 		private void InitializeGraphicsBrows()
 		{
 			Color color = _pawn.story.hairColor;
-			BrowGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-				texPathBrow,
+			BrowGraphic = GraphicDatabase.Get<Graphic_Multi>(
+				BrowTexPath(_pawnFace.BrowDef),
 				ShaderDatabase.CutoutSkin,
 				Vector2.one,
-				color);
+				color) as Graphic_Multi;
 		}
 				
 		public Material EyeMatAt(int partIdx, Rot4 headFacing, bool portrait, bool eyeOpen, BodyPartLevel partLevel)
@@ -221,7 +193,7 @@ namespace FacialStuff.GraphicsFS
 		
 		public string EyeTexturePath(EyeDef eyeDef)
 		{
-			string texBasePath = pawnFace.EyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : pawnFace.EyeDef.texBasePath;
+			string texBasePath = _pawnFace.EyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : _pawnFace.EyeDef.texBasePath;
 			string texFileName = eyeDef.texCollection + "_" + eyeDef.texName;
 			return texBasePath + texFileName;
 		}
@@ -229,14 +201,13 @@ namespace FacialStuff.GraphicsFS
 		private void InitializeGraphicsEyes()
 		{
 			Color eyeColor = Color.white;
-			var compProps = _compFace.Props;
 			Array.Clear(_eyeGraphics, 0, _eyeGraphics.Length);
 
 			// compProps.eyeBehavior.NumEyes indicates how many eyes the race has.
 			// Open eye graphics
 			for(int i = 0; i < _compFace.EyeBehavior.NumEyes; ++i)
 			{
-				string texPath = EyeTexturePath(pawnFace.EyeDef);
+				string texPath = EyeTexturePath(_pawnFace.EyeDef);
 				_eyeGraphics[i, (int)BodyPartLevel.Natural] = GraphicDatabase.Get<Graphic_FaceMirror>(
 					texPath,
 					ShaderDatabase.CutoutComplex,
@@ -246,9 +217,9 @@ namespace FacialStuff.GraphicsFS
 			// Closed eye graphics
 			for(int i = 0; i < _compFace.EyeBehavior.NumEyes; ++i)
 			{
-				if(pawnFace.EyeDef.closedEyeDef != null)
+				if(_pawnFace.EyeDef.closedEyeDef != null)
 				{
-					string texPath = EyeTexturePath(pawnFace.EyeDef.closedEyeDef);
+					string texPath = EyeTexturePath(_pawnFace.EyeDef.closedEyeDef);
 					_eyeClosedGraphics[i] = GraphicDatabase.Get<Graphic_FaceMirror>(
 						texPath,
 						ShaderDatabase.CutoutComplex,
@@ -259,9 +230,9 @@ namespace FacialStuff.GraphicsFS
 			// Missing eye part graphics
 			for(int i = 0; i < _compFace.EyeBehavior.NumEyes; ++i)
 			{
-				if(pawnFace.EyeDef.missingEyeDef != null)
+				if(_pawnFace.EyeDef.missingEyeDef != null)
 				{
-					string texPath = EyeTexturePath(pawnFace.EyeDef.missingEyeDef);
+					string texPath = EyeTexturePath(_pawnFace.EyeDef.missingEyeDef);
 					_eyeGraphics[i, (int)BodyPartLevel.Removed] = GraphicDatabase.Get<Graphic_FaceMirror>(
 						texPath,
 						ShaderDatabase.CutoutComplex,
@@ -273,30 +244,27 @@ namespace FacialStuff.GraphicsFS
 		
 		public Material MouthMatAt(Rot4 headFacing, int textureIdx)
 		{
-			return Mouthgraphic.HumanMouthGraphic[textureIdx].MatAt(headFacing);
+			return _mouthGraphics[textureIdx].MatAt(headFacing);
 		}
 		
 		private void InitializeGraphicsWrinkles(CompFace compFace)
 		{
 			Color wrinkleColor = _pawn.story.SkinColor * new Color(0.1f, 0.1f, 0.1f);
+			wrinkleColor.a = _pawnFace.WrinkleIntensity;
 
-			{
-				wrinkleColor.a = pawnFace.WrinkleIntensity;
+			WrinkleDef pawnFaceWrinkleDef = _pawnFace.WrinkleDef;
 
-				WrinkleDef pawnFaceWrinkleDef = pawnFace.WrinkleDef;
+			WrinkleGraphic = GraphicDatabase.Get<Graphic_Multi>(
+				pawnFaceWrinkleDef.texPath + "_" + compFace.PawnCrownType + "_" + compFace.PawnHeadType,
+				ShaderDatabase.Transparent,
+				Vector2.one,
+				wrinkleColor) as Graphic_Multi;
 
-				WrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-					pawnFaceWrinkleDef.texPath + "_" + compFace.PawnCrownType + "_" + compFace.PawnHeadType,
-					ShaderDatabase.Transparent,
-					Vector2.one,
-					wrinkleColor);
-
-				RottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-					pawnFaceWrinkleDef.texPath + "_" + compFace.PawnCrownType + "_" + compFace.PawnHeadType,
-					ShaderDatabase.Transparent,
-					Vector2.one,
-					wrinkleColor * FaceTextures.SkinRottingMultiplyColor);
-			}
+			RottingWrinkleGraphic = GraphicDatabase.Get<Graphic_Multi>(
+				pawnFaceWrinkleDef.texPath + "_" + compFace.PawnCrownType + "_" + compFace.PawnHeadType,
+				ShaderDatabase.Transparent,
+				Vector2.one,
+				wrinkleColor * FaceTextures.SkinRottingMultiplyColor) as Graphic_Multi;
 		}
 	}
 }

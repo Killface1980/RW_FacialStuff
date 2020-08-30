@@ -1584,30 +1584,30 @@ namespace FacialStuff.FaceEditor
         }
 
         [CanBeNull]
-        private Graphic_Multi_NaturalHeadParts BeardGraphic([NotNull] BeardDef def)
+        private Graphic_Multi BeardGraphic([NotNull] BeardDef def)
         {
             string path = CompFace.PawnFaceGraphic.GetBeardPath(def);
 
-            Graphic_Multi_NaturalHeadParts graphic =
-            GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
-                                                                path,
-                                                                ShaderDatabase.Cutout,
-                                                                new Vector2(38f, 38f),
-                                                                Color.white,
-                                                                Color.white) as Graphic_Multi_NaturalHeadParts;
+            Graphic_Multi graphic =
+            GraphicDatabase.Get<Graphic_Multi>(
+                path,
+                ShaderDatabase.Cutout,
+                new Vector2(38f, 38f),
+                Color.white,
+                Color.white) as Graphic_Multi;
 
             return graphic;
         }
 
-        private Graphic_Multi_NaturalHeadParts BrowGraphic(BrowDef def)
+        private Graphic_Multi BrowGraphic(BrowDef def)
         {
-            Graphic_Multi_NaturalHeadParts __result =
-            GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+            Graphic_Multi __result =
+            GraphicDatabase.Get<Graphic_Multi>(
                 CompFace.PawnFaceGraphic.BrowTexPath(def),
                 ShaderDatabase.CutoutSkin,
                 new Vector2(38f, 38f),
                 Color.white,
-                Color.white) as Graphic_Multi_NaturalHeadParts;
+                Color.white) as Graphic_Multi;
             
             return __result;
         }
@@ -2450,9 +2450,9 @@ namespace FacialStuff.FaceEditor
         }
 
         [CanBeNull]
-        private Graphic_Multi_NaturalHeadParts MoustacheGraphic([NotNull] MoustacheDef def)
+        private Graphic_Multi MoustacheGraphic([NotNull] MoustacheDef def)
         {
-            Graphic_Multi_NaturalHeadParts graphic;
+            Graphic_Multi graphic;
             string path = CompFace.PawnFaceGraphic.GetMoustachePath(def);
             if (path.NullOrEmpty())
             {
@@ -2460,14 +2460,12 @@ namespace FacialStuff.FaceEditor
             }
             else
             {
-
-                graphic = GraphicDatabase.Get<Graphic_Multi_NaturalHeadParts>(
+                graphic = GraphicDatabase.Get<Graphic_Multi>(
                     path,
                     ShaderDatabase.Cutout,
                     new Vector2(38f, 38f),
                     Color.white,
-                    Color.white) as Graphic_Multi_NaturalHeadParts;
-
+                    Color.white) as Graphic_Multi;
             }
             return graphic;
         }

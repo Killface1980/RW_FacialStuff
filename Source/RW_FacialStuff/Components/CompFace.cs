@@ -78,16 +78,15 @@ namespace FacialStuff
             }
         }
 
-        public CompProperties_Face Props => (CompProperties_Face)this.props;
+        public CompProperties_Face Props { get; private set; }
         
-        public Pawn Pawn => this.parent as Pawn;
+        public Pawn Pawn { get; private set; }
         
         public HeadCoverage CurrentHeadCoverage { get; set; }
-
-        private List<PawnHeadDrawer> PawnHeadDrawers { get; set; }
-                
+                        
 		// Return true if head was drawn. False if not.
 		public bool DrawHead(
+            PawnGraphicSet graphicSet,
             RotDrawMode bodyDrawType, 
             bool portrait, 
             bool headStump,
@@ -96,22 +95,22 @@ namespace FacialStuff
             Vector3 headPos,
             Quaternion headQuat)
         {
-            if(!PawnHeadDrawers.Any() || Pawn.IsChild() || Pawn.GetCompAnim().Deactivated)
+            if(Pawn.IsChild())
 			{
                 return false;
 			}
             bool headDrawn = false;
             // Draw head
-            foreach(var headDrawer in PawnHeadDrawers)
+            Material headMaterial = graphicSet.HeadMatAt_NewTemp(headFacing, bodyDrawType, headStump);
+            if(headMaterial != null)
             {
-                headDrawer.DrawBasicHead(
+                GenDraw.DrawMeshNowOrLater(
+                    MeshPool.humanlikeHeadSet.MeshAt(headFacing),
                     headPos,
                     headQuat,
-                    bodyDrawType,
-                    headStump,
-                    portrait,
-                    out bool headDrawnTemp);
-                headDrawn |= headDrawnTemp;
+                    headMaterial,
+                    portrait);
+                headDrawn = true;
             }
             if(headDrawn)
             {
@@ -122,10 +121,7 @@ namespace FacialStuff
                         Vector3 wrinkleLoc = headPos;
                         wrinkleLoc.y += YOffset_Wrinkles;
                         // Draw wrinkles
-                        foreach(var headDrawer in PawnHeadDrawers)
-                        {
-                            headDrawer.DrawWrinkles(wrinkleLoc, bodyDrawType, headQuat, portrait);
-                        }
+                        DrawWrinkles(wrinkleLoc, headFacing, headQuat, bodyDrawType, portrait);
                     }
                     if(EyeBehavior.NumEyes > 0)
                     {
@@ -137,17 +133,7 @@ namespace FacialStuff
                         Vector3 browLoc = headPos;
                         browLoc.y += YOffset_Brows;
                         // Draw brows above eyes
-                        foreach(var headDrawer in PawnHeadDrawers)
-                        {
-                            headDrawer.DrawBrows(browLoc, headQuat, portrait);
-                        }
-                        // Draw added eye parts on top of natural eyes
-                        Vector3 unnaturalEyeLoc = headPos;
-                        unnaturalEyeLoc.y += YOffset_UnnaturalEyes;
-                        foreach(var headDrawer in PawnHeadDrawers)
-                        {
-                            headDrawer.DrawUnnaturalEyeParts(unnaturalEyeLoc, headQuat, portrait);
-                        }
+                        DrawBrows(browLoc, headFacing, headQuat, portrait);
                     }
                     // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
                     if(Props.hasBeard)
@@ -157,10 +143,7 @@ namespace FacialStuff
                         beardLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Beard : YOffset_Beard;
                         tacheLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Tache : YOffset_Tache;
                         // Draw beard and mustache
-                        foreach(var headDrawer in PawnHeadDrawers)
-                        {
-                            headDrawer.DrawBeardAndTache(beardLoc, tacheLoc, headQuat, portrait);
-                        }
+                        DrawBeardAndTache(graphicSet, beardLoc, tacheLoc, headFacing, headQuat, portrait);
                     }
                     if(Props.hasMouth && 
                         _cachedMouthParam.render && 
@@ -228,9 +211,24 @@ namespace FacialStuff
             }
         }
 
-        public void DrawEyes(Vector3 headPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
+        public void DrawWrinkles(Vector3 drawPos, Rot4 headFacing, Quaternion headQuat, RotDrawMode bodyDrawType, bool portrait)
 		{
-            Vector3 drawLoc = headPos;
+            if(!Controller.settings.UseWrinkles)
+            {
+                return;
+            }
+            Material wrinkleMat = FaceMaterial.WrinkleMatAt(headFacing, bodyDrawType);
+            if(wrinkleMat == null)
+            {
+                return;
+            }
+            Mesh headMesh = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
+            GenDraw.DrawMeshNowOrLater(headMesh, drawPos, headQuat, wrinkleMat, portrait);
+        }
+
+        public void DrawEyes(Vector3 drawPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
+		{
+            Vector3 drawLoc = drawPos;
             FaceGraphic faceGraphic = PawnFaceGraphic;
             if(faceGraphic == null)
             {
@@ -261,10 +259,24 @@ namespace FacialStuff
             }
         }
 
-        public void DrawMouth(Vector3 headPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
+        public void DrawBrows(Vector3 drawPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
 		{
-            Vector3 mouthLoc = headPos;
-            mouthLoc.y += YOffset_Mouth;
+            Material browMat = FaceMaterial.BrowMatAt(headFacing);
+            if(browMat == null)
+            {
+                return;
+            }
+            Mesh eyeMesh = MeshPoolFS.GetFaceMesh(PawnCrownType, headFacing, false);
+            GenDraw.DrawMeshNowOrLater(
+                eyeMesh,
+                drawPos,
+                headQuat,
+                browMat,
+                portrait);
+        }
+
+        public void DrawMouth(Vector3 drawPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
+		{
             int mouthTextureIdx = _cachedMouthParam.mouthTextureIdx;
             Material mouthMat = PawnFaceGraphic.MouthMatAt(headFacing, mouthTextureIdx);
             if(mouthMat == null)
@@ -288,25 +300,38 @@ namespace FacialStuff
                     mouthOffset = Vector3.zero;
                     break;
             }
-            mouthLoc += headQuat * mouthOffset;
-            GenDraw.DrawMeshNowOrLater(meshMouth, mouthLoc, headQuat, mouthMat, portrait);
+            drawPos += headQuat * mouthOffset;
+            GenDraw.DrawMeshNowOrLater(meshMouth, drawPos, headQuat, mouthMat, portrait);
         }
 
-        public override void Initialize(CompProperties props)
+        public void DrawBeardAndTache(PawnGraphicSet graphicSet, Vector3 beardLoc, Vector3 tacheLoc, Rot4 headFacing, Quaternion headQuat, bool portrait)
         {
-            base.Initialize(props);
-            try
-			{
-                if(PartStatusTracker == null)
-                {
-                    PartStatusTracker = new PartStatusTracker(Pawn.RaceProps.body);
-                }
-                InitializePawnDrawer();
-            } 
-            catch(Exception e)
-			{
-                Log.Message("Facial Stuff: error while initializing CompFace: " + e.Message);
-			}
+            Mesh headMesh = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
+            if(FaceData.BeardDef.IsBeardNotHair())
+            {
+                headMesh = graphicSet.HairMeshSet.MeshAt(headFacing);
+            }
+            Material beardMat = FaceMaterial.BeardMatAt(headFacing);
+            Material moustacheMatAt = FaceMaterial.MoustacheMatAt(headFacing);
+            if(beardMat != null)
+            {
+                GenDraw.DrawMeshNowOrLater(headMesh, beardLoc, headQuat, beardMat, portrait);
+            }
+            if(moustacheMatAt != null)
+            {
+                GenDraw.DrawMeshNowOrLater(headMesh, tacheLoc, headQuat, moustacheMatAt, portrait);
+            }
+        }
+
+		public override void Initialize(CompProperties props)
+		{
+			base.Initialize(props);
+            Props = (CompProperties_Face)props;
+            Pawn = (Pawn)parent;
+            if(PartStatusTracker == null)
+            {
+                PartStatusTracker = new PartStatusTracker(Pawn.RaceProps.body);
+            }
         }
 
         // Faction data isn't available during ThingComp.Initialize(). Initialize faction-related members here.
@@ -320,6 +345,7 @@ namespace FacialStuff
             {
                 FaceData = new FaceData(this, OriginFaction?.def);
             }
+
             HeadBehavior = (IHeadBehavior)Props.headBehavior.Clone();
             MouthBehavior = (IMouthBehavior)Props.mouthBehavior.Clone();
             EyeBehavior = (IEyeBehavior)Props.eyeBehavior.Clone();
@@ -329,7 +355,7 @@ namespace FacialStuff
 			{
                 _cachedEyeParam.Add(new IEyeBehavior.Params()); 
 			}
-            
+
             FullHeadType = MeshPoolFS.GetFullHeadType(Pawn.gender, PawnCrownType, PawnHeadType);
             PawnFaceGraphic = new FaceGraphic(this, EyeBehavior.NumEyes);
             FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
@@ -366,33 +392,6 @@ namespace FacialStuff
             }
             if(portrait)
 			{
-
-            if(!this.PawnHeadDrawers.NullOrEmpty())
-            {
-                int i = 0;
-                int count = this.PawnHeadDrawers.Count;
-                while(i < count)
-                {
-                    this.PawnHeadDrawers[i].Tick(bodyFacing, headFacing, graphics);
-                    i++;
-                }
-            }
-        }
-        
-        public void DrawAlienHeadAddons(Vector3 headPos, bool portrait, Quaternion headQuat, Vector3 currentLoc)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i].DrawAlienHeadAddons(headPos, portrait, headQuat, currentLoc);
-                i++;
-            }
                 headFacing = HeadBehavior.GetRotationForPortrait();
                 _cachedMouthParam.render = true;
                 _cachedMouthParam.mouthTextureIdx = MouthBehavior.GetTextureIndexForPortrait(out _cachedMouthParam.mirror);
@@ -404,24 +403,7 @@ namespace FacialStuff
 				}
 			}
         }
-        
-        public void InitializePawnDrawer()
-        {
-            if(Props.headDrawers.Any())
-            {
-                PawnHeadDrawers = new List<PawnHeadDrawer>();
-                for(int i = 0; i < Props.headDrawers.Count; i++)
-                {
-                    PawnHeadDrawer thingComp =
-                        (PawnHeadDrawer)Activator.CreateInstance(Props.headDrawers[i].GetType());
-                    thingComp.CompFace = this;
-                    thingComp.Pawn = Pawn;
-                    PawnHeadDrawers.Add(thingComp);
-                    thingComp.Initialize();
-                }
-            }
-        }
-                        
+                                
         public override void PostExposeData()
         {
             base.PostExposeData();

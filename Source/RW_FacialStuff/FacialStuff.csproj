@@ -154,11 +154,9 @@
     <Compile Include="Enums\MaxLayerToShow.cs" />
     <Compile Include="Components\CompWeaponExtensions.cs" />
     <Compile Include="Components\CompProperties_WeaponExtensions.cs" />
-    <Compile Include="Drawer\PawnHeadDrawer.cs" />
     <Compile Include="FaceEditor\UI\Util\SelectionChangeListener.cs" />
     <Compile Include="FaceEditor\UI\Util\UpdatePawnListener.cs" />
     <Compile Include="Components\GameComponent_FacialStuff.cs" />
-    <Compile Include="Drawer\HumanHeadDrawer.cs" />
     <Compile Include="ITab_Pawn_Weapons.cs" />
     <None Include="FaceEditor\Job_FaceStylingJoy.cs" />
     <Compile Include="Components\CompFaceEditor.cs" />
@@ -189,7 +187,6 @@
     <Compile Include="FaceEditor\UI\Util\WidgetUtil.cs" />
     <Compile Include="Genetics\HairColorRequest.cs" />
     <Compile Include="Genetics\HairDNA.cs" />
-    <Compile Include="GraphicsFS\HumanMouthGraphics.cs" />
     <Compile Include="FaceData.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
@@ -198,7 +195,6 @@
     <Compile Include="Enums\HeadType.cs" />
     <Compile Include="GraphicsFS\FaceTextures.cs" />
     <Compile Include="GraphicsFS\Graphic_FaceMirror.cs" />
-    <Compile Include="GraphicsFS\Graphic_Multi_AddedHeadParts.cs" />
     <Compile Include="GraphicsFS\MeshPoolFS.cs" />
     <Compile Include="Components\CompFace.cs" />
     <Compile Include="FaceEditor\ColorPicker\ColorWrapper.cs" />
@@ -207,7 +203,6 @@
     <Compile Include="FaceEditor\Job_FaceStyling.cs" />
     <None Include="FaceEditor\Preset.cs" />
     <None Include="FaceEditor\PresetDatabase.cs" />
-    <Compile Include="GraphicsFS\Graphic_Multi_NaturalHeadParts.cs" />
     <Compile Include="Utilities\DialogUtility.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Genetics\PawnSkinColors_FS.cs" />

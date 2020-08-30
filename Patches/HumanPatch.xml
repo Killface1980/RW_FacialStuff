@@ -73,12 +73,6 @@
 			<mouthBehavior Class = "FacialStuff.AI.HumanMouthBehavior">
 				<!-- Set public member variables if needed -->
 			</mouthBehavior>
-			
-            <!--the drawer for the head. more than one can be defined-->
-            <headDrawers>
-              <li Class ="FacialStuff.HumanHeadDrawer"/>
-              <!--  <li Class ="FacialStuff.SecondHeadDrawer"/>-->
-            </headDrawers>
           </li>
         </value>
       </li>

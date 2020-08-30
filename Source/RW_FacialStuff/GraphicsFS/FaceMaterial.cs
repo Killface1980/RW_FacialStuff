@@ -85,74 +85,7 @@ namespace FacialStuff.GraphicsFS
 
             return material;
         }
-
-        // Deactivated for now
-        // ReSharper disable once FlagArgument
-        [CanBeNull]
-        public Material DeadEyeMatAt(Rot4 facing, RotDrawMode bodyCondition = RotDrawMode.Fresh)
-        {
-            Material material = null;
-            if (bodyCondition == RotDrawMode.Fresh)
-            {
-                material = this._pawnFaceGraphic.DeadEyeGraphic?.MatAt(facing);
-            }
-            else if (bodyCondition == RotDrawMode.Rotting)
-            {
-                material = this._pawnFaceGraphic.DeadEyeGraphic?.MatAt(facing);
-            }
-
-            if (material != null)
-            {
-                material = this.Flasher.GetDamagedMat(material);
-            }
-
-            return material;
-        }
-        
-        [CanBeNull]
-        public Material EyeLeftPatchMatAt(Rot4 facing)
-        {
-            Material material = this._pawnFaceGraphic.EyeLeftPatchGraphic?.MatAt(facing);
-
-            if (material != null)
-            {
-                material = this.Flasher.GetDamagedMat(material);
-            }
-
-            return material;
-        }
-        
-        [CanBeNull]
-        public Material EyeMissingMatAt(Rot4 facing, bool portrait)
-        {
-            if (facing == Rot4.West)
-            {
-                return null;
-            }
-
-            Material material = this._pawnFaceGraphic.EyeRightMissingGraphic?.MatAt(facing);
-
-            if (material != null)
-            {
-                material = this.Flasher.GetDamagedMat(material);
-            }
-
-            return material;
-        }     
-
-        [CanBeNull]
-        public Material EyeRightPatchMatAt(Rot4 facing)
-        {
-            Material material = this._pawnFaceGraphic.EyeRightPatchGraphic?.MatAt(facing);
-
-            if (material != null)
-            {
-                material = this.Flasher.GetDamagedMat(material);
-            }
-
-            return material;
-        }
-        
+                
         [CanBeNull]
         public Material MoustacheMatAt(Rot4 facing)
         {
