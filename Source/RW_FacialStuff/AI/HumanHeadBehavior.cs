@@ -142,6 +142,11 @@ namespace FacialStuff.AI
 			return MemberwiseClone();
 		}
 
+		public Rot4 GetRotationForPortrait()
+		{
+			return Rot4.South;
+		}
+
 		#endregion
 
 		#region Private Methods

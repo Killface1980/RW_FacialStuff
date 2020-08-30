@@ -79,6 +79,11 @@ namespace FacialStuff.AI
 				offset;
 		}
 
+		public bool GetEyeMirrorFlagForPortrait(int eyeIndex)
+		{
+			return eyeIndex == 0 ? true : false;
+		}
+
 		public object Clone()
 		{
 			return MemberwiseClone();

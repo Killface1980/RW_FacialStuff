@@ -85,9 +85,10 @@ namespace FacialStuff.AI
 				_curMouthTextureIdx = _happyTexIdx;
 			}
 		}
-
-		public int GetTextureIndexForPortrait()
+		
+		public int GetTextureIndexForPortrait(out bool mirror)
 		{
+			mirror = false;
 			return _normalTexIdx;
 		}
 

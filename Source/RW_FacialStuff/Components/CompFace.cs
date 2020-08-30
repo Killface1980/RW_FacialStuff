@@ -266,10 +266,6 @@ namespace FacialStuff
             Vector3 mouthLoc = headPos;
             mouthLoc.y += YOffset_Mouth;
             int mouthTextureIdx = _cachedMouthParam.mouthTextureIdx;
-            if(portrait)
-			{
-                mouthTextureIdx = MouthBehavior.GetTextureIndexForPortrait();
-			}
             Material mouthMat = PawnFaceGraphic.MouthMatAt(headFacing, mouthTextureIdx);
             if(mouthMat == null)
             {
@@ -347,7 +343,7 @@ namespace FacialStuff
                 !Pawn.InContainerEnclosed &&
                 Pawn.Spawned &&
                 !Find.TickManager.Paused;
-            if(canUpdatePawn)
+            if(canUpdatePawn && !portrait)
             {
                 _pawnState.alive = !Pawn.Dead;
                 _pawnState.aiming = Pawn.Aiming();
@@ -368,6 +364,7 @@ namespace FacialStuff
                 MouthBehavior.Update(Pawn, headFacing, _pawnState, _cachedMouthParam);
                 EyeBehavior.Update(Pawn, headFacing, _pawnState, _cachedEyeParam);
             }
+            if(portrait)
 			{
 
             if(!this.PawnHeadDrawers.NullOrEmpty())
@@ -396,6 +393,16 @@ namespace FacialStuff
                 this.PawnHeadDrawers[i].DrawAlienHeadAddons(headPos, portrait, headQuat, currentLoc);
                 i++;
             }
+                headFacing = HeadBehavior.GetRotationForPortrait();
+                _cachedMouthParam.render = true;
+                _cachedMouthParam.mouthTextureIdx = MouthBehavior.GetTextureIndexForPortrait(out _cachedMouthParam.mirror);
+                for(int i = 0; i < EyeBehavior.NumEyes; ++i)
+				{
+                    _cachedEyeParam[i].render = true;
+                    _cachedEyeParam[i].openEye = true;
+                    _cachedEyeParam[i].mirror = EyeBehavior.GetEyeMirrorFlagForPortrait(i);
+				}
+			}
         }
         
         public void InitializePawnDrawer()

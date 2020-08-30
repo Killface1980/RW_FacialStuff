@@ -24,6 +24,6 @@ namespace FacialStuff
 
 		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, Params mouthParams);
 
-		public int GetTextureIndexForPortrait();
+		public int GetTextureIndexForPortrait(out bool mirror);
 	}
 }

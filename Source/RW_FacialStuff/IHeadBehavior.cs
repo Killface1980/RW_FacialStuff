@@ -29,5 +29,7 @@ namespace FacialStuff
 		public void SetTarget(Thing target, IHeadBehavior.TargetType targetType);
 
 		public void Update(Pawn pawn, PawnState pawnState, out Rot4 headFacing);
+
+		public Rot4 GetRotationForPortrait();
 	}
 }

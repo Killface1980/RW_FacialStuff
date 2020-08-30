@@ -23,5 +23,7 @@ namespace FacialStuff
 		public int NumEyes { get; }
 
 		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, List<Params> eyeParams);
+
+		public bool GetEyeMirrorFlagForPortrait(int eyeIndex);
 	}
 }
