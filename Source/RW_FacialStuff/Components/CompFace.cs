@@ -24,6 +24,8 @@ namespace FacialStuff
         private IMouthBehavior.Params _cachedMouthParam = new IMouthBehavior.Params();
         private List<IEyeBehavior.Params> _cachedEyeParam;
         private PawnState _pawnState = new PawnState();
+        // Used for distance culling of face details
+        private GameComponent_FacialStuff _fsGameComp;
 
         public bool Initialized { get; private set; }
 
@@ -110,53 +112,53 @@ namespace FacialStuff
                     headMaterial,
                     portrait);
                 headDrawn = true;
-            }
-            if(headDrawn)
-            {
                 if(bodyDrawType != RotDrawMode.Dessicated && !headStump)
                 {
-                    if(Props.hasWrinkles)
-                    {
-                        Vector3 wrinkleLoc = headPos;
-                        wrinkleLoc.y += YOffset_Wrinkles;
-                        // Draw wrinkles
-                        DrawWrinkles(wrinkleLoc, headFacing, headQuat, bodyDrawType, portrait);
-                    }
-                    if(EyeBehavior.NumEyes > 0)
-                    {
-                        Vector3 eyeLoc = headPos;
-                        eyeLoc.y += YOffset_Eyes;
-                        // Draw natural eyes
-                        DrawEyes(eyeLoc, headFacing, headQuat, portrait);
+                    if(portrait || _fsGameComp.ShouldRenderFaceDetails)
+				    {
+                        if(Props.hasWrinkles)
+                        {
+                            Vector3 wrinkleLoc = headPos;
+                            wrinkleLoc.y += YOffset_Wrinkles;
+                            // Draw wrinkles
+                            DrawWrinkles(wrinkleLoc, headFacing, headQuat, bodyDrawType, portrait);
+                        }
+                        if(EyeBehavior.NumEyes > 0)
+                        {
+                            Vector3 eyeLoc = headPos;
+                            eyeLoc.y += YOffset_Eyes;
+                            // Draw natural eyes
+                            DrawEyes(eyeLoc, headFacing, headQuat, portrait);
 
-                        Vector3 browLoc = headPos;
-                        browLoc.y += YOffset_Brows;
-                        // Draw brows above eyes
-                        DrawBrows(browLoc, headFacing, headQuat, portrait);
-                    }
-                    // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
-                    if(Props.hasBeard)
-                    {
-                        Vector3 beardLoc = headPos;
-                        Vector3 tacheLoc = headPos;
-                        beardLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Beard : YOffset_Beard;
-                        tacheLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Tache : YOffset_Tache;
-                        // Draw beard and mustache
-                        DrawBeardAndTache(graphicSet, beardLoc, tacheLoc, headFacing, headQuat, portrait);
-                    }
-                    if(Props.hasMouth && 
-                        _cachedMouthParam.render && 
-                        _cachedMouthParam.mouthTextureIdx >= 0 && 
-                        FaceData.BeardDef.drawMouth && 
-                        Controller.settings.UseMouth)
-                    {
-                        Vector3 mouthLoc = headPos;
-                        mouthLoc.y += YOffset_Mouth;
-                        DrawMouth(mouthLoc, headFacing, headQuat, portrait);
+                            Vector3 browLoc = headPos;
+                            browLoc.y += YOffset_Brows;
+                            // Draw brows above eyes
+                            DrawBrows(browLoc, headFacing, headQuat, portrait);
+                        }
+                        // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
+                        if(Props.hasBeard)
+                        {
+                            Vector3 beardLoc = headPos;
+                            Vector3 tacheLoc = headPos;
+                            beardLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Beard : YOffset_Beard;
+                            tacheLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Tache : YOffset_Tache;
+                            // Draw beard and mustache
+                            DrawBeardAndTache(graphicSet, beardLoc, tacheLoc, headFacing, headQuat, portrait);
+                        }
+                        if(Props.hasMouth &&
+                            _cachedMouthParam.render &&
+                            _cachedMouthParam.mouthTextureIdx >= 0 &&
+                            FaceData.BeardDef.drawMouth &&
+                            Controller.settings.UseMouth)
+                        {
+                            Vector3 mouthLoc = headPos;
+                            mouthLoc.y += YOffset_Mouth;
+                            DrawMouth(mouthLoc, headFacing, headQuat, portrait);
+                        }
                     }
                     // When CurrentHeadCoverage == HeadCoverage.None, let the vanilla routine draw the hair
                     if(CurrentHeadCoverage != HeadCoverage.None)
-					{
+				    {
                         DrawHairBasedOnCoverage(headFacing, headPos, headQuat, portrait);
                     }
                 }
@@ -325,6 +327,7 @@ namespace FacialStuff
 		public override void Initialize(CompProperties props)
 		{
 			base.Initialize(props);
+            _fsGameComp = Current.Game.GetComponent<GameComponent_FacialStuff>();
             Props = (CompProperties_Face)props;
             Pawn = (Pawn)parent;
             if(PartStatusTracker == null)

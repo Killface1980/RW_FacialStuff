@@ -8,6 +8,8 @@ using FacialStuff.Harmony;
 using FacialStuff.Utilities;
 using UnityEngine;
 using Verse;
+using FacialStuff.GraphicsFS;
+using RimWorld.Planet;
 
 namespace FacialStuff
 {
@@ -72,8 +74,33 @@ namespace FacialStuff
         #region Public Methods
         protected UnityEngine.Animator animator;
 
+		public override void GameComponentTick()
+		{
+			base.GameComponentTick();
+            // Perform rudimentary distance culling. Don't render if camera isn't zoomed in enough for small facial details.
+            // GameComponentTick() is called before rendering the map. Therefore, this calculation can be done here.
+            if(WorldRendererUtility.CurrentWorldRenderMode == WorldRenderMode.None && Find.CurrentMap != null)
+			{
+                float meshWidth, meshHeight;
+                // CrownType.Average has slightly larger dimension that CrownType.Narrow, so use it for the calculation.
+                MeshPoolFS.GetFaceMeshDimension(CrownType.Average, out meshWidth, out meshHeight);
+                // Since the camera is orthorgraphic, the location of pawn relative to camera doesn't matter - All face mesh 
+                // will be rendered with the same dimension on screen.
+                Vector3 screenCoord = Find.Camera.WorldToScreenPoint(new Vector3(meshWidth, 0f, meshHeight));
+                float minPixelDim = Mathf.Min(Mathf.Abs(screenCoord.x), Mathf.Abs(screenCoord.y));
+                ShouldRenderFaceDetails = minPixelDim >= 10;
+            }
+            else
+			{
+                // Shouldn't matter because pawns aren't rendered in world view, but just in case. Also, portrait view 
+                // doesn't consider LOD and renders at full detail.
+                ShouldRenderFaceDetails = true;
+            }
+        }
 
-        public static void BuildWalkCycles([CanBeNull] WalkCycleDef defToRebuild = null)
+        public bool ShouldRenderFaceDetails { get; private set; }
+
+		public static void BuildWalkCycles([CanBeNull] WalkCycleDef defToRebuild = null)
         {
             List<WalkCycleDef> cycles = new List<WalkCycleDef>();
             if (defToRebuild != null)
