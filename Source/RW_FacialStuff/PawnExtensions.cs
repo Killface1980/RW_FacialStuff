@@ -78,23 +78,7 @@ namespace FacialStuff
             {
                 return;
             }
-
-            if (bodyProps._face != null)
-            {
-                if (bodyProps._face.EyeBehavior.NumEyes > 0)
-                {
-                    if (hediff.Part == bodyProps._leftEye)
-                    {
-                        bodyProps._face.BodyStat.EyeLeft = PartStatus.Missing;
-                    }
-
-                    if (hediff.Part == bodyProps._rightEye)
-                    {
-                        bodyProps._face.BodyStat.EyeRight = PartStatus.Missing;
-                    }
-                }
-            }
-
+            
             if (bodyProps._anim != null && bodyProps._anim.Props.bipedWithHands)
             {
                 if (hediff.Part == bodyProps._leftHand)
@@ -197,17 +181,7 @@ namespace FacialStuff
             {
                 return false;
             }
-
-            // Reset the stats
-            if(pawn.GetCompFace(out CompFace face))
-            {
-                face.BodyStat.EyeLeft = PartStatus.Natural;
-                face.BodyStat.EyeRight = PartStatus.Natural;
-                face.BodyStat.EarLeft = PartStatus.Natural;
-                face.BodyStat.EarRight = PartStatus.Natural;
-                face.BodyStat.Jaw = PartStatus.Natural;
-            }
-
+            
             if(pawn.GetCompAnim(out CompBodyAnimator anim))
             {
                 anim.BodyStat.HandLeft = PartStatus.Natural;
@@ -228,6 +202,8 @@ namespace FacialStuff
             {
                 return false;
             }
+
+            pawn.GetCompFace(out CompFace face);
 
             foreach (Hediff diff in hediffs.Where(diff => diff.def == HediffDefOf.MissingBodyPart))
             {

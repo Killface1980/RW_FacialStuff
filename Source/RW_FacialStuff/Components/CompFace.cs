@@ -17,9 +17,8 @@ namespace FacialStuff
 {
     public class CompFace : ThingComp
     {
-        public FacePartStats BodyStat;
         public FaceGraphic PawnFaceGraphic;
-        
+
         private Faction _originFactionInt;
         private FaceData _faceData;
         private IMouthBehavior.Params _cachedMouthParam = new IMouthBehavior.Params();

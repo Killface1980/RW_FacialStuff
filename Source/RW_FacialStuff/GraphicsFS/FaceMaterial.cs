@@ -64,12 +64,6 @@ namespace FacialStuff.GraphicsFS
 
         private bool CannotShowFaceHair()
         {
-            if (this._pawn.gender           != Gender.Male 
-             || this._compFace.BodyStat.Jaw == PartStatus.Missing || this._compFace.BodyStat.Jaw == PartStatus.Artificial)
-            {
-                return true;
-            }
-
             return false;
         }
 

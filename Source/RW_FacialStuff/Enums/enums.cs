@@ -22,18 +22,6 @@
         public PartStatus FootRight;
     }
 
-    public struct FacePartStats
-    {
-        public PartStatus EyeLeft;
-
-        public PartStatus EyeRight;
-
-        public PartStatus EarLeft;
-
-        public PartStatus EarRight;
-
-        public PartStatus Jaw;
-    }
     public enum HandsToDraw
     {
         Both = 0,
