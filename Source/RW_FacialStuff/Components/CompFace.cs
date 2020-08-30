@@ -227,7 +227,12 @@ namespace FacialStuff
 		{
             Vector3 mouthLoc = headPos;
             mouthLoc.y += YOffset_Mouth;
-            Material mouthMat = PawnFaceGraphic.MouthMatAt(headFacing, _mouthTextureIdx);
+            int mouthTextureIdx = _mouthTextureIdx;
+            if(portrait)
+			{
+                mouthTextureIdx = Props.mouthBehavior.GetTextureIndexForPortrait();
+			}
+            Material mouthMat = PawnFaceGraphic.MouthMatAt(headFacing, mouthTextureIdx);
             if(mouthMat == null)
             {
                 return;
