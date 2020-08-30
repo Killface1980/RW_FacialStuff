@@ -26,6 +26,7 @@ namespace FacialStuff
 
         private bool _drawMouth;
         private int _mouthTextureIdx;
+        private bool _mouthMirror;
 
         public bool Initialized { get; private set; }
         
@@ -237,7 +238,7 @@ namespace FacialStuff
             {
                 return;
             }
-            Mesh meshMouth = MeshPoolFS.GetFaceMesh(PawnCrownType, headFacing, false);
+            Mesh meshMouth = MeshPoolFS.GetFaceMesh(PawnCrownType, headFacing, _mouthMirror);
             Vector3 mouthOffset = MeshPoolFS.mouthOffsetsHeadType[(int)FullHeadType];
             switch(headFacing.AsInt)
             {
@@ -326,7 +327,8 @@ namespace FacialStuff
             if(canUpdatePawn)
             {
                 _mouthTextureIdx = -1;
-                Props.mouthBehavior.Update(Pawn, headFacing, pawnState, out _drawMouth, ref _mouthTextureIdx);
+                _mouthMirror = false;
+                Props.mouthBehavior.Update(Pawn, headFacing, pawnState, out _drawMouth, ref _mouthTextureIdx, ref _mouthMirror);
             }
 
             if(!portrait)

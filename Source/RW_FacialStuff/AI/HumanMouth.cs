@@ -36,7 +36,7 @@ namespace FacialStuff.AI
 			}
 		}
 
-		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, out bool render, ref int mouthTextureIdx)
+		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, out bool render, ref int mouthTextureIdx, ref bool mirror)
 		{
 			++_ticksSinceLastUpdate;
 			if(headRot == Rot4.North)

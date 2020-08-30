@@ -7,7 +7,7 @@ namespace FacialStuff
 	{
 		public void InitializeTextureIndex(ReadOnlyCollection<string> textureNames);
 
-		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, out bool render, ref int mouthTextureIdx);
+		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, out bool render, ref int mouthTextureIdx, ref bool mirror);
 
 		public int GetTextureIndexForPortrait();
 	}
