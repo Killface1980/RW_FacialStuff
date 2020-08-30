@@ -19,11 +19,9 @@ namespace FacialStuff
     {
         public FacePartStats BodyStat;
         public FaceGraphic PawnFaceGraphic;
-        public bool IsAsleep;
         
         private Faction _originFactionInt;
         private FaceData _faceData;
-        
         private IMouthBehavior.Params _cachedMouthParam = new IMouthBehavior.Params();
         private List<IEyeBehavior.Params> _cachedEyeParam;
 
@@ -345,19 +343,17 @@ namespace FacialStuff
         
         public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics, bool portrait)
         {
-            if(Find.TickManager.TicksGame % 180 == 0)
-            {
-                IsAsleep = !Pawn.Awake();
-            }
-
             PawnState pawnState = new PawnState();
             pawnState.alive = !Pawn.Dead;
-            pawnState.sleeping = IsAsleep;
             pawnState.aiming = Pawn.Aiming();
             pawnState.inPainShock = Pawn.health.InPainShock;
             pawnState.fleeing = Pawn.Fleeing();
             pawnState.burning = Pawn.IsBurning();
-
+            if(Find.TickManager.TicksGame % 180 == 0)
+            {
+                pawnState.sleeping = !Pawn.Awake();
+            }
+            
             bool canUpdatePawn =
                 Pawn.Map != null &&
                 !Pawn.InContainerEnclosed &&
