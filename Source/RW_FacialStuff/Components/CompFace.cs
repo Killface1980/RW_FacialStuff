@@ -319,8 +319,11 @@ namespace FacialStuff
                 !Find.TickManager.Paused;
             HeadRotationAI.Tick(canUpdatePawn, bodyFacing, pawnState);
             FacialExpressionAI.Tick(canUpdatePawn, this, pawnState);
-            _mouthTextureIdx = -1;
-            Props.mouthBehavior.Update(Pawn, headFacing, pawnState, out _drawMouth, ref _mouthTextureIdx);
+            if(canUpdatePawn)
+            {
+                _mouthTextureIdx = -1;
+                Props.mouthBehavior.Update(Pawn, headFacing, pawnState, out _drawMouth, ref _mouthTextureIdx);
+            }
 
             if(!portrait)
 			{
