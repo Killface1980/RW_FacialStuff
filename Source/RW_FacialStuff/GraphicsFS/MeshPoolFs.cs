@@ -9,9 +9,60 @@ namespace FacialStuff.GraphicsFS
     [StaticConstructorOnStartup]
     public static class MeshPoolFS
     {
+        private class MeshSet
+        {
+            private Mesh _mesh;
+            private Mesh _flippedMesh;
+
+            public MeshSet(float width, float height)
+			{
+                _mesh = MeshPool.GridPlane(new Vector2(width, height));
+                _flippedMesh = MeshPool.GridPlaneFlip(new Vector2(width, height));
+            }
+
+            public Mesh MeshAt(Rot4 rot, bool flipped)
+			{
+                if(!flipped)
+				{
+					switch(rot.AsInt)
+					{ 
+                        case 0:
+                            return _mesh;
+
+                        case 1:
+                            return _mesh;
+
+                        case 2:
+                            return _mesh;
+
+                        case 3:
+                            return _flippedMesh;
+                    }
+				}
+                else
+				{
+					switch(rot.AsInt)
+					{
+                        case 0:
+                            return _flippedMesh;
+
+                        case 1:
+                            return _mesh;
+
+                        case 2:
+                            return _flippedMesh;
+
+                        case 3:
+                            return _flippedMesh;
+                    }
+                }
+                return null;
+			}
+        }
+        
         #region Public Fields
 
-        private static GraphicMeshSet[,] HumanEyeSet = new GraphicMeshSet[3, 2];
+        private static MeshSet[] HumanEyeSet = new MeshSet[3];
                 
         public static List<Vector2> mouthOffsetsHeadType =
             new List<Vector2>
@@ -46,28 +97,19 @@ namespace FacialStuff.GraphicsFS
         {
             float width, height;
             GetFaceMeshDimension(CrownType.Average, out width, out height);
-            HumanEyeSet[1, 0] = new GraphicMeshSet(width, height);
+            HumanEyeSet[1] = new MeshSet(width, height);
             GetFaceMeshDimension(CrownType.Narrow, out width, out height);
-            HumanEyeSet[2, 0] = new GraphicMeshSet(width, height);
-
-            for(int i = 1; i < HumanEyeSet.GetLength(0); ++i)
-            {
-                // This behavor might change in the future, so it may be wise to manually create mirrored mesh instead
-                HumanEyeSet[i, 1] = new GraphicMeshSet(
-                    HumanEyeSet[i, 0].MeshAt(Rot4.West),
-                    HumanEyeSet[i, 0].MeshAt(Rot4.West));
-            }
-
+            HumanEyeSet[2] = new MeshSet(width, height);
+            
             // For Undefined CrownType
-            HumanEyeSet[0, 0] = HumanEyeSet[1, 0];
-            HumanEyeSet[0, 1] = HumanEyeSet[1, 1];
+            HumanEyeSet[0] = HumanEyeSet[1];
         }
 
         #endregion Public Constructors
 
         public static Mesh GetFaceMesh(CrownType crownType, Rot4 headFacing, bool mirrored)
 		{
-            return HumanEyeSet[(int)crownType, mirrored ? 1 : 0].MeshAt(headFacing);
+            return HumanEyeSet[(int)crownType].MeshAt(headFacing, mirrored);
         }
 
         public static FullHead GetFullHeadType(Gender gender, CrownType crownType, HeadType headType)
