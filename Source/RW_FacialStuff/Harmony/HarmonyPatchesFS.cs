@@ -868,14 +868,14 @@ namespace FacialStuff.Harmony
                 {
                     if(compFace.Props.canRotateHead)
                     {
-                        compFace.HeadRotationAI.SetTarget(recipient, AI.PawnHeadRotationAI.TargetMode.SocialRecipient);
+                        compFace.HeadBehavior.SetTarget(recipient, IHeadBehavior.TargetType.SocialRecipient);
                     }
                 }
                 if(recipient.GetCompFace(out CompFace recipientFace))
                 {
                     if(recipientFace.Props.canRotateHead)
                     {
-                        recipientFace.HeadRotationAI.SetTarget(pawn, AI.PawnHeadRotationAI.TargetMode.SocialInitiator);                            
+                        recipientFace.HeadBehavior.SetTarget(pawn, IHeadBehavior.TargetType.SocialInitiator);                            
                     }
                 }
             }

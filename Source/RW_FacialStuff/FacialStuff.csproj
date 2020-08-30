@@ -92,11 +92,12 @@
     <None Include="WidgetsFS.cs" />
     <Compile Include="AI\HumanEyeBehavior.cs" />
     <Compile Include="AI\HumanMouthBehavior.cs" />
-    <Compile Include="AI\PawnHeadRotationAI.cs" />
+    <Compile Include="AI\HumanHeadBehavior.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
     <None Include="Controller_Animator.cs" />
     <Compile Include="Defs\MouthSetDef.cs" />
     <Compile Include="IEyeBehavior.cs" />
+    <Compile Include="IHeadBehavior.cs" />
     <Compile Include="IMouthBehavior.cs" />
     <Compile Include="PartStatusTracker.cs" />
     <Compile Include="Components\Skeletoon\FS_Skeleton.cs" />

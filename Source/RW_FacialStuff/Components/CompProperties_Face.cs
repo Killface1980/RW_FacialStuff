@@ -30,6 +30,8 @@ namespace FacialStuff
         
         public List<string> useTexCollection;
         
+        public IHeadBehavior headBehavior;
+
         public IMouthBehavior mouthBehavior;
         
         public IEyeBehavior eyeBehavior;

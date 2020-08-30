@@ -51,6 +51,15 @@
 			that it is associated with. Same goes for other behavior classes. Doing so also allows configurable member 
 			variables like the following.
 			-->
+			<headBehavior Class = "FacialStuff.AI.HumanHeadBehavior">
+				<!-- The amount of ticks needed for the recipient of social interaction to wait before moving its head -->
+				<socialRecipientDelayTick>30</socialRecipientDelayTick>
+				<!-- How long the social interaction lasts in ticks -->
+				<socialDurationTick>240</socialDurationTick>
+				<!-- The speed that pawn can rotate head. Unit in deg/tick ( = degrees per 1/60 of second) -->
+				<headRotationRate>10</headRotationRate>
+			</headBehavior>
+			
 			<eyeBehavior Class = "FacialStuff.AI.HumanEyeBehavior">
 				<blinkCloseTicks>10</blinkCloseTicks>
 				<blinkOpenAverageTicks>120</blinkOpenAverageTicks>

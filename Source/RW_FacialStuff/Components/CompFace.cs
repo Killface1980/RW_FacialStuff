@@ -24,8 +24,11 @@ namespace FacialStuff
         private FaceData _faceData;
         private IMouthBehavior.Params _cachedMouthParam = new IMouthBehavior.Params();
         private List<IEyeBehavior.Params> _cachedEyeParam;
+        private PawnState _pawnState = new PawnState();
 
         public bool Initialized { get; private set; }
+
+        public IHeadBehavior HeadBehavior { get; private set; }
 
         public IMouthBehavior MouthBehavior { get; private set; }
 
@@ -36,9 +39,7 @@ namespace FacialStuff
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
         
         public PartStatusTracker PartStatusTracker { get; private set; }
-
-        public PawnHeadRotationAI HeadRotationAI { get; private set; }
-                        
+                                
         public Faction OriginFaction => _originFactionInt;
         
         public virtual CrownType PawnCrownType => Pawn?.story.crownType ?? CrownType.Average;
@@ -300,10 +301,6 @@ namespace FacialStuff
             base.Initialize(props);
             try
 			{
-                if(HeadRotationAI == null)
-                {
-                    HeadRotationAI = new PawnHeadRotationAI(Pawn);
-                }
                 if(PartStatusTracker == null)
                 {
                     PartStatusTracker = new PartStatusTracker(Pawn.RaceProps.body);
@@ -327,6 +324,7 @@ namespace FacialStuff
             {
                 FaceData = new FaceData(this, OriginFaction?.def);
             }
+            HeadBehavior = (IHeadBehavior)Props.headBehavior.Clone();
             MouthBehavior = (IMouthBehavior)Props.mouthBehavior.Clone();
             EyeBehavior = (IEyeBehavior)Props.eyeBehavior.Clone();
             MouthBehavior.InitializeTextureIndex(FaceData.MouthSetDef.texNames.AsReadOnly());
@@ -335,6 +333,7 @@ namespace FacialStuff
 			{
                 _cachedEyeParam.Add(new IEyeBehavior.Params()); 
 			}
+            
             FullHeadType = MeshPoolFS.GetFullHeadType(Pawn.gender, PawnCrownType, PawnHeadType);
             PawnFaceGraphic = new FaceGraphic(this, EyeBehavior.NumEyes);
             FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
@@ -343,38 +342,33 @@ namespace FacialStuff
         
         public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics, bool portrait)
         {
-            PawnState pawnState = new PawnState();
-            pawnState.alive = !Pawn.Dead;
-            pawnState.aiming = Pawn.Aiming();
-            pawnState.inPainShock = Pawn.health.InPainShock;
-            pawnState.fleeing = Pawn.Fleeing();
-            pawnState.burning = Pawn.IsBurning();
-            if(Find.TickManager.TicksGame % 180 == 0)
-            {
-                pawnState.sleeping = !Pawn.Awake();
-            }
-            
             bool canUpdatePawn =
                 Pawn.Map != null &&
                 !Pawn.InContainerEnclosed &&
                 Pawn.Spawned &&
                 !Find.TickManager.Paused;
-            HeadRotationAI.Tick(canUpdatePawn, bodyFacing, pawnState);
             if(canUpdatePawn)
             {
+                _pawnState.alive = !Pawn.Dead;
+                _pawnState.aiming = Pawn.Aiming();
+                _pawnState.inPainShock = Pawn.health.InPainShock;
+                _pawnState.fleeing = Pawn.Fleeing();
+                _pawnState.burning = Pawn.IsBurning();
+                if(Find.TickManager.TicksGame % 180 == 0)
+                {
+                    _pawnState.sleeping = !Pawn.Awake();
+                }
+                
                 _cachedMouthParam.Reset();
                 foreach(var eyeParam in _cachedEyeParam)
 				{
                     eyeParam.Reset();
 				}
-                MouthBehavior.Update(Pawn, headFacing, pawnState, _cachedMouthParam);
-                EyeBehavior.Update(Pawn, headFacing, pawnState, _cachedEyeParam);
+                HeadBehavior.Update(Pawn, _pawnState, out headFacing);
+                MouthBehavior.Update(Pawn, headFacing, _pawnState, _cachedMouthParam);
+                EyeBehavior.Update(Pawn, headFacing, _pawnState, _cachedEyeParam);
             }
-
-            if(!portrait)
 			{
-                headFacing = HeadRotationAI.CurrentRotation;
-            }
 
             if(!this.PawnHeadDrawers.NullOrEmpty())
             {
