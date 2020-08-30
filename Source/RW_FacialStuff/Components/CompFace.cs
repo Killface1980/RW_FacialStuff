@@ -315,7 +315,6 @@ namespace FacialStuff
                 Pawn.Map != null &&
                 !Pawn.InContainerEnclosed &&
                 Pawn.Spawned &&
-                !Pawn.Dead &&
                 !Find.TickManager.Paused;
             HeadRotationAI.Tick(canUpdatePawn, bodyFacing, pawnState);
             FacialExpressionAI.Tick(canUpdatePawn, this, pawnState);
