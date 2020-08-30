@@ -116,44 +116,46 @@ namespace FacialStuff
                 {
                     if(portrait || _fsGameComp.ShouldRenderFaceDetails)
 				    {
-                        if(Props.hasWrinkles)
-                        {
-                            Vector3 wrinkleLoc = headPos;
-                            wrinkleLoc.y += YOffset_Wrinkles;
-                            // Draw wrinkles
-                            DrawWrinkles(wrinkleLoc, headFacing, headQuat, bodyDrawType, portrait);
-                        }
                         if(EyeBehavior.NumEyes > 0)
                         {
                             Vector3 eyeLoc = headPos;
                             eyeLoc.y += YOffset_Eyes;
                             // Draw natural eyes
                             DrawEyes(eyeLoc, headFacing, headQuat, portrait);
-
-                            Vector3 browLoc = headPos;
-                            browLoc.y += YOffset_Brows;
-                            // Draw brows above eyes
-                            DrawBrows(browLoc, headFacing, headQuat, portrait);
-                        }
-                        // Portrait obviously ignores the y offset, thus render the beard after the body apparel (again)
-                        if(Props.hasBeard)
-                        {
-                            Vector3 beardLoc = headPos;
-                            Vector3 tacheLoc = headPos;
-                            beardLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Beard : YOffset_Beard;
-                            tacheLoc.y += headFacing == Rot4.North ? -YOffset_Head - YOffset_Tache : YOffset_Tache;
-                            // Draw beard and mustache
-                            DrawBeardAndTache(graphicSet, beardLoc, tacheLoc, headFacing, headQuat, portrait);
                         }
                         if(Props.hasMouth &&
-                            _cachedMouthParam.render &&
-                            _cachedMouthParam.mouthTextureIdx >= 0 &&
                             FaceData.BeardDef.drawMouth &&
                             Controller.settings.UseMouth)
                         {
                             Vector3 mouthLoc = headPos;
                             mouthLoc.y += YOffset_Mouth;
                             DrawMouth(mouthLoc, headFacing, headQuat, portrait);
+                        }
+                        if(headFacing != Rot4.North)
+						{
+                            if(Props.hasWrinkles)
+                            {
+                                Vector3 wrinkleLoc = headPos;
+                                wrinkleLoc.y += YOffset_Wrinkles;
+                                // Draw wrinkles
+                                DrawWrinkles(wrinkleLoc, headFacing, headQuat, bodyDrawType, portrait);
+                            }
+                            if(EyeBehavior.NumEyes > 0)
+                            {
+                                Vector3 browLoc = headPos;
+                                browLoc.y += YOffset_Brows;
+                                // Draw brows above eyes
+                                DrawBrows(browLoc, headFacing, headQuat, portrait);
+                            }
+                            if(Props.hasBeard)
+                            {
+                                Vector3 beardLoc = headPos;
+                                Vector3 tacheLoc = headPos;
+                                beardLoc.y += YOffset_Beard;
+                                tacheLoc.y += YOffset_Tache;
+                                // Draw beard and mustache
+                                DrawBeardAndTache(graphicSet, beardLoc, tacheLoc, headFacing, headQuat, portrait);
+                            }
                         }
                     }
                     // When CurrentHeadCoverage == HeadCoverage.None, let the vanilla routine draw the hair
@@ -278,6 +280,10 @@ namespace FacialStuff
 
         public void DrawMouth(Vector3 drawPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
 		{
+            if(!_cachedMouthParam.render || _cachedMouthParam.mouthTextureIdx < 0)
+			{
+                return;
+			}
             int mouthTextureIdx = _cachedMouthParam.mouthTextureIdx;
             Material mouthMat = PawnFaceGraphic.MouthMatAt(headFacing, mouthTextureIdx);
             if(mouthMat == null)
