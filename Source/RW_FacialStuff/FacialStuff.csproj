@@ -96,6 +96,7 @@
     <Compile Include="Animator\BodyAnimator.cs" />
     <None Include="Controller_Animator.cs" />
     <Compile Include="Defs\MouthSetDef.cs" />
+    <Compile Include="Harmony\HarmonyPatch_Pawn_InteractionsTracker.cs" />
     <Compile Include="IEyeBehavior.cs" />
     <Compile Include="IHeadBehavior.cs" />
     <Compile Include="IMouthBehavior.cs" />

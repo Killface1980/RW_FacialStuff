@@ -105,11 +105,6 @@ namespace FacialStuff.Harmony
                                                nameof(PawnSkinColors_FS.GetMelaninCommonalityFactor_Prefix)),
                              null);
             
-               harmony.Patch(
-                             AccessTools.Method(typeof(Pawn_InteractionsTracker),
-                                                nameof(Pawn_InteractionsTracker.TryInteractWith)),
-                             null,
-                             new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(TryInteractWith_Postfix)));
             
 
             Log.Message(
@@ -834,45 +829,7 @@ namespace FacialStuff.Harmony
 
             animator.WeaponQuat = Quaternion.AngleAxis(weaponAngle, Vector3.up);
         }
-
-        public static void TryInteractWith_Postfix(Pawn_InteractionsTracker __instance, bool __result, Pawn recipient)
-        {
-            if (__instance == null)
-            {
-                return;
-            }
-            
-            // TODO: do not use reflection to get Pawn instance
-            Pawn pawn = (Pawn)AccessTools.Field(typeof(Pawn_InteractionsTracker), "pawn").GetValue(__instance);
-            if(pawn == null || recipient == null)
-            {
-                return;
-            }
-
-            if(__result)
-            {
-                // If pawn can't see recipient, recipient can't see pawn
-                if(!pawn.CanSee(recipient))
-				{
-                    return;
-				}
-                if(pawn.GetCompFace(out CompFace compFace))
-                {
-                    if(compFace.Props.canRotateHead)
-                    {
-                        compFace.HeadBehavior.SetTarget(recipient, IHeadBehavior.TargetType.SocialRecipient);
-                    }
-                }
-                if(recipient.GetCompFace(out CompFace recipientFace))
-                {
-                    if(recipientFace.Props.canRotateHead)
-                    {
-                        recipientFace.HeadBehavior.SetTarget(pawn, IHeadBehavior.TargetType.SocialInitiator);                            
-                    }
-                }
-            }
-        }
-
+        
         // If the return value is positive, then rotate to the left. Else,
         // rotate to the right.
         private static float CalcShortestRot(float from, float to)
