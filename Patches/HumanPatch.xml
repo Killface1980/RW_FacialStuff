@@ -86,7 +86,7 @@
 			This determines what mouth texture is displayed under what circumstances 
 			Look at FacialStuff.AI.HumanMouth to see how it is implemented.
 			-->
-			<mouthBehavior Class = "FacialStuff.AI.HumanMouth">
+			<mouthBehavior Class = "FacialStuff.AI.HumanMouthBehavior">
 				<!-- Set public member variables if needed -->
 			</mouthBehavior>
 			

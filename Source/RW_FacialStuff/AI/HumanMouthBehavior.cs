@@ -9,7 +9,7 @@ using Verse.Noise;
 
 namespace FacialStuff.AI
 {
-	class HumanMouth : IMouthBehavior
+	class HumanMouthBehavior : IMouthBehavior
 	{
 		private int _deadTexIdx;
 		private int _extremeTexIdx;

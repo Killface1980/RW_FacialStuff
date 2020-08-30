@@ -90,7 +90,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="WidgetsFS.cs" />
-    <Compile Include="AI\HumanMouth.cs" />
+    <Compile Include="AI\HumanMouthBehavior.cs" />
     <Compile Include="AI\PawnFacialExpressionAI.cs" />
     <Compile Include="AI\PawnHeadRotationAI.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
