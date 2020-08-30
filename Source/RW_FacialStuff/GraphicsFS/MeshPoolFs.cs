@@ -44,14 +44,12 @@ namespace FacialStuff.GraphicsFS
 
         static MeshPoolFS()
         {
-            HumanEyeSet[1, 0] =
-                new GraphicMeshSet(
-                    HumanlikeHeadAverageWidth);
+            float width, height;
+            GetFaceMeshDimension(CrownType.Average, out width, out height);
+            HumanEyeSet[1, 0] = new GraphicMeshSet(width, height);
+            GetFaceMeshDimension(CrownType.Narrow, out width, out height);
+            HumanEyeSet[2, 0] = new GraphicMeshSet(width, height);
 
-            HumanEyeSet[2, 0] =
-                new GraphicMeshSet(
-                    HumanlikeHeadNarrowWidth,
-                    HumanlikeHeadAverageWidth);
             for(int i = 1; i < HumanEyeSet.GetLength(0); ++i)
             {
                 // This behavor might change in the future, so it may be wise to manually create mirrored mesh instead
@@ -79,5 +77,18 @@ namespace FacialStuff.GraphicsFS
             int headTypeVal = (int)headType;
             return (FullHead)(genderVal + crownVal + headTypeVal);
 		}
+
+        public static void GetFaceMeshDimension(CrownType crownType, out float width, out float height)
+		{
+            if(crownType == CrownType.Average)
+			{
+                width = HumanlikeHeadAverageWidth;
+                height = HumanlikeHeadAverageWidth;
+            } else
+			{
+                width = HumanlikeHeadNarrowWidth;
+                height = HumanlikeHeadAverageWidth;
+            }
+        }
     }
 }
