@@ -28,6 +28,8 @@ namespace FacialStuff
         
         public bool Initialized { get; private set; }
         
+
+        public IMouthBehavior MouthBehavior { get; private set; }
         public FaceMaterial FaceMaterial { get; set; }
         
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
@@ -233,7 +235,7 @@ namespace FacialStuff
             int mouthTextureIdx = _cachedMouthParam.mouthTextureIdx;
             if(portrait)
 			{
-                mouthTextureIdx = Props.mouthBehavior.GetTextureIndexForPortrait();
+                mouthTextureIdx = MouthBehavior.GetTextureIndexForPortrait();
 			}
             Material mouthMat = PawnFaceGraphic.MouthMatAt(headFacing, mouthTextureIdx);
             if(mouthMat == null)
@@ -297,7 +299,8 @@ namespace FacialStuff
             {
                 FaceData = new FaceData(this, OriginFaction?.def);
             }
-            Props.mouthBehavior.InitializeTextureIndex(FaceData.MouthSetDef.texNames.AsReadOnly());
+            MouthBehavior = (IMouthBehavior)Props.mouthBehavior.Clone();
+            MouthBehavior.InitializeTextureIndex(FaceData.MouthSetDef.texNames.AsReadOnly());
             FullHeadType = MeshPoolFS.GetFullHeadType(Pawn.gender, PawnCrownType, PawnHeadType);
             PawnFaceGraphic = new FaceGraphic(this, Props.perEyeBehaviors.Count);
             FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);

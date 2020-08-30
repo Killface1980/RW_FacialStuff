@@ -90,5 +90,10 @@ namespace FacialStuff.AI
 		{
 			return _normalTexIdx;
 		}
+
+		public object Clone()
+		{
+			return MemberwiseClone();
+		}
 	}
 }

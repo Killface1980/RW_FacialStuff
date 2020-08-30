@@ -1,9 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using Verse;
 
 namespace FacialStuff
 {
-	public interface IMouthBehavior
+	public interface IMouthBehavior : ICloneable
 	{
 		public class Params
 		{
