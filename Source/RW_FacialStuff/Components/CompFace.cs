@@ -23,11 +23,9 @@ namespace FacialStuff
         
         private Faction _originFactionInt;
         private FaceData _faceData;
-
-        private bool _drawMouth;
-        private int _mouthTextureIdx;
-        private bool _mouthMirror;
-
+        
+        private IMouthBehavior.Params _cachedMouthParam = new IMouthBehavior.Params();
+        
         public bool Initialized { get; private set; }
         
         public FaceMaterial FaceMaterial { get; set; }
@@ -164,7 +162,11 @@ namespace FacialStuff
                             headDrawer.DrawBeardAndTache(beardLoc, tacheLoc, headQuat, portrait);
                         }
                     }
-                    if(Props.hasMouth && _drawMouth && _mouthTextureIdx >= 0 && FaceData.BeardDef.drawMouth && Controller.settings.UseMouth)
+                    if(Props.hasMouth && 
+                        _cachedMouthParam.render && 
+                        _cachedMouthParam.mouthTextureIdx >= 0 && 
+                        FaceData.BeardDef.drawMouth && 
+                        Controller.settings.UseMouth)
                     {
                         DrawMouth(headPos, headFacing, headQuat, portrait);
                     }
@@ -228,7 +230,7 @@ namespace FacialStuff
 		{
             Vector3 mouthLoc = headPos;
             mouthLoc.y += YOffset_Mouth;
-            int mouthTextureIdx = _mouthTextureIdx;
+            int mouthTextureIdx = _cachedMouthParam.mouthTextureIdx;
             if(portrait)
 			{
                 mouthTextureIdx = Props.mouthBehavior.GetTextureIndexForPortrait();
@@ -238,7 +240,7 @@ namespace FacialStuff
             {
                 return;
             }
-            Mesh meshMouth = MeshPoolFS.GetFaceMesh(PawnCrownType, headFacing, _mouthMirror);
+            Mesh meshMouth = MeshPoolFS.GetFaceMesh(PawnCrownType, headFacing, _cachedMouthParam.mirror);
             Vector3 mouthOffset = MeshPoolFS.mouthOffsetsHeadType[(int)FullHeadType];
             switch(headFacing.AsInt)
             {
@@ -326,9 +328,8 @@ namespace FacialStuff
             FacialExpressionAI.Tick(canUpdatePawn, this, pawnState);
             if(canUpdatePawn)
             {
-                _mouthTextureIdx = -1;
-                _mouthMirror = false;
-                Props.mouthBehavior.Update(Pawn, headFacing, pawnState, out _drawMouth, ref _mouthTextureIdx, ref _mouthMirror);
+                _cachedMouthParam.Reset();
+                Props.mouthBehavior.Update(Pawn, headFacing, pawnState, _cachedMouthParam);
             }
 
             if(!portrait)

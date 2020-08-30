@@ -36,16 +36,16 @@ namespace FacialStuff.AI
 			}
 		}
 
-		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, out bool render, ref int mouthTextureIdx, ref bool mirror)
+		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, IMouthBehavior.Params mouthParams)
 		{
 			++_ticksSinceLastUpdate;
 			if(headRot == Rot4.North)
 			{
-				render = false;
+				mouthParams.render = false;
 				return;
 			}
-			render = true;
-			mouthTextureIdx = _curMouthTextureIdx;
+			mouthParams.render = true;
+			mouthParams.mouthTextureIdx = _curMouthTextureIdx;
 			if(_ticksSinceLastUpdate >= 90)
 			{
 				if(!pawnState.alive)
