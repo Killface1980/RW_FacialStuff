@@ -67,12 +67,12 @@ namespace FacialStuff.AI
 			if(Find.TickManager.TicksGame >= _ticksSinceLastUpdate + 90)
 			{
 				_ticksSinceLastUpdate = Find.TickManager.TicksGame;
-				if(!pawnState.alive)
+				if(!pawnState.Alive)
 				{
 					_curMouthTextureIdx = _deadTexIdx;
 					return;
 				}
-				if(pawnState.fleeing || pawnState.inPainShock)
+				if(pawnState.Fleeing || pawnState.InPainShock)
 				{
 					_curMouthTextureIdx = _cryingTexIdx;
 					return;

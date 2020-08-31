@@ -18,12 +18,12 @@ namespace FacialStuff
 		public const int kFleeingBitNum = 4;
 		public const int kBurningBitNum = 5;
 		
-		public bool alive = false;
-		public bool sleeping = false;
-		public bool aiming = false;
-		public bool inPainShock = false;
-		public bool fleeing = false;
-		public bool burning = false;
+		public bool Alive { get; private set; } = false;
+		public bool Sleeping { get; private set; } = false;
+		public bool Aiming { get; private set; } = false;
+		public bool InPainShock { get; private set; } = false;
+		public bool Fleeing { get; private set; } = false;
+		public bool Burning { get; private set; } = false;
 		
 		public Thing AimedThing { get; private set; }
 
@@ -36,28 +36,28 @@ namespace FacialStuff
 
 		public void UpdateState()
 		{
-			alive = !_pawn.Dead;
+			Alive = !_pawn.Dead;
 			Stance_Busy stance = _pawn.stances?.curStance as Stance_Busy;
-			aiming =
+			Aiming =
 				stance != null &&
 				!stance.neverAimWeapon &&
 				stance.focusTarg.IsValid;
 			AimedThing = stance.focusTarg.Thing;
-			inPainShock = _pawn.health.InPainShock;
-			fleeing = _pawn.Fleeing();
-			burning = _pawn.IsBurning();
-			sleeping = !_pawn.Awake();
+			InPainShock = _pawn.health.InPainShock;
+			Fleeing = _pawn.Fleeing();
+			Burning = _pawn.IsBurning();
+			Sleeping = !_pawn.Awake();
 		}
 
 		public long ToBitFlags()
 		{
 			return 
-				Convert.ToInt64(alive) << kAliveBitNum |
-				Convert.ToInt64(sleeping) << kSleepingBitNum |
-				Convert.ToInt64(aiming) << kAimingBitNum |
-				Convert.ToInt64(inPainShock) << kInPainShockBitNum |
-				Convert.ToInt64(fleeing) << kFleeingBitNum |
-				Convert.ToInt64(burning) << kBurningBitNum;
+				Convert.ToInt64(Alive) << kAliveBitNum |
+				Convert.ToInt64(Sleeping) << kSleepingBitNum |
+				Convert.ToInt64(Aiming) << kAimingBitNum |
+				Convert.ToInt64(InPainShock) << kInPainShockBitNum |
+				Convert.ToInt64(Fleeing) << kFleeingBitNum |
+				Convert.ToInt64(Burning) << kBurningBitNum;
 		}
 	}
 }

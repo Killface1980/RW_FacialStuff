@@ -48,7 +48,7 @@ namespace FacialStuff.AI
 		
 		public void Update(Pawn pawn, PawnState pawnState, out Rot4 headFacing)
 		{
-			if(!pawnState.alive)
+			if(!pawnState.Alive)
 			{
 				headFacing = pawn.Rotation;
 				_curTargetType = IHeadBehavior.TargetType.None;
@@ -151,7 +151,7 @@ namespace FacialStuff.AI
 
 		private bool UpdateTargetMode(Pawn pawn, PawnState pawnState, ref Quaternion targetQuat)
 		{
-			if(pawnState.aiming)
+			if(pawnState.Aiming)
 			{
 				SetTarget(pawnState.AimedThing, IHeadBehavior.TargetType.Aim);
 			}
@@ -162,7 +162,7 @@ namespace FacialStuff.AI
 			}
 
 			// Do not rotate head when sleeping.
-			if(pawnState.sleeping)
+			if(pawnState.Sleeping)
 			{
 				_curTargetType = IHeadBehavior.TargetType.None;
 			}
