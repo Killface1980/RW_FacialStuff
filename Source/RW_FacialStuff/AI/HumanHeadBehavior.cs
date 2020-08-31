@@ -23,14 +23,13 @@ namespace FacialStuff.AI
 		private IHeadBehavior.TargetType _curTargetType = IHeadBehavior.TargetType.None;
 		// Tick count when the target was set
 		private int _targetStartTick;
-		// Facing north is 0 degrees. Unit in degrees. Clockwise is positive.
-		private float _curAngle;
+		private Quaternion _curQuat;
 		
 		#endregion
 		
 		public void Initialize(Pawn pawn)
 		{
-			_curAngle = pawn.Rotation.AsAngle;
+			_curQuat = Quaternion.Euler(0f, pawn.Rotation.AsAngle, 0f);
 		}
 
 		#region Public Methods
@@ -69,31 +68,31 @@ namespace FacialStuff.AI
 				headFacing = Rot4.North;
 				return;
 			}
-			float targetAngle = 0f;
-			if(UpdateTargetMode(pawn, pawnState, ref targetAngle) && Mathf.Abs(_curAngle - targetAngle) > 0.1f)
+			Quaternion targetQuat = Quaternion.identity;
+			if(UpdateTargetMode(pawn, pawnState, ref targetQuat) && Mathf.Abs(Quaternion.Angle(targetQuat, _curQuat)) > 0.1f)
 			{
-				float curAngle = _curAngle;
-				GlobalAngleToLocalAngle(pawn.Rotation, ref targetAngle);
-				GlobalAngleToLocalAngle(pawn.Rotation, ref curAngle);
-				ClampLocalAngleToAllowedRange(ref targetAngle);
-				// Clamping current angle is necessary in case body rotation changes.
-				ClampLocalAngleToAllowedRange(ref curAngle);
-				float angleDiff = targetAngle - curAngle;
-				// If the difference is smaller than the rotation rate per tick...
-				if(Mathf.Abs(angleDiff) < headRotationRate)
+				float angle = Quaternion.Angle(targetQuat, _curQuat);
+				float lerpT = Mathf.Clamp(headRotationRate / angle, 0f, 1f);
+				_curQuat = Quaternion.Lerp(_curQuat, targetQuat, lerpT);
+			}
+			// Make sure that the head can't look back while changing body direction
+			float angleDiff = Mathf.Abs(Quaternion.Angle(Quaternion.Euler(0f, pawn.Rotation.AsAngle, 0f), _curQuat));
+			if(angleDiff > 90f)
+			{
+				Quaternion leftQuat = Quaternion.Euler(0f, pawn.Rotation.AsAngle - 90f, 0f);
+				Quaternion rightQuat = Quaternion.Euler(0f, pawn.Rotation.AsAngle + 90f, 0f);
+				float leftAngle = Mathf.Abs(Quaternion.Angle(leftQuat, _curQuat));
+				float rightAngle = Mathf.Abs(Quaternion.Angle(rightQuat, _curQuat));
+				if(leftAngle < rightAngle)
 				{
-					// ... then immediately set the angle to the target to avoid overshooting.
-					curAngle = targetAngle;
+					_curQuat = leftQuat;
 				} else
 				{
-					// Otherwise move the head as normal. Mathf.Sign() indicates direction of movement
-					curAngle += Mathf.Sign(targetAngle - curAngle) * headRotationRate;
+					_curQuat = rightQuat;
 				}
-				LocalAngleToGlobalAngle(pawn.Rotation, ref curAngle);
-				_curAngle = curAngle;
 			}
-			headFacing = Rot4.FromAngleFlat(_curAngle);
-
+			headFacing = Rot4.FromAngleFlat(_curQuat.eulerAngles.y);
+			
 			/*
 			Original code for pawns randomly looking at each other. May be performance intensive so leave it as option
 
@@ -143,14 +142,14 @@ namespace FacialStuff.AI
 			Scribe_References.Look(ref _target, "target");
 			Scribe_Values.Look(ref _curTargetType, "targetType");
 			Scribe_Values.Look(ref _targetStartTick, "targetAcquiredTick");
-			Scribe_Values.Look(ref _curAngle, "currentAngle");
+			Scribe_Values.Look(ref _curQuat, "currentAngle");
 		}
 		
 		#endregion
 
 		#region Private Methods
 
-		private bool UpdateTargetMode(Pawn pawn, PawnState pawnState, ref float targetAngle)
+		private bool UpdateTargetMode(Pawn pawn, PawnState pawnState, ref Quaternion targetQuat)
 		{
 			// If pawn is aiming at something, set aim target mode.
 			if(pawn.stances.curStance is Stance_Busy stance && !stance.neverAimWeapon && stance.focusTarg.HasThing)
@@ -176,88 +175,56 @@ namespace FacialStuff.AI
 			{
 				case IHeadBehavior.TargetType.None:
 					_target = null;
-					// Immediately track the body rotation if there is no target when body direction changes.
-					_curAngle = pawn.Rotation.AsAngle;
-					return false;
+					targetQuat = Quaternion.Euler(0f, pawn.Rotation.AsAngle, 0f);
+					return true;
 
 				case IHeadBehavior.TargetType.SocialInitiator:
 					// Wait for kSocialInteractionRecipientDelayTick before moving head
-					if(Find.TickManager.TicksGame - _targetStartTick < socialRecipientDelayTick)
+					if((Find.TickManager.TicksGame - _targetStartTick) < socialRecipientDelayTick)
 					{
-						return false;
+						targetQuat = Quaternion.Euler(0f, pawn.Rotation.AsAngle, 0f);
+						return true;
 					}
 					goto case IHeadBehavior.TargetType.SocialRecipient;
 
 				case IHeadBehavior.TargetType.SocialRecipient:
 					// End social interaction if enough time has passed
 					// or if pawn is unable to see the target
-					if(Find.TickManager.TicksGame - _targetStartTick > socialDurationTick ||
+					if((Find.TickManager.TicksGame - _targetStartTick) > socialDurationTick || 
 						!pawn.CanSee(_target))
 					{
+						_curTargetType = IHeadBehavior.TargetType.None;
 						goto case IHeadBehavior.TargetType.None;
 					}
-					targetAngle = UpdateTargetAngle(pawn);
+					targetQuat = UpdateTargetAngle(pawn);
 					return true;
 
 				case IHeadBehavior.TargetType.Aim:
-					targetAngle = UpdateTargetAngle(pawn);
+					targetQuat = UpdateTargetAngle(pawn);
 					return true;
 			}
 			// Shouldn't reach here
 			return false;
 		}
 
-		private float UpdateTargetAngle(Pawn pawn)
+		private Quaternion UpdateTargetAngle(Pawn pawn)
 		{
 			if(_target != null)
 			{
-				return (_target.Position - pawn.Position).AngleFlat;
+				// Non-zero y component will mess up the angle calculation.
+				Vector3 positionDir = new Vector3(
+					_target.DrawPos.x - pawn.DrawPos.x,
+					0,
+					_target.DrawPos.z - pawn.DrawPos.z);
+				return Quaternion.LookRotation(Vector3.Normalize(positionDir), Vector3.up);
 			}
 			else
 			{
 				Log.Warning("Facial Stuff: tried to update head angle when there is no target to turn the head towards");
-				return 0f;
+				return Quaternion.identity;
 			}
 		}
 				
-		// Prevent pawns from looking right behind their back
-		private static void ClampLocalAngleToAllowedRange(ref float angle)
-		{
-			if(angle >= -90f && angle <= 90f)
-			{
-				return;
-			}
-			// Find the absolute difference between the current angle, and the max angles for ccw/cw direction,
-			// then choose the direction with smaller difference
-			float cwMaxDiff = Mathf.Abs(90f - angle);
-			float ccwMaxDiff = Mathf.Abs(-90f - angle);
-			if(cwMaxDiff < ccwMaxDiff)
-			{
-				angle = 90f;
-			}
-			else
-			{
-				angle = -90f;
-			}
-		}
-
-		private static void GlobalAngleToLocalAngle(Rot4 basisRot, ref float angle)
-		{
-			// Global angle is simply angle with respect to north. Local angle is the angle with respect to the 
-			// whatever direction given.
-			// Ex. 90 degrees angle with basis of north (which is directly point at east) can be thought as 0 degrees for the 
-			// basis pointing east.
-			// Using localized angle has the benefit of not having to specify 4 different min/max angles for all of directions when
-			// clamping the angle.
-			angle = angle - basisRot.AsInt * 90f;
-		}
-
-		private static void LocalAngleToGlobalAngle(Rot4 basisrot, ref float localAngle)
-		{
-			// Convert the "localized" angle back to the ordinary angle with basis towards north
-			localAngle = localAngle + basisrot.AsInt * 90f;
-		}
-		
 		#endregion
 	}
 }
