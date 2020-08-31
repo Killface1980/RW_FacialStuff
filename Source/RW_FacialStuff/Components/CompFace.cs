@@ -21,6 +21,7 @@ namespace FacialStuff
 
         private Faction _originFactionInt;
         private FaceData _faceData;
+        private Rot4 _cachedHeadFacing;
         private IMouthBehavior.Params _cachedMouthParam = new IMouthBehavior.Params();
         private List<IEyeBehavior.Params> _cachedEyeParam;
         private PawnState _pawnState = new PawnState();
@@ -415,9 +416,16 @@ namespace FacialStuff
                     HeadBehavior.Update(Pawn, _pawnState, out headFacing);
                     MouthBehavior.Update(Pawn, headFacing, _pawnState, _cachedMouthParam);
                     EyeBehavior.Update(Pawn, headFacing, _pawnState, _cachedEyeParam);
+                    _cachedHeadFacing = headFacing;
                     _lastUpdateTick = Find.TickManager.TicksGame;
                 }
             }
+            else
+			{
+                // If TickDrawers is called multiple times in a single tick, this ensures that consistent result is returned.
+                // Results from MouthBehavior and EyeBehavior are already stored in _cachedMouthParam and _cachedMouthParam.
+                headFacing = _cachedHeadFacing;
+			}
             // Use default behaviors for rendering portrait
             if(portrait)
 			{
