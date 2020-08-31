@@ -21,6 +21,11 @@ namespace FacialStuff.AI
 		private int _ticksSinceLastUpdate;
 		private int _curMouthTextureIdx;
 
+		public HumanMouthBehavior()
+		{
+			_ticksSinceLastUpdate = Find.TickManager.TicksGame;
+		}
+
 		public void InitializeTextureIndex(ReadOnlyCollection<string> textureNames)
 		{
 			_extremeTexIdx = textureNames.IndexOf("Extreme");
@@ -38,7 +43,6 @@ namespace FacialStuff.AI
 
 		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, IMouthBehavior.Params mouthParams)
 		{
-			++_ticksSinceLastUpdate;
 			if(headRot == Rot4.North)
 			{
 				mouthParams.render = false;
@@ -46,8 +50,9 @@ namespace FacialStuff.AI
 			}
 			mouthParams.render = true;
 			mouthParams.mouthTextureIdx = _curMouthTextureIdx;
-			if(_ticksSinceLastUpdate >= 90)
+			if(Find.TickManager.TicksGame >= _ticksSinceLastUpdate + 90)
 			{
+				_ticksSinceLastUpdate = Find.TickManager.TicksGame;
 				if(!pawnState.alive)
 				{
 					_curMouthTextureIdx = _deadTexIdx;

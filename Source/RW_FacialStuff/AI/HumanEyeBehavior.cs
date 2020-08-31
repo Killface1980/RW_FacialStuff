@@ -16,14 +16,17 @@ namespace FacialStuff.AI
 		#pragma warning restore CS0649
 
 		private bool _blinkOpen;
-		private int _ticksSinceLastState;
-		private int _ticksUntilNextState;
+		private int _nextStateChangeTick;
 
 		public int NumEyes { get { return 2; } }
 
+		public HumanEyeBehavior()
+		{
+			_nextStateChangeTick = Find.TickManager.TicksGame;
+		}
+
 		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, List<IEyeBehavior.Params> eyeParams)
 		{
-			++_ticksSinceLastState;
 			if(!pawnState.alive)
 			{
 				return;
@@ -38,13 +41,12 @@ namespace FacialStuff.AI
 			bool closeOverride = inComa;
 
 			// Eye blinking update
-			if(_ticksSinceLastState >= _ticksUntilNextState)
+			if(Find.TickManager.TicksGame >= _nextStateChangeTick)
 			{
-				_ticksSinceLastState = 0;
-				_ticksUntilNextState =
+				_nextStateChangeTick =
 					_blinkOpen ?
-						blinkCloseTicks :
-						CalculateEyeOpenDuration(consciousness);
+						Find.TickManager.TicksGame + blinkCloseTicks :
+						Find.TickManager.TicksGame + CalculateEyeOpenDuration(consciousness);
 				_blinkOpen = !_blinkOpen;
 			}
 			// 0 is left eye, 1 is right eye.

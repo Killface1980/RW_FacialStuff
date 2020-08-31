@@ -23,8 +23,8 @@ namespace FacialStuff.AI
 		private Rot4 _prevBodyRot;
 		private Thing _target;
 		private IHeadBehavior.TargetType _curTargetMode = IHeadBehavior.TargetType.None;
-		// How many ticks have passed since target was set
-		private int _curTargetTicks;
+		// Tick count when the target was set
+		private int _targetStartTick;
 		// Facing north is 0 degrees. Unit in degrees. Clockwise is positive.
 		private float _curAngle;
 		// Facing north is 0 degrees. unit in degrees. Clockwise is positive.
@@ -49,13 +49,12 @@ namespace FacialStuff.AI
 			{
 				_curTargetMode = mode;
 				_target = target;
-				_curTargetTicks = 0;
+				_targetStartTick = Find.TickManager.TicksGame;
 			}
 		}
 		
 		public void Update(Pawn pawn, PawnState pawnState, out Rot4 headFacing)
 		{
-			++_curTargetTicks;
 			if(!pawnState.alive)
 			{
 				headFacing = pawn.Rotation;
@@ -189,7 +188,7 @@ namespace FacialStuff.AI
 
 				case IHeadBehavior.TargetType.SocialInitiator:
 					// Wait for kSocialInteractionRecipientDelayTick before moving head
-					if(_curTargetTicks < socialRecipientDelayTick)
+					if(Find.TickManager.TicksGame - _targetStartTick < socialRecipientDelayTick)
 					{
 						return false;
 					}
@@ -198,7 +197,7 @@ namespace FacialStuff.AI
 				case IHeadBehavior.TargetType.SocialRecipient:
 					// End social interaction if enough time has passed
 					// or if pawn is unable to see the target
-					if(_curTargetTicks > socialDurationTick ||
+					if(Find.TickManager.TicksGame - _targetStartTick > socialDurationTick ||
 						!pawn.CanSee(_target))
 					{
 						ResetHeadTarget(pawn.Rotation);
@@ -232,7 +231,7 @@ namespace FacialStuff.AI
 			_curTargetMode = IHeadBehavior.TargetType.None;
 			_targetAngle = bodyRot.AsAngle;
 			_target = null;
-			_curTargetTicks = 0;
+			_targetStartTick = Find.TickManager.TicksGame;
 		}
 		
 		// Prevent pawns from looking right behind their back
