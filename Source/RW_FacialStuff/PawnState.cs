@@ -25,7 +25,7 @@ namespace FacialStuff
 		public bool Fleeing { get; private set; } = false;
 		public bool Burning { get; private set; } = false;
 		
-		public Thing AimedThing { get; private set; }
+		public Thing Aiming_Target { get; private set; }
 
 		private Pawn _pawn;
 
@@ -42,7 +42,7 @@ namespace FacialStuff
 				stance != null &&
 				!stance.neverAimWeapon &&
 				stance.focusTarg.IsValid;
-			AimedThing = stance.focusTarg.Thing;
+			Aiming_Target = stance.focusTarg.Thing;
 			InPainShock = _pawn.health.InPainShock;
 			Fleeing = _pawn.Fleeing();
 			Burning = _pawn.IsBurning();

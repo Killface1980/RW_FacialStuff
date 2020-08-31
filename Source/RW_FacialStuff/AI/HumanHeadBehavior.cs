@@ -153,7 +153,7 @@ namespace FacialStuff.AI
 		{
 			if(pawnState.Aiming)
 			{
-				SetTarget(pawnState.AimedThing, IHeadBehavior.TargetType.Aim);
+				SetTarget(pawnState.Aiming_Target, IHeadBehavior.TargetType.Aim);
 			}
 			// If pawn is no longer aiming, reset the target mode.
 			else if(_curTargetType == IHeadBehavior.TargetType.Aim)
