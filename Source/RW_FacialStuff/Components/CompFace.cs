@@ -24,7 +24,7 @@ namespace FacialStuff
         private Rot4 _cachedHeadFacing;
         private IMouthBehavior.Params _cachedMouthParam = new IMouthBehavior.Params();
         private List<IEyeBehavior.Params> _cachedEyeParam;
-        private PawnState _pawnState = new PawnState();
+        private PawnState _pawnState;
         private IHeadBehavior _headBehavior;
         private IMouthBehavior _mouthBehavior;
         private IEyeBehavior _eyeBehavior;
@@ -358,6 +358,7 @@ namespace FacialStuff
 			{
                 _eyeBehavior = (IEyeBehavior)Props.eyeBehavior.Clone();
             }
+            _pawnState = new PawnState(Pawn);
         }
 
         // Faction data isn't available during ThingComp.Initialize(). Initialize faction-related members here.
@@ -398,16 +399,7 @@ namespace FacialStuff
                     !Find.TickManager.Paused;
                 if(canUpdatePawn && !portrait)
                 {
-                    _pawnState.alive = !Pawn.Dead;
-                    _pawnState.aiming = Pawn.Aiming();
-                    _pawnState.inPainShock = Pawn.health.InPainShock;
-                    _pawnState.fleeing = Pawn.Fleeing();
-                    _pawnState.burning = Pawn.IsBurning();
-                    if(Find.TickManager.TicksGame % 180 == 0)
-                    {
-                        _pawnState.sleeping = !Pawn.Awake();
-                    }
-
+                    _pawnState.UpdateState();
                     _cachedMouthParam.Reset();
                     foreach(var eyeParam in _cachedEyeParam)
                     {

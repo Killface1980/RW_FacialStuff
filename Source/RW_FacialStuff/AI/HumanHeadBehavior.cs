@@ -151,10 +151,9 @@ namespace FacialStuff.AI
 
 		private bool UpdateTargetMode(Pawn pawn, PawnState pawnState, ref Quaternion targetQuat)
 		{
-			// If pawn is aiming at something, set aim target mode.
-			if(pawn.stances.curStance is Stance_Busy stance && !stance.neverAimWeapon && stance.focusTarg.HasThing)
+			if(pawnState.aiming)
 			{
-				SetTarget(stance.focusTarg.Thing, IHeadBehavior.TargetType.Aim);
+				SetTarget(pawnState.AimedThing, IHeadBehavior.TargetType.Aim);
 			}
 			// If pawn is no longer aiming, reset the target mode.
 			else if(_curTargetType == IHeadBehavior.TargetType.Aim)
