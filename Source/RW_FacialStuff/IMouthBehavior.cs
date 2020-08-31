@@ -4,7 +4,7 @@ using Verse;
 
 namespace FacialStuff
 {
-	public interface IMouthBehavior : ICloneable
+	public interface IMouthBehavior : ICloneable, IExposable
 	{
 		public class Params
 		{

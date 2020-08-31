@@ -19,24 +19,18 @@ namespace FacialStuff.AI
 
 		#region Private Member Variable
 
-		private Rot4 _curRot;
-		private Rot4 _prevBodyRot;
 		private Thing _target;
-		private IHeadBehavior.TargetType _curTargetMode = IHeadBehavior.TargetType.None;
+		private IHeadBehavior.TargetType _curTargetType = IHeadBehavior.TargetType.None;
 		// Tick count when the target was set
 		private int _targetStartTick;
 		// Facing north is 0 degrees. Unit in degrees. Clockwise is positive.
 		private float _curAngle;
-		// Facing north is 0 degrees. unit in degrees. Clockwise is positive.
-		private float _targetAngle;
 		
 		#endregion
 		
 		public void Initialize(Pawn pawn)
 		{
-			_curRot = pawn.Rotation;
 			_curAngle = pawn.Rotation.AsAngle;
-			_prevBodyRot = pawn.Rotation;
 		}
 
 		#region Public Methods
@@ -45,9 +39,9 @@ namespace FacialStuff.AI
 		{
 			// Targets have priorities. Only set the target if new target is of higher priority 
 			// than the existing one.
-			if(_curTargetMode <= mode)
+			if(_curTargetType <= mode)
 			{
-				_curTargetMode = mode;
+				_curTargetType = mode;
 				_target = target;
 				_targetStartTick = Find.TickManager.TicksGame;
 			}
@@ -58,7 +52,7 @@ namespace FacialStuff.AI
 			if(!pawnState.alive)
 			{
 				headFacing = pawn.Rotation;
-				_curTargetMode = IHeadBehavior.TargetType.None;
+				_curTargetType = IHeadBehavior.TargetType.None;
 				return;
 			}
 			if(!pawn.Rotation.IsValid)
@@ -75,9 +69,9 @@ namespace FacialStuff.AI
 				headFacing = Rot4.North;
 				return;
 			}
-			if(UpdateTargetMode(pawn, pawnState) && Mathf.Abs(_curAngle - _targetAngle) > 0.1f)
+			float targetAngle = 0f;
+			if(UpdateTargetMode(pawn, pawnState, ref targetAngle) && Mathf.Abs(_curAngle - targetAngle) > 0.1f)
 			{
-				float targetAngle = _targetAngle;
 				float curAngle = _curAngle;
 				GlobalAngleToLocalAngle(pawn.Rotation, ref targetAngle);
 				GlobalAngleToLocalAngle(pawn.Rotation, ref curAngle);
@@ -97,10 +91,8 @@ namespace FacialStuff.AI
 				}
 				LocalAngleToGlobalAngle(pawn.Rotation, ref curAngle);
 				_curAngle = curAngle;
-				_curRot = Rot4.FromAngleFlat(_curAngle);
 			}
-			headFacing = _curRot;
-			_prevBodyRot = pawn.Rotation;
+			headFacing = Rot4.FromAngleFlat(_curAngle);
 
 			/*
 			Original code for pawns randomly looking at each other. May be performance intensive so leave it as option
@@ -146,11 +138,19 @@ namespace FacialStuff.AI
 			return Rot4.South;
 		}
 
+		public void ExposeData()
+		{
+			Scribe_References.Look(ref _target, "target");
+			Scribe_Values.Look(ref _curTargetType, "targetType");
+			Scribe_Values.Look(ref _targetStartTick, "targetAcquiredTick");
+			Scribe_Values.Look(ref _curAngle, "currentAngle");
+		}
+		
 		#endregion
 
 		#region Private Methods
 
-		private bool UpdateTargetMode(Pawn pawn, PawnState pawnState)
+		private bool UpdateTargetMode(Pawn pawn, PawnState pawnState, ref float targetAngle)
 		{
 			// If pawn is aiming at something, set aim target mode.
 			if(pawn.stances.curStance is Stance_Busy stance && !stance.neverAimWeapon && stance.focusTarg.HasThing)
@@ -158,33 +158,27 @@ namespace FacialStuff.AI
 				SetTarget(stance.focusTarg.Thing, IHeadBehavior.TargetType.Aim);
 			}
 			// If pawn is no longer aiming, reset the target mode.
-			else if(_curTargetMode == IHeadBehavior.TargetType.Aim)
+			else if(_curTargetType == IHeadBehavior.TargetType.Aim)
 			{
-				_curTargetMode = IHeadBehavior.TargetType.None;
+				_curTargetType = IHeadBehavior.TargetType.None;
 			}
 
 			// Do not rotate head when sleeping.
 			if(pawnState.sleeping)
 			{
-				_curTargetMode = IHeadBehavior.TargetType.None;
+				_curTargetType = IHeadBehavior.TargetType.None;
 			}
 			if(_target != null && _target.Destroyed)
 			{
-				_curTargetMode = IHeadBehavior.TargetType.None;
+				_curTargetType = IHeadBehavior.TargetType.None;
 			}
-			switch(_curTargetMode)
+			switch(_curTargetType)
 			{
 				case IHeadBehavior.TargetType.None:
-					ResetHeadTarget(pawn.Rotation);
+					_target = null;
 					// Immediately track the body rotation if there is no target when body direction changes.
-					if(pawn.Rotation != _prevBodyRot)
-					{
-						_curAngle = _targetAngle;
-						_curRot = pawn.Rotation;
-						// Angle is same as target angle. There is no need to move head.
-						return false;
-					}
-					return true;
+					_curAngle = pawn.Rotation.AsAngle;
+					return false;
 
 				case IHeadBehavior.TargetType.SocialInitiator:
 					// Wait for kSocialInteractionRecipientDelayTick before moving head
@@ -200,40 +194,32 @@ namespace FacialStuff.AI
 					if(Find.TickManager.TicksGame - _targetStartTick > socialDurationTick ||
 						!pawn.CanSee(_target))
 					{
-						ResetHeadTarget(pawn.Rotation);
-						return true;
+						goto case IHeadBehavior.TargetType.None;
 					}
-
-					UpdateTargetAngle(pawn);
+					targetAngle = UpdateTargetAngle(pawn);
 					return true;
 
 				case IHeadBehavior.TargetType.Aim:
-					UpdateTargetAngle(pawn);
+					targetAngle = UpdateTargetAngle(pawn);
 					return true;
 			}
-			return true;
+			// Shouldn't reach here
+			return false;
 		}
 
-		private void UpdateTargetAngle(Pawn pawn)
+		private float UpdateTargetAngle(Pawn pawn)
 		{
 			if(_target != null)
 			{
-				_targetAngle = (_target.Position - pawn.Position).AngleFlat;
+				return (_target.Position - pawn.Position).AngleFlat;
 			}
 			else
 			{
 				Log.Warning("Facial Stuff: tried to update head angle when there is no target to turn the head towards");
+				return 0f;
 			}
 		}
-
-		private void ResetHeadTarget(Rot4 bodyRot)
-		{
-			_curTargetMode = IHeadBehavior.TargetType.None;
-			_targetAngle = bodyRot.AsAngle;
-			_target = null;
-			_targetStartTick = Find.TickManager.TicksGame;
-		}
-		
+				
 		// Prevent pawns from looking right behind their back
 		private static void ClampLocalAngleToAllowedRange(ref float angle)
 		{

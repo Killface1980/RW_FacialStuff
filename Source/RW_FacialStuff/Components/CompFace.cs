@@ -24,17 +24,20 @@ namespace FacialStuff
         private IMouthBehavior.Params _cachedMouthParam = new IMouthBehavior.Params();
         private List<IEyeBehavior.Params> _cachedEyeParam;
         private PawnState _pawnState = new PawnState();
+        private IHeadBehavior _headBehavior;
+        private IMouthBehavior _mouthBehavior;
+        private IEyeBehavior _eyeBehavior;
         // Used for distance culling of face details
         private GameComponent_FacialStuff _fsGameComp;
         private int _lastUpdateTick;
 
         public bool Initialized { get; private set; }
 
-        public IHeadBehavior HeadBehavior { get; private set; }
+        public IHeadBehavior HeadBehavior => _headBehavior;
 
-        public IMouthBehavior MouthBehavior { get; private set; }
+        public IMouthBehavior MouthBehavior => _mouthBehavior;
 
-        public IEyeBehavior EyeBehavior { get; private set; }
+        public IEyeBehavior EyeBehavior => _eyeBehavior;
 
         public FaceMaterial FaceMaterial { get; set; }
         
@@ -341,9 +344,19 @@ namespace FacialStuff
             {
                 PartStatusTracker = new PartStatusTracker(Pawn.RaceProps.body);
             }
-            HeadBehavior = (IHeadBehavior)Props.headBehavior.Clone();
-            MouthBehavior = (IMouthBehavior)Props.mouthBehavior.Clone();
-            EyeBehavior = (IEyeBehavior)Props.eyeBehavior.Clone();
+            if(HeadBehavior == null)
+            {
+                _headBehavior = (IHeadBehavior)Props.headBehavior.Clone();
+                HeadBehavior.Initialize(Pawn);
+            }
+            if(MouthBehavior == null)
+            {
+                _mouthBehavior = (IMouthBehavior)Props.mouthBehavior.Clone();
+            }
+            if(EyeBehavior == null)
+			{
+                _eyeBehavior = (IEyeBehavior)Props.eyeBehavior.Clone();
+            }
         }
 
         // Faction data isn't available during ThingComp.Initialize(). Initialize faction-related members here.
@@ -426,6 +439,9 @@ namespace FacialStuff
 
             Scribe_References.Look(ref this._originFactionInt, "pawnFaction");
             Scribe_Deep.Look(ref this._faceData, "pawnFace");
+            Scribe_Deep.Look(ref _headBehavior, "headBehavior");
+            Scribe_Deep.Look(ref _mouthBehavior, "mouthBehavior");
+            Scribe_Deep.Look(ref _eyeBehavior, "eyeBehavior");
         }
     }
 }

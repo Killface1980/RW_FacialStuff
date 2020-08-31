@@ -19,7 +19,9 @@ namespace FacialStuff.AI
 		private int _happyTexIdx;
 		private int _cryingTexIdx;
 		private int _ticksSinceLastUpdate;
-		private int _curMouthTextureIdx;
+		private int _curMouthTextureIdx = -1;
+		private List<string> _textureNames;
+		private string _savedCurTexName;
 		
 		public void InitializeTextureIndex(ReadOnlyCollection<string> textureNames)
 		{
@@ -33,6 +35,23 @@ namespace FacialStuff.AI
 			if(_deadTexIdx < 0)
 			{
 				_deadTexIdx = _minorTexIdx;
+			}
+
+			// Attempt to load current texture from the saved texture name.
+			if(!_savedCurTexName.NullOrEmpty())
+			{
+				_curMouthTextureIdx = textureNames.IndexOf(_savedCurTexName);
+			}
+			if(_curMouthTextureIdx < 0)
+			{
+				_curMouthTextureIdx = _normalTexIdx;
+			}
+
+			// Copy the textureNames list for saving the texture name as string instead of int.
+			_textureNames = new List<string>(textureNames.Count);
+			foreach(var texName in textureNames)
+			{
+				_textureNames.Add(texName);
 			}
 		}
 
@@ -95,6 +114,16 @@ namespace FacialStuff.AI
 		public object Clone()
 		{
 			return MemberwiseClone();
+		}
+
+		public void ExposeData()
+		{
+			Scribe_Values.Look(ref _ticksSinceLastUpdate, "ticksSinceLastUpdate");
+			if(Scribe.mode == LoadSaveMode.Saving)
+			{
+				_savedCurTexName = _textureNames[_curMouthTextureIdx];
+			}
+			Scribe_Values.Look(ref _savedCurTexName, "curTexName");
 		}
 	}
 }

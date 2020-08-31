@@ -85,5 +85,11 @@ namespace FacialStuff.AI
 		{
 			return MemberwiseClone();
 		}
+
+		public void ExposeData()
+		{
+			Scribe_Values.Look(ref _blinkOpen, "blinkOpen");
+			Scribe_Values.Look(ref _nextStateChangeTick, "nextStateChangeTick");
+		}
 	}
 }

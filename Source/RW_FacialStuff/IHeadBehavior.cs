@@ -3,7 +3,7 @@ using Verse;
 
 namespace FacialStuff
 {
-	public interface IHeadBehavior : ICloneable
+	public interface IHeadBehavior : ICloneable, IExposable
 	{
 		public enum TargetType
 		{
