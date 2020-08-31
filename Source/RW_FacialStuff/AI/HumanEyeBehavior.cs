@@ -19,12 +19,7 @@ namespace FacialStuff.AI
 		private int _nextStateChangeTick;
 
 		public int NumEyes { get { return 2; } }
-
-		public HumanEyeBehavior()
-		{
-			_nextStateChangeTick = Find.TickManager.TicksGame;
-		}
-
+		
 		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, List<IEyeBehavior.Params> eyeParams)
 		{
 			if(!pawnState.alive)

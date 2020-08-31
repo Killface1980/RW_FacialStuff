@@ -20,12 +20,7 @@ namespace FacialStuff.AI
 		private int _cryingTexIdx;
 		private int _ticksSinceLastUpdate;
 		private int _curMouthTextureIdx;
-
-		public HumanMouthBehavior()
-		{
-			_ticksSinceLastUpdate = Find.TickManager.TicksGame;
-		}
-
+		
 		public void InitializeTextureIndex(ReadOnlyCollection<string> textureNames)
 		{
 			_extremeTexIdx = textureNames.IndexOf("Extreme");
