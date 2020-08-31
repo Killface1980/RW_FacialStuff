@@ -26,6 +26,7 @@ namespace FacialStuff
         private PawnState _pawnState = new PawnState();
         // Used for distance culling of face details
         private GameComponent_FacialStuff _fsGameComp;
+        private int _lastUpdateTick;
 
         public bool Initialized { get; private set; }
 
@@ -372,32 +373,39 @@ namespace FacialStuff
         
         public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics, bool portrait)
         {
-            bool canUpdatePawn =
-                Pawn.Map != null &&
-                !Pawn.InContainerEnclosed &&
-                Pawn.Spawned &&
-                !Find.TickManager.Paused;
-            if(canUpdatePawn && !portrait)
-            {
-                _pawnState.alive = !Pawn.Dead;
-                _pawnState.aiming = Pawn.Aiming();
-                _pawnState.inPainShock = Pawn.health.InPainShock;
-                _pawnState.fleeing = Pawn.Fleeing();
-                _pawnState.burning = Pawn.IsBurning();
-                if(Find.TickManager.TicksGame % 180 == 0)
+            // TickDrawers can be called multiple times in a single tick. Prevent updating more than once if this happens.
+            if(_lastUpdateTick != Find.TickManager.TicksGame)
+			{
+                _lastUpdateTick = Find.TickManager.TicksGame;
+                bool canUpdatePawn =
+                    Pawn.Map != null &&
+                    !Pawn.InContainerEnclosed &&
+                    Pawn.Spawned &&
+                    !Find.TickManager.Paused;
+                if(canUpdatePawn && !portrait)
                 {
-                    _pawnState.sleeping = !Pawn.Awake();
+                    _pawnState.alive = !Pawn.Dead;
+                    _pawnState.aiming = Pawn.Aiming();
+                    _pawnState.inPainShock = Pawn.health.InPainShock;
+                    _pawnState.fleeing = Pawn.Fleeing();
+                    _pawnState.burning = Pawn.IsBurning();
+                    if(Find.TickManager.TicksGame % 180 == 0)
+                    {
+                        _pawnState.sleeping = !Pawn.Awake();
+                    }
+
+                    _cachedMouthParam.Reset();
+                    foreach(var eyeParam in _cachedEyeParam)
+                    {
+                        eyeParam.Reset();
+                    }
+                    HeadBehavior.Update(Pawn, _pawnState, out headFacing);
+                    MouthBehavior.Update(Pawn, headFacing, _pawnState, _cachedMouthParam);
+                    EyeBehavior.Update(Pawn, headFacing, _pawnState, _cachedEyeParam);
+                    _lastUpdateTick = Find.TickManager.TicksGame;
                 }
-                
-                _cachedMouthParam.Reset();
-                foreach(var eyeParam in _cachedEyeParam)
-				{
-                    eyeParam.Reset();
-				}
-                HeadBehavior.Update(Pawn, _pawnState, out headFacing);
-                MouthBehavior.Update(Pawn, headFacing, _pawnState, _cachedMouthParam);
-                EyeBehavior.Update(Pawn, headFacing, _pawnState, _cachedEyeParam);
             }
+            // Use default behaviors for rendering portrait
             if(portrait)
 			{
                 headFacing = HeadBehavior.GetRotationForPortrait();
