@@ -37,7 +37,6 @@ namespace FacialStuff.Harmony
             }
             */
             List<CodeInstruction> instList = instructions.ToList();
-            List<CodeInstruction> newInst = new List<CodeInstruction>();
             FieldInfo pawnFieldInfo = typeof(Pawn_InteractionsTracker).GetField("pawn", BindingFlags.NonPublic | BindingFlags.Instance);
             if(pawnFieldInfo == null)
 			{
@@ -46,12 +45,9 @@ namespace FacialStuff.Harmony
                     "field doesn't exist.");
                 return instList;
             }
-            newInst.Add(new CodeInstruction(OpCodes.Ldarg_0));
-            newInst.Add(new CodeInstruction(OpCodes.Ldfld, pawnFieldInfo));
-            newInst.Add(new CodeInstruction(OpCodes.Ldarg_0));
-            newInst.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatch_Pawn_InteractionsTracker), nameof(OnSuccessfulInteraction))));
             int transpilerState = 0;
             int insertIdx = 0;
+            List<Label> oldLabels = new List<Label>();
             for(int i = instList.Count - 1; i >= 0; --i)
 			{
                 if(instList[i].opcode == OpCodes.Ret && transpilerState == 0)
@@ -60,6 +56,11 @@ namespace FacialStuff.Harmony
 				}
                 else if(instList[i].opcode == OpCodes.Ldc_I4_1 && transpilerState == 1)
 				{
+                    foreach(var label in instList[i].labels)
+					{
+                        oldLabels.Add(label);
+					}
+                    instList[i].labels.Clear();
                     insertIdx = i;
                     transpilerState = 2;
 				}
@@ -69,6 +70,13 @@ namespace FacialStuff.Harmony
                 Log.Warning("Facial Stuff: could not patch Pawn_InterationsTracker.TryInteractWith() method. Could not find instructions to patch.");
                 return instList;
 			}
+            List<CodeInstruction> newInst = new List<CodeInstruction>();
+            CodeInstruction ldarg0 = new CodeInstruction(OpCodes.Ldarg_0);
+            ldarg0.labels.InsertRange(0, oldLabels);
+            newInst.Add(ldarg0);
+            newInst.Add(new CodeInstruction(OpCodes.Ldfld, pawnFieldInfo));
+            newInst.Add(new CodeInstruction(OpCodes.Ldarg_1));
+            newInst.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatch_Pawn_InteractionsTracker), nameof(OnSuccessfulInteraction))));
             instList.InsertRange(insertIdx, newInst);
             return instList;
         }
@@ -81,17 +89,11 @@ namespace FacialStuff.Harmony
             }
             if(initiator.GetCompFace(out CompFace compFace))
             {
-                if(compFace.Props.canRotateHead)
-                {
-                    compFace.HeadBehavior.SetTarget(recipient, IHeadBehavior.TargetType.SocialRecipient);
-                }
+                compFace.HeadBehavior.SetTarget(recipient, IHeadBehavior.TargetType.SocialRecipient);
             }
             if(recipient.GetCompFace(out CompFace recipientFace))
             {
-                if(recipientFace.Props.canRotateHead)
-                {
-                    recipientFace.HeadBehavior.SetTarget(initiator, IHeadBehavior.TargetType.SocialInitiator);
-                }
+                recipientFace.HeadBehavior.SetTarget(initiator, IHeadBehavior.TargetType.SocialInitiator);
             }
         }
     }
