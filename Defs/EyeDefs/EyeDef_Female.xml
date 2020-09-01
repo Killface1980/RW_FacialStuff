@@ -3,6 +3,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_FL</defName>
+	<label>Human Female Average Flat</label>
 	<texCollection>Human</texCollection>
     <hairGender>Female</hairGender>
     <texBasePath></texBasePath><!-- empty for default path "Things/Pawn/Humanlike/Eyes/"-->
@@ -19,6 +20,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_RD</defName>
+	<label>Human Female Average Round</label>
 	<texCollection>Human</texCollection>
     <hairGender>Female</hairGender>
     <texName>FRD</texName>
@@ -34,6 +36,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_OV</defName>
+	<label>Human Female Average Oval</label>
 	<texCollection>Human</texCollection>
     <hairGender>Female</hairGender>
     <texName>FOV</texName>
@@ -49,6 +52,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Female_Average_SM</defName>
+	<label>Human Female Average Small</label>
 	<texCollection>Human</texCollection>
     <hairGender>Female</hairGender>
     <texName>FSM</texName>

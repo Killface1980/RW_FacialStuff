@@ -3,6 +3,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Closed</defName>
+	<label>Human Eye Closed</label>
     <texBasePath></texBasePath>
 	<!-- HumanHidden because it shouldn't be part of the Human texCollection. Otherwise it can possibly be assigned to pawns as "open" eyes -->
 	<texCollection>HumanHidden</texCollection>
@@ -11,6 +12,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Missing</defName>
+	<label>Human Eye Missing</label>
 	<!-- HumanHidden because it shouldn't be part of the Human texCollection. Otherwise it can possibly be assigned to pawns as "open" eyes -->
 	<texCollection>HumanHidden</texCollection>
     <texBasePath></texBasePath>

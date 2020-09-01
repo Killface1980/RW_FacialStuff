@@ -7,6 +7,7 @@
 	[texCollection]_[texName]_[direction].png
 	-->
     <defName>Eye_Male_Average_FL</defName>
+	<label>Human Male Average Flat</label>
 	<!-- 
 	texCollection is used to limit eye types for each races. Whether the race can use the 
 	texCollection is specified in CompProperties_Face.
@@ -27,6 +28,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_RD</defName>
+	<label>Human Male Average Round</label>
 	<texCollection>Human</texCollection>
     <hairGender>Male</hairGender>
     <texName>MRD</texName>
@@ -42,6 +44,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_OV</defName>
+	<label>Human Male Average Oval</label>
 	<texCollection>Human</texCollection>
     <hairGender>Male</hairGender>
     <texName>MOV</texName>
@@ -57,6 +60,7 @@
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_SM</defName>
+	<label>Human Male Average Small</label>
 	<texCollection>Human</texCollection>
     <hairGender>Male</hairGender>
     <texName>MSM</texName>
