@@ -1426,9 +1426,9 @@ namespace FacialStuff.FaceEditor
         public override void PostOpen()
         {
             FillDefs();
-            _hairDefs.SortBy(i => i.LabelCap.ToString());
-            _eyeDefs.SortBy(i => i.LabelCap.ToString());
-            BrowDefs.SortBy(i => i.LabelCap.ToString());
+            _hairDefs.SortBy(i => i.label);
+            _eyeDefs.SortBy(i => i.label);
+            BrowDefs.SortBy(i => i.label);
         }
 
         public override void PreClose()
