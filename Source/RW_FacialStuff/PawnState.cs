@@ -42,7 +42,10 @@ namespace FacialStuff
 				stance != null &&
 				!stance.neverAimWeapon &&
 				stance.focusTarg.IsValid;
-			Aiming_Target = stance.focusTarg.Thing;
+			if(Aiming) 
+			{
+				Aiming_Target = stance.focusTarg.Thing;
+			}
 			InPainShock = _pawn.health.InPainShock;
 			Fleeing = _pawn.Fleeing();
 			Burning = _pawn.IsBurning();
