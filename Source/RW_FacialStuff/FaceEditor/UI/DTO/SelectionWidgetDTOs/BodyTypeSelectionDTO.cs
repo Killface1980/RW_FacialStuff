@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -51,11 +52,11 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
         {
             this.OriginalBodyType = bodyType;
 
-            Array a = Enum.GetValues(typeof(BodyTypeDef));
-            this._bodyTypes = new List<BodyTypeDef>(a.Length);
-            this._maleBodyTypes = new List<BodyTypeDef>(a.Length - 1);
-            this._femaleBodyTypes = new List<BodyTypeDef>(a.Length - 1);
-            foreach (BodyTypeDef bt in a)
+            var bodyTypeDefs = DefDatabase<BodyTypeDef>.AllDefs;
+            this._bodyTypes = new List<BodyTypeDef>();
+            this._maleBodyTypes = new List<BodyTypeDef>();
+            this._femaleBodyTypes = new List<BodyTypeDef>();
+            foreach (BodyTypeDef bt in bodyTypeDefs)
             {
                 if (bt != BodyTypeDefOf.Female)
                 {
