@@ -419,15 +419,11 @@ namespace FacialStuff
             }
         }
         
-		public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics, bool portrait)
-        {
-            // Use default behaviors for rendering portrait
-            if(!portrait)
-			{
-                headFacing = _cachedHeadFacing;
-            }
-        }
-
+        public Rot4 GetHeadFacing()
+		{
+            return _cachedHeadFacing;
+		}
+        
         public override void PostExposeData()
         {
             base.PostExposeData();
