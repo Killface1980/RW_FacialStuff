@@ -30,8 +30,7 @@ namespace FacialStuff
         private IEyeBehavior _eyeBehavior;
         // Used for distance culling of face details
         private GameComponent_FacialStuff _fsGameComp;
-        private int _lastUpdateTick;
-
+        
         public bool Initialized { get; private set; }
 
         public IHeadBehavior HeadBehavior => _headBehavior;
@@ -385,19 +384,18 @@ namespace FacialStuff
             FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
             Initialized = true;
         }
-        
-        public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics, bool portrait)
-        {
-            // TickDrawers can be called multiple times in a single tick. Prevent updating more than once if this happens.
-            if(_lastUpdateTick != Find.TickManager.TicksGame)
-			{
-                _lastUpdateTick = Find.TickManager.TicksGame;
+
+		public override void CompTick()
+		{
+			base.CompTick();
+            if(Initialized)
+            {
                 bool canUpdatePawn =
                     Pawn.Map != null &&
                     !Pawn.InContainerEnclosed &&
                     Pawn.Spawned &&
                     !Find.TickManager.Paused;
-                if(canUpdatePawn && !portrait)
+                if(canUpdatePawn)
                 {
                     _pawnState.UpdateState();
                     _cachedMouthParam.Reset();
@@ -405,19 +403,15 @@ namespace FacialStuff
                     {
                         eyeParam.Reset();
                     }
-                    HeadBehavior.Update(Pawn, _pawnState, out headFacing);
-                    MouthBehavior.Update(Pawn, headFacing, _pawnState, _cachedMouthParam);
-                    EyeBehavior.Update(Pawn, headFacing, _pawnState, _cachedEyeParam);
-                    _cachedHeadFacing = headFacing;
-                    _lastUpdateTick = Find.TickManager.TicksGame;
+                    HeadBehavior.Update(Pawn, _pawnState, out _cachedHeadFacing);
+                    MouthBehavior.Update(Pawn, _cachedHeadFacing, _pawnState, _cachedMouthParam);
+                    EyeBehavior.Update(Pawn, _cachedHeadFacing, _pawnState, _cachedEyeParam);
                 }
             }
-            else
-			{
-                // If TickDrawers is called multiple times in a single tick, this ensures that consistent result is returned.
-                // Results from MouthBehavior and EyeBehavior are already stored in _cachedMouthParam and _cachedMouthParam.
-                headFacing = _cachedHeadFacing;
-			}
+        }
+        
+		public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics, bool portrait)
+        {
             // Use default behaviors for rendering portrait
             if(portrait)
 			{
@@ -431,6 +425,10 @@ namespace FacialStuff
                     _cachedEyeParam[i].mirror = EyeBehavior.GetEyeMirrorFlagForPortrait(i);
 				}
 			}
+            else
+			{
+                headFacing = _cachedHeadFacing;
+            }
         }
                                 
         public override void PostExposeData()
