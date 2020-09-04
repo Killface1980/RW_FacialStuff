@@ -106,6 +106,7 @@ namespace FacialStuff
 			}
             bool headDrawn = false;
             // Draw head
+            headFacing = portrait ? HeadBehavior.GetRotationForPortrait() : headFacing;
             Material headMaterial = graphicSet.HeadMatAt_NewTemp(headFacing, bodyDrawType, headStump);
             if(headMaterial != null)
             {
@@ -243,14 +244,18 @@ namespace FacialStuff
             }
             for(int partIdx = 0; partIdx < EyeBehavior.NumEyes; ++partIdx)
             {
-                if(_cachedEyeParam[partIdx].render)
+                if(_cachedEyeParam[partIdx].render || portrait)
                 {
-                    Mesh eyeMesh = MeshPoolFS.GetFaceMesh(PawnCrownType, headFacing, _cachedEyeParam[partIdx].mirror);
+                    Mesh eyeMesh = MeshPoolFS.GetFaceMesh(
+                        PawnCrownType, 
+                        headFacing,
+                        portrait ? EyeBehavior.GetEyeMirrorFlagForPortrait(partIdx) : _cachedEyeParam[partIdx].mirror);
                     Material eyeMat = faceGraphic.EyeMatAt(
                         partIdx,
                         headFacing,
                         portrait,
-                        _cachedEyeParam[partIdx].openEye,
+                        // If rendering portrait, always open eyes
+                        _cachedEyeParam[partIdx].openEye || portrait,
                         PartStatusTracker.GetEyePartLevel(partIdx));
                     if(eyeMat != null)
                     {
@@ -283,18 +288,22 @@ namespace FacialStuff
         }
 
         public void DrawMouth(Vector3 drawPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
-		{
-            if(!_cachedMouthParam.render || _cachedMouthParam.mouthTextureIdx < 0)
+		{            
+            if(!portrait && (!_cachedMouthParam.render || _cachedMouthParam.mouthTextureIdx < 0))
 			{
                 return;
 			}
-            int mouthTextureIdx = _cachedMouthParam.mouthTextureIdx;
+            bool portraitMirror = false;
+            int mouthTextureIdx = portrait ? 
+                MouthBehavior.GetTextureIndexForPortrait(out portraitMirror) : 
+                _cachedMouthParam.mouthTextureIdx;
+            bool mirror = portrait ? portraitMirror : _cachedMouthParam.mirror;
             Material mouthMat = PawnFaceGraphic.MouthMatAt(headFacing, mouthTextureIdx);
             if(mouthMat == null)
             {
                 return;
             }
-            Mesh meshMouth = MeshPoolFS.GetFaceMesh(PawnCrownType, headFacing, _cachedMouthParam.mirror);
+            Mesh meshMouth = MeshPoolFS.GetFaceMesh(PawnCrownType, headFacing, mirror);
             Vector3 mouthOffset = MeshPoolFS.mouthOffsetsHeadType[(int)FullHeadType];
             switch(headFacing.AsInt)
             {
@@ -413,24 +422,12 @@ namespace FacialStuff
 		public void TickDrawers(Rot4 bodyFacing, ref Rot4 headFacing, PawnGraphicSet graphics, bool portrait)
         {
             // Use default behaviors for rendering portrait
-            if(portrait)
-			{
-                headFacing = HeadBehavior.GetRotationForPortrait();
-                _cachedMouthParam.render = true;
-                _cachedMouthParam.mouthTextureIdx = MouthBehavior.GetTextureIndexForPortrait(out _cachedMouthParam.mirror);
-                for(int i = 0; i < EyeBehavior.NumEyes; ++i)
-				{
-                    _cachedEyeParam[i].render = true;
-                    _cachedEyeParam[i].openEye = true;
-                    _cachedEyeParam[i].mirror = EyeBehavior.GetEyeMirrorFlagForPortrait(i);
-				}
-			}
-            else
+            if(!portrait)
 			{
                 headFacing = _cachedHeadFacing;
             }
         }
-                                
+
         public override void PostExposeData()
         {
             base.PostExposeData();
