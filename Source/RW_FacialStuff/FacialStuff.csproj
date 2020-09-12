@@ -47,6 +47,10 @@
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+    <Reference Include="HugsLib">
+      <HintPath>..\..\..\HugsLib\v1.2\Assemblies\HugsLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
       <Private>False</Private>
     </Reference>
     <Reference Include="EdBPrepareCarefully">
@@ -96,6 +100,7 @@
     <Compile Include="Animator\BodyAnimator.cs" />
     <None Include="Controller_Animator.cs" />
     <Compile Include="Defs\MouthSetDef.cs" />
+    <Compile Include="FacialStuffModBase.cs" />
     <Compile Include="Harmony\HarmonyPatch_Pawn_InteractionsTracker.cs" />
     <Compile Include="IEyeBehavior.cs" />
     <Compile Include="IHeadBehavior.cs" />

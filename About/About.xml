@@ -12,6 +12,7 @@
   <loadAfter>
     <li>rimofmadness.vampires</li>
     <li>brrainz.harmony</li>
+	<li>UnlimitedHugs.HugsLib</li>
   </loadAfter>
   <loadBefore>
     <li>EdB.PrepareCarefully</li>
@@ -23,6 +24,12 @@
       <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
       <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
     </li>
+	<li>
+		<packageId>UnlimitedHugs.HugsLib</packageId>
+		<displayName>HugsLib</displayName>
+		<downloadUrl>https://github.com/UnlimitedHugs/RimworldHugsLib/releases/latest</downloadUrl>
+		<steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl>
+	</li>
   </modDependencies>
 
   <description>This mod aims to provide more visual individuality for your colonists
