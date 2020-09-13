@@ -15,65 +15,6 @@ namespace FacialStuff.GraphicsFS
 	[StaticConstructorOnStartup]
 	class Graphic_Hair : Graphic
 	{
-		#region Static Members
-		
-		private static Shader hairShader;
-		
-		public static Shader HairShader
-		{
-			get
-			{
-				return hairShader;
-			}
-		}
-
-		static Graphic_Hair()
-		{
-			var thisMod = ModLister.GetModWithIdentifier("killface.facialstuff");
-			if(thisMod == null)
-			{
-				Log.Error("Facial Stuff: failed to load shader - could not find mod root directory");
-				return;
-			}
-			string shaderAssetBundlePath = Path.Combine(
-				thisMod.RootDir.FullName +
-					Path.DirectorySeparatorChar +
-					VersionControl.CurrentVersion.ToString(2) +
-					Path.DirectorySeparatorChar +
-					"Assets" +
-					Path.DirectorySeparatorChar,
-				"shaders.assets");
-			AssetBundle shaderAssets = AssetBundle.LoadFromFile(shaderAssetBundlePath);
-			if(shaderAssets == null)
-			{
-				Log.Error("Facial Stuff: failed to load shader. Could not locate shader asset bundle at " + shaderAssetBundlePath);
-				return;
-			}
-			Shader[] shaders = shaderAssets.LoadAllAssets<Shader>();
-			for(int i = 0; i < shaders.Length; i++)
-			{
-				if(shaders[i].name.Equals("Custom/Mod/FacialStuff/Hair"))
-				{
-					if(shaders[i].isSupported)
-					{
-						Log.Message("Facial Stuff: successfully loaded shader " + shaders[i].name);
-						hairShader = shaders[i];
-					}
-				}
-			}
-			if(hairShader == null)
-			{
-				Log.Error("Facial Stuff: could not find shader Custom/Mod/FacialStuff/Hair in shader asset bundle");
-			}
-			else if(!hairShader.isSupported)
-			{
-				Log.Message("Facial Stuff: could not load shader " + hairShader.name + ". This shader is not supported");
-				hairShader = null;
-			}
-		}
-
-		#endregion
-
 		#region Private Variables
 
 		//private static string _maskedHairBaseDir;
@@ -111,7 +52,7 @@ namespace FacialStuff.GraphicsFS
 		
 		public override void Init(GraphicRequest req)
 		{
-			if(req.shader != hairShader)
+			if(req.shader != Shaders.Hair)
 			{
 				Log.Warning("Facial Stuff: tried to create hair graphic with wrong shader. Hair must be rendered using hair shader");
 			}
@@ -214,11 +155,11 @@ namespace FacialStuff.GraphicsFS
 		public override Graphic GetColoredVersion(Shader newShader, Color newColor, Color newColorTwo)
 		{
 			// Hairs must always be rendered with custom hair shader
-			if(newShader != hairShader)
+			if(newShader != Shaders.Hair)
 			{
 				Log.Warning("Facial Stuff: tried to copy hair graphic with wrong shader. Hair must be rendered using hair shader");
 			}
-			return GraphicDatabase.Get<Graphic_Hair>(path, hairShader, drawSize, newColor, newColorTwo, data);
+			return GraphicDatabase.Get<Graphic_Hair>(path, Shaders.Hair, drawSize, newColor, newColorTwo, data);
 		}
 
 		public override string ToString()

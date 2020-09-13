@@ -21,7 +21,7 @@ namespace FacialStuff.Harmony
 	{
         public static bool Prefix(ref bool __result, Shader shader)
 		{
-            if(shader == Graphic_Hair.HairShader)
+            if(shader == Shaders.Hair)
 			{
                 __result = true;
                 return false;

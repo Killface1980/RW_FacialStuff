@@ -687,7 +687,7 @@ namespace FacialStuff.Harmony
             
            __instance.hairGraphic = GraphicDatabase.Get<Graphic_Hair>(
                 pawn.story.hairDef.texPath,
-                Graphic_Hair.HairShader,
+                Shaders.Hair,
                 Vector2.one,
                 pawn.story.hairColor);
             PortraitsCache.SetDirty(pawn);

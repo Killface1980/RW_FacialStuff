@@ -101,6 +101,7 @@
     <None Include="Controller_Animator.cs" />
     <Compile Include="Defs\MouthSetDef.cs" />
     <Compile Include="FacialStuffModBase.cs" />
+    <Compile Include="GraphicsFS\Shaders.cs" />
     <Compile Include="Harmony\HarmonyPatch_Pawn_InteractionsTracker.cs" />
     <Compile Include="IEyeBehavior.cs" />
     <Compile Include="IHeadBehavior.cs" />
