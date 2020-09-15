@@ -48,6 +48,11 @@ namespace FacialStuff.GraphicsFS
 					{
 						Log.Message("Facial Stuff: successfully loaded shader " + shaders[i].name);
 						Hair = shaders[i];
+					} 
+					else
+					{
+						Log.Message("Facial Stuff: could not load shader " + Hair.name + ". This shader is not supported");
+						Hair = null;
 					}
 				} else if(shaders[i].name.Equals("Custom/Mod/FacialStuff/FacePart"))
 				{
@@ -55,24 +60,21 @@ namespace FacialStuff.GraphicsFS
 					{
 						Log.Message("Facial Stuff: successfully loaded shader " + shaders[i].name);
 						FacePart = shaders[i];
+					} 
+					else
+					{
+						Log.Message("Facial Stuff: could not load shader " + FacePart.name + ". This shader is not supported");
+						FacePart = null;
 					}
 				}
 			}
 			if(Hair == null)
 			{
 				Log.Error("Facial Stuff: could not find shader Custom/Mod/FacialStuff/Hair in shader asset bundle");
-			} else if(!Hair.isSupported)
-			{
-				Log.Message("Facial Stuff: could not load shader " + Hair.name + ". This shader is not supported");
-				Hair = null;
-			}
+			} 
 			if(FacePart == null)
 			{
 				Log.Error("Facial Stuff: could not find shader Custom/Mod/FacialStuff/FacePart in shader asset bundle");
-			} else if(!FacePart.isSupported)
-			{
-				Log.Message("Facial Stuff: could not load shader " + FacePart.name + ". This shader is not supported");
-				FacePart = null;
 			}
 		}
 	}

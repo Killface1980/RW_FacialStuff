@@ -10,22 +10,18 @@ using UnityEngine;
 using Verse;
 using FacialStuff.GraphicsFS;
 using RimWorld.Planet;
+using System;
 
 namespace FacialStuff
 {
     public class GameComponent_FacialStuff : GameComponent
     {
-        #region Private Fields
-
-        private static readonly List<string> NackbladTex =
-        new List<string> { "nbi_bushy", "nbi_crisis", "nbi_erik", "nbi_guard", "nbi_jr", "nbi_karl", "nbi_olof", "nbi_ruff", "nbi_trimmed" };
-
-        private static readonly List<string> SpoonTex = new List<string> { "SPSBeard", "SPSScot", "SPSViking" };
-
-        #endregion Private Fields
+        protected UnityEngine.Animator animator;
+        
+        public bool ShouldRenderFaceDetails { get; private set; }
 
         #region Public Constructors
-
+        
         public GameComponent_FacialStuff()
         {
         }
@@ -33,47 +29,22 @@ namespace FacialStuff
         // ReSharper disable once UnusedParameter.Local
         public GameComponent_FacialStuff(Game game)
         {
-            // Kill the damn beards - xml patching not reliable enough.
-            for (int i = 0; i < DefDatabase<HairDef>.AllDefsListForReading.Count; i++)
-            {
-                HairDef hairDef = DefDatabase<HairDef>.AllDefsListForReading[i];
-                CheckReplaceHairTexPath(hairDef);
-            }
-
             // Fix for VHE hair on existing pawns.
             foreach (Pawn pawn in PawnsFinder.AllMaps.FindAll(x =>
                 x.kindDef?.RaceProps != null && x.kindDef.RaceProps.Humanlike == true).Where(pawn => pawn.story?.hairDef != null && pawn.story.hairDef.IsBeardNotHair()))
             {
                 PawnHairChooser.RandomHairDefFor(pawn, pawn.Faction.def);
             }
-            this.WeaponCompsNew();
-
-            // todo: use BodyDef instead, target for kickstarting?
-            this.AnimalPawnCompsBodyDefImport();
-            this.AnimalPawnCompsImportFromAnimationTargetDefs();
+            WeaponCompsNew();
+            AnimalPawnCompsBodyDefImport();
+            AnimalPawnCompsImportFromAnimationTargetDefs();
             Controller.SetMainButtons();
-            // BuildWalkCycles();
-
-            // foreach (BodyAnimDef def in DefDatabase<BodyAnimDef>.AllDefsListForReading)
-            // {
-            // if (def.walkCycles.Count == 0)
-            // {
-            // var length = Enum.GetNames(typeof(LocomotionUrgency)).Length;
-            // for (int index = 0; index < length; index++)
-            // {
-            // WalkCycleDef cycleDef = new WalkCycleDef();
-            // cycleDef.defName = def.defName + "_cycle";
-            // def.walkCycles.Add(index, cycleDef);
-            // }
-            // }
-            // }
         }
 
         #endregion Public Constructors
 
         #region Public Methods
-        protected UnityEngine.Animator animator;
-
+        
 		public override void GameComponentTick()
 		{
 			base.GameComponentTick();
@@ -97,8 +68,6 @@ namespace FacialStuff
                 ShouldRenderFaceDetails = true;
             }
         }
-
-        public bool ShouldRenderFaceDetails { get; private set; }
 
 		public static void BuildWalkCycles([CanBeNull] WalkCycleDef defToRebuild = null)
         {
@@ -312,16 +281,6 @@ namespace FacialStuff
                     cycle.FrontPawPositionZ,
                     key.FrontPawPositionZ
                 }
-
-                // { cycle.BodyOffsetVerticalZ, key.BodyOffsetVerticalZ },
-
-                // { cycle.FootPositionVerticalZ, key.FootPositionVerticalZ },
-
-                // { cycle.HandsSwingPosVertical, key.HandsSwingPosVertical },
-                // {
-                // cycle.FrontPawPositionVerticalZ,
-                // key.FrontPawPositionVerticalZ
-                // }
             };
 
             foreach (KeyValuePair<SimpleCurve, float?> pair in dict)
@@ -424,49 +383,11 @@ namespace FacialStuff
                     cycle.FrontPawPositionZ,
                     key.FrontPawPositionZ
                 }
-
-                // { cycle.BodyOffsetVerticalZ, key.BodyOffsetVerticalZ },
-
-                // { cycle.FootPositionVerticalZ, key.FootPositionVerticalZ },
-
-                // { cycle.HandsSwingPosVertical, key.HandsSwingPosVertical },
-                // {
-                // cycle.FrontPawPositionVerticalZ,
-                // key.FrontPawPositionVerticalZ
-                // }
             };
 
             foreach (KeyValuePair<SimpleCurve, float?> pair in dict)
             {
                 UpdateCurve(key, pair.Value, pair.Key, frameAt);
-            }
-        }
-
-        private static void CheckReplaceHairTexPath(HairDef hairDef)
-        {
-            string folder = StringsFS.PathHumanlike + "Hair/";
-            List<string> collection;
-            if (hairDef.defName.Contains("SPS"))
-            {
-                collection = SpoonTex;
-                folder += "Spoon/";
-            }
-            else
-            {
-                collection = NackbladTex;
-                folder += "Nackblad/";
-            }
-
-            for (int index = 0; index < collection.Count; index++)
-            {
-                string hairname = collection[index];
-                if (!hairDef.defName.Equals(hairname))
-                {
-                    continue;
-                }
-
-                hairDef.texPath = folder + hairname;
-                break;
             }
         }
 

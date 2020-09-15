@@ -10,13 +10,9 @@ namespace FacialStuff.Genetics
     public static class HairMelanin
     {
         public static readonly List<Color> ArtificialHairColors;
-
         public static readonly FloatRange GreyRange = new FloatRange(0f, 0.95f);
-
         private static readonly Gradient GradientEuMelanin;
-
         private static readonly Gradient GradientPheoMelanin;
-
         private static readonly Color GrayHair = new Color(0.9f, 0.9f, 0.9f);
 
         static HairMelanin()
@@ -60,16 +56,16 @@ namespace FacialStuff.Genetics
             GradientEuMelanin.SetKeys(euMelaninGradientColorKeys, alphaKeys);
 
             ArtificialHairColors = new List<Color>
-                                   {
-                                   new Color32(37,  136, 0,   255),
-                                   new Color32(124, 189, 14,  255),
-                                   new Color32(71,  191, 165, 255),
-                                   new Color32(57,  144, 199, 255),
-                                   new Color32(25,  70,  136, 255),
-                                   new Color32(215, 168, 255, 255),
-                                   new Color32(145, 50,  191, 255),
-                                   new Color32(191, 35,  124, 255)
-                                   };
+            {
+                new Color32(37,  136, 0,   255),
+                new Color32(124, 189, 14,  255),
+                new Color32(71,  191, 165, 255),
+                new Color32(57,  144, 199, 255),
+                new Color32(25,  70,  136, 255),
+                new Color32(215, 168, 255, 255),
+                new Color32(145, 50,  191, 255),
+                new Color32(191, 35,  124, 255)
+            };
         }
 
         public static Color ShuffledBeardColor(Color color)
@@ -80,24 +76,20 @@ namespace FacialStuff.Genetics
         }
 
         public static HairDNA GenerateHairMelaninAndCuticula(
-        [NotNull] Pawn pawn,
-        bool           sameBeardColor,
-        bool           ignoreRelative = false)
+            Pawn pawn,
+            bool sameBeardColor,
+            bool ignoreRelative = false)
         {
             Color beardColor;
             SetInitialHairMelaninLevels(pawn, out HairColorRequest hair, ignoreRelative);
-
-            // Log.Message(
-            // pawn + " - " + melanin + " - " + face.euMelanin + " - " + face.pheoMelanin + " - " + mother?.euMelanin
-            // + mother?.pheoMelanin + father?.euMelanin + father?.pheoMelanin);
-
+            
             // Aging
-            if (pawn.ageTracker != null)
+            if(pawn.ageTracker != null)
             {
-                float ageFloat            = pawn.ageTracker.AgeBiologicalYearsFloat / 100;
+                float ageFloat = pawn.ageTracker.AgeBiologicalYearsFloat / 100;
                 float agingBeginGreyFloat = Rand.Range(0.35f, 0.5f);
 
-                if (pawn.story != null)
+                if(pawn.story != null)
                 {
                     agingBeginGreyFloat +=
                         pawn.story.melanin * 0.1f + hair.EuMelanin * 0.05f + hair.PheoMelanin * 0.05f;
@@ -114,19 +106,6 @@ namespace FacialStuff.Genetics
                 }
             }
 
-            // Soften the greyness
-            // greyness *= 0.95f;
-
-            // Even more - melanin
-            // if (PawnSkinColors.IsDarkSkin(pawn.story.SkinColor))
-            // {
-            // greyness *= Rand.Range(0.5f, 0.9f);
-            // }
-            // Log.Message(pawn.ToString());
-            // Log.Message(ageFloat.ToString());
-            // Log.Message(agingBeginGreyFloat.ToString());
-            // Log.Message(greySpan.ToString());
-            // Log.Message(greyness.ToString());
             Color hairColor = GetHairColor(hair);
 
             // Special hair colors
@@ -135,42 +114,34 @@ namespace FacialStuff.Genetics
             if (pawn.GetCompFace(out CompFace compFace))
             {
                 Faction faction = compFace.OriginFaction ?? Faction.OfPlayer;
-                if (faction?.def != null && (faction.def.techLevel > TechLevel.Industrial))
+                if(faction?.def != null && (faction.def.techLevel > TechLevel.Industrial))
                 {
                     limit *= pawn.gender == Gender.Female ? 0.7f : 0.9f;
-
-                    float       techMod = (faction.def.techLevel - TechLevel.Industrial) / 5f;
+                    float techMod = (faction.def.techLevel - TechLevel.Industrial) / 5f;
                     SimpleCurve ageCure = new SimpleCurve {{0.1f, 1f}, {0.25f, 1f - techMod}, {0.6f, 0.9f}};
-                    if (pawn.ageTracker != null) limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
+                    if(pawn.ageTracker != null) 
+                    {
+					    limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
+                    }
                 }
             }
 
-            // if (pawn.story.hairDef.hairTags.Contains("Punk"))
-            // {
-            // limit *= 0.2f;
-            // }
-            if (pawn.ageTracker != null && (factionColor > limit && pawn.ageTracker.AgeBiologicalYearsFloat > 16))
+            if(pawn.ageTracker != null && (factionColor > limit && pawn.ageTracker.AgeBiologicalYearsFloat > 16))
             {
                 Color color2 = ArtificialHairColors.RandomElement();
-
                 hairColor = Color.Lerp(hairColor, color2, Rand.Range(0.66f, 1f));
             }
-
-            if (sameBeardColor)
+            if(sameBeardColor)
             {
                 beardColor = ShuffledBeardColor(hairColor);
             }
             else
             {
                 Color color2 = GradientEuMelanin.Evaluate(hair.EuMelanin + Rand.Range(-0.5f, 0.5f));
-
                 color2 *= GradientPheoMelanin.Evaluate(hair.PheoMelanin + Rand.Range(-0.5f, 0.5f));
-
                 beardColor = Color.Lerp(color2, GrayHair, hair.Greyness * Rand.Value);
             }
-
             HairDNA dna = new HairDNA {HairColorRequest = hair, HairColor = hairColor, BeardColor = beardColor};
-
             return dna;
         }
 
@@ -326,8 +297,6 @@ namespace FacialStuff.Genetics
             {
                 GetRandomizedMelaninAndCuticula(ref hairColor);
             }
-
-            // hairColor.Baldness.currentBaldness = Rand.Range(0, hairColor.Baldness.maxBaldness);
         }
 
         /*

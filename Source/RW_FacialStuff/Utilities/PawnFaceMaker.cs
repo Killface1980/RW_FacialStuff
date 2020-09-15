@@ -408,26 +408,6 @@ namespace FacialStuff.Utilities
             return source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
         }
 
-        public static EarDef RandomEarDefFor(Pawn pawn, FactionDef factionType)
-        {
-            // Log.Message("Selecting eyes.");
-            IEnumerable<EarDef> source = from ear in DefDatabase<EarDef>.AllDefs
-
-                                             // where eye.forbiddenOnRace.Contains(pawn.def)
-                                         where ear.hairTags.SharesElementWith(factionType.hairTags)
-                                         select ear;
-
-            if (!source.Any())
-            {
-                // Log.Message("No eyes found, defaulting.");
-                source = from eye in DefDatabase<EarDef>.AllDefs select eye;
-            }
-
-            return source.RandomElementByWeight(eye => EarChoiceLikelihoodFor(eye, pawn));
-
-            // Log.Message("Chosen eyes: " + chosenEyes);
-        }
-
         private static float BeardChoiceLikelihoodFor([NotNull] BeardDef beard, Pawn pawn)
         {
             if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)

@@ -14,36 +14,17 @@ namespace FacialStuff
     {
         #region Private Fields
 
-        private Color _beardColor;
-
-        [CanBeNull]
         private BeardDef _beardDef;
-
-        [CanBeNull]
         private BrowDef _browDef;
-
-        // public float Cuticula;
-        private bool _drawMouth = true;
-
-        private float _euMelanin;
-
-        [CanBeNull]
         private EyeDef _eyeDef;
-        private EarDef _earDef;
-
-
-        private float _greyness;
-
-        private Color _hairColor;
-
-        private bool _hasSameBeardColor;
-
         private MoustacheDef _moustacheDef;
-
-        private float _pheoMelanin;
-
         private WrinkleDef _wrinkleDef;
-
+        private Color _hairColor;
+        private Color _beardColor;
+        private float _euMelanin;
+        private float _pheoMelanin;
+        private float _greyness;
+        private bool _hasSameBeardColor;
         private float _wrinkleIntensity;
 
         #endregion Private Fields
@@ -52,38 +33,28 @@ namespace FacialStuff
 
         #region Public Constructors
 
-        public FaceData([NotNull] CompFace face, FactionDef pawnFactionDef, bool newPawn = true)
+        public FaceData(CompFace face, FactionDef pawnFactionDef, bool newPawn = true)
         {
             Pawn pawn = face.Pawn;
-            this.DrawMouth = true;
             if (pawnFactionDef == null)
             {
                 pawnFactionDef = FactionDefOf.PlayerColony;
             }
             
-            this.EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, pawnFactionDef, face.Props);
-            this.EarDef = PawnFaceMaker.RandomEarDefFor(pawn, pawnFactionDef);
-            this.BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, pawnFactionDef);
+            EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, pawnFactionDef, face.Props);
+            BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, pawnFactionDef);
             MouthSetDef = PawnFaceMaker.RandomMouthDefFor(pawn, face.Props, pawnFactionDef);
-
-            this.WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn);
-
-            this.HasSameBeardColor = Rand.Value > 0.3f;
-
-            this.GenerateHairDNA(pawn, false, newPawn);
-
-            PawnFaceMaker.RandomBeardDefFor(face, pawnFactionDef, out this._beardDef, out this._moustacheDef);
-
-            this.WrinkleIntensity = Mathf.InverseLerp(45f, 80f, pawn.ageTracker.AgeBiologicalYearsFloat);
-            this.WrinkleIntensity -= pawn.story.melanin / 2;
-
-            // this.MelaninOrg = pawn.story.melanin;
+            WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn);
+            PawnFaceMaker.RandomBeardDefFor(face, pawnFactionDef, out _beardDef, out _moustacheDef);
+            
+            HasSameBeardColor = Rand.Value > 0.3f;
+            GenerateHairDNA(pawn, false, newPawn);
+            WrinkleIntensity = Mathf.InverseLerp(45f, 80f, pawn.ageTracker.AgeBiologicalYearsFloat) - pawn.story.melanin / 2;
         }
 
-        // public Baldness Baldness;
         public FaceData()
         {
-            // for RW to not bug out
+            
         }
 
         #endregion Public Constructors
@@ -107,13 +78,7 @@ namespace FacialStuff
             get => this._browDef;
             set => this._browDef = value;
         }
-
-        public bool DrawMouth
-        {
-            get => this._drawMouth;
-            set => this._drawMouth = value;
-        }
-
+        
         public float EuMelanin
         {
             get => this._euMelanin;
@@ -124,11 +89,6 @@ namespace FacialStuff
         {
             get => this._eyeDef;
             set => this._eyeDef = value;
-        }
-        public EarDef EarDef
-        {
-            get => this._earDef == null? EarDefOf.Ear_Default : this._earDef;
-            set => this._earDef = value;
         }
 
         public float Greyness
@@ -180,58 +140,43 @@ namespace FacialStuff
 
         public void ExposeData()
         {
-            Scribe_Defs.Look(ref this._eyeDef, "EyeDef");
-            Scribe_Defs.Look(ref this._browDef, "BrowDef");
-
-            Scribe_Defs.Look(ref this._wrinkleDef, "WrinkleDef");
-            Scribe_Defs.Look(ref this._beardDef, "BeardDef");
-            Scribe_Defs.Look(ref this._moustacheDef, "MoustacheDef");
-
-            Scribe_Values.Look(ref this._drawMouth, "drawMouth");
-
-            Scribe_Values.Look(ref this._beardColor, "BeardColor");
-            Scribe_Values.Look(ref this._hasSameBeardColor, "sameBeardColor");
-
-            Scribe_Values.Look(ref this._euMelanin, "euMelanin");
-            Scribe_Values.Look(ref this._pheoMelanin, "pheoMelanin");
-            Scribe_Values.Look(ref this._greyness, "greyness");
-
-            Scribe_Values.Look(ref this._hairColor, "hairColor");
-            Scribe_Values.Look(ref this._wrinkleIntensity, "wrinkles");
-
-            // Scribe_Values.Look(ref this.MelaninOrg, "melaninOrg");
-
-            // Scribe_Values.Look(ref this.skinColorHex, "SkinColorHex");
-            // Scribe_Values.Look(ref this.hairColorOrg, "HairColorOrg");
-            // Scribe_Values.Look(ref this.factionMelanin, "factionMelanin");
-            // Scribe_Values.Look(ref this.isSkinDNAoptimized, "IsSkinDNAoptimized");
-            // Scribe_Values.Look(ref this.melaninOrg, "MelaninOrg");
+            Scribe_Defs.Look(ref _eyeDef, "EyeDef");
+            Scribe_Defs.Look(ref _browDef, "BrowDef");
+            Scribe_Defs.Look(ref _wrinkleDef, "WrinkleDef");
+            Scribe_Defs.Look(ref _beardDef, "BeardDef");
+            Scribe_Defs.Look(ref _moustacheDef, "MoustacheDef");
+            
+            Scribe_Values.Look(ref _beardColor, "BeardColor");
+            Scribe_Values.Look(ref _hairColor, "hairColor");
+            Scribe_Values.Look(ref _hasSameBeardColor, "sameBeardColor");
+            Scribe_Values.Look(ref _euMelanin, "euMelanin");
+            Scribe_Values.Look(ref _pheoMelanin, "pheoMelanin");
+            Scribe_Values.Look(ref _greyness, "greyness");
+            Scribe_Values.Look(ref _wrinkleIntensity, "wrinkles");
         }
 
-        public void GenerateHairDNA([NotNull] Pawn pawn, bool ignoreRelative = false, bool newPawn = true)
+        public void GenerateHairDNA(Pawn pawn, bool ignoreRelative = false, bool newPawn = true)
         {
             HairDNA hairDna =
-                HairMelanin.GenerateHairMelaninAndCuticula(pawn, this.HasSameBeardColor, ignoreRelative);
-            this.EuMelanin = hairDna.HairColorRequest.EuMelanin;
-            this.PheoMelanin = hairDna.HairColorRequest.PheoMelanin;
-            this.Greyness = hairDna.HairColorRequest.Greyness;
+                HairMelanin.GenerateHairMelaninAndCuticula(pawn, HasSameBeardColor, ignoreRelative);
+            EuMelanin = hairDna.HairColorRequest.EuMelanin;
+            PheoMelanin = hairDna.HairColorRequest.PheoMelanin;
+            Greyness = hairDna.HairColorRequest.Greyness;
 
             // this.Baldness = hairDNA.HairColorRequest.Baldness;
             if (newPawn)
             {
-                this.HairColor = hairDna.HairColor;
-                this.BeardColor = hairDna.BeardColor;
+                HairColor = hairDna.HairColor;
+                BeardColor = hairDna.BeardColor;
             }
             else
             {
-                this.HairColor = pawn.story.hairColor;
-                this.BeardColor = HairMelanin.ShuffledBeardColor(this.HairColor);
+                HairColor = pawn.story.hairColor;
+                BeardColor = HairMelanin.ShuffledBeardColor(HairColor);
             }
 
         }
 
         #endregion Public Methods
-
-        // public float MelaninOrg;
     }
 }
