@@ -12,16 +12,20 @@ namespace FacialStuff
 	public class PawnState
 	{
 		public const int kAliveBitNum = 0;
-		public const int kSleepingBitNum = 1;
-		public const int kAimingBitNum = 2;
-		public const int kInPainShockBitNum = 3;
-		public const int kFleeingBitNum = 4;
-		public const int kBurningBitNum = 5;
+		public const int kStandingBitNum = 1;
+		public const int kSleepingBitNum = 2;
+		public const int kAimingBitNum = 3;
+		public const int kInPainShockBitNum = 4;
+		public const int kDownedBitNum = 5;
+		public const int kFleeingBitNum = 6;
+		public const int kBurningBitNum = 7;
 		
 		public bool Alive { get; private set; } = false;
+		public bool Standing { get; private set; } = false;
 		public bool Sleeping { get; private set; } = false;
 		public bool Aiming { get; private set; } = false;
 		public bool InPainShock { get; private set; } = false;
+		public bool Downed { get; private set; } = false;
 		public bool Fleeing { get; private set; } = false;
 		public bool Burning { get; private set; } = false;
 		
@@ -37,6 +41,7 @@ namespace FacialStuff
 		public void UpdateState()
 		{
 			Alive = !_pawn.Dead;
+			Standing = _pawn.GetPosture() == PawnPosture.Standing;
 			Stance_Busy stance = _pawn.stances?.curStance as Stance_Busy;
 			Aiming =
 				stance != null &&
@@ -44,6 +49,7 @@ namespace FacialStuff
 				stance.focusTarg.IsValid;
 			Aiming_Target = Aiming ? stance.focusTarg.Thing : null;
 			InPainShock = _pawn.health.InPainShock;
+			Downed = _pawn.Downed;
 			Fleeing = _pawn.Fleeing();
 			Burning = _pawn.IsBurning();
 			Sleeping = !_pawn.Awake();
@@ -53,9 +59,11 @@ namespace FacialStuff
 		{
 			return 
 				Convert.ToInt64(Alive) << kAliveBitNum |
+				Convert.ToInt64(Standing) << kStandingBitNum |
 				Convert.ToInt64(Sleeping) << kSleepingBitNum |
 				Convert.ToInt64(Aiming) << kAimingBitNum |
 				Convert.ToInt64(InPainShock) << kInPainShockBitNum |
+				Convert.ToInt64(Downed) << kDownedBitNum |
 				Convert.ToInt64(Fleeing) << kFleeingBitNum |
 				Convert.ToInt64(Burning) << kBurningBitNum;
 		}

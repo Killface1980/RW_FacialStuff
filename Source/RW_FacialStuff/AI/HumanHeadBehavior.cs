@@ -161,10 +161,12 @@ namespace FacialStuff.AI
 				_curTargetType = IHeadBehavior.TargetType.None;
 			}
 
-			// Do not rotate head when sleeping.
-			if(pawnState.Sleeping)
+			// Do not rotate head when laying down.
+			if(!pawnState.Standing)
 			{
 				_curTargetType = IHeadBehavior.TargetType.None;
+				_curQuat = FromRot4(pawn.Drawer.renderer.LayingFacing());
+				return false;
 			}
 			if(_target != null && _target.Destroyed)
 			{
@@ -221,6 +223,18 @@ namespace FacialStuff.AI
 			{
 				Log.Warning("Facial Stuff: tried to update head angle when there is no target to turn the head towards");
 				return Quaternion.identity;
+			}
+		}
+
+		private Quaternion FromRot4(Rot4 rot)
+		{
+			switch(rot.AsInt)
+			{
+				case 0: return Quaternion.AngleAxis(0f, new Vector3(0f, 1f, 0f));
+				case 1: return Quaternion.AngleAxis(90f, new Vector3(0f, 1f, 0f));
+				case 2: return Quaternion.AngleAxis(180f, new Vector3(0f, 1f, 0f));
+				case 3: return Quaternion.AngleAxis(270f, new Vector3(0f, 1f, 0f));
+				default: return Quaternion.AngleAxis(0f, new Vector3(0f, 1f, 0f));
 			}
 		}
 				

@@ -260,9 +260,10 @@ namespace FacialStuff
                     if(eyeMat != null)
                     {
                         drawLoc.y += Offsets.YOffset_LeftPart;
+                        offset = headQuat * offset;
                         GenDraw.DrawMeshNowOrLater(
                             eyeMesh,
-                            drawLoc,
+                            drawPos + offset,
                             headQuat,
                             eyeMat,
                             portrait);
