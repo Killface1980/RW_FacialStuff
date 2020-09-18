@@ -414,7 +414,7 @@ namespace FacialStuff
                 // if (tweener != null)
                 {
                     Vector3 position = ground + (groundPos.LeftJoint + leftFootCycle) * factor;
-
+                    position.y = rootLoc.y;
                     // tweener.PartPositions[(int)leftFoot] = position;
                     // tweener.PreThingPosCalculation(leftFoot, spring: SpringTightness.Stff);
 
@@ -434,7 +434,7 @@ namespace FacialStuff
                 // if (tweener != null)
                 // {
                 Vector3 position = ground + (groundPos.RightJoint + rightFootCycle) * factor;
-
+                position.y = rootLoc.y;
                 // tweener.PartPositions[(int)rightFoot] = position;
                 //     tweener.PreThingPosCalculation(rightFoot, spring: SpringTightness.Stff);
                 GenDraw.DrawMeshNowOrLater(
