@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<FacialStuff.Defs.EyeDef>
+		<defName>FSHumanClosed</defName>
+		<texBasePath>Things/Pawn/Humanlike/Eyes/</texBasePath>
+		<!-- allowedRaceDefs is empty because Pawns shouldn't generate with it -->
+		<allowedRaceDefs></allowedRaceDefs>
+		<texName>HumanClosed</texName>
+	</FacialStuff.Defs.EyeDef>
+
+	<FacialStuff.Defs.EyeDef>
+		<defName>FSHumanMissing</defName>
+		<texBasePath>Things/Pawn/Humanlike/Eyes/</texBasePath>
+		<allowedRaceDefs></allowedRaceDefs>
+		<texName>HumanMissing</texName>
+	</FacialStuff.Defs.EyeDef>
+
+</Defs>

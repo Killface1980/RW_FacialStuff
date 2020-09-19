@@ -16,6 +16,8 @@ namespace FacialStuff.Defs
 
         public EyeDef closedEyeDef;
 
+        public EyeDef inPainEyeDef;
+        
         public EyeDef missingEyeDef;
 
         public List<string> hairTags = new List<string>();
