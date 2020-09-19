@@ -209,7 +209,7 @@ namespace FacialStuff.GraphicsFS
 				string texPath = EyeTexturePath(_pawnFace.EyeDef);
 				_eyeGraphics[i, (int)BodyPartLevel.Natural] = GraphicDatabase.Get<Graphic_FaceMirror>(
 					texPath,
-					ShaderDatabase.CutoutComplex,
+					Shaders.FacePart,
 					Vector2.one,
 					eyeColor) as Graphic_FaceMirror;
 			}
@@ -221,7 +221,7 @@ namespace FacialStuff.GraphicsFS
 					string texPath = EyeTexturePath(_pawnFace.EyeDef.closedEyeDef);
 					_eyeClosedGraphics[i] = GraphicDatabase.Get<Graphic_FaceMirror>(
 						texPath,
-						ShaderDatabase.CutoutComplex,
+						Shaders.FacePart,
 						Vector2.one,
 						eyeColor) as Graphic_FaceMirror;
 				}
@@ -234,7 +234,7 @@ namespace FacialStuff.GraphicsFS
 					string texPath = EyeTexturePath(_pawnFace.EyeDef.missingEyeDef);
 					_eyeGraphics[i, (int)BodyPartLevel.Removed] = GraphicDatabase.Get<Graphic_FaceMirror>(
 						texPath,
-						ShaderDatabase.CutoutComplex,
+						Shaders.FacePart,
 						Vector2.one,
 						eyeColor) as Graphic_FaceMirror;
 				}
