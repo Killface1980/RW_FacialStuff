@@ -125,7 +125,7 @@ namespace FacialStuff
                         if(EyeBehavior.NumEyes > 0)
                         {
                             Vector3 eyeLoc = headPos;
-                            eyeLoc.y += YOffset_Eyes;
+                            eyeLoc.y += 0.002f;
                             // Draw natural eyes
                             DrawEyes(eyeLoc, headFacing, headQuat, portrait);
                         }
