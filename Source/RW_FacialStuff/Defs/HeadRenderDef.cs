@@ -21,11 +21,9 @@ namespace FacialStuff.Defs
                     headRenderDef._cacheBuilt = true;
                 }
                 eyeRenderParam = headRenderDef._cachedEyeRenderParam;
-                mouthRenderParam = headRenderDef._cachedMouthRenderParam;
                 return true;
             }
             eyeRenderParam = null;
-            mouthRenderParam = null;
             return false;
         }
 
