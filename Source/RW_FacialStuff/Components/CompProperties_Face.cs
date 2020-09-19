@@ -21,9 +21,7 @@ namespace FacialStuff
         public bool hasWrinkles;
         
         public bool needsBlankHumanHead;
-        
-        public List<string> useTexCollection;
-        
+                
         public IHeadBehavior headBehavior;
 
         public IMouthBehavior mouthBehavior;

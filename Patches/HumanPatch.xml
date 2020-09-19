@@ -38,11 +38,7 @@
             <hasWrinkles>true</hasWrinkles>
             <!--head rotation / tracking-->
             <canRotateHead>true</canRotateHead>
-			
-			<useTexCollection>
-				<li>Human</li>
-			</useTexCollection>
-			
+						
 			<!-- 
 			Since this class is defined within CompProperties, it will be only instantiated once and shared 
 			among multiple CompFace instances. However, this behavior is not desired - there need to be 

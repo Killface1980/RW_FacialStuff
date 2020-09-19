@@ -397,8 +397,7 @@ namespace FacialStuff.Utilities
                 from eyeDef in DefDatabase<EyeDef>.AllDefs
                 where
                     eyeDef.hairTags.SharesElementWith(factionType.hairTags) &&
-                    !eyeDef.texCollection.NullOrEmpty() &&
-                    faceProp.useTexCollection.Contains(eyeDef.texCollection)
+                    eyeDef.allowedRaceThingDefs.Contains(pawn.def)
                 select eyeDef;
 
             if(!source.Any())

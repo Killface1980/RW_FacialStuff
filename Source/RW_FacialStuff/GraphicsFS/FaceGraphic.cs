@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using FacialStuff.DefOfs;
 using FacialStuff.Defs;
 using FacialStuff.Harmony;
@@ -194,8 +195,7 @@ namespace FacialStuff.GraphicsFS
 		public string EyeTexturePath(EyeDef eyeDef)
 		{
 			string texBasePath = _pawnFace.EyeDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Eyes/" : _pawnFace.EyeDef.texBasePath;
-			string texFileName = eyeDef.texCollection + "_" + eyeDef.texName;
-			return texBasePath + texFileName;
+			return Path.Combine(texBasePath, eyeDef.texName);
 		}
 
 		private void InitializeGraphicsEyes()

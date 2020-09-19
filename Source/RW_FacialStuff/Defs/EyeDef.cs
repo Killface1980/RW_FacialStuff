@@ -6,11 +6,11 @@ namespace FacialStuff.Defs
 {
     public class EyeDef : Def
     {
-        public string texCollection;
-
         public HairGender hairGender;
 
         public string texBasePath;
+        
+        public List<ThingDef> allowedRaceThingDefs = new List<ThingDef>();
 
         public string texName;
 
