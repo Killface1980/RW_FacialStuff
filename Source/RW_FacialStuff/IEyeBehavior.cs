@@ -4,15 +4,22 @@ using Verse;
 
 namespace FacialStuff
 {
+	public enum EyeAction
+	{
+		None = 0,
+		Closed = 1,
+		Pain = 2
+	}
+	
 	public interface IEyeBehavior : ICloneable, IExposable
 	{
 		public class Result
 		{
-			public bool openEye;
+			public EyeAction eyeAction;
 
 			public void Reset()
 			{
-				openEye = false;
+				eyeAction = EyeAction.None;
 			}
 		}
 		

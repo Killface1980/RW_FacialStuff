@@ -13,7 +13,7 @@ namespace FacialStuff.GraphicsFS
 	{
 		public Graphic BrowGraphic;
 		private Graphic_FaceMirror[,] _eyeGraphics;
-		private Graphic_FaceMirror[] _eyeClosedGraphics;
+		private Graphic_FaceMirror[,] _eyeActionGraphics;
 		private List<Graphic_Multi> _mouthGraphics;
 		public Graphic_Multi JawGraphic;
 		public Graphic_Multi MainBeardGraphic;
@@ -30,7 +30,7 @@ namespace FacialStuff.GraphicsFS
 			_compFace = compFace;
 			_pawn = compFace.Pawn;
 			_eyeGraphics = new Graphic_FaceMirror[eyeCount, Enum.GetNames(typeof(BodyPartLevel)).Length];
-			_eyeClosedGraphics = new Graphic_FaceMirror[eyeCount];
+			_eyeActionGraphics = new Graphic_FaceMirror[eyeCount, Enum.GetNames(typeof(EyeAction)).Length];
 			_pawnFace = compFace.FaceData;
 			if(_pawnFace != null)
 			{
@@ -177,17 +177,17 @@ namespace FacialStuff.GraphicsFS
 				color) as Graphic_Multi;
 		}
 				
-		public Material EyeMatAt(int partIdx, Rot4 headFacing, bool portrait, bool eyeOpen, BodyPartLevel partLevel)
+		public Material EyeMatAt(int partIdx, Rot4 headFacing, bool portrait, EyeAction eyeAction, BodyPartLevel partLevel)
 		{
 			// TODO: get damaged mat
 			Graphic eyeGraphic = null;
-			if(eyeOpen || portrait)
+			if(eyeAction == EyeAction.None || portrait)
 			{
 				eyeGraphic = _eyeGraphics[partIdx, (int)partLevel];
 			}
 			else
 			{
-				eyeGraphic = _eyeClosedGraphics[partIdx];
+				eyeGraphic = _eyeActionGraphics[partIdx, (int)eyeAction - 1];
 			}
 			return eyeGraphic?.MatAt(headFacing);
 		}
@@ -219,7 +219,20 @@ namespace FacialStuff.GraphicsFS
 				if(_pawnFace.EyeDef.closedEyeDef != null)
 				{
 					string texPath = EyeTexturePath(_pawnFace.EyeDef.closedEyeDef);
-					_eyeClosedGraphics[i] = GraphicDatabase.Get<Graphic_FaceMirror>(
+					_eyeActionGraphics[i, (int)EyeAction.Closed - 1] = GraphicDatabase.Get<Graphic_FaceMirror>(
+						texPath,
+						Shaders.FacePart,
+						Vector2.one,
+						eyeColor) as Graphic_FaceMirror;
+				}
+			}
+			// In pain eye graphics
+			for(int i = 0; i < _compFace.EyeBehavior.NumEyes; ++i)
+			{
+				if(_pawnFace.EyeDef.closedEyeDef != null)
+				{
+					string texPath = EyeTexturePath(_pawnFace.EyeDef.inPainEyeDef);
+					_eyeActionGraphics[i, (int)EyeAction.Pain - 1] = GraphicDatabase.Get<Graphic_FaceMirror>(
 						texPath,
 						Shaders.FacePart,
 						Vector2.one,

@@ -47,16 +47,24 @@ namespace FacialStuff.AI
 			// 0 is left eye, 1 is right eye.
 			for(int i = 0; i < NumEyes; ++i)
 			{
-				// If pawnState.aiming is false, then it will be always be true for both eyes. Therefore, it won't have
-				// any effect when AND'ing with other booleans.
-				// Close left eye and open right eye while aiming, regardless of blinking status.
-				bool eyeAimingOpen = !((i == 0 ? true : false) && pawnState.Aiming);
-				bool eyeBlinkOpen = _blinkOpen || !Controller.settings.MakeThemBlink;
-				eyeResults[i].openEye =
-					eyeBlinkOpen &&
-					eyeAimingOpen &&
-					!pawnState.Sleeping &&
-					!closeOverride;
+				if(pawnState.InPainShock)
+				{
+					eyeResults[i].eyeAction = EyeAction.Pain;
+				}
+				else
+				{
+					// If pawnState.aiming is false, then it will be always be true for both eyes. Therefore, it won't have
+					// any effect when AND'ing with other booleans.
+					// Close left eye and open right eye while aiming, regardless of blinking status.
+					bool eyeAimingOpen = !((i == 0 ? true : false) && pawnState.Aiming);
+					bool eyeBlinkOpen = _blinkOpen || !Controller.settings.MakeThemBlink;
+					bool eyeOpen =
+						eyeBlinkOpen &&
+						eyeAimingOpen &&
+						!pawnState.Sleeping &&
+						!closeOverride;
+					eyeResults[i].eyeAction = eyeOpen ? EyeAction.None : EyeAction.Closed;
+				}
 			}
 		}
 		

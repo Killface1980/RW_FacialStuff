@@ -250,8 +250,7 @@ namespace FacialStuff
                         partIdx,
                         headFacing,
                         portrait,
-                        // If rendering portrait, always open eyes
-                        _cachedEyeParam[partIdx].openEye || portrait,
+                        _cachedEyeParam[partIdx].eyeAction,
                         PartStatusTracker.GetEyePartLevel(partIdx));
                     if(eyeMat != null)
                     {
