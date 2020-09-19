@@ -21,9 +21,10 @@ namespace FacialStuff
 
         private Faction _originFactionInt;
         private FaceData _faceData;
+        private RenderParam[,] _eyeRenderParams;
         private Rot4 _cachedHeadFacing;
         private IMouthBehavior.Params _cachedMouthParam = new IMouthBehavior.Params();
-        private List<IEyeBehavior.Params> _cachedEyeParam;
+        private List<IEyeBehavior.Result> _cachedEyeParam;
         private PawnState _pawnState;
         private IHeadBehavior _headBehavior;
         private IMouthBehavior _mouthBehavior;
@@ -236,21 +237,16 @@ namespace FacialStuff
 
         public void DrawEyes(Vector3 drawPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
 		{
-            Vector3 drawLoc = drawPos;
-            FaceGraphic faceGraphic = PawnFaceGraphic;
-            if(faceGraphic == null)
+            if(PawnFaceGraphic == null || _eyeRenderParams == null)
             {
                 return;
             }
-            for(int partIdx = 0; partIdx < EyeBehavior.NumEyes; ++partIdx)
+            for(int partIdx = 0; partIdx < _eyeRenderParams.GetLength(0); ++partIdx)
             {
-                if(_cachedEyeParam[partIdx].render || portrait)
+                if(_eyeRenderParams[partIdx, headFacing.AsInt].render || portrait)
                 {
-                    Mesh eyeMesh = MeshPoolFS.GetFaceMesh(
-                        PawnCrownType, 
-                        headFacing,
-                        portrait ? EyeBehavior.GetEyeMirrorFlagForPortrait(partIdx) : _cachedEyeParam[partIdx].mirror);
-                    Material eyeMat = faceGraphic.EyeMatAt(
+                    Mesh eyeMesh = _eyeRenderParams[partIdx, headFacing.AsInt].mesh;
+                    Material eyeMat = PawnFaceGraphic.EyeMatAt(
                         partIdx,
                         headFacing,
                         portrait,
@@ -259,7 +255,10 @@ namespace FacialStuff
                         PartStatusTracker.GetEyePartLevel(partIdx));
                     if(eyeMat != null)
                     {
-                        drawLoc.y += Offsets.YOffset_LeftPart;
+                        Vector3 offset = new Vector3(
+                            _eyeRenderParams[partIdx, headFacing.AsInt].offset.x,
+                            0,
+                            _eyeRenderParams[partIdx, headFacing.AsInt].offset.y);
                         offset = headQuat * offset;
                         GenDraw.DrawMeshNowOrLater(
                             eyeMesh,
@@ -370,7 +369,8 @@ namespace FacialStuff
             _pawnState = new PawnState(Pawn);
         }
 
-        // Faction data isn't available during ThingComp.Initialize(). Initialize faction-related members here.
+        // Graphics and faction data aren't available in ThingComp.Initialize(). Initialize the members related to those in this method,
+        // which is called by a postfix to ResolveAllGraphics() method.
         public void InitializeFace()
         {
             if(_originFactionInt == null)
@@ -381,12 +381,13 @@ namespace FacialStuff
             {
                 FaceData = new FaceData(this, OriginFaction?.def);
             }
-
+            HeadRenderDef.GetCachedHeadRenderParams(Pawn.story.HeadGraphicPath, out _eyeRenderParams);
+            
             MouthBehavior.InitializeTextureIndex(FaceData.MouthSetDef.texNames.AsReadOnly());
-            _cachedEyeParam = new List<IEyeBehavior.Params>(EyeBehavior.NumEyes);
+            _cachedEyeParam = new List<IEyeBehavior.Result>(EyeBehavior.NumEyes);
             for(int i = 0; i < EyeBehavior.NumEyes; ++i)
 			{
-                _cachedEyeParam.Add(new IEyeBehavior.Params()); 
+                _cachedEyeParam.Add(new IEyeBehavior.Result()); 
 			}
 
             FullHeadType = MeshPoolFS.GetFullHeadType(Pawn.gender, PawnCrownType, PawnHeadType);

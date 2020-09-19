@@ -1,4 +1,5 @@
-﻿using HugsLib;
+﻿using FacialStuff.Defs;
+using HugsLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,11 @@ namespace FacialStuff
 		public override void DefsLoaded()
 		{
 			base.DefsLoaded();
+			var headRenderDefs = DefDatabase<HeadRenderDef>.AllDefsListForReading;
+			foreach(var headRenderDef in headRenderDefs)
+			{
+				HeadRenderDef.headTextureMapping.Add(headRenderDef.headTexture, headRenderDef);
+			}
 		}
 	}
 }

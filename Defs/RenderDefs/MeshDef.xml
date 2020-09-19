@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<FacialStuff.Defs.MeshDef>
+		<defName>FSEyeMesh</defName>
+		<dimension>(0.1875, 0.1875)</dimension>
+		<mirror>false</mirror>
+	</FacialStuff.Defs.MeshDef>
+	
+	<FacialStuff.Defs.MeshDef>
+		<defName>FSEyeMesh_mirrored</defName>
+		<dimension>(0.1875, 0.1875)</dimension>
+		<mirror>true</mirror>
+	</FacialStuff.Defs.MeshDef>
+</Defs>

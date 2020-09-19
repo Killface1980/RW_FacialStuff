@@ -92,6 +92,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Defs\EyeRenderDef.cs" />
+    <Compile Include="Defs\HeadRenderDef.cs" />
+    <Compile Include="Defs\MeshDef.cs" />
     <None Include="packages.config" />
     <None Include="WidgetsFS.cs" />
     <Compile Include="AI\HumanEyeBehavior.cs" />
@@ -106,13 +109,13 @@
     <Compile Include="IEyeBehavior.cs" />
     <Compile Include="IHeadBehavior.cs" />
     <Compile Include="IMouthBehavior.cs" />
+    <Compile Include="Defs\PartRender.cs" />
     <Compile Include="PartStatusTracker.cs" />
     <Compile Include="Components\Skeletoon\FS_Skeleton.cs" />
     <None Include="DefOfs\ExtremityDefOf.cs" />
     <Compile Include="DefOfs\EarDefOf.cs" />
     <None Include="Defs\ExtremityDef.cs" />
     <Compile Include="Defs\EarDef.cs" />
-    <Compile Include="Defs\PerEyeBehavior.cs" />
     <Compile Include="Enums\HeadCoverage.cs" />
     <Compile Include="GraphicsFS\Graphic_Hair.cs" />
     <Compile Include="Harmony\HarmonyPatchesFS.cs" />
@@ -120,6 +123,7 @@
     <Compile Include="Harmony\HarmonyPatch_Pawn_HealthTracker.cs" />
     <Compile Include="Harmony\HarmonyPatch_ShaderUtility.cs" />
     <Compile Include="PawnState.cs" />
+    <Compile Include="RenderParam.cs" />
     <Compile Include="Tweener\TinyTween.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />

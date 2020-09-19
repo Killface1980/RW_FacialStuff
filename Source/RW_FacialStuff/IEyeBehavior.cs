@@ -6,23 +6,19 @@ namespace FacialStuff
 {
 	public interface IEyeBehavior : ICloneable, IExposable
 	{
-		public class Params
+		public class Result
 		{
-			public bool render;
 			public bool openEye;
-			public bool mirror;
 
 			public void Reset()
 			{
-				render = false;
 				openEye = false;
-				mirror = false;
 			}
 		}
 		
 		public int NumEyes { get; }
 
-		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, List<Params> eyeParams);
+		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, List<Result> eyeResults);
 
 		public bool GetEyeMirrorFlagForPortrait(int eyeIndex);
 	}

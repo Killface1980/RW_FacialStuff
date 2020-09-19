@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<FacialStuff.Defs.EyeRenderDef>
+		<!-- Both male and female narrow crown head textures have nearly identical eye offsets -->
+		<defName>FSHumanEyeRenderNarrow</defName>
+		<parts>
+			<!-- Left Eye -->
+			<li>
+				<!-- 
+				Used to distinguish between body parts with the same BodyPartDefs (eyes, ears, etc). 0 is for left and 1 is for right. 
+				For parts unique to body (only single part is present. ex: mouth), 0 must be used.
+				-->
+				<multiPartIndex>0</multiPartIndex>
+				<perRotation>
+					<!-- 
+					If rotation is missing in this list, the part isn't rendered for that rotation 
+					(ex. North and east for left eye) 
+					-->
+					<!-- South -->
+					<li>
+						<!--
+						Indicates what rotation the following properties are for. If there are duplicate rotation in this list, 
+						whatever comes last in the list will be used 
+						-->
+						<rotation>South</rotation>
+						<meshDef>FSEyeMesh_mirrored</meshDef>
+						<!-- The offset from center of head. Note that the head mesh is 1.5 by 1.5 in size. --> 
+						<offset>(0.0938, -0.0703)</offset>
+					</li>
+					<!-- West -->
+					<li>
+						<rotation>West</rotation>
+						<meshDef>FSEyeMesh_mirrored</meshDef>
+						<offset>(-0.1055, -0.0703)</offset>
+					</li>
+				</perRotation>
+			</li>
+			<!-- Right Eye -->
+			<li>
+				<multiPartIndex>1</multiPartIndex>
+				<perRotation>
+					<!-- East -->
+					<li>
+						<rotation>East</rotation>
+						<meshDef>FSEyeMesh</meshDef>
+						<offset>(0.1055, -0.0703)</offset>
+					</li>
+					<!-- South -->
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSEyeMesh</meshDef>
+						<offset>(-0.0938, -0.0703)</offset>
+					</li>
+				</perRotation>
+			</li>
+		</parts>
+	</FacialStuff.Defs.EyeRenderDef>
+	
+	<FacialStuff.Defs.EyeRenderDef>
+		<defName>FSHumanEyeRenderMaleAverage</defName>
+		<parts>
+			<li>
+				<multiPartIndex>0</multiPartIndex>
+				<perRotation>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSEyeMesh_mirrored</meshDef>
+						<offset>(0.0938, -0.0703)</offset>
+					</li>
+					<li>
+						<rotation>West</rotation>
+						<meshDef>FSEyeMesh_mirrored</meshDef>
+						<offset>(-0.1816, -0.0703)</offset>
+					</li>
+				</perRotation>
+			</li>
+			<li>
+				<multiPartIndex>1</multiPartIndex>
+				<perRotation>
+					<li>
+						<rotation>East</rotation>
+						<meshDef>FSEyeMesh</meshDef>
+						<offset>(0.1816, -0.0703)</offset>
+					</li>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSEyeMesh</meshDef>
+						<offset>(-0.0938, -0.0703)</offset>
+					</li>
+				</perRotation>
+			</li>
+		</parts>
+	</FacialStuff.Defs.EyeRenderDef>
+	
+	<FacialStuff.Defs.EyeRenderDef>
+		<defName>FSHumanEyeRenderFemaleAverage</defName>
+		<parts>
+			<li>
+				<multiPartIndex>0</multiPartIndex>
+				<perRotation>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSEyeMesh_mirrored</meshDef>
+						<offset>(0.0938, -0.0703)</offset>
+					</li>
+					<li>
+						<rotation>West</rotation>
+						<meshDef>FSEyeMesh_mirrored</meshDef>
+						<offset>(-0.1289, -0.0703)</offset>
+					</li>
+				</perRotation>
+			</li>
+			<li>
+				<multiPartIndex>1</multiPartIndex>
+				<perRotation>
+					<li>
+						<rotation>East</rotation>
+						<meshDef>FSEyeMesh</meshDef>
+						<offset>(0.1289, -0.0703)</offset>
+					</li>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSEyeMesh</meshDef>
+						<offset>(-0.0938, -0.0703)</offset>
+					</li>
+				</perRotation>
+			</li>
+		</parts>
+	</FacialStuff.Defs.EyeRenderDef>
+</Defs>
