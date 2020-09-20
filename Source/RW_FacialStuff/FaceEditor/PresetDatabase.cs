@@ -32,7 +32,7 @@ namespace FacialStuff.FaceStyler
         // RimWorld.FacePresetDatabase
         public void ExposeData()
         {
-            Scribe_Collections.LookList<FacePreset>(ref this.facePresets, "facePresets", LookMode.Deep, new object[0]);
+            Scribe_Collections.Look<FacePreset>(ref this.facePresets, "facePresets", LookMode.Deep, new object[0]);
         }
 
         // RimWorld.FacePresetDatabase

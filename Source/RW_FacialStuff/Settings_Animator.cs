@@ -9,8 +9,6 @@ namespace FacialStuff
 {
     public class Settings_Animator : ModSettings
     {
-        public Dictionary<ThingDef, RaceOption> Options = new Dictionary<ThingDef, RaceOption>();
-
         #region Public Methods
 
         public void DoWindowContents(Rect inRect)

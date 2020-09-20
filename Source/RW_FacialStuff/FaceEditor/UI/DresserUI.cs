@@ -27,9 +27,9 @@ namespace FacialStuffEditor.UI
     using System;
     using System.Reflection;
 
-    using FacialStuffEditor.UI.DTO;
-    using FacialStuffEditor.UI.DTO.SelectionWidgetDTOs;
-    using FacialStuffEditor.UI.Util;
+    using FacialStuff.FaceEditor.UI.DTO;
+    using FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs;
+    using FacialStuff.FaceEditor.UI.Util;
 
     using RimWorld;
 

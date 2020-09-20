@@ -41,9 +41,7 @@ namespace FacialStuff.AnimatorWindows
         protected override void DoBasicSettingsMenu(Listing_Standard listing)
         {
             base.DoBasicSettingsMenu(listing);
-
-            GetBodyAnimDef();
-
+            
             // listing_Standard.CheckboxLabeled("Equipment", ref Equipment);
 
             // listing_Standard.Label(horHeadOffset.ToString("N2") + " - " + verHeadOffset.ToString("N2"));
@@ -164,12 +162,7 @@ namespace FacialStuff.AnimatorWindows
         protected override void DrawBodySettingsEditor(Rot4 rotation)
         {
             Rect sliderRect = new Rect(0, 0, this.SliderWidth, 40f);
-
-            // this.DrawBodyStats("legLength", ref bodyAnimDef.legLength, ref sliderRect);
-            // this.DrawBodyStats("hipOffsetVerticalFromCenter",
-            // ref bodyAnimDef.hipOffsetVerticalFromCenter, ref sliderRect);
-            GetBodyAnimDef();
-
+            
             Vector3 shoulderOffset = CompAnim.BodyAnim.shoulderOffsets[rotation.AsInt];
 
             if (shoulderOffset.y == 0f)
@@ -454,7 +447,6 @@ namespace FacialStuff.AnimatorWindows
             {
                 EditorPoseCycle = anim.poseCycles.FirstOrDefault();
             }
-            this.CompAnim.AnimatorPoseOpen = true;
         }
 
         #endregion Public Methods
