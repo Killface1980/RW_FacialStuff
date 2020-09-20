@@ -3,7 +3,9 @@
 	<FacialStuff.Defs.MouthSetDef>
 		<defName>FSHumanMouth</defName>
 		<hairGender>Any</hairGender>
-		<texCollection>Human</texCollection>
+		<allowedRaceThingDefs>
+			<li>Human</li>
+		</allowedRaceThingDefs>
 		<texBasePath>Things/Pawn/Humanlike/Mouth/</texBasePath>
 		<texSetName>AnyGender</texSetName>
 		<!-- The list of texture names that can be used by mouthBehavior in HumanPatch.xml -->

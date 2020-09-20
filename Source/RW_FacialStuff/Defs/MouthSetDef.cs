@@ -12,7 +12,7 @@ namespace FacialStuff.Defs
 	{
 		public HairGender hairGender;
 		
-		public string texCollection;
+		public List<ThingDef> allowedRaceThingDefs;
 
 		public string texBasePath;
 		

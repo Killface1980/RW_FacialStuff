@@ -57,7 +57,6 @@ namespace FacialStuff.GraphicsFS
 					_mouthGraphics.Add(
 						GraphicDatabase.Get<Graphic_Multi>(
 							_pawnFace.MouthSetDef.texBasePath +
-								_pawnFace.MouthSetDef.texCollection + "_" +
 								_pawnFace.MouthSetDef.texSetName + "_" +
 								_pawnFace.MouthSetDef.texNames[i],
 							ShaderDatabase.CutoutSkin,

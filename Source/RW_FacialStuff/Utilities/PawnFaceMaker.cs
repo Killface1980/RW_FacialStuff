@@ -241,7 +241,9 @@ namespace FacialStuff.Utilities
 			}
             IEnumerable<MouthSetDef> source =
                 from mouth in DefDatabase<MouthSetDef>.AllDefs
-                where mouth.hairTags.SharesElementWith(pawnFactionDef.hairTags)
+                where 
+                    mouth.hairTags.SharesElementWith(pawnFactionDef.hairTags) && 
+                    mouth.allowedRaceThingDefs.Contains(pawn.def)
                 select mouth;
             if(!source.Any())
 			{
