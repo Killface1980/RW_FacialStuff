@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 using System.Collections.Generic;
 using Verse;
 
-namespace FacialStuff.Defs
+namespace PawnPlus.Defs
 {
     public class AnimationTargetDef : ThingDef
     {

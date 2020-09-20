@@ -1,4 +1,4 @@
-﻿using FacialStuff.GraphicsFS;
+﻿using PawnPlus.Graphics;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.Harmony
+namespace PawnPlus.Harmony
 {
     [HarmonyPatch(
         typeof(ShaderUtility),

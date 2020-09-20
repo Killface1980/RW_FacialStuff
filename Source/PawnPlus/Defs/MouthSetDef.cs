@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Verse;
 
-namespace FacialStuff.Defs
+namespace PawnPlus.Defs
 {
 	public class MouthSetDef : Def
 	{

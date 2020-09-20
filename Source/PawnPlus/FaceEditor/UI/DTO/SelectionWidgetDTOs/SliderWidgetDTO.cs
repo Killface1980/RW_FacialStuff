@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-using FacialStuff.FaceEditor.UI.Util;
+using PawnPlus.FaceEditor.UI.Util;
 
-namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
+namespace PawnPlus.FaceEditor.UI.DTO.SelectionWidgetDTOs
 {
     public class SliderWidgetDto
     {

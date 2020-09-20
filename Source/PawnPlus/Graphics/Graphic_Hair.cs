@@ -10,7 +10,7 @@ using UnityEngine;
 using Verse;
 using Verse.Noise;
 
-namespace FacialStuff.GraphicsFS
+namespace PawnPlus.Graphics
 {
 	[StaticConstructorOnStartup]
 	class Graphic_Hair : Graphic

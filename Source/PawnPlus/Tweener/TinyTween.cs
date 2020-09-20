@@ -37,7 +37,7 @@ using UnityEngine;
 #endif
 
 // ReSharper disable once CheckNamespace
-namespace FacialStuff.Tweener
+namespace PawnPlus.Tweener
 {
     /// <summary>
     /// Takes in progress which is the percentage of the tween complete and returns

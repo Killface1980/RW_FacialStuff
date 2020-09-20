@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FacialStuff.Animator;
-using FacialStuff.AnimatorWindows;
-using FacialStuff.Harmony;
-using FacialStuff.Tweener;
+using PawnPlus.Animator;
+using PawnPlus.AnimatorWindows;
+using PawnPlus.Harmony;
+using PawnPlus.Tweener;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public class HumanBipedDrawer : PawnBodyDrawer
     {

@@ -1,4 +1,4 @@
-namespace FacialStuff.Genetics
+namespace PawnPlus.Genetics
 {
     public class HairColorRequest
     {

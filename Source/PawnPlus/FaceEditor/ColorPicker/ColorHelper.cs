@@ -1,5 +1,5 @@
 // ReSharper disable All
-namespace FacialStuff.FaceEditor.ColorPicker
+namespace PawnPlus.FaceEditor.ColorPicker
 {
     using System.Globalization;
 

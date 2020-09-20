@@ -1,7 +1,7 @@
 ﻿using System;
 using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
 	public interface IHeadBehavior : ICloneable, IExposable
 	{

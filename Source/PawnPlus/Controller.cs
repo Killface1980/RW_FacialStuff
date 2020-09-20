@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public class Controller : Mod
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace FacialStuff.Genetics
+namespace PawnPlus.Genetics
 {
     public struct HairDNA
     {

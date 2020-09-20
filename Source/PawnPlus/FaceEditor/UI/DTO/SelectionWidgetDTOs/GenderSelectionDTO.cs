@@ -25,7 +25,7 @@
 using System.Collections.Generic;
 using Verse;
 
-namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
+namespace PawnPlus.FaceEditor.UI.DTO.SelectionWidgetDTOs
 {
     public class GenderSelectionDto : ASelectionWidgetDto
     {

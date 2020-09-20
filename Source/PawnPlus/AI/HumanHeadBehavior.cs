@@ -4,7 +4,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace FacialStuff.AI
+namespace PawnPlus.AI
 {
 	// This class helps simulate head movement so head moves separately from body depending on situation.
 	public class HumanHeadBehavior : IHeadBehavior

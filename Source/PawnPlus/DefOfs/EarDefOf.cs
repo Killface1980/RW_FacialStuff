@@ -6,10 +6,10 @@
 // ReSharper disable CollectionNeverUpdated.Global
 // ReSharper disable StyleCop.SA1310
 
-using FacialStuff.Defs;
+using PawnPlus.Defs;
 using RimWorld;
 
-namespace FacialStuff.DefOfs
+namespace PawnPlus.DefOfs
 {
     [DefOf]
     public static class EarDefOf

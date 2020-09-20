@@ -1,19 +1,19 @@
-﻿using FacialStuff.Animator;
-using FacialStuff.DefOfs;
-using FacialStuff.Defs;
-using FacialStuff.GraphicsFS;
-using FacialStuff.Utilities;
+﻿using PawnPlus.Animator;
+using PawnPlus.DefOfs;
+using PawnPlus.Defs;
+using PawnPlus.Graphics;
+using PawnPlus.Utilities;
 using JetBrains.Annotations;
 using RimWorld;
 using System;
 using System.Collections.Generic;
-using FacialStuff.Harmony;
+using PawnPlus.Harmony;
 using UnityEngine;
 using Verse;
-using static FacialStuff.Offsets;
-using FacialStuff.AI;
+using static PawnPlus.Offsets;
+using PawnPlus.AI;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public class CompFace : ThingComp
     {

@@ -1,15 +1,15 @@
-﻿using FacialStuff.Defs;
-using FacialStuff.GraphicsFS;
+﻿using PawnPlus.Defs;
+using PawnPlus.Graphics;
 using JetBrains.Annotations;
 using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FacialStuff.Animator;
+using PawnPlus.Animator;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.AnimatorWindows
+namespace PawnPlus.AnimatorWindows
 {
     public class MainTabWindow_BaseAnimator : MainTabWindow
     {

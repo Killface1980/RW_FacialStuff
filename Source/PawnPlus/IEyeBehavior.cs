@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
 	public enum EyeAction
 	{

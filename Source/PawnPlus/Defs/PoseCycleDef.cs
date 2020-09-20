@@ -6,7 +6,7 @@
 // ReSharper disable NotNullMemberIsNotInitialized
 // ReSharper disable CheckNamespace
 
-using FacialStuff.Defs;
+using PawnPlus.Defs;
 using JetBrains.Annotations;
 using System.Collections.Generic;
 using Verse;

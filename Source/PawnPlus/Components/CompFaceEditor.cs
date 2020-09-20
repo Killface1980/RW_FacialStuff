@@ -1,8 +1,8 @@
 ﻿// ReSharper disable All
 
-namespace FacialStuff
+namespace PawnPlus
 {
-    using FacialStuff.Harmony;
+    using PawnPlus.Harmony;
     using System;
     using System.Collections.Generic;
 

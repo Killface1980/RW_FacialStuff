@@ -28,7 +28,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
+namespace PawnPlus.FaceEditor.UI.DTO.SelectionWidgetDTOs
 {
     public class BodyTypeSelectionDto : ASelectionWidgetDto
     {

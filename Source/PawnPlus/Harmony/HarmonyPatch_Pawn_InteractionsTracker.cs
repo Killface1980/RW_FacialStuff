@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Verse;
 using Verse.AI;
 
-namespace FacialStuff.Harmony
+namespace PawnPlus.Harmony
 {
     [HarmonyPatch(
     typeof(Pawn_InteractionsTracker),

@@ -25,7 +25,7 @@
 using Verse;
 using Verse.AI;
 
-namespace FacialStuff.FaceEditor.UI.DTO
+namespace PawnPlus.FaceEditor.UI.DTO
 {
     internal static class DresserDtoFactory
     {

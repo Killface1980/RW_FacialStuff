@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public class CompLoaderTargets
     {

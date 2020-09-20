@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FacialStuff.DefOfs;
-using FacialStuff.Defs;
+using PawnPlus.DefOfs;
+using PawnPlus.Defs;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;
 
-namespace FacialStuff.Utilities
+namespace PawnPlus.Utilities
 {
     public static class PawnFaceMaker
     {

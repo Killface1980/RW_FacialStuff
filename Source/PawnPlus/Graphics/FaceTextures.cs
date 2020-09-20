@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Verse;
 
-namespace FacialStuff.GraphicsFS
+namespace PawnPlus.Graphics
 {
     [StaticConstructorOnStartup]
     public static class FaceTextures
@@ -57,8 +57,8 @@ namespace FacialStuff.GraphicsFS
                 RenderTextureFormat.Default,
                 RenderTextureReadWrite.Linear);
 
-            // Blit the pixels on texture to the RenderTexture
-            Graphics.Blit(texture, tmp);
+			// Blit the pixels on texture to the RenderTexture
+			UnityEngine.Graphics.Blit(texture, tmp);
 
             // Set the current RenderTexture to the temporary one we created
             RenderTexture.active = tmp;

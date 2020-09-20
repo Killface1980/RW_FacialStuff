@@ -169,14 +169,14 @@
     <Compile Include="Genetics\HairDNA.cs" />
     <Compile Include="Genetics\HairMelanin.cs" />
     <Compile Include="Genetics\PawnSkinColors_FS.cs" />
-    <Compile Include="GraphicsFS\FaceGraphic.cs" />
-    <Compile Include="GraphicsFS\FaceMaterial.cs" />
-    <Compile Include="GraphicsFS\FaceTextures.cs" />
-    <Compile Include="GraphicsFS\Graphic_FaceMirror.cs" />
-    <Compile Include="GraphicsFS\Graphic_Hair.cs" />
-    <Compile Include="GraphicsFS\MeshPoolFs.cs" />
-    <Compile Include="GraphicsFS\PawnBodyGraphic.cs" />
-    <Compile Include="GraphicsFS\Shaders.cs" />
+    <Compile Include="Graphics\FaceGraphic.cs" />
+    <Compile Include="Graphics\FaceMaterial.cs" />
+    <Compile Include="Graphics\FaceTextures.cs" />
+    <Compile Include="Graphics\Graphic_FaceMirror.cs" />
+    <Compile Include="Graphics\Graphic_Hair.cs" />
+    <Compile Include="Graphics\MeshPoolFs.cs" />
+    <Compile Include="Graphics\PawnBodyGraphic.cs" />
+    <Compile Include="Graphics\Shaders.cs" />
     <Compile Include="Harmony\HarmonyPatchesFS.cs" />
     <Compile Include="Harmony\HarmonyPatch_PawnRenderer.cs" />
     <Compile Include="Harmony\HarmonyPatch_Pawn_HealthTracker.cs" />
@@ -199,12 +199,6 @@
     <Compile Include="Utilities\PawnFaceMaker.cs" />
     <Compile Include="WidgetsFS.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Languages\English\" />
-    <Folder Include="Languages\German\" />
-    <Folder Include="Languages\PortugueseBrazilian\" />
-    <Folder Include="Languages\SpanishLatin\" />
-    <Folder Include="Languages\Spanish\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

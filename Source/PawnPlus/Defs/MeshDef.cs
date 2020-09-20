@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Verse;
 
-namespace FacialStuff.Defs
+namespace PawnPlus.Defs
 {
 	public class MeshDef : Def
 	{

@@ -1,13 +1,13 @@
-﻿using FacialStuff.DefOfs;
-using FacialStuff.Defs;
-using FacialStuff.FaceEditor.ColorPicker;
-using FacialStuff.FaceEditor.UI.DTO;
-using FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs;
-using FacialStuff.FaceEditor.UI.Util;
-using FacialStuff.Genetics;
-using FacialStuff.GraphicsFS;
-using FacialStuff.Harmony;
-using FacialStuff.Utilities;
+﻿using PawnPlus.DefOfs;
+using PawnPlus.Defs;
+using PawnPlus.FaceEditor.ColorPicker;
+using PawnPlus.FaceEditor.UI.DTO;
+using PawnPlus.FaceEditor.UI.DTO.SelectionWidgetDTOs;
+using PawnPlus.FaceEditor.UI.Util;
+using PawnPlus.Genetics;
+using PawnPlus.Graphics;
+using PawnPlus.Harmony;
+using PawnPlus.Utilities;
 using JetBrains.Annotations;
 using RimWorld;
 using System;
@@ -18,7 +18,7 @@ using System.Reflection;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.FaceEditor
+namespace PawnPlus.FaceEditor
 {
     [StaticConstructorOnStartup]
     public partial class Dialog_FaceStyling : Window

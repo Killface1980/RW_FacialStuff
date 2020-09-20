@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.AI
+namespace PawnPlus.AI
 {
 	class HumanEyeBehavior : IEyeBehavior
 	{

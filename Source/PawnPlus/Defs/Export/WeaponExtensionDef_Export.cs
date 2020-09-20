@@ -1,7 +1,7 @@
 ﻿using RimWorld;
 
 // ReSharper disable once CheckNamespace
-namespace FacialStuff.ExportWeaponExtensionDefs
+namespace PawnPlus.ExportWeaponExtensionDefs
 {
     // ReSharper disable StyleCop.SA1307
     // ReSharper disable StyleCop.SA1401

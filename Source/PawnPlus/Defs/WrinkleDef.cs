@@ -6,7 +6,7 @@
 // ReSharper disable CollectionNeverUpdated.Global
 // ReSharper disable All
 
-namespace FacialStuff.Defs
+namespace PawnPlus.Defs
 {
     using System.Collections.Generic;
 

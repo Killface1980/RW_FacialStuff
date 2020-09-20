@@ -24,11 +24,11 @@
 
 // Blatantly stolen from "Change Dresser"
 
-using FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs;
-using FacialStuff.FaceEditor.UI.Util;
+using PawnPlus.FaceEditor.UI.DTO.SelectionWidgetDTOs;
+using PawnPlus.FaceEditor.UI.Util;
 using Verse;
 
-namespace FacialStuff.FaceEditor.UI.DTO
+namespace PawnPlus.FaceEditor.UI.DTO
 {
     public class DresserDTO
     {

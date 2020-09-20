@@ -1,11 +1,11 @@
 ﻿using System.Linq;
-using FacialStuff.AnimatorWindows;
-using FacialStuff.Harmony;
+using PawnPlus.AnimatorWindows;
+using PawnPlus.Harmony;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public class QuadrupedDrawer : HumanBipedDrawer
     {

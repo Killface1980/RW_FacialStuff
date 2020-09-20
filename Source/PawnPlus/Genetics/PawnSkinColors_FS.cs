@@ -2,7 +2,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.Genetics
+namespace PawnPlus.Genetics
 {
     public static class PawnSkinColors_FS
     {

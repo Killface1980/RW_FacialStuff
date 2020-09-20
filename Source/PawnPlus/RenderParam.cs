@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace FacialStuff
+namespace PawnPlus
 {
 	// RenderParams are designed to be immutable after initialization, so make it struct instead.
 	public struct RenderParam

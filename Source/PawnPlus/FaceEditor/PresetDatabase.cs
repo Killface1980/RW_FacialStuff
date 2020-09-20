@@ -5,7 +5,7 @@ using System.Text;
 using RimWorld;
 using Verse;
 
-namespace FacialStuff.FaceStyler
+namespace PawnPlus.FaceStyler
 {
     public sealed class PresetDatabase : IExposable
     {

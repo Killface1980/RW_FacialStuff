@@ -10,7 +10,7 @@ using RimWorld;
 using System.Collections.Generic;
 using Verse;
 
-namespace FacialStuff.Defs
+namespace PawnPlus.Defs
 {
     public class MoustacheDef : Def
     {

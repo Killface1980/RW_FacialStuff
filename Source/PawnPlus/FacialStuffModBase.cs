@@ -1,4 +1,4 @@
-﻿using FacialStuff.Defs;
+﻿using PawnPlus.Defs;
 using HugsLib;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
 	class FacialStuffModBase : ModBase
 	{

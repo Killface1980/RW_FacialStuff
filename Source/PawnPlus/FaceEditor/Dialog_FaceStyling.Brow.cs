@@ -1,8 +1,8 @@
-﻿using FacialStuff.Defs;
+﻿using PawnPlus.Defs;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.FaceEditor
+namespace PawnPlus.FaceEditor
 {
     public partial class Dialog_FaceStyling
     {

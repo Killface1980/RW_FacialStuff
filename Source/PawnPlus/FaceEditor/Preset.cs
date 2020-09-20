@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public class FacePreset : ILoadReferenceable, IExposable
     {

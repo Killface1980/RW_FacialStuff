@@ -1,5 +1,5 @@
 ﻿// ReSharper disable StyleCop.SA1401
-namespace FacialStuff.Defs
+namespace PawnPlus.Defs
 {
     public class PawnKeyframe
     {

@@ -1,8 +1,8 @@
-﻿using FacialStuff.Animator;
-using FacialStuff.AnimatorWindows;
-using FacialStuff.GraphicsFS;
-using FacialStuff.Harmony;
-using FacialStuff.Tweener;
+﻿using PawnPlus.Animator;
+using PawnPlus.AnimatorWindows;
+using PawnPlus.Graphics;
+using PawnPlus.Harmony;
+using PawnPlus.Tweener;
 using JetBrains.Annotations;
 using RimWorld;
 using System;
@@ -13,7 +13,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public class CompBodyAnimator : ThingComp
     {

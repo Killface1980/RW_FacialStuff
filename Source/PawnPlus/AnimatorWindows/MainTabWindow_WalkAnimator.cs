@@ -1,6 +1,6 @@
-﻿using FacialStuff.DefOfs;
-using FacialStuff.Defs;
-using FacialStuff.GraphicsFS;
+﻿using PawnPlus.DefOfs;
+using PawnPlus.Defs;
+using PawnPlus.Graphics;
 using JetBrains.Annotations;
 using RimWorld;
 using System;
@@ -11,7 +11,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace FacialStuff.AnimatorWindows
+namespace PawnPlus.AnimatorWindows
 {
     public class MainTabWindow_WalkAnimator : MainTabWindow_BaseAnimator
     {

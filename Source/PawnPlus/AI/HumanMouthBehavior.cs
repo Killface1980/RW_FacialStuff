@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Verse;
 using Verse.Noise;
 
-namespace FacialStuff.AI
+namespace PawnPlus.AI
 {
 	class HumanMouthBehavior : IMouthBehavior
 	{

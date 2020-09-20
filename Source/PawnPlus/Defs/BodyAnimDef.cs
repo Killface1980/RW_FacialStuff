@@ -9,7 +9,7 @@
 // ReSharper disable StyleCop.SA1310
 // ReSharper disable CheckNamespace
 
-using FacialStuff;
+using PawnPlus;
 using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;

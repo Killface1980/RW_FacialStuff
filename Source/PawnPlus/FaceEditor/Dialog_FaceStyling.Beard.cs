@@ -1,13 +1,13 @@
-﻿using FacialStuff.DefOfs;
-using FacialStuff.Defs;
-using FacialStuff.FaceEditor.ColorPicker;
-using FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs;
-using FacialStuff.FaceEditor.UI.Util;
+﻿using PawnPlus.DefOfs;
+using PawnPlus.Defs;
+using PawnPlus.FaceEditor.ColorPicker;
+using PawnPlus.FaceEditor.UI.DTO.SelectionWidgetDTOs;
+using PawnPlus.FaceEditor.UI.Util;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.FaceEditor
+namespace PawnPlus.FaceEditor
 {
     public partial class Dialog_FaceStyling
     {

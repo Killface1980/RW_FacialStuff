@@ -1,8 +1,8 @@
-﻿using FacialStuff.AnimatorWindows;
-using FacialStuff.Harmony;
+﻿using PawnPlus.AnimatorWindows;
+using PawnPlus.Harmony;
 using Verse;
 
-namespace FacialStuff.Animator
+namespace PawnPlus.Animator
 {
     public class BodyAnimator
     {

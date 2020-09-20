@@ -1,6 +1,6 @@
-﻿using FacialStuff.FaceEditor.ColorPicker;
-using FacialStuff.Genetics;
-using FacialStuff.Harmony;
+﻿using PawnPlus.FaceEditor.ColorPicker;
+using PawnPlus.Genetics;
+using PawnPlus.Harmony;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.FaceEditor
+namespace PawnPlus.FaceEditor
 {
 	public partial class Dialog_FaceStyling
 	{

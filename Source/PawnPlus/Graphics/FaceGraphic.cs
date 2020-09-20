@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using FacialStuff.DefOfs;
-using FacialStuff.Defs;
-using FacialStuff.Harmony;
+using PawnPlus.DefOfs;
+using PawnPlus.Defs;
+using PawnPlus.Harmony;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.GraphicsFS
+namespace PawnPlus.Graphics
 {
 	public class FaceGraphic
 	{

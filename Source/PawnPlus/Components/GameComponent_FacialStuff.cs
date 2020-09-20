@@ -1,18 +1,18 @@
-﻿using FacialStuff.Defs;
+﻿using PawnPlus.Defs;
 using JetBrains.Annotations;
 using RimWorld;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using FacialStuff.Harmony;
-using FacialStuff.Utilities;
+using PawnPlus.Harmony;
+using PawnPlus.Utilities;
 using UnityEngine;
 using Verse;
-using FacialStuff.GraphicsFS;
+using PawnPlus.Graphics;
 using RimWorld.Planet;
 using System;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public class GameComponent_FacialStuff : GameComponent
     {

@@ -1,12 +1,12 @@
 ﻿// ReSharper disable StyleCop.SA1401
 
-using FacialStuff.Harmony;
+using PawnPlus.Harmony;
 using System;
 using System.Linq;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.GraphicsFS
+namespace PawnPlus.Graphics
 {
     public class PawnBodyGraphic
     {

@@ -4,7 +4,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public class Settings : ModSettings
     {

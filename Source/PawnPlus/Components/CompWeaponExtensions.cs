@@ -1,6 +1,6 @@
 ﻿using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     // ReSharper disable UnassignedField.Global
     // ReSharper disable StyleCop.SA1307

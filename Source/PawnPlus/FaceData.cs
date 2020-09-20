@@ -1,14 +1,14 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using FacialStuff.DefOfs;
-using FacialStuff.Defs;
-using FacialStuff.Genetics;
-using FacialStuff.Utilities;
+using PawnPlus.DefOfs;
+using PawnPlus.Defs;
+using PawnPlus.Genetics;
+using PawnPlus.Utilities;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public class FaceData : IExposable
     {

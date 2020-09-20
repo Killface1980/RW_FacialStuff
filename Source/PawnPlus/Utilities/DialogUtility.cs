@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.Utilities
+namespace PawnPlus.Utilities
 {
     public static class DialogUtility
     {

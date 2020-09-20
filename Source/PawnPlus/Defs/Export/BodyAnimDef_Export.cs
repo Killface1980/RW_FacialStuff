@@ -1,7 +1,7 @@
 ﻿using RimWorld;
 
 // ReSharper disable once CheckNamespace
-namespace FacialStuff.ExportAnimDefs
+namespace PawnPlus.ExportAnimDefs
 {
     // ReSharper disable StyleCop.SA1307
     // ReSharper disable StyleCop.SA1401

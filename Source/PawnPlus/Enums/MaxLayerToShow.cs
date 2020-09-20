@@ -1,4 +1,4 @@
-﻿namespace FacialStuff
+﻿namespace PawnPlus
 {
     public enum MaxLayerToShow : byte
     {

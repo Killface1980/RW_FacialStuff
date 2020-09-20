@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
 	public interface IMouthBehavior : ICloneable, IExposable
 	{

@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public class Settings_Animator : ModSettings
     {

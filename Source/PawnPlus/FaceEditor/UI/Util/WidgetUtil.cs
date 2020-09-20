@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
-using FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs;
+using PawnPlus.FaceEditor.UI.DTO.SelectionWidgetDTOs;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.FaceEditor.UI.Util
+namespace PawnPlus.FaceEditor.UI.Util
 {
     [StaticConstructorOnStartup]
     public static class WidgetUtil

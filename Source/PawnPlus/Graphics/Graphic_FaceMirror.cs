@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.GraphicsFS
+namespace PawnPlus.Graphics
 {
     public class Graphic_FaceMirror : Graphic
     {

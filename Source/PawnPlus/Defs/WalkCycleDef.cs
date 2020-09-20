@@ -7,7 +7,7 @@
 // ReSharper disable CheckNamespace
 
 using System.Collections.Generic;
-using FacialStuff.Defs;
+using PawnPlus.Defs;
 using JetBrains.Annotations;
 using Verse;
 using Verse.AI;

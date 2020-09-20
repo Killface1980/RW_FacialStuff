@@ -1,10 +1,10 @@
-using FacialStuff.DefOfs;
+using PawnPlus.DefOfs;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.GraphicsFS
+namespace PawnPlus.Graphics
 {
     public class FaceMaterial
     {

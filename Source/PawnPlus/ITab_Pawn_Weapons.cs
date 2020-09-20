@@ -1,11 +1,11 @@
-﻿using FacialStuff.AnimatorWindows;
+﻿using PawnPlus.AnimatorWindows;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using static FacialStuff.Offsets;
+using static PawnPlus.Offsets;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public class ITab_Pawn_Weapons : ITab
     {

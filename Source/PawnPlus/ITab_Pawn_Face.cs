@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FacialStuff.Defs;
-using FacialStuff.GraphicsFS;
+using PawnPlus.Defs;
+using PawnPlus.Graphics;
 using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public class ITab_Pawn_Face : ITab
     {

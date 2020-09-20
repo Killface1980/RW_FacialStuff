@@ -1,4 +1,4 @@
-﻿using FacialStuff.Defs;
+﻿using PawnPlus.Defs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff.FaceEditor
+namespace PawnPlus.FaceEditor
 {
 	public partial class Dialog_FaceStyling
 	{

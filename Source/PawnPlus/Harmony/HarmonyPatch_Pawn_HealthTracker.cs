@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Verse;
 
-namespace FacialStuff.Harmony
+namespace PawnPlus.Harmony
 {
     [HarmonyPatch(
     typeof(Pawn_HealthTracker),

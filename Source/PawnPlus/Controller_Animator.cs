@@ -2,7 +2,7 @@
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public class Controller_Animator : Mod
     {

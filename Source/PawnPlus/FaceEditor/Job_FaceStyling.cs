@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using FacialStuff.Harmony;
+using PawnPlus.Harmony;
 using Verse;
 using Verse.AI;
 
-namespace FacialStuff.FaceEditor
+namespace PawnPlus.FaceEditor
 {
     // ReSharper disable once UnusedMember.Global
     public class Job_FaceStyling : JobDriver

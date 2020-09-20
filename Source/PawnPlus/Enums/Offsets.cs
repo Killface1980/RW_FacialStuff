@@ -3,7 +3,7 @@
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
     public static class Offsets
     {

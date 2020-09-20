@@ -8,15 +8,15 @@ using RimWorld;
 using HarmonyLib;
 using Verse;
 using Verse.Sound;
-using FacialStuff.Genetics;
-using FacialStuff.FaceEditor;
-using FacialStuff.AnimatorWindows;
-using FacialStuff.Utilities;
-using FacialStuff.GraphicsFS;
-using FacialStuff.Defs;
-using FacialStuff.Tweener;
+using PawnPlus.Genetics;
+using PawnPlus.FaceEditor;
+using PawnPlus.AnimatorWindows;
+using PawnPlus.Utilities;
+using PawnPlus.Graphics;
+using PawnPlus.Defs;
+using PawnPlus.Tweener;
 
-namespace FacialStuff.Harmony
+namespace PawnPlus.Harmony
 {
     [StaticConstructorOnStartup]
     public static class HarmonyPatchesFS

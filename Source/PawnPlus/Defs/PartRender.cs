@@ -1,9 +1,9 @@
-﻿using FacialStuff.Defs;
+﻿using PawnPlus.Defs;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
-namespace FacialStuff
+namespace PawnPlus
 {
 	public class PartRender
 	{

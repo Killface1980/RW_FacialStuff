@@ -23,9 +23,9 @@
  */
 
 using System.Diagnostics.CodeAnalysis;
-using FacialStuff.FaceEditor.UI.Util;
+using PawnPlus.FaceEditor.UI.Util;
 
-namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
+namespace PawnPlus.FaceEditor.UI.DTO.SelectionWidgetDTOs
 {
     [SuppressMessage("ReSharper", "StyleCop.SA1215")]
     [SuppressMessage("ReSharper", "StyleCop.SA1401")]

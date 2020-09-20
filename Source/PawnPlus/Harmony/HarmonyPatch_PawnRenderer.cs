@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using FacialStuff.AnimatorWindows;
-using FacialStuff.GraphicsFS;
+using PawnPlus.AnimatorWindows;
+using PawnPlus.Graphics;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using static FacialStuff.Offsets;
+using static PawnPlus.Offsets;
 
-namespace FacialStuff.Harmony
+namespace PawnPlus.Harmony
 {    
     [HarmonyPatch(
         typeof(PawnRenderer),

@@ -10,7 +10,7 @@
 
 using RimWorld;
 
-namespace FacialStuff.DefOfs
+namespace PawnPlus.DefOfs
 {
     [DefOf]
     public static class WalkCycleDefOf

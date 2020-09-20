@@ -28,7 +28,7 @@ using System.IO;
 using System.Linq;
 using Verse;
 
-namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
+namespace PawnPlus.FaceEditor.UI.DTO.SelectionWidgetDTOs
 {
     public class HeadTypeSelectionDto : ASelectionWidgetDto
     {
