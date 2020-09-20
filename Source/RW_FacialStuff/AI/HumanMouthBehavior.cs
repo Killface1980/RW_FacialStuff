@@ -25,13 +25,13 @@ namespace FacialStuff.AI
 		
 		public void InitializeTextureIndex(ReadOnlyCollection<string> textureNames)
 		{
-			_extremeTexIdx = textureNames.IndexOf("Extreme");
-			_majorTexIdx = textureNames.IndexOf("Major");
-			_minorTexIdx = textureNames.IndexOf("Minor");
-			_normalTexIdx = textureNames.IndexOf("Normal");
-			_happyTexIdx = textureNames.IndexOf("Happy");
-			_cryingTexIdx = textureNames.IndexOf("Crying");
-			_deadTexIdx = textureNames.IndexOf("Dead");
+			_extremeTexIdx = textureNames.IndexOf("HumanM1Extreme");
+			_majorTexIdx = textureNames.IndexOf("HumanM1Major");
+			_minorTexIdx = textureNames.IndexOf("HumanM1Minor");
+			_normalTexIdx = textureNames.IndexOf("HumanM1Normal");
+			_happyTexIdx = textureNames.IndexOf("HumanM1Happy");
+			_cryingTexIdx = textureNames.IndexOf("HumanM1Crying");
+			_deadTexIdx = textureNames.IndexOf("HumanM1Dead");
 			if(_deadTexIdx < 0)
 			{
 				_deadTexIdx = _minorTexIdx;
@@ -57,12 +57,6 @@ namespace FacialStuff.AI
 
 		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, IMouthBehavior.Params mouthParams)
 		{
-			if(headRot == Rot4.North)
-			{
-				mouthParams.render = false;
-				return;
-			}
-			mouthParams.render = true;
 			mouthParams.mouthTextureIdx = _curMouthTextureIdx;
 			if(Find.TickManager.TicksGame >= _ticksSinceLastUpdate + 90)
 			{
@@ -105,9 +99,8 @@ namespace FacialStuff.AI
 			}
 		}
 		
-		public int GetTextureIndexForPortrait(out bool mirror)
+		public int GetTextureIndexForPortrait()
 		{
-			mirror = false;
 			return _normalTexIdx;
 		}
 

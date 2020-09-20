@@ -4,71 +4,83 @@
 		<defName>FSHeadRenderMaleAveragePointy</defName>
 		<headTexture>Things/Pawn/Humanlike/Heads/Male/Male_Average_Pointy</headTexture>
 		<eyeRenderDef>FSHumanEyeRenderMaleAverage</eyeRenderDef>
+		<mouthRenderDef>FSHumanMaleA</mouthRenderDef>
 	</FacialStuff.Defs.HeadRenderDef>
 	
 	<FacialStuff.Defs.HeadRenderDef>
 		<defName>FSHeadRenderMaleAverageNormal</defName>
 		<headTexture>Things/Pawn/Humanlike/Heads/Male/Male_Average_Normal</headTexture>
 		<eyeRenderDef>FSHumanEyeRenderMaleAverage</eyeRenderDef>
+		<mouthRenderDef>FSHumanMaleA</mouthRenderDef>
 	</FacialStuff.Defs.HeadRenderDef>
 	
 	<FacialStuff.Defs.HeadRenderDef>
 		<defName>FSHeadRenderMaleAverageWide</defName>
 		<headTexture>Things/Pawn/Humanlike/Heads/Male/Male_Average_Wide</headTexture>
 		<eyeRenderDef>FSHumanEyeRenderMaleAverage</eyeRenderDef>
+		<mouthRenderDef>FSHumanMaleA</mouthRenderDef>
 	</FacialStuff.Defs.HeadRenderDef>
 	
 	<FacialStuff.Defs.HeadRenderDef>
 		<defName>FSHeadRenderMaleNarrowPointy</defName>
 		<headTexture>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Pointy</headTexture>
 		<eyeRenderDef>FSHumanEyeRenderNarrow</eyeRenderDef>
+		<mouthRenderDef>FSHumanN</mouthRenderDef>
 	</FacialStuff.Defs.HeadRenderDef>
 	
 	<FacialStuff.Defs.HeadRenderDef>
 		<defName>FSHeadRenderMaleNarrowNormal</defName>
 		<headTexture>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Normal</headTexture>
 		<eyeRenderDef>FSHumanEyeRenderNarrow</eyeRenderDef>
+		<mouthRenderDef>FSHumanN</mouthRenderDef>
 	</FacialStuff.Defs.HeadRenderDef>
 	
 	<FacialStuff.Defs.HeadRenderDef>
 		<defName>FSHeadRenderMaleNarrowWide</defName>
 		<headTexture>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Wide</headTexture>
 		<eyeRenderDef>FSHumanEyeRenderNarrow</eyeRenderDef>
+		<mouthRenderDef>FSHumanN</mouthRenderDef>
 	</FacialStuff.Defs.HeadRenderDef>
 	
 	<FacialStuff.Defs.HeadRenderDef>
 		<defName>FSHeadRenderFemaleAveragePointy</defName>
 		<headTexture>Things/Pawn/Humanlike/Heads/Female/Female_Average_Pointy</headTexture>
 		<eyeRenderDef>FSHumanEyeRenderFemaleAverage</eyeRenderDef>
+		<mouthRenderDef>FSHumanFemaleA_NP</mouthRenderDef>
 	</FacialStuff.Defs.HeadRenderDef>
 	
 	<FacialStuff.Defs.HeadRenderDef>
 		<defName>FSHeadRenderFemaleAverageNormal</defName>
 		<headTexture>Things/Pawn/Humanlike/Heads/Female/Female_Average_Normal</headTexture>
 		<eyeRenderDef>FSHumanEyeRenderFemaleAverage</eyeRenderDef>
+		<mouthRenderDef>FSHumanFemaleA_NP</mouthRenderDef>
 	</FacialStuff.Defs.HeadRenderDef>
 	
 	<FacialStuff.Defs.HeadRenderDef>
 		<defName>FSHeadRenderFemaleAverageWide</defName>
 		<headTexture>Things/Pawn/Humanlike/Heads/Female/Female_Average_Wide</headTexture>
 		<eyeRenderDef>FSHumanEyeRenderFemaleAverage</eyeRenderDef>
+		<mouthRenderDef>FSHumanFemaleA_W</mouthRenderDef>
 	</FacialStuff.Defs.HeadRenderDef>
 	
 	<FacialStuff.Defs.HeadRenderDef>
 		<defName>FSHeadRenderFemaleNarrowPointy</defName>
 		<headTexture>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Pointy</headTexture>
 		<eyeRenderDef>FSHumanEyeRenderNarrow</eyeRenderDef>
+		<mouthRenderDef>FSHumanN</mouthRenderDef>
 	</FacialStuff.Defs.HeadRenderDef>
 	
 	<FacialStuff.Defs.HeadRenderDef>
 		<defName>FSHeadRenderFemaleNarrowNormal</defName>
 		<headTexture>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Normal</headTexture>
 		<eyeRenderDef>FSHumanEyeRenderNarrow</eyeRenderDef>
+		<mouthRenderDef>FSHumanN</mouthRenderDef>
 	</FacialStuff.Defs.HeadRenderDef>
 	
 	<FacialStuff.Defs.HeadRenderDef>
 		<defName>FSHeadRenderFemaleNarrowWide</defName>
 		<headTexture>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Wide</headTexture>
 		<eyeRenderDef>FSHumanEyeRenderNarrow</eyeRenderDef>
+		<mouthRenderDef>FSHumanN</mouthRenderDef>
 	</FacialStuff.Defs.HeadRenderDef>
 </Defs>

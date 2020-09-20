@@ -11,4 +11,22 @@
 		<dimension>(0.1875, 0.1875)</dimension>
 		<mirror>true</mirror>
 	</FacialStuff.Defs.MeshDef>
+	
+	<FacialStuff.Defs.MeshDef>
+		<defName>FSMouthAverage</defName>
+		<dimension>(0.1875, 0.1875)</dimension>
+		<mirror>false</mirror>
+	</FacialStuff.Defs.MeshDef>
+	
+	<FacialStuff.Defs.MeshDef>
+		<defName>FSMouthAverage_m</defName>
+		<dimension>(0.1875, 0.1875)</dimension>
+		<mirror>true</mirror>
+	</FacialStuff.Defs.MeshDef>
+	
+	<FacialStuff.Defs.MeshDef>
+		<defName>FSMouthNarrow</defName>
+		<dimension>(0.15, 0.1875)</dimension>
+		<mirror>false</mirror>
+	</FacialStuff.Defs.MeshDef>
 </Defs>

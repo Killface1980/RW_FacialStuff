@@ -16,8 +16,6 @@ namespace FacialStuff.Defs
 
 		public string texBasePath;
 		
-		public string texSetName;
-
 		public List<string> texNames = new List<string>();
 
 		public string defaultMouth;

@@ -7,15 +7,14 @@
 			<li>Human</li>
 		</allowedRaceThingDefs>
 		<texBasePath>Things/Pawn/Humanlike/Mouth/</texBasePath>
-		<texSetName>AnyGender</texSetName>
 		<!-- The list of texture names that can be used by mouthBehavior in HumanPatch.xml -->
 		<texNames>
-			<li>Extreme</li>
-			<li>Major</li>
-			<li>Minor</li>
-			<li>Normal</li>
-			<li>Happy</li>
-			<li>Crying</li>
+			<li>HumanM1Extreme</li>
+			<li>HumanM1Major</li>
+			<li>HumanM1Minor</li>
+			<li>HumanM1Normal</li>
+			<li>HumanM1Happy</li>
+			<li>HumanM1Crying</li>
 		</texNames>
 		<!-- 
 		If none of mouthBehaviors (see HumanPatch.xml) incorporate the current mood level and 

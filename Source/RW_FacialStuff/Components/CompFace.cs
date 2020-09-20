@@ -22,6 +22,7 @@ namespace FacialStuff
         private Faction _originFactionInt;
         private FaceData _faceData;
         private RenderParam[,] _eyeRenderParams;
+        private RenderParam[] _mouthRenderParams;
         private Rot4 _cachedHeadFacing;
         private IMouthBehavior.Params _cachedMouthParam = new IMouthBehavior.Params();
         private List<IEyeBehavior.Result> _cachedEyeParam;
@@ -287,40 +288,30 @@ namespace FacialStuff
         }
 
         public void DrawMouth(Vector3 drawPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
-		{            
-            if(!portrait && (!_cachedMouthParam.render || _cachedMouthParam.mouthTextureIdx < 0))
+		{
+            if(PawnFaceGraphic == null || _mouthRenderParams == null || !_mouthRenderParams[headFacing.AsInt].render)
 			{
                 return;
 			}
-            bool portraitMirror = false;
-            int mouthTextureIdx = portrait ? 
-                MouthBehavior.GetTextureIndexForPortrait(out portraitMirror) : 
+            Mesh mouthMesh = _mouthRenderParams[headFacing.AsInt].mesh;
+            int mouthTextureIdx = portrait ?
+                MouthBehavior.GetTextureIndexForPortrait() :
                 _cachedMouthParam.mouthTextureIdx;
-            bool mirror = portrait ? portraitMirror : _cachedMouthParam.mirror;
             Material mouthMat = PawnFaceGraphic.MouthMatAt(headFacing, mouthTextureIdx);
-            if(mouthMat == null)
+            if(mouthMat != null)
             {
-                return;
+                Vector3 offset = new Vector3(
+                    _mouthRenderParams[headFacing.AsInt].offset.x,
+                    0,
+                    _mouthRenderParams[headFacing.AsInt].offset.y);
+                offset = headQuat * offset;
+                GenDraw.DrawMeshNowOrLater(
+                    mouthMesh,
+                    drawPos + offset,
+                    headQuat,
+                    mouthMat,
+                    portrait);
             }
-            Mesh meshMouth = MeshPoolFS.GetFaceMesh(PawnCrownType, headFacing, mirror);
-            Vector3 mouthOffset = MeshPoolFS.mouthOffsetsHeadType[(int)FullHeadType];
-            switch(headFacing.AsInt)
-            {
-                case 1:
-                    mouthOffset = new Vector3(mouthOffset.x, 0f, mouthOffset.y);
-                    break;
-                case 2:
-                    mouthOffset = new Vector3(0, 0f, mouthOffset.y);
-                    break;
-                case 3:
-                    mouthOffset = new Vector3(-mouthOffset.x, 0f, mouthOffset.y);
-                    break;
-                default:
-                    mouthOffset = Vector3.zero;
-                    break;
-            }
-            drawPos += headQuat * mouthOffset;
-            GenDraw.DrawMeshNowOrLater(meshMouth, drawPos, headQuat, mouthMat, portrait);
         }
 
         public void DrawBeardAndTache(PawnGraphicSet graphicSet, Vector3 beardLoc, Vector3 tacheLoc, Rot4 headFacing, Quaternion headQuat, bool portrait)
@@ -380,7 +371,7 @@ namespace FacialStuff
             {
                 FaceData = new FaceData(this, OriginFaction?.def);
             }
-            HeadRenderDef.GetCachedHeadRenderParams(Pawn.story.HeadGraphicPath, out _eyeRenderParams);
+            HeadRenderDef.GetCachedHeadRenderParams(Pawn.story.HeadGraphicPath, out _eyeRenderParams, out _mouthRenderParams);
             
             MouthBehavior.InitializeTextureIndex(FaceData.MouthSetDef.texNames.AsReadOnly());
             _cachedEyeParam = new List<IEyeBehavior.Result>(EyeBehavior.NumEyes);

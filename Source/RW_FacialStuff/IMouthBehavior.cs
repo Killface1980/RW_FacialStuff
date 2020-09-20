@@ -8,15 +8,11 @@ namespace FacialStuff
 	{
 		public class Params
 		{
-			public bool render;
 			public int mouthTextureIdx;
-			public bool mirror;
 
 			public void Reset()
 			{
-				render = false;
 				mouthTextureIdx = -1;
-				mirror = false;
 			}
 		}
 
@@ -24,6 +20,6 @@ namespace FacialStuff
 
 		public void Update(Pawn pawn, Rot4 headRot, PawnState pawnState, Params mouthParams);
 
-		public int GetTextureIndexForPortrait(out bool mirror);
+		public int GetTextureIndexForPortrait();
 	}
 }

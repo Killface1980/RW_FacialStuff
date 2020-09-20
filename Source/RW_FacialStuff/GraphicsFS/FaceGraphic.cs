@@ -14,7 +14,7 @@ namespace FacialStuff.GraphicsFS
 		public Graphic BrowGraphic;
 		private Graphic_FaceMirror[,] _eyeGraphics;
 		private Graphic_FaceMirror[,] _eyeActionGraphics;
-		private List<Graphic_Multi> _mouthGraphics;
+		private List<Graphic_FaceMirror> _mouthGraphics;
 		public Graphic_Multi JawGraphic;
 		public Graphic_Multi MainBeardGraphic;
 		public Graphic_Multi MoustacheGraphic;
@@ -51,17 +51,17 @@ namespace FacialStuff.GraphicsFS
 			if(compFace.Props.hasMouth)
 			{
 				Color color = Color.white;
-				_mouthGraphics = new List<Graphic_Multi>(_pawnFace.MouthSetDef.texNames.Count);
+				_mouthGraphics = new List<Graphic_FaceMirror>(_pawnFace.MouthSetDef.texNames.Count);
 				for(int i = 0; i < _pawnFace.MouthSetDef.texNames.Count; ++i)
 				{
 					_mouthGraphics.Add(
-						GraphicDatabase.Get<Graphic_Multi>(
-							_pawnFace.MouthSetDef.texBasePath +
-								_pawnFace.MouthSetDef.texSetName + "_" +
-								_pawnFace.MouthSetDef.texNames[i],
-							ShaderDatabase.CutoutSkin,
+						GraphicDatabase.Get<Graphic_FaceMirror>(
+							Path.Combine(
+								_pawnFace.MouthSetDef.texBasePath,
+								_pawnFace.MouthSetDef.texNames[i]),
+							Shaders.FacePart,
 							Vector2.one,
-							color) as Graphic_Multi);
+							color) as Graphic_FaceMirror);
 				}
 			}
 		}

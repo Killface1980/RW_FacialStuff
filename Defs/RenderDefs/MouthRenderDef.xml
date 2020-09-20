@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<FacialStuff.Defs.MouthRenderDef>
+		<defName>FSHumanMaleA</defName>
+		<part>
+			<perRotation>
+				<!-- 
+				If rotation is missing in this list, the part isn't rendered for that rotation 
+				(ex. mouth when facing north) 
+				-->
+				<li>
+					<!-- 
+					Indicates what rotation the following properties are for. If there are duplicate rotation in this list, 
+					whatever comes last in the list will be used 
+					-->
+					<rotation>South</rotation>
+					<meshDef>FSMouthAverage</meshDef>
+					<offset>(0, -0.1875)</offset>
+				</li>
+				<li>
+					<rotation>East</rotation>
+					<meshDef>FSMouthAverage</meshDef>
+					<offset>(0.1992, -0.1875)</offset>
+				</li>
+				<li>
+					<rotation>West</rotation>
+					<meshDef>FSMouthAverage_m</meshDef>
+					<offset>(-0.1992, -0.1875)</offset>
+				</li>
+			</perRotation>
+		</part>
+	</FacialStuff.Defs.MouthRenderDef>
+	
+	<FacialStuff.Defs.MouthRenderDef>
+		<defName>FSHumanN</defName>
+		<part>
+			<perRotation>
+				<li>
+					<rotation>South</rotation>
+					<meshDef>FSMouthNarrow</meshDef>
+					<offset>(0, -0.1875)</offset>
+				</li>
+				<li>
+					<rotation>East</rotation>
+					<meshDef>FSMouthAverage</meshDef>
+					<offset>(0.1054, -0.1875)</offset>
+				</li>
+				<li>
+					<rotation>West</rotation>
+					<meshDef>FSMouthAverage_m</meshDef>
+					<offset>(-0.1054, -0.1875)</offset>
+				</li>
+			</perRotation>
+		</part>
+	</FacialStuff.Defs.MouthRenderDef>
+
+	<FacialStuff.Defs.MouthRenderDef>
+		<defName>FSHumanFemaleA_W</defName>
+		<part>
+			<perRotation>
+				<li>
+					<rotation>South</rotation>
+					<meshDef>FSMouthAverage</meshDef>
+					<offset>(0, -0.1875)</offset>
+				</li>
+				<li>
+					<rotation>East</rotation>
+					<meshDef>FSMouthAverage</meshDef>
+					<offset>(0.1699, -0.1875)</offset>
+				</li>
+				<li>
+					<rotation>West</rotation>
+					<meshDef>FSMouthAverage_m</meshDef>
+					<offset>(-0.1699, -0.1875)</offset>
+				</li>
+			</perRotation>
+		</part>
+	</FacialStuff.Defs.MouthRenderDef>
+
+	<FacialStuff.Defs.MouthRenderDef>
+		<defName>FSHumanFemaleA_NP</defName>
+		<part>
+			<perRotation>
+				<li>
+					<rotation>South</rotation>
+					<meshDef>FSMouthAverage</meshDef>
+					<offset>(0, -0.1875)</offset>
+				</li>
+				<li>
+					<rotation>East</rotation>
+					<meshDef>FSMouthAverage</meshDef>
+					<offset>(0.1465, -0.1875)</offset>
+				</li>
+				<li>
+					<rotation>West</rotation>
+					<meshDef>FSMouthAverage_m</meshDef>
+					<offset>(-0.1465, -0.1875)</offset>
+				</li>
+			</perRotation>
+		</part>
+	</FacialStuff.Defs.MouthRenderDef>
+</Defs>

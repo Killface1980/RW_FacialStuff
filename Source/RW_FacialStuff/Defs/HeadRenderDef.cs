@@ -8,10 +8,12 @@ namespace FacialStuff.Defs
 	{
 		public string headTexture;
 		public EyeRenderDef eyeRenderDef;
+		public MouthRenderDef mouthRenderDef;
 
         public static bool GetCachedHeadRenderParams(
             string headTexturePath, 
-            out RenderParam[,] eyeRenderParam)
+            out RenderParam[,] eyeRenderParam,
+            out RenderParam[] mouthRenderParam)
 		{
             if(headTextureMapping.TryGetValue(headTexturePath, out HeadRenderDef headRenderDef))
 			{
@@ -21,9 +23,11 @@ namespace FacialStuff.Defs
                     headRenderDef._cacheBuilt = true;
                 }
                 eyeRenderParam = headRenderDef._cachedEyeRenderParam;
+                mouthRenderParam = headRenderDef._cachedMouthRenderParam;
                 return true;
             }
             eyeRenderParam = null;
+            mouthRenderParam = null;
             return false;
         }
 
@@ -40,39 +44,57 @@ namespace FacialStuff.Defs
             var headRenderDefList = DefDatabase<HeadRenderDef>.AllDefsListForReading;
             foreach(var headRenderDef in headRenderDefList)
             {
-                int maxIndex = 0;
+                // Build RenderInfo cache for eyes
+                int maxEyeIndex = 0;
                 foreach(var partRender in headRenderDef.eyeRenderDef.parts)
                 {
-                    maxIndex = Math.Max(partRender.multiPartIndex, maxIndex);
+                    maxEyeIndex = Math.Max(partRender.multiPartIndex, maxEyeIndex);
                 }
-                headRenderDef._cachedEyeRenderParam = new RenderParam[maxIndex + 1, 4];
-                for(int i = 0; i <= maxIndex; ++i)
+                headRenderDef._cachedEyeRenderParam = new RenderParam[maxEyeIndex + 1, 4];
+                for(int i = 0; i <= maxEyeIndex; ++i)
                 {
-                    PartRender partRender = headRenderDef.eyeRenderDef?.parts.FindLast(x => x.multiPartIndex == i);
+                    RenderParam[] renderParams = 
+                        GetRenderParamForPart(headRenderDef.eyeRenderDef?.parts.FindLast(x => x.multiPartIndex == i));
                     for(int j = 0; j < 4; ++j)
-                    {
-                        Rot4 rotation = new Rot4(j);
-                        RenderParam renderInfo = new RenderParam();
-                        int partRenderIdx = 0;
-                        if(partRender != null &&
-                            // If partRender isn't null, check partRenderIdx >= 0 after calling FindLastIndex()
-                            (partRenderIdx = partRender.perRotation.FindLastIndex(x => x.rotation == rotation)) >= 0)
-                        {
-                            var perRotation = partRender.perRotation[partRenderIdx];
-                            renderInfo.render = true;
-                            renderInfo.offset = perRotation.offset;
-                            renderInfo.mesh = perRotation.meshDef.mirror ?
-                                MeshPool.GridPlaneFlip(perRotation.meshDef.dimension) :
-                                MeshPool.GridPlane(perRotation.meshDef.dimension);
-                        } else
-                        {
-                            // If there is no render info for <multiPartIndex> and direction, do not render.
-                            renderInfo.render = false;
-                        }
-                        headRenderDef._cachedEyeRenderParam[i, j] = renderInfo;
+					{
+                        headRenderDef._cachedEyeRenderParam[i, j] = renderParams[j];
                     }
                 }
+                // Build RenderInfo cache for mouth
+                headRenderDef._cachedMouthRenderParam = GetRenderParamForPart(headRenderDef.mouthRenderDef?.part);
             }
+        }
+
+        private RenderParam[] GetRenderParamForPart(PartRender partRender)
+		{
+            if(partRender == null)
+			{
+                return null;
+			}
+            RenderParam[] renderParams = new RenderParam[4];
+            for(int i = 0; i < 4; ++i)
+            {
+                Rot4 rotation = new Rot4(i);
+                RenderParam renderInfo = new RenderParam();
+                int partRenderIdx = 0;
+                if(partRender != null &&
+                    // If partRender isn't null, check partRenderIdx >= 0 after calling FindLastIndex()
+                    (partRenderIdx = partRender.perRotation.FindLastIndex(x => x.rotation == rotation)) >= 0)
+                {
+                    var perRotation = partRender.perRotation[partRenderIdx];
+                    renderInfo.render = true;
+                    renderInfo.offset = perRotation.offset;
+                    renderInfo.mesh = perRotation.meshDef.mirror ?
+                        MeshPool.GridPlaneFlip(perRotation.meshDef.dimension) :
+                        MeshPool.GridPlane(perRotation.meshDef.dimension);
+                } else
+                {
+                    // If there is no render info for <multiPartIndex> and direction, do not render.
+                    renderInfo.render = false;
+                }
+                renderParams[i] = renderInfo;
+            }
+            return renderParams;
         }
 
         [Unsaved(false)]
@@ -83,6 +105,10 @@ namespace FacialStuff.Defs
         [Unsaved(false)]
         private RenderParam[,] _cachedEyeRenderParam;
 		
+		// Index corresponds to the rotation in the same manner as _cachedEyeRenderParam.
+		[Unsaved(false)]
+        private RenderParam[] _cachedMouthRenderParam;
+
         // This dictionary is populated in FacialStuffModBase.DefsLoaded()
         [Unsaved(false)]
         public static Dictionary<string, HeadRenderDef> headTextureMapping = new Dictionary<string, HeadRenderDef>();
