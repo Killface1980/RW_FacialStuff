@@ -12,9 +12,9 @@ namespace PawnPlus.Graphics
 	public class FaceGraphic
 	{
 		public Graphic BrowGraphic;
-		private Graphic_FaceMirror[,] _eyeGraphics;
-		private Graphic_FaceMirror[,] _eyeActionGraphics;
-		private List<Graphic_FaceMirror> _mouthGraphics;
+		private Graphic_FacePart[,] _eyeGraphics;
+		private Graphic_FacePart[,] _eyeActionGraphics;
+		private List<Graphic_FacePart> _mouthGraphics;
 		public Graphic_Multi JawGraphic;
 		public Graphic_Multi MainBeardGraphic;
 		public Graphic_Multi MoustacheGraphic;
@@ -29,8 +29,8 @@ namespace PawnPlus.Graphics
 		{
 			_compFace = compFace;
 			_pawn = compFace.Pawn;
-			_eyeGraphics = new Graphic_FaceMirror[eyeCount, Enum.GetNames(typeof(BodyPartLevel)).Length];
-			_eyeActionGraphics = new Graphic_FaceMirror[eyeCount, Enum.GetNames(typeof(EyeAction)).Length];
+			_eyeGraphics = new Graphic_FacePart[eyeCount, Enum.GetNames(typeof(BodyPartLevel)).Length];
+			_eyeActionGraphics = new Graphic_FacePart[eyeCount, Enum.GetNames(typeof(EyeAction)).Length];
 			_pawnFace = compFace.FaceData;
 			if(_pawnFace != null)
 			{
@@ -51,17 +51,17 @@ namespace PawnPlus.Graphics
 			if(compFace.Props.hasMouth)
 			{
 				Color color = Color.white;
-				_mouthGraphics = new List<Graphic_FaceMirror>(_pawnFace.MouthSetDef.texNames.Count);
+				_mouthGraphics = new List<Graphic_FacePart>(_pawnFace.MouthSetDef.texNames.Count);
 				for(int i = 0; i < _pawnFace.MouthSetDef.texNames.Count; ++i)
 				{
 					_mouthGraphics.Add(
-						GraphicDatabase.Get<Graphic_FaceMirror>(
+						GraphicDatabase.Get<Graphic_FacePart>(
 							Path.Combine(
 								_pawnFace.MouthSetDef.texBasePath,
 								_pawnFace.MouthSetDef.texNames[i]),
 							Shaders.FacePart,
 							Vector2.one,
-							color) as Graphic_FaceMirror);
+							color) as Graphic_FacePart);
 				}
 			}
 		}
@@ -199,11 +199,11 @@ namespace PawnPlus.Graphics
 			for(int i = 0; i < _compFace.EyeBehavior.NumEyes; ++i)
 			{
 				string texPath = EyeTexturePath(_pawnFace.EyeDef);
-				_eyeGraphics[i, (int)BodyPartLevel.Natural] = GraphicDatabase.Get<Graphic_FaceMirror>(
+				_eyeGraphics[i, (int)BodyPartLevel.Natural] = GraphicDatabase.Get<Graphic_FacePart>(
 					texPath,
 					Shaders.FacePart,
 					Vector2.one,
-					eyeColor) as Graphic_FaceMirror;
+					eyeColor) as Graphic_FacePart;
 			}
 			// Closed eye graphics
 			for(int i = 0; i < _compFace.EyeBehavior.NumEyes; ++i)
@@ -211,11 +211,11 @@ namespace PawnPlus.Graphics
 				if(_pawnFace.EyeDef.closedEyeDef != null)
 				{
 					string texPath = EyeTexturePath(_pawnFace.EyeDef.closedEyeDef);
-					_eyeActionGraphics[i, (int)EyeAction.Closed - 1] = GraphicDatabase.Get<Graphic_FaceMirror>(
+					_eyeActionGraphics[i, (int)EyeAction.Closed - 1] = GraphicDatabase.Get<Graphic_FacePart>(
 						texPath,
 						Shaders.FacePart,
 						Vector2.one,
-						eyeColor) as Graphic_FaceMirror;
+						eyeColor) as Graphic_FacePart;
 				}
 			}
 			// In pain eye graphics
@@ -224,11 +224,11 @@ namespace PawnPlus.Graphics
 				if(_pawnFace.EyeDef.closedEyeDef != null)
 				{
 					string texPath = EyeTexturePath(_pawnFace.EyeDef.inPainEyeDef);
-					_eyeActionGraphics[i, (int)EyeAction.Pain - 1] = GraphicDatabase.Get<Graphic_FaceMirror>(
+					_eyeActionGraphics[i, (int)EyeAction.Pain - 1] = GraphicDatabase.Get<Graphic_FacePart>(
 						texPath,
 						Shaders.FacePart,
 						Vector2.one,
-						eyeColor) as Graphic_FaceMirror;
+						eyeColor) as Graphic_FacePart;
 				}
 			}
 			// Missing eye part graphics
@@ -237,11 +237,11 @@ namespace PawnPlus.Graphics
 				if(_pawnFace.EyeDef.missingEyeDef != null)
 				{
 					string texPath = EyeTexturePath(_pawnFace.EyeDef.missingEyeDef);
-					_eyeGraphics[i, (int)BodyPartLevel.Removed] = GraphicDatabase.Get<Graphic_FaceMirror>(
+					_eyeGraphics[i, (int)BodyPartLevel.Removed] = GraphicDatabase.Get<Graphic_FacePart>(
 						texPath,
 						Shaders.FacePart,
 						Vector2.one,
-						eyeColor) as Graphic_FaceMirror;
+						eyeColor) as Graphic_FacePart;
 				}
 			}
 		}

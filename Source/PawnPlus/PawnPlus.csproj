@@ -172,7 +172,7 @@
     <Compile Include="Graphics\FaceGraphic.cs" />
     <Compile Include="Graphics\FaceMaterial.cs" />
     <Compile Include="Graphics\FaceTextures.cs" />
-    <Compile Include="Graphics\Graphic_FaceMirror.cs" />
+    <Compile Include="Graphics\Graphic_FacePart.cs" />
     <Compile Include="Graphics\Graphic_Hair.cs" />
     <Compile Include="Graphics\MeshPoolFs.cs" />
     <Compile Include="Graphics\PawnBodyGraphic.cs" />

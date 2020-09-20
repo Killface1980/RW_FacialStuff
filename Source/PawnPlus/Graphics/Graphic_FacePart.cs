@@ -6,7 +6,7 @@ using Verse;
 
 namespace PawnPlus.Graphics
 {
-    public class Graphic_FaceMirror : Graphic
+    public class Graphic_FacePart : Graphic
     {
         private readonly Material[] _mats = new Material[2];
 

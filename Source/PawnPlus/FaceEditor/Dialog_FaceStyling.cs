@@ -1299,19 +1299,19 @@ namespace PawnPlus.FaceEditor
             return graphic;
         }
 
-        private Graphic_FaceMirror LeftEyeGraphic(EyeDef def)
+        private Graphic_FacePart LeftEyeGraphic(EyeDef def)
         {
-            Graphic_FaceMirror __result;
+            Graphic_FacePart __result;
             if (def != null)
             {
                 string path = CompFace.PawnFaceGraphic.EyeTexturePath(def);
 
-                __result = GraphicDatabase.Get<Graphic_FaceMirror>(
+                __result = GraphicDatabase.Get<Graphic_FacePart>(
                     path,
                     ShaderDatabase.CutoutComplex,
                     new Vector2(38f, 38f),
                     Color.white,
-                    Color.white) as Graphic_FaceMirror;
+                    Color.white) as Graphic_FacePart;
             }
             else
             {
@@ -1342,19 +1342,19 @@ namespace PawnPlus.FaceEditor
             return graphic;
         }
 
-        private Graphic_FaceMirror RightEyeGraphic(EyeDef def)
+        private Graphic_FacePart RightEyeGraphic(EyeDef def)
         {
-            Graphic_FaceMirror graphic;
+            Graphic_FacePart graphic;
             if (def != null)
             {
                 string path = CompFace.PawnFaceGraphic.EyeTexturePath(def);
 
-                graphic = GraphicDatabase.Get<Graphic_FaceMirror>(
+                graphic = GraphicDatabase.Get<Graphic_FacePart>(
                     path,
                     ShaderDatabase.CutoutComplex,
                     new Vector2(38f, 38f),
                     Color.white,
-                    Color.white) as Graphic_FaceMirror;
+                    Color.white) as Graphic_FacePart;
             }
             else
             {
