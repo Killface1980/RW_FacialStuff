@@ -99,12 +99,10 @@
     <Compile Include="Components\CompProperties_WeaponExtensions.cs" />
     <Compile Include="Components\CompWeaponExtensions.cs" />
     <Compile Include="Components\GameComponent_FacialStuff.cs" />
-    <Compile Include="Components\Skeletoon\FS_Skeleton.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Controller_Animator.cs" />
     <Compile Include="DefOfs\BeardDefOf.cs" />
     <Compile Include="DefOfs\EarDefOf.cs" />
-    <Compile Include="DefOfs\ExtremityDefOf.cs" />
     <Compile Include="DefOfs\MoustacheDefOf.cs" />
     <Compile Include="DefOfs\WalkCycleDefOf.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />
@@ -116,7 +114,6 @@
     <Compile Include="Defs\Export\PoseCycleDef_Export.cs" />
     <Compile Include="Defs\Export\WalkCycleDef_Export.cs" />
     <Compile Include="Defs\Export\WeaponExtensionDef_Export.cs" />
-    <Compile Include="Defs\ExtremityDef.cs" />
     <Compile Include="Defs\EyeDef.cs" />
     <Compile Include="Defs\EyeRenderDef.cs" />
     <Compile Include="Defs\HeadRenderDef.cs" />
@@ -143,7 +140,6 @@
     <Compile Include="Enums\MaxLayerToShow.cs" />
     <Compile Include="Enums\Offsets.cs" />
     <Compile Include="Enums\PartStatus.cs" />
-    <Compile Include="Enums\Side.cs" />
     <Compile Include="Enums\Tween.cs" />
     <Compile Include="Enums\WalkcycleType.cs" />
     <Compile Include="FaceData.cs" />
@@ -204,11 +200,6 @@
     <Compile Include="WidgetsFS.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Defs\xml\Face\" />
-    <Folder Include="Defs\xml\Generated\BodyAnimDefs\" />
-    <Folder Include="Defs\xml\Generated\WCycles\" />
-    <Folder Include="Defs\xml\Generated\WeaponExtensionDefs\" />
-    <Folder Include="Defs\xml\Hair\" />
     <Folder Include="Languages\English\" />
     <Folder Include="Languages\German\" />
     <Folder Include="Languages\PortugueseBrazilian\" />

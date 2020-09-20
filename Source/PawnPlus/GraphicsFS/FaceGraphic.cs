@@ -105,13 +105,6 @@ namespace FacialStuff.GraphicsFS
 				beardColor) as Graphic_Multi;
 		}
 		
-		public string EarTexPath(Side side, EarDef ear)
-		{
-			string earPath = ear.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Ears/" : ear.texBasePath;
-			string path = earPath + "Ear_" + ear.texName + "_" + _pawn.gender + "_" + side;
-			return path.Replace(@"\", @"/");
-		}
-
 		public string BrowTexPath(BrowDef browDef)
 		{
 			string browPath = browDef.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Brows/" : browDef.texBasePath;
