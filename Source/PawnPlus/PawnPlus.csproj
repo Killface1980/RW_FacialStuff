@@ -102,14 +102,12 @@
     <Compile Include="Controller.cs" />
     <Compile Include="Controller_Animator.cs" />
     <Compile Include="DefOfs\BeardDefOf.cs" />
-    <Compile Include="DefOfs\EarDefOf.cs" />
     <Compile Include="DefOfs\MoustacheDefOf.cs" />
     <Compile Include="DefOfs\WalkCycleDefOf.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />
     <Compile Include="Defs\BeardDef.cs" />
     <Compile Include="Defs\BodyAnimDef.cs" />
     <Compile Include="Defs\BrowDef.cs" />
-    <Compile Include="Defs\EarDef.cs" />
     <Compile Include="Defs\Export\BodyAnimDef_Export.cs" />
     <Compile Include="Defs\Export\PoseCycleDef_Export.cs" />
     <Compile Include="Defs\Export\WalkCycleDef_Export.cs" />
