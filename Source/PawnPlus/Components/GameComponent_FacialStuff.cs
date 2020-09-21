@@ -11,6 +11,7 @@ using Verse;
 using PawnPlus.Graphics;
 using RimWorld.Planet;
 using System;
+using System.Reflection;
 
 namespace PawnPlus
 {
@@ -18,6 +19,8 @@ namespace PawnPlus
     {
         protected UnityEngine.Animator animator;
         
+        private float faceMeshSize;
+
         public bool ShouldRenderFaceDetails { get; private set; }
 
         #region Public Constructors
@@ -39,6 +42,23 @@ namespace PawnPlus
             AnimalPawnCompsBodyDefImport();
             AnimalPawnCompsImportFromAnimationTargetDefs();
             Controller.SetMainButtons();
+
+            // Get head mesh size using reflection. Face mesh size is half of head mesh's.
+            FieldInfo headAvgWidthField = typeof(MeshPool).GetField("HumanlikeHeadAverageWidth", BindingFlags.NonPublic | BindingFlags.Static);
+            if(headAvgWidthField != null)
+			{
+                try
+				{
+                    faceMeshSize = (float)headAvgWidthField.GetValue(null) / 2f;
+                    return;
+                }
+                catch(Exception e)
+				{
+
+				}
+			}
+            Log.Message("Facial Stuff: Couldn't retrieve the value MeshPool.HumanlikeHeadAverageWidth. Using the default value of 0.75 for face part culling.");
+            faceMeshSize = 0.75f;
         }
 
         #endregion Public Constructors
@@ -53,11 +73,9 @@ namespace PawnPlus
             if(WorldRendererUtility.CurrentWorldRenderMode == WorldRenderMode.None && Find.CurrentMap != null)
 			{
                 float meshWidth, meshHeight;
-                // CrownType.Average has slightly larger dimension that CrownType.Narrow, so use it for the calculation.
-                MeshPoolFS.GetFaceMeshDimension(CrownType.Average, out meshWidth, out meshHeight);
                 // Since the camera is orthorgraphic, the location of pawn relative to camera doesn't matter - All face mesh 
                 // will be rendered with the same dimension on screen.
-                Vector3 screenCoord = Find.Camera.WorldToScreenPoint(new Vector3(meshWidth, 0f, meshHeight));
+                Vector3 screenCoord = Find.Camera.WorldToScreenPoint(new Vector3(faceMeshSize, 0f, faceMeshSize));
                 float minPixelDim = Mathf.Min(Mathf.Abs(screenCoord.x), Mathf.Abs(screenCoord.y));
                 ShouldRenderFaceDetails = minPixelDim >= 10;
             }
