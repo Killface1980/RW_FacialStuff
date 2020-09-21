@@ -17,7 +17,7 @@
         <xpath>/Defs/ThingDef[defName = "Dresser"]/comps</xpath>
         <value>
           <li>
-            <compClass>FacialStuff.CompFaceEditor</compClass>
+            <compClass>PawnPlus.CompFaceEditor</compClass>
           </li>
         </value>
       </li>

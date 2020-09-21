@@ -3,7 +3,7 @@
   <BodyAnimDef>
     <thingTarget>Donkey</thingTarget>
     <bodyDrawers>
-      <li Class="FacialStuff.QuadrupedDrawer">
+      <li Class="PawnPlus.QuadrupedDrawer">
       </li>
     </bodyDrawers>
     <handType>Animal</handType>

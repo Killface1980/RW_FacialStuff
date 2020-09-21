@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-	<FacialStuff.Defs.MeshDef>
+	<PawnPlus.Defs.MeshDef>
 		<defName>FSEyeMesh</defName>
 		<dimension>(0.1875, 0.1875)</dimension>
 		<mirror>false</mirror>
-	</FacialStuff.Defs.MeshDef>
+	</PawnPlus.Defs.MeshDef>
 	
-	<FacialStuff.Defs.MeshDef>
+	<PawnPlus.Defs.MeshDef>
 		<defName>FSEyeMesh_mirrored</defName>
 		<dimension>(0.1875, 0.1875)</dimension>
 		<mirror>true</mirror>
-	</FacialStuff.Defs.MeshDef>
+	</PawnPlus.Defs.MeshDef>
 	
-	<FacialStuff.Defs.MeshDef>
+	<PawnPlus.Defs.MeshDef>
 		<defName>FSMouthAverage</defName>
 		<dimension>(0.1875, 0.1875)</dimension>
 		<mirror>false</mirror>
-	</FacialStuff.Defs.MeshDef>
+	</PawnPlus.Defs.MeshDef>
 	
-	<FacialStuff.Defs.MeshDef>
+	<PawnPlus.Defs.MeshDef>
 		<defName>FSMouthAverage_m</defName>
 		<dimension>(0.1875, 0.1875)</dimension>
 		<mirror>true</mirror>
-	</FacialStuff.Defs.MeshDef>
+	</PawnPlus.Defs.MeshDef>
 	
-	<FacialStuff.Defs.MeshDef>
+	<PawnPlus.Defs.MeshDef>
 		<defName>FSMouthNarrow</defName>
 		<dimension>(0.15, 0.1875)</dimension>
 		<mirror>false</mirror>
-	</FacialStuff.Defs.MeshDef>
+	</PawnPlus.Defs.MeshDef>
 </Defs>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-	<FacialStuff.Defs.EyeRenderDef>
+	<PawnPlus.Defs.EyeRenderDef>
 		<!-- Both male and female narrow crown head textures have nearly identical eye offsets -->
 		<defName>FSHumanEyeRenderNarrow</defName>
 		<parts>
@@ -54,9 +54,9 @@
 				</perRotation>
 			</li>
 		</parts>
-	</FacialStuff.Defs.EyeRenderDef>
+	</PawnPlus.Defs.EyeRenderDef>
 	
-	<FacialStuff.Defs.EyeRenderDef>
+	<PawnPlus.Defs.EyeRenderDef>
 		<defName>FSHumanEyeRenderMaleAverage</defName>
 		<parts>
 			<li>
@@ -90,9 +90,9 @@
 				</perRotation>
 			</li>
 		</parts>
-	</FacialStuff.Defs.EyeRenderDef>
+	</PawnPlus.Defs.EyeRenderDef>
 	
-	<FacialStuff.Defs.EyeRenderDef>
+	<PawnPlus.Defs.EyeRenderDef>
 		<defName>FSHumanEyeRenderFemaleAverage</defName>
 		<parts>
 			<li>
@@ -126,5 +126,5 @@
 				</perRotation>
 			</li>
 		</parts>
-	</FacialStuff.Defs.EyeRenderDef>
+	</PawnPlus.Defs.EyeRenderDef>
 </Defs>

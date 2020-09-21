@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-	<FacialStuff.Defs.MouthRenderDef>
+	<PawnPlus.Defs.MouthRenderDef>
 		<defName>FSHumanMaleA</defName>
 		<part>
 			<perRotation>
@@ -29,9 +29,9 @@
 				</li>
 			</perRotation>
 		</part>
-	</FacialStuff.Defs.MouthRenderDef>
+	</PawnPlus.Defs.MouthRenderDef>
 	
-	<FacialStuff.Defs.MouthRenderDef>
+	<PawnPlus.Defs.MouthRenderDef>
 		<defName>FSHumanN</defName>
 		<part>
 			<perRotation>
@@ -52,9 +52,9 @@
 				</li>
 			</perRotation>
 		</part>
-	</FacialStuff.Defs.MouthRenderDef>
+	</PawnPlus.Defs.MouthRenderDef>
 
-	<FacialStuff.Defs.MouthRenderDef>
+	<PawnPlus.Defs.MouthRenderDef>
 		<defName>FSHumanFemaleA_W</defName>
 		<part>
 			<perRotation>
@@ -75,9 +75,9 @@
 				</li>
 			</perRotation>
 		</part>
-	</FacialStuff.Defs.MouthRenderDef>
+	</PawnPlus.Defs.MouthRenderDef>
 
-	<FacialStuff.Defs.MouthRenderDef>
+	<PawnPlus.Defs.MouthRenderDef>
 		<defName>FSHumanFemaleA_NP</defName>
 		<part>
 			<perRotation>
@@ -98,5 +98,5 @@
 				</li>
 			</perRotation>
 		</part>
-	</FacialStuff.Defs.MouthRenderDef>
+	</PawnPlus.Defs.MouthRenderDef>
 </Defs>

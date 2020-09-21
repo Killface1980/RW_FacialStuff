@@ -3,7 +3,7 @@
 
   <JobDef>
     <defName>FaceStyleChanger</defName>
-    <driverClass>FacialStuff.FaceEditor.Job_FaceStyling</driverClass>
+    <driverClass>PawnPlus.FaceEditor.Job_FaceStyling</driverClass>
     <reportString>Going to the styling station.</reportString>
   </JobDef>
 

@@ -31,13 +31,13 @@
         <li Class="PatchOperationAdd">
           <xpath>/Defs/Verse.ThingDef[defName = "Human"]/comps</xpath>
           <value>
-            <li Class = "FacialStuff.CompProperties_Face"/>
+            <li Class = "PawnPlus.CompProperties_Face"/>
           </value>
         </li>
         <li Class="PatchOperationAdd">
           <xpath>/Defs/Verse.ThingDef[defName = "Norbal"]/comps</xpath>
           <value>
-            <li Class = "FacialStuff.CompProperties_Face"/>
+            <li Class = "PawnPlus.CompProperties_Face"/>
           </value>
         </li>
       </operations>

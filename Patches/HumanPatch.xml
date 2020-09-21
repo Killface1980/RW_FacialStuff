@@ -17,17 +17,17 @@
       <li Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName = "Human"]/comps</xpath>
         <value>
-          <li Class = "FacialStuff.CompProperties_BodyAnimator">
+          <li Class = "PawnPlus.CompProperties_BodyAnimator">
             <!--needed for everything with hands-->
             <bipedWithHands>true</bipedWithHands>
             <!--which hand texture?-->
             <handType>Human</handType>
             <!--custom drawers can be used here-->
             <bodyDrawers>
-              <li Class ="FacialStuff.HumanBipedDrawer"/>
+              <li Class ="PawnPlus.HumanBipedDrawer"/>
             </bodyDrawers>
           </li>
-          <li Class = "FacialStuff.CompProperties_Face">
+          <li Class = "PawnPlus.CompProperties_Face">
             <!--if false, vanilla heads are used, otherwise the FS blank texture is used-->
             <needsBlankHumanHead>true</needsBlankHumanHead>
             <!-- off = no mouth-->
@@ -47,7 +47,7 @@
 			that it is associated with. Same goes for other behavior classes. Doing so also allows configurable member 
 			variables like the following.
 			-->
-			<headBehavior Class = "FacialStuff.AI.HumanHeadBehavior">
+			<headBehavior Class = "PawnPlus.AI.HumanHeadBehavior">
 				<!-- The amount of ticks needed for the recipient of social interaction to wait before moving its head -->
 				<socialRecipientDelayTick>30</socialRecipientDelayTick>
 				<!-- How long the social interaction lasts in ticks -->
@@ -56,7 +56,7 @@
 				<headRotationRate>10</headRotationRate>
 			</headBehavior>
 			
-			<eyeBehavior Class = "FacialStuff.AI.HumanEyeBehavior">
+			<eyeBehavior Class = "PawnPlus.AI.HumanEyeBehavior">
 				<blinkCloseTicks>10</blinkCloseTicks>
 				<blinkOpenAverageTicks>120</blinkOpenAverageTicks>
 				<blinkOpenMaxRandOffsetTicks>30</blinkOpenMaxRandOffsetTicks>
@@ -64,9 +64,9 @@
 			
 			<!-- 
 			This determines what mouth texture is displayed under what circumstances 
-			Look at FacialStuff.AI.HumanMouth to see how it is implemented.
+			Look at PawnPlus.AI.HumanMouth to see how it is implemented.
 			-->
-			<mouthBehavior Class = "FacialStuff.AI.HumanMouthBehavior">
+			<mouthBehavior Class = "PawnPlus.AI.HumanMouthBehavior">
 				<!-- Set public member variables if needed -->
 			</mouthBehavior>
           </li>

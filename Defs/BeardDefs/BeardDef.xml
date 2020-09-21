@@ -2,7 +2,7 @@
 
 <Defs>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_Anchor</defName>
     <label>Anchor</label>
     <hairGender>Male</hairGender>
@@ -13,9 +13,9 @@
       <li>Rural</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_Balbo</defName>
     <label>Balbo</label>
     <hairGender>Male</hairGender>
@@ -26,9 +26,9 @@
       <li>Rural</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_ChinCurtain</defName>
     <label>Chin Curtain</label>
     <hairGender>Male</hairGender>
@@ -41,9 +41,9 @@
     </hairTags>
     <drawMouth>true</drawMouth>
     <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_ChinPuff</defName>
     <label>Chin Puff</label>
     <hairGender>MaleUsually</hairGender>
@@ -55,9 +55,9 @@
     </hairTags>
     <drawMouth>true</drawMouth>
     <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_DuckTail</defName>
     <label>Duck Tail</label>
     <hairGender>Male</hairGender>
@@ -69,9 +69,9 @@
       <li>MaleOld</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_ElInsecto</defName>
     <label>El Insecto</label>
     <hairGender>MaleUsually</hairGender>
@@ -83,9 +83,9 @@
     </hairTags>
     <drawMouth>true</drawMouth>
     <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_FranzJoseph</defName>
     <label>Franz Joseph</label>
     <hairGender>MaleUsually</hairGender>
@@ -96,9 +96,9 @@
       <li>Rural</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_FrenchFork</defName>
     <label>French Fork</label>
     <hairGender>Male</hairGender>
@@ -110,9 +110,9 @@
       <li>MaleOld</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_FriendlyMuttonChops</defName>
     <label>Friendly Mutton Chops</label>
     <hairGender>Male</hairGender>
@@ -125,9 +125,9 @@
       <li>MaleOld</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_FullBeard</defName>
     <label>Full Beard</label>
     <hairGender>Male</hairGender>
@@ -140,9 +140,9 @@
       <li>Tribal</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_Garibaldi</defName>
     <label>Garibaldi</label>
     <hairGender>Male</hairGender>
@@ -156,9 +156,9 @@
       <li>MaleOld</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_Goatee</defName>
     <label>Goatee</label>
     <hairGender>Male</hairGender>
@@ -169,9 +169,9 @@
       <li>Rural</li>
     </hairTags>
     <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_Hollywoodian</defName>
     <label>Hollywoodian</label>
     <hairGender>Male</hairGender>
@@ -182,9 +182,9 @@
       <li>Rural</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_Hulihee</defName>
     <label>Hulihee</label>
     <hairGender>MaleUsually</hairGender>
@@ -196,9 +196,9 @@
       <li>MaleOld</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_Imperial</defName>
     <label>Imperial</label>
     <hairGender>MaleUsually</hairGender>
@@ -210,9 +210,9 @@
       <li>MaleOld</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_MuttonChops</defName>
     <label>Mutton Chops</label>
     <hairGender>Male</hairGender>
@@ -225,9 +225,9 @@
       <li>Tribal</li>
     </hairTags>
     <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_NapoleonIIIImperial</defName>
     <label>Napoleon III Imperial</label>
     <hairGender>MaleUsually</hairGender>
@@ -239,9 +239,9 @@
       <li>Punk</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_OldDutch</defName>
     <label>Old Dutch</label>
     <hairGender>Male</hairGender>
@@ -254,9 +254,9 @@
       <li>Tribal</li>
     </hairTags>
     <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_PetiteGoatee</defName>
     <label>Petite Goatee</label>
     <hairGender>Male</hairGender>
@@ -267,9 +267,9 @@
       <li>Rural</li>
     </hairTags>
     <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_SoulPatch</defName>
     <label>Soul Patch</label>
     <hairGender>Male</hairGender>
@@ -281,9 +281,9 @@
     </hairTags>
     <drawMouth>true</drawMouth>
     <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_Souvarov</defName>
     <label>Souvarov</label>
     <hairGender>MaleUsually</hairGender>
@@ -294,9 +294,9 @@
       <li>Rural</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_Stubble</defName>
     <label>Stubble</label>
     <hairGender>MaleUsually</hairGender>
@@ -310,9 +310,9 @@
     </hairTags>
     <drawMouth>true</drawMouth>
     <beardType>None</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_TheKlingon</defName>
     <label>The Klingon</label>
     <hairGender>MaleUsually</hairGender>
@@ -323,9 +323,9 @@
       <li>Tribal</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_TheSparrow</defName>
     <label>The Sparrow</label>
     <hairGender>Male</hairGender>
@@ -335,9 +335,9 @@
       <li>Tribal</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_TheWinnfield</defName>
     <label>The Winnfield</label>
     <hairGender>Male</hairGender>
@@ -348,9 +348,9 @@
       <li>Punk</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_TheZappa</defName>
     <label>The Zappa</label>
     <hairGender>MaleUsually</hairGender>
@@ -361,9 +361,9 @@
       <li>Punk</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_VanDyke</defName>
     <label>Van Dyke</label>
     <hairGender>Male</hairGender>
@@ -374,9 +374,9 @@
       <li>Rural</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_Shaved</defName>
     <label>0Shaved</label>
     <hairGender>MaleUsually</hairGender>
@@ -390,9 +390,9 @@
     </hairTags>
     <drawMouth>true</drawMouth>
     <beardType>None</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_CoolSteiner</defName>
     <label>Cool Steiner</label>
     <hairGender>Male</hairGender>
@@ -406,9 +406,9 @@
       <li>MaleOld</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_CaptainTiebeard</defName>
     <label>Captain Tiebeard</label>
     <hairGender>Male</hairGender>
@@ -418,9 +418,9 @@
       <li>Tribal</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_Santa</defName>
     <label>Santa</label>
     <hairGender>Male</hairGender>
@@ -434,9 +434,9 @@
       <li>MaleOld</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <PawnPlus.Defs.BeardDef>
     <defName>Beard_TwinPeaks</defName>
     <label>Twin Peaks</label>
     <hairGender>Male</hairGender>
@@ -450,5 +450,5 @@
       <li>MaleOld</li>
     </hairTags>
     <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </PawnPlus.Defs.BeardDef>
 </Defs>

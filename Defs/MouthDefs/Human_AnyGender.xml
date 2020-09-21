@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<FacialStuff.Defs.MouthSetDef>
+	<PawnPlus.Defs.MouthSetDef>
 		<defName>FSHumanMouth</defName>
 		<hairGender>Any</hairGender>
 		<allowedRaceThingDefs>
@@ -30,5 +30,5 @@
 			<li>Punk</li>
 			<li>Tribal</li>
 		</hairTags>
-	</FacialStuff.Defs.MouthSetDef>
+	</PawnPlus.Defs.MouthSetDef>
 </Defs>

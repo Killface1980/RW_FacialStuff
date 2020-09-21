@@ -18,7 +18,7 @@
     <defName>WalkAnimator</defName>
     <label>walk animator</label>
     <description>Animate walk cycles.</description>
-    <tabWindowClass>FacialStuff.AnimatorWindows.MainTabWindow_WalkAnimator</tabWindowClass>
+    <tabWindowClass>PawnPlus.AnimatorWindows.MainTabWindow_WalkAnimator</tabWindowClass>
     <canBeTutorDenied>false</canBeTutorDenied>
     <order>410</order>
     <validWithoutMap>false</validWithoutMap>

@@ -2,7 +2,7 @@
 
 <Defs>
 
-  <FacialStuff.Defs.MoustacheDef>
+  <PawnPlus.Defs.MoustacheDef>
     <defName>Moustache_Chaplin</defName>
     <label>Chaplin</label>
     <hairGender>MaleUsually</hairGender>
@@ -12,9 +12,9 @@
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
-  </FacialStuff.Defs.MoustacheDef>
+  </PawnPlus.Defs.MoustacheDef>
 
-  <FacialStuff.Defs.MoustacheDef>
+  <PawnPlus.Defs.MoustacheDef>
     <defName>Moustache_DoctorWatson</defName>
     <label>Doctor Watson</label>
     <forbiddenOnRace/>
@@ -24,9 +24,9 @@
       <li>Rural</li>
       <li>Punk</li>
     </hairTags>
-  </FacialStuff.Defs.MoustacheDef>
+  </PawnPlus.Defs.MoustacheDef>
 
-  <FacialStuff.Defs.MoustacheDef>
+  <PawnPlus.Defs.MoustacheDef>
     <defName>Moustache_FishTail</defName>
     <label>Freddie Fishtail</label>
     <hairGender>MaleUsually</hairGender>
@@ -38,9 +38,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </FacialStuff.Defs.MoustacheDef>
+  </PawnPlus.Defs.MoustacheDef>
 
-  <FacialStuff.Defs.MoustacheDef>
+  <PawnPlus.Defs.MoustacheDef>
     <defName>Moustache_LeChef</defName>
     <label>Le Chef</label>
     <forbiddenOnRace/>    
@@ -49,9 +49,9 @@
       <li>Urban</li>
       <li>Rural</li>
     </hairTags>
-  </FacialStuff.Defs.MoustacheDef>
+  </PawnPlus.Defs.MoustacheDef>
 
-  <FacialStuff.Defs.MoustacheDef>
+  <PawnPlus.Defs.MoustacheDef>
     <defName>Moustache_LittleWatson</defName>
     <label>Little Watson</label>
     <forbiddenOnRace/>
@@ -61,9 +61,9 @@
       <li>Rural</li>
       <li>Punk</li>
     </hairTags>
-  </FacialStuff.Defs.MoustacheDef>
+  </PawnPlus.Defs.MoustacheDef>
 
-  <FacialStuff.Defs.MoustacheDef>
+  <PawnPlus.Defs.MoustacheDef>
     <defName>Moustache_MisterSlave</defName>
     <label>Mister Slave</label>
     <hairGender>MaleUsually</hairGender>
@@ -73,9 +73,9 @@
       <li>Rural</li>
       <li>Punk</li>
     </hairTags>
-  </FacialStuff.Defs.MoustacheDef>
+  </PawnPlus.Defs.MoustacheDef>
 
-  <FacialStuff.Defs.MoustacheDef>
+  <PawnPlus.Defs.MoustacheDef>
     <defName>Shaved</defName>
     <label>0Shaved</label>
     <forbiddenOnRace/>
@@ -86,9 +86,9 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </FacialStuff.Defs.MoustacheDef>
+  </PawnPlus.Defs.MoustacheDef>
 
-  <FacialStuff.Defs.MoustacheDef>
+  <PawnPlus.Defs.MoustacheDef>
     <defName>Moustache_Souvarov</defName>
     <label>Master Souvarov</label>
     <hairGender>MaleUsually</hairGender>
@@ -99,9 +99,9 @@
       <li>Rural</li>
       <li>Punk</li>
     </hairTags>
-  </FacialStuff.Defs.MoustacheDef>
+  </PawnPlus.Defs.MoustacheDef>
 
-  <FacialStuff.Defs.MoustacheDef>
+  <PawnPlus.Defs.MoustacheDef>
     <defName>Moustache_Western</defName>
     <label>Gunslinger</label>
     <forbiddenOnRace/>
@@ -112,5 +112,5 @@
       <li>Punk</li>
       <li>Tribal</li>
     </hairTags>
-  </FacialStuff.Defs.MoustacheDef>
+  </PawnPlus.Defs.MoustacheDef>
 </Defs>

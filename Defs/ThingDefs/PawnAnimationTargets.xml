@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Defs>
-  <FacialStuff.Defs.AnimationTargetDef>
+  <PawnPlus.Defs.AnimationTargetDef>
     <defName>PawnAnimatorSettingsVanilla</defName>
     <label>Animation comp loader</label>
     <thingClass>Thing</thingClass>
@@ -11,7 +11,7 @@
         <handType>Animal</handType>
         <quadruped>true</quadruped>
         <bodyDrawers>
-          <li Class="FacialStuff.QuadrupedDrawer" />
+          <li Class="PawnPlus.QuadrupedDrawer" />
         </bodyDrawers>
         <thingTargets>
           <li>YorkshireTerrier</li>
@@ -29,7 +29,7 @@
         <handType>WildBoar</handType>
         <quadruped>true</quadruped>
         <bodyDrawers>
-          <li Class="FacialStuff.QuadrupedDrawer" />
+          <li Class="PawnPlus.QuadrupedDrawer" />
         </bodyDrawers>
         <thingTargets>
           <li>Caribou</li>
@@ -42,7 +42,7 @@
         <handType>Animal</handType>
         <quadruped>true</quadruped>
         <bodyDrawers>
-          <li Class ="FacialStuff.QuadrupedDrawer"/>
+          <li Class ="PawnPlus.QuadrupedDrawer"/>
         </bodyDrawers>
         <thingTargets>
           <li>Mech_Centipede</li>
@@ -52,7 +52,7 @@
         <handType>Scyther</handType>
         <bipedWithHands>true</bipedWithHands>
         <bodyDrawers>
-          <li Class="FacialStuff.HumanBipedDrawer" />
+          <li Class="PawnPlus.HumanBipedDrawer" />
         </bodyDrawers>
         <thingTargets>
           <li>Mech_Scyther</li>
@@ -60,5 +60,5 @@
       </li>
 
     </CompLoaderTargets>
-  </FacialStuff.Defs.AnimationTargetDef>
+  </PawnPlus.Defs.AnimationTargetDef>
 </Defs>
