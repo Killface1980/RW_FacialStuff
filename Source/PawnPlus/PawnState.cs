@@ -19,6 +19,7 @@ namespace PawnPlus
 		public const int kDownedBitNum = 5;
 		public const int kFleeingBitNum = 6;
 		public const int kBurningBitNum = 7;
+		public const int kConsciousBitNum = 8;
 		
 		public bool Alive { get; private set; } = false;
 		public bool Standing { get; private set; } = false;
@@ -28,6 +29,7 @@ namespace PawnPlus
 		public bool Downed { get; private set; } = false;
 		public bool Fleeing { get; private set; } = false;
 		public bool Burning { get; private set; } = false;
+		public bool Conscious { get; private set; } = false;
 		
 		public Thing Aiming_Target { get; private set; }
 
@@ -53,6 +55,9 @@ namespace PawnPlus
 			Fleeing = _pawn.Fleeing();
 			Burning = _pawn.IsBurning();
 			Sleeping = !_pawn.Awake();
+			Conscious = 
+				_pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness) >= 
+				PawnCapacityDefOf.Consciousness.minForCapable;
 		}
 
 		public long ToBitFlags()
@@ -65,7 +70,8 @@ namespace PawnPlus
 				Convert.ToInt64(InPainShock) << kInPainShockBitNum |
 				Convert.ToInt64(Downed) << kDownedBitNum |
 				Convert.ToInt64(Fleeing) << kFleeingBitNum |
-				Convert.ToInt64(Burning) << kBurningBitNum;
+				Convert.ToInt64(Burning) << kBurningBitNum |
+				Convert.ToInt64(Conscious) << kConsciousBitNum;
 		}
 	}
 }
