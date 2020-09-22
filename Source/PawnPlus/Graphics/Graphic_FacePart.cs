@@ -40,6 +40,7 @@ namespace PawnPlus.Graphics
             {
                 if(array[i] == null)
 				{
+                    _mats[i] = BaseContent.BadMat;
                     continue;
 				}
                 MaterialRequest req2 = default;
