@@ -21,7 +21,7 @@ namespace PawnPlus
     {
         public FaceGraphic PawnFaceGraphic;
 
-        private class PerBodyPart
+        private class BodyPartData
         {
             public IGraphicProvider graphicProvider;
             public Queue<PartSignal> signals = new Queue<PartSignal>();
@@ -46,7 +46,8 @@ namespace PawnPlus
             public Hediff hediff;
         }
         
-        private IReadOnlyDictionary<int, PerBodyPart> _perBodyPartData;
+        private IReadOnlyDictionary<int, BodyPartData> _perBodyPartData;
+        private BodyPartStatus[] _perPartStatus;
         private Faction _originFactionInt;
         private FaceData _faceData;
         private RenderParam[] _mouthRenderParams;
@@ -56,8 +57,7 @@ namespace PawnPlus
         private IHeadBehavior _headBehavior;
         private IMouthBehavior _mouthBehavior;
         private IEyeBehavior _eyeBehavior;
-        private Dictionary<int, Queue<PartSignal>> _eyeBehaviorParams = new Dictionary<int, Queue<PartSignal>>();
-        private Queue<HediffChangeEvent> _hediffEvents =  new Queue<HediffChangeEvent>();
+        private Dictionary<int, Queue<PartSignal>> _eyeBehaviorSignalSinks = new Dictionary<int, Queue<PartSignal>>();
         // Used for distance culling of face details
         private GameComponent_FacialStuff _fsGameComp;
         
@@ -147,7 +147,7 @@ namespace PawnPlus
                 {   
                     if(portrait || _fsGameComp.ShouldRenderFaceDetails)
 				    {
-                        foreach(KeyValuePair<int, PerBodyPart> pair in _perBodyPartData)
+                        foreach(KeyValuePair<int, BodyPartData> pair in _perBodyPartData)
                         {
                             Rot4 partRot4 = portrait ? Rot4.South : headFacing;
                             Vector3 partDrawPos = headPos;
@@ -368,11 +368,12 @@ namespace PawnPlus
                 _eyeBehavior = (IEyeBehavior)Props.eyeBehavior.Clone();
             }
             _pawnState = new PawnState(Pawn);
+            _perPartStatus = new BodyPartStatus[Pawn.RaceProps.body.AllParts.Count];
         }
-        
-		// Graphics and faction data aren't available in ThingComp.Initialize(). Initialize the members related to those in this method,
-		// which is called by a postfix to ResolveAllGraphics() method.
-		public void InitializeFace()
+
+        // Graphics and faction data aren't available in ThingComp.Initialize(). Initialize the members related to those in this method,
+        // which is called by a postfix to ResolveAllGraphics() method.
+        public void InitializeFace()
         {
             if(_originFactionInt == null)
             {
@@ -388,7 +389,7 @@ namespace PawnPlus
                 Pawn.story.HeadGraphicPath,
                 out Dictionary<int, RenderParam[]> eyeRenderParams,
                 out _mouthRenderParams);
-            var perBodyPartData = new SortedDictionary<int, PerBodyPart>();
+            var perBodyPartData = new SortedDictionary<int, BodyPartData>();
             foreach(BodyPartLocator partLocator in FaceData.EyeDef.representBodyParts)
             {
                 if(partLocator.resolvedPartIndex < 0)
@@ -399,7 +400,7 @@ namespace PawnPlus
                 {
                     if(!perBodyPartData.ContainsKey(partLocator.resolvedPartIndex))
                     {
-                        PerBodyPart perBodyPart = new PerBodyPart();
+                        BodyPartData perBodyPart = new BodyPartData();
                         perBodyPart.graphicProvider = FaceData.EyeDef.graphicProvider?.Clone() as IGraphicProvider;
                         if(perBodyPart.graphicProvider == null)
                         {
@@ -418,7 +419,8 @@ namespace PawnPlus
                         // TODO: get value from RenderDef properly
                         perBodyPart.attachment = PartRender.Attachment.Head;
                         perBodyPartData.Add(partLocator.resolvedPartIndex, perBodyPart);
-                    } else
+                    } 
+                    else
                     {
                         Log.Warning("Facial Stuff: Pawn " + Pawn.Label + " already has per body part data initialized for index " + partLocator.resolvedPartIndex);
                     }
@@ -434,7 +436,7 @@ namespace PawnPlus
 				{
                     if(bodyPartIndex >= 0 && _perBodyPartData.ContainsKey(bodyPartIndex))
 					{
-                        _eyeBehaviorParams.Add(bodyPartIndex, _perBodyPartData[bodyPartIndex].signals);
+                        _eyeBehaviorSignalSinks.Add(bodyPartIndex, _perBodyPartData[bodyPartIndex].signals);
                     }
                 }
             }
@@ -465,7 +467,7 @@ namespace PawnPlus
                 {
                     _pawnState.UpdateState();
                     HeadBehavior.Update(Pawn, _pawnState, out _cachedHeadFacing);
-                    _eyeBehavior.Update(Pawn, _pawnState, _eyeBehaviorParams);
+                    _eyeBehavior.Update(Pawn, _pawnState, _eyeBehaviorSignalSinks);
                     UpdateGraphicProviders(out bool updatePortrait);
                     if(updatePortrait)
 					{
@@ -481,11 +483,13 @@ namespace PawnPlus
         private void UpdateGraphicProviders(out bool updatePortrait)
 		{
             updatePortrait = false;
-            foreach(KeyValuePair<int, PerBodyPart> pair in _perBodyPartData)
+            foreach(KeyValuePair<int, BodyPartData> pair in _perBodyPartData)
             {
+                int partIndex = pair.Key;
                 bool updatePortraitTemp = false;
                 pair.Value.graphicProvider.Update(
                     _pawnState,
+                    _perPartStatus[partIndex],
                     out pair.Value.graphic,
                     out pair.Value.portraitGraphic,
                     ref updatePortraitTemp,
@@ -497,66 +501,79 @@ namespace PawnPlus
 
         public void NotifyBodyPartHediffGained(BodyPartRecord bodyPart, Hediff hediff)
 		{
-            // ThingComp.Initialize() is called before Pawn is fully defined (including the hediffs). This means that 
-            // _perBodyPartData can't be initialized in Initialize(). Therefore, the hediff events are stored in a queue
-            // then replayed when the comp updates.
-            // If the hediff is an added part, notify the child parts that the hediff has been added to them also.
-            if(hediff is Hediff_AddedPart)
+            if(hediff is Hediff_AddedPart hediffAddedPart)
             {
                 foreach(var childPart in bodyPart.GetChildParts())
 				{
-                    // PartRestored event will be fired before AddedPart hediff is added if the part had been missing.
-                    // Therefore, there is no need to create PartRestored event here.
-                    _hediffEvents.Enqueue(new HediffChangeEvent()
-                    {
-                        eventType = HediffChangeEvent.Type.HediffGained,
-                        bodyPartIndex = bodyPart.Index,
-                        hediff = hediff
-                    });
+                    _perPartStatus[childPart.Index] =
+						new BodyPartStatus()
+						{ 
+                            missing = false,
+                            hediffAddedPart = hediffAddedPart
+                        };
                 }
             }
             else if(hediff is Hediff_MissingPart)
 			{
                 foreach(var childPart in bodyPart.GetChildParts())
                 {
-                    _hediffEvents.Enqueue(new HediffChangeEvent()
-                    {
-                        eventType = HediffChangeEvent.Type.PartLost,
-                        bodyPartIndex = bodyPart.Index,
-                        hediff = hediff
-                    });
+                    _perPartStatus[childPart.Index] =
+                        new BodyPartStatus()
+                        {
+                            missing = true,
+                            hediffAddedPart = null
+                        };
                 }
             }
         }
         
         public void NotifyBodyPartHediffLost(BodyPartRecord bodyPart, Hediff hediff)
 		{
-            // If the removed hediff is an added part, notify the child parts that they've been removed also.
             if(hediff is Hediff_AddedPart)
 			{
                 foreach(var childPart in bodyPart.GetChildParts())
                 {
-                    _hediffEvents.Enqueue(new HediffChangeEvent()
-                    {
-                        eventType = HediffChangeEvent.Type.HediffLost,
-                        bodyPartIndex = bodyPart.Index,
-                        hediff = hediff
-                    });
+                    _perPartStatus[childPart.Index] =
+                        new BodyPartStatus()
+                        {
+                            missing = _perPartStatus[childPart.Index].missing,
+                            hediffAddedPart = null
+                        };
                 }
             }
         }
 
         public void NotifyBodyPartRestored(BodyPartRecord bodyPart)
         {
+            HashSet<int> affectedBodyParts = new HashSet<int>();
             foreach(var childPart in bodyPart.GetChildParts())
             {
-                _hediffEvents.Enqueue(new HediffChangeEvent()
-                {
-                    eventType = HediffChangeEvent.Type.PartRestored,
-                    bodyPartIndex = bodyPart.Index,
-                    hediff = null
-                });
+                affectedBodyParts.Add(childPart.Index);
+                _perPartStatus[childPart.Index] =
+                    new BodyPartStatus()
+                    {
+                        missing = false,
+                        hediffAddedPart = null
+                    };
             }
+            // It is possible that the hediff still exists after restoration due to HediffDef.keepOnBodyPartRestoration.
+            foreach(var hediff in Pawn.health.hediffSet.hediffs)
+			{
+                if(hediff.Part == null)
+				{
+                    continue;
+				}
+                if(affectedBodyParts.Contains(hediff.Part.Index) && 
+                    hediff is Hediff_AddedPart hediffAddedPart)
+				{
+                    _perPartStatus[hediff.Part.Index] =
+                        new BodyPartStatus()
+                        {
+                            missing = false,
+                            hediffAddedPart = hediffAddedPart
+                        };
+                }
+			}
         }
 
         public Rot4 GetHeadFacing()

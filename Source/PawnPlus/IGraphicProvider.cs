@@ -17,7 +17,8 @@ namespace PawnPlus
 			Dictionary<string, string> namedTexPaths);
 		
 		public void Update(
-			PawnState pawnState, 
+			PawnState pawnState,
+			in BodyPartStatus partStatus, 
 			out Graphic graphic, 
 			out Graphic portraitGraphic, 
 			ref bool updatePortrait, 

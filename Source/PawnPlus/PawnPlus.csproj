@@ -91,6 +91,7 @@
     <Compile Include="AnimatorWindows\MainTabWindow_WalkAnimator.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
     <Compile Include="BodyPartRecordExtension.cs" />
+    <Compile Include="BodyPartStatus.cs" />
     <Compile Include="PartSignal.cs" />
     <Compile Include="PartSignalArg.cs" />
     <Compile Include="PartSignalType.cs" />
