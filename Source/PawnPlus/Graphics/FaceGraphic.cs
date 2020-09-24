@@ -12,8 +12,6 @@ namespace PawnPlus.Graphics
 	public class FaceGraphic
 	{
 		public Graphic BrowGraphic;
-		private Graphic_FacePart[,] _eyeGraphics;
-		private Graphic_FacePart[,] _eyeActionGraphics;
 		private List<Graphic_FacePart> _mouthGraphics;
 		public Graphic_Multi JawGraphic;
 		public Graphic_Multi MainBeardGraphic;
@@ -29,8 +27,6 @@ namespace PawnPlus.Graphics
 		{
 			_compFace = compFace;
 			_pawn = compFace.Pawn;
-			_eyeGraphics = new Graphic_FacePart[eyeCount, Enum.GetNames(typeof(BodyPartLevel)).Length];
-			_eyeActionGraphics = new Graphic_FacePart[eyeCount, Enum.GetNames(typeof(EyeAction)).Length];
 			_pawnFace = compFace.FaceData;
 			if(_pawnFace != null)
 			{
@@ -42,11 +38,7 @@ namespace PawnPlus.Graphics
 				{
 					InitializeGraphicsWrinkles(compFace);
 				}
-				if(compFace.EyeBehavior.NumEyes > 0)
-				{
-					InitializeGraphicsEyes();
-					InitializeGraphicsBrows();
-				}
+				InitializeGraphicsBrows();
 			}
 			if(compFace.Props.hasMouth)
 			{
@@ -167,83 +159,6 @@ namespace PawnPlus.Graphics
 				ShaderDatabase.CutoutSkin,
 				Vector2.one,
 				color) as Graphic_Multi;
-		}
-				
-		public Material EyeMatAt(int partIdx, Rot4 headFacing, bool portrait, EyeAction eyeAction, BodyPartLevel partLevel)
-		{
-			// TODO: get damaged mat
-			Graphic eyeGraphic = null;
-			if(eyeAction == EyeAction.None || portrait)
-			{
-				eyeGraphic = _eyeGraphics[partIdx, (int)partLevel];
-			}
-			else
-			{
-				eyeGraphic = _eyeActionGraphics[partIdx, (int)eyeAction - 1];
-			}
-			return eyeGraphic?.MatAt(headFacing);
-		}
-		
-		public string EyeTexturePath(EyeDef eyeDef)
-		{
-			return Path.Combine(_pawnFace.EyeDef.texBasePath, eyeDef.texName);
-		}
-
-		private void InitializeGraphicsEyes()
-		{
-			Color eyeColor = Color.white;
-			Array.Clear(_eyeGraphics, 0, _eyeGraphics.Length);
-
-			// compProps.eyeBehavior.NumEyes indicates how many eyes the race has.
-			// Open eye graphics
-			for(int i = 0; i < _compFace.EyeBehavior.NumEyes; ++i)
-			{
-				string texPath = EyeTexturePath(_pawnFace.EyeDef);
-				_eyeGraphics[i, (int)BodyPartLevel.Natural] = GraphicDatabase.Get<Graphic_FacePart>(
-					texPath,
-					Shaders.FacePart,
-					Vector2.one,
-					eyeColor) as Graphic_FacePart;
-			}
-			// Closed eye graphics
-			for(int i = 0; i < _compFace.EyeBehavior.NumEyes; ++i)
-			{
-				if(_pawnFace.EyeDef.closedEyeDef != null)
-				{
-					string texPath = EyeTexturePath(_pawnFace.EyeDef.closedEyeDef);
-					_eyeActionGraphics[i, (int)EyeAction.Closed - 1] = GraphicDatabase.Get<Graphic_FacePart>(
-						texPath,
-						Shaders.FacePart,
-						Vector2.one,
-						eyeColor) as Graphic_FacePart;
-				}
-			}
-			// In pain eye graphics
-			for(int i = 0; i < _compFace.EyeBehavior.NumEyes; ++i)
-			{
-				if(_pawnFace.EyeDef.closedEyeDef != null)
-				{
-					string texPath = EyeTexturePath(_pawnFace.EyeDef.inPainEyeDef);
-					_eyeActionGraphics[i, (int)EyeAction.Pain - 1] = GraphicDatabase.Get<Graphic_FacePart>(
-						texPath,
-						Shaders.FacePart,
-						Vector2.one,
-						eyeColor) as Graphic_FacePart;
-				}
-			}
-			// Missing eye part graphics
-			for(int i = 0; i < _compFace.EyeBehavior.NumEyes; ++i)
-			{
-				if(_pawnFace.EyeDef.missingEyeDef != null)
-				{
-					string texPath = EyeTexturePath(_pawnFace.EyeDef.missingEyeDef);
-					_eyeGraphics[i, (int)BodyPartLevel.Removed] = GraphicDatabase.Get<Graphic_FacePart>(
-						texPath,
-						Shaders.FacePart,
-						Vector2.one,
-						eyeColor) as Graphic_FacePart;
-				}
-			}
 		}
 		
 		public Material MouthMatAt(Rot4 headFacing, int textureIdx)

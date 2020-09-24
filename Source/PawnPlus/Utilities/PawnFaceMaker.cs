@@ -399,7 +399,7 @@ namespace PawnPlus.Utilities
                 from eyeDef in DefDatabase<EyeDef>.AllDefs
                 where
                     eyeDef.hairTags.SharesElementWith(factionType.hairTags) &&
-                    eyeDef.allowedRaceThingDefs.Contains(pawn.def)
+                    eyeDef._allowedRaceBodyDefs.Contains(pawn.RaceProps.body)
                 select eyeDef;
 
             if(!source.Any())

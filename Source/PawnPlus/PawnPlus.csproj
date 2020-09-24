@@ -90,6 +90,10 @@
     <Compile Include="AnimatorWindows\MainTabWindow_PoseAnimator.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_WalkAnimator.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
+    <Compile Include="BodyPartRecordExtension.cs" />
+    <Compile Include="PartSignal.cs" />
+    <Compile Include="PartSignalArg.cs" />
+    <Compile Include="PartSignalType.cs" />
     <Compile Include="Components\CompBodyAnimator.cs" />
     <Compile Include="Components\CompFace.cs" />
     <Compile Include="Components\CompFaceEditor.cs" />
@@ -107,6 +111,7 @@
     <Compile Include="Defs\AnimationTargetDef.cs" />
     <Compile Include="Defs\BeardDef.cs" />
     <Compile Include="Defs\BodyAnimDef.cs" />
+    <Compile Include="Defs\BodyPartLocator.cs" />
     <Compile Include="Defs\BrowDef.cs" />
     <Compile Include="Defs\Export\BodyAnimDef_Export.cs" />
     <Compile Include="Defs\Export\PoseCycleDef_Export.cs" />
@@ -180,7 +185,9 @@
     <Compile Include="Harmony\HarmonyPatch_Pawn_HealthTracker.cs" />
     <Compile Include="Harmony\HarmonyPatch_Pawn_InteractionsTracker.cs" />
     <Compile Include="Harmony\HarmonyPatch_ShaderUtility.cs" />
+    <Compile Include="HumanEyeGraphicProvider.cs" />
     <Compile Include="IEyeBehavior.cs" />
+    <Compile Include="IGraphicProvider.cs" />
     <Compile Include="IHeadBehavior.cs" />
     <Compile Include="IMouthBehavior.cs" />
     <Compile Include="ITab_Pawn_Face.cs" />

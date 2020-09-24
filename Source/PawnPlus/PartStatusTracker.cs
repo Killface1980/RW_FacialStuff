@@ -22,28 +22,15 @@ namespace PawnPlus
 	public class PartStatusTracker
 	{
 		private BodyPartLevel[] _partStatus;
-		private List<int> _eyeIndices = new List<int>();
-
-		public int EyeCount =>_eyeIndices.Count;
-
+		
 		public PartStatusTracker(BodyDef bodyDef)
 		{
 			_partStatus = new BodyPartLevel[bodyDef.AllParts.Count];
-			int curIndex = 0;
-			foreach(var bodyPartRecord in bodyDef.AllParts)
-			{
-				if(bodyPartRecord.IsInGroup(BodyPartGroupDefOf.Eyes))
-				{
-					_eyeIndices.Add(curIndex);
-				}
-				// Could probably use GetIndexOfPart(). But this does the same job and may be more efficient.
-				++curIndex;
-			}
 		}
 
-		public BodyPartLevel GetEyePartLevel(int eyeIdx)
+		public BodyPartLevel GetPartLevel(int partIdx)
 		{
-			return _partStatus[_eyeIndices[eyeIdx]];
+			return _partStatus[partIdx];
 		}
 
 		public void NotifyHediffAdded(Hediff hediff)

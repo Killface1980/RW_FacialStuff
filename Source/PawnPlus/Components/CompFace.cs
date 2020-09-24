@@ -12,6 +12,8 @@ using UnityEngine;
 using Verse;
 using static PawnPlus.Offsets;
 using PawnPlus.AI;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace PawnPlus
 {
@@ -19,17 +21,43 @@ namespace PawnPlus
     {
         public FaceGraphic PawnFaceGraphic;
 
+        private class PerBodyPart
+        {
+            public IGraphicProvider graphicProvider;
+            public Queue<PartSignal> signals = new Queue<PartSignal>();
+            public PartRender.Attachment attachment;
+            public Graphic graphic;
+            public Graphic portraitGraphic;
+            public RenderParam[] renderParams;
+        }
+
+        private class HediffChangeEvent
+		{
+            public enum Type
+			{
+                PartRestored,
+                PartLost, // This indicates addition of Hediff_Removed hediff
+                HediffGained,
+                HediffLost
+			}
+
+            public HediffChangeEvent.Type eventType;
+            public int bodyPartIndex;
+            public Hediff hediff;
+        }
+        
+        private IReadOnlyDictionary<int, PerBodyPart> _perBodyPartData;
         private Faction _originFactionInt;
         private FaceData _faceData;
-        private RenderParam[,] _eyeRenderParams;
         private RenderParam[] _mouthRenderParams;
         private Rot4 _cachedHeadFacing;
         private IMouthBehavior.Params _cachedMouthParam = new IMouthBehavior.Params();
-        private List<IEyeBehavior.Result> _cachedEyeParam;
         private PawnState _pawnState;
         private IHeadBehavior _headBehavior;
         private IMouthBehavior _mouthBehavior;
         private IEyeBehavior _eyeBehavior;
+        private Dictionary<int, Queue<PartSignal>> _eyeBehaviorParams = new Dictionary<int, Queue<PartSignal>>();
+        private Queue<HediffChangeEvent> _hediffEvents =  new Queue<HediffChangeEvent>();
         // Used for distance culling of face details
         private GameComponent_FacialStuff _fsGameComp;
         
@@ -38,15 +66,11 @@ namespace PawnPlus
         public IHeadBehavior HeadBehavior => _headBehavior;
 
         public IMouthBehavior MouthBehavior => _mouthBehavior;
-
-        public IEyeBehavior EyeBehavior => _eyeBehavior;
-
+        
         public FaceMaterial FaceMaterial { get; set; }
         
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
-        
-        public PartStatusTracker PartStatusTracker { get; private set; }
-                                
+                                        
         public Faction OriginFaction => _originFactionInt;
         
         public virtual CrownType PawnCrownType => Pawn?.story.crownType ?? CrownType.Average;
@@ -120,16 +144,43 @@ namespace PawnPlus
                     portrait);
                 headDrawn = true;
                 if(bodyDrawType != RotDrawMode.Dessicated && !headStump)
-                {
+                {   
                     if(portrait || _fsGameComp.ShouldRenderFaceDetails)
 				    {
-                        if(EyeBehavior.NumEyes > 0)
+                        foreach(KeyValuePair<int, PerBodyPart> pair in _perBodyPartData)
                         {
-                            Vector3 eyeLoc = headPos;
-                            eyeLoc.y += 0.002f;
-                            // Draw natural eyes
-                            DrawEyes(eyeLoc, headFacing, headQuat, portrait);
+                            Rot4 partRot4 = portrait ? Rot4.South : headFacing;
+                            Vector3 partDrawPos = headPos;
+                            Quaternion partQuat = headQuat;
+                            switch(pair.Value.attachment)
+                            {
+                                case PartRender.Attachment.Body:
+                                    break;
+
+                                case PartRender.Attachment.Head:
+                                    break;
+                            }
+                            Graphic graphic = portrait ?
+                                pair.Value.portraitGraphic :
+                                pair.Value.graphic;
+                            if(graphic == null)
+							{
+                                continue;
+							}
+                            Material partMat = graphic.MatAt(partRot4);
+                            if(partMat != null)
+                            {
+                                Vector3 offset = pair.Value.renderParams[partRot4.AsInt].offset;
+                                offset = partQuat * offset;
+                                GenDraw.DrawMeshNowOrLater(
+                                        pair.Value.renderParams[partRot4.AsInt].mesh,
+                                        partDrawPos + offset,
+                                        partQuat,
+                                        partMat,
+                                        portrait);
+                            }
                         }
+
                         if(Props.hasMouth &&
                             FaceData.BeardDef.drawMouth &&
                             Controller.settings.UseMouth)
@@ -147,13 +198,12 @@ namespace PawnPlus
                                 // Draw wrinkles
                                 DrawWrinkles(wrinkleLoc, headFacing, headQuat, bodyDrawType, portrait);
                             }
-                            if(EyeBehavior.NumEyes > 0)
-                            {
-                                Vector3 browLoc = headPos;
-                                browLoc.y += YOffset_Brows;
-                                // Draw brows above eyes
-                                DrawBrows(browLoc, headFacing, headQuat, portrait);
-                            }
+
+                            Vector3 browLoc = headPos;
+                            browLoc.y += YOffset_Brows;
+                            // Draw brows above eyes
+                            DrawBrows(browLoc, headFacing, headQuat, portrait);
+
                             if(Props.hasBeard)
                             {
                                 Vector3 beardLoc = headPos;
@@ -235,42 +285,7 @@ namespace PawnPlus
             Mesh headMesh = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
             GenDraw.DrawMeshNowOrLater(headMesh, drawPos, headQuat, wrinkleMat, portrait);
         }
-
-        public void DrawEyes(Vector3 drawPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
-		{
-            if(PawnFaceGraphic == null || _eyeRenderParams == null)
-            {
-                return;
-            }
-            for(int partIdx = 0; partIdx < _eyeRenderParams.GetLength(0); ++partIdx)
-            {
-                if(_eyeRenderParams[partIdx, headFacing.AsInt].render || portrait)
-                {
-                    Mesh eyeMesh = _eyeRenderParams[partIdx, headFacing.AsInt].mesh;
-                    Material eyeMat = PawnFaceGraphic.EyeMatAt(
-                        partIdx,
-                        headFacing,
-                        portrait,
-                        _cachedEyeParam[partIdx].eyeAction,
-                        PartStatusTracker.GetEyePartLevel(partIdx));
-                    if(eyeMat != null)
-                    {
-                        Vector3 offset = new Vector3(
-                            _eyeRenderParams[partIdx, headFacing.AsInt].offset.x,
-                            0,
-                            _eyeRenderParams[partIdx, headFacing.AsInt].offset.y);
-                        offset = headQuat * offset;
-                        GenDraw.DrawMeshNowOrLater(
-                            eyeMesh,
-                            drawPos + offset,
-                            headQuat,
-                            eyeMat,
-                            portrait);
-                    }
-                }
-            }
-        }
-
+        
         public void DrawBrows(Vector3 drawPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
 		{
             Material browMat = FaceMaterial.BrowMatAt(headFacing);
@@ -339,10 +354,6 @@ namespace PawnPlus
             _fsGameComp = Current.Game.GetComponent<GameComponent_FacialStuff>();
             Props = (CompProperties_Face)props;
             Pawn = (Pawn)parent;
-            if(PartStatusTracker == null)
-            {
-                PartStatusTracker = new PartStatusTracker(Pawn.RaceProps.body);
-            }
             if(HeadBehavior == null)
             {
                 _headBehavior = (IHeadBehavior)Props.headBehavior.Clone();
@@ -352,16 +363,16 @@ namespace PawnPlus
             {
                 _mouthBehavior = (IMouthBehavior)Props.mouthBehavior.Clone();
             }
-            if(EyeBehavior == null)
+            if(_eyeBehavior == null)
 			{
                 _eyeBehavior = (IEyeBehavior)Props.eyeBehavior.Clone();
             }
             _pawnState = new PawnState(Pawn);
         }
-
-        // Graphics and faction data aren't available in ThingComp.Initialize(). Initialize the members related to those in this method,
-        // which is called by a postfix to ResolveAllGraphics() method.
-        public void InitializeFace()
+        
+		// Graphics and faction data aren't available in ThingComp.Initialize(). Initialize the members related to those in this method,
+		// which is called by a postfix to ResolveAllGraphics() method.
+		public void InitializeFace()
         {
             if(_originFactionInt == null)
             {
@@ -371,17 +382,71 @@ namespace PawnPlus
             {
                 FaceData = new FaceData(this, OriginFaction?.def);
             }
-            HeadRenderDef.GetCachedHeadRenderParams(Pawn.story.HeadGraphicPath, out _eyeRenderParams, out _mouthRenderParams);
-            
+
+            HeadRenderDef.GetCachedHeadRenderParams(
+                Pawn.RaceProps.body,
+                Pawn.story.HeadGraphicPath,
+                out Dictionary<int, RenderParam[]> eyeRenderParams,
+                out _mouthRenderParams);
+            var perBodyPartData = new SortedDictionary<int, PerBodyPart>();
+            foreach(BodyPartLocator partLocator in FaceData.EyeDef.representBodyParts)
+            {
+                if(partLocator.resolvedPartIndex < 0)
+                {
+                    continue;
+                }
+                if(partLocator.bodyDef == Pawn.RaceProps.body)
+                {
+                    if(!perBodyPartData.ContainsKey(partLocator.resolvedPartIndex))
+                    {
+                        PerBodyPart perBodyPart = new PerBodyPart();
+                        perBodyPart.graphicProvider = FaceData.EyeDef.graphicProvider?.Clone() as IGraphicProvider;
+                        if(perBodyPart.graphicProvider == null)
+                        {
+                            continue;
+                        }
+                        perBodyPart.renderParams = eyeRenderParams[partLocator.resolvedPartIndex];
+                        if(perBodyPart.renderParams == null)
+                        {
+                            continue;
+                        }
+                        perBodyPart.graphicProvider.Initialize(
+                            Pawn, Pawn.RaceProps.body,
+                            partLocator.resolvedBodyPartRecord,
+                            FaceData.EyeDef.defaultTexPath,
+                            FaceData.EyeDef.namedTexPaths);
+                        // TODO: get value from RenderDef properly
+                        perBodyPart.attachment = PartRender.Attachment.Head;
+                        perBodyPartData.Add(partLocator.resolvedPartIndex, perBodyPart);
+                    } else
+                    {
+                        Log.Warning("Facial Stuff: Pawn " + Pawn.Label + " already has per body part data initialized for index " + partLocator.resolvedPartIndex);
+                    }
+                }
+            }
+            // Make the dictionary unmodifiable
+            _perBodyPartData = perBodyPartData;
+
+            _eyeBehavior.Initialize(Pawn.RaceProps.body, out List<int> usedBodyPartIndices);
+            if(usedBodyPartIndices != null)
+            {
+                foreach(int bodyPartIndex in usedBodyPartIndices)
+				{
+                    if(bodyPartIndex >= 0 && _perBodyPartData.ContainsKey(bodyPartIndex))
+					{
+                        _eyeBehaviorParams.Add(bodyPartIndex, _perBodyPartData[bodyPartIndex].signals);
+                    }
+                }
+            }
+
+            _pawnState.UpdateState();
+            // Update the graphic providers to get the portrait graphic
+            UpdateGraphicProviders(out bool updatePortrait);
+
             MouthBehavior.InitializeTextureIndex(FaceData.MouthSetDef.texNames.AsReadOnly());
-            _cachedEyeParam = new List<IEyeBehavior.Result>(EyeBehavior.NumEyes);
-            for(int i = 0; i < EyeBehavior.NumEyes; ++i)
-			{
-                _cachedEyeParam.Add(new IEyeBehavior.Result()); 
-			}
 
             FullHeadType = MeshPoolFS.GetFullHeadType(Pawn.gender, PawnCrownType, PawnHeadType);
-            PawnFaceGraphic = new FaceGraphic(this, EyeBehavior.NumEyes);
+            PawnFaceGraphic = new FaceGraphic(this, 2);
             FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
             Initialized = true;
         }
@@ -399,18 +464,101 @@ namespace PawnPlus
                 if(canUpdatePawn)
                 {
                     _pawnState.UpdateState();
-                    _cachedMouthParam.Reset();
-                    foreach(var eyeParam in _cachedEyeParam)
-                    {
-                        eyeParam.Reset();
-                    }
                     HeadBehavior.Update(Pawn, _pawnState, out _cachedHeadFacing);
+                    _eyeBehavior.Update(Pawn, _pawnState, _eyeBehaviorParams);
+                    UpdateGraphicProviders(out bool updatePortrait);
+                    if(updatePortrait)
+					{
+                        PortraitsCache.SetDirty(Pawn);
+					}
+
+                    _cachedMouthParam.Reset();
                     MouthBehavior.Update(Pawn, _cachedHeadFacing, _pawnState, _cachedMouthParam);
-                    EyeBehavior.Update(Pawn, _cachedHeadFacing, _pawnState, _cachedEyeParam);
                 }
             }
         }
         
+        private void UpdateGraphicProviders(out bool updatePortrait)
+		{
+            updatePortrait = false;
+            foreach(KeyValuePair<int, PerBodyPart> pair in _perBodyPartData)
+            {
+                bool updatePortraitTemp = false;
+                pair.Value.graphicProvider.Update(
+                    _pawnState,
+                    out pair.Value.graphic,
+                    out pair.Value.portraitGraphic,
+                    ref updatePortraitTemp,
+                    pair.Value.signals);
+                pair.Value.signals.Clear();
+                updatePortrait |= updatePortraitTemp;
+            }
+        }
+
+        public void NotifyBodyPartHediffGained(BodyPartRecord bodyPart, Hediff hediff)
+		{
+            // ThingComp.Initialize() is called before Pawn is fully defined (including the hediffs). This means that 
+            // _perBodyPartData can't be initialized in Initialize(). Therefore, the hediff events are stored in a queue
+            // then replayed when the comp updates.
+            // If the hediff is an added part, notify the child parts that the hediff has been added to them also.
+            if(hediff is Hediff_AddedPart)
+            {
+                foreach(var childPart in bodyPart.GetChildParts())
+				{
+                    // PartRestored event will be fired before AddedPart hediff is added if the part had been missing.
+                    // Therefore, there is no need to create PartRestored event here.
+                    _hediffEvents.Enqueue(new HediffChangeEvent()
+                    {
+                        eventType = HediffChangeEvent.Type.HediffGained,
+                        bodyPartIndex = bodyPart.Index,
+                        hediff = hediff
+                    });
+                }
+            }
+            else if(hediff is Hediff_MissingPart)
+			{
+                foreach(var childPart in bodyPart.GetChildParts())
+                {
+                    _hediffEvents.Enqueue(new HediffChangeEvent()
+                    {
+                        eventType = HediffChangeEvent.Type.PartLost,
+                        bodyPartIndex = bodyPart.Index,
+                        hediff = hediff
+                    });
+                }
+            }
+        }
+        
+        public void NotifyBodyPartHediffLost(BodyPartRecord bodyPart, Hediff hediff)
+		{
+            // If the removed hediff is an added part, notify the child parts that they've been removed also.
+            if(hediff is Hediff_AddedPart)
+			{
+                foreach(var childPart in bodyPart.GetChildParts())
+                {
+                    _hediffEvents.Enqueue(new HediffChangeEvent()
+                    {
+                        eventType = HediffChangeEvent.Type.HediffLost,
+                        bodyPartIndex = bodyPart.Index,
+                        hediff = hediff
+                    });
+                }
+            }
+        }
+
+        public void NotifyBodyPartRestored(BodyPartRecord bodyPart)
+        {
+            foreach(var childPart in bodyPart.GetChildParts())
+            {
+                _hediffEvents.Enqueue(new HediffChangeEvent()
+                {
+                    eventType = HediffChangeEvent.Type.PartRestored,
+                    bodyPartIndex = bodyPart.Index,
+                    hediff = null
+                });
+            }
+        }
+
         public Rot4 GetHeadFacing()
 		{
             return _cachedHeadFacing;

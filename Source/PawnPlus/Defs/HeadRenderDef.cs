@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Verse;
 
 namespace PawnPlus.Defs
@@ -11,15 +12,16 @@ namespace PawnPlus.Defs
 		public MouthRenderDef mouthRenderDef;
 
         public static bool GetCachedHeadRenderParams(
+            BodyDef bodyDef,
             string headTexturePath, 
-            out RenderParam[,] eyeRenderParam,
+            out Dictionary<int, RenderParam[]> eyeRenderParam,
             out RenderParam[] mouthRenderParam)
 		{
             if(headTextureMapping.TryGetValue(headTexturePath, out HeadRenderDef headRenderDef))
 			{
                 if(!headRenderDef._cacheBuilt)
 				{
-                    headRenderDef.BuildRenderParamCache();
+                    headRenderDef.BuildRenderParamCache(bodyDef);
                     headRenderDef._cacheBuilt = true;
                 }
                 eyeRenderParam = headRenderDef._cachedEyeRenderParam;
@@ -33,7 +35,7 @@ namespace PawnPlus.Defs
 
         // The caches can't be built in static constructor because Unity crashes when trying to create mesh while loading. 
         // Therefore, meshes need to be created in game.
-        private void BuildRenderParamCache()
+        private void BuildRenderParamCache(BodyDef bodyDef)
 		{          
             // It is possible to extract rendering parameters from HeadRenderDef itself, but this requires some linear search (complexity of O(n)) and 
             // reference chasing. This alone is rather trivial but may have impact if there are a lot of pawns. Building caches for the parameters using 
@@ -44,57 +46,47 @@ namespace PawnPlus.Defs
             var headRenderDefList = DefDatabase<HeadRenderDef>.AllDefsListForReading;
             foreach(var headRenderDef in headRenderDefList)
             {
-                // Build RenderInfo cache for eyes
-                int maxEyeIndex = 0;
-                foreach(var partRender in headRenderDef.eyeRenderDef.parts)
+                if(headRenderDef.eyeRenderDef != null)
                 {
-                    maxEyeIndex = Math.Max(partRender.multiPartIndex, maxEyeIndex);
-                }
-                headRenderDef._cachedEyeRenderParam = new RenderParam[maxEyeIndex + 1, 4];
-                for(int i = 0; i <= maxEyeIndex; ++i)
-                {
-                    RenderParam[] renderParams = 
-                        GetRenderParamForPart(headRenderDef.eyeRenderDef?.parts.FindLast(x => x.multiPartIndex == i));
-                    for(int j = 0; j < 4; ++j)
-					{
-                        headRenderDef._cachedEyeRenderParam[i, j] = renderParams[j];
+                    headRenderDef._cachedEyeRenderParam = new Dictionary<int, RenderParam[]>();
+                    for(int i = 0; i < headRenderDef.eyeRenderDef.parts.Count; ++i)
+                    {
+                        PartRender partRender = headRenderDef.eyeRenderDef.parts[i];
+                        if(!partRender.linkedRacesBodyPart.TryGetValue(bodyDef, out BodyPartLocator bodyPartLocator))
+						{
+                            // TODO log
+                            continue;
+						}
+                        bodyPartLocator.bodyDef = bodyDef;
+                        bodyPartLocator.LocateBodyPart();
+                        if(bodyPartLocator.resolvedPartIndex < 0)
+						{
+                            // TODO log
+                            continue;
+						}
+                        partRender.BuildRenderParamCache();
+                        RenderParam[] renderParams = partRender._cachedRenderParam;
+                        if(!headRenderDef._cachedEyeRenderParam.ContainsKey(bodyPartLocator.resolvedPartIndex))
+						{
+                            headRenderDef._cachedEyeRenderParam.Add(bodyPartLocator.resolvedPartIndex, null);
+                        }
+                        headRenderDef._cachedEyeRenderParam[bodyPartLocator.resolvedPartIndex] = renderParams;
                     }
                 }
-                // Build RenderInfo cache for mouth
-                headRenderDef._cachedMouthRenderParam = GetRenderParamForPart(headRenderDef.mouthRenderDef?.part);
-            }
-        }
-
-        private RenderParam[] GetRenderParamForPart(PartRender partRender)
-		{
-            if(partRender == null)
-			{
-                return null;
-			}
-            RenderParam[] renderParams = new RenderParam[4];
-            for(int i = 0; i < 4; ++i)
-            {
-                Rot4 rotation = new Rot4(i);
-                RenderParam renderInfo = new RenderParam();
-                int partRenderIdx = 0;
-                if(partRender != null &&
-                    // If partRender isn't null, check partRenderIdx >= 0 after calling FindLastIndex()
-                    (partRenderIdx = partRender.perRotation.FindLastIndex(x => x.rotation == rotation)) >= 0)
-                {
-                    var perRotation = partRender.perRotation[partRenderIdx];
-                    renderInfo.render = true;
-                    renderInfo.offset = perRotation.offset;
-                    renderInfo.mesh = perRotation.meshDef.mirror ?
-                        MeshPool.GridPlaneFlip(perRotation.meshDef.dimension) :
-                        MeshPool.GridPlane(perRotation.meshDef.dimension);
-                } else
-                {
-                    // If there is no render info for <multiPartIndex> and direction, do not render.
-                    renderInfo.render = false;
+                else
+				{
+                    headRenderDef._cachedEyeRenderParam = null;
                 }
-                renderParams[i] = renderInfo;
+                
+                // Build RenderInfo cache for mouth
+                RenderParam[] mouthRenderParam = null;
+                if(headRenderDef.mouthRenderDef != null)
+                {
+                    headRenderDef.mouthRenderDef.part.BuildRenderParamCache();
+                    mouthRenderParam = headRenderDef.mouthRenderDef.part._cachedRenderParam;
+                }
+                headRenderDef._cachedMouthRenderParam = mouthRenderParam;
             }
-            return renderParams;
         }
 
         [Unsaved(false)]
@@ -103,7 +95,7 @@ namespace PawnPlus.Defs
         // First dimension corresponds to <multiPartIndex> field in EyeRenderDef.
         // Second dimension corresponds to rotation, with 0 for north, 1 for east, 2 for south, and 3 for west (same as the internal representation for Rot4)
         [Unsaved(false)]
-        private RenderParam[,] _cachedEyeRenderParam;
+        private Dictionary<int, RenderParam[]> _cachedEyeRenderParam;
 		
 		// Index corresponds to the rotation in the same manner as _cachedEyeRenderParam.
 		[Unsaved(false)]

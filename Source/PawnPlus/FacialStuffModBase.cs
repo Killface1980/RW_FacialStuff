@@ -30,10 +30,24 @@ namespace PawnPlus
 		public override void DefsLoaded()
 		{
 			base.DefsLoaded();
+
 			var headRenderDefs = DefDatabase<HeadRenderDef>.AllDefsListForReading;
 			foreach(var headRenderDef in headRenderDefs)
 			{
 				HeadRenderDef.headTextureMapping.Add(headRenderDef.headTexture, headRenderDef);
+			}
+
+			var partDefs = DefDatabase<EyeDef>.AllDefsListForReading;
+			foreach(var partDef in partDefs)
+			{
+				foreach(BodyPartLocator partLocator in partDef.representBodyParts)
+				{
+					partLocator.LocateBodyPart();
+					if(!partDef._allowedRaceBodyDefs.Contains(partLocator.bodyDef))
+					{
+						partDef._allowedRaceBodyDefs.Add(partLocator.bodyDef);
+					}
+				}
 			}
 		}
 	}

@@ -31,7 +31,7 @@ namespace PawnPlus.Harmony
             }
             if(pawn.GetCompFace(out CompFace compFace))
 			{
-                compFace.PartStatusTracker.NotifyHediffAdded(hediff);
+                compFace.NotifyBodyPartHediffGained(hediff.Part, hediff);
 			}
 		}
 	}
@@ -58,7 +58,7 @@ namespace PawnPlus.Harmony
             }
             if(pawn.GetCompFace(out CompFace compFace))
             {
-                compFace.PartStatusTracker.NotifyHediffRemoved(hediff);
+                compFace.NotifyBodyPartHediffLost(hediff.Part, hediff);
             }
         }
     }
@@ -85,7 +85,7 @@ namespace PawnPlus.Harmony
             }
             if(pawn.GetCompFace(out CompFace compFace))
             {
-                compFace.PartStatusTracker.NotifyBodyPartRestored(part);
+                compFace.NotifyBodyPartRestored(part);
             }
         }
     }

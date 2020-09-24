@@ -4,17 +4,60 @@
 	<PawnPlus.Defs.EyeDef>
 		<defName>FSHumanFFL</defName>
 		<label>Human Female Flat</label>
-		<!-- If the pawn belongs to one of ThingDefs included in this list, the pawn can have the eye. -->
-		<allowedRaceThingDefs>
-			<li>Human</li>
-		</allowedRaceThingDefs>
 		<hairGender>FemaleUsually</hairGender>
-		<texBasePath>Things/Pawn/Humanlike/Eyes/</texBasePath>
-		<texName>HumanFFL</texName>
-		<closedEyeDef>FSHumanClosed</closedEyeDef>
-		<!-- Original facial stuff mod didn't have eye texture for pain -->
-		<inPainEyeDef>FSHumanFFL</inPainEyeDef>
-		<missingEyeDef>FSHumanMissing</missingEyeDef>
+		<!-- Class must implement PawnPlus.IGraphicProvider interface. -->
+		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
+		<!-- 
+		Each IGraphicProvider instance is assigned to a single BodyPartRecord. Having multiple items in the following list 
+		means that the instance can be assigned to any one of the BodyPartRecords below.
+		-->
+		<representBodyParts>
+			<li>
+				<!-- defName of BodyDef -->
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>left eye</bodyPartLabel>
+			</li>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>right eye</bodyPartLabel>
+			</li>
+		</representBodyParts>
+		<namedTexPaths>
+			<li>
+				<!-- 
+				Key (or texture name) is passed to the IGraphicProvider implementation as string during initialization. 
+				It's up to the IGraphicProvider implementation to decide what the name means and when the name's 
+				corresponding texture should be used. 
+				PawnPlus.HumanEyeGraphicProvider can accept the following names:
+					Open, Closed, Dead, Missing, InPain, Aiming
+				-->
+				<key>Open</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanFFL</value>
+			</li>
+			<li>
+				<key>Closed</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Dead</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Missing</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMissing</value>
+			</li>
+			<li>
+				<key>InPain</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanFFL</value>
+			</li>
+			<li>
+				<key>Aiming</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanFFL</value>
+			</li>
+		</namedTexPaths>
+		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanFFL</defaultTexPath>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -26,140 +69,364 @@
 	<PawnPlus.Defs.EyeDef>
 		<defName>FSHumanFOV</defName>
 		<label>Human Female Oval</label>
-		<allowedRaceThingDefs>
-			<li>Human</li>
-		</allowedRaceThingDefs>
 		<hairGender>FemaleUsually</hairGender>
-		<texBasePath>Things/Pawn/Humanlike/Eyes/</texBasePath>
-		<texName>HumanFOV</texName>
-		<closedEyeDef>FSHumanClosed</closedEyeDef>
-		<inPainEyeDef>FSHumanFOV</inPainEyeDef>
-		<missingEyeDef>FSHumanMissing</missingEyeDef>
+		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
+		<representBodyParts>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>left eye</bodyPartLabel>
+			</li>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>right eye</bodyPartLabel>
+			</li>
+		</representBodyParts>
+		<namedTexPaths>
+			<li>
+				<key>Open</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanFOV</value>
+			</li>
+			<li>
+				<key>Closed</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Dead</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Missing</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMissing</value>
+			</li>
+			<li>
+				<key>InPain</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanFOV</value>
+			</li>
+			<li>
+				<key>Aiming</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanFOV</value>
+			</li>
+		</namedTexPaths>
+		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanFOV</defaultTexPath>
 		<hairTags>
-		  <li>Urban</li>
-		  <li>Rural</li>
-		  <li>Punk</li>
-		  <li>Tribal</li>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
 		</hairTags>
 	</PawnPlus.Defs.EyeDef>
   
 	<PawnPlus.Defs.EyeDef>
 		<defName>FSHumanFRD</defName>
 		<label>Human Female Round</label>
-		<allowedRaceThingDefs>
-			<li>Human</li>
-		</allowedRaceThingDefs>
 		<hairGender>FemaleUsually</hairGender>
-		<texBasePath>Things/Pawn/Humanlike/Eyes/</texBasePath>
-		<texName>HumanFRD</texName>
-		<closedEyeDef>FSHumanClosed</closedEyeDef>
-		<inPainEyeDef>FSHumanFRD</inPainEyeDef>
-		<missingEyeDef>FSHumanMissing</missingEyeDef>
+		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
+		<representBodyParts>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>left eye</bodyPartLabel>
+			</li>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>right eye</bodyPartLabel>
+			</li>
+		</representBodyParts>
+		<namedTexPaths>
+			<li>
+				<key>Open</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanFRD</value>
+			</li>
+			<li>
+				<key>Closed</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Dead</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Missing</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMissing</value>
+			</li>
+			<li>
+				<key>InPain</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanFRD</value>
+			</li>
+			<li>
+				<key>Aiming</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanFRD</value>
+			</li>
+		</namedTexPaths>
+		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanFRD</defaultTexPath>
 		<hairTags>
-		  <li>Urban</li>
-		  <li>Rural</li>
-		  <li>Punk</li>
-		  <li>Tribal</li>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
 		</hairTags>
 	</PawnPlus.Defs.EyeDef>
 
 	<PawnPlus.Defs.EyeDef>
 		<defName>FSHumanFSM</defName>
 		<label>Human Female Small</label>
-		<allowedRaceThingDefs>
-			<li>Human</li>
-		</allowedRaceThingDefs>
 		<hairGender>FemaleUsually</hairGender>
-		<texBasePath>Things/Pawn/Humanlike/Eyes/</texBasePath>
-		<texName>HumanFSM</texName>
-		<closedEyeDef>FSHumanClosed</closedEyeDef>
-		<inPainEyeDef>FSHumanFSM</inPainEyeDef>
-		<missingEyeDef>FSHumanMissing</missingEyeDef>
+		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
+		<representBodyParts>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>left eye</bodyPartLabel>
+			</li>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>right eye</bodyPartLabel>
+			</li>
+		</representBodyParts>
+		<namedTexPaths>
+			<li>
+				<key>Open</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanFSM</value>
+			</li>
+			<li>
+				<key>Closed</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Dead</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Missing</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMissing</value>
+			</li>
+			<li>
+				<key>InPain</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanFSM</value>
+			</li>
+			<li>
+				<key>Aiming</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanFSM</value>
+			</li>
+		</namedTexPaths>
+		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanFSM</defaultTexPath>
 		<hairTags>
-		  <li>Urban</li>
-		  <li>Rural</li>
-		  <li>Punk</li>
-		  <li>Tribal</li>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
 		</hairTags>
 	</PawnPlus.Defs.EyeDef>
 
 	<PawnPlus.Defs.EyeDef>
 		<defName>FSHumanMFL</defName>
 		<label>Human Male Flat</label>
-		<allowedRaceThingDefs>
-			<li>Human</li>
-		</allowedRaceThingDefs>
 		<hairGender>MaleUsually</hairGender>
-		<texBasePath>Things/Pawn/Humanlike/Eyes/</texBasePath>
-		<texName>HumanMFL</texName>
-		<closedEyeDef>FSHumanClosed</closedEyeDef>
-		<inPainEyeDef>FSHumanMFL</inPainEyeDef>
-		<missingEyeDef>FSHumanMissing</missingEyeDef>
+		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
+		<representBodyParts>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>left eye</bodyPartLabel>
+			</li>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>right eye</bodyPartLabel>
+			</li>
+		</representBodyParts>
+		<namedTexPaths>
+			<li>
+				<key>Open</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMFL</value>
+			</li>
+			<li>
+				<key>Closed</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Dead</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Missing</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMissing</value>
+			</li>
+			<li>
+				<key>InPain</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMFL</value>
+			</li>
+			<li>
+				<key>Aiming</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMFL</value>
+			</li>
+		</namedTexPaths>
+		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanMFL</defaultTexPath>
 		<hairTags>
-		  <li>Urban</li>
-		  <li>Rural</li>
-		  <li>Punk</li>
-		  <li>Tribal</li>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
 		</hairTags>
 	</PawnPlus.Defs.EyeDef>
 
 	<PawnPlus.Defs.EyeDef>
 		<defName>FSHumanMOV</defName>
 		<label>Human Male Oval</label>
-		<allowedRaceThingDefs>
-			<li>Human</li>
-		</allowedRaceThingDefs>
 		<hairGender>MaleUsually</hairGender>
-		<texBasePath>Things/Pawn/Humanlike/Eyes/</texBasePath>
-		<texName>HumanMOV</texName>
-		<closedEyeDef>FSHumanClosed</closedEyeDef>
-		<inPainEyeDef>FSHumanMOV</inPainEyeDef>
-		<missingEyeDef>FSHumanMissing</missingEyeDef>
+		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
+		<representBodyParts>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>left eye</bodyPartLabel>
+			</li>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>right eye</bodyPartLabel>
+			</li>
+		</representBodyParts>
+		<namedTexPaths>
+			<li>
+				<key>Open</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMOV</value>
+			</li>
+			<li>
+				<key>Closed</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Dead</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Missing</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMissing</value>
+			</li>
+			<li>
+				<key>InPain</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMOV</value>
+			</li>
+			<li>
+				<key>Aiming</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMOV</value>
+			</li>
+		</namedTexPaths>
+		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanMOV</defaultTexPath>
 		<hairTags>
-		  <li>Urban</li>
-		  <li>Rural</li>
-		  <li>Punk</li>
-		  <li>Tribal</li>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
 		</hairTags>
 	</PawnPlus.Defs.EyeDef>
 
 	<PawnPlus.Defs.EyeDef>
 		<defName>FSHumanMRD</defName>
 		<label>Human Male Round</label>
-		<allowedRaceThingDefs>
-			<li>Human</li>
-		</allowedRaceThingDefs>
 		<hairGender>MaleUsually</hairGender>
-		<texBasePath>Things/Pawn/Humanlike/Eyes/</texBasePath>
-		<texName>HumanMRD</texName>
-		<closedEyeDef>FSHumanClosed</closedEyeDef>
-		<inPainEyeDef>FSHumanMRD</inPainEyeDef>
-		<missingEyeDef>FSHumanMissing</missingEyeDef>
+		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
+		<representBodyParts>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>left eye</bodyPartLabel>
+			</li>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>right eye</bodyPartLabel>
+			</li>
+		</representBodyParts>
+		<namedTexPaths>
+			<li>
+				<key>Open</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMRD</value>
+			</li>
+			<li>
+				<key>Closed</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Dead</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Missing</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMissing</value>
+			</li>
+			<li>
+				<key>InPain</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMRD</value>
+			</li>
+			<li>
+				<key>Aiming</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMRD</value>
+			</li>
+		</namedTexPaths>
+		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanMRD</defaultTexPath>
 		<hairTags>
-		  <li>Urban</li>
-		  <li>Rural</li>
-		  <li>Punk</li>
-		  <li>Tribal</li>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
 		</hairTags>
 	</PawnPlus.Defs.EyeDef>
 
 	<PawnPlus.Defs.EyeDef>
 		<defName>FSHumanMSM</defName>
 		<label>Human Male Small</label>
-		<allowedRaceThingDefs>
-			<li>Human</li>
-		</allowedRaceThingDefs>
 		<hairGender>MaleUsually</hairGender>
-		<texBasePath>Things/Pawn/Humanlike/Eyes/</texBasePath>
-		<texName>HumanMSM</texName>
-		<closedEyeDef>FSHumanClosed</closedEyeDef>
-		<inPainEyeDef>FSHumanMSM</inPainEyeDef>
-		<missingEyeDef>FSHumanMissing</missingEyeDef>
+		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
+		<representBodyParts>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>left eye</bodyPartLabel>
+			</li>
+			<li>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>right eye</bodyPartLabel>
+			</li>
+		</representBodyParts>
+		<namedTexPaths>
+			<li>
+				<key>Open</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMSM</value>
+			</li>
+			<li>
+				<key>Closed</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Dead</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanClosed</value>
+			</li>
+			<li>
+				<key>Missing</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMissing</value>
+			</li>
+			<li>
+				<key>InPain</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMSM</value>
+			</li>
+			<li>
+				<key>Aiming</key>
+				<value>Things/Pawn/Humanlike/Eyes/HumanMSM</value>
+			</li>
+		</namedTexPaths>
+		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanMSM</defaultTexPath>
 		<hairTags>
-		  <li>Urban</li>
-		  <li>Rural</li>
-		  <li>Punk</li>
-		  <li>Tribal</li>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
 		</hairTags>
 	</PawnPlus.Defs.EyeDef>
 

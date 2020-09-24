@@ -8,18 +8,18 @@ namespace PawnPlus.Defs
     {
         public HairGender hairGender;
 
-        public string texBasePath;
-        
-        public List<ThingDef> allowedRaceThingDefs = new List<ThingDef>();
+        public IGraphicProvider graphicProvider;
 
-        public string texName;
+        public List<BodyPartLocator> representBodyParts = new List<BodyPartLocator>();
 
-        public EyeDef closedEyeDef;
+        public Dictionary<string, string> namedTexPaths = new Dictionary<string, string>();
 
-        public EyeDef inPainEyeDef;
-        
-        public EyeDef missingEyeDef;
+        public string defaultTexPath;
 
         public List<string> hairTags = new List<string>();
-    }
+
+        // The following variable is initialized in FacialStuffModBase.DefsLoaded()
+        [Unsaved(false)]
+        public List<BodyDef> _allowedRaceBodyDefs = new List<BodyDef>();
+	}
 }

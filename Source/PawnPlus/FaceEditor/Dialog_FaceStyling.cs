@@ -558,20 +558,19 @@ namespace PawnPlus.FaceEditor
                     tabList.Add(beardTab);
                 }
             }
-            if(CompFace.EyeBehavior.NumEyes > 0)
-            {
-                TabRecord eyeTab = new TabRecord(
-                    "FacialStuffEditor.Eye".Translate(),
-                    delegate { Tab = FaceStyleTab.Eye; }, 
-                    Tab == FaceStyleTab.Eye);
-                tabList.Add(eyeTab);
 
-                TabRecord browTab = new TabRecord(
-                    "FacialStuffEditor.Brow".Translate(),
-                    delegate { Tab = FaceStyleTab.Brow; }, 
-                    Tab == FaceStyleTab.Brow);
-                tabList.Add(browTab);
-            }
+            TabRecord eyeTab = new TabRecord(
+                "FacialStuffEditor.Eye".Translate(),
+                delegate { Tab = FaceStyleTab.Eye; }, 
+                Tab == FaceStyleTab.Eye);
+            tabList.Add(eyeTab);
+
+            TabRecord browTab = new TabRecord(
+                "FacialStuffEditor.Brow".Translate(),
+                delegate { Tab = FaceStyleTab.Brow; }, 
+                Tab == FaceStyleTab.Brow);
+            tabList.Add(browTab);
+
             if(Controller.settings.ShowBodyChange && Current.ProgramState == ProgramState.Playing)
             {
                 TabRecord typeSelectorTab = new TabRecord(
@@ -1301,7 +1300,8 @@ namespace PawnPlus.FaceEditor
 
         private Graphic_FacePart LeftEyeGraphic(EyeDef def)
         {
-            Graphic_FacePart __result;
+            // TODO: implement this after finishing part rendering framework
+            /*Graphic_FacePart __result;
             if (def != null)
             {
                 string path = CompFace.PawnFaceGraphic.EyeTexturePath(def);
@@ -1318,7 +1318,8 @@ namespace PawnPlus.FaceEditor
                 __result = null;
             }
 
-            return __result;
+            return __result;*/
+            return null;
         }
         
         [CanBeNull]
@@ -1344,7 +1345,8 @@ namespace PawnPlus.FaceEditor
 
         private Graphic_FacePart RightEyeGraphic(EyeDef def)
         {
-            Graphic_FacePart graphic;
+            // TODO: implement this after finishing part rendering framework
+            /*Graphic_FacePart graphic;
             if (def != null)
             {
                 string path = CompFace.PawnFaceGraphic.EyeTexturePath(def);
@@ -1360,8 +1362,8 @@ namespace PawnPlus.FaceEditor
             {
                 graphic = null;
             }
-
-            return graphic;
+            return graphic;*/
+            return null;
         }
         
         private void UpdatePawnColors(object type, object newValue)
