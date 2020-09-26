@@ -20,7 +20,7 @@ namespace PawnPlus
 
         #region Protected Constructors
 
-        protected PawnBodyDrawer()
+        public PawnBodyDrawer()
         {
         }
 
