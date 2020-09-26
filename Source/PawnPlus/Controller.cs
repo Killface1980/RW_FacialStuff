@@ -11,7 +11,7 @@ namespace PawnPlus
 {
     public class Controller : Mod
     {
-        private const string modName = "Facial Stuff";
+        private const string modName = "Pawn Plus";
         public const string HardCoreSkFile = "/HardCore.SK";
 
         // ReSharper disable once InconsistentNaming
