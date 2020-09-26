@@ -56,11 +56,13 @@
 				<headRotationRate>10</headRotationRate>
 			</headBehavior>
 			
-			<eyeBehavior Class = "PawnPlus.AI.HumanEyeBehavior">
-				<blinkCloseTicks>10</blinkCloseTicks>
-				<blinkOpenAverageTicks>120</blinkOpenAverageTicks>
-				<blinkOpenMaxRandOffsetTicks>30</blinkOpenMaxRandOffsetTicks>
-			</eyeBehavior>
+			<partBehaviors>
+				<li Class = "PawnPlus.AI.HumanEyeBehavior">
+					<blinkCloseTicks>10</blinkCloseTicks>
+					<blinkOpenAverageTicks>120</blinkOpenAverageTicks>
+					<blinkOpenMaxRandOffsetTicks>30</blinkOpenMaxRandOffsetTicks>
+				</li>
+			</partBehaviors>
 			
 			<!-- 
 			This determines what mouth texture is displayed under what circumstances 

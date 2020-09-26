@@ -26,7 +26,7 @@ namespace PawnPlus
 
         public IMouthBehavior mouthBehavior;
         
-        public IEyeBehavior eyeBehavior;
+        public List<IEyeBehavior> partBehaviors;
 
         public CompProperties_Face()
         {

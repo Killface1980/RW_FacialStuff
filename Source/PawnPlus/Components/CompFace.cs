@@ -31,19 +31,10 @@ namespace PawnPlus
             public RenderParam[] renderParams;
         }
 
-        private class HediffChangeEvent
+		private struct BehaviorData
 		{
-            public enum Type
-			{
-                PartRestored,
-                PartLost, // This indicates addition of Hediff_Removed hediff
-                HediffGained,
-                HediffLost
-			}
-
-            public HediffChangeEvent.Type eventType;
-            public int bodyPartIndex;
-            public Hediff hediff;
+            public IEyeBehavior behavior;
+            public Dictionary<int, Queue<PartSignal>> signalSinks;
         }
         
         private IReadOnlyDictionary<int, BodyPartData> _perBodyPartData;
@@ -56,8 +47,7 @@ namespace PawnPlus
         private PawnState _pawnState;
         private IHeadBehavior _headBehavior;
         private IMouthBehavior _mouthBehavior;
-        private IEyeBehavior _eyeBehavior;
-        private Dictionary<int, Queue<PartSignal>> _eyeBehaviorSignalSinks = new Dictionary<int, Queue<PartSignal>>();
+        private List<BehaviorData> _partBehaviors;
         // Used for distance culling of face details
         private GameComponent_FacialStuff _fsGameComp;
         
@@ -186,7 +176,6 @@ namespace PawnPlus
                             Controller.settings.UseMouth)
                         {
                             Vector3 mouthLoc = headPos;
-                            mouthLoc.y += YOffset_Mouth;
                             DrawMouth(mouthLoc, headFacing, headQuat, portrait);
                         }
                         if(headFacing != Rot4.North)
@@ -363,10 +352,15 @@ namespace PawnPlus
             {
                 _mouthBehavior = (IMouthBehavior)Props.mouthBehavior.Clone();
             }
-            if(_eyeBehavior == null)
+            _partBehaviors = new List<BehaviorData>(Props.partBehaviors.Count);
+            for(int i = 0; i < Props.partBehaviors.Count; ++i)
 			{
-                _eyeBehavior = (IEyeBehavior)Props.eyeBehavior.Clone();
-            }
+				_partBehaviors[i] = new BehaviorData()
+				{ 
+                    behavior = (IEyeBehavior)Props.partBehaviors[i],
+                    signalSinks = new Dictionary<int, Queue<PartSignal>>()
+                };
+			}
             _pawnState = new PawnState(Pawn);
             _perPartStatus = new BodyPartStatus[Pawn.RaceProps.body.AllParts.Count];
         }
@@ -429,17 +423,21 @@ namespace PawnPlus
             // Make the dictionary unmodifiable
             _perBodyPartData = perBodyPartData;
 
-            _eyeBehavior.Initialize(Pawn.RaceProps.body, out List<int> usedBodyPartIndices);
-            if(usedBodyPartIndices != null)
-            {
-                foreach(int bodyPartIndex in usedBodyPartIndices)
-				{
-                    if(bodyPartIndex >= 0 && _perBodyPartData.ContainsKey(bodyPartIndex))
-					{
-                        _eyeBehaviorSignalSinks.Add(bodyPartIndex, _perBodyPartData[bodyPartIndex].signals);
+            foreach(var partBehavior in _partBehaviors)
+			{
+                partBehavior.behavior.Initialize(Pawn.RaceProps.body, out List<int> usedBodyPartIndices);
+                if(usedBodyPartIndices != null)
+                {
+                    foreach(int bodyPartIndex in usedBodyPartIndices)
+                    {
+                        if(bodyPartIndex >= 0 && _perBodyPartData.ContainsKey(bodyPartIndex))
+                        {
+                            partBehavior.signalSinks.Add(bodyPartIndex, _perBodyPartData[bodyPartIndex].signals);
+                        }
                     }
                 }
             }
+            
 
             _pawnState.UpdateState();
             // Update the graphic providers to get the portrait graphic
@@ -467,7 +465,10 @@ namespace PawnPlus
                 {
                     _pawnState.UpdateState();
                     HeadBehavior.Update(Pawn, _pawnState, out _cachedHeadFacing);
-                    _eyeBehavior.Update(Pawn, _pawnState, _eyeBehaviorSignalSinks);
+                    foreach(var partBehavior in _partBehaviors)
+					{
+                        partBehavior.behavior.Update(Pawn, _pawnState, partBehavior.signalSinks);
+					}
                     UpdateGraphicProviders(out bool updatePortrait);
                     if(updatePortrait)
 					{
@@ -589,7 +590,7 @@ namespace PawnPlus
             Scribe_Deep.Look(ref this._faceData, "pawnFace");
             Scribe_Deep.Look(ref _headBehavior, "headBehavior");
             Scribe_Deep.Look(ref _mouthBehavior, "mouthBehavior");
-            Scribe_Deep.Look(ref _eyeBehavior, "eyeBehavior");
+            Scribe_Collections.Look(ref _partBehaviors, "partBehaviors");
         }
     }
 }
