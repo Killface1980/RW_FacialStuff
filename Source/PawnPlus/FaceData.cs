@@ -16,7 +16,7 @@ namespace PawnPlus
 
         private BeardDef _beardDef;
         private BrowDef _browDef;
-        private EyeDef _eyeDef;
+        private PartDef _eyeDef;
         private MoustacheDef _moustacheDef;
         private WrinkleDef _wrinkleDef;
         private Color _hairColor;
@@ -85,7 +85,7 @@ namespace PawnPlus
             set => this._euMelanin = value;
         }
 
-        public EyeDef EyeDef
+        public PartDef EyeDef
         {
             get => this._eyeDef;
             set => this._eyeDef = value;

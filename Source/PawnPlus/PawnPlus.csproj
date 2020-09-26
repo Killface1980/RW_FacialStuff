@@ -118,7 +118,7 @@
     <Compile Include="Defs\Export\PoseCycleDef_Export.cs" />
     <Compile Include="Defs\Export\WalkCycleDef_Export.cs" />
     <Compile Include="Defs\Export\WeaponExtensionDef_Export.cs" />
-    <Compile Include="Defs\EyeDef.cs" />
+    <Compile Include="Defs\PartDef.cs" />
     <Compile Include="Defs\EyeRenderDef.cs" />
     <Compile Include="Defs\HeadRenderDef.cs" />
     <Compile Include="Defs\MeshDef.cs" />

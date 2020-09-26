@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-	<PawnPlus.Defs.EyeDef>
+	<PawnPlus.Defs.PartDef>
 		<defName>FSHumanFFL</defName>
 		<label>Human Female Flat</label>
 		<hairGender>FemaleUsually</hairGender>
@@ -64,9 +64,9 @@
 			<li>Punk</li>
 			<li>Tribal</li>
 		</hairTags>
-	</PawnPlus.Defs.EyeDef>
+	</PawnPlus.Defs.PartDef>
   
-	<PawnPlus.Defs.EyeDef>
+	<PawnPlus.Defs.PartDef>
 		<defName>FSHumanFOV</defName>
 		<label>Human Female Oval</label>
 		<hairGender>FemaleUsually</hairGender>
@@ -116,9 +116,9 @@
 			<li>Punk</li>
 			<li>Tribal</li>
 		</hairTags>
-	</PawnPlus.Defs.EyeDef>
+	</PawnPlus.Defs.PartDef>
   
-	<PawnPlus.Defs.EyeDef>
+	<PawnPlus.Defs.PartDef>
 		<defName>FSHumanFRD</defName>
 		<label>Human Female Round</label>
 		<hairGender>FemaleUsually</hairGender>
@@ -168,9 +168,9 @@
 			<li>Punk</li>
 			<li>Tribal</li>
 		</hairTags>
-	</PawnPlus.Defs.EyeDef>
+	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.EyeDef>
+	<PawnPlus.Defs.PartDef>
 		<defName>FSHumanFSM</defName>
 		<label>Human Female Small</label>
 		<hairGender>FemaleUsually</hairGender>
@@ -220,9 +220,9 @@
 			<li>Punk</li>
 			<li>Tribal</li>
 		</hairTags>
-	</PawnPlus.Defs.EyeDef>
+	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.EyeDef>
+	<PawnPlus.Defs.PartDef>
 		<defName>FSHumanMFL</defName>
 		<label>Human Male Flat</label>
 		<hairGender>MaleUsually</hairGender>
@@ -272,9 +272,9 @@
 			<li>Punk</li>
 			<li>Tribal</li>
 		</hairTags>
-	</PawnPlus.Defs.EyeDef>
+	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.EyeDef>
+	<PawnPlus.Defs.PartDef>
 		<defName>FSHumanMOV</defName>
 		<label>Human Male Oval</label>
 		<hairGender>MaleUsually</hairGender>
@@ -324,9 +324,9 @@
 			<li>Punk</li>
 			<li>Tribal</li>
 		</hairTags>
-	</PawnPlus.Defs.EyeDef>
+	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.EyeDef>
+	<PawnPlus.Defs.PartDef>
 		<defName>FSHumanMRD</defName>
 		<label>Human Male Round</label>
 		<hairGender>MaleUsually</hairGender>
@@ -376,9 +376,9 @@
 			<li>Punk</li>
 			<li>Tribal</li>
 		</hairTags>
-	</PawnPlus.Defs.EyeDef>
+	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.EyeDef>
+	<PawnPlus.Defs.PartDef>
 		<defName>FSHumanMSM</defName>
 		<label>Human Male Small</label>
 		<hairGender>MaleUsually</hairGender>
@@ -428,6 +428,6 @@
 			<li>Punk</li>
 			<li>Tribal</li>
 		</hairTags>
-	</PawnPlus.Defs.EyeDef>
+	</PawnPlus.Defs.PartDef>
 
 </Defs>

@@ -4,7 +4,7 @@ using Verse;
 
 namespace PawnPlus.Defs
 {
-    public class EyeDef : Def
+    public class PartDef : Def
     {
         public HairGender hairGender;
 
@@ -18,8 +18,12 @@ namespace PawnPlus.Defs
 
         public List<string> hairTags = new List<string>();
 
-        // The following variable is initialized in FacialStuffModBase.DefsLoaded()
+        // The following variables are initialized in FacialStuffModBase.DefsLoaded()
+
         [Unsaved(false)]
         public List<BodyDef> _allowedRaceBodyDefs = new List<BodyDef>();
+
+        [Unsaved(false)]
+        public static HashSet<PartDef> _eyePartDefs =  new HashSet<PartDef>();
 	}
 }

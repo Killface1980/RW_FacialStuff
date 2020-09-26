@@ -393,20 +393,22 @@ namespace PawnPlus.Utilities
             return source.RandomElementByWeight(brow => BrowChoiceLikelihoodFor(brow, pawn));
         }
 
-        public static EyeDef RandomEyeDefFor(Pawn pawn, FactionDef factionType, CompProperties_Face faceProp)
+        public static PartDef RandomEyeDefFor(Pawn pawn, FactionDef factionType, CompProperties_Face faceProp)
         {
-            IEnumerable<EyeDef> source = 
-                from eyeDef in DefDatabase<EyeDef>.AllDefs
+            IEnumerable<PartDef> source = 
+                from partDef in PartDef._eyePartDefs
                 where
-                    eyeDef.hairTags.SharesElementWith(factionType.hairTags) &&
-                    eyeDef._allowedRaceBodyDefs.Contains(pawn.RaceProps.body)
-                select eyeDef;
+                    partDef.hairTags.SharesElementWith(factionType.hairTags) &&
+                    partDef._allowedRaceBodyDefs.Contains(pawn.RaceProps.body)
+                select partDef;
 
             if(!source.Any())
             {
-                source = from eye in DefDatabase<EyeDef>.AllDefs select eye;
+                source = from eye in DefDatabase<PartDef>.AllDefs select eye;
             }
-            return source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn));
+            return source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn)
+            
+            );
         }
 
         private static float BeardChoiceLikelihoodFor([NotNull] BeardDef beard, Pawn pawn)
@@ -507,7 +509,7 @@ namespace PawnPlus.Utilities
             return 0f;
         }
 
-        private static float EyeChoiceLikelihoodFor(EyeDef eye, [NotNull] Pawn pawn)
+        private static float EyeChoiceLikelihoodFor(PartDef eye, [NotNull] Pawn pawn)
         {
             if (pawn.gender == Gender.None)
             {

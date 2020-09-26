@@ -50,7 +50,7 @@ namespace PawnPlus.FaceEditor
             Widgets.EndScrollView();
         }
 
-        private void DrawEyePickerCell(EyeDef eye, Rect rect)
+        private void DrawEyePickerCell(PartDef eye, Rect rect)
         {
             Widgets.DrawBoxSolid(rect, DarkBackground);
 

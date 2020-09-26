@@ -115,7 +115,7 @@ namespace PawnPlus.FaceEditor
 
         private static List<string> _currentFilter = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
 
-        private static List<EyeDef> _eyeDefs;
+        private static List<PartDef> _eyeDefs;
 
         private static List<HairDef> _hairDefs;
 
@@ -145,7 +145,7 @@ namespace PawnPlus.FaceEditor
 
         private readonly CrownType _originalCrownType;
 
-        private readonly EyeDef _originalEye;
+        private readonly PartDef _originalEye;
 
         private readonly HairDef _originalHair;
 
@@ -167,7 +167,7 @@ namespace PawnPlus.FaceEditor
 
         private BrowDef _newBrow;
 
-        private EyeDef _newEye;
+        private PartDef _newEye;
 
         private HairDef _newHair;
 
@@ -204,7 +204,7 @@ namespace PawnPlus.FaceEditor
                                                                                 x => x.hairTags
                                                                                       .SharesElementWith(VanillaHairTags) && !x.IsBeardNotHair());
 
-            _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
+            _eyeDefs = DefDatabase<PartDef>.AllDefsListForReading;
             FullBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType == BeardType.FullBeard)
                                                  .ToList();
             LowerBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType != BeardType.FullBeard)
@@ -431,7 +431,7 @@ namespace PawnPlus.FaceEditor
             }
         }
 
-        private EyeDef NewEye
+        private PartDef NewEye
         {
             get => this._newEye;
 
@@ -909,7 +909,7 @@ namespace PawnPlus.FaceEditor
                             (x.hairGender == HairGender.Male || 
                             x.hairGender == HairGender.MaleUsually && 
                             !x.IsBeardNotHair()));
-                    _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
+                    _eyeDefs = DefDatabase<PartDef>.AllDefsListForReading.FindAll(
                         x => x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually);
                     BrowDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
                         x => x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually);
@@ -919,7 +919,7 @@ namespace PawnPlus.FaceEditor
                     HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                         x => x.hairTags.SharesElementWith(VanillaHairTags) && 
                             (x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually && !x.IsBeardNotHair()));
-                    _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
+                    _eyeDefs = DefDatabase<PartDef>.AllDefsListForReading.FindAll(
                         x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
                     BrowDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
                         x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
@@ -1298,7 +1298,7 @@ namespace PawnPlus.FaceEditor
             return graphic;
         }
 
-        private Graphic_FacePart LeftEyeGraphic(EyeDef def)
+        private Graphic_FacePart LeftEyeGraphic(PartDef def)
         {
             // TODO: implement this after finishing part rendering framework
             /*Graphic_FacePart __result;
@@ -1343,7 +1343,7 @@ namespace PawnPlus.FaceEditor
             return graphic;
         }
 
-        private Graphic_FacePart RightEyeGraphic(EyeDef def)
+        private Graphic_FacePart RightEyeGraphic(PartDef def)
         {
             // TODO: implement this after finishing part rendering framework
             /*Graphic_FacePart graphic;
@@ -1399,8 +1399,8 @@ namespace PawnPlus.FaceEditor
                 case MoustacheDef _:
                     this.PawnFace.MoustacheDef = (MoustacheDef)newValue;
                     break;
-                case EyeDef _:
-                    this.PawnFace.EyeDef = (EyeDef)newValue;
+                case PartDef _:
+                    this.PawnFace.EyeDef = (PartDef)newValue;
                     break;
                 case BrowDef _:
                     this.PawnFace.BrowDef = (BrowDef)newValue;
