@@ -383,6 +383,26 @@ namespace PawnPlus
                 FaceData = new FaceData(this, OriginFaction?.def);
             }
             _pawnState.UpdateState();
+
+            foreach(var partBehavior in _partBehaviors)
+            {
+                partBehavior.behavior.Initialize(Pawn.RaceProps.body, out List<int> usedBodyPartIndices);
+                if(usedBodyPartIndices == null)
+                {
+                    continue;
+                }
+                foreach(int bodyPartIdx in usedBodyPartIndices)
+                {
+                    if(_bodyPartSignals[bodyPartIdx] == null)
+                    {
+                        _bodyPartSignals[bodyPartIdx] = new List<PartSignal>();
+                    }
+                    if(!partBehavior.signalSinks.ContainsKey(bodyPartIdx))
+                    {
+                        partBehavior.signalSinks.Add(bodyPartIdx, _bodyPartSignals[bodyPartIdx]);
+                    }
+                }
+            }
             
             HeadRenderDef.GetCachedHeadRenderParams(
                 Pawn.RaceProps.body,
@@ -390,6 +410,12 @@ namespace PawnPlus
                 out Dictionary<int, RenderParam[]> eyeRenderParams,
                 out _mouthRenderParams);
 
+            if(Props.partGenHelper == null)
+			{
+                Log.Error("Facial Stuff: partGenHelper in CompProperties_Face can't be null. No parts will be generated.");
+                return;
+			}
+            Props.partGenHelper.PartsPreGeneration(Pawn);
             List<PartData> perPartData = new List<PartData>();
             foreach(string category in PartDef.GetCategoriesInRace(Pawn.RaceProps.body))
 			{
@@ -398,7 +424,11 @@ namespace PawnPlus
 				{
                     continue;
 				}
-                PartDef partDef = parts.RandomElementByWeight(p => PartGenHelper.PartChoiceLikelyhoodFor(p.hairGender, Pawn.gender));
+                PartDef partDef = Props.partGenHelper.GeneratePartInCategory(Pawn, category, parts);
+                if(partDef == null)
+				{
+                    continue;
+				}
                 foreach(var linkedBodypart in partDef.linkedBodyParts)
                 {
                     PartData partData = new PartData();
@@ -416,26 +446,7 @@ namespace PawnPlus
                 }
             }
             _perPartData = perPartData;
-            
-            foreach(var partBehavior in _partBehaviors)
-			{
-                partBehavior.behavior.Initialize(Pawn.RaceProps.body, out List<int> usedBodyPartIndices);
-                if(usedBodyPartIndices == null)
-                {
-                    continue;
-                }
-                foreach(int bodyPartIdx in usedBodyPartIndices)
-				{
-                    if(_bodyPartSignals[bodyPartIdx] == null)
-					{
-                        _bodyPartSignals[bodyPartIdx] = new List<PartSignal>();
-                    }
-					if(!partBehavior.signalSinks.ContainsKey(bodyPartIdx))
-					{
-                        partBehavior.signalSinks.Add(bodyPartIdx, _bodyPartSignals[bodyPartIdx]);
-                    }
-				}
-            }
+            Props.partGenHelper.PartsPostGeneration(Pawn);
 
             // Update the graphic providers to get the portrait graphic
             UpdateGraphicProviders(out bool updatePortrait);

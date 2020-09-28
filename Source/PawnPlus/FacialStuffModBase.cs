@@ -41,6 +41,11 @@ namespace PawnPlus
 			var partDefs = DefDatabase<PartDef>.AllDefsListForReading;
 			foreach(var partDef in partDefs)
 			{
+				if(partDef.raceBodyDef == null)
+				{
+					Log.Warning("Facial Stuff: <raceBodyDef> property in PartDef " + partDef.defName + " is null. The PartDef will be ignored.");
+					continue;
+				}
 				if(!PartDef._allParts.TryGetValue(partDef.raceBodyDef, out Dictionary<string, List<PartDef>> partsInRace))
 				{
 					partsInRace = new Dictionary<string, List<PartDef>>();

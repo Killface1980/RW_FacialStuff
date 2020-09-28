@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<PawnPlus.Defs.PartDef Abstract="True">
-		<defName>FSHumanEyeBase</defName>
+	<PawnPlus.Defs.PartDef Name="FSHumanEyeBase" Abstract="True">
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -37,7 +36,7 @@
 		</linkedBodyParts>
 	</PawnPlus.Defs.PartDef>
 	
-	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
+	<PawnPlus.Defs.PartDef Name="FSHumanFFL" ParentName="FSHumanEyeBase">
 		<defName>FSHumanFFL</defName>
 		<label>Human Female Flat</label>
 		<hairGender>FemaleUsually</hairGender>
@@ -77,7 +76,7 @@
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanFFL</defaultTexPath>
 	</PawnPlus.Defs.PartDef>
   
-	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
+	<PawnPlus.Defs.PartDef Name="FSHumanFOV" ParentName="FSHumanEyeBase">
 		<defName>FSHumanFOV</defName>
 		<label>Human Female Oval</label>
 		<hairGender>FemaleUsually</hairGender>
@@ -110,7 +109,7 @@
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanFOV</defaultTexPath>
 	</PawnPlus.Defs.PartDef>
   
-	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
+	<PawnPlus.Defs.PartDef Name="FSHumanFRD" ParentName="FSHumanEyeBase">
 		<defName>FSHumanFRD</defName>
 		<label>Human Female Round</label>
 		<hairGender>FemaleUsually</hairGender>
@@ -143,7 +142,7 @@
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanFRD</defaultTexPath>
 	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
+	<PawnPlus.Defs.PartDef Name="FSHumanFSM" ParentName="FSHumanEyeBase">
 		<defName>FSHumanFSM</defName>
 		<label>Human Female Small</label>
 		<hairGender>FemaleUsually</hairGender>
@@ -176,7 +175,7 @@
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanFSM</defaultTexPath>
 	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
+	<PawnPlus.Defs.PartDef Name="FSHumanMFL" ParentName="FSHumanEyeBase">
 		<defName>FSHumanMFL</defName>
 		<label>Human Male Flat</label>
 		<hairGender>MaleUsually</hairGender>
@@ -209,7 +208,7 @@
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanMFL</defaultTexPath>
 	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
+	<PawnPlus.Defs.PartDef Name="FSHumanMOV" ParentName="FSHumanEyeBase">
 		<defName>FSHumanMOV</defName>
 		<label>Human Male Oval</label>
 		<hairGender>MaleUsually</hairGender>
@@ -242,7 +241,7 @@
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanMOV</defaultTexPath>
 	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
+	<PawnPlus.Defs.PartDef Name="FSHumanMRD" ParentName="FSHumanEyeBase">
 		<defName>FSHumanMRD</defName>
 		<label>Human Male Round</label>
 		<hairGender>MaleUsually</hairGender>
@@ -275,7 +274,7 @@
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanMRD</defaultTexPath>
 	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
+	<PawnPlus.Defs.PartDef Name="FSHumanMSM" ParentName="FSHumanEyeBase">
 		<defName>FSHumanMSM</defName>
 		<label>Human Male Small</label>
 		<hairGender>MaleUsually</hairGender>
