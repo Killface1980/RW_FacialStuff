@@ -355,11 +355,11 @@ namespace PawnPlus
             _partBehaviors = new List<BehaviorData>(Props.partBehaviors.Count);
             for(int i = 0; i < Props.partBehaviors.Count; ++i)
 			{
-				_partBehaviors[i] = new BehaviorData()
+				_partBehaviors.Add(new BehaviorData()
 				{ 
                     behavior = (IEyeBehavior)Props.partBehaviors[i],
                     signalSinks = new Dictionary<int, Queue<PartSignal>>()
-                };
+                });
 			}
             _pawnState = new PawnState(Pawn);
             _perPartStatus = new BodyPartStatus[Pawn.RaceProps.body.AllParts.Count];
