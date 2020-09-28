@@ -15,17 +15,17 @@
 					-->
 					<rotation>South</rotation>
 					<meshDef>FSMouthAverage</meshDef>
-					<offset>(0, -0.1875)</offset>
+					<offset>(0, 0.002, -0.1875)</offset>
 				</li>
 				<li>
 					<rotation>East</rotation>
 					<meshDef>FSMouthAverage</meshDef>
-					<offset>(0.1992, -0.1875)</offset>
+					<offset>(0.1992, 0.002, -0.1875)</offset>
 				</li>
 				<li>
 					<rotation>West</rotation>
 					<meshDef>FSMouthAverage_m</meshDef>
-					<offset>(-0.1992, -0.1875)</offset>
+					<offset>(-0.1992, 0.002, -0.1875)</offset>
 				</li>
 			</perRotation>
 		</part>
@@ -38,17 +38,17 @@
 				<li>
 					<rotation>South</rotation>
 					<meshDef>FSMouthNarrow</meshDef>
-					<offset>(0, -0.1875)</offset>
+					<offset>(0, 0.002, -0.1875)</offset>
 				</li>
 				<li>
 					<rotation>East</rotation>
 					<meshDef>FSMouthAverage</meshDef>
-					<offset>(0.1054, -0.1875)</offset>
+					<offset>(0.1054, 0.002, -0.1875)</offset>
 				</li>
 				<li>
 					<rotation>West</rotation>
 					<meshDef>FSMouthAverage_m</meshDef>
-					<offset>(-0.1054, -0.1875)</offset>
+					<offset>(-0.1054, 0.002, -0.1875)</offset>
 				</li>
 			</perRotation>
 		</part>
@@ -61,17 +61,17 @@
 				<li>
 					<rotation>South</rotation>
 					<meshDef>FSMouthAverage</meshDef>
-					<offset>(0, -0.1875)</offset>
+					<offset>(0, 0.002, -0.1875)</offset>
 				</li>
 				<li>
 					<rotation>East</rotation>
 					<meshDef>FSMouthAverage</meshDef>
-					<offset>(0.1699, -0.1875)</offset>
+					<offset>(0.1699, 0.002, -0.1875)</offset>
 				</li>
 				<li>
 					<rotation>West</rotation>
 					<meshDef>FSMouthAverage_m</meshDef>
-					<offset>(-0.1699, -0.1875)</offset>
+					<offset>(-0.1699, 0.002, -0.1875)</offset>
 				</li>
 			</perRotation>
 		</part>
@@ -84,17 +84,17 @@
 				<li>
 					<rotation>South</rotation>
 					<meshDef>FSMouthAverage</meshDef>
-					<offset>(0, -0.1875)</offset>
+					<offset>(0, 0.002, -0.1875)</offset>
 				</li>
 				<li>
 					<rotation>East</rotation>
 					<meshDef>FSMouthAverage</meshDef>
-					<offset>(0.1465, -0.1875)</offset>
+					<offset>(0.1465, 0.002, -0.1875)</offset>
 				</li>
 				<li>
 					<rotation>West</rotation>
 					<meshDef>FSMouthAverage_m</meshDef>
-					<offset>(-0.1465, -0.1875)</offset>
+					<offset>(-0.1465, 0.002, -0.1875)</offset>
 				</li>
 			</perRotation>
 		</part>
