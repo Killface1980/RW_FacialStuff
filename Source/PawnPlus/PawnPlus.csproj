@@ -188,7 +188,7 @@
     <Compile Include="Harmony\HarmonyPatch_Pawn_InteractionsTracker.cs" />
     <Compile Include="Harmony\HarmonyPatch_ShaderUtility.cs" />
     <Compile Include="HumanEyeGraphicProvider.cs" />
-    <Compile Include="IEyeBehavior.cs" />
+    <Compile Include="IPartBehavior.cs" />
     <Compile Include="IGraphicProvider.cs" />
     <Compile Include="IHeadBehavior.cs" />
     <Compile Include="IMouthBehavior.cs" />

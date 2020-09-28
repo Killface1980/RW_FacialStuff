@@ -26,7 +26,7 @@ namespace PawnPlus
 
         public IMouthBehavior mouthBehavior;
         
-        public List<IEyeBehavior> partBehaviors;
+        public List<IPartBehavior> partBehaviors;
 
         public PartGenHelper partGenHelper;
 

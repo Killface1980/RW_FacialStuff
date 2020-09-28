@@ -8,7 +8,7 @@ using Verse;
 
 namespace PawnPlus.AI
 {
-	class HumanEyeBehavior : IEyeBehavior
+	class HumanEyeBehavior : IPartBehavior
 	{
 		public class BlinkPartSignalArg : PartSignalArg
 		{

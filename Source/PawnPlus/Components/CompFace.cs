@@ -34,7 +34,7 @@ namespace PawnPlus
 
 		private struct BehaviorData
 		{
-            public IEyeBehavior behavior;
+            public IPartBehavior behavior;
             public Dictionary<int, List<PartSignal>> signalSinks;
         }
         
@@ -361,7 +361,7 @@ namespace PawnPlus
 			{
 				_partBehaviors.Add(new BehaviorData()
 				{ 
-                    behavior = (IEyeBehavior)Props.partBehaviors[i].Clone(),
+                    behavior = (IPartBehavior)Props.partBehaviors[i].Clone(),
                     signalSinks = new Dictionary<int, List<PartSignal>>()
                 });
 			}
