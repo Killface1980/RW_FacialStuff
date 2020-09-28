@@ -57,20 +57,19 @@ namespace PawnPlus.Defs
                             // TODO log
                             continue;
 						}
-                        bodyPartLocator.bodyDef = bodyDef;
-                        bodyPartLocator.LocateBodyPart();
-                        if(bodyPartLocator.resolvedPartIndex < 0)
+                        bodyPartLocator.LocateBodyPart(bodyDef);
+                        if(bodyPartLocator._resolvedPartIndex < 0)
 						{
                             // TODO log
                             continue;
 						}
                         partRender.BuildRenderParamCache();
                         RenderParam[] renderParams = partRender._cachedRenderParam;
-                        if(!headRenderDef._cachedEyeRenderParam.ContainsKey(bodyPartLocator.resolvedPartIndex))
+                        if(!headRenderDef._cachedEyeRenderParam.ContainsKey(bodyPartLocator._resolvedPartIndex))
 						{
-                            headRenderDef._cachedEyeRenderParam.Add(bodyPartLocator.resolvedPartIndex, null);
+                            headRenderDef._cachedEyeRenderParam.Add(bodyPartLocator._resolvedPartIndex, null);
                         }
-                        headRenderDef._cachedEyeRenderParam[bodyPartLocator.resolvedPartIndex] = renderParams;
+                        headRenderDef._cachedEyeRenderParam[bodyPartLocator._resolvedPartIndex] = renderParams;
                     }
                 }
                 else

@@ -41,19 +41,28 @@ namespace PawnPlus
 			var partDefs = DefDatabase<PartDef>.AllDefsListForReading;
 			foreach(var partDef in partDefs)
 			{
-				bool isEye = false;
-				foreach(BodyPartLocator partLocator in partDef.representBodyParts)
+				foreach(var pair in partDef.raceSettings)
 				{
-					partLocator.LocateBodyPart();
-					if(!partDef._allowedRaceBodyDefs.Contains(partLocator.bodyDef))
+					BodyDef bodyDef = pair.Key;
+					PartDef.PartInfo partInfo = pair.Value;
+
+					if(!PartDef._allParts.TryGetValue(bodyDef, out Dictionary<string, List<PartDef.PartInfo>> partsInRace))
 					{
-						partDef._allowedRaceBodyDefs.Add(partLocator.bodyDef);
-						isEye |= partLocator.resolvedBodyPartRecord.groups.Contains(BodyPartGroupDefOf.Eyes);
+						partsInRace = new Dictionary<string, List<PartDef.PartInfo>>();
+						PartDef._allParts.Add(bodyDef, partsInRace);
 					}
-				}
-				if(isEye)
-				{
-					PartDef._eyePartDefs.Add(partDef);
+					if(!partsInRace.TryGetValue(partInfo.category, out List<PartDef.PartInfo> partsInCategory))
+					{
+						partsInCategory = new List<PartDef.PartInfo>();
+						partsInRace.Add(partInfo.category, partsInCategory);
+					}
+					partsInCategory.Add(partInfo);
+
+					foreach(var bodyPartParam in pair.Value.linkedBodyParts)
+					{
+						bodyPartParam.bodyPartLocator._parentPartDef = partDef;
+						bodyPartParam.bodyPartLocator.LocateBodyPart(pair.Key);
+					}
 				}
 			}
 		}

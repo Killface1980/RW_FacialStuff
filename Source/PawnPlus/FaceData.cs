@@ -41,7 +41,6 @@ namespace PawnPlus
                 pawnFactionDef = FactionDefOf.PlayerColony;
             }
             
-            EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, pawnFactionDef, face.Props);
             BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, pawnFactionDef);
             MouthSetDef = PawnFaceMaker.RandomMouthDefFor(pawn, face.Props, pawnFactionDef);
             WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn);

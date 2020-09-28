@@ -13,14 +13,15 @@ namespace PawnPlus
 {
 	class HumanEyeGraphicProvider : IGraphicProvider
 	{
+		public bool closeWhenAiming = false;
+		public Vector3 additionalOffset = new Vector3(0f, 0f, 0f);
+
 		private Graphic _open;
 		private Graphic _closed;
 		private Graphic _dead;
 		private Graphic _missing;
 		private Graphic _inPain;
 		private Graphic _aiming;
-		private bool _isLeftEye;
-		private bool _isMissing = false;
 		private int _eyeBlinkEndTick = 0;
 
 		public void Initialize(
@@ -30,7 +31,6 @@ namespace PawnPlus
 			string defaultTexPath, 
 			Dictionary<string, string> namedTexPaths)
 		{
-			_isLeftEye = bodyPartRecord.untranslatedCustomLabel == "left eye";
 			Graphic defaultGraphic = GraphicDatabase.Get<Graphic_Multi>(
 				defaultTexPath,
 				Shaders.FacePart);
@@ -69,13 +69,14 @@ namespace PawnPlus
 			PawnState pawnState,
 			in BodyPartStatus partStatus,
 			out Graphic graphic, 
-			out Graphic portraitGraphic, 
+			out Graphic portraitGraphic,
+			ref Vector3 additionalOffset, 
 			ref bool updatePortrait, 
-			Queue<PartSignal> partSignals)
+			IReadOnlyList<PartSignal> partSignals)
 		{
-			while(partSignals.Count > 0)
+			for(int i = 0; i < partSignals.Count; ++i)
 			{
-				PartSignal signal = partSignals.Dequeue();
+				PartSignal signal = partSignals[i];
 				if(signal.type == PartSignalType.EyeBlink)
 				{
 					if(signal.argument is HumanEyeBehavior.BlinkPartSignalArg signalArg)
@@ -84,6 +85,7 @@ namespace PawnPlus
 					}
 				}
 			}
+			additionalOffset = this.additionalOffset;
 			// TODO check if portrait cache refresh is needed
 			if(!pawnState.Alive)
 			{
@@ -91,7 +93,7 @@ namespace PawnPlus
 				portraitGraphic = _dead;
 				return;
 			}
-			if(_isMissing)
+			if(partStatus.missing)
 			{
 				graphic = _missing;
 				portraitGraphic = _missing;
@@ -103,7 +105,7 @@ namespace PawnPlus
 				graphic = _closed;
 				return;
 			}
-			if(pawnState.Aiming && _isLeftEye)
+			if(pawnState.Aiming && closeWhenAiming)
 			{
 				graphic = _aiming;
 				return;
@@ -114,27 +116,6 @@ namespace PawnPlus
 				return;
 			}
 			graphic = _open;
-		}
-
-		public void OnBodyPartHediffGained(Hediff hediff)
-		{
-			if(hediff is Hediff_MissingPart)
-			{
-				_isMissing = true;
-			}
-		}
-
-		public void OnBodyPartHediffLost(Hediff hediff)
-		{
-			if(hediff is Hediff_MissingPart)
-			{
-				_isMissing = false;
-			}
-		}
-
-		public void OnBodyPartRestored()
-		{
-			_isMissing = false;
 		}
 
 		public object Clone()

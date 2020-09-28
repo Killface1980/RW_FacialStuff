@@ -21,24 +21,26 @@ namespace PawnPlus
     {
         public FaceGraphic PawnFaceGraphic;
 
-        private class BodyPartData
+        private class PartData
         {
+            public int bodyPartIndex;
             public IGraphicProvider graphicProvider;
-            public Queue<PartSignal> signals = new Queue<PartSignal>();
             public PartRender.Attachment attachment;
             public Graphic graphic;
             public Graphic portraitGraphic;
+            public Vector3 additionalOffset;
             public RenderParam[] renderParams;
         }
 
 		private struct BehaviorData
 		{
             public IEyeBehavior behavior;
-            public Dictionary<int, Queue<PartSignal>> signalSinks;
+            public Dictionary<int, List<PartSignal>> signalSinks;
         }
         
-        private IReadOnlyDictionary<int, BodyPartData> _perBodyPartData;
+        private IReadOnlyList<PartData> _perPartData;
         private BodyPartStatus[] _perPartStatus;
+        private List<PartSignal>[] _bodyPartSignals;
         private Faction _originFactionInt;
         private FaceData _faceData;
         private RenderParam[] _mouthRenderParams;
@@ -137,12 +139,12 @@ namespace PawnPlus
                 {   
                     if(portrait || _fsGameComp.ShouldRenderFaceDetails)
 				    {
-                        foreach(KeyValuePair<int, BodyPartData> pair in _perBodyPartData)
+                        foreach(var part in _perPartData)
                         {
                             Rot4 partRot4 = portrait ? Rot4.South : headFacing;
                             Vector3 partDrawPos = headPos;
                             Quaternion partQuat = headQuat;
-                            switch(pair.Value.attachment)
+                            switch(part.attachment)
                             {
                                 case PartRender.Attachment.Body:
                                     break;
@@ -151,8 +153,8 @@ namespace PawnPlus
                                     break;
                             }
                             Graphic graphic = portrait ?
-                                pair.Value.portraitGraphic :
-                                pair.Value.graphic;
+                                part.portraitGraphic :
+                                part.graphic;
                             if(graphic == null)
 							{
                                 continue;
@@ -160,10 +162,12 @@ namespace PawnPlus
                             Material partMat = graphic.MatAt(partRot4);
                             if(partMat != null)
                             {
-                                Vector3 offset = pair.Value.renderParams[partRot4.AsInt].offset;
+                                Vector3 offset = 
+                                    part.renderParams[partRot4.AsInt].offset +
+                                    part.additionalOffset;
                                 offset = partQuat * offset;
                                 GenDraw.DrawMeshNowOrLater(
-                                        pair.Value.renderParams[partRot4.AsInt].mesh,
+                                        part.renderParams[partRot4.AsInt].mesh,
                                         partDrawPos + offset,
                                         partQuat,
                                         partMat,
@@ -306,7 +310,7 @@ namespace PawnPlus
             {
                 Vector3 offset = new Vector3(
                     _mouthRenderParams[headFacing.AsInt].offset.x,
-                    0,
+                    0f,
                     _mouthRenderParams[headFacing.AsInt].offset.y);
                 offset = headQuat * offset;
                 GenDraw.DrawMeshNowOrLater(
@@ -358,11 +362,12 @@ namespace PawnPlus
 				_partBehaviors.Add(new BehaviorData()
 				{ 
                     behavior = (IEyeBehavior)Props.partBehaviors[i],
-                    signalSinks = new Dictionary<int, Queue<PartSignal>>()
+                    signalSinks = new Dictionary<int, List<PartSignal>>()
                 });
 			}
             _pawnState = new PawnState(Pawn);
             _perPartStatus = new BodyPartStatus[Pawn.RaceProps.body.AllParts.Count];
+            _bodyPartSignals = new List<PartSignal>[Pawn.RaceProps.body.AllParts.Count];
         }
 
         // Graphics and faction data aren't available in ThingComp.Initialize(). Initialize the members related to those in this method,
@@ -377,69 +382,61 @@ namespace PawnPlus
             {
                 FaceData = new FaceData(this, OriginFaction?.def);
             }
-
+            _pawnState.UpdateState();
+            
             HeadRenderDef.GetCachedHeadRenderParams(
                 Pawn.RaceProps.body,
                 Pawn.story.HeadGraphicPath,
                 out Dictionary<int, RenderParam[]> eyeRenderParams,
                 out _mouthRenderParams);
-            var perBodyPartData = new SortedDictionary<int, BodyPartData>();
-            foreach(BodyPartLocator partLocator in FaceData.EyeDef.representBodyParts)
-            {
-                if(partLocator.resolvedPartIndex < 0)
-                {
+
+            List<PartData> perPartData = new List<PartData>();
+            foreach(string category in PartDef.GetCategoriesInRace(Pawn.RaceProps.body))
+			{
+                List<PartDef.PartInfo> parts = PartDef.GetAllPartsFromCategory(Pawn.RaceProps.body, category);
+                if(parts.NullOrEmpty())
+				{
                     continue;
-                }
-                if(partLocator.bodyDef == Pawn.RaceProps.body)
+				}
+                PartDef.PartInfo partInfo = parts.RandomElementByWeight(p => PartGenHelper.PartChoiceLikelyhoodFor(p.hairGender, Pawn.gender));
+                foreach(var linkedBodypart in partInfo.linkedBodyParts)
                 {
-                    if(!perBodyPartData.ContainsKey(partLocator.resolvedPartIndex))
-                    {
-                        BodyPartData perBodyPart = new BodyPartData();
-                        perBodyPart.graphicProvider = FaceData.EyeDef.graphicProvider?.Clone() as IGraphicProvider;
-                        if(perBodyPart.graphicProvider == null)
-                        {
-                            continue;
-                        }
-                        perBodyPart.renderParams = eyeRenderParams[partLocator.resolvedPartIndex];
-                        if(perBodyPart.renderParams == null)
-                        {
-                            continue;
-                        }
-                        perBodyPart.graphicProvider.Initialize(
-                            Pawn, Pawn.RaceProps.body,
-                            partLocator.resolvedBodyPartRecord,
-                            FaceData.EyeDef.defaultTexPath,
-                            FaceData.EyeDef.namedTexPaths);
-                        // TODO: get value from RenderDef properly
-                        perBodyPart.attachment = PartRender.Attachment.Head;
-                        perBodyPartData.Add(partLocator.resolvedPartIndex, perBodyPart);
-                    } 
-                    else
-                    {
-                        Log.Warning("Facial Stuff: Pawn " + Pawn.Label + " already has per body part data initialized for index " + partLocator.resolvedPartIndex);
-                    }
+                    PartData partData = new PartData();
+                    partData.bodyPartIndex = linkedBodypart.bodyPartLocator._resolvedPartIndex;
+                    partData.attachment = linkedBodypart.attachment;
+                    partData.graphicProvider = (IGraphicProvider)linkedBodypart.graphicProvider.Clone();
+                    partData.renderParams = eyeRenderParams[partData.bodyPartIndex];
+                    partData.graphicProvider.Initialize(
+                        Pawn,
+                        Pawn.RaceProps.body,
+                        linkedBodypart.bodyPartLocator._resolvedBodyPartRecord,
+                        linkedBodypart.bodyPartLocator._parentPartDef.defaultTexPath,
+                        linkedBodypart.bodyPartLocator._parentPartDef.namedTexPaths);
+                    perPartData.Add(partData);
                 }
             }
-            // Make the dictionary unmodifiable
-            _perBodyPartData = perBodyPartData;
-
+            _perPartData = perPartData;
+            
             foreach(var partBehavior in _partBehaviors)
 			{
                 partBehavior.behavior.Initialize(Pawn.RaceProps.body, out List<int> usedBodyPartIndices);
-                if(usedBodyPartIndices != null)
+                if(usedBodyPartIndices == null)
                 {
-                    foreach(int bodyPartIndex in usedBodyPartIndices)
-                    {
-                        if(bodyPartIndex >= 0 && _perBodyPartData.ContainsKey(bodyPartIndex))
-                        {
-                            partBehavior.signalSinks.Add(bodyPartIndex, _perBodyPartData[bodyPartIndex].signals);
-                        }
-                    }
+                    continue;
                 }
+                foreach(int bodyPartIdx in usedBodyPartIndices)
+				{
+                    if(_bodyPartSignals[bodyPartIdx] == null)
+					{
+                        _bodyPartSignals[bodyPartIdx] = new List<PartSignal>();
+                    }
+					if(!partBehavior.signalSinks.ContainsKey(bodyPartIdx))
+					{
+                        partBehavior.signalSinks.Add(bodyPartIdx, _bodyPartSignals[bodyPartIdx]);
+                    }
+				}
             }
-            
 
-            _pawnState.UpdateState();
             // Update the graphic providers to get the portrait graphic
             UpdateGraphicProviders(out bool updatePortrait);
 
@@ -450,7 +447,7 @@ namespace PawnPlus
             FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
             Initialized = true;
         }
-
+        
 		public override void CompTick()
 		{
 			base.CompTick();
@@ -465,6 +462,11 @@ namespace PawnPlus
                 {
                     _pawnState.UpdateState();
                     HeadBehavior.Update(Pawn, _pawnState, out _cachedHeadFacing);
+                    // Clear signals from previous tick
+                    foreach(List<PartSignal> partSignal in _bodyPartSignals)
+					{
+                        partSignal?.Clear();
+					}
                     foreach(var partBehavior in _partBehaviors)
 					{
                         partBehavior.behavior.Update(Pawn, _pawnState, partBehavior.signalSinks);
@@ -484,18 +486,17 @@ namespace PawnPlus
         private void UpdateGraphicProviders(out bool updatePortrait)
 		{
             updatePortrait = false;
-            foreach(KeyValuePair<int, BodyPartData> pair in _perBodyPartData)
+            foreach(var part in _perPartData)
             {
-                int partIndex = pair.Key;
                 bool updatePortraitTemp = false;
-                pair.Value.graphicProvider.Update(
+                part.graphicProvider.Update(
                     _pawnState,
-                    _perPartStatus[partIndex],
-                    out pair.Value.graphic,
-                    out pair.Value.portraitGraphic,
+                    _perPartStatus[part.bodyPartIndex],
+                    out part.graphic,
+                    out part.portraitGraphic,
+                    ref part.additionalOffset,
                     ref updatePortraitTemp,
-                    pair.Value.signals);
-                pair.Value.signals.Clear();
+                    _bodyPartSignals[part.bodyPartIndex]);
                 updatePortrait |= updatePortraitTemp;
             }
         }

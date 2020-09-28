@@ -1,29 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
-
+	
 	<PawnPlus.Defs.PartDef>
 		<defName>FSHumanFFL</defName>
 		<label>Human Female Flat</label>
-		<hairGender>FemaleUsually</hairGender>
-		<!-- Class must implement PawnPlus.IGraphicProvider interface. -->
-		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
-		<!-- 
-		Each IGraphicProvider instance is assigned to a single BodyPartRecord. Having multiple items in the following list 
-		means that the instance can be assigned to any one of the BodyPartRecords below.
-		-->
-		<representBodyParts>
+		<raceSettings>
 			<li>
 				<!-- defName of BodyDef -->
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>left eye</bodyPartLabel>
+				<key>Human</key>
+				<value>
+					<hairGender>FemaleUsually</hairGender>
+					<hairTags>
+						<li>Urban</li>
+						<li>Rural</li>
+						<li>Punk</li>
+						<li>Tribal</li>
+					</hairTags>
+					<category>Eyes</category>
+					<linkedBodyParts>
+						<li>
+							<bodyPartLocator>
+								<bodyPartDef>Eye</bodyPartDef>
+								<bodyPartLabel>left eye</bodyPartLabel>
+							</bodyPartLocator>
+							<attachment>Head</attachment>
+							<!-- Class must implement PawnPlus.IGraphicProvider interface. -->
+							<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider">
+								<closeWhenAiming>true</closeWhenAiming>
+								<additionalOffset>(0, 0, 0)</additionalOffset>
+							</graphicProvider>
+						</li>
+						<li>
+							<bodyPartLocator>
+								<bodyPartDef>Eye</bodyPartDef>
+								<bodyPartLabel>right eye</bodyPartLabel>
+							</bodyPartLocator>
+							<attachment>Head</attachment>
+							<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider">
+								<closeWhenAiming>false</closeWhenAiming>
+								<additionalOffset>(0, 0, 0)</additionalOffset>
+							</graphicProvider>
+						</li>
+					</linkedBodyParts>
+				</value>
 			</li>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>right eye</bodyPartLabel>
-			</li>
-		</representBodyParts>
+		</raceSettings>
 		<namedTexPaths>
 			<li>
 				<!-- 
@@ -58,12 +79,6 @@
 			</li>
 		</namedTexPaths>
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanFFL</defaultTexPath>
-		<hairTags>
-			<li>Urban</li>
-			<li>Rural</li>
-			<li>Punk</li>
-			<li>Tribal</li>
-		</hairTags>
 	</PawnPlus.Defs.PartDef>
   
 	<PawnPlus.Defs.PartDef>

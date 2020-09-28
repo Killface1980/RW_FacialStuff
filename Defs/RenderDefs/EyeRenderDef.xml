@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
+	
 	<PawnPlus.Defs.EyeRenderDef>
 		<!-- Both male and female narrow crown head textures have nearly identical eye offsets -->
 		<defName>FSHumanEyeRenderNarrow</defName>
@@ -32,7 +33,7 @@
 						<meshDef>FSEyeMesh_mirrored</meshDef>
 						<!-- 
 						The offset from center of head. Note that the head mesh is 1.5 by 1.5 in size. 
-						Y offset of 0.002 is enough to show the eye without overlapping with face.
+						Additional offsets can be defined in PartDef also.
 						--> 
 						<offset>(0.0938, 0.002, -0.0703)</offset>
 					</li>

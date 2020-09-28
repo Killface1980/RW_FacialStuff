@@ -393,24 +393,6 @@ namespace PawnPlus.Utilities
             return source.RandomElementByWeight(brow => BrowChoiceLikelihoodFor(brow, pawn));
         }
 
-        public static PartDef RandomEyeDefFor(Pawn pawn, FactionDef factionType, CompProperties_Face faceProp)
-        {
-            IEnumerable<PartDef> source = 
-                from partDef in PartDef._eyePartDefs
-                where
-                    partDef.hairTags.SharesElementWith(factionType.hairTags) &&
-                    partDef._allowedRaceBodyDefs.Contains(pawn.RaceProps.body)
-                select partDef;
-
-            if(!source.Any())
-            {
-                source = from eye in DefDatabase<PartDef>.AllDefs select eye;
-            }
-            return source.RandomElementByWeight(eye => EyeChoiceLikelihoodFor(eye, pawn)
-            
-            );
-        }
-
         private static float BeardChoiceLikelihoodFor([NotNull] BeardDef beard, Pawn pawn)
         {
             if (beard.hairTags.Contains("MaleOld") && pawn.ageTracker.AgeBiologicalYears < 32)
@@ -509,7 +491,7 @@ namespace PawnPlus.Utilities
             return 0f;
         }
 
-        private static float EyeChoiceLikelihoodFor(PartDef eye, [NotNull] Pawn pawn)
+        private static float EyeChoiceLikelihoodFor(HairGender genGender, [NotNull] Pawn pawn)
         {
             if (pawn.gender == Gender.None)
             {
@@ -518,7 +500,7 @@ namespace PawnPlus.Utilities
 
             if (pawn.gender == Gender.Male)
             {
-                switch (eye.hairGender)
+                switch (genGender)
                 {
                     case HairGender.Male: return 70f;
                     case HairGender.MaleUsually: return 30f;
@@ -530,7 +512,7 @@ namespace PawnPlus.Utilities
 
             if (pawn.gender == Gender.Female)
             {
-                switch (eye.hairGender)
+                switch (genGender)
                 {
                     case HairGender.Female: return 70f;
                     case HairGender.FemaleUsually: return 30f;
@@ -540,7 +522,7 @@ namespace PawnPlus.Utilities
                 }
             }
 
-            Log.Error(string.Concat("Unknown eye likelihood for ", eye, " with ", pawn));
+            Log.Error("Unknown eye likelihood for " + pawn);
             return 0f;
         }
 

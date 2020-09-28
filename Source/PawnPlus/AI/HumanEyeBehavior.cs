@@ -41,7 +41,7 @@ namespace PawnPlus.AI
 			_cachedBlinkSignal = new PartSignal(PartSignalType.EyeBlink, new BlinkPartSignalArg() { blinkDuration = blinkCloseTicks });
 		}
 
-		public void Update(Pawn pawn, PawnState pawnState, Dictionary<int, Queue<PartSignal>> bodyPartSignals)
+		public void Update(Pawn pawn, PawnState pawnState, Dictionary<int, List<PartSignal>> bodyPartSignals)
 		{
 			if(!pawnState.Alive)
 			{
@@ -59,7 +59,7 @@ namespace PawnPlus.AI
 				{
 					foreach(var partSignalQueue in bodyPartSignals)
 					{
-						partSignalQueue.Value.Enqueue(_cachedBlinkSignal);
+						partSignalQueue.Value.Add(_cachedBlinkSignal);
 					}
 				}
 				_blinkOpen = !_blinkOpen;

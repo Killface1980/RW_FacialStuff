@@ -63,7 +63,7 @@
 					<blinkOpenMaxRandOffsetTicks>30</blinkOpenMaxRandOffsetTicks>
 				</li>
 			</partBehaviors>
-			
+						
 			<!-- 
 			This determines what mouth texture is displayed under what circumstances 
 			Look at PawnPlus.AI.HumanMouth to see how it is implemented.

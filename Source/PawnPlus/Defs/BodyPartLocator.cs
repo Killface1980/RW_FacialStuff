@@ -9,29 +9,30 @@ namespace PawnPlus.Defs
 {
 	public class BodyPartLocator
 	{
-		public BodyDef bodyDef;
-
 		public BodyPartDef bodyPartDef;
 
 		public string bodyPartLabel;
+				
+		[Unsaved(false)]
+		public BodyPartRecord _resolvedBodyPartRecord;
 
 		[Unsaved(false)]
-		public BodyPartRecord resolvedBodyPartRecord;
+		public int _resolvedPartIndex;
 
 		[Unsaved(false)]
-		public int resolvedPartIndex;
+		public PartDef _parentPartDef;
 
-		public void LocateBodyPart()
+		public void LocateBodyPart(BodyDef bodyDef)
 		{
-			resolvedBodyPartRecord =
+			_resolvedBodyPartRecord =
 				bodyDef.GetPartsWithDef(bodyPartDef).ToList().FindLast(i => i.untranslatedCustomLabel == bodyPartLabel);
-			if(resolvedBodyPartRecord != null)
+			if(_resolvedBodyPartRecord != null)
 			{
-				resolvedPartIndex =  bodyDef.GetIndexOfPart(resolvedBodyPartRecord);
+				_resolvedPartIndex =  bodyDef.GetIndexOfPart(_resolvedBodyPartRecord);
 			}
 			else
 			{
-				resolvedPartIndex = -1;
+				_resolvedPartIndex = -1;
 			}
 		}
 	}

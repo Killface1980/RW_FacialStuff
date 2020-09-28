@@ -28,6 +28,8 @@ namespace PawnPlus
         
         public List<IEyeBehavior> partBehaviors;
 
+        public PartGenHelper partGenHelper;
+
         public CompProperties_Face()
         {
             this.compClass = typeof(CompFace);

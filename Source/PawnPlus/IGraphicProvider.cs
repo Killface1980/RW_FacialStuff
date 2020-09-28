@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 using Verse;
 
 namespace PawnPlus
@@ -21,13 +22,8 @@ namespace PawnPlus
 			in BodyPartStatus partStatus, 
 			out Graphic graphic, 
 			out Graphic portraitGraphic, 
-			ref bool updatePortrait, 
-			Queue<PartSignal> partSignals);
-		
-		public void OnBodyPartHediffGained(Hediff hediff);
-
-		public void OnBodyPartHediffLost(Hediff hediff);
-
-		public void OnBodyPartRestored();
+			ref Vector3 additionalOffset,
+			ref bool updatePortrait,
+			IReadOnlyList<PartSignal> partSignals);
 	}
 }

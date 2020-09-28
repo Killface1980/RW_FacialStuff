@@ -9,6 +9,6 @@ namespace PawnPlus
 	{
 		public void Initialize(BodyDef bodyDef, out List<int> usedBodyPartIndices);
 
-		public void Update(Pawn pawn, PawnState pawnState, Dictionary<int, Queue<PartSignal>> bodyPartSignals);
+		public void Update(Pawn pawn, PawnState pawnState, Dictionary<int, List<PartSignal>> bodyPartSignals);
 	}
 }
