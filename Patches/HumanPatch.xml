@@ -58,12 +58,15 @@
 			
 			<partBehaviors>
 				<li Class = "PawnPlus.AI.HumanEyeBehavior">
-					<blinkCloseTicks>10</blinkCloseTicks>
-					<blinkOpenAverageTicks>120</blinkOpenAverageTicks>
-					<blinkOpenMaxRandOffsetTicks>30</blinkOpenMaxRandOffsetTicks>
+					<blinkCloseTicks>6</blinkCloseTicks>
+					<blinkOpenAverageTicks>200</blinkOpenAverageTicks>
+					<blinkOpenMaxRandOffsetTicks>50</blinkOpenMaxRandOffsetTicks>
 				</li>
 			</partBehaviors>
-						
+			
+			<!-- Class must be PawnPlus.PartGenHelper or its subclass -->
+			<partGenHelper Class="PawnPlus.PartGenHelper"></partGenHelper>
+			
 			<!-- 
 			This determines what mouth texture is displayed under what circumstances 
 			Look at PawnPlus.AI.HumanMouth to see how it is implemented.
