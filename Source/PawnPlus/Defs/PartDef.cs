@@ -6,22 +6,22 @@ namespace PawnPlus.Defs
 {
     public class PartDef : Def
     {
-        public class PartInfo
-		{
-            public HairGender hairGender;
-            public List<string> hairTags = new List<string>();
-            public string category;
-            public List<LinkedBodyPart> linkedBodyParts;
-        }
-
         public class LinkedBodyPart
 		{
             public BodyPartLocator bodyPartLocator;
             public PartRender.Attachment attachment;
             public IGraphicProvider graphicProvider;
         }
-        
-        public Dictionary<BodyDef, PartInfo> raceSettings = new Dictionary<BodyDef, PartInfo>();
+
+        public HairGender hairGender;
+
+        public List<string> hairTags = new List<string>();
+
+        public string category;
+
+        public BodyDef raceBodyDef;
+
+        public List<LinkedBodyPart> linkedBodyParts;
 
         public Dictionary<string, string> namedTexPaths = new Dictionary<string, string>();
 
@@ -29,7 +29,7 @@ namespace PawnPlus.Defs
 
         public static IEnumerable<string> GetCategoriesInRace(BodyDef raceBodyDef)
 		{
-            if(_allParts.TryGetValue(raceBodyDef, out Dictionary<string, List<PartDef.PartInfo>> partsInCategory))
+            if(_allParts.TryGetValue(raceBodyDef, out Dictionary<string, List<PartDef>> partsInCategory))
 			{
                 foreach(var pair in partsInCategory)
 				{
@@ -38,11 +38,11 @@ namespace PawnPlus.Defs
 			}
 		}
 
-        public static List<PartInfo> GetAllPartsFromCategory(BodyDef raceBodyDef, string category)
+        public static List<PartDef> GetAllPartsFromCategory(BodyDef raceBodyDef, string category)
 		{
-            if(_allParts.TryGetValue(raceBodyDef, out Dictionary<string, List<PartDef.PartInfo>> partGenGroups))
+            if(_allParts.TryGetValue(raceBodyDef, out Dictionary<string, List<PartDef>> partGenGroups))
 			{
-                if(partGenGroups.TryGetValue(category, out List<PartInfo> parts))
+                if(partGenGroups.TryGetValue(category, out List<PartDef> parts))
 				{
                     return parts;
 				}
@@ -53,7 +53,7 @@ namespace PawnPlus.Defs
         // The following variables are initialized in FacialStuffModBase.DefsLoaded()
 
         [Unsaved(false)]
-        public static Dictionary<BodyDef, Dictionary<string, List<PartDef.PartInfo>>> _allParts =
-            new Dictionary<BodyDef, Dictionary<string, List<PartDef.PartInfo>>>();
+        public static Dictionary<BodyDef, Dictionary<string, List<PartDef>>> _allParts =
+            new Dictionary<BodyDef, Dictionary<string, List<PartDef>>>();
     }
 }

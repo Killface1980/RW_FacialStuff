@@ -1,50 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
+	<PawnPlus.Defs.PartDef Abstract="True">
+		<defName>FSHumanEyeBase</defName>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<category>Eyes</category>
+		<raceBodyDef>Human</raceBodyDef>
+		<linkedBodyParts>
+			<li>
+				<bodyPartLocator>
+					<bodyPartDef>Eye</bodyPartDef>
+					<bodyPartLabel>left eye</bodyPartLabel>
+				</bodyPartLocator>
+				<attachment>Head</attachment>
+				<!-- Class must implement PawnPlus.IGraphicProvider interface. -->
+				<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider">
+					<closeWhenAiming>true</closeWhenAiming>
+					<additionalOffset>(0, 0, 0)</additionalOffset>
+				</graphicProvider>
+			</li>
+			<li>
+				<bodyPartLocator>
+					<bodyPartDef>Eye</bodyPartDef>
+					<bodyPartLabel>right eye</bodyPartLabel>
+				</bodyPartLocator>
+				<attachment>Head</attachment>
+				<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider">
+					<closeWhenAiming>false</closeWhenAiming>
+					<additionalOffset>(0, 0, 0)</additionalOffset>
+				</graphicProvider>
+			</li>
+		</linkedBodyParts>
+	</PawnPlus.Defs.PartDef>
 	
-	<PawnPlus.Defs.PartDef>
+	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
 		<defName>FSHumanFFL</defName>
 		<label>Human Female Flat</label>
-		<raceSettings>
-			<li>
-				<!-- defName of BodyDef -->
-				<key>Human</key>
-				<value>
-					<hairGender>FemaleUsually</hairGender>
-					<hairTags>
-						<li>Urban</li>
-						<li>Rural</li>
-						<li>Punk</li>
-						<li>Tribal</li>
-					</hairTags>
-					<category>Eyes</category>
-					<linkedBodyParts>
-						<li>
-							<bodyPartLocator>
-								<bodyPartDef>Eye</bodyPartDef>
-								<bodyPartLabel>left eye</bodyPartLabel>
-							</bodyPartLocator>
-							<attachment>Head</attachment>
-							<!-- Class must implement PawnPlus.IGraphicProvider interface. -->
-							<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider">
-								<closeWhenAiming>true</closeWhenAiming>
-								<additionalOffset>(0, 0, 0)</additionalOffset>
-							</graphicProvider>
-						</li>
-						<li>
-							<bodyPartLocator>
-								<bodyPartDef>Eye</bodyPartDef>
-								<bodyPartLabel>right eye</bodyPartLabel>
-							</bodyPartLocator>
-							<attachment>Head</attachment>
-							<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider">
-								<closeWhenAiming>false</closeWhenAiming>
-								<additionalOffset>(0, 0, 0)</additionalOffset>
-							</graphicProvider>
-						</li>
-					</linkedBodyParts>
-				</value>
-			</li>
-		</raceSettings>
+		<hairGender>FemaleUsually</hairGender>
 		<namedTexPaths>
 			<li>
 				<!-- 
@@ -81,23 +77,10 @@
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanFFL</defaultTexPath>
 	</PawnPlus.Defs.PartDef>
   
-	<PawnPlus.Defs.PartDef>
+	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
 		<defName>FSHumanFOV</defName>
 		<label>Human Female Oval</label>
 		<hairGender>FemaleUsually</hairGender>
-		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
-		<representBodyParts>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>left eye</bodyPartLabel>
-			</li>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>right eye</bodyPartLabel>
-			</li>
-		</representBodyParts>
 		<namedTexPaths>
 			<li>
 				<key>Open</key>
@@ -125,31 +108,12 @@
 			</li>
 		</namedTexPaths>
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanFOV</defaultTexPath>
-		<hairTags>
-			<li>Urban</li>
-			<li>Rural</li>
-			<li>Punk</li>
-			<li>Tribal</li>
-		</hairTags>
 	</PawnPlus.Defs.PartDef>
   
-	<PawnPlus.Defs.PartDef>
+	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
 		<defName>FSHumanFRD</defName>
 		<label>Human Female Round</label>
 		<hairGender>FemaleUsually</hairGender>
-		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
-		<representBodyParts>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>left eye</bodyPartLabel>
-			</li>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>right eye</bodyPartLabel>
-			</li>
-		</representBodyParts>
 		<namedTexPaths>
 			<li>
 				<key>Open</key>
@@ -177,31 +141,12 @@
 			</li>
 		</namedTexPaths>
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanFRD</defaultTexPath>
-		<hairTags>
-			<li>Urban</li>
-			<li>Rural</li>
-			<li>Punk</li>
-			<li>Tribal</li>
-		</hairTags>
 	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.PartDef>
+	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
 		<defName>FSHumanFSM</defName>
 		<label>Human Female Small</label>
 		<hairGender>FemaleUsually</hairGender>
-		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
-		<representBodyParts>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>left eye</bodyPartLabel>
-			</li>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>right eye</bodyPartLabel>
-			</li>
-		</representBodyParts>
 		<namedTexPaths>
 			<li>
 				<key>Open</key>
@@ -229,31 +174,12 @@
 			</li>
 		</namedTexPaths>
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanFSM</defaultTexPath>
-		<hairTags>
-			<li>Urban</li>
-			<li>Rural</li>
-			<li>Punk</li>
-			<li>Tribal</li>
-		</hairTags>
 	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.PartDef>
+	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
 		<defName>FSHumanMFL</defName>
 		<label>Human Male Flat</label>
 		<hairGender>MaleUsually</hairGender>
-		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
-		<representBodyParts>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>left eye</bodyPartLabel>
-			</li>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>right eye</bodyPartLabel>
-			</li>
-		</representBodyParts>
 		<namedTexPaths>
 			<li>
 				<key>Open</key>
@@ -281,31 +207,12 @@
 			</li>
 		</namedTexPaths>
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanMFL</defaultTexPath>
-		<hairTags>
-			<li>Urban</li>
-			<li>Rural</li>
-			<li>Punk</li>
-			<li>Tribal</li>
-		</hairTags>
 	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.PartDef>
+	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
 		<defName>FSHumanMOV</defName>
 		<label>Human Male Oval</label>
 		<hairGender>MaleUsually</hairGender>
-		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
-		<representBodyParts>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>left eye</bodyPartLabel>
-			</li>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>right eye</bodyPartLabel>
-			</li>
-		</representBodyParts>
 		<namedTexPaths>
 			<li>
 				<key>Open</key>
@@ -333,31 +240,12 @@
 			</li>
 		</namedTexPaths>
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanMOV</defaultTexPath>
-		<hairTags>
-			<li>Urban</li>
-			<li>Rural</li>
-			<li>Punk</li>
-			<li>Tribal</li>
-		</hairTags>
 	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.PartDef>
+	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
 		<defName>FSHumanMRD</defName>
 		<label>Human Male Round</label>
 		<hairGender>MaleUsually</hairGender>
-		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
-		<representBodyParts>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>left eye</bodyPartLabel>
-			</li>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>right eye</bodyPartLabel>
-			</li>
-		</representBodyParts>
 		<namedTexPaths>
 			<li>
 				<key>Open</key>
@@ -385,31 +273,12 @@
 			</li>
 		</namedTexPaths>
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanMRD</defaultTexPath>
-		<hairTags>
-			<li>Urban</li>
-			<li>Rural</li>
-			<li>Punk</li>
-			<li>Tribal</li>
-		</hairTags>
 	</PawnPlus.Defs.PartDef>
 
-	<PawnPlus.Defs.PartDef>
+	<PawnPlus.Defs.PartDef Parent="FSHumanEyeBase">
 		<defName>FSHumanMSM</defName>
 		<label>Human Male Small</label>
 		<hairGender>MaleUsually</hairGender>
-		<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider"></graphicProvider>
-		<representBodyParts>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>left eye</bodyPartLabel>
-			</li>
-			<li>
-				<bodyDef>Human</bodyDef>
-				<bodyPartDef>Eye</bodyPartDef>
-				<bodyPartLabel>right eye</bodyPartLabel>
-			</li>
-		</representBodyParts>
 		<namedTexPaths>
 			<li>
 				<key>Open</key>
@@ -437,12 +306,6 @@
 			</li>
 		</namedTexPaths>
 		<defaultTexPath>Things/Pawn/Humanlike/Eyes/HumanMSM</defaultTexPath>
-		<hairTags>
-			<li>Urban</li>
-			<li>Rural</li>
-			<li>Punk</li>
-			<li>Tribal</li>
-		</hairTags>
 	</PawnPlus.Defs.PartDef>
 
 </Defs>

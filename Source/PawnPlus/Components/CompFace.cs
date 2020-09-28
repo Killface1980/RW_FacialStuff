@@ -393,13 +393,13 @@ namespace PawnPlus
             List<PartData> perPartData = new List<PartData>();
             foreach(string category in PartDef.GetCategoriesInRace(Pawn.RaceProps.body))
 			{
-                List<PartDef.PartInfo> parts = PartDef.GetAllPartsFromCategory(Pawn.RaceProps.body, category);
+                List<PartDef> parts = PartDef.GetAllPartsFromCategory(Pawn.RaceProps.body, category);
                 if(parts.NullOrEmpty())
 				{
                     continue;
 				}
-                PartDef.PartInfo partInfo = parts.RandomElementByWeight(p => PartGenHelper.PartChoiceLikelyhoodFor(p.hairGender, Pawn.gender));
-                foreach(var linkedBodypart in partInfo.linkedBodyParts)
+                PartDef partDef = parts.RandomElementByWeight(p => PartGenHelper.PartChoiceLikelyhoodFor(p.hairGender, Pawn.gender));
+                foreach(var linkedBodypart in partDef.linkedBodyParts)
                 {
                     PartData partData = new PartData();
                     partData.bodyPartIndex = linkedBodypart.bodyPartLocator._resolvedPartIndex;

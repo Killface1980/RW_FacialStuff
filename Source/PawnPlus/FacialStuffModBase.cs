@@ -41,28 +41,22 @@ namespace PawnPlus
 			var partDefs = DefDatabase<PartDef>.AllDefsListForReading;
 			foreach(var partDef in partDefs)
 			{
-				foreach(var pair in partDef.raceSettings)
+				if(!PartDef._allParts.TryGetValue(partDef.raceBodyDef, out Dictionary<string, List<PartDef>> partsInRace))
 				{
-					BodyDef bodyDef = pair.Key;
-					PartDef.PartInfo partInfo = pair.Value;
+					partsInRace = new Dictionary<string, List<PartDef>>();
+					PartDef._allParts.Add(partDef.raceBodyDef, partsInRace);
+				}
+				if(!partsInRace.TryGetValue(partDef.category, out List<PartDef> partsInCategory))
+				{
+					partsInCategory = new List<PartDef>();
+					partsInRace.Add(partDef.category, partsInCategory);
+				}
+				partsInCategory.Add(partDef);
 
-					if(!PartDef._allParts.TryGetValue(bodyDef, out Dictionary<string, List<PartDef.PartInfo>> partsInRace))
-					{
-						partsInRace = new Dictionary<string, List<PartDef.PartInfo>>();
-						PartDef._allParts.Add(bodyDef, partsInRace);
-					}
-					if(!partsInRace.TryGetValue(partInfo.category, out List<PartDef.PartInfo> partsInCategory))
-					{
-						partsInCategory = new List<PartDef.PartInfo>();
-						partsInRace.Add(partInfo.category, partsInCategory);
-					}
-					partsInCategory.Add(partInfo);
-
-					foreach(var bodyPartParam in pair.Value.linkedBodyParts)
-					{
-						bodyPartParam.bodyPartLocator._parentPartDef = partDef;
-						bodyPartParam.bodyPartLocator.LocateBodyPart(pair.Key);
-					}
+				foreach(var bodyPartParam in partDef.linkedBodyParts)
+				{
+					bodyPartParam.bodyPartLocator._parentPartDef = partDef;
+					bodyPartParam.bodyPartLocator.LocateBodyPart(partDef.raceBodyDef);
 				}
 			}
 		}
