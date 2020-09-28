@@ -361,7 +361,7 @@ namespace PawnPlus
 			{
 				_partBehaviors.Add(new BehaviorData()
 				{ 
-                    behavior = (IEyeBehavior)Props.partBehaviors[i],
+                    behavior = (IEyeBehavior)Props.partBehaviors[i].Clone(),
                     signalSinks = new Dictionary<int, List<PartSignal>>()
                 });
 			}
