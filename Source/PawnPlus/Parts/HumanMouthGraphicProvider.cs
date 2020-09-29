@@ -27,7 +27,8 @@ namespace PawnPlus.Parts
 			BodyDef bodyDef,
 			BodyPartRecord bodyPartRecord,
 			string defaultTexPath,
-			Dictionary<string, string> namedTexPaths)
+			Dictionary<string, string> namedTexPaths,
+			BodyPartSignals bodyPartSignals)
 		{
 			_pawn = pawn;
 			Graphic defaultGraphic = GraphicDatabase.Get<Graphic_Multi>(
@@ -73,8 +74,7 @@ namespace PawnPlus.Parts
 			out Graphic graphic,
 			out Graphic portraitGraphic,
 			ref Vector3 additionalOffset,
-			ref bool updatePortrait,
-			IReadOnlyList<PartSignal> partSignals)
+			ref bool updatePortrait)
 		{
 			portraitGraphic = _normal;
 			if(Find.TickManager.TicksGame >= _ticksSinceLastUpdate + 90)

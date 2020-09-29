@@ -9,10 +9,8 @@ namespace PawnPlus.Parts
 	{
 		public string UniqueID { get; }
 
-		public void Initialize(BodyDef bodyDef, out List<int> usedBodyPartIndices);
-
-		public void SetPartSignalSink(Dictionary<int, List<PartSignal>> bodyPartSignalSinks);
-
+		public void Initialize(BodyDef bodyDef, BodyPartSignals bodyPartSignals);
+		
 		public void Update(Pawn pawn, PawnState pawnState);
 	}
 }

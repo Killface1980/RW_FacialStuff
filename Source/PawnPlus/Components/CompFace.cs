@@ -33,12 +33,11 @@ namespace PawnPlus
         private IReadOnlyList<PartData> _perPartData;
         private BodyPartStatus[] _perPartStatus;
         private BodyPartStatus _defaultPart = new BodyPartStatus
-		    {
-                missing = false,
-                hediffAddedPart = null
-		    };
-        private Dictionary<int, List<PartSignal>> _bodyPartSignals;
-        private List<PartSignal> _defaultEmptyPartSignals = new List<PartSignal>();
+        {
+            missing = false,
+            hediffAddedPart = null
+        };
+        private BodyPartSignals _bodyPartSignals;
         private Rot4 _cachedHeadFacing;
         private PawnState _pawnState;
         private IHeadBehavior _headBehavior;
@@ -206,7 +205,7 @@ namespace PawnPlus
 
             _pawnState = new PawnState(Pawn);
             _perPartStatus = new BodyPartStatus[Pawn.RaceProps.body.AllParts.Count];
-            _bodyPartSignals = new Dictionary<int, List<PartSignal>>();
+            _bodyPartSignals = new BodyPartSignals(Pawn.RaceProps.body);
         }
 
         // Graphics and faction data aren't available in ThingComp.Initialize(). Initialize the members related to those in this method,
@@ -218,24 +217,7 @@ namespace PawnPlus
             _headBehavior.Initialize(Pawn);
             foreach(var partBehavior in _partBehaviors)
             {
-                partBehavior.Initialize(Pawn.RaceProps.body, out List<int> usedBodyPartIndices);
-                if(usedBodyPartIndices == null)
-                {
-                    continue;
-                }
-                Dictionary<int, List<PartSignal>> partSignalSink = new Dictionary<int, List<PartSignal>>();
-                foreach(int bodyPartIdx in usedBodyPartIndices)
-                {
-                    if(!_bodyPartSignals.ContainsKey(bodyPartIdx))
-                    {
-                        _bodyPartSignals.Add(bodyPartIdx, new List<PartSignal>());
-                    }
-                    if(!partSignalSink.ContainsKey(bodyPartIdx))
-					{
-                        partSignalSink.Add(bodyPartIdx, _bodyPartSignals[bodyPartIdx]);
-                    }
-                }
-                partBehavior.SetPartSignalSink(partSignalSink);
+                partBehavior.Initialize(Pawn.RaceProps.body, _bodyPartSignals);
             }
             
             if(_partDefs == null)
@@ -292,7 +274,8 @@ namespace PawnPlus
                         Pawn.RaceProps.body,
                         part.bodyPartLocator._resolvedBodyPartRecord,
                         partDef.defaultTexPath,
-                        partDef.namedTexPaths);
+                        partDef.namedTexPaths,
+                        _bodyPartSignals);
                     perPartData.Add(partData);
                 }
             }
@@ -345,11 +328,6 @@ namespace PawnPlus
                 {
                     _pawnState.UpdateState();
                     _headBehavior.Update(Pawn, _pawnState, out _cachedHeadFacing);
-                    // Clear signals from previous tick
-                    foreach(var pair in _bodyPartSignals)
-					{
-                        pair.Value.Clear();
-					}
                     foreach(var partBehavior in _partBehaviors)
 					{
                         partBehavior.Update(Pawn, _pawnState);
@@ -415,10 +393,6 @@ namespace PawnPlus
             foreach(var part in _perPartData)
             {
                 bool updatePortraitTemp = false;
-                if(!_bodyPartSignals.TryGetValue(part.bodyPartIndex, out List<PartSignal> partSignal))
-				{
-                    partSignal = _defaultEmptyPartSignals;
-                }
                 part.graphicProvider.Update(
                     _pawnState,
                     part.bodyPartIndex >= 0 ? 
@@ -426,8 +400,7 @@ namespace PawnPlus
                     out part.graphic,
                     out part.portraitGraphic,
                     ref part.additionalOffset,
-                    ref updatePortraitTemp,
-                    partSignal);
+                    ref updatePortraitTemp);
                 updatePortrait |= updatePortraitTemp;
             }
         }

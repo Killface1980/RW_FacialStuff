@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Parts\BodyPartSignals.cs" />
     <Compile Include="Parts\HumanEyeBehavior.cs" />
     <Compile Include="HumanHeadBehavior.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_BaseAnimator.cs" />
@@ -95,7 +96,6 @@
     <Compile Include="Parts\PartGenHelper.cs" />
     <Compile Include="Parts\PartSignal.cs" />
     <Compile Include="Parts\PartSignalArg.cs" />
-    <Compile Include="Parts\PartSignalType.cs" />
     <Compile Include="Components\CompBodyAnimator.cs" />
     <Compile Include="Components\CompFace.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />

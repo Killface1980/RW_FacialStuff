@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using PawnPlus.Defs;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +13,7 @@ namespace PawnPlus.Parts
 	{
 		public class BlinkPartSignalArg : PartSignalArg
 		{
-			public int blinkDuration;
+			public bool blinkClose;
 		}
 
 		// Disable warnings for public variables whose values are defined in xml
@@ -20,17 +21,16 @@ namespace PawnPlus.Parts
 		public int blinkCloseTicks;
 		public int blinkOpenAverageTicks;
 		public int blinkOpenMaxRandOffsetTicks;
+		public BodyDef raceBodyDef;
+		public BodyPartLocator leftEye;
+		public BodyPartLocator rightEye;
 		#pragma warning restore CS0649
 
-		private bool _blinkOpen;
+		private bool _blinkClose;
 		private int _nextStateChangeTick;
-
-		private int _leftEyeIdx;
-		private int _rightEyeIdx;
 		// When the signal is consumed, the argument is discarded. Therefore it should be safe to cache the argument.
-		private PartSignal _cachedBlinkSignal;
-		private Dictionary<int, List<PartSignal>> _bodyPartSignalSinks;
-
+		private BlinkPartSignalArg _cachedBlinkSignalArg;
+		
 		public string UniqueID 
 		{ 
 			get 
@@ -39,22 +39,17 @@ namespace PawnPlus.Parts
 			}
 		}
 
-		public void Initialize(BodyDef bodyDef, out List<int> usedBodyPartIndices)
+		public void Initialize(BodyDef bodyDef, BodyPartSignals bodyPartSignals)
 		{
 			List<BodyPartRecord> eyes = bodyDef.GetPartsWithDef(BodyPartDefOf.Eye).ToList();
-			usedBodyPartIndices = new List<int>(2);
-			_leftEyeIdx = bodyDef.GetIndexOfPart(eyes.FindLast(i => i.untranslatedCustomLabel == "left eye"));
-			usedBodyPartIndices.Add(_leftEyeIdx);
-			_rightEyeIdx = bodyDef.GetIndexOfPart(eyes.FindLast(i => i.untranslatedCustomLabel == "right eye"));
-			usedBodyPartIndices.Add(_rightEyeIdx);
-			_cachedBlinkSignal = new PartSignal(PartSignalType.EyeBlink, new BlinkPartSignalArg() { blinkDuration = blinkCloseTicks });
+			_cachedBlinkSignalArg = new BlinkPartSignalArg() { blinkClose = false };
+			PartSignal blinkSignal = new PartSignal("PP_EyeBlink", _cachedBlinkSignalArg);
+			leftEye?.LocateBodyPart(raceBodyDef);
+			rightEye?.LocateBodyPart(raceBodyDef);
+			bodyPartSignals.RegisterSignal(leftEye?._resolvedPartIndex ?? -1, blinkSignal);
+			bodyPartSignals.RegisterSignal(rightEye?._resolvedPartIndex ?? -1, blinkSignal);
 		}
-
-		public void SetPartSignalSink(Dictionary<int, List<PartSignal>> bodyPartSignalSinks)
-		{
-			_bodyPartSignalSinks = bodyPartSignalSinks;
-		}
-
+		
 		public void Update(Pawn pawn, PawnState pawnState)
 		{
 			if(!pawnState.Alive)
@@ -66,24 +61,16 @@ namespace PawnPlus.Parts
 			{
 				float consciousness = pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
 				_nextStateChangeTick =
-					_blinkOpen ?
+					_blinkClose ?
 						Find.TickManager.TicksGame + blinkCloseTicks :
 						Find.TickManager.TicksGame + CalculateEyeOpenDuration(consciousness);
-				if(!_blinkOpen)
-				{
-					foreach(var partSignalList in _bodyPartSignalSinks)
-					{
-						partSignalList.Value.Add(_cachedBlinkSignal);
-					}
-				}
-				_blinkOpen = !_blinkOpen;
+				_cachedBlinkSignalArg.blinkClose = _blinkClose;
+				_blinkClose = !_blinkClose;
 			}
 		}
 		
 		private int CalculateEyeOpenDuration(float consciousness)
 		{
-
-
 			consciousness = Mathf.Clamp(consciousness, 0f, 1f);
 			int offset = (int)(1f - consciousness) * blinkOpenAverageTicks;
 			return
@@ -100,7 +87,7 @@ namespace PawnPlus.Parts
 
 		public void ExposeData()
 		{
-			Scribe_Values.Look(ref _blinkOpen, "blinkOpen");
+			Scribe_Values.Look(ref _blinkClose, "blinkOpen");
 			Scribe_Values.Look(ref _nextStateChangeTick, "nextStateChangeTick");
 		}
 	}

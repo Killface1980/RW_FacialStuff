@@ -15,7 +15,8 @@ namespace PawnPlus.Parts
 			BodyDef bodyDef, 
 			BodyPartRecord bodyPartRecord, 
 			string defaultTexPath, 
-			Dictionary<string, string> namedTexPaths);
+			Dictionary<string, string> namedTexPaths,
+			BodyPartSignals bodyPartSignals);
 		
 		public void Update(
 			PawnState pawnState,
@@ -23,7 +24,6 @@ namespace PawnPlus.Parts
 			out Graphic graphic, 
 			out Graphic portraitGraphic, 
 			ref Vector3 additionalOffset,
-			ref bool updatePortrait,
-			IReadOnlyList<PartSignal> partSignals);
+			ref bool updatePortrait);
 	}
 }

@@ -21,14 +21,15 @@ namespace PawnPlus.Parts
 		private Graphic _missing;
 		private Graphic _inPain;
 		private Graphic _aiming;
-		private int _eyeBlinkEndTick = 0;
+		private HumanEyeBehavior.BlinkPartSignalArg _blinkSignalArg;
 
 		public void Initialize(
 			Pawn pawn,
-			BodyDef bodyDef, 
-			BodyPartRecord bodyPartRecord, 
-			string defaultTexPath, 
-			Dictionary<string, string> namedTexPaths)
+			BodyDef bodyDef,
+			BodyPartRecord bodyPartRecord,
+			string defaultTexPath,
+			Dictionary<string, string> namedTexPaths,
+			BodyPartSignals bodyPartSignals)
 		{
 			Graphic defaultGraphic = GraphicDatabase.Get<Graphic_Multi>(
 				defaultTexPath,
@@ -50,8 +51,7 @@ namespace PawnPlus.Parts
 						namedTexPaths[key],
 						Shaders.FacePart);
 					namedGraphics[key] = graphic;
-				}
-				else
+				} else
 				{
 					namedGraphics[key] = defaultGraphic;
 				}
@@ -62,6 +62,25 @@ namespace PawnPlus.Parts
 			_missing = namedGraphics["Missing"];
 			_inPain = namedGraphics["InPain"];
 			_aiming = namedGraphics["Aiming"];
+
+			if(bodyPartRecord != null)
+			{
+				bodyPartSignals.GetSignals(bodyPartRecord.Index, out List<PartSignal> partSignals);
+				List<PartSignal> eyeBlinkSignals = partSignals.FindAll(i => i.signalName == "PP_EyeBlink");
+				for(int i = eyeBlinkSignals.Count - 1; i >= 0; --i)
+				{
+					if(eyeBlinkSignals[i].argument is HumanEyeBehavior.BlinkPartSignalArg blinkSignalArg)
+					{
+						_blinkSignalArg = blinkSignalArg;
+						break;
+					}
+				}
+			}
+			// If blink signal couldn't be found, disable eye blinking.
+			if(_blinkSignalArg == null)
+			{
+				_blinkSignalArg = new HumanEyeBehavior.BlinkPartSignalArg() { blinkClose = false };
+			}
 		}
 		
 		public void Update(
@@ -70,20 +89,8 @@ namespace PawnPlus.Parts
 			out Graphic graphic, 
 			out Graphic portraitGraphic,
 			ref Vector3 additionalOffset, 
-			ref bool updatePortrait, 
-			IReadOnlyList<PartSignal> partSignals)
+			ref bool updatePortrait)
 		{
-			for(int i = 0; i < partSignals.Count; ++i)
-			{
-				PartSignal signal = partSignals[i];
-				if(signal.type == PartSignalType.EyeBlink)
-				{
-					if(signal.argument is HumanEyeBehavior.BlinkPartSignalArg signalArg)
-					{
-						_eyeBlinkEndTick = Find.TickManager.TicksGame + signalArg.blinkDuration;
-					}
-				}
-			}
 			additionalOffset = this.additionalOffset;
 			// TODO check if portrait cache refresh is needed
 			if(!pawnState.Alive)
@@ -99,7 +106,7 @@ namespace PawnPlus.Parts
 				return;
 			}
 			portraitGraphic = _open;
-			if(Find.TickManager.TicksGame < _eyeBlinkEndTick || pawnState.Sleeping || !pawnState.Conscious)
+			if(_blinkSignalArg.blinkClose || pawnState.Sleeping || !pawnState.Conscious)
 			{
 				graphic = _closed;
 				return;
