@@ -157,27 +157,31 @@ namespace PawnPlus
                                         break;
                                 }
                             }
-                            Graphic graphic = portrait ?
-                                part.portraitGraphic :
-                                part.graphic;
-                            if(graphic == null)
                             if(part.renderParams != null && part.renderParams[partRot4.AsInt].render)
 							{
-                                continue;
-							}
-                            Material partMat = graphic.MatAt(partRot4);
-                            if(partMat != null)
-                            {
-                                Vector3 offset = 
-                                    part.renderParams[partRot4.AsInt].offset +
-                                    part.additionalOffset;
-                                offset = partQuat * offset;
-                                GenDraw.DrawMeshNowOrLater(
-                                        part.renderParams[partRot4.AsInt].mesh,
-                                        partDrawPos + offset,
-                                        partQuat,
-                                        partMat,
-                                        portrait);
+                                Vector3 partDrawPos = headPos;
+                                Quaternion partQuat = headQuat;
+                                Graphic graphic = portrait ?
+                                    part.portraitGraphic :
+                                    part.graphic;
+                                if(graphic == null)
+                                {
+                                    continue;
+                                }
+                                Material partMat = graphic.MatAt(partRot4);
+                                if(partMat != null)
+                                {
+                                    Vector3 offset =
+                                        part.renderParams[partRot4.AsInt].offset +
+                                        part.additionalOffset;
+                                    offset = partQuat * offset;
+                                    GenDraw.DrawMeshNowOrLater(
+                                            part.renderParams[partRot4.AsInt].mesh,
+                                            partDrawPos + offset,
+                                            partQuat,
+                                            partMat,
+                                            portrait);
+                                }
                             }
                         }
                         
