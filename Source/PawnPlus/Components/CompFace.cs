@@ -14,6 +14,7 @@ using static PawnPlus.Offsets;
 using PawnPlus.AI;
 using System.Collections.ObjectModel;
 using System.Linq;
+using PawnPlus.Genetics;
 
 namespace PawnPlus
 {
@@ -50,6 +51,7 @@ namespace PawnPlus
         private PawnState _pawnState;
         private IHeadBehavior _headBehavior;
         private List<BehaviorData> _partBehaviors;
+        private HairMelanin _hairMelanin;
         // Used for distance culling of face details
         private GameComponent_FacialStuff _fsGameComp;
         
@@ -64,6 +66,8 @@ namespace PawnPlus
         public Pawn Pawn { get; private set; }
         
         public HeadCoverage CurrentHeadCoverage { get; set; }
+
+        public HairMelanin HairMelanin => _hairMelanin;
                         
 		// Return true if head was drawn. False if not.
 		public bool DrawHead(
@@ -231,6 +235,8 @@ namespace PawnPlus
                 _originFactionInt = Pawn.Faction ?? Faction.OfPlayer;
             }
             _pawnState.UpdateState();
+            _hairMelanin = new HairMelanin();
+            _hairMelanin.GenerateHairDNA(Pawn);
 
             foreach(var partBehavior in _partBehaviors)
             {

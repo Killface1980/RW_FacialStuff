@@ -184,14 +184,14 @@ namespace PawnPlus.Genetics
             pawn.relations.FamilyByBlood.FirstOrDefault(
                                                         x => x.HasPawnFace());
 
-            if (relPawn == null || !relPawn.GetPawnFace(out FaceData pawnFace))
+            if (relPawn == null || !relPawn.GetPawnHairMelanin(out HairMelanin hairMelanin))
             {
                 return false;
             }
 
             // ReSharper disable once PossibleNullReferenceException
-            float melaninx1 = pawnFace.EuMelanin;
-            float melaninx2 = pawnFace.PheoMelanin;
+            float melaninx1 = hairMelanin.EuMelanin;
+            float melaninx2 = hairMelanin.PheoMelanin;
 
             // float maxbaldness = relatedPawn.PawnFace.Baldness.maxBaldness;
             hairColor.EuMelanin   = GetRandomFloatSimilarTo(melaninx1);
@@ -225,21 +225,21 @@ namespace PawnPlus.Genetics
         }
 
         [CanBeNull]
-        private static FaceData GetFatherFace(Pawn pawn)
+        private static HairMelanin GetFatherHairMelanin(Pawn pawn)
         {
-            FaceData face   = null;
-            Pawn     father = pawn.GetFather();
-            father?.GetPawnFace(out face);
-            return face;
+            Pawn father = pawn.GetFather();
+            HairMelanin hairMelanin = null;
+            father?.GetPawnHairMelanin(out hairMelanin);
+            return hairMelanin;
         }
 
         [CanBeNull]
-        private static FaceData GetMotherFace([NotNull] Pawn pawn)
+        private static HairMelanin GetMotherHairMelanin([NotNull] Pawn pawn)
         {
-            FaceData face   = null;
-            Pawn     mother = pawn.GetMother();
-            mother?.GetPawnFace(out face);
-            return face;
+            Pawn mother = pawn.GetMother();
+            HairMelanin hairMelanin = null;
+            mother?.GetPawnHairMelanin(out hairMelanin);
+            return hairMelanin;
         }
 
         private static void SetInitialHairMelaninLevels(
@@ -251,19 +251,19 @@ namespace PawnPlus.Genetics
             bool flag = false;
             if (!ignoreRelative)
             {
-                FaceData motherPawnFace = GetMotherFace(pawn);
-                bool     hasMother      = motherPawnFace != null;
-                FaceData fatherPawnFace = GetFatherFace(pawn);
-                bool     hasFather      = fatherPawnFace != null;
+                HairMelanin motherHairMelanin = GetMotherHairMelanin(pawn);
+                bool hasMother = motherHairMelanin != null;
+                HairMelanin fatherHairMelanin = GetFatherHairMelanin(pawn);
+                bool hasFather = fatherHairMelanin != null;
 
                 if (hasMother && hasFather)
                 {
                     hairColor.EuMelanin =
 
                     // ReSharper disable once PossibleNullReferenceException
-                    GetRandomChildFloatValue(motherPawnFace.EuMelanin, fatherPawnFace.EuMelanin);
+                    GetRandomChildFloatValue(motherHairMelanin.EuMelanin, fatherHairMelanin.EuMelanin);
                     hairColor.PheoMelanin =
-                    GetRandomChildFloatValue(motherPawnFace.PheoMelanin, fatherPawnFace.PheoMelanin);
+                    GetRandomChildFloatValue(motherHairMelanin.PheoMelanin, fatherHairMelanin.PheoMelanin);
 
                     // hairColor.Baldness.maxBaldness = (int)GetRandomChildFloatValue(motherPawnFace.Baldness.maxBaldness, fatherPawnFace.Baldness.maxBaldness);
                     flag = true;
@@ -271,16 +271,16 @@ namespace PawnPlus.Genetics
                 else if (hasMother)
                 {
                     // ReSharper disable once PossibleNullReferenceException
-                    hairColor.EuMelanin   = GetRandomFloatSimilarTo(motherPawnFace.EuMelanin);
-                    hairColor.PheoMelanin = GetRandomFloatSimilarTo(motherPawnFace.PheoMelanin);
+                    hairColor.EuMelanin   = GetRandomFloatSimilarTo(motherHairMelanin.EuMelanin);
+                    hairColor.PheoMelanin = GetRandomFloatSimilarTo(motherHairMelanin.PheoMelanin);
 
                     // hairColor.Baldness.maxBaldness = (int)GetRandomFloatSimilarTo(motherPawnFace.Baldness.maxBaldness, 0f, 10f);
                     flag = true;
                 }
                 else if (hasFather)
                 {
-                    hairColor.EuMelanin   = GetRandomFloatSimilarTo(fatherPawnFace.EuMelanin);
-                    hairColor.PheoMelanin = GetRandomFloatSimilarTo(fatherPawnFace.PheoMelanin);
+                    hairColor.EuMelanin   = GetRandomFloatSimilarTo(fatherHairMelanin.EuMelanin);
+                    hairColor.PheoMelanin = GetRandomFloatSimilarTo(fatherHairMelanin.PheoMelanin);
 
                     // hairColor.Baldness.maxBaldness = (int)GetRandomFloatSimilarTo(fatherPawnFace.Baldness.maxBaldness, 0f, 10f);
                     flag = true;
