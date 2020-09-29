@@ -41,7 +41,7 @@ namespace PawnPlus
                 missing = false,
                 hediffAddedPart = null
 		    };
-        private List<PartSignal>[] _bodyPartSignals;
+        private Dictionary<int, List<PartSignal>> _bodyPartSignals;
         private List<PartSignal> _defaultEmptyPartSignals = new List<PartSignal>();
         private Rot4 _cachedHeadFacing;
         private PawnState _pawnState;
@@ -215,7 +215,7 @@ namespace PawnPlus
 			}
             _pawnState = new PawnState(Pawn);
             _perPartStatus = new BodyPartStatus[Pawn.RaceProps.body.AllParts.Count];
-            _bodyPartSignals = new List<PartSignal>[Pawn.RaceProps.body.AllParts.Count];
+            _bodyPartSignals = new Dictionary<int, List<PartSignal>>();
         }
 
         // Graphics and faction data aren't available in ThingComp.Initialize(). Initialize the members related to those in this method,
@@ -324,9 +324,9 @@ namespace PawnPlus
                     _pawnState.UpdateState();
                     HeadBehavior.Update(Pawn, _pawnState, out _cachedHeadFacing);
                     // Clear signals from previous tick
-                    foreach(List<PartSignal> partSignal in _bodyPartSignals)
+                    foreach(var pair in _bodyPartSignals)
 					{
-                        partSignal?.Clear();
+                        pair.Value.Clear();
 					}
                     foreach(var partBehavior in _partBehaviors)
 					{
@@ -347,6 +347,10 @@ namespace PawnPlus
             foreach(var part in _perPartData)
             {
                 bool updatePortraitTemp = false;
+                if(!_bodyPartSignals.TryGetValue(part.bodyPartIndex, out List<PartSignal> partSignal))
+				{
+                    partSignal = _defaultEmptyPartSignals;
+                }
                 part.graphicProvider.Update(
                     _pawnState,
                     part.bodyPartIndex >= 0 ? 
@@ -355,8 +359,7 @@ namespace PawnPlus
                     out part.portraitGraphic,
                     ref part.additionalOffset,
                     ref updatePortraitTemp,
-                    part.bodyPartIndex >= 0 ?
-                        _bodyPartSignals[part.bodyPartIndex] : _defaultEmptyPartSignals);
+                    partSignal);
                 updatePortrait |= updatePortraitTemp;
             }
         }
