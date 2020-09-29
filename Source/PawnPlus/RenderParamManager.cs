@@ -69,7 +69,10 @@ namespace PawnPlus
 			}
 		}
 
+		private static bool _initialized = false;
 		private static Dictionary<string, RenderNode> _renderNodes = new Dictionary<string, RenderNode>();
+
+		public static bool Initialized => _initialized;
 
 		public static void ReadFromRenderDefs()
 		{
@@ -97,6 +100,7 @@ namespace PawnPlus
 					}
 				}
 			}
+			_initialized = true;
 		}
 
 		public static void GetRenderParams(Pawn pawn, string renderNodeName, out RenderParam[] renderParams)

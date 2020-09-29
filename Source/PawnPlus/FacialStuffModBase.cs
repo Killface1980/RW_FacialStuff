@@ -58,8 +58,6 @@ namespace PawnPlus
 					bodyPartParam.bodyPartLocator.LocateBodyPart(partDef.raceBodyDef);
 				}
 			}
-
-			RenderParamManager.ReadFromRenderDefs();
 		}
 	}
 }

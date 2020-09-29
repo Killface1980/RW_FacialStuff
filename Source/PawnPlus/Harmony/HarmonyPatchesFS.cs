@@ -657,6 +657,13 @@ namespace PawnPlus.Harmony
 
         public static void ResolveAllGraphics_Postfix(PawnGraphicSet __instance)
         {
+            // Unity engine crashes when trying to load mesh while loading. This also includes DefsLoaded in ModBase implementation.
+            // RenderParamManager.ReadFromRenderDefs() loads meshes so it should be called here instead.
+            if(!RenderParamManager.Initialized)
+			{
+                RenderParamManager.ReadFromRenderDefs();
+            }
+
             Pawn pawn = __instance.pawn;
             if(pawn == null)
             {
