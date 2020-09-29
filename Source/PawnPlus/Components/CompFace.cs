@@ -428,7 +428,7 @@ namespace PawnPlus
         {
             base.PostExposeData();
             Scribe_Deep.Look(ref _headBehavior, "headBehavior");
-            Scribe_Collections.Look(ref _partBehaviors, "partBehaviors");
+            Scribe_Collections.Look(ref _partBehaviors, "partBehaviors", LookMode.Deep);
         }
     }
 }
