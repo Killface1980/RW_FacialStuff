@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using PawnPlus.Harmony;
 using UnityEngine;
 using Verse;
-using PawnPlus.AI;
 using System.Collections.ObjectModel;
 using System.Linq;
+using PawnPlus.Parts;
 
 namespace PawnPlus
 {

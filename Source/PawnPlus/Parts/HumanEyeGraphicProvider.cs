@@ -1,5 +1,4 @@
-﻿using PawnPlus.AI;
-using PawnPlus.Graphics;
+﻿using PawnPlus.Graphics;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
-namespace PawnPlus
+namespace PawnPlus.Parts
 {
 	class HumanEyeGraphicProvider : IGraphicProvider
 	{

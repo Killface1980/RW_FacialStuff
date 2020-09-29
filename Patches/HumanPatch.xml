@@ -47,7 +47,7 @@
 			that it is associated with. Same goes for other behavior classes. Doing so also allows configurable member 
 			variables like the following.
 			-->
-			<headBehavior Class = "PawnPlus.AI.HumanHeadBehavior">
+			<headBehavior Class = "PawnPlus.HumanHeadBehavior">
 				<!-- The amount of ticks needed for the recipient of social interaction to wait before moving its head -->
 				<socialRecipientDelayTick>30</socialRecipientDelayTick>
 				<!-- How long the social interaction lasts in ticks -->
@@ -56,16 +56,17 @@
 				<headRotationRate>10</headRotationRate>
 			</headBehavior>
 			
+			<!-- Class must implement PawnPlus.Parts.IPartBehavior -->
 			<partBehaviors>
-				<li Class = "PawnPlus.AI.HumanEyeBehavior">
+				<li Class = "PawnPlus.Parts.HumanEyeBehavior">
 					<blinkCloseTicks>6</blinkCloseTicks>
 					<blinkOpenAverageTicks>200</blinkOpenAverageTicks>
 					<blinkOpenMaxRandOffsetTicks>50</blinkOpenMaxRandOffsetTicks>
 				</li>
 			</partBehaviors>
 			
-			<!-- Class must be PawnPlus.PartGenHelper or its subclass -->
-			<partGenHelper Class="PawnPlus.PartGenHelper"></partGenHelper>	
+			<!-- Class must be PawnPlus.Parts.PartGenHelper or its subclass -->
+			<partGenHelper Class="PawnPlus.Parts.PartGenHelper"></partGenHelper>	
           </li>
         </value>
       </li>

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Verse;
 
-namespace PawnPlus
+namespace PawnPlus.Parts
 {
 	public class PartGenHelper
 	{

@@ -16,8 +16,8 @@
 					<bodyPartDef>Eye</bodyPartDef>
 					<bodyPartLabel>left eye</bodyPartLabel>
 				</bodyPartLocator>
-				<!-- Class must implement PawnPlus.IGraphicProvider interface. -->
-				<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider">
+				<!-- Class must implement PawnPlus.Parts.IGraphicProvider interface. -->
+				<graphicProvider Class="PawnPlus.Parts.HumanEyeGraphicProvider">
 					<closeWhenAiming>true</closeWhenAiming>
 					<additionalOffset>(0, 0, 0)</additionalOffset>
 				</graphicProvider>
@@ -28,7 +28,7 @@
 					<bodyPartDef>Eye</bodyPartDef>
 					<bodyPartLabel>right eye</bodyPartLabel>
 				</bodyPartLocator>
-				<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider">
+				<graphicProvider Class="PawnPlus.Parts.HumanEyeGraphicProvider">
 					<closeWhenAiming>false</closeWhenAiming>
 					<additionalOffset>(0, 0, 0)</additionalOffset>
 				</graphicProvider>

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PawnPlus
+namespace PawnPlus.Parts
 {
-	public enum PartSignalType
+	public enum RootType
 	{
-		EyeBlink, // Eye is closed for blinking
-		Custom
+		Body = 0,
+		Head = 1
 	}
 }

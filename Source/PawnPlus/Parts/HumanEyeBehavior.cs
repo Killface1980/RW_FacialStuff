@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 using Verse;
 
-namespace PawnPlus.AI
+namespace PawnPlus.Parts
 {
 	class HumanEyeBehavior : IPartBehavior
 	{

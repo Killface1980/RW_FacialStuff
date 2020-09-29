@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
-namespace PawnPlus
+namespace PawnPlus.Parts
 {	
 	public interface IGraphicProvider : ICloneable
 	{

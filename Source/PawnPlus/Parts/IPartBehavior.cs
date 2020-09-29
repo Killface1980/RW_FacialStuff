@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Verse;
 
-namespace PawnPlus
+namespace PawnPlus.Parts
 {	
 	public interface IPartBehavior : ICloneable, IExposable
 	{

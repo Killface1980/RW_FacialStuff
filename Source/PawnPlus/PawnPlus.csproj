@@ -83,19 +83,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\HumanEyeBehavior.cs" />
-    <Compile Include="AI\HumanHeadBehavior.cs" />
+    <Compile Include="Parts\HumanEyeBehavior.cs" />
+    <Compile Include="HumanHeadBehavior.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_BaseAnimator.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_PoseAnimator.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_WalkAnimator.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
     <Compile Include="BodyPartRecordExtension.cs" />
     <Compile Include="BodyPartStatus.cs" />
-    <Compile Include="HumanMouthGraphicProvider.cs" />
-    <Compile Include="PartGenHelper.cs" />
-    <Compile Include="PartSignal.cs" />
-    <Compile Include="PartSignalArg.cs" />
-    <Compile Include="PartSignalType.cs" />
+    <Compile Include="Parts\HumanMouthGraphicProvider.cs" />
+    <Compile Include="Parts\PartGenHelper.cs" />
+    <Compile Include="Parts\PartSignal.cs" />
+    <Compile Include="Parts\PartSignalArg.cs" />
+    <Compile Include="Parts\PartSignalType.cs" />
     <Compile Include="Components\CompBodyAnimator.cs" />
     <Compile Include="Components\CompFace.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
@@ -127,7 +127,7 @@
     <Compile Include="Drawer\PawnBodyDrawer.cs" />
     <Compile Include="Drawer\QuadrupedDrawer.cs" />
     <Compile Include="Enums\enums.cs" />
-    <Compile Include="Enums\HeadCoverage.cs" />
+    <Compile Include="HeadCoverage.cs" />
     <Compile Include="Enums\KeyStatus.cs" />
     <Compile Include="Enums\MaxLayerToShow.cs" />
     <Compile Include="Enums\Offsets.cs" />
@@ -143,16 +143,16 @@
     <Compile Include="Harmony\HarmonyPatch_Pawn_HealthTracker.cs" />
     <Compile Include="Harmony\HarmonyPatch_Pawn_InteractionsTracker.cs" />
     <Compile Include="Harmony\HarmonyPatch_ShaderUtility.cs" />
-    <Compile Include="HumanEyeGraphicProvider.cs" />
-    <Compile Include="IPartBehavior.cs" />
-    <Compile Include="IGraphicProvider.cs" />
+    <Compile Include="Parts\HumanEyeGraphicProvider.cs" />
+    <Compile Include="Parts\IPartBehavior.cs" />
+    <Compile Include="Parts\IGraphicProvider.cs" />
     <Compile Include="IHeadBehavior.cs" />
     <Compile Include="PawnExtensions.cs" />
     <Compile Include="PawnState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderParamManager.cs" />
     <Compile Include="RenderParam.cs" />
-    <Compile Include="RootType.cs" />
+    <Compile Include="Parts\RootType.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Settings_Animator.cs" />
     <Compile Include="Tweener\TinyTween.cs" />

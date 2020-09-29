@@ -4,6 +4,7 @@
 // ReSharper disable InconsistentNaming
 
 using PawnPlus.Defs;
+using PawnPlus.Parts;
 using System.Collections.Generic;
 
 using Verse;
