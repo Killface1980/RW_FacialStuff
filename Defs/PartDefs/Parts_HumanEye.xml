@@ -17,11 +17,11 @@
 					<bodyPartDef>Eye</bodyPartDef>
 					<bodyPartLabel>left eye</bodyPartLabel>
 				</bodyPartLocator>
-				<!-- Class must implement PawnPlus.Parts.IGraphicProvider interface. -->
-				<graphicProvider Class="PawnPlus.Parts.HumanEyeGraphicProvider">
+				<!-- Class must implement PawnPlus.Parts.IPartRenderer interface. -->
+				<partRenderer Class="PawnPlus.Parts.HumanEyeRenderer">
 					<closeWhenAiming>true</closeWhenAiming>
 					<additionalOffset>(0, 0, 0)</additionalOffset>
-				</graphicProvider>
+				</partRenderer>
 			</li>
 			<li>
 				<renderNodeName>HumanRightEye</renderNodeName>
@@ -30,10 +30,10 @@
 					<bodyPartDef>Eye</bodyPartDef>
 					<bodyPartLabel>right eye</bodyPartLabel>
 				</bodyPartLocator>
-				<graphicProvider Class="PawnPlus.Parts.HumanEyeGraphicProvider">
+				<partRenderer Class="PawnPlus.Parts.HumanEyeRenderer">
 					<closeWhenAiming>false</closeWhenAiming>
 					<additionalOffset>(0, 0, 0)</additionalOffset>
-				</graphicProvider>
+				</partRenderer>
 			</li>
 		</parts>
 	</PawnPlus.Defs.PartDef>

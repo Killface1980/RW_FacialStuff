@@ -8,7 +8,7 @@ using Verse;
 
 namespace PawnPlus.Parts
 {	
-	public interface IGraphicProvider : ICloneable
+	public interface IPartRenderer : ICloneable
 	{
 		public void Initialize(
 			Pawn pawn, 

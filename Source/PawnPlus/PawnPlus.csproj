@@ -92,7 +92,7 @@
     <Compile Include="Animator\BodyAnimator.cs" />
     <Compile Include="BodyPartRecordExtension.cs" />
     <Compile Include="BodyPartStatus.cs" />
-    <Compile Include="Parts\HumanMouthGraphicProvider.cs" />
+    <Compile Include="Parts\HumanMouthRenderer.cs" />
     <Compile Include="Parts\PartGenHelper.cs" />
     <Compile Include="Parts\PartSignal.cs" />
     <Compile Include="Parts\PartSignalArg.cs" />
@@ -143,9 +143,9 @@
     <Compile Include="Harmony\HarmonyPatch_Pawn_HealthTracker.cs" />
     <Compile Include="Harmony\HarmonyPatch_Pawn_InteractionsTracker.cs" />
     <Compile Include="Harmony\HarmonyPatch_ShaderUtility.cs" />
-    <Compile Include="Parts\HumanEyeGraphicProvider.cs" />
+    <Compile Include="Parts\HumanEyeRenderer.cs" />
     <Compile Include="Parts\IPartBehavior.cs" />
-    <Compile Include="Parts\IGraphicProvider.cs" />
+    <Compile Include="Parts\IPartRenderer.cs" />
     <Compile Include="IHeadBehavior.cs" />
     <Compile Include="PawnExtensions.cs" />
     <Compile Include="PawnState.cs" />

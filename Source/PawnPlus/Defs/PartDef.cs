@@ -12,7 +12,7 @@ namespace PawnPlus.Defs
             public string renderNodeName;
             public List<string> occludedRenderNodes;
             public BodyPartLocator bodyPartLocator;
-            public IGraphicProvider graphicProvider;
+            public IPartRenderer partRenderer;
         }
 
         public HairGender hairGender;

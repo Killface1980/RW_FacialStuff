@@ -10,7 +10,7 @@ using Verse;
 
 namespace PawnPlus.Parts
 {
-	class HumanEyeGraphicProvider : IGraphicProvider
+	class HumanEyeRenderer : IPartRenderer
 	{
 		public bool closeWhenAiming = false;
 		public Vector3 additionalOffset = new Vector3(0f, 0f, 0f);

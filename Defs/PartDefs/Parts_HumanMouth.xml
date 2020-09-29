@@ -20,7 +20,7 @@
 					<bodyPartDef>Jaw</bodyPartDef>
 					<bodyPartLabel></bodyPartLabel>
 				</bodyPartLocator>
-				<graphicProvider Class="PawnPlus.Parts.HumanMouthGraphicProvider"></graphicProvider>
+				<partRenderer Class="PawnPlus.Parts.HumanMouthRenderer"></partRenderer>
 			</li>
 		</parts>
 		<namedTexPaths>

@@ -9,7 +9,7 @@ using Verse;
 
 namespace PawnPlus.Parts
 {
-	class HumanMouthGraphicProvider : IGraphicProvider
+	class HumanMouthRenderer : IPartRenderer
 	{
 		private Pawn _pawn;
 		private Graphic _normal;

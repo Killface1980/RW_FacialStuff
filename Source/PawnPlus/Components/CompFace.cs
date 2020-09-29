@@ -21,7 +21,7 @@ namespace PawnPlus
         {
             public int bodyPartIndex;
             public RootType rootType;
-            public IGraphicProvider graphicProvider;
+            public IPartRenderer renderer;
             public Graphic graphic;
             public Graphic portraitGraphic;
             public Vector3 additionalOffset;
@@ -254,7 +254,7 @@ namespace PawnPlus
                 {
                     PartData partData = new PartData();
                     partData.bodyPartIndex = part.bodyPartLocator._resolvedPartIndex;
-                    if(part.graphicProvider == null)
+                    if(part.partRenderer == null)
 					{
                         Log.Warning(
                             "Pawn Plus: no graphic provider is specified for one of the parts in PartDef " + 
@@ -262,14 +262,14 @@ namespace PawnPlus
                             " . The part will not be shown.");
                         continue;
 					}
-                    partData.graphicProvider = (IGraphicProvider)part.graphicProvider.Clone();
+                    partData.renderer = (IPartRenderer)part.partRenderer.Clone();
                     partData.renderNodeName = part.renderNodeName;
                     RenderParamManager.GetRenderParams(
                         Pawn,
                         part.renderNodeName,
                         out partData.rootType,
                         out partData.renderParams);
-                    partData.graphicProvider.Initialize(
+                    partData.renderer.Initialize(
                         Pawn,
                         Pawn.RaceProps.body,
                         part.bodyPartLocator._resolvedBodyPartRecord,
@@ -393,7 +393,7 @@ namespace PawnPlus
             foreach(var part in _perPartData)
             {
                 bool updatePortraitTemp = false;
-                part.graphicProvider.Update(
+                part.renderer.Update(
                     _pawnState,
                     part.bodyPartIndex >= 0 ? 
                         _perPartStatus[part.bodyPartIndex] : _defaultPart,
