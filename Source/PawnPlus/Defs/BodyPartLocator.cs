@@ -23,6 +23,20 @@ namespace PawnPlus.Defs
 		[Unsaved(false)]
 		public PartDef _parentPartDef;
 
+		public BodyPartLocator()
+		{
+
+		}
+
+		public BodyPartLocator(BodyPartLocator other)
+		{
+			bodyPartDef = other.bodyPartDef;
+			bodyPartLabel = other.bodyPartLabel;
+			_resolvedBodyPartRecord = other._resolvedBodyPartRecord;
+			_resolvedPartIndex = other._resolvedPartIndex;
+			_parentPartDef = other._parentPartDef;
+		}
+
 		public void LocateBodyPart(BodyDef bodyDef)
 		{
 			_resolvedBodyPartRecord =
