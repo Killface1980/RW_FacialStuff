@@ -22,7 +22,7 @@ namespace PawnPlus.Graphics
 			var thisMod = ModLister.GetModWithIdentifier("killface.facialstuff");
 			if(thisMod == null)
 			{
-				Log.Error("Facial Stuff: failed to load shader - could not find mod root directory");
+				Log.Error("Pawn Plus: failed to load shader - could not find mod root directory");
 				return;
 			}
 			string shaderAssetBundlePath = Path.Combine(
@@ -36,7 +36,7 @@ namespace PawnPlus.Graphics
 			AssetBundle shaderAssets = AssetBundle.LoadFromFile(shaderAssetBundlePath);
 			if(shaderAssets == null)
 			{
-				Log.Error("Facial Stuff: failed to load shader. Could not locate shader asset bundle at " + shaderAssetBundlePath);
+				Log.Error("Pawn Plus: failed to load shader. Could not locate shader asset bundle at " + shaderAssetBundlePath);
 				return;
 			}
 			Shader[] shaders = shaderAssets.LoadAllAssets<Shader>();
@@ -46,35 +46,35 @@ namespace PawnPlus.Graphics
 				{
 					if(shaders[i].isSupported)
 					{
-						Log.Message("Facial Stuff: successfully loaded shader " + shaders[i].name);
+						Log.Message("Pawn Plus: successfully loaded shader " + shaders[i].name);
 						Hair = shaders[i];
 					} 
 					else
 					{
-						Log.Message("Facial Stuff: could not load shader " + Hair.name + ". This shader is not supported");
+						Log.Message("Pawn Plus: could not load shader " + Hair.name + ". This shader is not supported");
 						Hair = null;
 					}
 				} else if(shaders[i].name.Equals("Custom/Mod/FacialStuff/FacePart"))
 				{
 					if(shaders[i].isSupported)
 					{
-						Log.Message("Facial Stuff: successfully loaded shader " + shaders[i].name);
+						Log.Message("Pawn Plus: successfully loaded shader " + shaders[i].name);
 						FacePart = shaders[i];
 					} 
 					else
 					{
-						Log.Message("Facial Stuff: could not load shader " + FacePart.name + ". This shader is not supported");
+						Log.Message("Pawn Plus: could not load shader " + FacePart.name + ". This shader is not supported");
 						FacePart = null;
 					}
 				}
 			}
 			if(Hair == null)
 			{
-				Log.Error("Facial Stuff: could not find shader Custom/Mod/FacialStuff/Hair in shader asset bundle");
+				Log.Error("Pawn Plus: could not find shader Custom/Mod/FacialStuff/Hair in shader asset bundle");
 			} 
 			if(FacePart == null)
 			{
-				Log.Error("Facial Stuff: could not find shader Custom/Mod/FacialStuff/FacePart in shader asset bundle");
+				Log.Error("Pawn Plus: could not find shader Custom/Mod/FacialStuff/FacePart in shader asset bundle");
 			}
 		}
 	}

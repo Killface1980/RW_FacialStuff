@@ -103,7 +103,7 @@
     <Compile Include="Components\CompProperties_Face.cs" />
     <Compile Include="Components\CompProperties_WeaponExtensions.cs" />
     <Compile Include="Components\CompWeaponExtensions.cs" />
-    <Compile Include="Components\GameComponent_FacialStuff.cs" />
+    <Compile Include="Components\GameComponent_PawnPlus.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Controller_Animator.cs" />
     <Compile Include="DefOfs\WalkCycleDefOf.cs" />
@@ -136,7 +136,7 @@
     <Compile Include="Enums\PartStatus.cs" />
     <Compile Include="Enums\Tween.cs" />
     <Compile Include="Enums\WalkcycleType.cs" />
-    <Compile Include="FacialStuffModBase.cs" />
+    <Compile Include="PawnPlusModBase.cs" />
     <Compile Include="Graphics\Graphic_Hair.cs" />
     <Compile Include="Graphics\PawnBodyGraphic.cs" />
     <Compile Include="Graphics\Shaders.cs" />

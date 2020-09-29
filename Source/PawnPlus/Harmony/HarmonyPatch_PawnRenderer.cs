@@ -146,7 +146,7 @@ namespace PawnPlus.Harmony
                     }
                     if(!foundLabel)
                     {
-                        Log.Error("Facial Stuff: Could not patch RenderPawnInternal. Branch label was not found.");
+                        Log.Error("Pawn Plus: Could not patch RenderPawnInternal. Branch label was not found.");
                     } else
                     {
                         // Insert the following codes after the Stloc.S 11 instructon
@@ -225,15 +225,15 @@ namespace PawnPlus.Harmony
             }
             if(bodyPatchState != 1)
             {
-                Log.Warning("Facial Stuff: code for body animation wasn't injected");
+                Log.Warning("Pawn Plus: code for body animation wasn't injected");
             }
             if(headPatchState != 1)
             {
-                Log.Warning("Facial Stuff: code for rendering head wasn't injected");
+                Log.Warning("Pawn Plus: code for rendering head wasn't injected");
             }
             if(handPatchState != 1)
 			{
-                Log.Warning("Facial Stuff: code for rendering hand and feet wasn't injected");
+                Log.Warning("Pawn Plus: code for rendering hand and feet wasn't injected");
 			}
         }
 

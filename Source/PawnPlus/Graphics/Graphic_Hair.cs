@@ -54,7 +54,7 @@ namespace PawnPlus.Graphics
 		{
 			if(req.shader != Shaders.Hair)
 			{
-				Log.Warning("Facial Stuff: tried to create hair graphic with wrong shader. Hair must be rendered using hair shader");
+				Log.Warning("Pawn Plus: tried to create hair graphic with wrong shader. Hair must be rendered using hair shader");
 			}
 			data = req.graphicData;
 			path = req.path;
@@ -87,7 +87,7 @@ namespace PawnPlus.Graphics
 			}
 			if(defaultHairTex[0] == null)
 			{
-				Log.Error("Facial Stuff: Failed to find any textures at " + req.path + " while constructing " + this.ToStringSafe());
+				Log.Error("Pawn Plus: Failed to find any textures at " + req.path + " while constructing " + this.ToStringSafe());
 				return;
 			}
 			if(defaultHairTex[2] == null)
@@ -157,7 +157,7 @@ namespace PawnPlus.Graphics
 			// Hairs must always be rendered with custom hair shader
 			if(newShader != Shaders.Hair)
 			{
-				Log.Warning("Facial Stuff: tried to copy hair graphic with wrong shader. Hair must be rendered using hair shader");
+				Log.Warning("Pawn Plus: tried to copy hair graphic with wrong shader. Hair must be rendered using hair shader");
 			}
 			return GraphicDatabase.Get<Graphic_Hair>(path, Shaders.Hair, drawSize, newColor, newColorTwo, data);
 		}

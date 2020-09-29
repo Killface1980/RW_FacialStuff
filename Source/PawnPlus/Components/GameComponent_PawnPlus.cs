@@ -14,7 +14,7 @@ using System.Reflection;
 
 namespace PawnPlus
 {
-    public class GameComponent_FacialStuff : GameComponent
+    public class GameComponent_PawnPlus : GameComponent
     {
         protected UnityEngine.Animator animator;
         
@@ -24,12 +24,12 @@ namespace PawnPlus
 
         #region Public Constructors
         
-        public GameComponent_FacialStuff()
+        public GameComponent_PawnPlus()
         {
         }
 
         // ReSharper disable once UnusedParameter.Local
-        public GameComponent_FacialStuff(Game game)
+        public GameComponent_PawnPlus(Game game)
         {
             WeaponCompsNew();
             AnimalPawnCompsBodyDefImport();
@@ -50,7 +50,7 @@ namespace PawnPlus
 
 				}
 			}
-            Log.Message("Facial Stuff: Couldn't retrieve the value MeshPool.HumanlikeHeadAverageWidth. Using the default value of 0.75 for face part culling.");
+            Log.Message("Pawn Plus: Couldn't retrieve the value MeshPool.HumanlikeHeadAverageWidth. Using the default value of 0.75 for face part culling.");
             faceMeshSize = 0.75f;
         }
 

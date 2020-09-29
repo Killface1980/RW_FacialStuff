@@ -10,13 +10,13 @@ using RimWorld;
 
 namespace PawnPlus
 {
-	class FacialStuffModBase : ModBase
+	class PawnPlusModBase : ModBase
 	{
 		public override string ModIdentifier
 		{
 			get
 			{
-				return "FacialStuff";
+				return "PawnPlus";
 			}
 		}
 
@@ -37,7 +37,7 @@ namespace PawnPlus
 			{
 				if(partDef.raceBodyDef == null)
 				{
-					Log.Warning("Facial Stuff: <raceBodyDef> property in PartDef " + partDef.defName + " is null. The PartDef will be ignored.");
+					Log.Warning("Pawn Plus: <raceBodyDef> property in PartDef " + partDef.defName + " is null. The PartDef will be ignored.");
 					continue;
 				}
 				if(!PartDef._allParts.TryGetValue(partDef.raceBodyDef, out Dictionary<string, List<PartDef>> partsInRace))

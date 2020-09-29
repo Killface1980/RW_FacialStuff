@@ -90,7 +90,7 @@ namespace PawnPlus.AnimatorWindows
                                                      CompAnim.BodyAnim.PoseCycleType + "_" + name;
                                                      newCycle.pawnPosture = myenum;
                                                      newCycle.PoseCycleType = CompAnim.BodyAnim.PoseCycleType;
-                                                     GameComponent_FacialStuff.BuildPoseCycles(newCycle);
+                                                     GameComponent_PawnPlus.BuildPoseCycles(newCycle);
                                                      EditorPoseCycle = newCycle;
 
                                                      CompAnim.BodyAnim.poseCycles.Add(newCycle);
@@ -149,14 +149,14 @@ namespace PawnPlus.AnimatorWindows
             base.DoWindowContents(inRect);
             if (GUI.changed)
             {
-                GameComponent_FacialStuff.BuildPoseCycles();
+                GameComponent_PawnPlus.BuildPoseCycles();
             }
         }
 
         protected override void BuildEditorCycle()
         {
             base.BuildEditorCycle();
-            GameComponent_FacialStuff.BuildPoseCycles(EditorPoseCycle);
+            GameComponent_PawnPlus.BuildPoseCycles(EditorPoseCycle);
         }
 
         protected override void DrawBodySettingsEditor(Rot4 rotation)

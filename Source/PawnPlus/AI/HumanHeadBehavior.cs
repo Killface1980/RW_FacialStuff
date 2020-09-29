@@ -57,14 +57,14 @@ namespace PawnPlus.AI
 			if(!pawn.Rotation.IsValid)
 			{
 				Log.Warning(
-					"Facial Stuff: invalid body rotation given for PawnHeadRotationAI.Tick() (value: " 
+					"Pawn Plus: invalid body rotation given for PawnHeadRotationAI.Tick() (value: " 
 					+ pawn.Rotation.AsInt + ") Pawn:" + pawn?.ToString());
 				headFacing = pawn.Rotation;
 				return;
 			}
 			if(pawn == null)
 			{
-				Log.Warning("Facial Stuff: tried to update head rotation when pawn is null");
+				Log.Warning("Pawn Plus: tried to update head rotation when pawn is null");
 				headFacing = Rot4.North;
 				return;
 			}
@@ -221,7 +221,7 @@ namespace PawnPlus.AI
 			}
 			else
 			{
-				Log.Warning("Facial Stuff: tried to update head angle when there is no target to turn the head towards");
+				Log.Warning("Pawn Plus: tried to update head angle when there is no target to turn the head towards");
 				return Quaternion.identity;
 			}
 		}

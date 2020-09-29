@@ -49,7 +49,7 @@ namespace PawnPlus
         private IHeadBehavior _headBehavior;
         private List<BehaviorData> _partBehaviors;
         // Used for distance culling of face details
-        private GameComponent_FacialStuff _fsGameComp;
+        private GameComponent_PawnPlus _fsGameComp;
         
         public bool Initialized { get; private set; }
 
@@ -190,7 +190,7 @@ namespace PawnPlus
             } else
             {
                 Log.ErrorOnce(
-                    "Facial Stuff: " + Pawn.Name + " has CompFace but doesn't have valid hair graphic of Graphic_Hair class",
+                    "Pawn Plus: " + Pawn.Name + " has CompFace but doesn't have valid hair graphic of Graphic_Hair class",
                     "FacialStuff_CompFaceNoValidHair".GetHashCode());
             }
         }
@@ -198,7 +198,7 @@ namespace PawnPlus
 		public override void Initialize(CompProperties props)
 		{
 			base.Initialize(props);
-            _fsGameComp = Current.Game.GetComponent<GameComponent_FacialStuff>();
+            _fsGameComp = Current.Game.GetComponent<GameComponent_PawnPlus>();
             Props = (CompProperties_Face)props;
             Pawn = (Pawn)parent;
             if(HeadBehavior == null)
@@ -252,7 +252,7 @@ namespace PawnPlus
             
             if(Props.partGenHelper == null)
 			{
-                Log.Error("Facial Stuff: partGenHelper in CompProperties_Face can't be null. No parts will be generated.");
+                Log.Error("Pawn Plus: partGenHelper in CompProperties_Face can't be null. No parts will be generated.");
                 return;
 			}
             Props.partGenHelper.PartsPreGeneration(Pawn);

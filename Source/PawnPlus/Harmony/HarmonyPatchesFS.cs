@@ -55,7 +55,7 @@ namespace PawnPlus.Harmony
                 new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DirtyCache_Postfix)));
             
             Log.Message(
-                "Facial Stuff: successfully completed " + harmony.GetPatchedMethods().Count() + " patches with harmony.");
+                "Pawn Plus: successfully completed " + harmony.GetPatchedMethods().Count() + " patches with harmony.");
         }
 
         public static bool IsBeardNotHair(this Def def)

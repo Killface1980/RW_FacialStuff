@@ -67,7 +67,7 @@ namespace PawnPlus.AnimatorWindows
             {
                 if (!this.Loop)
                 {
-                    GameComponent_FacialStuff.BuildWalkCycles();
+                    GameComponent_PawnPlus.BuildWalkCycles();
                 }
             }
         }
@@ -86,7 +86,7 @@ namespace PawnPlus.AnimatorWindows
         protected override void BuildEditorCycle()
         {
             base.BuildEditorCycle();
-            GameComponent_FacialStuff.BuildWalkCycles(this.EditorWalkcycle);
+            GameComponent_PawnPlus.BuildWalkCycles(this.EditorWalkcycle);
         }
 
         // public static float horHeadOffset;
@@ -166,7 +166,7 @@ namespace PawnPlus.AnimatorWindows
                                                      this.BodyAnimDef.WalkCycleType + "_" + name;
                                                      newCycle.locomotionUrgency = myenum;
                                                      newCycle.WalkCycleType = this.BodyAnimDef.WalkCycleType;
-                                                     GameComponent_FacialStuff.BuildWalkCycles(newCycle);
+                                                     GameComponent_PawnPlus.BuildWalkCycles(newCycle);
                                                      this.EditorWalkcycle = newCycle;
 
                                                      this.BodyAnimDef.walkCycles.Add(myenum, newCycle);

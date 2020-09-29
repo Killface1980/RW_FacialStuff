@@ -88,7 +88,7 @@ namespace PawnPlus
 				if(renderNode.RootType != renderDef.rootType)
 				{
 					Log.Warning(
-						"Facial Stuff: all RenderDefs defining the same <renderNode> must have the same <rootType>. RenderDef " + 
+						"Pawn Plus: all RenderDefs defining the same <renderNode> must have the same <rootType>. RenderDef " + 
 						renderDef.defName + 
 						" will be ignored.");
 					continue;
