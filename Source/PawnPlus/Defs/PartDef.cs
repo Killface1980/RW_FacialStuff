@@ -10,6 +10,7 @@ namespace PawnPlus.Defs
         public class Part
 		{
             public string renderNodeName;
+            public List<string> occludedRenderNodes;
             public BodyPartLocator bodyPartLocator;
             public IGraphicProvider graphicProvider;
         }

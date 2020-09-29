@@ -12,6 +12,7 @@
 		<parts>
 			<li>
 				<renderNodeName>HumanLeftEye</renderNodeName>
+				<occludedRenderNodes></occludedRenderNodes>
 				<bodyPartLocator>
 					<bodyPartDef>Eye</bodyPartDef>
 					<bodyPartLabel>left eye</bodyPartLabel>
@@ -24,6 +25,7 @@
 			</li>
 			<li>
 				<renderNodeName>HumanRightEye</renderNodeName>
+				<occludedRenderNodes></occludedRenderNodes>
 				<bodyPartLocator>
 					<bodyPartDef>Eye</bodyPartDef>
 					<bodyPartLabel>right eye</bodyPartLabel>

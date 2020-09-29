@@ -25,6 +25,8 @@ namespace PawnPlus
             public Graphic graphic;
             public Graphic portraitGraphic;
             public Vector3 additionalOffset;
+            public string renderNodeName;
+            public bool occluded;
             public RenderParam[] renderParams;
         }
                 
@@ -89,6 +91,10 @@ namespace PawnPlus
 				    {
                         foreach(var part in _perPartData)
                         {
+                            if(part.renderParams == null || part.occluded)
+							{
+                                continue;
+							}
                             Rot4 partRot4 = Rot4.South;
                             if(!portrait)
 							{
@@ -103,7 +109,7 @@ namespace PawnPlus
                                         break;
                                 }
                             }
-                            if(part.renderParams != null && part.renderParams[partRot4.AsInt].render)
+                            if(part.renderParams[partRot4.AsInt].render)
 							{
                                 Vector3 partDrawPos = headPos;
                                 Quaternion partQuat = headQuat;
@@ -279,6 +285,7 @@ namespace PawnPlus
                         continue;
 					}
                     partData.graphicProvider = (IGraphicProvider)part.graphicProvider.Clone();
+                    partData.renderNodeName = part.renderNodeName;
                     RenderParamManager.GetRenderParams(
                         Pawn,
                         part.renderNodeName,
@@ -294,6 +301,33 @@ namespace PawnPlus
                 }
             }
             _perPartData = perPartData;
+
+            HashSet<string> occludedRenderNodes = new HashSet<string>();
+            foreach(var partDef in _partDefs)
+			{
+                foreach(var part in partDef.parts)
+				{
+                    if(part.occludedRenderNodes == null)
+					{
+                        continue;
+					}
+                    foreach(var occludedRenderNode in part.occludedRenderNodes)
+					{
+                        occludedRenderNodes.Add(occludedRenderNode);
+					}
+				}
+            }
+            foreach(var partData in _perPartData)
+			{
+                if(occludedRenderNodes.Contains(partData.renderNodeName))
+				{
+                    partData.occluded = true;
+				}
+                else
+				{
+                    partData.occluded = false;
+				}
+			}
 
             // Update the graphic providers to get the portrait graphic
             UpdateGraphicProviders(out bool updatePortrait);

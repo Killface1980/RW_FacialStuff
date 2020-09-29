@@ -15,6 +15,7 @@
 		<parts>
 			<li>
 				<renderNodeName>HumanMouth</renderNodeName>
+				<occludedRenderNodes></occludedRenderNodes>
 				<bodyPartLocator>
 					<bodyPartDef>Jaw</bodyPartDef>
 					<bodyPartLabel></bodyPartLabel>
