@@ -12,7 +12,7 @@
 		</hairTags>
 		<category>Mouth</category>
 		<raceBodyDef>Human</raceBodyDef>
-		<linkedBodyParts>
+		<parts>
 			<li>
 				<renderNodeName>HumanMouth</renderNodeName>
 				<bodyPartLocator>
@@ -21,7 +21,7 @@
 				</bodyPartLocator>
 				<graphicProvider Class="PawnPlus.HumanMouthGraphicProvider"></graphicProvider>
 			</li>
-		</linkedBodyParts>
+		</parts>
 		<namedTexPaths>
 			<li>
 				<key>Normal</key>

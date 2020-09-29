@@ -47,6 +47,7 @@ namespace PawnPlus
         private PawnState _pawnState;
         private IHeadBehavior _headBehavior;
         private List<BehaviorData> _partBehaviors;
+        private List<PartDef> _partDefs;
         // Used for distance culling of face details
         private GameComponent_PawnPlus _fsGameComp;
         
@@ -243,46 +244,64 @@ namespace PawnPlus
                 }
             }
             
-            if(Props.partGenHelper == null)
+            if(_partDefs == null)
 			{
-                Log.Error("Pawn Plus: partGenHelper in CompProperties_Face can't be null. No parts will be generated.");
-                return;
-			}
-            Props.partGenHelper.PartsPreGeneration(Pawn);
+                if(Props.partGenHelper == null)
+                {
+                    Log.Error("Pawn Plus: partGenHelper in CompProperties_Face can't be null. No parts will be generated.");
+                    Initialized = true;
+                    return;
+                }
+                Props.partGenHelper.PartsPreGeneration(Pawn);
+                _partDefs = new List<PartDef>();
+                foreach(string category in PartDef.GetCategoriesInRace(Pawn.RaceProps.body))
+                {
+                    List<PartDef> parts = PartDef.GetAllPartsFromCategory(Pawn.RaceProps.body, category);
+                    if(parts.NullOrEmpty())
+                    {
+                        continue;
+                    }
+                    PartDef partDef = Props.partGenHelper.GeneratePartInCategory(Pawn, category, parts);
+                    if(partDef == null)
+                    {
+                        continue;
+                    }
+                    _partDefs.Add(partDef);
+                }
+                Props.partGenHelper.PartsPostGeneration(Pawn);
+            }
+
             List<PartData> perPartData = new List<PartData>();
-            foreach(string category in PartDef.GetCategoriesInRace(Pawn.RaceProps.body))
+            foreach(var partDef in _partDefs)
 			{
-                List<PartDef> parts = PartDef.GetAllPartsFromCategory(Pawn.RaceProps.body, category);
-                if(parts.NullOrEmpty())
-				{
-                    continue;
-				}
-                PartDef partDef = Props.partGenHelper.GeneratePartInCategory(Pawn, category, parts);
-                if(partDef == null)
-				{
-                    continue;
-				}
-                foreach(var linkedBodypart in partDef.linkedBodyParts)
+                foreach(var part in partDef.parts)
                 {
                     PartData partData = new PartData();
-                    partData.bodyPartIndex = linkedBodypart.bodyPartLocator._resolvedPartIndex;
-                    partData.graphicProvider = (IGraphicProvider)linkedBodypart.graphicProvider.Clone();
+                    partData.bodyPartIndex = part.bodyPartLocator._resolvedPartIndex;
+                    if(part.graphicProvider == null)
+					{
+                        Log.Warning(
+                            "Pawn Plus: no graphic provider is specified for one of the parts in PartDef " + 
+                            partDef.defName +
+                            " . The part will not be shown.");
+                        continue;
+					}
+                    partData.graphicProvider = (IGraphicProvider)part.graphicProvider.Clone();
                     RenderParamManager.GetRenderParams(
-                        Pawn, 
-                        linkedBodypart.renderNodeName, 
+                        Pawn,
+                        part.renderNodeName,
                         out partData.rootType,
                         out partData.renderParams);
                     partData.graphicProvider.Initialize(
                         Pawn,
                         Pawn.RaceProps.body,
-                        linkedBodypart.bodyPartLocator._resolvedBodyPartRecord,
-                        linkedBodypart.bodyPartLocator._parentPartDef.defaultTexPath,
-                        linkedBodypart.bodyPartLocator._parentPartDef.namedTexPaths);
+                        part.bodyPartLocator._resolvedBodyPartRecord,
+                        partDef.defaultTexPath,
+                        partDef.namedTexPaths);
                     perPartData.Add(partData);
                 }
             }
             _perPartData = perPartData;
-            Props.partGenHelper.PartsPostGeneration(Pawn);
 
             // Update the graphic providers to get the portrait graphic
             UpdateGraphicProviders(out bool updatePortrait);
@@ -429,6 +448,7 @@ namespace PawnPlus
             base.PostExposeData();
             Scribe_Deep.Look(ref _headBehavior, "headBehavior");
             Scribe_Collections.Look(ref _partBehaviors, "partBehaviors", LookMode.Deep);
+            Scribe_Collections.Look(ref _partDefs, "partDefs", LookMode.Def);
         }
     }
 }

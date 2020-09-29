@@ -9,7 +9,7 @@
 		</hairTags>
 		<category>Eyes</category>
 		<raceBodyDef>Human</raceBodyDef>
-		<linkedBodyParts>
+		<parts>
 			<li>
 				<renderNodeName>HumanLeftEye</renderNodeName>
 				<bodyPartLocator>
@@ -33,7 +33,7 @@
 					<additionalOffset>(0, 0, 0)</additionalOffset>
 				</graphicProvider>
 			</li>
-		</linkedBodyParts>
+		</parts>
 	</PawnPlus.Defs.PartDef>
 	
 	<PawnPlus.Defs.PartDef Name="FSHumanFFL" ParentName="FSHumanEyeBase">

@@ -52,7 +52,7 @@ namespace PawnPlus
 				}
 				partsInCategory.Add(partDef);
 
-				foreach(var bodyPartParam in partDef.linkedBodyParts)
+				foreach(var bodyPartParam in partDef.parts)
 				{
 					bodyPartParam.bodyPartLocator._parentPartDef = partDef;
 					bodyPartParam.bodyPartLocator.LocateBodyPart(partDef.raceBodyDef);
