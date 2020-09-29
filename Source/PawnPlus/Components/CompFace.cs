@@ -157,6 +157,7 @@ namespace PawnPlus
                                 part.portraitGraphic :
                                 part.graphic;
                             if(graphic == null)
+                            if(part.renderParams != null && part.renderParams[partRot4.AsInt].render)
 							{
                                 continue;
 							}
