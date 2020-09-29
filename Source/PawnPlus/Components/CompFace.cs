@@ -43,7 +43,6 @@ namespace PawnPlus
 		    };
         private List<PartSignal>[] _bodyPartSignals;
         private List<PartSignal> _defaultEmptyPartSignals = new List<PartSignal>();
-        private Faction _originFactionInt;
         private Rot4 _cachedHeadFacing;
         private PawnState _pawnState;
         private IHeadBehavior _headBehavior;
@@ -54,9 +53,7 @@ namespace PawnPlus
         public bool Initialized { get; private set; }
 
         public IHeadBehavior HeadBehavior => _headBehavior;
-                                                        
-        public Faction OriginFaction => _originFactionInt;
-                
+                        
         public CompProperties_Face Props { get; private set; }
         
         public Pawn Pawn { get; private set; }
@@ -224,10 +221,6 @@ namespace PawnPlus
         // which is called by a postfix to ResolveAllGraphics() method.
         public void InitializeFace()
         {
-            if(_originFactionInt == null)
-            {
-                _originFactionInt = Pawn.Faction ?? Faction.OfPlayer;
-            }
             _pawnState.UpdateState();
             
             foreach(var partBehavior in _partBehaviors)
@@ -434,8 +427,6 @@ namespace PawnPlus
         public override void PostExposeData()
         {
             base.PostExposeData();
-
-            Scribe_References.Look(ref this._originFactionInt, "pawnFaction");
             Scribe_Deep.Look(ref _headBehavior, "headBehavior");
             Scribe_Collections.Look(ref _partBehaviors, "partBehaviors");
         }
