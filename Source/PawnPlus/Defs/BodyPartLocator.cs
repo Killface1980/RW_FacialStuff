@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,7 @@ namespace PawnPlus.Defs
 		public void LocateBodyPart(BodyDef bodyDef)
 		{
 			_resolvedBodyPartRecord =
-				bodyDef.GetPartsWithDef(bodyPartDef).ToList().FindLast(i => i.untranslatedCustomLabel == bodyPartLabel);
+				bodyDef.GetPartsWithDef(bodyPartDef).ToList().FindLast(i => CompareBodyPartLabel(i.untranslatedCustomLabel, bodyPartLabel));			
 			if(_resolvedBodyPartRecord != null)
 			{
 				_resolvedPartIndex =  bodyDef.GetIndexOfPart(_resolvedBodyPartRecord);
@@ -34,6 +35,15 @@ namespace PawnPlus.Defs
 			{
 				_resolvedPartIndex = -1;
 			}
+		}
+
+		private bool CompareBodyPartLabel(string candidatePartLabel, string searchLabel)
+		{
+			if(candidatePartLabel.NullOrEmpty())
+			{
+				return searchLabel.NullOrEmpty();
+			}
+			return candidatePartLabel == searchLabel;
 		}
 	}
 }
