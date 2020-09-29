@@ -21,9 +21,14 @@ namespace PawnPlus.Parts
 		public void Update(
 			PawnState pawnState,
 			in BodyPartStatus partStatus, 
-			out Graphic graphic, 
-			out Graphic portraitGraphic, 
-			ref Vector3 additionalOffset,
 			ref bool updatePortrait);
+
+		public void Render(
+			Vector3 rootPos,
+			Quaternion rootQuat,
+			Rot4 rootRot4,
+			Vector3 renderNodeOffset,
+			Mesh renderNodeMesh,
+			bool portrait);
 	}
 }

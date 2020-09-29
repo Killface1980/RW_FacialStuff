@@ -22,6 +22,8 @@ namespace PawnPlus.Parts
 		private Graphic _inPain;
 		private Graphic _aiming;
 		private HumanEyeBehavior.BlinkPartSignalArg _blinkSignalArg;
+		private Graphic _curGraphic;
+		private Graphic _curPortraitGraphic;
 
 		public void Initialize(
 			Pawn pawn,
@@ -86,42 +88,67 @@ namespace PawnPlus.Parts
 		public void Update(
 			PawnState pawnState,
 			in BodyPartStatus partStatus,
-			out Graphic graphic, 
-			out Graphic portraitGraphic,
-			ref Vector3 additionalOffset, 
 			ref bool updatePortrait)
 		{
 			additionalOffset = this.additionalOffset;
 			// TODO check if portrait cache refresh is needed
 			if(!pawnState.Alive)
 			{
-				graphic = _dead;
-				portraitGraphic = _dead;
+				_curGraphic = _dead;
+				_curPortraitGraphic = _dead;
 				return;
 			}
 			if(partStatus.missing)
 			{
-				graphic = _missing;
-				portraitGraphic = _missing;
+				_curGraphic = _missing;
+				_curPortraitGraphic = _missing;
 				return;
 			}
-			portraitGraphic = _open;
+			_curPortraitGraphic = _open;
 			if(_blinkSignalArg.blinkClose || pawnState.Sleeping || !pawnState.Conscious)
 			{
-				graphic = _closed;
+				_curGraphic = _closed;
 				return;
 			}
 			if(pawnState.Aiming && closeWhenAiming)
 			{
-				graphic = _aiming;
+				_curGraphic = _aiming;
 				return;
 			}
 			if(pawnState.InPainShock)
 			{
-				graphic = _inPain;
+				_curGraphic = _inPain;
 				return;
 			}
-			graphic = _open;
+			_curGraphic = _open;
+		}
+
+		public void Render(
+			Vector3 rootPos,
+			Quaternion rootQuat,
+			Rot4 rootRot4,
+			Vector3 renderNodeOffset,
+			Mesh renderNodeMesh,
+			bool portrait)
+		{
+			Graphic graphic = portrait ?
+				_curPortraitGraphic :
+				_curGraphic;
+			if(graphic == null)
+			{
+				return;
+			}
+			Material partMat = graphic.MatAt(rootRot4);
+			if(partMat != null)
+			{
+				Vector3 offset = rootQuat * renderNodeOffset;
+				GenDraw.DrawMeshNowOrLater(
+						renderNodeMesh,
+						rootPos + offset,
+						rootQuat,
+						partMat,
+						portrait);
+			}
 		}
 
 		public object Clone()

@@ -22,9 +22,6 @@ namespace PawnPlus
             public int bodyPartIndex;
             public RootType rootType;
             public IPartRenderer renderer;
-            public Graphic graphic;
-            public Graphic portraitGraphic;
-            public Vector3 additionalOffset;
             public string renderNodeName;
             public bool occluded;
             public RenderParam[] renderParams;
@@ -92,45 +89,21 @@ namespace PawnPlus
 							{
                                 continue;
 							}
-                            Rot4 partRot4 = Rot4.South;
-                            if(!portrait)
+                            // If portrait is being rendered, follow the body rotation.
+                            Rot4 partRot4 = bodyFacing;
+                            if(!portrait && part.rootType == RootType.Head)
 							{
-                                switch(part.rootType)
-                                {
-                                    case RootType.Body:
-                                        partRot4 = bodyFacing;
-                                        break;
-
-                                    case RootType.Head:
-                                        partRot4 = headFacing;
-                                        break;
-                                }
+                                partRot4 = headFacing;
                             }
                             if(part.renderParams[partRot4.AsInt].render)
 							{
-                                Vector3 partDrawPos = headPos;
-                                Quaternion partQuat = headQuat;
-                                Graphic graphic = portrait ?
-                                    part.portraitGraphic :
-                                    part.graphic;
-                                if(graphic == null)
-                                {
-                                    continue;
-                                }
-                                Material partMat = graphic.MatAt(partRot4);
-                                if(partMat != null)
-                                {
-                                    Vector3 offset =
-                                        part.renderParams[partRot4.AsInt].offset +
-                                        part.additionalOffset;
-                                    offset = partQuat * offset;
-                                    GenDraw.DrawMeshNowOrLater(
-                                            part.renderParams[partRot4.AsInt].mesh,
-                                            partDrawPos + offset,
-                                            partQuat,
-                                            partMat,
-                                            portrait);
-                                }
+                                part.renderer.Render(
+                                    headPos, 
+                                    headQuat, 
+                                    partRot4, 
+                                    part.renderParams[partRot4.AsInt].offset, 
+                                    part.renderParams[partRot4.AsInt].mesh, 
+                                    portrait);
                             }
                         }
                     }
@@ -397,9 +370,6 @@ namespace PawnPlus
                     _pawnState,
                     part.bodyPartIndex >= 0 ? 
                         _perPartStatus[part.bodyPartIndex] : _defaultPart,
-                    out part.graphic,
-                    out part.portraitGraphic,
-                    ref part.additionalOffset,
                     ref updatePortraitTemp);
                 updatePortrait |= updatePortraitTemp;
             }

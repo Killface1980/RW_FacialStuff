@@ -71,18 +71,13 @@ namespace PawnPlus.Parts
 		public void Update(
 			PawnState pawnState,
 			in BodyPartStatus partStatus,
-			out Graphic graphic,
-			out Graphic portraitGraphic,
-			ref Vector3 additionalOffset,
 			ref bool updatePortrait)
 		{
-			portraitGraphic = _normal;
 			if(Find.TickManager.TicksGame >= _ticksSinceLastUpdate + 90)
 			{
 				_ticksSinceLastUpdate = Find.TickManager.TicksGame;
 				UpdateCurrentGraphic(pawnState);
 			}
-			graphic = _curGraphic;
 		}
 
 		private void UpdateCurrentGraphic(PawnState pawnState)
@@ -122,6 +117,34 @@ namespace PawnPlus.Parts
 				return;
 			}
 			_curGraphic = _happy;
+		}
+
+		public void Render(
+			Vector3 rootPos,
+			Quaternion rootQuat,
+			Rot4 rootRot4,
+			Vector3 renderNodeOffset,
+			Mesh renderNodeMesh,
+			bool portrait)
+		{
+			Graphic graphic = portrait ?
+				_normal :
+				_curGraphic;
+			if(graphic == null)
+			{
+				return;
+			}
+			Material partMat = graphic.MatAt(rootRot4);
+			if(partMat != null)
+			{
+				Vector3 offset = rootQuat * renderNodeOffset;
+				GenDraw.DrawMeshNowOrLater(
+						renderNodeMesh,
+						rootPos + offset,
+						rootQuat,
+						partMat,
+						portrait);
+			}
 		}
 
 		public object Clone()
