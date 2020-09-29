@@ -154,7 +154,7 @@ namespace PawnPlus
         public void GenerateHairDNA(Pawn pawn, bool ignoreRelative = false, bool newPawn = true)
         {
             HairDNA hairDna =
-                HairMelanin.GenerateHairMelaninAndCuticula(pawn, HasSameBeardColor, ignoreRelative);
+                HairMelaninUtil.GenerateHairMelaninAndCuticula(pawn, HasSameBeardColor, ignoreRelative);
             EuMelanin = hairDna.HairColorRequest.EuMelanin;
             PheoMelanin = hairDna.HairColorRequest.PheoMelanin;
             Greyness = hairDna.HairColorRequest.Greyness;
@@ -168,7 +168,7 @@ namespace PawnPlus
             else
             {
                 HairColor = pawn.story.hairColor;
-                BeardColor = HairMelanin.ShuffledBeardColor(HairColor);
+                BeardColor = HairMelaninUtil.ShuffledBeardColor(HairColor);
             }
 
         }

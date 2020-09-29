@@ -366,7 +366,7 @@ namespace PawnPlus.FaceEditor
 
                 if (this.PawnFace.HasSameBeardColor && !this._reInit)
                 {
-                    Color color = HairMelanin.ShuffledBeardColor(value);
+                    Color color = HairMelaninUtil.ShuffledBeardColor(value);
                     this.UpdatePawnColors(this.NewBeard, color);
                 }
             }
@@ -715,7 +715,7 @@ namespace PawnPlus.FaceEditor
                 {
                     RemoveColorPicker();
                     PawnFace.HasSameBeardColor = faceCompHasSameBeardColor;
-                    NewBeardColor = HairMelanin.ShuffledBeardColor(NewHairColor);
+                    NewBeardColor = HairMelaninUtil.ShuffledBeardColor(NewHairColor);
                 }
             }
 
@@ -988,7 +988,7 @@ namespace PawnPlus.FaceEditor
                     new HairColorRequest(pheoMelanin, euMelanin, this.PawnFace.Greyness);
 
                     this.DrawHairColorPickerCell(
-                                            HairMelanin.GetHairColor(colorRequest),
+                                            HairMelaninUtil.GetHairColor(colorRequest),
                                             set.ContractedBy(2f),
                                             "FacialStuffEditor.Pheomelanin".Translate() + " - " +
                                             pheoMelanin.ToString("N2"),
@@ -1002,9 +1002,9 @@ namespace PawnPlus.FaceEditor
             }
 
             set.y += set.height / 4;
-            set.width = contractedBy.width / HairMelanin.ArtificialHairColors.Count;
+            set.width = contractedBy.width / HairMelaninUtil.ArtificialHairColors.Count;
 
-            foreach (Color color in HairMelanin.ArtificialHairColors)
+            foreach (Color color in HairMelaninUtil.ArtificialHairColors)
             {
                 this.DrawHairColorPickerCell(color, set.ContractedBy(3f), color.ToString());
                 set.x += set.width;
@@ -1032,8 +1032,8 @@ namespace PawnPlus.FaceEditor
             grey = Widgets.HorizontalSlider(
                 set,
                 grey,
-                HairMelanin.GreyRange.min,
-                HairMelanin.GreyRange.max,
+                HairMelaninUtil.GreyRange.min,
+                HairMelaninUtil.GreyRange.max,
                 false,
                 "FacialStuffEditor.Greyness".Translate(),
                 "0",

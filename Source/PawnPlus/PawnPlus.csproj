@@ -91,6 +91,7 @@
     <Compile Include="Animator\BodyAnimator.cs" />
     <Compile Include="BodyPartRecordExtension.cs" />
     <Compile Include="BodyPartStatus.cs" />
+    <Compile Include="Genetics\HairMelanin.cs" />
     <Compile Include="HumanMouthGraphicProvider.cs" />
     <Compile Include="PartGenHelper.cs" />
     <Compile Include="PartSignal.cs" />
@@ -168,7 +169,7 @@
     <Compile Include="FacialStuffModBase.cs" />
     <Compile Include="Genetics\HairColorRequest.cs" />
     <Compile Include="Genetics\HairDNA.cs" />
-    <Compile Include="Genetics\HairMelanin.cs" />
+    <Compile Include="Genetics\HairMelaninUtil.cs" />
     <Compile Include="Genetics\PawnSkinColors_FS.cs" />
     <Compile Include="Graphics\Graphic_FacePart.cs" />
     <Compile Include="Graphics\Graphic_Hair.cs" />
