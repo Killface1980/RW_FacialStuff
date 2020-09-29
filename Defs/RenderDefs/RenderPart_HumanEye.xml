@@ -91,7 +91,6 @@
 	<PawnPlus.Defs.PartRenderDef>
 		<defName>HumanRightEyeVanillaHead</defName>
 		<renderNodeName>HumanRightEye</renderNodeName>
-		<raceBodyDef>Human</raceBodyDef>
 		<rootType>Head</rootType>
 		<rootTexturesToRenderInfoMapping>
 			<li mappingName="Human_M_A_PNW">

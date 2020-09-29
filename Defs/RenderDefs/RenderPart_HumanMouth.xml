@@ -4,7 +4,6 @@
 	<PawnPlus.Defs.PartRenderDef>
 		<defName>HumanMouthVanillaHead</defName>
 		<renderNodeName>HumanMouth</renderNodeName>
-		<raceBodyDef>Human</raceBodyDef>
 		<rootType>Head</rootType>
 		<rootTexturesToRenderInfoMapping>
 			<li mappingName="Human_M_A_PNW">
