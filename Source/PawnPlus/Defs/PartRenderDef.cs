@@ -31,7 +31,7 @@ namespace PawnPlus.Defs
 		
 		public RootType rootType;
 
-		public List<RootTextureRenderInfoMapping> rootTexturesToNodeOffsetMapping;
+		public List<RootTextureRenderInfoMapping> rootTexturesToRenderInfoMapping;
 
 		public static void asdf(string renderNodeName, Pawn pawn, out RenderParam[] renderParams)
 		{

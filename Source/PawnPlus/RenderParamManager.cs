@@ -89,7 +89,7 @@ namespace PawnPlus
 						" will be ignored.");
 					continue;
 				}
-				foreach(var rootTextureToRenderInfo in renderDef.rootTexturesToNodeOffsetMapping)
+				foreach(var rootTextureToRenderInfo in renderDef.rootTexturesToRenderInfoMapping)
 				{
 					foreach(var rootTexturePath in rootTextureToRenderInfo.rootTexturePaths)
 					{
