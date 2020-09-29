@@ -126,10 +126,8 @@
     <Compile Include="Drawer\JointLister.cs" />
     <Compile Include="Drawer\PawnBodyDrawer.cs" />
     <Compile Include="Drawer\QuadrupedDrawer.cs" />
-    <Compile Include="Enums\BeardType.cs" />
     <Compile Include="Enums\enums.cs" />
     <Compile Include="Enums\HeadCoverage.cs" />
-    <Compile Include="Enums\HeadType.cs" />
     <Compile Include="Enums\KeyStatus.cs" />
     <Compile Include="Enums\MaxLayerToShow.cs" />
     <Compile Include="Enums\Offsets.cs" />
@@ -149,7 +147,6 @@
     <Compile Include="IPartBehavior.cs" />
     <Compile Include="IGraphicProvider.cs" />
     <Compile Include="IHeadBehavior.cs" />
-    <Compile Include="PartStatusTracker.cs" />
     <Compile Include="PawnExtensions.cs" />
     <Compile Include="PawnState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
