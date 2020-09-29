@@ -41,9 +41,7 @@ namespace PawnPlus
                     var rotationParam = perRotation[partRenderIdx];
                     renderInfo.render = true;
                     renderInfo.offset = rotationParam.offset;
-                    renderInfo.mesh = rotationParam.meshDef.mirror ?
-                        MeshPool.GridPlaneFlip(rotationParam.meshDef.dimension) :
-                        MeshPool.GridPlane(rotationParam.meshDef.dimension);
+                    renderInfo.mesh = rotationParam.meshDef.Mesh;
                 } else
                 {
                     // If there is no render info for <multiPartIndex> and direction, do not render.
