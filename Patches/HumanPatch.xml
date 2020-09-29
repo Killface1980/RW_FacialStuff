@@ -27,18 +27,7 @@
               <li Class ="PawnPlus.HumanBipedDrawer"/>
             </bodyDrawers>
           </li>
-          <li Class = "PawnPlus.CompProperties_Face">
-            <!--if false, vanilla heads are used, otherwise the FS blank texture is used-->
-            <needsBlankHumanHead>true</needsBlankHumanHead>
-            <!-- off = no mouth-->
-            <hasMouth>true</hasMouth>
-            <!--race can have beards?-->
-            <hasBeard>true</hasBeard>
-            <!--race can have wrinkles?-->
-            <hasWrinkles>true</hasWrinkles>
-            <!--head rotation / tracking-->
-            <canRotateHead>true</canRotateHead>
-						
+          <li Class = "PawnPlus.CompProperties_Face">			
 			<!-- 
 			Since this class is defined within CompProperties, it will be only instantiated once and shared 
 			among multiple CompFace instances. However, this behavior is not desired - there need to be 
