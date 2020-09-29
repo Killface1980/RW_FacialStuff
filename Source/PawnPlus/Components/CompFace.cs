@@ -39,7 +39,13 @@ namespace PawnPlus
         
         private IReadOnlyList<PartData> _perPartData;
         private BodyPartStatus[] _perPartStatus;
+        private BodyPartStatus _defaultPart = new BodyPartStatus
+		    {
+                missing = false,
+                hediffAddedPart = null
+		    };
         private List<PartSignal>[] _bodyPartSignals;
+        private List<PartSignal> _defaultEmptyPartSignals = new List<PartSignal>();
         private Faction _originFactionInt;
         private FaceData _faceData;
         private RenderParam[] _mouthRenderParams;
@@ -447,12 +453,14 @@ namespace PawnPlus
                 bool updatePortraitTemp = false;
                 part.graphicProvider.Update(
                     _pawnState,
-                    _perPartStatus[part.bodyPartIndex],
+                    part.bodyPartIndex >= 0 ? 
+                        _perPartStatus[part.bodyPartIndex] : _defaultPart,
                     out part.graphic,
                     out part.portraitGraphic,
                     ref part.additionalOffset,
                     ref updatePortraitTemp,
-                    _bodyPartSignals[part.bodyPartIndex]);
+                    part.bodyPartIndex >= 0 ?
+                        _bodyPartSignals[part.bodyPartIndex] : _defaultEmptyPartSignals);
                 updatePortrait |= updatePortraitTemp;
             }
         }
