@@ -25,7 +25,6 @@ namespace PawnPlus
         {
             public int bodyPartIndex;
             public IGraphicProvider graphicProvider;
-            public PartRender.Attachment attachment;
             public Graphic graphic;
             public Graphic portraitGraphic;
             public Vector3 additionalOffset;
@@ -404,12 +403,6 @@ namespace PawnPlus
                 }
             }
             
-            HeadRenderDef.GetCachedHeadRenderParams(
-                Pawn.RaceProps.body,
-                Pawn.story.HeadGraphicPath,
-                out Dictionary<int, RenderParam[]> eyeRenderParams,
-                out _mouthRenderParams);
-
             if(Props.partGenHelper == null)
 			{
                 Log.Error("Facial Stuff: partGenHelper in CompProperties_Face can't be null. No parts will be generated.");
@@ -433,9 +426,8 @@ namespace PawnPlus
                 {
                     PartData partData = new PartData();
                     partData.bodyPartIndex = linkedBodypart.bodyPartLocator._resolvedPartIndex;
-                    partData.attachment = linkedBodypart.attachment;
                     partData.graphicProvider = (IGraphicProvider)linkedBodypart.graphicProvider.Clone();
-                    partData.renderParams = eyeRenderParams[partData.bodyPartIndex];
+                    RenderParamManager.GetRenderParams(Pawn, linkedBodypart.renderNodeName, out partData.renderParams);
                     partData.graphicProvider.Initialize(
                         Pawn,
                         Pawn.RaceProps.body,

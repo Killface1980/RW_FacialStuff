@@ -8,8 +8,8 @@ namespace PawnPlus.Defs
     {
         public class LinkedBodyPart
 		{
+            public string renderNodeName;
             public BodyPartLocator bodyPartLocator;
-            public PartRender.Attachment attachment;
             public IGraphicProvider graphicProvider;
         }
 

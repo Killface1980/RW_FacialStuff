@@ -11,11 +11,11 @@
 		<raceBodyDef>Human</raceBodyDef>
 		<linkedBodyParts>
 			<li>
+				<renderNodeName>HumanLeftEye</renderNodeName>
 				<bodyPartLocator>
 					<bodyPartDef>Eye</bodyPartDef>
 					<bodyPartLabel>left eye</bodyPartLabel>
 				</bodyPartLocator>
-				<attachment>Head</attachment>
 				<!-- Class must implement PawnPlus.IGraphicProvider interface. -->
 				<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider">
 					<closeWhenAiming>true</closeWhenAiming>
@@ -23,11 +23,11 @@
 				</graphicProvider>
 			</li>
 			<li>
+				<renderNodeName>HumanRightEye</renderNodeName>
 				<bodyPartLocator>
 					<bodyPartDef>Eye</bodyPartDef>
 					<bodyPartLabel>right eye</bodyPartLabel>
 				</bodyPartLocator>
-				<attachment>Head</attachment>
 				<graphicProvider Class="PawnPlus.HumanEyeGraphicProvider">
 					<closeWhenAiming>false</closeWhenAiming>
 					<additionalOffset>(0, 0, 0)</additionalOffset>

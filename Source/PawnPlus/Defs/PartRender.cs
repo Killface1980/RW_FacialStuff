@@ -7,12 +7,6 @@ namespace PawnPlus
 {	
 	public class PartRender
 	{
-		public enum Attachment
-		{
-            Body = 0,
-            Head = 1
-        }
-
 		public class PerRotation
 		{
 			public Rot4 rotation;
@@ -20,7 +14,6 @@ namespace PawnPlus
 			public Vector3 offset;
 		}
 		
-        public Attachment attachment;
 		public Dictionary<BodyDef, BodyPartLocator> linkedRacesBodyPart = new Dictionary<BodyDef, BodyPartLocator>();
 		public List<PerRotation> perRotation = new List<PerRotation>();
 

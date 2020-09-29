@@ -31,13 +31,7 @@ namespace PawnPlus
 		public override void DefsLoaded()
 		{
 			base.DefsLoaded();
-
-			var headRenderDefs = DefDatabase<HeadRenderDef>.AllDefsListForReading;
-			foreach(var headRenderDef in headRenderDefs)
-			{
-				HeadRenderDef.headTextureMapping.Add(headRenderDef.headTexture, headRenderDef);
-			}
-
+			
 			var partDefs = DefDatabase<PartDef>.AllDefsListForReading;
 			foreach(var partDef in partDefs)
 			{
@@ -64,6 +58,8 @@ namespace PawnPlus
 					bodyPartParam.bodyPartLocator.LocateBodyPart(partDef.raceBodyDef);
 				}
 			}
+
+			RenderParamManager.ReadFromRenderDefs();
 		}
 	}
 }

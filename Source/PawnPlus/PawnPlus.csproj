@@ -121,7 +121,6 @@
     <Compile Include="Defs\Export\WeaponExtensionDef_Export.cs" />
     <Compile Include="Defs\PartDef.cs" />
     <Compile Include="Defs\PartRenderDef.cs" />
-    <Compile Include="Defs\RootRenderDef.cs" />
     <Compile Include="Defs\MeshDef.cs" />
     <Compile Include="Defs\MoustacheDef.cs" />
     <Compile Include="Defs\MouthRenderDef.cs" />
@@ -198,6 +197,7 @@
     <Compile Include="PawnExtensions.cs" />
     <Compile Include="PawnState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RenderParamManager.cs" />
     <Compile Include="RenderParam.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Settings_Animator.cs" />
