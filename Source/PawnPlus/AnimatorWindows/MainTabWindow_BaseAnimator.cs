@@ -621,7 +621,8 @@ namespace PawnPlus.AnimatorWindows
 
         protected virtual void DrawBackground(Rect rect)
         {
-            GUI.DrawTexture(rect, FaceTextures.BackgroundAnimTex);
+            // TODO commented out for rewrite
+            // GUI.DrawTexture(rect, FaceTextures.BackgroundAnimTex);
         }
 
         private static void DoActiveKeyframeButtons(List<int> framesAt, ref Rect buttonRect)

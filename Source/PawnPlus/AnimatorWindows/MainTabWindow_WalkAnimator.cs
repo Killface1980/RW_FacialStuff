@@ -247,8 +247,9 @@ namespace PawnPlus.AnimatorWindows
                 rect2 = new Rect(rect1) { y = rect1.yMax };
             }
 
-            GUI.DrawTexture(rect1, FaceTextures.BackgroundAnimTex);
-            GUI.DrawTexture(rect2, FaceTextures.BackgroundAnimTex);
+            // TODO commented out for rewrite
+            /*GUI.DrawTexture(rect1, FaceTextures.BackgroundAnimTex);
+            GUI.DrawTexture(rect2, FaceTextures.BackgroundAnimTex);*/
             GUI.EndGroup();
         }
 

@@ -229,7 +229,8 @@ namespace PawnPlus.FaceEditor
             this._gear = Controller.settings.FilterHats;
             Prefs.HatsOnlyOnMap = true;
             Controller.settings.FilterHats = false;
-            this._pawnFace = this.CompFace.FaceData;
+            // TODO commented out for rewrite
+            // this._pawnFace = this.CompFace.FaceData;
 
             if (this.PawnFace == null)
             {
@@ -464,7 +465,8 @@ namespace PawnPlus.FaceEditor
         {
             // Portrait
             Rect rect = new Rect(left, top, _portraitSize.x, _portraitSize.y);
-            GUI.DrawTexture(rect, FaceTextures.BackgroundTex);
+            // TODO commented out for rewrite
+            // GUI.DrawTexture(rect, FaceTextures.BackgroundTex);
 
             // Draw the pawn's portrait
             GUI.BeginGroup(rect);
@@ -767,7 +769,8 @@ namespace PawnPlus.FaceEditor
 
         public void FaceRandomizer()
         {
-            while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
+            // TODO commented out for rewrite
+            /*while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker)))
             {
             }
 
@@ -791,7 +794,7 @@ namespace PawnPlus.FaceEditor
                 CompFace.Props);
             this.NewBrow = PawnFaceMaker.RandomBrowDefFor(Pawn, Faction.OfPlayer.def);
 
-            this._reInit = false;
+            this._reInit = false;*/
         }
 
         public override void PostClose()
@@ -901,7 +904,8 @@ namespace PawnPlus.FaceEditor
         // ReSharper disable once MethodTooLong
         private static void FillDefs()
         {
-            switch (Pawn.gender)
+            // TODO commented out due to rewrite
+            /*switch (Pawn.gender)
             {
                 default:
                     HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
@@ -924,13 +928,14 @@ namespace PawnPlus.FaceEditor
                     BrowDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
                         x => x.hairGender == HairGender.Female || x.hairGender == HairGender.FemaleUsually);
                     break;
-            }
+            }*/
         }
 
         [CanBeNull]
         private Graphic_Multi BeardGraphic([NotNull] BeardDef def)
         {
-            string path = CompFace.PawnFaceGraphic.GetBeardPath(def);
+            // TODO commented out for rewrite
+            /*string path = CompFace.PawnFaceGraphic.GetBeardPath(def);
 
             Graphic_Multi graphic =
             GraphicDatabase.Get<Graphic_Multi>(
@@ -940,12 +945,14 @@ namespace PawnPlus.FaceEditor
                 Color.white,
                 Color.white) as Graphic_Multi;
 
-            return graphic;
+            return graphic;*/
+            return null;
         }
 
         private Graphic_Multi BrowGraphic(BrowDef def)
         {
-            Graphic_Multi __result =
+            // TODO commented out for rewrite
+            /*Graphic_Multi __result =
             GraphicDatabase.Get<Graphic_Multi>(
                 CompFace.PawnFaceGraphic.BrowTexPath(def),
                 ShaderDatabase.CutoutSkin,
@@ -953,7 +960,8 @@ namespace PawnPlus.FaceEditor
                 Color.white,
                 Color.white) as Graphic_Multi;
             
-            return __result;
+            return __result;*/
+            return null;
         }
         
         private void DrawHairColorSelector(Rect rect)
@@ -1325,7 +1333,8 @@ namespace PawnPlus.FaceEditor
         [CanBeNull]
         private Graphic_Multi MoustacheGraphic([NotNull] MoustacheDef def)
         {
-            Graphic_Multi graphic;
+            // TODO commented out for rewrite
+            /*Graphic_Multi graphic;
             string path = CompFace.PawnFaceGraphic.GetMoustachePath(def);
             if (path.NullOrEmpty())
             {
@@ -1340,7 +1349,8 @@ namespace PawnPlus.FaceEditor
                     Color.white,
                     Color.white) as Graphic_Multi;
             }
-            return graphic;
+            return graphic;*/
+            return null;
         }
 
         private Graphic_FacePart RightEyeGraphic(PartDef def)

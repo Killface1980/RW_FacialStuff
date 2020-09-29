@@ -19,8 +19,6 @@ namespace PawnPlus
 {
     public class CompFace : ThingComp
     {
-        public FaceGraphic PawnFaceGraphic;
-
         private class PartData
         {
             public int bodyPartIndex;
@@ -48,8 +46,6 @@ namespace PawnPlus
         private List<PartSignal>[] _bodyPartSignals;
         private List<PartSignal> _defaultEmptyPartSignals = new List<PartSignal>();
         private Faction _originFactionInt;
-        private FaceData _faceData;
-        private RenderParam[] _mouthRenderParams;
         private Rot4 _cachedHeadFacing;
         private PawnState _pawnState;
         private IHeadBehavior _headBehavior;
@@ -60,49 +56,9 @@ namespace PawnPlus
         public bool Initialized { get; private set; }
 
         public IHeadBehavior HeadBehavior => _headBehavior;
-                
-        public FaceMaterial FaceMaterial { get; set; }
-        
-        public FullHead FullHeadType { get; set; } = FullHead.Undefined;
-                                        
+                                                        
         public Faction OriginFaction => _originFactionInt;
-        
-        public virtual CrownType PawnCrownType => Pawn?.story.crownType ?? CrownType.Average;
-
-        public FaceData FaceData
-        {
-            get
-			{
-                return _faceData;
-            }
-
-            set
-			{
-                _faceData = value;
-			}
-        }
-
-        public HeadType PawnHeadType
-        {
-            get
-            {
-                if(Pawn.story?.HeadGraphicPath != null)
-                {
-                    if(Pawn.story.HeadGraphicPath.Contains("Pointy"))
-                    {
-                        return HeadType.Pointy;
-                    }
-
-                    if(Pawn.story.HeadGraphicPath.Contains("Wide"))
-                    {
-                        return HeadType.Wide;
-                    }
-                }
-
-                return HeadType.Normal;
-            }
-        }
-
+                
         public CompProperties_Face Props { get; private set; }
         
         public Pawn Pawn { get; private set; }
@@ -184,32 +140,6 @@ namespace PawnPlus
                                 }
                             }
                         }
-                        
-                        if(headFacing != Rot4.North)
-						{
-                            if(Props.hasWrinkles)
-                            {
-                                Vector3 wrinkleLoc = headPos;
-                                wrinkleLoc.y += YOffset_Wrinkles;
-                                // Draw wrinkles
-                                DrawWrinkles(wrinkleLoc, headFacing, headQuat, bodyDrawType, portrait);
-                            }
-
-                            Vector3 browLoc = headPos;
-                            browLoc.y += YOffset_Brows;
-                            // Draw brows above eyes
-                            DrawBrows(browLoc, headFacing, headQuat, portrait);
-
-                            if(Props.hasBeard)
-                            {
-                                Vector3 beardLoc = headPos;
-                                Vector3 tacheLoc = headPos;
-                                beardLoc.y += YOffset_Beard;
-                                tacheLoc.y += YOffset_Tache;
-                                // Draw beard and mustache
-                                DrawBeardAndTache(graphicSet, beardLoc, tacheLoc, headFacing, headQuat, portrait);
-                            }
-                        }
                     }
                     // When CurrentHeadCoverage == HeadCoverage.None, let the vanilla routine draw the hair
                     if(CurrentHeadCoverage != HeadCoverage.None)
@@ -266,57 +196,7 @@ namespace PawnPlus
                     "FacialStuff_CompFaceNoValidHair".GetHashCode());
             }
         }
-
-        public void DrawWrinkles(Vector3 drawPos, Rot4 headFacing, Quaternion headQuat, RotDrawMode bodyDrawType, bool portrait)
-		{
-            if(!Controller.settings.UseWrinkles)
-            {
-                return;
-            }
-            Material wrinkleMat = FaceMaterial.WrinkleMatAt(headFacing, bodyDrawType);
-            if(wrinkleMat == null)
-            {
-                return;
-            }
-            Mesh headMesh = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
-            GenDraw.DrawMeshNowOrLater(headMesh, drawPos, headQuat, wrinkleMat, portrait);
-        }
         
-        public void DrawBrows(Vector3 drawPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
-		{
-            Material browMat = FaceMaterial.BrowMatAt(headFacing);
-            if(browMat == null)
-            {
-                return;
-            }
-            Mesh eyeMesh = MeshPoolFS.GetFaceMesh(PawnCrownType, headFacing, false);
-            GenDraw.DrawMeshNowOrLater(
-                eyeMesh,
-                drawPos,
-                headQuat,
-                browMat,
-                portrait);
-        }
-
-        public void DrawBeardAndTache(PawnGraphicSet graphicSet, Vector3 beardLoc, Vector3 tacheLoc, Rot4 headFacing, Quaternion headQuat, bool portrait)
-        {
-            Mesh headMesh = MeshPool.humanlikeHeadSet.MeshAt(headFacing);
-            if(FaceData.BeardDef.IsBeardNotHair())
-            {
-                headMesh = graphicSet.HairMeshSet.MeshAt(headFacing);
-            }
-            Material beardMat = FaceMaterial.BeardMatAt(headFacing);
-            Material moustacheMatAt = FaceMaterial.MoustacheMatAt(headFacing);
-            if(beardMat != null)
-            {
-                GenDraw.DrawMeshNowOrLater(headMesh, beardLoc, headQuat, beardMat, portrait);
-            }
-            if(moustacheMatAt != null)
-            {
-                GenDraw.DrawMeshNowOrLater(headMesh, tacheLoc, headQuat, moustacheMatAt, portrait);
-            }
-        }
-
 		public override void Initialize(CompProperties props)
 		{
 			base.Initialize(props);
@@ -349,10 +229,6 @@ namespace PawnPlus
             if(_originFactionInt == null)
             {
                 _originFactionInt = Pawn.Faction ?? Faction.OfPlayer;
-            }
-            if(FaceData == null)
-            {
-                FaceData = new FaceData(this, OriginFaction?.def);
             }
             _pawnState.UpdateState();
 
@@ -419,10 +295,7 @@ namespace PawnPlus
 
             // Update the graphic providers to get the portrait graphic
             UpdateGraphicProviders(out bool updatePortrait);
-            
-            FullHeadType = MeshPoolFS.GetFullHeadType(Pawn.gender, PawnCrownType, PawnHeadType);
-            PawnFaceGraphic = new FaceGraphic(this, 2);
-            FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);
+
             Initialized = true;
         }
         
@@ -565,7 +438,6 @@ namespace PawnPlus
             base.PostExposeData();
 
             Scribe_References.Look(ref this._originFactionInt, "pawnFaction");
-            Scribe_Deep.Look(ref this._faceData, "pawnFace");
             Scribe_Deep.Look(ref _headBehavior, "headBehavior");
             Scribe_Collections.Look(ref _partBehaviors, "partBehaviors");
         }

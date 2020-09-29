@@ -69,7 +69,8 @@ namespace PawnPlus
                 _rotation = this.SelPawn.Rotation.AsInt;
             }
 
-            FullHead fullHead = MeshPoolFS.GetFullHeadType(SelPawn.gender, compFace.PawnCrownType, compFace.PawnHeadType);
+            // TODO commented out for rewrite
+            /*FullHead fullHead = MeshPoolFS.GetFullHeadType(SelPawn.gender, compFace.PawnCrownType, compFace.PawnHeadType);
             GUILayout.Label("Eye" + fullHead.ToString() + "Offset: NOT USED");
             float x = GUILayout.HorizontalSlider(0f, -0.2f, 0.2f);
             float y = GUILayout.HorizontalSlider(0f, -0.2f, 0.2f);
@@ -78,7 +79,7 @@ namespace PawnPlus
             Vector3 mouthOffset = MeshPoolFS.mouthOffsetsHeadType[(int)fullHead];
             mouthOffset.x = GUILayout.HorizontalSlider(mouthOffset.x, -0.2f, 0.2f);
             mouthOffset.y = GUILayout.HorizontalSlider(mouthOffset.y, -0.2f, 0.2f);
-            MeshPoolFS.mouthOffsetsHeadType[(int)fullHead] = mouthOffset;
+            MeshPoolFS.mouthOffsetsHeadType[(int)fullHead] = mouthOffset;*/
         
             GUILayout.EndVertical();
 
