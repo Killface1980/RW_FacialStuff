@@ -48,9 +48,7 @@ namespace PawnPlus
         private GameComponent_PawnPlus _fsGameComp;
         
         public bool Initialized { get; private set; }
-
-        public IHeadBehavior HeadBehavior => _headBehavior;
-                        
+                                
         public CompProperties_Face Props { get; private set; }
         
         public Pawn Pawn { get; private set; }
@@ -74,7 +72,7 @@ namespace PawnPlus
 			}
             bool headDrawn = false;
             // Draw head
-            headFacing = portrait ? HeadBehavior.GetRotationForPortrait() : headFacing;
+            headFacing = portrait ? _headBehavior.GetRotationForPortrait() : headFacing;
             Material headMaterial = graphicSet.HeadMatAt_NewTemp(headFacing, bodyDrawType, headStump);
             if(headMaterial != null)
             {
@@ -200,10 +198,9 @@ namespace PawnPlus
             Props = (CompProperties_Face)props;
             Pawn = (Pawn)parent;
 
-            if(HeadBehavior == null)
+            if(_headBehavior == null)
             {
                 _headBehavior = (IHeadBehavior)Props.headBehavior.Clone();
-                HeadBehavior.Initialize(Pawn);
             }
             BuildPartBehaviors();
 
@@ -217,7 +214,8 @@ namespace PawnPlus
         public void InitializeFace()
         {
             _pawnState.UpdateState();
-            
+
+            _headBehavior.Initialize(Pawn);
             foreach(var partBehavior in _partBehaviors)
             {
                 partBehavior.Initialize(Pawn.RaceProps.body, out List<int> usedBodyPartIndices);
@@ -346,7 +344,7 @@ namespace PawnPlus
                 if(canUpdatePawn)
                 {
                     _pawnState.UpdateState();
-                    HeadBehavior.Update(Pawn, _pawnState, out _cachedHeadFacing);
+                    _headBehavior.Update(Pawn, _pawnState, out _cachedHeadFacing);
                     // Clear signals from previous tick
                     foreach(var pair in _bodyPartSignals)
 					{
@@ -510,6 +508,11 @@ namespace PawnPlus
                 }
 			}
         }
+
+        public void SetHeadTarget(Thing target, IHeadBehavior.TargetType targetType)
+		{
+            _headBehavior.SetTarget(target, targetType);
+		}
 
         public Rot4 GetHeadFacing()
 		{

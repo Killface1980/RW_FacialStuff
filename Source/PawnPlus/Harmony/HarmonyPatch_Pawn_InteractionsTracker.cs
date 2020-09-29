@@ -27,11 +27,11 @@ namespace PawnPlus.Harmony
             }
             if(initiator.GetCompFace(out CompFace compFace))
             {
-                compFace.HeadBehavior.SetTarget(recipient, IHeadBehavior.TargetType.SocialRecipient);
+                compFace.SetHeadTarget(recipient, IHeadBehavior.TargetType.SocialRecipient);
             }
             if(recipient.GetCompFace(out CompFace recipientFace))
             {
-                recipientFace.HeadBehavior.SetTarget(initiator, IHeadBehavior.TargetType.SocialInitiator);
+                recipientFace.SetHeadTarget(initiator, IHeadBehavior.TargetType.SocialInitiator);
             }
         }
     }
