@@ -120,8 +120,8 @@
     <Compile Include="Defs\Export\WalkCycleDef_Export.cs" />
     <Compile Include="Defs\Export\WeaponExtensionDef_Export.cs" />
     <Compile Include="Defs\PartDef.cs" />
-    <Compile Include="Defs\EyeRenderDef.cs" />
-    <Compile Include="Defs\HeadRenderDef.cs" />
+    <Compile Include="Defs\PartRenderDef.cs" />
+    <Compile Include="Defs\RootRenderDef.cs" />
     <Compile Include="Defs\MeshDef.cs" />
     <Compile Include="Defs\MoustacheDef.cs" />
     <Compile Include="Defs\MouthRenderDef.cs" />

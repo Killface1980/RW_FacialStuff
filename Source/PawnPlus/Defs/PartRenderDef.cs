@@ -3,8 +3,9 @@ using Verse;
 
 namespace PawnPlus.Defs
 {
-	public class EyeRenderDef : Def
+	public class PartRenderDef : Def
 	{
+		public BodyDef raceBodyDef;
 		public List<PartRender> parts;
 	}
 }

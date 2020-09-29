@@ -5,10 +5,16 @@ using Verse;
 
 namespace PawnPlus.Defs
 {
-	public class HeadRenderDef : Def
+	public class RootRenderDef : Def
 	{
-		public string headTexture;
-		public EyeRenderDef eyeRenderDef;
+        public enum Attachment
+        {
+            Body = 0,
+            Head = 1
+        }
+        
+        public string headTexture;
+		public PartRenderDef eyeRenderDef;
 		public MouthRenderDef mouthRenderDef;
 
         public static bool GetCachedHeadRenderParams(
@@ -17,7 +23,7 @@ namespace PawnPlus.Defs
             out Dictionary<int, RenderParam[]> eyeRenderParam,
             out RenderParam[] mouthRenderParam)
 		{
-            if(headTextureMapping.TryGetValue(headTexturePath, out HeadRenderDef headRenderDef))
+            if(headTextureMapping.TryGetValue(headTexturePath, out RootRenderDef headRenderDef))
 			{
                 if(!headRenderDef._cacheBuilt)
 				{
@@ -43,7 +49,7 @@ namespace PawnPlus.Defs
             // RenderInfo caches are built here because Verse.MeshPool's static constructor needs to be called before building the cache.
 
             // Build RenderInfo cache for eyes.
-            var headRenderDefList = DefDatabase<HeadRenderDef>.AllDefsListForReading;
+            var headRenderDefList = DefDatabase<RootRenderDef>.AllDefsListForReading;
             foreach(var headRenderDef in headRenderDefList)
             {
                 if(headRenderDef.eyeRenderDef != null)
@@ -52,24 +58,24 @@ namespace PawnPlus.Defs
                     for(int i = 0; i < headRenderDef.eyeRenderDef.parts.Count; ++i)
                     {
                         PartRender partRender = headRenderDef.eyeRenderDef.parts[i];
-                        if(!partRender.linkedRacesBodyPart.TryGetValue(bodyDef, out BodyPartLocator bodyPartLocator))
+                        if(headRenderDef.eyeRenderDef.raceBodyDef != bodyDef)
 						{
                             // TODO log
                             continue;
 						}
-                        bodyPartLocator.LocateBodyPart(bodyDef);
-                        if(bodyPartLocator._resolvedPartIndex < 0)
+                        partRender.bodyPartLocator.LocateBodyPart(bodyDef);
+                        if(partRender.bodyPartLocator._resolvedPartIndex < 0)
 						{
                             // TODO log
                             continue;
 						}
                         partRender.BuildRenderParamCache();
                         RenderParam[] renderParams = partRender._cachedRenderParam;
-                        if(!headRenderDef._cachedEyeRenderParam.ContainsKey(bodyPartLocator._resolvedPartIndex))
+                        if(!headRenderDef._cachedEyeRenderParam.ContainsKey(partRender.bodyPartLocator._resolvedPartIndex))
 						{
-                            headRenderDef._cachedEyeRenderParam.Add(bodyPartLocator._resolvedPartIndex, null);
+                            headRenderDef._cachedEyeRenderParam.Add(partRender.bodyPartLocator._resolvedPartIndex, null);
                         }
-                        headRenderDef._cachedEyeRenderParam[bodyPartLocator._resolvedPartIndex] = renderParams;
+                        headRenderDef._cachedEyeRenderParam[partRender.bodyPartLocator._resolvedPartIndex] = renderParams;
                     }
                 }
                 else
@@ -102,6 +108,6 @@ namespace PawnPlus.Defs
 
         // This dictionary is populated in FacialStuffModBase.DefsLoaded()
         [Unsaved(false)]
-        public static Dictionary<string, HeadRenderDef> headTextureMapping = new Dictionary<string, HeadRenderDef>();
+        public static Dictionary<string, RootRenderDef> headTextureMapping = new Dictionary<string, RootRenderDef>();
 	}
 }
