@@ -27,13 +27,7 @@ namespace PawnPlus
             public Vector3 additionalOffset;
             public RenderParam[] renderParams;
         }
-
-		private struct BehaviorData
-		{
-            public IPartBehavior behavior;
-            public Dictionary<int, List<PartSignal>> signalSinks;
-        }
-        
+                
         private IReadOnlyList<PartData> _perPartData;
         private BodyPartStatus[] _perPartStatus;
         private BodyPartStatus _defaultPart = new BodyPartStatus
@@ -46,7 +40,7 @@ namespace PawnPlus
         private Rot4 _cachedHeadFacing;
         private PawnState _pawnState;
         private IHeadBehavior _headBehavior;
-        private List<BehaviorData> _partBehaviors;
+        private List<IPartBehavior> _partBehaviors;
         private List<PartDef> _partDefs;
         // Used for distance culling of face details
         private GameComponent_PawnPlus _fsGameComp;
@@ -204,14 +198,10 @@ namespace PawnPlus
                 _headBehavior = (IHeadBehavior)Props.headBehavior.Clone();
                 HeadBehavior.Initialize(Pawn);
             }
-            _partBehaviors = new List<BehaviorData>(Props.partBehaviors.Count);
+            _partBehaviors = new List<IPartBehavior>(Props.partBehaviors.Count);
             for(int i = 0; i < Props.partBehaviors.Count; ++i)
 			{
-				_partBehaviors.Add(new BehaviorData()
-				{ 
-                    behavior = (IPartBehavior)Props.partBehaviors[i].Clone(),
-                    signalSinks = new Dictionary<int, List<PartSignal>>()
-                });
+				_partBehaviors.Add((IPartBehavior)Props.partBehaviors[i].Clone());
 			}
             _pawnState = new PawnState(Pawn);
             _perPartStatus = new BodyPartStatus[Pawn.RaceProps.body.AllParts.Count];
@@ -226,22 +216,24 @@ namespace PawnPlus
             
             foreach(var partBehavior in _partBehaviors)
             {
-                partBehavior.behavior.Initialize(Pawn.RaceProps.body, out List<int> usedBodyPartIndices);
+                partBehavior.Initialize(Pawn.RaceProps.body, out List<int> usedBodyPartIndices);
                 if(usedBodyPartIndices == null)
                 {
                     continue;
                 }
+                Dictionary<int, List<PartSignal>> bodyPartSignals = new Dictionary<int, List<PartSignal>>();
                 foreach(int bodyPartIdx in usedBodyPartIndices)
                 {
                     if(_bodyPartSignals[bodyPartIdx] == null)
                     {
                         _bodyPartSignals[bodyPartIdx] = new List<PartSignal>();
                     }
-                    if(!partBehavior.signalSinks.ContainsKey(bodyPartIdx))
-                    {
-                        partBehavior.signalSinks.Add(bodyPartIdx, _bodyPartSignals[bodyPartIdx]);
+                    if(!bodyPartSignals.ContainsKey(bodyPartIdx))
+					{
+                        bodyPartSignals.Add(bodyPartIdx, _bodyPartSignals[bodyPartIdx]);
                     }
                 }
+                partBehavior.SetPartSignalSink(bodyPartSignals);
             }
             
             if(_partDefs == null)
@@ -330,7 +322,7 @@ namespace PawnPlus
 					}
                     foreach(var partBehavior in _partBehaviors)
 					{
-                        partBehavior.behavior.Update(Pawn, _pawnState, partBehavior.signalSinks);
+                        partBehavior.Update(Pawn, _pawnState);
 					}
                     UpdateGraphicProviders(out bool updatePortrait);
                     if(updatePortrait)

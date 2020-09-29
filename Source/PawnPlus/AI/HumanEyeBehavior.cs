@@ -29,6 +29,7 @@ namespace PawnPlus.AI
 		private int _rightEyeIdx;
 		// When the signal is consumed, the argument is discarded. Therefore it should be safe to cache the argument.
 		private PartSignal _cachedBlinkSignal;
+		private Dictionary<int, List<PartSignal>> _bodyPartSignalSinks;
 
 		public void Initialize(BodyDef bodyDef, out List<int> usedBodyPartIndices)
 		{
@@ -41,7 +42,12 @@ namespace PawnPlus.AI
 			_cachedBlinkSignal = new PartSignal(PartSignalType.EyeBlink, new BlinkPartSignalArg() { blinkDuration = blinkCloseTicks });
 		}
 
-		public void Update(Pawn pawn, PawnState pawnState, Dictionary<int, List<PartSignal>> bodyPartSignals)
+		public void SetPartSignalSink(Dictionary<int, List<PartSignal>> bodyPartSignalSinks)
+		{
+			_bodyPartSignalSinks = bodyPartSignalSinks;
+		}
+
+		public void Update(Pawn pawn, PawnState pawnState)
 		{
 			if(!pawnState.Alive)
 			{
@@ -57,9 +63,9 @@ namespace PawnPlus.AI
 						Find.TickManager.TicksGame + CalculateEyeOpenDuration(consciousness);
 				if(!_blinkOpen)
 				{
-					foreach(var partSignalQueue in bodyPartSignals)
+					foreach(var partSignalList in _bodyPartSignalSinks)
 					{
-						partSignalQueue.Value.Add(_cachedBlinkSignal);
+						partSignalList.Value.Add(_cachedBlinkSignal);
 					}
 				}
 				_blinkOpen = !_blinkOpen;
