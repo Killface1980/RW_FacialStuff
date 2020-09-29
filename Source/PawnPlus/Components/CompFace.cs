@@ -221,19 +221,19 @@ namespace PawnPlus
                 {
                     continue;
                 }
-                Dictionary<int, List<PartSignal>> bodyPartSignals = new Dictionary<int, List<PartSignal>>();
+                Dictionary<int, List<PartSignal>> partSignalSink = new Dictionary<int, List<PartSignal>>();
                 foreach(int bodyPartIdx in usedBodyPartIndices)
                 {
-                    if(_bodyPartSignals[bodyPartIdx] == null)
+                    if(!_bodyPartSignals.ContainsKey(bodyPartIdx))
                     {
-                        _bodyPartSignals[bodyPartIdx] = new List<PartSignal>();
+                        _bodyPartSignals.Add(bodyPartIdx, new List<PartSignal>());
                     }
-                    if(!bodyPartSignals.ContainsKey(bodyPartIdx))
+                    if(!partSignalSink.ContainsKey(bodyPartIdx))
 					{
-                        bodyPartSignals.Add(bodyPartIdx, _bodyPartSignals[bodyPartIdx]);
+                        partSignalSink.Add(bodyPartIdx, _bodyPartSignals[bodyPartIdx]);
                     }
                 }
-                partBehavior.SetPartSignalSink(bodyPartSignals);
+                partBehavior.SetPartSignalSink(partSignalSink);
             }
             
             if(_partDefs == null)
