@@ -24,6 +24,7 @@ namespace PawnPlus
         private class PartData
         {
             public int bodyPartIndex;
+            public RootType rootType;
             public IGraphicProvider graphicProvider;
             public Graphic graphic;
             public Graphic portraitGraphic;
@@ -142,16 +143,19 @@ namespace PawnPlus
 				    {
                         foreach(var part in _perPartData)
                         {
-                            Rot4 partRot4 = portrait ? Rot4.South : headFacing;
-                            Vector3 partDrawPos = headPos;
-                            Quaternion partQuat = headQuat;
-                            switch(part.attachment)
-                            {
-                                case PartRender.Attachment.Body:
-                                    break;
+                            Rot4 partRot4 = Rot4.South;
+                            if(!portrait)
+							{
+                                switch(part.rootType)
+                                {
+                                    case RootType.Body:
+                                        partRot4 = bodyFacing;
+                                        break;
 
-                                case PartRender.Attachment.Head:
-                                    break;
+                                    case RootType.Head:
+                                        partRot4 = headFacing;
+                                        break;
+                                }
                             }
                             Graphic graphic = portrait ?
                                 part.portraitGraphic :
@@ -392,7 +396,11 @@ namespace PawnPlus
                     PartData partData = new PartData();
                     partData.bodyPartIndex = linkedBodypart.bodyPartLocator._resolvedPartIndex;
                     partData.graphicProvider = (IGraphicProvider)linkedBodypart.graphicProvider.Clone();
-                    RenderParamManager.GetRenderParams(Pawn, linkedBodypart.renderNodeName, out partData.renderParams);
+                    RenderParamManager.GetRenderParams(
+                        Pawn, 
+                        linkedBodypart.renderNodeName, 
+                        out partData.rootType,
+                        out partData.renderParams);
                     partData.graphicProvider.Initialize(
                         Pawn,
                         Pawn.RaceProps.body,

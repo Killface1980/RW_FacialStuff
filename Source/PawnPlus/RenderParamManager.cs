@@ -12,12 +12,12 @@ namespace PawnPlus
 	{
 		private class RenderNode
 		{
-			private Defs.PartRenderDef.RootType _rootType;
+			private RootType _rootType;
 			private Dictionary<string, RenderParam[]> _rootTextureRenderInfoMapping = new Dictionary<string, RenderParam[]>();
 
-			public Defs.PartRenderDef.RootType RootType => _rootType;
+			public RootType RootType => _rootType;
 
-			public RenderNode(Defs.PartRenderDef.RootType rootType)
+			public RenderNode(RootType rootType)
 			{
 				_rootType = rootType;
 			}
@@ -47,16 +47,17 @@ namespace PawnPlus
 				_rootTextureRenderInfoMapping[rootTexture] = renderParams;
 			}
 
-			public void GetRenderParams(Pawn pawn, out RenderParam[] renderParams)
+			public void GetRenderParams(Pawn pawn, out RootType rootType, out RenderParam[] renderParams)
 			{
 				string rootTexturePath = null;
+				rootType = _rootType;
 				switch(_rootType)
 				{
-					case Defs.PartRenderDef.RootType.Body:
+					case RootType.Body:
 						rootTexturePath = pawn.story.bodyType.bodyNakedGraphicPath;
 						break;
 
-					case Defs.PartRenderDef.RootType.Head:
+					case RootType.Head:
 						rootTexturePath = pawn.story.HeadGraphicPath;
 						break;
 				}
@@ -103,13 +104,14 @@ namespace PawnPlus
 			_initialized = true;
 		}
 
-		public static void GetRenderParams(Pawn pawn, string renderNodeName, out RenderParam[] renderParams)
+		public static void GetRenderParams(Pawn pawn, string renderNodeName, out RootType rootType, out RenderParam[] renderParams)
 		{
 			if(_renderNodes.TryGetValue(renderNodeName, out RenderNode renderNode))
 			{
-				renderNode.GetRenderParams(pawn, out renderParams);
+				renderNode.GetRenderParams(pawn, out rootType, out renderParams);
 				return;
 			}
+			rootType = RootType.Body;
 			renderParams = null;
 		}
 	}

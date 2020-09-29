@@ -8,12 +8,6 @@ namespace PawnPlus.Defs
 {
 	public class PartRenderDef : Def
 	{
-		public enum RootType
-		{
-			Body = 0,
-			Head = 1
-		}
-
 		public class RenderInfo
 		{
 			public Rot4 rotation;
