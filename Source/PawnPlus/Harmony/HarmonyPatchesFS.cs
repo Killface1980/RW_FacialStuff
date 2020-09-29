@@ -8,10 +8,7 @@ using RimWorld;
 using HarmonyLib;
 using Verse;
 using Verse.Sound;
-using PawnPlus.Genetics;
-using PawnPlus.FaceEditor;
 using PawnPlus.AnimatorWindows;
-using PawnPlus.Utilities;
 using PawnPlus.Graphics;
 using PawnPlus.Defs;
 using PawnPlus.Tweener;
@@ -29,12 +26,7 @@ namespace PawnPlus.Harmony
         {
             HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("rimworld.facialstuff.mod");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
-            
-            harmony.Patch(
-                AccessTools.Method(typeof(Page_ConfigureStartingPawns), "DrawPortraitArea"),
-                null,
-                new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(AddFaceEditButton)));
-            
+                        
             harmony.Patch(
                 AccessTools.Method(typeof(PawnGraphicSet), nameof(PawnGraphicSet.ResolveAllGraphics)),
                 null,
@@ -61,79 +53,9 @@ namespace PawnPlus.Harmony
                 AccessTools.Method(typeof(HediffSet), nameof(HediffSet.DirtyCache)),
                 null,
                 new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DirtyCache_Postfix)));
-                            
-            harmony.Patch(
-                AccessTools.Method(typeof(PawnHairChooser), nameof(PawnHairChooser.RandomHairDefFor)),
-                new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(RandomHairDefFor_PreFix)), 
-                null);
             
-            harmony.Patch(
-                AccessTools.Method(typeof(PawnSkinColors), "GetSkinDataIndexOfMelanin"),
-                new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.GetSkinDataIndexOfMelanin_Prefix)));
-            
-            harmony.Patch(
-                AccessTools.Method(typeof(PawnSkinColors), nameof(PawnSkinColors.GetSkinColor)),
-                new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.GetSkinColor_Prefix)));
-            
-            harmony.Patch(
-                AccessTools.Method(typeof(PawnSkinColors), nameof(PawnSkinColors.RandomMelanin)),
-                new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.RandomMelanin_Prefix)));
-            
-            harmony.Patch(
-                AccessTools.Method(typeof(PawnSkinColors), nameof(PawnSkinColors.GetMelaninCommonalityFactor)),
-                new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.GetMelaninCommonalityFactor_Prefix)));            
-
             Log.Message(
                 "Facial Stuff: successfully completed " + harmony.GetPatchedMethods().Count() + " patches with harmony.");
-
-            foreach(ThingDef def in 
-                DefDatabase<ThingDef>.AllDefsListForReading.Where(
-                    td => td.category == ThingCategory.Pawn && td.race.Humanlike))
-            {
-                if(def.inspectorTabs == null || def.inspectorTabs.Count == 0)
-                {
-                    def.inspectorTabs = new List<Type>();
-                    def.inspectorTabsResolved = new List<InspectTabBase>();
-                }
-                if(def.inspectorTabs.Contains(typeof(ITab_Pawn_Weapons)))
-                {
-                    return;
-                }
-
-                def.inspectorTabs.Add(typeof(ITab_Pawn_Weapons));
-                def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Weapons)));
-
-                def.inspectorTabs.Add(typeof(ITab_Pawn_Face));
-                def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Face)));
-            }
-
-            List<HairDef> beardyHairList =
-                DefDatabase<HairDef>.AllDefsListForReading.Where(x => x.IsBeardNotHair()).ToList();
-            for(int i = 0; i < beardyHairList.Count(); i++)
-            {
-                HairDef beardy = beardyHairList[i];
-                if(beardy.label.Contains("shaven")) continue;
-                BeardDef beardDef = new BeardDef 
-                {
-                    defName = beardy.defName,
-                    label = "_VHE_" + beardy.label,
-                    hairGender = beardy.hairGender,
-                    texPath = beardy.texPath.Replace("Things/Pawn/Humanlike/Beards/", ""),
-                    hairTags = beardy.hairTags,
-                    beardType = BeardType.FullBeard
-                };
-                if(beardDef.label.Contains("stubble") || beardDef.label.Contains("goatee") || beardDef.label.Contains("lincoln"))
-                {
-                    beardDef.drawMouth = true;
-                }
-                DefDatabase<BeardDef>.Add(beardDef);
-
-            }
-            Dialog_FaceStyling.FullBeardDefs = 
-                DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType == BeardType.FullBeard).ToList();
-            Dialog_FaceStyling.LowerBeardDefs = 
-                DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType != BeardType.FullBeard).ToList();
-            Dialog_FaceStyling.MoustacheDefs = DefDatabase<MoustacheDef>.AllDefsListForReading;
         }
 
         public static bool IsBeardNotHair(this Def def)
@@ -173,42 +95,6 @@ namespace PawnPlus.Harmony
 
         #region Public Methods
         
-        public static void AddFaceEditButton(Page_ConfigureStartingPawns __instance, Rect rect)
-        {
-            FieldInfo PawnFieldInfo =
-            typeof(Page_ConfigureStartingPawns).GetField("curPawn", BindingFlags.NonPublic | BindingFlags.Instance);
-
-            Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
-
-            if(!pawn.GetCompFace(out CompFace compFace))
-            {
-                return;
-            }
-
-            // Shitty Transpiler, doin' it on my own
-            Rect rect2 = new Rect(rect.x + 500f, rect.y, 25f, 25f);
-            if(rect2.Contains(Event.current.mousePosition))
-            {
-                GUI.color = Color.cyan;
-            }
-            else
-            {
-                GUI.color = new Color(0.623529f, 0.623529f, 0.623529f);
-            }
-
-            GUI.DrawTexture(rect2, ContentFinder<Texture2D>.Get("Buttons/ButtonFace", true));
-            GUI.color = Color.white;
-            string tip = "FacialStuffEditor.EditFace".Translate();
-            TooltipHandler.TipRegion(rect2, tip);
-
-            // ReSharper disable once InvertIf
-            if(Widgets.ButtonInvisible(rect2, false))
-            {
-                SoundDefOf.Tick_Low.PlayOneShotOnCamera(null);
-                OpenStylingWindow(pawn);
-            }
-        }
-
         public static void CheckAndDrawHands(Thing carriedThing, Vector3 thingVector3, bool flip, Pawn pawn, bool thingBehind)
         {
             if(pawn.RaceProps.Animal)
@@ -543,45 +429,6 @@ namespace PawnPlus.Harmony
             return instructionList;
         }
 
-        public static void OpenStylingWindow(Pawn pawn)
-        {
-            pawn.GetCompFace(out CompFace face);
-            Find.WindowStack.Add(new Dialog_FaceStyling(face));
-        }
-
-        public static bool RandomHairDefFor_PreFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
-        {
-            if(!pawn.GetCompFace(out CompFace compFace))
-            {
-                return true;
-            }
-
-            FactionDef faction = factionType;
-
-            if(faction == null)
-            {
-                faction = FactionDefOf.PlayerColony;
-            }
-
-            List<string> hairTags = faction.hairTags;
-
-            if(pawn.def == ThingDefOf.Human)
-            {
-                List<string> vanillatags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
-                if(!hairTags.Any(x => vanillatags.Contains(x)))
-                {
-                    hairTags.AddRange(vanillatags);
-                }
-            }
-
-            IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
-                                          where hair.hairTags.SharesElementWith(hairTags) && !hair.IsBeardNotHair()
-                                          select hair;
-
-            __result = source.RandomElementByWeight(hair => PawnFaceMaker.HairChoiceLikelihoodFor(hair, pawn));
-            return false;
-        }
-
         public static bool IsChild(this Pawn pawn)
         {
             return 
@@ -841,21 +688,7 @@ namespace PawnPlus.Harmony
             // Determine the shortest direction.
             return ((left <= right) ? left : (right * -1));
         }
-
-        // Call CalcShortestRot and check its return value.
-        // If CalcShortestRot returns a positive value, then this function
-        // will return true for left. Else, false for right.
-        private static bool CalcShortestRotDirection(float from, float to)
-        {
-            // If the value is positive, return true (left).
-            if(CalcShortestRot(@from, to) >= 0)
-            {
-                return true;
-            }
-
-            return false; // right
-        }
-
+        
         private static void CalculatePositionsWeapon(
             Pawn pawn, 
             ref float weaponAngle,
@@ -919,17 +752,5 @@ namespace PawnPlus.Harmony
             }
         }
         #endregion Public Methods
-
-        #region Private Methods
-
-        private static void ChangeAngleForNorth(Pawn pawn, ref float aimAngle)
-        {
-            if(pawn.ShowWeaponOpenly() && pawn.Rotation == Rot4.North)
-            {
-                aimAngle = 217f;
-            }
-        }
-
-        #endregion Private Methods
     }
 }

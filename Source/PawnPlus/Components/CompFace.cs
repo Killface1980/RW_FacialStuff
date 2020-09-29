@@ -2,7 +2,6 @@
 using PawnPlus.DefOfs;
 using PawnPlus.Defs;
 using PawnPlus.Graphics;
-using PawnPlus.Utilities;
 using JetBrains.Annotations;
 using RimWorld;
 using System;
@@ -10,11 +9,9 @@ using System.Collections.Generic;
 using PawnPlus.Harmony;
 using UnityEngine;
 using Verse;
-using static PawnPlus.Offsets;
 using PawnPlus.AI;
 using System.Collections.ObjectModel;
 using System.Linq;
-using PawnPlus.Genetics;
 
 namespace PawnPlus
 {
@@ -51,7 +48,6 @@ namespace PawnPlus
         private PawnState _pawnState;
         private IHeadBehavior _headBehavior;
         private List<BehaviorData> _partBehaviors;
-        private HairMelanin _hairMelanin;
         // Used for distance culling of face details
         private GameComponent_FacialStuff _fsGameComp;
         
@@ -66,9 +62,7 @@ namespace PawnPlus
         public Pawn Pawn { get; private set; }
         
         public HeadCoverage CurrentHeadCoverage { get; set; }
-
-        public HairMelanin HairMelanin => _hairMelanin;
-                        
+                                
 		// Return true if head was drawn. False if not.
 		public bool DrawHead(
             PawnGraphicSet graphicSet,
@@ -235,9 +229,7 @@ namespace PawnPlus
                 _originFactionInt = Pawn.Faction ?? Faction.OfPlayer;
             }
             _pawnState.UpdateState();
-            _hairMelanin = new HairMelanin();
-            _hairMelanin.GenerateHairDNA(Pawn);
-
+            
             foreach(var partBehavior in _partBehaviors)
             {
                 partBehavior.behavior.Initialize(Pawn.RaceProps.body, out List<int> usedBodyPartIndices);

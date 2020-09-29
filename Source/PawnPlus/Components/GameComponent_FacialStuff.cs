@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using PawnPlus.Harmony;
-using PawnPlus.Utilities;
 using UnityEngine;
 using Verse;
 using PawnPlus.Graphics;
@@ -32,12 +31,6 @@ namespace PawnPlus
         // ReSharper disable once UnusedParameter.Local
         public GameComponent_FacialStuff(Game game)
         {
-            // Fix for VHE hair on existing pawns.
-            foreach (Pawn pawn in PawnsFinder.AllMaps.FindAll(x =>
-                x.kindDef?.RaceProps != null && x.kindDef.RaceProps.Humanlike == true).Where(pawn => pawn.story?.hairDef != null && pawn.story.hairDef.IsBeardNotHair()))
-            {
-                PawnHairChooser.RandomHairDefFor(pawn, pawn.Faction.def);
-            }
             WeaponCompsNew();
             AnimalPawnCompsBodyDefImport();
             AnimalPawnCompsImportFromAnimationTargetDefs();

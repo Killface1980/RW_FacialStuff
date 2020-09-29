@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using PawnPlus.Genetics;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -248,23 +247,7 @@ namespace PawnPlus
             compFace = pawn.GetComp<CompFace>();
             return compFace != null;
         }
-
-        public static bool GetPawnHairMelanin([NotNull] this Pawn pawn, [CanBeNull] out HairMelanin pawnHairMelanin)
-        {
-            pawnHairMelanin = null;
-            if(!pawn.GetCompFace(out CompFace compFace))
-            {
-                return false;
-            }
-            HairMelanin hairMelanin = compFace.HairMelanin;
-            if(hairMelanin != null)
-            {
-                pawnHairMelanin = hairMelanin;
-                return true;
-            }
-            return false;
-        }
-
+        
         public static bool HasCompAnimator([NotNull] this Pawn pawn)
         {
             return pawn.def.HasComp(typeof(CompBodyAnimator));
@@ -273,15 +256,6 @@ namespace PawnPlus
         public static bool HasCompFace([NotNull] this Pawn pawn)
         {
             return pawn.def.HasComp(typeof(CompFace));
-        }
-
-        public static bool HasPawnFace(this Pawn pawn)
-        {
-            if(pawn.GetCompFace(out CompFace compFace))
-            {
-                return compFace.HairMelanin != null;
-            }
-            return false;
         }
     }
 }
