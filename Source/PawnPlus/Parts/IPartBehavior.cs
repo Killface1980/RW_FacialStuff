@@ -7,6 +7,8 @@ namespace PawnPlus.Parts
 {	
 	public interface IPartBehavior : ICloneable, IExposable
 	{
+		public string UniqueID { get; }
+
 		public void Initialize(BodyDef bodyDef, out List<int> usedBodyPartIndices);
 
 		public void SetPartSignalSink(Dictionary<int, List<PartSignal>> bodyPartSignalSinks);

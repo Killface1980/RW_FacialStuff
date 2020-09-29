@@ -199,16 +199,14 @@ namespace PawnPlus
             _fsGameComp = Current.Game.GetComponent<GameComponent_PawnPlus>();
             Props = (CompProperties_Face)props;
             Pawn = (Pawn)parent;
+
             if(HeadBehavior == null)
             {
                 _headBehavior = (IHeadBehavior)Props.headBehavior.Clone();
                 HeadBehavior.Initialize(Pawn);
             }
-            _partBehaviors = new List<IPartBehavior>(Props.partBehaviors.Count);
-            for(int i = 0; i < Props.partBehaviors.Count; ++i)
-			{
-				_partBehaviors.Add((IPartBehavior)Props.partBehaviors[i].Clone());
-			}
+            BuildPartBehaviors();
+
             _pawnState = new PawnState(Pawn);
             _perPartStatus = new BodyPartStatus[Pawn.RaceProps.body.AllParts.Count];
             _bodyPartSignals = new Dictionary<int, List<PartSignal>>();
@@ -367,6 +365,52 @@ namespace PawnPlus
             }
         }
         
+        private void BuildPartBehaviors()
+		{
+            if(_partBehaviors == null)
+            {
+                _partBehaviors = new List<IPartBehavior>();
+            }
+            // Check if there is an existing part behavior class from the previous save. If so, use that instance instead of
+            // creating a new one.
+            // Also, drop existing part behavior instance if it is not defined in <partBehaviors> list anymore.
+            List<IPartBehavior> newPartBehaviors = new List<IPartBehavior>();
+            // Note that items in Props.partBehaviors are guaranteed to have unique string IDs (IPartBehavior.UniqueID)
+            // Look CompProperties_Face.ResolveReferences()
+            for(int i = 0; i < Props.partBehaviors.Count; ++i)
+            {
+                IPartBehavior partBehavior = null;
+                int partBehaviorIdx =
+                    _partBehaviors.FindIndex(behavior => behavior.UniqueID == Props.partBehaviors[i].UniqueID);
+                if(partBehaviorIdx >= 0)
+                {
+                    partBehavior = _partBehaviors[partBehaviorIdx];
+                    _partBehaviors.RemoveAt(partBehaviorIdx);
+                } else
+                {
+                    partBehavior = (IPartBehavior)Props.partBehaviors[i].Clone();
+                }
+                newPartBehaviors.Add(partBehavior);
+            }
+            foreach(var oldPartBehavior in _partBehaviors)
+            {
+                // Scribe_Collections inserts null item if the IPartBehavior implementation class does not exist anymore in the assembly
+                if(oldPartBehavior == null)
+                {
+                    continue;
+                }
+                Log.Warning(
+                    "Pawn Plus: The previously-saved part behavior class (" +
+                    oldPartBehavior.GetType().ToString() +
+                    " UniqueID: " +
+                    oldPartBehavior.UniqueID +
+                    ") for pawn (" +
+                    Pawn +
+                    ") will be dropped because it is no longer defined in <partBehaviors> list in CompProperties_Face.");
+            }
+            _partBehaviors = newPartBehaviors;
+        }
+
         private void UpdateGraphicProviders(out bool updatePortrait)
 		{
             updatePortrait = false;

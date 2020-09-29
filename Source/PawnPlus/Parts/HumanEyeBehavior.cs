@@ -31,6 +31,14 @@ namespace PawnPlus.Parts
 		private PartSignal _cachedBlinkSignal;
 		private Dictionary<int, List<PartSignal>> _bodyPartSignalSinks;
 
+		public string UniqueID 
+		{ 
+			get 
+			{
+				return "PawnPlus_HumanEyeBehavior";
+			}
+		}
+
 		public void Initialize(BodyDef bodyDef, out List<int> usedBodyPartIndices)
 		{
 			List<BodyPartRecord> eyes = bodyDef.GetPartsWithDef(BodyPartDefOf.Eye).ToList();
