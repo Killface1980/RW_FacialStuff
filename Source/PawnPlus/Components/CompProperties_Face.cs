@@ -23,9 +23,7 @@ namespace PawnPlus
         public bool needsBlankHumanHead;
                 
         public IHeadBehavior headBehavior;
-
-        public IMouthBehavior mouthBehavior;
-        
+                
         public List<IPartBehavior> partBehaviors;
 
         public PartGenHelper partGenHelper;

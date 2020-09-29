@@ -85,13 +85,13 @@
   <ItemGroup>
     <Compile Include="AI\HumanEyeBehavior.cs" />
     <Compile Include="AI\HumanHeadBehavior.cs" />
-    <Compile Include="AI\HumanMouthBehavior.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_BaseAnimator.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_PoseAnimator.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_WalkAnimator.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
     <Compile Include="BodyPartRecordExtension.cs" />
     <Compile Include="BodyPartStatus.cs" />
+    <Compile Include="HumanMouthGraphicProvider.cs" />
     <Compile Include="PartGenHelper.cs" />
     <Compile Include="PartSignal.cs" />
     <Compile Include="PartSignalArg.cs" />
@@ -187,7 +187,6 @@
     <Compile Include="IPartBehavior.cs" />
     <Compile Include="IGraphicProvider.cs" />
     <Compile Include="IHeadBehavior.cs" />
-    <Compile Include="IMouthBehavior.cs" />
     <Compile Include="ITab_Pawn_Face.cs" />
     <Compile Include="ITab_Pawn_Weapons.cs" />
     <Compile Include="PartStatusTracker.cs" />

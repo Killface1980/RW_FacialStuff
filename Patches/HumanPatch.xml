@@ -65,15 +65,7 @@
 			</partBehaviors>
 			
 			<!-- Class must be PawnPlus.PartGenHelper or its subclass -->
-			<partGenHelper Class="PawnPlus.PartGenHelper"></partGenHelper>
-			
-			<!-- 
-			This determines what mouth texture is displayed under what circumstances 
-			Look at PawnPlus.AI.HumanMouth to see how it is implemented.
-			-->
-			<mouthBehavior Class = "PawnPlus.AI.HumanMouthBehavior">
-				<!-- Set public member variables if needed -->
-			</mouthBehavior>
+			<partGenHelper Class="PawnPlus.PartGenHelper"></partGenHelper>	
           </li>
         </value>
       </li>

@@ -1,102 +1,109 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-	<PawnPlus.Defs.MouthRenderDef>
-		<defName>FSHumanMaleA</defName>
-		<part>
-			<perRotation>
-				<!-- 
-				If rotation is missing in this list, the part isn't rendered for that rotation 
-				(ex. mouth when facing north) 
-				-->
-				<li>
-					<!-- 
-					Indicates what rotation the following properties are for. If there are duplicate rotation in this list, 
-					whatever comes last in the list will be used 
-					-->
-					<rotation>South</rotation>
-					<meshDef>FSMouthAverage</meshDef>
-					<offset>(0, 0.002, -0.1875)</offset>
-				</li>
-				<li>
-					<rotation>East</rotation>
-					<meshDef>FSMouthAverage</meshDef>
-					<offset>(0.1992, 0.002, -0.1875)</offset>
-				</li>
-				<li>
-					<rotation>West</rotation>
-					<meshDef>FSMouthAverage_m</meshDef>
-					<offset>(-0.1992, 0.002, -0.1875)</offset>
-				</li>
-			</perRotation>
-		</part>
-	</PawnPlus.Defs.MouthRenderDef>
+
+	<PawnPlus.Defs.PartRenderDef>
+		<defName>HumanMouthVanillaHead</defName>
+		<renderNodeName>HumanMouth</renderNodeName>
+		<raceBodyDef>Human</raceBodyDef>
+		<rootType>Head</rootType>
+		<rootTexturesToRenderInfoMapping>
+			<li mappingName="Human_M_A_PNW">
+				<rootTexturePaths>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Average_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Average_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Average_Wide</li>
+				</rootTexturePaths>
+				<renderInfoPerRotation>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSMouthAverage</meshDef>
+						<offset>(0, 0.002, -0.1875)</offset>
+					</li>
+					<li>
+						<rotation>East</rotation>
+						<meshDef>FSMouthAverage</meshDef>
+						<offset>(0.1992, 0.002, -0.1875)</offset>
+					</li>
+					<li>
+						<rotation>West</rotation>
+						<meshDef>FSMouthAverage_m</meshDef>
+						<offset>(-0.1992, 0.002, -0.1875)</offset>
+					</li>
+				</renderInfoPerRotation>
+			</li>
+			<li mappingName="Human_F_A_PN">
+				<rootTexturePaths>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Average_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Average_Normal</li>
+				</rootTexturePaths>
+				<renderInfoPerRotation>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSMouthAverage</meshDef>
+						<offset>(0, 0.002, -0.1875)</offset>
+					</li>
+					<li>
+						<rotation>East</rotation>
+						<meshDef>FSMouthAverage</meshDef>
+						<offset>(0.1465, 0.002, -0.1875)</offset>
+					</li>
+					<li>
+						<rotation>West</rotation>
+						<meshDef>FSMouthAverage_m</meshDef>
+						<offset>(-0.1465, 0.002, -0.1875)</offset>
+					</li>
+				</renderInfoPerRotation>
+			</li>
+			<li mappingName="Human_F_A_W">
+				<rootTexturePaths>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Average_Wide</li>
+				</rootTexturePaths>
+				<renderInfoPerRotation>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSMouthAverage</meshDef>
+						<offset>(0, 0.002, -0.1875)</offset>
+					</li>
+					<li>
+						<rotation>East</rotation>
+						<meshDef>FSMouthAverage</meshDef>
+						<offset>(0.1699, 0.002, -0.1875)</offset>
+					</li>
+					<li>
+						<rotation>West</rotation>
+						<meshDef>FSMouthAverage_m</meshDef>
+						<offset>(-0.1699, 0.002, -0.1875)</offset>
+					</li>
+				</renderInfoPerRotation>
+			</li>
+			<li mappingName="Human_MF_N_PNW">
+				<rootTexturePaths>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Wide</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Wide</li>
+				</rootTexturePaths>
+				<renderInfoPerRotation>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSMouthNarrow</meshDef>
+						<offset>(0, 0.002, -0.1875)</offset>
+					</li>
+					<li>
+						<rotation>East</rotation>
+						<meshDef>FSMouthAverage</meshDef>
+						<offset>(0.1054, 0.002, -0.1875)</offset>
+					</li>
+					<li>
+						<rotation>West</rotation>
+						<meshDef>FSMouthAverage_m</meshDef>
+						<offset>(-0.1054, 0.002, -0.1875)</offset>
+					</li>
+				</renderInfoPerRotation>
+			</li>
+		</rootTexturesToRenderInfoMapping>
+	</PawnPlus.Defs.PartRenderDef>
 	
-	<PawnPlus.Defs.MouthRenderDef>
-		<defName>FSHumanN</defName>
-		<part>
-			<perRotation>
-				<li>
-					<rotation>South</rotation>
-					<meshDef>FSMouthNarrow</meshDef>
-					<offset>(0, 0.002, -0.1875)</offset>
-				</li>
-				<li>
-					<rotation>East</rotation>
-					<meshDef>FSMouthAverage</meshDef>
-					<offset>(0.1054, 0.002, -0.1875)</offset>
-				</li>
-				<li>
-					<rotation>West</rotation>
-					<meshDef>FSMouthAverage_m</meshDef>
-					<offset>(-0.1054, 0.002, -0.1875)</offset>
-				</li>
-			</perRotation>
-		</part>
-	</PawnPlus.Defs.MouthRenderDef>
-
-	<PawnPlus.Defs.MouthRenderDef>
-		<defName>FSHumanFemaleA_W</defName>
-		<part>
-			<perRotation>
-				<li>
-					<rotation>South</rotation>
-					<meshDef>FSMouthAverage</meshDef>
-					<offset>(0, 0.002, -0.1875)</offset>
-				</li>
-				<li>
-					<rotation>East</rotation>
-					<meshDef>FSMouthAverage</meshDef>
-					<offset>(0.1699, 0.002, -0.1875)</offset>
-				</li>
-				<li>
-					<rotation>West</rotation>
-					<meshDef>FSMouthAverage_m</meshDef>
-					<offset>(-0.1699, 0.002, -0.1875)</offset>
-				</li>
-			</perRotation>
-		</part>
-	</PawnPlus.Defs.MouthRenderDef>
-
-	<PawnPlus.Defs.MouthRenderDef>
-		<defName>FSHumanFemaleA_NP</defName>
-		<part>
-			<perRotation>
-				<li>
-					<rotation>South</rotation>
-					<meshDef>FSMouthAverage</meshDef>
-					<offset>(0, 0.002, -0.1875)</offset>
-				</li>
-				<li>
-					<rotation>East</rotation>
-					<meshDef>FSMouthAverage</meshDef>
-					<offset>(0.1465, 0.002, -0.1875)</offset>
-				</li>
-				<li>
-					<rotation>West</rotation>
-					<meshDef>FSMouthAverage_m</meshDef>
-					<offset>(-0.1465, 0.002, -0.1875)</offset>
-				</li>
-			</perRotation>
-		</part>
-	</PawnPlus.Defs.MouthRenderDef>
 </Defs>

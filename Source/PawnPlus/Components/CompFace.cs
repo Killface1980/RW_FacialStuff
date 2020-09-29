@@ -44,10 +44,8 @@ namespace PawnPlus
         private FaceData _faceData;
         private RenderParam[] _mouthRenderParams;
         private Rot4 _cachedHeadFacing;
-        private IMouthBehavior.Params _cachedMouthParam = new IMouthBehavior.Params();
         private PawnState _pawnState;
         private IHeadBehavior _headBehavior;
-        private IMouthBehavior _mouthBehavior;
         private List<BehaviorData> _partBehaviors;
         // Used for distance culling of face details
         private GameComponent_FacialStuff _fsGameComp;
@@ -55,9 +53,7 @@ namespace PawnPlus
         public bool Initialized { get; private set; }
 
         public IHeadBehavior HeadBehavior => _headBehavior;
-
-        public IMouthBehavior MouthBehavior => _mouthBehavior;
-        
+                
         public FaceMaterial FaceMaterial { get; set; }
         
         public FullHead FullHeadType { get; set; } = FullHead.Undefined;
@@ -317,10 +313,6 @@ namespace PawnPlus
                 _headBehavior = (IHeadBehavior)Props.headBehavior.Clone();
                 HeadBehavior.Initialize(Pawn);
             }
-            if(MouthBehavior == null)
-            {
-                _mouthBehavior = (IMouthBehavior)Props.mouthBehavior.Clone();
-            }
             _partBehaviors = new List<BehaviorData>(Props.partBehaviors.Count);
             for(int i = 0; i < Props.partBehaviors.Count; ++i)
 			{
@@ -443,9 +435,6 @@ namespace PawnPlus
 					{
                         PortraitsCache.SetDirty(Pawn);
 					}
-
-                    _cachedMouthParam.Reset();
-                    MouthBehavior.Update(Pawn, _cachedHeadFacing, _pawnState, _cachedMouthParam);
                 }
             }
         }
@@ -557,7 +546,6 @@ namespace PawnPlus
             Scribe_References.Look(ref this._originFactionInt, "pawnFaction");
             Scribe_Deep.Look(ref this._faceData, "pawnFace");
             Scribe_Deep.Look(ref _headBehavior, "headBehavior");
-            Scribe_Deep.Look(ref _mouthBehavior, "mouthBehavior");
             Scribe_Collections.Look(ref _partBehaviors, "partBehaviors");
         }
     }
