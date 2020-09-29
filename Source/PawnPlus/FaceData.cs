@@ -28,9 +28,7 @@ namespace PawnPlus
         private float _wrinkleIntensity;
 
         #endregion Private Fields
-
-        public MouthSetDef MouthSetDef { get; private set; }
-
+        
         #region Public Constructors
 
         public FaceData(CompFace face, FactionDef pawnFactionDef, bool newPawn = true)
@@ -42,7 +40,6 @@ namespace PawnPlus
             }
             
             BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, pawnFactionDef);
-            MouthSetDef = PawnFaceMaker.RandomMouthDefFor(pawn, face.Props, pawnFactionDef);
             WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn);
             PawnFaceMaker.RandomBeardDefFor(face, pawnFactionDef, out _beardDef, out _moustacheDef);
             

@@ -40,22 +40,6 @@ namespace PawnPlus.Graphics
 				}
 				InitializeGraphicsBrows();
 			}
-			if(compFace.Props.hasMouth)
-			{
-				Color color = Color.white;
-				_mouthGraphics = new List<Graphic_FacePart>(_pawnFace.MouthSetDef.texNames.Count);
-				for(int i = 0; i < _pawnFace.MouthSetDef.texNames.Count; ++i)
-				{
-					_mouthGraphics.Add(
-						GraphicDatabase.Get<Graphic_FacePart>(
-							Path.Combine(
-								_pawnFace.MouthSetDef.texBasePath,
-								_pawnFace.MouthSetDef.texNames[i]),
-							Shaders.FacePart,
-							Vector2.one,
-							color) as Graphic_FacePart);
-				}
-			}
 		}
 						
 		private void InitializeGraphicsBeard(CompFace compFace)

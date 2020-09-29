@@ -123,9 +123,6 @@
     <Compile Include="Defs\PartRenderDef.cs" />
     <Compile Include="Defs\MeshDef.cs" />
     <Compile Include="Defs\MoustacheDef.cs" />
-    <Compile Include="Defs\MouthRenderDef.cs" />
-    <Compile Include="Defs\MouthSetDef.cs" />
-    <Compile Include="Defs\PartRender.cs" />
     <Compile Include="Defs\PawnKeyframe.cs" />
     <Compile Include="Defs\PoseCycleDef.cs" />
     <Compile Include="Defs\WalkCycleDef.cs" />

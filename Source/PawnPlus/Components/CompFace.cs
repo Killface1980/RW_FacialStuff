@@ -173,14 +173,7 @@ namespace PawnPlus
                                         portrait);
                             }
                         }
-
-                        if(Props.hasMouth &&
-                            FaceData.BeardDef.drawMouth &&
-                            Controller.settings.UseMouth)
-                        {
-                            Vector3 mouthLoc = headPos;
-                            DrawMouth(mouthLoc, headFacing, headQuat, portrait);
-                        }
+                        
                         if(headFacing != Rot4.North)
 						{
                             if(Props.hasWrinkles)
@@ -292,33 +285,6 @@ namespace PawnPlus
                 headQuat,
                 browMat,
                 portrait);
-        }
-
-        public void DrawMouth(Vector3 drawPos, Rot4 headFacing, Quaternion headQuat, bool portrait)
-		{
-            if(PawnFaceGraphic == null || _mouthRenderParams == null || !_mouthRenderParams[headFacing.AsInt].render)
-			{
-                return;
-			}
-            Mesh mouthMesh = _mouthRenderParams[headFacing.AsInt].mesh;
-            int mouthTextureIdx = portrait ?
-                MouthBehavior.GetTextureIndexForPortrait() :
-                _cachedMouthParam.mouthTextureIdx;
-            Material mouthMat = PawnFaceGraphic.MouthMatAt(headFacing, mouthTextureIdx);
-            if(mouthMat != null)
-            {
-                Vector3 offset = new Vector3(
-                    _mouthRenderParams[headFacing.AsInt].offset.x,
-                    0f,
-                    _mouthRenderParams[headFacing.AsInt].offset.y);
-                offset = headQuat * offset;
-                GenDraw.DrawMeshNowOrLater(
-                    mouthMesh,
-                    drawPos + offset,
-                    headQuat,
-                    mouthMat,
-                    portrait);
-            }
         }
 
         public void DrawBeardAndTache(PawnGraphicSet graphicSet, Vector3 beardLoc, Vector3 tacheLoc, Rot4 headFacing, Quaternion headQuat, bool portrait)
@@ -442,9 +408,7 @@ namespace PawnPlus
 
             // Update the graphic providers to get the portrait graphic
             UpdateGraphicProviders(out bool updatePortrait);
-
-            MouthBehavior.InitializeTextureIndex(FaceData.MouthSetDef.texNames.AsReadOnly());
-
+            
             FullHeadType = MeshPoolFS.GetFullHeadType(Pawn.gender, PawnCrownType, PawnHeadType);
             PawnFaceGraphic = new FaceGraphic(this, 2);
             FaceMaterial = new FaceMaterial(this, PawnFaceGraphic);

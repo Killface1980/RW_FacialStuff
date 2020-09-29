@@ -232,60 +232,7 @@ namespace PawnPlus.Utilities
             Log.Error(string.Concat("Unknown hair likelihood for ", hair, " with ", pawn));
             return 0f;
         }
-
-        public static MouthSetDef RandomMouthDefFor(Pawn pawn, CompProperties_Face faceProp, FactionDef pawnFactionDef)
-		{
-            if(!faceProp.hasMouth)
-			{
-                return null;
-			}
-            IEnumerable<MouthSetDef> source =
-                from mouth in DefDatabase<MouthSetDef>.AllDefs
-                where 
-                    mouth.hairTags.SharesElementWith(pawnFactionDef.hairTags) && 
-                    mouth.allowedRaceThingDefs.Contains(pawn.def)
-                select mouth;
-            if(!source.Any())
-			{
-                Log.Warning("Facial Stuff: no MouthSetDef is available for pawn " + pawn.Name);
-                return null;
-			}
-            return source.RandomElementByWeight(mouth => MouthChoiceLikelihoodFor(mouth, pawn));
-        }
-
-        private static float MouthChoiceLikelihoodFor(MouthSetDef mouth, Pawn pawn)
-		{
-			switch(pawn.gender)
-			{
-                case Gender.None:
-                    return 100f;
-
-                case Gender.Male:
-                    switch(mouth.hairGender)
-                    {
-                        case HairGender.Male: return 70f;
-                        case HairGender.MaleUsually: return 30f;
-                        case HairGender.Any: return 50;
-                        case HairGender.FemaleUsually: return 5f;
-                        case HairGender.Female: return 1f;
-                    }
-                    break;
-
-                case Gender.Female:
-                    switch(mouth.hairGender)
-                    {
-                        case HairGender.Female: return 70f;
-                        case HairGender.FemaleUsually: return 30f;
-                        case HairGender.Any: return 60f;
-                        case HairGender.MaleUsually: return 5f;
-                        case HairGender.Male: return 1f;
-                    }
-                    break;
-            }
-            Log.Warning("Facial Stuff: Can't calculate random weight for mouth texture of pawn " + pawn.Name);
-            return 0f;
-        }
-
+        
         public static void RandomBeardDefFor(
             [NotNull] CompFace face,
             [NotNull] FactionDef factionType,
