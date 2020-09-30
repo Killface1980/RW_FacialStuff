@@ -203,7 +203,7 @@ namespace PawnPlus
                 }
                 Props.partGenHelper.PartsPreGeneration(Pawn);
                 Dictionary<string, PartDef> partDefInCategory = 
-                    Props.partGenHelper.GeneratePartInCategory(Pawn, _orignalFaction, PartDef.GetCategoriesInRace(Pawn.RaceProps.body));                
+                    Props.partGenHelper.GeneratePartInCategory(Pawn, _originalFaction, PartDef.GetCategoriesInRace(Pawn.RaceProps.body));                
                 _partDefs = new List<PartDef>();
                 foreach(var pair in partDefInCategory)
 				{
