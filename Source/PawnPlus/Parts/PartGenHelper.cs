@@ -16,7 +16,10 @@ namespace PawnPlus.Parts
 
 		}
 
-		public virtual Dictionary<string, PartDef> GeneratePartInCategory(Pawn pawn, Dictionary<string, List<PartDef>> partsInCategory)
+		public virtual Dictionary<string, PartDef> GeneratePartInCategory(
+			Pawn pawn, 
+			FactionDef pawnFactionDef,
+			Dictionary<string, List<PartDef>> partsInCategory)
 		{
 			Dictionary<string, PartDef> genParts = new Dictionary<string, PartDef>();
 			foreach(var pair in partsInCategory)
@@ -25,9 +28,33 @@ namespace PawnPlus.Parts
 				List<PartDef> partDefList = pair.Value;
 				if(partDefList.NullOrEmpty())
 				{
+					Log.Warning(
+						"Pawn Plus: could not generate part for " +
+						pawn +
+						" in the part category " +
+						category +
+						". No parts are availble.");
 					continue;
 				}
-				PartDef genPart = partDefList.RandomElementByWeight(p => PartGenHelper.PartChoiceLikelyhoodFor(p.hairGender, pawn.gender));
+				if(category == "Beard" || category == "Moustache")
+				{
+					continue;
+				}
+				IEnumerable<PartDef> partDefCandidates = 
+					from partDef in partDefList
+					where partDef.hairTags.SharesElementWith(pawnFactionDef.hairTags)
+					select partDef;
+				if(!partDefCandidates.Any())
+				{
+					Log.Warning(
+						"Pawn Plus: no parts are available for the pawn " + 
+						pawn + 
+						" in the part category " + 
+						category + 
+						". Pawn generation constraints will be ignored.");
+					partDefCandidates = partDefList;
+				}
+				PartDef genPart = partDefCandidates.RandomElementByWeight(p => PartGenHelper.PartChoiceLikelyhoodFor(p.hairGender, pawn.gender));
 				genParts.Add(category, genPart);
 			}
 			return genParts;

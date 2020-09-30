@@ -25,7 +25,8 @@ namespace PawnPlus
             public bool occluded;
             public RenderParam[] renderParams;
         }
-                
+        
+        private FactionDef _originalFaction;
         private IReadOnlyList<PartData> _perPartData;
         private BodyPartSignals _bodyPartSignals;
         private BodyPartStatus _bodyPartStatus;
@@ -179,6 +180,11 @@ namespace PawnPlus
         // which is called by a postfix to ResolveAllGraphics() method.
         public void InitializeFace()
         {
+            if(_originalFaction == null)
+			{
+                _originalFaction = Pawn.Faction.def ?? Faction.OfPlayer.def;
+			}
+
             _pawnState.UpdateState();
 
             _headBehavior.Initialize(Pawn);
@@ -196,7 +202,8 @@ namespace PawnPlus
                     return;
                 }
                 Props.partGenHelper.PartsPreGeneration(Pawn);
-                Dictionary<string, PartDef> partDefInCategory = Props.partGenHelper.GeneratePartInCategory(Pawn, PartDef.GetCategoriesInRace(Pawn.RaceProps.body));                
+                Dictionary<string, PartDef> partDefInCategory = 
+                    Props.partGenHelper.GeneratePartInCategory(Pawn, _orignalFaction, PartDef.GetCategoriesInRace(Pawn.RaceProps.body));                
                 _partDefs = new List<PartDef>();
                 foreach(var pair in partDefInCategory)
 				{
@@ -385,6 +392,7 @@ namespace PawnPlus
         public override void PostExposeData()
         {
             base.PostExposeData();
+            Scribe_Defs.Look(ref _originalFaction, "originalFaction");
             Scribe_Deep.Look(ref _headBehavior, "headBehavior");
             Scribe_Collections.Look(ref _partBehaviors, "partBehaviors", LookMode.Deep);
             Scribe_Collections.Look(ref _partDefs, "partDefs", LookMode.Def);
