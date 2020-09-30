@@ -30,7 +30,8 @@ namespace PawnPlus.Parts
 			BodyDef bodyDef,
 			string defaultTexPath,
 			Dictionary<string, string> namedTexPaths,
-			BodyPartSignals bodyPartSignals)
+			BodyPartSignals bodyPartSignals,
+			ref TickDelegate tickDelegate)
 		{
 			_pawn = pawn;
 			Graphic defaultGraphic = GraphicDatabase.Get<Graphic_Multi>(
@@ -45,7 +46,7 @@ namespace PawnPlus.Parts
 				{ "Extreme", null },
 				{ "Crying", null },
 				{ "Dead", null }
-			};
+			}; 
 			foreach(string key in new List<string>(namedGraphics.Keys))
 			{
 				if(namedTexPaths.ContainsKey(key))
@@ -66,23 +67,14 @@ namespace PawnPlus.Parts
 			_extreme = namedGraphics["Extreme"];
 			_crying = namedGraphics["Crying"];
 			_dead = namedGraphics["Dead"];
-
-			_ticksSinceLastUpdate = Find.TickManager.TicksGame;
+			_curGraphic = _normal;
+			tickDelegate.RareUpdate = Update;
 		}
 
 		public void Update(
 			PawnState pawnState,
 			BodyPartStatus bodyPartStatus,
 			ref bool updatePortrait)
-		{
-			if(Find.TickManager.TicksGame >= _ticksSinceLastUpdate + 90)
-			{
-				_ticksSinceLastUpdate = Find.TickManager.TicksGame;
-				UpdateCurrentGraphic(pawnState);
-			}
-		}
-
-		private void UpdateCurrentGraphic(PawnState pawnState)
 		{
 			if(!pawnState.Alive)
 			{

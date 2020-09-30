@@ -21,6 +21,7 @@ namespace PawnPlus
         {
             public RootType rootType;
             public IPartRenderer renderer;
+            public TickDelegate tickDelegate;
             public string renderNodeName;
             public bool occluded;
             public RenderParam[] renderParams;
@@ -238,7 +239,8 @@ namespace PawnPlus
                         Pawn.RaceProps.body,
                         partDef.defaultTexPath,
                         partDef.namedTexPaths,
-                        _bodyPartSignals);
+                        _bodyPartSignals,
+                        ref partData.tickDelegate);
                     perPartData.Add(partData);
                 }
             }
@@ -282,8 +284,7 @@ namespace PawnPlus
                 bool canUpdatePawn =
                     Pawn.Map != null &&
                     !Pawn.InContainerEnclosed &&
-                    Pawn.Spawned &&
-                    !Find.TickManager.Paused;
+                    Pawn.Spawned;
                 if(canUpdatePawn)
                 {
                     _pawnState.UpdateState();
@@ -295,12 +296,15 @@ namespace PawnPlus
                     bool updatePortrait = false;
                     foreach(var part in _perPartData)
                     {
-                        bool updatePortraitTemp = false;
-                        part.renderer.Update(
-                            _pawnState,
-                            _bodyPartStatus,
-                            ref updatePortraitTemp);
-                        updatePortrait |= updatePortraitTemp;
+                        if(part.tickDelegate.NormalUpdate != null)
+						{
+                            bool updatePortraitTemp = false;
+                            part.tickDelegate.NormalUpdate(
+                                _pawnState,
+                                _bodyPartStatus,
+                                ref updatePortraitTemp);
+                            updatePortrait |= updatePortraitTemp;
+                        }
                     }
                     if(updatePortrait)
 					{
@@ -309,8 +313,72 @@ namespace PawnPlus
                 }
             }
         }
-        
-        private void BuildPartBehaviors()
+
+        public override void CompTickRare()
+        {
+            base.CompTickRare();
+            if(Initialized)
+            {
+                bool canUpdatePawn =
+                    Pawn.Map != null &&
+                    !Pawn.InContainerEnclosed &&
+                    Pawn.Spawned;
+                if(canUpdatePawn)
+                {
+                    bool updatePortrait = false;
+                    foreach(var part in _perPartData)
+                    {
+                        if(part.tickDelegate.RareUpdate != null)
+                        {
+                            bool updatePortraitTemp = false;
+                            part.tickDelegate.RareUpdate(
+                                _pawnState,
+                                _bodyPartStatus,
+                                ref updatePortraitTemp);
+                            updatePortrait |= updatePortraitTemp;
+                        }
+                    }
+                    if(updatePortrait)
+                    {
+                        PortraitsCache.SetDirty(Pawn);
+                    }
+                }
+            }
+        }
+
+        public override void CompTickLong()
+		{
+			base.CompTickLong();
+            if(Initialized)
+            {
+                bool canUpdatePawn =
+                    Pawn.Map != null &&
+                    !Pawn.InContainerEnclosed &&
+                    Pawn.Spawned;
+                if(canUpdatePawn)
+                {
+                    bool updatePortrait = false;
+                    foreach(var part in _perPartData)
+                    {
+                        if(part.tickDelegate.LongUpdate != null)
+                        {
+                            bool updatePortraitTemp = false;
+                            part.tickDelegate.LongUpdate(
+                                _pawnState,
+                                _bodyPartStatus,
+                                ref updatePortraitTemp);
+                            updatePortrait |= updatePortraitTemp;
+                        }
+                    }
+                    if(updatePortrait)
+                    {
+                        PortraitsCache.SetDirty(Pawn);
+                    }
+                }
+            }
+        }
+
+		private void BuildPartBehaviors()
 		{
             if(_partBehaviors == null)
             {

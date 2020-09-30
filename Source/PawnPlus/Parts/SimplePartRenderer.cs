@@ -20,18 +20,14 @@ namespace PawnPlus.Parts
 			BodyDef bodyDef, 
 			string defaultTexPath, 
 			Dictionary<string, string> namedTexPaths, 
-			BodyPartSignals bodyPartSignals)
+			BodyPartSignals bodyPartSignals,
+			ref TickDelegate tickDelegate)
 		{
 			_graphic = GraphicDatabase.Get<Graphic_Multi>(
 				defaultTexPath,
 				Shaders.FacePart);
 		}
-		
-		public void Update(PawnState pawnState, BodyPartStatus partStatus, ref bool updatePortrait)
-		{
-			
-		}
-		
+				
 		public void Render(Vector3 rootPos, Quaternion rootQuat, Rot4 rootRot4, Vector3 renderNodeOffset, Mesh renderNodeMesh, bool portrait)
 		{
 			if(_graphic == null)

@@ -16,7 +16,8 @@ namespace PawnPlus.Parts
 			BodyDef bodyDef,
 			string defaultTexPath,
 			Dictionary<string, string> namedTexPaths,
-			BodyPartSignals bodyPartSignals)
+			BodyPartSignals bodyPartSignals,
+			ref TickDelegate tickDelegate)
 		{
 			_graphic = GraphicDatabase.Get<Graphic_Multi>(
 				defaultTexPath,

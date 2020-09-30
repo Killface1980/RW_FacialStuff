@@ -136,6 +136,7 @@
     <Compile Include="Enums\Tween.cs" />
     <Compile Include="Enums\WalkcycleType.cs" />
     <Compile Include="Parts\SimplePartRenderer.cs" />
+    <Compile Include="Parts\TickDelegate.cs" />
     <Compile Include="PawnPlusModBase.cs" />
     <Compile Include="Graphics\Graphic_Hair.cs" />
     <Compile Include="Graphics\PawnBodyGraphic.cs" />

@@ -32,7 +32,8 @@ namespace PawnPlus.Parts
 			BodyDef bodyDef,
 			string defaultTexPath,
 			Dictionary<string, string> namedTexPaths,
-			BodyPartSignals bodyPartSignals)
+			BodyPartSignals bodyPartSignals,
+			ref TickDelegate tickDelegate)
 		{
 			Graphic defaultGraphic = GraphicDatabase.Get<Graphic_Multi>(
 				defaultTexPath,
@@ -86,6 +87,7 @@ namespace PawnPlus.Parts
 			}
 			// Initialize portrait graphics because Render() could be called before first Update().
 			_curPortraitGraphic = _open;
+			tickDelegate.NormalUpdate = Update;
 		}
 		
 		public void Update(

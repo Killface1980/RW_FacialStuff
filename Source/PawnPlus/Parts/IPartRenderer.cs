@@ -15,13 +15,9 @@ namespace PawnPlus.Parts
 			BodyDef bodyDef, 
 			string defaultTexPath, 
 			Dictionary<string, string> namedTexPaths,
-			BodyPartSignals bodyPartSignals);
+			BodyPartSignals bodyPartSignals,
+			ref TickDelegate tickDelegate);
 		
-		public void Update(
-			PawnState pawnState,
-			BodyPartStatus bodyPartStatus, 
-			ref bool updatePortrait);
-
 		public void Render(
 			Vector3 rootPos,
 			Quaternion rootQuat,
