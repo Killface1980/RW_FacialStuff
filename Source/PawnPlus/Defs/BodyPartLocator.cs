@@ -24,15 +24,7 @@ namespace PawnPlus.Defs
 		{
 
 		}
-
-		public BodyPartLocator(BodyPartLocator other)
-		{
-			bodyPartDef = other.bodyPartDef;
-			bodyPartLabel = other.bodyPartLabel;
-			_resolvedBodyPartRecord = other._resolvedBodyPartRecord;
-			_parentPartDef = other._parentPartDef;
-		}
-
+		
 		public void LocateBodyPart(BodyDef bodyDef)
 		{
 			_resolvedBodyPartRecord =

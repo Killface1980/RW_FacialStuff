@@ -82,10 +82,7 @@ namespace PawnPlus.Parts
 		
 		public object Clone()
 		{
-			HumanEyeBehavior clone = (HumanEyeBehavior)MemberwiseClone();
-			clone.leftEye = new BodyPartLocator(leftEye);
-			clone.rightEye = new BodyPartLocator(rightEye);
-			return clone;
+			return (HumanEyeBehavior)MemberwiseClone();
 		}
 
 		public void ExposeData()
