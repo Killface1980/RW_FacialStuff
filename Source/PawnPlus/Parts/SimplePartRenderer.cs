@@ -26,7 +26,7 @@ namespace PawnPlus.Parts
 				Shaders.FacePart);
 		}
 		
-		public void Update(PawnState pawnState, in BodyPartStatus partStatus, ref bool updatePortrait)
+		public void Update(PawnState pawnState, BodyPartStatus partStatus, ref bool updatePortrait)
 		{
 			
 		}

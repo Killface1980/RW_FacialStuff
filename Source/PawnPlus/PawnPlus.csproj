@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parts\BodyPartSignals.cs" />
+    <Compile Include="Parts\BodyPartStatus.cs" />
     <Compile Include="Parts\FacialHairRenderer.cs" />
     <Compile Include="Parts\HumanEyeBehavior.cs" />
     <Compile Include="HumanHeadBehavior.cs" />
@@ -92,7 +93,6 @@
     <Compile Include="AnimatorWindows\MainTabWindow_WalkAnimator.cs" />
     <Compile Include="Animator\BodyAnimator.cs" />
     <Compile Include="BodyPartRecordExtension.cs" />
-    <Compile Include="BodyPartStatus.cs" />
     <Compile Include="Parts\HumanMouthRenderer.cs" />
     <Compile Include="Parts\PartGenHelper.cs" />
     <Compile Include="Parts\PartSignal.cs" />

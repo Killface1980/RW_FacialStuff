@@ -28,13 +28,8 @@ namespace PawnPlus
         }
                 
         private IReadOnlyList<PartData> _perPartData;
-        private BodyPartStatus[] _perPartStatus;
-        private BodyPartStatus _defaultPart = new BodyPartStatus
-        {
-            missing = false,
-            hediffAddedPart = null
-        };
         private BodyPartSignals _bodyPartSignals;
+        private BodyPartStatus _bodyPartStatus;
         private Rot4 _cachedHeadFacing;
         private PawnState _pawnState;
         private IHeadBehavior _headBehavior;
@@ -177,8 +172,8 @@ namespace PawnPlus
             BuildPartBehaviors();
 
             _pawnState = new PawnState(Pawn);
-            _perPartStatus = new BodyPartStatus[Pawn.RaceProps.body.AllParts.Count];
             _bodyPartSignals = new BodyPartSignals(Pawn.RaceProps.body);
+            _bodyPartStatus = new BodyPartStatus(Pawn);
         }
 
         // Graphics and faction data aren't available in ThingComp.Initialize(). Initialize the members related to those in this method,
@@ -375,8 +370,7 @@ namespace PawnPlus
                 bool updatePortraitTemp = false;
                 part.renderer.Update(
                     _pawnState,
-                    part.bodyPartIndex >= 0 ? 
-                        _perPartStatus[part.bodyPartIndex] : _defaultPart,
+                    _bodyPartStatus,
                     ref updatePortraitTemp);
                 updatePortrait |= updatePortraitTemp;
             }
@@ -384,79 +378,17 @@ namespace PawnPlus
 
         public void NotifyBodyPartHediffGained(BodyPartRecord bodyPart, Hediff hediff)
 		{
-            if(hediff is Hediff_AddedPart hediffAddedPart)
-            {
-                foreach(var childPart in bodyPart.GetChildParts())
-				{
-                    _perPartStatus[childPart.Index] =
-						new BodyPartStatus()
-						{ 
-                            missing = false,
-                            hediffAddedPart = hediffAddedPart
-                        };
-                }
-            }
-            else if(hediff is Hediff_MissingPart)
-			{
-                foreach(var childPart in bodyPart.GetChildParts())
-                {
-                    _perPartStatus[childPart.Index] =
-                        new BodyPartStatus()
-                        {
-                            missing = true,
-                            hediffAddedPart = null
-                        };
-                }
-            }
+            _bodyPartStatus.NotifyBodyPartHediffGained(bodyPart, hediff);
         }
         
         public void NotifyBodyPartHediffLost(BodyPartRecord bodyPart, Hediff hediff)
 		{
-            if(hediff is Hediff_AddedPart)
-			{
-                foreach(var childPart in bodyPart.GetChildParts())
-                {
-                    _perPartStatus[childPart.Index] =
-                        new BodyPartStatus()
-                        {
-                            missing = _perPartStatus[childPart.Index].missing,
-                            hediffAddedPart = null
-                        };
-                }
-            }
+            _bodyPartStatus.NotifyBodyPartHediffLost(bodyPart, hediff);
         }
 
         public void NotifyBodyPartRestored(BodyPartRecord bodyPart)
         {
-            HashSet<int> affectedBodyParts = new HashSet<int>();
-            foreach(var childPart in bodyPart.GetChildParts())
-            {
-                affectedBodyParts.Add(childPart.Index);
-                _perPartStatus[childPart.Index] =
-                    new BodyPartStatus()
-                    {
-                        missing = false,
-                        hediffAddedPart = null
-                    };
-            }
-            // It is possible that the hediff still exists after restoration due to HediffDef.keepOnBodyPartRestoration.
-            foreach(var hediff in Pawn.health.hediffSet.hediffs)
-			{
-                if(hediff.Part == null)
-				{
-                    continue;
-				}
-                if(affectedBodyParts.Contains(hediff.Part.Index) && 
-                    hediff is Hediff_AddedPart hediffAddedPart)
-				{
-                    _perPartStatus[hediff.Part.Index] =
-                        new BodyPartStatus()
-                        {
-                            missing = false,
-                            hediffAddedPart = hediffAddedPart
-                        };
-                }
-			}
+            _bodyPartStatus.NotifyBodyPartRestored(bodyPart);
         }
 
         public void SetHeadTarget(Thing target, IHeadBehavior.TargetType targetType)

@@ -20,7 +20,7 @@ namespace PawnPlus.Parts
 		
 		public void Update(
 			PawnState pawnState,
-			in BodyPartStatus partStatus, 
+			BodyPartStatus bodyPartStatus, 
 			ref bool updatePortrait);
 
 		public void Render(

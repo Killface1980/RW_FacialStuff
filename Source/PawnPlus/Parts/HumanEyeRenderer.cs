@@ -24,6 +24,7 @@ namespace PawnPlus.Parts
 		private HumanEyeBehavior.BlinkPartSignalArg _blinkSignalArg;
 		private Graphic _curGraphic;
 		private Graphic _curPortraitGraphic;
+		private BodyPartRecord _eyePart;
 
 		public void Initialize(
 			Pawn pawn,
@@ -77,6 +78,7 @@ namespace PawnPlus.Parts
 						break;
 					}
 				}
+				_eyePart = bodyPartRecord;
 			}
 			// If blink signal couldn't be found, disable eye blinking.
 			if(_blinkSignalArg == null)
@@ -87,7 +89,7 @@ namespace PawnPlus.Parts
 		
 		public void Update(
 			PawnState pawnState,
-			in BodyPartStatus partStatus,
+			BodyPartStatus bodyPartStatus,
 			ref bool updatePortrait)
 		{
 			additionalOffset = this.additionalOffset;
@@ -98,7 +100,8 @@ namespace PawnPlus.Parts
 				_curPortraitGraphic = _dead;
 				return;
 			}
-			if(partStatus.missing)
+			BodyPartStatus.Status partStatus;
+			if(bodyPartStatus.GetPartStatus(_eyePart, out partStatus) && partStatus.missing)
 			{
 				_curGraphic = _missing;
 				_curPortraitGraphic = _missing;

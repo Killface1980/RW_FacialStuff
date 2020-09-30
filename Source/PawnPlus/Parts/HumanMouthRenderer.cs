@@ -70,7 +70,7 @@ namespace PawnPlus.Parts
 
 		public void Update(
 			PawnState pawnState,
-			in BodyPartStatus partStatus,
+			BodyPartStatus bodyPartStatus,
 			ref bool updatePortrait)
 		{
 			if(Find.TickManager.TicksGame >= _ticksSinceLastUpdate + 90)
