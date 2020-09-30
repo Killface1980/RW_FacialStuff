@@ -6,6 +6,7 @@ Shader "Custom/Mod/FacialStuff/FacePart"
     Properties
     {
 		_MainTex ("Main texture", 2D) = "white" { }
+		_Color ("Color", Color) = (1,1,1,1)
     }
     SubShader
     {
@@ -36,6 +37,7 @@ Shader "Custom/Mod/FacialStuff/FacePart"
             };
 
             sampler2D _MainTex;
+			float4 _Color;
 			
             VertexOut VertexProgram(VertexIn v)
             {
@@ -52,7 +54,7 @@ Shader "Custom/Mod/FacialStuff/FacePart"
 				{
 					discard;
 				}
-				return partTexColor;
+				return partTexColor * _Color;
             }
             ENDCG
         }
