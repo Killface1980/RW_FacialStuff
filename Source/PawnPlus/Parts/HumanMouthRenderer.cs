@@ -1,4 +1,5 @@
-﻿using PawnPlus.Graphics;
+﻿using PawnPlus.Defs;
+using PawnPlus.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace PawnPlus.Parts
 {
 	class HumanMouthRenderer : IPartRenderer
 	{
+		public BodyPartLocator mouthPartLocator;
+
 		private Pawn _pawn;
 		private Graphic _normal;
 		private Graphic _happy;
@@ -25,7 +28,6 @@ namespace PawnPlus.Parts
 		public void Initialize(
 			Pawn pawn,
 			BodyDef bodyDef,
-			BodyPartRecord bodyPartRecord,
 			string defaultTexPath,
 			Dictionary<string, string> namedTexPaths,
 			BodyPartSignals bodyPartSignals)

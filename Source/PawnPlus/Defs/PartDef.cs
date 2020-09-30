@@ -11,7 +11,6 @@ namespace PawnPlus.Defs
 		{
             public string renderNodeName;
             public List<string> occludedRenderNodes;
-            public BodyPartLocator bodyPartLocator;
             public IPartRenderer partRenderer;
         }
 

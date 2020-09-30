@@ -21,9 +21,8 @@ namespace PawnPlus.Parts
 		public int blinkCloseTicks;
 		public int blinkOpenAverageTicks;
 		public int blinkOpenMaxRandOffsetTicks;
-		public BodyDef raceBodyDef;
-		public BodyPartLocator leftEye;
-		public BodyPartLocator rightEye;
+		public BodyPartLocator leftEyePartLocator;
+		public BodyPartLocator rightEyePartLocator;
 		#pragma warning restore CS0649
 
 		private bool _blinkClose;
@@ -44,10 +43,8 @@ namespace PawnPlus.Parts
 			List<BodyPartRecord> eyes = bodyDef.GetPartsWithDef(BodyPartDefOf.Eye).ToList();
 			_cachedBlinkSignalArg = new BlinkPartSignalArg() { blinkClose = false };
 			PartSignal blinkSignal = new PartSignal("PP_EyeBlink", _cachedBlinkSignalArg);
-			leftEye?.LocateBodyPart(raceBodyDef);
-			rightEye?.LocateBodyPart(raceBodyDef);
-			bodyPartSignals.RegisterSignal(leftEye?._resolvedBodyPartRecord, blinkSignal);
-			bodyPartSignals.RegisterSignal(rightEye?._resolvedBodyPartRecord, blinkSignal);
+			bodyPartSignals.RegisterSignal(leftEyePartLocator?.PartRecord, blinkSignal);
+			bodyPartSignals.RegisterSignal(rightEyePartLocator?.PartRecord, blinkSignal);
 		}
 		
 		public void Update(Pawn pawn, PawnState pawnState)

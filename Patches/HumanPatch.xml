@@ -52,14 +52,16 @@
 					<blinkOpenAverageTicks>200</blinkOpenAverageTicks>
 					<blinkOpenMaxRandOffsetTicks>50</blinkOpenMaxRandOffsetTicks>
 					<raceBodyDef>Human</raceBodyDef>
-					<leftEye>
+					<leftEyePartLocator>
+						<bodyDef>Human</bodyDef>
 						<bodyPartDef>Eye</bodyPartDef>
 						<bodyPartLabel>left eye</bodyPartLabel>
-					</leftEye>
-					<rightEye>
+					</leftEyePartLocator>
+					<rightEyePartLocator>
+						<bodyDef>Human</bodyDef>
 						<bodyPartDef>Eye</bodyPartDef>
 						<bodyPartLabel>right eye</bodyPartLabel>
-					</rightEye>
+					</rightEyePartLocator>
 				</li>
 			</partBehaviors>
 			

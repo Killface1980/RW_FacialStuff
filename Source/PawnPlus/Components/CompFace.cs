@@ -238,7 +238,6 @@ namespace PawnPlus
                     partData.renderer.Initialize(
                         Pawn,
                         Pawn.RaceProps.body,
-                        part.bodyPartLocator?._resolvedBodyPartRecord,
                         partDef.defaultTexPath,
                         partDef.namedTexPaths,
                         _bodyPartSignals);

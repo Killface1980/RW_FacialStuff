@@ -16,11 +16,13 @@
 			<li>
 				<renderNodeName>HumanMouth</renderNodeName>
 				<occludedRenderNodes></occludedRenderNodes>
-				<bodyPartLocator>
-					<bodyPartDef>Jaw</bodyPartDef>
-					<bodyPartLabel></bodyPartLabel>
-				</bodyPartLocator>
-				<partRenderer Class="PawnPlus.Parts.HumanMouthRenderer"></partRenderer>
+				<partRenderer Class="PawnPlus.Parts.HumanMouthRenderer">
+					<mouthPartLocator>
+						<bodyDef>Human</bodyDef>
+						<bodyPartDef>Jaw</bodyPartDef>
+						<bodyPartLabel></bodyPartLabel>
+					</mouthPartLocator>
+				</partRenderer>
 			</li>
 		</parts>
 		<namedTexPaths>

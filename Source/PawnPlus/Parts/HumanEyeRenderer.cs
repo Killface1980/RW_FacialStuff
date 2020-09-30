@@ -1,4 +1,5 @@
-﻿using PawnPlus.Graphics;
+﻿using PawnPlus.Defs;
+using PawnPlus.Graphics;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace PawnPlus.Parts
 	{
 		public bool closeWhenAiming = false;
 		public Vector3 additionalOffset = new Vector3(0f, 0f, 0f);
+		public BodyPartLocator eyePartLocator;
 
 		private Graphic _open;
 		private Graphic _closed;
@@ -24,12 +26,10 @@ namespace PawnPlus.Parts
 		private HumanEyeBehavior.BlinkPartSignalArg _blinkSignalArg;
 		private Graphic _curGraphic;
 		private Graphic _curPortraitGraphic;
-		private BodyPartRecord _eyePart;
 
 		public void Initialize(
 			Pawn pawn,
 			BodyDef bodyDef,
-			BodyPartRecord bodyPartRecord,
 			string defaultTexPath,
 			Dictionary<string, string> namedTexPaths,
 			BodyPartSignals bodyPartSignals)
@@ -66,9 +66,9 @@ namespace PawnPlus.Parts
 			_inPain = namedGraphics["InPain"];
 			_aiming = namedGraphics["Aiming"];
 
-			if(bodyPartRecord != null)
+			if(eyePartLocator != null)
 			{
-				bodyPartSignals.GetSignals(bodyPartRecord, out List<PartSignal> partSignals);
+				bodyPartSignals.GetSignals(eyePartLocator.PartRecord, out List<PartSignal> partSignals);
 				List<PartSignal> eyeBlinkSignals = partSignals.FindAll(i => i.signalName == "PP_EyeBlink");
 				for(int i = eyeBlinkSignals.Count - 1; i >= 0; --i)
 				{
@@ -78,7 +78,6 @@ namespace PawnPlus.Parts
 						break;
 					}
 				}
-				_eyePart = bodyPartRecord;
 			}
 			// If blink signal couldn't be found, disable eye blinking.
 			if(_blinkSignalArg == null)
@@ -101,7 +100,7 @@ namespace PawnPlus.Parts
 				return;
 			}
 			BodyPartStatus.Status partStatus;
-			if(bodyPartStatus.GetPartStatus(_eyePart, out partStatus) && partStatus.missing)
+			if(bodyPartStatus.GetPartStatus(eyePartLocator.PartRecord, out partStatus) && partStatus.missing)
 			{
 				_curGraphic = _missing;
 				_curPortraitGraphic = _missing;

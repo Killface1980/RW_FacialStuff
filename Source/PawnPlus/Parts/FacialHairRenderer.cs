@@ -14,7 +14,6 @@ namespace PawnPlus.Parts
 		public override void Initialize(
 			Pawn pawn,
 			BodyDef bodyDef,
-			BodyPartRecord bodyPartRecord,
 			string defaultTexPath,
 			Dictionary<string, string> namedTexPaths,
 			BodyPartSignals bodyPartSignals)
