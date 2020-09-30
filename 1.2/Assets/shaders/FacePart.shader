@@ -47,8 +47,12 @@ Shader "Custom/Mod/FacialStuff/FacePart"
 
             float4 FragmentProgram(VertexOut i) : SV_Target
             {
-				float4 eyeTexColor = tex2D(_MainTex, i.texCoord);
-				return eyeTexColor;
+				float4 partTexColor = tex2D(_MainTex, i.texCoord);
+				if(partTexColor.a < 0.1f)
+				{
+					discard;
+				}
+				return partTexColor;
             }
             ENDCG
         }
