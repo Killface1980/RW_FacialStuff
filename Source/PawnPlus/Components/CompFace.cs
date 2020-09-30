@@ -226,7 +226,14 @@ namespace PawnPlus
                 foreach(var part in partDef.parts)
                 {
                     PartData partData = new PartData();
-                    partData.bodyPartIndex = part.bodyPartLocator._resolvedPartIndex;
+                    if(part.bodyPartLocator != null)
+                    {
+                        partData.bodyPartIndex = part.bodyPartLocator._resolvedPartIndex;
+                    }
+                    else
+					{
+                        partData.bodyPartIndex = -1;
+					}
                     if(part.partRenderer == null)
 					{
                         Log.Warning(
@@ -245,7 +252,7 @@ namespace PawnPlus
                     partData.renderer.Initialize(
                         Pawn,
                         Pawn.RaceProps.body,
-                        part.bodyPartLocator._resolvedBodyPartRecord,
+                        part.bodyPartLocator?._resolvedBodyPartRecord,
                         partDef.defaultTexPath,
                         partDef.namedTexPaths,
                         _bodyPartSignals);

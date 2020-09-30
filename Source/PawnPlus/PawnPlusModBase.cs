@@ -54,8 +54,11 @@ namespace PawnPlus
 
 				foreach(var bodyPartParam in partDef.parts)
 				{
-					bodyPartParam.bodyPartLocator._parentPartDef = partDef;
-					bodyPartParam.bodyPartLocator.LocateBodyPart(partDef.raceBodyDef);
+					if(bodyPartParam.bodyPartLocator != null)
+					{
+						bodyPartParam.bodyPartLocator._parentPartDef = partDef;
+						bodyPartParam.bodyPartLocator.LocateBodyPart(partDef.raceBodyDef);
+					}
 				}
 			}
 		}
