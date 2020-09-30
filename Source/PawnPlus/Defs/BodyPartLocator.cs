@@ -16,10 +16,7 @@ namespace PawnPlus.Defs
 				
 		[Unsaved(false)]
 		public BodyPartRecord _resolvedBodyPartRecord;
-
-		[Unsaved(false)]
-		public int _resolvedPartIndex;
-
+		
 		[Unsaved(false)]
 		public PartDef _parentPartDef;
 
@@ -33,7 +30,6 @@ namespace PawnPlus.Defs
 			bodyPartDef = other.bodyPartDef;
 			bodyPartLabel = other.bodyPartLabel;
 			_resolvedBodyPartRecord = other._resolvedBodyPartRecord;
-			_resolvedPartIndex = other._resolvedPartIndex;
 			_parentPartDef = other._parentPartDef;
 		}
 
@@ -41,14 +37,6 @@ namespace PawnPlus.Defs
 		{
 			_resolvedBodyPartRecord =
 				bodyDef.GetPartsWithDef(bodyPartDef).ToList().FindLast(i => CompareBodyPartLabel(i.untranslatedCustomLabel, bodyPartLabel));			
-			if(_resolvedBodyPartRecord != null)
-			{
-				_resolvedPartIndex =  bodyDef.GetIndexOfPart(_resolvedBodyPartRecord);
-			}
-			else
-			{
-				_resolvedPartIndex = -1;
-			}
 		}
 
 		private bool CompareBodyPartLabel(string candidatePartLabel, string searchLabel)

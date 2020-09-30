@@ -68,7 +68,7 @@ namespace PawnPlus.Parts
 
 			if(bodyPartRecord != null)
 			{
-				bodyPartSignals.GetSignals(bodyPartRecord.Index, out List<PartSignal> partSignals);
+				bodyPartSignals.GetSignals(bodyPartRecord, out List<PartSignal> partSignals);
 				List<PartSignal> eyeBlinkSignals = partSignals.FindAll(i => i.signalName == "PP_EyeBlink");
 				for(int i = eyeBlinkSignals.Count - 1; i >= 0; --i)
 				{

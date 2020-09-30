@@ -9,39 +9,39 @@ namespace PawnPlus.Parts
 {
 	public class BodyPartSignals
 	{
-		private int _numBodyParts;
+		private BodyDef _bodyDef;
 		private Dictionary<int, List<PartSignal>> _bodyPartSignals = new Dictionary<int, List<PartSignal>>();
 
 		public BodyPartSignals(BodyDef bodyDef)
 		{
-			_numBodyParts = bodyDef.AllParts.Count;
+			_bodyDef = bodyDef;
 		}
 
-		public void GetSignals(int bodyPartIndex, out List<PartSignal> partSignals)
+		public void GetSignals(BodyPartRecord bodyPartRecord, out List<PartSignal> partSignals)
 		{
-			if(!_bodyPartSignals.TryGetValue(bodyPartIndex, out partSignals) || !IndexWithinRange(bodyPartIndex))
+			if(!_bodyPartSignals.TryGetValue(bodyPartRecord.Index, out partSignals) || !IsValidBodyPartRecord(bodyPartRecord))
 			{
 				partSignals = new List<PartSignal>();
 			}
 		}
 
-		public void RegisterSignal(int bodyPartIndex, PartSignal partSignal)
+		public void RegisterSignal(BodyPartRecord bodyPartRecord, PartSignal partSignal)
 		{
-			if(!IndexWithinRange(bodyPartIndex))
+			if(!IsValidBodyPartRecord(bodyPartRecord))
 			{
 				return;
 			}
-			if(!_bodyPartSignals.TryGetValue(bodyPartIndex, out List<PartSignal> partSignals))
+			if(!_bodyPartSignals.TryGetValue(bodyPartRecord.Index, out List<PartSignal> partSignals))
 			{
 				partSignals = new List<PartSignal>();
-				_bodyPartSignals.Add(bodyPartIndex, partSignals);
+				_bodyPartSignals.Add(bodyPartRecord.Index, partSignals);
 			}
 			partSignals.Add(partSignal);
 		}
 
-		private bool IndexWithinRange(int bodyPartIndex)
+		private bool IsValidBodyPartRecord(BodyPartRecord bodyPartRecord)
 		{
-			return bodyPartIndex >= 0 && bodyPartIndex < _numBodyParts;
+			return bodyPartRecord != null && bodyPartRecord.body == _bodyDef;
 		}
 	}
 }

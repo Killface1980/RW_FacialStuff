@@ -46,8 +46,8 @@ namespace PawnPlus.Parts
 			PartSignal blinkSignal = new PartSignal("PP_EyeBlink", _cachedBlinkSignalArg);
 			leftEye?.LocateBodyPart(raceBodyDef);
 			rightEye?.LocateBodyPart(raceBodyDef);
-			bodyPartSignals.RegisterSignal(leftEye?._resolvedPartIndex ?? -1, blinkSignal);
-			bodyPartSignals.RegisterSignal(rightEye?._resolvedPartIndex ?? -1, blinkSignal);
+			bodyPartSignals.RegisterSignal(leftEye?._resolvedBodyPartRecord, blinkSignal);
+			bodyPartSignals.RegisterSignal(rightEye?._resolvedBodyPartRecord, blinkSignal);
 		}
 		
 		public void Update(Pawn pawn, PawnState pawnState)

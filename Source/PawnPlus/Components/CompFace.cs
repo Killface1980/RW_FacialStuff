@@ -19,7 +19,6 @@ namespace PawnPlus
     {
         private class PartData
         {
-            public int bodyPartIndex;
             public RootType rootType;
             public IPartRenderer renderer;
             public string renderNodeName;
@@ -221,14 +220,6 @@ namespace PawnPlus
                 foreach(var part in partDef.parts)
                 {
                     PartData partData = new PartData();
-                    if(part.bodyPartLocator != null)
-                    {
-                        partData.bodyPartIndex = part.bodyPartLocator._resolvedPartIndex;
-                    }
-                    else
-					{
-                        partData.bodyPartIndex = -1;
-					}
                     if(part.partRenderer == null)
 					{
                         Log.Warning(
