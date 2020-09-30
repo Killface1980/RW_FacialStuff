@@ -196,20 +196,11 @@ namespace PawnPlus
                     return;
                 }
                 Props.partGenHelper.PartsPreGeneration(Pawn);
+                Dictionary<string, PartDef> partDefInCategory = Props.partGenHelper.GeneratePartInCategory(Pawn, PartDef.GetCategoriesInRace(Pawn.RaceProps.body));                
                 _partDefs = new List<PartDef>();
-                foreach(string category in PartDef.GetCategoriesInRace(Pawn.RaceProps.body))
-                {
-                    List<PartDef> parts = PartDef.GetAllPartsFromCategory(Pawn.RaceProps.body, category);
-                    if(parts.NullOrEmpty())
-                    {
-                        continue;
-                    }
-                    PartDef partDef = Props.partGenHelper.GeneratePartInCategory(Pawn, category, parts);
-                    if(partDef == null)
-                    {
-                        continue;
-                    }
-                    _partDefs.Add(partDef);
+                foreach(var pair in partDefInCategory)
+				{
+                    _partDefs.Add(pair.Value);
                 }
                 Props.partGenHelper.PartsPostGeneration(Pawn);
             }

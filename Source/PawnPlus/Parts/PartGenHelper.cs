@@ -16,9 +16,21 @@ namespace PawnPlus.Parts
 
 		}
 
-		public virtual PartDef GeneratePartInCategory(Pawn pawn, string category, List<PartDef> partsInCategory)
+		public virtual Dictionary<string, PartDef> GeneratePartInCategory(Pawn pawn, Dictionary<string, List<PartDef>> partsInCategory)
 		{
-			return partsInCategory.RandomElementByWeight(p => PartGenHelper.PartChoiceLikelyhoodFor(p.hairGender, pawn.gender));
+			Dictionary<string, PartDef> genParts = new Dictionary<string, PartDef>();
+			foreach(var pair in partsInCategory)
+			{
+				string category = pair.Key;
+				List<PartDef> partDefList = pair.Value;
+				if(partDefList.NullOrEmpty())
+				{
+					continue;
+				}
+				PartDef genPart = partDefList.RandomElementByWeight(p => PartGenHelper.PartChoiceLikelyhoodFor(p.hairGender, pawn.gender));
+				genParts.Add(category, genPart);
+			}
+			return genParts;
 		}
 
 		public virtual void PartsPostGeneration(Pawn pawn)
