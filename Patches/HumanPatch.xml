@@ -51,7 +51,6 @@
 					<blinkCloseTicks>6</blinkCloseTicks>
 					<blinkOpenAverageTicks>200</blinkOpenAverageTicks>
 					<blinkOpenMaxRandOffsetTicks>50</blinkOpenMaxRandOffsetTicks>
-					<raceBodyDef>Human</raceBodyDef>
 					<leftEyePartLocator>
 						<bodyDef>Human</bodyDef>
 						<bodyPartDef>Eye</bodyPartDef>
