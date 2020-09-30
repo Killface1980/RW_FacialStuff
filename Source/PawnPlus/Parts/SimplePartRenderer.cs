@@ -13,6 +13,8 @@ namespace PawnPlus.Parts
 	{
 		protected Graphic _graphic;
 
+		protected Vector3 additionalOffset = Vector3.zero;
+		
 		public virtual void Initialize(
 			Pawn pawn, 
 			BodyDef bodyDef, 
@@ -39,7 +41,7 @@ namespace PawnPlus.Parts
 			Material partMat = _graphic.MatAt(rootRot4);
 			if(partMat != null)
 			{
-				Vector3 offset = rootQuat * renderNodeOffset;
+				Vector3 offset = rootQuat * (renderNodeOffset + additionalOffset);
 				GenDraw.DrawMeshNowOrLater(
 						renderNodeMesh,
 						rootPos + offset,
