@@ -50,12 +50,12 @@
 					</li>
 					<li>
 						<rotation>East</rotation>
-						<meshDef>FSHumanFaceAverage</meshDef>
+						<meshDef>FSHumanFaceNarrow</meshDef>
 						<offset>(0, 0.002, 0)</offset>
 					</li>
 					<li>
 						<rotation>West</rotation>
-						<meshDef>FSHumanFaceAverage_m</meshDef>
+						<meshDef>FSHumanFaceNarrow_m</meshDef>
 						<offset>(0, 0.002, 0)</offset>
 					</li>
 				</renderInfoPerRotation>

@@ -47,4 +47,10 @@
 		<dimension>(0.65, 0.75)</dimension>
 		<mirror>false</mirror>
 	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSHumanFaceNarrow_m</defName>
+		<dimension>(0.65, 0.75)</dimension>
+		<mirror>true</mirror>
+	</PawnPlus.Defs.MeshDef>
 </Defs>
