@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<PawnPlus.Defs.PartDef Name="FSHumanBrowBase" Abstract="True">
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<category>Brow</category>
+		<raceBodyDef>Human</raceBodyDef>
+		<parts>
+			<li>
+				<renderNodeName>HumanFace</renderNodeName>
+				<occludedRenderNodes></occludedRenderNodes>
+				<partRenderer Class="PawnPlus.Parts.FacialHairRenderer"></partRenderer>
+			</li>
+		</parts>
+		<namedTexPaths></namedTexPaths>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBrowBase">
+		<defName>FSHumanBrowMaleAggro</defName>
+		<label>Male Aggro</label>
+		<hairGender>MaleUsually</hairGender>
+		<defaultTexPath>Things/Pawn/Humanlike/Brows/MaleAggro</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBrowBase">
+		<defName>FSHumanBrowMaleAware</defName>
+		<label>Male Aware</label>
+		<hairGender>MaleUsually</hairGender>
+		<defaultTexPath>Things/Pawn/Humanlike/Brows/MaleAware</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBrowBase">
+		<defName>FSHumanBrowMaleDepressed</defName>
+		<label>Male Depressed</label>
+		<hairGender>MaleUsually</hairGender>
+		<defaultTexPath>Things/Pawn/Humanlike/Brows/MaleDepressed</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBrowBase">
+		<defName>FSHumanBrowMaleFurious</defName>
+		<label>Male Furious</label>
+		<hairGender>MaleUsually</hairGender>
+		<defaultTexPath>Things/Pawn/Humanlike/Brows/MaleFurious</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBrowBase">
+		<defName>FSHumanBrowMaleNice</defName>
+		<label>Male Nice</label>
+		<hairGender>MaleUsually</hairGender>
+		<defaultTexPath>Things/Pawn/Humanlike/Brows/MaleNice</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBrowBase">
+		<defName>FSHumanBrowMaleTired</defName>
+		<label>Male Tired</label>
+		<hairGender>MaleUsually</hairGender>
+		<defaultTexPath>Things/Pawn/Humanlike/Brows/MaleTired</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBrowBase">
+		<defName>FSHumanBrowMaleMono</defName>
+		<label>Male Mono</label>
+		<hairGender>MaleUsually</hairGender>
+		<defaultTexPath>Things/Pawn/Humanlike/Brows/MaleMono</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBrowBase">
+		<defName>FSHumanBrowFemaleAggro</defName>
+		<label>Female Aggro</label>
+		<hairGender>FemaleUsually</hairGender>
+		<defaultTexPath>Things/Pawn/Humanlike/Brows/FemaleAggro</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBrowBase">
+		<defName>FSHumanBrowFemaleAware</defName>
+		<label>Female Aware</label>
+		<hairGender>FemaleUsually</hairGender>
+		<defaultTexPath>Things/Pawn/Humanlike/Brows/FemaleAware</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBrowBase">
+		<defName>FSHumanBrowFemaleDepressed</defName>
+		<label>Female Depressed</label>
+		<hairGender>FemaleUsually</hairGender>
+		<defaultTexPath>Things/Pawn/Humanlike/Brows/FemaleDepressed</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBrowBase">
+		<defName>FSHumanBrowFemaleFurious</defName>
+		<label>Female Furious</label>
+		<hairGender>FemaleUsually</hairGender>
+		<defaultTexPath>Things/Pawn/Humanlike/Brows/FemaleFurious</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBrowBase">
+		<defName>FSHumanBrowFemaleNice</defName>
+		<label>Female Nice</label>
+		<hairGender>FemaleUsually</hairGender>
+		<defaultTexPath>Things/Pawn/Humanlike/Brows/FemaleNice</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBrowBase">
+		<defName>FSHumanBrowFemaleTired</defName>
+		<label>Female Tired</label>
+		<hairGender>FemaleUsually</hairGender>
+		<defaultTexPath>Things/Pawn/Humanlike/Brows/FemaleTired</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBrowBase">
+		<defName>FSHumanBrowFemaleMono</defName>
+		<label>Female Mono</label>
+		<hairGender>FemaleUsually</hairGender>
+		<defaultTexPath>Things/Pawn/Humanlike/Brows/FemaleMono</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+</Defs>

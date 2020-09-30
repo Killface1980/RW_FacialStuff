@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parts\BodyPartSignals.cs" />
+    <Compile Include="Parts\FacialHairRenderer.cs" />
     <Compile Include="Parts\HumanEyeBehavior.cs" />
     <Compile Include="HumanHeadBehavior.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_BaseAnimator.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Enums\PartStatus.cs" />
     <Compile Include="Enums\Tween.cs" />
     <Compile Include="Enums\WalkcycleType.cs" />
+    <Compile Include="Parts\SimplePartRenderer.cs" />
     <Compile Include="PawnPlusModBase.cs" />
     <Compile Include="Graphics\Graphic_Hair.cs" />
     <Compile Include="Graphics\PawnBodyGraphic.cs" />
