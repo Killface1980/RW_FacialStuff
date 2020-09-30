@@ -19,7 +19,7 @@ namespace PawnPlus.Graphics
 
 		static Shaders()
 		{
-			var thisMod = ModLister.GetModWithIdentifier("killface.facialstuff");
+			var thisMod = ModLister.GetModWithIdentifier("rocketdelivery.pawnplus");
 			if(thisMod == null)
 			{
 				Log.Error("Pawn Plus: failed to load shader - could not find mod root directory");
