@@ -199,7 +199,7 @@ namespace PawnPlus
                 if(Props.partGenHelper == null)
                 {
                     Log.Error("Pawn Plus: partGenHelper in CompProperties_Face can't be null. No parts will be generated.");
-                    Initialized = true;
+                    Initialized = false;
                     return;
                 }
                 Props.partGenHelper.PartsPreGeneration(Pawn);
