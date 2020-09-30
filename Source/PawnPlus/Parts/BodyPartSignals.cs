@@ -17,19 +17,21 @@ namespace PawnPlus.Parts
 			_bodyDef = bodyDef;
 		}
 
-		public void GetSignals(BodyPartRecord bodyPartRecord, out List<PartSignal> partSignals)
+		public bool GetSignals(BodyPartRecord bodyPartRecord, out List<PartSignal> partSignals)
 		{
 			if(!_bodyPartSignals.TryGetValue(bodyPartRecord.Index, out partSignals) || !IsValidBodyPartRecord(bodyPartRecord))
 			{
 				partSignals = new List<PartSignal>();
+				return false;
 			}
+			return true;
 		}
 
-		public void RegisterSignal(BodyPartRecord bodyPartRecord, PartSignal partSignal)
+		public bool RegisterSignal(BodyPartRecord bodyPartRecord, PartSignal partSignal)
 		{
 			if(!IsValidBodyPartRecord(bodyPartRecord))
 			{
-				return;
+				return false;
 			}
 			if(!_bodyPartSignals.TryGetValue(bodyPartRecord.Index, out List<PartSignal> partSignals))
 			{
@@ -37,6 +39,7 @@ namespace PawnPlus.Parts
 				_bodyPartSignals.Add(bodyPartRecord.Index, partSignals);
 			}
 			partSignals.Add(partSignal);
+			return true;
 		}
 
 		private bool IsValidBodyPartRecord(BodyPartRecord bodyPartRecord)
