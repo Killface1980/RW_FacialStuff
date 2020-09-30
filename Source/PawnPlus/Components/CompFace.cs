@@ -270,10 +270,7 @@ namespace PawnPlus
                     partData.occluded = false;
 				}
 			}
-
-            // Update the graphic providers to get the portrait graphic
-            UpdateGraphicProviders(out bool updatePortrait);
-
+            
             Initialized = true;
         }
         
@@ -295,7 +292,16 @@ namespace PawnPlus
 					{
                         partBehavior.Update(Pawn, _pawnState);
 					}
-                    UpdateGraphicProviders(out bool updatePortrait);
+                    bool updatePortrait = false;
+                    foreach(var part in _perPartData)
+                    {
+                        bool updatePortraitTemp = false;
+                        part.renderer.Update(
+                            _pawnState,
+                            _bodyPartStatus,
+                            ref updatePortraitTemp);
+                        updatePortrait |= updatePortraitTemp;
+                    }
                     if(updatePortrait)
 					{
                         PortraitsCache.SetDirty(Pawn);
@@ -349,21 +355,7 @@ namespace PawnPlus
             }
             _partBehaviors = newPartBehaviors;
         }
-
-        private void UpdateGraphicProviders(out bool updatePortrait)
-		{
-            updatePortrait = false;
-            foreach(var part in _perPartData)
-            {
-                bool updatePortraitTemp = false;
-                part.renderer.Update(
-                    _pawnState,
-                    _bodyPartStatus,
-                    ref updatePortraitTemp);
-                updatePortrait |= updatePortraitTemp;
-            }
-        }
-
+        
         public void NotifyBodyPartHediffGained(BodyPartRecord bodyPart, Hediff hediff)
 		{
             _bodyPartStatus.NotifyBodyPartHediffGained(bodyPart, hediff);

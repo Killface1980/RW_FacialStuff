@@ -84,6 +84,8 @@ namespace PawnPlus.Parts
 			{
 				_blinkSignalArg = new HumanEyeBehavior.BlinkPartSignalArg() { blinkClose = false };
 			}
+			// Initialize portrait graphics because Render() could be called before first Update().
+			_curPortraitGraphic = _open;
 		}
 		
 		public void Update(
