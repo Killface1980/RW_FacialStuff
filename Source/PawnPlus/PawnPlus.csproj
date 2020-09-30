@@ -116,7 +116,7 @@
     <Compile Include="Defs\Export\WalkCycleDef_Export.cs" />
     <Compile Include="Defs\Export\WeaponExtensionDef_Export.cs" />
     <Compile Include="Defs\PartDef.cs" />
-    <Compile Include="Defs\PartRenderDef.cs" />
+    <Compile Include="Defs\RenderNodeMappingDef.cs" />
     <Compile Include="Defs\MeshDef.cs" />
     <Compile Include="Defs\PawnKeyframe.cs" />
     <Compile Include="Defs\PoseCycleDef.cs" />

@@ -23,7 +23,7 @@ namespace PawnPlus
 				_rootType = rootType;
 			}
 
-			public void BuildRenderParamFromRenderInfo(string rootTexture, List<PartRenderDef.RenderInfo> renderInfo)
+			public void BuildRenderParamFromRenderInfo(string rootTexture, List<RenderNodeMappingDef.RenderInfo> renderInfo)
 			{
 				RenderParam[] renderParams = new RenderParam[4];
 				for(int i = 0; i < 4; ++i)
@@ -78,7 +78,7 @@ namespace PawnPlus
 
 		public static void ReadFromRenderDefs()
 		{
-			var renderDefList = DefDatabase<PartRenderDef>.AllDefsListForReading;
+			var renderDefList = DefDatabase<RenderNodeMappingDef>.AllDefsListForReading;
 			foreach(var renderDef in renderDefList)
 			{
 				if(!_renderNodes.ContainsKey(renderDef.renderNodeName))
@@ -89,7 +89,7 @@ namespace PawnPlus
 				if(renderNode.RootType != renderDef.rootType)
 				{
 					Log.Warning(
-						"Pawn Plus: all RenderDefs defining the same <renderNode> must have the same <rootType>. RenderDef " + 
+						"Pawn Plus: all RenderNodeMappingDefs defining the same <renderNode> must have the same <rootType>. RenderDef " + 
 						renderDef.defName + 
 						" will be ignored.");
 					continue;

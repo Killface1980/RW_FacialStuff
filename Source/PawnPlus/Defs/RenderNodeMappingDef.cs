@@ -7,7 +7,7 @@ using Verse;
 
 namespace PawnPlus.Defs
 {
-	public class PartRenderDef : Def
+	public class RenderNodeMappingDef : Def
 	{
 		public class RenderInfo
 		{

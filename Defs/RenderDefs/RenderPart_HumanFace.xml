@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-	<PawnPlus.Defs.PartRenderDef>
+	<PawnPlus.Defs.RenderNodeMappingDef>
 		<defName>HumanFaceVanillaHead</defName>
 		<renderNodeName>HumanFace</renderNodeName>
 		<rootType>Head</rootType>
@@ -61,6 +61,6 @@
 				</renderInfoPerRotation>
 			</li>
 		</rootTexturesToRenderInfoMapping>
-	</PawnPlus.Defs.PartRenderDef>
+	</PawnPlus.Defs.RenderNodeMappingDef>
 	
 </Defs>
