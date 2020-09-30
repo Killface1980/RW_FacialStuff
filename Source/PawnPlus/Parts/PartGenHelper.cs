@@ -11,6 +11,8 @@ namespace PawnPlus.Parts
 {
 	public class PartGenHelper
 	{
+		public SimpleCurve facialHairGenChanceCurve;
+		
 		public virtual void PartsPreGeneration(Pawn pawn)
 		{
 
@@ -22,6 +24,21 @@ namespace PawnPlus.Parts
 			Dictionary<string, List<PartDef>> partsInCategory)
 		{
 			Dictionary<string, PartDef> genParts = new Dictionary<string, PartDef>();
+			if(pawn.gender == Gender.Male)
+			{
+				partsInCategory.TryGetValue("Moustache", out List<PartDef> moustachePartList);
+				HandleBeardAndMoustache(
+					pawn, 
+					pawnFactionDef, 
+					null, 
+					moustachePartList, 
+					out PartDef beardDef, 
+					out PartDef moustacheDef);
+				if(moustacheDef != null)
+				{
+					genParts.Add("Moustache", moustacheDef);
+				}
+			}
 			foreach(var pair in partsInCategory)
 			{
 				string category = pair.Key;
@@ -40,21 +57,8 @@ namespace PawnPlus.Parts
 				{
 					continue;
 				}
-				IEnumerable<PartDef> partDefCandidates = 
-					from partDef in partDefList
-					where partDef.hairTags.SharesElementWith(pawnFactionDef.hairTags)
-					select partDef;
-				if(!partDefCandidates.Any())
-				{
-					Log.Warning(
-						"Pawn Plus: no parts are available for the pawn " + 
-						pawn + 
-						" in the part category " + 
-						category + 
-						". Pawn generation constraints will be ignored.");
-					partDefCandidates = partDefList;
-				}
-				PartDef genPart = partDefCandidates.RandomElementByWeight(p => PartGenHelper.PartChoiceLikelyhoodFor(p.hairGender, pawn.gender));
+				var candidates = GetCandidates(pawn, pawnFactionDef, partDefList);
+				PartDef genPart = candidates.RandomElementByWeight(p => PartGenHelper.PartChoiceLikelyhoodFor(p.hairGender, pawn.gender));
 				genParts.Add(category, genPart);
 			}
 			return genParts;
@@ -104,6 +108,48 @@ namespace PawnPlus.Parts
 				}
 			}
 			return 0f;
+		}
+
+		private IEnumerable<PartDef> GetCandidates(Pawn pawn, FactionDef factionDef, List<PartDef> partDefList)
+		{
+			IEnumerable<PartDef> partDefCandidates =
+					from partDef in partDefList
+					where partDef.hairTags.SharesElementWith(factionDef.hairTags)
+					select partDef;
+			if(!partDefCandidates.Any())
+			{
+				Log.Warning(
+					"Pawn Plus: no parts are available for the pawn " +
+					pawn +
+					" in the part category " +
+					partDefList.First()?.category +
+					". Pawn generation constraints will be ignored.");
+				partDefCandidates = partDefList;
+			}
+			return partDefCandidates;
+		}
+
+		private void HandleBeardAndMoustache(
+			Pawn pawn,
+			FactionDef factionDef,
+			List<PartDef> beardPartList, 
+			List<PartDef> moustachePartList, 
+			out PartDef beardDef, 
+			out PartDef moustacheDef)
+		{
+			beardDef = null;
+			moustacheDef = null;
+			if(moustachePartList.NullOrEmpty())
+			{
+				return;
+			}
+			float facialHairProbability = facialHairGenChanceCurve.Evaluate(pawn.ageTracker.AgeBiologicalYearsFloat);
+			float probabilityRoll = Rand.Range(0f, 1f);
+			if(probabilityRoll <= facialHairProbability)
+			{
+				IEnumerable<PartDef> moustacheCandidates = GetCandidates(pawn, factionDef, moustachePartList);
+				moustacheDef = moustacheCandidates.RandomElementByWeight(p => PartGenHelper.PartChoiceLikelyhoodFor(p.hairGender, pawn.gender));
+			}
 		}
 	}
 }

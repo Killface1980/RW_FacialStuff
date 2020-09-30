@@ -65,7 +65,15 @@
 			</partBehaviors>
 			
 			<!-- Class must be PawnPlus.Parts.PartGenHelper or its subclass -->
-			<partGenHelper Class="PawnPlus.Parts.PartGenHelper"></partGenHelper>	
+			<partGenHelper Class="PawnPlus.Parts.PartGenHelper">
+				<facialHairGenChanceCurve>
+					<points>
+						<li>(20, 0)</li>
+						<li>(40, 0.4)</li>
+						<li>(80, 0.6)</li>
+					</points>
+				</facialHairGenChanceCurve>
+			</partGenHelper>	
           </li>
         </value>
       </li>
