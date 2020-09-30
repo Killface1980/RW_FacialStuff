@@ -7,6 +7,12 @@
 			<li>Punk</li>
 			<li>Tribal</li>
 		</hairTags>
+		<!-- 
+		This is the category of parts that this PartDef belongs to. When pawn is generated, 
+		one PartDef is chosen from each category. Some categories may not generate a PartDef 
+		under certain circumstances (ex. Beard category for female pawns). This behavior is 
+		defined by <partGenHelper> property in CompProperties_Face.
+		-->
 		<category>Eyes</category>
 		<raceBodyDef>Human</raceBodyDef>
 		<parts>
@@ -47,10 +53,10 @@
 		<namedTexPaths>
 			<li>
 				<!-- 
-				Key (or texture name) is passed to the IGraphicProvider implementation as string during initialization. 
-				It's up to the IGraphicProvider implementation to decide what the name means and when the name's 
-				corresponding texture should be used. 
-				PawnPlus.HumanEyeGraphicProvider can accept the following names:
+				Key (or texture name) is passed to the IPartRenderer implementation as string during 
+				initialization. It's up to the IPartRenderer implementation to decide what the name means 
+				and when the name's corresponding texture should be used. 
+				PawnPlus.HumanEyeRenderer can accept the following names:
 					Open, Closed, Dead, Missing, InPain, Aiming
 				-->
 				<key>Open</key>
