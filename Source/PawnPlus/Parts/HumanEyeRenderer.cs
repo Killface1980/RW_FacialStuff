@@ -18,15 +18,16 @@ namespace PawnPlus.Parts
 		public Vector3 additionalOffset = new Vector3(0f, 0f, 0f);
 		public BodyPartLocator eyePartLocator;
 		
-		private MatProps_Multi _open;
-		private MatProps_Multi _closed;
-		private MatProps_Multi _dead;
-		private MatProps_Multi _missing;
-		private MatProps_Multi _inPain;
-		private MatProps_Multi _aiming;
+		private MaterialPropertyBlock _matPropBlock = new MaterialPropertyBlock();
+		private TextureSet _open;
+		private TextureSet _closed;
+		private TextureSet _dead;
+		private TextureSet _missing;
+		private TextureSet _inPain;
+		private TextureSet _aiming;
 		private HumanEyeBehavior.BlinkPartSignalArg _blinkSignalArg;
-		private MatProps_Multi _curMatProp;
-		private MatProps_Multi _curPortraitMatProp;
+		private TextureSet _curTexSet;
+		private TextureSet _curPortraitMatProp;
 		
 		public void Initialize(
 			Pawn pawn,
@@ -36,9 +37,9 @@ namespace PawnPlus.Parts
 			BodyPartSignals bodyPartSignals,
 			ref TickDelegate tickDelegate)
 		{
-			MatProps_Multi defautMapProps = MatProps_Multi.Create(defaultTexPath);
-			Dictionary<string, MatProps_Multi> namedMatProps = 
-				new Dictionary<string, MatProps_Multi>()
+			TextureSet defaultTexSet = TextureSet.Create(defaultTexPath);
+			Dictionary<string, TextureSet> namedTexSets = 
+				new Dictionary<string, TextureSet>()
 				{
 					{ "Open", null },
 					{ "Closed", null },
@@ -47,22 +48,22 @@ namespace PawnPlus.Parts
 					{ "InPain", null },
 					{ "Aiming", null }
 				};
-			foreach(string key in new List<string>(namedMatProps.Keys))
+			foreach(string key in new List<string>(namedTexSets.Keys))
 			{
 				if(namedTexPaths.ContainsKey(key))
 				{
-					namedMatProps[key] = MatProps_Multi.Create(namedTexPaths[key]);
+					namedTexSets[key] = TextureSet.Create(namedTexPaths[key]);
 				} else
 				{
-					namedMatProps[key] = defautMapProps;
+					namedTexSets[key] = defaultTexSet;
 				}
 			}
-			_open = namedMatProps["Open"];
-			_closed = namedMatProps["Closed"];
-			_dead = namedMatProps["Dead"];
-			_missing = namedMatProps["Missing"];
-			_inPain = namedMatProps["InPain"];
-			_aiming = namedMatProps["Aiming"];
+			_open = namedTexSets["Open"];
+			_closed = namedTexSets["Closed"];
+			_dead = namedTexSets["Dead"];
+			_missing = namedTexSets["Missing"];
+			_inPain = namedTexSets["InPain"];
+			_aiming = namedTexSets["Aiming"];
 
 			if(eyePartLocator != null)
 			{
@@ -96,34 +97,34 @@ namespace PawnPlus.Parts
 			// TODO check if portrait cache refresh is needed
 			if(!pawnState.Alive)
 			{
-				_curMatProp = _dead;
+				_curTexSet = _dead;
 				_curPortraitMatProp = _dead;
 				return;
 			}
 			BodyPartStatus.Status partStatus;
 			if(bodyPartStatus.GetPartStatus(eyePartLocator.PartRecord, out partStatus) && partStatus.missing)
 			{
-				_curMatProp = _missing;
+				_curTexSet = _missing;
 				_curPortraitMatProp = _missing;
 				return;
 			}
 			_curPortraitMatProp = _open;
 			if(_blinkSignalArg.blinkClose || pawnState.Sleeping || !pawnState.Conscious)
 			{
-				_curMatProp = _closed;
+				_curTexSet = _closed;
 				return;
 			}
 			if(pawnState.Aiming && closeWhenAiming)
 			{
-				_curMatProp = _aiming;
+				_curTexSet = _aiming;
 				return;
 			}
 			if(pawnState.InPainShock)
 			{
-				_curMatProp = _inPain;
+				_curTexSet = _inPain;
 				return;
 			}
-			_curMatProp = _open;
+			_curTexSet = _open;
 		}
 
 		public void Render(
@@ -134,34 +135,34 @@ namespace PawnPlus.Parts
 			Mesh renderNodeMesh,
 			bool portrait)
 		{
-			MatProps_Multi matProps = portrait ?
+			TextureSet curTexSet = portrait ?
 				_curPortraitMatProp :
-				_curMatProp;
-			if(matProps == null)
+				_curTexSet;
+			if(curTexSet == null)
 			{
 				return;
 			}
-			MaterialPropertyBlock matPropBlock = matProps.GetMaterialProperty(rootRot4);
-			if(matPropBlock != null)
+			Texture2DArray curTextureArray = curTexSet.GetTextureArray(rootRot4, out float index);
+			Vector3 offset = rootQuat * renderNodeOffset;
+			if(!portrait)
 			{
-				Vector3 offset = rootQuat * renderNodeOffset;
-				if(!portrait)
-				{
-					UnityEngine.Graphics.DrawMesh(
-						renderNodeMesh,
-						Matrix4x4.TRS(rootPos + offset, rootQuat, Vector3.one),
-						Shaders.FacePart,
-						0,
-						null,
-						0,
-						matPropBlock);
-				}
-				else
-				{
-					Shaders.FacePart.mainTexture = matPropBlock.GetTexture(Shaders.MainTexPropID);
-					Shaders.FacePart.SetPass(0);
-					UnityEngine.Graphics.DrawMeshNow(renderNodeMesh, rootPos + offset, rootQuat);
-				}
+				_matPropBlock.SetTexture(Shaders.MainTexPropID, curTextureArray);
+				_matPropBlock.SetFloat(Shaders.TexIndexPropID, index);
+				UnityEngine.Graphics.DrawMesh(
+					renderNodeMesh,
+					Matrix4x4.TRS(rootPos + offset, rootQuat, Vector3.one),
+					Shaders.FacePart,
+					0,
+					null,
+					0,
+					_matPropBlock);
+			}
+			else
+			{
+				Shaders.FacePart.mainTexture = curTextureArray;
+				Shaders.FacePart.SetFloat(Shaders.TexIndexPropID, index);
+				Shaders.FacePart.SetPass(0);
+				UnityEngine.Graphics.DrawMeshNow(renderNodeMesh, rootPos + offset, rootQuat);
 			}
 		}
 

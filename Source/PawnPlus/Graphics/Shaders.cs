@@ -21,6 +21,8 @@ namespace PawnPlus.Graphics
 
 		public static int ColorOnePropID { get; private set; }
 
+		public static int TexIndexPropID { get; private set; }
+
 		static Shaders()
 		{
 			var thisMod = ModLister.GetModWithIdentifier("rocketdelivery.pawnplus");
@@ -82,6 +84,7 @@ namespace PawnPlus.Graphics
 			}
 			MainTexPropID = Shader.PropertyToID("_MainTex");
 			ColorOnePropID = Shader.PropertyToID("_Color");
+			TexIndexPropID = Shader.PropertyToID("_TexIndex");
 		}
 	}
 }

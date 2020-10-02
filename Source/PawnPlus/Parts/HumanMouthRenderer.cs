@@ -15,14 +15,15 @@ namespace PawnPlus.Parts
 		public BodyPartLocator mouthPartLocator;
 
 		private Pawn _pawn;
-		private MatProps_Multi _normal;
-		private MatProps_Multi _happy;
-		private MatProps_Multi _minor;
-		private MatProps_Multi _major;
-		private MatProps_Multi _extreme;
-		private MatProps_Multi _crying;
-		private MatProps_Multi _dead;
-		private MatProps_Multi _curGraphic;
+		private TextureSet _normal;
+		private TextureSet _happy;
+		private TextureSet _minor;
+		private TextureSet _major;
+		private TextureSet _extreme;
+		private TextureSet _crying;
+		private TextureSet _dead;
+		private TextureSet _curTexSet;
+		private MaterialPropertyBlock _matPropBlock = new MaterialPropertyBlock();
 		private int _ticksSinceLastUpdate;
 
 		public void Initialize(
@@ -34,8 +35,8 @@ namespace PawnPlus.Parts
 			ref TickDelegate tickDelegate)
 		{
 			_pawn = pawn;
-			MatProps_Multi defaultGraphic = MatProps_Multi.Create(defaultTexPath);
-			Dictionary<string, MatProps_Multi> namedGraphics = new Dictionary<string, MatProps_Multi>()
+			TextureSet defaultGraphic = TextureSet.Create(defaultTexPath);
+			Dictionary<string, TextureSet> namedGraphics = new Dictionary<string, TextureSet>()
 			{
 				{ "Normal", null },
 				{ "Happy", null },
@@ -49,7 +50,7 @@ namespace PawnPlus.Parts
 			{
 				if(namedTexPaths.ContainsKey(key))
 				{
-					namedGraphics[key] = MatProps_Multi.Create(namedTexPaths[key]);
+					namedGraphics[key] = TextureSet.Create(namedTexPaths[key]);
 				} else
 				{
 					namedGraphics[key] = defaultGraphic;
@@ -62,7 +63,7 @@ namespace PawnPlus.Parts
 			_extreme = namedGraphics["Extreme"];
 			_crying = namedGraphics["Crying"];
 			_dead = namedGraphics["Dead"];
-			_curGraphic = _normal;
+			_curTexSet = _normal;
 			tickDelegate.RareUpdate = Update;
 		}
 
@@ -73,28 +74,28 @@ namespace PawnPlus.Parts
 		{
 			if(!pawnState.Alive)
 			{
-				_curGraphic = _dead;
+				_curTexSet = _dead;
 				return;
 			}
 			if(pawnState.Fleeing || pawnState.InPainShock)
 			{
-				_curGraphic = _crying;
+				_curTexSet = _crying;
 				return;
 			}
 			float moodLevel = _pawn.needs.mood.CurInstantLevel;
 			if(moodLevel <= _pawn.mindState.mentalBreaker.BreakThresholdExtreme)
 			{
-				_curGraphic = _extreme;
+				_curTexSet = _extreme;
 				return;
 			}
 			if(moodLevel <= _pawn.mindState.mentalBreaker.BreakThresholdMajor)
 			{
-				_curGraphic = _major;
+				_curTexSet = _major;
 				return;
 			}
 			if(moodLevel <= _pawn.mindState.mentalBreaker.BreakThresholdMinor)
 			{
-				_curGraphic = _minor;
+				_curTexSet = _minor;
 				return;
 			}
 			float happyThreshold =
@@ -102,10 +103,10 @@ namespace PawnPlus.Parts
 				((1f - _pawn.mindState.mentalBreaker.BreakThresholdMinor) / 2f);
 			if(moodLevel < happyThreshold)
 			{
-				_curGraphic = _normal;
+				_curTexSet = _normal;
 				return;
 			}
-			_curGraphic = _happy;
+			_curTexSet = _happy;
 		}
 
 		public void Render(
@@ -116,33 +117,33 @@ namespace PawnPlus.Parts
 			Mesh renderNodeMesh,
 			bool portrait)
 		{
-			MatProps_Multi graphic = portrait ?
+			TextureSet curTexSet = portrait ?
 				_normal :
-				_curGraphic;
-			if(graphic == null)
+				_curTexSet;
+			if(curTexSet == null)
 			{
 				return;
 			}
-			MaterialPropertyBlock matPropBlock = graphic.GetMaterialProperty(rootRot4);
-			if(matPropBlock != null)
+			Texture2DArray curTextureArray = curTexSet.GetTextureArray(rootRot4, out float index);
+			Vector3 offset = rootQuat * renderNodeOffset;
+			if(!portrait)
 			{
-				Vector3 offset = rootQuat * renderNodeOffset;
-				if(!portrait)
-				{
-					UnityEngine.Graphics.DrawMesh(
-						renderNodeMesh,
-						Matrix4x4.TRS(rootPos + offset, rootQuat, Vector3.one),
-						Shaders.FacePart,
-						0,
-						null,
-						0,
-						matPropBlock);
-				} else
-				{
-					Shaders.FacePart.mainTexture = matPropBlock.GetTexture(Shaders.MainTexPropID);
-					Shaders.FacePart.SetPass(0);
-					UnityEngine.Graphics.DrawMeshNow(renderNodeMesh, rootPos + offset, rootQuat);
-				}
+				_matPropBlock.SetTexture(Shaders.MainTexPropID, curTextureArray);
+				_matPropBlock.SetFloat(Shaders.TexIndexPropID, index);
+				UnityEngine.Graphics.DrawMesh(
+					renderNodeMesh,
+					Matrix4x4.TRS(rootPos + offset, rootQuat, Vector3.one),
+					Shaders.FacePart,
+					0,
+					null,
+					0,
+					_matPropBlock);
+			} else
+			{
+				Shaders.FacePart.mainTexture = curTextureArray;
+				Shaders.FacePart.SetFloat(Shaders.TexIndexPropID, index);
+				Shaders.FacePart.SetPass(0);
+				UnityEngine.Graphics.DrawMeshNow(renderNodeMesh, rootPos + offset, rootQuat);
 			}
 		}
 

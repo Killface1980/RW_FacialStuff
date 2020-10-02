@@ -12,7 +12,8 @@ namespace PawnPlus.Parts
 {
 	class FacialHairRenderer : IPartRenderer
 	{
-		private MatProps_Multi _materialProps;
+		private TextureSet _textureSet;
+		private MaterialPropertyBlock _matPropBlock = new MaterialPropertyBlock();
 		private Color _hairColor;
 
 		public void Initialize(
@@ -24,8 +25,9 @@ namespace PawnPlus.Parts
 			ref TickDelegate tickDelegate)
 		{
 			_hairColor = pawn.story.hairColor;
-			_materialProps = MatProps_Multi.Create(defaultTexPath);
-			_materialProps.SetColor("_Color", _hairColor);
+			_textureSet = TextureSet.Create(defaultTexPath);
+			_matPropBlock.SetColor("_Color", _hairColor);
+			_matPropBlock.SetTexture("_MainTex", _textureSet.GetTextureArray());
 		}
 		
 		public void Render(
@@ -36,20 +38,21 @@ namespace PawnPlus.Parts
 			Mesh renderNodeMesh,
 			bool portrait)
 		{
-			MaterialPropertyBlock matPropBlock = _materialProps.GetMaterialProperty(rootRot4);
+			Vector3 offset = rootQuat * renderNodeOffset;
 			if(!portrait)
 			{
 				UnityEngine.Graphics.DrawMesh(
 					renderNodeMesh,
-					Matrix4x4.TRS(rootPos + renderNodeOffset, rootQuat, Vector3.one),
+					Matrix4x4.TRS(rootPos + offset, rootQuat, Vector3.one),
 					Shaders.FacePart,
 					0,
 					null,
 					0,
-					matPropBlock);
+					_matPropBlock);
 			} else
 			{
-				Shaders.FacePart.mainTexture = matPropBlock.GetTexture(Shaders.MainTexPropID);
+				Shaders.FacePart.mainTexture = _textureSet.GetTextureArray(rootRot4, out float index);
+				Shaders.FacePart.SetFloat(Shaders.TexIndexPropID, index);
 				Shaders.FacePart.SetColor(Shaders.ColorOnePropID, _hairColor);
 				Shaders.FacePart.SetPass(0);
 				UnityEngine.Graphics.DrawMeshNow(renderNodeMesh, rootPos + renderNodeOffset, rootQuat);
