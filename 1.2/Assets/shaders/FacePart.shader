@@ -5,8 +5,9 @@ Shader "Custom/Mod/FacialStuff/FacePart"
 {
     Properties
     {
-		_MainTex ("Main texture", 2D) = "white" { }
+		_MainTex ("Main texture", 2DArray) = "white" { }
 		_Color ("Color", Color) = (1,1,1,1)
+		_TexIndex ("Texture Array Index", Float) = 0
     }
     SubShader
     {
@@ -36,8 +37,9 @@ Shader "Custom/Mod/FacialStuff/FacePart"
                 float4 outPos : SV_POSITION;
             };
 
-            sampler2D _MainTex;
+            UNITY_DECLARE_TEX2DARRAY(_MainTex);
 			float4 _Color;
+			float _TexIndex;
 			
             VertexOut VertexProgram(VertexIn v)
             {
@@ -49,12 +51,13 @@ Shader "Custom/Mod/FacialStuff/FacePart"
 
             float4 FragmentProgram(VertexOut i) : SV_Target
             {
-				float4 partTexColor = tex2D(_MainTex, i.texCoord);
+				float4 partTexColor = UNITY_SAMPLE_TEX2DARRAY(_MainTex, float3(i.texCoord, _TexIndex));
+				partTexColor *= _Color;
 				if(partTexColor.a < 0.1f)
 				{
 					discard;
 				}
-				return partTexColor * _Color;
+				return partTexColor;
             }
             ENDCG
         }
