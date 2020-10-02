@@ -28,7 +28,13 @@ namespace PawnPlus.Parts
 				Shaders.FacePart);
 		}
 				
-		public void Render(Vector3 rootPos, Quaternion rootQuat, Rot4 rootRot4, Vector3 renderNodeOffset, Mesh renderNodeMesh, bool portrait)
+		public virtual void Render(
+			Vector3 rootPos, 
+			Quaternion rootQuat, 
+			Rot4 rootRot4, 
+			Vector3 renderNodeOffset, 
+			Mesh renderNodeMesh, 
+			bool portrait)
 		{
 			if(_graphic == null)
 			{
@@ -47,7 +53,7 @@ namespace PawnPlus.Parts
 			}
 		}
 		
-		public object Clone()
+		public virtual object Clone()
 		{
 			return MemberwiseClone();
 		}
