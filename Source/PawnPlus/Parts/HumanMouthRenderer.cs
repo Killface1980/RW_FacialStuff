@@ -64,6 +64,9 @@ namespace PawnPlus.Parts
 			_crying = namedGraphics["Crying"];
 			_dead = namedGraphics["Dead"];
 			_curTexSet = _normal;
+			// If shader property left uninitialized, then the result from other MaterialPropertyBlock  
+			// can interfere with it.
+			_matPropBlock.SetColor("_Color", Color.white);
 			tickDelegate.RareUpdate = Update;
 		}
 

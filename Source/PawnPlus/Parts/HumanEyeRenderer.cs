@@ -85,6 +85,9 @@ namespace PawnPlus.Parts
 			}
 			// Initialize portrait graphics because Render() could be called before first Update().
 			_curPortraitMatProp = _open;
+			// If shader property left uninitialized, then the result from other MateriaPropertyBlock 
+			// using the same shader can interfere with it.
+			_matPropBlock.SetColor("_Color", Color.white);
 			tickDelegate.NormalUpdate = Update;
 		}
 		
