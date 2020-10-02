@@ -38,9 +38,11 @@ namespace PawnPlus.Parts
 			Mesh renderNodeMesh,
 			bool portrait)
 		{
+			_textureSet.GetIndexForRot(rootRot4, out float index);
 			Vector3 offset = rootQuat * renderNodeOffset;
 			if(!portrait)
 			{
+				_matPropBlock.SetFloat(Shaders.TexIndexPropID, index);
 				UnityEngine.Graphics.DrawMesh(
 					renderNodeMesh,
 					Matrix4x4.TRS(rootPos + offset, rootQuat, Vector3.one),
@@ -51,7 +53,6 @@ namespace PawnPlus.Parts
 					_matPropBlock);
 			} else
 			{
-				_textureSet.GetIndexForRot(rootRot4, out float index);
 				Shaders.FacePart.mainTexture = _textureSet.GetTextureArray();
 				Shaders.FacePart.SetFloat(Shaders.TexIndexPropID, index);
 				Shaders.FacePart.SetColor(Shaders.ColorOnePropID, _hairColor);
