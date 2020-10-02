@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Graphics\MatProps_Multi.cs" />
     <Compile Include="Parts\BodyPartSignals.cs" />
     <Compile Include="Parts\BodyPartStatus.cs" />
     <Compile Include="Parts\FacialHairRenderer.cs" />
