@@ -51,7 +51,8 @@ namespace PawnPlus.Parts
 					_matPropBlock);
 			} else
 			{
-				Shaders.FacePart.mainTexture = _textureSet.GetTextureArray(rootRot4, out float index);
+				_textureSet.GetIndexForRot(rootRot4, out float index);
+				Shaders.FacePart.mainTexture = _textureSet.GetTextureArray();
 				Shaders.FacePart.SetFloat(Shaders.TexIndexPropID, index);
 				Shaders.FacePart.SetColor(Shaders.ColorOnePropID, _hairColor);
 				Shaders.FacePart.SetPass(0);

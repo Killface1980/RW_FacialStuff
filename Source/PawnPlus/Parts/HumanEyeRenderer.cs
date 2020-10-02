@@ -142,7 +142,8 @@ namespace PawnPlus.Parts
 			{
 				return;
 			}
-			Texture2DArray curTextureArray = curTexSet.GetTextureArray(rootRot4, out float index);
+			curTexSet.GetIndexForRot(rootRot4, out float index);
+			Texture2DArray curTextureArray = curTexSet.GetTextureArray();
 			Vector3 offset = rootQuat * renderNodeOffset;
 			if(!portrait)
 			{

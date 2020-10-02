@@ -26,10 +26,9 @@ namespace PawnPlus.Graphics
 			return textureSet;
 		}
 		
-		public Texture2DArray GetTextureArray(Rot4 rot, out float index)
+		public void GetIndexForRot(Rot4 rot, out float index)
 		{
 			index = _texIndices[rot.AsInt];
-			return _textureArray;
 		}
 
 		public Texture2DArray GetTextureArray()
