@@ -15,14 +15,14 @@ namespace PawnPlus.Parts
 		public BodyPartLocator mouthPartLocator;
 
 		private Pawn _pawn;
-		private Graphic _normal;
-		private Graphic _happy;
-		private Graphic _minor;
-		private Graphic _major;
-		private Graphic _extreme;
-		private Graphic _crying;
-		private Graphic _dead;
-		private Graphic _curGraphic;
+		private MatProps_Multi _normal;
+		private MatProps_Multi _happy;
+		private MatProps_Multi _minor;
+		private MatProps_Multi _major;
+		private MatProps_Multi _extreme;
+		private MatProps_Multi _crying;
+		private MatProps_Multi _dead;
+		private MatProps_Multi _curGraphic;
 		private int _ticksSinceLastUpdate;
 
 		public void Initialize(
@@ -34,10 +34,8 @@ namespace PawnPlus.Parts
 			ref TickDelegate tickDelegate)
 		{
 			_pawn = pawn;
-			Graphic defaultGraphic = GraphicDatabase.Get<Graphic_Multi>(
-				defaultTexPath,
-				Shaders.FacePart);
-			Dictionary<string, Graphic> namedGraphics = new Dictionary<string, Graphic>()
+			MatProps_Multi defaultGraphic = MatProps_Multi.Create(defaultTexPath);
+			Dictionary<string, MatProps_Multi> namedGraphics = new Dictionary<string, MatProps_Multi>()
 			{
 				{ "Normal", null },
 				{ "Happy", null },
@@ -51,10 +49,7 @@ namespace PawnPlus.Parts
 			{
 				if(namedTexPaths.ContainsKey(key))
 				{
-					Graphic graphic = GraphicDatabase.Get<Graphic_Multi>(
-						namedTexPaths[key],
-						Shaders.FacePart);
-					namedGraphics[key] = graphic;
+					namedGraphics[key] = MatProps_Multi.Create(namedTexPaths[key]);
 				} else
 				{
 					namedGraphics[key] = defaultGraphic;
@@ -121,23 +116,33 @@ namespace PawnPlus.Parts
 			Mesh renderNodeMesh,
 			bool portrait)
 		{
-			Graphic graphic = portrait ?
+			MatProps_Multi graphic = portrait ?
 				_normal :
 				_curGraphic;
 			if(graphic == null)
 			{
 				return;
 			}
-			Material partMat = graphic.MatAt(rootRot4);
-			if(partMat != null)
+			MaterialPropertyBlock matPropBlock = graphic.GetMaterialProperty(rootRot4);
+			if(matPropBlock != null)
 			{
 				Vector3 offset = rootQuat * renderNodeOffset;
-				GenDraw.DrawMeshNowOrLater(
+				if(!portrait)
+				{
+					UnityEngine.Graphics.DrawMesh(
 						renderNodeMesh,
-						rootPos + offset,
-						rootQuat,
-						partMat,
-						portrait);
+						Matrix4x4.TRS(rootPos + offset, rootQuat, Vector3.one),
+						Shaders.FacePart,
+						0,
+						null,
+						0,
+						matPropBlock);
+				} else
+				{
+					Shaders.FacePart.mainTexture = matPropBlock.GetTexture(Shaders.MainTexPropID);
+					Shaders.FacePart.SetPass(0);
+					UnityEngine.Graphics.DrawMeshNow(renderNodeMesh, rootPos + offset, rootQuat);
+				}
 			}
 		}
 

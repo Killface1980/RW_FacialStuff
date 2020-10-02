@@ -15,7 +15,11 @@ namespace PawnPlus.Graphics
 	{
 		public static Shader Hair { get; private set; }
 
-		public static Shader FacePart { get; private set; }
+		public static Material FacePart { get; private set; }
+		
+		public static int MainTexPropID { get; private set; }
+
+		public static int ColorOnePropID { get; private set; }
 
 		static Shaders()
 		{
@@ -59,7 +63,7 @@ namespace PawnPlus.Graphics
 					if(shaders[i].isSupported)
 					{
 						Log.Message("Pawn Plus: successfully loaded shader " + shaders[i].name);
-						FacePart = shaders[i];
+						FacePart = new Material(shaders[i]);
 					} 
 					else
 					{
@@ -76,6 +80,8 @@ namespace PawnPlus.Graphics
 			{
 				Log.Error("Pawn Plus: could not find shader Custom/Mod/FacialStuff/FacePart in shader asset bundle");
 			}
+			MainTexPropID = Shader.PropertyToID("_MainTex");
+			ColorOnePropID = Shader.PropertyToID("_Color");
 		}
 	}
 }

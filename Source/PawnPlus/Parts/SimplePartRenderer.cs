@@ -9,7 +9,7 @@ using Verse;
 
 namespace PawnPlus.Parts
 {
-	public class SimplePartRenderer : IPartRenderer
+	/*public class SimplePartRenderer : IPartRenderer
 	{
 		protected Graphic _graphic;
 
@@ -57,5 +57,5 @@ namespace PawnPlus.Parts
 		{
 			return MemberwiseClone();
 		}
-	}
+	}*/
 }

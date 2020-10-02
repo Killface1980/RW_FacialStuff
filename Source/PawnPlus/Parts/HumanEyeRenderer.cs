@@ -11,22 +11,23 @@ using Verse;
 
 namespace PawnPlus.Parts
 {
+	[StaticConstructorOnStartup]
 	class HumanEyeRenderer : IPartRenderer
 	{
 		public bool closeWhenAiming = false;
 		public Vector3 additionalOffset = new Vector3(0f, 0f, 0f);
 		public BodyPartLocator eyePartLocator;
-
-		private Graphic _open;
-		private Graphic _closed;
-		private Graphic _dead;
-		private Graphic _missing;
-		private Graphic _inPain;
-		private Graphic _aiming;
+		
+		private MatProps_Multi _open;
+		private MatProps_Multi _closed;
+		private MatProps_Multi _dead;
+		private MatProps_Multi _missing;
+		private MatProps_Multi _inPain;
+		private MatProps_Multi _aiming;
 		private HumanEyeBehavior.BlinkPartSignalArg _blinkSignalArg;
-		private Graphic _curGraphic;
-		private Graphic _curPortraitGraphic;
-
+		private MatProps_Multi _curMatProp;
+		private MatProps_Multi _curPortraitMatProp;
+		
 		public void Initialize(
 			Pawn pawn,
 			BodyDef bodyDef,
@@ -35,37 +36,33 @@ namespace PawnPlus.Parts
 			BodyPartSignals bodyPartSignals,
 			ref TickDelegate tickDelegate)
 		{
-			Graphic defaultGraphic = GraphicDatabase.Get<Graphic_Multi>(
-				defaultTexPath,
-				Shaders.FacePart);
-			Dictionary<string, Graphic> namedGraphics = new Dictionary<string, Graphic>()
-			{
-				{ "Open", null },
-				{ "Closed", null },
-				{ "Dead", null },
-				{ "Missing", null },
-				{ "InPain", null },
-				{ "Aiming", null }
-			};
-			foreach(string key in new List<string>(namedGraphics.Keys))
+			MatProps_Multi defautMapProps = MatProps_Multi.Create(defaultTexPath);
+			Dictionary<string, MatProps_Multi> namedMatProps = 
+				new Dictionary<string, MatProps_Multi>()
+				{
+					{ "Open", null },
+					{ "Closed", null },
+					{ "Dead", null },
+					{ "Missing", null },
+					{ "InPain", null },
+					{ "Aiming", null }
+				};
+			foreach(string key in new List<string>(namedMatProps.Keys))
 			{
 				if(namedTexPaths.ContainsKey(key))
 				{
-					Graphic graphic = GraphicDatabase.Get<Graphic_Multi>(
-						namedTexPaths[key],
-						Shaders.FacePart);
-					namedGraphics[key] = graphic;
+					namedMatProps[key] = MatProps_Multi.Create(namedTexPaths[key]);
 				} else
 				{
-					namedGraphics[key] = defaultGraphic;
+					namedMatProps[key] = defautMapProps;
 				}
 			}
-			_open = namedGraphics["Open"];
-			_closed = namedGraphics["Closed"];
-			_dead = namedGraphics["Dead"];
-			_missing = namedGraphics["Missing"];
-			_inPain = namedGraphics["InPain"];
-			_aiming = namedGraphics["Aiming"];
+			_open = namedMatProps["Open"];
+			_closed = namedMatProps["Closed"];
+			_dead = namedMatProps["Dead"];
+			_missing = namedMatProps["Missing"];
+			_inPain = namedMatProps["InPain"];
+			_aiming = namedMatProps["Aiming"];
 
 			if(eyePartLocator != null)
 			{
@@ -86,7 +83,7 @@ namespace PawnPlus.Parts
 				_blinkSignalArg = new HumanEyeBehavior.BlinkPartSignalArg() { blinkClose = false };
 			}
 			// Initialize portrait graphics because Render() could be called before first Update().
-			_curPortraitGraphic = _open;
+			_curPortraitMatProp = _open;
 			tickDelegate.NormalUpdate = Update;
 		}
 		
@@ -99,34 +96,34 @@ namespace PawnPlus.Parts
 			// TODO check if portrait cache refresh is needed
 			if(!pawnState.Alive)
 			{
-				_curGraphic = _dead;
-				_curPortraitGraphic = _dead;
+				_curMatProp = _dead;
+				_curPortraitMatProp = _dead;
 				return;
 			}
 			BodyPartStatus.Status partStatus;
 			if(bodyPartStatus.GetPartStatus(eyePartLocator.PartRecord, out partStatus) && partStatus.missing)
 			{
-				_curGraphic = _missing;
-				_curPortraitGraphic = _missing;
+				_curMatProp = _missing;
+				_curPortraitMatProp = _missing;
 				return;
 			}
-			_curPortraitGraphic = _open;
+			_curPortraitMatProp = _open;
 			if(_blinkSignalArg.blinkClose || pawnState.Sleeping || !pawnState.Conscious)
 			{
-				_curGraphic = _closed;
+				_curMatProp = _closed;
 				return;
 			}
 			if(pawnState.Aiming && closeWhenAiming)
 			{
-				_curGraphic = _aiming;
+				_curMatProp = _aiming;
 				return;
 			}
 			if(pawnState.InPainShock)
 			{
-				_curGraphic = _inPain;
+				_curMatProp = _inPain;
 				return;
 			}
-			_curGraphic = _open;
+			_curMatProp = _open;
 		}
 
 		public void Render(
@@ -137,23 +134,34 @@ namespace PawnPlus.Parts
 			Mesh renderNodeMesh,
 			bool portrait)
 		{
-			Graphic graphic = portrait ?
-				_curPortraitGraphic :
-				_curGraphic;
-			if(graphic == null)
+			MatProps_Multi matProps = portrait ?
+				_curPortraitMatProp :
+				_curMatProp;
+			if(matProps == null)
 			{
 				return;
 			}
-			Material partMat = graphic.MatAt(rootRot4);
-			if(partMat != null)
+			MaterialPropertyBlock matPropBlock = matProps.GetMaterialProperty(rootRot4);
+			if(matPropBlock != null)
 			{
 				Vector3 offset = rootQuat * renderNodeOffset;
-				GenDraw.DrawMeshNowOrLater(
+				if(!portrait)
+				{
+					UnityEngine.Graphics.DrawMesh(
 						renderNodeMesh,
-						rootPos + offset,
-						rootQuat,
-						partMat,
-						portrait);
+						Matrix4x4.TRS(rootPos + offset, rootQuat, Vector3.one),
+						Shaders.FacePart,
+						0,
+						null,
+						0,
+						matPropBlock);
+				}
+				else
+				{
+					Shaders.FacePart.mainTexture = matPropBlock.GetTexture(Shaders.MainTexPropID);
+					Shaders.FacePart.SetPass(0);
+					UnityEngine.Graphics.DrawMeshNow(renderNodeMesh, rootPos + offset, rootQuat);
+				}
 			}
 		}
 
