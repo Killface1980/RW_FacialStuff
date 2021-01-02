@@ -152,6 +152,7 @@ namespace PawnPlus.Parts
 			{
 				_matPropBlock.SetTexture(Shaders.MainTexPropID, curTextureArray);
 				_matPropBlock.SetFloat(Shaders.TexIndexPropID, index);
+				Shaders.FacePart.SetColor(Shaders.ColorOnePropID, Color.black);
 				UnityEngine.Graphics.DrawMesh(
 					renderNodeMesh,
 					Matrix4x4.TRS(rootPos + offset, rootQuat, Vector3.one),
@@ -165,6 +166,7 @@ namespace PawnPlus.Parts
 			{
 				Shaders.FacePart.mainTexture = curTextureArray;
 				Shaders.FacePart.SetFloat(Shaders.TexIndexPropID, index);
+				Shaders.FacePart.SetColor(Shaders.ColorOnePropID, Color.black);
 				Shaders.FacePart.SetPass(0);
 				UnityEngine.Graphics.DrawMeshNow(renderNodeMesh, rootPos + offset, rootQuat);
 			}
