@@ -3,7 +3,6 @@
 	<PawnPlus.Defs.PartDef Name="FSHumanBeardHideMouth" Abstract="True">
 		<hairGender>Male</hairGender>
 		<raceBodyDef>Human</raceBodyDef>
-		<category>Beard</category>
 		<parts>
 			<li>
 				<renderNodeName>HumanBeard</renderNodeName>
@@ -18,7 +17,6 @@
 	<PawnPlus.Defs.PartDef Name="FSHumanBeardShowMouth" Abstract="True">
 		<hairGender>Male</hairGender>
 		<raceBodyDef>Human</raceBodyDef>
-		<category>Beard</category>
 		<parts>
 			<li>
 				<renderNodeName>HumanBeard</renderNodeName>
@@ -32,7 +30,10 @@
 		<defName>FSHumanBeardShaved</defName>
 		<label>Shaved</label>
 		<raceBodyDef>Human</raceBodyDef>
-		<subcategory>Shaved</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Shaved</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -44,7 +45,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardShowMouth">
 		<defName>FSHumanBeardStubble</defName>
 		<label>Stubble</label>
-		<subcategory>Shaved</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Shaved</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -57,7 +61,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardAnchor</defName>
 		<label>Anchor</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -68,7 +75,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardBalbo</defName>
 		<label>Balbo</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -79,7 +89,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardShowMouth">
 		<defName>FSHumanBeardChinCurtain</defName>
 		<label>Chin Curtain</label>
-		<subcategory>Lower</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Lower</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -91,7 +104,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardShowMouth">
 		<defName>FSHumanBeardChinPuff</defName>
 		<label>Chin Puff</label>
-		<subcategory>Lower</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Lower</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Punk</li>
 			<li>Tribal</li>
@@ -102,7 +118,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardDuckTail</defName>
 		<label>Duck Tail</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -113,7 +132,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardShowMouth">
 		<defName>FSHumanBeardElInsecto</defName>
 		<label>El Insecto</label>
-		<subcategory>Lower</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Lower</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Punk</li>
 			<li>Tribal</li>
@@ -124,7 +146,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardFranzJoseph</defName>
 		<label>Franz Joseph</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Uran</li>
 			<li>Rural</li>
@@ -135,7 +160,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardFrenchFork</defName>
 		<label>French Fork</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Punk</li>
 			<li>Rural</li>
@@ -146,7 +174,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardFriendlyMuttonChops</defName>
 		<label>Friendly Mutton Chops</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -158,7 +189,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardFullBeard</defName>
 		<label>Full Beard</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -171,7 +205,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardGaribaldi</defName>
 		<label>Garibaldi</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -184,7 +221,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardGoatee</defName>
 		<label>Goatee</label>
-		<subcategory>Lower</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Lower</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -195,7 +235,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardHollywoodian</defName>
 		<label>Hollywoodian</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -206,7 +249,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardHulihee</defName>
 		<label>Hulihee</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Rural</li>
 			<li>Punk</li>
@@ -217,7 +263,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardImperial</defName>
 		<label>Imperial</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -228,7 +277,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardMuttonChops</defName>
 		<label>Mutton Chops</label>
-		<subcategory>Lower</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Lower</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -240,7 +292,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardNapoleonIIIImperial</defName>
 		<label>Napoleon III Imperial</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -252,7 +307,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardOldDutch</defName>
 		<label>Old Dutch</label>
-		<subcategory>Lower</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Lower</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -265,7 +323,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardPetiteGoatee</defName>
 		<label>Petite Goatee</label>
-		<subcategory>Lower</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Lower</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -276,7 +337,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardShowMouth">
 		<defName>FSHumanBeardSoulPatch</defName>
 		<label>Soul Patch</label>
-		<subcategory>Lower</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Lower</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -287,7 +351,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardSouvarov</defName>
 		<label>Souvarov</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -298,7 +365,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardTheKlingon</defName>
 		<label>The Klingon</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Punk</li>
 			<li>Tribal</li>
@@ -309,7 +379,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardTheSparrow</defName>
 		<label>The Sparrow</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Tribal</li>
 		</hairTags>
@@ -319,7 +392,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardTheWinnfield</defName>
 		<label>The Winnfield</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Rural</li>
 			<li>Punk</li>
@@ -330,7 +406,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardTheZappa</defName>
 		<label>The Zappa</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Rural</li>
 			<li>Punk</li>
@@ -341,7 +420,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardVanDyke</defName>
 		<label>Van Dyke</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -352,7 +434,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardCoolSteiner</defName>
 		<label>Cool Steiner</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -365,7 +450,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardCaptainTiebeard</defName>
 		<label>Captain Tiebeard</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Tribal</li>
 		</hairTags>
@@ -375,7 +463,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardSanta</defName>
 		<label>Santa</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>
@@ -388,7 +479,10 @@
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
 		<defName>FSHumanBeardTwinPeaks</defName>
 		<label>Twin Peaks</label>
-		<subcategory>Full</subcategory>
+		<partClass>
+			<category>Beard</category>
+			<subcategory>Full</subcategory>
+		</partClass>
 		<hairTags>
 			<li>Urban</li>
 			<li>Rural</li>

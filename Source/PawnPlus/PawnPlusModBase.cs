@@ -45,10 +45,10 @@ namespace PawnPlus
 					partsInRace = new Dictionary<string, List<PartDef>>();
 					PartDef._allParts.Add(partDef.raceBodyDef, partsInRace);
 				}
-				if(!partsInRace.TryGetValue(partDef.category, out List<PartDef> partsInCategory))
+				if(!partsInRace.TryGetValue(partDef.partClass.category, out List<PartDef> partsInCategory))
 				{
 					partsInCategory = new List<PartDef>();
-					partsInRace.Add(partDef.category, partsInCategory);
+					partsInRace.Add(partDef.partClass.category, partsInCategory);
 				}
 				partsInCategory.Add(partDef);
 			}

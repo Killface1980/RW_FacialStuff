@@ -53,7 +53,7 @@ namespace PawnPlus.Parts
 				foreach(var partClass in constraintDef.partClasses)
 				{
 					if(categoryParts.TryGetValue(partClass.category, out PartDef partDef) &&
-						partDef.subcategory == partClass.subcategory)
+						partDef.partClass.subcategory == partClass.subcategory)
 					{
 						count++;
 					}

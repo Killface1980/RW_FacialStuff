@@ -9,7 +9,9 @@
 			<li>Punk</li>
 			<li>Tribal</li>
 		</hairTags>
-		<category>Wrinkle</category>
+		<partClass>
+			<category>Wrinkle</category>
+		</partClass>
 		<raceBodyDef>Human</raceBodyDef>
 		<parts>
 			<li>

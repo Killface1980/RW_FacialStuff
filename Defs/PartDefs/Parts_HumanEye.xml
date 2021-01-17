@@ -13,7 +13,9 @@
 		under certain circumstances (ex. Beard category for female pawns). This behavior is 
 		defined by <partGenHelper> property in CompProperties_Face.
 		-->
-		<category>Eyes</category>
+		<partClass>
+			<category>Eyes</category>
+		</partClass>
 		<raceBodyDef>Human</raceBodyDef>
 		<parts>
 			<li>

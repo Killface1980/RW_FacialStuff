@@ -10,7 +10,9 @@
 			<li>Punk</li>
 			<li>Tribal</li>
 		</hairTags>
-		<category>Mouth</category>
+		<partClass>
+			<category>Mouth</category>
+		</partClass>
 		<raceBodyDef>Human</raceBodyDef>
 		<parts>
 			<li>

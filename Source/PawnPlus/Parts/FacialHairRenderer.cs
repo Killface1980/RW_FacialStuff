@@ -16,6 +16,8 @@ namespace PawnPlus.Parts
 		private MaterialPropertyBlock _matPropBlock = new MaterialPropertyBlock();
 		private Color _hairColor;
 
+		public Vector3 additionalOffset;
+
 		public void Initialize(
 			Pawn pawn,
 			BodyDef bodyDef,

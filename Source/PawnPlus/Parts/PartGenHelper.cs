@@ -110,7 +110,7 @@ namespace PawnPlus.Parts
 					"Pawn Plus: no parts are available for the pawn " +
 					pawn +
 					" in the part category " +
-					partDefList.First()?.category +
+					partDefList.First()?.partClass.category +
 					". Pawn generation constraints will be ignored.");
 				partDefCandidates = partDefList;
 			}

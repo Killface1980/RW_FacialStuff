@@ -2,7 +2,9 @@
 <Defs>
 	<PawnPlus.Defs.PartDef Name="FSHumanMoustacheBase" Abstract="True">
 		<hairGender>Male</hairGender>
-		<category>Moustache</category>
+		<partClass>
+			<category>Moustache</category>
+		</partClass>
 		<raceBodyDef>Human</raceBodyDef>
 		<parts>
 			<li>

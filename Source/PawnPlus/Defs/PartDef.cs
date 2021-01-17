@@ -18,10 +18,8 @@ namespace PawnPlus.Defs
 
         public List<string> hairTags = new List<string>();
 
-        public string category;
-
-        public string subcategory = "";
-
+        public Parts.PartClass partClass = new PartClass();
+        
         public BodyDef raceBodyDef;
 
         public List<Part> parts;

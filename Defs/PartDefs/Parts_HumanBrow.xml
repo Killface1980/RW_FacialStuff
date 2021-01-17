@@ -7,7 +7,9 @@
 			<li>Punk</li>
 			<li>Tribal</li>
 		</hairTags>
-		<category>Brow</category>
+		<partClass>
+			<category>Brow</category>
+		</partClass>
 		<raceBodyDef>Human</raceBodyDef>
 		<parts>
 			<li>
