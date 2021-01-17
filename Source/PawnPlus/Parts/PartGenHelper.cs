@@ -11,8 +11,18 @@ namespace PawnPlus.Parts
 {
 	public class PartGenHelper
 	{
-		public SimpleCurve facialHairGenChanceCurve;
-		public List<PartCategoryDef> partCategoryDefGenOrder;
+		public class PartGenParam
+		{
+			public PartCategoryDef categoryDef;
+			public Dictionary<Gender, SimpleCurve> genChanceAgeCurvePerGender = new Dictionary<Gender, SimpleCurve>()
+			{
+				[Gender.Female] = new SimpleCurve(new List<CurvePoint>() { new CurvePoint(0, 1f) }),
+				[Gender.Male] = new SimpleCurve(new List<CurvePoint>() { new CurvePoint(0, 1f) }),
+				[Gender.None] = new SimpleCurve(new List<CurvePoint>() { new CurvePoint(0, 1f) })
+			};
+		}
+
+		public List<PartGenParam> partGenParams;
 
 		public virtual void PartsPreGeneration(Pawn pawn)
 		{
@@ -25,28 +35,34 @@ namespace PawnPlus.Parts
 			Dictionary<PartCategoryDef, List<PartDef>> partsInCategory)
 		{
 			Dictionary<PartCategoryDef, PartDef> genParts = new Dictionary<PartCategoryDef, PartDef>();
-			foreach(var category in partCategoryDefGenOrder)
+			foreach(var partGenParam in partGenParams)
 			{
-				if(pawn.gender == Gender.Female && (category.defName == "Beard" || category.defName ==  "Moustache"))
+				PartCategoryDef categoryDef = partGenParam.categoryDef;
+				float rand = Rand.Value;
+				if(!partGenParam.genChanceAgeCurvePerGender.TryGetValue(pawn.gender, out SimpleCurve genChanceCurve))
 				{
 					continue;
 				}
-				if(!partsInCategory.TryGetValue(category, out List<PartDef> partDefList) || partDefList.NullOrEmpty())
+				if(rand > genChanceCurve.Evaluate(pawn.ageTracker.AgeBiologicalYearsFloat))
+				{
+					continue;
+				}
+				if(!partsInCategory.TryGetValue(categoryDef, out List<PartDef> partDefList) || partDefList.NullOrEmpty())
 				{
 					Log.Warning(
 						"Pawn Plus: could not generate part for " +
 						pawn +
 						" in the part category " +
-						category +
+						categoryDef.defName +
 						". No parts are availble.");
 					continue;
 				}
 				var candidates = GetCandidates(pawn, pawnFactionDef, partDefList);
 				PartDef genPart = candidates.RandomElementByWeight(p => PartGenHelper.PartChoiceLikelyhoodFor(p.hairGender, pawn.gender));
-				genParts.Add(category, genPart);
+				genParts.Add(categoryDef, genPart);
 				if(!PartConstraintManager.CheckConstraint(pawn.RaceProps.body, genParts, out PartConstraintDef conflictingConstraintDef))
 				{
-					genParts.Remove(category);
+					genParts.Remove(categoryDef);
 				}
 			}
 			return genParts;

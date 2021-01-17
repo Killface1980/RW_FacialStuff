@@ -29,22 +29,6 @@
 			</li>
 		</parts>
 	</PawnPlus.Defs.PartDef>
-	
-	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardShowMouth">
-		<defName>FSHumanBeardShaved</defName>
-		<label>Shaved</label>
-		<raceBodyDef>Human</raceBodyDef>
-		<partClass>
-			<categoryDef>Beard</categoryDef>
-			<subcategory>Shaved</subcategory>
-		</partClass>
-		<hairTags>
-			<li>Urban</li>
-			<li>Rural</li>
-			<li>Punk</li>
-			<li>Tribal</li>
-		</hairTags>
-	</PawnPlus.Defs.PartDef>
 		
 	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardShowMouth">
 		<defName>FSHumanBeardStubble</defName>

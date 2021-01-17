@@ -9,6 +9,6 @@ namespace PawnPlus.Defs
 {
 	public class PartCategoryDef : Def
 	{
-
+		
 	}
 }

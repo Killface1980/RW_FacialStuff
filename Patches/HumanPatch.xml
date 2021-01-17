@@ -66,21 +66,50 @@
 			
 			<!-- Class must be PawnPlus.Parts.PartGenHelper or its subclass -->
 			<partGenHelper Class="PawnPlus.Parts.PartGenHelper">
-				<facialHairGenChanceCurve>
-					<points>
-						<li>(20, 0)</li>
-						<li>(40, 0.4)</li>
-						<li>(80, 0.6)</li>
-					</points>
-				</facialHairGenChanceCurve>
-				<partCategoryDefGenOrder>
-					<li>Wrinkle</li>
-					<li>Eyes</li>
-					<li>Brow</li>
-					<li>Beard</li>
-					<li>Moustache</li>
-					<li>Mouth</li>
-				</partCategoryDefGenOrder>
+				<partGenParams>
+					<li>
+						<categoryDef>Wrinkle</categoryDef>
+					</li>
+					<li>
+						<categoryDef>Eyes</categoryDef>
+					</li>
+					<li>
+						<categoryDef>Brow</categoryDef>
+					</li>
+					<li>
+						<categoryDef>Beard</categoryDef>
+						<genChanceAgeCurvePerGender>
+							<li>
+								<key>Male</key>
+								<value>
+									<points>
+										<li>(18, 0)</li>
+										<li>(40, 0.3)</li>
+										<li>(80, 0.4)</li>
+									</points>
+								</value>
+							</li>
+						</genChanceAgeCurvePerGender>
+					</li>
+					<li>
+						<categoryDef>Moustache</categoryDef>
+						<genChanceAgeCurvePerGender>
+							<li>
+								<key>Male</key>
+								<value>
+									<points>
+										<li>(18, 0)</li>
+										<li>(40, 0.6)</li>
+										<li>(80, 0.7)</li>
+									</points>
+								</value>
+							</li>
+						</genChanceAgeCurvePerGender>
+					</li>
+					<li>
+						<categoryDef>Mouth</categoryDef>
+					</li>
+				</partGenParams>
 			</partGenHelper>
           </li>
         </value>
