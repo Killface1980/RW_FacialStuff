@@ -28,10 +28,14 @@ namespace PawnPlus.Parts
 		{
 			_hairColor = pawn.story.hairColor;
 			_textureSet = TextureSet.Create(defaultTexPath);
+			if(_textureSet == null)
+			{
+				return;
+			}
 			_matPropBlock.SetColor("_Color", _hairColor);
 			_matPropBlock.SetTexture("_MainTex", _textureSet.GetTextureArray());
 		}
-		
+
 		public void Render(
 			Vector3 rootPos,
 			Quaternion rootQuat,
@@ -40,6 +44,10 @@ namespace PawnPlus.Parts
 			Mesh renderNodeMesh,
 			bool portrait)
 		{
+			if(_textureSet == null)
+			{
+				return;
+			}
 			_textureSet.GetIndexForRot(rootRot4, out float index);
 			Vector3 offset = rootQuat * (renderNodeOffset + additionalOffset);
 			if(!portrait)

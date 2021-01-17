@@ -18,6 +18,10 @@ namespace PawnPlus.Graphics
 
 		public static TextureSet Create(string texturePath)
 		{
+			if(texturePath == null)
+			{
+				return null;
+			}
 			if(!cachedTextureSets.TryGetValue(texturePath, out TextureSet textureSet))
 			{
 				textureSet = new TextureSet();
