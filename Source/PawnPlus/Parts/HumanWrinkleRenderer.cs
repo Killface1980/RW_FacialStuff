@@ -47,7 +47,7 @@ namespace PawnPlus.Parts
 			if(!portrait)
 			{
 				_matPropBlock.SetFloat(Shaders.TexIndexPropID, index);
-				_matPropBlock.SetColor("_Color", _skinColor);
+				_matPropBlock.SetColor(Shaders.ColorOnePropID, _skinColor);
 				UnityEngine.Graphics.DrawMesh(
 					renderNodeMesh,
 					Matrix4x4.TRS(rootPos + offset, rootQuat, Vector3.one),
