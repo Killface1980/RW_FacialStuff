@@ -53,4 +53,28 @@
 		<dimension>(0.65, 0.75)</dimension>
 		<mirror>true</mirror>
 	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSHumanBeardAverage</defName>
+		<dimension>(1.5, 1.5)</dimension>
+		<mirror>false</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSHumanBeardAverage_m</defName>
+		<dimension>(1.5, 1.5)</dimension>
+		<mirror>true</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSHumanBeardNarrow</defName>
+		<dimension>(1.3, 1.5)</dimension>
+		<mirror>false</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSHumanBeardNarrow_m</defName>
+		<dimension>(1.3, 1.5)</dimension>
+		<mirror>true</mirror>
+	</PawnPlus.Defs.MeshDef>
 </Defs>

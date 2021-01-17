@@ -20,6 +20,8 @@ namespace PawnPlus.Defs
 
         public string category;
 
+        public string subcategory = "";
+
         public BodyDef raceBodyDef;
 
         public List<Part> parts;

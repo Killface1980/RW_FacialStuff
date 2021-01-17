@@ -52,6 +52,8 @@ namespace PawnPlus
 				}
 				partsInCategory.Add(partDef);
 			}
+
+			Parts.PartConstraintManager.ReadFromConstraintDefs();
 		}
 	}
 }

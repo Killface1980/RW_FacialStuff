@@ -73,7 +73,15 @@
 						<li>(80, 0.6)</li>
 					</points>
 				</facialHairGenChanceCurve>
-			</partGenHelper>	
+				<partGenCategoryOrder>
+					<li>Wrinkle</li>
+					<li>Eyes</li>
+					<li>Brow</li>
+					<li>Beard</li>
+					<li>Moustache</li>
+					<li>Mouth</li>
+				</partGenCategoryOrder>
+			</partGenHelper>
           </li>
         </value>
       </li>

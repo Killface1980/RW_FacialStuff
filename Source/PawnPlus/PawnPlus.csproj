@@ -83,7 +83,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Defs\PartConstraintDef.cs" />
     <Compile Include="Graphics\TextureSet.cs" />
+    <Compile Include="Parts\PartClass.cs" />
+    <Compile Include="Parts\PartConstraintManager.cs" />
     <Compile Include="Parts\BodyPartSignals.cs" />
     <Compile Include="Parts\BodyPartStatus.cs" />
     <Compile Include="Parts\FacialHairRenderer.cs" />

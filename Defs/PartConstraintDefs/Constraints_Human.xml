@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<PawnPlus.Defs.PartConstraintDef>
+		<defName>FSFullBeardMoustache</defName>
+		<label>Full beard and moustache cannot be combined together</label>
+		<raceBodyDef>Human</raceBodyDef>
+		<!-- constraintType>MutualExclusion</constraintType-->
+		<partClasses>
+			<li>
+				<category>Beard</category>
+				<subcategory>Full</subcategory>
+			</li>
+			<li>
+				<category>Moustache</category>
+			</li>
+		</partClasses>
+	</PawnPlus.Defs.PartConstraintDef>
+</Defs>
