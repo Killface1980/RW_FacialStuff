@@ -67,7 +67,7 @@ namespace PawnPlus.Parts
 				Shaders.FacePart.SetFloat(Shaders.TexIndexPropID, index);
 				Shaders.FacePart.SetColor(Shaders.ColorOnePropID, _hairColor);
 				Shaders.FacePart.SetPass(0);
-				UnityEngine.Graphics.DrawMeshNow(renderNodeMesh, rootPos + renderNodeOffset, rootQuat);
+				UnityEngine.Graphics.DrawMeshNow(renderNodeMesh, rootPos + offset, rootQuat);
 			}
 		}
 
