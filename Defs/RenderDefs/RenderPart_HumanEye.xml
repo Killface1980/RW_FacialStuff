@@ -55,13 +55,13 @@
 						The offset from center of root (in this case, Head). Note that the head mesh is 
 						1.5 by 1.5 in size.
 						--> 
-						<offset>(0.0938, 0.003, -0.0703)</offset>
+						<offset>(0.0938, 0.004, -0.0703)</offset>
 					</li>
 					<!-- West -->
 					<li>
 						<rotation>West</rotation>
 						<meshDef>FSEyeMesh_mirrored</meshDef>
-						<offset>(-0.1816, 0.003, -0.0703)</offset>
+						<offset>(-0.1816, 0.004, -0.0703)</offset>
 					</li>
 				</renderInfoPerRotation>
 			</li>
@@ -75,12 +75,12 @@
 					<li>
 						<rotation>South</rotation>
 						<meshDef>FSEyeMesh_mirrored</meshDef>
-						<offset>(0.0938, 0.003, -0.0703)</offset>
+						<offset>(0.0938, 0.004, -0.0703)</offset>
 					</li>
 					<li>
 						<rotation>West</rotation>
 						<meshDef>FSEyeMesh_mirrored</meshDef>
-						<offset>(-0.1289, 0.003, -0.0703)</offset>
+						<offset>(-0.1289, 0.004, -0.0703)</offset>
 					</li>
 				</renderInfoPerRotation>
 			</li>
@@ -97,12 +97,12 @@
 					<li>
 						<rotation>South</rotation>
 						<meshDef>FSEyeMesh_mirrored</meshDef>
-						<offset>(0.0938, 0.003, -0.0703)</offset>
+						<offset>(0.0938, 0.004, -0.0703)</offset>
 					</li>
 					<li>
 						<rotation>West</rotation>
 						<meshDef>FSEyeMesh_mirrored</meshDef>
-						<offset>(-0.1055, 0.003, -0.0703)</offset>
+						<offset>(-0.1055, 0.004, -0.0703)</offset>
 					</li>
 				</renderInfoPerRotation>
 			</li>
@@ -124,12 +124,12 @@
 					<li>
 						<rotation>East</rotation>
 						<meshDef>FSEyeMesh</meshDef>
-						<offset>(0.1816, 0.003, -0.0703)</offset>
+						<offset>(0.1816, 0.004, -0.0703)</offset>
 					</li>
 					<li>
 						<rotation>South</rotation>
 						<meshDef>FSEyeMesh</meshDef>
-						<offset>(-0.0938, 0.003, -0.0703)</offset>
+						<offset>(-0.0938, 0.004, -0.0703)</offset>
 					</li>
 				</renderInfoPerRotation>
 			</li>
@@ -143,12 +143,12 @@
 					<li>
 						<rotation>East</rotation>
 						<meshDef>FSEyeMesh</meshDef>
-						<offset>(0.1289, 0.003, -0.0703)</offset>
+						<offset>(0.1289, 0.004, -0.0703)</offset>
 					</li>
 					<li>
 						<rotation>South</rotation>
 						<meshDef>FSEyeMesh</meshDef>
-						<offset>(-0.0938, 0.003, -0.0703)</offset>
+						<offset>(-0.0938, 0.004, -0.0703)</offset>
 					</li>
 				</renderInfoPerRotation>
 			</li>
@@ -165,12 +165,12 @@
 					<li>
 						<rotation>East</rotation>
 						<meshDef>FSEyeMesh</meshDef>
-						<offset>(0.1055, 0.003, -0.0703)</offset>
+						<offset>(0.1055, 0.004, -0.0703)</offset>
 					</li>
 					<li>
 						<rotation>South</rotation>
 						<meshDef>FSEyeMesh</meshDef>
-						<offset>(-0.0938, 0.003, -0.0703)</offset>
+						<offset>(-0.0938, 0.004, -0.0703)</offset>
 					</li>
 				</renderInfoPerRotation>
 			</li>
