@@ -2,8 +2,8 @@
 <Defs>
 
 	<PawnPlus.Defs.RenderNodeMappingDef>
-		<defName>HumanBeardVanillaHead</defName>
-		<renderNodeName>HumanBeard</renderNodeName>
+		<defName>HumanFaceLargeVanillaHead</defName>
+		<renderNodeName>HumanFaceLarge</renderNodeName>
 		<rootType>Head</rootType>
 		<rootTexturesToRenderInfoMapping>
 			<li mappingName="Human_MF_A_PNW">

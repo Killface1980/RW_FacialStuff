@@ -5,7 +5,7 @@
 		<raceBodyDef>Human</raceBodyDef>
 		<parts>
 			<li>
-				<renderNodeName>HumanBeard</renderNodeName>
+				<renderNodeName>HumanFaceLarge</renderNodeName>
 				<occludedRenderNodes>
 					<li>HumanMouth</li>
 				</occludedRenderNodes>
@@ -21,7 +21,7 @@
 		<raceBodyDef>Human</raceBodyDef>
 		<parts>
 			<li>
-				<renderNodeName>HumanBeard</renderNodeName>
+				<renderNodeName>HumanFaceLarge</renderNodeName>
 				<occludedRenderNodes></occludedRenderNodes>
 				<partRenderer Class="PawnPlus.Parts.FacialHairRenderer">
 					<additionalOffset>(0, 0.006, 0)</additionalOffset>
