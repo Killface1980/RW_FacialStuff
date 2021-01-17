@@ -7,7 +7,7 @@ namespace PawnPlus.Defs
 {
     public class PartDef : Def
     {
-        public class Part
+        public class Render
 		{
             public string renderNodeName;
             public List<string> occludedRenderNodes;
@@ -22,7 +22,7 @@ namespace PawnPlus.Defs
         
         public BodyDef raceBodyDef;
 
-        public List<Part> parts;
+        public List<PartDef.Render> parts;
 
         public Dictionary<string, string> namedTexPaths = new Dictionary<string, string>();
 
