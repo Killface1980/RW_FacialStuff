@@ -45,6 +45,11 @@ namespace PawnPlus
 					partsInRace = new Dictionary<PartCategoryDef, List<PartDef>>();
 					PartDef._allParts.Add(partDef.raceBodyDef, partsInRace);
 				}
+				if(partDef.partClass.categoryDef == null)
+				{
+					Log.Warning("Pawn Plus: <categoryDef> property in PartDef " + partDef.defName + " is null. The PartDef will be ignored.");
+					continue;
+				}
 				if(!partsInRace.TryGetValue(partDef.partClass.categoryDef, out List<PartDef> partsInCategory))
 				{
 					partsInCategory = new List<PartDef>();

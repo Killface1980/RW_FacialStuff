@@ -52,6 +52,14 @@ namespace PawnPlus.Parts
 				int count = 0;
 				foreach(var partClass in constraintDef.partClasses)
 				{
+					if(partClass.categoryDef == null)
+					{
+						Log.Warning(
+							"Pawn Plus: one of the categoryDefs in the constraint def " + constraintDef.defName + 
+							" is null. The constraint def will be ignored.");
+						conflictingConstraintDef = null;
+						return true;
+					}
 					if(categoryParts.TryGetValue(partClass.categoryDef, out PartDef partDef) &&
 						partDef.partClass.subcategory == partClass.subcategory)
 					{
