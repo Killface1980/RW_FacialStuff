@@ -14,7 +14,7 @@
 		defined by <partGenHelper> property in CompProperties_Face.
 		-->
 		<partClass>
-			<category>Eyes</category>
+			<categoryDef>Eyes</categoryDef>
 		</partClass>
 		<raceBodyDef>Human</raceBodyDef>
 		<parts>

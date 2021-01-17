@@ -10,7 +10,7 @@
 			<li>Tribal</li>
 		</hairTags>
 		<partClass>
-			<category>Wrinkle</category>
+			<categoryDef>Wrinkle</categoryDef>
 		</partClass>
 		<raceBodyDef>Human</raceBodyDef>
 		<parts>

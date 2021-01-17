@@ -7,11 +7,11 @@
 		<!-- constraintType>MutualExclusion</constraintType-->
 		<partClasses>
 			<li>
-				<category>Beard</category>
+				<categoryDef>Beard</categoryDef>
 				<subcategory>Full</subcategory>
 			</li>
 			<li>
-				<category>Moustache</category>
+				<categoryDef>Moustache</categoryDef>
 			</li>
 		</partClasses>
 	</PawnPlus.Defs.PartConstraintDef>

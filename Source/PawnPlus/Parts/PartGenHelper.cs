@@ -12,22 +12,22 @@ namespace PawnPlus.Parts
 	public class PartGenHelper
 	{
 		public SimpleCurve facialHairGenChanceCurve;
-		public List<string> partGenCategoryOrder;
+		public List<PartCategoryDef> partCategoryDefGenOrder;
 
 		public virtual void PartsPreGeneration(Pawn pawn)
 		{
 
 		}
 
-		public virtual Dictionary<string, PartDef> GeneratePartInCategory(
+		public virtual Dictionary<PartCategoryDef, PartDef> GeneratePartInCategory(
 			Pawn pawn, 
 			FactionDef pawnFactionDef,
-			Dictionary<string, List<PartDef>> partsInCategory)
+			Dictionary<PartCategoryDef, List<PartDef>> partsInCategory)
 		{
-			Dictionary<string, PartDef> genParts = new Dictionary<string, PartDef>();
-			foreach(var category in partGenCategoryOrder)
+			Dictionary<PartCategoryDef, PartDef> genParts = new Dictionary<PartCategoryDef, PartDef>();
+			foreach(var category in partCategoryDefGenOrder)
 			{
-				if(pawn.gender == Gender.Female && (category == "Beard" || category ==  "Moustache"))
+				if(pawn.gender == Gender.Female && (category.defName == "Beard" || category.defName ==  "Moustache"))
 				{
 					continue;
 				}
@@ -110,7 +110,7 @@ namespace PawnPlus.Parts
 					"Pawn Plus: no parts are available for the pawn " +
 					pawn +
 					" in the part category " +
-					partDefList.First()?.partClass.category +
+					partDefList.First()?.partClass.categoryDef +
 					". Pawn generation constraints will be ignored.");
 				partDefCandidates = partDefList;
 			}

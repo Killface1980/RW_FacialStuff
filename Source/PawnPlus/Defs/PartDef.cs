@@ -28,19 +28,19 @@ namespace PawnPlus.Defs
 
         public string defaultTexPath;
 
-        public static Dictionary<string, List<PartDef>> GetCategoriesInRace(BodyDef raceBodyDef)
+        public static Dictionary<PartCategoryDef, List<PartDef>> GetCategoriesInRace(BodyDef raceBodyDef)
 		{
-            if(_allParts.TryGetValue(raceBodyDef, out Dictionary<string, List<PartDef>> partsInCategory))
+            if(_allParts.TryGetValue(raceBodyDef, out Dictionary<PartCategoryDef, List<PartDef>> partsInCategory))
 			{
                 return partsInCategory;
 			}
-            return new Dictionary<string, List<PartDef>>();
+            return new Dictionary<PartCategoryDef, List<PartDef>>();
 		}
         
         // The following variables are initialized in FacialStuffModBase.DefsLoaded()
 
         [Unsaved(false)]
-        public static Dictionary<BodyDef, Dictionary<string, List<PartDef>>> _allParts =
-            new Dictionary<BodyDef, Dictionary<string, List<PartDef>>>();
+        public static Dictionary<BodyDef, Dictionary<PartCategoryDef, List<PartDef>>> _allParts =
+            new Dictionary<BodyDef, Dictionary<PartCategoryDef, List<PartDef>>>();
     }
 }

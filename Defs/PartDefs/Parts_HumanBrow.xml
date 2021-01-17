@@ -8,7 +8,7 @@
 			<li>Tribal</li>
 		</hairTags>
 		<partClass>
-			<category>Brow</category>
+			<categoryDef>Brow</categoryDef>
 		</partClass>
 		<raceBodyDef>Human</raceBodyDef>
 		<parts>

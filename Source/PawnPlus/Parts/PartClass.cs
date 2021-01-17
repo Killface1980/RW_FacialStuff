@@ -8,17 +8,17 @@ namespace PawnPlus.Parts
 {
 	public class PartClass
 	{
-		public string category = "";
+		public Defs.PartCategoryDef categoryDef;
 		public string subcategory = "";
 		
 		public static bool operator ==(PartClass a, PartClass b)
 		{
-			return a.category == b.category && a.subcategory == b.subcategory;
+			return a.categoryDef == b.categoryDef && a.subcategory == b.subcategory;
 		}
 
 		public static bool operator !=(PartClass a, PartClass b)
 		{
-			return a.category != b.category || a.subcategory != b.subcategory;
+			return a.categoryDef != b.categoryDef || a.subcategory != b.subcategory;
 		}
 	}
 }

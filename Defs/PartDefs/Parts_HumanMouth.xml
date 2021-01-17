@@ -11,7 +11,7 @@
 			<li>Tribal</li>
 		</hairTags>
 		<partClass>
-			<category>Mouth</category>
+			<categoryDef>Mouth</categoryDef>
 		</partClass>
 		<raceBodyDef>Human</raceBodyDef>
 		<parts>

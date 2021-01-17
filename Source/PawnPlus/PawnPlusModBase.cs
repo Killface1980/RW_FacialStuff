@@ -40,15 +40,15 @@ namespace PawnPlus
 					Log.Warning("Pawn Plus: <raceBodyDef> property in PartDef " + partDef.defName + " is null. The PartDef will be ignored.");
 					continue;
 				}
-				if(!PartDef._allParts.TryGetValue(partDef.raceBodyDef, out Dictionary<string, List<PartDef>> partsInRace))
+				if(!PartDef._allParts.TryGetValue(partDef.raceBodyDef, out Dictionary<PartCategoryDef, List<PartDef>> partsInRace))
 				{
-					partsInRace = new Dictionary<string, List<PartDef>>();
+					partsInRace = new Dictionary<PartCategoryDef, List<PartDef>>();
 					PartDef._allParts.Add(partDef.raceBodyDef, partsInRace);
 				}
-				if(!partsInRace.TryGetValue(partDef.partClass.category, out List<PartDef> partsInCategory))
+				if(!partsInRace.TryGetValue(partDef.partClass.categoryDef, out List<PartDef> partsInCategory))
 				{
 					partsInCategory = new List<PartDef>();
-					partsInRace.Add(partDef.partClass.category, partsInCategory);
+					partsInRace.Add(partDef.partClass.categoryDef, partsInCategory);
 				}
 				partsInCategory.Add(partDef);
 			}

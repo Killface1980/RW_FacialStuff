@@ -39,7 +39,7 @@ namespace PawnPlus.Parts
 
 		public static bool CheckConstraint(
 			BodyDef raceBodyDef, 
-			Dictionary<string, PartDef> categoryParts, 
+			Dictionary<PartCategoryDef, PartDef> categoryParts, 
 			out PartConstraintDef conflictingConstraintDef)
 		{
 			if(!racePartConstraints.TryGetValue(raceBodyDef, out List<PartConstraintDef> partConstraints))
@@ -52,7 +52,7 @@ namespace PawnPlus.Parts
 				int count = 0;
 				foreach(var partClass in constraintDef.partClasses)
 				{
-					if(categoryParts.TryGetValue(partClass.category, out PartDef partDef) &&
+					if(categoryParts.TryGetValue(partClass.categoryDef, out PartDef partDef) &&
 						partDef.partClass.subcategory == partClass.subcategory)
 					{
 						count++;

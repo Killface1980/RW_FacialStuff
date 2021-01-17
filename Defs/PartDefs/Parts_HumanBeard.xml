@@ -31,7 +31,7 @@
 		<label>Shaved</label>
 		<raceBodyDef>Human</raceBodyDef>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Shaved</subcategory>
 		</partClass>
 		<hairTags>
@@ -46,7 +46,7 @@
 		<defName>FSHumanBeardStubble</defName>
 		<label>Stubble</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Shaved</subcategory>
 		</partClass>
 		<hairTags>
@@ -62,7 +62,7 @@
 		<defName>FSHumanBeardAnchor</defName>
 		<label>Anchor</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -76,7 +76,7 @@
 		<defName>FSHumanBeardBalbo</defName>
 		<label>Balbo</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -90,7 +90,7 @@
 		<defName>FSHumanBeardChinCurtain</defName>
 		<label>Chin Curtain</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Lower</subcategory>
 		</partClass>
 		<hairTags>
@@ -105,7 +105,7 @@
 		<defName>FSHumanBeardChinPuff</defName>
 		<label>Chin Puff</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Lower</subcategory>
 		</partClass>
 		<hairTags>
@@ -119,7 +119,7 @@
 		<defName>FSHumanBeardDuckTail</defName>
 		<label>Duck Tail</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -133,7 +133,7 @@
 		<defName>FSHumanBeardElInsecto</defName>
 		<label>El Insecto</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Lower</subcategory>
 		</partClass>
 		<hairTags>
@@ -147,7 +147,7 @@
 		<defName>FSHumanBeardFranzJoseph</defName>
 		<label>Franz Joseph</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -161,7 +161,7 @@
 		<defName>FSHumanBeardFrenchFork</defName>
 		<label>French Fork</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -175,7 +175,7 @@
 		<defName>FSHumanBeardFriendlyMuttonChops</defName>
 		<label>Friendly Mutton Chops</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -190,7 +190,7 @@
 		<defName>FSHumanBeardFullBeard</defName>
 		<label>Full Beard</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -206,7 +206,7 @@
 		<defName>FSHumanBeardGaribaldi</defName>
 		<label>Garibaldi</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -222,7 +222,7 @@
 		<defName>FSHumanBeardGoatee</defName>
 		<label>Goatee</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Lower</subcategory>
 		</partClass>
 		<hairTags>
@@ -236,7 +236,7 @@
 		<defName>FSHumanBeardHollywoodian</defName>
 		<label>Hollywoodian</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -250,7 +250,7 @@
 		<defName>FSHumanBeardHulihee</defName>
 		<label>Hulihee</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -264,7 +264,7 @@
 		<defName>FSHumanBeardImperial</defName>
 		<label>Imperial</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -278,7 +278,7 @@
 		<defName>FSHumanBeardMuttonChops</defName>
 		<label>Mutton Chops</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Lower</subcategory>
 		</partClass>
 		<hairTags>
@@ -293,7 +293,7 @@
 		<defName>FSHumanBeardNapoleonIIIImperial</defName>
 		<label>Napoleon III Imperial</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -308,7 +308,7 @@
 		<defName>FSHumanBeardOldDutch</defName>
 		<label>Old Dutch</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Lower</subcategory>
 		</partClass>
 		<hairTags>
@@ -324,7 +324,7 @@
 		<defName>FSHumanBeardPetiteGoatee</defName>
 		<label>Petite Goatee</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Lower</subcategory>
 		</partClass>
 		<hairTags>
@@ -338,7 +338,7 @@
 		<defName>FSHumanBeardSoulPatch</defName>
 		<label>Soul Patch</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Lower</subcategory>
 		</partClass>
 		<hairTags>
@@ -352,7 +352,7 @@
 		<defName>FSHumanBeardSouvarov</defName>
 		<label>Souvarov</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -366,7 +366,7 @@
 		<defName>FSHumanBeardTheKlingon</defName>
 		<label>The Klingon</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -380,7 +380,7 @@
 		<defName>FSHumanBeardTheSparrow</defName>
 		<label>The Sparrow</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -393,7 +393,7 @@
 		<defName>FSHumanBeardTheWinnfield</defName>
 		<label>The Winnfield</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -407,7 +407,7 @@
 		<defName>FSHumanBeardTheZappa</defName>
 		<label>The Zappa</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -421,7 +421,7 @@
 		<defName>FSHumanBeardVanDyke</defName>
 		<label>Van Dyke</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -435,7 +435,7 @@
 		<defName>FSHumanBeardCoolSteiner</defName>
 		<label>Cool Steiner</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -451,7 +451,7 @@
 		<defName>FSHumanBeardCaptainTiebeard</defName>
 		<label>Captain Tiebeard</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -464,7 +464,7 @@
 		<defName>FSHumanBeardSanta</defName>
 		<label>Santa</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
@@ -480,7 +480,7 @@
 		<defName>FSHumanBeardTwinPeaks</defName>
 		<label>Twin Peaks</label>
 		<partClass>
-			<category>Beard</category>
+			<categoryDef>Beard</categoryDef>
 			<subcategory>Full</subcategory>
 		</partClass>
 		<hairTags>
