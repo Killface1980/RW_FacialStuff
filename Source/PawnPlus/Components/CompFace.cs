@@ -216,6 +216,10 @@ namespace PawnPlus
             List<PartData> perPartData = new List<PartData>();
             foreach(var partDef in _partDefs)
 			{
+                if(partDef.parts.NullOrEmpty())
+				{
+                    continue;
+				}
                 foreach(var part in partDef.parts)
                 {
                     PartData partData = new PartData();
