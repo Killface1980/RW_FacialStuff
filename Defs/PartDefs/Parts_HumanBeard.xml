@@ -9,7 +9,9 @@
 				<occludedRenderNodes>
 					<li>HumanMouth</li>
 				</occludedRenderNodes>
-				<partRenderer Class="PawnPlus.Parts.FacialHairRenderer"/>
+				<partRenderer Class="PawnPlus.Parts.FacialHairRenderer">
+					<additionalOffset>(0, 0.006, 0)</additionalOffset>
+				</partRenderer>
 			</li>
 		</parts>
 	</PawnPlus.Defs.PartDef>
@@ -21,7 +23,9 @@
 			<li>
 				<renderNodeName>HumanBeard</renderNodeName>
 				<occludedRenderNodes></occludedRenderNodes>
-				<partRenderer Class="PawnPlus.Parts.FacialHairRenderer"/>
+				<partRenderer Class="PawnPlus.Parts.FacialHairRenderer">
+					<additionalOffset>(0, 0.006, 0)</additionalOffset>
+				</partRenderer>
 			</li>
 		</parts>
 	</PawnPlus.Defs.PartDef>

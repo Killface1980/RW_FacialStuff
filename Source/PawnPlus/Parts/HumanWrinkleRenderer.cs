@@ -12,6 +12,7 @@ namespace PawnPlus.Parts
 	public class HumanWrinkleRenderer : IPartRenderer
 	{
 		public SimpleCurve ageIntensityCurve;
+		public Vector3 additionalOffset = new Vector3(0f, 0f, 0f);
 
 		private MaterialPropertyBlock _matPropBlock = new MaterialPropertyBlock();
 		private TextureSet _textureSet;
@@ -41,7 +42,7 @@ namespace PawnPlus.Parts
 			Mesh renderNodeMesh, 
 			bool portrait)
 		{
-			Vector3 offset = rootQuat * renderNodeOffset;
+			Vector3 offset = rootQuat * (renderNodeOffset + additionalOffset);
 			_textureSet.GetIndexForRot(rootRot4, out float index);
 			if(!portrait)
 			{

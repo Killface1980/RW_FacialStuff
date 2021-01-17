@@ -24,7 +24,7 @@
 				<!-- Class must implement PawnPlus.Parts.IPartRenderer interface. -->
 				<partRenderer Class="PawnPlus.Parts.HumanEyeRenderer">
 					<closeWhenAiming>true</closeWhenAiming>
-					<additionalOffset>(0, 0, 0)</additionalOffset>
+					<additionalOffset>(0, 0.004, 0)</additionalOffset>
 					<eyePartLocator>
 						<bodyDef>Human</bodyDef>
 						<bodyPartDef>Eye</bodyPartDef>
@@ -37,7 +37,7 @@
 				<occludedRenderNodes></occludedRenderNodes>
 				<partRenderer Class="PawnPlus.Parts.HumanEyeRenderer">
 					<closeWhenAiming>false</closeWhenAiming>
-					<additionalOffset>(0, 0, 0)</additionalOffset>
+					<additionalOffset>(0, 0.004, 0)</additionalOffset>
 					<eyePartLocator>
 						<bodyDef>Human</bodyDef>
 						<bodyPartDef>Eye</bodyPartDef>

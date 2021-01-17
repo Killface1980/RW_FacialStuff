@@ -15,7 +15,9 @@
 			<li>
 				<renderNodeName>HumanFace</renderNodeName>
 				<occludedRenderNodes></occludedRenderNodes>
-				<partRenderer Class="PawnPlus.Parts.FacialHairRenderer"></partRenderer>
+				<partRenderer Class="PawnPlus.Parts.FacialHairRenderer">
+					<additionalOffset>(0, 0.006, 0)</additionalOffset>
+				</partRenderer>
 			</li>
 		</parts>
 		<namedTexPaths></namedTexPaths>

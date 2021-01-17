@@ -25,6 +25,7 @@
 							<li>(80, 1)</li>
 						</points>
 					</ageIntensityCurve>
+					<additionalOffset>(0, 0.002, 0)</additionalOffset>
 				</partRenderer>
 			</li>
 		</parts>

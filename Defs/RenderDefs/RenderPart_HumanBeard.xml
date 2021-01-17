@@ -19,17 +19,17 @@
 					<li>
 						<rotation>South</rotation>
 						<meshDef>FSHumanBeardAverage</meshDef>
-						<offset>(0, 0.006, 0)</offset>
+						<offset>(0, 0, 0)</offset>
 					</li>
 					<li>
 						<rotation>East</rotation>
 						<meshDef>FSHumanBeardAverage</meshDef>
-						<offset>(0, 0.006, 0)</offset>
+						<offset>(0, 0, 0)</offset>
 					</li>
 					<li>
 						<rotation>West</rotation>
 						<meshDef>FSHumanBeardAverage_m</meshDef>
-						<offset>(0, 0.006, 0)</offset>
+						<offset>(0, 0, 0)</offset>
 					</li>
 				</renderInfoPerRotation>
 			</li>
@@ -46,17 +46,17 @@
 					<li>
 						<rotation>South</rotation>
 						<meshDef>FSHumanBeardNarrow</meshDef>
-						<offset>(0, 0.006, 0)</offset>
+						<offset>(0, 0, 0)</offset>
 					</li>
 					<li>
 						<rotation>East</rotation>
 						<meshDef>FSHumanBeardNarrow</meshDef>
-						<offset>(0, 0.006, 0)</offset>
+						<offset>(0, 0, 0)</offset>
 					</li>
 					<li>
 						<rotation>West</rotation>
 						<meshDef>FSHumanBeardNarrow_m</meshDef>
-						<offset>(0, 0.006, 0)</offset>
+						<offset>(0, 0, 0)</offset>
 					</li>
 				</renderInfoPerRotation>
 			</li>

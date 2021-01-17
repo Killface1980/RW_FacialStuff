@@ -16,7 +16,7 @@ namespace PawnPlus.Parts
 		private MaterialPropertyBlock _matPropBlock = new MaterialPropertyBlock();
 		private Color _hairColor;
 
-		public Vector3 additionalOffset;
+		public Vector3 additionalOffset = new Vector3(0f, 0f, 0f);
 
 		public void Initialize(
 			Pawn pawn,
@@ -41,7 +41,7 @@ namespace PawnPlus.Parts
 			bool portrait)
 		{
 			_textureSet.GetIndexForRot(rootRot4, out float index);
-			Vector3 offset = rootQuat * renderNodeOffset;
+			Vector3 offset = rootQuat * (renderNodeOffset + additionalOffset);
 			if(!portrait)
 			{
 				_matPropBlock.SetFloat(Shaders.TexIndexPropID, index);

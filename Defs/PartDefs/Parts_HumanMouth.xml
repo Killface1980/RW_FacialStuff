@@ -19,6 +19,7 @@
 				<renderNodeName>HumanMouth</renderNodeName>
 				<occludedRenderNodes></occludedRenderNodes>
 				<partRenderer Class="PawnPlus.Parts.HumanMouthRenderer">
+					<additionalOffset>(0, 0.004, 0)</additionalOffset>
 					<mouthPartLocator>
 						<bodyDef>Human</bodyDef>
 						<bodyPartDef>Jaw</bodyPartDef>

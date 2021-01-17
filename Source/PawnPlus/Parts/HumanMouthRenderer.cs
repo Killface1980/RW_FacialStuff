@@ -13,6 +13,7 @@ namespace PawnPlus.Parts
 	class HumanMouthRenderer : IPartRenderer
 	{
 		public BodyPartLocator mouthPartLocator;
+		public Vector3 additionalOffset = new Vector3(0f, 0f, 0f);
 
 		private Pawn _pawn;
 		private TextureSet _normal;
@@ -129,7 +130,7 @@ namespace PawnPlus.Parts
 			}
 			curTexSet.GetIndexForRot(rootRot4, out float index);
 			Texture2DArray curTextureArray = curTexSet.GetTextureArray();
-			Vector3 offset = rootQuat * renderNodeOffset;
+			Vector3 offset = rootQuat * (renderNodeOffset + additionalOffset);
 			if(!portrait)
 			{
 				_matPropBlock.SetTexture(Shaders.MainTexPropID, curTextureArray);

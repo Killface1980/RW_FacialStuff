@@ -96,7 +96,6 @@ namespace PawnPlus.Parts
 			BodyPartStatus bodyPartStatus,
 			ref bool updatePortrait)
 		{
-			additionalOffset = this.additionalOffset;
 			// TODO check if portrait cache refresh is needed
 			if(!pawnState.Alive)
 			{
@@ -147,7 +146,7 @@ namespace PawnPlus.Parts
 			}
 			curTexSet.GetIndexForRot(rootRot4, out float index);
 			Texture2DArray curTextureArray = curTexSet.GetTextureArray();
-			Vector3 offset = rootQuat * renderNodeOffset;
+			Vector3 offset = rootQuat * (renderNodeOffset + additionalOffset);
 			if(!portrait)
 			{
 				_matPropBlock.SetTexture(Shaders.MainTexPropID, curTextureArray);
