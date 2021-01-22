@@ -122,7 +122,7 @@ namespace PawnPlus.Harmony
                 ...
                 */
                 // There is only one Stloc.S 11 instruction in the method
-                if(code.opcode == OpCodes.Stloc_S && ((LocalBuilder)code.operand).LocalIndex == 11 && headPatchState == 0)
+                if(code.opcode == OpCodes.Stloc_S && code.operand is LocalBuilder lb && lb.LocalIndex == 11 && headPatchState == 0)
                 {                   
                     // Emit Stloc.S 11. Injecting a call instruction right before Stloc.S 11 will cause IL compiler to fail
                     // because there is a returned value from op_Multiply() on top of the stack.

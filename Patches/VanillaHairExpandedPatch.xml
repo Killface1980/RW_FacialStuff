@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardBoxed"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardCircle"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardCleanShaven"]</xpath>
+		<subcategory>Shaved</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardUrist"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardMuttonChops"]</xpath>
+		<subcategory>Lower</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardStubble"]</xpath>
+		<subcategory>Shaved</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardCurly"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardFork"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardFrench"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardGoatee"]</xpath>
+		<subcategory>Lower</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardKhan"]</xpath>
+		<subcategory>Lower</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardLincoln"]</xpath>
+		<subcategory>Lower</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+	
+	<!-- TODO this should be a moustache -->
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardMoustache"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardOldDutch"]</xpath>
+		<subcategory>Lower</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardSeer"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardVanDyke"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardFull"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardDucktail"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardCurtain"]</xpath>
+		<subcategory>Lower</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardAnchor"]</xpath>
+		<subcategory>Lower</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardSoulPatch"]</xpath>
+		<subcategory>Lower</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardSideWhiskers"]</xpath>
+		<subcategory>Lower</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardImperial"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardLongDutch"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardMachete"]</xpath>
+		<subcategory>Lower</subcategory>
+		<hideMouth>false</hideMouth>
+	</Operation>
+
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardWizard"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardDori"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardDwalin"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+	
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardBifur"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardNori"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+
+	<Operation Class="PawnPlus.PatchOperationVHECompatibility">
+		<xpath>/Defs/HairDef[defName="VHE_BeardBalin"]</xpath>
+		<subcategory>Full</subcategory>
+		<hideMouth>true</hideMouth>
+	</Operation>
+</Patch>
