@@ -147,7 +147,7 @@ namespace PawnPlus.Harmony
                 return;
             }
 
-            if(!pawn.GetCompAnim().Deactivated && pawn.CheckForAddedOrMissingParts())
+            if(!pawn.GetCompAnim().Deactivated)
             {
                 pawn.Drawer.renderer.graphics.nakedGraphic = null;
                 PortraitsCache.SetDirty(pawn);
@@ -516,7 +516,6 @@ namespace PawnPlus.Harmony
             {
                 return;
             }            
-            pawn.CheckForAddedOrMissingParts();
             pawn.GetCompAnim()?.PawnBodyGraphic?.Initialize();
 
             // Check if race has face, else return

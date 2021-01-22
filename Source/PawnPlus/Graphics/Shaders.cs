@@ -50,27 +50,13 @@ namespace PawnPlus.Graphics
 			{
 				if(shaders[i].name.Equals("Custom/Mod/FacialStuff/Hair"))
 				{
-					if(shaders[i].isSupported)
-					{
-						Log.Message("Pawn Plus: successfully loaded shader " + shaders[i].name);
-						Hair = shaders[i];
-					} 
-					else
-					{
-						Log.Message("Pawn Plus: could not load shader " + Hair.name + ". This shader is not supported");
-						Hair = null;
-					}
+					Hair = LoadShader(shaders[i]);
 				} else if(shaders[i].name.Equals("Custom/Mod/FacialStuff/FacePart"))
 				{
-					if(shaders[i].isSupported)
+					Shader facePartShader = LoadShader(shaders[i]);
+					if(facePartShader != null)
 					{
-						Log.Message("Pawn Plus: successfully loaded shader " + shaders[i].name);
-						FacePart = new Material(shaders[i]);
-					} 
-					else
-					{
-						Log.Message("Pawn Plus: could not load shader " + FacePart.name + ". This shader is not supported");
-						FacePart = null;
+						FacePart = new Material(facePartShader);
 					}
 				}
 			}
@@ -85,6 +71,19 @@ namespace PawnPlus.Graphics
 			MainTexPropID = Shader.PropertyToID("_MainTex");
 			ColorOnePropID = Shader.PropertyToID("_Color");
 			TexIndexPropID = Shader.PropertyToID("_TexIndex");
+		}
+
+		private static Shader LoadShader(Shader shader)
+		{
+			if(shader)
+			{
+				Log.Message("Pawn Plus: successfully loaded shader " + shader.name);
+				return shader;
+			} else
+			{
+				Log.Message("Pawn Plus: could not load shader " + shader.name + ". This shader is not supported");
+				return null;
+			}
 		}
 	}
 }

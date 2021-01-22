@@ -11,7 +11,6 @@ using Verse;
 
 namespace PawnPlus.Parts
 {
-	[StaticConstructorOnStartup]
 	class HumanEyeRenderer : IPartRenderer
 	{
 		public bool closeWhenAiming = false;

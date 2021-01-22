@@ -432,7 +432,6 @@ namespace PawnPlus
                 this.Vector3Tweens[i] = new Vector3Tween();
             }
             this.BodyAnimator = new BodyAnimator(this.Pawn, this);
-            this.Pawn.CheckForAddedOrMissingParts();
             this.PawnBodyGraphic = new PawnBodyGraphic(this);
 
             string bodyType = "Undefined";
