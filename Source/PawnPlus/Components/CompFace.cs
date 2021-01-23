@@ -16,26 +16,15 @@ using PawnPlus.Parts;
 namespace PawnPlus
 {
     public class CompFace : ThingComp
-    {
-        private class PartData
-        {
-            public RootType rootType;
-            public IPartRenderer renderer;
-            public TickDelegate tickDelegate;
-            public string renderNodeName;
-            public bool occluded;
-            public RenderParam[] renderParams;
-        }
-        
+    {        
         private FactionDef _originalFaction;
-        private IReadOnlyList<PartData> _perPartData;
         private BodyPartSignals _bodyPartSignals;
         private BodyPartStatus _bodyPartStatus;
         private Rot4 _cachedHeadFacing;
         private PawnState _pawnState;
         private IHeadBehavior _headBehavior;
         private List<IPartBehavior> _partBehaviors;
-        private List<PartDef> _partDefs;
+        private Dictionary<PartCategoryDef, PartDef> _partDefs;
         // Used for distance culling of face details
         private GameComponent_PawnPlus _fsGameComp;
         
@@ -79,27 +68,31 @@ namespace PawnPlus
                 {   
                     if(portrait || _fsGameComp.ShouldRenderFaceDetails)
 				    {
-                        foreach(var part in _perPartData)
-                        {
-                            if(part.renderParams == null || part.occluded)
-							{
-                                continue;
-							}
-                            // If portrait is being rendered, follow the body rotation.
-                            Rot4 partRot4 = bodyFacing;
-                            if(!portrait && part.rootType == RootType.Head)
-							{
-                                partRot4 = headFacing;
-                            }
-                            if(part.renderParams[partRot4.AsInt].render)
-							{
-                                part.renderer.Render(
-                                    headPos, 
-                                    headQuat, 
-                                    partRot4, 
-                                    part.renderParams[partRot4.AsInt].offset, 
-                                    part.renderParams[partRot4.AsInt].mesh, 
-                                    portrait);
+                        foreach(var pair in _partDefs)
+						{
+                            PartDef partDef = pair.Value;
+                            foreach (var part in partDef.parts)
+                            {
+                                if (part._renderParams == null || part._occluded)
+                                {
+                                    continue;
+                                }
+                                // If portrait is being rendered, follow the body rotation.
+                                Rot4 partRot4 = bodyFacing;
+                                if (!portrait && part._rootType == RootType.Head)
+                                {
+                                    partRot4 = headFacing;
+                                }
+                                if (part._renderParams[partRot4.AsInt].render)
+                                {
+                                    part._renderer.Render(
+                                        headPos,
+                                        headQuat,
+                                        partRot4,
+                                        part._renderParams[partRot4.AsInt].offset,
+                                        part._renderParams[partRot4.AsInt].mesh,
+                                        portrait);
+                                }
                             }
                         }
                     }
@@ -203,26 +196,23 @@ namespace PawnPlus
                     return;
                 }
                 Props.partGenHelper.PartsPreGeneration(Pawn);
-                Dictionary<PartCategoryDef, PartDef> partDefInCategory = 
-                    Props.partGenHelper.GeneratePartInCategory(Pawn, _originalFaction, PartDef.GetCategoriesInRace(Pawn.RaceProps.body));                
-                _partDefs = new List<PartDef>();
-                foreach(var pair in partDefInCategory)
-				{
-                    _partDefs.Add(pair.Value);
-                }
+                _partDefs =  Props.partGenHelper.GeneratePartInCategory(
+                    Pawn, 
+                    _originalFaction, 
+                    PartDef.GetCategoriesInRace(Pawn.RaceProps.body)
+                );                
                 Props.partGenHelper.PartsPostGeneration(Pawn);
             }
 
-            List<PartData> perPartData = new List<PartData>();
-            foreach(var partDef in _partDefs)
+            foreach(var pair in _partDefs)
 			{
+                PartDef partDef = pair.Value;
                 if(partDef.parts.NullOrEmpty())
 				{
                     continue;
 				}
                 foreach(var part in partDef.parts)
                 {
-                    PartData partData = new PartData();
                     if(part.partRenderer == null)
 					{
                         Log.Warning(
@@ -231,31 +221,29 @@ namespace PawnPlus
                             " . The part will not be shown.");
                         continue;
 					}
-                    partData.renderer = (IPartRenderer)part.partRenderer.Clone();
-                    partData.renderNodeName = part.renderNodeName;
+                    part._renderer = (IPartRenderer)part.partRenderer.Clone();
                     RenderParamManager.GetRenderParams(
                         Pawn,
                         part.renderNodeName,
-                        out partData.rootType,
-                        out partData.renderParams);
-                    partData.renderer.Initialize(
+                        out part._rootType,
+                        out part._renderParams);
+                    part._renderer.Initialize(
                         Pawn,
                         Pawn.RaceProps.body,
                         partDef.defaultTexPath,
                         partDef.namedTexPaths,
                         _bodyPartSignals,
-                        ref partData.tickDelegate);
-                    perPartData.Add(partData);
+                        ref part._tickDelegate);
                 }
             }
-            _perPartData = perPartData;
 
             HashSet<string> occludedRenderNodes = new HashSet<string>();
-            foreach(var partDef in _partDefs)
+            foreach(var pair in _partDefs)
 			{
-                foreach(var part in partDef.parts)
+                PartDef partDef = pair.Value;
+                foreach (var part in partDef.parts)
 				{
-                    if(part.occludedRenderNodes == null)
+                    if(part.occludedRenderNodes.NullOrEmpty())
 					{
                         continue;
 					}
@@ -265,17 +253,21 @@ namespace PawnPlus
 					}
 				}
             }
-            foreach(var partData in _perPartData)
+            foreach(var pair in _partDefs)
 			{
-                if(occludedRenderNodes.Contains(partData.renderNodeName))
-				{
-                    partData.occluded = true;
-				}
-                else
-				{
-                    partData.occluded = false;
-				}
-			}
+                PartDef partDef = pair.Value;
+                foreach (var part in partDef.parts)
+                {
+                    if (occludedRenderNodes.Contains(part.renderNodeName))
+                    {
+                        part._occluded = true;
+                    }
+                    else
+                    {
+                        part._occluded = false;
+                    }
+                }
+            }
             
             Initialized = true;
         }
@@ -298,18 +290,23 @@ namespace PawnPlus
                         partBehavior.Update(Pawn, _pawnState);
 					}
                     bool updatePortrait = false;
-                    foreach(var part in _perPartData)
-                    {
-                        if(part.tickDelegate.NormalUpdate != null)
-						{
-                            bool updatePortraitTemp = false;
-                            part.tickDelegate.NormalUpdate(
-                                _pawnState,
-                                _bodyPartStatus,
-                                ref updatePortraitTemp);
-                            updatePortrait |= updatePortraitTemp;
+                    foreach(var pair in _partDefs)
+					{
+                        PartDef partDef = pair.Value;
+                        foreach (var part in partDef.parts)
+                        {
+                            if (part._tickDelegate.NormalUpdate != null)
+                            {
+                                bool updatePortraitTemp = false;
+                                part._tickDelegate.NormalUpdate(
+                                    _pawnState,
+                                    _bodyPartStatus,
+                                    ref updatePortraitTemp);
+                                updatePortrait |= updatePortraitTemp;
+                            }
                         }
                     }
+                    
                     if(updatePortrait)
 					{
                         PortraitsCache.SetDirty(Pawn);
@@ -330,16 +327,20 @@ namespace PawnPlus
                 if(canUpdatePawn)
                 {
                     bool updatePortrait = false;
-                    foreach(var part in _perPartData)
-                    {
-                        if(part.tickDelegate.RareUpdate != null)
+                    foreach(var pair in _partDefs)
+					{
+                        PartDef partDef = pair.Value;
+                        foreach (var part in partDef.parts)
                         {
-                            bool updatePortraitTemp = false;
-                            part.tickDelegate.RareUpdate(
-                                _pawnState,
-                                _bodyPartStatus,
-                                ref updatePortraitTemp);
-                            updatePortrait |= updatePortraitTemp;
+                            if (part._tickDelegate.RareUpdate != null)
+                            {
+                                bool updatePortraitTemp = false;
+                                part._tickDelegate.RareUpdate(
+                                    _pawnState,
+                                    _bodyPartStatus,
+                                    ref updatePortraitTemp);
+                                updatePortrait |= updatePortraitTemp;
+                            }
                         }
                     }
                     if(updatePortrait)
@@ -362,18 +363,23 @@ namespace PawnPlus
                 if(canUpdatePawn)
                 {
                     bool updatePortrait = false;
-                    foreach(var part in _perPartData)
-                    {
-                        if(part.tickDelegate.LongUpdate != null)
+                    foreach(var pair in _partDefs)
+					{
+                        PartDef partDef = pair.Value;
+                        foreach (var part in partDef.parts)
                         {
-                            bool updatePortraitTemp = false;
-                            part.tickDelegate.LongUpdate(
-                                _pawnState,
-                                _bodyPartStatus,
-                                ref updatePortraitTemp);
-                            updatePortrait |= updatePortraitTemp;
+                            if(part._tickDelegate.LongUpdate != null)
+                            {
+                                bool updatePortraitTemp = false;
+                                part._tickDelegate.LongUpdate(
+                                    _pawnState,
+                                    _bodyPartStatus,
+                                    ref updatePortraitTemp);
+                                updatePortrait |= updatePortraitTemp;
+                            }
                         }
                     }
+                    
                     if(updatePortrait)
                     {
                         PortraitsCache.SetDirty(Pawn);

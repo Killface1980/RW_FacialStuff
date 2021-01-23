@@ -7,11 +7,26 @@ namespace PawnPlus.Defs
 {
     public class PartDef : Def
     {
-        public class Render
+        public class SinglePart
 		{
             public string renderNodeName;
             public List<string> occludedRenderNodes;
             public IPartRenderer partRenderer;
+
+            [Unsaved(false)]
+            public RootType _rootType;
+
+            [Unsaved(false)]
+            public IPartRenderer _renderer;
+
+            [Unsaved(false)]
+            public TickDelegate _tickDelegate;
+
+            [Unsaved(false)]
+            public bool _occluded;
+
+            [Unsaved(false)]
+            public RenderParam[] _renderParams;
         }
 
         public HairGender hairGender;
@@ -22,7 +37,7 @@ namespace PawnPlus.Defs
         
         public BodyDef raceBodyDef;
 
-        public List<PartDef.Render> parts;
+        public List<PartDef.SinglePart> parts;
 
         public Dictionary<string, string> namedTexPaths = new Dictionary<string, string>();
 
