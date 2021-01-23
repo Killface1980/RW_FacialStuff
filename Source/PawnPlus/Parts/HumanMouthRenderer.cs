@@ -23,6 +23,7 @@ namespace PawnPlus.Parts
 		private TextureSet _extreme;
 		private TextureSet _crying;
 		private TextureSet _dead;
+		private TextureSet _default;
 		private TextureSet _curTexSet;
 		private MaterialPropertyBlock _matPropBlock = new MaterialPropertyBlock();
 		private int _ticksSinceLastUpdate;
@@ -36,7 +37,7 @@ namespace PawnPlus.Parts
 			ref TickDelegate tickDelegate)
 		{
 			_pawn = pawn;
-			TextureSet defaultGraphic = TextureSet.Create(defaultTexPath);
+			_default = TextureSet.Create(defaultTexPath);
 			Dictionary<string, TextureSet> namedGraphics = new Dictionary<string, TextureSet>()
 			{
 				{ "Normal", null },
@@ -54,7 +55,7 @@ namespace PawnPlus.Parts
 					namedGraphics[key] = TextureSet.Create(namedTexPaths[key]);
 				} else
 				{
-					namedGraphics[key] = defaultGraphic;
+					namedGraphics[key] = _default;
 				}
 			}
 			_normal = namedGraphics["Normal"];
@@ -84,6 +85,11 @@ namespace PawnPlus.Parts
 			if(pawnState.Fleeing || pawnState.InPainShock)
 			{
 				_curTexSet = _crying;
+				return;
+			}
+			if(_pawn.needs == null)
+			{
+				_curTexSet = default;
 				return;
 			}
 			float moodLevel = _pawn.needs.mood.CurInstantLevel;
