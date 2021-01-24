@@ -8,7 +8,7 @@ using Verse;
 
 namespace PawnPlus.Graphics
 {
-	class TextureSet
+	public class TextureSet
 	{
 		private static Dictionary<string, TextureSet> cachedTextureSets = 
 			new Dictionary<string, TextureSet>();
