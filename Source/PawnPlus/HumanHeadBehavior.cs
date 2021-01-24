@@ -142,7 +142,7 @@ namespace PawnPlus
 			Scribe_References.Look(ref _target, "target");
 			Scribe_Values.Look(ref _curTargetType, "targetType");
 			Scribe_Values.Look(ref _targetStartTick, "targetAcquiredTick");
-			Scribe_Values.Look(ref _curQuat, "currentAngle");
+			Scribe_Values.Look<Quaternion>(ref _curQuat, "currentAngle");
 		}
 		
 		#endregion
