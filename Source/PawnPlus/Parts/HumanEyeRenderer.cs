@@ -15,8 +15,15 @@ namespace PawnPlus.Parts
 	{
 		public bool closeWhenAiming = false;
 		public Vector3 additionalOffset = new Vector3(0f, 0f, 0f);
-		public BodyPartLocator eyePartLocator;
-		
+		public BodyPartLocator leftEyePartLocator;
+		public BodyPartLocator rightEyePartLocator;
+
+		private struct EyeData
+		{
+			public TextureSet _curTexture;
+			public TextureSet _portraitTexture;
+		}
+
 		private MaterialPropertyBlock _matPropBlock = new MaterialPropertyBlock();
 		private TextureSet _open;
 		private TextureSet _closed;
@@ -25,9 +32,8 @@ namespace PawnPlus.Parts
 		private TextureSet _inPain;
 		private TextureSet _aiming;
 		private HumanEyeBehavior.BlinkPartSignalArg _blinkSignalArg;
-		private TextureSet _curTexSet;
-		private TextureSet _curPortraitMatProp;
-		
+		private EyeData[] _eyeData = new EyeData[2];
+				
 		public void Initialize(
 			Pawn pawn,
 			BodyDef bodyDef,
@@ -64,9 +70,9 @@ namespace PawnPlus.Parts
 			_inPain = namedTexSets["InPain"];
 			_aiming = namedTexSets["Aiming"];
 
-			if(eyePartLocator != null)
+			if(leftEyePartLocator != null)
 			{
-				bodyPartSignals.GetSignals(eyePartLocator.PartRecord, out List<PartSignal> partSignals);
+				bodyPartSignals.GetSignals(leftEyePartLocator.PartRecord, out List<PartSignal> partSignals);
 				List<PartSignal> eyeBlinkSignals = partSignals.FindAll(i => i.signalName == "PP_EyeBlink");
 				for(int i = eyeBlinkSignals.Count - 1; i >= 0; --i)
 				{
@@ -83,7 +89,7 @@ namespace PawnPlus.Parts
 				_blinkSignalArg = new HumanEyeBehavior.BlinkPartSignalArg() { blinkClose = false };
 			}
 			// Initialize portrait graphics because Render() could be called before first Update().
-			_curPortraitMatProp = _open;
+			SetAllEyesPortrait(_open);
 			// If shader property left uninitialized, then the result from other MateriaPropertyBlock 
 			// using the same shader can interfere with it.
 			_matPropBlock.SetColor("_Color", Color.white);
@@ -95,37 +101,71 @@ namespace PawnPlus.Parts
 			BodyPartStatus bodyPartStatus,
 			ref bool updatePortrait)
 		{
-			// TODO check if portrait cache refresh is needed
-			if(!pawnState.Alive)
+			if(!UpdateEyesCommon(pawnState))
 			{
-				_curTexSet = _dead;
-				_curPortraitMatProp = _dead;
-				return;
+				if(!UpdateEye(pawnState, bodyPartStatus, leftEyePartLocator, 0))
+				{
+					_eyeData[0]._portraitTexture = _open;
+					if(pawnState.Aiming)
+					{
+						_eyeData[0]._curTexture = _aiming;
+					}
+					else
+					{
+						_eyeData[0]._curTexture = _blinkSignalArg.blinkClose ? _closed : _open;
+					}
+				}
+				if(!UpdateEye(pawnState, bodyPartStatus, rightEyePartLocator, 1))
+				{
+					_eyeData[1]._portraitTexture = _open;
+					_eyeData[1]._curTexture = _blinkSignalArg.blinkClose ? _closed : _open;
+				}
 			}
-			BodyPartStatus.Status partStatus;
-			if(bodyPartStatus.GetPartStatus(eyePartLocator.PartRecord, out partStatus) && partStatus.missing)
+		}
+
+		private bool UpdateEyesCommon(PawnState pawnState)
+		{
+			if(!pawnState.Alive || pawnState.Sleeping || !pawnState.Conscious)
 			{
-				_curTexSet = _missing;
-				_curPortraitMatProp = _missing;
-				return;
-			}
-			_curPortraitMatProp = _open;
-			if(_blinkSignalArg.blinkClose || pawnState.Sleeping || !pawnState.Conscious)
-			{
-				_curTexSet = _closed;
-				return;
-			}
-			if(pawnState.Aiming && closeWhenAiming)
-			{
-				_curTexSet = _aiming;
-				return;
+				SetAllEyes(_closed);
+				SetAllEyesPortrait(_closed);
+				return true;
 			}
 			if(pawnState.InPainShock)
 			{
-				_curTexSet = _inPain;
-				return;
+				SetAllEyes(_inPain);
+				SetAllEyesPortrait(_inPain);
+				return true;
 			}
-			_curTexSet = _open;
+			return false;
+		}
+
+		private bool UpdateEye(
+			PawnState pawnState,
+			BodyPartStatus bodyPartStatus,
+			BodyPartLocator bodyPartLocator,
+			int partIdentifier)
+		{
+			BodyPartStatus.Status partStatus;
+			if(bodyPartStatus.GetPartStatus(leftEyePartLocator.PartRecord, out partStatus) && partStatus.missing)
+			{
+				_eyeData[partIdentifier]._curTexture = _missing;
+				_eyeData[partIdentifier]._portraitTexture = _missing;
+				return true;
+			}
+			return false;
+		}
+		
+		private void SetAllEyes(TextureSet texture)
+		{
+			_eyeData[0]._curTexture = texture;
+			_eyeData[1]._curTexture = texture;
+		}
+
+		private void SetAllEyesPortrait(TextureSet texture)
+		{
+			_eyeData[0]._portraitTexture = texture;
+			_eyeData[1]._portraitTexture = texture;
 		}
 
 		public void Render(
@@ -134,11 +174,12 @@ namespace PawnPlus.Parts
 			Rot4 rootRot4,
 			Vector3 renderNodeOffset,
 			Mesh renderNodeMesh,
+			int partIdentifier,
 			bool portrait)
 		{
 			TextureSet curTexSet = portrait ?
-				_curPortraitMatProp :
-				_curTexSet;
+				_eyeData[partIdentifier]._portraitTexture:
+				_eyeData[partIdentifier]._curTexture;
 			if(curTexSet == null)
 			{
 				return;
@@ -148,7 +189,7 @@ namespace PawnPlus.Parts
 			Vector3 offset = rootQuat * (renderNodeOffset + additionalOffset);
 			if(!portrait)
 			{
-				_matPropBlock.SetTexture(Shaders.MainTexPropID, curTextureArray);
+				_matPropBlock.SetTexture(Shaders.MainTexPropID, _eyeData[partIdentifier]._curTexture.GetTextureArray());
 				_matPropBlock.SetFloat(Shaders.TexIndexPropID, index);
 				Shaders.FacePart.SetColor(Shaders.ColorOnePropID, Color.black);
 				UnityEngine.Graphics.DrawMesh(

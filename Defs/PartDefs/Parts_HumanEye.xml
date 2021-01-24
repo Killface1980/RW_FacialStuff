@@ -17,33 +17,38 @@
 			<categoryDef>Eyes</categoryDef>
 		</partClass>
 		<raceBodyDef>Human</raceBodyDef>
+		<!-- Class must implement PawnPlus.Parts.IPartRenderer interface. -->
+		<partRenderer Class="PawnPlus.Parts.HumanEyeRenderer">
+			<closeWhenAiming>true</closeWhenAiming>
+			<additionalOffset>(0, 0, 0)</additionalOffset>
+			<leftEyePartLocator>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>left eye</bodyPartLabel>
+			</leftEyePartLocator>
+			<rightEyePartLocator>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Eye</bodyPartDef>
+				<bodyPartLabel>right eye</bodyPartLabel>
+			</rightEyePartLocator>
+		</partRenderer>
 		<parts>
 			<li>
 				<renderNodeName>HumanLeftEye</renderNodeName>
+				<!-- An integer value that is passed to the partRenderer when rendering.
+				It's up to the partRenderer implementation to interpret it.
+				For HumanEyeRenderer, 0 indicates left eye and 1 indicates right eye.
+				-->
+				<partIdentifier>0</partIdentifier>
+				<!-- 
+				Any parts using render nodes included in this list won't be rendered if this
+				part is active.
+				-->
 				<occludedRenderNodes></occludedRenderNodes>
-				<!-- Class must implement PawnPlus.Parts.IPartRenderer interface. -->
-				<partRenderer Class="PawnPlus.Parts.HumanEyeRenderer">
-					<closeWhenAiming>true</closeWhenAiming>
-					<additionalOffset>(0, 0, 0)</additionalOffset>
-					<eyePartLocator>
-						<bodyDef>Human</bodyDef>
-						<bodyPartDef>Eye</bodyPartDef>
-						<bodyPartLabel>left eye</bodyPartLabel>
-					</eyePartLocator>
-				</partRenderer>
 			</li>
 			<li>
 				<renderNodeName>HumanRightEye</renderNodeName>
-				<occludedRenderNodes></occludedRenderNodes>
-				<partRenderer Class="PawnPlus.Parts.HumanEyeRenderer">
-					<closeWhenAiming>false</closeWhenAiming>
-					<additionalOffset>(0, 0, 0)</additionalOffset>
-					<eyePartLocator>
-						<bodyDef>Human</bodyDef>
-						<bodyPartDef>Eye</bodyPartDef>
-						<bodyPartLabel>right eye</bodyPartLabel>
-					</eyePartLocator>
-				</partRenderer>
+				<partIdentifier>1</partIdentifier>
 			</li>
 		</parts>
 	</PawnPlus.Defs.PartDef>

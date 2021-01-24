@@ -10,23 +10,8 @@ namespace PawnPlus.Defs
         public class SinglePart
 		{
             public string renderNodeName;
+            public int partIdentifier;
             public List<string> occludedRenderNodes;
-            public IPartRenderer partRenderer;
-
-            [Unsaved(false)]
-            public RootType _rootType;
-
-            [Unsaved(false)]
-            public IPartRenderer _renderer;
-
-            [Unsaved(false)]
-            public TickDelegate _tickDelegate;
-
-            [Unsaved(false)]
-            public bool _occluded;
-
-            [Unsaved(false)]
-            public RenderParam[] _renderParams;
         }
 
         public HairGender hairGender;
@@ -34,7 +19,9 @@ namespace PawnPlus.Defs
         public List<string> hairTags = new List<string>();
 
         public Parts.PartClass partClass = new PartClass();
-        
+
+        public IPartRenderer partRenderer;
+
         public BodyDef raceBodyDef;
 
         public List<PartDef.SinglePart> parts;
@@ -42,7 +29,7 @@ namespace PawnPlus.Defs
         public Dictionary<string, string> namedTexPaths = new Dictionary<string, string>();
 
         public string defaultTexPath;
-
+                
         public static Dictionary<PartCategoryDef, List<PartDef>> GetCategoriesInRace(BodyDef raceBodyDef)
 		{
             if(_allParts.TryGetValue(raceBodyDef, out Dictionary<PartCategoryDef, List<PartDef>> partsInCategory))

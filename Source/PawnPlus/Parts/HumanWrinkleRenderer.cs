@@ -39,7 +39,8 @@ namespace PawnPlus.Parts
 			Quaternion rootQuat, 
 			Rot4 rootRot4, 
 			Vector3 renderNodeOffset, 
-			Mesh renderNodeMesh, 
+			Mesh renderNodeMesh,
+			int partIdentifier,
 			bool portrait)
 		{
 			Vector3 offset = rootQuat * (renderNodeOffset + additionalOffset);

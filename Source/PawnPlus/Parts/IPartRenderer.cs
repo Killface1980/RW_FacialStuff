@@ -24,6 +24,7 @@ namespace PawnPlus.Parts
 			Rot4 rootRot4,
 			Vector3 renderNodeOffset,
 			Mesh renderNodeMesh,
+			int partIdentifier,
 			bool portrait);
 	}
 }
