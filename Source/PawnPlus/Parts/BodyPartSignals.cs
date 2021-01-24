@@ -10,16 +10,16 @@ namespace PawnPlus.Parts
 	public class BodyPartSignals
 	{
 		private BodyDef _bodyDef;
-		private Dictionary<int, List<PartSignal>> _bodyPartSignals = new Dictionary<int, List<PartSignal>>();
+		private Dictionary<string, List<PartSignal>> _bodyPartSignals = new Dictionary<string, List<PartSignal>>();
 
 		public BodyPartSignals(BodyDef bodyDef)
 		{
 			_bodyDef = bodyDef;
 		}
 
-		public bool GetSignals(BodyPartRecord bodyPartRecord, out List<PartSignal> partSignals)
+		public bool GetSignals(string signalName, out List<PartSignal> partSignals)
 		{
-			if(!_bodyPartSignals.TryGetValue(bodyPartRecord.Index, out partSignals) || !IsValidBodyPartRecord(bodyPartRecord))
+			if(!_bodyPartSignals.TryGetValue(signalName, out partSignals))
 			{
 				partSignals = new List<PartSignal>();
 				return false;
@@ -27,24 +27,15 @@ namespace PawnPlus.Parts
 			return true;
 		}
 
-		public bool RegisterSignal(BodyPartRecord bodyPartRecord, PartSignal partSignal)
+		public bool RegisterSignal(string signalName, PartSignal partSignal)
 		{
-			if(!IsValidBodyPartRecord(bodyPartRecord))
-			{
-				return false;
-			}
-			if(!_bodyPartSignals.TryGetValue(bodyPartRecord.Index, out List<PartSignal> partSignals))
+			if(!_bodyPartSignals.TryGetValue(signalName, out List<PartSignal> partSignals))
 			{
 				partSignals = new List<PartSignal>();
-				_bodyPartSignals.Add(bodyPartRecord.Index, partSignals);
+				_bodyPartSignals.Add(signalName, partSignals);
 			}
 			partSignals.Add(partSignal);
 			return true;
-		}
-
-		private bool IsValidBodyPartRecord(BodyPartRecord bodyPartRecord)
-		{
-			return bodyPartRecord != null && bodyPartRecord.body == _bodyDef;
 		}
 	}
 }

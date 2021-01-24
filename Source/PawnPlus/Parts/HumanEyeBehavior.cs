@@ -42,9 +42,8 @@ namespace PawnPlus.Parts
 		{
 			List<BodyPartRecord> eyes = bodyDef.GetPartsWithDef(BodyPartDefOf.Eye).ToList();
 			_cachedBlinkSignalArg = new BlinkPartSignalArg() { blinkClose = false };
-			PartSignal blinkSignal = new PartSignal("PP_EyeBlink", _cachedBlinkSignalArg);
-			bodyPartSignals.RegisterSignal(leftEyePartLocator?.PartRecord, blinkSignal);
-			bodyPartSignals.RegisterSignal(rightEyePartLocator?.PartRecord, blinkSignal);
+			PartSignal blinkSignal = new PartSignal(_cachedBlinkSignalArg);
+			bodyPartSignals.RegisterSignal("PP_EyeBlink", blinkSignal);
 		}
 		
 		public void Update(Pawn pawn, PawnState pawnState)

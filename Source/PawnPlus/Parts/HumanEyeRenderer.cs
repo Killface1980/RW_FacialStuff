@@ -70,19 +70,9 @@ namespace PawnPlus.Parts
 			_inPain = namedTexSets["InPain"];
 			_aiming = namedTexSets["Aiming"];
 
-			if(leftEyePartLocator != null)
-			{
-				bodyPartSignals.GetSignals(leftEyePartLocator.PartRecord, out List<PartSignal> partSignals);
-				List<PartSignal> eyeBlinkSignals = partSignals.FindAll(i => i.signalName == "PP_EyeBlink");
-				for(int i = eyeBlinkSignals.Count - 1; i >= 0; --i)
-				{
-					if(eyeBlinkSignals[i].argument is HumanEyeBehavior.BlinkPartSignalArg blinkSignalArg)
-					{
-						_blinkSignalArg = blinkSignalArg;
-						break;
-					}
-				}
-			}
+			bodyPartSignals.GetSignals("PP_EyeBlink", out List<PartSignal> partSignals);
+			PartSignal eyeBlinkSignal = partSignals.Find(i => i.argument is HumanEyeBehavior.BlinkPartSignalArg);
+			_blinkSignalArg = eyeBlinkSignal?.argument as HumanEyeBehavior.BlinkPartSignalArg;
 			// If blink signal couldn't be found, disable eye blinking.
 			if(_blinkSignalArg == null)
 			{

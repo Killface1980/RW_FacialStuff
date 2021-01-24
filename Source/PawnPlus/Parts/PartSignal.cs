@@ -8,12 +8,10 @@ namespace PawnPlus.Parts
 {
 	public class PartSignal
 	{
-		public string signalName;
 		public PartSignalArg argument;
 		
-		public PartSignal(string signalName, PartSignalArg argument, string customSignalLabel = null)
+		public PartSignal(PartSignalArg argument, string customSignalLabel = null)
 		{
-			this.signalName = signalName;
 			this.argument = argument;
 		}
 	}
