@@ -18,13 +18,27 @@ namespace PawnPlus.Parts
 		public BodyPartLocator leftEyePartLocator;
 		public BodyPartLocator rightEyePartLocator;
 
-		private struct EyeData
+		private class EyeData
 		{
 			public TextureSet _curTexture;
 			public TextureSet _portraitTexture;
+			public MaterialPropertyBlock _matPropBlock;
+
+			private TextureSet _prevTexture;
+			private TextureSet _prevPortraitTexture;
+
+			public void Update()
+			{
+				_prevTexture = _curTexture;
+				_prevPortraitTexture = _portraitTexture;
+			}
+
+			public bool TextureChanged()
+			{
+				return _curTexture != _prevTexture;
+			}
 		}
 
-		private MaterialPropertyBlock _matPropBlock = new MaterialPropertyBlock();
 		private TextureSet _open;
 		private TextureSet _closed;
 		private TextureSet _dead;
@@ -78,11 +92,18 @@ namespace PawnPlus.Parts
 			{
 				_blinkSignalArg = new HumanEyeBehavior.BlinkPartSignalArg() { blinkClose = false };
 			}
+			_eyeData[0] = new EyeData();
+			_eyeData[1] = new EyeData();
 			// Initialize portrait graphics because Render() could be called before first Update().
 			SetAllEyesPortrait(_open);
+			_eyeData[0].Update();
+			_eyeData[0]._matPropBlock = new MaterialPropertyBlock();
+			_eyeData[1].Update();
+			_eyeData[1]._matPropBlock = new MaterialPropertyBlock();
 			// If shader property left uninitialized, then the result from other MateriaPropertyBlock 
 			// using the same shader can interfere with it.
-			_matPropBlock.SetColor("_Color", Color.white);
+			_eyeData[0]._matPropBlock.SetColor("_Color", Color.white);
+			_eyeData[1]._matPropBlock.SetColor("_Color", Color.white);
 			tickDelegate.NormalUpdate = Update;
 		}
 		
@@ -91,6 +112,8 @@ namespace PawnPlus.Parts
 			BodyPartStatus bodyPartStatus,
 			ref bool updatePortrait)
 		{
+			_eyeData[0].Update();
+			_eyeData[1].Update();
 			if(!UpdateEyesCommon(pawnState))
 			{
 				if(!UpdateEye(pawnState, bodyPartStatus, leftEyePartLocator, 0))
@@ -110,6 +133,14 @@ namespace PawnPlus.Parts
 					_eyeData[1]._portraitTexture = _open;
 					_eyeData[1]._curTexture = _blinkSignalArg.blinkClose ? _closed : _open;
 				}
+			}
+			if(_eyeData[0].TextureChanged())
+			{
+				_eyeData[0]._matPropBlock.SetTexture(Shaders.MainTexPropID, _eyeData[0]._curTexture.GetTextureArray());
+			}
+			if(_eyeData[1].TextureChanged())
+			{
+				_eyeData[1]._matPropBlock.SetTexture(Shaders.MainTexPropID, _eyeData[1]._curTexture.GetTextureArray());
 			}
 		}
 
@@ -168,7 +199,7 @@ namespace PawnPlus.Parts
 			bool portrait)
 		{
 			TextureSet curTexSet = portrait ?
-				_eyeData[partIdentifier]._portraitTexture:
+				_eyeData[partIdentifier]._portraitTexture :
 				_eyeData[partIdentifier]._curTexture;
 			if(curTexSet == null)
 			{
@@ -179,9 +210,7 @@ namespace PawnPlus.Parts
 			Vector3 offset = rootQuat * (renderNodeOffset + additionalOffset);
 			if(!portrait)
 			{
-				_matPropBlock.SetTexture(Shaders.MainTexPropID, _eyeData[partIdentifier]._curTexture.GetTextureArray());
-				_matPropBlock.SetFloat(Shaders.TexIndexPropID, index);
-				Shaders.FacePart.SetColor(Shaders.ColorOnePropID, Color.black);
+				_eyeData[partIdentifier]._matPropBlock.SetFloat(Shaders.TexIndexPropID, index);
 				UnityEngine.Graphics.DrawMesh(
 					renderNodeMesh,
 					Matrix4x4.TRS(rootPos + offset, rootQuat, Vector3.one),
@@ -189,7 +218,7 @@ namespace PawnPlus.Parts
 					0,
 					null,
 					0,
-					_matPropBlock);
+					_eyeData[partIdentifier]._matPropBlock);
 			}
 			else
 			{
