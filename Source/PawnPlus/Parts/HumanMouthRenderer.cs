@@ -10,7 +10,7 @@ using Verse;
 
 namespace PawnPlus.Parts
 {
-	class HumanMouthRenderer : IPartRenderer
+	class HumanMouthRenderer : PartRendererBase
 	{
 		public BodyPartLocator mouthPartLocator;
 		public Vector3 additionalOffset = new Vector3(0f, 0f, 0f);
@@ -28,13 +28,12 @@ namespace PawnPlus.Parts
 		private MaterialPropertyBlock _matPropBlock = new MaterialPropertyBlock();
 		private int _ticksSinceLastUpdate;
 
-		public void Initialize(
+		public override void Initialize(
 			Pawn pawn,
 			BodyDef bodyDef,
 			string defaultTexPath,
 			Dictionary<string, string> namedTexPaths,
-			BodyPartSignals bodyPartSignals,
-			ref TickDelegate tickDelegate)
+			BodyPartSignals bodyPartSignals)
 		{
 			_pawn = pawn;
 			_default = TextureSet.Create(defaultTexPath);
@@ -69,10 +68,9 @@ namespace PawnPlus.Parts
 			// If shader property left uninitialized, then the result from other MaterialPropertyBlock  
 			// can interfere with it.
 			_matPropBlock.SetColor("_Color", Color.white);
-			tickDelegate.RareUpdate = Update;
 		}
 
-		public void Update(
+		public override void Update(
 			PawnState pawnState,
 			BodyPartStatus bodyPartStatus,
 			ref bool updatePortrait)
@@ -119,7 +117,7 @@ namespace PawnPlus.Parts
 			_curTexSet = _happy;
 		}
 
-		public void Render(
+		public override void Render(
 			Vector3 rootPos,
 			Quaternion rootQuat,
 			Rot4 rootRot4,
@@ -159,7 +157,8 @@ namespace PawnPlus.Parts
 			}
 		}
 
-		public object Clone()
+
+		public override object Clone()
 		{
 			return MemberwiseClone();
 		}

@@ -142,7 +142,6 @@
     <Compile Include="Enums\Tween.cs" />
     <Compile Include="Enums\WalkcycleType.cs" />
     <Compile Include="Parts\SimplePartRenderer.cs" />
-    <Compile Include="Parts\TickDelegate.cs" />
     <Compile Include="PawnPlusModBase.cs" />
     <Compile Include="Graphics\Graphic_Hair.cs" />
     <Compile Include="Graphics\PawnBodyGraphic.cs" />
@@ -154,7 +153,7 @@
     <Compile Include="Harmony\HarmonyPatch_ShaderUtility.cs" />
     <Compile Include="Parts\HumanEyeRenderer.cs" />
     <Compile Include="Parts\IPartBehavior.cs" />
-    <Compile Include="Parts\IPartRenderer.cs" />
+    <Compile Include="Parts\PartRendererBase.cs" />
     <Compile Include="IHeadBehavior.cs" />
     <Compile Include="PawnExtensions.cs" />
     <Compile Include="PawnState.cs" />

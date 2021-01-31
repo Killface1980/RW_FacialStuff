@@ -17,7 +17,7 @@
 			<categoryDef>Eyes</categoryDef>
 		</partClass>
 		<raceBodyDef>Human</raceBodyDef>
-		<!-- Class must implement PawnPlus.Parts.IPartRenderer interface. -->
+		<!-- Class must override PawnPlus.Parts.PartRendererBase class. -->
 		<partRenderer Class="PawnPlus.Parts.HumanEyeRenderer">
 			<additionalOffset>(0, 0, 0)</additionalOffset>
 			<leftEyePartLocator>

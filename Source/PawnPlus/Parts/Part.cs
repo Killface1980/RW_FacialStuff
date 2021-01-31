@@ -21,8 +21,7 @@ namespace PawnPlus.Parts
         }
 
         private PartDef _partDef;
-        private IPartRenderer _partRenderer;
-        private TickDelegate _tickDelegate;
+        private PartRendererBase _partRenderer;
         private List<SinglePart> _parts;
         
         public static Part Create(Pawn pawn, PartDef partDef, BodyPartSignals bodyPartSignals)
@@ -38,17 +37,21 @@ namespace PawnPlus.Parts
             return new Part(pawn, partDef, bodyPartSignals);
 		}
 
+        public Part Clone()
+        {
+            return null;
+        }
+        
         private Part(Pawn pawn, PartDef partDef, BodyPartSignals bodyPartSignals)
 		{
             _partDef = partDef;
-            _partRenderer = (IPartRenderer)partDef.partRenderer.Clone();
+            _partRenderer = (PartRendererBase)partDef.partRenderer.Clone();
             _partRenderer.Initialize(
                 pawn,
                 pawn.RaceProps.body,
                 partDef.defaultTexPath,
                 partDef.namedTexPaths,
-                bodyPartSignals,
-                ref _tickDelegate);
+                bodyPartSignals);
             _parts = new List<Part.SinglePart>();
             foreach(var part in partDef.parts)
             {
@@ -64,37 +67,33 @@ namespace PawnPlus.Parts
             }
         }
         
+        private Part()
+		{
+            _parts = new List<SinglePart>();
+        }
+
         public void Update(PawnState pawnState, BodyPartStatus bodyPartStatus, ref bool updatePortrait)
 		{
-            if(_tickDelegate.NormalUpdate != null)
-            {
-                _tickDelegate.NormalUpdate(
-                    pawnState,
-                    bodyPartStatus,
-                    ref updatePortrait);
-            }
+            _partRenderer.Update(
+                pawnState,
+                bodyPartStatus,
+                ref updatePortrait);
         }
 
         public void UpdateRare(PawnState pawnState, BodyPartStatus bodyPartStatus, ref bool updatePortrait)
         {
-            if(_tickDelegate.RareUpdate != null)
-            {
-                _tickDelegate.RareUpdate(
-                    pawnState,
-                    bodyPartStatus,
-                    ref updatePortrait);
-            }
+            _partRenderer.UpdateRare(
+                pawnState,
+                bodyPartStatus,
+                ref updatePortrait);
         }
 
         public void UpdateLong(PawnState pawnState, BodyPartStatus bodyPartStatus, ref bool updatePortrait)
         {
-            if(_tickDelegate.LongUpdate != null)
-            {
-                _tickDelegate.LongUpdate(
-                    pawnState,
-                    bodyPartStatus,
-                    ref updatePortrait);
-            }
+            _partRenderer.UpdateLong(
+                pawnState,
+                bodyPartStatus,
+                ref updatePortrait);
         }
 
         public void RenderPart(

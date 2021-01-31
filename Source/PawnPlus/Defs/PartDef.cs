@@ -20,7 +20,7 @@ namespace PawnPlus.Defs
 
         public Parts.PartClass partClass = new PartClass();
 
-        public IPartRenderer partRenderer;
+        public PartRendererBase partRenderer;
 
         public BodyDef raceBodyDef;
 

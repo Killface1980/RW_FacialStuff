@@ -9,7 +9,7 @@ using Verse;
 
 namespace PawnPlus.Parts
 {
-	public class HumanWrinkleRenderer : IPartRenderer
+	public class HumanWrinkleRenderer : PartRendererBase
 	{
 		public SimpleCurve ageIntensityCurve;
 		public Vector3 additionalOffset = new Vector3(0f, 0f, 0f);
@@ -18,13 +18,12 @@ namespace PawnPlus.Parts
 		private TextureSet _textureSet;
 		private Color _skinColor;
 
-		public void Initialize(
+		public override void Initialize(
 			Pawn pawn, 
 			BodyDef bodyDef, 
 			string defaultTexPath, 
 			Dictionary<string, string> namedTexPaths, 
-			BodyPartSignals bodyPartSignals, 
-			ref TickDelegate tickDelegate)
+			BodyPartSignals bodyPartSignals)
 		{
 			_skinColor = pawn.story.SkinColor;
 			float intensity = ageIntensityCurve.Evaluate(pawn.ageTracker.AgeBiologicalYearsFloat);
@@ -34,7 +33,7 @@ namespace PawnPlus.Parts
 			_matPropBlock.SetColor("_Color", _skinColor);
 		}
 
-		public void Render(
+		public override void Render(
 			Vector3 rootPos, 
 			Quaternion rootQuat, 
 			Rot4 rootRot4, 
@@ -67,7 +66,8 @@ namespace PawnPlus.Parts
 			}
 		}
 
-		public object Clone()
+
+		public override object Clone()
 		{
 			return MemberwiseClone();
 		}

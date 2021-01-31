@@ -10,7 +10,7 @@ using Verse;
 
 namespace PawnPlus.Parts
 {
-	class FacialHairRenderer : IPartRenderer
+	class FacialHairRenderer : PartRendererBase
 	{
 		private TextureSet _textureSet;
 		private MaterialPropertyBlock _matPropBlock = new MaterialPropertyBlock();
@@ -18,13 +18,12 @@ namespace PawnPlus.Parts
 
 		public Vector3 additionalOffset = new Vector3(0f, 0f, 0f);
 
-		public void Initialize(
+		public override void Initialize(
 			Pawn pawn,
 			BodyDef bodyDef,
 			string defaultTexPath,
 			Dictionary<string, string> namedTexPaths,
-			BodyPartSignals bodyPartSignals,
-			ref TickDelegate tickDelegate)
+			BodyPartSignals bodyPartSignals)
 		{
 			_hairColor = pawn.story.hairColor;
 			_textureSet = TextureSet.Create(defaultTexPath);
@@ -36,7 +35,7 @@ namespace PawnPlus.Parts
 			_matPropBlock.SetTexture("_MainTex", _textureSet.GetTextureArray());
 		}
 
-		public void Render(
+		public override void Render(
 			Vector3 rootPos,
 			Quaternion rootQuat,
 			Rot4 rootRot4,
@@ -72,7 +71,8 @@ namespace PawnPlus.Parts
 			}
 		}
 
-		public object Clone()
+
+		public override object Clone()
 		{
 			return MemberwiseClone();
 		}

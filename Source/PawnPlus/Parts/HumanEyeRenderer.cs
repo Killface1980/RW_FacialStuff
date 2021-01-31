@@ -11,7 +11,7 @@ using Verse;
 
 namespace PawnPlus.Parts
 {
-	public class HumanEyeRenderer : IPartRenderer
+	public class HumanEyeRenderer : PartRendererBase
 	{
 		public Vector3 additionalOffset = new Vector3(0f, 0f, 0f);
 		public BodyPartLocator leftEyePartLocator;
@@ -129,13 +129,12 @@ namespace PawnPlus.Parts
 			}
 		}
 						
-		public void Initialize(
+		public override void Initialize(
 			Pawn pawn,
 			BodyDef bodyDef,
 			string defaultTexPath,
 			Dictionary<string, string> namedTexPaths,
-			BodyPartSignals bodyPartSignals,
-			ref TickDelegate tickDelegate)
+			BodyPartSignals bodyPartSignals)
 		{
 			TextureSet defaultTexSet = TextureSet.Create(defaultTexPath);
 			Dictionary<string, TextureSet> namedTexSets = 
@@ -176,10 +175,9 @@ namespace PawnPlus.Parts
 			_eyeData = new EyeData[2];
 			_eyeData[0] = new EyeData(this, true, leftEyePartLocator);
 			_eyeData[1] = new EyeData(this, false, rightEyePartLocator);
-			tickDelegate.NormalUpdate = Update;
 		}
 		
-		public void Update(
+		public override void Update(
 			PawnState pawnState,
 			BodyPartStatus bodyPartStatus,
 			ref bool updatePortrait)
@@ -190,7 +188,7 @@ namespace PawnPlus.Parts
 			}
 		}
 				
-		public void Render(
+		public override void Render(
 			Vector3 rootPos,
 			Quaternion rootQuat,
 			Rot4 rootRot4,
@@ -204,7 +202,7 @@ namespace PawnPlus.Parts
 
 		}
 
-		public object Clone()
+		public override object Clone()
 		{
 			return MemberwiseClone();
 		}
