@@ -244,12 +244,12 @@ namespace PawnPlus
                         partBehavior.Update(Pawn, _pawnState);
 					}
                     bool updatePortrait = false;
-                    foreach(var pair in _realPartData)
+                    foreach(var pair in _dispPartData)
 					{
                         bool updatePortraitTemp = false;
                         pair.Value.Update(_pawnState, _bodyPartStatus, ref updatePortraitTemp);
                         updatePortrait |= updatePortraitTemp;
-                    }                 
+                    }
                     if(updatePortrait)
 					{
                         PortraitsCache.SetDirty(Pawn);
@@ -270,7 +270,7 @@ namespace PawnPlus
                 if(canUpdatePawn)
                 {
                     bool updatePortrait = false;
-                    foreach(var pair in _realPartData)
+                    foreach(var pair in _dispPartData)
                     {
                         bool updatePortraitTemp = false;
                         pair.Value.UpdateRare(_pawnState, _bodyPartStatus, ref updatePortraitTemp);
@@ -296,7 +296,7 @@ namespace PawnPlus
                 if(canUpdatePawn)
                 {
                     bool updatePortrait = false;
-                    foreach(var pair in _realPartData)
+                    foreach(var pair in _dispPartData)
                     {
                         bool updatePortraitTemp = false;
                         pair.Value.UpdateLong(_pawnState, _bodyPartStatus, ref updatePortraitTemp);
@@ -309,6 +309,26 @@ namespace PawnPlus
                 }
             }
         }
+
+        public Dictionary<PartCategoryDef, Part> ClonePartData()
+		{
+            Dictionary<PartCategoryDef, Part> clonedParts = new Dictionary<PartCategoryDef, Part>();
+            foreach(var pair in _realPartData)
+			{
+                clonedParts.Add(pair.Key, pair.Value.ClonePart());
+			}
+            return clonedParts;
+        }
+
+        public void SetPartDisplay(Dictionary<PartCategoryDef, Part> parts)
+		{
+            _dispPartData = parts;
+		}
+
+        public void RestorePartDisplay()
+		{
+            _dispPartData = _realPartData;
+		}
 
 		private void BuildPartBehaviors()
 		{
