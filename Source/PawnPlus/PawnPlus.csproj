@@ -100,6 +100,7 @@
     <Compile Include="BodyPartRecordExtension.cs" />
     <Compile Include="Parts\HumanMouthRenderer.cs" />
     <Compile Include="Parts\HumanWrinkleRenderer.cs" />
+    <Compile Include="Parts\Part.cs" />
     <Compile Include="Parts\PartGenHelper.cs" />
     <Compile Include="Parts\PartSignal.cs" />
     <Compile Include="Parts\PartSignalArg.cs" />
