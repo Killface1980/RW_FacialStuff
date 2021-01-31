@@ -19,7 +19,6 @@
 		<raceBodyDef>Human</raceBodyDef>
 		<!-- Class must implement PawnPlus.Parts.IPartRenderer interface. -->
 		<partRenderer Class="PawnPlus.Parts.HumanEyeRenderer">
-			<closeWhenAiming>true</closeWhenAiming>
 			<additionalOffset>(0, 0, 0)</additionalOffset>
 			<leftEyePartLocator>
 				<bodyDef>Human</bodyDef>
