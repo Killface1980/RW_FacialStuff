@@ -192,6 +192,7 @@ namespace PawnPlus
 					// End social interaction if enough time has passed
 					// or if pawn is unable to see the target
 					if((Find.TickManager.TicksGame - _targetStartTick) > socialDurationTick || 
+						!_target.Spawned || 
 						!pawn.CanSee(_target))
 					{
 						_curTargetType = IHeadBehavior.TargetType.None;
