@@ -162,13 +162,7 @@ namespace PawnPlus
 			}
 
             _pawnState.UpdateState();
-
-            _headBehavior.Initialize(Pawn);
-            foreach(var partBehavior in _partBehaviors)
-            {
-                partBehavior.Initialize(Pawn.RaceProps.body, _bodyPartSignals);
-            }
-
+            
 			if(_partDefs == null)
 			{
 				if(Props.partGenHelper == null)
@@ -185,6 +179,12 @@ namespace PawnPlus
 				);
 				Props.partGenHelper.PartsPostGeneration(Pawn);
 			}
+
+            _headBehavior.Initialize(Pawn);
+            foreach(var partBehavior in _partBehaviors)
+            {
+                partBehavior.Initialize(Pawn.RaceProps.body, _bodyPartSignals);
+            }
 
             _realPartData = new Dictionary<PartCategoryDef, Part>();
             foreach(var pair in _partDefs)
