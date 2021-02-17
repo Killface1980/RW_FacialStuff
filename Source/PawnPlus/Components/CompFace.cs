@@ -1,5 +1,4 @@
-﻿using PawnPlus.Animator;
-using PawnPlus.DefOfs;
+﻿using PawnPlus.DefOfs;
 using PawnPlus.Defs;
 using PawnPlus.Graphics;
 using JetBrains.Annotations;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PawnPlus.Animator;
 using PawnPlus.AnimatorWindows;
 using PawnPlus.Harmony;
 using PawnPlus.Tweener;
@@ -59,8 +58,6 @@ namespace PawnPlus
 
                     rootLoc.z += bam;
                     quat = this.QuatBody(quat, this.CompAnimator.MovedPercent);
-
-                    // Log.Message(CompFace.Pawn + " - " + this.movedPercent + " - " + bam.ToString());
                 }
             }
 
@@ -179,11 +176,6 @@ namespace PawnPlus
                 weaponPosition += currentOffset;
             }
 
-            // else if (damageDef == DamageDefOf.Blunt || damageDef == DamageDefOf.Cut)
-            // {
-            // totalSwingAngle = 120;
-            // weaponPosition += currentOffset + new Vector3(0, 0, Mathf.Sin(magnitude * Mathf.PI / jitterMax) / 10);
-            // }
             float angle = animationPhasePercent * totalSwingAngle;
             weaponAngle[0] += (flipped ? -1f : 1f) * angle;
             weaponAngle[1] += (flipped ? -1f : 1f) * angle;
@@ -481,11 +473,6 @@ namespace PawnPlus
                     drawQuat * Quaternion.AngleAxis(0, Vector3.up),
                     hipMat,
                     portrait);
-
-                // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z),
-                // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
-                // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z2),
-                // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);
             }
         }
 
@@ -764,51 +751,12 @@ namespace PawnPlus
         public virtual void SelectPosecycle()
         {
             return;
-            /*if (HarmonyPatchesFS.AnimatorIsOpen())
-            {
-                //  this.CompAnimator.PoseCycle = MainTabWindow_PoseAnimator.EditorPoseCycle;
-            }
-
-            if (this.Pawn.CurJob != null)
-            {
-                BodyAnimDef animDef = this.CompAnimator.BodyAnim;
-
-                List<PoseCycleDef> cycles = animDef?.poseCycles;
-
-                if (cycles != null && cycles.Count > 0)
-                {
-                    this.CompAnimator.PoseCycle = animDef.poseCycles.FirstOrDefault();
-                }
-
-                // switch (this.Pawn.CurJob.locomotionUrgency)
-                // {
-                // case LocomotionUrgency.None:
-                // case LocomotionUrgency.Amble:
-                // this.walkCycle = WalkCycleDefOf.Biped_Amble;
-                // break;
-                // case LocomotionUrgency.Walk:
-                // this.walkCycle = WalkCycleDefOf.Biped_Walk;
-                // break;
-                // case LocomotionUrgency.Jog:
-                // this.walkCycle = WalkCycleDefOf.Biped_Jog;
-                // break;
-                // case LocomotionUrgency.Sprint:
-                // this.walkCycle = WalkCycleDefOf.Biped_Sprint;
-                // break;
-                // }
-            }*/
         }
 
         public override void Tick(Rot4 bodyFacing, PawnGraphicSet graphics)
         {
             base.Tick(bodyFacing, graphics);
-
-            BodyAnimator animator = this.CompAnimator.BodyAnimator;
-            if (animator != null)
-            {
-                animator.IsPosing(out this._animatedPercent);
-            }
-
+            
             // var curve = bodyFacing.IsHorizontal ? this.walkCycle.BodyOffsetZ : this.walkCycle.BodyOffsetVerticalZ;
             bool pawnInEditor = HarmonyPatchesFS.AnimatorIsOpen() && MainTabWindow_BaseAnimator.Pawn == this.Pawn;
             if (!Find.TickManager.Paused || pawnInEditor)

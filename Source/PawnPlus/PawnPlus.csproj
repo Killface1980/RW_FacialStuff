@@ -96,7 +96,6 @@
     <Compile Include="AnimatorWindows\MainTabWindow_BaseAnimator.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_PoseAnimator.cs" />
     <Compile Include="AnimatorWindows\MainTabWindow_WalkAnimator.cs" />
-    <Compile Include="Animator\BodyAnimator.cs" />
     <Compile Include="BodyPartRecordExtension.cs" />
     <Compile Include="Parts\HumanMouthRenderer.cs" />
     <Compile Include="Parts\HumanWrinkleRenderer.cs" />
