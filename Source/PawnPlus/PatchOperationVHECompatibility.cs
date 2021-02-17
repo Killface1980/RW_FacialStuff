@@ -18,7 +18,7 @@ namespace PawnPlus
 			foreach(object item in xml.SelectNodes(xpath))
 			{
 				XmlNode xmlNode = item as XmlNode;
-				XmlNode xmlNode2 = xmlNode.OwnerDocument.CreateElement("PawnPlus.PartDef");
+				XmlNode xmlNode2 = xmlNode.OwnerDocument.CreateElement("PawnPlus.Defs.PartDef");
 				var parentNameAttr = xmlNode.OwnerDocument.CreateAttribute("ParentName");
 				parentNameAttr.Value = hideMouth ? "FSHumanBeardHideMouth" : "FSHumanBeardShowMouth";
 				xmlNode2.Attributes.Append(parentNameAttr);
