@@ -3,7 +3,7 @@
 
 	<PawnPlus.Defs.RenderNodeMappingDef>
 		<defName>HumanFaceLargeVanillaHead</defName>
-		<renderNodeName>HumanFaceLarge</renderNodeName>
+		<renderNodeName>HumanHead</renderNodeName>
 		<rootType>Head</rootType>
 		<rootTexturesToRenderInfoMapping>
 			<li mappingName="Human_MF_A_PNW">
@@ -18,17 +18,17 @@
 				<renderInfoPerRotation>
 					<li>
 						<rotation>South</rotation>
-						<meshDef>FSHumanBeardAverage</meshDef>
+						<meshDef>FSHumanHeadAverage</meshDef>
 						<offset>(0, 0, 0)</offset>
 					</li>
 					<li>
 						<rotation>East</rotation>
-						<meshDef>FSHumanBeardAverage</meshDef>
+						<meshDef>FSHumanHeadAverage</meshDef>
 						<offset>(0, 0, 0)</offset>
 					</li>
 					<li>
 						<rotation>West</rotation>
-						<meshDef>FSHumanBeardAverage_m</meshDef>
+						<meshDef>FSHumanHeadAverage_m</meshDef>
 						<offset>(0, 0, 0)</offset>
 					</li>
 				</renderInfoPerRotation>
@@ -45,17 +45,17 @@
 				<renderInfoPerRotation>
 					<li>
 						<rotation>South</rotation>
-						<meshDef>FSHumanBeardNarrow</meshDef>
+						<meshDef>FSHumanHeadNarrow</meshDef>
 						<offset>(0, 0, 0)</offset>
 					</li>
 					<li>
 						<rotation>East</rotation>
-						<meshDef>FSHumanBeardNarrow</meshDef>
+						<meshDef>FSHumanHeadNarrow</meshDef>
 						<offset>(0, 0, 0)</offset>
 					</li>
 					<li>
 						<rotation>West</rotation>
-						<meshDef>FSHumanBeardNarrow_m</meshDef>
+						<meshDef>FSHumanHeadNarrow_m</meshDef>
 						<offset>(0, 0, 0)</offset>
 					</li>
 				</renderInfoPerRotation>
