@@ -36,6 +36,7 @@ namespace PawnPlus.Harmony
         {
             int bodyPatchState = 0;
             int headPatchState = 0;
+            int hairPatchState = 0;
             int handPatchState = 0;
 
             // Declare ExtraLocalVar
@@ -122,7 +123,7 @@ namespace PawnPlus.Harmony
                 ...
                 */
                 // There is only one Stloc.S 11 instruction in the method
-                if(code.opcode == OpCodes.Stloc_S && code.operand is LocalBuilder lb && lb.LocalIndex == 11 && headPatchState == 0)
+                if(code.opcode == OpCodes.Stloc_S && code.operand is LocalBuilder lb1 && lb1.LocalIndex == 11 && headPatchState == 0)
                 {                   
                     // Emit Stloc.S 11. Injecting a call instruction right before Stloc.S 11 will cause IL compiler to fail
                     // because there is a returned value from op_Multiply() on top of the stack.
@@ -181,6 +182,34 @@ namespace PawnPlus.Harmony
                 /*
                 // Before running the transpiler
                 ...
+                if (!flag && bodyDrawType != RotDrawMode.Dessicated && !headStump)
+		        {
+			        GenDraw.DrawMeshNowOrLater(graphics.HairMeshSet.MeshAt(headFacing), mat: graphics.HairMatAt_NewTemp(headFacing, portrait), loc: loc2, quat: quaternion, drawNow: portrait);
+		        }
+                ...
+
+                // After running the transpiler
+                ...
+                flag = true;
+                if (!flag && bodyDrawType != RotDrawMode.Dessicated && !headStump)
+		        {
+			        GenDraw.DrawMeshNowOrLater(graphics.HairMeshSet.MeshAt(headFacing), mat: graphics.HairMatAt_NewTemp(headFacing, portrait), loc: loc2, quat: quaternion, drawNow: portrait);
+		        }
+                ...
+                */
+                if(code.opcode == OpCodes.Ldloc_S && code.operand is LocalBuilder lb2 && lb2.LocalIndex == 14 && hairPatchState == 0)
+				{
+                    if(instList[i+1].opcode == OpCodes.Brtrue_S)
+					{
+                        yield return new CodeInstruction(OpCodes.Ldc_I4_1);
+                        yield return new CodeInstruction(OpCodes.Stloc_S, lb2);
+                        hairPatchState = 1;
+                    }
+				}
+
+                /*
+                // Before running the transpiler
+                ...
                 if (portrait)
 	            {
 		            return;
@@ -231,6 +260,10 @@ namespace PawnPlus.Harmony
             {
                 Log.Warning("Pawn Plus: code for rendering head wasn't injected");
             }
+            if(hairPatchState != 1)
+			{
+                Log.Warning("Pawn Plus: code for overriding head rendering wasn't injected");
+			}
             if(handPatchState != 1)
 			{
                 Log.Warning("Pawn Plus: code for rendering hand and feet wasn't injected");

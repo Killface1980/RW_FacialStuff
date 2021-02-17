@@ -82,11 +82,7 @@ namespace PawnPlus
                                 headQuat);
                         }
                     }
-                    // When CurrentHeadCoverage == HeadCoverage.None, let the vanilla routine draw the hair
-                    if(CurrentHeadCoverage != HeadCoverage.None)
-				    {
-                        DrawHairBasedOnCoverage(headFacing, headPos, headQuat, portrait);
-                    }
+                    DrawHairBasedOnCoverage(headFacing, headPos, headQuat, portrait);
                 }
             }
             return headDrawn;
