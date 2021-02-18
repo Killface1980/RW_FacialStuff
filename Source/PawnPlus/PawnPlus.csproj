@@ -170,6 +170,8 @@
     <Compile Include="UI\DialogEditAppearance.cs" />
     <Compile Include="UI\DialogEditAppearance_Subclass.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Parts\HumanHairRenderer.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

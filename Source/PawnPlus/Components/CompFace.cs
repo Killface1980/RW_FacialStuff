@@ -82,56 +82,9 @@ namespace PawnPlus
                                 headQuat);
                         }
                     }
-                    DrawHairBasedOnCoverage(headFacing, headPos, headQuat, portrait);
                 }
             }
             return headDrawn;
-        }
-
-        // Draw hair using different cutout masks based on head coverage
-        public void DrawHairBasedOnCoverage(
-            Rot4 headFacing, 
-            Vector3 headDrawLoc, 
-            Quaternion headQuat, 
-            bool portrait)
-		{
-            PawnGraphicSet graphics = Pawn.Drawer.renderer.graphics;
-            Vector3 hairDrawLoc = headDrawLoc;
-            // Constant is "YOffsetIntervalClothes". Adding this will ensure that hair is above the head 
-            // and apparel regardless of the head's orientation, but also ensure that it remains below headwear.
-            // Kind of arbitrary, but at least it works.
-            hairDrawLoc.y += 0.00306122447f;
-            Graphic_Hair hairGraphic = graphics.hairGraphic as Graphic_Hair;
-            if(hairGraphic != null)
-            {
-                // Copied from PawnGraphicSet.HairMatAt_NewTemp
-                Material hairBasemat = hairGraphic.MatAt(headFacing, CurrentHeadCoverage);
-                if(!portrait && Pawn.IsInvisible())
-                {
-                    // Invisibility shader ignores the mask texture used in this mod's custom hair shader, which
-                    // cuts out the parts of hair that are poking through headwear.
-                    // However, decompiling vanilla invisibility shader and writing an equivalent shader for this mod's
-                    // custom shader is rather difficult. The only downside of using the vanilla invisibility shader
-                    // is the graphical artifacts, so fixing it will be a low priority task.
-                    hairBasemat = InvisibilityMatPool.GetInvisibleMat(hairBasemat);
-                }
-                // Similar to the invisibility shader, a separate damaged mat shader needs to be written for this
-                // mod's custom hair shader. However, the effect is so subtle that taking time to decompile the vanilla
-                // shader and writing a custom shader isn't worth the time.
-                // graphics.flasher.GetDamagedMat(baseMat);
-                var maskTex = hairBasemat.GetMaskTexture();
-                GenDraw.DrawMeshNowOrLater(
-                    graphics.HairMeshSet.MeshAt(headFacing),
-                    mat: hairBasemat,
-                    loc: hairDrawLoc,
-                    quat: headQuat,
-                    drawNow: portrait);
-            } else
-            {
-                Log.ErrorOnce(
-                    "Pawn Plus: " + Pawn.Name + " has CompFace but doesn't have valid hair graphic of Graphic_Hair class",
-                    "FacialStuff_CompFaceNoValidHair".GetHashCode());
-            }
         }
         
 		public override void Initialize(CompProperties props)

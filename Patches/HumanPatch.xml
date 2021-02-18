@@ -68,6 +68,9 @@
 			<partGenHelper Class="PawnPlus.Parts.PartGenHelper">
 				<partGenParams>
 					<li>
+						<categoryDef>Hair</categoryDef>
+					</li>
+					<li>
 						<categoryDef>Wrinkle</categoryDef>
 					</li>
 					<li>
