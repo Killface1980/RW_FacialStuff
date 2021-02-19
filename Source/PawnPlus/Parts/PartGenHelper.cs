@@ -37,7 +37,6 @@ namespace PawnPlus.Parts
 			Dictionary<PartCategoryDef, PartDef> genParts = new Dictionary<PartCategoryDef, PartDef>();
 			foreach(var partGenParam in partGenParams)
 			{
-				PartCategoryDef categoryDef = partGenParam.categoryDef;
 				float rand = Rand.Value;
 				if(!partGenParam.genChanceAgeCurvePerGender.TryGetValue(pawn.gender, out SimpleCurve genChanceCurve))
 				{
@@ -47,18 +46,34 @@ namespace PawnPlus.Parts
 				{
 					continue;
 				}
-				if(!partsInCategory.TryGetValue(categoryDef, out List<PartDef> partDefList) || partDefList.NullOrEmpty())
+
+				PartCategoryDef categoryDef = partGenParam.categoryDef;
+				PartDef genPart = null;
+				if(categoryDef.defName == "Hair")
 				{
-					Log.Warning(
-						"Pawn Plus: could not generate part for " +
-						pawn +
-						" in the part category " +
-						categoryDef.defName +
-						". No parts are availble.");
-					continue;
+					ModExtensionHair modExtHair = pawn.story.hairDef.GetModExtension<ModExtensionHair>();
+					if(modExtHair == null || modExtHair.partDef == null)
+					{
+						continue;
+					}
+					genPart = modExtHair.partDef;
 				}
-				var candidates = GetCandidates(pawn, pawnFactionDef, partDefList);
-				PartDef genPart = candidates.RandomElementByWeight(p => PartGenHelper.PartChoiceLikelyhoodFor(p.hairGender, pawn.gender));
+				else
+				{
+					if(!partsInCategory.TryGetValue(categoryDef, out List<PartDef> partDefList) || partDefList.NullOrEmpty())
+					{
+						Log.Warning(
+							"Pawn Plus: could not generate part for " +
+							pawn +
+							" in the part category " +
+							categoryDef.defName +
+							". No parts are availble.");
+						continue;
+					}
+					var candidates = GetCandidates(pawn, pawnFactionDef, partDefList);
+					genPart = candidates.RandomElementByWeight(p => PartGenHelper.PartChoiceLikelyhoodFor(p.hairGender, pawn.gender));
+				}
+				
 				genParts.Add(categoryDef, genPart);
 				if(!PartConstraintManager.CheckConstraint(pawn.RaceProps.body, genParts, out PartConstraintDef conflictingConstraintDef))
 				{

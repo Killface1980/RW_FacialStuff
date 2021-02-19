@@ -88,6 +88,7 @@
     <Compile Include="Defs\PartConstraintDef.cs" />
     <Compile Include="Graphics\TextureSet.cs" />
     <Compile Include="Job_EditAppearance.cs" />
+    <Compile Include="Parts\ModExtensionHair.cs" />
     <Compile Include="Parts\PartClass.cs" />
     <Compile Include="Parts\PartConstraintManager.cs" />
     <Compile Include="Parts\BodyPartSignals.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Enums\Tween.cs" />
     <Compile Include="Enums\WalkcycleType.cs" />
     <Compile Include="Parts\SimplePartRenderer.cs" />
+    <Compile Include="PatchOperationHairDefConversion.cs" />
     <Compile Include="PawnPlusModBase.cs" />
     <Compile Include="Graphics\Graphic_Hair.cs" />
     <Compile Include="Graphics\PawnBodyGraphic.cs" />
