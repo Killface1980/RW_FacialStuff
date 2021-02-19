@@ -2,7 +2,7 @@
 <Defs>
 
 	<PawnPlus.Defs.RenderNodeMappingDef>
-		<defName>HumanFaceLargeVanillaHead</defName>
+		<defName>HumanHeadVanillaHead</defName>
 		<renderNodeName>HumanHead</renderNodeName>
 		<rootType>Head</rootType>
 		<rootTexturesToRenderInfoMapping>
@@ -31,6 +31,11 @@
 						<meshDef>FSHumanHeadAverage_m</meshDef>
 						<offset>(0, 0, 0)</offset>
 					</li>
+					<li>
+						<rotation>North</rotation>
+						<meshDef>FSHumanHeadAverage_m</meshDef>
+						<offset>(0, 0, 0)</offset>
+					</li>
 				</renderInfoPerRotation>
 			</li>
 			<li mappingName="Human_MF_N_PNW">
@@ -55,6 +60,11 @@
 					</li>
 					<li>
 						<rotation>West</rotation>
+						<meshDef>FSHumanHeadNarrow_m</meshDef>
+						<offset>(0, 0, 0)</offset>
+					</li>
+					<li>
+						<rotation>North</rotation>
 						<meshDef>FSHumanHeadNarrow_m</meshDef>
 						<offset>(0, 0, 0)</offset>
 					</li>

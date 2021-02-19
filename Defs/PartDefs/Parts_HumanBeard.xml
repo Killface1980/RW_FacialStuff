@@ -8,7 +8,7 @@
 		</partRenderer>
 		<parts>
 			<li>
-				<renderNodeName>HumanHead</renderNodeName>
+				<renderNodeName>HumanFaceFull</renderNodeName>
 				<occludedRenderNodes>
 					<li>HumanMouth</li>
 				</occludedRenderNodes>
@@ -24,7 +24,7 @@
 		</partRenderer>
 		<parts>
 			<li>
-				<renderNodeName>HumanHead</renderNodeName>
+				<renderNodeName>HumanFaceFull</renderNodeName>
 				<occludedRenderNodes></occludedRenderNodes>
 			</li>
 		</parts>
