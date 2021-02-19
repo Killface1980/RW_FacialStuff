@@ -174,6 +174,42 @@ namespace PawnPlus
             Initialized = true;
         }
         
+        public void OnResolveGraphics(PawnGraphicSet graphics)
+		{
+            if(!Initialized)
+            {
+                InitializeFace();
+            }
+            graphics.hairGraphic = GraphicDatabase.Get<Graphic_Hair>(
+                Pawn.story.hairDef.texPath,
+                Shaders.Hair,
+                Vector2.one,
+                Pawn.story.hairColor);
+        }
+
+        public void OnResolveApparelGraphics(PawnGraphicSet graphics)
+		{
+            // Update head coverage status
+            if(Controller.settings.MergeHair)
+            {
+                CurrentHeadCoverage = HeadCoverage.None;
+                var wornApparel = Pawn.apparel.WornApparel.Where(
+                    x => x.def.apparel.LastLayer == ApparelLayerDefOf.Overhead).ToList();
+                if(!wornApparel.NullOrEmpty())
+                {
+                    // Full head coverage has precedence over upper head coverage
+                    if(wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)))
+                    {
+                        CurrentHeadCoverage = HeadCoverage.FullHead;
+                    }
+                    else if(wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)))
+                    {
+                        CurrentHeadCoverage = HeadCoverage.UpperHead;
+                    }
+                }
+            }
+        }
+
 		public override void CompTick()
 		{
 			base.CompTick();

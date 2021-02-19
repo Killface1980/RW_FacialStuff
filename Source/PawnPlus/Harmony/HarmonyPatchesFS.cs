@@ -517,59 +517,17 @@ namespace PawnPlus.Harmony
                 return;
             }            
             pawn.GetCompAnim()?.PawnBodyGraphic?.Initialize();
-
-            // Check if race has face, else return
-            if(!pawn.GetCompFace(out CompFace compFace))
-            {
-                return;
-            }
-
-            // Return if child
-            if(pawn.IsChild() || pawn.GetCompAnim().Deactivated)
-            {
-                return;
-            }
-            
+                        
             __instance.ClearCache();
             pawn.GetComp<CompBodyAnimator>()?.ClearCache();
-
-            if(!compFace.Initialized)
-            {
-                compFace.InitializeFace();
-            }
             
-           __instance.hairGraphic = GraphicDatabase.Get<Graphic_Hair>(
-                pawn.story.hairDef.texPath,
-                Shaders.Hair,
-                Vector2.one,
-                pawn.story.hairColor);
-            PortraitsCache.SetDirty(pawn);
+            pawn.GetComp<CompFace>()?.OnResolveGraphics(__instance);
         }
 
         public static void ResolveApparelGraphics_Postfix(PawnGraphicSet __instance)
         {
             Pawn pawn = __instance.pawn;
-            CompFace compFace = pawn.GetCompFace();
-            // Update head coverage status
-            if(Controller.settings.MergeHair && compFace != null)
-            {
-                HeadCoverage coverage = HeadCoverage.None;
-                var wornApparel = pawn.apparel.WornApparel.Where(
-                    x => x.def.apparel.LastLayer == ApparelLayerDefOf.Overhead).ToList();
-                if(!wornApparel.NullOrEmpty())
-				{
-                    // Full head coverage has precedence over upper head coverage
-                    if(wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.FullHead)))
-                    {
-                        coverage = HeadCoverage.FullHead;
-                    }
-                    else if(wornApparel.Any(x => x.def.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.UpperHead)))
-                    {
-                        coverage = HeadCoverage.UpperHead;
-                    }
-                }
-                compFace.CurrentHeadCoverage = coverage;
-            }
+            pawn.GetComp<CompFace>()?.OnResolveApparelGraphics(__instance);
         }
 
         public static void SetPositionsForHandsOnWeapons(
