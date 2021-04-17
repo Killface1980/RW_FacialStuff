@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Miscellaneous 'CORE'</li>
+		</mods>
+		<success>Always</success>
+		<match Class="PatchOperationAdd">
+			<xpath>Defs</xpath>
+			<value>
+				<WeaponExtensionDef>
+					<weapon>Gun_RailgunMKI</weapon>
+					<attackAngleOffset IsNull="True" />
+					<weaponPositionOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+					</weaponPositionOffset>
+					<aimedWeaponPositionOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+					</aimedWeaponPositionOffset>
+					<firstHandPosition>
+						<x>-0.2075472</x>
+						<y>0.005</y>
+						<z>-0.06918239</z>
+					</firstHandPosition>
+					<secondHandPosition>
+						<x>0.08805031</x>
+						<y>-0.005</y>
+						<z>0</z>
+					</secondHandPosition>
+					<defName>WeaponExtensionDef_Gun_RailgunMKI</defName>
+					<label>WeaponExtensionDef_Gun_RailgunMKI</label>
+				</WeaponExtensionDef>
+			</value>
+		</match>
+	</Operation>
+
+</Patch>
