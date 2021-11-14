@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<PawnPlus.Defs.RenderNodeMappingDef>
+		<defName>HumanFaceVanillaHead</defName>
+		<renderNodeName>HumanFace</renderNodeName>
+		<rootType>Head</rootType>
+		<rootTexturesToRenderInfoMapping>
+			<li mappingName="Human_MF_A_PNW">
+				<rootTexturePaths>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Average_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Average_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Average_Wide</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Average_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Average_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Average_Wide</li>
+				</rootTexturePaths>
+				<renderInfoPerRotation>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSHumanFaceAverage</meshDef>
+						<offset>(0, 0.002, 0)</offset>
+					</li>
+					<li>
+						<rotation>East</rotation>
+						<meshDef>FSHumanFaceAverage</meshDef>
+						<offset>(0, 0.002, 0)</offset>
+					</li>
+					<li>
+						<rotation>West</rotation>
+						<meshDef>FSHumanFaceAverage_m</meshDef>
+						<offset>(0, 0.002, 0)</offset>
+					</li>
+				</renderInfoPerRotation>
+			</li>
+			<li mappingName="Human_MF_N_PNW">
+				<rootTexturePaths>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Wide</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Wide</li>
+				</rootTexturePaths>
+				<renderInfoPerRotation>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSHumanFaceNarrow</meshDef>
+						<offset>(0, 0.002, 0)</offset>
+					</li>
+					<li>
+						<rotation>East</rotation>
+						<meshDef>FSHumanFaceNarrow</meshDef>
+						<offset>(0, 0.002, 0)</offset>
+					</li>
+					<li>
+						<rotation>West</rotation>
+						<meshDef>FSHumanFaceNarrow_m</meshDef>
+						<offset>(0, 0.002, 0)</offset>
+					</li>
+				</renderInfoPerRotation>
+			</li>
+		</rootTexturesToRenderInfoMapping>
+	</PawnPlus.Defs.RenderNodeMappingDef>
+	
+</Defs>

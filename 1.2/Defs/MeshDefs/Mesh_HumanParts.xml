@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSEyeMesh</defName>
+		<dimension>(0.1875, 0.1875)</dimension>
+		<mirror>false</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSEyeMesh_mirrored</defName>
+		<dimension>(0.1875, 0.1875)</dimension>
+		<mirror>true</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSMouthAverage</defName>
+		<dimension>(0.1875, 0.1875)</dimension>
+		<mirror>false</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSMouthAverage_m</defName>
+		<dimension>(0.1875, 0.1875)</dimension>
+		<mirror>true</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSMouthNarrow</defName>
+		<dimension>(0.15, 0.1875)</dimension>
+		<mirror>false</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSHumanFaceAverage</defName>
+		<dimension>(0.75, 0.75)</dimension>
+		<mirror>false</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSHumanFaceAverage_m</defName>
+		<dimension>(0.75, 0.75)</dimension>
+		<mirror>true</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSHumanFaceNarrow</defName>
+		<dimension>(0.65, 0.75)</dimension>
+		<mirror>false</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSHumanFaceNarrow_m</defName>
+		<dimension>(0.65, 0.75)</dimension>
+		<mirror>true</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSHumanHeadAverage</defName>
+		<dimension>(1.5, 1.5)</dimension>
+		<mirror>false</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSHumanHeadAverage_m</defName>
+		<dimension>(1.5, 1.5)</dimension>
+		<mirror>true</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSHumanHeadNarrow</defName>
+		<dimension>(1.3, 1.5)</dimension>
+		<mirror>false</mirror>
+	</PawnPlus.Defs.MeshDef>
+	
+	<PawnPlus.Defs.MeshDef>
+		<defName>FSHumanHeadNarrow_m</defName>
+		<dimension>(1.3, 1.5)</dimension>
+		<mirror>true</mirror>
+	</PawnPlus.Defs.MeshDef>
+</Defs>

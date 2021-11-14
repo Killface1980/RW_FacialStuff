@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+  <Operation Class="PatchOperationSequence">
+    <success>Always</success>
+    <!--this part adds a component if not already there. pre-requisite-->
+    <operations>
+      <li Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName = "Human"]/comps</xpath>
+        <success>Always</success>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName = "Human"]</xpath>
+          <value>
+            <comps />
+          </value>
+        </nomatch>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName = "Human"]/comps</xpath>
+        <value>
+          <li Class = "PawnPlus.CompProperties_BodyAnimator">
+            <!--needed for everything with hands-->
+            <bipedWithHands>true</bipedWithHands>
+            <!--which hand texture?-->
+            <handType>Human</handType>
+            <!--custom drawers can be used here-->
+            <bodyDrawers>
+              <li Class ="PawnPlus.HumanBipedDrawer"/>
+            </bodyDrawers>
+          </li>
+          <li Class = "PawnPlus.CompProperties_Face">			
+			<!-- 
+			Since this class is defined within CompProperties, it will be only instantiated once and shared 
+			among multiple CompFace instances. However, this behavior is not desired - there need to be 
+			separate instances of the behavior class for each CompFace instance. Therefore, during initialization
+			the instance will be cloned so each instance can have its own member variable for the CompFace
+			that it is associated with. Same goes for other behavior classes. Doing so also allows configurable member 
+			variables like the following.
+			-->
+			<headBehavior Class = "PawnPlus.HumanHeadBehavior">
+				<!-- The amount of ticks needed for the recipient of social interaction to wait before moving its head -->
+				<socialRecipientDelayTick>30</socialRecipientDelayTick>
+				<!-- How long the social interaction lasts in ticks -->
+				<socialDurationTick>240</socialDurationTick>
+				<!-- The speed that pawn can rotate head. Unit in deg/tick ( = degrees per 1/60 of second) -->
+				<headRotationRate>10</headRotationRate>
+			</headBehavior>
+			
+			<!-- Class must implement PawnPlus.Parts.IPartBehavior -->
+			<partBehaviors>
+				<li Class = "PawnPlus.Parts.HumanEyeBehavior">
+					<blinkCloseTicks>6</blinkCloseTicks>
+					<blinkOpenAverageTicks>200</blinkOpenAverageTicks>
+					<blinkOpenMaxRandOffsetTicks>50</blinkOpenMaxRandOffsetTicks>
+					<leftEyePartLocator>
+						<bodyDef>Human</bodyDef>
+						<bodyPartDef>Eye</bodyPartDef>
+						<bodyPartLabel>left eye</bodyPartLabel>
+					</leftEyePartLocator>
+					<rightEyePartLocator>
+						<bodyDef>Human</bodyDef>
+						<bodyPartDef>Eye</bodyPartDef>
+						<bodyPartLabel>right eye</bodyPartLabel>
+					</rightEyePartLocator>
+				</li>
+			</partBehaviors>
+			
+			<!-- Class must be PawnPlus.Parts.PartGenHelper or its subclass -->
+			<partGenHelper Class="PawnPlus.Parts.PartGenHelper">
+				<partGenParams>
+					<li>
+						<categoryDef>Hair</categoryDef>
+					</li>
+					<li>
+						<categoryDef>Wrinkle</categoryDef>
+					</li>
+					<li>
+						<categoryDef>Eyes</categoryDef>
+					</li>
+					<li>
+						<categoryDef>Brow</categoryDef>
+					</li>
+					<li>
+						<categoryDef>Beard</categoryDef>
+						<genChanceAgeCurvePerGender>
+							<li>
+								<key>Male</key>
+								<value>
+									<points>
+										<li>(18, 0)</li>
+										<li>(40, 0.3)</li>
+										<li>(80, 0.4)</li>
+									</points>
+								</value>
+							</li>
+						</genChanceAgeCurvePerGender>
+					</li>
+					<li>
+						<categoryDef>Moustache</categoryDef>
+						<genChanceAgeCurvePerGender>
+							<li>
+								<key>Male</key>
+								<value>
+									<points>
+										<li>(18, 0)</li>
+										<li>(40, 0.6)</li>
+										<li>(80, 0.7)</li>
+									</points>
+								</value>
+							</li>
+						</genChanceAgeCurvePerGender>
+					</li>
+					<li>
+						<categoryDef>Mouth</categoryDef>
+					</li>
+				</partGenParams>
+			</partGenHelper>
+          </li>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+
+</Patch>

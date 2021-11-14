@@ -1,0 +1,482 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>	
+	<PawnPlus.Defs.PartDef Name="FSHumanBeardHideMouth" Abstract="True">
+		<hairGender>Male</hairGender>
+		<raceBodyDef>Human</raceBodyDef>
+		<partRenderer Class="PawnPlus.Parts.FacialHairRenderer">
+			<additionalOffset>(0, 0.006, 0)</additionalOffset>
+		</partRenderer>
+		<parts>
+			<li>
+				<renderNodeName>HumanFaceFull</renderNodeName>
+				<occludedRenderNodes>
+					<li>HumanMouth</li>
+				</occludedRenderNodes>
+			</li>
+		</parts>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef Name="FSHumanBeardShowMouth" Abstract="True">
+		<hairGender>Male</hairGender>
+		<raceBodyDef>Human</raceBodyDef>
+		<partRenderer Class="PawnPlus.Parts.FacialHairRenderer">
+			<additionalOffset>(0, 0.006, 0)</additionalOffset>
+		</partRenderer>
+		<parts>
+			<li>
+				<renderNodeName>HumanFaceFull</renderNodeName>
+				<occludedRenderNodes></occludedRenderNodes>
+			</li>
+		</parts>
+	</PawnPlus.Defs.PartDef>
+		
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardShowMouth">
+		<defName>FSHumanBeardStubble</defName>
+		<label>Stubble</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Shaved</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/Stubble</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+		
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardAnchor</defName>
+		<label>Anchor</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/Anchor</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardBalbo</defName>
+		<label>Balbo</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/Balbo</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardShowMouth">
+		<defName>FSHumanBeardChinCurtain</defName>
+		<label>Chin Curtain</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Lower</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/ChinCurtain</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardShowMouth">
+		<defName>FSHumanBeardChinPuff</defName>
+		<label>Chin Puff</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Lower</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/ChinPuff</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardDuckTail</defName>
+		<label>Duck Tail</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/DuckTail</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardShowMouth">
+		<defName>FSHumanBeardElInsecto</defName>
+		<label>El Insecto</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Lower</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/ElInsecto</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardFranzJoseph</defName>
+		<label>Franz Joseph</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/FranzJoseph</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardFrenchFork</defName>
+		<label>French Fork</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Punk</li>
+			<li>Rural</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/FrenchFork</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardFriendlyMuttonChops</defName>
+		<label>Friendly Mutton Chops</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/FriendlyMuttonChops</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardFullBeard</defName>
+		<label>Full Beard</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/FullBeard</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardGaribaldi</defName>
+		<label>Garibaldi</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/Garibaldi</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardGoatee</defName>
+		<label>Goatee</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Lower</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/Goatee</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardHollywoodian</defName>
+		<label>Hollywoodian</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/Hollywoodian</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardHulihee</defName>
+		<label>Hulihee</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Rural</li>
+			<li>Punk</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/Hulihee</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardImperial</defName>
+		<label>Imperial</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/Imperial</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardMuttonChops</defName>
+		<label>Mutton Chops</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Lower</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/MuttonChops</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardNapoleonIIIImperial</defName>
+		<label>Napoleon III Imperial</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/NapoleonIIIImperial</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardOldDutch</defName>
+		<label>Old Dutch</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Lower</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/OldDutch</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardPetiteGoatee</defName>
+		<label>Petite Goatee</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Lower</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/PetiteGoatee</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardShowMouth">
+		<defName>FSHumanBeardSoulPatch</defName>
+		<label>Soul Patch</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Lower</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/SoulPatch</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardSouvarov</defName>
+		<label>Souvarov</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/Souvarov</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+		
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardTheKlingon</defName>
+		<label>The Klingon</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/TheKlingon</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardTheSparrow</defName>
+		<label>The Sparrow</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Tribal</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/TheSparrow</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardTheWinnfield</defName>
+		<label>The Winnfield</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Rural</li>
+			<li>Punk</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/TheWinnfield</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+		
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardTheZappa</defName>
+		<label>The Zappa</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Rural</li>
+			<li>Punk</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/TheZappa</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardVanDyke</defName>
+		<label>Van Dyke</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/VanDyke</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardCoolSteiner</defName>
+		<label>Cool Steiner</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/CoolSteiner</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardCaptainTiebeard</defName>
+		<label>Captain Tiebeard</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Tribal</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/CaptainTiebeard</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardSanta</defName>
+		<label>Santa</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/Santa</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanBeardHideMouth">
+		<defName>FSHumanBeardTwinPeaks</defName>
+		<label>Twin Peaks</label>
+		<partClass>
+			<categoryDef>Beard</categoryDef>
+			<subcategory>Full</subcategory>
+		</partClass>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Beards/TwinPeaks</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+</Defs>

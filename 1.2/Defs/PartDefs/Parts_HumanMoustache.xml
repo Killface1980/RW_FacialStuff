@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<PawnPlus.Defs.PartDef Name="FSHumanMoustacheBase" Abstract="True">
+		<hairGender>Male</hairGender>
+		<partClass>
+			<categoryDef>Moustache</categoryDef>
+		</partClass>
+		<raceBodyDef>Human</raceBodyDef>
+		<partRenderer Class="PawnPlus.Parts.FacialHairRenderer">
+			<additionalOffset>(0, 0.006, 0)</additionalOffset>
+		</partRenderer>
+		<parts>
+			<li>
+				<renderNodeName>HumanFace</renderNodeName>
+			</li>
+		</parts>
+		<namedTexPaths></namedTexPaths>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanMoustacheBase">
+		<defName>FSHumanMoustacheChaplin</defName>
+		<label>Chaplin</label>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Moustaches/Chaplin</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+
+	<PawnPlus.Defs.PartDef ParentName="FSHumanMoustacheBase">
+		<defName>FSHumanMoustacheDoctorWatson</defName>
+		<label>Doctor Watson</label>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Moustaches/DoctorWatson</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanMoustacheBase">
+		<defName>FSHumanMoustacheFishTail</defName>
+		<label>Fish Tail</label>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Moustaches/FishTail</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanMoustacheBase">
+		<defName>FSHumanMoustacheLeChef</defName>
+		<label>LeChef</label>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Moustaches/LeChef</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanMoustacheBase">
+		<defName>FSHumanMoustacheLittleWatson</defName>
+		<label>Little Watson</label>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Moustaches/LittleWatson</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanMoustacheBase">
+		<defName>FSHumanMoustacheMisterSlave</defName>
+		<label>Mister Slave</label>
+		<hairTags>
+			<li>Rural</li>
+			<li>Punk</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Moustaches/MisterSlave</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanMoustacheBase">
+		<defName>FSHumanMoustacheSouvarov</defName>
+		<label>Souvarov</label>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Moustaches/Souvarov</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+	
+	<PawnPlus.Defs.PartDef ParentName="FSHumanMoustacheBase">
+		<defName>FSHumanMoustacheWestern</defName>
+		<label>Western</label>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<defaultTexPath>Things/Pawn/Humanlike/Moustaches/Western</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+</Defs>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<!-- 
+	RenderNodeMappingDefs function slightly different from typical defs. Instead of defining properties pertaining to a single object, 
+	each RenderNodeMappingDef is a _collection_ of mappings between the head/body texture(s) and the rendering information for 
+	a single render node. The mappings defined in RenderNodeMappingDef will be consolidated for each render node, after all defs have 
+	been loaded. If there are duplicate mappings between head/body texture and render info for a render node, whatever is defined later 
+	will override anything defined earlier. However, if a RenderNodeMappingDef with the same defName is loaded, every mapping defined 
+	in the previously-loaded RenderNodeMappingDef with the same defName will be ignored as per vanilla behavior.
+	-->
+	<PawnPlus.Defs.RenderNodeMappingDef>
+		<!-- 
+		Note that render nodes are not referenced by the defName. This is because multiple defs can define the mapping for a single
+		render node.
+		-->
+		<defName>HumanLeftEyeVanillaHead</defName>
+		<!-- The name of the render node represented by the following mappings. Render node name is referenced in PartDef. -->
+		<renderNodeName>HumanLeftEye</renderNodeName>
+		<!-- 
+		Specifies which root the render node is attached to. Render node will follow the rotation and position of the root
+		when rendering. If there are multiple RenderNodeMappingDefs for the same render node, <rootType> must be the same.
+		Allowed values are: Body and Head
+		-->
+		<rootType>Head</rootType>
+		<rootTexturesToRenderInfoMapping>
+			<!-- 
+			This establishes many-to-one relationship between root texture (head or body) and
+			the renderNode's mesh and offset for each rotation. The mapping can be overriden in a different RenderNodeMappingDef,
+			assuming that the new RenderNodeMappingDef is loaded after this RenderNodeMappingDef.
+			
+			mappingName attribute doesn't serve any functional purpose in-game, but can be 
+			used to locate the mapping when writing a patch.
+			-->
+			<li mappingName="Human_M_A_PNW">
+				<!-- Since <rootType> is Head for this def, the following textures are head textures. -->
+				<rootTexturePaths>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Average_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Average_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Average_Wide</li>
+				</rootTexturePaths>
+				<renderInfoPerRotation>
+					<!-- 
+					If rotation is missing in this list, the part isn't rendered for that rotation 
+					(ex. North and east for left eye) 
+					-->
+					<!-- South -->
+					<li>
+						<!--
+						Indicates what rotation the following properties are for. If there are duplicate rotation in this list, 
+						whatever comes last in the list will be used 
+						-->
+						<rotation>South</rotation>
+						<meshDef>FSEyeMesh_mirrored</meshDef>
+						<!-- 
+						The offset from center of root (in this case, Head). Note that the head mesh is 
+						1.5 by 1.5 in size.
+						--> 
+						<offset>(0.0938, 0.004, -0.0703)</offset>
+					</li>
+					<!-- West -->
+					<li>
+						<rotation>West</rotation>
+						<meshDef>FSEyeMesh_mirrored</meshDef>
+						<offset>(-0.1816, 0.004, -0.0703)</offset>
+					</li>
+				</renderInfoPerRotation>
+			</li>
+			<li mappingName="Human_F_A_PNW">
+				<rootTexturePaths>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Average_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Average_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Average_Wide</li>
+				</rootTexturePaths>
+				<renderInfoPerRotation>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSEyeMesh_mirrored</meshDef>
+						<offset>(0.0938, 0.004, -0.0703)</offset>
+					</li>
+					<li>
+						<rotation>West</rotation>
+						<meshDef>FSEyeMesh_mirrored</meshDef>
+						<offset>(-0.1289, 0.004, -0.0703)</offset>
+					</li>
+				</renderInfoPerRotation>
+			</li>
+			<li mappingName="Human_MF_N_PNW">
+				<rootTexturePaths>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Wide</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Wide</li>
+				</rootTexturePaths>
+				<renderInfoPerRotation>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSEyeMesh_mirrored</meshDef>
+						<offset>(0.0938, 0.004, -0.0703)</offset>
+					</li>
+					<li>
+						<rotation>West</rotation>
+						<meshDef>FSEyeMesh_mirrored</meshDef>
+						<offset>(-0.1055, 0.004, -0.0703)</offset>
+					</li>
+				</renderInfoPerRotation>
+			</li>
+		</rootTexturesToRenderInfoMapping>
+	</PawnPlus.Defs.RenderNodeMappingDef>
+	
+	<PawnPlus.Defs.RenderNodeMappingDef>
+		<defName>HumanRightEyeVanillaHead</defName>
+		<renderNodeName>HumanRightEye</renderNodeName>
+		<rootType>Head</rootType>
+		<rootTexturesToRenderInfoMapping>
+			<li mappingName="Human_M_A_PNW">
+				<rootTexturePaths>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Average_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Average_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Average_Wide</li>
+				</rootTexturePaths>
+				<renderInfoPerRotation>
+					<li>
+						<rotation>East</rotation>
+						<meshDef>FSEyeMesh</meshDef>
+						<offset>(0.1816, 0.004, -0.0703)</offset>
+					</li>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSEyeMesh</meshDef>
+						<offset>(-0.0938, 0.004, -0.0703)</offset>
+					</li>
+				</renderInfoPerRotation>
+			</li>
+			<li mappingName="Human_F_A_PNW">
+				<rootTexturePaths>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Average_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Average_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Average_Wide</li>
+				</rootTexturePaths>
+				<renderInfoPerRotation>
+					<li>
+						<rotation>East</rotation>
+						<meshDef>FSEyeMesh</meshDef>
+						<offset>(0.1289, 0.004, -0.0703)</offset>
+					</li>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSEyeMesh</meshDef>
+						<offset>(-0.0938, 0.004, -0.0703)</offset>
+					</li>
+				</renderInfoPerRotation>
+			</li>
+			<li mappingName="Human_MF_N_PNW">
+				<rootTexturePaths>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Male/Male_Narrow_Wide</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Pointy</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Normal</li>
+					<li>Things/Pawn/Humanlike/Heads/Female/Female_Narrow_Wide</li>
+				</rootTexturePaths>
+				<renderInfoPerRotation>
+					<li>
+						<rotation>East</rotation>
+						<meshDef>FSEyeMesh</meshDef>
+						<offset>(0.1055, 0.004, -0.0703)</offset>
+					</li>
+					<li>
+						<rotation>South</rotation>
+						<meshDef>FSEyeMesh</meshDef>
+						<offset>(-0.0938, 0.004, -0.0703)</offset>
+					</li>
+				</renderInfoPerRotation>
+			</li>
+		</rootTexturesToRenderInfoMapping>
+	</PawnPlus.Defs.RenderNodeMappingDef>
+
+</Defs>

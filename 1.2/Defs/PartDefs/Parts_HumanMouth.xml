@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<PawnPlus.Defs.PartDef>
+		<defName>FSHumanMouth</defName>
+		<label>Human Mouth</label>
+		<hairGender>Any</hairGender>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<partClass>
+			<categoryDef>Mouth</categoryDef>
+		</partClass>
+		<raceBodyDef>Human</raceBodyDef>
+		<partRenderer Class="PawnPlus.Parts.HumanMouthRenderer">
+			<additionalOffset>(0, 0.004, 0)</additionalOffset>
+			<mouthPartLocator>
+				<bodyDef>Human</bodyDef>
+				<bodyPartDef>Jaw</bodyPartDef>
+				<bodyPartLabel></bodyPartLabel>
+			</mouthPartLocator>
+		</partRenderer>
+		<parts>
+			<li>
+				<renderNodeName>HumanMouth</renderNodeName>
+			</li>
+		</parts>
+		<namedTexPaths>
+			<li>
+				<key>Normal</key>
+				<value>Things/Pawn/Humanlike/Mouth/HumanM1Normal</value>
+			</li>
+			<li>
+				<key>Happy</key>
+				<value>Things/Pawn/Humanlike/Mouth/HumanM1Happy</value>
+			</li>
+			<li>
+				<key>Minor</key>
+				<value>Things/Pawn/Humanlike/Mouth/HumanM1Minor</value>
+			</li>
+			<li>
+				<key>Major</key>
+				<value>Things/Pawn/Humanlike/Mouth/HumanM1Major</value>
+			</li>
+			<li>
+				<key>Extreme</key>
+				<value>Things/Pawn/Humanlike/Mouth/HumanM1Extreme</value>
+			</li>
+			<li>
+				<key>Crying</key>
+				<value>Things/Pawn/Humanlike/Mouth/HumanM1Crying</value>
+			</li>
+		</namedTexPaths>
+		<defaultTexPath>Things/Pawn/Humanlike/Mouth/HumanM1Normal</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+</Defs>

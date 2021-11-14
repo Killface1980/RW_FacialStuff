@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<PawnPlus.Defs.PartDef>
+		<defName>FSHumanWrinkle</defName>
+		<hairGender>Any</hairGender>
+		<hairTags>
+			<li>Urban</li>
+			<li>Rural</li>
+			<li>Punk</li>
+			<li>Tribal</li>
+		</hairTags>
+		<partClass>
+			<categoryDef>Wrinkle</categoryDef>
+		</partClass>
+		<raceBodyDef>Human</raceBodyDef>
+		<partRenderer Class="PawnPlus.Parts.HumanWrinkleRenderer">
+			<ageIntensityCurve>
+				<points>
+					<li>(30, 0)</li>
+					<li>(50, 0.5)</li>
+					<li>(80, 1)</li>
+				</points>
+			</ageIntensityCurve>
+			<additionalOffset>(0, 0.002, 0)</additionalOffset>
+		</partRenderer>
+		<parts>
+			<li>
+				<renderNodeName>HumanFace</renderNodeName>
+			</li>
+		</parts>
+		<defaultTexPath>Things/Pawn/Humanlike/Wrinkles/Wrinkle</defaultTexPath>
+	</PawnPlus.Defs.PartDef>
+</Defs>

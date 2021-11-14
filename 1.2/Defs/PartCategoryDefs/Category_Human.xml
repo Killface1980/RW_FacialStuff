@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<PawnPlus.Defs.PartCategoryDef>
+		<defName>Wrinkle</defName>
+		<label>Wrinkle</label>
+		<customization>
+			<!-- If true, then the part can be omitted -->
+			<optional>false</optional>
+			<!-- If true, then the pawn must have body shaping implant to change the parameters -->
+			<requireBodyShaping>true</requireBodyShaping>
+		</customization>
+	</PawnPlus.Defs.PartCategoryDef>
+	
+	<PawnPlus.Defs.PartCategoryDef>
+		<defName>Hair</defName>
+		<label>Hair</label>
+		<customization>
+			<optional>true</optional>
+			<requireBodyShaping>false</requireBodyShaping>
+		</customization>
+	</PawnPlus.Defs.PartCategoryDef>
+
+	<PawnPlus.Defs.PartCategoryDef>
+		<defName>Eyes</defName>
+		<label>Eyes</label>
+		<customization>
+			<optional>false</optional>
+			<requireBodyShaping>true</requireBodyShaping>
+		</customization>
+	</PawnPlus.Defs.PartCategoryDef>
+	
+	<PawnPlus.Defs.PartCategoryDef>
+		<defName>Brow</defName>
+		<label>Brow</label>
+		<customization>
+			<optional>true</optional>
+			<requireBodyShaping>false</requireBodyShaping>
+		</customization>
+	</PawnPlus.Defs.PartCategoryDef>
+	
+	<PawnPlus.Defs.PartCategoryDef>
+		<defName>Beard</defName>
+		<label>Beard</label>
+		<customization>
+			<optional>true</optional>
+			<requireBodyShaping>false</requireBodyShaping>
+		</customization>
+	</PawnPlus.Defs.PartCategoryDef>
+	
+	<PawnPlus.Defs.PartCategoryDef>
+		<defName>Moustache</defName>
+		<label>Moustache</label>
+		<customization>
+			<optional>true</optional>
+			<requireBodyShaping>false</requireBodyShaping>
+		</customization>
+	</PawnPlus.Defs.PartCategoryDef>
+	
+	<PawnPlus.Defs.PartCategoryDef>
+		<defName>Mouth</defName>
+		<label>Mouth</label>
+		<customization>
+			<optional>false</optional>
+			<requireBodyShaping>true</requireBodyShaping>
+		</customization>
+	</PawnPlus.Defs.PartCategoryDef>
+</Defs>
