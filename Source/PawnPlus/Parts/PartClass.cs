@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PawnPlus.Parts
+﻿namespace PawnPlus.Parts
 {
-	public class PartClass
+    using PawnPlus.Defs;
+
+    public class PartClass
 	{
-		public Defs.PartCategoryDef categoryDef;
-		public string subcategory = "";
+		public PartCategoryDef categoryDef;
+		public string subcategory = string.Empty;
 		
 		public static bool operator ==(PartClass a, PartClass b)
 		{

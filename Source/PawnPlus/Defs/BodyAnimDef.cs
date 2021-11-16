@@ -9,15 +9,19 @@
 // ReSharper disable StyleCop.SA1310
 // ReSharper disable CheckNamespace
 
-using PawnPlus;
-using JetBrains.Annotations;
-using System.Collections.Generic;
-using UnityEngine;
-using Verse;
-using Verse.AI;
-
 namespace RimWorld
 {
+    using System.Collections.Generic;
+
+    using JetBrains.Annotations;
+
+    using PawnPlus;
+
+    using UnityEngine;
+
+    using Verse;
+    using Verse.AI;
+
     public class BodyAnimDef : Def
     {
         #region Public Fields

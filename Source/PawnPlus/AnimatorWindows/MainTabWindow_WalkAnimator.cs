@@ -1,18 +1,23 @@
-﻿using PawnPlus.DefOfs;
-using PawnPlus.Defs;
-using PawnPlus.Graphics;
-using JetBrains.Annotations;
-using RimWorld;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using UnityEngine;
-using Verse;
-using Verse.AI;
-
-namespace PawnPlus.AnimatorWindows
+﻿namespace PawnPlus.AnimatorWindows
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+
+    using JetBrains.Annotations;
+
+    using PawnPlus.DefOfs;
+    using PawnPlus.Defs;
+    using PawnPlus.ExportAnimDefs;
+
+    using RimWorld;
+
+    using UnityEngine;
+
+    using Verse;
+    using Verse.AI;
+
     public class MainTabWindow_WalkAnimator : MainTabWindow_BaseAnimator
     {
         #region Public Fields
@@ -33,12 +38,12 @@ namespace PawnPlus.AnimatorWindows
             PawnKeyframes = this.EditorWalkcycle.keyframes;
             this.Label = this.EditorWalkcycle.LabelCap;
         }
+
         #endregion Public Properties
 
         #region Private Properties
 
         // public static float verHeadOffset;
-
         #endregion Private Properties
 
         #region Public Methods
@@ -80,6 +85,7 @@ namespace PawnPlus.AnimatorWindows
         public override void PreOpen()
         {
             base.PreOpen();
+
             // IsMoving = true;
         }
 
@@ -94,7 +100,7 @@ namespace PawnPlus.AnimatorWindows
         {
             base.DoBasicSettingsMenu(listing);
 
-            //  listing.CheckboxLabeled("Moving", ref IsMoving);
+            // listing.CheckboxLabeled("Moving", ref IsMoving);
 
             // listing_Standard.CheckboxLabeled("Equipment", ref Equipment);
 
@@ -185,8 +191,8 @@ namespace PawnPlus.AnimatorWindows
                         this.filePathBodyanim,
                         delegate
                         {
-                            ExportAnimDefs.Defs animDef =
-                                new ExportAnimDefs.Defs(this.BodyAnimDef);
+                            Defs animDef =
+                                new Defs(this.BodyAnimDef);
 
                             DirectXmlSaver.SaveDataObject(
                                 animDef,
@@ -219,7 +225,7 @@ namespace PawnPlus.AnimatorWindows
         protected override void DrawBackground(Rect rect)
         {
             GUI.BeginGroup(rect);
-            var percent = AnimationPercent;
+            float percent = AnimationPercent;
             float width = rect.width;
             float zero = rect.x;
 
@@ -260,11 +266,9 @@ namespace PawnPlus.AnimatorWindows
             // this.DrawBodyStats("legLength", ref bodyAnimDef.legLength, ref sliderRect);
             // this.DrawBodyStats("hipOffsetVerticalFromCenter",
             // ref bodyAnimDef.hipOffsetVerticalFromCenter, ref sliderRect);
-
             Vector2 headOffset = this.BodyAnimDef.headOffset;
             this.DrawBodyStats("headOffsetX", ref headOffset.x, ref sliderRect);
             this.DrawBodyStats("headOffsetY", ref headOffset.y, ref sliderRect);
-
 
             Vector3 shoulderOffset = this.BodyAnimDef.shoulderOffsets[rotation.AsInt];
 
@@ -289,8 +293,8 @@ namespace PawnPlus.AnimatorWindows
 
             this.DrawBodyStats("shoulderOffsetX", ref shoulderOffset.x, ref sliderRect);
             this.DrawBodyStats("shoulderOffsetZ", ref shoulderOffset.z, ref sliderRect);
-            // this.DrawBodyStats("shoulderFront",   ref front,            ref sliderRect);
 
+            // this.DrawBodyStats("shoulderFront",   ref front,            ref sliderRect);
             Vector3 hipOffset = this.BodyAnimDef.hipOffsets[rotation.AsInt];
             if (hipOffset.y == 0f)
             {
@@ -312,8 +316,8 @@ namespace PawnPlus.AnimatorWindows
 
             this.DrawBodyStats("hipOffsetX", ref hipOffset.x, ref sliderRect);
             this.DrawBodyStats("hipOffsetZ", ref hipOffset.z, ref sliderRect);
-            // this.DrawBodyStats("hipFront",   ref hipFront,    ref sliderRect);
 
+            // this.DrawBodyStats("hipFront",   ref hipFront,    ref sliderRect);
             if (GUI.changed)
             {
                 this.BodyAnimDef.headOffset = headOffset;
@@ -528,6 +532,7 @@ namespace PawnPlus.AnimatorWindows
                                   "BodyAngleVertical",
                                   framesAt);
                 }
+
                 framesAt = (from keyframe in frames
                             where keyframe.ShoulderOffsetHorizontalX.HasValue
                             select keyframe.KeyIndex).ToList();
@@ -574,8 +579,8 @@ namespace PawnPlus.AnimatorWindows
 
         protected override void FindRandomPawn()
         {
-            //if (Pawn == null)
             {
+                // if (Pawn == null)
                 base.FindRandomPawn();
 
                 BodyAnimDef anim = this.CompAnim.BodyAnim;
@@ -595,6 +600,7 @@ namespace PawnPlus.AnimatorWindows
                 anim.walkCycles.FirstOrDefault().Value;
             }
         }
+
         #endregion Public Methods
 
         #region Private Methods

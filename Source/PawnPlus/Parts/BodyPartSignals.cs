@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Verse;
-
-namespace PawnPlus.Parts
+﻿namespace PawnPlus.Parts
 {
-	public class BodyPartSignals
+    using System.Collections.Generic;
+
+    using Verse;
+
+    public class BodyPartSignals
 	{
 		private BodyDef _bodyDef;
 		private Dictionary<string, List<PartSignal>> _bodyPartSignals = new Dictionary<string, List<PartSignal>>();
@@ -24,6 +21,7 @@ namespace PawnPlus.Parts
 				partSignals = new List<PartSignal>();
 				return false;
 			}
+
 			return true;
 		}
 
@@ -34,6 +32,7 @@ namespace PawnPlus.Parts
 				partSignals = new List<PartSignal>();
 				_bodyPartSignals.Add(signalName, partSignals);
 			}
+
 			partSignals.Add(partSignal);
 			return true;
 		}

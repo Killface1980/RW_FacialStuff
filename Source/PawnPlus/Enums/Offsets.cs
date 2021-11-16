@@ -1,14 +1,14 @@
 ﻿// ReSharper disable InconsistentNaming
 
-using UnityEngine;
-using Verse;
-
 namespace PawnPlus
 {
+    using UnityEngine;
+
+    using Verse;
+
     public static class Offsets
     {
         //// total max with repetitions: LayerSpacing = 0.46875f;
-
         public const float YOffsetPawns = 0.05f;
 
         private const float SubInterval = 0.00390625f;

@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using Verse;
-
-namespace PawnPlus.Graphics
+﻿namespace PawnPlus.Graphics
 {
-	public class TextureSet
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using UnityEngine;
+
+    using Verse;
+
+    public class TextureSet
 	{
 		private static Dictionary<string, TextureSet> cachedTextureSets = 
 			new Dictionary<string, TextureSet>();
@@ -22,11 +21,13 @@ namespace PawnPlus.Graphics
 			{
 				return null;
 			}
+
 			if(!cachedTextureSets.TryGetValue(texturePath, out TextureSet textureSet))
 			{
 				textureSet = new TextureSet();
 				textureSet.Init(texturePath);
 			}
+
 			return textureSet;
 		}
 		
@@ -66,12 +67,15 @@ namespace PawnPlus.Graphics
 					Log.Error("Failed to find any textures at " + texturePath + " while constructing " + this.ToStringSafe());
 					texArray[0] = BaseContent.BadTex;
 				}
+
 				for(int i = 0; i < this._texIndices.Length; ++i)
 				{
 					_texIndices[i] = 0f;
 				}
+
 				return CreateTextureArray(texArray);
 			}
+
 			int texCount = 0;
 			for(int i = 0; i < texArray.Length; ++i)
 			{
@@ -84,7 +88,8 @@ namespace PawnPlus.Graphics
 				{
 					_texIndices[i] = -1;
 				}
-			}	
+			}
+	
 			if(_texIndices[0] < 0f)
 			{
 				if(_texIndices[2] >= 0f)
@@ -98,10 +103,12 @@ namespace PawnPlus.Graphics
 					_texIndices[0] = _texIndices[3];
 				}
 			}
+
 			if(_texIndices[2] < 0f)
 			{
 				_texIndices[2] = _texIndices[0];
 			}
+
 			if(_texIndices[1] < 0f)
 			{
 				if(_texIndices[3] >= 0f)
@@ -112,6 +119,7 @@ namespace PawnPlus.Graphics
 					_texIndices[1] = _texIndices[0];
 				}
 			}
+
 			if(_texIndices[3] < 0f)
 			{
 				if(_texIndices[1] >= 0f)
@@ -122,6 +130,7 @@ namespace PawnPlus.Graphics
 					_texIndices[3] = _texIndices[0];
 				}
 			}
+
 			return CreateTextureArray(texArray);
 		}
 
@@ -142,11 +151,13 @@ namespace PawnPlus.Graphics
 				{
 					for(int mipLevel = 0; mipLevel < sparseTextureArray[i].mipmapCount; ++mipLevel)
 					{
-						UnityEngine.Graphics.CopyTexture(sparseTextureArray[i], 0, mipLevel, textureArray, curTexIndex, mipLevel);
+						Graphics.CopyTexture(sparseTextureArray[i], 0, mipLevel, textureArray, curTexIndex, mipLevel);
 					}
+
 					++curTexIndex;
 				}
 			}
+
 			return textureArray;
 		}
 	}

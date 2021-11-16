@@ -1,12 +1,12 @@
-﻿// ReSharper disable StyleCop.SA1401
-
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using Verse;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class Settings_Animator : ModSettings
     {
         #region Public Methods

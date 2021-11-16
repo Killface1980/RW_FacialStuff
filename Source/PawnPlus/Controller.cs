@@ -1,14 +1,18 @@
-﻿using JetBrains.Annotations;
-using RimWorld;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
-using UnityEngine;
-using Verse;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
+    using System.Linq;
+
+    using JetBrains.Annotations;
+
+    using RimWorld;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class Controller : Mod
     {
         private const string modName = "Pawn Plus";
@@ -72,6 +76,7 @@ namespace PawnPlus
             }
             {
             }
+
             List<Pawn> allPawns = PawnsFinder.AllMapsWorldAndTemporary_AliveOrDead.ToList();
             for (int i = 0; i < allPawns.Count; i++)
             {
@@ -95,7 +100,8 @@ namespace PawnPlus
         public static void SetMainButtons()
         {
             MainButtonDef button = DefDatabase<MainButtonDef>.GetNamedSilentFail("WalkAnimator");
-            //   MainButtonDef button2 = DefDatabase<MainButtonDef>.GetNamedSilentFail("PoseAnimator");
+
+            // MainButtonDef button2 = DefDatabase<MainButtonDef>.GetNamedSilentFail("PoseAnimator");
             button.buttonVisible = settings.Develop;
         }
     }

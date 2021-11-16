@@ -1,16 +1,21 @@
-﻿using PawnPlus.Defs;
-using JetBrains.Annotations;
-using RimWorld;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using UnityEngine;
-using Verse;
-using Verse.AI;
-
-namespace PawnPlus.AnimatorWindows
+﻿namespace PawnPlus.AnimatorWindows
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+
+    using JetBrains.Annotations;
+
+    using PawnPlus.Defs;
+    using PawnPlus.ExportAnimDefs;
+
+    using RimWorld;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class MainTabWindow_PoseAnimator : MainTabWindow_BaseAnimator
     {
         #region Public Fields
@@ -29,11 +34,6 @@ namespace PawnPlus.AnimatorWindows
         #endregion Private Fields
 
         public static bool IsOpen;
-
-        #region Public Properties
-
-
-        #endregion Private Properties
 
         #region Public Methods
 
@@ -112,8 +112,8 @@ namespace PawnPlus.AnimatorWindows
                                                                           filePath,
                                                                           delegate
                                                                           {
-                                                                              ExportAnimDefs.Defs animDef =
-                                                                              new ExportAnimDefs.Defs(CompAnim.BodyAnim);
+                                                                              Defs animDef =
+                                                                              new Defs(CompAnim.BodyAnim);
 
                                                                               DirectXmlSaver.SaveDataObject(
                                                                                                             animDef,
@@ -162,7 +162,7 @@ namespace PawnPlus.AnimatorWindows
         protected override void DrawBodySettingsEditor(Rot4 rotation)
         {
             Rect sliderRect = new Rect(0, 0, this.SliderWidth, 40f);
-            
+
             Vector3 shoulderOffset = CompAnim.BodyAnim.shoulderOffsets[rotation.AsInt];
 
             if (shoulderOffset.y == 0f)
@@ -186,8 +186,8 @@ namespace PawnPlus.AnimatorWindows
 
             this.DrawBodyStats("shoulderOffsetX", ref shoulderOffset.x, ref sliderRect);
             this.DrawBodyStats("shoulderOffsetZ", ref shoulderOffset.z, ref sliderRect);
-            // this.DrawBodyStats("shoulderFront",   ref front,            ref sliderRect);
 
+            // this.DrawBodyStats("shoulderFront",   ref front,            ref sliderRect);
             Vector3 hipOffset = CompAnim.BodyAnim.hipOffsets[rotation.AsInt];
             if (hipOffset.y == 0f)
             {
@@ -209,8 +209,8 @@ namespace PawnPlus.AnimatorWindows
 
             this.DrawBodyStats("hipOffsetX", ref hipOffset.x, ref sliderRect);
             this.DrawBodyStats("hipOffsetZ", ref hipOffset.z, ref sliderRect);
-            // this.DrawBodyStats("hipFront",   ref hipFront,    ref sliderRect);
 
+            // this.DrawBodyStats("hipFront",   ref hipFront,    ref sliderRect);
             if (GUI.changed)
             {
                 this.SetNewVector(rotation, shoulderOffset, CompAnim.BodyAnim.shoulderOffsets, front);
@@ -400,6 +400,7 @@ namespace PawnPlus.AnimatorWindows
                                   "BodyAngleVertical",
                                   framesAt);
                 }
+
                 framesAt = (from keyframe in frames
                             where keyframe.ShoulderOffsetHorizontalX.HasValue
                             select keyframe.KeyIndex).ToList();

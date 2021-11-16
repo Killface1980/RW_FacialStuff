@@ -1,12 +1,16 @@
-﻿using System.Linq;
-using PawnPlus.AnimatorWindows;
-using PawnPlus.Harmony;
-using RimWorld;
-using UnityEngine;
-using Verse;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using System.Linq;
+
+    using PawnPlus.AnimatorWindows;
+    using PawnPlus.Harmony;
+
+    using RimWorld;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class QuadrupedDrawer : HumanBipedDrawer
     {
         public override void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait, float factor = 1f)
@@ -27,12 +31,13 @@ namespace PawnPlus
             // Fix the position, maybe needs new code in GetJointPositions()?
             if (!this.BodyFacing.IsHorizontal)
             {
-         //       rootLoc.y -=  Offsets.YOffset_Behind;
+         // rootLoc.y -=  Offsets.YOffset_Behind;
             }
+
             rootLoc.y += this.BodyFacing == Rot4.South ? -Offsets.YOffset_HandsFeetOver : 0;
 
-            var frontPawLoc = rootLoc;
-            var rearPawLoc = rootLoc;
+            Vector3 frontPawLoc = rootLoc;
+            Vector3 rearPawLoc = rootLoc;
 
             if (!this.BodyFacing.IsHorizontal)
             {
@@ -46,7 +51,7 @@ namespace PawnPlus
         }
 
         public override void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, Thing carriedThing = null,
-            bool flip = false, float factor = 1f)
+                                       bool flip = false, float factor = 1f)
         {
            // base.DrawHands(bodyQuat, drawPos, portrait, carrying, drawSide);
         }

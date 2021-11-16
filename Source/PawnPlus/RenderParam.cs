@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
-	// RenderParams are designed to be immutable after initialization, so make it struct instead.
+    using UnityEngine;
+
+    // RenderParams are designed to be immutable after initialization, so make it struct instead.
 	public struct RenderParam
 	{
 		public bool render;

@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using PawnPlus.AnimatorWindows;
-using PawnPlus.Harmony;
-using PawnPlus.Tweener;
-using JetBrains.Annotations;
-using RimWorld;
-using UnityEngine;
-using Verse;
-using Verse.AI;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using PawnPlus.AnimatorWindows;
+    using PawnPlus.Harmony;
+    using PawnPlus.Tweener;
+
+    using RimWorld;
+
+    using UnityEngine;
+
+    using Verse;
+    using Verse.AI;
+
     public class HumanBipedDrawer : PawnBodyDrawer
     {
         #region Protected Fields
@@ -24,7 +26,7 @@ namespace PawnPlus
 
         #region Private Fields
 
-        //  private PawnFeetTweener feetTweener;
+        // private PawnFeetTweener feetTweener;
         private float _animatedPercent;
 
         #endregion Private Fields
@@ -76,6 +78,7 @@ namespace PawnPlus
                     vector3 = quat * vector3;
                     vector4 = quat * vector4;
                 }
+
                 if(!CompAnimator.IsRider)
                 {
                     rootLoc += vector3;
@@ -84,6 +87,7 @@ namespace PawnPlus
                 {
                     footPos -= vector3;
                 }
+
                 footPos += vector4;
 
             }
@@ -179,6 +183,7 @@ namespace PawnPlus
             {
                 return;
             }
+
             /// No feet while sitting at a table
             Job curJob = Pawn.CurJob;
             if(curJob != null)
@@ -300,6 +305,7 @@ namespace PawnPlus
                     matLeft,
                     portrait);
             }
+
             if (drawRight)
             {
                 Vector3 position = ground + (groundPos.RightJoint + rightFootCycle) * factor;
@@ -614,13 +620,13 @@ namespace PawnPlus
                         CompAnimator.SetWalkCycle(animDef.walkCycles.FirstOrDefault().Value);
                     }
                 }
+
                 lastJob = Pawn.CurJob;
             }
         }
 
         public virtual void SelectPosecycle()
         {
-            return;
         }
 
         public override void Tick(Rot4 bodyFacing, PawnGraphicSet graphics)

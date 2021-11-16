@@ -1,14 +1,13 @@
-﻿using PawnPlus.Defs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using Verse;
-
-namespace PawnPlus.Parts
+﻿namespace PawnPlus.Parts
 {
+    using System.Collections.Generic;
+
+    using PawnPlus.Defs;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class Part
     {
         private class SinglePart
@@ -20,16 +19,17 @@ namespace PawnPlus.Parts
             public RenderParam[] _renderParams;
 
             public SinglePart CloneSinglePart()
-			{
+            {
                 SinglePart clone = new SinglePart();
                 clone._renderNodeName = _renderNodeName;
                 clone._partIdentifier = _partIdentifier;
                 clone._rootType = _rootType;
                 clone._occluded = _occluded;
+
                 // RenderParam is struct, so shallow copy is fine.
                 clone._renderParams = (RenderParam[])_renderParams.Clone();
                 return clone;
-			}
+            }
         }
 
         private PartDef _partDef;
@@ -46,6 +46,7 @@ namespace PawnPlus.Parts
                     " . The part will not be shown.");
                 return null;
             }
+
             return new Part(pawn, partDef, bodyPartSignals);
 		}
 
@@ -54,10 +55,11 @@ namespace PawnPlus.Parts
             Part clone = new Part();
             clone._partDef = _partDef;
             clone._partRenderer = _partRenderer.Clone() as PartRendererBase;
-            foreach(var singlePart in _parts)
+            foreach(SinglePart singlePart in _parts)
 			{
                 clone._parts.Add(singlePart.CloneSinglePart());
 			}
+
             return clone;
         }
         
@@ -71,10 +73,10 @@ namespace PawnPlus.Parts
                 partDef.defaultTexPath,
                 partDef.namedTexPaths,
                 bodyPartSignals);
-            _parts = new List<Part.SinglePart>();
-            foreach(var part in partDef.parts)
+            _parts = new List<SinglePart>();
+            foreach(PartDef.SinglePart part in partDef.parts)
             {
-                Part.SinglePart singlePartData = new Part.SinglePart();
+                SinglePart singlePartData = new SinglePart();
                 singlePartData._renderNodeName = part.renderNodeName;
                 singlePartData._partIdentifier = part.partIdentifier;
                 RenderParamManager.GetRenderParams(
@@ -125,19 +127,21 @@ namespace PawnPlus.Parts
             Vector3 headPos,
             Quaternion headQuat)
 		{
-            foreach(var part in _parts)
+            foreach(SinglePart part in _parts)
             {
-                if(part._renderParams == null || part._occluded)
+                if (part._renderParams == null || part._occluded)
                 {
                     continue;
                 }
+
                 // If portrait is being rendered, follow the body rotation.
                 Rot4 partRot4 = bodyFacing;
-                if(!portrait && part._rootType == RootType.Head)
+                if (!portrait && part._rootType == RootType.Head)
                 {
                     partRot4 = headFacing;
                 }
-                if(part._renderParams[partRot4.AsInt].render)
+
+                if (part._renderParams[partRot4.AsInt].render)
                 {
                     _partRenderer.Render(
                         headPos,
@@ -153,7 +157,7 @@ namespace PawnPlus.Parts
 
         public void UpdatePartOcclusion(HashSet<string> occludedRenderNodes)
 		{
-            foreach(var singlePart in _parts)
+            foreach(SinglePart singlePart in _parts)
             {
                 if(occludedRenderNodes.Contains(singlePart._renderNodeName))
                 {

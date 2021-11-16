@@ -1,13 +1,13 @@
 ﻿// ReSharper disable StyleCop.SA1401
 
-using PawnPlus.Harmony;
-using System;
-using System.Linq;
-using UnityEngine;
-using Verse;
-
 namespace PawnPlus.Graphics
 {
+    using PawnPlus.Harmony;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class PawnBodyGraphic
     {
         #region Public Fields
@@ -86,6 +86,7 @@ namespace PawnPlus.Graphics
             {
                 texNameFoot = "Paws/" + this.CompAni.Props.handType + STR_Foot;
             }
+
             Color skinColor;
             if (this._pawn.story == null)
             {
@@ -176,6 +177,7 @@ namespace PawnPlus.Graphics
                 return;
 
             }
+
             string texNameFoot = "Paws/" + this.CompAni.Props.handType + STR_Foot;
 
             Color skinColor;
@@ -269,18 +271,19 @@ namespace PawnPlus.Graphics
 
             string texNameHand;
             Color skinColor;
+
             // Mechanoid
             if (this._pawn.story == null)
             {
                 PawnKindLifeStage curKindLifeStage = this._pawn.ageTracker.CurKindLifeStage;
 
                 skinColor = curKindLifeStage.bodyGraphicData.color;
-            texNameHand = "Paws/" + this.CompAni.Props.handType + STR_Hand;
+                texNameHand = "Paws/" + this.CompAni.Props.handType + STR_Hand;
             }
             else
             {
                 skinColor = this._pawn.story.SkinColor;
-            texNameHand = StringsFS.PathHumanlike + "Hands/" + this.CompAni.Props.handType + STR_Hand;
+                texNameHand = StringsFS.PathHumanlike + "Hands/" + this.CompAni.Props.handType + STR_Hand;
             }
 
             Color rightColorHand = Color.cyan;

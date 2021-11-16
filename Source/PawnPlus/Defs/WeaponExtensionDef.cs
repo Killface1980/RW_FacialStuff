@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using Verse;
-
-namespace RimWorld
+﻿namespace RimWorld
 {
+    using UnityEngine;
+
+    using Verse;
+
     public class WeaponExtensionDef : Def
     {
         public string weapon;

@@ -1,15 +1,13 @@
-﻿using PawnPlus.Defs;
-using PawnPlus.Parts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Verse;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
-	public static class RenderParamManager
+    using System.Collections.Generic;
+
+    using PawnPlus.Defs;
+    using PawnPlus.Parts;
+
+    using Verse;
+
+    public static class RenderParamManager
 	{
 		private class RenderNode
 		{
@@ -27,25 +25,29 @@ namespace PawnPlus
 			{
 				RenderParam[] renderParams = new RenderParam[4];
 				for(int i = 0; i < 4; ++i)
-				{
-					Rot4 rotation = new Rot4(i);
-					RenderParam renderParam = new RenderParam();
-					int partRenderIdx = 0;
-					// Check partRenderIdx >= 0 after calling FindLastIndex()
-					if((partRenderIdx = renderInfo.FindLastIndex(x => x.rotation == rotation)) >= 0)
-					{
-						var rotationParam = renderInfo[partRenderIdx];
-						renderParam.render = true;
-						renderParam.offset = rotationParam.offset;
-						renderParam.mesh = rotationParam.meshDef.Mesh;
-					} else
-					{
-						// If there is no render info for <multiPartIndex> and direction, do not render.
-						renderParam.render = false;
-					}
-					renderParams[i] = renderParam;
-				}
-				_rootTextureRenderInfoMapping[rootTexture] = renderParams;
+                {
+                    Rot4 rotation = new Rot4(i);
+                    RenderParam renderParam = new RenderParam();
+                    int partRenderIdx = 0;
+
+                    // Check partRenderIdx >= 0 after calling FindLastIndex()
+                    if ((partRenderIdx = renderInfo.FindLastIndex(x => x.rotation == rotation)) >= 0)
+                    {
+                        RenderNodeMappingDef.RenderInfo rotationParam = renderInfo[partRenderIdx];
+                        renderParam.render = true;
+                        renderParam.offset = rotationParam.offset;
+                        renderParam.mesh = rotationParam.meshDef.Mesh;
+                    }
+                    else
+                    {
+                        // If there is no render info for <multiPartIndex> and direction, do not render.
+                        renderParam.render = false;
+                    }
+
+                    renderParams[i] = renderParam;
+                }
+
+                _rootTextureRenderInfoMapping[rootTexture] = renderParams;
 			}
 
 			public void GetRenderParams(Pawn pawn, out RootType rootType, out RenderParam[] renderParams)
@@ -67,24 +69,26 @@ namespace PawnPlus
 					renderParams = null;
 					return;
 				}
+
 				_rootTextureRenderInfoMapping.TryGetValue(rootTexturePath, out renderParams);
 			}
 		}
 
-		private static bool _initialized = false;
+		private static bool _initialized;
 		private static Dictionary<string, RenderNode> _renderNodes = new Dictionary<string, RenderNode>();
 
 		public static bool Initialized => _initialized;
 
 		public static void ReadFromRenderDefs()
 		{
-			var renderDefList = DefDatabase<RenderNodeMappingDef>.AllDefsListForReading;
-			foreach(var renderDef in renderDefList)
+			List<RenderNodeMappingDef> renderDefList = DefDatabase<RenderNodeMappingDef>.AllDefsListForReading;
+			foreach(RenderNodeMappingDef renderDef in renderDefList)
 			{
 				if(!_renderNodes.ContainsKey(renderDef.renderNodeName))
 				{
 					_renderNodes.Add(renderDef.renderNodeName, new RenderNode(renderDef.rootType));
 				}
+
 				RenderNode renderNode = _renderNodes[renderDef.renderNodeName];
 				if(renderNode.RootType != renderDef.rootType)
 				{
@@ -94,14 +98,16 @@ namespace PawnPlus
 						" will be ignored.");
 					continue;
 				}
-				foreach(var rootTextureToRenderInfo in renderDef.rootTexturesToRenderInfoMapping)
+
+				foreach(RenderNodeMappingDef.RootTextureRenderInfoMapping rootTextureToRenderInfo in renderDef.rootTexturesToRenderInfoMapping)
 				{
-					foreach(var rootTexturePath in rootTextureToRenderInfo.rootTexturePaths)
+					foreach(string rootTexturePath in rootTextureToRenderInfo.rootTexturePaths)
 					{
 						renderNode.BuildRenderParamFromRenderInfo(rootTexturePath, rootTextureToRenderInfo.renderInfoPerRotation);
 					}
 				}
 			}
+
 			_initialized = true;
 		}
 
@@ -112,6 +118,7 @@ namespace PawnPlus
 				renderNode.GetRenderParams(pawn, out rootType, out renderParams);
 				return;
 			}
+
 			rootType = RootType.Body;
 			renderParams = null;
 		}

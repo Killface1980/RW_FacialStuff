@@ -1,16 +1,17 @@
-﻿using PawnPlus.Defs;
-using RimWorld;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using Verse;
-
-namespace PawnPlus.UI
+﻿namespace PawnPlus.UI
 {
-	public partial class DialogEditAppearance
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using PawnPlus.Defs;
+
+    using RimWorld;
+
+    using UnityEngine;
+
+    using Verse;
+
+    public partial class DialogEditAppearance
 	{
 		private abstract class CategoryWorker
 		{
@@ -35,8 +36,8 @@ namespace PawnPlus.UI
 
 			public override List<TabRecord> GetGenderTabs()
 			{
-				return new List<TabRecord>()
-				{
+				return new List<TabRecord>
+                           {
 					new TabRecord("All", delegate { _genderTabIndex = 0; }, _genderTabIndex == 0),
 					new TabRecord("Male", delegate { _genderTabIndex = 1; }, _genderTabIndex == 1),
 					new TabRecord("Female", delegate { _genderTabIndex = 2; }, _genderTabIndex == 2)
@@ -45,8 +46,8 @@ namespace PawnPlus.UI
 
 			public override List<TabRecord> GetTagTabs()
 			{
-				return new List<TabRecord>()
-				{
+				return new List<TabRecord>
+                           {
 					new TabRecord("All", delegate { }, true),
 					new TabRecord("Tag1", delegate { }, false),
 					new TabRecord("Tag2", delegate { }, false),
@@ -65,8 +66,8 @@ namespace PawnPlus.UI
 			private List<PartDef> _allPartsInCategory;
 			private List<string> _tags;
 			private Dictionary<string, List<PartDef>> _partsPerTag;
-			private List<HairGender> _genders;
-			private Dictionary<HairGender, List<PartDef>> _partsPerGender;
+			private List<StyleGender> _genders;
+			private Dictionary<StyleGender, List<PartDef>> _partsPerGender;
 
 			public override string CategoryTabLabel => _categoryDef.label;
 
@@ -88,11 +89,12 @@ namespace PawnPlus.UI
 						 select partDef).ToList();
 					_partsPerTag.Add(tag, parts);
 				}
+
 				_genders =
 					(from partDef in partsInCategory
 					 select partDef.hairGender).Distinct().OrderBy(gender => gender).ToList();
-				_partsPerGender = new Dictionary<HairGender, List<PartDef>>();
-				foreach(HairGender gender in _genders)
+				_partsPerGender = new Dictionary<StyleGender, List<PartDef>>();
+				foreach(StyleGender gender in _genders)
 				{
 					List<PartDef> parts =
 						(from partDef in partsInCategory
@@ -114,7 +116,8 @@ namespace PawnPlus.UI
 					_genderTabIndex == 0));
 					++index;
 				}
-				foreach(HairGender gender in _genders)
+
+				foreach(StyleGender gender in _genders)
 				{
 					int tempIndex = index;
 					++index;
@@ -123,6 +126,7 @@ namespace PawnPlus.UI
 						delegate { _genderTabIndex = tempIndex; },
 						_genderTabIndex == tempIndex));
 				}
+
 				return genderTabRecords;
 			}
 
@@ -143,6 +147,7 @@ namespace PawnPlus.UI
 						delegate { _tagTabIndex = tempIndex; },
 						_tagTabIndex == tempIndex));
 				}
+
 				return tagTabRecords;
 			}
 		}

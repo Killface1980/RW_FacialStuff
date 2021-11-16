@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Verse;
+﻿namespace PawnPlus.Parts
+{
+    using System;
 
-namespace PawnPlus.Parts
-{	
-	public interface IPartBehavior : ICloneable, IExposable
+    using Verse;
+
+    public interface IPartBehavior : ICloneable, IExposable
 	{
 		public string UniqueID { get; }
 

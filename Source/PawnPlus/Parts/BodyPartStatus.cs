@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Verse;
-
-namespace PawnPlus.Parts
+﻿namespace PawnPlus.Parts
 {
-	public class BodyPartStatus
+    using System.Collections.Generic;
+
+    using Verse;
+
+    public class BodyPartStatus
 	{
 		public struct Status
 		{
@@ -20,10 +17,10 @@ namespace PawnPlus.Parts
 		private BodyDef _bodyDef;
 		private Status[] _partStatus;
 		private Status _invalidStatus = new Status
-		{
-			missing = false,
-			hediffAddedPart = null
-		};
+                                            {
+                                                missing = false,
+                                                hediffAddedPart = null
+                                            };
 
 		public BodyPartStatus(Pawn pawn)
 		{
@@ -39,6 +36,7 @@ namespace PawnPlus.Parts
 				partStatus = _partStatus[bodyPartRecord.Index];
 				return true;
 			}
+
 			partStatus = _invalidStatus;
 			return false;
 		}
@@ -47,22 +45,22 @@ namespace PawnPlus.Parts
 		{
 			if(hediff is Hediff_AddedPart hediffAddedPart)
 			{
-				foreach(var childPart in bodyPart.GetChildParts())
+				foreach(BodyPartRecord childPart in bodyPart.GetChildParts())
 				{
 					_partStatus[childPart.Index] =
-						new Status()
-						{
+						new Status
+                            {
 							missing = false,
 							hediffAddedPart = hediffAddedPart
 						};
 				}
 			} else if(hediff is Hediff_MissingPart)
 			{
-				foreach(var childPart in bodyPart.GetChildParts())
+				foreach(BodyPartRecord childPart in bodyPart.GetChildParts())
 				{
 					_partStatus[childPart.Index] =
-						new Status()
-						{
+						new Status
+                            {
 							missing = true,
 							hediffAddedPart = null
 						};
@@ -74,11 +72,11 @@ namespace PawnPlus.Parts
 		{
 			if(hediff is Hediff_AddedPart)
 			{
-				foreach(var childPart in bodyPart.GetChildParts())
+				foreach(BodyPartRecord childPart in bodyPart.GetChildParts())
 				{
 					_partStatus[childPart.Index] =
-						new Status()
-						{
+						new Status
+                            {
 							missing = _partStatus[childPart.Index].missing,
 							hediffAddedPart = null
 						};
@@ -87,39 +85,30 @@ namespace PawnPlus.Parts
 		}
 
 		public void NotifyBodyPartRestored(BodyPartRecord bodyPart)
-		{
-			HashSet<int> affectedBodyParts = new HashSet<int>();
-			foreach(var childPart in bodyPart.GetChildParts())
-			{
-				affectedBodyParts.Add(childPart.Index);
-				_partStatus[childPart.Index] =
-					new Status()
-					{
-						missing = false,
-						hediffAddedPart = null
-					};
-			}
-			// It is possible that the hediff still exists after restoration due to HediffDef.keepOnBodyPartRestoration.
-			foreach(var hediff in _pawn.health.hediffSet.hediffs)
-			{
-				if(hediff.Part == null)
-				{
-					continue;
-				}
-				if(affectedBodyParts.Contains(hediff.Part.Index) &&
-					hediff is Hediff_AddedPart hediffAddedPart)
-				{
-					_partStatus[hediff.Part.Index] =
-						new Status()
-						{
-							missing = false,
-							hediffAddedPart = hediffAddedPart
-						};
-				}
-			}
-		}
+        {
+            HashSet<int> affectedBodyParts = new HashSet<int>();
+            foreach (BodyPartRecord childPart in bodyPart.GetChildParts())
+            {
+                affectedBodyParts.Add(childPart.Index);
+                _partStatus[childPart.Index] = new Status { missing = false, hediffAddedPart = null };
+            }
 
-		private bool IsValidBodyPartRecord(BodyPartRecord bodyPartRecord)
+            // It is possible that the hediff still exists after restoration due to HediffDef.keepOnBodyPartRestoration.
+            foreach (Hediff hediff in _pawn.health.hediffSet.hediffs)
+            {
+                if (hediff.Part == null)
+                {
+                    continue;
+                }
+
+                if (affectedBodyParts.Contains(hediff.Part.Index) && hediff is Hediff_AddedPart hediffAddedPart)
+                {
+                    _partStatus[hediff.Part.Index] = new Status { missing = false, hediffAddedPart = hediffAddedPart };
+                }
+            }
+        }
+
+        private bool IsValidBodyPartRecord(BodyPartRecord bodyPartRecord)
 		{
 			return bodyPartRecord != null && bodyPartRecord.body == _bodyDef;
 		}

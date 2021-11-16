@@ -1,9 +1,11 @@
-﻿using JetBrains.Annotations;
-using UnityEngine;
-using Verse;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using JetBrains.Annotations;
+
+    using UnityEngine;
+
+    using Verse;
+
     public abstract class BasicDrawer
     {
         #region Protected Fields
@@ -32,15 +34,15 @@ namespace PawnPlus
 
         #region Protected Methods
 
-        protected JointLister GetJointPositions(JointType jointType,Vector3 offsets,
+        protected JointLister GetJointPositions(JointType jointType, Vector3 offsets,
                                                 float jointWidth,
                                                 bool carrying = false, bool armed = false)
         {
             Rot4 rot = this.BodyFacing;
             JointLister joints = new JointLister
-            {
-                jointType = jointType
-            };
+                                     {
+                                         jointType = jointType
+                                     };
             float leftX = offsets.x;
             float rightX = offsets.x;
             float leftZ = offsets.z;
@@ -95,6 +97,7 @@ namespace PawnPlus
             if (rot == Rot4.North)
             {
                 leftY = rightY = -Offsets.YOffset_Behind;
+
                 // leftX *= -1;
                 // rightX *= -1;
             }

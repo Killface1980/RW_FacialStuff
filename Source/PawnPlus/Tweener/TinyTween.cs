@@ -26,8 +26,7 @@
 //#define XNA
 #endif
 
-using System;
-using UnityEngine;
+
 
 // XNA and Unity have such similar APIs we can use the same code by just swapping the namespaces.
 #if XNA
@@ -39,6 +38,10 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace PawnPlus.Tweener
 {
+    using System;
+
+    using UnityEngine;
+
     /// <summary>
     /// Takes in progress which is the percentage of the tween complete and returns
     /// the interpolation value that is fed into the lerp function for the tween.
@@ -175,12 +178,17 @@ namespace PawnPlus.Tweener
         private readonly LerpFunc<T> _lerpFunc;
 
         private float _currentTime;
+
         private float _duration;
+
         private ScaleFunc _scaleFunc;
+
         private TweenState _state;
 
         private T _start;
+
         private T _end;
+
         private T _value;
 
         /// <summary>
@@ -310,7 +318,6 @@ namespace PawnPlus.Tweener
             this.UpdateValue();
         }
 
-
         /// <summary>
         /// Helper that uses the current time, duration, and delegates to update the current value.
         /// </summary>
@@ -325,7 +332,10 @@ namespace PawnPlus.Tweener
     /// </summary>
     public class FloatTween : Tween<float>
     {
-        private static float LerpFloat(float start, float end, float progress) { return start + (end - start) * progress; }
+        private static float LerpFloat(float start, float end, float progress)
+        {
+            return start + (end - start) * progress;
+        }
 
         // Static readonly delegate to avoid multiple delegate allocations
         private static readonly LerpFunc<float> LerpFunc = LerpFloat;
@@ -333,11 +343,15 @@ namespace PawnPlus.Tweener
         /// <summary>
         /// Initializes a new FloatTween instance.
         /// </summary>
-        public FloatTween() : base(LerpFunc) { }
+        public FloatTween()
+            : base(LerpFunc)
+        {
+        }
     }
 
     // If XNA or Unity we can leverage their types to create more tween types to simplify usage.
-//#if XNA || UNITY
+
+    // #if XNA || UNITY
     /// <summary>
     /// Object used to tween Vector2 values.
     /// </summary>
@@ -349,7 +363,10 @@ namespace PawnPlus.Tweener
         /// <summary>
         /// Initializes a new Vector2Tween instance.
         /// </summary>
-        public Vector2Tween() : base(LerpFunc) { }
+        public Vector2Tween()
+            : base(LerpFunc)
+        {
+        }
     }
 
     /// <summary>
@@ -363,7 +380,10 @@ namespace PawnPlus.Tweener
         /// <summary>
         /// Initializes a new Vector3Tween instance.
         /// </summary>
-        public Vector3Tween() : base(LerpFunc) { }
+        public Vector3Tween()
+            : base(LerpFunc)
+        {
+        }
     }
 
     /// <summary>
@@ -377,7 +397,10 @@ namespace PawnPlus.Tweener
         /// <summary>
         /// Initializes a new Vector4Tween instance.
         /// </summary>
-        public Vector4Tween() : base(LerpFunc) { }
+        public Vector4Tween()
+            : base(LerpFunc)
+        {
+        }
     }
 
     /// <summary>
@@ -391,7 +414,10 @@ namespace PawnPlus.Tweener
         /// <summary>
         /// Initializes a new ColorTween instance.
         /// </summary>
-        public ColorTween() : base(LerpFunc) { }
+        public ColorTween()
+            : base(LerpFunc)
+        {
+        }
     }
 
     /// <summary>
@@ -405,9 +431,13 @@ namespace PawnPlus.Tweener
         /// <summary>
         /// Initializes a new QuaternionTween instance.
         /// </summary>
-        public QuaternionTween() : base(LerpFunc) { }
+        public QuaternionTween()
+            : base(LerpFunc)
+        {
+        }
     }
-//#endif
+
+    // #endif
 
     /// <summary>
     /// Defines a set of premade scale functions for use with tweens.
@@ -502,21 +532,73 @@ namespace PawnPlus.Tweener
         public static readonly ScaleFunc SineEaseInOut = SineEaseInOutImpl;
 
         private const float Pi = (float)Math.PI;
+
         private const float HalfPi = Pi / 2f;
 
-        private static float LinearImpl(float progress) { return progress; }
-        private static float QuadraticEaseInImpl(float progress) { return EaseInPower(progress, 2); }
-        private static float QuadraticEaseOutImpl(float progress) { return EaseOutPower(progress, 2); }
-        private static float QuadraticEaseInOutImpl(float progress) { return EaseInOutPower(progress, 2); }
-        private static float CubicEaseInImpl(float progress) { return EaseInPower(progress, 3); }
-        private static float CubicEaseOutImpl(float progress) { return EaseOutPower(progress, 3); }
-        private static float CubicEaseInOutImpl(float progress) { return EaseInOutPower(progress, 3); }
-        private static float QuarticEaseInImpl(float progress) { return EaseInPower(progress, 4); }
-        private static float QuarticEaseOutImpl(float progress) { return EaseOutPower(progress, 4); }
-        private static float QuarticEaseInOutImpl(float progress) { return EaseInOutPower(progress, 4); }
-        private static float QuinticEaseInImpl(float progress) { return EaseInPower(progress, 5); }
-        private static float QuinticEaseOutImpl(float progress) { return EaseOutPower(progress, 5); }
-        private static float QuinticEaseInOutImpl(float progress) { return EaseInOutPower(progress, 5); }
+        private static float LinearImpl(float progress)
+        {
+            return progress;
+        }
+
+        private static float QuadraticEaseInImpl(float progress)
+        {
+            return EaseInPower(progress, 2);
+        }
+
+        private static float QuadraticEaseOutImpl(float progress)
+        {
+            return EaseOutPower(progress, 2);
+        }
+
+        private static float QuadraticEaseInOutImpl(float progress)
+        {
+            return EaseInOutPower(progress, 2);
+        }
+
+        private static float CubicEaseInImpl(float progress)
+        {
+            return EaseInPower(progress, 3);
+        }
+
+        private static float CubicEaseOutImpl(float progress)
+        {
+            return EaseOutPower(progress, 3);
+        }
+
+        private static float CubicEaseInOutImpl(float progress)
+        {
+            return EaseInOutPower(progress, 3);
+        }
+
+        private static float QuarticEaseInImpl(float progress)
+        {
+            return EaseInPower(progress, 4);
+        }
+
+        private static float QuarticEaseOutImpl(float progress)
+        {
+            return EaseOutPower(progress, 4);
+        }
+
+        private static float QuarticEaseInOutImpl(float progress)
+        {
+            return EaseInOutPower(progress, 4);
+        }
+
+        private static float QuinticEaseInImpl(float progress)
+        {
+            return EaseInPower(progress, 5);
+        }
+
+        private static float QuinticEaseOutImpl(float progress)
+        {
+            return EaseOutPower(progress, 5);
+        }
+
+        private static float QuinticEaseInOutImpl(float progress)
+        {
+            return EaseInOutPower(progress, 5);
+        }
 
         private static float EaseInPower(float progress, int power)
         {
@@ -537,7 +619,7 @@ namespace PawnPlus.Tweener
                 return (float)Math.Pow(progress, power) / 2f;
             }
 
-            int sign = power                                                  % 2 == 0 ? -1 : 1;
+            int sign = power % 2 == 0 ? -1 : 1;
             return (float)(sign / 2.0 * (Math.Pow(progress - 2, power) + sign * 2));
         }
 

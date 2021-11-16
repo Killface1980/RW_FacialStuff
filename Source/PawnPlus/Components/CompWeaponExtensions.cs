@@ -1,7 +1,7 @@
-﻿using Verse;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using Verse;
+
     // ReSharper disable UnassignedField.Global
     // ReSharper disable StyleCop.SA1307
     // ReSharper disable StyleCop.SA1401

@@ -1,23 +1,18 @@
-﻿using RimWorld;
-using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using Verse;
-using Verse.Noise;
-
-namespace PawnPlus.Graphics
+﻿namespace PawnPlus.Graphics
 {
-	[StaticConstructorOnStartup]
+    using System;
+    using System.Linq;
+
+    using UnityEngine;
+
+    using Verse;
+
+    [StaticConstructorOnStartup]
 	class Graphic_Hair : Graphic
 	{
 		#region Private Variables
 
-		//private static string _maskedHairBaseDir;
+		// private static string _maskedHairBaseDir;
 		private Material[,] hairMat = new Material[4, Enum.GetNames(typeof(HeadCoverage)).Length];
 		private bool westFlipped;
 		private bool eastFlipped;
@@ -26,7 +21,7 @@ namespace PawnPlus.Graphics
 		#endregion
 
 		// public CompFace FaceComponent { get; set; }
-		public override Material MatSingle => MatSouth;
+        public override Material MatSingle => MatSouth;
 		public override Material MatWest => hairMat[3, 0];
 		public override Material MatSouth => hairMat[2, 0];
 		public override Material MatEast => hairMat[1, 0];
@@ -41,10 +36,12 @@ namespace PawnPlus.Graphics
 				{
 					return false;
 				}
+
 				if (!(MatEast == MatNorth))
 				{
 					return MatWest == MatNorth;
 				}
+
 				return true;
 			}
 		}
@@ -56,6 +53,7 @@ namespace PawnPlus.Graphics
 			{
 				Log.Warning("Pawn Plus: tried to create hair graphic with wrong shader. Hair must be rendered using hair shader");
 			}
+
 			data = req.graphicData;
 			path = req.path;
 			color = req.color;
@@ -85,62 +83,69 @@ namespace PawnPlus.Graphics
 					defaultHairTex[0] = ContentFinder<Texture2D>.Get(req.path, reportFailure: false);
 				}
 			}
+
 			if(defaultHairTex[0] == null)
 			{
 				Log.Error("Pawn Plus: Failed to find any textures at " + req.path + " while constructing " + this.ToStringSafe());
 				return;
 			}
+
 			if(defaultHairTex[2] == null)
 			{
 				defaultHairTex[2] = defaultHairTex[0];
 			}
+
 			if(defaultHairTex[1] == null)
 			{
 				if(defaultHairTex[3] != null)
 				{
 					defaultHairTex[1] = defaultHairTex[3];
-					eastFlipped = base.DataAllowsFlip;
+					eastFlipped = this.DataAllowsFlip;
 				} else
 				{
 					defaultHairTex[1] = defaultHairTex[0];
 				}
 			}
+
 			if(defaultHairTex[3] == null)
 			{
 				if(defaultHairTex[1] != null)
 				{
 					defaultHairTex[3] = defaultHairTex[1];
-					westFlipped = base.DataAllowsFlip;
+					westFlipped = this.DataAllowsFlip;
 				} else
 				{
 					defaultHairTex[3] = defaultHairTex[0];
 				}
 			}
-			foreach(var headCoverage in Enum.GetValues(typeof(HeadCoverage)).Cast<HeadCoverage>())
-			{
-				Texture2D[] maskTex = new Texture2D[4];
-				// Don't need to have mask texture for full hair. If matReq.maskTex is null, the mask will default 
-				// to white texture which will do nothing.
-				if(headCoverage != HeadCoverage.None)
-				{
-					maskTex[0] = ContentFinder<Texture2D>.Get("HairMask/Mask_" + headCoverage + "_FrontBack");
-					maskTex[1] = ContentFinder<Texture2D>.Get("HairMask/Mask_" + headCoverage + "_Side");
-					maskTex[2] = maskTex[0];
-					maskTex[3] = maskTex[1];
-				}
-				for(int i = 0; i < maskTex.Length; ++i)
-				{
-					MaterialRequest matReq = default;
-					matReq.mainTex = defaultHairTex[i];
-					matReq.shader = req.shader;
-					matReq.color = color;
-					matReq.colorTwo = colorTwo;
-					matReq.maskTex = headCoverage != HeadCoverage.None ? maskTex[i] : null;
-					matReq.shaderParameters = req.shaderParameters;
-					hairMat[i, (int)headCoverage] = MaterialPool.MatFrom(matReq);
-				}
-			}
-		}
+
+			foreach(HeadCoverage headCoverage in Enum.GetValues(typeof(HeadCoverage)).Cast<HeadCoverage>())
+            {
+                Texture2D[] maskTex = new Texture2D[4];
+
+                // Don't need to have mask texture for full hair. If matReq.maskTex is null, the mask will default 
+                // to white texture which will do nothing.
+                if (headCoverage != HeadCoverage.None)
+                {
+                    maskTex[0] = ContentFinder<Texture2D>.Get("HairMask/Mask_" + headCoverage + "_FrontBack");
+                    maskTex[1] = ContentFinder<Texture2D>.Get("HairMask/Mask_" + headCoverage + "_Side");
+                    maskTex[2] = maskTex[0];
+                    maskTex[3] = maskTex[1];
+                }
+
+                for (int i = 0; i < maskTex.Length; ++i)
+                {
+                    MaterialRequest matReq = default;
+                    matReq.mainTex = defaultHairTex[i];
+                    matReq.shader = req.shader;
+                    matReq.color = color;
+                    matReq.colorTwo = colorTwo;
+                    matReq.maskTex = headCoverage != HeadCoverage.None ? maskTex[i] : null;
+                    matReq.shaderParameters = req.shaderParameters;
+                    hairMat[i, (int)headCoverage] = MaterialPool.MatFrom(matReq);
+                }
+            }
+        }
 		
 		public Material MatAt(Rot4 rot, HeadCoverage coverage)
 		{
@@ -149,6 +154,7 @@ namespace PawnPlus.Graphics
 			{
 				return hairMat[rotation, (int)coverage];
 			}
+
 			return BaseContent.BadMat;
 		}
 
@@ -159,6 +165,7 @@ namespace PawnPlus.Graphics
 			{
 				Log.Warning("Pawn Plus: tried to copy hair graphic with wrong shader. Hair must be rendered using hair shader");
 			}
+
 			return GraphicDatabase.Get<Graphic_Hair>(path, Shaders.Hair, drawSize, newColor, newColorTwo, data);
 		}
 

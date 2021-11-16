@@ -3,9 +3,6 @@
 // ReSharper disable StyleCop.SA1401
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 
-
-using JetBrains.Annotations;
-
 // ReSharper disable UnassignedField.Global
 
 using System.Collections.Generic;
@@ -13,6 +10,8 @@ using UnityEngine;
 
 namespace PawnPlus
 {
+    using JetBrains.Annotations;
+
     public class CompLoaderTargets
     {
         #region Public Fields

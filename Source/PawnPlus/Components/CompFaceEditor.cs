@@ -1,11 +1,11 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using Verse;
-using Verse.AI;
-
 namespace PawnPlus
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Verse;
+    using Verse.AI;
 
     public class CompFaceEditor : ThingComp
     {
@@ -20,7 +20,6 @@ namespace PawnPlus
                 return new List<FloatMenuOption> { item };
             }
             */
-
             if(!pawn.CanReserve(styler))
             {
                 FloatMenuOption item = new FloatMenuOption("CannotUseReserved".Translate(), null);
@@ -56,12 +55,12 @@ namespace PawnPlus
             Action action = delegate
             {
                 Job editAppearanceJob = new Job(
-                    DefDatabase<JobDef>.GetNamed("PawnPlus_EditAppearance"),
-                    styler,
-                    styler.InteractionCell)
-                {
-                    locomotionUrgency = LocomotionUrgency.Sprint
-                };
+                                            DefDatabase<JobDef>.GetNamed("PawnPlus_EditAppearance"),
+                                            styler,
+                                            styler.InteractionCell)
+                                            {
+                                                locomotionUrgency = LocomotionUrgency.Sprint
+                                            };
                 if(!pawn.jobs.TryTakeOrderedJob(editAppearanceJob))
                 {
                     // This is used to force go job, it will work even when drafted
@@ -70,7 +69,6 @@ namespace PawnPlus
                 }
             };
             yield return new FloatMenuOption("FacialStuffEditor.EditFace".Translate(), action);
-            yield break;
         }
     }
 }

@@ -4,12 +4,14 @@
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 // ReSharper disable UnassignedField.Global
 
-using JetBrains.Annotations;
-using System.Collections.Generic;
-using Verse;
-
 namespace PawnPlus.Defs
 {
+    using System.Collections.Generic;
+
+    using JetBrains.Annotations;
+
+    using Verse;
+
     public class AnimationTargetDef : ThingDef
     {
         #region Public Fields

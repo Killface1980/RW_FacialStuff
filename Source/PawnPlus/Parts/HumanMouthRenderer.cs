@@ -1,16 +1,15 @@
-﻿using PawnPlus.Defs;
-using PawnPlus.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using Verse;
-
-namespace PawnPlus.Parts
+﻿namespace PawnPlus.Parts
 {
-	class HumanMouthRenderer : PartRendererBase
+    using System.Collections.Generic;
+
+    using PawnPlus.Defs;
+    using PawnPlus.Graphics;
+
+    using UnityEngine;
+
+    using Verse;
+
+    class HumanMouthRenderer : PartRendererBase
 	{
 		public BodyPartLocator mouthPartLocator;
 		public Vector3 additionalOffset = new Vector3(0f, 0f, 0f);
@@ -34,43 +33,46 @@ namespace PawnPlus.Parts
 			string defaultTexPath,
 			Dictionary<string, string> namedTexPaths,
 			BodyPartSignals bodyPartSignals)
-		{
-			_pawn = pawn;
-			_default = TextureSet.Create(defaultTexPath);
-			Dictionary<string, TextureSet> namedGraphics = new Dictionary<string, TextureSet>()
-			{
-				{ "Normal", null },
-				{ "Happy", null },
-				{ "Minor", null },
-				{ "Major", null },
-				{ "Extreme", null },
-				{ "Crying", null },
-				{ "Dead", null }
-			}; 
-			foreach(string key in new List<string>(namedGraphics.Keys))
-			{
-				if(namedTexPaths.ContainsKey(key))
-				{
-					namedGraphics[key] = TextureSet.Create(namedTexPaths[key]);
-				} else
-				{
-					namedGraphics[key] = _default;
-				}
-			}
-			_normal = namedGraphics["Normal"];
-			_happy = namedGraphics["Happy"];
-			_minor = namedGraphics["Minor"];
-			_major = namedGraphics["Major"];
-			_extreme = namedGraphics["Extreme"];
-			_crying = namedGraphics["Crying"];
-			_dead = namedGraphics["Dead"];
-			_curTexSet = _normal;
-			// If shader property left uninitialized, then the result from other MaterialPropertyBlock  
-			// can interfere with it.
-			_matPropBlock.SetColor("_Color", Color.white);
-		}
+        {
+            _pawn = pawn;
+            _default = TextureSet.Create(defaultTexPath);
+            Dictionary<string, TextureSet> namedGraphics = new Dictionary<string, TextureSet>
+                                                               {
+                                                                   { "Normal", null },
+                                                                   { "Happy", null },
+                                                                   { "Minor", null },
+                                                                   { "Major", null },
+                                                                   { "Extreme", null },
+                                                                   { "Crying", null },
+                                                                   { "Dead", null }
+                                                               };
+            foreach (string key in new List<string>(namedGraphics.Keys))
+            {
+                if (namedTexPaths.ContainsKey(key))
+                {
+                    namedGraphics[key] = TextureSet.Create(namedTexPaths[key]);
+                }
+                else
+                {
+                    namedGraphics[key] = _default;
+                }
+            }
 
-		public override void Update(
+            _normal = namedGraphics["Normal"];
+            _happy = namedGraphics["Happy"];
+            _minor = namedGraphics["Minor"];
+            _major = namedGraphics["Major"];
+            _extreme = namedGraphics["Extreme"];
+            _crying = namedGraphics["Crying"];
+            _dead = namedGraphics["Dead"];
+            _curTexSet = _normal;
+
+            // If shader property left uninitialized, then the result from other MaterialPropertyBlock  
+            // can interfere with it.
+            _matPropBlock.SetColor("_Color", Color.white);
+        }
+
+        public override void Update(
 			PawnState pawnState,
 			BodyPartStatus bodyPartStatus,
 			ref bool updatePortrait)
@@ -80,32 +82,38 @@ namespace PawnPlus.Parts
 				_curTexSet = _dead;
 				return;
 			}
+
 			if(pawnState.Fleeing || pawnState.InPainShock)
 			{
 				_curTexSet = _crying;
 				return;
 			}
+
 			if(_pawn.needs == null)
 			{
 				_curTexSet = default;
 				return;
 			}
+
 			float moodLevel = _pawn.needs.mood.CurInstantLevel;
 			if(moodLevel <= _pawn.mindState.mentalBreaker.BreakThresholdExtreme)
 			{
 				_curTexSet = _extreme;
 				return;
 			}
+
 			if(moodLevel <= _pawn.mindState.mentalBreaker.BreakThresholdMajor)
 			{
 				_curTexSet = _major;
 				return;
 			}
+
 			if(moodLevel <= _pawn.mindState.mentalBreaker.BreakThresholdMinor)
 			{
 				_curTexSet = _minor;
 				return;
 			}
+
 			float happyThreshold =
 				_pawn.mindState.mentalBreaker.BreakThresholdMinor +
 				((1f - _pawn.mindState.mentalBreaker.BreakThresholdMinor) / 2f);
@@ -114,6 +122,7 @@ namespace PawnPlus.Parts
 				_curTexSet = _normal;
 				return;
 			}
+
 			_curTexSet = _happy;
 		}
 
@@ -127,12 +136,13 @@ namespace PawnPlus.Parts
 			bool portrait)
 		{
 			TextureSet curTexSet = portrait ?
-				_normal :
-				_curTexSet;
+                                       _normal :
+                                       _curTexSet;
 			if(curTexSet == null)
 			{
 				return;
 			}
+
 			curTexSet.GetIndexForRot(rootRot4, out float index);
 			Texture2DArray curTextureArray = curTexSet.GetTextureArray();
 			Vector3 offset = rootQuat * (renderNodeOffset + additionalOffset);
@@ -140,7 +150,7 @@ namespace PawnPlus.Parts
 			{
 				_matPropBlock.SetTexture(Shaders.MainTexPropID, curTextureArray);
 				_matPropBlock.SetFloat(Shaders.TexIndexPropID, index);
-				UnityEngine.Graphics.DrawMesh(
+				Graphics.DrawMesh(
 					renderNodeMesh,
 					Matrix4x4.TRS(rootPos + offset, rootQuat, Vector3.one),
 					Shaders.FacePart,
@@ -153,12 +163,16 @@ namespace PawnPlus.Parts
 				Shaders.FacePart.mainTexture = curTextureArray;
 				Shaders.FacePart.SetFloat(Shaders.TexIndexPropID, index);
 				Shaders.FacePart.SetPass(0);
-				UnityEngine.Graphics.DrawMeshNow(renderNodeMesh, rootPos + offset, rootQuat);
+				Graphics.DrawMeshNow(renderNodeMesh, rootPos + offset, rootQuat);
 			}
 		}
 
 
-		public override object Clone()
+        public override void DoCustomizationGUI(Rect contentRect)
+        {
+        }
+
+        public override object Clone()
 		{
 			return MemberwiseClone();
 		}

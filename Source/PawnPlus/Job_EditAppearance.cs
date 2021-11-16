@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
-using Verse;
-using Verse.AI;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using System.Collections.Generic;
+
+    using PawnPlus.UI;
+
+    using Verse;
+    using Verse.AI;
+
     public class Job_EditAppearance : JobDriver
     {
         private const TargetIndex CellInd = TargetIndex.B;
@@ -29,26 +32,26 @@ namespace PawnPlus
         private Toil Toils_WaitWithSoundAndEffect()
         {
             Toil toil = new Toil
-            {
-                initAction = delegate
-                {
-                    CompFaceEditor faceStylerNew = this.TargetA.Thing?.TryGetComp<CompFaceEditor>();
-                    if(faceStylerNew != null)
-                    {
-                        Pawn actor = this.GetActor();
-                        if(actor != null && 
-                            actor.Position == this.TargetA.Thing.InteractionCell)
-                        {
-                            Find.WindowStack.Add(new UI.DialogEditAppearance(actor));
-                        }
-                    }
-                    else
-                    {
-                        Log.Error(ErrorMessage);
-                    }
-                },
-                defaultCompleteMode = ToilCompleteMode.Instant
-            };
+                            {
+                                initAction = delegate
+                                    {
+                                        CompFaceEditor faceStylerNew = this.TargetA.Thing?.TryGetComp<CompFaceEditor>();
+                                        if(faceStylerNew != null)
+                                        {
+                                            Pawn actor = this.GetActor();
+                                            if(actor != null && 
+                                               actor.Position == this.TargetA.Thing.InteractionCell)
+                                            {
+                                                Find.WindowStack.Add(new DialogEditAppearance(actor));
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Log.Error(ErrorMessage);
+                                        }
+                                    },
+                                defaultCompleteMode = ToilCompleteMode.Instant
+                            };
             return toil;
         }
     }

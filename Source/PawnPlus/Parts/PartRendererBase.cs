@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using Verse;
+﻿namespace PawnPlus.Parts
+{
+    using System;
+    using System.Collections.Generic;
 
-namespace PawnPlus.Parts
-{	
-	public abstract class PartRendererBase : ICloneable
+    using UnityEngine;
+
+    using Verse;
+
+    public abstract class PartRendererBase : ICloneable
 	{
 		public abstract void Initialize(
 			Pawn pawn, 

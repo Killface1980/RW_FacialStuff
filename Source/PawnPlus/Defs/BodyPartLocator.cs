@@ -1,14 +1,10 @@
-﻿using RimWorld;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Verse;
-
-namespace PawnPlus.Defs
+﻿namespace PawnPlus.Defs
 {
-	public class BodyPartLocator
+    using System.Linq;
+
+    using Verse;
+
+    public class BodyPartLocator
 	{
 		private BodyDef bodyDef;
 
@@ -16,11 +12,11 @@ namespace PawnPlus.Defs
 
 		private string bodyPartLabel;
 		
-		[Unsaved(false)]
+		[Unsaved()]
 		private BodyPartRecord _resolvedBodyPartRecord;
 
-		[Unsaved(false)]
-		private bool _resolved = false;
+		[Unsaved()]
+		private bool _resolved;
 
 		public BodyPartRecord PartRecord
 		{
@@ -31,6 +27,7 @@ namespace PawnPlus.Defs
 					LocateBodyPart(bodyDef);
 					_resolved = true;
 				}
+
 				return _resolvedBodyPartRecord;
 			}
 		}
@@ -47,6 +44,7 @@ namespace PawnPlus.Defs
 			{
 				return searchLabel.NullOrEmpty();
 			}
+
 			return candidatePartLabel == searchLabel;
 		}
 	}

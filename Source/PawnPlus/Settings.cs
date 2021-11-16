@@ -1,11 +1,11 @@
-﻿// ReSharper disable StyleCop.SA1401
-
-using RimWorld;
-using UnityEngine;
-using Verse;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using RimWorld;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class Settings : ModSettings
     {
         #region Private Fields
@@ -50,7 +50,7 @@ namespace PawnPlus
         private bool _useHands = true;
 
         private bool _useFeet = !Controller.SKisActive;
-        private bool _usePaws = false;
+        private bool _usePaws;
         private bool develop;
 
         private bool showRoyalHeadgear = true;
@@ -118,7 +118,7 @@ namespace PawnPlus
             Rect rect4 = new Rect(0f, 0f, rect.width - 16f, this.viewHeight);
 
 
-            Widgets.BeginScrollView(rect, ref this.scrollPosition, rect4, true);
+            Widgets.BeginScrollView(rect, ref this.scrollPosition, rect4);
             Rect rect5 = rect4;
             rect5.width -= 20f;
             rect5.height = 9999f;
@@ -297,7 +297,7 @@ namespace PawnPlus
 
 
 
-            //   list.CheckboxLabeled("Settings.ILikeBigHeads".Translate(), ref this.iLikeBigHeads, "Settings.ILikeBigHeadsTooltip".Translate());
+            // list.CheckboxLabeled("Settings.ILikeBigHeads".Translate(), ref this.iLikeBigHeads, "Settings.ILikeBigHeadsTooltip".Translate());
 
             // if (list.ButtonText("Reset"))
             // {
@@ -311,7 +311,6 @@ namespace PawnPlus
             // "Settings.UseFreeWillTooltip".Translate());
 
             // this.useDNAByFaction = Toggle(this.useDNAByFaction, "Settings.UseDNAByFaction".Translate());
-
             if (Event.current.type == EventType.Layout)
             {
                 this.viewHeight = list.CurHeight;

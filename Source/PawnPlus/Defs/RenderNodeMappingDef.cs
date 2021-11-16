@@ -1,13 +1,14 @@
-﻿using PawnPlus.Parts;
-using RimWorld;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Windows.WebCam;
-using Verse;
-
-namespace PawnPlus.Defs
+﻿namespace PawnPlus.Defs
 {
-	public class RenderNodeMappingDef : Def
+    using System.Collections.Generic;
+
+    using PawnPlus.Parts;
+
+    using UnityEngine;
+
+    using Verse;
+
+    public class RenderNodeMappingDef : Def
 	{
 		public class RenderInfo
 		{

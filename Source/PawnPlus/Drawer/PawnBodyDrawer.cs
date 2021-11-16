@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
-using RimWorld;
-using UnityEngine;
-using Verse;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using System.Collections.Generic;
+
+    using RimWorld;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class PawnBodyDrawer : BasicDrawer
     {
-        #region Public Fields
-
-        #endregion Public Fields
-
         #region Protected Fields
 
         protected Mesh HandMesh = MeshPool.plane10;
@@ -19,10 +18,6 @@ namespace PawnPlus
         #endregion Protected Fields
 
         #region Protected Constructors
-
-        public PawnBodyDrawer()
-        {
-        }
 
         #endregion Protected Constructors
 
@@ -36,9 +31,11 @@ namespace PawnPlus
         public virtual void ApplyBodyWobble(ref Vector3 rootLoc, ref Vector3 footPos, ref Quaternion quat)
         {
         }
+
         public virtual void DrawApparel(Quaternion quat, Vector3 vector, bool renderBody, bool portrait)
         {
         }
+
         public virtual List<Material> BodyBaseAt(
             PawnGraphicSet graphics,
             Rot4 bodyFacing,
@@ -60,17 +57,19 @@ namespace PawnPlus
         public virtual void DrawEquipment(Vector3 rootLoc, bool portrait)
         {
         }
+
         public virtual void DrawAlienBodyAddons(bool portrait, Vector3 rootLoc, Quaternion quat, bool renderBody,
-            Rot4 rotation, bool invisible)
+                                                Rot4 rotation, bool invisible)
         {
             // Just for the Aliens
         }
+
         public virtual void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait, float factor = 1f)
         {
         }
 
         public virtual void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, Thing carriedThing = null,
-            bool flip = false, float factor = 1f)
+                                      bool flip = false, float factor = 1f)
         {
 
         }

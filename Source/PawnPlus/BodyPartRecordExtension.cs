@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Verse;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
-	public static class BodyPartRecordExtension
+    using System.Collections.Generic;
+
+    using Verse;
+
+    public static class BodyPartRecordExtension
 	{
 		public static IEnumerable<BodyPartRecord> GetChildParts(this BodyPartRecord bodyPart)
 		{
 			yield return bodyPart;
-			foreach(var childPart in bodyPart.parts)
+			foreach(BodyPartRecord childPart in bodyPart.parts)
 			{
-				foreach(var grandChildPart in childPart.GetChildParts())
+				foreach(BodyPartRecord grandChildPart in childPart.GetChildParts())
 				{
 					yield return grandChildPart;
 				}

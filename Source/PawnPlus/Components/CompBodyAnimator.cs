@@ -1,19 +1,24 @@
-﻿using PawnPlus.AnimatorWindows;
-using PawnPlus.Graphics;
-using PawnPlus.Harmony;
-using PawnPlus.Tweener;
-using JetBrains.Annotations;
-using RimWorld;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using UnityEngine;
-using Verse;
-using Verse.AI;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
+
+    using JetBrains.Annotations;
+
+    using PawnPlus.AnimatorWindows;
+    using PawnPlus.Graphics;
+    using PawnPlus.Harmony;
+    using PawnPlus.Tweener;
+
+    using RimWorld;
+
+    using UnityEngine;
+
+    using Verse;
+    using Verse.AI;
+
     public class CompBodyAnimator : ThingComp
     {
         #region Public Fields
@@ -28,8 +33,7 @@ namespace PawnPlus
         public float JitterMax = 0.35f;
         public readonly Vector3Tween[] Vector3Tweens = new Vector3Tween[(int)TweenThing.Max];
 
-        //   [CanBeNull] public PawnPartsTweener PartTweener;
-
+        // [CanBeNull] public PawnPartsTweener PartTweener;
         [CanBeNull] public PawnBodyGraphic PawnBodyGraphic;
 
         [CanBeNull] public PoseCycleDef PoseCycle;
@@ -67,12 +71,13 @@ namespace PawnPlus
         {
             get
             {
-                RoomGroup theRoomGroup = TheRoom?.Group;
-                if(theRoomGroup != null && !theRoomGroup.UsesOutdoorTemperature)
+                // RoomGroup theRoomGroup = TheRoom?.Group;
+                if(TheRoom != null && !TheRoom.UsesOutdoorTemperature)
                 {
                     // Pawn is indoors
                     return !Pawn.Drafted || !Controller.settings.IgnoreWhileDrafted;
                 }
+
                 return false;
             }
         }
@@ -199,8 +204,8 @@ namespace PawnPlus
                 PawnBodyDrawers = new List<PawnBodyDrawer>();
                 bool isQuaduped = Pawn.GetCompAnim().BodyAnim.quadruped;
                 PawnBodyDrawer thingComp = isQuaduped
-                    ? (PawnBodyDrawer)Activator.CreateInstance(typeof(QuadrupedDrawer))
-                    : (PawnBodyDrawer)Activator.CreateInstance(typeof(HumanBipedDrawer));
+                                               ? (PawnBodyDrawer)Activator.CreateInstance(typeof(QuadrupedDrawer))
+                                               : (PawnBodyDrawer)Activator.CreateInstance(typeof(HumanBipedDrawer));
                 thingComp.CompAnimator = this;
                 thingComp.Pawn = Pawn;
                 PawnBodyDrawers.Add(thingComp);
@@ -267,10 +272,12 @@ namespace PawnPlus
                 {
                     leftHand.Update(1f * Find.TickManager.TickRateMultiplier);
                 }
+
                 if(rightHand.State == TweenState.Running)
                 {
                     rightHand.Update(1f * Find.TickManager.TickRateMultiplier);
                 }
+
                 if(eqTween.State == TweenState.Running)
                 {
                     eqTween.Update(1f * Find.TickManager.TickRateMultiplier);
@@ -296,6 +303,7 @@ namespace PawnPlus
 				{
                     DrawHands(bodyQuat, rootLoc, false, null, false, Pawn.GetBodysizeScaling());
                 }
+
                 if(Controller.settings.UseFeet)
 				{
                     DrawFeet(bodyQuat, bodyQuat, rootLoc, false);
@@ -316,6 +324,7 @@ namespace PawnPlus
             {
                 Vector3Tweens[i] = new Vector3Tween();
             }
+
             PawnBodyGraphic = new PawnBodyGraphic(this);
 
             string bodyType = "Undefined";
@@ -327,9 +336,9 @@ namespace PawnPlus
 
             string defaultName = "BodyAnimDef_" + Pawn.def.defName + "_" + bodyType;
             List<string> names = new List<string>
-            {
-                defaultName,
-            };
+                                     {
+                                         defaultName,
+                                     };
 
             bool needsNewDef = true;
             foreach(string name in names)
@@ -378,36 +387,37 @@ namespace PawnPlus
                 _cachedSkinMatsBodyBase.Clear();
                 _cachedSkinMatsBodyBaseHash = num;
                 PawnGraphicSet graphics = Pawn.Drawer.renderer.graphics;
-                if(bodyCondition == RotDrawMode.Fresh)
+                if (bodyCondition == RotDrawMode.Fresh)
                 {
                     _cachedSkinMatsBodyBase.Add(graphics.nakedGraphic.MatAt(facing));
                 }
-                else if(bodyCondition == RotDrawMode.Rotting || graphics.dessicatedGraphic == null)
+                else if (bodyCondition == RotDrawMode.Rotting || graphics.dessicatedGraphic == null)
                 {
                     _cachedSkinMatsBodyBase.Add(graphics.rottingGraphic.MatAt(facing));
                 }
-                else if(bodyCondition == RotDrawMode.Dessicated)
+                else if (bodyCondition == RotDrawMode.Dessicated)
                 {
                     _cachedSkinMatsBodyBase.Add(graphics.dessicatedGraphic.MatAt(facing));
                 }
 
-                for(int i = 0; i < graphics.apparelGraphics.Count; i++)
+                for (int i = 0; i < graphics.apparelGraphics.Count; i++)
                 {
                     ApparelLayerDef lastLayer = graphics.apparelGraphics[i].sourceApparel.def.apparel.LastLayer;
 
-                    if(lastLayer == ApparelLayerDefOf.OnSkin)
+                    if (lastLayer == ApparelLayerDefOf.OnSkin)
                     {
                         _cachedSkinMatsBodyBase.Add(graphics.apparelGraphics[i].graphic.MatAt(facing));
                     }
                 }
+
                 // One more time to get at least one pieces of cloth
-                if(_cachedSkinMatsBodyBase.Count < 1)
+                if (_cachedSkinMatsBodyBase.Count < 1)
                 {
-                    for(int i = 0; i < graphics.apparelGraphics.Count; i++)
+                    for (int i = 0; i < graphics.apparelGraphics.Count; i++)
                     {
                         ApparelLayerDef lastLayer = graphics.apparelGraphics[i].sourceApparel.def.apparel.LastLayer;
 
-                        if(lastLayer == ApparelLayerDefOf.Middle)
+                        if (lastLayer == ApparelLayerDefOf.Middle)
                         {
                             _cachedSkinMatsBodyBase.Add(graphics.apparelGraphics[i].graphic.MatAt(facing));
                         }
@@ -425,7 +435,7 @@ namespace PawnPlus
 
         public float LastAimAngle = 143f;
 
-        //  public float lastWeaponAngle = 53f;
+        // public float lastWeaponAngle = 53f;
         public readonly Vector3[] LastPosition = new Vector3[(int)TweenThing.Max];
 
         public readonly FloatTween AimAngleTween = new FloatTween();
@@ -436,22 +446,25 @@ namespace PawnPlus
 
         public void CheckMovement()
         {
-            if(HarmonyPatchesFS.AnimatorIsOpen() && MainTabWindow_BaseAnimator.Pawn == Pawn)
+            if (HarmonyPatchesFS.AnimatorIsOpen() && MainTabWindow_BaseAnimator.Pawn == Pawn)
             {
                 _isMoving = true;
                 _movedPercent = MainTabWindow_BaseAnimator.AnimationPercent;
                 return;
             }
 
-            if(IsRider)
+            if (IsRider)
             {
                 _isMoving = false;
                 return;
             }
-            // pawn started pathing
 
+            // pawn started pathing
             Pawn_PathFollower pather = Pawn.pather;
-            if((pather != null) && (pather.Moving) && !Pawn.stances.FullBodyBusy && (pather.BuildingBlockingNextPathCell() == null) && (pather.NextCellDoorToWaitForOrManuallyOpen() == null) && !pather.WillCollideWithPawnOnNextPathCell())
+            if ((pather != null) && (pather.Moving) && !Pawn.stances.FullBodyBusy
+                && (pather.BuildingBlockingNextPathCell() == null)
+                && (pather.NextCellDoorToWaitForOrManuallyOpen() == null)
+                && !pather.WillCollideWithPawnOnNextPathCell())
             {
                 _movedPercent = 1f - pather.nextCellCostLeft / pather.nextCellCostTotal;
                 _isMoving = true;

@@ -1,10 +1,13 @@
-﻿using JetBrains.Annotations;
-using System.Collections.Generic;
-using UnityEngine;
-using Verse;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using System.Collections.Generic;
+
+    using JetBrains.Annotations;
+
+    using UnityEngine;
+
+    using Verse;
+
     // ReSharper disable UnassignedField.Global
     // ReSharper disable StyleCop.SA1307
     // ReSharper disable StyleCop.SA1401

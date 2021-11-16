@@ -1,15 +1,12 @@
-﻿using RimWorld;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Verse;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
-	public class PawnState
+    using System;
+
+    using RimWorld;
+
+    using Verse;
+
+    public class PawnState
 	{
 		public const int kAliveBitNum = 0;
 		public const int kStandingBitNum = 1;
@@ -21,15 +18,15 @@ namespace PawnPlus
 		public const int kBurningBitNum = 7;
 		public const int kConsciousBitNum = 8;
 		
-		public bool Alive { get; private set; } = false;
-		public bool Standing { get; private set; } = false;
-		public bool Sleeping { get; private set; } = false;
-		public bool Aiming { get; private set; } = false;
-		public bool InPainShock { get; private set; } = false;
-		public bool Downed { get; private set; } = false;
-		public bool Fleeing { get; private set; } = false;
-		public bool Burning { get; private set; } = false;
-		public bool Conscious { get; private set; } = false;
+		public bool Alive { get; private set; }
+		public bool Standing { get; private set; }
+		public bool Sleeping { get; private set; }
+		public bool Aiming { get; private set; }
+		public bool InPainShock { get; private set; }
+		public bool Downed { get; private set; }
+		public bool Fleeing { get; private set; }
+		public bool Burning { get; private set; }
+		public bool Conscious { get; private set; }
 		
 		public Thing Aiming_Target { get; private set; }
 

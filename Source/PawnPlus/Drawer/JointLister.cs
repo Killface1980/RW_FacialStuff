@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using UnityEngine;
+
     public struct JointLister
     {
         #region Public Fields

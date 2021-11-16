@@ -1,10 +1,11 @@
-﻿using PawnPlus.Defs;
-using PawnPlus.Parts;
-using System.Collections.Generic;
-using Verse;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using System.Collections.Generic;
+
+    using PawnPlus.Parts;
+
+    using Verse;
+
     public class CompProperties_Face : CompProperties
     {               
         public IHeadBehavior headBehavior;
@@ -19,22 +20,22 @@ namespace PawnPlus
         }
 
 		public override void ResolveReferences(ThingDef parentDef)
-		{
-			base.ResolveReferences(parentDef);
+        {
+            base.ResolveReferences(parentDef);
+
             // Check for dupicate UniqueIDs
-            for(int i = 0; i < partBehaviors.Count; ++i)
-			{
+            for (int i = 0; i < partBehaviors.Count; ++i)
+            {
                 int lastIndex = partBehaviors.FindLastIndex(behavior => behavior.UniqueID == partBehaviors[i].UniqueID);
-                if(lastIndex > i)
-				{
+                if (lastIndex > i)
+                {
                     partBehaviors.RemoveAt(i);
                     Log.Warning(
-                        "Pawn Plus: there are more than one IPartBehavior implementation with the same UniqueID " + 
-                        partBehaviors[i].UniqueID + 
-                        " . Only the last duplicate implementation in the list will be used.");
-                    continue;
-				}
+                        "Pawn Plus: there are more than one IPartBehavior implementation with the same UniqueID "
+                        + partBehaviors[i].UniqueID
+                        + " . Only the last duplicate implementation in the list will be used.");
+                }
             }
-		}
-	}
+        }
+    }
 }

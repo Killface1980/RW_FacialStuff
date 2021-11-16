@@ -6,13 +6,16 @@
 // ReSharper disable NotNullMemberIsNotInitialized
 // ReSharper disable CheckNamespace
 
-using PawnPlus.Defs;
-using JetBrains.Annotations;
-using System.Collections.Generic;
-using Verse;
-
 namespace RimWorld
 {
+    using System.Collections.Generic;
+
+    using JetBrains.Annotations;
+
+    using PawnPlus.Defs;
+
+    using Verse;
+
     public class PoseCycleDef : Def
     {
         #region Public Fields

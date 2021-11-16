@@ -1,20 +1,14 @@
-﻿using HarmonyLib;
-using RimWorld;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using Verse;
-using Verse.AI;
-
-namespace PawnPlus.Harmony
+﻿namespace PawnPlus.Harmony
 {
+    using HarmonyLib;
+
+    using RimWorld;
+
+    using Verse;
+
     [HarmonyPatch(
     typeof(Pawn_InteractionsTracker),
-    "TryInteractWith")]
+    nameof(Pawn_InteractionsTracker.TryInteractWith))]
     class HarmonyPatch_Pawn_InteractionsTracker
 	{
         public static void Postfix(bool __result, Pawn ___pawn, Pawn recipient)
@@ -25,10 +19,12 @@ namespace PawnPlus.Harmony
             {
                 return;
             }
+
             if(initiator.GetCompFace(out CompFace compFace))
             {
                 compFace.SetHeadTarget(recipient, IHeadBehavior.TargetType.SocialRecipient);
             }
+
             if(recipient.GetCompFace(out CompFace recipientFace))
             {
                 recipientFace.SetHeadTarget(initiator, IHeadBehavior.TargetType.SocialInitiator);

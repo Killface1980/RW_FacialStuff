@@ -1,22 +1,24 @@
-﻿using PawnPlus.Defs;
-using JetBrains.Annotations;
-using RimWorld;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using PawnPlus.Harmony;
-using UnityEngine;
-using Verse;
-using PawnPlus.Graphics;
-using RimWorld.Planet;
-using System;
-using System.Reflection;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using JetBrains.Annotations;
+
+    using PawnPlus.Defs;
+
+    using RimWorld;
+    using RimWorld.Planet;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class GameComponent_PawnPlus : GameComponent
     {
-        protected UnityEngine.Animator animator;
+        protected Animator animator;
         
         private float faceMeshSize;
 
@@ -50,6 +52,7 @@ namespace PawnPlus
 
 				}
 			}
+
             Log.Message("Pawn Plus: Couldn't retrieve the value MeshPool.HumanlikeHeadAverageWidth. Using the default value of 0.75 for face part culling.");
             faceMeshSize = 0.75f;
         }
@@ -59,13 +62,15 @@ namespace PawnPlus
         #region Public Methods
         
 		public override void GameComponentTick()
-		{
-			base.GameComponentTick();
+        {
+            base.GameComponentTick();
+
             // Perform rudimentary distance culling. Don't render if camera isn't zoomed in enough for small facial details.
             // GameComponentTick() is called before rendering the map. Therefore, this calculation can be done here.
-            if(WorldRendererUtility.CurrentWorldRenderMode == WorldRenderMode.None && Find.CurrentMap != null)
-			{
+            if (WorldRendererUtility.CurrentWorldRenderMode == WorldRenderMode.None && Find.CurrentMap != null)
+            {
                 float meshWidth, meshHeight;
+
                 // Since the camera is orthorgraphic, the location of pawn relative to camera doesn't matter - All face mesh 
                 // will be rendered with the same dimension on screen.
                 Vector3 screenCoord = Find.Camera.WorldToScreenPoint(new Vector3(faceMeshSize, 0f, faceMeshSize));
@@ -73,14 +78,14 @@ namespace PawnPlus
                 ShouldRenderFaceDetails = minPixelDim >= 10;
             }
             else
-			{
+            {
                 // Shouldn't matter because pawns aren't rendered in world view, but just in case. Also, portrait view 
                 // doesn't consider LOD and renders at full detail.
                 ShouldRenderFaceDetails = true;
             }
         }
 
-		public static void BuildWalkCycles([CanBeNull] WalkCycleDef defToRebuild = null)
+        public static void BuildWalkCycles([CanBeNull] WalkCycleDef defToRebuild = null)
         {
             List<WalkCycleDef> cycles = new List<WalkCycleDef>();
             if (defToRebuild != null)
@@ -241,58 +246,58 @@ namespace PawnPlus
             }
 
             Dictionary<SimpleCurve, float?> dict = new Dictionary<SimpleCurve, float?>
-            {
-                {cycle.HeadAngleX, key.HeadAngleX },
-                {cycle.HeadOffsetZ, key.HeadOffsetZ },
-                {
-                    cycle.ShoulderOffsetHorizontalX,
-                    key.ShoulderOffsetHorizontalX
-                },
-                {
-                    cycle.HipOffsetHorizontalX,
-                    key.HipOffsetHorizontalX
-                },
-                {
-                    cycle.BodyAngleVertical,
-                    key.BodyAngleVertical
-                },
-                {
-                    cycle.BodyOffsetZ,
-                    key.BodyOffsetZ
-                },
-                {
-                    cycle.FootAngle,
-                    key.FootAngle
-                },
-                {
-                    cycle.FootPositionX,
-                    key.FootPositionX
-                },
-                {
-                    cycle.FootPositionZ,
-                    key.FootPositionZ
-                },
-                {
-                    cycle.HandsSwingAngle,
-                    key.HandsSwingAngle
-                },
-                {
-                    cycle.HandsSwingPosVertical,
-                    key.HandsSwingAngle
-                },
-                {
-                    cycle.FrontPawAngle,
-                    key.FrontPawAngle
-                },
-                {
-                    cycle.FrontPawPositionX,
-                    key.FrontPawPositionX
-                },
-                {
-                    cycle.FrontPawPositionZ,
-                    key.FrontPawPositionZ
-                }
-            };
+                                                       {
+                                                           {cycle.HeadAngleX, key.HeadAngleX },
+                                                           {cycle.HeadOffsetZ, key.HeadOffsetZ },
+                                                           {
+                                                               cycle.ShoulderOffsetHorizontalX,
+                                                               key.ShoulderOffsetHorizontalX
+                                                           },
+                                                           {
+                                                               cycle.HipOffsetHorizontalX,
+                                                               key.HipOffsetHorizontalX
+                                                           },
+                                                           {
+                                                               cycle.BodyAngleVertical,
+                                                               key.BodyAngleVertical
+                                                           },
+                                                           {
+                                                               cycle.BodyOffsetZ,
+                                                               key.BodyOffsetZ
+                                                           },
+                                                           {
+                                                               cycle.FootAngle,
+                                                               key.FootAngle
+                                                           },
+                                                           {
+                                                               cycle.FootPositionX,
+                                                               key.FootPositionX
+                                                           },
+                                                           {
+                                                               cycle.FootPositionZ,
+                                                               key.FootPositionZ
+                                                           },
+                                                           {
+                                                               cycle.HandsSwingAngle,
+                                                               key.HandsSwingAngle
+                                                           },
+                                                           {
+                                                               cycle.HandsSwingPosVertical,
+                                                               key.HandsSwingAngle
+                                                           },
+                                                           {
+                                                               cycle.FrontPawAngle,
+                                                               key.FrontPawAngle
+                                                           },
+                                                           {
+                                                               cycle.FrontPawPositionX,
+                                                               key.FrontPawPositionX
+                                                           },
+                                                           {
+                                                               cycle.FrontPawPositionZ,
+                                                               key.FrontPawPositionZ
+                                                           }
+                                                       };
 
             foreach (KeyValuePair<SimpleCurve, float?> pair in dict)
             {
@@ -333,68 +338,68 @@ namespace PawnPlus
             }
 
             Dictionary<SimpleCurve, float?> dict = new Dictionary<SimpleCurve, float?>
-            {
-                {
-                    cycle.ShoulderOffsetHorizontalX,
-                    key.ShoulderOffsetHorizontalX
-                },
-                {
-                    cycle.HipOffsetHorizontalX,
-                    key.HipOffsetHorizontalX
-                },
-                {
-                    cycle.BodyAngle,
-                    key.BodyAngle
-                },
-                {
-                    cycle.BodyAngleVertical,
-                    key.BodyAngleVertical
-                },
-                {
-                    cycle.BodyOffsetZ,
-                    key.BodyOffsetZ
-                },
-                {
-                    cycle.FootAngle,
-                    key.FootAngle
-                },
-                {
-                    cycle.FootPositionX,
-                    key.FootPositionX
-                },
-                {
-                    cycle.FootPositionZ,
-                    key.FootPositionZ
-                },
-                {
-                    cycle.HandPositionX,
-                    key.HandPositionX
-                },
-                {
-                    cycle.HandPositionZ,
-                    key.HandPositionZ
-                },
-                {
-                    cycle.HandsSwingAngle,
-                    key.HandsSwingAngle
-                },
-                {
-                    cycle.HandsSwingPosVertical,
-                    key.HandsSwingAngle
-                },
-                {
-                    cycle.FrontPawAngle,
-                    key.FrontPawAngle
-                },
-                {
-                    cycle.FrontPawPositionX,
-                    key.FrontPawPositionX
-                },
-                {
-                    cycle.FrontPawPositionZ,
-                    key.FrontPawPositionZ
-                }
-            };
+                                                       {
+                                                           {
+                                                               cycle.ShoulderOffsetHorizontalX,
+                                                               key.ShoulderOffsetHorizontalX
+                                                           },
+                                                           {
+                                                               cycle.HipOffsetHorizontalX,
+                                                               key.HipOffsetHorizontalX
+                                                           },
+                                                           {
+                                                               cycle.BodyAngle,
+                                                               key.BodyAngle
+                                                           },
+                                                           {
+                                                               cycle.BodyAngleVertical,
+                                                               key.BodyAngleVertical
+                                                           },
+                                                           {
+                                                               cycle.BodyOffsetZ,
+                                                               key.BodyOffsetZ
+                                                           },
+                                                           {
+                                                               cycle.FootAngle,
+                                                               key.FootAngle
+                                                           },
+                                                           {
+                                                               cycle.FootPositionX,
+                                                               key.FootPositionX
+                                                           },
+                                                           {
+                                                               cycle.FootPositionZ,
+                                                               key.FootPositionZ
+                                                           },
+                                                           {
+                                                               cycle.HandPositionX,
+                                                               key.HandPositionX
+                                                           },
+                                                           {
+                                                               cycle.HandPositionZ,
+                                                               key.HandPositionZ
+                                                           },
+                                                           {
+                                                               cycle.HandsSwingAngle,
+                                                               key.HandsSwingAngle
+                                                           },
+                                                           {
+                                                               cycle.HandsSwingPosVertical,
+                                                               key.HandsSwingAngle
+                                                           },
+                                                           {
+                                                               cycle.FrontPawAngle,
+                                                               key.FrontPawAngle
+                                                           },
+                                                           {
+                                                               cycle.FrontPawPositionX,
+                                                               key.FrontPawPositionX
+                                                           },
+                                                           {
+                                                               cycle.FrontPawPositionZ,
+                                                               key.FrontPawPositionZ
+                                                           }
+                                                       };
 
             foreach (KeyValuePair<SimpleCurve, float?> pair in dict)
             {
@@ -458,6 +463,7 @@ namespace PawnPlus
                 {
                     continue;
                 }
+
                 if (thingDef == null)
                 {
                     continue;
@@ -514,23 +520,25 @@ namespace PawnPlus
                         {
                             continue;
                         }
-                        //if (DefDatabase<BodyAnimDef>
-                        //   .AllDefsListForReading.Any(x => x.defName.Contains(thingDef.defName))) continue;
+
+                        // if (DefDatabase<BodyAnimDef>
+                        // .AllDefsListForReading.Any(x => x.defName.Contains(thingDef.defName))) continue;
                         if (thingDef.HasComp(typeof(CompBodyAnimator)))
                         {
                             continue;
                         }
 
                         CompProperties_BodyAnimator bodyAnimator = new CompProperties_BodyAnimator
-                        {
-                            compClass = typeof(CompBodyAnimator),
-                            bodyDrawers = pawnSets.bodyDrawers,
-                            handType = pawnSets.handType,
-                            // footType = pawnSets.footType,
-                            // pawType = pawnSets.pawType,
-                            quadruped = pawnSets.quadruped,
-                            bipedWithHands = pawnSets.bipedWithHands
-                        };
+                                                                       {
+                                                                           compClass = typeof(CompBodyAnimator),
+                                                                           bodyDrawers = pawnSets.bodyDrawers,
+                                                                           handType = pawnSets.handType,
+
+                                                                           // footType = pawnSets.footType,
+                                                                           // pawType = pawnSets.pawType,
+                                                                           quadruped = pawnSets.quadruped,
+                                                                           bipedWithHands = pawnSets.bipedWithHands
+                                                                       };
                         thingDef.comps?.Add(bodyAnimator);
                     }
                 }
@@ -555,23 +563,25 @@ namespace PawnPlus
                 {
                     continue;
                 }
-                //if (DefDatabase<BodyAnimDef>
-                //   .AllDefsListForReading.Any(x => x.defName.Contains(thingDef.defName))) continue;
+
+                // if (DefDatabase<BodyAnimDef>
+                // .AllDefsListForReading.Any(x => x.defName.Contains(thingDef.defName))) continue;
                 if (thingDef.HasComp(typeof(CompBodyAnimator)))
                 {
                     continue;
                 }
 
                 CompProperties_BodyAnimator bodyAnimator = new CompProperties_BodyAnimator
-                {
-                    compClass = typeof(CompBodyAnimator),
-                    bodyDrawers = def.bodyDrawers,
-                    handType = def.handType,
-                    // footType = def.footType,
-                    // pawType = def.pawType,
-                    quadruped = def.quadruped,
-                    bipedWithHands = def.bipedWithHands
-                };
+                                                               {
+                                                                   compClass = typeof(CompBodyAnimator),
+                                                                   bodyDrawers = def.bodyDrawers,
+                                                                   handType = def.handType,
+
+                                                                   // footType = def.footType,
+                                                                   // pawType = def.pawType,
+                                                                   quadruped = def.quadruped,
+                                                                   bipedWithHands = def.bipedWithHands
+                                                               };
 
                 thingDef.comps?.Add(bodyAnimator);
             }

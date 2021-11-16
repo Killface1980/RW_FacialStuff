@@ -3,20 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawnPlus", "Source\PawnPlus\PawnPlus.csproj", "{3DDFC5DE-8924-461C-8DC3-D842CC00DA06}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PawnPlus", "PawnPlus\PawnPlus.csproj", "{3DDFC5DE-8924-461C-8DC3-D842CC00DA06}"
 EndProject
 Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "RimWorldWin64", "..\..\RimWorldWin64.exe", "{2EA5ABCD-DE3C-45DA-B078-5409671C010D}"
 	ProjectSection(DebuggerProjectSystem) = preProject
 		PortSupplier = 00000000-0000-0000-0000-000000000000
-		Executable = C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64.exe
+		Executable = D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe
 		RemoteMachine = DESKTOP-E674KT8
-		StartingDirectory = C:\Program Files (x86)\Steam\steamapps\common\RimWorld
+		StartingDirectory = D:\SteamLibrary\steamapps\common\RimWorld
 		Arguments = -quicktest
 		Environment = dnspy_unity_dbg2=--debugger-agent=transport=dt_socket,server=y,address=127.0.0.1:56000,suspend=y,no-hide-debugger	
 		LaunchingEngine = 00000000-0000-0000-0000-000000000000
 		UseLegacyDebugEngines = No
 		LaunchSQLEngine = No
 		AttachLaunchAction = No
+		IORedirection = Auto
 	EndProjectSection
 EndProject
 Global

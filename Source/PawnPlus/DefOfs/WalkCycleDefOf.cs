@@ -8,10 +8,10 @@
 
 // ReSharper disable StyleCop.SA1310
 
-using RimWorld;
-
 namespace PawnPlus.DefOfs
 {
+    using RimWorld;
+
     [DefOf]
     public static class WalkCycleDefOf
     {

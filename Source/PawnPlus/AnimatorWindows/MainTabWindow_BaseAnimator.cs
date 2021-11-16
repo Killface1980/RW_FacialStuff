@@ -1,15 +1,19 @@
-﻿using PawnPlus.Defs;
-using PawnPlus.Graphics;
-using JetBrains.Annotations;
-using RimWorld;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using Verse;
-
-namespace PawnPlus.AnimatorWindows
+﻿namespace PawnPlus.AnimatorWindows
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using JetBrains.Annotations;
+
+    using PawnPlus.Defs;
+
+    using RimWorld;
+
+    using UnityEngine;
+
+    using Verse;
+
     public class MainTabWindow_BaseAnimator : MainTabWindow
     {
         #region Public Fields
@@ -31,6 +35,7 @@ namespace PawnPlus.AnimatorWindows
             // Execute PostDraw if pawn is not on screen
             this.CompAnim.PostDraw();
         }
+
         #endregion Public Fields
 
         #region Protected Fields
@@ -94,7 +99,6 @@ namespace PawnPlus.AnimatorWindows
         public static Rot4 HeadRot { get; private set; } = Rot4.East;
 
         // public override Vector2 InitialSize => new Vector2(UI.screenWidth, UI.screenHeight - 35f);
-
         #endregion Public Properties
 
         #region Protected Properties
@@ -146,11 +150,13 @@ namespace PawnPlus.AnimatorWindows
                     this.CompAnim.BodyAnim.thingTarget = Pawn.def.ToString();
                     this.CompAnim.BodyAnim.bodyDrawers = this.CompAnim.Props.bodyDrawers;
                     this.CompAnim.BodyAnim.handType = this.CompAnim.Props.handType;
-                    //this.CompAnim.BodyAnim.footType = this.CompAnim.Props.footType;
-                    //this.CompAnim.BodyAnim.pawType = this.CompAnim.Props.pawType;
+
+                    // this.CompAnim.BodyAnim.footType = this.CompAnim.Props.footType;
+                    // this.CompAnim.BodyAnim.pawType = this.CompAnim.Props.pawType;
                     this.CompAnim.BodyAnim.quadruped = this.CompAnim.Props.quadruped;
                     this.CompAnim.BodyAnim.bipedWithHands = this.CompAnim.Props.bipedWithHands;
                 }
+
                 return this.CompAnim.BodyAnim;
             }
         }
@@ -252,6 +258,7 @@ namespace PawnPlus.AnimatorWindows
 
                     // Log.Message("current frame: " + this.CurrentFrameInt);
                 }
+
                 if (PawnKeyframes != null)
                 {
                     if (CurrentFrameInt == 0)
@@ -267,7 +274,7 @@ namespace PawnPlus.AnimatorWindows
             }
 
             // HarmonyPatch_PawnRenderer.Prefix(this.pawn.Drawer.renderer, Vector3.zero, Rot4.East.AsQuat, true, Rot4.East, Rot4.East, RotDrawMode.Fresh, false, false);
-            base.DoWindowContents(inRect);
+            // base.DoWindowContents(inRect);
         }
 
         public override void PostClose()
@@ -283,10 +290,12 @@ namespace PawnPlus.AnimatorWindows
             this.FindRandomPawn();
             PortraitsCache.SetDirty(Pawn);
         }
+
         protected virtual void SetKeyframes()
         {
             PawnKeyframes = new List<PawnKeyframe> { new PawnKeyframe() };
         }
+
         #endregion Public Methods
 
         #region Protected Methods
@@ -360,6 +369,7 @@ namespace PawnPlus.AnimatorWindows
 
                 Find.WindowStack.Add(new FloatMenu(list));
             }
+
             this.Zoom = listing.Slider(this.Zoom, 0.5f, 1.5f);
 
             listing.CheckboxLabeled("Develop", ref Develop);
@@ -409,6 +419,7 @@ namespace PawnPlus.AnimatorWindows
                 }
             }
         }
+
         protected virtual void DrawBodySettingsEditor(Rot4 rotation)
         {
         }
@@ -518,6 +529,7 @@ namespace PawnPlus.AnimatorWindows
         protected virtual void SetCurrentCycle()
         {
         }
+
         protected void SetNewVector(Rot4 rotation, Vector3 newOffset, List<Vector3> offset, bool front)
         {
             newOffset.y = (front ? 1 : -1) * 0.025f;
@@ -616,7 +628,7 @@ namespace PawnPlus.AnimatorWindows
 
         #region Private Methods
 
-        public float lastTime = 0f;
+        public float lastTime;
 
         protected virtual void DrawBackground(Rect rect)
         {
@@ -722,7 +734,6 @@ namespace PawnPlus.AnimatorWindows
 
             skeleton.joints.Add(head);
             }*/
-
             this.DrawBackground(rect);
 
             // Draw the pawn's portrait
@@ -735,10 +746,10 @@ namespace PawnPlus.AnimatorWindows
                                      size.y);
 
             Vector3 cameraOffset = new Vector3(0f, 0f, 0.1f);
-            //   RenderTexture image = PortraitsCache.Get(Pawn, size, cameraOffset, this.Zoom);
             {
+                // RenderTexture image = PortraitsCache.Get(Pawn, size, cameraOffset, this.Zoom);
                 RenderTexture renderTexture = new RenderTexture((int)size.x, (int)size.y, 24);
-                Find.PortraitRenderer.RenderPortrait(Pawn, renderTexture, cameraOffset, this.Zoom);
+                Find.PawnCacheRenderer.RenderPawn(Pawn, renderTexture, cameraOffset, this.Zoom, 0, Rot4.South);
                 GUI.DrawTexture(position, renderTexture);
                 renderTexture.Release();
             }
@@ -746,6 +757,7 @@ namespace PawnPlus.AnimatorWindows
             // GUI.DrawTexture(position, PortraitsCache.Get(pawn, size, default(Vector3)));
             Widgets.DrawBox(rect);
         }
+
         private void DrawRotatorBody(float curY, float width)
         {
             float buttWidth = (width - 4 * this.Spacing) / 6;
@@ -832,6 +844,7 @@ namespace PawnPlus.AnimatorWindows
             {
                 return;
             }
+
             Rect buttonRect = new Rect(0f, 48f, (width - (count - 1) * this.Spacing) / count, 32f);
             foreach (PawnKeyframe keyframe in PawnKeyframes)
             {
@@ -855,6 +868,7 @@ namespace PawnPlus.AnimatorWindows
                 buttonRect.x += buttonRect.width + this.Spacing;
             }
         }
+
         private void DrawTimelineSlider(int count, float width)
         {
             Rect timeline = new Rect(0f, 0f, width, 40f);

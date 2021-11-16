@@ -1,16 +1,17 @@
-﻿using RimWorld;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using Verse;
-using PawnPlus.Defs;
-
-namespace PawnPlus.UI
+﻿namespace PawnPlus.UI
 {
-	public partial class DialogEditAppearance : Window
+    using System.Collections.Generic;
+
+    using PawnPlus.Defs;
+    using PawnPlus.Parts;
+
+    using RimWorld;
+
+    using UnityEngine;
+
+    using Verse;
+
+    public partial class DialogEditAppearance : Window
 	{
 		private static Color kMenuSectionBGFillColor = new ColorInt(42, 43, 44).ToColor;
 		private static Color KMenuSectionBGBorderColor = new ColorInt(135, 135, 135).ToColor;
@@ -21,26 +22,28 @@ namespace PawnPlus.UI
 
 		private Pawn _pawn;
 		private CompFace _compPawnPlus;
-		private int _categoryTabIndex = 0;
-		private Parts.PartRendererBase _curPartRenderer;
+		private int _categoryTabIndex;
+		private PartRendererBase _curPartRenderer;
 		private Vector2 _scrollPos = Vector2.zero;
 		private List<CategoryWorker> _categoryWorkers = new List<CategoryWorker>();
 				
 		public DialogEditAppearance(Pawn pawn)
 		{
-			base.doCloseX = true;
+			this.doCloseX = true;
 			_pawn = pawn;
 			_categoryWorkers.Add(new CategoryWorkerHair());
-			if(!Defs.PartDef._allParts.TryGetValue(pawn.RaceProps.body, out Dictionary<PartCategoryDef, List<PartDef>> partDefs))
+			if(!PartDef._allParts.TryGetValue(pawn.RaceProps.body, out Dictionary<PartCategoryDef, List<PartDef>> partDefs))
 			{
 				return;
 			}
-			foreach(var pair in partDefs)
+
+			foreach(KeyValuePair<PartCategoryDef, List<PartDef>> pair in partDefs)
 			{
 				PartCategoryDef partCategoryDef = pair.Key;
 				List<PartDef> partsInCategory = pair.Value;
 				_categoryWorkers.Add(new CategoryWorkerPartDef(partCategoryDef, partsInCategory));
 			}
+
 			_compPawnPlus = _pawn.GetComp<CompFace>();
 		}
 
@@ -62,7 +65,7 @@ namespace PawnPlus.UI
 
 			List<TabRecord> categoryTabs = new List<TabRecord>();
 			int tabIndex = 0;
-			foreach(var categoryWorker in _categoryWorkers)
+			foreach(CategoryWorker categoryWorker in _categoryWorkers)
 			{
 				int tabIndexCopy = tabIndex;
 				categoryTabs.Add(new TabRecord(categoryWorker.CategoryTabLabel, delegate { _categoryTabIndex = tabIndexCopy; }, _categoryTabIndex == tabIndex));
@@ -97,10 +100,12 @@ namespace PawnPlus.UI
 							new Vector2(
 								localPortraitRect.width, 
 								localPortraitRect.height), 
+							Rot4.South,
 							new Vector3(0f, 0f, 0.35f), 
 							1.25f));
 					GUI.color = Color.white;
 				}
+
 				GUI.EndGroup();
 
 				Rect slidersRect = new Rect(
@@ -114,6 +119,7 @@ namespace PawnPlus.UI
 					Widgets.DrawBoxSolid(localSlidersRect, kMenuSectionBGFillColor);
 					Widgets.DrawBox(localSlidersRect);
 				}
+
 				GUI.EndGroup();
 
 				GUI.BeginGroup(rightRect);
@@ -135,11 +141,12 @@ namespace PawnPlus.UI
 					TabDrawer.DrawTabs(tagsTabRect, curCategoryWorker.GetTagTabs());
 					Rect scrollViewRect = tagsTabRect.ContractedBy(2f);
 					Rect scrollViewContentRect = new Rect(
-						0,
-						0,
-						// Subtract 2 from width to hide horizontal scroll bar
-						scrollViewRect.width - GUI.skin.verticalScrollbar.fixedWidth - 2f,
-						1000);
+                        0,
+                        0,
+
+                        // Subtract 2 from width to hide horizontal scroll bar
+                        scrollViewRect.width - GUI.skin.verticalScrollbar.fixedWidth - 2f,
+                        1000);
 					Widgets.BeginScrollView(
 						scrollViewRect, 
 						ref curCategoryWorker.scrollPos,
@@ -175,12 +182,16 @@ namespace PawnPlus.UI
 									break;
 							}
 						}
+
 						GUI.EndClip();
 					}
+
 					Widgets.EndScrollView();
 				}
+
 				GUI.EndGroup();
 			}
+
 			GUI.EndGroup();
 
 			bottomRect = bottomRect.ContractedBy(kMargin);
@@ -196,6 +207,7 @@ namespace PawnPlus.UI
 				Rect btnResetRect = new Rect(btnCancelRect.x - kMargin - buttonWidth, localBottomRect.y, buttonWidth, localBottomRect.height);
 				Widgets.ButtonText(btnResetRect, "Reset");
 			}
+
 			GUI.EndGroup();
 		}
 	}

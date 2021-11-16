@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using Verse;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
-	public class PatchOperationVHECompatibility : PatchOperationPathed
+    using System.Xml;
+
+    using Verse;
+
+    public class PatchOperationVHECompatibility : PatchOperationPathed
 	{
 		public string subcategory;
 		public bool hideMouth;
@@ -19,21 +15,21 @@ namespace PawnPlus
 			{
 				XmlNode xmlNode = item as XmlNode;
 				XmlNode xmlNode2 = xmlNode.OwnerDocument.CreateElement("PawnPlus.Defs.PartDef");
-				var parentNameAttr = xmlNode.OwnerDocument.CreateAttribute("ParentName");
+				XmlAttribute parentNameAttr = xmlNode.OwnerDocument.CreateAttribute("ParentName");
 				parentNameAttr.Value = hideMouth ? "FSHumanBeardHideMouth" : "FSHumanBeardShowMouth";
 				xmlNode2.Attributes.Append(parentNameAttr);
 
-				var defNameElem = xmlNode2.OwnerDocument.CreateElement("defName");
+				XmlElement defNameElem = xmlNode2.OwnerDocument.CreateElement("defName");
 				defNameElem.InnerText = xmlNode["defName"].InnerText;
 				xmlNode2.AppendChild(defNameElem);
 				
-				var labelElem = xmlNode2.OwnerDocument.CreateElement("label");
+				XmlElement labelElem = xmlNode2.OwnerDocument.CreateElement("label");
 				labelElem.InnerText = xmlNode["label"].InnerText;
 				xmlNode2.AppendChild(labelElem);
 
-				var partClassElem = xmlNode2.OwnerDocument.CreateElement("partClass");
-				var categoryDefElem = partClassElem.OwnerDocument.CreateElement("categoryDef");
-				var subCategoryElem = partClassElem.OwnerDocument.CreateElement("subcategory");
+				XmlElement partClassElem = xmlNode2.OwnerDocument.CreateElement("partClass");
+				XmlElement categoryDefElem = partClassElem.OwnerDocument.CreateElement("categoryDef");
+				XmlElement subCategoryElem = partClassElem.OwnerDocument.CreateElement("subcategory");
 				categoryDefElem.InnerText = "Beard";
 				subCategoryElem.InnerText = subcategory;
 				partClassElem.AppendChild(categoryDefElem);
@@ -42,13 +38,14 @@ namespace PawnPlus
 
 				xmlNode2.AppendChild(xmlNode["hairTags"]);
 
-				var defaultTexPathElem = xmlNode2.OwnerDocument.CreateElement("defaultTexPath");
+				XmlElement defaultTexPathElem = xmlNode2.OwnerDocument.CreateElement("defaultTexPath");
 				defaultTexPathElem.InnerText = xmlNode["texPath"].InnerText;
 				xmlNode2.AppendChild(defaultTexPathElem);
 
 				xmlNode.ParentNode.InsertBefore(xmlNode2, xmlNode);
 				xmlNode.ParentNode.RemoveChild(xmlNode);
 			}
+
 			return true;
 		}
 	}

@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using JetBrains.Annotations;
-using RimWorld;
-using Verse;
-using Verse.AI;
-
-namespace PawnPlus
+﻿namespace PawnPlus
 {
+    using JetBrains.Annotations;
+
+    using RimWorld;
+
+    using Verse;
+    using Verse.AI;
+
     public class BodyProps
     {
         public BodyPartRecord _rightFoot;
@@ -78,6 +78,7 @@ namespace PawnPlus
         {
             return pawn.GetComp<CompFace>();
         }
+
         public static bool GetCompFace([NotNull] this Pawn pawn, [NotNull] out CompFace compFace)
         {
             compFace = pawn.GetComp<CompFace>();

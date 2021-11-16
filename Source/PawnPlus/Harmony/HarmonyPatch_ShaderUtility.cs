@@ -1,22 +1,17 @@
-﻿using PawnPlus.Graphics;
-using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using Verse;
-
-namespace PawnPlus.Harmony
+﻿namespace PawnPlus.Harmony
 {
+    using HarmonyLib;
+
+    using PawnPlus.Graphics;
+
+    using UnityEngine;
+
+    using Verse;
+
     [HarmonyPatch(
         typeof(ShaderUtility),
         "SupportsMaskTex",
-        new[]
-        {
-            typeof(Shader)
-        })]
+        typeof(Shader))]
     class HarmonyPatch_ShaderUtility
 	{
         public static bool Prefix(ref bool __result, Shader shader)
@@ -26,6 +21,7 @@ namespace PawnPlus.Harmony
                 __result = true;
                 return false;
 			}
+
             return true;
 		}
 	}

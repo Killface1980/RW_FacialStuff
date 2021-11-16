@@ -1,14 +1,12 @@
-﻿using PawnPlus.Defs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Verse;
-
-namespace PawnPlus.Parts
+﻿namespace PawnPlus.Parts
 {
-	public static class PartConstraintManager
+    using System.Collections.Generic;
+
+    using PawnPlus.Defs;
+
+    using Verse;
+
+    public static class PartConstraintManager
 	{
 		private static Dictionary<BodyDef, List<PartConstraintDef>> racePartConstraints = 
 			new Dictionary<BodyDef, List<PartConstraintDef>>();
@@ -16,7 +14,7 @@ namespace PawnPlus.Parts
 		public static void ReadFromConstraintDefs()
 		{
 			List<PartConstraintDef> constraintDefs = DefDatabase<PartConstraintDef>.AllDefsListForReading;
-			foreach(var constraintDef in constraintDefs)
+			foreach(PartConstraintDef constraintDef in constraintDefs)
 			{
 				BodyDef raceBodyDef = constraintDef.raceBodyDef;
 				if(!racePartConstraints.TryGetValue(raceBodyDef, out List<PartConstraintDef> constraints))
@@ -24,9 +22,10 @@ namespace PawnPlus.Parts
 					constraints = new List<PartConstraintDef>();
 					racePartConstraints.Add(raceBodyDef, constraints);
 				}
-				foreach(var partClass in constraintDef.partClasses)
+
+				foreach(PartClass partClass in constraintDef.partClasses)
 				{
-					foreach(var otherPartClass in constraintDef.partClasses)
+					foreach(PartClass otherPartClass in constraintDef.partClasses)
 					{
 						if(partClass != otherPartClass)
 						{
@@ -47,10 +46,11 @@ namespace PawnPlus.Parts
 				conflictingConstraintDef = null;
 				return true;
 			}
-			foreach(var constraintDef in partConstraints)
+
+			foreach(PartConstraintDef constraintDef in partConstraints)
 			{
 				int count = 0;
-				foreach(var partClass in constraintDef.partClasses)
+				foreach(PartClass partClass in constraintDef.partClasses)
 				{
 					if(partClass.categoryDef == null)
 					{
@@ -60,18 +60,21 @@ namespace PawnPlus.Parts
 						conflictingConstraintDef = null;
 						return true;
 					}
+
 					if(categoryParts.TryGetValue(partClass.categoryDef, out PartDef partDef) &&
 						partDef.partClass.subcategory == partClass.subcategory)
 					{
 						count++;
 					}
 				}
+
 				if(count >= constraintDef.partClasses.Count)
 				{
 					conflictingConstraintDef = constraintDef;
 					return false;
 				}
 			}
+
 			conflictingConstraintDef = null;
 			return true;
 		}

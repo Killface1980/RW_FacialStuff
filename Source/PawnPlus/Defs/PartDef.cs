@@ -1,10 +1,13 @@
-﻿using PawnPlus.Parts;
-using RimWorld;
-using System.Collections.Generic;
-using Verse;
-
-namespace PawnPlus.Defs
+﻿namespace PawnPlus.Defs
 {
+    using System.Collections.Generic;
+
+    using PawnPlus.Parts;
+
+    using RimWorld;
+
+    using Verse;
+
     public class PartDef : Def
     {
         public class SinglePart
@@ -14,17 +17,17 @@ namespace PawnPlus.Defs
             public List<string> occludedRenderNodes;
         }
 
-        public HairGender hairGender;
+        public StyleGender hairGender;
 
         public List<string> hairTags = new List<string>();
 
-        public Parts.PartClass partClass = new PartClass();
+        public PartClass partClass = new PartClass();
 
         public PartRendererBase partRenderer;
 
         public BodyDef raceBodyDef;
 
-        public List<PartDef.SinglePart> parts;
+        public List<SinglePart> parts;
 
         public Dictionary<string, string> namedTexPaths = new Dictionary<string, string>();
 
@@ -36,12 +39,12 @@ namespace PawnPlus.Defs
 			{
                 return partsInCategory;
 			}
+
             return new Dictionary<PartCategoryDef, List<PartDef>>();
 		}
         
         // The following variables are initialized in FacialStuffModBase.DefsLoaded()
-
-        [Unsaved(false)]
+        [Unsaved()]
         public static Dictionary<BodyDef, Dictionary<PartCategoryDef, List<PartDef>>> _allParts =
             new Dictionary<BodyDef, Dictionary<PartCategoryDef, List<PartDef>>>();
     }

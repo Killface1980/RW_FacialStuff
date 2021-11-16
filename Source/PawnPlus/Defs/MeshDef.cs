@@ -1,9 +1,10 @@
-﻿using UnityEngine;
-using Verse;
-
-namespace PawnPlus.Defs
+﻿namespace PawnPlus.Defs
 {
-	public class MeshDef : Def
+    using UnityEngine;
+
+    using Verse;
+
+    public class MeshDef : Def
 	{
 		public Vector2 dimension;
 		public bool mirror;
@@ -20,6 +21,7 @@ namespace PawnPlus.Defs
 				{
 					_cachedMesh = mirror ? MeshPool.GridPlaneFlip(dimension) : MeshPool.GridPlane(dimension);
 				}
+
 				return _cachedMesh;
 			}
 		}
