@@ -20,6 +20,8 @@ using Verse;
 
 namespace FacialStuff.FaceEditor
 {
+    using BeardDef = Defs.BeardDef;
+    using BeardDefOf = DefOfs.BeardDefOf;
 
     // ReSharper disable once InconsistentNaming
     [StaticConstructorOnStartup]
@@ -27,9 +29,9 @@ namespace FacialStuff.FaceEditor
     {
         #region Public Fields
 
-        public static readonly Color ColorSwatchBorder = new Color(0.77255f, 0.77255f, 0.77255f);
+        public static readonly Color ColorSwatchBorder = new(0.77255f, 0.77255f, 0.77255f);
 
-        public static readonly Color ColorSwatchSelection = new Color(0.9098f, 0.9098f, 0.9098f);
+        public static readonly Color ColorSwatchSelection = new(0.9098f, 0.9098f, 0.9098f);
 
         public static readonly int Columns;
 
@@ -57,7 +59,7 @@ namespace FacialStuff.FaceEditor
         private FilterTab filterTab;
         public GenderTab genderTab;
         public Vector2 PickerPosition = Vector2.zero;
-        public Vector2 PickerSize = new Vector2(200, 200);
+        public Vector2 PickerSize = new(200, 200);
         public bool RerenderPawn = true;
 
         public Vector2 ScrollPositionHairAll = Vector2.zero;
@@ -74,7 +76,7 @@ namespace FacialStuff.FaceEditor
 
 #region Private Fields
 
-        private static readonly Color DarkBackground = new Color(0.12f, 0.12f, 0.12f);
+        private static readonly Color DarkBackground = new(0.12f, 0.12f, 0.12f);
 
         public static List<BeardDef> FullBeardDefs;
 
@@ -93,22 +95,21 @@ namespace FacialStuff.FaceEditor
 
         private static readonly long TicksPerYear = 3600000L;
 
-        private static readonly List<string> VanillaHairTags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
+        private static readonly List<string> VanillaHairTags = new() { "Urban", "Rural", "Punk", "Tribal" };
 
         public static List<BrowDef> BrowDefs;
 
-        private static List<string> _currentFilter = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
+        private static List<string> _currentFilter = new() { "Urban", "Rural", "Punk", "Tribal" };
 
         private static List<EyeDef> _eyeDefs;
-        private static List<EarDef> _earDefs;
 
         private static List<HairDef> _hairDefs;
 
         public static Pawn Pawn;
 
-        private static Vector2 _portraitSize = new Vector2(203f, 203f);
+        private static Vector2 _portraitSize = new(203f, 203f);
 
-        private static float _previewSize = 220f;
+        private static readonly float _previewSize = 220f;
         private readonly ColorWrapper _colourWrapper;
 
         private readonly bool _gear;
@@ -132,7 +133,6 @@ namespace FacialStuff.FaceEditor
         private readonly CrownType _originalCrownType;
 
         private readonly EyeDef _originalEye;
-        private readonly EarDef _originalEar;
 
         private readonly HairDef _originalHair;
 
@@ -155,7 +155,6 @@ namespace FacialStuff.FaceEditor
         private BrowDef _newBrow;
 
         private EyeDef _newEye;
-        private EarDef _newEar;
 
         private HairDef _newHair;
 
@@ -164,11 +163,6 @@ namespace FacialStuff.FaceEditor
         private float _newMelanin;
 
         private MoustacheDef _newMoustache;
-
-        [SuppressMessage(
-        "StyleCop.CSharp.NamingRules",
-        "SA1305:FieldNamesMustNotUseHungarianNotation",
-        Justification = "Reviewed. Suppression is OK here.")]
         private bool _reInit;
 
         private bool _saveChangedOnExit;
@@ -184,12 +178,12 @@ namespace FacialStuff.FaceEditor
 #if legacy
         private SpecialTab _specialTab;
 #endif
-        private Vector2 _swatchSize = new Vector2(14, 14);
-        public PawnFace PawnFace => this._pawnFace;
+        private Vector2 _swatchSize = new(14, 14);
+        public PawnFace PawnFace { get; }
 
-#endregion Private Fields
+        #endregion Private Fields
 
-#region Public Constructors
+        #region Public Constructors
         static Dialog_FaceStyling()
         {
             // _previewSize = 100f;
@@ -201,11 +195,10 @@ namespace FacialStuff.FaceEditor
             EntrySize = ListWidth / Columns;
             NameBackground = SolidColorMaterials.NewSolidColorTexture(new Color(0f, 0f, 0f, 0.3f));
             HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
-                                                                                x => x.hairTags
+                                                                                x => x.styleTags
                                                                                       .SharesElementWith(VanillaHairTags) && !x.IsBeardNotHair());
 
             _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading;
-            _earDefs = DefDatabase<EarDef>.AllDefsListForReading;
             FullBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType == BeardType.FullBeard)
                                                  .ToList();
             LowerBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType != BeardType.FullBeard)
@@ -230,7 +223,7 @@ namespace FacialStuff.FaceEditor
             this._gear = Controller.settings.FilterHats;
             Prefs.HatsOnlyOnMap = true;
             Controller.settings.FilterHats = false;
-            this._pawnFace = this.CompFace.PawnFace;
+            this.PawnFace = this.CompFace.PawnFace;
 
             if (this.PawnFace == null)
             {
@@ -248,16 +241,16 @@ namespace FacialStuff.FaceEditor
                 this.genderTab = GenderTab.Male;
             }
 
-            CurrentFilter = Pawn.story.hairDef.hairTags;
-            if (Pawn.story.hairDef.hairTags.Contains("Urban"))
+            CurrentFilter = Pawn.story.hairDef.styleTags;
+            if (Pawn.story.hairDef.styleTags.Contains("Urban"))
             {
                 this.filterTab = FilterTab.Urban;
             }
-            else if (Pawn.story.hairDef.hairTags.Contains("Rural"))
+            else if (Pawn.story.hairDef.styleTags.Contains("Rural"))
             {
                 this.filterTab = FilterTab.Rural;
             }
-            else if (Pawn.story.hairDef.hairTags.Contains("Punk"))
+            else if (Pawn.story.hairDef.styleTags.Contains("Punk"))
             {
                 this.filterTab = FilterTab.Punk;
             }
@@ -325,7 +318,7 @@ namespace FacialStuff.FaceEditor
             set
             {
                 _currentFilter = value;
-                FilteredHairDefs = _hairDefs.FindAll(x => x.hairTags.SharesElementWith(_currentFilter));
+                FilteredHairDefs = _hairDefs.FindAll(x => x.styleTags.SharesElementWith(_currentFilter));
                 FilteredHairDefs.SortBy(i => i.LabelCap.ToString());    //Check it
             }
         }
@@ -337,12 +330,12 @@ namespace FacialStuff.FaceEditor
             set
             {
                 _hairDefs = value;
-                FilteredHairDefs = _hairDefs.FindAll(x => x.hairTags.SharesElementWith(CurrentFilter));
+                FilteredHairDefs = _hairDefs.FindAll(x => x.styleTags.SharesElementWith(CurrentFilter));
                 FilteredHairDefs.SortBy(i => i.LabelCap.ToString());
             }
         }
 
-        public override Vector2 InitialSize => new Vector2(750f, 700f);
+        public override Vector2 InitialSize => new(750f, 700f);
 
         public Color NewBeardColor
         {
@@ -443,17 +436,7 @@ namespace FacialStuff.FaceEditor
                 this.UpdatePawnDefs(value);
             }
         }
-        private EarDef NewEar
-        {
-            get => this._newEar;
 
-            set
-            {
-                this._newEar = value;
-
-                this.UpdatePawnDefs(value);
-            }
-        }
 
         private HairDef NewHair
         {
@@ -466,27 +449,25 @@ namespace FacialStuff.FaceEditor
             }
         }
 
-        private readonly PawnFace _pawnFace;
+        #endregion Private Properties
 
-#endregion Private Properties
-
-#region Public Methods
+        #region Public Methods
 
         public static Rect AddPortraitWidget(float left, float top)
         {
             // Portrait
-            Rect rect = new Rect(left, top, _portraitSize.x, _portraitSize.y);
+            Rect rect = new(left, top, _portraitSize.x, _portraitSize.y);
             GUI.DrawTexture(rect, FaceTextures.BackgroundTex);
 
             // Draw the pawn's portrait
             GUI.BeginGroup(rect);
-            Vector2 size = new Vector2(rect.height / 1.4f, rect.height); // 128x180
-            Rect position = new Rect(
+            Vector2 size = new(rect.height / 1.4f, rect.height); // 128x180
+            Rect position = new(
                                         rect.width * 0.5f - size.x * 0.5f,
                                         10f + rect.height * 0.5f - size.y * 0.5f,
                                         size.x,
                                         size.y);
-            GUI.DrawTexture(position, PortraitsCache.Get(Pawn, size, new Vector3(0f, 0f, 0.1f), 1.25f));
+            GUI.DrawTexture(position, PortraitsCache.Get(Pawn, size, Rot4.South, new Vector3(0f, 0f, 0.1f), 1.25f));
 
             // GUI.DrawTexture(position, PortraitsCache.Get(pawn, size, default(Vector3)));
             GUI.EndGroup();
@@ -499,7 +480,7 @@ namespace FacialStuff.FaceEditor
 
         public void DoColorWindowBeard()
         {
-            this.RemoveColorPicker();
+            RemoveColorPicker();
 
             this._colourWrapper.Color = this.PawnFace.HasSameBeardColor
                                    ? this.NewHairColor
@@ -525,7 +506,7 @@ namespace FacialStuff.FaceEditor
 
         public override void DoWindowContents(Rect inRect)
         {
-            Rect rect = new Rect(MarginFS, 0f, inRect.width, TitleHeight);
+            Rect rect = new(MarginFS, 0f, inRect.width, TitleHeight);
             Text.Font = GameFont.Medium;
             Text.Anchor = TextAnchor.MiddleLeft;
             Widgets.Label(rect, Title);
@@ -552,9 +533,9 @@ namespace FacialStuff.FaceEditor
             {
             }
 
-            List<TabRecord> list = new List<TabRecord>();
+            List<TabRecord> list = new();
 
-            TabRecord item = new TabRecord(
+            TabRecord item = new(
                                            "FacialStuffEditor.Hair".Translate(), this.SetTabFaceStyle(FaceStyleTab.Hair), this.Tab == FaceStyleTab.Hair);
             list.Add(item);
 
@@ -562,7 +543,7 @@ namespace FacialStuff.FaceEditor
             {
                 if (Pawn.gender == Gender.Male)
                 {
-                    TabRecord item2 = new TabRecord(
+                    TabRecord item2 = new(
                                                     "FacialStuffEditor.Beard".Translate(), this.SetTabFaceStyle(FaceStyleTab.Beard), this.Tab == FaceStyleTab.Beard);
                     list.Add(item2);
                 }
@@ -570,23 +551,23 @@ namespace FacialStuff.FaceEditor
 
             if (this.CompFace.Props.hasEyes)
             {
-                TabRecord item3 = new TabRecord(
+                TabRecord item3 = new(
                                                 "FacialStuffEditor.Eye".Translate(), this.SetTabFaceStyle(FaceStyleTab.Eye), this.Tab == FaceStyleTab.Eye);
                 list.Add(item3);
 
-                TabRecord item4 = new TabRecord(
+                TabRecord item4 = new(
                                                 "FacialStuffEditor.Brow".Translate(), this.SetTabFaceStyle(FaceStyleTab.Brow), this.Tab == FaceStyleTab.Brow);
                 list.Add(item4);
             }
 
             if (Controller.settings.ShowBodyChange && Current.ProgramState == ProgramState.Playing)
             {
-                TabRecord item5 = new TabRecord(
+                TabRecord item5 = new(
                                                 "FacialStuffEditor.TypeSelector".Translate(), this.SetTabFaceStyle(FaceStyleTab.TypeSelector), this.Tab == FaceStyleTab.TypeSelector);
                 list.Add(item5);
             }
 
-            Rect contentRect = new Rect(
+            Rect contentRect = new(
                                         0f,
                                         TitleHeight + TabDrawer.TabHeight + MarginFS / 2,
                                         inRect.width,
@@ -598,7 +579,7 @@ namespace FacialStuff.FaceEditor
 
             Action backAct = delegate
             {
-                this.RemoveColorPicker();
+                RemoveColorPicker();
 
                 // SoundDef.Named("InteractShotgun").PlayOneShotOnCamera();
                 if (this.OriginalGender != Gender.Male && this.Tab == FaceStyleTab.Beard)
@@ -618,30 +599,30 @@ namespace FacialStuff.FaceEditor
 
         public void DrawBeardPicker(Rect rect)
         {
-            List<TabRecord> list = new List<TabRecord>();
+            List<TabRecord> list = new();
 
             void FullBeards()
             {
-                // HairDefs = hairDefs.FindAll(x => x.hairTags.SharesElementWith(VanillaHairTags) &&
-                //                                  (x.hairGender == HairGender.Female ||
-                //                                   x.hairGender == HairGender.FemaleUsually));
+                // HairDefs = hairDefs.FindAll(x => x.styleTags.SharesElementWith(VanillaHairTags) &&
+                //                                  (x.styleGender == StyleGender.Female ||
+                //                                   x.styleGender == StyleGender.FemaleUsually));
                 // HairDefs.SortBy(i => i.LabelCap);
                 this._beardTab = BeardTab.FullBeards;
             }
 
-            TabRecord item = new TabRecord(
+            TabRecord item = new(
                                            "FacialStuffEditor.FullBeards".Translate(),
                                            FullBeards, this._beardTab == BeardTab.FullBeards);
             list.Add(item);
 
             void CombinableBeards()
             {
-                // HairDefs = hairDefs.FindAll(x => x.hairTags.SharesElementWith(VanillaHairTags) && (x.hairGender == HairGender.Male || x.hairGender == HairGender.MaleUsually));
+                // HairDefs = hairDefs.FindAll(x => x.styleTags.SharesElementWith(VanillaHairTags) && (x.styleGender == StyleGender.Male || x.styleGender == StyleGender.MaleUsually));
                 // HairDefs.SortBy(i => i.LabelCap);
                 this._beardTab = BeardTab.Combinable;
             }
 
-            TabRecord item2 = new TabRecord(
+            TabRecord item2 = new(
                                             "FacialStuffEditor.Combinable".Translate(),
                                             CombinableBeards, this._beardTab == BeardTab.Combinable);
             list.Add(item2);
@@ -673,7 +654,7 @@ namespace FacialStuff.FaceEditor
             }
 
             rect3.height = allRows * thisEntrySize;
-            Vector2 vector = new Vector2(thisEntrySize * 2, thisEntrySize);
+            Vector2 vector = new(thisEntrySize * 2, thisEntrySize);
             if (rect3.height > rect2.height)
             {
                 vector.x -= 16f / thisColumns;
@@ -704,7 +685,7 @@ namespace FacialStuff.FaceEditor
                     int yPos = i / thisColumns;
                     int xPos = i % thisColumns;
 
-                    Rect rect4 = new Rect(xPos * vector.x, yPos * vector.y, vector.x, vector.y);
+                    Rect rect4 = new(xPos * vector.x, yPos * vector.y, vector.x, vector.y);
                     this.DrawMoustachePickerCell(MoustacheDefs[i], rect4.ContractedBy(3f));
                     thisY = rect4.yMax;
                 }
@@ -715,7 +696,7 @@ namespace FacialStuff.FaceEditor
                     int num2 = i / thisColumns;
                     int num3 = i % thisColumns;
 
-                    Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y + curY, vector.x, vector.y);
+                    Rect rect4 = new(num3 * vector.x, num2 * vector.y + curY, vector.x, vector.y);
                     this.DrawBeardPickerCell(LowerBeardDefs[i], rect4.ContractedBy(3f));
                 }
             }
@@ -727,7 +708,7 @@ namespace FacialStuff.FaceEditor
                     int num2 = i / thisColumns;
                     int num3 = i % thisColumns;
 
-                    Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
+                    Rect rect4 = new(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
                     this.DrawBeardPickerCell(FullBeardDefs[i], rect4.ContractedBy(3f));
                 }
             }
@@ -749,7 +730,7 @@ namespace FacialStuff.FaceEditor
             int num = Mathf.CeilToInt(BrowDefs.Count / (float)thisColumns);
 
             rect3.height = num * thisEntrySize;
-            Vector2 vector = new Vector2(thisEntrySize * iconSides, thisEntrySize);
+            Vector2 vector = new(thisEntrySize * iconSides, thisEntrySize);
             if (rect3.height > rect2.height)
             {
                 vector.x -= 16f / Columns;
@@ -767,7 +748,7 @@ namespace FacialStuff.FaceEditor
             {
                 int yPos = i / thisColumns;
                 int xPos = i % thisColumns;
-                Rect rect4 = new Rect(xPos * vector.x, yPos * vector.y, vector.x, vector.y);
+                Rect rect4 = new(xPos * vector.x, yPos * vector.y, vector.x, vector.y);
                 this.DrawBrowPickerCell(BrowDefs[i], rect4.ContractedBy(3f));
             }
 
@@ -775,7 +756,7 @@ namespace FacialStuff.FaceEditor
             Widgets.EndScrollView();
         }
 
-        public void DrawColorSelected(Rect swatchRect)
+        public static void DrawColorSelected(Rect swatchRect)
         {
             Widgets.DrawBoxSolid(swatchRect, Color.white);
         }
@@ -793,7 +774,7 @@ namespace FacialStuff.FaceEditor
             int num = Mathf.CeilToInt(_eyeDefs.Count / (float)thisColumns);
 
             rect3.height = num * thisEntrySize;
-            Vector2 vector = new Vector2(thisEntrySize * iconSides, thisEntrySize);
+            Vector2 vector = new(thisEntrySize * iconSides, thisEntrySize);
             if (rect3.height > rect2.height)
             {
                 vector.x -= 16f / thisColumns;
@@ -811,7 +792,7 @@ namespace FacialStuff.FaceEditor
             {
                 int num2 = i / thisColumns;
                 int num3 = i % thisColumns;
-                Rect rect4 = new Rect(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
+                Rect rect4 = new(num3 * vector.x, num2 * vector.y, vector.x, vector.y);
                 this.DrawEyePickerCell(_eyeDefs[i], rect4.ContractedBy(3f));
             }
 
@@ -829,7 +810,7 @@ namespace FacialStuff.FaceEditor
             Widgets.DrawHighlightIfMouseover(rect);
             if (this.NewHairColor.IndistinguishableFrom(color))
             {
-                this.DrawColorSelected(rect.ContractedBy(-2f));
+                DrawColorSelected(rect.ContractedBy(-2f));
                 text += "\n(selected)";
             }
 
@@ -840,7 +821,7 @@ namespace FacialStuff.FaceEditor
             // ReSharper disable once InvertIf
             if (Widgets.ButtonInvisible(rect))
             {
-                this.RemoveColorPicker();
+                RemoveColorPicker();
 
                 if (colorRequest != null)
                 {
@@ -863,22 +844,22 @@ namespace FacialStuff.FaceEditor
 
         public virtual void DrawHairPicker(Rect rect)
         {
-            List<TabRecord> list = new List<TabRecord>();
+            List<TabRecord> list = new();
 
-            TabRecord item = new TabRecord(
+            TabRecord item = new(
                                            "Female".Translate(),
                                            delegate
                                            {
                                                HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                                                                                                              x =>
-                                                                                                                 x.hairTags
+                                                                                                                 x.styleTags
                                                                                                                   .SharesElementWith(VanillaHairTags)
                                                                                                                &&
-                                                                                                                 (x.hairGender ==
-                                                                                                                  HairGender
+                                                                                                                 (x.styleGender ==
+                                                                                                                  StyleGender
                                                                                                                  .Female ||
-                                                                                                                  x.hairGender ==
-                                                                                                                  HairGender
+                                                                                                                  x.styleGender ==
+                                                                                                                  StyleGender
                                                                                                                  .FemaleUsually && !x.IsBeardNotHair()
                                                                                                                  ));
                                                HairDefs.SortBy(i => i.LabelCap.ToString());
@@ -886,20 +867,20 @@ namespace FacialStuff.FaceEditor
                                            }, this.genderTab == GenderTab.Female);
             list.Add(item);
 
-            TabRecord item2 = new TabRecord(
+            TabRecord item2 = new(
                                             "Male".Translate(),
                                             delegate
                                             {
                                                 HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                                                                                                               x =>
-                                                                                                                  x.hairTags
+                                                                                                                  x.styleTags
                                                                                                                    .SharesElementWith(VanillaHairTags)
                                                                                                                 &&
-                                                                                                                  (x.hairGender ==
-                                                                                                                   HairGender
+                                                                                                                  (x.styleGender ==
+                                                                                                                   StyleGender
                                                                                                                   .Male ||
-                                                                                                                   x.hairGender ==
-                                                                                                                   HairGender
+                                                                                                                   x.styleGender ==
+                                                                                                                   StyleGender
                                                                                                                   .MaleUsually && !x.IsBeardNotHair()
                                                                                                                   ));
                                                 HairDefs.SortBy(i => i.LabelCap.ToString());
@@ -907,29 +888,29 @@ namespace FacialStuff.FaceEditor
                                             }, this.genderTab == GenderTab.Male);
             list.Add(item2);
 
-            TabRecord item3 = new TabRecord(
+            TabRecord item3 = new(
                                             "FacialStuffEditor.Any".Translate(),
                                             delegate
                                             {
                                                 HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                                                                                                               x =>
-                                                                                                                  x.hairTags
+                                                                                                                  x.styleTags
                                                                                                                    .SharesElementWith(VanillaHairTags) &&
-                                                                                                                  x.hairGender ==
-                                                                                                                  HairGender
+                                                                                                                  x.styleGender ==
+                                                                                                                  StyleGender
                                                                                                                  .Any && !x.IsBeardNotHair());
                                                 HairDefs.SortBy(i => i.LabelCap.ToString());
                                                 this.genderTab = GenderTab.Any;
                                             }, this.genderTab == GenderTab.Any);
             list.Add(item3);
 
-            TabRecord item4 = new TabRecord(
+            TabRecord item4 = new(
                                             "FacialStuffEditor.All".Translate(),
                                             delegate
                                             {
                                                 HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                                                                                                               x => x
-                                                                                                                  .hairTags
+                                                                                                                  .styleTags
                                                                                                                   .SharesElementWith(VanillaHairTags) && !x.IsBeardNotHair());
                                                 HairDefs.SortBy(i => i.LabelCap.ToString());
                                                 this.genderTab = GenderTab.All;
@@ -939,9 +920,9 @@ namespace FacialStuff.FaceEditor
 
             TabDrawer.DrawTabs(rect, list);
 
-            List<TabRecord> list2 = new List<TabRecord>();
+            List<TabRecord> list2 = new();
 
-            TabRecord urban = new TabRecord(
+            TabRecord urban = new(
                                             "FacialStuffEditor.Urban".Translate(),
                                             delegate
                                             {
@@ -950,7 +931,7 @@ namespace FacialStuff.FaceEditor
                                             }, this.filterTab == FilterTab.Urban);
             list2.Add(urban);
 
-            TabRecord rural = new TabRecord(
+            TabRecord rural = new(
                                             "FacialStuffEditor.Rural".Translate(),
                                             delegate
                                             {
@@ -959,7 +940,7 @@ namespace FacialStuff.FaceEditor
                                             }, this.filterTab == FilterTab.Rural);
             list2.Add(rural);
 
-            TabRecord punk = new TabRecord(
+            TabRecord punk = new(
                                            "FacialStuffEditor.Punk".Translate(),
                                            delegate
                                            {
@@ -968,7 +949,7 @@ namespace FacialStuff.FaceEditor
                                            }, this.filterTab == FilterTab.Punk);
             list2.Add(punk);
 
-            TabRecord tribal = new TabRecord(
+            TabRecord tribal = new(
                                              "FacialStuffEditor.Tribal".Translate(),
                                              delegate
                                              {
@@ -977,7 +958,7 @@ namespace FacialStuff.FaceEditor
                                              }, this.filterTab == FilterTab.Tribal);
             list2.Add(tribal);
 
-            Rect rect2A = new Rect(rect);
+            Rect rect2A = new(rect);
 
             rect2A.yMin += 32f;
 
@@ -996,7 +977,7 @@ namespace FacialStuff.FaceEditor
 
             rect3.height = rowsCount * thisEntrySize;
 
-            Vector2 vector = new Vector2(thisEntrySize * iconSides, thisEntrySize);
+            Vector2 vector = new(thisEntrySize * iconSides, thisEntrySize);
             if (rect3.height > rect2.height)
             {
                 vector.x -= 16f / thisColumns;
@@ -1030,7 +1011,7 @@ namespace FacialStuff.FaceEditor
             {
                 int yPos = i / thisColumns;
                 int xPos = i % thisColumns;
-                Rect rect4 = new Rect(xPos * vector.x, yPos * vector.y, vector.x, vector.y);
+                Rect rect4 = new(xPos * vector.x, yPos * vector.y, vector.x, vector.y);
                 this.DrawHairPickerCell(FilteredHairDefs[i], rect4.ContractedBy(3f));
             }
 
@@ -1047,8 +1028,8 @@ namespace FacialStuff.FaceEditor
             // Get the offset, cause width != 2 * height
             float offset = (rect.width / 2 - rect.height) / 3;
 
-            Rect rect1 = new Rect(rect.x + offset, rect.y, rect.height, rect.height);
-            Rect rect2 = new Rect(rect1.xMax + offset, rect.y, rect.height, rect.height);
+            Rect rect1 = new(rect.x + offset, rect.y, rect.height, rect.height);
+            Rect rect2 = new(rect1.xMax + offset, rect.y, rect.height, rect.height);
             {
                 // Highlight box
                 Widgets.DrawHighlightIfMouseover(rect);
@@ -1068,7 +1049,7 @@ namespace FacialStuff.FaceEditor
             }
 
             string highlightText = string.Empty;
-            foreach (string hairTag in hair.hairTags)
+            foreach (string hairTag in hair.styleTags)
             {
                 if (!highlightText.NullOrEmpty())
                 {
@@ -1084,8 +1065,8 @@ namespace FacialStuff.FaceEditor
             GUI.DrawTexture(rect2, Pawn.Drawer.renderer.graphics.headGraphic.MatEast.mainTexture);
 
             GUI.color = Pawn.story.hairColor;
-            GUI.DrawTexture(rect1, this.HairGraphic(hair).MatSouth.mainTexture);
-            GUI.DrawTexture(rect2, this.HairGraphic(hair).MatEast.mainTexture);
+            GUI.DrawTexture(rect1, HairGraphic(hair).MatSouth.mainTexture);
+            GUI.DrawTexture(rect2, HairGraphic(hair).MatEast.mainTexture);
 
             GUI.color = Color.white;
 
@@ -1100,7 +1081,7 @@ namespace FacialStuff.FaceEditor
             {
                 this.NewHair = hair;
 
-                this.RemoveColorPicker();
+                RemoveColorPicker();
                 {
                     this._colourWrapper.Color = this.NewHairColor;
 
@@ -1137,11 +1118,13 @@ namespace FacialStuff.FaceEditor
             top += WidgetUtil.SelectionRowHeight + 20f;
             HeadTypeSelectionDto dresserDtoHeadTypeSelectionDto = this.DresserDto.HeadTypeSelectionDto;
             if (dresserDtoHeadTypeSelectionDto != null)
+            {
                 WidgetUtil.AddSelectorWidget(
                     editorLeft,
                     top,
                     editorWidth,
                     "FacialStuffEditor.HeadType".Translate() + ":", dresserDtoHeadTypeSelectionDto);
+            }
 
             top += WidgetUtil.SelectionRowHeight + 20f;
 
@@ -1155,11 +1138,13 @@ namespace FacialStuff.FaceEditor
 
                 GenderSelectionDto dresserDtoGenderSelectionDto = this.DresserDto.GenderSelectionDto;
                 if (dresserDtoGenderSelectionDto != null)
+                {
                     WidgetUtil.AddSelectorWidget(
                         editorLeft,
                         top,
                         editorWidth,
                         "FacialStuffEditor.Gender".Translate() + ":", dresserDtoGenderSelectionDto);
+                }
 
                 // top += WidgetUtil.SelectionRowHeight + 5;
                 // long ageBio = pawn.ageTracker.AgeBiologicalTicks;
@@ -1206,20 +1191,20 @@ namespace FacialStuff.FaceEditor
             Vector2 vector = Text.CalcSize(pawnName);
 
             Rect pawnRect = AddPortraitWidget(0f, TitleHeight);
-            Rect labelRect = new Rect(0f, pawnRect.yMax, vector.x, vector.y);
+            Rect labelRect = new(0f, pawnRect.yMax, vector.x, vector.y);
             labelRect = labelRect.CenteredOnXIn(pawnRect);
 
             float width = rect.width - ListWidth - MarginFS;
 
-            Rect button = new Rect(
+            Rect button = new(
                                    0f,
                                    labelRect.yMax + MarginFS / 2,
                                    (width - MarginFS) / 2,
                                    WidgetUtil.SelectionRowHeight);
-            Rect mainRect = new Rect(0f, button.yMax + MarginFS, width, 65f);
+            Rect mainRect = new(0f, button.yMax + MarginFS, width, 65f);
             if (Widgets.ButtonText(button, "FacialStuffEditor.SkinSettings".Translate()))
             {
-                this.RemoveColorPicker();
+                RemoveColorPicker();
 
                 this.SkinPage = true;
             }
@@ -1238,7 +1223,7 @@ namespace FacialStuff.FaceEditor
 
             float height = rect.height - MarginFS * 3 - TitleHeight;
 
-            Rect listRect = new Rect(0f, TitleHeight, ListWidth, height) { x = mainRect.xMax + MarginFS };
+            Rect listRect = new(0f, TitleHeight, ListWidth, height) { x = mainRect.xMax + MarginFS };
 
             mainRect.yMax = listRect.yMax;
 
@@ -1250,7 +1235,7 @@ namespace FacialStuff.FaceEditor
                             NameBackground);
             Widgets.Label(labelRect, pawnName);
 
-            Rect set = new Rect(mainRect) { height = WidgetUtil.SelectionRowHeight, width = mainRect.width / 2 - 10f };
+            Rect set = new(mainRect) { height = WidgetUtil.SelectionRowHeight, width = mainRect.width / 2 - 10f };
             set.y = listRect.yMax -
                        WidgetUtil.SelectionRowHeight;
             set.width = mainRect.width -
@@ -1310,7 +1295,7 @@ namespace FacialStuff.FaceEditor
             {
                 if (this.PawnFace.HasSameBeardColor != faceCompHasSameBeardColor)
                 {
-                    this.RemoveColorPicker();
+                    RemoveColorPicker();
                     this.PawnFace.HasSameBeardColor = faceCompHasSameBeardColor;
                     this.NewBeardColor = HairMelanin.ShuffledBeardColor(this.NewHairColor);
                 }
@@ -1338,19 +1323,19 @@ namespace FacialStuff.FaceEditor
                 {
                     BrowDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
                                                                                   x =>
-                                                                                      x.hairGender ==
-                                                                                      HairGender.Female ||
-                                                                                      x.hairGender ==
-                                                                                      HairGender.FemaleUsually);
+                                                                                      x.styleGender ==
+                                                                                      StyleGender.Female ||
+                                                                                      x.styleGender ==
+                                                                                      StyleGender.FemaleUsually);
                     BrowDefs.SortBy(i => i.LabelCap.ToString());
                 }
                 else
                 {
                     BrowDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
                                                                                   x =>
-                                                                                      x.hairGender == HairGender.Male ||
-                                                                                      x.hairGender ==
-                                                                                      HairGender.MaleUsually);
+                                                                                      x.styleGender == StyleGender.Male ||
+                                                                                      x.styleGender ==
+                                                                                      StyleGender.MaleUsually);
                     BrowDefs.SortBy(i => i.LabelCap.ToString());
                 }
 
@@ -1384,7 +1369,7 @@ namespace FacialStuff.FaceEditor
             // HairDNA hair = HairMelanin.GenerateHairMelaninAndCuticula(pawn, Rand.Value > 0.5f);
             this._reInit = true;
             this.PawnFace.HasSameBeardColor = Rand.Value > 0.3f;
-            this.NewHair = PawnHairChooser.RandomHairDefFor(Pawn, Faction.OfPlayer.def);
+            this.NewHair = PawnStyleItemChooser.RandomHairFor(Pawn);
             // Pawn.story.melanin = PawnSkinColors.RandomMelanin(Pawn.Faction);
             this.PawnFace.GenerateHairDNA(Pawn, true);
             this.NewHairColor = this.PawnFace.HairColor;
@@ -1397,8 +1382,6 @@ namespace FacialStuff.FaceEditor
             this.NewMoustache = tache;
 
             this.NewEye = PawnFaceMaker.RandomEyeDefFor(Pawn,
-                Faction.OfPlayer.def);
-            this.NewEar = PawnFaceMaker.RandomEarDefFor(Pawn,
                 Faction.OfPlayer.def);
             this.NewBrow = PawnFaceMaker.RandomBrowDefFor(Pawn, Faction.OfPlayer.def);
 
@@ -1430,10 +1413,10 @@ namespace FacialStuff.FaceEditor
                 this.ResetPawnFace();
             }
 
-            this.RemoveColorPicker();
+            RemoveColorPicker();
         }
 
-        public void RemoveColorPicker()
+        public static void RemoveColorPicker()
         {
             while (Find.WindowStack.TryRemove(typeof(Dialog_ColorPicker), false))
             {
@@ -1528,54 +1511,45 @@ namespace FacialStuff.FaceEditor
                 default:
                     HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                                                                                   x =>
-                                                                                      x.hairTags
+                                                                                      x.styleTags
                                                                                        .SharesElementWith(VanillaHairTags)
-                                                                                   && (x.hairGender ==
-                                                                                       HairGender.Male ||
-                                                                                       x.hairGender ==
-                                                                                       HairGender.MaleUsually && !x.IsBeardNotHair()));
+                                                                                   && (x.styleGender ==
+                                                                                       StyleGender.Male ||
+                                                                                       x.styleGender ==
+                                                                                       StyleGender.MaleUsually && !x.IsBeardNotHair()));
                     _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
-                                                                                 x => x.hairGender == HairGender.Male ||
-                                                                                      x.hairGender ==
-                                                                                      HairGender.MaleUsually);
-                    _earDefs = DefDatabase<EarDef>.AllDefsListForReading.FindAll(
-                                                                                 x => x.hairGender == HairGender.Male ||
-                                                                                      x.hairGender ==
-                                                                                      HairGender.MaleUsually);
+                                                                                 x => x.styleGender == StyleGender.Male ||
+                                                                                      x.styleGender ==
+                                                                                      StyleGender.MaleUsually);
+                    
                     BrowDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
                                                                                   x =>
-                                                                                      x.hairGender == HairGender.Male ||
-                                                                                      x.hairGender ==
-                                                                                      HairGender.MaleUsually);
+                                                                                      x.styleGender == StyleGender.Male ||
+                                                                                      x.styleGender ==
+                                                                                      StyleGender.MaleUsually);
                     break;
 
                 case Gender.Female:
                     HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                                                                                   x =>
-                                                                                      x.hairTags
+                                                                                      x.styleTags
                                                                                        .SharesElementWith(VanillaHairTags)
-                                                                                   && (x.hairGender ==
-                                                                                       HairGender.Female ||
-                                                                                       x.hairGender ==
-                                                                                       HairGender.FemaleUsually && !x.IsBeardNotHair()));
+                                                                                   && (x.styleGender ==
+                                                                                       StyleGender.Female ||
+                                                                                       x.styleGender ==
+                                                                                       StyleGender.FemaleUsually && !x.IsBeardNotHair()));
                     _eyeDefs = DefDatabase<EyeDef>.AllDefsListForReading.FindAll(
                                                                                  x =>
-                                                                                     x.hairGender ==
-                                                                                     HairGender.Female ||
-                                                                                     x.hairGender ==
-                                                                                     HairGender.FemaleUsually);
-                    _earDefs = DefDatabase<EarDef>.AllDefsListForReading.FindAll(
-                                                                                 x =>
-                                                                                     x.hairGender ==
-                                                                                     HairGender.Female ||
-                                                                                     x.hairGender ==
-                                                                                     HairGender.FemaleUsually);
+                                                                                     x.styleGender ==
+                                                                                     StyleGender.Female ||
+                                                                                     x.styleGender ==
+                                                                                     StyleGender.FemaleUsually);
                     BrowDefs = DefDatabase<BrowDef>.AllDefsListForReading.FindAll(
                                                                                   x =>
-                                                                                      x.hairGender ==
-                                                                                      HairGender.Female ||
-                                                                                      x.hairGender ==
-                                                                                      HairGender.FemaleUsually);
+                                                                                      x.styleGender ==
+                                                                                      StyleGender.Female ||
+                                                                                      x.styleGender ==
+                                                                                      StyleGender.FemaleUsually);
                     break;
             }
         }
@@ -1627,7 +1601,7 @@ namespace FacialStuff.FaceEditor
             // ReSharper disable once InvertIf
             if (Widgets.ButtonInvisible(rect))
             {
-                this.RemoveColorPicker();
+                RemoveColorPicker();
 
                 this._colourWrapper.Color = color;
                 Find.WindowStack.Add(
@@ -1694,8 +1668,8 @@ namespace FacialStuff.FaceEditor
             }
 
             // Get the offset, cause width != 2 * height
-            Rect leftRect = new Rect(rect.x + offset, rect.y, rect.height, rect.height);
-            Rect rightRect = new Rect(leftRect.xMax + offset, rect.y, rect.height, rect.height);
+            Rect leftRect = new(rect.x + offset, rect.y, rect.height, rect.height);
+            Rect rightRect = new(leftRect.xMax + offset, rect.y, rect.height, rect.height);
 
             GUI.color = Pawn.story.SkinColor;
             GUI.DrawTexture(leftRect, Pawn.Drawer.renderer.graphics.headGraphic.MatSouth.mainTexture);
@@ -1764,7 +1738,7 @@ namespace FacialStuff.FaceEditor
             if (Widgets.ButtonInvisible(rect))
             {
                 this.NewBrow = brow;
-                this.RemoveColorPicker();
+                RemoveColorPicker();
             }
         }
 
@@ -1801,53 +1775,17 @@ namespace FacialStuff.FaceEditor
             if (Widgets.ButtonInvisible(rect))
             {
                 this.NewEye = eye;
-                this.RemoveColorPicker();
+                RemoveColorPicker();
             }
         }
 
-        private void DrawEarPickerCell(EarDef ear, Rect rect)
-        {
-            Widgets.DrawBoxSolid(rect, DarkBackground);
-
-            string text = ear.LabelCap;
-            Widgets.DrawHighlightIfMouseover(rect);
-            if (ear == this.NewEar)
-            {
-                Widgets.DrawHighlightSelected(rect);
-                text += "\n(selected)";
-            }
-            else
-            {
-                if (ear == this._originalEar)
-                {
-                    Widgets.DrawAltRect(rect);
-                    text += "\n(original)";
-                }
-            }
-
-            GUI.DrawTexture(rect, this.RightEarGraphic(ear).MatSouth.mainTexture);
-            GUI.DrawTexture(rect, this.LeftEarGraphic(ear).MatSouth.mainTexture);
-
-            Text.Anchor = TextAnchor.UpperCenter;
-            Widgets.Label(rect, text);
-            Text.Anchor = TextAnchor.UpperLeft;
-
-            TooltipHandler.TipRegion(rect, text);
-
-            // ReSharper disable once InvertIf
-            if (Widgets.ButtonInvisible(rect))
-            {
-                this.NewEar = ear;
-                this.RemoveColorPicker();
-            }
-        }
 
         private void DrawHairColorSelector(Rect rect)
         {
             Widgets.DrawBoxSolid(rect, new Color(0.3f, 0.3f, 0.3f));
             Rect contractedBy = rect.ContractedBy(MarginFS / 2);
 
-            Rect set = new Rect(contractedBy);
+            Rect set = new(contractedBy);
             int colorFields = 7;
             int colorRows = 4;
 
@@ -1863,7 +1801,7 @@ namespace FacialStuff.FaceEditor
                 {
                     float pheoMelanin = (float)num / (colorFields * colorRows - 1);
                     HairColorRequest colorRequest =
-                    new HairColorRequest(pheoMelanin, euMelanin, this.PawnFace.Greyness);
+                    new(pheoMelanin, euMelanin, this.PawnFace.Greyness);
 
                     this.DrawHairColorPickerCell(
                                             HairMelanin.GetHairColor(colorRequest),
@@ -1963,7 +1901,7 @@ namespace FacialStuff.FaceEditor
                                 */
                 if (update)
                 {
-                    this.RemoveColorPicker();
+                    RemoveColorPicker();
 
                     this.NewHairColor = this.PawnFace.GetCurrentHairColor();
                 }
@@ -2057,8 +1995,8 @@ namespace FacialStuff.FaceEditor
                 }
             }
 
-            Rect rect1 = new Rect(rect.x + offset, rect.y, rect.height, rect.height);
-            Rect rect2 = new Rect(rect1.xMax + offset, rect.y, rect.height, rect.height);
+            Rect rect1 = new(rect.x + offset, rect.y, rect.height, rect.height);
+            Rect rect2 = new(rect1.xMax + offset, rect.y, rect.height, rect.height);
 
             GUI.color = Pawn.story.SkinColor;
             GUI.DrawTexture(rect1, Pawn.Drawer.renderer.graphics.headGraphic.MatSouth.mainTexture);
@@ -2095,7 +2033,7 @@ namespace FacialStuff.FaceEditor
             int colorCount = PawnSkinColors_FS.SkinColors.Length;
             float size = contractedBy.width / (colorCount - 1);
 
-            Rect swatchRect = new Rect(0, 0, size, size);
+            Rect swatchRect = new(0, 0, size, size);
 
             // Draw the swatch selection boxes.
             int clickedIndex = -1;
@@ -2110,7 +2048,7 @@ namespace FacialStuff.FaceEditor
                                             < PawnSkinColors_FS.SkinColors[Mathf.Min(colorCount - 1, i + 1)].melanin;
                 if (isThisSwatchSelected)
                 {
-                    this.DrawColorSelected(swatchRect);
+                    DrawColorSelected(swatchRect);
                 }
 
                 // Draw the border around the swatch.
@@ -2144,7 +2082,7 @@ namespace FacialStuff.FaceEditor
                 // }
             }
 
-            Rect melaninSlider = new Rect(
+            Rect melaninSlider = new(
                 0,
                 swatchRect.yMax + MarginFS / 2,
                 contractedBy.width,
@@ -2161,7 +2099,7 @@ namespace FacialStuff.FaceEditor
                 "1");
 
             // Draw the current color box.
-            Rect currentColorRect = new Rect(0, melaninSlider.yMax + MarginFS, 20, 20);
+            Rect currentColorRect = new(0, melaninSlider.yMax + MarginFS, 20, 20);
 
             Widgets.DrawBoxSolid(currentColorRect, ColorSwatchBorder);
             Widgets.DrawBoxSolid(currentColorRect.ContractedBy(1), PawnSkinColors_FS.GetSkinColor(melly));
@@ -2185,7 +2123,7 @@ namespace FacialStuff.FaceEditor
             }
 
             // Draw the slider.
-            Rect detailRect = new Rect(
+            Rect detailRect = new(
                 currentColorRect.x + 35f,
                 currentColorRect.y + MarginFS / 2,
                 contractedBy.width - 35f,
@@ -2226,7 +2164,7 @@ namespace FacialStuff.FaceEditor
             {
                 if (Controller.settings.UseWrinkles)
                 {
-                    Rect wrinkleRect = new Rect(
+                    Rect wrinkleRect = new(
                         contractedBy.x,
                         detailRect.yMax,
                         contractedBy.width,
@@ -2277,14 +2215,14 @@ namespace FacialStuff.FaceEditor
                 {
                     HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                         x =>
-                            x.hairTags
+                            x.styleTags
                                 .SharesElementWith(VanillaHairTags)
                             &&
-                            (x.hairGender ==
-                             HairGender
+                            (x.styleGender ==
+                             StyleGender
                                  .Female ||
-                             x.hairGender ==
-                             HairGender
+                             x.styleGender ==
+                             StyleGender
                                  .FemaleUsually && !x.IsBeardNotHair()
                             ));
                     HairDefs.SortBy(i => i.LabelCap.ToString());
@@ -2298,14 +2236,14 @@ namespace FacialStuff.FaceEditor
                                             {
                                                 HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                                                                                                               x =>
-                                                                                                                  x.hairTags
+                                                                                                                  x.styleTags
                                                                                                                    .SharesElementWith(VanillaHairTags)
                                                                                                                 &&
-                                                                                                                  (x.hairGender ==
-                                                                                                                   HairGender
+                                                                                                                  (x.styleGender ==
+                                                                                                                   StyleGender
                                                                                                                   .Male ||
-                                                                                                                   x.hairGender ==
-                                                                                                                   HairGender
+                                                                                                                   x.styleGender ==
+                                                                                                                   StyleGender
                                                                                                                   .MaleUsually && !x.IsBeardNotHair()
                                                                                                                   ));
                                                 HairDefs.SortBy(i => i.LabelCap.ToString());
@@ -2319,10 +2257,10 @@ namespace FacialStuff.FaceEditor
                                             {
                                                 HairDefs = DefDatabase<HairDef>.AllDefsListForReading.FindAll(
                                                                                                               x =>
-                                                                                                                  x.hairTags
+                                                                                                                  x.styleTags
                                                                                                                    .SharesElementWith(VanillaHairTags) &&
-                                                                                                                  x.hairGender ==
-                                                                                                                  HairGender
+                                                                                                                  x.styleGender ==
+                                                                                                                  StyleGender
                                                                                                                  .Any && !x.IsBeardNotHair());
                                                 HairDefs.SortBy(i => i.LabelCap.ToString());
                                                 this.genderTab = GenderTab.Any;
@@ -2384,7 +2322,7 @@ namespace FacialStuff.FaceEditor
             Widgets.EndScrollView();
         }
 #endif
-        private Graphic HairGraphic(HairDef def)
+        private static Graphic HairGraphic(HairDef def)
         {
             Graphic graphic;
             if (def.texPath != null)
@@ -2426,27 +2364,6 @@ namespace FacialStuff.FaceEditor
             return __result;
         }
 
-        private Graphic_Multi_NaturalEars LeftEarGraphic(EarDef def)
-        {
-            Graphic_Multi_NaturalEars __result;
-            if (def != null)
-            {
-                string path = this.CompFace.EarTexPath(Side.Left, def);
-
-                __result = GraphicDatabase.Get<Graphic_Multi_NaturalEars>(
-                    path,
-                    ShaderDatabase.CutoutComplex,
-                    new Vector2(38f, 38f),
-                    Color.white,
-                    Color.white) as Graphic_Multi_NaturalEars;
-            }
-            else
-            {
-                __result = null;
-            }
-
-            return __result;
-        }
 
         [CanBeNull]
         private Graphic_Multi_NaturalHeadParts MoustacheGraphic([NotNull] MoustacheDef def)
@@ -2493,27 +2410,6 @@ namespace FacialStuff.FaceEditor
             return graphic;
         }
 
-        private Graphic_Multi_NaturalEyes RightEarGraphic(EarDef def)
-        {
-            Graphic_Multi_NaturalEyes graphic;
-            if (def != null)
-            {
-                string path = this.CompFace.EarTexPath(Side.Right, def);
-
-                graphic = GraphicDatabase.Get<Graphic_Multi_NaturalEyes>(
-                    path,
-                    ShaderDatabase.CutoutComplex,
-                    new Vector2(38f, 38f),
-                    Color.white,
-                    Color.white) as Graphic_Multi_NaturalEyes;
-            }
-            else
-            {
-                graphic = null;
-            }
-
-            return graphic;
-        }
 
         private void UpdatePawnColors(object type, object newValue)
         {
@@ -2538,7 +2434,6 @@ namespace FacialStuff.FaceEditor
             this.RerenderPawn = true;
         }
 
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private void UpdatePawnDefs([NotNull] Def newValue)
         {
             switch (newValue)
@@ -2551,9 +2446,6 @@ namespace FacialStuff.FaceEditor
                     break;
                 case EyeDef _:
                     this.PawnFace.EyeDef = (EyeDef)newValue;
-                    break;
-                case EarDef _:
-                    this.PawnFace.EarDef = (EarDef)newValue;
                     break;
                 case BrowDef _:
                     this.PawnFace.BrowDef = (BrowDef)newValue;

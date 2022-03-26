@@ -11,6 +11,8 @@ using RimWorld;
 
 namespace FacialStuff.DefOfs
 {
+    using BeardDef = Defs.BeardDef;
+
     [DefOf]
     public static class BeardDefOf
     {

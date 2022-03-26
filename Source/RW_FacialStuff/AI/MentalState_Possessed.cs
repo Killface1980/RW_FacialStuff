@@ -13,7 +13,7 @@ namespace FacialStuff.AI
 
         private const int MaxSameTargetChaseTicks = 1250;
 
-        private static readonly List<Pawn> Candidates = new List<Pawn>();
+        private static readonly List<Pawn> Candidates = new();
 
         public bool InsultedTargetAtLeastOnce;
 

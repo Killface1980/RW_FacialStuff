@@ -16,9 +16,9 @@ namespace FacialStuff.HairCut
     {
         const string STR_MergedHair = "/Textures/MergedHair/";
         private static readonly Dictionary<GraphicRequest, Graphic> AllGraphics =
-            new Dictionary<GraphicRequest, Graphic>();
+            new();
 
-        private static readonly List<HairCutPawn> PawnHairCache = new List<HairCutPawn>();
+        private static readonly List<HairCutPawn> PawnHairCache = new();
 
 
         private static string _mergedHairPath;
@@ -49,7 +49,7 @@ namespace FacialStuff.HairCut
             where T : Graphic, new()
         {
                         // Added second 'color' to get a separate graphic
-            GraphicRequest req = new GraphicRequest(typeof(T), path, shader, drawSize, color, color, null, 0, new List<ShaderParameter>());
+            GraphicRequest req = new(typeof(T), path, shader, drawSize, color, color, null, 0, new List<ShaderParameter>(), "");
             return GetInner<T>(req, coverage);
         }
 
@@ -63,7 +63,7 @@ namespace FacialStuff.HairCut
                 }
             }
 
-            HairCutPawn n = new HairCutPawn { Pawn = pawn };
+            HairCutPawn n = new() { Pawn = pawn };
             PawnHairCache.Add(n);
             return n;
         }
@@ -299,7 +299,7 @@ namespace FacialStuff.HairCut
             File.WriteAllBytes(exportPath + "_east.png", bytes2);
             byte[] bytes3 = temptextureback.EncodeToPNG();
             File.WriteAllBytes(exportPath + "_north.png", bytes3);
-            byte[] bytes4 = temptextureside2.EncodeToPNG();
+            _ = temptextureside2.EncodeToPNG();
             File.WriteAllBytes(exportPath + "_west.png", bytes2);
         }
     }

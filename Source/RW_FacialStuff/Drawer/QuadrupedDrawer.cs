@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using FacialStuff.AnimatorWindows;
+﻿using FacialStuff.AnimatorWindows;
 using FacialStuff.Harmony;
 using RimWorld;
+using System.Linq;
 using UnityEngine;
 using Verse;
 
@@ -16,23 +16,22 @@ namespace FacialStuff
                 return;
             }
 
-            if (this.Pawn.kindDef.lifeStages.Any())
+            if (this.ThePawn.kindDef.lifeStages.Any())
             {
-
-            Vector2 maxSize = this.Pawn.kindDef.lifeStages.Last().bodyGraphicData.drawSize;
-            Vector2 sizePaws = this.Pawn.ageTracker.CurKindLifeStage.bodyGraphicData.drawSize;
-            factor = sizePaws.x / maxSize.x;
+                Vector2 maxSize = this.ThePawn.kindDef.lifeStages.Last().bodyGraphicData.drawSize;
+                Vector2 sizePaws = this.ThePawn.ageTracker.CurKindLifeStage.bodyGraphicData.drawSize;
+                factor = sizePaws.x / maxSize.x;
             }
 
             // Fix the position, maybe needs new code in GetJointPositions()?
             if (!this.BodyFacing.IsHorizontal)
             {
-         //       rootLoc.y -=  Offsets.YOffset_Behind;
+                //       rootLoc.y -=  Offsets.YOffset_Behind;
             }
             rootLoc.y += this.BodyFacing == Rot4.South ? -Offsets.YOffset_HandsFeetOver : 0;
 
-            var frontPawLoc = rootLoc;
-            var rearPawLoc = rootLoc;
+            Vector3 frontPawLoc = rootLoc;
+            Vector3 rearPawLoc = rootLoc;
 
             if (!this.BodyFacing.IsHorizontal)
             {
@@ -41,14 +40,13 @@ namespace FacialStuff
 
             this.DrawFrontPaws(bodyQuat, footQuat, frontPawLoc, portrait, factor);
 
-
             base.DrawFeet(bodyQuat, footQuat, rearPawLoc, portrait, factor);
         }
 
         public override void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, Thing carriedThing = null,
             bool flip = false, float factor = 1f)
         {
-           // base.DrawHands(bodyQuat, drawPos, portrait, carrying, drawSide);
+            // base.DrawHands(bodyQuat, drawPos, portrait, carrying, drawSide);
         }
 
         protected virtual void DrawFrontPaws(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait, float factor = 1f)
@@ -57,7 +55,6 @@ namespace FacialStuff
             {
                 return;
             }
-
 
             // Basic values
             BodyAnimDef body = this.CompAnimator.BodyAnim;
@@ -72,7 +69,7 @@ namespace FacialStuff
                 body.shoulderOffsets[rot.AsInt],
                 body.shoulderOffsets[Rot4.North.AsInt].x);
 
-            // get the actual hip height 
+            // get the actual hip height
             JointLister groundPos = this.GetJointPositions(JointType.Hip,
                 body.hipOffsets[rot.AsInt],
                 body.hipOffsets[Rot4.North.AsInt].x);
@@ -141,7 +138,6 @@ namespace FacialStuff
                 }
             }
 
-
             Quaternion drawQuat = this.CompAnimator.IsMoving ? footQuat : bodyQuat;
             Vector3 ground = rootLoc + (drawQuat * new Vector3(0, 0, OffsetGroundZ)) * factor;
 
@@ -155,7 +151,7 @@ namespace FacialStuff
                         position,
                         drawQuat * Quaternion.AngleAxis(footAngleLeft, Vector3.up),
                         matLeft,
-                        portrait);
+                        false);
                 }
             }
 
@@ -169,7 +165,7 @@ namespace FacialStuff
                         position,
                         drawQuat * Quaternion.AngleAxis(footAngleRight, Vector3.up),
                         matRight,
-                        portrait);
+                        false);
                 }
             }
 
@@ -186,7 +182,7 @@ namespace FacialStuff
                     new Vector3(offsetJoint, 0.301f, 0),
                     drawQuat * Quaternion.AngleAxis(0, Vector3.up),
                     centerMat,
-                    portrait);
+                    false);
 
                 GenDraw.DrawMeshNowOrLater(
                     footMeshRight,
@@ -194,7 +190,7 @@ namespace FacialStuff
                     new Vector3(offsetJoint, 0.301f, 0),
                     drawQuat * Quaternion.AngleAxis(0, Vector3.up),
                     centerMat,
-                    portrait);
+                    false);
 
                 // UnityEngine.Graphics.DrawMesh(handsMesh, center + new Vector3(0, 0.301f, z),
                 // Quaternion.AngleAxis(0, Vector3.up), centerMat, 0);

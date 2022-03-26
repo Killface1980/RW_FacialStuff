@@ -4,74 +4,74 @@
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_FL</defName>
     <label>Flat</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texBasePath></texBasePath> <!-- empty for default path "Things/Pawn/Humanlike/Eyes/"-->
     <texName>FL</texName> <!-- The eye name. File name of the textures is always "Eye_<texName>_<pawnGender_Left/Right_east"  -->
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.EyeDef>
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_RD</defName>
     <label>Round</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texName>RD</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.EyeDef>
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_OV</defName>
     <label>Oval</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texName>OV</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.EyeDef>
 
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_SM</defName>
     <label>Small</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texName>SM</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.EyeDef>
 <!--
   <FacialStuff.Defs.EyeDef>
     <defName>Eye_Male_Average_Toon</defName>
     <label>Toon</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <raceList>
       <li>Human</li>
     </raceList>
     <texName>Toon</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.EyeDef>
   -->
 </Defs>

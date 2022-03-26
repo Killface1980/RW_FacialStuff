@@ -8,572 +8,572 @@
       <!-- Roppoi category patches - male -->
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m01"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m01"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m02"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m02"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Punk</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m03"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m03"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Tribal</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m04"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m04"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m05"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m05"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m06"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m06"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Punk</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m07"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m07"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m08"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m08"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m09"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m09"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m10"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m10"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m11"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m11"]/styleTags</xpath>
         <value>
-          <hairTags>
-            <li>Rural</li>
-            <li>Punk</li>
-          </hairTags>
-        </value>
-      </li>
-
-      <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m12"]/hairTags</xpath>
-        <value>
-          <hairTags>
-            <li>Urban</li>
-          </hairTags>
-        </value>
-      </li>
-
-      <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m13"]/hairTags</xpath>
-        <value>
-          <hairTags>
+          <styleTags>
             <li>Rural</li>
             <li>Punk</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m14"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m12"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
+            <li>Urban</li>
+          </styleTags>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/HairDef[defName = "ro_m13"]/styleTags</xpath>
+        <value>
+          <styleTags>
+            <li>Rural</li>
+            <li>Punk</li>
+          </styleTags>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/HairDef[defName = "ro_m14"]/styleTags</xpath>
+        <value>
+          <styleTags>
             <li>Tribal</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m15"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m15"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Punk</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m16"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m16"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m17"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m17"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Rural</li>
             <li>Punk</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m18"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m18"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Punk</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m19"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m19"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m20"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m20"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Tribal</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m21"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m21"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m22"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m22"]/styleTags</xpath>
         <value>
-          <hairTags>
-            <li>Urban</li>
-            <li>Rural</li>
-          </hairTags>
-        </value>
-      </li>
-
-      <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m23"]/hairTags</xpath>
-        <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m24"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m23"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m25"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m24"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m26"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m25"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m27"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m26"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m28"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m27"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_m29"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_m28"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
+        </value>
+      </li>
+
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/HairDef[defName = "ro_m29"]/styleTags</xpath>
+        <value>
+          <styleTags>
+            <li>Urban</li>
+            <li>Rural</li>
+          </styleTags>
         </value>
       </li>
 
   <!-- Roppoi category patches - female -->
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f01"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f01"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f02"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f02"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f03"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f03"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f04"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f04"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f05"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f05"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f06"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f06"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f07"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f07"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f08"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f08"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f09"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f09"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f10"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f10"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f11"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f11"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f12"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f12"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f13"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f13"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f14"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f14"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f15"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f15"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Tribal</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f16"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f16"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f17"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f17"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f18"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f18"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f19"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f19"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Tribal</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f20"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f20"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f21"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f21"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f22"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f22"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f23"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f23"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f24"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f24"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f25"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f25"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f26"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f26"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f27"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f27"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f28"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f28"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 
       <li Class="PatchOperationReplace">
-        <xpath>/Defs/HairDef[defName = "ro_f29"]/hairTags</xpath>
+        <xpath>/Defs/HairDef[defName = "ro_f29"]/styleTags</xpath>
         <value>
-          <hairTags>
+          <styleTags>
             <li>Urban</li>
             <li>Rural</li>
-          </hairTags>
+          </styleTags>
         </value>
       </li>
 

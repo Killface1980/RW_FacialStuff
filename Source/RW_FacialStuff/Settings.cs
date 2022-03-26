@@ -115,7 +115,7 @@ namespace FacialStuff
         {
             Rect rect = inRect.ContractedBy(15f);
 
-            Rect rect4 = new Rect(0f, 0f, rect.width - 16f, this.viewHeight);
+            Rect rect4 = new(0f, 0f, rect.width - 16f, this.viewHeight);
 
 
             Widgets.BeginScrollView(rect, ref this.scrollPosition, rect4, true);
@@ -123,7 +123,7 @@ namespace FacialStuff
             rect5.width -= 20f;
             rect5.height = 9999f;
 
-            Listing_Standard list = new Listing_Standard(GameFont.Small) { ColumnWidth = (rect5.width / 2) -15f };
+            Listing_Standard list = new(GameFont.Small) { ColumnWidth = (rect5.width / 2) -15f };
 
             list.Begin(rect5);
 

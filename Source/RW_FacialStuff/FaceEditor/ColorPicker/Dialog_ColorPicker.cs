@@ -24,7 +24,7 @@ namespace FacialStuff.FaceEditor.ColorPicker
 
         public int numPresets;
 
-        public Vector2 pickerSize = new Vector2(200, 200);
+        public Vector2 pickerSize = new(200, 200);
 
         public int previewSize = 90;
 
@@ -183,7 +183,7 @@ namespace FacialStuff.FaceEditor.ColorPicker
             {
                 if (this._previewBG == null)
                 {
-                    this._previewBG = this.CreatePreviewBG(this.Color);
+                    this._previewBG = CreatePreviewBG(this.Color);
                 }
 
                 return this._previewBG;
@@ -207,7 +207,7 @@ namespace FacialStuff.FaceEditor.ColorPicker
             {
                 if (this._tempPreviewBG == null)
                 {
-                    this._tempPreviewBG = this.CreatePreviewBG(this.tempColor);
+                    this._tempPreviewBG = CreatePreviewBG(this.tempColor);
                 }
 
                 return this._tempPreviewBG;
@@ -259,7 +259,7 @@ namespace FacialStuff.FaceEditor.ColorPicker
             this._callback?.Invoke();
         }
 
-        public Texture2D CreatePreviewBG(Color col)
+        public static Texture2D CreatePreviewBG(Color col)
         {
             return SolidColorMaterials.NewSolidColorTexture(col);
         }
@@ -268,30 +268,30 @@ namespace FacialStuff.FaceEditor.ColorPicker
         {
             // set up rects
             // pickers & sliders
-            Rect pickerRect = new Rect(inRect.xMin, inRect.yMin, this.pickerSize.x, this.pickerSize.y);
-            Rect hueRect = new Rect(pickerRect.xMax + this._margin, inRect.yMin, this.sliderWidth, this.pickerSize.y);
+            Rect pickerRect = new(inRect.xMin, inRect.yMin, this.pickerSize.x, this.pickerSize.y);
+            Rect hueRect = new(pickerRect.xMax + this._margin, inRect.yMin, this.sliderWidth, this.pickerSize.y);
 
             // previews
-            Rect previewRect = new Rect(hueRect.xMax + this._margin, inRect.yMin, this.previewSize, this.previewSize);
-            Rect previewOldRect = new Rect(previewRect.xMax, inRect.yMin, this.previewSize, this.previewSize);
+            Rect previewRect = new(hueRect.xMax + this._margin, inRect.yMin, this.previewSize, this.previewSize);
+            Rect previewOldRect = new(previewRect.xMax, inRect.yMin, this.previewSize, this.previewSize);
 
             // buttons and textfields
-            Rect okRect = new Rect(
+            Rect okRect = new(
                 hueRect.xMax + this._margin,
                 inRect.yMax - this._fieldHeight,
                 this.previewSize * 2,
                 this._fieldHeight);
-            Rect applyRect = new Rect(
+            Rect applyRect = new(
                 hueRect.xMax + this._margin,
                 inRect.yMax - (2 * this._fieldHeight) - this._margin,
                 this.previewSize - (this._margin / 2),
                 this._fieldHeight);
-            Rect cancelRect = new Rect(
+            Rect cancelRect = new(
                 applyRect.xMax + this._margin,
                 applyRect.yMin,
                 this.previewSize - (this._margin / 2),
                 this._fieldHeight);
-            Rect hexRect = new Rect(
+            Rect hexRect = new(
                 hueRect.xMax + this._margin,
                 inRect.yMax - (3 * this._fieldHeight) - (2 * this._margin),
                 this.previewSize * 2,
@@ -319,12 +319,12 @@ namespace FacialStuff.FaceEditor.ColorPicker
             }
 
             // draw slider handles
-            Rect hueHandleRect = new Rect(
+            Rect hueHandleRect = new(
                 hueRect.xMin - 3f,
                 hueRect.yMin + this._huePosition - (this.handleSize / 2),
                 this.sliderWidth + 6f,
                 this.handleSize);
-            Rect pickerHandleRect = new Rect(
+            Rect pickerHandleRect = new(
                 pickerRect.xMin + this._pickerPosition.x - (this.handleSize / 2),
                 pickerRect.yMin + this._pickerPosition.y - (this.handleSize / 2),
                 this.handleSize,
@@ -441,7 +441,7 @@ namespace FacialStuff.FaceEditor.ColorPicker
         {
             this.tempColor = ColorHelper.HSVtoRGB(this.H, this.S, this.V);
             this.tempColor.a = this.A;
-            this._tempPreviewBG = this.CreatePreviewBG(this.tempColor);
+            this._tempPreviewBG = CreatePreviewBG(this.tempColor);
 
             if (this._preview)
             {
@@ -470,7 +470,7 @@ namespace FacialStuff.FaceEditor.ColorPicker
             this._pickerPosition.y = (1f - this._V) / this.UnitsPerPixel;
 
             // set the color block and update hex fields
-            this._tempPreviewBG = this.CreatePreviewBG(this.tempColor);
+            this._tempPreviewBG = CreatePreviewBG(this.tempColor);
             if (this._preview)
             {
                 this._hexOut = this._hexIn = ColorHelper.RGBtoHex(this.tempColor);
@@ -547,7 +547,7 @@ namespace FacialStuff.FaceEditor.ColorPicker
         public void SetColor()
         {
             this.Color = this.tempColor;
-            this._previewBG = this.CreatePreviewBG(this.tempColor);
+            this._previewBG = CreatePreviewBG(this.tempColor);
         }
 
         public void SetWindowLocation(Vector2 location)

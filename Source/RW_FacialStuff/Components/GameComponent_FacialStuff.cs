@@ -17,9 +17,10 @@ namespace FacialStuff
         #region Private Fields
 
         private static readonly List<string> NackbladTex =
-        new List<string> { "nbi_bushy", "nbi_crisis", "nbi_erik", "nbi_guard", "nbi_jr", "nbi_karl", "nbi_olof", "nbi_ruff", "nbi_trimmed" };
+        new()
+        { "nbi_bushy", "nbi_crisis", "nbi_erik", "nbi_guard", "nbi_jr", "nbi_karl", "nbi_olof", "nbi_ruff", "nbi_trimmed" };
 
-        private static readonly List<string> SpoonTex = new List<string> { "SPSBeard", "SPSScot", "SPSViking" };
+        private static readonly List<string> SpoonTex = new() { "SPSBeard", "SPSScot", "SPSViking" };
 
         #endregion Private Fields
 
@@ -49,7 +50,7 @@ namespace FacialStuff
             foreach (Pawn pawn in PawnsFinder.AllMaps.FindAll(x =>
                 x.kindDef?.RaceProps != null && x.kindDef.RaceProps.Humanlike == true).Where(pawn => pawn.story?.hairDef != null && pawn.story.hairDef.IsBeardNotHair()))
             {
-                PawnHairChooser.RandomHairDefFor(pawn, pawn.Faction.def);
+                PawnStyleItemChooser.RandomHairFor(pawn);
             }
             this.WeaponCompsNew();
 
@@ -82,7 +83,7 @@ namespace FacialStuff
 
         public static void BuildWalkCycles([CanBeNull] WalkCycleDef defToRebuild = null)
         {
-            List<WalkCycleDef> cycles = new List<WalkCycleDef>();
+            List<WalkCycleDef> cycles = new();
             if (defToRebuild != null)
             {
                 cycles.Add(defToRebuild);
@@ -150,7 +151,7 @@ namespace FacialStuff
         /// <param name="defToRebuild"></param>
         public static void BuildPoseCycles([CanBeNull] PoseCycleDef defToRebuild = null)
         {
-            List<PoseCycleDef> cycles = new List<PoseCycleDef>();
+            List<PoseCycleDef> cycles = new();
             if (defToRebuild != null)
             {
                 cycles.Add(defToRebuild);
@@ -240,7 +241,7 @@ namespace FacialStuff
                 frameAt = (float)key.KeyIndex / (keyframes.Count - 1);
             }
 
-            Dictionary<SimpleCurve, float?> dict = new Dictionary<SimpleCurve, float?>
+            Dictionary<SimpleCurve, float?> dict = new()
             {
                 {cycle.HeadAngleX, key.HeadAngleX },
                 {cycle.HeadOffsetZ, key.HeadOffsetZ },
@@ -342,7 +343,7 @@ namespace FacialStuff
                 frameAt = (float)key.KeyIndex / (keyframes.Count - 1);
             }
 
-            Dictionary<SimpleCurve, float?> dict = new Dictionary<SimpleCurve, float?>
+            Dictionary<SimpleCurve, float?> dict = new()
             {
                 {
                     cycle.ShoulderOffsetHorizontalX,
@@ -467,20 +468,20 @@ namespace FacialStuff
             }
         }
 
-        private bool HandCheck()
+        private static bool HandCheck()
         {
             return ModsConfig.ActiveModsInLoadOrder.Any(mod => mod.Name == "Clutter Laser Rifle");
         }
 
         private void LaserLoad()
         {
-            if (this.HandCheck())
+            if (HandCheck())
             {
                 ThingDef wepzie = ThingDef.Named("LaserRifle");
                 if (wepzie != null)
                 {
                     CompProperties_WeaponExtensions extensions =
-                    new CompProperties_WeaponExtensions
+                    new()
                     {
                         compClass = typeof(CompWeaponExtensions),
                         RightHandPosition = new Vector3(-0.2f, 0.3f, -0.05f),
@@ -517,7 +518,7 @@ namespace FacialStuff
                 }
 
                 CompProperties_WeaponExtensions weaponExtensions =
-                new CompProperties_WeaponExtensions
+                new()
                 {
                     compClass = typeof(CompWeaponExtensions),
                     AttackAngleOffset = weaponExtensionDef.attackAngleOffset,
@@ -569,7 +570,7 @@ namespace FacialStuff
                             continue;
                         }
 
-                        CompProperties_BodyAnimator bodyAnimator = new CompProperties_BodyAnimator
+                        CompProperties_BodyAnimator bodyAnimator = new()
                         {
                             compClass = typeof(CompBodyAnimator),
                             bodyDrawers = pawnSets.bodyDrawers,
@@ -610,7 +611,7 @@ namespace FacialStuff
                     continue;
                 }
 
-                CompProperties_BodyAnimator bodyAnimator = new CompProperties_BodyAnimator
+                CompProperties_BodyAnimator bodyAnimator = new()
                 {
                     compClass = typeof(CompBodyAnimator),
                     bodyDrawers = def.bodyDrawers,

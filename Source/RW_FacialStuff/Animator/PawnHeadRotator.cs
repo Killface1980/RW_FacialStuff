@@ -11,7 +11,7 @@ namespace FacialStuff.Animator
         #region Public Fields
 
         private readonly SimpleCurve _motionCurve =
-            new SimpleCurve
+            new()
             {
                 new CurvePoint(0f,   0f),
                 new CurvePoint(90f,  1.25f),
@@ -300,12 +300,15 @@ namespace FacialStuff.Animator
                     {
                         Thing thing = intVec.GetThingList(this._pawn.Map)?.Find(x => x is Pawn);
 
-                        if (!(thing is Pawn otherPawn) || otherPawn == this._pawn || !otherPawn.Spawned) // || otherPawn.Dead || otherPawn.Downed)
+                        if (thing is not Pawn otherPawn || otherPawn == this._pawn || !otherPawn.Spawned) // || otherPawn.Dead || otherPawn.Downed)
                         {
                             continue;
                         }
                         
-                        if (!this._pawn.CanSee(otherPawn)) continue;
+                        if (!this._pawn.CanSee(otherPawn))
+                        {
+                            continue;
+                        }
 
                         // Log.Message(this.pawn + " will look at random pawn " + thing);
                         this._target = otherPawn;

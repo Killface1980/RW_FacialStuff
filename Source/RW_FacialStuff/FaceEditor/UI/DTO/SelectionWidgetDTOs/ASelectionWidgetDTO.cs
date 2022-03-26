@@ -27,8 +27,6 @@ using FacialStuff.FaceEditor.UI.Util;
 
 namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 {
-    [SuppressMessage("ReSharper", "StyleCop.SA1215")]
-    [SuppressMessage("ReSharper", "StyleCop.SA1401")]
     public abstract class ASelectionWidgetDto
     {
         #region Protected Fields

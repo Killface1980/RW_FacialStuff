@@ -13,6 +13,9 @@ using Verse;
 
 namespace FacialStuff
 {
+    using BeardDef = Defs.BeardDef;
+    using BeardDefOf = DefOfs.BeardDefOf;
+
     public class CompFace : ThingComp
     {
         #region Public Fields
@@ -196,13 +199,13 @@ namespace FacialStuff
                     break;
             }
 
-            switch (rotation.AsInt)
+            return rotation.AsInt switch
             {
-                case 1: return new Vector3(this._eyeOffset.x, 0f, -this._eyeOffset.y);
-                case 2: return new Vector3(0, 0f, -this._eyeOffset.y);
-                case 3: return new Vector3(-this._eyeOffset.x, 0f, -this._eyeOffset.y);
-                default: return Vector3.zero;
-            }
+                1 => new Vector3(this._eyeOffset.x, 0f, -this._eyeOffset.y),
+                2 => new Vector3(0, 0f, -this._eyeOffset.y),
+                3 => new Vector3(-this._eyeOffset.x, 0f, -this._eyeOffset.y),
+                _ => Vector3.zero,
+            };
         }
 
         // public Vector3 RightHandPosition;
@@ -297,13 +300,13 @@ namespace FacialStuff
                 }
             }
 
-            switch (rotation.AsInt)
+            return rotation.AsInt switch
             {
-                case 1: return new Vector3(this._mouthOffset.x, 0f, -this._mouthOffset.y);
-                case 2: return new Vector3(0, 0f, -this._mouthOffset.y);
-                case 3: return new Vector3(-this._mouthOffset.x, 0f, -this._mouthOffset.y);
-                default: return Vector3.zero;
-            }
+                1 => new Vector3(this._mouthOffset.x, 0f, -this._mouthOffset.y),
+                2 => new Vector3(0, 0f, -this._mouthOffset.y),
+                3 => new Vector3(-this._mouthOffset.x, 0f, -this._mouthOffset.y),
+                _ => Vector3.zero,
+            };
         }
 
         [NotNull]
@@ -316,7 +319,7 @@ namespace FacialStuff
 
         // Can be called externally
 
-        public void DrawAlienHeadAddons(Vector3 headPos, bool portrait, Quaternion headQuat, Vector3 currentLoc)
+        public void DrawAlienHeadAddons(Vector3 headPos, PawnRenderFlags flags, Quaternion headQuat, Vector3 currentLoc)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -327,12 +330,12 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i].DrawAlienHeadAddons(headPos, portrait, headQuat, currentLoc);
+                this.PawnHeadDrawers[i].DrawAlienHeadAddons(headPos, flags, headQuat, currentLoc);
                 i++;
             }
         }
 
-        public void DrawBasicHead(out bool headDrawn, RotDrawMode bodyDrawType, bool portrait, bool headStump,
+        public void DrawBasicHead(out bool headDrawn, RotDrawMode bodyDrawType, PawnRenderFlags flags, bool headStump,
                                   Vector3 drawLoc, Quaternion headQuat)
         {
             headDrawn = false;
@@ -350,13 +353,13 @@ namespace FacialStuff
                     headQuat,
                     bodyDrawType,
                     headStump,
-                    portrait,
+                    flags,
                     out headDrawn);
                 i++;
             }
         }
 
-        public void DrawBeardAndTache(Vector3 beardLoc, Vector3 tacheLoc, bool portrait, Quaternion headQuat)
+        public void DrawBeardAndTache(Vector3 beardLoc, Vector3 tacheLoc, PawnRenderFlags flags, Quaternion headQuat)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -367,12 +370,12 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i].DrawBeardAndTache(beardLoc, tacheLoc, headQuat, portrait);
+                this.PawnHeadDrawers[i].DrawBeardAndTache(beardLoc, tacheLoc, headQuat, flags);
                 i++;
             }
         }
 
-        public void DrawBrows(Vector3 drawLoc, Quaternion headQuat, bool portrait)
+        public void DrawBrows(Vector3 drawLoc, Quaternion headQuat, PawnRenderFlags flags)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -383,7 +386,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawBrows(drawLoc, headQuat, portrait);
+                this.PawnHeadDrawers[i]?.DrawBrows(drawLoc, headQuat, flags);
                 i++;
             }
         }
@@ -430,7 +433,7 @@ namespace FacialStuff
             }
         }
 
-        public void DrawNaturalEyes(Vector3 drawLoc, bool portrait, Quaternion headQuat)
+        public void DrawNaturalEyes(Vector3 drawLoc, PawnRenderFlags flags, Quaternion headQuat)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -441,27 +444,13 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawNaturalEyes(drawLoc, headQuat, portrait);
-                i++;
-            }
-        }
-        public void DrawNaturalEars(Vector3 drawLoc, bool portrait, Quaternion headQuat)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i]?.DrawNaturalEars(drawLoc, headQuat, portrait);
+                this.PawnHeadDrawers[i]?.DrawNaturalEyes(drawLoc, headQuat, flags);
                 i++;
             }
         }
 
-        public void DrawNaturalMouth(Vector3 drawLoc, bool portrait, Quaternion headQuat)
+
+        public void DrawNaturalMouth(Vector3 drawLoc, PawnRenderFlags flags, Quaternion headQuat)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -472,12 +461,12 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawNaturalMouth(drawLoc, headQuat, portrait);
+                this.PawnHeadDrawers[i]?.DrawNaturalMouth(drawLoc, headQuat, flags);
                 i++;
             }
         }
 
-        public void DrawUnnaturalEyeParts(Vector3 locFacialY, Quaternion headQuat, bool portrait)
+        public void DrawUnnaturalEyeParts(Vector3 locFacialY, Quaternion headQuat, PawnRenderFlags flags)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -488,27 +477,13 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawUnnaturalEyeParts(locFacialY, headQuat, portrait);
-                i++;
-            }
-        }
-        public void DrawUnnaturalEarParts(Vector3 locFacialY, Quaternion headQuat, bool portrait)
-        {
-            if (this.PawnHeadDrawers.NullOrEmpty())
-            {
-                return;
-            }
-
-            int i = 0;
-            int count = this.PawnHeadDrawers.Count;
-            while (i < count)
-            {
-                this.PawnHeadDrawers[i]?.DrawUnnaturalEarParts(locFacialY, headQuat, portrait);
+                this.PawnHeadDrawers[i]?.DrawUnnaturalEyeParts(locFacialY, headQuat, flags);
                 i++;
             }
         }
 
-        public void DrawWrinkles(RotDrawMode bodyDrawType, Vector3 drawLoc, Quaternion headQuat, bool portrait)
+
+        public void DrawWrinkles(RotDrawMode bodyDrawType, Vector3 drawLoc, Quaternion headQuat, PawnRenderFlags flags)
         {
             if (this.PawnHeadDrawers.NullOrEmpty())
             {
@@ -519,7 +494,7 @@ namespace FacialStuff
             int count = this.PawnHeadDrawers.Count;
             while (i < count)
             {
-                this.PawnHeadDrawers[i]?.DrawWrinkles(drawLoc, bodyDrawType, headQuat, portrait);
+                this.PawnHeadDrawers[i]?.DrawWrinkles(drawLoc, bodyDrawType, headQuat, flags);
                 i++;
             }
         }
@@ -545,19 +520,7 @@ namespace FacialStuff
         }
     
         // }
-        [NotNull]
-        public string EarTexPath(Side side, [NotNull] EarDef ear = null)
-        {
-            if (ear == null)
-            {
-                ear = this.PawnFace?.EarDef;
-            }
-            // ReSharper disable once PossibleNullReferenceException
-            string earPath = ear.texBasePath.NullOrEmpty() ? StringsFS.PathHumanlike + "Ears/" : ear.texBasePath;
-            string path = earPath + "Ear_" + ear.texName + "_" + this.Pawn.gender + "_" + side;
 
-            return path.Replace(@"\", @"/");
-        }
 
         [NotNull]
         public string GetBeardPath(BeardDef def = null)
@@ -662,7 +625,7 @@ namespace FacialStuff
                     PawnHeadDrawer thingComp =
                     (PawnHeadDrawer)Activator.CreateInstance(this.Props.headDrawers[i].GetType());
                     thingComp.CompFace = this;
-                    thingComp.Pawn = this.Pawn;
+                    thingComp.ThePawn = this.Pawn;
                     this.PawnHeadDrawers.Add(thingComp);
                     thingComp.Initialize();
                 }
@@ -673,7 +636,7 @@ namespace FacialStuff
                 PawnHeadDrawer thingComp =
                 (PawnHeadDrawer)Activator.CreateInstance(typeof(HumanHeadDrawer));
                 thingComp.CompFace = this;
-                thingComp.Pawn = this.Pawn;
+                thingComp.ThePawn = this.Pawn;
                 this.PawnHeadDrawers.Add(thingComp);
                 thingComp.Initialize();
             }

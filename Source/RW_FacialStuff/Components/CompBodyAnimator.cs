@@ -38,19 +38,20 @@ namespace FacialStuff
         public Vector3 FirstHandPosition;
         public Vector3 SecondHandPosition;
 
-        [CanBeNull] public WalkCycleDef WalkCycle => this._walkCycle;
+        [CanBeNull]
+        public WalkCycleDef WalkCycle { get; private set; }
 
-        public Quaternion WeaponQuat = new Quaternion();
+        public Quaternion WeaponQuat = new();
 
         #endregion Public Fields
 
         #region Private Fields
 
-        private static FieldInfo _infoJitterer;
+        private static readonly FieldInfo _infoJitterer;
 
-        [NotNull] private readonly List<Material> _cachedNakedMatsBodyBase = new List<Material>();
+        [NotNull] private readonly List<Material> _cachedNakedMatsBodyBase = new();
 
-        private readonly List<Material> _cachedSkinMatsBodyBase = new List<Material>();
+        private readonly List<Material> _cachedSkinMatsBodyBase = new();
 
         private int _cachedNakedMatsBodyBaseHash = -1;
         private int _cachedSkinMatsBodyBaseHash = -1;
@@ -66,18 +67,18 @@ namespace FacialStuff
 
         public BodyAnimator BodyAnimator { get; private set; }
 
-        public bool HideShellLayer => this.InRoom && Controller.settings.HideShellWhileRoofed && (this.Pawn.IsColonistPlayerControlled && this.Pawn.Faction.IsPlayer && !this.Pawn.HasExtraHomeFaction());
+        public bool HideShellLayer => this.InRoom && Controller.settings.HideShellWhileRoofed && (this.ThePawn.IsColonistPlayerControlled && this.ThePawn.Faction.IsPlayer && !this.ThePawn.HasExtraHomeFaction());
 
         public bool InPrivateRoom
         {
             get
             {
-                if (!this.InRoom || this.Pawn.IsPrisoner)
+                if (!this.InRoom || this.ThePawn.IsPrisoner)
                 {
                     return false;
                 }
 
-                Room ownedRoom = this.Pawn.ownership?.OwnedRoom;
+                Room ownedRoom = this.ThePawn.ownership?.OwnedRoom;
                 if (ownedRoom != null)
                 {
                     return ownedRoom == this.TheRoom;
@@ -91,11 +92,10 @@ namespace FacialStuff
         {
             get
             {
-                RoomGroup theRoomGroup = this.TheRoom?.Group;
-                if (theRoomGroup != null && !theRoomGroup.UsesOutdoorTemperature)
+                if (TheRoom != null && !TheRoom.UsesOutdoorTemperature)
                 {
                     // Pawn is indoors
-                    return !this.Pawn.Drafted || !Controller.settings.IgnoreWhileDrafted;
+                    return !this.ThePawn.Drafted || !Controller.settings.IgnoreWhileDrafted;
                 }
 
                 return false;
@@ -105,17 +105,17 @@ namespace FacialStuff
         }
 
         public JitterHandler Jitterer
-            => GetHiddenValue(typeof(Pawn_DrawTracker), this.Pawn.Drawer, "jitterer", _infoJitterer) as
+            => GetHiddenValue(typeof(Pawn_DrawTracker), this.ThePawn.Drawer, "jitterer", _infoJitterer) as
                 JitterHandler;
 
         [NotNull]
-        public Pawn Pawn => this.parent as Pawn;
+        public Pawn ThePawn => this.parent as Pawn;
 
         public List<PawnBodyDrawer> PawnBodyDrawers { get; private set; }
 
         public CompProperties_BodyAnimator Props => (CompProperties_BodyAnimator)this.props;
 
-        public bool HideHat => this.InRoom && Controller.settings.HideHatWhileRoofed && (this.Pawn.IsColonistPlayerControlled && this.Pawn.Faction.IsPlayer && !this.Pawn.HasExtraHomeFaction());
+        public bool HideHat => this.InRoom && Controller.settings.HideHatWhileRoofed && (this.ThePawn.IsColonistPlayerControlled && this.ThePawn.Faction.IsPlayer && !this.ThePawn.HasExtraHomeFaction());
 
         #endregion Public Properties
 
@@ -126,7 +126,7 @@ namespace FacialStuff
         {
             get
             {
-                if (this.Pawn.Dead)
+                if (this.ThePawn.Dead)
                 {
                     return null;
                 }
@@ -136,7 +136,7 @@ namespace FacialStuff
                     return this._theRoom;
                 }
 
-                this._theRoom = this.Pawn.GetRoom();
+                this._theRoom = this.ThePawn.GetRoom();
                 this._lastRoomCheck = Find.TickManager.TicksGame;
 
                 return this._theRoom;
@@ -157,7 +157,7 @@ namespace FacialStuff
             return info?.GetValue(__instance);
         }
 
-        public void ApplyBodyWobble(ref Vector3 rootLoc, ref Vector3 footPos, ref Quaternion quat)
+        public void ApplyBodyWobble(ref Vector3 rootLoc, ref Vector3 footPos)
         {
             if (this.PawnBodyDrawers == null)
             {
@@ -168,7 +168,7 @@ namespace FacialStuff
             int count = this.PawnBodyDrawers.Count;
             while (i < count)
             {
-                this.PawnBodyDrawers[i].ApplyBodyWobble(ref rootLoc, ref footPos, ref quat);
+                this.PawnBodyDrawers[i].ApplyBodyWobble(ref rootLoc, ref footPos);
                 i++;
             }
         }
@@ -180,7 +180,7 @@ namespace FacialStuff
             this._cachedNakedMatsBodyBaseHash = -1;
         }
 
-        public void DrawApparel(Quaternion quat, Vector3 vector, bool portrait, bool renderBody)
+        public void DrawApparel(Quaternion quat, Vector3 vector, PawnRenderFlags flags, bool renderBody)
         {
             if (this.PawnBodyDrawers.NullOrEmpty())
             {
@@ -191,7 +191,7 @@ namespace FacialStuff
             int count = this.PawnBodyDrawers.Count;
             while (i < count)
             {
-                this.PawnBodyDrawers[i].DrawApparel(quat, vector, renderBody, portrait);
+                this.PawnBodyDrawers[i].DrawApparel(quat, vector, renderBody, flags);
                 i++;
             }
         }
@@ -202,31 +202,31 @@ namespace FacialStuff
         //     return extra;
         // }
 
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public void DrawBody(Vector3 rootLoc, Quaternion quat, RotDrawMode bodyDrawType,
-                             [CanBeNull] PawnWoundDrawer woundDrawer, bool renderBody, bool portrait)
+        // off for now
+        public void DrawBody(Vector3 rootLoc, float angle, Rot4 facing, RotDrawMode bodyDrawType, PawnRenderFlags flags, out Mesh bodyMesh)
         {
+            bodyMesh = null;
+
             if (this.PawnBodyDrawers.NullOrEmpty())
             {
-                return;
+                InitializePawnDrawer();
             }
 
             int i = 0;
 
             while (i < this.PawnBodyDrawers.Count)
             {
-                this.PawnBodyDrawers[i].DrawBody(
-                                                 woundDrawer,
+                this.PawnBodyDrawers[i].DrawPawnBody(
                                                  rootLoc,
-                                                 quat,
+                                                 angle,
+                                                 facing,
                                                  bodyDrawType,
-                                                 renderBody,
-                                                 portrait);
+                                                 flags,
+                                                 out bodyMesh);
                 i++;
             }
         }
 
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public void DrawEquipment(Vector3 rootLoc, bool portrait)
         {
             if (!this.PawnBodyDrawers.NullOrEmpty())
@@ -241,7 +241,6 @@ namespace FacialStuff
             }
         }
 
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait, float factor = 1f)
         {
             if (!this.PawnBodyDrawers.NullOrEmpty())
@@ -256,10 +255,13 @@ namespace FacialStuff
             }
         }
 
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public void DrawHands(Quaternion bodyQuat, Vector3 rootLoc, bool portrait, Thing carriedThing = null, bool flip = false, float factor = 1f)
         {
-            if (this.PawnBodyDrawers.NullOrEmpty()) return;
+            if (this.PawnBodyDrawers.NullOrEmpty())
+            {
+                return;
+            }
+
             int i = 0;
             int count = this.PawnBodyDrawers.Count;
             while (i < count)
@@ -279,7 +281,7 @@ namespace FacialStuff
                     PawnBodyDrawer thingComp =
                     (PawnBodyDrawer)Activator.CreateInstance(this.Props.bodyDrawers[i].GetType());
                     thingComp.CompAnimator = this;
-                    thingComp.Pawn = this.Pawn;
+                    thingComp.ThePawn = this.ThePawn;
                     this.PawnBodyDrawers.Add(thingComp);
                     thingComp.Initialize();
                 }
@@ -287,12 +289,12 @@ namespace FacialStuff
             else
             {
                 this.PawnBodyDrawers = new List<PawnBodyDrawer>();
-                bool isQuaduped = this.Pawn.GetCompAnim().BodyAnim.quadruped;
+                bool isQuaduped = this.ThePawn.GetCompAnim().BodyAnim.quadruped;
                 PawnBodyDrawer thingComp = isQuaduped
                     ? (PawnBodyDrawer)Activator.CreateInstance(typeof(QuadrupedDrawer))
                     : (PawnBodyDrawer)Activator.CreateInstance(typeof(HumanBipedDrawer));
                 thingComp.CompAnimator = this;
-                thingComp.Pawn = this.Pawn;
+                thingComp.ThePawn = this.ThePawn;
                 this.PawnBodyDrawers.Add(thingComp);
                 thingComp.Initialize();
             }
@@ -305,7 +307,7 @@ namespace FacialStuff
             {
                 this._cachedNakedMatsBodyBase.Clear();
                 this._cachedNakedMatsBodyBaseHash = num;
-                PawnGraphicSet graphics = this.Pawn.Drawer.renderer.graphics;
+                PawnGraphicSet graphics = this.ThePawn.Drawer.renderer.graphics;
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
                     this._cachedNakedMatsBodyBase.Add(graphics.nakedGraphic.MatAt(facing));
@@ -323,7 +325,7 @@ namespace FacialStuff
                 {
                     ApparelLayerDef lastLayer = graphics.apparelGraphics[i].sourceApparel.def.apparel.LastLayer;
 
-                    if (this.Pawn.Dead)
+                    if (this.ThePawn.Dead)
                     {
                         if (lastLayer != ApparelLayerDefOf.Shell && lastLayer != ApparelLayerDefOf.Overhead)
                         {
@@ -354,11 +356,10 @@ namespace FacialStuff
             base.PostDraw();
 
             // Children & Pregnancy || Werewolves transformed
-            if (this.Pawn.Map == null || !this.Pawn.Spawned || this.Pawn.Dead || this.Pawn.GetCompAnim().Deactivated)
+            if (this.ThePawn.Map == null || !this.ThePawn.Spawned || this.ThePawn.Dead || this.ThePawn.GetCompAnim().Deactivated)
             {
                 return;
             }
-
             //if (Find.TickManager.Paused)
             //{
             //    if (!HarmonyPatchesFS.AnimatorIsOpen() || MainTabWindow_BaseAnimator.Pawn != this.Pawn)
@@ -369,7 +370,7 @@ namespace FacialStuff
 
             if (this.Props.bipedWithHands)
             {
-                this.BodyAnimator.AnimatorTick();
+                BodyAnimator.AnimatorTick();
             }
 
                 // Tweener
@@ -400,20 +401,27 @@ namespace FacialStuff
 
                     this.CheckMovement();
 
-                    if (this.Pawn.IsChild())
-                    this.TickDrawers(this.Pawn.Rotation, new PawnGraphicSet(this.Pawn));
+                    if (this.ThePawn.IsChild())
+                {
+                    this.TickDrawers(this.ThePawn.Rotation, new PawnGraphicSet(this.ThePawn));
                 }
-            
+            }
 
-            if (this.Pawn.IsChild())
+
+            if (this.ThePawn.IsChild())
             {
-                float angle = this.Pawn.Drawer.renderer.BodyAngle();
+                float angle = this.ThePawn.Drawer.renderer.BodyAngle();
                 Quaternion bodyQuat = Quaternion.AngleAxis(angle, Vector3.up);
-                Vector3 rootLoc = this.Pawn.Drawer.DrawPos;
+                Vector3 rootLoc = this.ThePawn.Drawer.DrawPos;
                 if (Controller.settings.UseHands)
-                    this.DrawHands(bodyQuat, rootLoc, false, null, false, this.Pawn.GetBodysizeScaling());
+                {
+                    this.DrawHands(bodyQuat, rootLoc, false, null, false, this.ThePawn.GetBodysizeScaling());
+                }
+
                 if (Controller.settings.UseFeet)
+                {
                     this.DrawFeet(bodyQuat, bodyQuat, rootLoc, false);
+                }
             }
         }
 
@@ -431,20 +439,20 @@ namespace FacialStuff
             {
                 this.Vector3Tweens[i] = new Vector3Tween();
             }
-            this.BodyAnimator = new BodyAnimator(this.Pawn, this);
-            this.Pawn.CheckForAddedOrMissingParts();
+            this.BodyAnimator = new BodyAnimator(this.ThePawn, this);
+            this.ThePawn.CheckForAddedOrMissingParts();
             this.PawnBodyGraphic = new PawnBodyGraphic(this);
 
             string bodyType = "Undefined";
 
-            if (this.Pawn.story?.bodyType != null)
+            if (this.ThePawn.story?.bodyType != null)
             {
-                bodyType = this.Pawn.story.bodyType.ToString();
+                bodyType = this.ThePawn.story.bodyType.ToString();
             }
 
-            string defaultName = "BodyAnimDef_" + this.Pawn.def.defName + "_" + bodyType;
-            List<string> names = new List<string>
-                                       {
+            string defaultName = "BodyAnimDef_" + this.ThePawn.def.defName + "_" + bodyType;
+            List<string> names = new()
+            {
                                        defaultName,
                                        // "BodyAnimDef_" + ThingDefOf.Human.defName + "_" + bodyType
                                        };
@@ -478,7 +486,11 @@ namespace FacialStuff
                 this._initialized = true;
             }
 
-            if (this.PawnBodyDrawers.NullOrEmpty()) return;
+            if (this.PawnBodyDrawers.NullOrEmpty())
+            {
+                return;
+            }
+
             int i = 0;
             int count = this.PawnBodyDrawers.Count;
             while (i < count)
@@ -495,7 +507,7 @@ namespace FacialStuff
             {
                 this._cachedSkinMatsBodyBase.Clear();
                 this._cachedSkinMatsBodyBaseHash = num;
-                PawnGraphicSet graphics = this.Pawn.Drawer.renderer.graphics;
+                PawnGraphicSet graphics = this.ThePawn.Drawer.renderer.graphics;
                 if (bodyCondition == RotDrawMode.Fresh)
                 {
                     this._cachedSkinMatsBodyBase.Add(graphics.nakedGraphic.MatAt(facing));
@@ -540,7 +552,7 @@ namespace FacialStuff
 
         #endregion Public Methods
 
-        public float MovedPercent => this._movedPercent;
+        public float MovedPercent { get; private set; }
         public float BodyAngle;
 
         public float LastAimAngle = 143f;
@@ -548,7 +560,7 @@ namespace FacialStuff
         //  public float lastWeaponAngle = 53f;
         public readonly Vector3[] LastPosition = new Vector3[(int)TweenThing.Max];
 
-        public readonly FloatTween AimAngleTween = new FloatTween();
+        public readonly FloatTween AimAngleTween = new();
         public bool HasLeftHandPosition => this.SecondHandPosition != Vector3.zero;
 
         public Vector3 LastEqPos = Vector3.zero;
@@ -556,35 +568,52 @@ namespace FacialStuff
 
         public void CheckMovement()
         {
-            if (HarmonyPatchesFS.AnimatorIsOpen() && MainTabWindow_BaseAnimator.Pawn == this.Pawn)
+            if (HarmonyPatchesFS.AnimatorIsOpen() && MainTabWindow_BaseAnimator.thePawn == this.ThePawn)
             {
-                this._isMoving = true;
-                this._movedPercent = MainTabWindow_BaseAnimator.AnimationPercent;
+                this.IsMoving = true;
+                this.MovedPercent = MainTabWindow_BaseAnimator.AnimationPercent;
                 return;
             }
 
             if (this.IsRider)
             {
-                this._isMoving = false;
+                this.IsMoving = false;
                 return;
             }
             // pawn started pathing
 
-            Pawn_PathFollower pather = this.Pawn.pather;
-            if ((pather != null) && (pather.Moving) && !this.Pawn.stances.FullBodyBusy && (pather.BuildingBlockingNextPathCell() == null) && (pather.NextCellDoorToWaitForOrManuallyOpen() == null) && !pather.WillCollideWithPawnOnNextPathCell())
-            {
-                this._movedPercent = 1f - pather.nextCellCostLeft / pather.nextCellCostTotal;
-                this._isMoving = true;
-            }
-            else
-            {
-                this._isMoving = false;
-            }
+            this.MovedPercent = PawnMovedPercent(ThePawn);
+
         }
+        private float PawnMovedPercent(Pawn pawn)
+        {
+            Pawn_PathFollower pather = pawn.pather;
+            if (pather.Moving)
+            {
+                if (pawn.stances.FullBodyBusy)
+                {
+                    return 0f;
+                }
+                if (pather.BuildingBlockingNextPathCell() != null)
+                {
+                    return 0f;
+                }
+                if (pather.NextCellDoorToWaitForOrManuallyOpen() != null)
+                {
+                    return 0f;
+                }
+                if (pather.WillCollideWithPawnOnNextPathCell())
+                {
+                    return 0f;
+                }
+                this.IsMoving = true;
+                return 1f - pather.nextCellCostLeft / pather.nextCellCostTotal;
+            }
+            return 0f;
+        }
+        public bool IsRider { get; set; } = false;
 
-        public bool IsRider { get; set; }
-
-        public void DrawAlienBodyAddons(Quaternion quat, Vector3 vector, bool portrait, bool renderBody, Rot4 rotation,
+        public void DrawAlienBodyAddons(Quaternion quat, Vector3 vector, PawnRenderFlags flags, bool renderBody, Rot4 rotation,
             bool invisible)
         {
             if (this.PawnBodyDrawers.NullOrEmpty())
@@ -596,14 +625,14 @@ namespace FacialStuff
             int count = this.PawnBodyDrawers.Count;
             while (i < count)
             {
-                this.PawnBodyDrawers[i].DrawAlienBodyAddons(portrait, vector, quat, renderBody, rotation, invisible);
+                this.PawnBodyDrawers[i].DrawAlienBodyAddons(flags, vector, quat, renderBody, rotation, invisible);
                 i++;
             }
         }
 
         public void SetWalkCycle(WalkCycleDef walkCycleDef)
         {
-            this._walkCycle = walkCycleDef;
+            this.WalkCycle = walkCycleDef;
         }
 
         public float HeadffsetZ
@@ -617,7 +646,9 @@ namespace FacialStuff
                     {
                         SimpleCurve curve = walkCycle.HeadOffsetZ;
                         if (curve.PointsCount > 0)
+                        {
                             return curve.Evaluate(this.MovedPercent);
+                        }
                     }
                 }
 
@@ -636,7 +667,9 @@ namespace FacialStuff
                     {
                         SimpleCurve curve = walkCycle.HeadAngleX;
                         if (curve.PointsCount > 0)
+                        {
                             return curve.Evaluate(this.MovedPercent);
+                        }
                     }
                 }
 
@@ -655,7 +688,9 @@ namespace FacialStuff
                     {
                         SimpleCurve curve = walkCycle.BodyOffsetZ;
                         if (curve.PointsCount > 0)
+                        {
                             return curve.Evaluate(this.MovedPercent);
+                        }
                     }
                 }
 
@@ -663,13 +698,10 @@ namespace FacialStuff
             }
         }
 
-        public bool IsMoving => this._isMoving;
+        public bool IsMoving { get; private set; }
         internal bool MeshFlipped;
         internal float LastWeaponAngle;
         internal readonly int[] LastPosUpdate = new int[(int)TweenThing.Max];
         internal int LastAngleTick;
-        private float _movedPercent;
-        private bool _isMoving;
-        private WalkCycleDef _walkCycle;
     }
 }

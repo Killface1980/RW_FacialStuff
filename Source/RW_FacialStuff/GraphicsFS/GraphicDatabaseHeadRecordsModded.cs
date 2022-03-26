@@ -14,7 +14,7 @@ namespace FacialStuff.GraphicsFS
 
         [NotNull]
         public static List<HeadGraphicRecord> HeadsVanillaCustom =
-        new List<HeadGraphicRecord>();
+        new();
 
         #endregion Public Fields
 
@@ -109,7 +109,7 @@ namespace FacialStuff.GraphicsFS
 
             public string graphicPath;
 
-            private List<KeyValuePair<Color, Graphic_Multi>> graphics = new List<KeyValuePair<Color, Graphic_Multi>>();
+            private readonly List<KeyValuePair<Color, Graphic_Multi>> graphics = new();
 
             public HeadGraphicRecord(string graphicPath)
             {

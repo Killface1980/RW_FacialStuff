@@ -43,7 +43,7 @@ namespace FacialStuff.AnimatorWindows
 
         #region Public Methods
 
-        private string filePathBodyanim
+        private string FilePathBodyanim
         {
             get
             {
@@ -51,7 +51,7 @@ namespace FacialStuff.AnimatorWindows
             }
         }
 
-        private string pathWalkcycles
+        private string PathWalkcycles
         {
             get
             {
@@ -106,11 +106,11 @@ namespace FacialStuff.AnimatorWindows
 
             if (listing.ButtonText("This pawn is using: " + this.BodyAnimDef.WalkCycleType))
             {
-                List<FloatMenuOption> list = new List<FloatMenuOption>();
+                List<FloatMenuOption> list = new();
 
                 List<WalkCycleDef> listy = DefDatabase<WalkCycleDef>.AllDefsListForReading;
 
-                List<string> stringsy = new List<string>();
+                List<string> stringsy = new();
 
                 foreach (WalkCycleDef cycleDef in listy)
                 {
@@ -130,8 +130,8 @@ namespace FacialStuff.AnimatorWindows
 
             if (listing.ButtonText(this.EditorWalkcycle.LabelCap))
             {
-                List<string> exists = new List<string>();
-                List<FloatMenuOption> list = new List<FloatMenuOption>();
+                List<string> exists = new();
+                List<FloatMenuOption> list = new();
                 this.BodyAnimDef.walkCycles.Clear();
 
                 foreach (WalkCycleDef walkcycle in (DefDatabase<WalkCycleDef>.AllDefs.OrderBy(bsm => bsm.label))
@@ -160,7 +160,7 @@ namespace FacialStuff.AnimatorWindows
                                                  "Add new " + this.BodyAnimDef.WalkCycleType + "_" + myenum,
                                                  delegate
                                                  {
-                                                     WalkCycleDef newCycle = new WalkCycleDef();
+                                                     WalkCycleDef newCycle = new();
                                                      newCycle.defName =
                                                      newCycle.label =
                                                      this.BodyAnimDef.WalkCycleType + "_" + name;
@@ -168,7 +168,6 @@ namespace FacialStuff.AnimatorWindows
                                                      newCycle.WalkCycleType = this.BodyAnimDef.WalkCycleType;
                                                      GameComponent_FacialStuff.BuildWalkCycles(newCycle);
                                                      this.EditorWalkcycle = newCycle;
-
                                                      this.BodyAnimDef.walkCycles.Add(myenum, newCycle);
                                                  }));
                 }
@@ -182,15 +181,15 @@ namespace FacialStuff.AnimatorWindows
                 Find.WindowStack.Add(
                     Dialog_MessageBox.CreateConfirmation(
                         "Confirm overwriting " +
-                        this.filePathBodyanim,
+                        this.FilePathBodyanim,
                         delegate
                         {
                             ExportAnimDefs.Defs animDef =
-                                new ExportAnimDefs.Defs(this.BodyAnimDef);
+                                new(this.BodyAnimDef);
 
                             DirectXmlSaver.SaveDataObject(
                                 animDef,
-                                this.filePathBodyanim);
+                                this.FilePathBodyanim);
                         },
                         true));
 
@@ -202,15 +201,15 @@ namespace FacialStuff.AnimatorWindows
 
                 Find.WindowStack.Add(
                     Dialog_MessageBox.CreateConfirmation(
-                        "Confirm overwriting " + this.pathWalkcycles,
+                        "Confirm overwriting " + this.PathWalkcycles,
                         delegate
                         {
                             ExportWalkCycleDefs.Defs cycle =
-                                new ExportWalkCycleDefs.Defs(this.EditorWalkcycle);
+                                new(this.EditorWalkcycle);
 
                             DirectXmlSaver.SaveDataObject(
                                 cycle,
-                                this.pathWalkcycles);
+                                this.PathWalkcycles);
                         },
                         true));
             }
@@ -219,9 +218,9 @@ namespace FacialStuff.AnimatorWindows
         protected override void DrawBackground(Rect rect)
         {
             GUI.BeginGroup(rect);
-            var percent = AnimationPercent;
+            _ = AnimationPercent;
             float width = rect.width;
-            float zero = rect.x;
+            _ = rect.x;
 
             float moved = (width * AnimationPercent);
             Rect rect1;
@@ -254,7 +253,7 @@ namespace FacialStuff.AnimatorWindows
 
         protected override void DrawBodySettingsEditor(Rot4 rotation)
         {
-            Rect sliderRect = new Rect(0, 0, this.SliderWidth, 40f);
+            Rect sliderRect = new(0, 0, this.SliderWidth, 40f);
 
             // this.DrawBodyStats("legLength", ref bodyAnimDef.legLength, ref sliderRect);
             // this.DrawBodyStats("hipOffsetVerticalFromCenter",
@@ -316,18 +315,17 @@ namespace FacialStuff.AnimatorWindows
             if (GUI.changed)
             {
                 this.BodyAnimDef.headOffset = headOffset;
-                this.SetNewVector(rotation, shoulderOffset, this.BodyAnimDef.shoulderOffsets, front);
-                this.SetNewVector(rotation, hipOffset, this.BodyAnimDef.hipOffsets, hipFront);
+                SetNewVector(rotation, shoulderOffset, this.BodyAnimDef.shoulderOffsets, front);
+                SetNewVector(rotation, hipOffset, this.BodyAnimDef.hipOffsets, hipFront);
             }
 
             this.DrawBodyStats("armLength", ref this.BodyAnimDef.armLength, ref sliderRect);
             this.DrawBodyStats("extraLegLength", ref this.BodyAnimDef.extraLegLength, ref sliderRect);
         }
 
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         protected override void DrawKeyframeEditor(Rect keyframes, Rot4 rotation)
         {
-            if (this.CurrentFrame == null)
+            if (CurrentFrame == null)
             {
                 return;
             }
@@ -339,7 +337,7 @@ namespace FacialStuff.AnimatorWindows
             rightController.xMin += this.Spacing;
             {
                 GUI.BeginGroup(leftController);
-                Rect editorRect = new Rect(0f, 0f, leftController.width, 56f);
+                Rect editorRect = new(0f, 0f, leftController.width, 56f);
 
                 // Dictionary<int, float> keysFloats = new Dictionary<int, float>();
 
@@ -362,7 +360,7 @@ namespace FacialStuff.AnimatorWindows
 
 
                     this.SetPosition(
-                                     ref this.CurrentFrame.FootPositionX,
+                                     ref CurrentFrame.FootPositionX,
                                      ref editorRect,
                                      walkcycle.FootPositionX,
                                      "FootPosX",
@@ -372,7 +370,7 @@ namespace FacialStuff.AnimatorWindows
                    .ToList();
 
                     this.SetPosition(
-                                     ref this.CurrentFrame.FootPositionZ,
+                                     ref CurrentFrame.FootPositionZ,
                                      ref editorRect,
                                      walkcycle.FootPositionZ,
                                      "FootPosY",
@@ -382,7 +380,7 @@ namespace FacialStuff.AnimatorWindows
                    .ToList();
 
                     this.SetAngle(
-                                  ref this.CurrentFrame.FootAngle,
+                                  ref CurrentFrame.FootAngle,
                                   ref editorRect,
                                   walkcycle.FootAngle,
                                   "FootAngle",
@@ -393,7 +391,7 @@ namespace FacialStuff.AnimatorWindows
                                 select keyframe.KeyIndex).ToList();
 
                     this.SetPosition(
-                                     ref this.CurrentFrame.HipOffsetHorizontalX,
+                                     ref CurrentFrame.HipOffsetHorizontalX,
                                      ref editorRect,
                                      walkcycle.HipOffsetHorizontalX,
                                      "HipOffsetHorizontalX",
@@ -429,7 +427,7 @@ namespace FacialStuff.AnimatorWindows
                    .ToList();
 
                     this.SetAngle(
-                                  ref this.CurrentFrame.HandsSwingAngle,
+                                  ref CurrentFrame.HandsSwingAngle,
                                   ref editorRect,
                                   walkcycle.HandsSwingAngle,
                                   "HandSwing",
@@ -444,7 +442,7 @@ namespace FacialStuff.AnimatorWindows
                                     where keyframe.FrontPawPositionX.HasValue
                                     select keyframe.KeyIndex).ToList();
                         this.SetPosition(
-                                         ref this.CurrentFrame.FrontPawPositionX,
+                                         ref CurrentFrame.FrontPawPositionX,
                                          ref editorRect,
                                          walkcycle.FrontPawPositionX,
                                          "FrontPawPositionX",
@@ -455,7 +453,7 @@ namespace FacialStuff.AnimatorWindows
                                     select keyframe.KeyIndex).ToList();
 
                         this.SetPosition(
-                                         ref this.CurrentFrame.FrontPawPositionZ,
+                                         ref CurrentFrame.FrontPawPositionZ,
                                          ref editorRect,
                                          walkcycle.FrontPawPositionZ,
                                          "FrontPawPositionZ",
@@ -466,7 +464,7 @@ namespace FacialStuff.AnimatorWindows
                                     select keyframe.KeyIndex).ToList();
 
                         this.SetAngle(
-                                      ref this.CurrentFrame.FrontPawAngle,
+                                      ref CurrentFrame.FrontPawAngle,
                                       ref editorRect,
                                       walkcycle.FrontPawAngle,
                                       "FrontPawAngle",
@@ -478,7 +476,7 @@ namespace FacialStuff.AnimatorWindows
                         .ToList();
 
                     this.SetAngle(
-                                  ref this.CurrentFrame.BodyAngle,
+                                  ref CurrentFrame.BodyAngle,
                                   ref editorRect,
                                   walkcycle.BodyAngle,
                                   "BodyAngle",
@@ -521,7 +519,7 @@ namespace FacialStuff.AnimatorWindows
                                 where keyframe.BodyAngleVertical.HasValue
                                 select keyframe.KeyIndex).ToList();
                     this.SetAngle(
-                                  ref this.CurrentFrame.BodyAngleVertical,
+                                  ref CurrentFrame.BodyAngleVertical,
                                   ref editorRect,
                                   walkcycle.BodyAngleVertical,
                                   "BodyAngleVertical",
@@ -531,7 +529,7 @@ namespace FacialStuff.AnimatorWindows
                             where keyframe.ShoulderOffsetHorizontalX.HasValue
                             select keyframe.KeyIndex).ToList();
                 this.SetPosition(
-                                 ref this.CurrentFrame.ShoulderOffsetHorizontalX,
+                                 ref CurrentFrame.ShoulderOffsetHorizontalX,
                                  ref editorRect,
                                  walkcycle.ShoulderOffsetHorizontalX,
                                  "ShoulderOffsetHorizontalX",
@@ -541,7 +539,7 @@ namespace FacialStuff.AnimatorWindows
                     .ToList();
 
                 this.SetPosition(
-                    ref this.CurrentFrame.HeadAngleX,
+                    ref CurrentFrame.HeadAngleX,
                     ref editorRect,
                     walkcycle.HeadAngleX,
                     "HeadAngleX",
@@ -551,7 +549,7 @@ namespace FacialStuff.AnimatorWindows
                     .ToList();
 
                 this.SetPosition(
-                    ref this.CurrentFrame.HeadOffsetZ,
+                    ref CurrentFrame.HeadOffsetZ,
                     ref editorRect,
                     walkcycle.HeadOffsetZ,
                     "HeadOffsetZ",
@@ -561,7 +559,7 @@ namespace FacialStuff.AnimatorWindows
                 (from keyframe in frames where keyframe.BodyOffsetZ.HasValue select keyframe.KeyIndex).ToList();
 
                 this.SetPosition(
-                                 ref this.CurrentFrame.BodyOffsetZ,
+                                 ref CurrentFrame.BodyOffsetZ,
                                  ref editorRect,
                                  walkcycle.BodyOffsetZ,
                                  "BodyOffsetZ",

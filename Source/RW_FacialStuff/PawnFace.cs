@@ -10,6 +10,8 @@ using Verse;
 
 namespace FacialStuff
 {
+    using BeardDef = Defs.BeardDef;
+
     public class PawnFace : IExposable
     {
         #region Private Fields
@@ -24,16 +26,10 @@ namespace FacialStuff
 
         // public float Cuticula;
         private bool _drawMouth = true;
-
-        [SuppressMessage(
-            "StyleCop.CSharp.NamingRules",
-            "SA1305:FieldNamesMustNotUseHungarianNotation",
-            Justification = "Reviewed. Suppression is OK here.")]
         private float _euMelanin;
 
         [CanBeNull]
         private EyeDef _eyeDef;
-        private EarDef _earDef;
 
         private float _greyness;
 
@@ -63,7 +59,6 @@ namespace FacialStuff
             }
 
             this.EyeDef = PawnFaceMaker.RandomEyeDefFor(pawn, pawnFactionDef);
-            this.EarDef = PawnFaceMaker.RandomEarDefFor(pawn, pawnFactionDef);
             this.BrowDef = PawnFaceMaker.RandomBrowDefFor(pawn, pawnFactionDef);
 
             this.WrinkleDef = PawnFaceMaker.AssignWrinkleDefFor(pawn);
@@ -125,11 +120,7 @@ namespace FacialStuff
             get => this._eyeDef;
             set => this._eyeDef = value;
         }
-        public EarDef EarDef
-        {
-            get => this._earDef == null? EarDefOf.Ear_Default : this._earDef;
-            set => this._earDef = value;
-        }
+
 
         public float Greyness
         {

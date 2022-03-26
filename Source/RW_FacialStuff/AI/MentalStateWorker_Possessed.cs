@@ -9,7 +9,7 @@ namespace FacialStuff.AI
 {
     public class MentalStateWorker_Possessed : MentalStateWorker
     {
-        private static readonly List<Pawn> Candidates = new List<Pawn>();
+        private static readonly List<Pawn> Candidates = new();
 
         public override bool StateCanOccur([NotNull] Pawn pawn)
         {

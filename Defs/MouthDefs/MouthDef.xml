@@ -6,12 +6,12 @@
     <label>Grin</label>
     <forbiddenOnRace />
     <texPath>Things/Pawn/Humanlike/Mouth/Mouth_Grin</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.MouthDef>
 
   <FacialStuff.Defs.MouthDef>
@@ -19,12 +19,12 @@
     <label>Crying</label>
     <forbiddenOnRace />
     <texPath>Things/Pawn/Humanlike/Mouth/Mouth_Crying</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.MouthDef>
 
   <FacialStuff.Defs.MouthDef>
@@ -32,12 +32,12 @@
     <label>Mouth_Mood01</label>
     <forbiddenOnRace />
     <texPath>Things/Pawn/Humanlike/Mouth/Mouth_Mood01</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.MouthDef>
 
   <FacialStuff.Defs.MouthDef>
@@ -45,12 +45,12 @@
     <label>Mouth_Mood02</label>
     <forbiddenOnRace />
     <texPath>Things/Pawn/Humanlike/Mouth/Mouth_Mood02</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.MouthDef>
 
   <FacialStuff.Defs.MouthDef>
@@ -58,12 +58,12 @@
     <label>Mouth_Mood03</label>
     <forbiddenOnRace />
     <texPath>Things/Pawn/Humanlike/Mouth/Mouth_Mood03</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.MouthDef>
 
   <FacialStuff.Defs.MouthDef>
@@ -71,12 +71,12 @@
     <label>Mouth_Mood04</label>
     <forbiddenOnRace />
     <texPath>Things/Pawn/Humanlike/Mouth/Mouth_Mood04</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.MouthDef>
 
   <FacialStuff.Defs.MouthDef>
@@ -84,12 +84,12 @@
     <label>Mouth_Mood05</label>
     <forbiddenOnRace />
     <texPath>Things/Pawn/Humanlike/Mouth/Mouth_Mood05</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.MouthDef>
 
   <FacialStuff.Defs.MouthDef>
@@ -97,11 +97,11 @@
     <label>Mouth_Mood06</label>
     <forbiddenOnRace />
     <texPath>Things/Pawn/Humanlike/Mouth/Mouth_Mood06</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.MouthDef>
 </Defs>

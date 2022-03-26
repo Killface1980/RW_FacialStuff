@@ -36,11 +36,11 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
 
         public readonly string OriginalHeadType;
 
-        private readonly List<string> _femaleHeadTypes = new List<string>();
+        private readonly List<string> _femaleHeadTypes = new();
 
         private List<string> _headTypes;
 
-        private readonly List<string> _maleHeadTypes = new List<string>();
+        private readonly List<string> _maleHeadTypes = new();
 
         private int _savedFemaleIndex;
 

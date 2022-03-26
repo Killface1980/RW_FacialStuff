@@ -11,6 +11,8 @@ using Verse;
 
 namespace FacialStuff.GraphicsFS
 {
+    using BeardDefOf = DefOfs.BeardDefOf;
+
     public class PawnFaceGraphic
     {
         const string STR_south      = "_south";
@@ -89,7 +91,7 @@ namespace FacialStuff.GraphicsFS
                 }
 
                 this.MakeEyes();
-                this.MakeEars();
+                // this.MakeEars();
             }
 
             if (this._compFace.Props.hasMouth)
@@ -117,21 +119,6 @@ namespace FacialStuff.GraphicsFS
 
             this.InitializeGraphicsEyes();
             this.InitializeGraphicsBrows();
-        }
-        public void MakeEars()
-        {
-            if (!this._compFace.Props.hasEars)
-            {
-                return;
-            }
-
-            this._compFace.TexPathEarRight = this._compFace.EarTexPath(Side.Right);
-            this._compFace.TexPathEarLeft = this._compFace.EarTexPath(Side.Left);
-            this._compFace.TexPathEarRightMissing = this._compFace.EarTexPath(Side.Right, EarDefOf.Missing);
-            this._compFace.TexPathEarLeftMissing = this._compFace.EarTexPath(Side.Left, EarDefOf.Missing);
-
-
-            this.InitializeGraphicsEars();
         }
 
         public void SetMouthAccordingToMoodLevel()

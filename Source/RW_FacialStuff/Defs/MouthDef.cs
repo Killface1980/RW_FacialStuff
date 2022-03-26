@@ -11,9 +11,9 @@ namespace FacialStuff.Defs
 {
     public class MouthDef : Def
     {
-        public List<string> hairTags = new List<string>();
+        public List<string> styleTags = new();
 
-        public List<ThingDef> forbiddenOnRace = new List<ThingDef>();
+        public List<ThingDef> forbiddenOnRace = new();
 
         public string texPath = string.Empty;
     }

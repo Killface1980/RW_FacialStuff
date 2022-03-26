@@ -22,7 +22,7 @@ namespace FacialStuff
 
         #region Public Fields
 
-        [NotNull] public List<PawnBodyDrawer> bodyDrawers = new List<PawnBodyDrawer>();
+        [NotNull] public List<PawnBodyDrawer> bodyDrawers = new();
 
         public string handType = "Human";
         public Vector3 hipOffset;

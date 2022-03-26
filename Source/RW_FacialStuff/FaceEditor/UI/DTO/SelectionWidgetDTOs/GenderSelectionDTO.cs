@@ -31,7 +31,7 @@ namespace FacialStuff.FaceEditor.UI.DTO.SelectionWidgetDTOs
     {
         public readonly Gender OriginalGender;
 
-        private readonly List<Gender> _genders = new List<Gender>(2);
+        private readonly List<Gender> _genders = new(2);
 
         public GenderSelectionDto(Gender currentGender)
         {

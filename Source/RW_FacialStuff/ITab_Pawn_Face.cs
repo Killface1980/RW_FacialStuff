@@ -14,7 +14,7 @@ namespace FacialStuff
 
         private static int _rotation = 2;
 
-        private Pawn _pawn;
+        private readonly Pawn _pawn;
 
         public ITab_Pawn_Face()
         {
@@ -33,13 +33,13 @@ namespace FacialStuff
                 return;
             }
 
-            Rect rect = new Rect(10f, 10f, 330f, 330f);
+            Rect rect = new(10f, 10f, 330f, 330f);
 
-            Rect checkbox = new Rect(rect.x, rect.y, rect.width, 24f);
+            Rect checkbox = new(rect.x, rect.y, rect.width, 24f);
 
             Widgets.CheckboxLabeled(checkbox, "Ignore renderer", ref this.SelPawn.GetCompAnim().IgnoreRenderer);
 
-            Rect pawnRect = new Rect(rect.x, checkbox.yMax, rect.width, 24f);
+            Rect pawnRect = new(rect.x, checkbox.yMax, rect.width, 24f);
 
             foreach (Pawn relatedPawn in this.SelPawn.relations.FamilyByBlood)
             {
@@ -47,7 +47,7 @@ namespace FacialStuff
                 pawnRect.y += 24f;
             }
 
-            Rect rect2 = new Rect(rect.x, pawnRect.yMax + 15f, rect.width, rect.height - checkbox.yMax);
+            Rect rect2 = new(rect.x, pawnRect.yMax + 15f, rect.width, rect.height - checkbox.yMax);
 
             GUILayout.BeginArea(rect2);
             GUILayout.BeginVertical();
@@ -398,7 +398,7 @@ namespace FacialStuff
 
             if (GUILayout.Button("Mouth"))
             {
-                List<FloatMenuOption> list = new List<FloatMenuOption>();
+                List<FloatMenuOption> list = new();
                 foreach (MouthDef current in DefDatabase<MouthDef>.AllDefs)
                 {
                     MouthDef localOut = current;

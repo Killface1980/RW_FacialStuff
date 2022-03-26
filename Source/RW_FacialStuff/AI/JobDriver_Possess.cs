@@ -44,7 +44,7 @@ namespace FacialStuff.AI
 
         private Toil HaveFunWithDemons()
         {
-            Toil toil = new Toil();
+            Toil toil = new();
             this.pawn.GetCompFace(out CompFace compFace);
 
             toil.initAction = delegate
@@ -164,7 +164,7 @@ namespace FacialStuff.AI
                 this.pawn.jobs.curDriver.ReadyForNextToil();
             }
 
-            Toil toil = new Toil
+            Toil toil = new()
             {
                 initAction = Action,
                 tickAction = Action,
@@ -183,7 +183,7 @@ namespace FacialStuff.AI
                                             return;
                                         }
 
-                                        if (!(this.pawn.MentalState is MentalState_Possessed mentalState_InsultingSpree))
+                                        if (this.pawn.MentalState is not MentalState_Possessed mentalState_InsultingSpree)
                                         {
                                             return;
                                         }

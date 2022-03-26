@@ -5,40 +5,40 @@
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Anchor</defName>
     <label>Anchor</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>Anchor</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Balbo</defName>
     <label>Balbo</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>Balbo</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_ChinCurtain</defName>
     <label>Chin Curtain</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>ChinCurtain</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
-    </hairTags>
+    </styleTags>
     <drawMouth>true</drawMouth>
     <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
@@ -46,13 +46,13 @@
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_ChinPuff</defName>
     <label>Chin Puff</label>
-    <hairGender>MaleUsually</hairGender>
+    <styleGender>MaleUsually</styleGender>
     <forbiddenOnRace/>
     <texPath>ChinPuff</texPath>
-    <hairTags>
+    <styleTags>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
     <drawMouth>true</drawMouth>
     <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
@@ -60,27 +60,27 @@
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_DuckTail</defName>
     <label>Duck Tail</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>DuckTail</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>MaleOld</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_ElInsecto</defName>
     <label>El Insecto</label>
-    <hairGender>MaleUsually</hairGender>
+    <styleGender>MaleUsually</styleGender>
     <forbiddenOnRace/>
     <texPath>ElInsecto</texPath>
-    <hairTags>
+    <styleTags>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
     <drawMouth>true</drawMouth>
     <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
@@ -88,197 +88,197 @@
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_FranzJoseph</defName>
     <label>Franz Joseph</label>
-    <hairGender>MaleUsually</hairGender>
+    <styleGender>MaleUsually</styleGender>
     <forbiddenOnRace/>
     <texPath>FranzJoseph</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_FrenchFork</defName>
     <label>French Fork</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>FrenchFork</texPath>
-    <hairTags>
+    <styleTags>
       <li>Rural</li>
       <li>Punk</li>
       <li>MaleOld</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_FriendlyMuttonChops</defName>
     <label>Friendly Mutton Chops</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>FriendlyMuttonChops</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>MaleOld</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_FullBeard</defName>
     <label>Full Beard</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>FullBeard</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Garibaldi</defName>
     <label>Garibaldi</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>Garibaldi</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
       <li>MaleOld</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Goatee</defName>
     <label>Goatee</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>Goatee</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
-    </hairTags>
+    </styleTags>
     <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Hollywoodian</defName>
     <label>Hollywoodian</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>Hollywoodian</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Hulihee</defName>
     <label>Hulihee</label>
-    <hairGender>MaleUsually</hairGender>
+    <styleGender>MaleUsually</styleGender>
     <forbiddenOnRace/>
     <texPath>Hulihee</texPath>
-    <hairTags>
+    <styleTags>
       <li>Rural</li>
       <li>Punk</li>
       <li>MaleOld</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Imperial</defName>
     <label>Imperial</label>
-    <hairGender>MaleUsually</hairGender>
+    <styleGender>MaleUsually</styleGender>
     <forbiddenOnRace/>
     <texPath>Imperial</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>MaleOld</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_MuttonChops</defName>
     <label>Mutton Chops</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>MuttonChops</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
     <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_NapoleonIIIImperial</defName>
     <label>Napoleon III Imperial</label>
-    <hairGender>MaleUsually</hairGender>
+    <styleGender>MaleUsually</styleGender>
     <forbiddenOnRace/>
     <texPath>NapoleonIIIImperial</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_OldDutch</defName>
     <label>Old Dutch</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>OldDutch</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
     <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_PetiteGoatee</defName>
     <label>Petite Goatee</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>PetiteGoatee</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
-    </hairTags>
+    </styleTags>
     <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_SoulPatch</defName>
     <label>Soul Patch</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>SoulPatch</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
-    </hairTags>
+    </styleTags>
     <drawMouth>true</drawMouth>
     <beardType>LowerBeard</beardType>
   </FacialStuff.Defs.BeardDef>
@@ -286,28 +286,28 @@
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Souvarov</defName>
     <label>Souvarov</label>
-    <hairGender>MaleUsually</hairGender>
+    <styleGender>MaleUsually</styleGender>
     <forbiddenOnRace/>
     <texPath>Souvarov</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Stubble</defName>
     <label>Stubble</label>
-    <hairGender>MaleUsually</hairGender>
+    <styleGender>MaleUsually</styleGender>
     <forbiddenOnRace/>
     <texPath>Stubble</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
     <drawMouth>true</drawMouth>
     <beardType>None</beardType>
   </FacialStuff.Defs.BeardDef>
@@ -315,79 +315,79 @@
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_TheKlingon</defName>
     <label>The Klingon</label>
-    <hairGender>MaleUsually</hairGender>
+    <styleGender>MaleUsually</styleGender>
     <forbiddenOnRace/>
     <texPath>TheKlingon</texPath>
-    <hairTags>
+    <styleTags>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_TheSparrow</defName>
     <label>The Sparrow</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>TheSparrow</texPath>
-    <hairTags>
+    <styleTags>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_TheWinnfield</defName>
     <label>The Winnfield</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>TheWinnfield</texPath>
-    <hairTags>
+    <styleTags>
       <li>Rural</li>
       <li>Punk</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_TheZappa</defName>
     <label>The Zappa</label>
-    <hairGender>MaleUsually</hairGender>
+    <styleGender>MaleUsually</styleGender>
     <forbiddenOnRace/>
     <texPath>TheZappa</texPath>
-    <hairTags>
+    <styleTags>
       <li>Rural</li>
       <li>Punk</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_VanDyke</defName>
     <label>Van Dyke</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>VanDyke</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Shaved</defName>
     <label>0Shaved</label>
-    <hairGender>MaleUsually</hairGender>
+    <styleGender>MaleUsually</styleGender>
     <forbiddenOnRace/>
     <texPath>Shaved</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
     <drawMouth>true</drawMouth>
     <beardType>None</beardType>
   </FacialStuff.Defs.BeardDef>
@@ -395,60 +395,60 @@
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_CoolSteiner</defName>
     <label>Cool Steiner</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>CoolSteiner</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
       <li>MaleOld</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_CaptainTiebeard</defName>
     <label>Captain Tiebeard</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>CaptainTiebeard</texPath>
-    <hairTags>
+    <styleTags>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_Santa</defName>
     <label>Santa</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>Santa</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
       <li>MaleOld</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 
   <FacialStuff.Defs.BeardDef>
     <defName>Beard_TwinPeaks</defName>
     <label>Twin Peaks</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texPath>TwinPeaks</texPath>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
       <li>MaleOld</li>
-    </hairTags>
+    </styleTags>
     <beardType>FullBeard</beardType>
   </FacialStuff.Defs.BeardDef>
 </Defs>

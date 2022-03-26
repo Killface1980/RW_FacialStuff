@@ -24,10 +24,10 @@ namespace FacialStuff.AnimatorWindows
         public override void WindowUpdate()
         {
             base.WindowUpdate();
-            if (Pawn == null || this.CompAnim == null) { return; }
+            if (thePawn == null || this.CompAnim == null) { return; }
             CellRect _viewRect = Find.CameraDriver.CurrentViewRect;
 
-            if (_viewRect.Contains(Pawn.Position)) { return; }
+            if (_viewRect.Contains(thePawn.Position)) { return; }
 
             // Execute PostDraw if pawn is not on screen
             this.CompAnim.PostDraw();
@@ -36,7 +36,7 @@ namespace FacialStuff.AnimatorWindows
 
         #region Protected Fields
 
-        public static Pawn Pawn;
+        public static Pawn thePawn;
         protected readonly float SliderWidth = 420f;
         protected readonly float Spacing = 12f;
         protected CompBodyAnimator CompAnim;
@@ -46,22 +46,22 @@ namespace FacialStuff.AnimatorWindows
 
         #region Private Fields
 
-        [CanBeNull] protected static List<PawnKeyframe> PawnKeyframes;
-        private static readonly Color AddColor = new Color(0.25f, 1f, 0.25f);
+        [CanBeNull] [ItemCanBeNull] protected static List<PawnKeyframe> PawnKeyframes;
+        private static readonly Color AddColor = new(0.25f, 1f, 0.25f);
 
-        private static readonly Color RemoveColor = new Color(1f, 0.25f, 0.25f);
+        private static readonly Color RemoveColor = new(1f, 0.25f, 0.25f);
 
-        private static readonly Color SelectedColor = new Color(1f, 0.79f, 0.26f);
+        private static readonly Color SelectedColor = new(1f, 0.79f, 0.26f);
 
         private static float _animationPercent;
 
         private static float _animSlider;
 
         private static Rot4 _bodyRot = Rot4.East;
-
+        [CanBeNull]
         private static string _defPath;
 
-        private static Vector2 _portraitSize = new Vector2(320f, 320f);
+        private static Vector2 _portraitSize = new(320f, 320f);
         private readonly float _defaultHeight = 36f;
         private readonly float _widthLabel = 150f;
         private int _frameLabel = 1;
@@ -94,7 +94,7 @@ namespace FacialStuff.AnimatorWindows
 
         public static Rot4 HeadRot { get; private set; } = Rot4.East;
 
-        public override Vector2 InitialSize => new Vector2(UI.screenWidth, UI.screenHeight - 35f);
+        public override Vector2 InitialSize => new(UI.screenWidth, UI.screenHeight - 35f);
 
         #endregion Public Properties
 
@@ -144,7 +144,7 @@ namespace FacialStuff.AnimatorWindows
                 if (compAnimBodyAnim != null && compAnimBodyAnim.thingTarget.NullOrEmpty())
                 {
                     // ReSharper disable once PossibleNullReferenceException
-                    this.CompAnim.BodyAnim.thingTarget = Pawn.def.ToString();
+                    this.CompAnim.BodyAnim.thingTarget = thePawn.def.ToString();
                     this.CompAnim.BodyAnim.bodyDrawers = this.CompAnim.Props.bodyDrawers;
                     this.CompAnim.BodyAnim.handType = this.CompAnim.Props.handType;
                     //this.CompAnim.BodyAnim.footType = this.CompAnim.Props.footType;
@@ -157,7 +157,7 @@ namespace FacialStuff.AnimatorWindows
         }
 
         [CanBeNull]
-        protected PawnKeyframe CurrentFrame => PawnKeyframes?[CurrentFrameInt];
+        protected static PawnKeyframe CurrentFrame => PawnKeyframes?[CurrentFrameInt];
 
         #endregion Protected Properties
 
@@ -178,7 +178,7 @@ namespace FacialStuff.AnimatorWindows
             basics.width -= 36f;
             basics.xMin += 36f;
 
-            Listing_Standard listing = new Listing_Standard();
+            Listing_Standard listing = new();
             listing.Begin(basics);
             this.DoBasicSettingsMenu(listing);
             listing.End();
@@ -189,7 +189,7 @@ namespace FacialStuff.AnimatorWindows
             bodySetting.xMin += 36f;
 
             Rect imageRect =
-            new Rect(topEditor.ContractedBy(12f))
+            new(topEditor.ContractedBy(12f))
             {
                 xMin = basics.xMax + 2 * this.Spacing,
                 xMax = bodySetting.x - 2 * this.Spacing
@@ -257,24 +257,24 @@ namespace FacialStuff.AnimatorWindows
                 {
                     if (CurrentFrameInt == 0)
                     {
-                        SynchronizeFrames(this.CurrentFrame, PawnKeyframes[LastInd]);
+                        SynchronizeFrames(CurrentFrame, PawnKeyframes[LastInd]);
                     }
 
                     if (CurrentFrameInt == LastInd)
                     {
-                        SynchronizeFrames(this.CurrentFrame, PawnKeyframes[0]);
+                        SynchronizeFrames(CurrentFrame, PawnKeyframes[0]);
                     }
                 }
             }
 
             // HarmonyPatch_PawnRenderer.Prefix(this.pawn.Drawer.renderer, Vector3.zero, Rot4.East.AsQuat, true, Rot4.East, Rot4.East, RotDrawMode.Fresh, false, false);
-            base.DoWindowContents(inRect);
+            //base.DoWindowContents(inRect);
         }
 
         public override void PostClose()
         {
             this.CompAnim = null;
-            Pawn = null;
+            thePawn = null;
             base.PostClose();
         }
 
@@ -282,7 +282,7 @@ namespace FacialStuff.AnimatorWindows
         {
             base.PreOpen();
             this.FindRandomPawn();
-            PortraitsCache.SetDirty(Pawn);
+            PortraitsCache.SetDirty(thePawn);
         }
         protected virtual void SetKeyframes()
         {
@@ -298,7 +298,7 @@ namespace FacialStuff.AnimatorWindows
         {
             get
             {
-                PawnKeyframe currentFrame = this.CurrentFrame;
+                PawnKeyframe currentFrame = CurrentFrame;
                 if (currentFrame != null)
                 {
                     return currentFrame.Shift;
@@ -309,21 +309,21 @@ namespace FacialStuff.AnimatorWindows
 
             set
             {
-                if (this.CurrentFrame == null)
+                if (CurrentFrame == null)
                 {
                     return;
                 }
 
                 if (Math.Abs(value) < 0.05f)
                 {
-                    this.CurrentFrame.Status = KeyStatus.Automatic;
+                    CurrentFrame.Status = KeyStatus.Automatic;
                 }
                 else
                 {
-                    this.CurrentFrame.Status = KeyStatus.Manual;
+                    CurrentFrame.Status = KeyStatus.Manual;
                 }
 
-                this.CurrentFrame.Shift = value;
+                CurrentFrame.Shift = value;
                 this.BuildEditorCycle();
             }
         }
@@ -334,14 +334,14 @@ namespace FacialStuff.AnimatorWindows
 
         protected virtual void DoBasicSettingsMenu(Listing_Standard listing)
         {
-            string label = Pawn.LabelCap + " - " + this.Label + " - " + this.BodyAnimDef.LabelCap;
+            string label = thePawn.LabelCap + " - " + this.Label + " - " + this.BodyAnimDef.LabelCap;
 
             listing.Label(label);
 
-            if (listing.ButtonText(Pawn.LabelCap))
+            if (listing.ButtonText(thePawn.LabelCap))
             {
-                List<FloatMenuOption> list = new List<FloatMenuOption>();
-                foreach (Pawn current in from bsm in Pawn.Map.mapPawns.AllPawnsSpawned
+                List<FloatMenuOption> list = new();
+                foreach (Pawn current in from bsm in thePawn.Map.mapPawns.AllPawnsSpawned
                                          where bsm.HasCompAnimator()
                                          orderby bsm.LabelCap
                                          select bsm)
@@ -368,7 +368,7 @@ namespace FacialStuff.AnimatorWindows
 
             if (listing.ButtonText("Add 1 keyframe: "))
             {
-                List<FloatMenuOption> list = new List<FloatMenuOption>();
+                List<FloatMenuOption> list = new();
 
                 if (PawnKeyframes != null)
                 {
@@ -383,7 +383,7 @@ namespace FacialStuff.AnimatorWindows
                                                          PawnKeyframes.Insert(keyframe.KeyIndex + 1,
                                                                               new PawnKeyframe());
 
-                                                         this.ReIndexKeyframes();
+                                                         ReIndexKeyframes();
                                                      }));
                     }
                 }
@@ -396,7 +396,7 @@ namespace FacialStuff.AnimatorWindows
                 if (listing.ButtonText("Remove current keyframe " + (CurrentFrameInt + 1)))
                 {
                     PawnKeyframes?.RemoveAt(CurrentFrameInt);
-                    this.ReIndexKeyframes();
+                    ReIndexKeyframes();
                 }
             }
 
@@ -423,17 +423,17 @@ namespace FacialStuff.AnimatorWindows
             Thing selectedThing = Find.Selector.SingleSelectedThing;
             if (selectedThing != null && selectedThing is Pawn pawn && pawn.HasCompAnimator())
             {
-                Pawn = pawn;
+                thePawn = pawn;
             }
             else
             {
-                Pawn = Find.AnyPlayerHomeMap.PlayerPawnsForStoryteller.FirstOrDefault(x => x.HasCompAnimator());
+                thePawn = Find.AnyPlayerHomeMap.PlayerPawnsForStoryteller.FirstOrDefault(x => x.HasCompAnimator());
             }
 
-            Pawn?.GetCompAnim(out this.CompAnim);
+            thePawn?.GetCompAnim(out this.CompAnim);
         }
 
-        protected void ReIndexKeyframes()
+        protected static void ReIndexKeyframes()
         {
             if (PawnKeyframes == null)
             {
@@ -454,8 +454,8 @@ namespace FacialStuff.AnimatorWindows
         string label,
         List<int> framesAt)
         {
-            Rect sliderRect = new Rect(editorRect.x, editorRect.y, this.SliderWidth, this._defaultHeight);
-            Rect buttonRect = new Rect(
+            Rect sliderRect = new(editorRect.x, editorRect.y, this.SliderWidth, this._defaultHeight);
+            Rect buttonRect = new(
                                        sliderRect.xMax + this.Spacing,
                                        editorRect.y,
                                        editorRect.width - this.SliderWidth - this.Spacing, this._defaultHeight);
@@ -507,8 +507,8 @@ namespace FacialStuff.AnimatorWindows
 
         protected void SetAngleShoulder(ref float angle, ref Rect editorRect, string label)
         {
-            Rect labelRect = new Rect(editorRect.x, editorRect.y, this._widthLabel, this._defaultHeight);
-            Rect sliderRect = new Rect(labelRect.xMax, editorRect.y, this.SliderWidth, this._defaultHeight);
+            Rect labelRect = new(editorRect.x, editorRect.y, this._widthLabel, this._defaultHeight);
+            Rect sliderRect = new(labelRect.xMax, editorRect.y, this.SliderWidth, this._defaultHeight);
 
             Widgets.Label(labelRect, label + " " + angle);
             angle = Mathf.FloorToInt(Widgets.HorizontalSlider(sliderRect, angle, 0, 180f));
@@ -519,7 +519,7 @@ namespace FacialStuff.AnimatorWindows
         protected virtual void SetCurrentCycle()
         {
         }
-        protected void SetNewVector(Rot4 rotation, Vector3 newOffset, List<Vector3> offset, bool front)
+        protected static void SetNewVector(Rot4 rotation, Vector3 newOffset, List<Vector3> offset, bool front)
         {
             newOffset.y = (front ? 1 : -1) * 0.025f;
             if (rotation == Rot4.West)
@@ -558,8 +558,12 @@ namespace FacialStuff.AnimatorWindows
         string label,
         List<int> framesAt, float sliderFactor = 1f)
         {
-            Rect sliderRect = new Rect(editorRect.x, editorRect.y, this.SliderWidth, this._defaultHeight);
-            Rect buttonRect = new Rect(
+            if (thisFrame.Points.Count == 0)
+            {
+                return;
+            }
+            Rect sliderRect = new(editorRect.x, editorRect.y, this.SliderWidth, this._defaultHeight);
+            Rect buttonRect = new(
                                        sliderRect.xMax + this.Spacing,
                                        editorRect.y,
                                        editorRect.width - this.SliderWidth - this.Spacing, this._defaultHeight);
@@ -689,35 +693,35 @@ namespace FacialStuff.AnimatorWindows
         private void AddPortraitWidget(float inRectWidth)
         {
             // Portrait
-            Rect rect = new Rect(0, 0, inRectWidth, inRectWidth);
+            Rect rect = new(0, 0, inRectWidth, inRectWidth);
 
             if (false)
             {
 
-            var skeleton = new FS_Skeleton {joints = new List<FS_Joint>()};
-            FS_Joint head = new FS_Joint {color = Color.red};
-            FS_Joint neck = new FS_Joint {color = Color.cyan};
-            FS_Joint hipCenter = new FS_Joint { color = Color.cyan };
+                FS_Skeleton skeleton = new FS_Skeleton {joints = new List<FS_Joint>()};
+            FS_Joint head = new() { color = Color.red};
+            FS_Joint neck = new() { color = Color.cyan};
+            FS_Joint hipCenter = new() { color = Color.cyan };
 
-            FS_Joint leftShoulder = new FS_Joint();
-            FS_Joint leftElbow = new FS_Joint();
-            FS_Joint leftWrist = new FS_Joint();
-            FS_Joint leftHand = new FS_Joint();
+            FS_Joint leftShoulder = new();
+            FS_Joint leftElbow = new();
+            FS_Joint leftWrist = new();
+            FS_Joint leftHand = new();
 
-            FS_Joint rightShoulder = new FS_Joint();
-            FS_Joint rightElbow = new FS_Joint();
-            FS_Joint rightWrist = new FS_Joint();
-            FS_Joint rightHand = new FS_Joint();
+            FS_Joint rightShoulder = new();
+            FS_Joint rightElbow = new();
+            FS_Joint rightWrist = new();
+            FS_Joint rightHand = new();
 
-            FS_Joint leftHip = new FS_Joint();
-            FS_Joint leftKnee = new FS_Joint();
-            FS_Joint leftAnkle = new FS_Joint();
-            FS_Joint leftFoot = new FS_Joint();
+            FS_Joint leftHip = new();
+            FS_Joint leftKnee = new();
+            FS_Joint leftAnkle = new();
+            FS_Joint leftFoot = new();
       
-            FS_Joint rightHip = new FS_Joint();
-            FS_Joint rightKnee = new FS_Joint();
-            FS_Joint rightAnkle = new FS_Joint();
-            FS_Joint rightFoot = new FS_Joint();
+            FS_Joint rightHip = new();
+            FS_Joint rightKnee = new();
+            FS_Joint rightAnkle = new();
+            FS_Joint rightFoot = new();
 
 
             skeleton.joints.Add(head);
@@ -726,19 +730,19 @@ namespace FacialStuff.AnimatorWindows
             this.DrawBackground(rect);
 
             // Draw the pawn's portrait
-            Vector2 size = new Vector2(rect.height / 1.4f, rect.height); // 128x180
+            Vector2 size = new(rect.height / 1.4f, rect.height); // 128x180
 
-            Rect position = new Rect(
+            Rect position = new(
                                      rect.width * 0.5f - size.x * 0.5f,
                                      rect.height * 0.5f - size.y * 0.5f - 10f,
                                      size.x,
                                      size.y);
 
-            Vector3 cameraOffset = new Vector3(0f, 0f, 0.1f);
+            Vector3 cameraOffset = new(0f, 0f, 0.1f);
             //   RenderTexture image = PortraitsCache.Get(Pawn, size, cameraOffset, this.Zoom);
             {
-                RenderTexture renderTexture = new RenderTexture((int)size.x, (int)size.y, 24);
-                Find.PortraitRenderer.RenderPortrait(Pawn, renderTexture, cameraOffset, this.Zoom);
+                RenderTexture renderTexture = new((int)size.x, (int)size.y, 24);
+                Find.PawnCacheRenderer.RenderPawn(thePawn, renderTexture, cameraOffset, this.Zoom, 0, _bodyRot);
                 GUI.DrawTexture(position, renderTexture);
                 renderTexture.Release();
             }
@@ -749,7 +753,7 @@ namespace FacialStuff.AnimatorWindows
         private void DrawRotatorBody(float curY, float width)
         {
             float buttWidth = (width - 4 * this.Spacing) / 6;
-            Rect butt = new Rect(0f, curY, buttWidth, 32f);
+            Rect butt = new(0f, curY, buttWidth, 32f);
 
             Rot4 rotation = Rot4.East;
 
@@ -789,7 +793,7 @@ namespace FacialStuff.AnimatorWindows
         private void DrawRotatorHead(float curY, float width)
         {
             float buttWidth = (width - 4 * this.Spacing) / 6;
-            Rect butt = new Rect(0f, curY, buttWidth, 32f);
+            Rect butt = new(0f, curY, buttWidth, 32f);
 
             Rot4 rotation = Rot4.East;
 
@@ -832,7 +836,7 @@ namespace FacialStuff.AnimatorWindows
             {
                 return;
             }
-            Rect buttonRect = new Rect(0f, 48f, (width - (count - 1) * this.Spacing) / count, 32f);
+            Rect buttonRect = new(0f, 48f, (width - (count - 1) * this.Spacing) / count, 32f);
             foreach (PawnKeyframe keyframe in PawnKeyframes)
             {
                 int keyIndex = keyframe.KeyIndex;
@@ -857,7 +861,7 @@ namespace FacialStuff.AnimatorWindows
         }
         private void DrawTimelineSlider(int count, float width)
         {
-            Rect timeline = new Rect(0f, 0f, width, 40f);
+            Rect timeline = new(0f, 0f, width, 40f);
             string label = "Current frame: " + this._frameLabel;
             if (this.Loop)
             {

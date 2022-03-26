@@ -173,40 +173,33 @@ namespace FacialStuff.Tweener
         where T : struct
     {
         private readonly LerpFunc<T> _lerpFunc;
-
-        private float _currentTime;
-        private float _duration;
         private ScaleFunc _scaleFunc;
-        private TweenState _state;
-
-        private T _start;
-        private T _end;
         private T _value;
 
         /// <summary>
         /// Gets the current time of the tween.
         /// </summary>
-        public float CurrentTime => this._currentTime;
+        public float CurrentTime { get; private set; }
 
         /// <summary>
         /// Gets the duration of the tween.
         /// </summary>
-        public float Duration => this._duration;
+        public float Duration { get; private set; }
 
         /// <summary>
         /// Gets the current state of the tween.
         /// </summary>
-        public TweenState State => this._state;
+        public TweenState State { get; private set; }
 
         /// <summary>
         /// Gets the starting value of the tween.
         /// </summary>
-        public T StartValue => this._start;
+        public T StartValue { get; private set; }
 
         /// <summary>
         /// Gets the ending value of the tween.
         /// </summary>
-        public T EndValue => this._end;
+        public T EndValue { get; private set; }
 
         /// <summary>
         /// Gets the current value of the tween.
@@ -224,7 +217,7 @@ namespace FacialStuff.Tweener
         public Tween(LerpFunc<T> lerpFunc)
         {
             this._lerpFunc = lerpFunc;
-            this._state = TweenState.Stopped;
+            this.State = TweenState.Stopped;
         }
 
         /// <summary>
@@ -241,13 +234,13 @@ namespace FacialStuff.Tweener
                 throw new ArgumentException("duration must be greater than 0");
             }
 
-            this._currentTime = 0;
-            this._duration = duration;
+            this.CurrentTime = 0;
+            this.Duration = duration;
             this._scaleFunc = scaleFunc ?? throw new ArgumentNullException("scaleFunc");
-            this._state = TweenState.Running;
+            this.State = TweenState.Running;
 
-            this._start = start;
-            this._end = end;
+            this.StartValue = start;
+            this.EndValue = end;
 
             this.UpdateValue();
         }
@@ -257,9 +250,9 @@ namespace FacialStuff.Tweener
         /// </summary>
         public void Pause()
         {
-            if (this._state == TweenState.Running)
+            if (this.State == TweenState.Running)
             {
-                this._state = TweenState.Paused;
+                this.State = TweenState.Paused;
             }
         }
 
@@ -268,9 +261,9 @@ namespace FacialStuff.Tweener
         /// </summary>
         public void Resume()
         {
-            if (this._state == TweenState.Paused)
+            if (this.State == TweenState.Paused)
             {
-                this._state = TweenState.Running;
+                this.State = TweenState.Running;
             }
         }
 
@@ -280,11 +273,11 @@ namespace FacialStuff.Tweener
         /// <param name="stopBehavior">The behavior to use to handle the stop.</param>
         public void Stop(StopBehavior stopBehavior)
         {
-            this._state = TweenState.Stopped;
+            this.State = TweenState.Stopped;
 
             if (stopBehavior == StopBehavior.ForceComplete)
             {
-                this._currentTime = this._duration;
+                this.CurrentTime = this.Duration;
                 this.UpdateValue();
             }
         }
@@ -295,16 +288,16 @@ namespace FacialStuff.Tweener
         /// <param name="elapsedTime">The elapsed time to add to the tween.</param>
         public void Update(float elapsedTime)
         {
-            if (this._state != TweenState.Running)
+            if (this.State != TweenState.Running)
             {
                 return;
             }
 
-            this._currentTime += elapsedTime;
-            if (this._currentTime >= this._duration)
+            this.CurrentTime += elapsedTime;
+            if (this.CurrentTime >= this.Duration)
             {
-                this._currentTime = this._duration;
-                this._state = TweenState.Stopped;
+                this.CurrentTime = this.Duration;
+                this.State = TweenState.Stopped;
             }
 
             this.UpdateValue();
@@ -316,7 +309,7 @@ namespace FacialStuff.Tweener
         /// </summary>
         private void UpdateValue()
         {
-            this._value = this._lerpFunc(this._start, this._end, this._scaleFunc(this._currentTime / this._duration));
+            this._value = this._lerpFunc(this.StartValue, this.EndValue, this._scaleFunc(this.CurrentTime / this.Duration));
         }
     }
 

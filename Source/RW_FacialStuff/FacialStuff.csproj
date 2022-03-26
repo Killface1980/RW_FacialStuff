@@ -19,7 +19,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\1.1\Assemblies\</OutputPath>
+    <OutputPath>..\..\1.3\Assemblies\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -41,16 +41,12 @@
     <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.0.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lib.Harmony.2.0.0.5\lib\net472\0Harmony.dll</HintPath>
+    <Reference Include="0Harmony, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.2.1.1\lib\net472\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="EdBPrepareCarefully">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\735106432\1.1\Assemblies\EdBPrepareCarefully.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -98,14 +94,15 @@
     <None Include="Components\CompHumanFace.cs" />
     <None Include="Controller_Animator.cs" />
     <None Include="Components\Class1.cs" />
+    <None Include="___EXCLUDED.cs" />
     <Compile Include="Components\Skeletoon\CompPropertiesSkeleton.cs" />
     <Compile Include="Components\Skeletoon\FS_Skeleton.cs" />
     <Compile Include="Components\Skeletoon\CompSkeleton.cs" />
     <None Include="DefOfs\ExtremityDefOf.cs" />
-    <Compile Include="DefOfs\EarDefOf.cs" />
+    <None Include="DefOfs\EarDefOf.cs" />
     <Compile Include="DefOfs\EyeDefOf.cs" />
     <None Include="Defs\ExtremityDef.cs" />
-    <Compile Include="Defs\EarDef.cs" />
+    <None Include="Defs\EarDef.cs" />
     <Compile Include="Enums\HeadCoverage.cs" />
     <None Include="GraphicsFS\MeshMakerPlanesFS.cs" />
     <None Include="GraphicsFS\Graphic_Multi_Four.cs" />
@@ -116,6 +113,7 @@
     <None Include="Harmony\Optional\Jec\Harmony_JecsTools.cs" />
     <None Include="Harmony\Optional\Jec\Harmony_Lightsabers.cs" />
     <None Include="Harmony\Optional\Werewolf_Patches.cs" />
+    <None Include="Harmony\HarmonyTranspiler_RenderPawnInternal.cs" />
     <Compile Include="Tweener\TinyTween.cs" />
     <Compile Include="Components\CompLoaderTargets.cs" />
     <Compile Include="Defs\AnimationTargetDef.cs" />
@@ -303,10 +301,7 @@
       <Link>Defs\xml\Face\BrowDef_Male.xml</Link>
     </Content>
     <Content Include="..\..\Defs\EarDefs\EarDef_Default.xml">
-      <Link>Defs\EarDef_Default.xml</Link>
-    </Content>
-    <Content Include="..\..\Defs\ExtremityDefs\ExtremityDef_Default.xml">
-      <Link>Defs\xml\ExtremityDef_Default.xml</Link>
+      <Link>Defs\xml\Face\EarDef_Default.xml</Link>
     </Content>
     <Content Include="..\..\Defs\EyeDefs\EyeDef_Basic.xml">
       <Link>Defs\xml\Face\EyeDef_Basic.xml</Link>

@@ -11,13 +11,13 @@ namespace FacialStuff.Genetics
     {
         public static readonly List<Color> ArtificialHairColors;
 
-        public static readonly FloatRange GreyRange = new FloatRange(0f, 0.95f);
+        public static readonly FloatRange GreyRange = new(0f, 0.95f);
 
         private static readonly Gradient GradientEuMelanin;
 
         private static readonly Gradient GradientPheoMelanin;
 
-        private static readonly Color GrayHair = new Color(0.9f, 0.9f, 0.9f);
+        private static readonly Color GrayHair = new(0.9f, 0.9f, 0.9f);
 
         static HairMelanin()
         {
@@ -74,7 +74,7 @@ namespace FacialStuff.Genetics
 
         public static Color ShuffledBeardColor(Color color)
         {
-            Color shuffle = new Color(Rand.Range(0.9f, 1.1f), Rand.Range(0.9f, 1.1f), Rand.Range(0.9f, 1.1f));
+            Color shuffle = new(Rand.Range(0.9f, 1.1f), Rand.Range(0.9f, 1.1f), Rand.Range(0.9f, 1.1f));
 
             return color * shuffle;
         }
@@ -140,12 +140,15 @@ namespace FacialStuff.Genetics
                     limit *= pawn.gender == Gender.Female ? 0.7f : 0.9f;
 
                     float       techMod = (faction.def.techLevel - TechLevel.Industrial) / 5f;
-                    SimpleCurve ageCure = new SimpleCurve {{0.1f, 1f}, {0.25f, 1f - techMod}, {0.6f, 0.9f}};
-                    if (pawn.ageTracker != null) limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
+                    SimpleCurve ageCure = new() { {0.1f, 1f}, {0.25f, 1f - techMod}, {0.6f, 0.9f}};
+                    if (pawn.ageTracker != null)
+                    {
+                        limit *= ageCure.Evaluate(pawn.ageTracker.AgeBiologicalYears / 100f);
+                    }
                 }
             }
 
-            // if (pawn.story.hairDef.hairTags.Contains("Punk"))
+            // if (pawn.story.hairDef.styleTags.Contains("Punk"))
             // {
             // limit *= 0.2f;
             // }
@@ -169,14 +172,14 @@ namespace FacialStuff.Genetics
                 beardColor = Color.Lerp(color2, GrayHair, hair.Greyness * Rand.Value);
             }
 
-            HairDNA dna = new HairDNA {HairColorRequest = hair, HairColor = hairColor, BeardColor = beardColor};
+            HairDNA dna = new() { HairColorRequest = hair, HairColor = hairColor, BeardColor = beardColor};
 
             return dna;
         }
 
         public static Color GetCurrentHairColor(this PawnFace face)
         {
-            HairColorRequest colorRequest = new HairColorRequest(face.PheoMelanin, face.EuMelanin, face.Greyness);
+            HairColorRequest colorRequest = new(face.PheoMelanin, face.EuMelanin, face.Greyness);
 
             return GetHairColor(colorRequest);
         }

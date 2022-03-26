@@ -6,7 +6,6 @@ using HarmonyLib;
 using JetBrains.Annotations;
 using System;
 using System.Reflection.Emit;
-using FacialStuff.Defs;
 using Verse.AI;
 
 namespace FacialStuff.Harmony
@@ -19,10 +18,15 @@ namespace FacialStuff.Harmony
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
+    using FacialStuff.Defs;
+
     using UnityEngine;
     using Utilities;
     using Verse;
     using Verse.Sound;
+
+    using BeardDef = RimWorld.BeardDef;
 
     [StaticConstructorOnStartup]
     public static class HarmonyPatchesFS
@@ -33,44 +37,40 @@ namespace FacialStuff.Harmony
 
         static HarmonyPatchesFS()
         {
-            HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("rimworld.facialstuff.mod");
+            HarmonyLib.Harmony harmony = new("rimworld.facialstuff.mod");
             // HarmonyLib.Harmony.DEBUG = true;
             harmony.PatchAll(Assembly.GetExecutingAssembly());
-
 
                harmony.Patch(
                              AccessTools.Method(typeof(Page_ConfigureStartingPawns), "DrawPortraitArea"),
                              null,
                              new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(AddFaceEditButton)));
-            
                harmony.Patch(
                              AccessTools.Method(typeof(PawnGraphicSet), nameof(PawnGraphicSet.ResolveAllGraphics)),
                              null,
                              new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(ResolveAllGraphics_Postfix)));
-            
-               harmony.Patch(
+
+            harmony.Patch(
                              AccessTools.Method(typeof(PawnGraphicSet), nameof(PawnGraphicSet.ResolveApparelGraphics)),
                              null,
                              new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(ResolveApparelGraphics_Postfix)));
-            
-               harmony.Patch(
+            harmony.Patch(
                              AccessTools.Method(typeof(PawnRenderer), nameof(PawnRenderer.DrawEquipmentAiming)),
                              new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DrawEquipmentAiming_Prefix)),
                              null,
                              new HarmonyMethod(typeof(HarmonyPatchesFS),
                                                nameof(DrawEquipmentAiming_Transpiler)));
-            
-               harmony.Patch(
-                             AccessTools.Method(typeof(PawnRenderer), nameof(PawnRenderer.RenderPawnAt),
-                                                new[] { typeof(Vector3), typeof(RotDrawMode), typeof(bool), typeof(bool) }),
-            
+
+            harmony.Patch(
+                             AccessTools.Method(typeof(PawnRenderer), "DrawCarriedThing",
+                                                new[] { typeof(Vector3) }),
                              // new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(HarmonyPatchesFS.RenderPawnAt)),
                              null,
                              null,
-                             new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(RenderPawnAt_Transpiler))
+                             new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DrawCarriedThing_Transpiler))
                             );
-            
-               harmony.Patch(
+
+            harmony.Patch(
                              AccessTools.Method(typeof(HediffSet), nameof(HediffSet.DirtyCache)),
                              null,
                              new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DirtyCache_Postfix)));
@@ -82,43 +82,43 @@ namespace FacialStuff.Harmony
                              new HarmonyMethod(
                                                typeof(GraphicDatabaseHeadRecordsModded),
                                                nameof(GraphicDatabaseHeadRecordsModded.Reset)));
-            
-               harmony.Patch(
-                             AccessTools.Method(typeof(PawnHairChooser), nameof(PawnHairChooser.RandomHairDefFor)),
-                             new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(RandomHairDefFor_PreFix)),
-                             null);
-            
-               harmony.Patch(
+               /*
+                  harmony.Patch(
+                                AccessTools.Method(typeof(PawnStyleItemChooser), nameof(PawnStyleItemChooser.RandomHairFor)),
+                                new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(RandomHairDefFor_PreFix)),
+                                null);
+               */
+            harmony.Patch(
                              AccessTools.Method(typeof(PawnSkinColors), "GetSkinDataIndexOfMelanin"),
                              new HarmonyMethod(
                                                typeof(PawnSkinColors_FS),
                                                nameof(PawnSkinColors_FS.GetSkinDataIndexOfMelanin_Prefix)),
                              null);
-            
-               harmony.Patch(
+
+            harmony.Patch(
                              AccessTools.Method(typeof(PawnSkinColors), nameof(PawnSkinColors.GetSkinColor)),
                              new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.GetSkinColor_Prefix)),
                              null);
-            
-               harmony.Patch(
+
+            harmony.Patch(
                              AccessTools.Method(typeof(PawnSkinColors), nameof(PawnSkinColors.RandomMelanin)),
                              new HarmonyMethod(typeof(PawnSkinColors_FS), nameof(PawnSkinColors_FS.RandomMelanin_Prefix)),
                              null);
-            
-               harmony.Patch(
+
+            harmony.Patch(
                              AccessTools.Method(typeof(PawnSkinColors),
                                                 nameof(PawnSkinColors.GetMelaninCommonalityFactor)),
                              new HarmonyMethod(
                                                typeof(PawnSkinColors_FS),
                                                nameof(PawnSkinColors_FS.GetMelaninCommonalityFactor_Prefix)),
                              null);
-            
-               harmony.Patch(
+
+            harmony.Patch(
                              AccessTools.Method(typeof(Pawn_InteractionsTracker),
                                                 nameof(Pawn_InteractionsTracker.TryInteractWith)),
                              null,
                              new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(TryInteractWith_Postfix)));
-            
+
 
             Log.Message(
                         "Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count()
@@ -152,26 +152,30 @@ namespace FacialStuff.Harmony
             for (int i = 0; i < beardyHairList.Count(); i++)
             {
                 HairDef beardy = beardyHairList[i];
-                if (beardy.label.Contains("shaven")) continue;
-                BeardDef beardDef = new BeardDef 
+                if (beardy.label.Contains("shaven"))
+                {
+                    continue;
+                }
+
+                Defs.BeardDef beardDef = new()
                 {
                     defName = beardy.defName,
                     label = "_VHE_" + beardy.label,
-                    hairGender = beardy.hairGender,
+                    styleGender = beardy.styleGender,
                     texPath = beardy.texPath.Replace("Things/Pawn/Humanlike/Beards/", ""),
-                    hairTags = beardy.hairTags,
+                    styleTags = beardy.styleTags,
                     beardType = BeardType.FullBeard
                 };
                 if (beardDef.label.Contains("stubble") || beardDef.label.Contains("goatee") || beardDef.label.Contains("lincoln"))
                 {
                     beardDef.drawMouth = true;
                 }
-                DefDatabase<BeardDef>.Add(beardDef);
+                DefDatabase<Defs.BeardDef>.Add(beardDef);
 
             }
-            Dialog_FaceStyling.FullBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType == BeardType.FullBeard)
+            Dialog_FaceStyling.FullBeardDefs = DefDatabase<Defs.BeardDef>.AllDefsListForReading.Where(x => x.beardType == BeardType.FullBeard)
                 .ToList();
-            Dialog_FaceStyling.LowerBeardDefs = DefDatabase<BeardDef>.AllDefsListForReading.Where(x => x.beardType != BeardType.FullBeard)
+            Dialog_FaceStyling.LowerBeardDefs = DefDatabase<Defs.BeardDef>.AllDefsListForReading.Where(x => x.beardType != BeardType.FullBeard)
                 .ToList();
             Dialog_FaceStyling.MoustacheDefs = DefDatabase<MoustacheDef>.AllDefsListForReading;
 
@@ -192,7 +196,7 @@ namespace FacialStuff.Harmony
 
         #region Public Fields
 
-        public static List<Thing> PlantMoved = new List<Thing>();
+        public static List<Thing> PlantMoved = new();
 
         public static bool Plants;
 
@@ -204,9 +208,9 @@ namespace FacialStuff.Harmony
 
         private static readonly FieldInfo pawnField = AccessTools.Field(typeof(Pawn_EquipmentTracker), "pawn");
 
-        private static Graphic_Shadow _shadowGraphic;
-        private static float angleStanding = 143f;
-        private static float angleStandingFlipped = 217f;
+        private static readonly Graphic_Shadow _shadowGraphic;
+        private static readonly float angleStanding = 143f;
+        private static readonly float angleStandingFlipped = 217f;
 
         public static bool AnimatorIsOpen()
         {
@@ -215,7 +219,7 @@ namespace FacialStuff.Harmony
 
         public static bool IsAnimated_Prefix(Pawn pawn, ref bool __result)
         {
-            if (AnimatorIsOpen() && MainTabWindow_WalkAnimator.Pawn == pawn)
+            if (AnimatorIsOpen() && MainTabWindow_BaseAnimator.thePawn == pawn)
             {
                 __result = true;
                 return false;
@@ -274,14 +278,12 @@ namespace FacialStuff.Harmony
             typeof(Page_ConfigureStartingPawns).GetField("curPawn", BindingFlags.NonPublic | BindingFlags.Instance);
 
             Pawn pawn = (Pawn)PawnFieldInfo?.GetValue(__instance);
-
-            if (!pawn.GetCompFace(out CompFace compFace))
+            if (!pawn.GetCompFace(out _))
             {
                 return;
             }
 
-            // Shitty Transpiler, doin' it on my own
-            Rect rect2 = new Rect(rect.x + 500f, rect.y, 25f, 25f);
+            Rect rect2 = new(rect.x + 500f, rect.y, 25f, 25f);
             if (rect2.Contains(Event.current.mousePosition))
             {
                 GUI.color = Color.cyan;
@@ -353,7 +355,7 @@ namespace FacialStuff.Harmony
                 return;
             }
 
-            if (!pawn.GetCompFace(out CompFace compFace))
+            if (!pawn.GetCompFace(out _))
             {
                 return;
             }
@@ -399,8 +401,6 @@ namespace FacialStuff.Harmony
                 return;
             }
 
-            // total weapon angle change during animation sequence
-            int totalSwingAngle = 0;
             Vector3 currentOffset = animator.Jitterer.CurrentOffset;
 
             float jitterMax = animator.JitterMax;
@@ -415,7 +415,8 @@ namespace FacialStuff.Harmony
             }
             else if (damageDef == DamageDefOf.Blunt || damageDef == DamageDefOf.Cut)
             {
-                totalSwingAngle = 120;
+                // total weapon angle change during animation sequence
+                int totalSwingAngle = 120;
                 weaponPosition += currentOffset + new Vector3(0, 0, Mathf.Sin(magnitude * Mathf.PI / jitterMax) / 10);
                 weaponAngle += flipped
                                ? -animationPhasePercent * totalSwingAngle
@@ -458,7 +459,7 @@ namespace FacialStuff.Harmony
             //      sizeMod = 1f;
             //  }
 
-            if (Find.TickManager.TicksGame == animator.LastPosUpdate[(int)equipment] || AnimatorIsOpen() && MainTabWindow_WalkAnimator.Pawn != pawn)
+            if (Find.TickManager.TicksGame == animator.LastPosUpdate[(int)equipment] || AnimatorIsOpen() && MainTabWindow_BaseAnimator.thePawn != pawn)
             {
                 drawLoc = animator.LastPosition[(int)equipment];
                 weaponAngle = animator.LastWeaponAngle;
@@ -653,7 +654,7 @@ namespace FacialStuff.Harmony
             Find.WindowStack.Add(new Dialog_FaceStyling(face));
         }
 
-        public static bool RandomHairDefFor_PreFix(Pawn pawn, FactionDef factionType, ref HairDef __result)
+        public static bool RandomHairDefFor_PreFix(Pawn pawn, ref HairDef __result)
         {
             //  Log.Message("1 - " + pawn);
             if (!pawn.GetCompFace(out CompFace compFace))
@@ -668,26 +669,26 @@ namespace FacialStuff.Harmony
                 return true;
             }
 
-            FactionDef faction = factionType;
+            FactionDef faction = null; // factionType;
 
             if (faction == null)
             {
                 faction = FactionDefOf.PlayerColony;
             }
 
-            List<string> hairTags = faction.hairTags;
+            List<string> styleTags = null; // faction.styleTags;
 
             if (pawn.def == ThingDefOf.Human)
             {
-                List<string> vanillatags = new List<string> { "Urban", "Rural", "Punk", "Tribal" };
-                if (!hairTags.Any(x => vanillatags.Contains(x)))
+                List<string> vanillatags = new() { "Urban", "Rural", "Punk", "Tribal" };
+                if (!styleTags.Any(x => vanillatags.Contains(x)))
                 {
-                    hairTags.AddRange(vanillatags);
+                    styleTags.AddRange(vanillatags);
                 }
             }
 
             IEnumerable<HairDef> source = from hair in DefDatabase<HairDef>.AllDefs
-                                          where hair.hairTags.SharesElementWith(hairTags) && !hair.IsBeardNotHair()
+                                          where hair.styleTags.SharesElementWith(styleTags) && !hair.IsBeardNotHair()
                                           select hair;
 
             __result = source.RandomElementByWeight(hair => PawnFaceMaker.HairChoiceLikelihoodFor(hair, pawn));
@@ -743,7 +744,7 @@ namespace FacialStuff.Harmony
             return num * num2;
         }
 
-        public static IEnumerable<CodeInstruction> RenderPawnAt_Transpiler(
+        public static IEnumerable<CodeInstruction> DrawCarriedThing_Transpiler(
         IEnumerable<CodeInstruction> instructions, ILGenerator ilGen)
         {
             List<CodeInstruction> instructionList = instructions.ToList();
@@ -755,15 +756,16 @@ namespace FacialStuff.Harmony
             instructionList.RemoveAt(indexDrawAt);
             instructionList.InsertRange(indexDrawAt, new List<CodeInstruction>
             {
-                                                     // carriedThing.DrawAt(vector, flip);
-                                                     // carriedThing = ldloc.1
-                                                     // vector = ldloc.2
-                                                     // bool flip = ldloc.s 4
+                // carriedThing.DrawAt(drawPos, flip);
+                                                     // IL_00c4: ldloc.0 this Thing
+                                                     // IL_00c5: ldloc.1 drawPos
+                                                     // IL_00c6: ldloc.3 flip
+
                                                      new CodeInstruction(OpCodes.Ldarg_0), // this.PawnRenderer
                                                      new CodeInstruction(OpCodes.Ldfld,
                                                                          AccessTools.Field(typeof(PawnRenderer),
                                                                                            "pawn")), // pawn
-                                                     new CodeInstruction(OpCodes.Ldloc_3),           // flag
+                                                     new CodeInstruction(OpCodes.Ldloc_2),           // thingBehind
                                                      new CodeInstruction(OpCodes.Call,
                                                                          AccessTools.Method(typeof(HarmonyPatchesFS),
                                                                                             nameof(CheckAndDrawHands)))
@@ -849,6 +851,63 @@ namespace FacialStuff.Harmony
                                                                              pawn.story.hairColor);
             PortraitsCache.SetDirty(pawn);
         }
+
+        [HarmonyPatch(typeof(PawnRenderer), "RenderPawnAt")]
+        class Patch
+        {
+
+            static void Prefix(PawnRenderer __instance, ref Vector3 drawLoc, Rot4? rotOverride, bool neverAimWeapon, out Vector3 __state)
+            {
+                Pawn pawn = __instance.graphics.pawn;
+                CompFace compFace = pawn.GetCompFace();
+                CompBodyAnimator compAnim = pawn.GetCompAnim();
+
+                __state = drawLoc;
+                compAnim?.ApplyBodyWobble(ref drawLoc, ref __state);
+                drawLoc.x += compAnim?.BodyAnim?.offCenterX ?? 0f;
+
+            }
+            static void Postfix(PawnRenderer __instance, Vector3 drawLoc, Rot4? rotOverride, bool neverAimWeapon, Vector3 __state)
+            {
+                Pawn pawn = __instance.graphics.pawn;
+                CompFace compFace = pawn.GetCompFace();
+                CompBodyAnimator compAnim = pawn.GetCompAnim();
+
+                Quaternion bodyQuat = Quaternion.AngleAxis(__instance.BodyAngle(), Vector3.up);
+                Quaternion footQuat = bodyQuat;
+
+                if (Controller.settings.UseFeet)
+                {
+                    compAnim?.DrawFeet(bodyQuat, footQuat, __state, false);
+                }
+                if (Controller.settings.UseHands)
+                {
+                    compAnim?.DrawHands(bodyQuat, drawLoc, false);
+                }
+            }
+
+        }
+
+        [HarmonyPatch(typeof(PawnRenderer), nameof(PawnRenderer.BodyAngle))]
+        class Patch2
+        {
+            static bool Prefix([NotNull] PawnRenderer __instance, ref float __result)
+            {
+                Pawn pawn = __instance.graphics.pawn;
+                CompBodyAnimator compAnim = pawn.GetCompAnim();
+                if (compAnim != null)
+                {
+                    if (compAnim.IsMoving)
+                    {
+                        __result = compAnim.BodyAngle;
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+        }
+
 
         public static void ResolveApparelGraphics_Postfix(PawnGraphicSet __instance)
         {

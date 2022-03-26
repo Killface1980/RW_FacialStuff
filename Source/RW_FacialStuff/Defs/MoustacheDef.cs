@@ -16,13 +16,13 @@ namespace FacialStuff.Defs
     {
         public bool drawMouth;
 
-        public HairGender hairGender = HairGender.Male;
+        public StyleGender styleGender = StyleGender.Male;
 
         [NotNull]
-        public List<string> hairTags = new List<string>();
+        public List<string> styleTags = new();
 
         [NotNull]
-        public List<ThingDef> forbiddenOnRace = new List<ThingDef>();
+        public List<ThingDef> forbiddenOnRace = new();
 
         [NotNull]
         public string texPath = string.Empty;

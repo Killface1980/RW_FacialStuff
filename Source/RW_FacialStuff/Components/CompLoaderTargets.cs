@@ -20,7 +20,7 @@ namespace FacialStuff
         public Vector3 firstHandPosition = Vector3.zero;
         public Vector3 secondHandPosition = Vector3.zero;
 
-        [NotNull] public List<string> thingTargets = new List<string>();
+        [NotNull] public List<string> thingTargets = new();
 
         public float? attackAngleOffset;
 

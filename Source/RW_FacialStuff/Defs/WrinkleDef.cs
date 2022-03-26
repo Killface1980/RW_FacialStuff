@@ -16,9 +16,9 @@ namespace FacialStuff.Defs
 
     public class WrinkleDef : Def
     {
-        public HairGender hairGender = HairGender.Any;
+        public StyleGender styleGender = StyleGender.Any;
 
-        public List<ThingDef> forbiddenOnRace = new List<ThingDef>();
+        public List<ThingDef> forbiddenOnRace = new();
 
         public string texPath;
     }

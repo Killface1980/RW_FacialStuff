@@ -30,8 +30,8 @@ namespace FacialStuff.FaceEditor
 
         private Toil Toils_WaitWithSoundAndEffect()
         {
-            Toil toil = new Toil
-                            {
+            Toil toil = new()
+            {
                                 initAction = delegate
                                     {
                                         CompFaceEditor faceStylerNew = this.TargetA.Thing?.TryGetComp<CompFaceEditor>();

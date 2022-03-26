@@ -347,8 +347,7 @@ namespace FacialStuff.GraphicsFS
         [CanBeNull]
         public Material MouthMatAt(Rot4 facing, bool portrait)
         {
-            Material material = null;
-
+            Material material;
             if (this._compFace.BodyStat.Jaw != PartStatus.Natural && Controller.settings.ShowExtraParts)
             {
                 material = this._pawnFaceGraphic.JawGraphic?.MatAt(facing);

@@ -9,12 +9,12 @@ namespace FacialStuff.Utilities
     {
         public const float BottomAreaHeight = 38f;
 
-        private static readonly Vector2 BottomButSize = new Vector2(150f, 38f);
+        private static readonly Vector2 BottomButSize = new(150f, 38f);
 
         public static bool DoMiddleButton(Rect innerRect, string label)
         {
             float top = innerRect.height - 38f;
-            Rect rect = new Rect(innerRect.width / 2f - BottomButSize.x / 2f, top, BottomButSize.x, BottomButSize.y);
+            Rect rect = new(innerRect.width / 2f - BottomButSize.x / 2f, top, BottomButSize.x, BottomButSize.y);
             return Widgets.ButtonText(rect, label);
         }
 
@@ -28,13 +28,13 @@ namespace FacialStuff.Utilities
         {
             float top = innerRect.height - 38f;
             Text.Font = GameFont.Small;
-            Rect backRect = new Rect(0f, top, BottomButSize.x, BottomButSize.y);
+            Rect backRect = new(0f, top, BottomButSize.x, BottomButSize.y);
             if (Widgets.ButtonText(backRect, "Back".Translate()))
             {
                 backAct();
             }
 
-            Rect randomRect = new Rect(
+            Rect randomRect = new(
                 innerRect.width / 2f - BottomButSize.x / 2f,
                 top,
                 BottomButSize.x,
@@ -44,7 +44,7 @@ namespace FacialStuff.Utilities
                 middleAct();
             }
 
-            Rect nextRect = new Rect(innerRect.width - BottomButSize.x, top, BottomButSize.x, BottomButSize.y);
+            Rect nextRect = new(innerRect.width - BottomButSize.x, top, BottomButSize.x, BottomButSize.y);
             if (Widgets.ButtonText(nextRect, nextLabel))
             {
                 nextAct();

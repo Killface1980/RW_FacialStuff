@@ -4,96 +4,96 @@
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Female_Aggro</defName>
     <label>Aggro</label>
-    <hairGender>Female</hairGender>
+    <styleGender>Female</styleGender>
     <forbiddenOnRace/>
     <texName>Aggro</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.BrowDef>
 
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Female_Aware</defName>
     <label>Aware</label>
-    <hairGender>Female</hairGender>
+    <styleGender>Female</styleGender>
     <forbiddenOnRace/>
     <texName>Aware</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.BrowDef>
 
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Female_Depressed</defName>
     <label>Depressed</label>
-    <hairGender>Female</hairGender>
+    <styleGender>Female</styleGender>
     <forbiddenOnRace/>
     <texName>Depressed</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.BrowDef>
 
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Female_Furious</defName>
     <label>Furious</label>
-    <hairGender>Female</hairGender>
+    <styleGender>Female</styleGender>
     <forbiddenOnRace/>
     <texName>Furious</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.BrowDef>
 
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Female_Nice</defName>
     <label>Nice</label>
-    <hairGender>Female</hairGender>
+    <styleGender>Female</styleGender>
     <forbiddenOnRace/>
     <texName>Nice</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.BrowDef>
 
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Female_Tired</defName>
     <label>Tired</label>
-    <hairGender>Female</hairGender>
+    <styleGender>Female</styleGender>
     <forbiddenOnRace/>
     <texName>Tired</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.BrowDef>
 
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Female_Mono</defName>
     <label>Mono</label>
-    <hairGender>Female</hairGender>
+    <styleGender>Female</styleGender>
     <forbiddenOnRace/>
     <texName>Mono</texName>
-    <hairTags>
+    <styleTags>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.BrowDef>
 </Defs>

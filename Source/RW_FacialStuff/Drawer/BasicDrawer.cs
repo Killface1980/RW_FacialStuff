@@ -9,7 +9,7 @@ namespace FacialStuff
         #region Protected Fields
 
         [NotNull]
-        public Pawn Pawn { get; set; }
+        public Pawn ThePawn { get; set; }
 
         [NotNull] protected PawnGraphicSet Graphics;
 
@@ -37,7 +37,7 @@ namespace FacialStuff
                                                 bool carrying = false, bool armed = false)
         {
             Rot4 rot = this.BodyFacing;
-            JointLister joints = new JointLister
+            JointLister joints = new()
             {
                 jointType = jointType
             };

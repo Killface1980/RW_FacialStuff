@@ -23,10 +23,10 @@ namespace FacialStuff
         private readonly string[] _psiToolbarStrings =
         {"North", "East", "South", "West"};
 
-        private bool _leftFront;
-        private bool _rightFront = true;
+        private readonly bool _leftFront;
+        private readonly bool _rightFront = true;
 
-        private bool _useSecondHand =
+        private readonly bool _useSecondHand =
         weaponExtensions?.RightHandPosition != Vector3.zero;
 
         private Pawn pawn;
@@ -47,7 +47,7 @@ namespace FacialStuff
 
         public override bool IsVisible => this.SelPawn.HasCompFace() && Controller.settings.Develop;
 
-        public bool LeftFront
+        public static bool LeftFront
         {
             set
             {
@@ -60,7 +60,7 @@ namespace FacialStuff
             }
         }
 
-        public bool RightFront
+        public static bool RightFront
         {
             set
             {
@@ -84,7 +84,7 @@ namespace FacialStuff
                 {
                     if (weaponExtensions.LeftHandPosition == Vector3.zero)
                     {
-                        this.LeftFront = false;
+                        LeftFront = false;
                     }
                 }
                 else
@@ -111,9 +111,9 @@ namespace FacialStuff
                 return;
             }
 
-            Rect rect = new Rect(10f, 10f, 330f, 530f);
+            Rect rect = new(10f, 10f, 330f, 530f);
 
-            Listing_Standard listing = new Listing_Standard();
+            Listing_Standard listing = new();
 
             listing.Begin(rect);
 
@@ -256,7 +256,7 @@ namespace FacialStuff
                                                                               delegate
                                                                               {
                                                                                   ExportWeaponExtensionDefs.Defs cycle =
-                                                                                  new ExportWeaponExtensionDefs.Defs(wepDef);
+                                                                                  new(wepDef);
 
                                                                                   DirectXmlSaver.SaveDataObject(
                                                                                                                 cycle,

@@ -19,13 +19,13 @@ namespace FacialStuff.GraphicsFS
         public static readonly Texture2D MaskTexUppherheadFrontBack;
         public static readonly Texture2D MaskTexUppherheadFrontBack256;
         public static readonly Texture2D RedTexture;
-        public static readonly Color SkinRottingMultiplyColor = new Color(0.35f, 0.38f, 0.3f);
+        public static readonly Color SkinRottingMultiplyColor = new(0.35f, 0.38f, 0.3f);
 
 /*
         private static Texture2D _maskTexAverageSide;
 */
 
-        private static Texture2D _maskTexNarrowFrontBack;
+        private static readonly Texture2D _maskTexNarrowFrontBack;
         static FaceTextures()
         {
             MaskTexUppherheadFrontBack = MakeReadable(ContentFinder<Texture2D>.Get("MaskTex/MaskTex_Upperhead_south"));
@@ -93,7 +93,7 @@ namespace FacialStuff.GraphicsFS
             RenderTexture.active = tmp;
 
             // Create a new readable Texture2D to copy the pixels to it
-            Texture2D myTexture2D = new Texture2D(texture.width, texture.width, TextureFormat.ARGB32, false);
+            Texture2D myTexture2D = new(texture.width, texture.width, TextureFormat.ARGB32, false);
 
             // Copy the pixels from the RenderTexture to the new Texture
             myTexture2D.ReadPixels(new Rect(0, 0, tmp.width, tmp.height), 0, 0);

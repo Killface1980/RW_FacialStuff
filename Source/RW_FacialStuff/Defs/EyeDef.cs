@@ -13,11 +13,11 @@ namespace FacialStuff.Defs
 {
     public class EyeDef : Def
     {
-        public HairGender hairGender = HairGender.Any;
+        public StyleGender styleGender = StyleGender.Any;
 
-        public List<string> hairTags = new List<string>();
+        public List<string> styleTags = new();
 
-        public List<ThingDef> forbiddenOnRace = new List<ThingDef>();
+        public List<ThingDef> forbiddenOnRace = new();
 
         public string texBasePath = string.Empty;
 

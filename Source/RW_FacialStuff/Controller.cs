@@ -17,10 +17,6 @@ namespace FacialStuff
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once StyleCop.SA1307
         [NotNull]
-        [SuppressMessage(
-            "StyleCop.CSharp.MaintainabilityRules",
-            "SA1401:FieldsMustBePrivate",
-            Justification = "Reviewed. Suppression is OK here.")]
         public static Settings settings;
 
         private static bool? skActive;

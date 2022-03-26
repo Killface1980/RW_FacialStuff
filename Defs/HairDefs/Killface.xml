@@ -3,14 +3,14 @@
 
 <HairDef>
     <label>Scientist</label>
-    <hairGender>MaleUsually</hairGender>
+    <styleGender>MaleUsually</styleGender>
     <texPath>Things/Pawn/Humanlike/Hair/Killface/Scientist</texPath>
     <defName>Scientist</defName>
-		<hairTags>
+		<styleTags>
 			<li>Urban</li>
 			<li>Rural</li>
 		  <li>MaleOld</li>
 		  <li>MaleOnly</li>
-		</hairTags>
+		</styleTags>
   </HairDef>
 </Defs>

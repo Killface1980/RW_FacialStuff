@@ -35,21 +35,21 @@ namespace FacialStuff
         {
         }
 
-        public virtual void DrawAlienHeadAddons(Vector3 headPos, bool portrait, Quaternion headQuat, Vector3 currentLoc)
+        public virtual void DrawAlienHeadAddons(Vector3 headPos, PawnRenderFlags flags, Quaternion headQuat, Vector3 currentLoc)
         {
             // Just for the Aliens
         }
 
-        public virtual void DrawBasicHead(Vector3 drawLoc, Quaternion headQuat, RotDrawMode bodyDrawType, bool headStump, bool portrait, out bool headDrawn)
+        public virtual void DrawBasicHead(Vector3 drawLoc, Quaternion headQuat, RotDrawMode bodyDrawType, bool headStump, PawnRenderFlags flags, out bool headDrawn)
         {
             headDrawn = false;
         }
 
-        public virtual void DrawBeardAndTache(Vector3 beardLoc, Vector3 tacheLoc, Quaternion headQuat, bool portrait)
+        public virtual void DrawBeardAndTache(Vector3 beardLoc, Vector3 tacheLoc, Quaternion headQuat, PawnRenderFlags flags)
         {
         }
 
-        public virtual void DrawBrows(Vector3 drawLoc, Quaternion headQuat, bool portrait)
+        public virtual void DrawBrows(Vector3 drawLoc, Quaternion headQuat, PawnRenderFlags flags)
         {
         }
 
@@ -64,22 +64,19 @@ namespace FacialStuff
             headOverlays?.RenderStatusOverlays(bodyLoc, headQuat, this.GetPawnMesh(false, false));
         }
 
-        public virtual void DrawNaturalEyes(Vector3 drawLoc, Quaternion headQuat, bool portrait)
-        {
-        }
-        public virtual void DrawNaturalEars(Vector3 drawLoc, Quaternion headQuat, bool portrait)
+        public virtual void DrawNaturalEyes(Vector3 drawLoc, Quaternion headQuat, PawnRenderFlags flags)
         {
         }
 
-        public virtual void DrawNaturalMouth(Vector3 drawLoc, Quaternion headQuat, bool portrait)
+        public virtual void DrawNaturalMouth(Vector3 drawLoc, Quaternion headQuat, PawnRenderFlags flags)
         {
         }
 
-        public virtual void DrawUnnaturalEyeParts(Vector3 drawLoc, Quaternion headQuat, bool portrait)
+        public virtual void DrawUnnaturalEyeParts(Vector3 drawLoc, Quaternion headQuat, PawnRenderFlags flags)
         {
         }
 
-        public virtual void DrawWrinkles(Vector3 drawLoc, RotDrawMode bodyDrawType, Quaternion headQuat, bool portrait)
+        public virtual void DrawWrinkles(Vector3 drawLoc, RotDrawMode bodyDrawType, Quaternion headQuat, PawnRenderFlags flags)
         {
         }
 
@@ -115,9 +112,6 @@ namespace FacialStuff
 
         #endregion Public Methods
 
-        public virtual void DrawUnnaturalEarParts(Vector3 drawLoc, Quaternion headQuat, bool portrait)
-        {
-            throw new System.NotImplementedException();
-        }
+ 
     }
 }

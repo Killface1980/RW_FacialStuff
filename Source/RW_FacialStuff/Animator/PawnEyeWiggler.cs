@@ -12,8 +12,8 @@ namespace FacialStuff.Animator
         #region Private Fields
 
         private static readonly SimpleCurve EyeMotionFullCurve =
-            new SimpleCurve
-                {
+            new()
+            {
                     new CurvePoint(0f, 0f),
                     new CurvePoint(0.05f, -1f),
                     new CurvePoint(0.65f, 1f),
@@ -21,8 +21,8 @@ namespace FacialStuff.Animator
                 };
 
         private static readonly SimpleCurve EyeMotionHalfCurve =
-            new SimpleCurve
-                {
+            new()
+            {
                     new CurvePoint(0f, 0f),
                     new CurvePoint(0.1f, 1f),
                     new CurvePoint(0.65f, 1f),
@@ -33,14 +33,16 @@ namespace FacialStuff.Animator
         private readonly CompFace _compFace;
 
         private readonly SimpleCurve _consciousnessCurve =
-            new SimpleCurve { new CurvePoint(0f, 5f), new CurvePoint(0.5f, 2f), new CurvePoint(1f, 1f) };
+            new()
+            { new CurvePoint(0f, 5f), new CurvePoint(0.5f, 2f), new CurvePoint(1f, 1f) };
 
         private readonly float _factorX = 0.02f;
 
         private readonly float _factorY = 0.01f;
 
         private readonly SimpleCurve _painCurve =
-            new SimpleCurve { new CurvePoint(0f, 1f), new CurvePoint(0.65f, 1f), new CurvePoint(1f, 2f) };
+            new()
+            { new CurvePoint(0f, 1f), new CurvePoint(0.65f, 1f), new CurvePoint(1f, 2f) };
 
         private readonly Pawn _pawn;
 

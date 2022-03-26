@@ -4,99 +4,99 @@
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Male_Aggro</defName>
     <label>Aggro</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texBasePath></texBasePath><!-- empty for default path "Things/Pawn/Humanlike/Brows/"-->
     <texName>Aggro</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.BrowDef>
 
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Male_Aware</defName>
     <label>Aware</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texName>Aware</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.BrowDef>
 
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Male_Depressed</defName>
     <label>Depressed</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texName>Depressed</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.BrowDef>
 
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Male_Furious</defName>
     <label>Furious</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texName>Furious</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.BrowDef>
 
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Male_Nice</defName>
     <label>Nice</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texName>Nice</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.BrowDef>
 
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Male_Tired</defName>
     <label>Tired</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texName>Tired</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.BrowDef>
 
   <FacialStuff.Defs.BrowDef>
     <defName>Brow_Male_Mono</defName>
     <label>Mono</label>
-    <hairGender>Male</hairGender>
+    <styleGender>Male</styleGender>
     <forbiddenOnRace/>
     <texName>Mono</texName>
-    <hairTags>
+    <styleTags>
       <li>Urban</li>
       <li>Rural</li>
       <li>Punk</li>
       <li>Tribal</li>
-    </hairTags>
+    </styleTags>
   </FacialStuff.Defs.BrowDef>
 </Defs>

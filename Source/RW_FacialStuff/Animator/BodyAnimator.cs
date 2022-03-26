@@ -32,7 +32,7 @@ namespace FacialStuff.Animator
             return false;
         }
 
-        public void AnimatorTick()
+        public static void AnimatorTick()
         {
             // if (this.pawn.pather.Moving)
             // {

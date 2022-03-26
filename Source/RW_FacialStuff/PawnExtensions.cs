@@ -130,18 +130,7 @@ namespace FacialStuff
                         bodyProps._face.BodyStat.EyeRight = PartStatus.Missing;
                     }
                 }
-                if (bodyProps._face.Props.hasEars)
-                {
-                    if (hediff.Part == bodyProps._leftEar)
-                    {
-                        bodyProps._face.BodyStat.EarLeft = PartStatus.Missing;
-                    }
 
-                    if (hediff.Part == bodyProps._rightEar)
-                    {
-                        bodyProps._face.BodyStat.EarRight = PartStatus.Missing;
-                    }
-                }
             }
 
             if (bodyProps._anim != null && bodyProps._anim.Props.bipedWithHands)
@@ -223,7 +212,7 @@ namespace FacialStuff
             }
 
             //  Log.Message("Checking face for added parts.");
-            if (anim != null && anim.Pawn.RaceProps.Humanlike && face != null)
+            if (anim != null && anim.ThePawn.RaceProps.Humanlike && face != null)
             {
                 CheckFaceForAddedParts(hediff, face, leftEye, rightEye, jaw);
             }
@@ -277,8 +266,6 @@ namespace FacialStuff
             {
                 face.BodyStat.EyeLeft = PartStatus.Natural;
                 face.BodyStat.EyeRight = PartStatus.Natural;
-                face.BodyStat.EarLeft = PartStatus.Natural;
-                face.BodyStat.EarRight = PartStatus.Natural;
                 face.BodyStat.Jaw = PartStatus.Natural;
             }
 

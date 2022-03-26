@@ -13,9 +13,9 @@ namespace FacialStuff.Defs
 {
     public class EarDef : Def
     {
-        public HairGender hairGender = HairGender.Any;
+        public StyleGender styleGender = StyleGender.Any;
 
-        public List<string> hairTags = new List<string>();
+        public List<string> styleTags = new List<string>();
 
         public List<ThingDef> forbiddenOnRace = new List<ThingDef>();
 

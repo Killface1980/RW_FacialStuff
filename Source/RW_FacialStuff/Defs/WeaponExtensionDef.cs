@@ -6,7 +6,7 @@ namespace RimWorld
 {
     public class WeaponExtensionDef : Def
     {
-        public List<DefHyperlink> descriptionHyperlinks = new List<DefHyperlink>();
+        public List<DefHyperlink> descriptionHyperlinks = new();
         public string weapon;
 
         public float? attackAngleOffset;

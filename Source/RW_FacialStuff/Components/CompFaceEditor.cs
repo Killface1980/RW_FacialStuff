@@ -15,29 +15,29 @@ namespace FacialStuff
         {
             Building styler = this.parent as Building;
 
-            List<FloatMenuOption> list = new List<FloatMenuOption>();
+            List<FloatMenuOption> list = new();
             {
                 if (selPawn.IsChild())
                 {
-                    FloatMenuOption item = new FloatMenuOption("Pawn must be at least 18 with CSL activated.", null);
+                    FloatMenuOption item = new("Pawn must be at least 18 with CSL activated.", null);
                     return new List<FloatMenuOption> { item };
                 }
                 
                 if (!selPawn.CanReserve(styler))
                 {
-                    FloatMenuOption item = new FloatMenuOption("CannotUseReserved".Translate(), null);
+                    FloatMenuOption item = new("CannotUseReserved".Translate(), null);
                     return new List<FloatMenuOption> { item };
                 }
 
                 if (!selPawn.CanReach(styler, PathEndMode.Touch, Danger.Some))
                 {
-                    FloatMenuOption item2 = new FloatMenuOption("CannotUseNoPath".Translate(), null);
+                    FloatMenuOption item2 = new("CannotUseNoPath".Translate(), null);
                     return new List<FloatMenuOption> { item2 };
                 }
 
                 if (!selPawn.HasCompFace())
                 {
-                    FloatMenuOption item3 = new FloatMenuOption(
+                    FloatMenuOption item3 = new(
                         "FacialStuffEditor.CannotUseNoFacePawn".Translate(selPawn),
                         null);
                     return new List<FloatMenuOption> { item3 };
@@ -45,7 +45,7 @@ namespace FacialStuff
 
                 if (selPawn.GetCompFace(out CompFace compFace) && selPawn.GetCompAnim().Deactivated)
                 {
-                    FloatMenuOption item4 = new FloatMenuOption(
+                    FloatMenuOption item4 = new(
                         "FacialStuffEditor.CannotUseShouldNotRender".Translate(selPawn),
                         null);
                     return new List<FloatMenuOption> { item4 };
@@ -54,7 +54,7 @@ namespace FacialStuff
                 Action action = delegate
                     {
                         // IntVec3 InteractionSquare = (this.Position + new IntVec3(0, 0, 1)).RotatedBy(this.Rotation);
-                        Job FaceStyleChanger = new Job(
+                        Job FaceStyleChanger = new(
                                                    DefDatabase<JobDef>.GetNamed("FaceStyleChanger"),
                                                    styler,
                                                    styler.InteractionCell)

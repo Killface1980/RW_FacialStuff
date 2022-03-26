@@ -40,7 +40,7 @@ namespace FacialStuff.GraphicsFS
         private const string STR_Hand = "_Hand";
         private readonly Pawn _pawn;
 
-        private readonly Color _shadowColor = new Color(0.54f, 0.56f, 0.6f);
+        private readonly Color _shadowColor = new(0.54f, 0.56f, 0.6f);
 
         #endregion Private Fields
 
@@ -49,7 +49,7 @@ namespace FacialStuff.GraphicsFS
         public PawnBodyGraphic(CompBodyAnimator compAni)
         {
             this.CompAni = compAni;
-            this._pawn = compAni.Pawn;
+            this._pawn = compAni.ThePawn;
 
             this.Initialize();
         }
@@ -103,7 +103,7 @@ namespace FacialStuff.GraphicsFS
 
             Color rightFootColor = skinColor;
             Color leftFootColor = skinColor;
-            Color metal = new Color(0.51f, 0.61f, 0.66f);
+            Color metal = new(0.51f, 0.61f, 0.66f);
 
             switch (this.CompAni.BodyStat.FootRight)
             {
@@ -124,7 +124,7 @@ namespace FacialStuff.GraphicsFS
 
             float factor = this._pawn.GetBodysizeScaling();
 
-            Vector2 drawSize = new Vector2(factor, factor);
+            Vector2 drawSize = new(factor, factor);
 
             this.FootGraphicRight = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
@@ -195,7 +195,7 @@ namespace FacialStuff.GraphicsFS
 
             Color rightFootColor = skinColor;
             Color leftFootColor = skinColor;
-            Color metal = new Color(0.51f, 0.61f, 0.66f);
+            Color metal = new(0.51f, 0.61f, 0.66f);
 
             switch (this.CompAni.BodyStat.FootRight)
             {
@@ -216,7 +216,7 @@ namespace FacialStuff.GraphicsFS
 
             float factor = this._pawn.GetBodysizeScaling();
 
-            Vector2 drawSize = new Vector2(factor, factor);
+            Vector2 drawSize = new(factor, factor);
             this.FrontPawGraphicRight = GraphicDatabase.Get<Graphic_Multi>(
                 texNameFoot,
                 ShaderDatabase.CutoutSkin,
@@ -289,7 +289,7 @@ namespace FacialStuff.GraphicsFS
             Color rightHandColor = skinColor;
             Color leftHandColor = skinColor;
 
-            Color metal = new Color(0.51f, 0.61f, 0.66f);
+            Color metal = new(0.51f, 0.61f, 0.66f);
 
             switch (this.CompAni.BodyStat.HandRight)
             {
@@ -309,7 +309,7 @@ namespace FacialStuff.GraphicsFS
             Color rightHandColorShadow = rightHandColor * this._shadowColor;
             float factor = this._pawn.GetBodysizeScaling();
 
-            Vector2 drawSize = new Vector2(factor, factor);
+            Vector2 drawSize = new(factor, factor);
             this.HandGraphicRight = GraphicDatabase.Get<Graphic_Multi>(
                 texNameHand,
                 ShaderDatabase.CutoutSkin,

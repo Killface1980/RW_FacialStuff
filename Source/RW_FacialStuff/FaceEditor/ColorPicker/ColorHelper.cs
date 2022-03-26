@@ -137,7 +137,7 @@ namespace FacialStuff.FaceEditor.ColorPicker
         /// <returns>bool success</returns>
         public static bool TryHexToRGB(string hex, ref Color col)
         {
-            Color clr = new Color(0, 0, 0);
+            Color clr = new(0, 0, 0);
             if (hex == null || hex.Length != 9 && hex.Length != 7)
             {
                 return false;
