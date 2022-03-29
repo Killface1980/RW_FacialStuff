@@ -9,18 +9,18 @@ namespace FacialStuff
 {
     public class QuadrupedDrawer : HumanBipedDrawer
     {
-        public override void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait, float factor = 1f)
+        public override void DrawFeet(Quaternion drawQuat, Vector3 rootLoc, float factor = 1f)
         {
-            if (portrait && !HarmonyPatchesFS.AnimatorIsOpen())
-            {
-                return;
-            }
 
             if (this.ThePawn.kindDef.lifeStages.Any())
             {
                 Vector2 maxSize = this.ThePawn.kindDef.lifeStages.Last().bodyGraphicData.drawSize;
                 Vector2 sizePaws = this.ThePawn.ageTracker.CurKindLifeStage.bodyGraphicData.drawSize;
                 factor = sizePaws.x / maxSize.x;
+            }
+            if (this.CompAnimator.IsMoving)
+            {
+                drawQuat *= Quaternion.AngleAxis(-ThePawn.Drawer.renderer.BodyAngle(), Vector3.up);
             }
 
             // Fix the position, maybe needs new code in GetJointPositions()?
@@ -38,18 +38,21 @@ namespace FacialStuff
                 frontPawLoc.y += (this.BodyFacing == Rot4.North ? Offsets.YOffset_Behind : -Offsets.YOffset_Behind);
             }
 
-            this.DrawFrontPaws(bodyQuat, footQuat, frontPawLoc, portrait, factor);
+            this.DrawFrontPaws(drawQuat, frontPawLoc, factor);
 
-            base.DrawFeet(bodyQuat, footQuat, rearPawLoc, portrait, factor);
+            base.DrawFeet(drawQuat, rearPawLoc, factor);
         }
 
-        public override void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, Thing carriedThing = null,
+        public Rot4 BodyFacing => this.CompAnimator.ThePawn.Rotation;
+
+        public override void DrawHands(Quaternion bodyQuat, Vector3 drawPos, Thing carriedThing = null,
             bool flip = false, float factor = 1f)
         {
             // base.DrawHands(bodyQuat, drawPos, portrait, carrying, drawSide);
         }
 
-        protected virtual void DrawFrontPaws(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait, float factor = 1f)
+        protected virtual void DrawFrontPaws(Quaternion drawQuat, Vector3 rootLoc,
+            float factor = 1f)
         {
             if (!this.CompAnimator.Props.quadruped)
             {
@@ -85,7 +88,7 @@ namespace FacialStuff
             float offsetJoint = 0;
 
             WalkCycleDef cycle = this.CompAnimator.WalkCycle;
-            if (cycle != null)
+            if (cycle != null && CompAnimator.IsMoving)
             {
                 offsetJoint = cycle.ShoulderOffsetHorizontalX.Evaluate(this.CompAnimator.MovedPercent);
 
@@ -138,7 +141,6 @@ namespace FacialStuff
                 }
             }
 
-            Quaternion drawQuat = this.CompAnimator.IsMoving ? footQuat : bodyQuat;
             Vector3 ground = rootLoc + (drawQuat * new Vector3(0, 0, OffsetGroundZ)) * factor;
 
             if (matLeft != null)

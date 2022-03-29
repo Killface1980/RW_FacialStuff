@@ -732,23 +732,29 @@ namespace FacialStuff.AnimatorWindows
             // Draw the pawn's portrait
             Vector2 size = new(rect.height / 1.4f, rect.height); // 128x180
 
-            Rect position = new(
-                                     rect.width * 0.5f - size.x * 0.5f,
-                                     rect.height * 0.5f - size.y * 0.5f - 10f,
-                                     size.x,
-                                     size.y);
+            Rect position = new Rect(
+                rect.width * 0.5f - size.x * 0.5f,
+                rect.height * 0.5f - size.y * 0.5f - 10f,
+                size.x,
+                size.y);
 
-            Vector3 cameraOffset = new(0f, 0f, 0.1f);
-            //   RenderTexture image = PortraitsCache.Get(Pawn, size, cameraOffset, this.Zoom);
-            {
-                RenderTexture renderTexture = new((int)size.x, (int)size.y, 24);
-                Find.PawnCacheRenderer.RenderPawn(thePawn, renderTexture, cameraOffset, this.Zoom, 0, _bodyRot);
-                GUI.DrawTexture(position, renderTexture);
-                renderTexture.Release();
-            }
+            GUI.DrawTexture(position, PortraitsCache.Get(thePawn, size, BodyRot, new Vector3(0f, 0f, 0.1f), this.Zoom));
 
             // GUI.DrawTexture(position, PortraitsCache.Get(pawn, size, default(Vector3)));
             Widgets.DrawBox(rect);
+        }
+        public void RenderPawn(Pawn pawn, RenderTexture renderTexture, Vector3 cameraOffset, float cameraZoom, float angle, Rot4 rotation, bool renderHead = true, bool renderBody = true, bool renderHeadgear = true, bool renderClothes = true, bool portrait = false, Vector3 positionOffset = default(Vector3), Dictionary<Apparel, Color> overrideApparelColor = null, Color? overrideHairColor = null, bool stylingStation = false)
+        {
+            Camera pawnCacheCamera = Find.PawnCacheCamera;
+            Vector3 position = pawnCacheCamera.transform.position;
+            float orthographicSize = pawnCacheCamera.orthographicSize;
+            pawnCacheCamera.transform.position += cameraOffset;
+            pawnCacheCamera.orthographicSize = 1f / cameraZoom;
+            pawnCacheCamera.SetTargetBuffers(renderTexture.colorBuffer, renderTexture.depthBuffer);
+            pawnCacheCamera.Render();
+            pawnCacheCamera.transform.position = position;
+            pawnCacheCamera.orthographicSize = orthographicSize;
+            pawnCacheCamera.targetTexture = null;
         }
         private void DrawRotatorBody(float curY, float width)
         {

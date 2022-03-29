@@ -11,21 +11,14 @@ namespace FacialStuff
         [NotNull]
         public Pawn ThePawn { get; set; }
 
-        [NotNull] protected PawnGraphicSet Graphics;
-
-        protected Rot4 BodyFacing;
-
-        protected Rot4 HeadFacing;
 
         #endregion Protected Fields
 
         #region Public Methods
 
-        protected virtual Mesh GetPawnMesh(bool wantsBody, bool portrait)
+        protected virtual Mesh GetPawnMesh(bool wantsBody)
         {
-            return wantsBody
-                       ? MeshPool.humanlikeBodySet?.MeshAt(this.BodyFacing)
-                       : MeshPool.humanlikeHeadSet?.MeshAt(this.HeadFacing);
+            return MeshPool.humanlikeBodySet?.MeshAt(this.CompAnimator.ThePawn.Rotation);
         }
 
         #endregion Public Methods
@@ -36,7 +29,7 @@ namespace FacialStuff
                                                 float jointWidth,
                                                 bool carrying = false, bool armed = false)
         {
-            Rot4 rot = this.BodyFacing;
+            Rot4 rot = this.CompAnimator.ThePawn.Rotation;
             JointLister joints = new()
             {
                 jointType = jointType

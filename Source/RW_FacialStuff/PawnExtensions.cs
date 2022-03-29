@@ -18,13 +18,12 @@ namespace FacialStuff
         public BodyPartRecord _rightEar;
         public BodyPartRecord _leftEar;
         public CompBodyAnimator _anim;
-        public CompFace _face;
         public Hediff _hediff;
 
-        public BodyProps(Hediff hediff, CompFace face, CompBodyAnimator anim, BodyPartRecord leftEye, BodyPartRecord rightEye, BodyPartRecord leftHand, BodyPartRecord rightHand, BodyPartRecord leftFoot, BodyPartRecord rightFoot)
+        public BodyProps(Hediff hediff, CompBodyAnimator anim, BodyPartRecord leftEye, BodyPartRecord rightEye,
+            BodyPartRecord leftHand, BodyPartRecord rightHand, BodyPartRecord leftFoot, BodyPartRecord rightFoot)
         {
             this._hediff = hediff;
-            this._face = face;
             this._anim = anim;
             this._leftEye = leftEye;
             this._rightEye = rightEye;
@@ -63,49 +62,13 @@ namespace FacialStuff
             {
                 anim.BodyStat.FootLeft = PartStatus.Artificial;
             }
-
+            
             if (hediff.Part.parts.Contains(rightFoot) || hediff.Part.parts.Contains(rightLeg))
             {
                 anim.BodyStat.FootRight = PartStatus.Artificial;
             }
         }
 
-        private static void CheckFaceForAddedParts(Hediff hediff, CompFace face, BodyPartRecord leftEye,
-                                      BodyPartRecord rightEye,
-                                      BodyPartRecord jaw)
-        {
-            if (!face.Pawn.RaceProps.Humanlike || hediff.Part == null)
-            {
-                return;
-
-            }
-
-            if (face.Props.hasEyes)
-            {
-                if (hediff.Part == leftEye)
-                {
-                    face.TexPathEyeLeftPatch = StringsFS.PathHumanlike + "AddedParts/Eye_" + hediff.def.defName + "_Left" + "_"
-                                             + face.PawnCrownType;
-                }
-
-                if (hediff.Part == rightEye)
-                {
-                    face.TexPathEyeRightPatch = StringsFS.PathHumanlike + "AddedParts/Eye_" + hediff.def.defName + "_Right" + "_"
-                                              + face.PawnCrownType;
-                    face.BodyStat.EyeRight = PartStatus.Artificial;
-
-                }
-            }
-
-            if (face.Props.hasMouth)
-            {
-                if (hediff.Part == jaw)
-                {
-                    face.BodyStat.Jaw = PartStatus.Artificial;
-                    face.TexPathJawAddedPart = StringsFS.PathHumanlike + "AddedParts/Mouth_" + hediff.def.defName;
-                }
-            }
-        }
 
         private static void CheckMissingParts(BodyProps bodyProps)
         {
@@ -115,7 +78,7 @@ namespace FacialStuff
             {
                 return;
             }
-
+            /*
             if (bodyProps._face != null)
             {
                 if (bodyProps._face.Props.hasEyes)
@@ -132,7 +95,7 @@ namespace FacialStuff
                 }
 
             }
-
+            */
             if (bodyProps._anim != null && bodyProps._anim.Props.bipedWithHands)
             {
                 if (hediff.Part == bodyProps._leftHand)
@@ -157,8 +120,8 @@ namespace FacialStuff
             }
         }
 
-        private static void CheckPart(List<BodyPartRecord> body, Hediff hediff, [CanBeNull] CompFace face,
-                                      [CanBeNull]                                           CompBodyAnimator anim, bool missing)
+        private static void CheckPart(List<BodyPartRecord> body, Hediff hediff,
+            [CanBeNull] CompBodyAnimator anim, bool missing)
         {
             if (body.NullOrEmpty() || hediff.def == null)
             {
@@ -192,7 +155,7 @@ namespace FacialStuff
 
             if (missing)
             {
-                CheckMissingParts(new BodyProps(hediff, face, anim, leftEye, rightEye, leftHand, rightHand, leftFoot,
+                CheckMissingParts(new BodyProps(hediff, anim, leftEye, rightEye, leftHand, rightHand, leftFoot,
                                                 rightFoot));
                 return;
             }
@@ -211,11 +174,7 @@ namespace FacialStuff
                 return;
             }
 
-            //  Log.Message("Checking face for added parts.");
-            if (anim != null && anim.ThePawn.RaceProps.Humanlike && face != null)
-            {
-                CheckFaceForAddedParts(hediff, face, leftEye, rightEye, jaw);
-            }
+
 
             //  Log.Message("Checking body for added parts.");
 
@@ -261,13 +220,7 @@ namespace FacialStuff
                 return false;
             }
 
-            // Reset the stats
-            if (pawn.GetCompFace(out CompFace face))
-            {
-                face.BodyStat.EyeLeft = PartStatus.Natural;
-                face.BodyStat.EyeRight = PartStatus.Natural;
-                face.BodyStat.Jaw = PartStatus.Natural;
-            }
+
 
             if (pawn.GetCompAnim(out CompBodyAnimator anim))
             {
@@ -298,13 +251,13 @@ namespace FacialStuff
             foreach (Hediff diff in hediffs.Where(diff => diff.def == HediffDefOf.MissingBodyPart))
             {
                 // Log.Message("Checking missing part "+diff.def.defName);
-                CheckPart(allParts, diff, face, anim, true);
+                CheckPart(allParts, diff, anim, true);
             }
 
             foreach (Hediff diff in hediffs.Where(diff => diff.def.addedPartProps != null))
             {
                 //  Log.Message("Checking added part on " + pawn + "--"+diff.def.defName);
-                CheckPart(allParts, diff, face, anim, false);
+                CheckPart(allParts, diff, anim, false);
             }
 
             return true;
@@ -328,7 +281,7 @@ namespace FacialStuff
             compAnim = pawn.GetComp<CompBodyAnimator>();
             return compAnim != null;
         }
-
+        /*
         [CanBeNull]
         public static CompFace GetCompFace([NotNull] this Pawn pawn)
         {
@@ -339,7 +292,8 @@ namespace FacialStuff
             compFace = pawn.GetComp<CompFace>();
             return compFace != null;
         }
-
+        */
+        /*
         public static bool GetPawnFace([NotNull] this Pawn pawn, [CanBeNull] out PawnFace pawnFace)
         {
             pawnFace = null;
@@ -358,17 +312,14 @@ namespace FacialStuff
 
             return false;
         }
-
+        */
         public static bool HasCompAnimator([NotNull] this Pawn pawn)
         {
             return pawn.def.HasComp(typeof(CompBodyAnimator));
         }
 
-        public static bool HasCompFace([NotNull] this Pawn pawn)
-        {
-            return pawn.def.HasComp(typeof(CompFace));
-        }
 
+        /*
         public static bool HasPawnFace([NotNull] this Pawn pawn)
         {
             if (pawn.GetCompFace(out CompFace compFace))
@@ -379,5 +330,6 @@ namespace FacialStuff
 
             return false;
         }
+        */
     }
 }

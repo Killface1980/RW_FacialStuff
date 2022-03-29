@@ -108,18 +108,13 @@ namespace FacialStuff.AnimatorWindows
             {
                 string filePath = configFolder + "/BodyAnimDefs/" + CompAnim.BodyAnim.defName + ".xml";
 
-                Find.WindowStack.Add(
-                                     Dialog_MessageBox.CreateConfirmation(
-                                                                          "Confirm overwriting " +
+                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
+                                                                          "Confirm exporting/overwriting " +
                                                                           filePath,
                                                                           delegate
                                                                           {
-                                                                              ExportAnimDefs.Defs animDef =
-                                                                              new ExportAnimDefs.Defs(CompAnim.BodyAnim);
-
-                                                                              DirectXmlSaver.SaveDataObject(
-                                                                                                            animDef,
-                                                                                                            filePath);
+                                                                              ExportAnimDefs.Defs animDef = new ExportAnimDefs.Defs(CompAnim.BodyAnim);
+                                                                              DirectXmlSaver.SaveDataObject(animDef, filePath);
                                                                           },
                                                                           true));
 

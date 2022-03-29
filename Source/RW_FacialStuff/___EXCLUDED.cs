@@ -8,6 +8,24 @@ namespace FacialStuff
 {
     class ___EXCLUDED
     {
+
+        // interessant:
+
+        public static IEnumerable<CodeInstruction> TranspilerInsertAnimationHeadCode(IEnumerable<CodeInstruction> instructions)
+        {
+            MethodInfo drawMeshMethod = (from x in typeof(GenDraw).GetMethods(AccessTools.all)
+                where x.Name.Contains("DrawMeshNowOrLater")
+                select x).First();
+            MethodInfo operand = AccessTools.Method(typeof(HarmonyPatches), "DrawFace");
+            List<CodeInstruction> list = instructions.Where((CodeInstruction x) => x.operand == drawMeshMethod).ToList();
+            if (!list.Any())
+            {
+                return instructions;
+            }
+            list[0].operand = operand;
+            return instructions;
+        }
+
                     {
 
 

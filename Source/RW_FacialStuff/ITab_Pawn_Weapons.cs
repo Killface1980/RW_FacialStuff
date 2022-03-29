@@ -45,7 +45,7 @@ namespace FacialStuff
 
         #region Public Properties
 
-        public override bool IsVisible => this.SelPawn.HasCompFace() && Controller.settings.Develop;
+        public override bool IsVisible => this.SelPawn.HasCompAnimator() && Controller.settings.Develop;
 
         public static bool LeftFront
         {
@@ -106,7 +106,7 @@ namespace FacialStuff
             }
 
             bool horizontal = this.pawn.Rotation.IsHorizontal;
-            if (!this.SelPawn.GetCompFace(out CompFace compFace))
+            if (!this.SelPawn.GetCompAnim(out CompBodyAnimator _))
             {
                 return;
             }

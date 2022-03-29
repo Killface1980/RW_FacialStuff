@@ -27,25 +27,6 @@
               <li Class ="FacialStuff.HumanBipedDrawer"/>
             </bodyDrawers>
           </li>
-          <li Class = "FacialStuff.CompProperties_Face">
-            <!--if false, vanilla heads are used, otherwise the FS blank texture is used-->
-            <needsBlankHumanHead>true</needsBlankHumanHead>
-            <!-- off = no mouth-->
-            <hasMouth>true</hasMouth>
-            <!--race can have beards?-->
-            <hasBeard>true</hasBeard>
-            <!--race can have wrinkles?-->
-            <hasWrinkles>true</hasWrinkles>
-            <!--eyes?-->
-            <hasEyes>true</hasEyes>
-            <!--head rotation / tracking-->
-            <canRotateHead>true</canRotateHead>
-            <!--the drawer for the head. more than one can be defined-->
-            <headDrawers>
-              <li Class ="FacialStuff.HumanHeadDrawer"/>
-              <!--  <li Class ="FacialStuff.SecondHeadDrawer"/>-->
-            </headDrawers>
-          </li>
         </value>
       </li>
     </operations>

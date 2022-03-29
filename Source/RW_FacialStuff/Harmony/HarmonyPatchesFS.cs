@@ -6,6 +6,7 @@ using HarmonyLib;
 using JetBrains.Annotations;
 using System;
 using System.Reflection.Emit;
+using FacialStuff.Animator;
 using Verse.AI;
 
 namespace FacialStuff.Harmony
@@ -41,10 +42,12 @@ namespace FacialStuff.Harmony
             // HarmonyLib.Harmony.DEBUG = true;
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
+            /*
                harmony.Patch(
                              AccessTools.Method(typeof(Page_ConfigureStartingPawns), "DrawPortraitArea"),
                              null,
                              new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(AddFaceEditButton)));
+               */
                harmony.Patch(
                              AccessTools.Method(typeof(PawnGraphicSet), nameof(PawnGraphicSet.ResolveAllGraphics)),
                              null,
@@ -75,13 +78,6 @@ namespace FacialStuff.Harmony
                              null,
                              new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(DirtyCache_Postfix)));
             
-               harmony.Patch(
-                             AccessTools.Method(typeof(GraphicDatabaseHeadRecords),
-                                                nameof(GraphicDatabaseHeadRecords.Reset)),
-                             null,
-                             new HarmonyMethod(
-                                               typeof(GraphicDatabaseHeadRecordsModded),
-                                               nameof(GraphicDatabaseHeadRecordsModded.Reset)));
                /*
                   harmony.Patch(
                                 AccessTools.Method(typeof(PawnStyleItemChooser), nameof(PawnStyleItemChooser.RandomHairFor)),
@@ -112,13 +108,13 @@ namespace FacialStuff.Harmony
                                                typeof(PawnSkinColors_FS),
                                                nameof(PawnSkinColors_FS.GetMelaninCommonalityFactor_Prefix)),
                              null);
-
+            /*
             harmony.Patch(
                              AccessTools.Method(typeof(Pawn_InteractionsTracker),
                                                 nameof(Pawn_InteractionsTracker.TryInteractWith)),
                              null,
                              new HarmonyMethod(typeof(HarmonyPatchesFS), nameof(TryInteractWith_Postfix)));
-
+            */
 
             Log.Message(
                         "Facial Stuff successfully completed " + harmony.GetPatchedMethods().Count()
@@ -143,9 +139,8 @@ namespace FacialStuff.Harmony
                 def.inspectorTabs.Add(typeof(ITab_Pawn_Weapons));
                 def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Weapons)));
 
-                def.inspectorTabs.Add(typeof(ITab_Pawn_Face));
-                def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Face)));
             }
+            /*
 
             List<HairDef> beardyHairList =
                 DefDatabase<HairDef>.AllDefsListForReading.Where(x => x.IsBeardNotHair()).ToList();
@@ -178,7 +173,7 @@ namespace FacialStuff.Harmony
             Dialog_FaceStyling.LowerBeardDefs = DefDatabase<Defs.BeardDef>.AllDefsListForReading.Where(x => x.beardType != BeardType.FullBeard)
                 .ToList();
             Dialog_FaceStyling.MoustacheDefs = DefDatabase<MoustacheDef>.AllDefsListForReading;
-
+            */
             CheckAllInjected();
         }
 
@@ -271,7 +266,7 @@ namespace FacialStuff.Harmony
         //           animator.IsMoving = false;
         //       }
         //   }
-
+        /*
         public static void AddFaceEditButton(Page_ConfigureStartingPawns __instance, Rect rect)
         {
             FieldInfo PawnFieldInfo =
@@ -307,7 +302,7 @@ namespace FacialStuff.Harmony
                 OpenStylingWindow(pawn);
             }
         }
-
+        */
         public static void CheckAndDrawHands(Thing carriedThing, Vector3 thingVector3, bool flip, Pawn pawn, bool thingBehind)
         {
             if (pawn.RaceProps.Animal)
@@ -338,7 +333,7 @@ namespace FacialStuff.Harmony
             thingVector3.y += compAnim.DrawOffsetY;
             float factor = pawn.GetBodysizeScaling();
 
-            compAnim.DrawHands(Quaternion.identity, thingVector3, false, carriedThing, flip, factor);
+            compAnim.DrawHands(Quaternion.identity, thingVector3, carriedThing, flip, factor);
         }
 
         public static void DirtyCache_Postfix(HediffSet __instance)
@@ -355,16 +350,6 @@ namespace FacialStuff.Harmony
                 return;
             }
 
-            if (!pawn.GetCompFace(out _))
-            {
-                return;
-            }
-
-            if (!pawn.GetCompAnim().Deactivated && pawn.CheckForAddedOrMissingParts())
-            {
-                pawn.Drawer.renderer.graphics.nakedGraphic = null;
-                PortraitsCache.SetDirty(pawn);
-            }
 
             pawn.GetCompAnim()?.PawnBodyGraphic?.Initialize();
         }
@@ -394,8 +379,7 @@ namespace FacialStuff.Harmony
                 return;
             }
 
-            DamageDef
-            damageDef = busy.verb.GetDamageDef(); //ThingUtility.PrimaryMeleeWeaponDamageType(primaryEq.parent.def);
+            DamageDef damageDef = busy.verb.GetDamageDef(); //ThingUtility.PrimaryMeleeWeaponDamageType(primaryEq.parent.def);
             if (damageDef == null)
             {
                 return;
@@ -562,16 +546,16 @@ namespace FacialStuff.Harmony
 
             // Flip the angle for north
 
-            if (pawn.Rotation == Rot4.North && aimAngle == angleStanding)
-            {
-                aimAngle = angleStandingFlipped;
-            }
+
 
             if (!pawn.GetCompAnim(out CompBodyAnimator animator))
             {
                 return;
             }
-
+            if (pawn.Rotation == Rot4.North && aimAngle == angleStanding)
+            {
+                aimAngle = angleStandingFlipped;
+            }
             if (Find.TickManager.TicksGame == animator.LastAngleTick)
             {
                 aimAngle = animator.LastAimAngle;
@@ -647,13 +631,14 @@ namespace FacialStuff.Harmony
             instructionList[index].labels = labels;
             return instructionList;
         }
-
+        /*
         public static void OpenStylingWindow(Pawn pawn)
         {
             pawn.GetCompFace(out CompFace face);
             Find.WindowStack.Add(new Dialog_FaceStyling(face));
         }
-
+        */
+        /*
         public static bool RandomHairDefFor_PreFix(Pawn pawn, ref HairDef __result)
         {
             //  Log.Message("1 - " + pawn);
@@ -694,6 +679,7 @@ namespace FacialStuff.Harmony
             __result = source.RandomElementByWeight(hair => PawnFaceMaker.HairChoiceLikelihoodFor(hair, pawn));
             return false;
         }
+        */
         public static bool IsChild(this Pawn pawn)
         {
             
@@ -782,107 +768,121 @@ namespace FacialStuff.Harmony
                 return;
             }
 
-            pawn.CheckForAddedOrMissingParts();
             pawn.GetCompAnim()?.PawnBodyGraphic?.Initialize();
 
-            // Check if race has face, else return
-            if (!pawn.GetCompFace(out CompFace compFace))
-            {
-                return;
-            }
 
-            // compFace.IsChild = pawn.ageTracker.AgeBiologicalYearsFloat < 14;
-
-            // Return if child
-            if (pawn.IsChild() || pawn.GetCompAnim().Deactivated)
-            {
-                return;
-            }
-
-            __instance.ClearCache();
             pawn.GetComp<CompBodyAnimator>()?.ClearCache();
 
-            GraphicDatabaseHeadRecordsModded.BuildDatabaseIfNecessary();
-
-            // Need: get the traditional habitat of a faction => not suitable, as factions are scattered around the globe
-            // if (!faceComp.IsSkinDNAoptimized)
-            // {
-            // faceComp.DefineSkinDNA();
-            // }
-
-            // Custom rotting color, mixed with skin tone
-            Color rotColor = pawn.story.SkinColor * FaceTextures.SkinRottingMultiplyColor;
-            if (!compFace.InitializeCompFace())
-            {
-                return;
-            }
-
-            __instance.nakedGraphic = GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.bodyType.bodyNakedGraphicPath, ShaderDatabase.CutoutSkin, Vector2.one, __instance.pawn.story.SkinColor);
-            if (compFace.Props.needsBlankHumanHead)
-            {
-                // if (!compFace.IsChild)
-                {
-                    __instance.headGraphic =
-                        GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn,
-                            pawn.story.SkinColor);
-                    __instance.desiccatedHeadGraphic =
-                        GraphicDatabaseHeadRecordsModded.GetModdedHeadNamed(pawn, rotColor);
-                    __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecordsModded.GetStump(rotColor);
-                }
-               // else
-               // {
-               //     __instance.headGraphic =
-               //         GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,
-               //             pawn.story.SkinColor);
-               //     __instance.desiccatedHeadGraphic =
-               //         GraphicDatabaseHeadRecords.GetHeadNamed(pawn.story.HeadGraphicPath,
-               //             rotColor);
-               //     __instance.desiccatedHeadStumpGraphic = GraphicDatabaseHeadRecords.GetStump(rotColor);
-               // }
-            }
-
-            __instance.rottingGraphic =
-           GraphicDatabase.Get<Graphic_Multi>(__instance.pawn.story.bodyType.bodyNakedGraphicPath, ShaderDatabase.CutoutSkin, Vector2.one, rotColor);
-
-            __instance.hairGraphic = GraphicDatabase.Get<Graphic_Multi>(
-                                                                             pawn.story.hairDef.texPath,
-                                                                             ShaderDatabase.Cutout,
-                                                                             Vector2.one,
-                                                                             pawn.story.hairColor);
-            PortraitsCache.SetDirty(pawn);
         }
 
-        [HarmonyPatch(typeof(PawnRenderer), "RenderPawnAt")]
+        [HarmonyPatch(typeof(Pawn_DrawTracker), "DrawAt")]
         class Patch
         {
-
-            static void Prefix(PawnRenderer __instance, ref Vector3 drawLoc, Rot4? rotOverride, bool neverAimWeapon, out Vector3 __state)
+            static void Prefix(Pawn_DrawTracker __instance, ref Vector3 loc, out Vector3 __state)
             {
-                Pawn pawn = __instance.graphics.pawn;
-                CompFace compFace = pawn.GetCompFace();
+                Pawn pawn = __instance.renderer.graphics.pawn;
+                //CompFace compFace = pawn.GetCompFace();
                 CompBodyAnimator compAnim = pawn.GetCompAnim();
 
-                __state = drawLoc;
-                compAnim?.ApplyBodyWobble(ref drawLoc, ref __state);
-                drawLoc.x += compAnim?.BodyAnim?.offCenterX ?? 0f;
+                loc.x += compAnim?.BodyAnim?.offCenterX ?? 0f;
+                __state = loc;
+                compAnim?.ApplyBodyWobble(ref loc, ref __state);
+                compAnim?.TickDrawers();
+
 
             }
-            static void Postfix(PawnRenderer __instance, Vector3 drawLoc, Rot4? rotOverride, bool neverAimWeapon, Vector3 __state)
-            {
-                Pawn pawn = __instance.graphics.pawn;
-                CompFace compFace = pawn.GetCompFace();
-                CompBodyAnimator compAnim = pawn.GetCompAnim();
 
-                Quaternion bodyQuat = Quaternion.AngleAxis(__instance.BodyAngle(), Vector3.up);
-                Quaternion footQuat = bodyQuat;
+            static void Postfix(Pawn_DrawTracker __instance, Vector3 loc, Vector3 __state)
+            {
+                Pawn pawn = __instance.renderer.graphics.pawn;
+                //CompFace compFace = pawn.GetCompFace();
+                CompBodyAnimator compAnim = pawn.GetCompAnim();
+                
+                var angle = __instance.renderer.BodyAngle();
+
+                Quaternion bodyQuat = Quaternion.AngleAxis(angle, Vector3.up);
+                var drawLoc = loc;
+                Building_Bed building_Bed = pawn.CurrentBed();
+               
+                bool showBody = true;
+                if (building_Bed != null && pawn.RaceProps.Humanlike)
+                {
+                    showBody = building_Bed.def.building.bed_showSleeperBody;
+                }
+
+                // hands and feet look weird with no body. skip it.
+                if (!showBody)
+                {
+                    return;
+                    /*
+                    var fixingSleeperVector = new Vector3(0, 0, -0.4f).RotatedBy(angle);
+                    __state += fixingSleeperVector;
+                    drawLoc+=fixingSleeperVector;
+                    */
+                }
+
+                // do the tweening now
+                if (compAnim.Props.bipedWithHands)
+                {
+                    BodyAnimator.AnimatorTick();
+                }
+
+                // Tweener
+                Vector3Tween eqTween = compAnim.Vector3Tweens[(int)HarmonyPatchesFS.equipment];
+
+                FloatTween angleTween = compAnim.AimAngleTween;
+                Vector3Tween leftHand = compAnim.Vector3Tweens[(int)TweenThing.HandLeft];
+                Vector3Tween rightHand = compAnim.Vector3Tweens[(int)TweenThing.HandRight];
+
+                if (!Find.TickManager.Paused)
+                {
+                    if (leftHand.State == TweenState.Running)
+                    {
+                        leftHand.Update(1f * Find.TickManager.TickRateMultiplier);
+                    }
+                    if (rightHand.State == TweenState.Running)
+                    {
+                        rightHand.Update(1f * Find.TickManager.TickRateMultiplier);
+                    }
+                    if (eqTween.State == TweenState.Running)
+                    {
+                        eqTween.Update(1f * Find.TickManager.TickRateMultiplier);
+                    }
+
+                    if (angleTween.State == TweenState.Running)
+                    {
+                        compAnim.AimAngleTween.Update(3f * Find.TickManager.TickRateMultiplier);
+                    }
+
+                    compAnim.CheckMovement();
+
+                }
+                // todo update or not?
+                /*
+                if (this.ThePawn.IsChild())
+                {
+                    float angle = this.ThePawn.Drawer.renderer.BodyAngle();
+                    Quaternion bodyQuat = Quaternion.AngleAxis(angle, Vector3.up);
+                    Vector3 rootLoc = this.ThePawn.Drawer.DrawPos;
+                    if (Controller.settings.UseHands && this.ThePawn.carryTracker?.CarriedThing == null)
+                    {
+                        this.DrawHands(bodyQuat, rootLoc, null, false, this.ThePawn.GetBodysizeScaling());
+                    }
+
+                    if (Controller.settings.UseFeet)
+                    {
+                        this.DrawFeet(bodyQuat, rootLoc, false);
+                    }
+                }
+                */
 
                 if (Controller.settings.UseFeet)
                 {
-                    compAnim?.DrawFeet(bodyQuat, footQuat, __state, false);
+                    compAnim?.DrawFeet(bodyQuat, __state, false);
                 }
-                if (Controller.settings.UseHands)
+                if (Controller.settings.UseHands && pawn.carryTracker?.CarriedThing == null)
                 {
-                    compAnim?.DrawHands(bodyQuat, drawLoc, false);
+                    compAnim?.DrawHands(bodyQuat, drawLoc);
                 }
             }
 
@@ -891,7 +891,7 @@ namespace FacialStuff.Harmony
         [HarmonyPatch(typeof(PawnRenderer), nameof(PawnRenderer.BodyAngle))]
         class Patch2
         {
-            static bool Prefix([NotNull] PawnRenderer __instance, ref float __result)
+            static void Postfix( PawnRenderer __instance, ref float __result)
             {
                 Pawn pawn = __instance.graphics.pawn;
                 CompBodyAnimator compAnim = pawn.GetCompAnim();
@@ -899,11 +899,11 @@ namespace FacialStuff.Harmony
                 {
                     if (compAnim.IsMoving)
                     {
-                        __result = compAnim.BodyAngle;
-                        return false;
+                        __result += compAnim.BodyAngle;
+                        //return false;
                     }
                 }
-                return true;
+                //return true;
             }
 
         }
@@ -1006,15 +1006,14 @@ namespace FacialStuff.Harmony
                 //    y2 *= -1f;
                 //}
 
-                animator.SecondHandPosition =
-                weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle);
+                animator.SecondHandPosition = weaponPosition + new Vector3(x2, y2, z2).RotatedBy(weaponAngle);
             }
 
             // Swap left and right hand position when flipped
 
             animator.WeaponQuat = Quaternion.AngleAxis(weaponAngle, Vector3.up);
         }
-
+        /*
         public static void TryInteractWith_Postfix(Pawn_InteractionsTracker __instance, bool __result, Pawn recipient)
         {
             if (__instance == null)
@@ -1057,7 +1056,7 @@ namespace FacialStuff.Harmony
                 }
             }
         }
-
+        */
         // If the return value is positive, then rotate to the left. Else,
         // rotate to the right.
         private static float CalcShortestRot(float from, float to)

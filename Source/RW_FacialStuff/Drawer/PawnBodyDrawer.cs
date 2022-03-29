@@ -66,11 +66,11 @@ namespace FacialStuff
         {
             // Just for the Aliens
         }
-        public virtual void DrawFeet(Quaternion bodyQuat, Quaternion footQuat, Vector3 rootLoc, bool portrait, float factor = 1f)
+        public virtual void DrawFeet(Quaternion drawQuat, Vector3 rootLoc, float factor = 1f)
         {
         }
 
-        public virtual void DrawHands(Quaternion bodyQuat, Vector3 drawPos, bool portrait, Thing carriedThing = null,
+        public virtual void DrawHands(Quaternion bodyQuat, Vector3 drawPos, Thing carriedThing = null,
             bool flip = false, float factor = 1f)
         {
 
@@ -80,10 +80,8 @@ namespace FacialStuff
         {
         }
 
-        public virtual void Tick(Rot4 bodyFacing, PawnGraphicSet graphics)
+        public virtual void Tick()
         {
-            this.Graphics = graphics;
-            this.BodyFacing = bodyFacing;
         }
 
         #endregion Public Methods

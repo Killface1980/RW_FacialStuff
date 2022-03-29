@@ -2,115 +2,120 @@
 
 <Defs>
 
-  <FacialStuff.Defs.MoustacheDef>
+  <BeardDef>
     <defName>Moustache_Chaplin</defName>
     <label>Chaplin</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_Chaplin</texPath>
-    <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-    </styleTags>
-  </FacialStuff.Defs.MoustacheDef>
+    <styleGender>Male</styleGender>
 
-  <FacialStuff.Defs.MoustacheDef>
+    <texPath>Things/Pawn/Humanlike/Moustaches/Chaplin</texPath>
+    <category>Moustache</category>
+    <styleTags>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>MoustacheOnly</li>
+    </styleTags>
+  </BeardDef>
+
+  <BeardDef>
     <defName>Moustache_DoctorWatson</defName>
     <label>Doctor Watson</label>
-    <forbiddenOnRace/>
-    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_DoctorWatson</texPath>
-    <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-    </styleTags>
-  </FacialStuff.Defs.MoustacheDef>
 
-  <FacialStuff.Defs.MoustacheDef>
+    <texPath>Things/Pawn/Humanlike/Moustaches/DoctorWatson</texPath>
+    <category>Moustache</category>
+    <styleTags>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+      <li>MoustacheOnly</li>
+    </styleTags>
+  </BeardDef>
+
+  <BeardDef>
     <defName>Moustache_FishTail</defName>
     <label>Freddie Fishtail</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_FishTail</texPath>
-    <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </styleTags>
-  </FacialStuff.Defs.MoustacheDef>
+    <styleGender>Male</styleGender>
 
-  <FacialStuff.Defs.MoustacheDef>
+    <texPath>Things/Pawn/Humanlike/Moustaches/FishTail</texPath>
+    <category>Moustache</category>
+    <styleTags>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+      <li>BeardTribal</li>
+      <li>MoustacheOnly</li>
+    </styleTags>
+  </BeardDef>
+
+  <BeardDef>
     <defName>Moustache_LeChef</defName>
     <label>Le Chef</label>
-    <forbiddenOnRace/>    
-    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_LeChef</texPath>
+    
+    <texPath>Things/Pawn/Humanlike/Moustaches/LeChef</texPath>
+    <category>Moustache</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>MoustacheOnly</li>
     </styleTags>
-  </FacialStuff.Defs.MoustacheDef>
+  </BeardDef>
 
-  <FacialStuff.Defs.MoustacheDef>
+  <BeardDef>
     <defName>Moustache_LittleWatson</defName>
     <label>Little Watson</label>
-    <forbiddenOnRace/>
-    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_LittleWatson</texPath>
-    <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-    </styleTags>
-  </FacialStuff.Defs.MoustacheDef>
 
-  <FacialStuff.Defs.MoustacheDef>
+    <texPath>Things/Pawn/Humanlike/Moustaches/LittleWatson</texPath>
+    <category>Moustache</category>
+    <styleTags>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+      <li>MoustacheOnly</li>
+    </styleTags>
+  </BeardDef>
+
+  <BeardDef>
     <defName>Moustache_MisterSlave</defName>
     <label>Mister Slave</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_MisterSlave</texPath>
-    <styleTags>
-      <li>Rural</li>
-      <li>Punk</li>
-    </styleTags>
-  </FacialStuff.Defs.MoustacheDef>
+    <styleGender>Male</styleGender>
 
-  <FacialStuff.Defs.MoustacheDef>
-    <defName>Shaved</defName>
-    <label>0Shaved</label>
-    <forbiddenOnRace/>
-    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_Shaved</texPath>
+    <texPath>Things/Pawn/Humanlike/Moustaches/MisterSlave</texPath>
+    <category>Moustache</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+      <li>MoustacheOnly</li>
     </styleTags>
-  </FacialStuff.Defs.MoustacheDef>
+  </BeardDef>
 
-  <FacialStuff.Defs.MoustacheDef>
+
+
+  <BeardDef>
     <defName>Moustache_Souvarov</defName>
-    <label>Master Souvarov</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_Souvarov</texPath>
-    <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-    </styleTags>
-  </FacialStuff.Defs.MoustacheDef>
+    <label>M Souvarov</label>
+    <styleGender>Male</styleGender>
 
-  <FacialStuff.Defs.MoustacheDef>
+    <texPath>Things/Pawn/Humanlike/Moustaches/Souvarov</texPath>
+    <category>Moustache</category>
+    <styleTags>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+      <li>MoustacheOnly</li>
+    </styleTags>
+  </BeardDef>
+
+  <BeardDef>
     <defName>Moustache_Western</defName>
     <label>Gunslinger</label>
-    <forbiddenOnRace/>
-    <texPath>Things/Pawn/Humanlike/Moustaches/Moustache_Western</texPath>
+
+    <texPath>Things/Pawn/Humanlike/Moustaches/Western</texPath>
+    <category>Moustache</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+      <li>BeardTribal</li>
+      <li>MoustacheOnly</li>
     </styleTags>
-  </FacialStuff.Defs.MoustacheDef>
+  </BeardDef>
 </Defs>

@@ -2,453 +2,443 @@
 
 <Defs>
 
-  <FacialStuff.Defs.BeardDef>
+  <BeardDef>
     <defName>Beard_Anchor</defName>
     <label>Anchor</label>
-    <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Anchor</texPath>
+    <texPath>Things/Pawn/Humanlike/Beards/Anchor</texPath>
+    <category>Urban</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
     </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <BeardDef>
     <defName>Beard_Balbo</defName>
     <label>Balbo</label>
-    <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Balbo</texPath>
+    <texPath>Things/Pawn/Humanlike/Beards/Balbo</texPath>
+    <category>Urban</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
     </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <BeardDef>
     <defName>Beard_ChinCurtain</defName>
     <label>Chin Curtain</label>
-    <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>ChinCurtain</texPath>
+    <texPath>Things/Pawn/Humanlike/Beards/ChinCurtain</texPath>
+    <category>Rural</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
     </styleTags>
-    <drawMouth>true</drawMouth>
-    <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_ChinPuff</defName>
     <label>Chin Puff</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>ChinPuff</texPath>
+    <styleGender>Male</styleGender>
+    <texPath>Things/Pawn/Humanlike/Beards/ChinPuff</texPath>
+    <category>Rural</category>
     <styleTags>
-      <li>Punk</li>
-      <li>Tribal</li>
+      <li>BeardPunk</li>
+      <li>BeardTribal</li>
     </styleTags>
-    <drawMouth>true</drawMouth>
-    <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_DuckTail</defName>
     <label>Duck Tail</label>
-    <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>DuckTail</texPath>
+    <texPath>Things/Pawn/Humanlike/Beards/DuckTail</texPath>
+    <category>Urban</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
       <li>MaleOld</li>
     </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+    
+  </BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <BeardDef>
     <defName>Beard_ElInsecto</defName>
     <label>El Insecto</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>ElInsecto</texPath>
+    <styleGender>Male</styleGender>
+    <texPath>Things/Pawn/Humanlike/Beards/ElInsecto</texPath>
+    <category>Urban</category>
     <styleTags>
-      <li>Punk</li>
-      <li>Tribal</li>
+      <li>BeardPunk</li>
+      <li>BeardTribal</li>
     </styleTags>
-    <drawMouth>true</drawMouth>
-    <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_FranzJoseph</defName>
     <label>Franz Joseph</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>FranzJoseph</texPath>
+    <styleGender>Male</styleGender>
+    <texPath>Things/Pawn/Humanlike/Beards/FranzJoseph</texPath>
+    <category>Urban</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
     </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+    
+  </BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <BeardDef>
     <defName>Beard_FrenchFork</defName>
     <label>French Fork</label>
-    <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>FrenchFork</texPath>
+    <texPath>Things/Pawn/Humanlike/Beards/FrenchFork</texPath>
+    <category>Rural</category>
     <styleTags>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>MaleOld</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
     </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+  </BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <BeardDef>
     <defName>Beard_FriendlyMuttonChops</defName>
-    <label>Friendly Mutton Chops</label>
+    <label>Mutton Chops</label>
     <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>FriendlyMuttonChops</texPath>
+    <texPath>Things/Pawn/Humanlike/Beards/FriendlyMuttonChops</texPath>
+    <category>Rural</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>MaleOld</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
     </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+    
+  </BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <BeardDef>
     <defName>Beard_FullBeard</defName>
     <label>Full Beard</label>
     <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>FullBeard</texPath>
+    <texPath>Things/Pawn/Humanlike/Beards/FullBeard</texPath>
+    <category>Tribal</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+      <li>BeardTribal</li>
     </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
-
-  <FacialStuff.Defs.BeardDef>
+    
+  </BeardDef>
+  <BeardDef>
     <defName>Beard_Garibaldi</defName>
     <label>Garibaldi</label>
     <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Garibaldi</texPath>
+    <texPath>Things/Pawn/Humanlike/Beards/Garibaldi</texPath>
+    <category>Urban</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-      <li>MaleOld</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+      <li>BeardTribal</li>
     </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+    
+  </BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <BeardDef>
     <defName>Beard_Goatee</defName>
     <label>Goatee</label>
     <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Goatee</texPath>
+    <texPath>Things/Pawn/Humanlike/Beards/Goatee</texPath>
+    <category>Urban</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
     </styleTags>
-    <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_Hollywoodian</defName>
     <label>Hollywoodian</label>
     <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Hollywoodian</texPath>
+    <texPath>Things/Pawn/Humanlike/Beards/Hollywoodian</texPath>
+    <category>Urban</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
     </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+    
+  </BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <BeardDef>
     <defName>Beard_Hulihee</defName>
     <label>Hulihee</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Hulihee</texPath>
+    <styleGender>Male</styleGender>
+
+    <texPath>Things/Pawn/Humanlike/Beards/Hulihee</texPath>
+    <category>Rural</category>
     <styleTags>
-      <li>Rural</li>
-      <li>Punk</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
       <li>MaleOld</li>
     </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+    
+  </BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <BeardDef>
     <defName>Beard_Imperial</defName>
     <label>Imperial</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Imperial</texPath>
-    <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>MaleOld</li>
-    </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+    <styleGender>Male</styleGender>
 
-  <FacialStuff.Defs.BeardDef>
+    <texPath>Things/Pawn/Humanlike/Beards/Imperial</texPath>
+    <category>Urban</category>
+    <styleTags>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+    </styleTags>
+    
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_MuttonChops</defName>
     <label>Mutton Chops</label>
-    <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>MuttonChops</texPath>
+    <texPath>Things/Pawn/Humanlike/Beards/MuttonChops</texPath>
+    <category>Rural</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+      <li>BeardTribal</li>
     </styleTags>
-    <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_NapoleonIIIImperial</defName>
-    <label>Napoleon III Imperial</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>NapoleonIIIImperial</texPath>
-    <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-    </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+    <label>Napoleon III</label>
+    <styleGender>Male</styleGender>
 
-  <FacialStuff.Defs.BeardDef>
+    <texPath>Things/Pawn/Humanlike/Beards/NapoleonIIIImperial</texPath>
+    <category>Tribal</category>
+    <styleTags>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+    </styleTags>
+    
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_OldDutch</defName>
     <label>Old Dutch</label>
     <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>OldDutch</texPath>
-    <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </styleTags>
-    <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+
+    <texPath>Things/Pawn/Humanlike/Beards/OldDutch</texPath>
+    <category>Rural</category>
+    <styleTags>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+      <li>BeardTribal</li>
+    </styleTags>
+
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_PetiteGoatee</defName>
     <label>Petite Goatee</label>
     <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>PetiteGoatee</texPath>
-    <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-    </styleTags>
-    <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+
+    <texPath>Things/Pawn/Humanlike/Beards/PetiteGoatee</texPath>
+    <category>Urban</category>
+    <styleTags>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+    </styleTags>
+
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_SoulPatch</defName>
     <label>Soul Patch</label>
     <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>SoulPatch</texPath>
-    <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-    </styleTags>
-    <drawMouth>true</drawMouth>
-    <beardType>LowerBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+
+    <texPath>Things/Pawn/Humanlike/Beards/SoulPatch</texPath>
+    <category>Urban</category>
+    <styleTags>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+    </styleTags>
+
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_Souvarov</defName>
     <label>Souvarov</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Souvarov</texPath>
-    <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-    </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+    <styleGender>Male</styleGender>
 
-  <FacialStuff.Defs.BeardDef>
+    <texPath>Things/Pawn/Humanlike/Beards/Souvarov</texPath>
+    <category>Urban</category>
+    <styleTags>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+    </styleTags>
+    
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_Stubble</defName>
     <label>Stubble</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Stubble</texPath>
-    <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </styleTags>
-    <drawMouth>true</drawMouth>
-    <beardType>None</beardType>
-  </FacialStuff.Defs.BeardDef>
+    <styleGender>Male</styleGender>
 
-  <FacialStuff.Defs.BeardDef>
+    <texPath>Things/Pawn/Humanlike/Beards/Stubble</texPath>
+    <category>Punk</category>
+    <styleTags>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+      <li>BeardTribal</li>
+    </styleTags>
+
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_TheKlingon</defName>
     <label>The Klingon</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>TheKlingon</texPath>
-    <styleTags>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+    <styleGender>Male</styleGender>
 
-  <FacialStuff.Defs.BeardDef>
+    <texPath>Things/Pawn/Humanlike/Beards/TheKlingon</texPath>
+    <category>Urban</category>
+    <styleTags>
+      <li>BeardPunk</li>
+      <li>BeardTribal</li>
+    </styleTags>
+    
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_TheSparrow</defName>
     <label>The Sparrow</label>
     <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>TheSparrow</texPath>
-    <styleTags>
-      <li>Tribal</li>
-    </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+
+    <texPath>Things/Pawn/Humanlike/Beards/TheSparrow</texPath>
+    <category>Tribal</category>
+    <styleTags>
+      <li>BeardTribal</li>
+    </styleTags>
+    
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_TheWinnfield</defName>
     <label>The Winnfield</label>
-    <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>TheWinnfield</texPath>
-    <styleTags>
-      <li>Rural</li>
-      <li>Punk</li>
-    </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+
+    <texPath>Things/Pawn/Humanlike/Beards/TheWinnfield</texPath>
+    <category>Rural</category>
+    <styleTags>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+    </styleTags>
+    
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_TheZappa</defName>
     <label>The Zappa</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>TheZappa</texPath>
-    <styleTags>
-      <li>Rural</li>
-      <li>Punk</li>
-    </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+    <styleGender>Male</styleGender>
 
-  <FacialStuff.Defs.BeardDef>
+    <texPath>Things/Pawn/Humanlike/Beards/TheZappa</texPath>
+    <category>Urban</category>
+    <styleTags>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+    </styleTags>
+    
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_VanDyke</defName>
     <label>Van Dyke</label>
     <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>VanDyke</texPath>
-    <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-    </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
-    <defName>Beard_Shaved</defName>
-    <label>0Shaved</label>
-    <styleGender>MaleUsually</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Shaved</texPath>
-    <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
-    </styleTags>
-    <drawMouth>true</drawMouth>
-    <beardType>None</beardType>
-  </FacialStuff.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+    <texPath>Things/Pawn/Humanlike/Beards/VanDyke</texPath>
+    <category>Urban</category>
+    <styleTags>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+    </styleTags>
+    
+  </BeardDef>
+
+
+  <BeardDef>
     <defName>Beard_CoolSteiner</defName>
     <label>Cool Steiner</label>
     <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>CoolSteiner</texPath>
+
+
+    <texPath>Things/Pawn/Humanlike/Beards/CoolSteiner</texPath>
+    <category>Tribal</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+      <li>BeardTribal</li>
       <li>MaleOld</li>
     </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+    
+  </BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <BeardDef>
     <defName>Beard_CaptainTiebeard</defName>
     <label>Captain Tiebeard</label>
     <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>CaptainTiebeard</texPath>
-    <styleTags>
-      <li>Tribal</li>
-    </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+
+    <texPath>Things/Pawn/Humanlike/Beards/CaptainTiebeard</texPath>
+    <category>Tribal</category>
+    <styleTags>
+      <li>BeardTribal</li>
+    </styleTags>
+    
+  </BeardDef>
+
+  <BeardDef>
     <defName>Beard_Santa</defName>
     <label>Santa</label>
     <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>Santa</texPath>
+
+
+    <texPath>Things/Pawn/Humanlike/Beards/Santa</texPath>
+    <category>Tribal</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+      <li>BeardTribal</li>
       <li>MaleOld</li>
     </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+    
+  </BeardDef>
 
-  <FacialStuff.Defs.BeardDef>
+  <BeardDef>
     <defName>Beard_TwinPeaks</defName>
     <label>Twin Peaks</label>
     <styleGender>Male</styleGender>
-    <forbiddenOnRace/>
-    <texPath>TwinPeaks</texPath>
+    <texPath>Things/Pawn/Humanlike/Beards/TwinPeaks</texPath>
+    <category>Tribal</category>
     <styleTags>
-      <li>Urban</li>
-      <li>Rural</li>
-      <li>Punk</li>
-      <li>Tribal</li>
+      <li>BeardUrban</li>
+      <li>BeardRural</li>
+      <li>BeardPunk</li>
+      <li>BeardTribal</li>
       <li>MaleOld</li>
     </styleTags>
-    <beardType>FullBeard</beardType>
-  </FacialStuff.Defs.BeardDef>
+    
+  </BeardDef>
 </Defs>

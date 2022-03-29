@@ -16,14 +16,6 @@ namespace FacialStuff
 
         private bool _hideHatWhileRoofed;
 
-        private bool _hideShellWhileRoofed = true;
-        private bool _ignoreRenderBody;
-        private bool _ignoreWhileDrafted;
-        private MaxLayerToShow _layerInBed = MaxLayerToShow.OnSkin;
-        private MaxLayerToShow _layerInOwnedBed = MaxLayerToShow.Naked;
-        private MaxLayerToShow _layerInPrivateRoom = MaxLayerToShow.OnSkin;
-        private MaxLayerToShow _layerInRoom = MaxLayerToShow.Middle;
-        private bool _makeThemBlink = true;
 
         private bool _mergeHair = true;
 
@@ -49,8 +41,8 @@ namespace FacialStuff
 
         private bool _useHands = true;
 
-        private bool _useFeet = !Controller.SKisActive;
-        private bool _usePaws = false;
+        private bool _useFeet = true;
+        private bool _usePaws = true;
         private bool develop;
 
         private bool showRoyalHeadgear = true;
@@ -75,14 +67,6 @@ namespace FacialStuff
 
         public bool HideHatWhileRoofed => this._hideHatWhileRoofed;
 
-        public bool HideShellWhileRoofed => this._hideShellWhileRoofed;
-        public bool IgnoreRenderBody => this._ignoreRenderBody;
-        public bool IgnoreWhileDrafted => this._ignoreWhileDrafted;
-        public MaxLayerToShow LayerInBed => this._layerInBed;
-        public MaxLayerToShow LayerInOwnedBed => this._layerInOwnedBed;
-        public MaxLayerToShow LayerInPrivateRoom => this._layerInPrivateRoom;
-        public MaxLayerToShow LayerInRoom => this._layerInRoom;
-        public bool MakeThemBlink => this._makeThemBlink;
         public bool MergeHair => this._mergeHair;
         public bool SameBeardColor => this._sameBeardColor;
         public bool ShowBodyChange => this._showBodyChange;
@@ -134,10 +118,6 @@ namespace FacialStuff
                 "Settings.UseHeadRotator".Translate(),
                 ref this._useHeadRotator,
                 "Settings.UseHeadRotatorTooltip".Translate());
-            list.CheckboxLabeled(
-                "Settings.MakeThemBlink".Translate(),
-                ref this._makeThemBlink,
-                "Settings.MakeThemBlinkTooltip".Translate());
             list.CheckboxLabeled(
                 "Settings.UseMouth".Translate(),
                 ref this._useMouth,
@@ -240,52 +220,6 @@ namespace FacialStuff
                 "Settings.FilterHatsTooltip".Translate());
 
 
-            list.Gap();
-            list.Label("Body");
-
-            list.CheckboxLabeled(
-                "Settings.HideShellWhileRoofed".Translate(),
-                ref this._hideShellWhileRoofed,
-                "Settings.HideShellWhileRoofedTooltip".Translate());
-
-            if (this.HideShellWhileRoofed)
-            {
-                list.Label("Apparel layers to show:");
-                list.LabelDouble("In a room: ", this.LayerInRoom.ToString());
-                this._layerInRoom = (MaxLayerToShow)list.Slider((float)this._layerInRoom, 0, 2);
-
-                list.LabelDouble("In private room: ", this.LayerInPrivateRoom.ToString());
-                this._layerInPrivateRoom = (MaxLayerToShow)list.Slider((float)this._layerInPrivateRoom, 0, 2);
-            }
-
-            list.Gap();
-            list.Label("Visibility Of Bodies");
-            list.GapLine();
-
-            list.CheckboxLabeled(
-                "Settings.IgnoreRenderBody".Translate(),
-                ref this._ignoreRenderBody,
-                "Settings.IgnoreRenderBodyTooltip".Translate());
-
-            if (this.IgnoreRenderBody)
-            {
-                if (this.HideShellWhileRoofed)
-                {
-                    list.LabelDouble("Apparel layers in bed: ", this.LayerInBed.ToString());
-                    this._layerInBed = (MaxLayerToShow)list.Slider((float)this._layerInBed, 0, 2);
-                    list.LabelDouble("Apparel layers in owned bed: ", this.LayerInOwnedBed.ToString());
-                    this._layerInOwnedBed = (MaxLayerToShow)list.Slider((float)this._layerInOwnedBed, 0, 2);
-                }
-            }
-
-            if (this.HideHatWhileRoofed || this.HideShellWhileRoofed)
-            {
-                list.GapLine(24f);
-                list.CheckboxLabeled(
-                    "Settings.IgnoreWhileDrafted".Translate(),
-                    ref this._ignoreWhileDrafted,
-                    "Settings.IgnoreWhileDraftedTooltip".Translate());
-            }
 
 
 
@@ -351,7 +285,6 @@ namespace FacialStuff
             base.ExposeData();
 
             Scribe_Values.Look(ref this.develop, "develop", false, true);
-            Scribe_Values.Look(ref this._hideShellWhileRoofed, "hideShellWhileRoofed", false, true);
             Scribe_Values.Look(ref this._useWrinkles, "useWrinkles", false, true);
             Scribe_Values.Look(ref this._useMouth, "useMouth", false, true);
             Scribe_Values.Look(ref this._useHands, "useHands");
@@ -367,20 +300,12 @@ namespace FacialStuff
             Scribe_Values.Look(ref this._sameBeardColor, "sameBeardColor", false, true);
 
             // Scribe_Values.Look(ref this.useDNAByFaction, "useDNAByFaction", false, true);
-            Scribe_Values.Look(ref this._makeThemBlink, "makeThemBlink", false, true);
             Scribe_Values.Look(ref this._useCaching, "useCaching", false, true);
             Scribe_Values.Look(ref this._useNastyGrin, "useNastyGrin", false, true);
             Scribe_Values.Look(ref this._useHeadRotator, "useHeadRotator", false, true);
             Scribe_Values.Look(ref this._showBodyChange, "showBodyChange", false, true);
             Scribe_Values.Look(ref this._showGenderAgeChange, "showGenderAgeChange", false, true);
 
-            Scribe_Values.Look(ref this._ignoreWhileDrafted, "ignoreWhileDrafted", false, true);
-            Scribe_Values.Look(ref this._ignoreRenderBody, "ignoreRenderBody", false, true);
-
-            Scribe_Values.Look(ref this._layerInRoom, "layerInRoom");
-            Scribe_Values.Look(ref this._layerInPrivateRoom, "layerInPrivateRoom");
-            Scribe_Values.Look(ref this._layerInBed, "layerInBed");
-            Scribe_Values.Look(ref this._layerInOwnedBed, "layerInOwnedBed");
         }
 
         #endregion Public Methods

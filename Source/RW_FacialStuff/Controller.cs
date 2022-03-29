@@ -12,7 +12,6 @@ namespace FacialStuff
     public class Controller : Mod
     {
         private const string modName = "Facial Stuff";
-        public const string HardCoreSkFile = "/HardCore.SK";
 
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once StyleCop.SA1307
@@ -21,24 +20,7 @@ namespace FacialStuff
 
         private static bool? skActive;
 
-        public static bool SKisActive
-        {
-            get
-            {
-                if (skActive.HasValue)
-                {
-                    return skActive.Value;
-                }
 
-                ModMetaData mod = ModLister.AllInstalledMods.FirstOrDefault(
-                                                                            x => x?.Name != null && x.Active &&
-                                                                                 x.Name
-                                                                                  .StartsWith(modName));
-                skActive = mod != null && File.Exists(mod.RootDir + HardCoreSkFile);
-
-                return skActive.Value;
-            }
-        }
 
         public Controller(ModContentPack content)
             : base(content)
@@ -72,7 +54,7 @@ namespace FacialStuff
             for (int i = 0; i < allPawns.Count; i++)
             {
                 Pawn pawn = allPawns[i];
-                if (!pawn.HasCompFace())
+                if (!pawn.HasCompAnimator())
                 {
                     continue;
                 }

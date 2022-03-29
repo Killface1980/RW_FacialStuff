@@ -219,7 +219,7 @@ namespace FacialStuff
                      || (!apCoversFullHead && !apCoversUpperHead && noRenderGoggles))
                     {
                         Material mat = this.Graphics.HairMatAt(this.HeadFacing);
-                        GenDraw.DrawMeshNowOrLater(hairMesh, hairLoc, headQuat, mat, true);
+                        GenDraw.DrawMeshNowOrLater(hairMesh, hairLoc, headQuat, mat, false);
                     }
                     else if (Controller.settings.MergeHair) // && !apCoversFullHead)
                     {
@@ -228,7 +228,7 @@ namespace FacialStuff
                         Material hairCutMat = hairPawn.HairCutMatAt(this.HeadFacing);
                         if (hairCutMat != null)
                         {
-                            GenDraw.DrawMeshNowOrLater(hairMesh, hairLoc, headQuat, hairCutMat, true);
+                            GenDraw.DrawMeshNowOrLater(hairMesh, hairLoc, headQuat, hairCutMat, false);
                         }
                     }
                 }

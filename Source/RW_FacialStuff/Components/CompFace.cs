@@ -90,10 +90,10 @@ namespace FacialStuff
         public Faction OriginFaction => this._factionInt;
 
         public virtual CrownType PawnCrownType => this.Pawn?.story.crownType ?? CrownType.Average;
-
+        /*
         [CanBeNull]
         public PawnFace PawnFace => this._pawnFace;
-
+        */
         public HeadType PawnHeadType
         {
             get

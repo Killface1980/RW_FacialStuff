@@ -11,6 +11,7 @@ namespace FacialStuff.Animator
     {
         #region Private Fields
 
+        [NotNull]
         private static readonly SimpleCurve EyeMotionFullCurve =
             new()
             {
@@ -19,7 +20,7 @@ namespace FacialStuff.Animator
                     new CurvePoint(0.65f, 1f),
                     new CurvePoint(0.85f, 0f)
                 };
-
+        [NotNull]
         private static readonly SimpleCurve EyeMotionHalfCurve =
             new()
             {
@@ -31,7 +32,7 @@ namespace FacialStuff.Animator
 
         [NotNull]
         private readonly CompFace _compFace;
-
+        [NotNull]
         private readonly SimpleCurve _consciousnessCurve =
             new()
             { new CurvePoint(0f, 5f), new CurvePoint(0.5f, 2f), new CurvePoint(1f, 1f) };
@@ -39,7 +40,7 @@ namespace FacialStuff.Animator
         private readonly float _factorX = 0.02f;
 
         private readonly float _factorY = 0.01f;
-
+        [NotNull]
         private readonly SimpleCurve _painCurve =
             new()
             { new CurvePoint(0f, 1f), new CurvePoint(0.65f, 1f), new CurvePoint(1f, 2f) };
@@ -157,7 +158,8 @@ namespace FacialStuff.Animator
                     this.EyeMoveL = new Vector3(movePixel * this._flippedX, 0, movePixelY * this._flippedY);
                 }
             }
-
+            //Todo: 1.3 changed lots of stuff, rewrite and fing a way to use FS with 1. rendering optimizations
+            GlobalTextureAtlasManager.TryMarkPawnFrameSetDirty(this._pawn);
             if (tickManagerTicksGame > this.NextBlinkEnd)
             {
                 // Set upnext blinking cycle

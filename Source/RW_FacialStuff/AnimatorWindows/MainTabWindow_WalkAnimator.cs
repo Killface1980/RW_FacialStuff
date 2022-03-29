@@ -90,7 +90,7 @@ namespace FacialStuff.AnimatorWindows
         }
 
         // public static float horHeadOffset;
-        protected override void DoBasicSettingsMenu(Listing_Standard listing)
+        protected override void DoBasicSettingsMenu([NotNull] Listing_Standard listing)
         {
             base.DoBasicSettingsMenu(listing);
 
